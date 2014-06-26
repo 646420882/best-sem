@@ -1,8 +1,8 @@
 package com.perfect.mongodb.dao.impl;
 
 import com.perfect.mongodb.dao.SystemUserDAO;
-import com.perfect.mongodb.entity.BaiduAccountInfo;
-import com.perfect.mongodb.entity.SystemUser;
+import com.perfect.mongodb.entity.BaiduAccountInfoEntity;
+import com.perfect.mongodb.entity.SystemUserEntity;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -15,59 +15,59 @@ import java.util.List;
  * Created by vbzer_000 on 2014-6-19.
  */
 @Repository("systemUserDAO")
-public class SystemUserDAOImpl extends AbstractBaseDAO<SystemUser> implements SystemUserDAO {
+public class SystemUserDAOImpl extends AbstractBaseDAO<SystemUserEntity> implements SystemUserDAO {
 
     @Override
-    public void addBaiduAccount(List<BaiduAccountInfo> list, String currSystemUserName) {
-        SystemUser currSystemUser = findByUserName(currSystemUserName);
-        List<BaiduAccountInfo> list1 = currSystemUser.getBaiduAccountInfos();
+    public void addBaiduAccount(List<BaiduAccountInfoEntity> list, String currSystemUserName) {
+        SystemUserEntity currSystemUserEntity = findByUserName(currSystemUserName);
+        List<BaiduAccountInfoEntity> list1 = currSystemUserEntity.getBaiduAccountInfoEntities();
         if (list1 == null) {
             list1 = new ArrayList<>();
-            for (BaiduAccountInfo entity : list)
+            for (BaiduAccountInfoEntity entity : list)
                 list1.add(entity);
         } else {
-            for (BaiduAccountInfo entity : list)
+            for (BaiduAccountInfoEntity entity : list)
                 list1.add(entity);
         }
         getMongoTemplate().updateFirst(new Query(Criteria.where("userName").is(currSystemUserName)), Update.update("baiduAccountInfos", list1), "SystemUser");
     }
 
     @Override
-    public void updateById(SystemUser systemUser) {
+    public void updateById(SystemUserEntity systemUserEntity) {
 
     }
 
     @Override
-    public void update(SystemUser s, SystemUser d) {
+    public void update(SystemUserEntity s, SystemUserEntity d) {
 
     }
 
     @Override
-    public SystemUser findById(String id) {
+    public SystemUserEntity findById(String id) {
         return null;
     }
 
     @Override
-    public SystemUser findByUserName(String userName) {
-        SystemUser user = getMongoTemplate().
-                find(new Query(Criteria.where("userName").is(userName)), SystemUser.class, "SystemUser")
+    public SystemUserEntity findByUserName(String userName) {
+        SystemUserEntity user = getMongoTemplate().
+                find(new Query(Criteria.where("userName").is(userName)), SystemUserEntity.class, "SystemUser")
                 .get(0);
         return user;
     }
 
 
     @Override
-    public List<SystemUser> find(SystemUser systemUser, int skip, int limit) {
+    public List<SystemUserEntity> find(SystemUserEntity systemUserEntity, int skip, int limit) {
         return null;
     }
 
     @Override
-    public SystemUser findAndModify(SystemUser q, SystemUser u) {
+    public SystemUserEntity findAndModify(SystemUserEntity q, SystemUserEntity u) {
         return null;
     }
 
     @Override
-    public SystemUser findAndRemove(SystemUser systemUser) {
+    public SystemUserEntity findAndRemove(SystemUserEntity systemUserEntity) {
         return null;
     }
 
@@ -77,12 +77,12 @@ public class SystemUserDAOImpl extends AbstractBaseDAO<SystemUser> implements Sy
     }
 
     @Override
-    public List<SystemUser> findAll() {
-        return getMongoTemplate().findAll(SystemUser.class);
+    public List<SystemUserEntity> findAll() {
+        return getMongoTemplate().findAll(SystemUserEntity.class);
     }
 
     @Override
     public void deleteAll() {
-        getMongoTemplate().dropCollection(SystemUser.class);
+        getMongoTemplate().dropCollection(SystemUserEntity.class);
     }
 }

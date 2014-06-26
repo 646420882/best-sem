@@ -9,7 +9,7 @@ import java.util.List;
  * Created by vbzer_000 on 2014/6/18.
  */
 @Document(collection = "SystemUser")
-public class SystemUser {
+public class SystemUserEntity {
 
     private String id;
 
@@ -17,7 +17,7 @@ public class SystemUser {
 
     private String password;
 
-    private List<BaiduAccountInfo> baiduAccountInfos;
+    private List<BaiduAccountInfoEntity> baiduAccountInfoEntities;
 
     public String getId() {
         return id;
@@ -43,18 +43,18 @@ public class SystemUser {
         this.password = password;
     }
 
-    public List<BaiduAccountInfo> getBaiduAccountInfos() {
-        return baiduAccountInfos;
+    public List<BaiduAccountInfoEntity> getBaiduAccountInfoEntities() {
+        return baiduAccountInfoEntities;
     }
 
-    public void setBaiduAccountInfos(List<BaiduAccountInfo> baiduAccountInfos) {
-        this.baiduAccountInfos = baiduAccountInfos;
+    public void setBaiduAccountInfoEntities(List<BaiduAccountInfoEntity> baiduAccountInfoEntities) {
+        this.baiduAccountInfoEntities = baiduAccountInfoEntities;
     }
 
-    public void addBaiduAccountInfo(BaiduAccountInfo baiduAccountInfo){
-        if(baiduAccountInfos == null){
-            baiduAccountInfos = new ArrayList<BaiduAccountInfo>();
+    public void addBaiduAccountInfo(BaiduAccountInfoEntity baiduAccountInfoEntity) {
+        if (baiduAccountInfoEntities == null) {
+            baiduAccountInfoEntities = new ArrayList<BaiduAccountInfoEntity>();
         }
-        baiduAccountInfos.add(baiduAccountInfo);
+        baiduAccountInfoEntities.add(baiduAccountInfoEntity);
     }
 }

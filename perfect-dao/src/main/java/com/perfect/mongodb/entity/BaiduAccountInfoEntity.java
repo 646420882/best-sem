@@ -3,7 +3,7 @@ package com.perfect.mongodb.entity;
 /**
  * Created by vbzer_000 on 2014/6/18.
  */
-public class BaiduAccountInfo {
+public class BaiduAccountInfoEntity {
 
     private Long id;
 
