@@ -1,6 +1,5 @@
-package com.perfect.mongodb.impl;
+package com.perfect.mongodb.dao.impl;
 
-import com.perfect.dao.AccountDAO;
 import com.perfect.entity.AccountInfoEntity;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -14,7 +13,7 @@ import java.util.List;
  * Created by vbzer_000 on 2014/6/18.
  */
 @Repository(value = "accountDAO")
-public class AccountDAOImpl extends AbstractBaseDAOImpl<AccountInfoEntity> implements AccountDAO {
+public class AccountDAOImpl extends AbstractBaseDAO<AccountInfoEntity> implements com.perfect.dao.AccountDAO {
 
     @Override
     public void insert(AccountInfoEntity accountInfoEntity) {

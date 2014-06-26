@@ -1,9 +1,9 @@
-package com.perfect.mongodb.entity;
+package com.perfect.entity;
 
 /**
  * Created by baizz on 2014-7-2.
  */
-public class DataAttributeInfo {
+public class DataAttributeInfoEntity {
 
     private String name;
 
@@ -11,10 +11,10 @@ public class DataAttributeInfo {
 
     private Object after;
 
-    public DataAttributeInfo() {
+    public DataAttributeInfoEntity() {
     }
 
-    public DataAttributeInfo(String name, Object before, Object after) {
+    public DataAttributeInfoEntity(String name, Object before, Object after) {
         this.name = name;
         this.before = before;
         this.after = after;

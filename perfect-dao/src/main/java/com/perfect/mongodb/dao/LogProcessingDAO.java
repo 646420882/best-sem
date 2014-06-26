@@ -1,7 +1,7 @@
 package com.perfect.mongodb.dao;
 
-import com.perfect.mongodb.entity.DataAttributeInfo;
-import com.perfect.mongodb.entity.DataOperationLog;
+import com.perfect.entity.DataAttributeInfoEntity;
+import com.perfect.entity.DataOperationLogEntity;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by baizz on 2014-7-4.
  */
-public interface LogProcessingDAO extends CrudRepository<DataOperationLog, Long> {
+public interface LogProcessingDAO extends CrudRepository<DataOperationLogEntity, Long> {
 
     /**
      * 按类型查找
@@ -18,7 +18,7 @@ public interface LogProcessingDAO extends CrudRepository<DataOperationLog, Long>
      * @param type
      * @return
      */
-    Collection<DataOperationLog> findByType(String type);
+    Collection<DataOperationLogEntity> findByType(String type);
 
     /**
      * <br>------------------------------<br>
@@ -26,14 +26,14 @@ public interface LogProcessingDAO extends CrudRepository<DataOperationLog, Long>
      * @param status
      * @return
      */
-    Collection<DataOperationLog> findAll(Integer status);
+    Collection<DataOperationLogEntity> findAll(Integer status);
 
     /**
      * <br>------------------------------<br>
      *
      * @param logs
      */
-    void delete(List<DataOperationLog> logs);
+    void delete(List<DataOperationLogEntity> logs);
 
     /**
      * 创建日志
@@ -45,5 +45,5 @@ public interface LogProcessingDAO extends CrudRepository<DataOperationLog, Long>
      * @param instance
      * @return
      */
-    DataOperationLog getLog(Long id, Class _class, DataAttributeInfo attribute, Object instance);
+    DataOperationLogEntity getLog(Long id, Class _class, DataAttributeInfoEntity attribute, Object instance);
 }

@@ -1,6 +1,5 @@
-package com.perfect.mongodb.impl;
+package com.perfect.mongodb.dao.impl;
 
-import com.perfect.dao.AdgroupDAO;
 import com.perfect.entity.AdgroupEntity;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -15,7 +14,7 @@ import static com.perfect.constants.AdgroupEntityConstant.*;
  * Created by vbzer_000 on 2014/7/2.
  */
 @Repository(value = "adgroupDAO")
-public class AdgroupDAOImpl extends AbstractBaseDAOImpl<AdgroupEntity> implements AdgroupDAO {
+public class AdgroupDAOImpl extends AbstractBaseDAO<AdgroupEntity> implements com.perfect.dao.AdgroupDAO {
 
     @Override
     public void deleteAll() {

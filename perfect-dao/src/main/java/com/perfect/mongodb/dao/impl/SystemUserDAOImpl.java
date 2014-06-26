@@ -1,10 +1,9 @@
-package com.perfect.mongodb.impl;
+package com.perfect.mongodb.dao.impl;
 
 import com.perfect.api.baidu.BaiduService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.dao.AccountDAO;
-import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -20,7 +19,7 @@ import java.util.List;
  * Created by vbzer_000 on 2014-6-19.
  */
 @Repository(value = "systemUserDAO")
-public class SystemUserDAOImpl extends AbstractBaseDAOImpl<SystemUserEntity> implements SystemUserDAO {
+public class SystemUserDAOImpl extends AbstractBaseDAO<SystemUserEntity> implements com.perfect.dao.SystemUserDAO {
 
     @Resource
     private AccountDAO accountDAO;

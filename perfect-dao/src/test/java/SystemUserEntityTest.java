@@ -1,4 +1,4 @@
-import com.perfect.dao.SystemUserDAO;
+
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.MD5;
 import com.perfect.entity.SystemUserEntity;
@@ -10,11 +10,12 @@ import org.unitils.spring.annotation.SpringBeanByName;
 /**
  * Created by vbzer_000 on 2014-6-19.
  */
+
 @SpringApplicationContext({"spring.xml"})
 public class SystemUserEntityTest extends UnitilsJUnit4 {
 
     @SpringBeanByName
-    private SystemUserDAO systemUserDAO;
+    private com.perfect.mongodb.dao.SystemUserDAO systemUserDAO;
 
     @Test
     public void init() {
@@ -23,6 +24,7 @@ public class SystemUserEntityTest extends UnitilsJUnit4 {
         systemUserEntity.setUserName("perfect");
         MD5 md5 = new MD5("test", "perfect");
         systemUserEntity.setPassword(md5.getMD5());
+//        systemUserDAO.deleteAll();
 
         BaiduAccountInfoEntity baiduAccountInfoEntity = new BaiduAccountInfoEntity();
         baiduAccountInfoEntity.setBaiduUserName("baidu-bjtthunbohui2134115");

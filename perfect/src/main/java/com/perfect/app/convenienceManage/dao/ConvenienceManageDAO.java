@@ -4,8 +4,8 @@ import com.perfect.app.convenienceManage.vo.AttentionReport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.entity.DataOperationLogEntity;
 import com.perfect.mongodb.dao.LogProcessingDAO;
-import com.perfect.mongodb.entity.DataOperationLog;
 import com.perfect.utils.BaiduServiceSupport;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -59,7 +59,7 @@ public class ConvenienceManageDAO {
 
     //添加新关注
     public void addAttention(KeywordInfo[] keywordInfos) {
-        List<DataOperationLog> logs = new ArrayList<>();
+        List<DataOperationLogEntity> logs = new ArrayList<>();
         for (KeywordInfo keywordInfo : keywordInfos) {
             mongoTemplate.insert(keywordInfo, "KeywordInfo");
             logs.add(logProcessingDAO.getLog(keywordInfo.getKeywordId(), KeywordInfo.class, null, keywordInfo));
@@ -189,14 +189,14 @@ public class ConvenienceManageDAO {
 
     //取消关注
     public void cancelAttention(String[] keywordIds) {
-        List<DataOperationLog> logs = new ArrayList<>();
+        List<DataOperationLogEntity> logs = new ArrayList<>();
         for (String id : keywordIds) {
             mongoTemplate.remove(
                     new Query(Criteria.where("keywordId").is(Long.valueOf(id))),
                     KeywordInfo.class,
                     "KeywordInfo"
             );
-            DataOperationLog log = logProcessingDAO.getLog(Long.valueOf(id), KeywordType.class, null, null);
+            DataOperationLogEntity log = logProcessingDAO.getLog(Long.valueOf(id), KeywordType.class, null, null);
             logs.add(log);
         }
         logProcessingDAO.insertAll(logs);

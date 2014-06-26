@@ -1,4 +1,4 @@
-package com.perfect.mongodb.entity;
+package com.perfect.entity;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by baizz on 2014-7-2.
  */
 @Document(collection = "DataOperationLog")
-public class DataOperationLog {
+public class DataOperationLogEntity {
 
     private Long dataId;    //数据的ID
 
@@ -18,7 +18,7 @@ public class DataOperationLog {
     private Date time;      //日志写入时间
 
     @Field("attr")
-    private DataAttributeInfo attribute;     //用于修改(obj为null)---要修改的属性
+    private DataAttributeInfoEntity attribute;     //用于修改(obj为null)---要修改的属性
 
     @Field("obj")
     private Object instance;      //用于新增(attr为null)---一个type实例
@@ -52,11 +52,11 @@ public class DataOperationLog {
         this.time = time;
     }
 
-    public DataAttributeInfo getAttribute() {
+    public DataAttributeInfoEntity getAttribute() {
         return attribute;
     }
 
-    public void setAttribute(DataAttributeInfo attribute) {
+    public void setAttribute(DataAttributeInfoEntity attribute) {
         this.attribute = attribute;
     }
 

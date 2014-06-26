@@ -1,7 +1,6 @@
 package com.perfect.dao;
 
 
-import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.entity.AccountInfoEntity;
 
 /**
