@@ -27,7 +27,7 @@ public class PageManageController {
     public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) boolean error,
                                      ModelMap model) {
         if (error == true) {
-            model.put("error", "You have entered an invalid username or password!");
+            model.put("error", "用户名或密码错误!");
         } else {
             model.put("error", "");
         }
