@@ -39,7 +39,7 @@
 <body>
 <!-- This file lives in public/404.html -->
 <div class="dialog">
-    <a href="javascript:history.go(-1);"><img src="public/css/404.png"/></a>
+    <a href="javascript:history.go(-1);"><img src="${pageContext.request.contextPath}/public/css/404.png"/></a>
 
     <p>It looks like that page you were looking has been mislaid, sorry.</p>
 </div>

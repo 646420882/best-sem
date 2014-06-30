@@ -4,6 +4,7 @@ import com.perfect.app.accountCenter.dao.AccountManageDAO;
 import com.perfect.app.homePage.service.CustomUserDetailsService;
 import com.perfect.mongodb.dao.SystemUserDAO;
 import com.perfect.mongodb.entity.BaiduAccountInfo;
+import com.perfect.utils.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,13 +34,24 @@ public class AccountManageController {
     @Resource(name = "accountManageDAO")
     private AccountManageDAO<BaiduAccountInfo> accountManageDAO;
 
-    @RequestMapping(value = "/getAllBaiduAccount", method = {RequestMethod.GET, RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/getAllBaiduAccount", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getAllBaiduAccount() {
         ModelAndView mav = new ModelAndView();
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
         List<BaiduAccountInfo> baiduAccountList = systemUserDAO.findByUserName(CustomUserDetailsService.getUserName()).getBaiduAccountInfos();
         Map<String, Object> attributes = new LinkedHashMap<>();
         attributes.put("tree", accountManageDAO.getAccountTree(baiduAccountList));
+        jsonView.setAttributesMap(attributes);
+        mav.setView(jsonView);
+        return mav;
+    }
+
+    @RequestMapping(value = "/getBaiduAccountItems", method = RequestMethod.GET, produces = "application/json")
+    public ModelAndView getBaiduAccountItems() {
+        ModelAndView mav = new ModelAndView();
+        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+        List<BaiduAccountInfo> list = accountManageDAO.getBaiduAccountItems(CustomUserDetailsService.getUserName());
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list.toArray(new BaiduAccountInfo[list.size()]));
         jsonView.setAttributesMap(attributes);
         mav.setView(jsonView);
         return mav;

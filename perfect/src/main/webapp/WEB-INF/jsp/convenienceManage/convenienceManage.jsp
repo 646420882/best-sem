@@ -109,7 +109,7 @@
 
             <div class="nav-collapse collapse">
                 <p class="navbar-text pull-right">
-                    baidu-bjperfrct2131113 <a href="#" class="navbar-link">退出</a>
+                    ${currSystemUserName} <a href="#" class="navbar-link">退出</a>
                 </p>
                 <ul class="nav">
                     <li><a href="${pageContext.request.contextPath}/home">首页</a></li>

@@ -1,6 +1,7 @@
 package com.perfect.app.accountCenter.dao.impl;
 
 import com.perfect.app.accountCenter.dao.AccountManageDAO;
+import com.perfect.app.homePage.service.CustomUserDetailsService;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
@@ -8,11 +9,13 @@ import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.autosdk.sms.v3.AccountService;
 import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
+import com.perfect.mongodb.dao.SystemUserDAO;
 import com.perfect.mongodb.entity.BaiduAccountInfo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +24,9 @@ import java.util.List;
  */
 @Repository("accountManageDAO")
 public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfo> {
+
+    @Resource(name = "systemUserDAO")
+    private SystemUserDAO systemUserDAO;
 
     /**
      * 百度账户树
@@ -41,6 +47,61 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfo> 
             jsonObject = null;
         }
         return jsonArray;
+    }
+
+    /**
+     * ---
+     *
+     * @param currUserName
+     * @return
+     */
+    @Override
+    public List<BaiduAccountInfo> getBaiduAccountItems(String currUserName) {
+        List<BaiduAccountInfo> list = systemUserDAO
+                .findByUserName(currUserName)
+                .getBaiduAccountInfos();
+        return list;
+    }
+
+    /**
+     * ---
+     *
+     * @param baiduUserId
+     * @return
+     */
+    @Override
+    public BaiduAccountInfo findByBaiduUserId(Long baiduUserId) {
+        List<BaiduAccountInfo> list = getBaiduAccountItems(CustomUserDetailsService.getUserName());
+        BaiduAccountInfo baiduAccount = new BaiduAccountInfo();
+        for (BaiduAccountInfo entity : list) {
+            if (baiduUserId.equals(entity.getId())) {
+                baiduAccount.setId(baiduUserId);
+                baiduAccount.setBaiduUserName(entity.getBaiduUserName());
+                baiduAccount.setBaiduPassword(entity.getBaiduPassword());
+                baiduAccount.setToken(entity.getToken());
+                break;
+            }
+        }
+        return baiduAccount;
+    }
+
+    /**
+     * @param username
+     * @param password
+     * @param token
+     * @return
+     */
+    @Override
+    public List<BaiduAccountInfo> getBaiduAccountInfos(String username, String password, String token) {
+        List<BaiduAccountInfo> list = new ArrayList<>();
+        Long id = getBaiduAccountId(username, password, token);
+        BaiduAccountInfo entity = new BaiduAccountInfo();
+        entity.setId(id);
+        entity.setBaiduUserName(username);
+        entity.setBaiduPassword(password);
+        entity.setToken(token);
+        list.add(entity);
+        return list;
     }
 
     /**
@@ -66,24 +127,5 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfo> 
         }
 
         return baiduAccountId;
-    }
-
-    /**
-     * @param username
-     * @param password
-     * @param token
-     * @return
-     */
-    @Override
-    public List<BaiduAccountInfo> getBaiduAccountInfos(String username, String password, String token) {
-        List<BaiduAccountInfo> list = new ArrayList<>();
-        Long id = getBaiduAccountId(username, password, token);
-        BaiduAccountInfo entity = new BaiduAccountInfo();
-        entity.setId(id);
-        entity.setBaiduUserName(username);
-        entity.setBaiduPassword(password);
-        entity.setToken(token);
-        list.add(entity);
-        return list;
     }
 }

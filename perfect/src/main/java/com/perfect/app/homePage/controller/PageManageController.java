@@ -1,6 +1,8 @@
 package com.perfect.app.homePage.controller;
 
+import com.perfect.app.accountCenter.dao.AccountManageDAO;
 import com.perfect.app.homePage.service.CustomUserDetailsService;
+import com.perfect.mongodb.entity.BaiduAccountInfo;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,12 +11,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
+
 /**
  * Created by baizz on 2014-6-23.
  */
 @RestController
 @Scope("prototype")
 public class PageManageController {
+
+    private static String currLoginUserName;
+
+    static {
+        currLoginUserName = (currLoginUserName == null) ? CustomUserDetailsService.getUserName() : currLoginUserName;
+    }
+
+    @Resource(name = "accountManageDAO")
+    private AccountManageDAO<BaiduAccountInfo> accountManageDAO;
 
     /**
      * 登录页面
@@ -27,7 +40,7 @@ public class PageManageController {
     public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) boolean error,
                                      ModelMap model) {
         if (error == true) {
-            model.put("error", "用户名或密码错误!");
+            model.put("error", "invalid userName or password!");
         } else {
             model.put("error", "");
         }
@@ -51,7 +64,7 @@ public class PageManageController {
      */
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getHomePage(ModelMap modelMap) {
-        modelMap.put("currSystemUserName", CustomUserDetailsService.getUserName());
+        modelMap.put("currSystemUserName", currLoginUserName);
         return new ModelAndView("homePage/home");
     }
 
@@ -61,7 +74,8 @@ public class PageManageController {
      * @return
      */
     @RequestMapping(value = "/main/convenienceManage", method = RequestMethod.GET)
-    public ModelAndView getConvenienceManagePage() {
+    public ModelAndView getConvenienceManagePage(ModelMap modelMap) {
+        modelMap.put("currSystemUserName", currLoginUserName);
         return new ModelAndView("convenienceManage/convenienceManage");
     }
 
@@ -70,8 +84,13 @@ public class PageManageController {
      *
      * @return
      */
-    @RequestMapping(value = "/main/spreadManage", method = RequestMethod.GET)
-    public ModelAndView getSpreadManagePage() {
+    @RequestMapping(value = "/main/spreadManage", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView getSpreadManagePage(@RequestParam(value = "baiduUserId") Long baiduUserId,
+                                            ModelMap modelMap) {
+        BaiduAccountInfo entity = accountManageDAO.findByBaiduUserId(baiduUserId);
+        modelMap.put("currSystemUserName", currLoginUserName);
+        modelMap.put("baiduAccountId", baiduUserId);
+        modelMap.put("baiduAccountName", entity.getBaiduUserName());
         return new ModelAndView("spreadManage/spreadManage");
     }
 }
