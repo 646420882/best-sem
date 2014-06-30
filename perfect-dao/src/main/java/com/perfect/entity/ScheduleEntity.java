@@ -1,7 +1,7 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
-package com.perfect.mongodb.entity;
+package com.perfect.entity;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

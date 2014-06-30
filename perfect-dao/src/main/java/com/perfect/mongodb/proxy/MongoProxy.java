@@ -3,6 +3,7 @@ package com.perfect.mongodb.proxy;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.lang.reflect.InvocationHandler;
@@ -12,6 +13,7 @@ import java.lang.reflect.Proxy;
 /**
  * Created by vbzer_000 on 2014/6/26.
  */
+@Component
 public class MongoProxy<T> implements InvocationHandler, ApplicationContextAware {
 
     private final Class<T> interfaceClass;
@@ -23,7 +25,6 @@ public class MongoProxy<T> implements InvocationHandler, ApplicationContextAware
 
     public static <T> T createProxy(Class<T> interfaceClass) {
         MongoProxy<T> proxy = new MongoProxy<T>(interfaceClass);
-
         return (T) Proxy.newProxyInstance(MongoProxy.class.getClassLoader(), new Class<?>[]{interfaceClass}, proxy);
     }
 
@@ -32,8 +33,6 @@ public class MongoProxy<T> implements InvocationHandler, ApplicationContextAware
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         String daoName = MongoCollectionUtils.getDaoName(proxy.getClass());
         Object bean = applicationContext.getBean(daoName);
-
-
 
 
         return null;

@@ -1,4 +1,4 @@
-package com.perfect.mongodb.utils;
+package com.perfect.mongodb.base;
 
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;

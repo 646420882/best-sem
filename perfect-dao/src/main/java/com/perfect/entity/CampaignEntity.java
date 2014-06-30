@@ -1,4 +1,4 @@
-package com.perfect.mongodb.entity;
+package com.perfect.entity;
 
 import com.perfect.autosdk.sms.v3.OfflineTimeType;
 import com.perfect.autosdk.sms.v3.ScheduleType;

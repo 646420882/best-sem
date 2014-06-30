@@ -1,8 +1,8 @@
-package com.perfect.mongodb.dao.impl;
+package com.perfect.mongodb.impl;
 
-import com.perfect.mongodb.dao.SystemUserDAO;
-import com.perfect.mongodb.entity.BaiduAccountInfoEntity;
-import com.perfect.mongodb.entity.SystemUserEntity;
+import com.perfect.dao.SystemUserDAO;
+import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.SystemUserEntity;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -15,7 +15,7 @@ import java.util.List;
  * Created by vbzer_000 on 2014-6-19.
  */
 @Repository("systemUserDAO")
-public class SystemUserDAOImpl extends AbstractBaseDAO<SystemUserEntity> implements SystemUserDAO {
+public class SystemUserDAOImplImpl extends AbstractBaseDAOImpl<SystemUserEntity> implements SystemUserDAO {
 
     @Override
     public void addBaiduAccount(List<BaiduAccountInfoEntity> list, String currSystemUserName) {

@@ -1,4 +1,4 @@
-package com.perfect.mongodb.entity;
+package com.perfect.entity;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

@@ -1,4 +1,4 @@
-package com.perfect.mongodb.dao;
+package com.perfect.dao;
 
 
 import com.perfect.autosdk.sms.v3.AccountInfoType;

@@ -1,4 +1,4 @@
-package com.perfect.mongodb.entity;
+package com.perfect.entity;
 
 /**
  * Created by vbzer_000 on 2014/6/18.

@@ -22,7 +22,7 @@
     </mongo:mongo>
     <mongo:db-factory id="mongoDbFactory" dbname="baidu_spread" mongo-ref="mongo"/>
     <mongo:mapping-converter id="mongoConverter"/>
-    <bean id="noClassMongoConverter" class="com.perfect.mongodb.utils.MongoConverterEnhanceFactoryBean">
+    <bean id="noClassMongoConverter" class="com.perfect.mongodb.base.MongoConverterEnhanceFactoryBean">
         <property name="mongoConverter" ref="mongoConverter"/>
     </bean>
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">

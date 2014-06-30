@@ -1,6 +1,6 @@
-import com.perfect.mongodb.dao.SystemUserDAO;
-import com.perfect.mongodb.entity.BaiduAccountInfoEntity;
-import com.perfect.mongodb.entity.SystemUserEntity;
+import com.perfect.dao.SystemUserDAO;
+import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.SystemUserEntity;
 import org.junit.Test;
 import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;

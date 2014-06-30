@@ -1,4 +1,4 @@
-package com.perfect.mongodb.utils;
+package com.perfect.mongodb.base;
 
 import com.mongodb.DB;
 import org.springframework.beans.BeansException;
