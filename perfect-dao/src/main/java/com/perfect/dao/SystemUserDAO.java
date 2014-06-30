@@ -1,7 +1,7 @@
-package com.perfect.mongodb.dao;
+package com.perfect.dao;
 
-import com.perfect.mongodb.entity.BaiduAccountInfoEntity;
-import com.perfect.mongodb.entity.SystemUserEntity;
+import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.SystemUserEntity;
 
 import java.util.List;
 
