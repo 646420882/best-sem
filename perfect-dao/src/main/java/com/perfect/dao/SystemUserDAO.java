@@ -1,17 +1,19 @@
 package com.perfect.dao;
 
-import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
+
+import com.perfect.entity.BaiduAccountInfoEntity;
 
 import java.util.List;
 
 /**
- * Created by vbzer_000 on 2014-6-18.
+ * Created by vbzer_000 on 2014/6/18.
  */
 public interface SystemUserDAO extends BaseDAO<SystemUserEntity> {
 
     /**
      * 根据用户名查询
+     * <br>------------------------------<br>
      *
      * @param userName
      * @return
@@ -25,6 +27,4 @@ public interface SystemUserDAO extends BaseDAO<SystemUserEntity> {
      * @param currSystemUserName
      */
     void addBaiduAccount(List<BaiduAccountInfoEntity> list, String currSystemUserName);
-
-    void updateAccount(String userName);
 }

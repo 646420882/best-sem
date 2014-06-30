@@ -1,6 +1,8 @@
 
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.MD5;
+import com.perfect.dao.SystemUserDAO;
+import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 import org.junit.Test;
 import org.unitils.UnitilsJUnit4;
@@ -15,7 +17,7 @@ import org.unitils.spring.annotation.SpringBeanByName;
 public class SystemUserEntityTest extends UnitilsJUnit4 {
 
     @SpringBeanByName
-    private com.perfect.mongodb.dao.SystemUserDAO systemUserDAO;
+    private SystemUserDAO systemUserDAO;
 
     @Test
     public void init() {
