@@ -26,4 +26,19 @@ public interface AccountManageDAO<T> {
      * @return
      */
     List<T> getBaiduAccountInfos(String username, String password, String token);
+
+    /**
+     * 获取百度账户列表
+     *
+     * @return
+     */
+    List<T> getBaiduAccountItems(String currUserName);
+
+    /**
+     * 根据百度账户ID获取用户信息
+     *
+     * @param baiduUserId
+     * @return
+     */
+    T findByBaiduUserId(Long baiduUserId);
 }

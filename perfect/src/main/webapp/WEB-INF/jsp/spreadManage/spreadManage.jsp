@@ -76,7 +76,7 @@
 
             <div class="nav-collapse collapse">
                 <p class="navbar-text pull-right">
-                    baidu-bjperfrct2131113 <a href="#" class="navbar-link">退出</a>
+                    ${currSystemUserName} <a href="#" class="navbar-link">退出</a>
                 </p>
                 <ul class="nav">
                     <li><a href="${pageContext.request.contextPath}/home">首页</a></li>
@@ -100,7 +100,8 @@
     </h5>
 
     <div style="font-weight: bold">
-        <a id="userName" class="btn" style="height: 15px; width: 88%; border: 0" onclick=accountClick();>baidu-bjperfrct2131113</a>
+        <a id="baiduAccountName" class="btn" style="height: 15px; width: 88%; border: 0"
+           onclick=accountClick();>${baiduAccountName}</a>
     </div>
 
     <div id="zTree" class="ztree"
@@ -387,6 +388,8 @@
 </div>
 
 <div id="dialog1"></div>
+
+<div id="baiduAccountId" style="display: none">${baiduAccountId}</div>
 
 <!-- Placed at the end of the document so the pages load faster -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>

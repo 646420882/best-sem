@@ -15,7 +15,7 @@ import java.util.List;
  * Created by vbzer_000 on 2014-6-19.
  */
 @Repository("systemUserDAO")
-public class SystemUserDAOImplImpl extends AbstractBaseDAOImpl<SystemUserEntity> implements SystemUserDAO {
+public class SystemUserDAOImpl extends AbstractBaseDAOImpl<SystemUserEntity> implements SystemUserDAO {
 
     @Override
     public void addBaiduAccount(List<BaiduAccountInfoEntity> list, String currSystemUserName) {
@@ -30,6 +30,11 @@ public class SystemUserDAOImplImpl extends AbstractBaseDAOImpl<SystemUserEntity>
                 list1.add(entity);
         }
         getMongoTemplate().updateFirst(new Query(Criteria.where("userName").is(currSystemUserName)), Update.update("baiduAccountInfos", list1), "SystemUser");
+    }
+
+    @Override
+    public List<BaiduAccountInfoEntity> getBaiduAccountInfos() {
+        return null;
     }
 
     @Override
