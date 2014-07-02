@@ -2,9 +2,14 @@ package com.perfect.app.accountCenter.controller;
 
 import com.perfect.app.accountCenter.dao.AccountManageDAO;
 import com.perfect.app.homePage.service.CustomUserDetailsService;
+<<<<<<< HEAD
 import com.perfect.mongodb.dao.SystemUserDAO;
 import com.perfect.mongodb.entity.BaiduAccountInfo;
 import com.perfect.utils.JSONUtils;
+=======
+import com.perfect.dao.SystemUserDAO;
+import com.perfect.entity.BaiduAccountInfoEntity;
+>>>>>>> [mongo-proxy] development
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,13 +37,13 @@ public class AccountManageController {
     private SystemUserDAO systemUserDAO;
 
     @Resource(name = "accountManageDAO")
-    private AccountManageDAO<BaiduAccountInfo> accountManageDAO;
+    private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
 
     @RequestMapping(value = "/getAllBaiduAccount", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getAllBaiduAccount() {
         ModelAndView mav = new ModelAndView();
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<BaiduAccountInfo> baiduAccountList = systemUserDAO.findByUserName(CustomUserDetailsService.getUserName()).getBaiduAccountInfos();
+        List<BaiduAccountInfoEntity> baiduAccountList = systemUserDAO.findByUserName(CustomUserDetailsService.getUserName()).getBaiduAccountInfos();
         Map<String, Object> attributes = new LinkedHashMap<>();
         attributes.put("tree", accountManageDAO.getAccountTree(baiduAccountList));
         jsonView.setAttributesMap(attributes);

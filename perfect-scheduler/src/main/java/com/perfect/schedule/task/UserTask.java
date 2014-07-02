@@ -1,18 +1,17 @@
 package com.perfect.schedule.task;
 
-import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
-import com.perfect.autosdk.service.BaiduServiceSupport;
-import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.autosdk.sms.v3.AccountService;
-import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
-import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
-import com.perfect.mongodb.dao.AccountDAO;
-import com.perfect.mongodb.dao.SystemUserDAO;
-import com.perfect.mongodb.entity.BaiduAccountInfo;
-import com.perfect.mongodb.entity.SystemUser;
+import com.perfect.dao.AccountDAO;
+import com.perfect.dao.AdgroupDAO;
+import com.perfect.dao.CampaignDAO;
+import com.perfect.dao.SystemUserDAO;
+import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.SystemUserEntity;
 import com.perfect.schedule.core.IScheduleTaskDealSingle;
 import com.perfect.schedule.core.TaskItemDefine;
+import com.perfect.schedule.utils.AccountDataUpdateTask;
+import com.perfect.schedule.utils.WorkPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -27,34 +26,38 @@ import java.util.List;
  */
 
 @Component("userUpdateTask")
-public class UserTask implements IScheduleTaskDealSingle<SystemUser> {
+public class UserTask implements IScheduleTaskDealSingle<SystemUserEntity> {
     protected static transient Logger log = LoggerFactory.getLogger(IScheduleTaskDealSingle.class);
-
-    private static CommonService service = BaiduServiceSupport.getService();
 
     @Resource
     private AccountDAO accountDAO;
 
     @Resource
+    private CampaignDAO campaignDAO;
+
+    @Resource
     private SystemUserDAO systemUserDAO;
 
+    @Resource
+    private AdgroupDAO adgroupDAO;
+
+    @Resource
+
     @Override
-    public boolean execute(SystemUser systemUser, String ownSign) throws Exception {
+    public boolean execute(SystemUserEntity systemUser, String ownSign) throws Exception {
 
-        List<BaiduAccountInfo> baiduAccountInfoList = systemUser.getBaiduAccountInfos();
+        List<BaiduAccountInfoEntity> baiduAccountInfoList = systemUser.getBaiduAccountInfoEntities();
 
-        if(baiduAccountInfoList == null ){
+        if (baiduAccountInfoList == null) {
             return false;
         }
 
-        for (BaiduAccountInfo baiduAccountInfo : baiduAccountInfoList) {
-            AccountService accountService = ServiceFactory.getInstance(baiduAccountInfo.getBaiduUserName(), baiduAccountInfo.getBaiduPassword(), baiduAccountInfo.getToken(), null).getService(AccountService.class);
+        for (BaiduAccountInfoEntity baiduAccountInfo : baiduAccountInfoList) {
 
-            GetAccountInfoRequest getAccountInfoRequest = new GetAccountInfoRequest();
-            GetAccountInfoResponse getAccountInfoResponse = accountService.getAccountInfo(getAccountInfoRequest);
+            AccountDataUpdateTask accountDataUpdateTask = new AccountDataUpdateTask(ServiceFactory.getInstance(baiduAccountInfo.getBaiduUserName(), baiduAccountInfo.getBaiduPassword(), baiduAccountInfo.getToken(), null), accountDAO,campaignDAO,adgroupDAO);
 
-            AccountInfoType accountInfoType = getAccountInfoResponse.getAccountInfoType();
-            accountDAO.updateById(accountInfoType);
+            WorkPool.pushTask(accountDataUpdateTask);
+
         }
 
         return true;
@@ -63,9 +66,9 @@ public class UserTask implements IScheduleTaskDealSingle<SystemUser> {
     @Override
     public List selectTasks(String taskParameter, String ownSign, int taskItemNum, List<TaskItemDefine> taskItemList, int eachFetchDataNum) throws Exception {
 
-        List<SystemUser> result = new ArrayList<>();
+        List<SystemUserEntity> result = new ArrayList<>();
 
-        List<SystemUser> systemUsers = systemUserDAO.findAll();
+        List<SystemUserEntity> systemUsers = systemUserDAO.findAll();
         return systemUsers;
     }
 
