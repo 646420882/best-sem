@@ -26,6 +26,37 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
     private Log4MongoTemplate log4MongoTemplate;
 
     /**
+     * 创建日志
+     * =======
+     * # 新增数据
+     * attribute = null
+     * # 修改数据
+     * instance = null
+     * # 删除数据
+     * attribute = null, instance = null
+     *
+     * @param dataId
+     * @param _class
+     * @param attribute
+     * @param instance
+     * @return
+     */
+    public DataOperationLog getLog(Long dataId, Class _class, DataAttributeInfo attribute, Object instance) {
+        DataOperationLog log = new DataOperationLog();
+        log.setDataId(dataId);
+        log.setType(_class.getSimpleName());
+        log.setTime(new Date());
+        log.setStatus(0);   //默认为0, 还未进行数据同步
+        if (attribute != null && instance == null)
+            //更新
+            log.setAttribute(attribute);
+        else if (instance != null && attribute == null)
+            //新增
+            log.setInstance(instance);
+        return log;
+    }
+
+    /**
      * 按类型查找
      *
      * @param type
@@ -71,61 +102,32 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
     }
 
     /**
-     * 用于数据更新操作同步成功后删除日志
-     *
-     * @param logs
-     */
-    public void delete(List<DataOperationLog> logs) {
-        for (DataOperationLog log : logs)
-            log4MongoTemplate.remove(log, "DataOperationLog");
-    }
-
-    /**
-     * 创建日志
-     * =======
-     * # 新增数据
-     * attribute = null
-     * # 修改数据
-     * instance = null
-     * # 删除数据
-     * attribute = null, instance = null
-     *
-     * @param dataId
-     * @param _class
-     * @param attribute
-     * @param instance
-     * @return
-     */
-    public DataOperationLog getLog(Long dataId, Class _class, DataAttributeInfo attribute, Object instance) {
-        DataOperationLog log = new DataOperationLog();
-        log.setDataId(dataId);
-        log.setType(_class.getSimpleName());
-        log.setTime(new Date());
-        log.setStatus(0);   //默认为0, 还未进行数据同步
-        if (attribute != null && instance == null)
-            //更新
-            log.setAttribute(attribute);
-        else if (instance != null && attribute == null)
-            //新增
-            log.setInstance(instance);
-        return log;
-    }
-
-    /**
-     * 根据数据id查询日志
+     * 根据数据id查询该条数据最近的操作日志
      *
      * @param dataId
      * @return
      */
     public DataOperationLog findOne(Long dataId) {
         List<DataOperationLog> list = log4MongoTemplate.find(
-                new Query(Criteria.where("dataId").is(dataId)),
+                Query.query(Criteria.where("dataId").is(dataId)).with(new Sort(Sort.Direction.DESC, "time")),
                 DataOperationLog.class,
                 "DataOperationLog");
-        if (list.size() == 1)
+        if (list != null && list.size() > 0)
             return list.get(0);
         else
             return null;
+    }
+
+    /**
+     * @param criteria
+     * @param skip
+     * @param limit
+     * @return
+     */
+    public Collection<DataOperationLog> find(DataOperationLog criteria, int skip, int limit) {
+        Query query = getQuery(criteria);
+        query.skip(skip).limit(limit);
+        return log4MongoTemplate.find(query, DataOperationLog.class, "DataOperationLog");
     }
 
     /**
@@ -139,18 +141,6 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
         List<DataOperationLog> list = log4MongoTemplate
                 .find(query, DataOperationLog.class, "DataOperationLog");
         return list;
-    }
-
-    public Collection<DataOperationLog> find(DataOperationLog log, int skip, int limit) {
-        return null;
-    }
-
-    public DataOperationLog findAndModify(DataOperationLog q, DataOperationLog v) {
-        return null;
-    }
-
-    public DataOperationLog findAndRemove(DataOperationLog log) {
-        return null;
     }
 
     /**
@@ -269,6 +259,16 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
         log4MongoTemplate.remove(log, "DataOperationLog");
     }
 
+    /**
+     * 用于数据更新操作同步成功后删除日志
+     *
+     * @param logs
+     */
+    public void delete(List<DataOperationLog> logs) {
+        for (DataOperationLog log : logs)
+            log4MongoTemplate.remove(log, "DataOperationLog");
+    }
+
     public void deleteAll() {
 
     }
@@ -306,4 +306,17 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
         if (list.size() == 1) return true;
         else return false;
     }
+
+    private Query getQuery(DataOperationLog log) {
+        Query query = new Query();
+
+        if (log == null)
+            return query;
+
+        if (log.getDataId() != null)
+            query.addCriteria(Criteria.where("dataId").is(log.getDataId()));
+
+        return query;
+    }
+
 }

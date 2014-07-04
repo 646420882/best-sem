@@ -18,7 +18,7 @@ public interface LogProcessingDAO extends CrudRepository<DataOperationLog, Long>
      * @param type
      * @return
      */
-    List<DataOperationLog> findByType(String type);
+    Collection<DataOperationLog> findByType(String type);
 
     /**
      * <br>------------------------------<br>

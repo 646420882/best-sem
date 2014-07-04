@@ -40,25 +40,6 @@ public interface CrudRepository<T, ID extends Serializable> extends Repository<T
     Collection<T> find(T t, int skip, int limit);
 
     /**
-     * 根据条件查询出来后, 再修改
-     * <br>------------------------------<br>
-     *
-     * @param q 查询条件
-     * @param v 修改的值对象
-     * @return
-     */
-    T findAndModify(T q, T v);
-
-    /**
-     * 查询出来后, 删除
-     * <br>------------------------------<br>
-     *
-     * @param t
-     * @return
-     */
-    T findAndRemove(T t);
-
-    /**
      * 新增
      * <br>------------------------------<br>
      *
