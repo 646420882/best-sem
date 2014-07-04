@@ -77,7 +77,7 @@
         </property>
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <!-- 使用annotation自动注册bean -->
@@ -90,13 +90,22 @@
                        threads-allowed-to-block-for-connection-multiplier="4"
                        auto-connect-retry="true"/>
     </mongo:mongo>
+
     <mongo:db-factory id="mongoDbFactory" dbname="baidu_spread" mongo-ref="mongo"/>
+    <mongo:db-factory id="log4MongoDbFactory" dbname="perfect_log" mongo-ref="mongo"/>
+
     <mongo:mapping-converter id="mongoConverter"/>
     <bean id="noClassMongoConverter" class="com.perfect.mongodb.utils.MongoConverterEnhanceFactoryBean">
         <property name="mongoConverter" ref="mongoConverter"/>
     </bean>
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+        <constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>
+    </bean>
+
+    <!-- 数据操作日志记录 -->
+    <bean id="log4MongoTemplate" class="com.perfect.mongodb.utils.Log4MongoTemplate" scope="singleton">
+        <constructor-arg name="mongoDbFactory" ref="log4MongoDbFactory"/>
         <constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>
     </bean>
 

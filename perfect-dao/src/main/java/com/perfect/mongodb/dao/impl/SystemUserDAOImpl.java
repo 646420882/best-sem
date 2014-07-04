@@ -22,7 +22,7 @@ public class SystemUserDAOImpl extends AbstractBaseDAO<SystemUser> implements Sy
         SystemUser currSystemUser = findByUserName(currSystemUserName);
         List<BaiduAccountInfo> list1 = currSystemUser.getBaiduAccountInfos();
         if (list1 == null) {
-            list1 = new ArrayList<>();
+            list1 = new ArrayList<BaiduAccountInfo>();
             for (BaiduAccountInfo entity : list)
                 list1.add(entity);
         } else {

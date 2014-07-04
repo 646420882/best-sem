@@ -4,12 +4,15 @@ import com.perfect.app.convenienceManage.vo.AttentionReport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.mongodb.utils.AbstractBaseMongoTemplate;
+import com.perfect.mongodb.dao.LogProcessingDAO;
+import com.perfect.mongodb.entity.DataOperationLog;
 import com.perfect.utils.BaiduServiceSupport;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -18,8 +21,14 @@ import java.util.*;
  * Created by baizz on 2014-6-12.
  */
 @Repository("convenienceManageDAO")
-public class ConvenienceManageDAO extends AbstractBaseMongoTemplate {
+public class ConvenienceManageDAO {
     private static CommonService service = BaiduServiceSupport.getService();
+
+    @Resource(name = "mongoTemplate")
+    private MongoTemplate mongoTemplate;
+
+    @Resource(name = "logProcessingDAO")
+    private LogProcessingDAO logProcessingDAO;
 
     /*
      * 根据用户提供的待搜索关键字, 返回当前用户账户中的相关关键词的搜索结果.
@@ -50,8 +59,12 @@ public class ConvenienceManageDAO extends AbstractBaseMongoTemplate {
 
     //添加新关注
     public void addAttention(KeywordInfo[] keywordInfos) {
-        for (KeywordInfo keywordInfo : keywordInfos)
-            _mongoTemplate.save(keywordInfo, "KeywordInfo");
+        List<DataOperationLog> logs = new ArrayList<>();
+        for (KeywordInfo keywordInfo : keywordInfos) {
+            mongoTemplate.insert(keywordInfo, "KeywordInfo");
+            logs.add(logProcessingDAO.getLog(keywordInfo.getKeywordId(), KeywordInfo.class, null, keywordInfo));
+        }
+        logProcessingDAO.insertAll(logs);
     }
 
     //获取关键词监控报告
@@ -176,18 +189,23 @@ public class ConvenienceManageDAO extends AbstractBaseMongoTemplate {
 
     //取消关注
     public void cancelAttention(String[] keywordIds) {
-        for (String id : keywordIds)
-            _mongoTemplate.remove(
+        List<DataOperationLog> logs = new ArrayList<>();
+        for (String id : keywordIds) {
+            mongoTemplate.remove(
                     new Query(Criteria.where("keywordId").is(Long.valueOf(id))),
                     KeywordInfo.class,
                     "KeywordInfo"
             );
+            DataOperationLog log = logProcessingDAO.getLog(Long.valueOf(id), KeywordType.class, null, null);
+            logs.add(log);
+        }
+        logProcessingDAO.insertAll(logs);
     }
 
     //获取所有监控关键词的ID
     private List<Long> getAttentionKeywordId() {
         List<Long> ids = new ArrayList<>();
-        for (KeywordInfo keywordInfo : _mongoTemplate.find(
+        for (KeywordInfo keywordInfo : mongoTemplate.find(
                 new Query(new Criteria().all()),
                 KeywordInfo.class,
                 "KeywordInfo"))
