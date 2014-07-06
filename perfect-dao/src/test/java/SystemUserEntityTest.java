@@ -10,7 +10,6 @@ import org.unitils.spring.annotation.SpringBeanByName;
 /**
  * Created by vbzer_000 on 2014-6-19.
  */
-
 @SpringApplicationContext({"spring.xml"})
 public class SystemUserEntityTest extends UnitilsJUnit4 {
 

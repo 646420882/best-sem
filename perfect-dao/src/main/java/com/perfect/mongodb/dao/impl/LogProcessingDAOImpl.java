@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by baizz on 2014-7-4.
  */
-@Repository("logProcessingDAO")
+@Repository(value = "logProcessingDAO")
 public class LogProcessingDAOImpl implements LogProcessingDAO {
 
     @Resource(name = "log4MongoTemplate")

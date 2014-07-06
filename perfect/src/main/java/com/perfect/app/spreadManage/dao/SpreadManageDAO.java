@@ -17,7 +17,7 @@ import java.util.*;
 /**
  * Created by baizz on 2014-6-4.
  */
-@Repository("spreadManageDAO")
+@Repository(value = "spreadManageDAO")
 public class SpreadManageDAO {
     private static CommonService service = BaiduServiceSupport.getService();
 

@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by vbzer_000 on 2014/6/18.
  */
-@Repository("accountDAO")
+@Repository(value = "accountDAO")
 public class AccountDAOImpl extends AbstractBaseDAOImpl<AccountInfoEntity> implements AccountDAO {
 
     @Override

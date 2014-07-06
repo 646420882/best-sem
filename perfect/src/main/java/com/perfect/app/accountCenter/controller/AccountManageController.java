@@ -2,14 +2,9 @@ package com.perfect.app.accountCenter.controller;
 
 import com.perfect.app.accountCenter.dao.AccountManageDAO;
 import com.perfect.app.homePage.service.CustomUserDetailsService;
-<<<<<<< HEAD
-import com.perfect.mongodb.dao.SystemUserDAO;
-import com.perfect.mongodb.entity.BaiduAccountInfo;
-import com.perfect.utils.JSONUtils;
-=======
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
->>>>>>> [mongo-proxy] development
+import com.perfect.utils.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +38,7 @@ public class AccountManageController {
     public ModelAndView getAllBaiduAccount() {
         ModelAndView mav = new ModelAndView();
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<BaiduAccountInfoEntity> baiduAccountList = systemUserDAO.findByUserName(CustomUserDetailsService.getUserName()).getBaiduAccountInfos();
+        List<BaiduAccountInfoEntity> baiduAccountList = systemUserDAO.findByUserName(CustomUserDetailsService.getUserName()).getBaiduAccountInfoEntities();
         Map<String, Object> attributes = new LinkedHashMap<>();
         attributes.put("tree", accountManageDAO.getAccountTree(baiduAccountList));
         jsonView.setAttributesMap(attributes);
@@ -55,8 +50,8 @@ public class AccountManageController {
     public ModelAndView getBaiduAccountItems() {
         ModelAndView mav = new ModelAndView();
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<BaiduAccountInfo> list = accountManageDAO.getBaiduAccountItems(CustomUserDetailsService.getUserName());
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list.toArray(new BaiduAccountInfo[list.size()]));
+        List<BaiduAccountInfoEntity> list = accountManageDAO.getBaiduAccountItems(CustomUserDetailsService.getUserName());
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list.toArray(new BaiduAccountInfoEntity[list.size()]));
         jsonView.setAttributesMap(attributes);
         mav.setView(jsonView);
         return mav;

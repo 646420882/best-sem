@@ -2,12 +2,14 @@ package com.perfect.mongodb.impl;
 
 import com.perfect.dao.CampaignDAO;
 import com.perfect.entity.CampaignEntity;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by vbzer_000 on 2014/6/27.
  */
+@Repository(value = "campaignDAO")
 public class CampaignDAOImpl extends AbstractBaseDAOImpl<CampaignEntity> implements CampaignDAO {
     @Override
     public void deleteAll() {

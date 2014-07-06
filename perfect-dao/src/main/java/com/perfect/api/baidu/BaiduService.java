@@ -22,13 +22,13 @@ import java.util.List;
 @Component
 public class BaiduService {
 
-    @Resource
+    @Resource(name = "accountDAO")
     private AccountDAO accountDAO;
 
-    @Resource
+    @Resource(name = "campaignDAO")
     private CampaignDAO campaignDAO;
 
-    @Resource
+    @Resource(name = "adgroupDAO")
     private AdgroupDAO adgroupDAO;
 
     /**

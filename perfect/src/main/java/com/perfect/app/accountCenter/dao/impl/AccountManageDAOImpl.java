@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Created by baizz on 2014-6-25.
  */
-@Repository("accountManageDAO")
+@Repository(value = "accountManageDAO")
 public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEntity> {
 
     @Resource(name = "systemUserDAO")
