@@ -2,7 +2,7 @@ package com.perfect.mongodb.dao.impl;
 
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
-import com.perfect.mongodb.dao.LogProcessingDAO;
+import com.perfect.dao.LogProcessingDAO;
 import com.perfect.mongodb.utils.Log4MongoTemplate;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;

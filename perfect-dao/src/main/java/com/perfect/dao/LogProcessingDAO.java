@@ -1,4 +1,4 @@
-package com.perfect.mongodb.dao;
+package com.perfect.dao;
 
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;

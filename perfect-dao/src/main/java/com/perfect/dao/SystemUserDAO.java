@@ -27,4 +27,6 @@ public interface SystemUserDAO extends BaseDAO<SystemUserEntity> {
      * @param currSystemUserName
      */
     void addBaiduAccount(List<BaiduAccountInfoEntity> list, String currSystemUserName);
+
+    void updateAccount(String userName);
 }

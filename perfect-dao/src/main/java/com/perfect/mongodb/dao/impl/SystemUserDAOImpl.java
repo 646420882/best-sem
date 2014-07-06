@@ -1,4 +1,4 @@
-package com.perfect.mongodb.impl;
+package com.perfect.mongodb.dao.impl;
 
 import com.perfect.api.baidu.BaiduService;
 import com.perfect.autosdk.core.ServiceFactory;
@@ -27,8 +27,6 @@ public class SystemUserDAOImpl extends AbstractBaseDAO<SystemUserEntity> impleme
 
     @Resource
     private BaiduService baiduService;
-@Repository("systemUserDAO")
-public class SystemUserDAOImplImpl extends AbstractBaseDAOImpl<SystemUserEntity> implements SystemUserDAO {
 
     @Override
     public void addBaiduAccount(List<BaiduAccountInfoEntity> list, String currSystemUserName) {

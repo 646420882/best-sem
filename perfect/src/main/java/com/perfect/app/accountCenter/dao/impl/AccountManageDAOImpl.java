@@ -22,7 +22,11 @@ import java.util.List;
 /**
  * Created by baizz on 2014-6-25.
  */
+<<<<<<< HEAD
 @Repository(value = "accountManageDAO")
+=======
+@Repository("accountManageDAO")
+>>>>>>> [mongo_proxy] commit
 public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEntity> {
 
     @Resource(name = "systemUserDAO")

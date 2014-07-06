@@ -1,9 +1,10 @@
-package com.perfect.mongodb.impl;
+package com.perfect.mongodb.dao.impl;
 
 import com.perfect.entity.AccountInfoEntity;
 
 import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.dao.AccountDAO;
+import com.perfect.mongodb.dao.impl.AbstractBaseDAO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;

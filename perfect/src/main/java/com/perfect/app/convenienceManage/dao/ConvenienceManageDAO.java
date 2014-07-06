@@ -4,8 +4,12 @@ import com.perfect.app.convenienceManage.vo.AttentionReport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+<<<<<<< HEAD
 import com.perfect.entity.DataOperationLogEntity;
 import com.perfect.mongodb.dao.LogProcessingDAO;
+=======
+import com.perfect.mongodb.base.AbstractBaseMongoTemplate;
+>>>>>>> [mongo_proxy] commit
 import com.perfect.utils.BaiduServiceSupport;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
