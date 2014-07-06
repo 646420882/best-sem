@@ -10,6 +10,7 @@ import java.util.List;
 
 @Document(collection = "AdgroupType")
 public class AdgroupEntity {
+
     //AdgroupType Attributes
     private Long adgroupId;
 

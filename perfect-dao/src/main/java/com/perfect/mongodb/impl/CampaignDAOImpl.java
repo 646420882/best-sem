@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by vbzer_000 on 2014/6/27.
  */
-public class CampaignDAOImplImpl extends AbstractBaseDAOImpl<CampaignEntity> implements CampaignDAO {
+public class CampaignDAOImpl extends AbstractBaseDAOImpl<CampaignEntity> implements CampaignDAO {
     @Override
     public void deleteAll() {
         getMongoTemplate().dropCollection(CampaignEntity.class);

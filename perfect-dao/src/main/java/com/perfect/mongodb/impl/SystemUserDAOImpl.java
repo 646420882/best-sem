@@ -1,5 +1,11 @@
 package com.perfect.mongodb.impl;
 
+import com.perfect.api.baidu.BaiduService;
+import com.perfect.autosdk.core.ServiceFactory;
+import com.perfect.autosdk.exception.ApiException;
+import com.perfect.autosdk.sms.v3.AccountService;
+import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
+import com.perfect.dao.AccountDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
@@ -8,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +23,12 @@ import java.util.List;
  */
 @Repository("systemUserDAO")
 public class SystemUserDAOImpl extends AbstractBaseDAOImpl<SystemUserEntity> implements SystemUserDAO {
+
+    @Resource
+    private AccountDAO accountDAO;
+
+    @Resource
+    private BaiduService baiduService;
 
     @Override
     public void addBaiduAccount(List<BaiduAccountInfoEntity> list, String currSystemUserName) {
@@ -33,8 +46,17 @@ public class SystemUserDAOImpl extends AbstractBaseDAOImpl<SystemUserEntity> imp
     }
 
     @Override
-    public List<BaiduAccountInfoEntity> getBaiduAccountInfos() {
-        return null;
+    public void updateAccount(String userName) {
+        SystemUserEntity systemUserEntity = findByUserName(userName);
+        List<BaiduAccountInfoEntity> list = systemUserEntity.getBaiduAccountInfoEntities();
+        try {
+            for (BaiduAccountInfoEntity entity : list) {
+                ServiceFactory sf = ServiceFactory.getInstance(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
+                baiduService.init(sf);
+            }
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

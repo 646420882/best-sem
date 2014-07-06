@@ -4,7 +4,7 @@ import com.perfect.app.convenienceManage.vo.AttentionReport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.mongodb.utils.AbstractBaseMongoTemplate;
+import com.perfect.mongodb.base.AbstractBaseMongoTemplate;
 import com.perfect.utils.BaiduServiceSupport;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;

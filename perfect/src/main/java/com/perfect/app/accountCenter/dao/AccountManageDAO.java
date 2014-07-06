@@ -41,4 +41,7 @@ public interface AccountManageDAO<T> {
      * @return
      */
     T findByBaiduUserId(Long baiduUserId);
+
+
+    void updateAccountData(Long baiduUserId);
 }
