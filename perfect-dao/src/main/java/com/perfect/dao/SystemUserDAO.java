@@ -26,4 +26,9 @@ public interface SystemUserDAO extends BaseDAO<SystemUserEntity> {
      * @param currSystemUserName
      */
     void addBaiduAccount(List<BaiduAccountInfoEntity> list, String currSystemUserName);
+<<<<<<< HEAD
+=======
+
+    void updateAccount(String userName);
+>>>>>>> [mongo_proxy] commit
 }

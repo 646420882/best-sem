@@ -12,6 +12,7 @@ import java.util.List;
 @Document(collection = "CampaginType")
 public class CampaignEntity {
 
+    private String _id;
     //CampaignType Attributes
     private Long campaignId;
 

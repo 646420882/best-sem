@@ -2,7 +2,7 @@ package com.perfect.app.homePage.controller;
 
 import com.perfect.app.accountCenter.dao.AccountManageDAO;
 import com.perfect.app.homePage.service.CustomUserDetailsService;
-import com.perfect.mongodb.entity.BaiduAccountInfo;
+import com.perfect.entity.BaiduAccountInfoEntity;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +27,7 @@ public class PageManageController {
     }
 
     @Resource(name = "accountManageDAO")
-    private AccountManageDAO<BaiduAccountInfo> accountManageDAO;
+    private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
 
     /**
      * 登录页面
@@ -87,7 +87,7 @@ public class PageManageController {
     @RequestMapping(value = "/main/spreadManage", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getSpreadManagePage(@RequestParam(value = "baiduUserId") Long baiduUserId,
                                             ModelMap modelMap) {
-        BaiduAccountInfo entity = accountManageDAO.findByBaiduUserId(baiduUserId);
+        BaiduAccountInfoEntity entity = accountManageDAO.findByBaiduUserId(baiduUserId);
         modelMap.put("currSystemUserName", currLoginUserName);
         modelMap.put("baiduAccountId", baiduUserId);
         modelMap.put("baiduAccountName", entity.getBaiduUserName());

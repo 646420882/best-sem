@@ -1,7 +1,7 @@
 package com.perfect.app.homePage.service;
 
-import com.perfect.mongodb.dao.SystemUserDAO;
-import com.perfect.mongodb.entity.SystemUser;
+import com.perfect.dao.SystemUserDAO;
+import com.perfect.entity.SystemUserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserDetails user = null;
-        SystemUser systemUser = systemUserDAO.findByUserName(s);
+        SystemUserEntity systemUser = systemUserDAO.findByUserName(s);
         userName = systemUser.getUserName();
         user = new User(
                 systemUser.getUserName(),
