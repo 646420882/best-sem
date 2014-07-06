@@ -95,7 +95,7 @@
     <mongo:db-factory id="log4MongoDbFactory" dbname="perfect_log" mongo-ref="mongo"/>
 
     <mongo:mapping-converter id="mongoConverter"/>
-    <bean id="noClassMongoConverter" class="com.perfect.mongodb.utils.MongoConverterEnhanceFactoryBean">
+    <bean id="noClassMongoConverter" class="com.perfect.mongodb.base.MongoConverterEnhanceFactoryBean">
         <property name="mongoConverter" ref="mongoConverter"/>
     </bean>
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">

@@ -3,8 +3,6 @@ package com.perfect.mongodb.impl;
 import com.perfect.api.baidu.BaiduService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
-import com.perfect.autosdk.sms.v3.AccountService;
-import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.dao.AccountDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
@@ -42,7 +40,7 @@ public class SystemUserDAOImpl extends AbstractBaseDAOImpl<SystemUserEntity> imp
             for (BaiduAccountInfoEntity entity : list)
                 list1.add(entity);
         }
-        getMongoTemplate().updateFirst(new Query(Criteria.where("userName").is(currSystemUserName)), Update.update("baiduAccountInfos", list1), "SystemUser");
+        getMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName)), Update.update("baiduAccountInfos", list1), "SystemUser");
     }
 
     @Override
@@ -77,8 +75,7 @@ public class SystemUserDAOImpl extends AbstractBaseDAOImpl<SystemUserEntity> imp
     @Override
     public SystemUserEntity findByUserName(String userName) {
         SystemUserEntity user = getMongoTemplate().
-                find(new Query(Criteria.where("userName").is(userName)), SystemUserEntity.class, "SystemUser")
-                .get(0);
+                find(Query.query(Criteria.where("userName").is(userName)), SystemUserEntity.class, "SystemUser").get(0);
         return user;
     }
 
@@ -105,7 +102,7 @@ public class SystemUserDAOImpl extends AbstractBaseDAOImpl<SystemUserEntity> imp
 
     @Override
     public List<SystemUserEntity> findAll() {
-        return getMongoTemplate().findAll(SystemUserEntity.class);
+        return getMongoTemplate().findAll(SystemUserEntity.class, "SystemUser");
     }
 
     @Override
