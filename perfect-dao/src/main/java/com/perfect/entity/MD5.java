@@ -33,7 +33,7 @@ public class MD5 {
             return md5;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            return "error";
+            return null;
         }
     }
 
