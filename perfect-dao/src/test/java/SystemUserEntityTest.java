@@ -28,6 +28,7 @@ public class SystemUserEntityTest extends UnitilsJUnit4 {
         systemUserEntity.setPassword(md5.getMD5());
 //        systemUserDAO.deleteAll();
 
+
         BaiduAccountInfoEntity baiduAccountInfoEntity = new BaiduAccountInfoEntity();
         baiduAccountInfoEntity.setBaiduUserName("baidu-bjtthunbohui2134115");
         baiduAccountInfoEntity.setBaiduPassword("Bjhunbohui7");

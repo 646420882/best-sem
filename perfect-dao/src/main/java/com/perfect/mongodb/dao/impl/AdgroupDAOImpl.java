@@ -14,7 +14,7 @@ import static com.perfect.constants.AdgroupEntityConstant.*;
  * Created by vbzer_000 on 2014/7/2.
  */
 @Repository(value = "adgroupDAO")
-public class AdgroupDAOImpl extends AbstractBaseDAO<AdgroupEntity> implements com.perfect.dao.AdgroupDAO {
+public class AdgroupDAOImpl extends AbstractBaseDAOImpl<AdgroupEntity> implements com.perfect.dao.AdgroupDAO {
 
     @Override
     public void deleteAll() {

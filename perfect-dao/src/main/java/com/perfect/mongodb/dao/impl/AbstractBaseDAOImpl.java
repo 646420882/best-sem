@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by vbzer_000 on 2014/6/18.
  */
-public abstract class AbstractBaseDAO<T> implements BaseDAO<T> {
+public abstract class AbstractBaseDAOImpl<T> implements BaseDAO<T> {
 
     @Resource
     private MongoTemplate mongoTemplate;

@@ -1,8 +1,7 @@
 package com.perfect.dao;
 
-import com.perfect.entity.SystemUserEntity;
-
 import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.SystemUserEntity;
 
 import java.util.List;
 

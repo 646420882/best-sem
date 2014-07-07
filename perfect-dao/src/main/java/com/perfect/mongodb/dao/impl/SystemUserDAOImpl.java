@@ -20,7 +20,7 @@ import java.util.List;
  * Created by vbzer_000 on 2014-6-19.
  */
 @Repository(value = "systemUserDAO")
-public class SystemUserDAOImpl extends AbstractBaseDAO<SystemUserEntity> implements SystemUserDAO {
+public class SystemUserDAOImpl extends AbstractBaseDAOImpl<SystemUserEntity> implements SystemUserDAO {
 
     @Resource
     private AccountDAO accountDAO;
