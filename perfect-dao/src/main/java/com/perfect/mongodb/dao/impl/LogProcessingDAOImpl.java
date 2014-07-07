@@ -206,7 +206,7 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
         query.addCriteria(Criteria.where("dataId").is(log.getDataId()));
         Update update = new Update();
         update.set("time", log.getTime());
-        update.set("status", log.getStatus());
+        update.set("status", 1);
         update.set("msg", log.getMessage());
         log4MongoTemplate.updateFirst(query, update, "DataOperationLog");
     }
