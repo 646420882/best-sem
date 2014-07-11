@@ -4,20 +4,15 @@ package com.perfect.dao;
 
 import com.perfect.entity.AdgroupEntity;
 
-public interface AdgroupDAO extends BaseDAO<AdgroupEntity>{
+import java.util.List;
+import java.util.Map;
 
-//    // ABSTRACT METHODS
-//
-//    public List<AdgroupEntity> getAdgroupByCampaignId(Object campaginId);
-//
-//    public AdgroupEntity getAdgroupById(Object adgroupId);
-//
-//    public List<AdgroupEntity> findAdgroup(AdgroupEntity adgroupEntity);
-//
-//    public int addAdgroup(AdgroupEntity adgroupEntity);
-//
-//    public int updateAdgroup(AdgroupEntity adgroupEntity);
-//
-//    public int deleteAdgroup(AdgroupEntity adgroupEntity);
+public interface AdgroupDAO extends CrudRepository<AdgroupEntity, Long> {
+
+    List<Long> getAllAdgroupId();
+
+    List<Long> getAdgroupIdByCampaignId(Long campaignId);
+
+    List<AdgroupEntity> getAdgroupByCampaignId(Long campaignId, Map<String, Object> params, int skip, int limit);
 
 }

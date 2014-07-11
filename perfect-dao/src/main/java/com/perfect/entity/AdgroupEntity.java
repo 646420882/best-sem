@@ -4,6 +4,7 @@
 package com.perfect.entity;
 
 import com.perfect.autosdk.common.OptType;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 public class AdgroupEntity {
 
     //AdgroupType Attributes
+    @Indexed(unique = true)
     private Long adgroupId;
 
     //------------------------

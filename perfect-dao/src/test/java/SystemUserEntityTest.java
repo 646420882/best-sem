@@ -1,8 +1,6 @@
-
-import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.MD5;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.MD5;
 import com.perfect.entity.SystemUserEntity;
 import org.junit.Test;
 import org.unitils.UnitilsJUnit4;
@@ -22,12 +20,12 @@ public class SystemUserEntityTest extends UnitilsJUnit4 {
     @Test
     public void init() {
 
+//        systemUserDAO.deleteAll();
+
         SystemUserEntity systemUserEntity = new SystemUserEntity();
         systemUserEntity.setUserName("perfect");
         MD5 md5 = new MD5("test", "perfect");
         systemUserEntity.setPassword(md5.getMD5());
-//        systemUserDAO.deleteAll();
-
 
         BaiduAccountInfoEntity baiduAccountInfoEntity = new BaiduAccountInfoEntity();
         baiduAccountInfoEntity.setBaiduUserName("baidu-bjtthunbohui2134115");

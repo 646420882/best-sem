@@ -2,18 +2,19 @@ package com.perfect.entity;
 
 import com.perfect.autosdk.sms.v3.OfflineTimeType;
 import com.perfect.autosdk.sms.v3.ScheduleType;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 /**
- * Created by vbzer_000 on 2014/6/26.
+ * Created by vbzer_000 on 2014-6-26.
  */
 @Document(collection = "CampaginType")
 public class CampaignEntity {
 
-    private String _id;
     //CampaignType Attributes
+    @Indexed(unique = true)
     private Long campaignId;
 
     //------------------------

@@ -1,8 +1,8 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
-import com.perfect.dao.LogProcessingDAO;
 import com.perfect.mongodb.utils.Log4MongoTemplate;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -12,17 +12,17 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by baizz on 2014-7-4.
  */
-@Repository(value = "logProcessingDAO")
+@Repository("logProcessingDAO")
 public class LogProcessingDAOImpl implements LogProcessingDAO {
 
-    @Resource(name = "log4MongoTemplate")
+    @Resource
     private Log4MongoTemplate log4MongoTemplate;
 
     /**
@@ -79,7 +79,7 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      * @param status
      * @return
      */
-    public Collection<DataOperationLogEntity> findAll(Integer status) {
+    public List<DataOperationLogEntity> findAll(Integer status) {
         if (status == -1) {
             Query query = new Query();
             query.with(new Sort(Sort.Direction.ASC, "time"));
@@ -119,15 +119,13 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
     }
 
     /**
-     * @param criteria
+     * @param params
      * @param skip
      * @param limit
      * @return
      */
-    public Collection<DataOperationLogEntity> find(DataOperationLogEntity criteria, int skip, int limit) {
-        Query query = getQuery(criteria);
-        query.skip(skip).limit(limit);
-        return log4MongoTemplate.find(query, DataOperationLogEntity.class, "DataOperationLogEntity");
+    public List<DataOperationLogEntity> find(Map<String, Object> params, int skip, int limit) {
+        return null;
     }
 
     /**
@@ -135,7 +133,7 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      *
      * @return
      */
-    public Collection<DataOperationLogEntity> findAll() {
+    public List<DataOperationLogEntity> findAll() {
         Query query = new Query();
         query.with(new Sort(Sort.Direction.ASC, "time"));
         List<DataOperationLogEntity> list = log4MongoTemplate
@@ -151,12 +149,12 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      */
     public void insert(DataOperationLogEntity log) {
         Long dataId = log.getDataId();
+        List<DataOperationLogEntity> list = log4MongoTemplate.find(
+                new Query(Criteria.where("dataId").is(dataId).and("obj").ne(null)),
+                DataOperationLogEntity.class,
+                "DataOperationLogEntity");
         if (!isExists(log)) {
             if (log.getAttribute() == null && log.getInstance() == null) {
-                List<DataOperationLogEntity> list = log4MongoTemplate.find(
-                        new Query(Criteria.where("dataId").is(dataId).and("obj").ne(null)),
-                        DataOperationLogEntity.class,
-                        "DataOperationLogEntity");
                 if (list.size() == 1) {
                     //新增的数据还未同步, 则删除数据库中所有dataId为log.getDataId()的日志记录
                     log4MongoTemplate.remove(new Query(Criteria.where("dataId").is(dataId)),
@@ -170,6 +168,15 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
                             DataOperationLogEntity.class, "DataOperationLogEntity");
                     log4MongoTemplate.insert(log, "DataOperationLogEntity");
                 }
+            } else if (log.getAttribute() != null && log.getInstance() == null) {
+                //数据新增之后还未进行同步, 又需要对其进行修改
+                Update update = new Update();
+                update.set("time", log.getTime());
+                update.set("obj." + log.getAttribute().getName(), log.getAttribute().getAfter());
+                log4MongoTemplate.updateFirst(
+                        new Query(Criteria.where("dataId").is(dataId)),
+                        update,
+                        "DataOperationLogEntity");
             } else {
                 log4MongoTemplate.insert(log, "DataOperationLogEntity");
             }
@@ -191,7 +198,7 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      *
      * @param logs
      */
-    public void insertAll(Collection<? extends DataOperationLogEntity> logs) {
+    public void insertAll(List<DataOperationLogEntity> logs) {
         for (DataOperationLogEntity log : logs)
             insert(log);
     }
@@ -216,13 +223,9 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      *
      * @param logs
      */
-    public void update(Collection<DataOperationLogEntity> logs) {
+    public void update(List<DataOperationLogEntity> logs) {
         for (DataOperationLogEntity log : logs)
             update(log);
-    }
-
-    public void updateMulti(String key, Object value1, Object value2) {
-
     }
 
     /**
@@ -242,7 +245,7 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      *
      * @param dataIds
      */
-    public void deleteByIds(Collection<Long> dataIds) {
+    public void deleteByIds(List<Long> dataIds) {
         for (Long dataId : dataIds)
             log4MongoTemplate.remove(
                     new Query(Criteria.where("dataId").is(dataId)),
@@ -295,7 +298,7 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
                             .and("obj").ne(null)),
                     DataOperationLogEntity.class,
                     "DataOperationLogEntity");
-        else if (log.getAttribute() == null && log.getInstance() == null)
+        else
             list = log4MongoTemplate.find(
                     new Query(Criteria.where("dataId").is(log.getDataId())
                             .and("attr").is(null)
@@ -303,20 +306,7 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
                     DataOperationLogEntity.class,
                     "DataOperationLogEntity");
 
-        if (list.size() == 1) return true;
-        else return false;
-    }
-
-    private Query getQuery(DataOperationLogEntity log) {
-        Query query = new Query();
-
-        if (log == null)
-            return query;
-
-        if (log.getDataId() != null)
-            query.addCriteria(Criteria.where("dataId").is(log.getDataId()));
-
-        return query;
+        return list.size() == 1;
     }
 
 }

@@ -17,7 +17,7 @@
             <id>central</id>
             <url>http://repo1.maven.org/maven2/</url>
         </repository>
-        
+
         <repository>
             <id>sonatype</id>
             <url>http://repository.sonatype.org/content/groups/public/</url>
@@ -69,6 +69,13 @@
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
             <version>3.2.1</version>
+        </dependency>
+
+        <!-- slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.7</version>
         </dependency>
 
         <!-- Spring -->
@@ -126,6 +133,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${org.springframework-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${org.springframework-version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -189,6 +202,11 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>4.3.5.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.5.6-Final</version>
         </dependency>
 
         <!-- Servlet -->
@@ -256,20 +274,44 @@
             <version>2.1</version>
         </dependency>
 
-        <!-- junit -->
+        <!-- test -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.5</version>
+            <groupId>org.unitils</groupId>
+            <artifactId>unitils</artifactId>
+            <version>2.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.unitils</groupId>
-            <artifactId>unitils</artifactId>
-            <version>2.3</version>
+            <artifactId>unitils-easymock</artifactId>
+            <version>3.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>0.9.1</version>
             <scope>test</scope>
         </dependency>
 
+        <!-- DAO -->
         <dependency>
             <groupId>com.perfect</groupId>
             <artifactId>perfect-baidu</artifactId>
@@ -290,6 +332,7 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>

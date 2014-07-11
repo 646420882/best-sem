@@ -3,15 +3,17 @@
 
 package com.perfect.entity;
 
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "KeywordType")
-public class KeywordEntity extends BinlogEntity{
+public class KeywordEntity extends BinlogEntity {
     //------------------------
     // MEMBER VARIABLES
     //------------------------
 
     //KeywordType Attributes
+    @Indexed(unique = true)
     private Long keywordId;
     private Long adgroupId;
     private String keyword;

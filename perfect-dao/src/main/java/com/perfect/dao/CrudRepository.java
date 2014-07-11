@@ -4,7 +4,8 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by baizz on 2014-7-4.
@@ -26,18 +27,18 @@ public interface CrudRepository<T, ID extends Serializable> extends Repository<T
      *
      * @return
      */
-    Collection<T> findAll();
+    List<T> findAll();
 
     /**
      * 按条件查询
      * <br>------------------------------<br>
      *
-     * @param t
+     * @param params
      * @param skip
      * @param limit
      * @return
      */
-    Collection<T> find(T t, int skip, int limit);
+    List<T> find(Map<String, Object> params, int skip, int limit);
 
     /**
      * 新增
@@ -53,7 +54,7 @@ public interface CrudRepository<T, ID extends Serializable> extends Repository<T
      *
      * @param entities
      */
-    void insertAll(Collection<? extends T> entities);
+    void insertAll(List<T> entities);
 
     /**
      * 更新
@@ -69,17 +70,7 @@ public interface CrudRepository<T, ID extends Serializable> extends Repository<T
      *
      * @param entities
      */
-    void update(Collection<T> entities);
-
-    /**
-     * 按条件批量更新
-     * <br>------------------------------<br>
-     *
-     * @param key
-     * @param value1
-     * @param value2
-     */
-    void updateMulti(String key, Object value1, Object value2);
+    void update(List<T> entities);
 
     /**
      * 根据id删除
@@ -95,7 +86,7 @@ public interface CrudRepository<T, ID extends Serializable> extends Repository<T
      *
      * @param ids
      */
-    void deleteByIds(Collection<ID> ids);
+    void deleteByIds(List<ID> ids);
 
     /**
      * 按条件删除
