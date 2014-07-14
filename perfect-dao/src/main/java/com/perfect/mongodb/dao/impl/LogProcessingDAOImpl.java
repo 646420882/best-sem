@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -283,7 +282,7 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      * @return
      */
     private boolean isExists(DataOperationLogEntity log) {
-        List<DataOperationLogEntity> list = new ArrayList<DataOperationLogEntity>();
+        List<DataOperationLogEntity> list;
         if (log.getAttribute() != null)
             list = log4MongoTemplate.find(
                     new Query(Criteria.where("dataId").is(log.getDataId())
