@@ -2,6 +2,7 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
+import com.perfect.autosdk.common.*;
 
 // line 20 "../../../../../../../SDKDemo.ump"
 public class KeywordType
@@ -24,6 +25,8 @@ public class KeywordType
   private Boolean pause;
   private Integer status;
   private Integer phraseType;
+  private Integer wmatchprefer;
+  private Integer owmatch;
 
   //------------------------
   // INTERFACE
@@ -109,6 +112,22 @@ public class KeywordType
     return wasSet;
   }
 
+  public boolean setWmatchprefer(Integer aWmatchprefer)
+  {
+    boolean wasSet = false;
+    wmatchprefer = aWmatchprefer;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setOwmatch(Integer aOwmatch)
+  {
+    boolean wasSet = false;
+    owmatch = aOwmatch;
+    wasSet = true;
+    return wasSet;
+  }
+
   public Long getKeywordId()
   {
     return keywordId;
@@ -159,6 +178,16 @@ public class KeywordType
     return phraseType;
   }
 
+  public Integer getWmatchprefer()
+  {
+    return wmatchprefer;
+  }
+
+  public Integer getOwmatch()
+  {
+    return owmatch;
+  }
+
 
   public void delete()
   {}
@@ -177,7 +206,9 @@ public class KeywordType
             "matchType" + ":" + getMatchType()+ "," +
             "pause" + ":" + getPause()+ "," +
             "status" + ":" + getStatus()+ "," +
-            "phraseType" + ":" + getPhraseType()+ "]"
+            "phraseType" + ":" + getPhraseType()+ "," +
+            "wmatchprefer" + ":" + getWmatchprefer()+ "," +
+            "owmatch" + ":" + getOwmatch()+ "]"
      + outputString;
   }
 }

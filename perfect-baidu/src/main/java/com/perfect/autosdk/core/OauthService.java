@@ -16,11 +16,11 @@ import java.net.MalformedURLException;
 import java.util.Map;
 
 /**
- * @title OauthService
- * @description Oauth2.0 related apis 
  * @author wangbin14
- * @date 2014-2-14
  * @version 1.0
+ * @title OauthService
+ * @description Oauth2.0 related apis
+ * @date 2014-2-14
  */
 public class OauthService {
 
@@ -40,10 +40,10 @@ public class OauthService {
     }
 
     /**
-     * @description build OauthService with client's parameters
      * @param clientId
      * @param clientSecret
      * @param redirectUrl
+     * @description build OauthService with client's parameters
      */
     public OauthService(String clientId, String clientSecret, String redirectUrl) {
         this.clientId = trimNotNullStr(clientId);
@@ -59,8 +59,8 @@ public class OauthService {
     }
 
     /**
-     * @description set user config: redirectUrl
      * @param redirectUrl: the redirectUrl of an APP
+     * @description set user config: redirectUrl
      */
     public void setRedirectUrl(String redirectUrl) {
         this.redirectUrl = trimNotNullStr(redirectUrl);
@@ -74,8 +74,8 @@ public class OauthService {
     }
 
     /**
-     * @description set user config: clientId
      * @param clientId: the unique id of an APP
+     * @description set user config: clientId
      */
     public void setClientId(String clientId) {
         this.clientId = trimNotNullStr(clientId);
@@ -89,8 +89,8 @@ public class OauthService {
     }
 
     /**
-     * @description set user config: clientSecret
      * @param clientSecret: the secret of an APP
+     * @description set user config: clientSecret
      */
     public void setClientSecret(String clientSecret) {
         this.clientSecret = trimNotNullStr(clientSecret);
@@ -104,26 +104,26 @@ public class OauthService {
     }
 
     /**
-     * @description set user config: state
      * @param state: a customized random string
+     * @description set user config: state
      */
     public void setState(String state) {
         this.state = trimNotNullStr(state);
     }
 
     /**
-     * @description return trimmed value of a not-null-string
      * @param ori
      * @return
+     * @description return trimmed value of a not-null-string
      */
     public static String trimNotNullStr(String ori) {
         return ori == null ? null : ori.trim();
     }
 
     /**
-     * @description run native browser, redirect to the authorization page 
      * @param responseType: Client & Server Flow: responseType=code; Implicit Flow: responseType=token
-     * @param state: customized random string
+     * @param state:        customized random string
+     * @description run native browser, redirect to the authorization page
      */
     public void authorize(String responseType, String state) {
         if (state != null && state.length() > 0) {
@@ -133,9 +133,10 @@ public class OauthService {
     }
 
     /**
-     * @description Client & Server Flow: send authcode to open2 in exchange for accesstoken
      * @param code
+     * @description Client & Server Flow: send authcode to open2 in exchange for accesstoken
      */
+    @SuppressWarnings("unchecked")
     public AccessToken getAccesstokenByCode(String code) {
 
         JsonConnection conn;
@@ -179,8 +180,8 @@ public class OauthService {
     }
 
     /**
-     * @description Client & Server Flow: build the url which is used to get authorization code 
      * @return
+     * @description Client & Server Flow: build the url which is used to get authorization code
      */
     public String buildAuthorizeUrl(String responseType) {
 
@@ -195,9 +196,9 @@ public class OauthService {
     }
 
     /**
-     * @description Client & Server Flow: build the url which is used to exchange authorization code for accesstoken
      * @param authcode
      * @return
+     * @description Client & Server Flow: build the url which is used to exchange authorization code for accesstoken
      */
     public String buildAccesstokenUrl(String authcode) {
 

@@ -17,16 +17,16 @@
  */
 package com.perfect.autosdk.util;
 
-
-import com.perfect.autosdk.exception.ClientInternalException;
-import org.apache.commons.lang.ArrayUtils;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+
+import org.apache.commons.lang.ArrayUtils;
+
+import com.perfect.autosdk.exception.ClientInternalException;
 
 /**
  * Download file from remote server.

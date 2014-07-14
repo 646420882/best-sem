@@ -2,8 +2,8 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
-
-import java.util.List;
+import com.perfect.autosdk.common.*;
+import java.util.*;
 
 // line 9 "../../../../../../../SDKDemo.ump"
 public class GetPreviewRequest
@@ -21,6 +21,7 @@ public class GetPreviewRequest
   private Integer region;
   private Integer page;
   private Integer display;
+  private Integer enableSeo;
 
   //------------------------
   // INTERFACE
@@ -76,6 +77,14 @@ public class GetPreviewRequest
     return wasSet;
   }
 
+  public boolean setEnableSeo(Integer aEnableSeo)
+  {
+    boolean wasSet = false;
+    enableSeo = aEnableSeo;
+    wasSet = true;
+    return wasSet;
+  }
+
   public String getKeyWord(int index)
   {
     String aKeyWord = keyWords.get(index);
@@ -125,6 +134,11 @@ public class GetPreviewRequest
     return display;
   }
 
+  public Integer getEnableSeo()
+  {
+    return enableSeo;
+  }
+
   public void delete()
   {}
 
@@ -136,7 +150,8 @@ public class GetPreviewRequest
             "device" + ":" + getDevice()+ "," +
             "region" + ":" + getRegion()+ "," +
             "page" + ":" + getPage()+ "," +
-            "display" + ":" + getDisplay()+ "]"
+            "display" + ":" + getDisplay()+ "," +
+            "enableSeo" + ":" + getEnableSeo()+ "]"
      + outputString;
   }
 }

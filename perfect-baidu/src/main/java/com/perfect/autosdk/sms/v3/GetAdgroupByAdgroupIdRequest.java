@@ -2,10 +2,10 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
+import com.perfect.autosdk.common.*;
+import java.util.*;
 
-import java.util.List;
-
-// line 70 "../../../../../../../SDKDemo.ump"
+// line 75 "../../../../../../../SDKDemo.ump"
 public class GetAdgroupByAdgroupIdRequest
 {
   @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
@@ -17,6 +17,7 @@ public class GetAdgroupByAdgroupIdRequest
 
   //GetAdgroupByAdgroupIdRequest Attributes
   private List<Long> adgroupIds;
+  private Integer extended;
 
   //------------------------
   // INTERFACE
@@ -38,6 +39,14 @@ public class GetAdgroupByAdgroupIdRequest
     boolean wasRemoved = false;
     wasRemoved = adgroupIds.remove(aAdgroupId);
     return wasRemoved;
+  }
+
+  public boolean setExtended(Integer aExtended)
+  {
+    boolean wasSet = false;
+    extended = aExtended;
+    wasSet = true;
+    return wasSet;
   }
 
   public Long getAdgroupId(int index)
@@ -69,6 +78,11 @@ public class GetAdgroupByAdgroupIdRequest
     return index;
   }
 
+  public Integer getExtended()
+  {
+    return extended;
+  }
+
   public void delete()
   {}
 
@@ -76,7 +90,8 @@ public class GetAdgroupByAdgroupIdRequest
   public String toString()
   {
 	  String outputString = "";
-    return super.toString() + "["+ "]"
+    return super.toString() + "["+
+            "extended" + ":" + getExtended()+ "]"
      + outputString;
   }
 }

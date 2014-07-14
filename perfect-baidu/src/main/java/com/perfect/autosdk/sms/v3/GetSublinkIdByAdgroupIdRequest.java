@@ -2,8 +2,8 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
-
-import java.util.List;
+import com.perfect.autosdk.common.*;
+import java.util.*;
 
 // line 25 "../../../../../../../SDKDemo.ump"
 public class GetSublinkIdByAdgroupIdRequest

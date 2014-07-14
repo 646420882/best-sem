@@ -17,11 +17,11 @@
  */
 package com.perfect.autosdk.core;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * The abstract version configuration class, used to configure QName and service address.

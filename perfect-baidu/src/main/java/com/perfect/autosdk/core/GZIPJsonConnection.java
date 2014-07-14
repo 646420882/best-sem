@@ -17,9 +17,6 @@
  */
 package com.perfect.autosdk.core;
 
-
-import com.perfect.autosdk.exception.ApiException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,12 +24,14 @@ import java.net.MalformedURLException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import com.perfect.autosdk.exception.ApiException;
+
 public class GZIPJsonConnection extends JsonConnection {
 
     /**
      * @param url The request URL
-     * @throws java.net.MalformedURLException
-     * @throws java.io.IOException
+     * @throws MalformedURLException
+     * @throws IOException
      */
     public GZIPJsonConnection(String url) throws MalformedURLException, IOException {
         super(url + "/gzip");

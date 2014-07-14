@@ -2,8 +2,9 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
+import com.perfect.autosdk.common.*;
 
-// line 23 "../../../../../../../SDKDemo.ump"
+// line 24 "../../../../../../../SDKDemo.ump"
 public class PreviewInfo
 {
   @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)

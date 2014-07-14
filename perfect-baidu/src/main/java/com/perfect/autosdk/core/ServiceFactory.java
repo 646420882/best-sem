@@ -17,11 +17,10 @@
  */
 package com.perfect.autosdk.core;
 
+import java.util.Properties;
+import java.util.Map.Entry;
 
 import com.perfect.autosdk.exception.ApiException;
-
-import java.util.Map.Entry;
-import java.util.Properties;
 
 /**
  * The Service Factory, please use this class to create client side service stub.

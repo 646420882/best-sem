@@ -2,80 +2,81 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
-
-import java.util.List;
+import com.perfect.autosdk.common.*;
+import java.util.*;
 
 // line 71 "../../../../../../../SDKDemo.ump"
-public class GetAllCampaignResponse {
-    @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-    public @interface umplesourcefile {
-        int[] line();
+public class GetAllCampaignResponse
+{
+  @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+  public @interface umplesourcefile{int[] line();String[] file();int[] javaline();int[] length();}
 
-        String[] file();
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
 
-        int[] javaline();
+  //GetAllCampaignResponse Attributes
+  private List<CampaignType> campaignTypes;
 
-        int[] length();
-    }
+  //------------------------
+  // INTERFACE
+  //------------------------
 
-    //------------------------
-    // MEMBER VARIABLES
-    //------------------------
+  public void setCampaignTypes(List<CampaignType> acampaignTypes){
+    campaignTypes = acampaignTypes;
+  }
 
-    //GetAllCampaignResponse Attributes
-    private List<CampaignType> campaignTypes;
+  public boolean addCampaignType(CampaignType aCampaignType)
+  {
+    boolean wasAdded = false;
+    wasAdded = campaignTypes.add(aCampaignType);
+    return wasAdded;
+  }
 
-    //------------------------
-    // INTERFACE
-    //------------------------
+  public boolean removeCampaignType(CampaignType aCampaignType)
+  {
+    boolean wasRemoved = false;
+    wasRemoved = campaignTypes.remove(aCampaignType);
+    return wasRemoved;
+  }
 
-    public void setCampaignTypes(List<CampaignType> acampaignTypes) {
-        campaignTypes = acampaignTypes;
-    }
+  public CampaignType getCampaignType(int index)
+  {
+    CampaignType aCampaignType = campaignTypes.get(index);
+    return aCampaignType;
+  }
 
-    public boolean addCampaignType(CampaignType aCampaignType) {
-        boolean wasAdded = false;
-        wasAdded = campaignTypes.add(aCampaignType);
-        return wasAdded;
-    }
+  public List<CampaignType> getCampaignTypes()
+  {
+    return campaignTypes;
+  }
 
-    public boolean removeCampaignType(CampaignType aCampaignType) {
-        boolean wasRemoved = false;
-        wasRemoved = campaignTypes.remove(aCampaignType);
-        return wasRemoved;
-    }
+  public int numberOfCampaignTypes()
+  {
+    int number = campaignTypes.size();
+    return number;
+  }
 
-    public CampaignType getCampaignType(int index) {
-        CampaignType aCampaignType = campaignTypes.get(index);
-        return aCampaignType;
-    }
+  public boolean hasCampaignTypes()
+  {
+    boolean has = campaignTypes.size() > 0;
+    return has;
+  }
 
-    public List<CampaignType> getCampaignTypes() {
-        return campaignTypes;
-    }
+  public int indexOfCampaignType(CampaignType aCampaignType)
+  {
+    int index = campaignTypes.indexOf(aCampaignType);
+    return index;
+  }
 
-    public int numberOfCampaignTypes() {
-        int number = campaignTypes.size();
-        return number;
-    }
-
-    public boolean hasCampaignTypes() {
-        boolean has = campaignTypes.size() > 0;
-        return has;
-    }
-
-    public int indexOfCampaignType(CampaignType aCampaignType) {
-        int index = campaignTypes.indexOf(aCampaignType);
-        return index;
-    }
-
-    public void delete() {
-    }
+  public void delete()
+  {}
 
 
-    public String toString() {
-        String outputString = "";
-        return super.toString() + "[" + "]"
-                + outputString;
-    }
+  public String toString()
+  {
+	  String outputString = "";
+    return super.toString() + "["+ "]"
+     + outputString;
+  }
 }

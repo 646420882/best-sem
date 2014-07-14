@@ -2,11 +2,8 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
-
-
-import com.perfect.autosdk.common.OptType;
-
-import java.util.List;
+import com.perfect.autosdk.common.*;
+import java.util.*;
 
 // line 16 "../../../../../../../SDKDemo.ump"
 public class AccountInfoType
@@ -33,6 +30,7 @@ public class AccountInfoType
   private List<Double> weeklyBudget;
   private Integer userStat;
   private Boolean isDynamicCreative;
+  private String dynamicCreativeParam;
   private OptType opt;
 
   //------------------------
@@ -197,6 +195,14 @@ public class AccountInfoType
   {
     boolean wasSet = false;
     isDynamicCreative = aIsDynamicCreative;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setDynamicCreativeParam(String aDynamicCreativeParam)
+  {
+    boolean wasSet = false;
+    dynamicCreativeParam = aDynamicCreativeParam;
     wasSet = true;
     return wasSet;
   }
@@ -399,6 +405,11 @@ public class AccountInfoType
     return isDynamicCreative;
   }
 
+  public String getDynamicCreativeParam()
+  {
+    return dynamicCreativeParam;
+  }
+
   public OptType getOpt()
   {
     return opt;
@@ -421,7 +432,8 @@ public class AccountInfoType
             "budget" + ":" + getBudget()+ "," +
             "regDomain" + ":" + getRegDomain()+ "," +
             "userStat" + ":" + getUserStat()+ "," +
-            "isDynamicCreative" + ":" + getIsDynamicCreative()+ "]" + System.getProperties().getProperty("line.separator") +
+            "isDynamicCreative" + ":" + getIsDynamicCreative()+ "," +
+            "dynamicCreativeParam" + ":" + getDynamicCreativeParam()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "opt" + "=" + (getOpt() != null ? !getOpt().equals(this)  ? getOpt().toString().replaceAll("  ","    ") : "this" : "null")
      + outputString;
   }

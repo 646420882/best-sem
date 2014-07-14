@@ -17,10 +17,9 @@
  */
 package com.perfect.autosdk.util;
 
+import java.security.MessageDigest;
 
 import com.perfect.autosdk.exception.ClientInternalException;
-
-import java.security.MessageDigest;
 
 /**
  * @author @author@ (@author-email@)

@@ -2,10 +2,10 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
+import com.perfect.autosdk.common.*;
+import java.util.*;
 
-import java.util.List;
-
-// line 112 "../../../../../../../SDKDemo.ump"
+// line 114 "../../../../../../../SDKDemo.ump"
 public class GetKeywordIdByAdgroupIdResponse
 {
   @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)

@@ -2,53 +2,47 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
-
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.perfect.autosdk.common.*;
 
 // line 95 "../../../../../../../SDKDemo.ump"
-@Document(collection = "GetRealTimeDataRequest")
-public class GetRealTimeDataRequest {
-    @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-    public @interface umplesourcefile {
-        int[] line();
+public class GetRealTimeDataRequest
+{
+  @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+  public @interface umplesourcefile{int[] line();String[] file();int[] javaline();int[] length();}
 
-        String[] file();
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
 
-        int[] javaline();
+  //GetRealTimeDataRequest Attributes
+  private RealTimeRequestType realTimeRequestTypes;
 
-        int[] length();
-    }
+  //------------------------
+  // INTERFACE
+  //------------------------
 
-    //------------------------
-    // MEMBER VARIABLES
-    //------------------------
+  public boolean setRealTimeRequestTypes(RealTimeRequestType aRealTimeRequestTypes)
+  {
+    boolean wasSet = false;
+    realTimeRequestTypes = aRealTimeRequestTypes;
+    wasSet = true;
+    return wasSet;
+  }
 
-    //GetRealTimeDataRequest Attributes
-    private RealTimeRequestType realTimeRequestTypes;
+  public RealTimeRequestType getRealTimeRequestTypes()
+  {
+    return realTimeRequestTypes;
+  }
 
-    //------------------------
-    // INTERFACE
-    //------------------------
-
-    public boolean setRealTimeRequestTypes(RealTimeRequestType aRealTimeRequestTypes) {
-        boolean wasSet = false;
-        realTimeRequestTypes = aRealTimeRequestTypes;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public RealTimeRequestType getRealTimeRequestTypes() {
-        return realTimeRequestTypes;
-    }
-
-    public void delete() {
-    }
+  public void delete()
+  {}
 
 
-    public String toString() {
-        String outputString = "";
-        return super.toString() + "[" + "]" + System.getProperties().getProperty("line.separator") +
-                "  " + "realTimeRequestTypes" + "=" + (getRealTimeRequestTypes() != null ? !getRealTimeRequestTypes().equals(this) ? getRealTimeRequestTypes().toString().replaceAll("  ", "    ") : "this" : "null")
-                + outputString;
-    }
+  public String toString()
+  {
+	  String outputString = "";
+    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "realTimeRequestTypes" + "=" + (getRealTimeRequestTypes() != null ? !getRealTimeRequestTypes().equals(this)  ? getRealTimeRequestTypes().toString().replaceAll("  ","    ") : "this" : "null")
+     + outputString;
+  }
 }

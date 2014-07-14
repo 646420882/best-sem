@@ -17,14 +17,15 @@
  */
 package com.perfect.autosdk.core;
 
-import com.perfect.autosdk.exception.ApiException;
-import com.perfect.autosdk.util.PrintUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.perfect.autosdk.exception.ApiException;
+import com.perfect.autosdk.util.PrintUtil;
 
 
 /**
@@ -56,7 +57,7 @@ public class JsonProxy<I> implements InvocationHandler {
      * @param service The original object.
      * @return The proxied object.
      * @throws ApiException 
-     * @throws Throwable
+     * @throws Throwable 
      */
     @SuppressWarnings("unchecked")
     public static <T> T createProxy(Class<T> interfaces, CommonService service) throws ApiException {

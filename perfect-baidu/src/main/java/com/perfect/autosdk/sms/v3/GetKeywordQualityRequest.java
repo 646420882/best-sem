@@ -2,10 +2,10 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
+import com.perfect.autosdk.common.*;
+import java.util.*;
 
-import java.util.List;
-
-// line 163 "../../../../../../../SDKDemo.ump"
+// line 165 "../../../../../../../SDKDemo.ump"
 public class GetKeywordQualityRequest
 {
   @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)

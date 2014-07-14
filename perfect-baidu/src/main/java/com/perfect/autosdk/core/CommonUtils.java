@@ -1,14 +1,13 @@
 package com.perfect.autosdk.core;
 
-
-import com.perfect.autosdk.exception.ApiException;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import com.perfect.autosdk.exception.ApiException;
+
 public class CommonUtils {
 	public static final String NAMESPACE = "http://10.48.59.45:8080/api-gateway/json/sms/";
-	public static final String PACKAGE = "com.baidu.drapi.com.perfect.autosdk.sms.";
+	public static final String PACKAGE = "com.perfect.autosdk.sms.";
 	private static final String DOT = ".";
 	public static final String SLASH = "/";
 	public static final String V2 = "v2";

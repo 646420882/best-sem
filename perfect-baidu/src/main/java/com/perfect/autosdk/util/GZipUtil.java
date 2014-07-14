@@ -17,17 +17,18 @@
  */
 package com.perfect.autosdk.util;
 
-import com.perfect.autosdk.core.JacksonUtil;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.type.JavaType;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipInputStream;
+
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.type.JavaType;
+
+import com.perfect.autosdk.core.JacksonUtil;
 
 /**
  * @author

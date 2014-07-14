@@ -17,7 +17,6 @@
  */
 package com.perfect.autosdk.core;
 
-
 import com.perfect.autosdk.exception.ApiException;
 import org.codehaus.jackson.map.type.TypeFactory;
 
@@ -49,10 +48,9 @@ public class JsonConnection {
     }
 
     /**
-     * @param url
-     *            The request URL
-     * @throws java.io.IOException
-     * @throws java.net.MalformedURLException
+     * @param url The request URL
+     * @throws IOException
+     * @throws MalformedURLException
      */
     public JsonConnection(String url) throws MalformedURLException, IOException {
         super();
@@ -61,8 +59,9 @@ public class JsonConnection {
 
     /**
      * 向服务器发送信息
-     * 
-     * @throws ClientInternalException
+     *
+     * @return
+     * @throws ApiException
      */
 
     protected OutputStream sendRequest() throws ApiException {
@@ -85,9 +84,8 @@ public class JsonConnection {
 
     /**
      * 向服务器发送信息
-     * 
-     * @param body
-     *            向服务器发送的信封对象
+     *
+     * @param body 向服务器发送的信封对象
      * @throws ApiException
      */
     public void sendRequest(JsonEnvelop<?, ?> body) throws ApiException {
@@ -110,7 +108,7 @@ public class JsonConnection {
 
     /**
      * 读取服务器返回的信息
-     * 
+     *
      * @return 读取到的数据
      * @throws ApiException
      */
@@ -134,22 +132,19 @@ public class JsonConnection {
 
     /**
      * 读取服务器返回的信息
-     * 
-     * @param <T>
-     *            返回头类型。
-     * @param <K>
-     *            返回body类型。
-     * @param t
-     *            返回头类型的class
-     * @param k
-     *            返回body类型的class
+     *
+     * @param <T> 返回头类型。
+     * @param <K> 返回body类型。
+     * @param t   返回头类型的class
+     * @param k   返回body类型的class
      * @return 服务器返回的信封
      * @throws ApiException
      */
     public <T, K> JsonEnvelop<T, K> readResponse(Class<T> t, Class<K> k) throws ApiException {
         InputStream in = readResponse();
         try {
-            return JacksonUtil.readObj(in, TypeFactory.parametricType(JsonEnvelop.class, t, k));
+            TypeFactory instance = TypeFactory.defaultInstance();
+            return JacksonUtil.readObj(in, instance.constructParametricType(JsonEnvelop.class, t, k));
         } catch (IOException e) {
             throw new ApiException(e);
         } finally {
@@ -164,11 +159,11 @@ public class JsonConnection {
     }
 
     /**
-     * @description 读取服务器返回的信息，转换为类型 T
      * @param <T>
      * @param t
      * @return
      * @throws ApiException
+     * @description 读取服务器返回的信息，转换为类型 T
      */
     public <T> T readResponse(Class<T> t) throws ApiException {
         InputStream in = readResponse();
@@ -189,6 +184,7 @@ public class JsonConnection {
 
     /**
      * 将服务器返回的信息转为String
+     *
      * @return
      */
     public String readResponseAsString() throws ApiException {

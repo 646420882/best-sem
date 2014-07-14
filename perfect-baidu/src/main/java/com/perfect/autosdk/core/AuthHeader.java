@@ -6,7 +6,7 @@ public class AuthHeader {
     private String password;
     private String target;
     private String token;
-    private String action = "API-SDK-JAVA";
+    private String action = "API-SDK";
     private String accessToken;
     private Integer account_type;
 

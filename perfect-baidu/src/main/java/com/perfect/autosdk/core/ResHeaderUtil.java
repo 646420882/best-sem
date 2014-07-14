@@ -17,11 +17,14 @@
  */
 package com.perfect.autosdk.core;
 
-import com.perfect.autosdk.exception.ApiException;
+import java.util.List;
+
+import javax.xml.ws.BindingProvider;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import java.util.List;
+import com.perfect.autosdk.exception.ApiException;
 
 /**
  * The response header process utility class

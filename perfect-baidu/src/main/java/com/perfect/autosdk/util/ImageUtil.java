@@ -1,10 +1,9 @@
 package com.perfect.autosdk.util;
 
-import sun.misc.BASE64Encoder;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import sun.misc.BASE64Encoder;
 
 /**
  * Get image file base64 or byte code

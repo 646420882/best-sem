@@ -2,10 +2,10 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
+import com.perfect.autosdk.common.*;
+import java.util.*;
 
-import java.util.List;
-
-// line 198 "../../../../../../../SDKDemo.ump"
+// line 200 "../../../../../../../SDKDemo.ump"
 public class Quality10Type
 {
   @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)

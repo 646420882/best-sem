@@ -33,7 +33,7 @@ public class PassHostnameVerifier implements HostnameVerifier {
     /** 
      * Override super method.
      * 
-     * @see javax.net.ssl.HostnameVerifier#verify(String, javax.net.ssl.SSLSession)
+     * @see javax.net.ssl.HostnameVerifier#verify(java.lang.String, javax.net.ssl.SSLSession)
      */
     public boolean verify(String arg0, SSLSession arg1) {
         return true;

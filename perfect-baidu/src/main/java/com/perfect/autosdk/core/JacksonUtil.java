@@ -17,17 +17,17 @@
  */
 package com.perfect.autosdk.core;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.type.JavaType;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public abstract class JacksonUtil {
 

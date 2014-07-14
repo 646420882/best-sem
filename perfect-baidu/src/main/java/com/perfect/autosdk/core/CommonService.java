@@ -17,11 +17,12 @@
  */
 package com.perfect.autosdk.core;
 
-import com.perfect.autosdk.exception.ApiException;
+import java.lang.reflect.Field;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.lang.reflect.Field;
+import com.perfect.autosdk.exception.ApiException;
 
 /**
  * Internal use only, please ignore.
@@ -59,7 +60,7 @@ public abstract class CommonService implements Config {
      *            The service interface
      * @return The client side serivce stub.
      * @throws ApiException 
-     * @throws Throwable
+     * @throws Throwable 
      */
     public final <T> T getJsonService(Class<T> cls) throws ApiException {
         return JsonProxy.createProxy(cls, this);
@@ -146,7 +147,7 @@ public abstract class CommonService implements Config {
      *            The service interface
      * @return The client side serivce stub.
      * @throws ApiException 
-     * @throws Throwable
+     * @throws Throwable 
      */
     public final <T> T getService(Class<T> cls) throws ApiException {
         //        if ("SOAP".equalsIgnoreCase(protocol)) {
@@ -243,6 +244,7 @@ public abstract class CommonService implements Config {
                 setField(CommonService.class.getDeclaredField(key), value);
             }
         } catch (Exception e) {
+            log.info("Can not set [" + key + "] into config field: " + e.toString());
         }
     }
 

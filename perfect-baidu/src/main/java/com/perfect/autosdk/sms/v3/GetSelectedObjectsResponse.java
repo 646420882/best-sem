@@ -2,6 +2,7 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
+import com.perfect.autosdk.common.*;
 
 // line 249 "../../../../../../../SDKDemo.ump"
 public class GetSelectedObjectsResponse

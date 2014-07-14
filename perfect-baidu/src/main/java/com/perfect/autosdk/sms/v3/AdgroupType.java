@@ -2,10 +2,8 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
-
-import com.perfect.autosdk.common.OptType;
-
-import java.util.List;
+import com.perfect.autosdk.common.*;
+import java.util.*;
 
 // line 15 "../../../../../../../SDKDemo.ump"
 public class AdgroupType
@@ -27,6 +25,10 @@ public class AdgroupType
   private String reserved;
   private Boolean pause;
   private Integer status;
+  private Double accuPriceFactor;
+  private Double wordPriceFactor;
+  private Double widePriceFactor;
+  private Integer matchPriceStatus;
   private OptType opt;
 
   //------------------------
@@ -121,6 +123,38 @@ public class AdgroupType
   {
     boolean wasSet = false;
     status = aStatus;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setAccuPriceFactor(Double aAccuPriceFactor)
+  {
+    boolean wasSet = false;
+    accuPriceFactor = aAccuPriceFactor;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setWordPriceFactor(Double aWordPriceFactor)
+  {
+    boolean wasSet = false;
+    wordPriceFactor = aWordPriceFactor;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setWidePriceFactor(Double aWidePriceFactor)
+  {
+    boolean wasSet = false;
+    widePriceFactor = aWidePriceFactor;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setMatchPriceStatus(Integer aMatchPriceStatus)
+  {
+    boolean wasSet = false;
+    matchPriceStatus = aMatchPriceStatus;
     wasSet = true;
     return wasSet;
   }
@@ -226,6 +260,26 @@ public class AdgroupType
     return status;
   }
 
+  public Double getAccuPriceFactor()
+  {
+    return accuPriceFactor;
+  }
+
+  public Double getWordPriceFactor()
+  {
+    return wordPriceFactor;
+  }
+
+  public Double getWidePriceFactor()
+  {
+    return widePriceFactor;
+  }
+
+  public Integer getMatchPriceStatus()
+  {
+    return matchPriceStatus;
+  }
+
   public OptType getOpt()
   {
     return opt;
@@ -246,7 +300,11 @@ public class AdgroupType
             "maxPrice" + ":" + getMaxPrice()+ "," +
             "reserved" + ":" + getReserved()+ "," +
             "pause" + ":" + getPause()+ "," +
-            "status" + ":" + getStatus()+ "]" + System.getProperties().getProperty("line.separator") +
+            "status" + ":" + getStatus()+ "," +
+            "accuPriceFactor" + ":" + getAccuPriceFactor()+ "," +
+            "wordPriceFactor" + ":" + getWordPriceFactor()+ "," +
+            "widePriceFactor" + ":" + getWidePriceFactor()+ "," +
+            "matchPriceStatus" + ":" + getMatchPriceStatus()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "opt" + "=" + (getOpt() != null ? !getOpt().equals(this)  ? getOpt().toString().replaceAll("  ","    ") : "this" : "null")
      + outputString;
   }

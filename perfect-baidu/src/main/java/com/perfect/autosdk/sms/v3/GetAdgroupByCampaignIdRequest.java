@@ -2,10 +2,10 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.autosdk.sms.v3;
+import com.perfect.autosdk.common.*;
+import java.util.*;
 
-import java.util.List;
-
-// line 60 "../../../../../../../SDKDemo.ump"
+// line 64 "../../../../../../../SDKDemo.ump"
 public class GetAdgroupByCampaignIdRequest
 {
   @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
@@ -17,6 +17,7 @@ public class GetAdgroupByCampaignIdRequest
 
   //GetAdgroupByCampaignIdRequest Attributes
   private List<Long> campaignIds;
+  private Integer extended;
 
   //------------------------
   // INTERFACE
@@ -38,6 +39,14 @@ public class GetAdgroupByCampaignIdRequest
     boolean wasRemoved = false;
     wasRemoved = campaignIds.remove(aCampaignId);
     return wasRemoved;
+  }
+
+  public boolean setExtended(Integer aExtended)
+  {
+    boolean wasSet = false;
+    extended = aExtended;
+    wasSet = true;
+    return wasSet;
   }
 
   public Long getCampaignId(int index)
@@ -69,6 +78,11 @@ public class GetAdgroupByCampaignIdRequest
     return index;
   }
 
+  public Integer getExtended()
+  {
+    return extended;
+  }
+
   public void delete()
   {}
 
@@ -76,7 +90,8 @@ public class GetAdgroupByCampaignIdRequest
   public String toString()
   {
 	  String outputString = "";
-    return super.toString() + "["+ "]"
+    return super.toString() + "["+
+            "extended" + ":" + getExtended()+ "]"
      + outputString;
   }
 }

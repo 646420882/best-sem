@@ -1,5 +1,7 @@
 package com.perfect.autosdk.core;
 
+import com.perfect.autosdk.exception.ApiException;
+
 public class CommercialClient {
 	private JsonProxy proxy;
 
