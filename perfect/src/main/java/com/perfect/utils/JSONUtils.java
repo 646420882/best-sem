@@ -65,6 +65,7 @@ public class JSONUtils {
         return jsonObject;
     }
 
+    //将JSON字符串转换为对应的Java Bean
     public static Object getObjectByJSON(String objStr, Class _class, String... dateFormat) {
         DateFormat df;
         if (dateFormat != null && dateFormat.length == 1)

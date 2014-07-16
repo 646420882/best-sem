@@ -11,7 +11,7 @@ public class SessionFactorySupport {
 
     public synchronized static org.hibernate.SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
-            sessionFactory = com.perfect.utils.ApplicationContext.getCurrentApplicationContext().getBean(org.hibernate.SessionFactory.class);
+            sessionFactory = com.perfect.utils.GetApplicationContext.getCurrentApplicationContext().getBean(org.hibernate.SessionFactory.class);
         }
         return sessionFactory;
     }

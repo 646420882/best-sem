@@ -6,7 +6,8 @@ import net.sf.json.processors.JsonValueProcessor;
 /**
  * Created by baizz on 2014-6-5.
  */
-public class JsonDateProcessor implements JsonValueProcessor {
+class JsonDateProcessor implements JsonValueProcessor {
+
     private static final String DEFAULT_JSON_VALUE_PROCESSOR_DATE_MATCHER = "yyyy-M-d";
 
     private java.text.DateFormat dateFormat = null;
