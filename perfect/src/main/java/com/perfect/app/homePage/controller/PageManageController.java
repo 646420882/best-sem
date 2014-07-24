@@ -101,6 +101,6 @@ public class PageManageController {
      */
     @RequestMapping(value = "/main/examples", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView test(ModelMap modelMap){
-        return new ModelAndView("accountManage/examples");
+        return new ModelAndView("homePage/examples");
     }
 }
