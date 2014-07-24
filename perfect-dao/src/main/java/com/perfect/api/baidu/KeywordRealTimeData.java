@@ -60,7 +60,7 @@ public class KeywordRealTimeData {
         //关键词统计范围下的id集合
         realTimeRequestType.setStatIds(keywordIds);
         //指定返回数据类型
-        realTimeRequestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "cost", "cpc", "conversion"}));
+        realTimeRequestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "ctr", "cost", "cpc", "conversion"}));
         //指定起始时间
         realTimeRequestType.setStartDate(startDate);
         realTimeRequestType.setEndDate(endDate);
