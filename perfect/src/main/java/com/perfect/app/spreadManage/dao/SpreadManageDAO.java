@@ -19,7 +19,7 @@ import java.util.*;
  */
 @Repository(value = "spreadManageDAO")
 public class SpreadManageDAO {
-    private static CommonService service = BaiduServiceSupport.getService();
+    private static CommonService service = BaiduServiceSupport.getCommonService();
 
     //生成账户树
     public JSONArray getAccountTree() {

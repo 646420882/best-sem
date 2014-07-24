@@ -13,7 +13,7 @@ public class BaiduServiceSupport {
     private BaiduServiceSupport() {
     }
 
-    public synchronized static CommonService getService() {
+    public synchronized static CommonService getCommonService() {
         if (commonService == null) {
             try {
                 commonService = ServiceFactory.getInstance();
