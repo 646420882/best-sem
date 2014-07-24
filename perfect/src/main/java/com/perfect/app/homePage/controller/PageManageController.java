@@ -93,4 +93,14 @@ public class PageManageController {
         modelMap.put("baiduAccountName", entity.getBaiduUserName());
         return new ModelAndView("spreadManage/spreadManage");
     }
+
+    /**
+     * 页面测试
+     * @param modelMap
+     * @return
+     */
+    @RequestMapping(value = "/main/examples", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView test(ModelMap modelMap){
+        return new ModelAndView("accountManage/examples");
+    }
 }

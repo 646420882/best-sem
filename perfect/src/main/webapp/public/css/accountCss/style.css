@@ -1,0 +1,332 @@
+/***mid***/
+.mid {
+	width:84.5%;
+	background: url(/public/img/concent_bg.jpg) repeat;
+	position: relative;
+	min-height:1100px;}
+.concent {
+	min-height: 800px;
+}
+#tab {
+	padding-bottom:80px;
+	overflow: hidden;
+}
+.tab_menu {
+	width: 100%;
+	float: left;
+	height: 62px;
+	background: url(/public/img/tab_bg.jpg) repeat-x;
+	z-index: 1;
+	overflow: hidden;
+}
+.tab_menu li {
+	display: block;
+	float: left;
+	padding: 0 40px;
+	line-height: 62px;
+	color: #6f6f6f;
+	background: url(/public/img/border.png) right no-repeat;
+}
+.tab_box {
+	clear: both;
+}
+.tab_menu .selected {
+	background: url(/public/img/table_current.jpg) repeat-x;
+	color: #030303;
+	font-weight: bold;
+}
+.hide {
+	display: none;
+}
+.tab_box {
+	padding: 20px 3%;
+}
+.list01 {
+	padding-top: 50px;
+	padding-bottom: 60px;
+}
+/***标题***/
+.list01_top {
+	font-size: 16px;
+	color: #000;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+.list01_top span, .list01_top a {
+	display: block;
+	float: left;
+}
+.list01_top span {
+	background: url(/public/img/point.png) left no-repeat;
+	padding-left: 20px;
+	overflow: hidden;
+}
+.question {
+	display: block;
+	float: left;
+	width: 14px;
+	height: 12px;
+	margin: 8px 0 0 5px;
+
+	background: url(/public/img/bg.png) -10px -10px no-repeat;
+}
+.list01_top ul {
+	display: block;
+	float: left;
+	width: 369px;
+	height: 25px;
+	margin-left: 25px;
+	overflow: hidden;
+}
+.list01_top ul li {
+	display: block;
+	float: left;
+	height: 25px;
+	line-height: 25px;
+	background: url(/public/img/time_bg_mid.png) repeat;
+	font-size: 12px;
+	font-weight: normal;
+}
+.list01_top ul li a {
+	width: 88px;
+	text-align: center;
+	color: #000000;
+}
+.list01_top ul li a:hover {
+	background: url(/public/img/time_hover.jpg) repeat;
+	color: #fff;
+}
+.list01_top ul .current {
+	background: url(/public/img/bg.png) -10px -92px no-repeat;
+}
+.list01_top ul .current a {
+	color: #fff;
+	background: url(/public/img/colock.png) 8px 4px no-repeat;
+}
+.list01_top ul .current a:hover {
+	background: url(/public/img/colock.png) 8px 4px no-repeat;
+}
+.list01_top ul .date {
+	position: relative;
+	background: url(/public/img/bg.png) -10px -120px no-repeat;
+}
+.list01_top ul .date a:hover {
+	background: url(/public/img/bg.png) -10px -150px no-repeat;
+}
+.list01_top ul .date input {
+	position: absolute;
+	top: 3px;
+	right: 6px;
+}
+/***账户诊断***/
+.list01_top ul li {
+	display: block;
+}
+.list01_under ul li {
+	padding-left: 20px;
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+.list01_under ul li a {
+	color: #00a5e6;
+}
+.list01_under ul li a:hover {
+	color: #f5b802;
+}
+.list01_under ul li span {
+	color: #aaaaaa;
+}
+.list01_under ul li input {
+	margin-left: 7px;
+}
+.list01_under ul .week {
+	background: url(/public/img/zhou.png) left no-repeat;
+}
+.list01_under ul .months {
+	background: url(/public/img/yue.png) left no-repeat;
+}
+/***近期概览***/
+.wd1 {
+	width: 40%;
+	height: 100px;
+}
+.wd2 {
+	width: 50%;
+*width:48%;
+	padding: 0 5%;
+	height: 100px;
+}
+.list01_under2 ul {
+	width: 101%;
+}
+.list01_under2 ul li {
+	display: block;
+	float: left;
+	width: 24%;
+	height: 100px;
+	margin-right: 1%;
+	white-space: nowrap;
+	overflow: hidden
+}
+.list01_under2 ul li span {
+	display: block;
+	font-size: 30px;
+	color: #fff;
+	font-family: "Arial";
+	padding-top: 26px;
+}
+.list01_under2 ul li p {
+	color: #fff;
+	line-height: 20px;
+}
+.list01_under2 ul li .blue1 {
+	background: #34befe url(/public/img/blue1.png) center no-repeat;
+}
+.list01_under2 ul li .blue2 {
+	background: #30b0eb;
+}
+.list01_under2 ul li .green1 {
+	background: #48c9b0 url(/public/img/geen1.png) center no-repeat
+}
+.list01_under2 ul li .green2 {
+	background: #43bca5;
+}
+.list01_under2 ul li .red1 {
+	background: #ff6600 url(/public/img/red1.png) center no-repeat
+}
+.list01_under2 ul li .red2 {
+	background: #ed5f01;
+}
+.list01_under2 ul li .yellow1 {
+	background: #ffd055 url(/public/img/yellow1.png) center no-repeat
+}
+.list01_under2 ul li .yellow2 {
+	background: #e1b749;
+}
+/***数据分析***/
+.fenxi {
+	position: relative;
+}
+.download {
+	margin-top: 10px;
+	line-height: 20px;
+}
+.download a {
+	display: block;
+	float: left;
+	width: 74px;
+	height: 20px;
+	font-size: 12px;
+	font-family: "微软雅黑";
+	background: url(/public/img/download_bg.jpg) repeat;
+	text-align: center;
+	border: 1px solid #bdbdbd;
+	line-height: 20px;
+	color: #555555;
+}
+.download select {
+	height: 22px;
+	border: 1px solid #bdbdbd;
+}
+.download span {
+	display: block;
+	float: left;
+}
+.download a:hover {
+	background: #efefef;
+}
+.list02 table {
+	width: 100%;
+	margin-top: 10px;
+	border: 1px solid #eaf0f3;
+}
+.list02 table td {
+	height: 30px;
+	line-height:30px;
+	*line-height:inherit;
+	padding-left: 12px;
+	color: #454545;
+	overflow: hidden;
+}
+.list02 table span {
+	display: block;
+	float: left;
+*margin-top:-5px;
+}
+.list02 table b{ display:block; float:left; margin-top:8px;*margin-top:2px;}
+.list02 table .list02_top {
+	background: #272537;
+	font-weight: bold;
+	overflow: hidden;
+}
+.list02 table .list02_top td {
+	color: #fff;
+}
+.list02 table .list02_top input {
+	display: block;
+	width: 7px;
+	height: 5px;
+	border: 0px;
+	margin-left: 4px;
+	margin-top: 2px;
+	overflow: hidden;
+}
+
+.one {
+	background: url(/public/img/button.png) no-repeat;
+}
+.two {
+	background: url(/public/img/button.png) left -6px no-repeat;
+	line-height: 20px;
+}
+.list02_top2 {
+	background: #fadd86;
+}
+.list02_box1 {
+	background: #f7f9fb;
+}
+.list02_box2 {
+	background: #ecf3f9;
+	border-bottom: 1px solid #ffffff;
+}
+.paihang {
+	display: block;
+	float: left;
+	padding-left: 10px;
+	overflow: hidden;
+}
+.paihang li {
+	display: block;
+	float: left;
+	margin-right: 6px;
+	overflow: hidden;
+}
+.wd3 {
+	width: 10px;
+	height: 10px;
+	margin:10px 0 0 8px;
+
+}
+.green_arrow {
+	background: url(/public/img/bg.png) -26px -10px no-repeat;
+}
+.red_arrow {
+	background: url(/public/img/bg.png) -38px -10px no-repeat;
+}
+.hot {
+	width: 20px;
+	height: 11px;
+	background: url(/public/img/bg.png) -50px -10px no-repeat;
+	margin-left: 8px;
+	margin:10px 0 0 8px;
+}
+.list01_under3 {
+	margin-top: 40px;
+}
+.tips {
+	width:0.5%;
+	background: url(/public/img/tips_bg_03.png) repeat;
+	min-height:1100px;
+}
+.tips input{margin-top:200px; width:100%;}
+
