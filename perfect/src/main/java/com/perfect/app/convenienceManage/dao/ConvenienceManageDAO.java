@@ -22,7 +22,7 @@ import java.util.*;
  */
 @Repository(value = "convenienceManageDAO")
 public class ConvenienceManageDAO {
-    private static CommonService service = BaiduServiceSupport.getService();
+    private static CommonService service = BaiduServiceSupport.getCommonService();
 
     @Resource(name = "mongoTemplate")
     private MongoTemplate mongoTemplate;
