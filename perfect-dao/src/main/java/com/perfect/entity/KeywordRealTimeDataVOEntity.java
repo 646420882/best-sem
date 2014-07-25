@@ -26,7 +26,7 @@ public class KeywordRealTimeDataVOEntity {
     private Double cpc;     //平均点击价格=消费/点击次数
 
     @Field(value = "posi")
-    private Integer position;       //平均排名
+    private Double position;       //平均排名
 
     @Field(value = "conv")
     private Double conversion;      //转化
@@ -87,11 +87,11 @@ public class KeywordRealTimeDataVOEntity {
         this.cpc = cpc;
     }
 
-    public Integer getPosition() {
+    public Double getPosition() {
         return position;
     }
 
-    public void setPosition(Integer position) {
+    public void setPosition(Double position) {
         this.position = position;
     }
 
