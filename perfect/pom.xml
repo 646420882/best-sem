@@ -321,7 +321,7 @@
         </dependency>
         <dependency>
             <groupId>com.perfect</groupId>
-            <artifactId>perfect-dao</artifactId>
+            <artifactId>perfect-service</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
