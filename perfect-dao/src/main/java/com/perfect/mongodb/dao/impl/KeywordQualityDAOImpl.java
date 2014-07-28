@@ -30,7 +30,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
 
     private Class<KeywordRealTimeDataVOEntity> _class = KeywordRealTimeDataVOEntity.class;
 
-    private Map<String, KeywordRealTimeDataVOEntity> map = new ConcurrentHashMap<>();
+    private Map<String, KeywordRealTimeDataVOEntity> map;
 
     private Method getMethod;
 
@@ -38,6 +38,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
 
     @Override
     public KeywordRealTimeDataVOEntity[] find(String _startDate, String _endDate, String fieldName, int limit) {
+        map = new ConcurrentHashMap<>();
         this.topN = limit;
         currUserName = currUserName.substring(0, 1).toUpperCase() + currUserName.substring(1, currUserName.length());
         Date startDate = null, endDate = null;

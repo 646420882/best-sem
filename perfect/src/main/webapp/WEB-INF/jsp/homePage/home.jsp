@@ -2415,6 +2415,10 @@
             </ul>
         </div>
 
+        <div id="data_1">
+
+        </div>
+
         <div>
             <dl class="fr">
                 每页显示
@@ -7356,11 +7360,12 @@
             },
             success: function (data, textStatus, jqXHR) {
                 if (data.rows.length > 0) {
+                    $("#data_1").empty();
                     $.each(data.rows, function (i, item) {
                         var _div = "<div><ul><li></li><li><span>" + item.keywordName + "</span><span class='green_arrow wd3'></span></li>" +
-                                "<li>" + item.impression + "</li><li>" + item.click + "</li><li>" + item.ctr + "</li><li>" + item.cost + "</li>" +
-                                "<li>" + item.cpc + "</li><li>" + item.conversion + "</li></ul></div>"
-                        $("#keywordQuality1").append(_div);
+                                "<li>" + item.impression + "</li><li>" + item.click + "</li><li>" + (item.ctr * 100) + "%</li><li>￥" + item.cost + "</li>" +
+                                "<li>￥" + item.cpc + "</li><li>" + item.conversion + "</li></ul></div>";
+                        $("#data_1").append(_div);
                     })
                 }
             }
