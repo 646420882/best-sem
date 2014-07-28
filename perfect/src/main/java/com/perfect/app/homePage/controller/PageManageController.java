@@ -73,7 +73,7 @@ public class PageManageController extends WebContextSupport {
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getHomePage(ModelMap modelMap) {
         modelMap.put("currSystemUserName", currLoginUserName);
-        return new ModelAndView("homePage/home2");
+        return new ModelAndView("homePage/home");
     }
 
     /**
@@ -104,11 +104,12 @@ public class PageManageController extends WebContextSupport {
 
     /**
      * 页面测试
+     *
      * @param modelMap
      * @return
      */
     @RequestMapping(value = "/main/examples", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView test(ModelMap modelMap){
+    public ModelAndView test(ModelMap modelMap) {
         return new ModelAndView("homePage/examples");
     }
 }
