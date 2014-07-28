@@ -58,8 +58,6 @@ public class ConvenienceManageController {
     //获取关键词监控报告
     @RequestMapping(value = "/{keywordReport}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getKeywordReport(@PathVariable String keywordReport) {
-        System.out.println(AppContext.getUser());
-
         ModelAndView mav = new ModelAndView();
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
         AttentionReport[] attentionReports = convenienceManageDAO.getKeywordReport();
