@@ -7332,7 +7332,7 @@
         });
 
         //默认加载昨天的数据
-        loadYesterdayData();
+        //loadYesterdayData();
 
     });
 
