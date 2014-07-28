@@ -65,7 +65,7 @@ public class PageManageController {
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getHomePage(ModelMap modelMap) {
         modelMap.put("currSystemUserName", currLoginUserName);
-        return new ModelAndView("homePage/home");
+        return new ModelAndView("homePage/home2");
     }
 
     /**
