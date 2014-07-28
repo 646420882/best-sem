@@ -8,4 +8,7 @@ import com.perfect.entity.KeywordRealTimeDataVOEntity;
 public interface KeywordQualityDAO {
     public KeywordRealTimeDataVOEntity[] find(String _startDate, String _endDate, String fieldName, int limit);
 
+
+
+    
 }
