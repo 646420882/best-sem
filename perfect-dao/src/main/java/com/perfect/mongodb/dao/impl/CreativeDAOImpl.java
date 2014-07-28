@@ -5,6 +5,7 @@ import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
+import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -168,5 +169,10 @@ public class CreativeDAOImpl implements CreativeDAO {
             logEntities.add(log);
         }
         logProcessingDAO.insertAll(logEntities);
+    }
+
+    @Override
+    public Pager findByPager(int start, int pageSize, Map<String,Object> q,int orderBy) {
+        return null;
     }
 }

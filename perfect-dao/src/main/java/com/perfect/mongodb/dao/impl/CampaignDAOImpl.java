@@ -3,6 +3,7 @@ package com.perfect.mongodb.dao.impl;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.*;
+import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -141,6 +142,11 @@ public class CampaignDAOImpl implements CampaignDAO {
     public void deleteAll() {
         mongoTemplate.dropCollection("CampaginType");
         deleteSub(getAllCampaignId());
+    }
+
+    @Override
+    public Pager findByPager(int start, int pageSize, Map<String,Object> q,int orderBy) {
+        return null;
     }
 
     private List<Long> getAdgroupIdByCampaignId(List<Long> campaignIds) {

@@ -3,6 +3,7 @@ package com.perfect.mongodb.dao.impl;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.*;
+import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -171,6 +172,11 @@ public class AdgroupDAOImpl implements AdgroupDAO {
     public void deleteAll() {
         mongoTemplate.dropCollection("AdgroupType");
         deleteSub(getAllAdgroupId());
+    }
+
+    @Override
+    public Pager findByPager(int start, int pageSize, Map<String,Object> q,int orderBy) {
+        return null;
     }
 
     private Update getUpdate(AdgroupEntity adgroupEntity) {

@@ -4,6 +4,7 @@ import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
 import com.perfect.mongodb.utils.Log4MongoTemplate;
+import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -273,6 +274,11 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
 
     public void deleteAll() {
 
+    }
+
+    @Override
+    public Pager findByPager(int start, int pageSize, Map<String,Object> q,int orderBy) {
+        return null;
     }
 
     /**

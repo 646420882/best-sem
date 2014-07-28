@@ -1,5 +1,6 @@
 package com.perfect.dao;
 
+import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 
@@ -13,6 +14,8 @@ import java.util.Map;
 @NoRepositoryBean
 public interface CrudRepository<T, ID extends Serializable> extends Repository<T, ID> {
 
+    public   final String START="start";
+    public   final String PAGESIZE="pageSize";
     /**
      * <br>------------------------------<br>
      *
@@ -102,4 +105,12 @@ public interface CrudRepository<T, ID extends Serializable> extends Repository<T
      */
     void deleteAll();
 
+    /**
+     *
+     * @param start 开始页数
+     * @param pageSize 每页数量
+     * @param q 查询参数
+     * @return
+     */
+    Pager findByPager(int start,int pageSize,Map<String,Object> q,int orderBy);
 }

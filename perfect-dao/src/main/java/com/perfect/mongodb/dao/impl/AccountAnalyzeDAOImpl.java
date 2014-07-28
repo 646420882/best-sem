@@ -8,6 +8,7 @@ import com.perfect.dao.AccountAnalyzeDAO;
 import com.perfect.entity.AccountAnalyzeEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
+import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -72,6 +73,9 @@ public class AccountAnalyzeDAOImpl implements AccountAnalyzeDAO {
     }
 
     @Override
+    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
+        return null;
+    }
     public List<AccountAnalyzeEntity> performance(String userTable) {
         List<AccountAnalyzeEntity> list = mongoTemplate.findAll(AccountAnalyzeEntity.class,userTable);
         return list;

@@ -248,6 +248,12 @@
 	border: 1px solid #eaf0f3;
 	table-layout: auto
 }
+.list02 table td,th {
+    height: 30px;
+    line-height: 30px;
+    *line-height: inherit;
+    padding-left: 12px;
+}
 .list02 table td {
 	line-height: 30px;
 	color: #454545;
@@ -310,7 +316,7 @@
 	font-weight: bold;
 	overflow: hidden;
 }
-.list02 table .list02_top td {
+.list02 table .list02_top td,th {
 	color: #fff;
 }
 .list02 table .list02_top input {
