@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.perfect.app.convenienceManage.dao.ConvenienceManageDAO;
 import com.perfect.app.convenienceManage.vo.AttentionReport;
 import com.perfect.autosdk.sms.v3.KeywordInfo;
+import com.perfect.core.AppContext;
 import com.perfect.utils.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
