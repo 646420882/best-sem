@@ -1,14 +1,15 @@
 /***mid***/
 .mid {
-	width:84.5%;
+	width: 85%;
 	background: url(/public/img/concent_bg.jpg) repeat;
 	position: relative;
-	min-height:1100px;}
+	min-height: 1140px;
+}
 .concent {
 	min-height: 800px;
 }
 #tab {
-	padding-bottom:80px;
+	padding-bottom: 80px;
 	overflow: hidden;
 }
 .tab_menu {
@@ -26,6 +27,7 @@
 	line-height: 62px;
 	color: #6f6f6f;
 	background: url(/public/img/border.png) right no-repeat;
+	font-size: 14px;
 }
 .tab_box {
 	clear: both;
@@ -64,10 +66,11 @@
 .question {
 	display: block;
 	float: left;
+ *display:inline-block;
+*float:none;
 	width: 14px;
 	height: 12px;
 	margin: 8px 0 0 5px;
-
 	background: url(/public/img/bg.png) -10px -10px no-repeat;
 }
 .list01_top ul {
@@ -146,16 +149,20 @@
 	background: url(/public/img/yue.png) left no-repeat;
 }
 /***近期概览***/
+.wd {
+	margin-bottom: 20px;
+}
 .wd1 {
 	width: 40%;
 	height: 100px;
 }
 .wd2 {
 	width: 50%;
-*width:48%;
+ *width:48%;
 	padding: 0 5%;
 	height: 100px;
 }
+/********table***********/
 .list01_under2 ul {
 	width: 101%;
 }
@@ -239,21 +246,71 @@
 	width: 100%;
 	margin-top: 10px;
 	border: 1px solid #eaf0f3;
+	table-layout: auto
 }
 .list02 table td,th {
-	height: 30px;
-	line-height:30px;
-	*line-height:inherit;
-	padding-left: 12px;
+    height: 30px;
+    line-height: 30px;
+    *line-height: inherit;
+    padding-left: 12px;
+}
+.list02 table td {
+	line-height: 30px;
 	color: #454545;
 	overflow: hidden;
+}
+.list02 table tr {
+	display: block;
+	width: 100%;
+	line-height: 30px;
+	background: #fff;
+	overflow: hidden;
+}
+.list02 table tr td {
+	display: block;
+	float: left;
+	clear: both;
+	width: 100%;
+	overflow: hidden;
+}
+.list02 table tr td ul {
+	display: block;
+	float: left;
+	width: 100%;
+	height: 30px;
+	overflow: hidden;
+}
+.list02 table tr td ul li {
+	display: block;
+	float: left;
+	height: 30px;
+	width: 11%;
+	padding-left: 10px;
+	overflow: hidden;
+}
+.list02 table tr td ul li ul {
+	width: 50%;
+}
+.list02 table tr td ul li ul li {
+	width: 14px;
+}
+.list02_top2 {
+	height: 30px;
 }
 .list02 table span {
 	display: block;
 	float: left;
-*margin-top:-5px;
+ *display:inline-block;
+*float:none;
 }
-.list02 table b{ display:block; float:left; margin-top:8px;*margin-top:2px;}
+.list02 table b {
+	display: block;
+	float: left;
+	margin-top: 8px;
+ *display:inline-block;
+*float:none;
+ *margin-top:0px;
+}
 .list02 table .list02_top {
 	background: #272537;
 	font-weight: bold;
@@ -271,7 +328,6 @@
 	margin-top: 2px;
 	overflow: hidden;
 }
-
 .one {
 	background: url(/public/img/button.png) no-repeat;
 }
@@ -282,10 +338,10 @@
 .list02_top2 {
 	background: #fadd86;
 }
-.list02_box1 {
+.list02 table .list02_box1 {
 	background: #f7f9fb;
 }
-.list02_box2 {
+.list02 table .list02_box2 {
 	background: #ecf3f9;
 	border-bottom: 1px solid #ffffff;
 }
@@ -304,8 +360,7 @@
 .wd3 {
 	width: 10px;
 	height: 10px;
-	margin:10px 0 0 8px;
-
+	margin: 10px 0 0 8px;
 }
 .green_arrow {
 	background: url(/public/img/bg.png) -26px -10px no-repeat;
@@ -318,15 +373,104 @@
 	height: 11px;
 	background: url(/public/img/bg.png) -50px -10px no-repeat;
 	margin-left: 8px;
-	margin:10px 0 0 8px;
+	margin: 10px 0 0 8px;
 }
 .list01_under3 {
 	margin-top: 40px;
 }
 .tips {
-	width:0.5%;
+	width: 3%;
 	background: url(/public/img/tips_bg_03.png) repeat;
-	min-height:1100px;
+	min-height: 1140px;
 }
-.tips input{margin-top:200px; width:100%;}
-
+.tips input {
+	margin-top: 200px;
+	width: 100%;
+}
+.page span {
+	display: block;
+	float: right;
+}
+/*数据分析*/
+.number_concent {
+	background: #f7f9fb;
+	padding-bottom: 20px;
+	padding: 20px 2%;
+	border-bottom: 1px solid #dadadd;
+	border-top: 1px solid #dadadd;
+}
+.shuju_detali ul li {
+	line-height: 20px;
+	color: #000000;
+	margin-top: 15px;
+	overflow: hidden;
+}
+.shuju_detali ul li a {
+	padding: 0 10px;
+	color: #0033cc;
+}
+.shuju_detali ul li a:hover {
+	color: #ffb904;
+}
+.shuju_detali ul li span {
+	color: #d7d7d7;
+}
+.shuju_detali ul li .current {
+	color: #000000;
+	font-weight: bold;
+}
+.time_input {
+	border: 1px solid #dadadd;
+	height: 18px;
+	padding: 0 14px;
+	color: #000000;
+	margin: 0 5px;
+}
+.become {
+	display: block;
+	width: 84px;
+	height: 31px;
+	line-height: 31px;
+	margin-top: 29px;
+	color: #000;
+	text-align: center;
+	background: url(/public/img/bg.png) -10px -180px no-repeat;
+}
+.become:hover {
+	background: url(/public/img/bg.png) -10px -215px no-repeat;
+	color: #fff;
+}
+.tubiao2 {
+	margin-top: 40px;
+}
+/****账户报告****/
+.list03 table {
+	width: 100%;
+	border: 6px solid #eaf0f3;
+}
+.list03 table tr {
+	height: 30px;
+}
+.list03 table .list03_top {
+	background: #eaf0f3;
+	color: #6d6d6d;
+	font-weight: bold;
+}
+.list03 table tr td {
+	padding-left: 10px;
+}
+.list03 table tr td span {
+	display: block;
+	float: left;
+	margin-right: 4px;
+}
+.list03 table tr td .green_arrow, .list03 table tr td .red_arrow {
+	margin-top: 3px;
+	margin-left: 0px;
+}
+.list03 table tr td span b {
+	color: #259e01;
+}
+.list03 table tr td span strong {
+	color: #ee410c;
+}

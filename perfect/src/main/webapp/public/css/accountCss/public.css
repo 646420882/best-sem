@@ -48,7 +48,6 @@ html {
 .logo {
 	height: 53px;
 	margin-top: 10px;
-	
 	padding-left: 2%;
 	line-height: 77px;
 	padding-right: 40px;
@@ -111,20 +110,15 @@ html {
 .nav {
 	width: 15%;
 	border-top: 1px solid #48464c;
-	background: #272537 url(/public/img/nav_bg.jpg) top no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-	min-height:1100px;
+	
 }
+.nav_left { width:97%;}
 .nav_top {
 	height: 34px;
 	line-height: 34px;
 	color: #f0b004;
 	font-size: 14px;
 	background: url(/public/img/nav_top_bg.png) repeat-x;
-	margin-top: 8px;
 	padding: 0 10%;
 }
 .nav_top span {
@@ -135,6 +129,17 @@ html {
 	height: 9px;
 	background: url(/public/img/bg.png) -74px -10px no-repeat;
 }
+.nav_mid{
+	padding-top:10px;
+	background: #272537 url(/public/img/nav_bg.jpg) top no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	min-height: 1140px;
+	
+
+	}
 .nav_under {
 	padding: 0 10%;
 }
