@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.perfect.app.convenienceManage.dao.ConvenienceManageDAO;
 import com.perfect.app.convenienceManage.vo.AttentionReport;
 import com.perfect.autosdk.sms.v3.KeywordInfo;
+import com.perfect.core.AppContext;
 import com.perfect.utils.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -57,6 +58,8 @@ public class ConvenienceManageController {
     //获取关键词监控报告
     @RequestMapping(value = "/{keywordReport}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getKeywordReport(@PathVariable String keywordReport) {
+        System.out.println(AppContext.getUser());
+
         ModelAndView mav = new ModelAndView();
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
         AttentionReport[] attentionReports = convenienceManageDAO.getKeywordReport();
