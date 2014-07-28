@@ -6,7 +6,7 @@ import javax.xml.ws.Response;
 /**
  * Created by XiaoWei on 2014/7/25.
  */
-public interface webContext {
+public interface WebContext {
     /**
      * 写出Html对象
      * @param html
