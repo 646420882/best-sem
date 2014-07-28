@@ -1,5 +1,6 @@
 package com.perfect.app.homePage.controller;
 
+
         import com.perfect.app.accountCenter.dao.AccountManageDAO;
         import com.perfect.app.homePage.service.CustomUserDetailsService;
         import com.perfect.dao.KeywordDAO;
@@ -26,6 +27,7 @@ package com.perfect.app.homePage.controller;
 @Scope("prototype")
 public class PageManageController extends WebContextSupport {
 
+
     private static String currLoginUserName;
 
     static {
@@ -34,8 +36,6 @@ public class PageManageController extends WebContextSupport {
 
     @Resource(name = "accountManageDAO")
     private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
-
-
 
     /**
      * 登录页面
@@ -73,7 +73,7 @@ public class PageManageController extends WebContextSupport {
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getHomePage(ModelMap modelMap) {
         modelMap.put("currSystemUserName", currLoginUserName);
-        return new ModelAndView("homePage/home");
+        return new ModelAndView("homePage/home2");
     }
 
     /**
@@ -111,31 +111,4 @@ public class PageManageController extends WebContextSupport {
     public ModelAndView test(ModelMap modelMap){
         return new ModelAndView("homePage/examples");
     }
-
-    /**
-     * 关键词跳转页面
-     * @return
-     */
-    @RequestMapping("/main/keywordControl")
-    public ModelAndView forward(){
-
-        return new ModelAndView("homePage/keywordControl");
-    }
-
-    /**
-     * 获取关键词列表
-     * @return
-     */
-    @RequestMapping("/main/getData")
-    public  void getData(HttpServletRequest request,HttpServletResponse response){
-//        KeywordInfo KeywordInfo=keywordDAO
-        Map<String,Object> m=new HashMap<String,Object>();
-        m.put("a","123");
-
-            Pager p=keywordDAO.getKeywordByPager(request,m,1);
-        writeObject(p,response);
-    }
-
-    @Resource
-    private KeywordDAO keywordDAO;
 }
