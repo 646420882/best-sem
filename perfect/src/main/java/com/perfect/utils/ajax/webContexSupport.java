@@ -3,12 +3,13 @@ package com.perfect.utils.ajax;
 import net.sf.json.JSONSerializer;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
 import java.io.IOException;
 
 /**
  * Created by XiaoWei on 2014/7/25.
  */
-public class WebContexSupport implements WebContext {
+public class webContexSupport implements webContext {
     @Override
     public void writeHtml(String html,HttpServletResponse response) {
         try
