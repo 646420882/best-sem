@@ -1,7 +1,9 @@
 package com.perfect.dao;
 
 import com.perfect.entity.KeywordEntity;
+import com.perfect.mongodb.utils.Pager;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -23,4 +25,5 @@ public interface KeywordDAO extends CrudRepository<KeywordEntity, Long> {
 
     List<KeywordEntity> getKeywordByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
 
+    Pager getKeywordByPager(HttpServletRequest request,Map<String,Object> params,int orderBy);
 }

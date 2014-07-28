@@ -1,24 +1,30 @@
 package com.perfect.app.homePage.controller;
 
-import com.perfect.app.accountCenter.dao.AccountManageDAO;
-import com.perfect.app.homePage.service.CustomUserDetailsService;
-import com.perfect.entity.BaiduAccountInfoEntity;
-import org.springframework.context.annotation.Scope;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.annotation.Resource;
+        import com.perfect.app.accountCenter.dao.AccountManageDAO;
+        import com.perfect.app.homePage.service.CustomUserDetailsService;
+        import com.perfect.dao.KeywordDAO;
+        import com.perfect.entity.BaiduAccountInfoEntity;
+        import com.perfect.mongodb.utils.Pager;
+        import com.perfect.utils.ajax.webContexSupport;
+        import org.springframework.context.annotation.Scope;
+        import org.springframework.ui.ModelMap;
+        import org.springframework.web.bind.annotation.RequestMapping;
+        import org.springframework.web.bind.annotation.RequestMethod;
+        import org.springframework.web.bind.annotation.RequestParam;
+        import org.springframework.web.bind.annotation.RestController;
+        import org.springframework.web.servlet.ModelAndView;
+        import javax.annotation.Resource;
+        import javax.servlet.http.HttpServletRequest;
+        import javax.servlet.http.HttpServletResponse;
+        import java.util.HashMap;
+        import java.util.Map;
 
 /**
  * Created by baizz on 2014-6-23.
  */
 @RestController
 @Scope("prototype")
-public class PageManageController {
+public class PageManageController extends webContexSupport {
 
     private static String currLoginUserName;
 
@@ -28,6 +34,8 @@ public class PageManageController {
 
     @Resource(name = "accountManageDAO")
     private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
+
+
 
     /**
      * 登录页面
@@ -103,4 +111,31 @@ public class PageManageController {
     public ModelAndView test(ModelMap modelMap){
         return new ModelAndView("homePage/examples");
     }
+
+    /**
+     * 关键词跳转页面
+     * @return
+     */
+    @RequestMapping("/main/keywordControl")
+    public ModelAndView forward(){
+
+        return new ModelAndView("homePage/keywordControl");
+    }
+
+    /**
+     * 获取关键词列表
+     * @return
+     */
+    @RequestMapping("/main/getData")
+    public  void getData(HttpServletRequest request,HttpServletResponse response){
+//        KeywordInfo KeywordInfo=keywordDAO
+        Map<String,Object> m=new HashMap<String,Object>();
+        m.put("a","123");
+
+            Pager p=keywordDAO.getKeywordByPager(request,m,1);
+        writeObject(p,response);
+    }
+
+    @Resource
+    private KeywordDAO keywordDAO;
 }

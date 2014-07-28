@@ -57,6 +57,8 @@
                            style="font-size: 20px; font-weight: bold">便捷管理</a></li>
                     <li><a href="javascript:toSpreadManage();"
                            style="font-size: 20px; font-weight: bold">推广管理</a></li>
+                    <li><a href="${pageContext.request.contextPath}/main/keywordControl"
+                           style="font-size: 20px; font-weight: bold">重点关键词</a></li>
                 </ul>
             </div>
         </div>
