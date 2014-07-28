@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by XiaoWei on 2014/7/25.
+ * Created by XiaoWei on 2014/7/28.
  */
-public class WebContexSupport implements WebContext {
+public class WebContextSupport implements  WebContext {
     @Override
     public void writeHtml(String html,HttpServletResponse response) {
         try

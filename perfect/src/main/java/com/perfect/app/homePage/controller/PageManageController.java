@@ -1,24 +1,32 @@
 package com.perfect.app.homePage.controller;
 
-import com.perfect.app.accountCenter.dao.AccountManageDAO;
-import com.perfect.app.homePage.service.CustomUserDetailsService;
-import com.perfect.entity.BaiduAccountInfoEntity;
-import org.springframework.context.annotation.Scope;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
+        import com.perfect.app.accountCenter.dao.AccountManageDAO;
+        import com.perfect.app.homePage.service.CustomUserDetailsService;
+        import com.perfect.dao.KeywordDAO;
+        import com.perfect.entity.BaiduAccountInfoEntity;
+        import com.perfect.mongodb.utils.Pager;
+        import com.perfect.utils.ajax.WebContextSupport;
+        import org.springframework.context.annotation.Scope;
+        import org.springframework.ui.ModelMap;
+        import org.springframework.web.bind.annotation.RequestMapping;
+        import org.springframework.web.bind.annotation.RequestMethod;
+        import org.springframework.web.bind.annotation.RequestParam;
+        import org.springframework.web.bind.annotation.RestController;
+        import org.springframework.web.servlet.ModelAndView;
+        import javax.annotation.Resource;
+        import javax.servlet.http.HttpServletRequest;
+        import javax.servlet.http.HttpServletResponse;
+        import java.util.HashMap;
+        import java.util.Map;
 
 /**
  * Created by baizz on 2014-6-23.
  */
 @RestController
 @Scope("prototype")
-public class PageManageController {
+public class PageManageController extends WebContextSupport {
+
 
     private static String currLoginUserName;
 
@@ -65,7 +73,7 @@ public class PageManageController {
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getHomePage(ModelMap modelMap) {
         modelMap.put("currSystemUserName", currLoginUserName);
-        return new ModelAndView("homePage/home2");
+        return new ModelAndView("homePage/home");
     }
 
     /**
@@ -96,11 +104,12 @@ public class PageManageController {
 
     /**
      * 页面测试
+     *
      * @param modelMap
      * @return
      */
     @RequestMapping(value = "/main/examples", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView test(ModelMap modelMap){
+    public ModelAndView test(ModelMap modelMap) {
         return new ModelAndView("homePage/examples");
     }
 }

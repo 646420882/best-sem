@@ -91,4 +91,8 @@ public class InitializeAccountDAOImpl implements InitializeAccountDAO {
 
     }
 
+    public static void main(String[] args) {
+        new InitializeAccountDAOImpl().getBeforeKeywordRealTimeType();
+    }
+
 }
