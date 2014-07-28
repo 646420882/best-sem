@@ -5,6 +5,7 @@ import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
 import com.perfect.entity.KeywordEntity;
+import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -15,6 +16,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -57,6 +59,14 @@ public class KeywordDAOImpl implements KeywordDAO {
         query.with(new PageRequest(skip, limit, new Sort(Sort.Direction.DESC, "price")));
         List<KeywordEntity> _list = mongoTemplate.find(query, KeywordEntity.class, "KeywordType");
         return _list;
+    }
+
+    @Override
+    public Pager getKeywordByPager(HttpServletRequest request, Map<String, Object> params,int orderBy) {
+        int start=Integer.parseInt(request.getParameter(START));
+        int pageSize=Integer.parseInt(request.getParameter(PAGESIZE));
+        Pager pager=findByPager(start,pageSize,params,orderBy);
+        return pager;
     }
 
     public KeywordEntity findOne(Long keywordId) {
@@ -203,5 +213,47 @@ public class KeywordDAOImpl implements KeywordDAO {
             logEntities.add(log);
         }
         logProcessingDAO.insertAll(logEntities);
+    }
+
+    @Override
+    public Pager findByPager(int start, int pageSize, Map<String,Object> params,int orderBy) {
+        Query q=new Query();
+        List<KeywordEntity> list=null;
+         if (params!=null&&params.size()>0){
+             q.skip(start);
+             q.limit(pageSize);
+             Criteria where=Criteria.where("keywordId").ne(null);
+               for (Map.Entry<String,Object> m:params.entrySet()){
+                    where.and(m.getKey()).is(m.getValue());
+               }
+             q.addCriteria(where);
+         }
+        addOrder(orderBy,q);
+        list=mongoTemplate.find(q,KeywordEntity.class,"keywordType");
+        Pager p=new Pager();
+        p.setRows(list);
+
+        return p;
+    }
+    private int getCount(Map<String,Object> params,String collections,String nell){
+        Query q=new Query();
+        if (params!=null&&params.size()>0){
+            Criteria where=nell!=null?Criteria.where(nell).ne(null):null;
+            for (Map.Entry<String,Object> m:params.entrySet()){
+                where.and(m.getKey()).is(m.getValue());
+            }
+            q.addCriteria(where);
+        }
+        return (int) mongoTemplate.count(q,collections);
+    }
+    private void addOrder(int orderBy,Query q){
+        switch (orderBy){
+            case 1:
+                q.with(new Sort(Sort.Direction.DESC,"price"));
+                break;
+            default:
+                q.with(new Sort(Sort.Direction.DESC,"price"));
+                break;
+        }
     }
 }
