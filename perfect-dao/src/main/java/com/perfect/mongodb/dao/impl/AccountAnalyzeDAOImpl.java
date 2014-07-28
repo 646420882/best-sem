@@ -3,6 +3,7 @@ package com.perfect.mongodb.dao.impl;
 import com.perfect.dao.AccountAnalyzeDAO;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
+import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.List;
@@ -57,5 +58,10 @@ public class AccountAnalyzeDAOImpl implements AccountAnalyzeDAO {
 
     public void deleteAll() {
 
+    }
+
+    @Override
+    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
+        return null;
     }
 }

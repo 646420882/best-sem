@@ -240,7 +240,7 @@
 	margin-top: 10px;
 	border: 1px solid #eaf0f3;
 }
-.list02 table td {
+.list02 table td,th {
 	height: 30px;
 	line-height:30px;
 	*line-height:inherit;
@@ -259,7 +259,7 @@
 	font-weight: bold;
 	overflow: hidden;
 }
-.list02 table .list02_top td {
+.list02 table .list02_top td,th {
 	color: #fff;
 }
 .list02 table .list02_top input {
