@@ -122,20 +122,5 @@ public class PageManageController extends WebContexSupport {
         return new ModelAndView("homePage/keywordControl");
     }
 
-    /**
-     * 获取关键词列表
-     * @return
-     */
-    @RequestMapping("/main/getData")
-    public  void getData(HttpServletRequest request,HttpServletResponse response){
-//        KeywordInfo KeywordInfo=keywordDAO
-        Map<String,Object> m=new HashMap<String,Object>();
-        m.put("a","123");
 
-            Pager p=keywordDAO.getKeywordByPager(request,m,1);
-        writeObject(p,response);
-    }
-
-    @Resource
-    private KeywordDAO keywordDAO;
 }
