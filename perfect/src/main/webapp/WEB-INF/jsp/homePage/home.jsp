@@ -16,8 +16,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="all"
-          href="${pageContext.request.contextPath}/public/css/accountCss/daterangepicker-bs3.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/css/accountCss/daterangepicker-bs3.css" />
 
 </head>
 <body>
@@ -2236,8 +2235,7 @@
         <li class="date">
             <a href="javascript:loadCustomData();">
                 自定义
-                <input id="reservation" class=" fa fa-calendar " type="image"
-                       src="${pageContext.request.contextPath}/public/img/date.png">
+                <input id="reservation" class=" fa fa-calendar " type="image" src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
         </li>
     </ul>
@@ -2264,7 +2262,7 @@
                 </p></b>
             </li>
             <li>
-                &nbsp;<span>关键词</span><b>
+                &nbsp;<span>关键词数</span><b>
                 <p>
                     <input class="one" type="button">
                 </p>
@@ -2276,31 +2274,31 @@
             <li>
                 &nbsp;<span>展现</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'impression';sort = 1;"/>
+                    <input class="one" type="button">
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'impression';sort = -1;"/>
+                    <input class="two" type="button">
                 </p></b>
             </li>
             <li>
                 &nbsp;<span>点击</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'click';sort = 1;"/>
+                    <input class="one" type="button">
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'click';sort = -1;"/>
+                    <input class="two" type="button">
                 </p></b>
             </li>
             <li>
                 &nbsp;<span>点击率</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'ctr';sort = 1;"/>
+                    <input class="one" type="button">
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'ctr';sort = -1;"/>
+                    <input class="two" type="button">
                 </p></b>
                 <a href="#" class="question">
                 </a>
@@ -2308,11 +2306,11 @@
             <li>
                 &nbsp;<span>消费</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'cost';sort = 1;"/>
+                    <input class="one" type="button">
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'cost';sort = -1;"/>
+                    <input class="two" type="button">
                 </p></b>
                 <a href="#" class="question">
                 </a>
@@ -2320,22 +2318,22 @@
             <li>
                 &nbsp;<span>平均点击价格</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'cpc';sort = 1;"/>
+                    <input class="one" type="button">
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'cpc';sort = -1;"/>
+                    <input class="two" type="button">
                 </p></b>
                 <a href="#" class="question"></a>
             </li>
             <li>
                 &nbsp;<span>转化</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'conversion';sort = 1;"/>
+                    <input class="one" type="button">
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'conversion';sort = -1;"/>
+                    <input class="two" type="button">
                 </p></b>
                 <a href="#" class="question"></a>
             </li>
@@ -2425,10 +2423,10 @@
         <div>
             <dl class="fr">
                 每页显示
-                <select onclick="reloadKeywordQuality();">
+                <select>
                     <option>10个</option>
-                    <option>15个</option>
-                    <option>20个</option>
+                    <option>9个</option>
+                    <option>8个</option>
                 </select>
             </dl>
         </div>
@@ -5601,12 +5599,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/accountJs/daterangepicker.js"></script>
 <script type="text/javascript">
 
-    //默认按照展现进行排名
-    var category = "impression";
-
-    //默认降序排列
-    var sort = 1;
-
     $(function () {
         var $tab_li = $('.tab_menu li');
         $('.tab_menu li').click(function () {
@@ -5633,7 +5625,7 @@
         });
 
         //加载日历控件
-        $('#reservation').daterangepicker(null, function (start, end, label) {
+        $('#reservation').daterangepicker(null, function(start, end, label) {
             console.log(start.toISOString(), end.toISOString(), label);
         });
 
@@ -5658,8 +5650,7 @@
             dataType: "json",
             data: {
                 startDate: "2014-01-25",
-                endDate: "2014-01-25",
-                fieldName: category
+                endDate: "2014-01-25"
             },
             success: function (data, textStatus, jqXHR) {
                 if (data.rows.length > 0) {
@@ -5682,8 +5673,7 @@
             dataType: "json",
             data: {
                 startDate: "2014-01-25",
-                endDate: "2014-01-31",
-                fieldName: category
+                endDate: "2014-01-31"
             },
             success: function (data, textStatus, jqXHR) {
                 if (data.rows.length > 0) {
@@ -5706,8 +5696,7 @@
             dataType: "json",
             data: {
                 startDate: "2014-01-25",
-                endDate: "2014-02-15",
-                fieldName: category
+                endDate: "2014-02-15"
             },
             success: function (data, textStatus, jqXHR) {
                 if (data.rows.length > 0) {
@@ -5725,11 +5714,6 @@
 
     var loadCustomData = function () {
         ;
-    };
-
-    var reloadKeywordQuality = function () {
-        alert("***********");
-        alert($("#keywordQuality1").next().children.eq(0).children.length);//select的长度
     };
 </script>
 
