@@ -14,6 +14,9 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/css/accountCss/daterangepicker-bs3.css" />
 
 </head>
 <body>
@@ -321,9 +324,9 @@
         </li>
     </ul>
 </div>
-<div class="list02 wd">
+<div class="list2 wd">
 <table border="0" cellspacing="0" cellspacing="0">
-<tr class="list02_top">
+<tr class="list2_top">
     <td>
         <ul>
             <li>
@@ -416,7 +419,7 @@
         </ul>
     </td>
 </tr>
-<tr class="list02_box1" onclick="TestBlack('divc');">
+<tr class="list2_box1" onclick="TestBlack('divc');">
     <td>
         <ul>
             <li>
@@ -448,7 +451,7 @@
     </td>
 </tr>
 <td id="divc" style="display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -670,7 +673,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box2" onclick="TestBlack('divc1');">
+<tr class="list2_box2" onclick="TestBlack('divc1');">
     <td>
         <ul>
             <li>
@@ -702,7 +705,7 @@
     </td>
 </tr>
 <td id="divc1" style="display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -924,7 +927,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box1" onclick="TestBlack('divc2');">
+<tr class="list2_box1" onclick="TestBlack('divc2');">
     <td>
         <ul>
             <li>
@@ -956,7 +959,7 @@
     </td>
 </tr>
 <td id="divc2" style="display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -1178,7 +1181,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box2" onclick="TestBlack('divc3');">
+<tr class="list2_box2" onclick="TestBlack('divc3');">
     <td>
         <ul>
             <li>
@@ -1210,7 +1213,7 @@
     </td>
 </tr>
 <td id="divc3" style="display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -1432,7 +1435,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box1" onclick="TestBlack('divc4');">
+<tr class="list2_box1" onclick="TestBlack('divc4');">
     <td>
         <ul>
             <li>
@@ -1464,7 +1467,7 @@
     </td>
 </tr>
 <td id="divc4" style="display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -1686,7 +1689,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box2" onclick="TestBlack('divc5');">
+<tr class="list2_box2" onclick="TestBlack('divc5');">
     <td>
         <ul>
             <li>
@@ -1718,7 +1721,7 @@
     </td>
 </tr>
 <td id="divc5" style="display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -1940,7 +1943,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box1" onclick="TestBlack('divc6');">
+<tr class="list2_box1" onclick="TestBlack('divc6');">
     <td>
         <ul>
             <li>
@@ -1972,7 +1975,7 @@
     </td>
 </tr>
 <td id="divc6" style="display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -2232,7 +2235,7 @@
         <li class="date">
             <a href="javascript:loadCustomData();">
                 自定义
-                <input type="image" src="${pageContext.request.contextPath}/public/img/date.png">
+                <input id="reservation" class=" fa fa-calendar " type="image" src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
         </li>
     </ul>
@@ -2242,9 +2245,9 @@
         </a>
     </div>
 </div>
-<div class="list02 wd">
+<div class="list2 wd">
 <table border="0" cellspacing="0" cellspacing="0">
-<tr class="list02_top">
+<tr class="list2_top">
 
     <td>
         <ul>
@@ -2337,7 +2340,7 @@
         </ul>
     </td>
 </tr>
-<tr class="list02_box1" onclick="TestBlack('divo');">
+<tr class="list2_box1" onclick="TestBlack('divo');">
     <td>
         <ul>
             <li>
@@ -2386,7 +2389,7 @@
 </tr>
 <tr>
     <td id="divo">
-        <div class="list02_top2">
+        <div class="list2_top2">
             <ul>
                 <li></li>
                 <li>
@@ -2429,7 +2432,7 @@
         </div>
     </td>
 </tr>
-<tr class="list02_box2" onclick="TestBlack('divo1');">
+<tr class="list2_box2" onclick="TestBlack('divo1');">
     <td>
         <ul>
             <li>
@@ -2477,7 +2480,7 @@
     </td>
 </tr>
 <td id="divo1" style=" display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -2699,7 +2702,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box1" onclick="TestBlack('divo2');">
+<tr class="list2_box1" onclick="TestBlack('divo2');">
     <td>
         <ul>
             <li>
@@ -2747,7 +2750,7 @@
     </td>
 </tr>
 <td id="divo2" style=" display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -2969,7 +2972,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box2" onclick="TestBlack('divo3');">
+<tr class="list2_box2" onclick="TestBlack('divo3');">
     <td>
         <ul>
             <li>
@@ -3017,7 +3020,7 @@
     </td>
 </tr>
 <td id="divo3" style=" display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -3239,7 +3242,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box1" onclick="TestBlack('divo4');">
+<tr class="list2_box1" onclick="TestBlack('divo4');">
     <td>
         <ul>
             <li>
@@ -3287,7 +3290,7 @@
     </td>
 </tr>
 <td id="divo4" style=" display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -3510,7 +3513,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box2" onclick="TestBlack('divo5');">
+<tr class="list2_box2" onclick="TestBlack('divo5');">
     <td>
         <ul>
             <li>
@@ -3558,7 +3561,7 @@
     </td>
 </tr>
 <td id="divo5" style=" display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -3780,7 +3783,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box1" onclick="TestBlack('divo6');">
+<tr class="list2_box1" onclick="TestBlack('divo6');">
     <td>
         <ul>
             <li>
@@ -3828,7 +3831,7 @@
     </td>
 </tr>
 <td id="divo6" style=" display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -4050,7 +4053,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box2" onclick="TestBlack('divo7');">
+<tr class="list2_box2" onclick="TestBlack('divo7');">
     <td>
         <ul>
             <li>
@@ -4098,7 +4101,7 @@
     </td>
 </tr>
 <td id="divo7" style=" display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -4320,7 +4323,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box1" onclick="TestBlack('divo8');">
+<tr class="list2_box1" onclick="TestBlack('divo8');">
     <td>
         <ul>
             <li>
@@ -4368,7 +4371,7 @@
     </td>
 </tr>
 <td id="divo8" style=" display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -4590,7 +4593,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box2" onclick="TestBlack('divo9');">
+<tr class="list2_box2" onclick="TestBlack('divo9');">
     <td>
         <ul>
             <li>
@@ -4638,7 +4641,7 @@
     </td>
 </tr>
 <td id="divo9" style=" display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -4860,7 +4863,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box2" onclick="TestBlack('divo10');">
+<tr class="list2_box2" onclick="TestBlack('divo10');">
     <td>
         <ul>
             <li>
@@ -4908,7 +4911,7 @@
     </td>
 </tr>
 <td id="divo10" style=" display:none;">
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li></li>
         <li>
@@ -5161,9 +5164,9 @@
         </li>
     </ul>
 </div>
-<div class="list02 wd">
+<div class="list2 wd">
 <table border="0" cellspacing="0" cellspacing="0">
-<tr class="list02_top">
+<tr class="list2_top">
     <td>
         <ul>
             <li>
@@ -5272,7 +5275,7 @@
         </ul>
     </td>
 </tr>
-<tr class="list02_box1" onclick="TestBlack('divf');">
+<tr class="list2_box1" onclick="TestBlack('divf');">
     <td>
         <ul>
             <li>
@@ -5329,7 +5332,7 @@
 </tr>
 <tr id="divf" style="display:none;">
 <td>
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li>
             <span>关键词数</span>
@@ -5557,7 +5560,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box2" onclick="TestBlack('divf1');">
+<tr class="list2_box2" onclick="TestBlack('divf1');">
     <td>
         <ul>
             <li>
@@ -5612,7 +5615,7 @@
 </tr>
 <tr id="divf1" style="display:none;">
 <td>
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li>
             <span>关键词数</span>
@@ -5840,7 +5843,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box1" onclick="TestBlack('divf2');">
+<tr class="list2_box1" onclick="TestBlack('divf2');">
     <td>
         <ul>
             <li>
@@ -5896,7 +5899,7 @@
 </tr>
 <tr id="divf2" style="display:none;">
 <td>
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li>
             <span>关键词数</span>
@@ -6124,7 +6127,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box2" onclick="TestBlack('divf3');">
+<tr class="list2_box2" onclick="TestBlack('divf3');">
     <td>
         <ul>
             <li>
@@ -6180,7 +6183,7 @@
 </tr>
 <tr id="divf3" style="display:none;">
 <td>
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li>
             <span>关键词数</span>
@@ -6408,7 +6411,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box1" onclick="TestBlack('divf4');">
+<tr class="list2_box1" onclick="TestBlack('divf4');">
     <td>
         <ul>
             <li>
@@ -6464,7 +6467,7 @@
 </tr>
 <tr id="divf4" style="display:none;">
 <td>
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li>
             <span>关键词数</span>
@@ -6692,7 +6695,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box2" onclick="TestBlack('divf5');">
+<tr class="list2_box2" onclick="TestBlack('divf5');">
     <td>
         <ul>
             <li>
@@ -6748,7 +6751,7 @@
 </tr>
 <tr id="divf5" style="display:none;">
 <td>
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li>
             <span>关键词数</span>
@@ -6976,7 +6979,7 @@
 </div>
 </td>
 </tr>
-<tr class="list02_box1" onclick="TestBlack('divf6');">
+<tr class="list2_box1" onclick="TestBlack('divf6');">
     <td>
         <ul>
             <li>
@@ -7032,7 +7035,7 @@
 </tr>
 <tr id="divf6" style="display:none;">
 <td>
-<div class="list02_top2">
+<div class="list2_top2">
     <ul>
         <li>
             <span>关键词数</span>
@@ -7306,6 +7309,9 @@
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
+<script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/accountJs/moment.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/accountJs/daterangepicker.js"></script>
 <script type="text/javascript">
 
     $(function () {
@@ -7331,6 +7337,11 @@
                 });
             }
             console.log(scroH == navH);
+        });
+
+        //加载日历控件
+        $('#reservation').daterangepicker(null, function(start, end, label) {
+            console.log(start.toISOString(), end.toISOString(), label);
         });
 
         //默认加载昨天的数据

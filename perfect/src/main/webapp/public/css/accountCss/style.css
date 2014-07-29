@@ -312,6 +312,7 @@
  *margin-top:0px;
 }
 .list2 table .list2_top {
+    height:30px;
 	background: #272537;
 	font-weight: bold;
 	overflow: hidden;
@@ -322,7 +323,8 @@
 .list2 table .list2_top input {
 	display: block;
 	width: 7px;
-	height: 5px;
+	/*height: 5px;
+	*/
 	border: 0px;
 	margin-left: 4px;
 	margin-top: 2px;
