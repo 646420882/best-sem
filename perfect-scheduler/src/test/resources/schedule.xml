@@ -11,7 +11,7 @@
 		http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"
        default-lazy-init="true" default-autowire="byName">
 
-    <bean id="userUpdateTask" class="com.perfect.schedule.task.UserTask"/>
+    <bean id="userUpdateTask" class="com.perfect.schedule.task.execute.UserTask"/>
 
     <bean id="scheduleManagerFactory" class="com.perfect.schedule.core.strategy.TBScheduleManagerFactory"
           init-method="init">
