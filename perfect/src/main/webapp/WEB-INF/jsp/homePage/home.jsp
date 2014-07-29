@@ -16,7 +16,8 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/css/accountCss/daterangepicker-bs3.css" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="${pageContext.request.contextPath}/public/css/accountCss/daterangepicker-bs3.css"/>
 
 </head>
 <body>
@@ -2235,7 +2236,8 @@
         <li class="date">
             <a href="javascript:loadCustomData();">
                 自定义
-                <input id="reservation" class=" fa fa-calendar " type="image" src="${pageContext.request.contextPath}/public/img/date.png">
+                <input id="reservation" class=" fa fa-calendar " type="image"
+                       src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
         </li>
     </ul>
@@ -2262,7 +2264,7 @@
                 </p></b>
             </li>
             <li>
-                &nbsp;<span>关键词数</span><b>
+                &nbsp;<span>关键词</span><b>
                 <p>
                     <input class="one" type="button">
                 </p>
@@ -2274,31 +2276,31 @@
             <li>
                 &nbsp;<span>展现</span><b>
                 <p>
-                    <input class="one" type="button">
+                    <input class="one" type="button" onclick="javascript:category = 'impression';sort = 1;"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button">
+                    <input class="two" type="button" onclick="javascript:category = 'impression';sort = -1;"/>
                 </p></b>
             </li>
             <li>
                 &nbsp;<span>点击</span><b>
                 <p>
-                    <input class="one" type="button">
+                    <input class="one" type="button" onclick="javascript:category = 'click';sort = 1;"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button">
+                    <input class="two" type="button" onclick="javascript:category = 'click';sort = -1;"/>
                 </p></b>
             </li>
             <li>
                 &nbsp;<span>点击率</span><b>
                 <p>
-                    <input class="one" type="button">
+                    <input class="one" type="button" onclick="javascript:category = 'ctr';sort = 1;"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button">
+                    <input class="two" type="button" onclick="javascript:category = 'ctr';sort = -1;"/>
                 </p></b>
                 <a href="#" class="question">
                 </a>
@@ -2306,11 +2308,11 @@
             <li>
                 &nbsp;<span>消费</span><b>
                 <p>
-                    <input class="one" type="button">
+                    <input class="one" type="button" onclick="javascript:category = 'cost';sort = 1;"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button">
+                    <input class="two" type="button" onclick="javascript:category = 'cost';sort = -1;"/>
                 </p></b>
                 <a href="#" class="question">
                 </a>
@@ -2318,22 +2320,22 @@
             <li>
                 &nbsp;<span>平均点击价格</span><b>
                 <p>
-                    <input class="one" type="button">
+                    <input class="one" type="button" onclick="javascript:category = 'cpc';sort = 1;"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button">
+                    <input class="two" type="button" onclick="javascript:category = 'cpc';sort = -1;"/>
                 </p></b>
                 <a href="#" class="question"></a>
             </li>
             <li>
                 &nbsp;<span>转化</span><b>
                 <p>
-                    <input class="one" type="button">
+                    <input class="one" type="button" onclick="javascript:category = 'conversion';sort = 1;"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button">
+                    <input class="two" type="button" onclick="javascript:category = 'conversion';sort = -1;"/>
                 </p></b>
                 <a href="#" class="question"></a>
             </li>
@@ -2423,10 +2425,10 @@
         <div>
             <dl class="fr">
                 每页显示
-                <select>
+                <select onclick="reloadKeywordQuality();">
                     <option>10个</option>
-                    <option>9个</option>
-                    <option>8个</option>
+                    <option>15个</option>
+                    <option>20个</option>
                 </select>
             </dl>
         </div>
@@ -5331,82 +5333,82 @@
 
 </tr>
 <tr id="divf" style="display:none;">
-<td>
-<div class="list2_top2">
-    <ul>
-        <li>
-            <span>关键词数</span>
-            <a href="#" class="question">
-            </a>
-        </li>
-        <li>
-            <span>展现</span>
-        </li>
-        <li>
-            <span>点击</span>
-        </li>
-        <li>
-            <span>消费</span>
-        </li>
-        <li>
-            <span>平均点击价格</span>
-        </li>
-        <li>
-            <span>点击率</span>
-        </li>
-        <li>
-            <span>转化</span>
-        </li>
-        <li>
-            平均排名
-        </li>
+    <td>
+        <div class="list2_top2">
+            <ul>
+                <li>
+                    <span>关键词数</span>
+                    <a href="#" class="question">
+                    </a>
+                </li>
+                <li>
+                    <span>展现</span>
+                </li>
+                <li>
+                    <span>点击</span>
+                </li>
+                <li>
+                    <span>消费</span>
+                </li>
+                <li>
+                    <span>平均点击价格</span>
+                </li>
+                <li>
+                    <span>点击率</span>
+                </li>
+                <li>
+                    <span>转化</span>
+                </li>
+                <li>
+                    平均排名
+                </li>
 
-    </ul>
-</div>
-<div>
-    <ul>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li></li>
+            </ul>
+        </div>
+        <div>
+            <ul>
+                <li>
+                    <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
+                </li>
+                <li>
+                    17(0.11%)
+                </li>
+                <li>
+                    17(0.11%)
+                </li>
+                <li>
+                    17(0.11%)
+                </li>
+                <li>
+                    17(0.11%)
+                </li>
+                <li>
+                    17(0.11%)
+                </li>
+                <li>
+                    17(0.11%)
+                </li>
+                <li></li>
 
-    </ul>
-</div>
-
-
+            </ul>
+        </div>
 
 
 
 
-<div class="page">
-    <dl class="fr">
-        每页显示
-        <select>
-            <option>10个</option>
-            <option>9个</option>
-            <option>8个</option>
-        </select>
-    </dl>
-</div>
-</td>
+
+
+        <div class="page">
+            <dl class="fr">
+                每页显示
+                <select>
+                    <option>10个</option>
+                    <option>9个</option>
+                    <option>8个</option>
+                </select>
+            </dl>
+        </div>
+    </td>
 </tr>
 <tr class="list2_box2" onclick="TestBlack('divf1');">
     <td>
@@ -5462,82 +5464,82 @@
         </ul>
 </tr>
 <tr id="divf1" style="display:none;">
-<td>
-<div class="list2_top2">
-    <ul>
-        <li>
-            <span>关键词数</span>
-            <a href="#" class="question">
-            </a>
-        </li>
-        <li>
-            <span>展现</span>
-        </li>
-        <li>
-            <span>点击</span>
-        </li>
-        <li>
-            <span>消费</span>
-        </li>
-        <li>
-            <span>平均点击价格</span>
-        </li>
-        <li>
-            <span>点击率</span>
-        </li>
-        <li>
-            <span>转化</span>
-        </li>
-        <li>
-            平均排名
-        </li>
+    <td>
+        <div class="list2_top2">
+            <ul>
+                <li>
+                    <span>关键词数</span>
+                    <a href="#" class="question">
+                    </a>
+                </li>
+                <li>
+                    <span>展现</span>
+                </li>
+                <li>
+                    <span>点击</span>
+                </li>
+                <li>
+                    <span>消费</span>
+                </li>
+                <li>
+                    <span>平均点击价格</span>
+                </li>
+                <li>
+                    <span>点击率</span>
+                </li>
+                <li>
+                    <span>转化</span>
+                </li>
+                <li>
+                    平均排名
+                </li>
 
-    </ul>
-</div>
-<div>
-    <ul>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li></li>
+            </ul>
+        </div>
+        <div>
+            <ul>
+                <li>
+                    <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
+                </li>
+                <li>
+                    17(0.11%)
+                </li>
+                <li>
+                    17(0.11%)
+                </li>
+                <li>
+                    17(0.11%)
+                </li>
+                <li>
+                    17(0.11%)
+                </li>
+                <li>
+                    17(0.11%)
+                </li>
+                <li>
+                    17(0.11%)
+                </li>
+                <li></li>
 
-    </ul>
-</div>
-
-
+            </ul>
+        </div>
 
 
 
 
-<div class="page">
-    <dl class="fr">
-        每页显示
-        <select>
-            <option>10个</option>
-            <option>9个</option>
-            <option>8个</option>
-        </select>
-    </dl>
-</div>
-</td>
+
+
+        <div class="page">
+            <dl class="fr">
+                每页显示
+                <select>
+                    <option>10个</option>
+                    <option>9个</option>
+                    <option>8个</option>
+                </select>
+            </dl>
+        </div>
+    </td>
 </tr>
 
 
@@ -5599,6 +5601,12 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/accountJs/daterangepicker.js"></script>
 <script type="text/javascript">
 
+    //默认按照展现进行排名
+    var category = "impression";
+
+    //默认降序排列
+    var sort = 1;
+
     $(function () {
         var $tab_li = $('.tab_menu li');
         $('.tab_menu li').click(function () {
@@ -5625,7 +5633,7 @@
         });
 
         //加载日历控件
-        $('#reservation').daterangepicker(null, function(start, end, label) {
+        $('#reservation').daterangepicker(null, function (start, end, label) {
             console.log(start.toISOString(), end.toISOString(), label);
         });
 
@@ -5650,7 +5658,8 @@
             dataType: "json",
             data: {
                 startDate: "2014-01-25",
-                endDate: "2014-01-25"
+                endDate: "2014-01-25",
+                fieldName: category
             },
             success: function (data, textStatus, jqXHR) {
                 if (data.rows.length > 0) {
@@ -5673,7 +5682,8 @@
             dataType: "json",
             data: {
                 startDate: "2014-01-25",
-                endDate: "2014-01-31"
+                endDate: "2014-01-31",
+                fieldName: category
             },
             success: function (data, textStatus, jqXHR) {
                 if (data.rows.length > 0) {
@@ -5696,7 +5706,8 @@
             dataType: "json",
             data: {
                 startDate: "2014-01-25",
-                endDate: "2014-02-15"
+                endDate: "2014-02-15",
+                fieldName: category
             },
             success: function (data, textStatus, jqXHR) {
                 if (data.rows.length > 0) {
@@ -5713,6 +5724,10 @@
     };
 
     var loadCustomData = function () {
+        ;
+    };
+
+    var reloadKeywordQuality = function () {
         ;
     };
 </script>
