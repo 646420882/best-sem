@@ -38,7 +38,7 @@ html {
 .top {
 	height: 77px;
 	line-height: 77px;
-	background: url(/public/img/top_bg.jpg) center repeat;
+	background: url(../img/top_bg.jpg) center repeat;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -68,13 +68,13 @@ html {
 .user {
 	height: 32px;
 	line-height: 32px;
-	background: url(/public/img/user_bg.jpg) repeat-x;
+	background: url(../img/user_bg.jpg) repeat-x;
 }
 .on_title {
 	padding-left: 20px;
 	height: 32px;
 	line-height: 32px;
-	background: url(/public/img/title_bg.jpg) repeat-x;
+	background: url(../img/title_bg.jpg) repeat-x;
 	border-bottom: 1px solid #abafbc;
 }
 .on_title a {
@@ -118,7 +118,7 @@ html {
 	line-height: 34px;
 	color: #f0b004;
 	font-size: 14px;
-	background: url(/public/img/nav_top_bg.png) repeat-x;
+	background: url(../img/nav_top_bg.png) repeat-x;
 	padding: 0 10%;
 }
 .nav_top span {
@@ -127,11 +127,11 @@ html {
 	margin-top: 12px;
 	width: 9px;
 	height: 9px;
-	background: url(/public/img/bg.png) -74px -10px no-repeat;
+	background: url(../img/bg.png) -74px -10px no-repeat;
 }
 .nav_mid{
 	padding-top:10px;
-	background: #272537 url(/public/img/nav_bg.jpg) top no-repeat;
+	background: #272537 url(../img/nav_bg.jpg) top no-repeat;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -166,40 +166,40 @@ html {
 	margin: 0 8px 0 16px;
 }
 .nav_under ul li .list1 {
-	background: url(/public/img/bg.png) -10px -29px no-repeat;
+	background: url(../img/bg.png) -10px -29px no-repeat;
 }
 .nav_under ul li .list2 {
-	background: url(/public/img/bg.png) -28px -29px no-repeat;
+	background: url(../img/bg.png) -28px -29px no-repeat;
 }
 .nav_under ul li .list3 {
-	background: url(/public/img/bg.png) -50px -29px no-repeat;
+	background: url(../img/bg.png) -50px -29px no-repeat;
 }
 .nav_under ul li .list4 {
-	background: url(/public/img/bg.png) -74px -29px no-repeat;
+	background: url(../img/bg.png) -74px -29px no-repeat;
 }
 .nav_under ul li .list5 {
-	background: url(/public/img/bg.png) -10px -49px no-repeat;
+	background: url(../img/bg.png) -10px -49px no-repeat;
 }
 .nav_under ul li .list6 {
-	background: url(/public/img/bg.png) -28px -49px no-repeat;
+	background: url(../img/bg.png) -28px -49px no-repeat;
 }
 .nav_under ul li .list7 {
-	background: url(/public/img/bg.png) -50px -49px no-repeat;
+	background: url(../img/bg.png) -50px -49px no-repeat;
 }
 .nav_under ul li .list8 {
-	background: url(/public/img/bg.png) -74px -49px no-repeat;
+	background: url(../img/bg.png) -74px -49px no-repeat;
 }
 .nav_under ul li .list9 {
-	background: url(/public/img/bg.png) -10px -71px no-repeat;
+	background: url(../img/bg.png) -10px -71px no-repeat;
 }
 .nav_under ul li .list10 {
-	background: url(/public/img/bg.png) -28px -71px no-repeat;
+	background: url(../img/bg.png) -28px -71px no-repeat;
 }
 .nav_under ul li .list11 {
-	background: url(/public/img/bg.png) -50px -71px no-repeat;
+	background: url(../img/bg.png) -50px -71px no-repeat;
 }
 .nav_under ul li .list12 {
-	background: url(/public/img/bg.png) -73px -71px no-repeat;
+	background: url(../img/bg.png) -73px -71px no-repeat;
 }
 /*底部*/
 .footer{width:100%; margin-top:80px; height:80px; padding-top:20px; border-top:1px solid #d1d1d1; text-align:center; line-height:30px; color:#999999;	font-family: "微软雅黑"; position:absolute;bottom:0px; }
