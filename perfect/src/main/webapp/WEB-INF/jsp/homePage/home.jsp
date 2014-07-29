@@ -162,7 +162,7 @@
     </li>
 </ul>
 <div class="tab_box">
-<div class="container">
+<div class="containers">
     <div class="list01 over">
         <div class="list01_top over">
             <Span>账户诊断</Span>
@@ -260,7 +260,7 @@
         </div>
     </div>
 </div>
-<div class="container  hide over">
+<div class="containers  hides over">
 <div class="list01 over" style="border-bottom:1px solid #d5d5d8;">
     <div class="list01_top over">
         <Span>账户趋势图</Span>
@@ -2209,7 +2209,7 @@
 </div>
 </div>
 </div>
-<div class="container hide over">
+<div class="containers hides over">
 <div class="list01_top over">
     <Span>质量度分析</Span>
     <a href="#" class="question"></a>
@@ -2390,7 +2390,7 @@
             <ul>
                 <li></li>
                 <li>
-                    <span>关键词数</span>
+                    <span>关键词</span>
                     <a href="#" class="question">
                     </a>
                 </li>
@@ -5133,7 +5133,7 @@
 </table>
 </div>
 </div>
-<div class="container hide over">
+<div class="containers hides over">
 <div class="list01_top over">
     <Span>重点关键词监控</Span>
     <a href="#" class="question"></a>
