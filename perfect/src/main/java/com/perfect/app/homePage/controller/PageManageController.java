@@ -112,15 +112,7 @@ public class PageManageController extends WebContexSupport {
         return new ModelAndView("homePage/examples");
     }
 
-    /**
-     * 关键词跳转页面
-     * @return
-     */
-    @RequestMapping("/main/keywordControl")
-    public ModelAndView forward(){
 
-        return new ModelAndView("homePage/keywordControl");
-    }
 
 
 }
