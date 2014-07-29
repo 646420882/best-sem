@@ -138,7 +138,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
 
         List<KeywordRealTimeDataVOEntity> list1 = new ArrayList<>(map.values());
         KeywordRealTimeDataVOEntity[] topNData = TopN(list1.toArray(new KeywordRealTimeDataVOEntity[list1.size()]), topN, fieldName);
-
+        this.map = null;
         return topNData;
     }
 

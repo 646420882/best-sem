@@ -1,17 +1,18 @@
 package com.perfect.app.homePage.controller;
 
 
-        import com.perfect.app.accountCenter.dao.AccountManageDAO;
-        import com.perfect.app.homePage.service.CustomUserDetailsService;
-        import com.perfect.entity.BaiduAccountInfoEntity;
-        import org.springframework.context.annotation.Scope;
-        import org.springframework.ui.ModelMap;
-        import org.springframework.web.bind.annotation.RequestMapping;
-        import org.springframework.web.bind.annotation.RequestMethod;
-        import org.springframework.web.bind.annotation.RequestParam;
-        import org.springframework.web.bind.annotation.RestController;
-        import org.springframework.web.servlet.ModelAndView;
-        import javax.annotation.Resource;
+import com.perfect.app.accountCenter.dao.AccountManageDAO;
+import com.perfect.app.homePage.service.CustomUserDetailsService;
+import com.perfect.entity.BaiduAccountInfoEntity;
+import org.springframework.context.annotation.Scope;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -19,7 +20,7 @@ package com.perfect.app.homePage.controller;
  */
 @RestController
 @Scope("prototype")
-public class PageManageController   {
+public class PageManageController {
 
 
     private static String currLoginUserName;
@@ -96,14 +97,4 @@ public class PageManageController   {
         return new ModelAndView("spreadManage/spreadManage");
     }
 
-    /**
-     * 页面测试
-     *
-     * @param modelMap
-     * @return
-     */
-    @RequestMapping(value = "/main/examples", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView test(ModelMap modelMap) {
-        return new ModelAndView("homePage/examples");
-    }
 }
