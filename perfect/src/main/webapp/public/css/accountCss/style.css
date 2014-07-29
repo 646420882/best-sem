@@ -293,6 +293,7 @@
 }
 .list2 table tr td ul li ul li {
 	width: 14px;
+    padding-left: 0px;
 }
 .list2_top2 {
 	height: 30px;
