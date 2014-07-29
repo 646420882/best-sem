@@ -100,6 +100,7 @@
 .list01_top ul li a:hover {
 	background: url(/public/img/time_hover.jpg) repeat;
 	color: #fff;
+	text-decoration:none;
 }
 .list01_top ul .current {
 	background: url(/public/img/bg.png) -10px -92px no-repeat;
