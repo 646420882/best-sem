@@ -213,7 +213,8 @@
                 <li class="date">
                     <a href="#">
                         自定义
-                        <input type="image" src="${pageContext.request.contextPath}/public/img/date.png">
+                        <input name="reservation" class=" fa fa-calendar " type="image"
+                               src="${pageContext.request.contextPath}/public/img/date.png">
                     </a>
                 </li>
             </ul>
@@ -288,7 +289,8 @@
             <li class="date">
                 <a href="#">
                     自定义
-                    <input type="image" src="${pageContext.request.contextPath}/public/img/date.png">
+                    <input name="reservation" class=" fa fa-calendar " type="image"
+                           src="${pageContext.request.contextPath}/public/img/date.png">
                 </a>
             </li>
         </ul>
@@ -320,7 +322,8 @@
         <li class="date">
             <a href="#">
                 自定义
-                <input type="image" src="${pageContext.request.contextPath}/public/img/date.png">
+                <input name="reservation" class=" fa fa-calendar " type="image"
+                       src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
         </li>
     </ul>
@@ -2219,22 +2222,22 @@
     <a href="#" class="question"></a>
     <ul id="keywordQualityClass">
         <li class="current">
-            <a href="javascript:loadKeywordQualityYesterdayData();">
+            <a href="javascript:loadKeywordQualityData(1);">
                 昨天
             </a>
         </li>
         <li>
-            <a href="javascript:loadKeywordQuality7dayData();">
+            <a href="javascript:loadKeywordQualityData(7);">
                 近7天
             </a>
         </li>
         <li>
-            <a href="javascript:loadKeywordQuality30dayData();">
+            <a href="javascript:loadKeywordQualityData(30);">
                 近30天
             </a>
         </li>
         <li class="date">
-            <a href="javascript:loadKeywordQualityCustomData();">
+            <a href="javascript:loadKeywordQualityData(0);">
                 自定义
                 <input name="reservation" class=" fa fa-calendar " type="image"
                        src="${pageContext.request.contextPath}/public/img/date.png">
@@ -2425,7 +2428,7 @@
         <div>
             <dl class="fr">
                 每页显示
-                <select onclick="reloadKeywordQuality();">
+                <select id="keywordQuality1Page" onclick="reloadKeywordQuality();">
                     <option>10个</option>
                     <option>15个</option>
                     <option>20个</option>
@@ -5161,7 +5164,8 @@
         <li class="date">
             <a href="#">
                 自定义
-                <input type="image" src="${pageContext.request.contextPath}/public/img/date.png">
+                <input name="reservation" class=" fa fa-calendar " type="image"
+                       src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
         </li>
     </ul>
@@ -5584,6 +5588,31 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/accountJs/moment.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/accountJs/daterangepicker.js"></script>
 <script type="text/javascript">
+    // 对Date的扩展，将 Date 转化为指定格式的String
+    // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
+    // 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
+    // 例子：
+    // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2014-07-02 08:09:04.423
+    // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2014-7-2 8:9:4.18
+    Date.prototype.Format = function (fmt) {
+        var o = {
+            "M+": this.getMonth() + 1,                 //月份
+            "d+": this.getDate(),                    //日
+            "h+": this.getHours(),                   //小时
+            "m+": this.getMinutes(),                 //分
+            "s+": this.getSeconds(),                 //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds()             //毫秒
+        };
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+</script>
+<script type="text/javascript">
 
     //默认按照展现进行排名
     var category = "impression";
@@ -5626,7 +5655,7 @@
         });
 
         //默认加载昨天的数据
-        loadKeywordQualityYesterdayData();
+        loadKeywordQualityData(1);
 
     });
 
@@ -5639,86 +5668,36 @@
         }
     }
 
+    //获取日期控件的日期
     var getCustomDate = function () {
         daterangepicker_start_date = $("input[name=daterangepicker_start]").val();
         daterangepicker_end_date = $("input[name=daterangepicker_end]").val();
     };
 
-    var loadKeywordQualityYesterdayData = function () {
-        $.ajax({
-            url: "/keywordQuality/list",
-            type: "GET",
-            dataType: "json",
-            data: {
-                startDate: "2014-01-25",
-                endDate: "2014-01-25",
-                fieldName: category
-            },
-            success: function (data, textStatus, jqXHR) {
-                if (data.rows.length > 0) {
-                    $("#keywordQuality1").empty();
-                    $.each(data.rows, function (i, item) {
-                        var _div = "<div><ul><li></li><li><span>" + item.keywordName + "</span><span class='green_arrow wd3'></span></li>" +
-                                "<li>" + item.impression + "</li><li>" + item.click + "</li><li>" + item.ctr + "</li><li>" + item.cost + "</li>" +
-                                "<li>" + item.cpc + "</li><li>" + item.conversion + "</li></ul></div>";
-                        $("#keywordQuality1").append(_div);
-                    })
-                }
-            }
-        });
+    /**
+     * 获取昨天, 近七天, 近30天日期
+     * 参数为1, 昨天
+     * 参数为7, 7天
+     * 参数为30, 近30天
+     * @param day
+     */
+    var getDateParam = function (day) {
+        var currDate = new Date();
+        if (day = 1) {
+            daterangepicker_start_date = null;
+            daterangepicker_end_date = null;
+        } else if (day == 7) {
+            daterangepicker_start_date = (currDate.getTime() - 1000 * 60 * 60 * 24 * 8).Format("yyyy-MM-dd");
+            daterangepicker_end_date = (currDate.getTime() - 1000 * 60 * 60 * 24).Format("yyyy-MM-dd");
+        } else if (day == 30) {
+            daterangepicker_start_date = (currDate.getTime() - 1000 * 60 * 60 * 24 * 31).Format("yyyy-MM-dd");
+            daterangepicker_end_date = (currDate.getTime() - 1000 * 60 * 60 * 24).Format("yyyy-MM-dd");
+        }
     };
 
-    var loadKeywordQuality7dayData = function () {
-        //$("#keywordQualityClass").find("li").hasClass("current").removeClass("current");
-        //$(this).parent("li").attr("'class", "current");
-        $.ajax({
-            url: "/keywordQuality/list",
-            type: "GET",
-            dataType: "json",
-            data: {
-                startDate: "2014-01-25",
-                endDate: "2014-01-31",
-                fieldName: category
-            },
-            success: function (data, textStatus, jqXHR) {
-                if (data.rows.length > 0) {
-                    $("#keywordQuality1").empty();
-                    $.each(data.rows, function (i, item) {
-                        var _div = "<div><ul><li></li><li><span>" + item.keywordName + "</span><span class='green_arrow wd3'></span></li>" +
-                                "<li>" + item.impression + "</li><li>" + item.click + "</li><li>" + item.ctr + "</li><li>" + item.cost + "</li>" +
-                                "<li>" + item.cpc + "</li><li>" + item.conversion + "</li></ul></div>";
-                        $("#keywordQuality1").append(_div);
-                    })
-                }
-            }
-        });
-    };
-
-    var loadKeywordQuality30dayData = function () {
-        $.ajax({
-            url: "/keywordQuality/list",
-            type: "GET",
-            dataType: "json",
-            data: {
-                startDate: "2014-01-25",
-                endDate: "2014-02-15",
-                fieldName: category
-            },
-            success: function (data, textStatus, jqXHR) {
-                if (data.rows.length > 0) {
-                    $("#keywordQuality1").empty();
-                    $.each(data.rows, function (i, item) {
-                        var _div = "<div><ul><li></li><li><span>" + item.keywordName + "</span><span class='green_arrow wd3'></span></li>" +
-                                "<li>" + item.impression + "</li><li>" + item.click + "</li><li>" + item.ctr + "</li><li>" + item.cost + "</li>" +
-                                "<li>" + item.cpc + "</li><li>" + item.conversion + "</li></ul></div>";
-                        $("#keywordQuality1").append(_div);
-                    })
-                }
-            }
-        });
-    };
-
-    var loadKeywordQualityCustomData = function () {
+    //关键词质量度数据加载
+    var loadKeywordQualityData = function (param) {
+        getDateParam(param);
         $.ajax({
             url: "/keywordQuality/list",
             type: "GET",
@@ -5726,7 +5705,8 @@
             data: {
                 startDate: daterangepicker_start_date,
                 endDate: daterangepicker_end_date,
-                fieldName: category
+                fieldName: category,
+                sort: sort
             },
             success: function (data, textStatus, jqXHR) {
                 if (data.rows.length > 0) {
@@ -5743,7 +5723,7 @@
     };
 
     var reloadKeywordQuality = function () {
-        ;
+        $("#keywordQuality1Page");
     };
 </script>
 
