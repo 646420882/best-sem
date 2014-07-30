@@ -5,5 +5,8 @@ package com.perfect.app.accountCenter.dao;
  */
 public interface InitializeAccountDAO {
 
+    void getBeforeAccountRealTimeType();
+
     void getBeforeKeywordRealTimeType();
+
 }

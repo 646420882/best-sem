@@ -114,7 +114,7 @@ html {
 	width: 15%;
 	border-top: 1px solid #48464c;
 	max-height: 900px;
- *max-height:902px;
+   *max-height:902px;
 }
 .nav_left {
 	width: 97%;
@@ -217,7 +217,7 @@ html {
 	color: #999999;
 	font-family: "微软雅黑";
 	position: absolute;
-     bottom: 20px;
+   bottom: 20px;
     margin-top: 80px;
 }
 .footer a {
