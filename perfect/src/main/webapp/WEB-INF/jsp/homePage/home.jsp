@@ -2217,24 +2217,24 @@
 <div class="list01_top over">
     <Span>质量度分析</Span>
     <a href="#" class="question"></a>
-    <ul>
+    <ul id="keywordQualityClass">
         <li class="current">
-            <a href="javascript:loadYesterdayData();">
+            <a href="javascript:loadKeywordQualityYesterdayData();">
                 昨天
             </a>
         </li>
         <li>
-            <a href="javascript:load7dayData();">
+            <a href="javascript:loadKeywordQuality7dayData();">
                 近7天
             </a>
         </li>
         <li>
-            <a href="javascript:load30dayData();">
+            <a href="javascript:loadKeywordQuality30dayData();">
                 近30天
             </a>
         </li>
         <li class="date">
-            <a href="javascript:loadCustomData();">
+            <a href="javascript:loadKeywordQualityCustomData();">
                 自定义
                 <input name="reservation" class=" fa fa-calendar " type="image"
                        src="${pageContext.request.contextPath}/public/img/date.png">
@@ -2276,31 +2276,31 @@
             <li>
                 &nbsp;<span>展现</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'impression';sort = 1;"/>
+                    <input class="one" type="button" onclick="javascript:category = 'impression';sort = -1;"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'impression';sort = -1;"/>
+                    <input class="two" type="button" onclick="javascript:category = 'impression';sort = 1;"/>
                 </p></b>
             </li>
             <li>
                 &nbsp;<span>点击</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'click';sort = 1;"/>
+                    <input class="one" type="button" onclick="javascript:category = 'click';sort = -1;"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'click';sort = -1;"/>
+                    <input class="two" type="button" onclick="javascript:category = 'click';sort = 1;"/>
                 </p></b>
             </li>
             <li>
                 &nbsp;<span>点击率</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'ctr';sort = 1;"/>
+                    <input class="one" type="button" onclick="javascript:category = 'ctr';sort = -1;"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'ctr';sort = -1;"/>
+                    <input class="two" type="button" onclick="javascript:category = 'ctr';sort = 1;"/>
                 </p></b>
                 <a href="#" class="question">
                 </a>
@@ -2308,11 +2308,11 @@
             <li>
                 &nbsp;<span>消费</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'cost';sort = 1;"/>
+                    <input class="one" type="button" onclick="javascript:category = 'cost';sort = -1;"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'cost';sort = -1;"/>
+                    <input class="two" type="button" onclick="javascript:category = 'cost';sort = 1;"/>
                 </p></b>
                 <a href="#" class="question">
                 </a>
@@ -2320,22 +2320,22 @@
             <li>
                 &nbsp;<span>平均点击价格</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'cpc';sort = 1;"/>
+                    <input class="one" type="button" onclick="javascript:category = 'cpc';sort = -1;"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'cpc';sort = -1;"/>
+                    <input class="two" type="button" onclick="javascript:category = 'cpc';sort = 1;"/>
                 </p></b>
                 <a href="#" class="question"></a>
             </li>
             <li>
                 &nbsp;<span>转化</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'conversion';sort = 1;"/>
+                    <input class="one" type="button" onclick="javascript:category = 'conversion';sort = -1;"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'conversion';sort = -1;"/>
+                    <input class="two" type="button" onclick="javascript:category = 'conversion';sort = 1;"/>
                 </p></b>
                 <a href="#" class="question"></a>
             </li>
@@ -5589,7 +5589,7 @@
     var category = "impression";
 
     //默认降序排列
-    var sort = 1;
+    var sort = -1;
 
     var daterangepicker_start_date = null;
 
@@ -5626,7 +5626,7 @@
         });
 
         //默认加载昨天的数据
-        loadYesterdayData();
+        loadKeywordQualityYesterdayData();
 
     });
 
@@ -5639,12 +5639,12 @@
         }
     }
 
-    var getCustomDate = function(){
+    var getCustomDate = function () {
         daterangepicker_start_date = $("input[name=daterangepicker_start]").val();
         daterangepicker_end_date = $("input[name=daterangepicker_end]").val();
     };
 
-    var loadYesterdayData = function () {
+    var loadKeywordQualityYesterdayData = function () {
         $.ajax({
             url: "/keywordQuality/list",
             type: "GET",
@@ -5668,7 +5668,9 @@
         });
     };
 
-    var load7dayData = function () {
+    var loadKeywordQuality7dayData = function () {
+        //$("#keywordQualityClass").find("li").hasClass("current").removeClass("current");
+        //$(this).parent("li").attr("'class", "current");
         $.ajax({
             url: "/keywordQuality/list",
             type: "GET",
@@ -5692,7 +5694,7 @@
         });
     };
 
-    var load30dayData = function () {
+    var loadKeywordQuality30dayData = function () {
         $.ajax({
             url: "/keywordQuality/list",
             type: "GET",
@@ -5716,8 +5718,28 @@
         });
     };
 
-    var loadCustomData = function () {
-        alert(daterangepicker_start_date + "," + daterangepicker_end_date);
+    var loadKeywordQualityCustomData = function () {
+        $.ajax({
+            url: "/keywordQuality/list",
+            type: "GET",
+            dataType: "json",
+            data: {
+                startDate: daterangepicker_start_date,
+                endDate: daterangepicker_end_date,
+                fieldName: category
+            },
+            success: function (data, textStatus, jqXHR) {
+                if (data.rows.length > 0) {
+                    $("#keywordQuality1").empty();
+                    $.each(data.rows, function (i, item) {
+                        var _div = "<div><ul><li></li><li><span>" + item.keywordName + "</span><span class='green_arrow wd3'></span></li>" +
+                                "<li>" + item.impression + "</li><li>" + item.click + "</li><li>" + item.ctr + "</li><li>" + item.cost + "</li>" +
+                                "<li>" + item.cpc + "</li><li>" + item.conversion + "</li></ul></div>";
+                        $("#keywordQuality1").append(_div);
+                    })
+                }
+            }
+        });
     };
 
     var reloadKeywordQuality = function () {
