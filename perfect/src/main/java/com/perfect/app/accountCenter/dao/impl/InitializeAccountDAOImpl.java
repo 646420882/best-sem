@@ -1,11 +1,13 @@
 package com.perfect.app.accountCenter.dao.impl;
 
+import com.perfect.api.baidu.AccountRealTimeData;
 import com.perfect.api.baidu.KeywordRealTimeData;
 import com.perfect.app.accountCenter.dao.InitializeAccountDAO;
-import com.perfect.app.homePage.service.CustomUserDetailsService;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.core.AppContext;
+import com.perfect.entity.AccountRealTimeDataVOEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
 import com.perfect.utils.BaiduServiceSupport;
@@ -19,22 +21,30 @@ import java.util.List;
  */
 public class InitializeAccountDAOImpl implements InitializeAccountDAO {
 
-    private String currUserName = CustomUserDetailsService.getUserName();
+    private String currUserName = AppContext.getUser().toString();
 
     private CommonService commonService = BaiduServiceSupport.getCommonService();
 
     private List<Long> list = new ArrayList<>();
 
-    {
+    private Long baiduAccountUserId;
 
+    {
+        AccountService accountService = null;
         KeywordService keywordService = null;
         AdgroupService adgroupService = null;
         try {
+            accountService = commonService.getService(AccountService.class);
             keywordService = commonService.getService(KeywordService.class);
             adgroupService = commonService.getService(AdgroupService.class);
         } catch (ApiException e) {
             e.printStackTrace();
         }
+
+        //获取账户ID
+        GetAccountInfoRequest getAccountInfoRequest = new GetAccountInfoRequest();
+        GetAccountInfoResponse getAccountInfoResponse = accountService.getAccountInfo(getAccountInfoRequest);
+        baiduAccountUserId = getAccountInfoResponse.getAccountInfoType().getUserid();
 
         GetAllAdgroupIdRequest getAllAdgroupIdRequest = new GetAllAdgroupIdRequest();
         GetAllAdgroupIdResponse getAllAdgroupIdResponse = adgroupService.getAllAdgroupId(getAllAdgroupIdRequest);
@@ -91,8 +101,34 @@ public class InitializeAccountDAOImpl implements InitializeAccountDAO {
 
     }
 
+    public void getBeforeAccountRealTimeType() {
+        List<RealTimeResultType> list1 = AccountRealTimeData.getAccountRealTimeData("2014-01-25", "2014-02-25");
+        if (list1.size() == 0)
+            return;
+
+        //数据存储处理
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("perfect");
+        List<AccountRealTimeDataVOEntity> listVO = new ArrayList<>();
+
+        for (RealTimeResultType entity : list1) {
+            //创建日志内容
+            AccountRealTimeDataVOEntity vo = new AccountRealTimeDataVOEntity();
+            vo.setAccountId(entity.getID());
+            vo.setAccountName(entity.getName().get(0));
+            vo.setDate(entity.getDate());
+            vo.setImpression(Integer.valueOf(entity.getKPI(0)));
+            vo.setClick(Integer.valueOf(entity.getKPI(1)));
+            vo.setCtr(Double.valueOf(entity.getKPI(2)));
+            vo.setCost(Double.valueOf(entity.getKPI(3)));
+            vo.setCpc(Double.valueOf(entity.getKPI(4)));
+            vo.setConversion(Double.valueOf(entity.getKPI(5)));
+            listVO.add(vo);
+        }
+        mongoTemplate.insert(listVO, AccountRealTimeDataVOEntity.class);
+    }
+
     public static void main(String[] args) {
-        new InitializeAccountDAOImpl().getBeforeKeywordRealTimeType();
+        new InitializeAccountDAOImpl().getBeforeAccountRealTimeType();
     }
 
 }
