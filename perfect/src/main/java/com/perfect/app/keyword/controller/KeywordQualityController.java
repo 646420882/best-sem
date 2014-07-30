@@ -28,9 +28,10 @@ public class KeywordQualityController {
     public ModelAndView findKeywordQuality(@RequestParam(value = "startDate", required = false) String startDate,
                                            @RequestParam(value = "endDate", required = false) String endDate,
                                            @RequestParam(value = "fieldName", required = false, defaultValue = "impression") String fieldName,
-                                           @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit) {
+                                           @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit,
+                                           @RequestParam(value = "sort", required = false, defaultValue = "-1") Integer sort) {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        KeywordRealTimeDataVOEntity[] voEntities = keywordQualityDAO.find(startDate, endDate, fieldName, limit);
+        KeywordRealTimeDataVOEntity[] voEntities = keywordQualityDAO.find(startDate, endDate, fieldName, limit, sort);
         Map<String, Object> attributes = null;
         if (voEntities != null)
             attributes = JSONUtils.getJsonMapData(voEntities);
