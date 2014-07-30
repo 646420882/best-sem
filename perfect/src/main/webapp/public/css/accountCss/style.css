@@ -1,12 +1,14 @@
 /***mid***/
 .mid {
 	width: 85%;
+    min-height:901px;
 }
 .concent {
 	position: relative;
 	background: url(/public/img/concent_bg.jpg) repeat;
 	font-family:"微软雅黑";
 	font-size:12px;
+
 }
 #tab {
 	overflow: hidden;
