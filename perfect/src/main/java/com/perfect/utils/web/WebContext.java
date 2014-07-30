@@ -7,10 +7,25 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface WebContext {
 
+    /**
+     *
+     * @param html 返回页面的字符串
+     * @param response
+     */
         public void writeHtml(String html,HttpServletResponse response) ;
 
+    /**
+     *
+     * @param obj 返回Object 对象
+     * @param res
+     */
         public void writeObject(Object obj,HttpServletResponse res);
 
+    /**
+     *
+     * @param obj 返回Json对象
+     * @param res
+     */
         public void wirteJson(Object obj,HttpServletResponse res);
 
 

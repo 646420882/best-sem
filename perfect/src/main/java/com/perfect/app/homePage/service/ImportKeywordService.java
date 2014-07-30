@@ -20,8 +20,8 @@ import java.util.List;
 public class ImportKeywordService {
     @Resource
     AccountAnalyzeDAO accountAnalyzeDAO;
-    private final String DATE_START="date_start";
-    private final String DATE_END="date_end";
+    private final String DATE_START="startDate";
+    private final String DATE_END="endDate";
     private final String USER_NAME="groupId";
 
     /**
@@ -30,6 +30,7 @@ public class ImportKeywordService {
      * @return
      */
     public List<KeywordRealTimeDataVOEntity> getList(HttpServletRequest request) {
+        System.out.println(">>>>>>>>>>>>>>>>>>");
         Date[] currDate=getDate(request);
         List<KeywordRealTimeDataVOEntity> lst = new ArrayList<>();
         String newStr=request.getParameter(USER_NAME);

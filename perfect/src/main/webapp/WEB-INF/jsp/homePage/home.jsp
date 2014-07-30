@@ -5175,7 +5175,7 @@
             </a>
         </li>
         <li class="date">
-            <a href="javascript:void(0)">
+            <a href="javascript:getImportKeywordDefault(1)">
                 自定义
                 <input name="reservation" class=" fa fa-calendar " type="image"
                        src="${pageContext.request.contextPath}/public/img/date.png">
@@ -5552,7 +5552,7 @@
 
         //默认加载昨天的数据
         loadKeywordQualityData(1);
-
+        getImportKeywordDefault(1);
     });
 
     function TestBlack(TagName) {
@@ -5627,6 +5627,20 @@
         });
     };
 
+    var getImportKeywordDefault=function(day){
+        getDateParam(day);
+        $.get("/main/getImportKeywordList",{
+            startDate: daterangepicker_start_date,
+            endDate: daterangepicker_end_date,
+            groupId:"aaa123"
+        },function(result){
+
+        });
+    };
+
+    var reloadKeywordQuality = function () {
+        $("#keywordQuality1Page");
+    };
 </script>
 
 </body>
