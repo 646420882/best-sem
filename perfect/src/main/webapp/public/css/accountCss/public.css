@@ -208,7 +208,7 @@ html {
 }
 /*底部*/
 .footer {
-	width: 100%;
+	width: 85%;
 	height: 80px;
 	padding-top: 20px;
 	border-top: 1px solid #d1d1d1;
@@ -216,6 +216,9 @@ html {
 	line-height: 30px;
 	color: #999999;
 	font-family: "微软雅黑";
+	position: absolute;
+     bottom: 20px;
+    margin-top: 80px;
 }
 .footer a {
 	color: #999999;
