@@ -7,5 +7,5 @@ import com.perfect.entity.KeywordRealTimeDataVOEntity;
  */
 public interface KeywordQualityDAO {
 
-    KeywordRealTimeDataVOEntity[] find(String _startDate, String _endDate, String fieldName, int limit);
+    KeywordRealTimeDataVOEntity[] find(String _startDate, String _endDate, String fieldName, int limit, int sort);
 }

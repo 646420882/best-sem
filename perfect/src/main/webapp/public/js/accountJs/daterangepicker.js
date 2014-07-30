@@ -18,7 +18,7 @@
 
         //create the picker HTML object
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
-               
+
                 '<div class="ranges">' +
                   '<div class="range_inputs">' +
                     '<div class="daterangepicker_start_input">' +
@@ -29,7 +29,7 @@
                       '<label for="daterangepicker_end"></label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
                     '</div>' +
-                    '<button class="applyBtn" disabled="disabled"></button>&nbsp;' +
+                    '<button class="applyBtn" disabled="disabled" onclick="getCustomDate();"></button>&nbsp;' +
                     '<button class="cancelBtn"></button>' +
                   '</div>' +
                 '</div>' +
@@ -37,10 +37,10 @@
                  '<div class="calendar left"></div>' +
                 '<div class="calendar right"></div>' +
               '</div>'
-			  
-			  
-			  
-			  
+
+
+
+
 			  ;
 
         //custom options
@@ -431,7 +431,7 @@
             var dateString = this.element.val().split(this.separator),
                 start = null,
                 end = null;
-            
+
             if(dateString.length === 2) {
                 start = moment(dateString[0], this.format);
                 end = moment(dateString[1], this.format);
@@ -441,7 +441,7 @@
                 start = moment(this.element.val(), this.format);
                 end = start;
             }
-            
+
             if (end.isBefore(start)) return;
 
             this.oldStartDate = this.startDate.clone();

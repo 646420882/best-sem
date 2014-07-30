@@ -2236,7 +2236,7 @@
         <li class="date">
             <a href="javascript:loadCustomData();">
                 自定义
-                <input id="reservation" class=" fa fa-calendar " type="image"
+                <input name="reservation" class=" fa fa-calendar " type="image"
                        src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
         </li>
@@ -5394,10 +5394,6 @@
         </div>
 
 
-
-
-
-
         <div class="page">
             <dl class="fr">
                 每页显示
@@ -5525,10 +5521,6 @@
         </div>
 
 
-
-
-
-
         <div class="page">
             <dl class="fr">
                 每页显示
@@ -5541,14 +5533,6 @@
         </div>
     </td>
 </tr>
-
-
-
-
-
-
-
-
 
 
 </table>
@@ -5607,6 +5591,10 @@
     //默认降序排列
     var sort = 1;
 
+    var daterangepicker_start_date = null;
+
+    var daterangepicker_end_date = null;
+
     $(function () {
         var $tab_li = $('.tab_menu li');
         $('.tab_menu li').click(function () {
@@ -5633,7 +5621,7 @@
         });
 
         //加载日历控件
-        $('#reservation').daterangepicker(null, function (start, end, label) {
+        $('input[name=reservation]').daterangepicker(null, function (start, end, label) {
             console.log(start.toISOString(), end.toISOString(), label);
         });
 
@@ -5650,6 +5638,11 @@
             obj.style.display = "";
         }
     }
+
+    var getCustomDate = function(){
+        daterangepicker_start_date = $("input[name=daterangepicker_start]").val();
+        daterangepicker_end_date = $("input[name=daterangepicker_end]").val();
+    };
 
     var loadYesterdayData = function () {
         $.ajax({
@@ -5724,7 +5717,7 @@
     };
 
     var loadCustomData = function () {
-        ;
+        alert(daterangepicker_start_date + "," + daterangepicker_end_date);
     };
 
     var reloadKeywordQuality = function () {
