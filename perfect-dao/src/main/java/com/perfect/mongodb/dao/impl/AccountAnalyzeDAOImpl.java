@@ -1,6 +1,8 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.AccountAnalyzeDAO;
+import com.perfect.entity.AccountRealTimeDataVOEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
@@ -15,7 +17,8 @@ import java.util.Map;
 @Repository("accountAnalyzeDAO")
 public class AccountAnalyzeDAOImpl implements AccountAnalyzeDAO {
 
-    private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("perfect");
+    private String currUserName = AppContext.getUser().toString();
+    private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(currUserName);
 
     public KeywordRealTimeDataVOEntity findOne(Long aLong) {
         return null;
@@ -67,6 +70,12 @@ public class AccountAnalyzeDAOImpl implements AccountAnalyzeDAO {
     @Override
     public List<KeywordRealTimeDataVOEntity> performance(String userTable) {
         List<KeywordRealTimeDataVOEntity> list = mongoTemplate.findAll(KeywordRealTimeDataVOEntity.class,userTable);
+        return list;
+    }
+
+    @Override
+    public List<AccountRealTimeDataVOEntity> performaneUser() {
+        List<AccountRealTimeDataVOEntity> list = mongoTemplate.findAll(AccountRealTimeDataVOEntity.class,"AccountRealTimeData");
         return list;
     }
 }
