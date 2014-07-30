@@ -5162,7 +5162,7 @@
             </a>
         </li>
         <li class="date">
-            <a href="#">
+            <a href="javascript:void(0)">
                 自定义
                 <input name="reservation" class=" fa fa-calendar " type="image"
                        src="${pageContext.request.contextPath}/public/img/date.png">
@@ -5410,133 +5410,8 @@
         </div>
     </td>
 </tr>
-<tr class="list2_box2" onclick="TestBlack('divf1');">
-    <td>
-        <ul>
-            <li>
-                &nbsp;<span>搜索引擎优化2</span><span class="red_arrow wd3"></span>
-            </li>
-            <li>
-                &nbsp;3.902
-            </li>
-            <li>
-                &nbsp;13
-            </li>
-            <li>
-                &nbsp;￥0.91
-            </li>
-            <li>
-                &nbsp;￥0.91
-            </li>
-            <li>
-                &nbsp;0.33%
-            </li>
-            <li>
-                &nbsp;0.00
-            </li>
-            <li>
-                &nbsp;2.24
-            </li>
-            <li>
-                &nbsp;
-                <ul class="paihang">
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                </ul>
-                <span>0</span>
-            </li>
-            <li>
-                &nbsp;广泛
-            </li>
-        </ul>
-</tr>
-<tr id="divf1" style="display:none;">
-    <td>
-        <div class="list2_top2">
-            <ul>
-                <li>
-                    <span>关键词数</span>
-                    <a href="#" class="question">
-                    </a>
-                </li>
-                <li>
-                    <span>展现</span>
-                </li>
-                <li>
-                    <span>点击</span>
-                </li>
-                <li>
-                    <span>消费</span>
-                </li>
-                <li>
-                    <span>平均点击价格</span>
-                </li>
-                <li>
-                    <span>点击率</span>
-                </li>
-                <li>
-                    <span>转化</span>
-                </li>
-                <li>
-                    平均排名
-                </li>
-
-            </ul>
-        </div>
-        <div>
-            <ul>
-                <li>
-                    <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-                </li>
-                <li>
-                    17(0.11%)
-                </li>
-                <li>
-                    17(0.11%)
-                </li>
-                <li>
-                    17(0.11%)
-                </li>
-                <li>
-                    17(0.11%)
-                </li>
-                <li>
-                    17(0.11%)
-                </li>
-                <li>
-                    17(0.11%)
-                </li>
-                <li></li>
-
-            </ul>
-        </div>
 
 
-        <div class="page">
-            <dl class="fr">
-                每页显示
-                <select>
-                    <option>10个</option>
-                    <option>9个</option>
-                    <option>8个</option>
-                </select>
-            </dl>
-        </div>
-    </td>
-</tr>
 
 
 </table>
