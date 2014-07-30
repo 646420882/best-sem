@@ -2279,31 +2279,37 @@
             <li>
                 &nbsp;<span>展现</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'impression';sort = -1;"/>
+                    <input class="one" type="button"
+                           onclick="javascript:category = 'impression';sort = -1;loadKeywordQualityData(statDate);"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'impression';sort = 1;"/>
+                    <input class="two" type="button"
+                           onclick="javascript:category = 'impression';sort = 1;loadKeywordQualityData(statDate);"/>
                 </p></b>
             </li>
             <li>
                 &nbsp;<span>点击</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'click';sort = -1;"/>
+                    <input class="one" type="button"
+                           onclick="javascript:category = 'click';sort = -1;loadKeywordQualityData(statDate);"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'click';sort = 1;"/>
+                    <input class="two" type="button"
+                           onclick="javascript:category = 'click';sort = 1;loadKeywordQualityData(statDate);"/>
                 </p></b>
             </li>
             <li>
                 &nbsp;<span>点击率</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'ctr';sort = -1;"/>
+                    <input class="one" type="button"
+                           onclick="javascript:category = 'ctr';sort = -1;loadKeywordQualityData(statDate);"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'ctr';sort = 1;"/>
+                    <input class="two" type="button"
+                           onclick="javascript:category = 'ctr';sort = 1;loadKeywordQualityData(statDate);"/>
                 </p></b>
                 <a href="#" class="question">
                 </a>
@@ -2311,11 +2317,13 @@
             <li>
                 &nbsp;<span>消费</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'cost';sort = -1;"/>
+                    <input class="one" type="button"
+                           onclick="javascript:category = 'cost';sort = -1;loadKeywordQualityData(statDate);"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'cost';sort = 1;"/>
+                    <input class="two" type="button"
+                           onclick="javascript:category = 'cost';sort = 1;loadKeywordQualityData(statDate);"/>
                 </p></b>
                 <a href="#" class="question">
                 </a>
@@ -2323,22 +2331,26 @@
             <li>
                 &nbsp;<span>平均点击价格</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'cpc';sort = -1;"/>
+                    <input class="one" type="button"
+                           onclick="javascript:category = 'cpc';sort = -1;loadKeywordQualityData(statDate);"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'cpc';sort = 1;"/>
+                    <input class="two" type="button"
+                           onclick="javascript:category = 'cpc';sort = 1;loadKeywordQualityData(statDate);"/>
                 </p></b>
                 <a href="#" class="question"></a>
             </li>
             <li>
                 &nbsp;<span>转化</span><b>
                 <p>
-                    <input class="one" type="button" onclick="javascript:category = 'conversion';sort = -1;"/>
+                    <input class="one" type="button"
+                           onclick="javascript:category = 'conversion';sort = -1;loadKeywordQualityData(statDate);"/>
                 </p>
 
                 <p>
-                    <input class="two" type="button" onclick="javascript:category = 'conversion';sort = 1;"/>
+                    <input class="two" type="button"
+                           onclick="javascript:category = 'conversion';sort = 1;loadKeywordQualityData(statDate);"/>
                 </p></b>
                 <a href="#" class="question"></a>
             </li>
@@ -2428,10 +2440,11 @@
         <div>
             <dl class="fr">
                 每页显示
-                <select id="keywordQuality1Page" onclick="reloadKeywordQuality();">
-                    <option>10个</option>
-                    <option>15个</option>
-                    <option>20个</option>
+                <select id="keywordQuality1Page"
+                        onchange="javascript:limit = $('#keywordQuality1Page option:selected').val();loadKeywordQualityData(statDate);">
+                    <option selected="selected" value="10">10个</option>
+                    <option value="15">15个</option>
+                    <option value="20">20个</option>
                 </select>
             </dl>
         </div>
@@ -2699,9 +2712,9 @@
     <dl class="fr">
         每页显示
         <select>
-            <option>10个</option>
-            <option>9个</option>
-            <option>8个</option>
+            <option selected="selected" value="10">10个</option>
+            <option value="15">15个</option>
+            <option value="20">20个</option>
         </select>
     </dl>
 </div>
@@ -5495,9 +5508,17 @@
     //默认降序排列
     var sort = -1;
 
+    //默认加载前10条数据
+    var limit = 10;
+
+    //日期控件-开始日期
     var daterangepicker_start_date = null;
 
+    //日期控件-结束日期
     var daterangepicker_end_date = null;
+
+    //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
+    var statDate = 1;
 
     $(function () {
         var $tab_li = $('.tab_menu li');
@@ -5558,20 +5579,28 @@
      */
     var getDateParam = function (day) {
         var currDate = new Date();
-        if (day = 1) {
-            daterangepicker_start_date = null;
-            daterangepicker_end_date = null;
+        if (day == 1) {
+            currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
+            daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
+            daterangepicker_end_date = daterangepicker_start_date;
         } else if (day == 7) {
-            daterangepicker_start_date = (currDate.getTime() - 1000 * 60 * 60 * 24 * 8).Format("yyyy-MM-dd");
-            daterangepicker_end_date = (currDate.getTime() - 1000 * 60 * 60 * 24).Format("yyyy-MM-dd");
+            currDate = new Date();
+            currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
+            daterangepicker_end_date = currDate.Format("yyyy-MM-dd");
+            currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24 * 6);
+            daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
         } else if (day == 30) {
-            daterangepicker_start_date = (currDate.getTime() - 1000 * 60 * 60 * 24 * 31).Format("yyyy-MM-dd");
-            daterangepicker_end_date = (currDate.getTime() - 1000 * 60 * 60 * 24).Format("yyyy-MM-dd");
+            currDate = new Date();
+            currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
+            daterangepicker_end_date = currDate.Format("yyyy-MM-dd");
+            currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24 * 29);
+            daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
         }
     };
 
     //关键词质量度数据加载
     var loadKeywordQualityData = function (param) {
+        statDate = param;
         getDateParam(param);
         $.ajax({
             url: "/keywordQuality/list",
@@ -5581,7 +5610,8 @@
                 startDate: daterangepicker_start_date,
                 endDate: daterangepicker_end_date,
                 fieldName: category,
-                sort: sort
+                sort: sort,
+                limit: limit
             },
             success: function (data, textStatus, jqXHR) {
                 if (data.rows.length > 0) {
@@ -5597,9 +5627,6 @@
         });
     };
 
-    var reloadKeywordQuality = function () {
-        $("#keywordQuality1Page");
-    };
 </script>
 
 </body>
