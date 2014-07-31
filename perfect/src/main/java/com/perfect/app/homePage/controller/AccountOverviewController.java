@@ -27,11 +27,14 @@ public class AccountOverviewController {
     @Resource
     private AccountOverviewService accountOverviewService;
 
-    @RequestMapping(value = "/account/accountOverview")
-    public ModelAndView getAccountOverviewPage(){
-        return new ModelAndView("homePage/accountOverview");
-    }
 
+    /**
+     * 账户概览(获取汇总数据)
+     * @param response
+     * @param days
+     * @param startDate
+     * @param endDate
+     */
     @RequestMapping(value = "/account/getAccountOverviewData", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccountOverviewData(HttpServletResponse response,Integer days,String startDate,String endDate){
 
