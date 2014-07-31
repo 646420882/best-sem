@@ -27,10 +27,6 @@ public class AccountOverviewController {
     @Resource
     private AccountOverviewService accountOverviewService;
 
-    //
-    //
-    //
-
     @RequestMapping(value = "/account/accountOverview")
     public ModelAndView getAccountOverviewPage(){
         return new ModelAndView("homePage/accountOverview");
