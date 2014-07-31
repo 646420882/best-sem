@@ -194,16 +194,17 @@
     <div class="list01 over" style="border-top:1px solid #d5d5d8;">
         <div class="list01_top over">
             <Span>近期概览</Span>
-            <ul id = "clickLis">
-                <li class="current"><a  href="javascript:" onclick="lisClick(this,1)">昨天</a></li>
-                <li><a  href="javascript:" onclick="lisClick(this,7)">近7天</a></li>
-                <li><a  href="javascript:"  onclick="lisClick(this,30)">近30天</a></li>
+            <ul id="clickLis">
+                <li class="current"><a href="javascript:" onclick="lisClick(this,1)">昨天</a></li>
+                <li><a href="javascript:" onclick="lisClick(this,7)">近7天</a></li>
+                <li><a href="javascript:" onclick="lisClick(this,30)">近30天</a></li>
                 <li class="date">
                     <a href="javascript:" onclick="lisClick(this,null);">
                         自定义
 
                     </a>
-                        <input name="reservation" class=" fa fa-calendar " type="image" src="${pageContext.request.contextPath}/public/img/date.png">
+                    <input name="reservation" class=" fa fa-calendar " type="image"
+                           src="${pageContext.request.contextPath}/public/img/date.png">
 
                 </li>
             </ul>
@@ -211,26 +212,30 @@
         <div class="list01_under2 over">
             <ul>
                 <li>
-                    <div class="blue1 fl wd1"> </div>
-                    <div class="blue2 fl wd2"> <Span class="impression"></Span>
+                    <div class="blue1 fl wd1"></div>
+                    <div class="blue2 fl wd2"><Span class="impression"></Span>
+
                         <p>展现次数</p>
                     </div>
                 </li>
                 <li>
-                    <div class="green1 fl wd1"> </div>
-                    <div class="green2 fl wd2"> <Span class="click"></Span>
+                    <div class="green1 fl wd1"></div>
+                    <div class="green2 fl wd2"><Span class="click"></Span>
+
                         <p>点击次数</p>
                     </div>
                 </li>
                 <li>
-                    <div class="red1 fl wd1"> </div>
-                    <div class="red2 fl wd2"> <Span class="cos"></Span>
+                    <div class="red1 fl wd1"></div>
+                    <div class="red2 fl wd2"><Span class="cos"></Span>
+
                         <p>消费</p>
                     </div>
                 </li>
                 <li>
-                    <div class="yellow1 fl wd1"> </div>
-                    <div class="yellow2 fl wd2"> <Span class="conversion"></Span>
+                    <div class="yellow1 fl wd1"></div>
+                    <div class="yellow2 fl wd2"><Span class="conversion"></Span>
+
                         <p>转化次数</p>
                     </div>
                 </li>
@@ -302,178 +307,178 @@
     </ul>
 </div>
 <div class="list2 wd">
-<table border="0" cellspacing="0" cellspacing="0">
-<thead>
-<tr class="list2_top">
-    <td>
-        <ul>
-            <li>
-                &nbsp;<span>时间</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
+    <table border="0" cellspacing="0" cellspacing="0">
+        <thead>
+        <tr class="list2_top">
+            <td>
+                <ul>
+                    <li>
+                        &nbsp;<span>时间</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
 
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-            </li>
-            <li>
-                &nbsp;<span>展现量</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                    </li>
+                    <li>
+                        &nbsp;<span>展现量</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
 
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-            </li>
-            <li>
-                &nbsp;<span>点击量</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                    </li>
+                    <li>
+                        &nbsp;<span>点击量</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
 
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-            </li>
-            <li>
-                &nbsp;<span>消费</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                    </li>
+                    <li>
+                        &nbsp;<span>消费</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
 
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-            </li>
-            <li>
-                &nbsp;<span>点击率</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                    </li>
+                    <li>
+                        &nbsp;<span>点击率</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
 
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-                <a href="#" class="question">
-                </a>
-            </li>
-            <li>
-                &nbsp;<span>平均点击价格</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                        <a href="#" class="question">
+                        </a>
+                    </li>
+                    <li>
+                        &nbsp;<span>平均点击价格</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
 
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-                <a href="#" class="question">
-                </a>
-            </li>
-            <li>
-                &nbsp;<span>平均排名</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                        <a href="#" class="question">
+                        </a>
+                    </li>
+                    <li>
+                        &nbsp;<span>平均排名</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
 
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-                <a href="#" class="question"></a>
-            </li>
-            <li>
-                &nbsp;<span>转化(页面)</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                        <a href="#" class="question"></a>
+                    </li>
+                    <li>
+                        &nbsp;<span>转化(页面)</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
 
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-                <a href="#" class="question">
-                </a>
-            </li>
-        </ul>
-    </td>
-</tr>
-</thead>
-<tbody id="performance">
-<tr class="list2_box1">
-    <td>
-        <ul>
-            <li>
-                &nbsp;2014年6月9日
-            </li>
-            <li>
-                &nbsp;3.902
-            </li>
-            <li>
-                &nbsp;3.902
-            </li>
-            <li>
-                &nbsp;13
-            </li>
-            <li>
-                &nbsp;￥0.91
-            </li>
-            <li>
-                &nbsp;￥0.91
-            </li>
-            <li>
-                &nbsp;0.33%
-            </li>
-            <li>
-                &nbsp;0.00
-            </li>
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                        <a href="#" class="question">
+                        </a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </thead>
+        <tbody id="performance">
+        <tr class="list2_box1">
+            <td>
+                <ul>
+                    <li>
+                        &nbsp;2014年6月9日
+                    </li>
+                    <li>
+                        &nbsp;3.902
+                    </li>
+                    <li>
+                        &nbsp;3.902
+                    </li>
+                    <li>
+                        &nbsp;13
+                    </li>
+                    <li>
+                        &nbsp;￥0.91
+                    </li>
+                    <li>
+                        &nbsp;￥0.91
+                    </li>
+                    <li>
+                        &nbsp;0.33%
+                    </li>
+                    <li>
+                        &nbsp;0.00
+                    </li>
 
-        </ul>
-    </td>
-</tr>
-<tr class="list2_box2" onclick="TestBlack('divc1');">
-    <td>
-        <ul>
-            <li>
-                &nbsp;2014年6月9日
-            </li>
-            <li>
-                &nbsp;3.902
-            </li>
-            <li>
-                &nbsp;3.902
-            </li>
-            <li>
-                &nbsp;13
-            </li>
-            <li>
-                &nbsp;￥0.91
-            </li>
-            <li>
-                &nbsp;￥0.91
-            </li>
-            <li>
-                &nbsp;0.33%
-            </li>
-            <li>
-                &nbsp;0.00
-            </li>
+                </ul>
+            </td>
+        </tr>
+        <tr class="list2_box2" onclick="TestBlack('divc1');">
+            <td>
+                <ul>
+                    <li>
+                        &nbsp;2014年6月9日
+                    </li>
+                    <li>
+                        &nbsp;3.902
+                    </li>
+                    <li>
+                        &nbsp;3.902
+                    </li>
+                    <li>
+                        &nbsp;13
+                    </li>
+                    <li>
+                        &nbsp;￥0.91
+                    </li>
+                    <li>
+                        &nbsp;￥0.91
+                    </li>
+                    <li>
+                        &nbsp;0.33%
+                    </li>
+                    <li>
+                        &nbsp;0.00
+                    </li>
 
-        </ul>
-    </td>
-</tr>
-</tbody>
-</table>
-<div class="download over fr">
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="download over fr">
 										<span>每页显示
 											<select>
                                                 <option>10个</option>
                                                 <option>9个</option>
                                                 <option>8个</option>
                                             </select> </span>
-    <a href="#">
-        下载全部
-    </a>
-</div>
+        <a href="#">
+            下载全部
+        </a>
+    </div>
 </div>
 </div>
 </div>
@@ -498,9 +503,10 @@
             </a>
         </li>
         <li class="date">
-            <a href="javascript:loadKeywordQualityData(0);">
+            <a>
                 自定义
                 <input name="reservation" class=" fa fa-calendar " type="image"
+                       onclick="javascript:genre = 'keywordQualityCustom';"
                        src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
         </li>
@@ -759,11 +765,723 @@
     </td>
 </tr>
 <td id="divo1" style=" display:none;">
+    <div class="list2_top2">
+        <ul>
+            <li></li>
+            <li>
+                <span>关键词</span>
+                <a href="#" class="question">
+                </a>
+            </li>
+            <li>
+                <span>展现</span>
+            </li>
+            <li>
+                <span>点击</span>
+            </li>
+            <li>
+                <span>点击率</span>
+            </li>
+            <li>
+                <span>消费</span>
+            </li>
+            <li>
+                <span>平均点击价格</span>
+            </li>
+            <li>
+                <span>转化</span>
+            </li>
+        </ul>
+    </div>
+    <div id="keywordQuality2"></div>
+    <div>
+        <dl class="fr">
+            每页显示
+            <select>
+                <option selected="selected" value="10">10个</option>
+                <option value="15">15个</option>
+                <option value="20">20个</option>
+            </select>
+        </dl>
+    </div>
+</td>
+</tr>
+<tr class="list2_box1" onclick="TestBlack('divo2');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                </ul>
+                <span>2</span>
+            </li>
+            <li>
+                &nbsp;17(0.11%)
+            </li>
+            <li>
+                &nbsp;60(0.83%)
+            </li>
+            <li>
+                &nbsp;1(4.76%)
+            </li>
+            <li>
+                &nbsp;1.67%
+            </li>
+            <li>
+                &nbsp;￥2.98(11.26%)
+            </li>
+            <li>
+                &nbsp;￥2.98
+            </li>
+            <li>
+                &nbsp;-
+            </li>
+        </ul>
+    </td>
+</tr>
+<td id="divo2" style=" display:none;">
+    <div class="list2_top2">
+        <ul>
+            <li></li>
+            <li>
+                <span>关键词</span>
+                <a href="#" class="question">
+                </a>
+            </li>
+            <li>
+                <span>展现</span>
+            </li>
+            <li>
+                <span>点击</span>
+            </li>
+            <li>
+                <span>点击率</span>
+            </li>
+            <li>
+                <span>消费</span>
+            </li>
+            <li>
+                <span>平均点击价格</span>
+            </li>
+            <li>
+                <span>转化</span>
+            </li>
+        </ul>
+    </div>
+    <div id="keywordQuality3"></div>
+    <div>
+        <dl class="fr">
+            每页显示
+            <select>
+                <option selected="selected" value="10">10个</option>
+                <option value="15">15个</option>
+                <option value="20">20个</option>
+            </select>
+        </dl>
+    </div>
+</td>
+</tr>
+<tr class="list2_box2" onclick="TestBlack('divo3');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                </ul>
+                <span>3</span>
+            </li>
+            <li>
+                &nbsp;17(0.11%)
+            </li>
+            <li>
+                &nbsp;60(0.83%)
+            </li>
+            <li>
+                &nbsp;1(4.76%)
+            </li>
+            <li>
+                &nbsp;1.67%
+            </li>
+            <li>
+                &nbsp;￥2.98(11.26%)
+            </li>
+            <li>
+                &nbsp;￥2.98
+            </li>
+            <li>
+                &nbsp;-
+            </li>
+        </ul>
+    </td>
+</tr>
+<td id="divo3" style=" display:none;">
+    <div class="list2_top2">
+        <ul>
+            <li></li>
+            <li>
+                <span>关键词</span>
+                <a href="#" class="question">
+                </a>
+            </li>
+            <li>
+                <span>展现</span>
+            </li>
+            <li>
+                <span>点击</span>
+            </li>
+            <li>
+                <span>点击率</span>
+            </li>
+            <li>
+                <span>消费</span>
+            </li>
+            <li>
+                <span>平均点击价格</span>
+            </li>
+            <li>
+                <span>转化</span>
+            </li>
+        </ul>
+    </div>
+    <div id="keywordQuality4"></div>
+    <div>
+        <dl class="fr">
+            每页显示
+            <select>
+                <option selected="selected" value="10">10个</option>
+                <option value="15">15个</option>
+                <option value="20">20个</option>
+            </select>
+        </dl>
+    </div>
+</td>
+</tr>
+<tr class="list2_box1" onclick="TestBlack('divo4');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                </ul>
+                <span>4</span>
+            </li>
+            <li>
+                &nbsp;17(0.11%)
+            </li>
+            <li>
+                &nbsp;60(0.83%)
+            </li>
+            <li>
+                &nbsp;1(4.76%)
+            </li>
+            <li>
+                &nbsp;1.67%
+            </li>
+            <li>
+                &nbsp;￥2.98(11.26%)
+            </li>
+            <li>
+                &nbsp;￥2.98
+            </li>
+            <li>
+                &nbsp;-
+            </li>
+        </ul>
+    </td>
+</tr>
+<td id="divo4" style=" display:none;">
+    <div class="list2_top2">
+        <ul>
+            <li></li>
+            <li>
+                <span>关键词</span>
+                <a href="#" class="question">
+                </a>
+            </li>
+            <li>
+                <span>展现</span>
+            </li>
+            <li>
+                <span>点击</span>
+            </li>
+            <li>
+                <span>点击率</span>
+            </li>
+            <li>
+                <span>消费</span>
+            </li>
+            <li>
+                <span>平均点击价格</span>
+            </li>
+            <li>
+                <span>转化</span>
+            </li>
+        </ul>
+    </div>
+    <div id="keywordQuality5"></div>
+    <div>
+        <dl class="fr">
+            每页显示
+            <select>
+                <option selected="selected" value="10">10个</option>
+                <option value="15">15个</option>
+                <option value="20">20个</option>
+            </select>
+        </dl>
+    </div>
+</td>
+</tr>
+<tr class="list2_box2" onclick="TestBlack('divo5');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                </ul>
+                <span>5</span>
+            </li>
+            <li>
+                &nbsp;17(0.11%)
+            </li>
+            <li>
+                &nbsp;60(0.83%)
+            </li>
+            <li>
+                &nbsp;1(4.76%)
+            </li>
+            <li>
+                &nbsp;1.67%
+            </li>
+            <li>
+                &nbsp;￥2.98(11.26%)
+            </li>
+            <li>
+                &nbsp;￥2.98
+            </li>
+            <li>
+                &nbsp;-
+            </li>
+        </ul>
+    </td>
+</tr>
+<td id="divo5" style=" display:none;">
+    <div class="list2_top2">
+        <ul>
+            <li></li>
+            <li>
+                <span>关键词</span>
+                <a href="#" class="question">
+                </a>
+            </li>
+            <li>
+                <span>展现</span>
+            </li>
+            <li>
+                <span>点击</span>
+            </li>
+            <li>
+                <span>点击率</span>
+            </li>
+            <li>
+                <span>消费</span>
+            </li>
+            <li>
+                <span>平均点击价格</span>
+            </li>
+            <li>
+                <span>转化</span>
+            </li>
+        </ul>
+    </div>
+    <div id="keywordQuality6"></div>
+    <div>
+        <dl class="fr">
+            每页显示
+            <select>
+                <option selected="selected" value="10">10个</option>
+                <option value="15">15个</option>
+                <option value="20">20个</option>
+            </select>
+        </dl>
+    </div>
+</td>
+</tr>
+<tr class="list2_box1" onclick="TestBlack('divo6');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                </ul>
+                <span>6</span>
+            </li>
+            <li>
+                &nbsp;17(0.11%)
+            </li>
+            <li>
+                &nbsp;60(0.83%)
+            </li>
+            <li>
+                &nbsp;1(4.76%)
+            </li>
+            <li>
+                &nbsp;1.67%
+            </li>
+            <li>
+                &nbsp;￥2.98(11.26%)
+            </li>
+            <li>
+                &nbsp;￥2.98
+            </li>
+            <li>
+                &nbsp;-
+            </li>
+        </ul>
+    </td>
+</tr>
+<td id="divo6" style=" display:none;">
+    <div class="list2_top2">
+        <ul>
+            <li></li>
+            <li>
+                <span>关键词</span>
+                <a href="#" class="question">
+                </a>
+            </li>
+            <li>
+                <span>展现</span>
+            </li>
+            <li>
+                <span>点击</span>
+            </li>
+            <li>
+                <span>点击率</span>
+            </li>
+            <li>
+                <span>消费</span>
+            </li>
+            <li>
+                <span>平均点击价格</span>
+            </li>
+            <li>
+                <span>转化</span>
+            </li>
+        </ul>
+    </div>
+    <div id="keywordQuality7"></div>
+    <div>
+        <dl class="fr">
+            每页显示
+            <select>
+                <option selected="selected" value="10">10个</option>
+                <option value="15">15个</option>
+                <option value="20">20个</option>
+            </select>
+        </dl>
+    </div>
+</td>
+</tr>
+<tr class="list2_box2" onclick="TestBlack('divo7');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                </ul>
+                <span>7</span>
+            </li>
+            <li>
+                &nbsp;17(0.11%)
+            </li>
+            <li>
+                &nbsp;60(0.83%)
+            </li>
+            <li>
+                &nbsp;1(4.76%)
+            </li>
+            <li>
+                &nbsp;1.67%
+            </li>
+            <li>
+                &nbsp;￥2.98(11.26%)
+            </li>
+            <li>
+                &nbsp;￥2.98
+            </li>
+            <li>
+                &nbsp;-
+            </li>
+        </ul>
+    </td>
+</tr>
+<td id="divo7" style=" display:none;">
+    <div class="list2_top2">
+        <ul>
+            <li></li>
+            <li>
+                <span>关键词</span>
+                <a href="#" class="question">
+                </a>
+            </li>
+            <li>
+                <span>展现</span>
+            </li>
+            <li>
+                <span>点击</span>
+            </li>
+            <li>
+                <span>点击率</span>
+            </li>
+            <li>
+                <span>消费</span>
+            </li>
+            <li>
+                <span>平均点击价格</span>
+            </li>
+            <li>
+                <span>转化</span>
+            </li>
+        </ul>
+    </div>
+    <div id="keywordQuality8"></div>
+    <div>
+        <dl class="fr">
+            每页显示
+            <select>
+                <option selected="selected" value="10">10个</option>
+                <option value="15">15个</option>
+                <option value="20">20个</option>
+            </select>
+        </dl>
+    </div>
+</td>
+</tr>
+<tr class="list2_box1" onclick="TestBlack('divo8');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                </ul>
+                <span>8</span>
+            </li>
+            <li>
+                &nbsp;17(0.11%)
+            </li>
+            <li>
+                &nbsp;60(0.83%)
+            </li>
+            <li>
+                &nbsp;1(4.76%)
+            </li>
+            <li>
+                &nbsp;1.67%
+            </li>
+            <li>
+                &nbsp;￥2.98(11.26%)
+            </li>
+            <li>
+                &nbsp;￥2.98
+            </li>
+            <li>
+                &nbsp;-
+            </li>
+        </ul>
+    </td>
+</tr>
+<td id="divo8" style=" display:none;">
+    <div class="list2_top2">
+        <ul>
+            <li></li>
+            <li>
+                <span>关键词</span>
+                <a href="#" class="question">
+                </a>
+            </li>
+            <li>
+                <span>展现</span>
+            </li>
+            <li>
+                <span>点击</span>
+            </li>
+            <li>
+                <span>点击率</span>
+            </li>
+            <li>
+                <span>消费</span>
+            </li>
+            <li>
+                <span>平均点击价格</span>
+            </li>
+            <li>
+                <span>转化</span>
+            </li>
+        </ul>
+    </div>
+    <div id="keywordQuality9"></div>
+    <div>
+        <dl class="fr">
+            每页显示
+            <select>
+                <option selected="selected" value="10">10个</option>
+                <option value="15">15个</option>
+                <option value="20">20个</option>
+            </select>
+        </dl>
+    </div>
+</td>
+</tr>
+<tr class="list2_box2" onclick="TestBlack('divo9');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                    <li>
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                    </li>
+                </ul>
+                <span>9</span>
+            </li>
+            <li>
+                &nbsp;17(0.11%)
+            </li>
+            <li>
+                &nbsp;60(0.83%)
+            </li>
+            <li>
+                &nbsp;1(4.76%)
+            </li>
+            <li>
+                &nbsp;1.67%
+            </li>
+            <li>
+                &nbsp;￥2.98(11.26%)
+            </li>
+            <li>
+                &nbsp;￥2.98
+            </li>
+            <li>
+                &nbsp;-
+            </li>
+        </ul>
+    </td>
+</tr>
+<td id="divo9" style=" display:none;">
 <div class="list2_top2">
     <ul>
         <li></li>
         <li>
-            <span>关键词数</span>
+            <span>关键词</span>
             <a href="#" class="question">
             </a>
         </li>
@@ -981,2167 +1699,6 @@
 </div>
 </td>
 </tr>
-<tr class="list2_box1" onclick="TestBlack('divo2');">
-    <td>
-        <ul>
-            <li>
-                <ul class="paihang">
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                </ul>
-                <span>2</span>
-            </li>
-            <li>
-                &nbsp;17(0.11%)
-            </li>
-            <li>
-                &nbsp;60(0.83%)
-            </li>
-            <li>
-                &nbsp;1(4.76%)
-            </li>
-            <li>
-                &nbsp;1.67%
-            </li>
-            <li>
-                &nbsp;￥2.98(11.26%)
-            </li>
-            <li>
-                &nbsp;￥2.98
-            </li>
-            <li>
-                &nbsp;-
-            </li>
-        </ul>
-    </td>
-</tr>
-<td id="divo2" style=" display:none;">
-<div class="list2_top2">
-    <ul>
-        <li></li>
-        <li>
-            <span>关键词数</span>
-            <a href="#" class="question">
-            </a>
-        </li>
-        <li>
-            <span>展现</span>
-        </li>
-        <li>
-            <span>点击</span>
-        </li>
-        <li>
-            <span>点击率</span>
-        </li>
-        <li>
-            <span>消费</span>
-        </li>
-        <li>
-            <span>平均点击价格</span>
-        </li>
-        <li>
-            <span>转化</span>
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow  wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <dl class="fr">
-        每页显示
-        <select>
-            <option>10个</option>
-            <option>9个</option>
-            <option>8个</option>
-        </select>
-    </dl>
-</div>
-</td>
-</tr>
-<tr class="list2_box2" onclick="TestBlack('divo3');">
-    <td>
-        <ul>
-            <li>
-                <ul class="paihang">
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                </ul>
-                <span>3</span>
-            </li>
-            <li>
-                &nbsp;17(0.11%)
-            </li>
-            <li>
-                &nbsp;60(0.83%)
-            </li>
-            <li>
-                &nbsp;1(4.76%)
-            </li>
-            <li>
-                &nbsp;1.67%
-            </li>
-            <li>
-                &nbsp;￥2.98(11.26%)
-            </li>
-            <li>
-                &nbsp;￥2.98
-            </li>
-            <li>
-                &nbsp;-
-            </li>
-        </ul>
-    </td>
-</tr>
-<td id="divo3" style=" display:none;">
-<div class="list2_top2">
-    <ul>
-        <li></li>
-        <li>
-            <span>关键词数</span>
-            <a href="#" class="question">
-            </a>
-        </li>
-        <li>
-            <span>展现</span>
-        </li>
-        <li>
-            <span>点击</span>
-        </li>
-        <li>
-            <span>点击率</span>
-        </li>
-        <li>
-            <span>消费</span>
-        </li>
-        <li>
-            <span>平均点击价格</span>
-        </li>
-        <li>
-            <span>转化</span>
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow  wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <dl class="fr">
-        每页显示
-        <select>
-            <option>10个</option>
-            <option>9个</option>
-            <option>8个</option>
-        </select>
-    </dl>
-</div>
-</td>
-</tr>
-<tr class="list2_box1" onclick="TestBlack('divo4');">
-    <td>
-        <ul>
-            <li>
-                <ul class="paihang">
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                </ul>
-                <span>4</span>
-            </li>
-            <li>
-                &nbsp;17(0.11%)
-            </li>
-            <li>
-                &nbsp;60(0.83%)
-            </li>
-            <li>
-                &nbsp;1(4.76%)
-            </li>
-            <li>
-                &nbsp;1.67%
-            </li>
-            <li>
-                &nbsp;￥2.98(11.26%)
-            </li>
-            <li>
-                &nbsp;￥2.98
-            </li>
-            <li>
-                &nbsp;-
-            </li>
-        </ul>
-    </td>
-</tr>
-<td id="divo4" style=" display:none;">
-<div class="list2_top2">
-    <ul>
-        <li></li>
-        <li>
-            <span>关键词数</span>
-            <a href="#" class="question">
-            </a>
-        </li>
-        <li>
-            <span>展现</span>
-        </li>
-        <li>
-            <span>点击</span>
-        </li>
-        <li>
-            <span>点击率</span>
-        </li>
-        <li>
-            <span>消费</span>
-        </li>
-        <li>
-            <span>平均点击价格</span>
-        </li>
-        <li>
-            <span>转化</span>
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow  wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <dl class="fr">
-        每页显示
-        <select>
-            <option>10个</option>
-            <option>9个</option>
-            <option>8个</option>
-        </select>
-    </dl>
-</div>
-</td>
-</tr>
-<tr class="list2_box2" onclick="TestBlack('divo5');">
-    <td>
-        <ul>
-            <li>
-                <ul class="paihang">
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                </ul>
-                <span>5</span>
-            </li>
-            <li>
-                &nbsp;17(0.11%)
-            </li>
-            <li>
-                &nbsp;60(0.83%)
-            </li>
-            <li>
-                &nbsp;1(4.76%)
-            </li>
-            <li>
-                &nbsp;1.67%
-            </li>
-            <li>
-                &nbsp;￥2.98(11.26%)
-            </li>
-            <li>
-                &nbsp;￥2.98
-            </li>
-            <li>
-                &nbsp;-
-            </li>
-        </ul>
-    </td>
-</tr>
-<td id="divo5" style=" display:none;">
-<div class="list2_top2">
-    <ul>
-        <li></li>
-        <li>
-            <span>关键词数</span>
-            <a href="#" class="question">
-            </a>
-        </li>
-        <li>
-            <span>展现</span>
-        </li>
-        <li>
-            <span>点击</span>
-        </li>
-        <li>
-            <span>点击率</span>
-        </li>
-        <li>
-            <span>消费</span>
-        </li>
-        <li>
-            <span>平均点击价格</span>
-        </li>
-        <li>
-            <span>转化</span>
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow  wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <dl class="fr">
-        每页显示
-        <select>
-            <option>10个</option>
-            <option>9个</option>
-            <option>8个</option>
-        </select>
-    </dl>
-</div>
-</td>
-</tr>
-<tr class="list2_box1" onclick="TestBlack('divo6');">
-    <td>
-        <ul>
-            <li>
-                <ul class="paihang">
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                </ul>
-                <span>6</span>
-            </li>
-            <li>
-                &nbsp;17(0.11%)
-            </li>
-            <li>
-                &nbsp;60(0.83%)
-            </li>
-            <li>
-                &nbsp;1(4.76%)
-            </li>
-            <li>
-                &nbsp;1.67%
-            </li>
-            <li>
-                &nbsp;￥2.98(11.26%)
-            </li>
-            <li>
-                &nbsp;￥2.98
-            </li>
-            <li>
-                &nbsp;-
-            </li>
-        </ul>
-    </td>
-</tr>
-<td id="divo6" style=" display:none;">
-<div class="list2_top2">
-    <ul>
-        <li></li>
-        <li>
-            <span>关键词数</span>
-            <a href="#" class="question">
-            </a>
-        </li>
-        <li>
-            <span>展现</span>
-        </li>
-        <li>
-            <span>点击</span>
-        </li>
-        <li>
-            <span>点击率</span>
-        </li>
-        <li>
-            <span>消费</span>
-        </li>
-        <li>
-            <span>平均点击价格</span>
-        </li>
-        <li>
-            <span>转化</span>
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow  wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <dl class="fr">
-        每页显示
-        <select>
-            <option>10个</option>
-            <option>9个</option>
-            <option>8个</option>
-        </select>
-    </dl>
-</div>
-</td>
-</tr>
-<tr class="list2_box2" onclick="TestBlack('divo7');">
-    <td>
-        <ul>
-            <li>
-                <ul class="paihang">
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                </ul>
-                <span>7</span>
-            </li>
-            <li>
-                &nbsp;17(0.11%)
-            </li>
-            <li>
-                &nbsp;60(0.83%)
-            </li>
-            <li>
-                &nbsp;1(4.76%)
-            </li>
-            <li>
-                &nbsp;1.67%
-            </li>
-            <li>
-                &nbsp;￥2.98(11.26%)
-            </li>
-            <li>
-                &nbsp;￥2.98
-            </li>
-            <li>
-                &nbsp;-
-            </li>
-        </ul>
-    </td>
-</tr>
-<td id="divo7" style=" display:none;">
-<div class="list2_top2">
-    <ul>
-        <li></li>
-        <li>
-            <span>关键词数</span>
-            <a href="#" class="question">
-            </a>
-        </li>
-        <li>
-            <span>展现</span>
-        </li>
-        <li>
-            <span>点击</span>
-        </li>
-        <li>
-            <span>点击率</span>
-        </li>
-        <li>
-            <span>消费</span>
-        </li>
-        <li>
-            <span>平均点击价格</span>
-        </li>
-        <li>
-            <span>转化</span>
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow  wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <dl class="fr">
-        每页显示
-        <select>
-            <option>10个</option>
-            <option>9个</option>
-            <option>8个</option>
-        </select>
-    </dl>
-</div>
-</td>
-</tr>
-<tr class="list2_box1" onclick="TestBlack('divo8');">
-    <td>
-        <ul>
-            <li>
-                <ul class="paihang">
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                </ul>
-                <span>8</span>
-            </li>
-            <li>
-                &nbsp;17(0.11%)
-            </li>
-            <li>
-                &nbsp;60(0.83%)
-            </li>
-            <li>
-                &nbsp;1(4.76%)
-            </li>
-            <li>
-                &nbsp;1.67%
-            </li>
-            <li>
-                &nbsp;￥2.98(11.26%)
-            </li>
-            <li>
-                &nbsp;￥2.98
-            </li>
-            <li>
-                &nbsp;-
-            </li>
-        </ul>
-    </td>
-</tr>
-<td id="divo8" style=" display:none;">
-<div class="list2_top2">
-    <ul>
-        <li></li>
-        <li>
-            <span>关键词数</span>
-            <a href="#" class="question">
-            </a>
-        </li>
-        <li>
-            <span>展现</span>
-        </li>
-        <li>
-            <span>点击</span>
-        </li>
-        <li>
-            <span>点击率</span>
-        </li>
-        <li>
-            <span>消费</span>
-        </li>
-        <li>
-            <span>平均点击价格</span>
-        </li>
-        <li>
-            <span>转化</span>
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow  wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <dl class="fr">
-        每页显示
-        <select>
-            <option>10个</option>
-            <option>9个</option>
-            <option>8个</option>
-        </select>
-    </dl>
-</div>
-</td>
-</tr>
-<tr class="list2_box2" onclick="TestBlack('divo9');">
-    <td>
-        <ul>
-            <li>
-                <ul class="paihang">
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                    <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                    </li>
-                </ul>
-                <span>9</span>
-            </li>
-            <li>
-                &nbsp;17(0.11%)
-            </li>
-            <li>
-                &nbsp;60(0.83%)
-            </li>
-            <li>
-                &nbsp;1(4.76%)
-            </li>
-            <li>
-                &nbsp;1.67%
-            </li>
-            <li>
-                &nbsp;￥2.98(11.26%)
-            </li>
-            <li>
-                &nbsp;￥2.98
-            </li>
-            <li>
-                &nbsp;-
-            </li>
-        </ul>
-    </td>
-</tr>
-<td id="divo9" style=" display:none;">
-<div class="list2_top2">
-    <ul>
-        <li></li>
-        <li>
-            <span>关键词数</span>
-            <a href="#" class="question">
-            </a>
-        </li>
-        <li>
-            <span>展现</span>
-        </li>
-        <li>
-            <span>点击</span>
-        </li>
-        <li>
-            <span>点击率</span>
-        </li>
-        <li>
-            <span>消费</span>
-        </li>
-        <li>
-            <span>平均点击价格</span>
-        </li>
-        <li>
-            <span>转化</span>
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow  wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <dl class="fr">
-        每页显示
-        <select>
-            <option>10个</option>
-            <option>9个</option>
-            <option>8个</option>
-        </select>
-    </dl>
-</div>
-</td>
-</tr>
 <tr class="list2_box2" onclick="TestBlack('divo10');">
     <td>
         <ul>
@@ -3190,226 +1747,45 @@
     </td>
 </tr>
 <td id="divo10" style=" display:none;">
-<div class="list2_top2">
-    <ul>
-        <li></li>
-        <li>
-            <span>关键词数</span>
-            <a href="#" class="question">
-            </a>
-        </li>
-        <li>
-            <span>展现</span>
-        </li>
-        <li>
-            <span>点击</span>
-        </li>
-        <li>
-            <span>点击率</span>
-        </li>
-        <li>
-            <span>消费</span>
-        </li>
-        <li>
-            <span>平均点击价格</span>
-        </li>
-        <li>
-            <span>转化</span>
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow  wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="hot"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <ul>
-        <li></li>
-        <li>
-            <span>搜索引擎优化</span><span class="red_arrow wd3"></span>
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-        <li>
-            17(0.11%)
-        </li>
-    </ul>
-</div>
-<div>
-    <dl class="fr">
-        每页显示
-        <select>
-            <option>10个</option>
-            <option>9个</option>
-            <option>8个</option>
-        </select>
-    </dl>
-</div>
+    <div class="list2_top2">
+        <ul>
+            <li></li>
+            <li>
+                <span>关键词</span>
+                <a href="#" class="question">
+                </a>
+            </li>
+            <li>
+                <span>展现</span>
+            </li>
+            <li>
+                <span>点击</span>
+            </li>
+            <li>
+                <span>点击率</span>
+            </li>
+            <li>
+                <span>消费</span>
+            </li>
+            <li>
+                <span>平均点击价格</span>
+            </li>
+            <li>
+                <span>转化</span>
+            </li>
+        </ul>
+    </div>
+
+    <div>
+        <dl class="fr">
+            每页显示
+            <select>
+                <option selected="selected" value="10">10个</option>
+                <option value="15">15个</option>
+                <option value="20">20个</option>
+            </select>
+        </dl>
+    </div>
 </td>
 </tr>
 </table>
@@ -3613,8 +1989,6 @@
 
 
 
-
-
 </table>
 <div class="download over fr">
 									<span>每页显示
@@ -3710,6 +2084,9 @@
     //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
     var statDate = 1;
 
+    //查询类别区分
+    var genre = "";
+
     $(function () {
         var $tab_li = $('.tab_menu li');
         $('.tab_menu li').click(function () {
@@ -3736,9 +2113,19 @@
         });
 
         //加载日历控件
-        $('input[name=reservation]').daterangepicker(null, function (start, end, label) {
-            console.log(start.toISOString(), end.toISOString(), label);
-        });
+        $("input[name=reservation]").daterangepicker({}, function (startDate, endDate) {
+                    var date = new Date();
+                    date.setTime(startDate);
+                    daterangepicker_start_date = date.Format("yyyy-MM-dd");
+                    date.setTime(endDate);
+                    daterangepicker_end_date = date.Format("yyyy-MM-dd");
+                    if (genre == "keywordQualityCustom") {
+                        //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
+                        loadKeywordQualityData(0);
+                    }
+
+                }
+        );
 
         //默认加载昨天的数据
         loadKeywordQualityData(1);
@@ -3755,12 +2142,6 @@
             obj.style.display = "";
         }
     }
-
-    //获取日期控件的日期
-    var getCustomDate = function () {
-        daterangepicker_start_date = $("input[name=daterangepicker_start]").val();
-        daterangepicker_end_date = $("input[name=daterangepicker_end]").val();
-    };
 
     /**
      * 获取昨天, 近七天, 近30天日期
@@ -3810,7 +2191,7 @@
                     $("#keywordQuality1").empty();
                     $.each(data.rows, function (i, item) {
                         var _div = "<div><ul><li></li><li><span>" + item.keywordName + "</span><span class='green_arrow wd3'></span></li>" +
-                                "<li>" + item.impression + "</li><li>" + item.click + "</li><li>" + item.ctr + "</li><li>" + item.cost + "</li>" +
+                                "<li>" + item.impression + "</li><li>" + item.click + "</li><li>" + (item.ctr * 100) + "%</li><li>" + item.cost + "</li>" +
                                 "<li>" + item.cpc + "</li><li>" + item.conversion + "</li></ul></div>";
                         $("#keywordQuality1").append(_div);
                     })
@@ -3829,16 +2210,16 @@
                 fieldName: category
             },
             success: function (data, textStatus, jqXHR) {
-                var calssStr="";
+                var calssStr = "";
                 if (data.length > 0) {
                     $.each(data, function (i, item) {
-                        if(i%2 == 0){
+                        if (i % 2 == 0) {
                             calssStr = "list2_box1";
-                        }else{
+                        } else {
                             calssStr = "list2_box2";
                         }
-                        var _div = "<tr class="+calssStr+"><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.impression + "</li><li> &nbsp;" + item.click + "</li><li> &nbsp;" + item.cost + "</li><li> &nbsp;" + item.ctr*100 + "%</li>"
-                                +"<li> &nbsp;" + item.cpc + "</li><li> &nbsp;" + item.conversion + "</li></ul></td></tr>";
+                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.impression + "</li><li> &nbsp;" + item.click + "</li><li> &nbsp;" + item.cost + "</li><li> &nbsp;" + item.ctr * 100 + "%</li>"
+                                + "<li> &nbsp;" + item.cpc + "</li><li> &nbsp;" + item.conversion + "</li></ul></td></tr>";
                         $("#performance").append(_div);
                     })
                 }
@@ -3933,46 +2314,36 @@
     });
 
 
-    var getImportKeywordDefault=function(day){
+    var getImportKeywordDefault = function (day) {
         getDateParam(day);
-        $.get("/main/getImportKeywordList",{
+        $.get("/main/getImportKeywordList", {
             startDate: daterangepicker_start_date,
             endDate: daterangepicker_end_date,
-            userTable:"aaa123"
-        },function(result){
+            userTable: "aaa123"
+        }, function (result) {
 
         });
     };
 
-    var reloadKeywordQuality = function () {
-        $("#keywordQuality1Page");
-    };
-
-
-    var reloadKeywordQuality = function () {
-        ;
-    };
-
-
     /*===========================================================账户概览start================*/
 
     //根据最近几天获取数据
-    function lisClick(obj,days){
+    function lisClick(obj, days) {
         htmlLoding();
         getData(days);
         changedLiState($(obj));
     }
 
     //改变li的样式状态
-    function changedLiState(obj){
-        $("#clickLis li").each(function(){
+    function changedLiState(obj) {
+        $("#clickLis li").each(function () {
             $(this).removeClass("current");
         });
         obj.parent().addClass("current");
     }
 
     //数据获取中。。。
-    function htmlLoding(){
+    function htmlLoding() {
         $(".impression").html("<h6>数据获取中...</h6>");
         $(".click").html("<h6>数据获取中...</h6>");
         $(".cos").html("<h6>数据获取中...</h6>");
@@ -3983,13 +2354,13 @@
     htmlLoding();
 
     //获取数据
-    function getData(days){
+    function getData(days) {
         $.ajax({
-            url:"/account/getAccountOverviewData",
-            type:"get",
-            dataType:"json",
-            data:{"days":days,"startDate":daterangepicker_start_date,"endDate":daterangepicker_end_date},
-            success:function(data){
+            url: "/account/getAccountOverviewData",
+            type: "get",
+            dataType: "json",
+            data: {"days": days, "startDate": daterangepicker_start_date, "endDate": daterangepicker_end_date},
+            success: function (data) {
                 $(".impression").html(data.impression);
                 $(".click").html(data.click);
                 $(".cos").html(data.cos);
