@@ -1821,186 +1821,185 @@
     </ul>
 </div>
 <div class="list2 wd">
-<table border="0" cellspacing="0" cellspacing="0">
-<tr class="list2_top">
-    <td>
-        <ul>
-            <li>
-                &nbsp;<span>关键词</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
-
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-                <a href="#" class="question">
-                </a>
-            </li>
-            <li>
-                &nbsp;<span>展现</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
-
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-            </li>
-            <li>
-                &nbsp;<span>点击</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
-
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-            </li>
-            <li>
-                &nbsp;<span>消费</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
-
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-            </li>
-            <li>
-                &nbsp;<span>平均点击价格</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
-
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-            </li>
-            <li>
-                &nbsp;<span>点击率</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
-
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-            </li>
-            <li>
-                &nbsp;<span>转化</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
-
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-            </li>
-            <li>
-                &nbsp;<span>平均排名</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
-
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-            </li>
-            <li>
-                &nbsp;<span>质量度</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
-
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-            </li>
-            <li>
-                &nbsp;<span>匹配</span><b>
-                <p>
-                    <input class="one" type="button">
-                </p>
-
-                <p>
-                    <input class="two" type="button">
-                </p></b>
-                <a href="#" class="question"></a>
-            </li>
-        </ul>
-    </td>
-</tr>
-<tr class="list2_box1" >
-    <td>
-        <ul>
-            <li>
-                &nbsp;<span>搜索引擎优化1</span><span class="green_arrow wd3"></span>
-            </li>
-            <li>
-                &nbsp;3.902
-            </li>
-            <li>
-                &nbsp;13
-            </li>
-            <li>
-                &nbsp;￥0.91
-            </li>
-            <li>
-                &nbsp;￥0.91
-            </li>
-            <li>
-                &nbsp;0.33%
-            </li>
-            <li>
-                &nbsp;0.00
-            </li>
-            <li>
-                &nbsp;2.24
-            </li>
-            <li>
-                &nbsp;
-                <ul class="paihang">
+    <table border="0" cellspacing="0" cellspacing="0">
+        <tr class="list2_top">
+            <td>
+                <ul>
                     <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star.png">
+                        &nbsp;<span>关键词</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
+
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                        <a href="#" class="question">
+                        </a>
                     </li>
                     <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star2.png">
+                        &nbsp;<span>展现</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
+
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
                     </li>
                     <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                        &nbsp;<span>点击</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
+
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
                     </li>
                     <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                        &nbsp;<span>消费</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
+
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
                     </li>
                     <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                        &nbsp;<span>平均点击价格</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
+
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                    </li>
+                    <li>
+                        &nbsp;<span>点击率</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
+
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                    </li>
+                    <li>
+                        &nbsp;<span>转化</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
+
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                    </li>
+                    <li>
+                        &nbsp;<span>平均排名</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
+
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                    </li>
+                    <li>
+                        &nbsp;<span>质量度</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
+
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                    </li>
+                    <li>
+                        &nbsp;<span>匹配</span><b>
+                        <p>
+                            <input class="one" type="button">
+                        </p>
+
+                        <p>
+                            <input class="two" type="button">
+                        </p></b>
+                        <a href="#" class="question"></a>
                     </li>
                 </ul>
-                <span>0</span>
-            </li>
-            <li>
-                &nbsp;广泛
-            </li>
-        </ul>
-    </td>
+            </td>
+        </tr>
+        <tr class="list2_box1">
+            <td>
+                <ul>
+                    <li>
+                        &nbsp;<span>搜索引擎优化1</span><span class="green_arrow wd3"></span>
+                    </li>
+                    <li>
+                        &nbsp;3.902
+                    </li>
+                    <li>
+                        &nbsp;13
+                    </li>
+                    <li>
+                        &nbsp;￥0.91
+                    </li>
+                    <li>
+                        &nbsp;￥0.91
+                    </li>
+                    <li>
+                        &nbsp;0.33%
+                    </li>
+                    <li>
+                        &nbsp;0.00
+                    </li>
+                    <li>
+                        &nbsp;2.24
+                    </li>
+                    <li>
+                        &nbsp;
+                        <ul class="paihang">
+                            <li>
+                                <img src="${pageContext.request.contextPath}/public/img/star.png">
+                            </li>
+                            <li>
+                                <img src="${pageContext.request.contextPath}/public/img/star2.png">
+                            </li>
+                            <li>
+                                <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                            </li>
+                            <li>
+                                <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                            </li>
+                            <li>
+                                <img src="${pageContext.request.contextPath}/public/img/star3.png">
+                            </li>
+                        </ul>
+                        <span>0</span>
+                    </li>
+                    <li>
+                        &nbsp;广泛
+                    </li>
+                </ul>
+            </td>
 
-</tr>
+        </tr>
 
 
-
-</table>
-<div class="download over fr">
+    </table>
+    <div class="download over fr">
 									<span>每页显示
 										<select>
                                             <option>10个</option>
                                             <option>9个</option>
                                             <option>8个</option>
                                         </select> </span>
-    <a href="#">
-        下载全部
-    </a>
-</div>
+        <a href="#">
+            下载全部
+        </a>
+    </div>
 </div>
 </div>
 </div>
