@@ -194,71 +194,44 @@
     <div class="list01 over" style="border-top:1px solid #d5d5d8;">
         <div class="list01_top over">
             <Span>近期概览</Span>
-            <ul>
-                <li class="current">
-                    <a href="#">
-                        昨天
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        近7天
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        近30天
-                    </a>
-                </li>
+            <ul id = "clickLis">
+                <li class="current"><a  href="javascript:" onclick="lisClick(this,1)">昨天</a></li>
+                <li><a  href="javascript:" onclick="lisClick(this,7)">近7天</a></li>
+                <li><a  href="javascript:"  onclick="lisClick(this,30)">近30天</a></li>
                 <li class="date">
-                    <a href="#">
+                    <a href="javascript:" onclick="lisClick(this,null);">
                         自定义
-                        <input name="reservation" class=" fa fa-calendar " type="image"
-                               src="${pageContext.request.contextPath}/public/img/date.png">
+
                     </a>
+                        <input name="reservation" class=" fa fa-calendar " type="image" src="${pageContext.request.contextPath}/public/img/date.png">
+
                 </li>
             </ul>
         </div>
         <div class="list01_under2 over">
             <ul>
                 <li>
-                    <div class="blue1 fl wd1"></div>
-                    <div class="blue2 fl wd2">
-                        <Span>2,34,402</Span>
-
-                        <p>
-                            展现次数
-                        </p>
+                    <div class="blue1 fl wd1"> </div>
+                    <div class="blue2 fl wd2"> <Span class="impression"></Span>
+                        <p>展现次数</p>
                     </div>
                 </li>
                 <li>
-                    <div class="green1 fl wd1"></div>
-                    <div class="green2 fl wd2">
-                        <Span>2344</Span>
-
-                        <p>
-                            点击次数
-                        </p>
+                    <div class="green1 fl wd1"> </div>
+                    <div class="green2 fl wd2"> <Span class="click"></Span>
+                        <p>点击次数</p>
                     </div>
                 </li>
                 <li>
-                    <div class="red1 fl wd1"></div>
-                    <div class="red2 fl wd2">
-                        <Span>2,34,402</Span>
-
-                        <p>
-                            展现次数
-                        </p>
+                    <div class="red1 fl wd1"> </div>
+                    <div class="red2 fl wd2"> <Span class="cos"></Span>
+                        <p>消费</p>
                     </div>
                 </li>
                 <li>
-                    <div class="yellow1 fl wd1"></div>
-                    <div class="yellow2 fl wd2">
-                        <Span>2344</Span>
-
-                        <p>
-                            转化次数
-                        </p>
+                    <div class="yellow1 fl wd1"> </div>
+                    <div class="yellow2 fl wd2"> <Span class="conversion"></Span>
+                        <p>转化次数</p>
                     </div>
                 </li>
             </ul>
@@ -4047,6 +4020,64 @@
     var reloadKeywordQuality = function () {
         $("#keywordQuality1Page");
     };
+
+
+    var reloadKeywordQuality = function () {
+        ;
+    };
+
+
+    /*===========================================================账户概览start================*/
+
+    //根据最近几天获取数据
+    function lisClick(obj,days){
+        htmlLoding();
+        getData(days);
+        changedLiState($(obj));
+    }
+
+    //改变li的样式状态
+    function changedLiState(obj){
+        $("#clickLis li").each(function(){
+            $(this).removeClass("current");
+        });
+        obj.parent().addClass("current");
+    }
+
+    //数据获取中。。。
+    function htmlLoding(){
+        $(".impression").html("<h6>数据获取中...</h6>");
+        $(".click").html("<h6>数据获取中...</h6>");
+        $(".cos").html("<h6>数据获取中...</h6>");
+        $(".conversion").html("<h6>数据获取中...</h6>");
+    }
+
+    //默认为数据获取中
+    htmlLoding();
+
+    //获取数据
+    function getData(days){
+        $.ajax({
+            url:"/account/getAccountOverviewData",
+            type:"get",
+            dataType:"json",
+            data:{"days":days,"startDate":daterangepicker_start_date,"endDate":daterangepicker_end_date},
+            success:function(data){
+                $(".impression").html(data.impression);
+                $(".click").html(data.click);
+                $(".cos").html(data.cos);
+                $(".conversion").html(data.conversion);
+            }
+        });
+        daterangepicker_start_date = null;
+        daterangepicker_end_date = null;
+    }
+
+    //初始化账户概览页面数据
+    getData(1);//默认显示昨天的汇总数据
+
+
+    /*===========================================================账户概览end==============================================*/
 
 </script>
 
