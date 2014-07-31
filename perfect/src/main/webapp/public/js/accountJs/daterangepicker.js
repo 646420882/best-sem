@@ -1,11 +1,11 @@
 ﻿/**
-* @version: 1.3.6
-* @author: Dan Grossman http://www.dangrossman.info/
-* @date: 2014-04-29
-* @copyright: Copyright (c) 2012-2014 Dan Grossman. All rights reserved.
-* @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
-* @website: http://www.improvely.com/
-*/
+ * @version: 1.3.6
+ * @author: Dan Grossman http://www.dangrossman.info/
+ * @date: 2014-04-29
+ * @copyright: Copyright (c) 2012-2014 Dan Grossman. All rights reserved.
+ * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
+ * @website: http://www.improvely.com/
+ */
 !function ($, moment) {
 
     var DateRangePicker = function (element, options, cb) {
@@ -20,28 +20,28 @@
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
 
                 '<div class="ranges">' +
-                  '<div class="range_inputs">' +
-                    '<div class="daterangepicker_start_input">' +
-                      '<label for="daterangepicker_start"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
-                    '</div>' +
-                    '<div class="daterangepicker_end_input">' +
-                      '<label for="daterangepicker_end"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
-                    '</div>' +
-                    '<button class="applyBtn" disabled="disabled" onclick="getCustomDate();"></button>&nbsp;' +
-                    '<button class="cancelBtn"></button>' +
-                  '</div>' +
+                '<div class="range_inputs">' +
+                '<div class="daterangepicker_start_input">' +
+                '<label for="daterangepicker_start"></label>' +
+                '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
+                '</div>' +
+                '<div class="daterangepicker_end_input">' +
+                '<label for="daterangepicker_end"></label>' +
+                '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
+                '</div>' +
+                '<button class="applyBtn" disabled="disabled"/>&nbsp;' +
+                '<button class="cancelBtn"/>' +
+                '</div>' +
                 '</div>' +
                 '<div class="clear"></div>'+
-                 '<div class="calendar left"></div>' +
+                '<div class="calendar left"></div>' +
                 '<div class="calendar right"></div>' +
-              '</div>'
+                '</div>'
 
 
 
 
-			  ;
+            ;
 
         //custom options
         if (typeof options !== 'object' || options === null)
@@ -192,7 +192,7 @@
                 }
 
                 if (typeof options.locale.monthNames === 'object') {
-                  this.locale.monthNames = options.locale.monthNames.slice();
+                    this.locale.monthNames = options.locale.monthNames.slice();
                 }
 
                 if (typeof options.locale.firstDay === 'number') {
@@ -205,27 +205,27 @@
                 }
 
                 if (typeof options.locale.applyLabel === 'string') {
-                  this.locale.applyLabel = options.locale.applyLabel;
+                    this.locale.applyLabel = options.locale.applyLabel;
                 }
 
                 if (typeof options.locale.cancelLabel === 'string') {
-                  this.locale.cancelLabel = options.locale.cancelLabel;
+                    this.locale.cancelLabel = options.locale.cancelLabel;
                 }
 
                 if (typeof options.locale.fromLabel === 'string') {
-                  this.locale.fromLabel = options.locale.fromLabel;
+                    this.locale.fromLabel = options.locale.fromLabel;
                 }
 
                 if (typeof options.locale.toLabel === 'string') {
-                  this.locale.toLabel = options.locale.toLabel;
+                    this.locale.toLabel = options.locale.toLabel;
                 }
 
                 if (typeof options.locale.weekLabel === 'string') {
-                  this.locale.weekLabel = options.locale.weekLabel;
+                    this.locale.weekLabel = options.locale.weekLabel;
                 }
 
                 if (typeof options.locale.customRangeLabel === 'string') {
-                  this.locale.customRangeLabel = options.locale.customRangeLabel;
+                    this.locale.customRangeLabel = options.locale.customRangeLabel;
                 }
             }
 

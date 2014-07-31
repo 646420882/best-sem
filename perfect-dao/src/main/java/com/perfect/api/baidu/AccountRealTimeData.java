@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by baizz on 14-7-30.
+ * Created by baizz on 2014-7-30.
  */
 public class AccountRealTimeData {
 
@@ -70,7 +70,6 @@ public class AccountRealTimeData {
 
         //创建请求
         GetRealTimeDataRequest getRealTimeDataRequest = new GetRealTimeDataRequest();
-        ResHeaderUtil.printResHeader(ResHeaderUtil.getJsonResHeader(true));
         getRealTimeDataRequest.setRealTimeRequestTypes(realTimeRequestType);
         GetRealTimeDataResponse response = reportService.getRealTimeData(getRealTimeDataRequest);
         List<RealTimeResultType> list = response.getRealTimeResultTypes();
