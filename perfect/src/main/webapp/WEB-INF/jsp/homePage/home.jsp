@@ -4038,7 +4038,7 @@
         $.get("/main/getImportKeywordList",{
             startDate: daterangepicker_start_date,
             endDate: daterangepicker_end_date,
-            groupId:"aaa123"
+            userTable:"aaa123"
         },function(result){
 
         });
