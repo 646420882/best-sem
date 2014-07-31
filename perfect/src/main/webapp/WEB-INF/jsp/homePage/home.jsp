@@ -2032,6 +2032,9 @@
 
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.10.4.min.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/accountJs/moment.min.js"></script>
@@ -2193,7 +2196,7 @@
                 if (data.rows.length > 0) {
                     $.each(data.rows, function (i, item) {
                         var _div = "<div><ul><li></li><li><span>" + item.keywordName + "</span><span class='green_arrow wd3'></span></li>" +
-                                "<li>" + item.impression + "</li><li>" + item.click + "</li><li>" + (item.ctr * 100) + "%</li><li>" + item.cost + "</li>" +
+                                "<li>" + item.impression + "</li><li>" + item.click + "</li><li>" + item.ctr + "%</li><li>" + item.cost + "</li>" +
                                 "<li>" + item.cpc + "</li><li>" + item.conversion + "</li></ul></div>";
                         $("#keywordQuality1").append(_div);
                     })
