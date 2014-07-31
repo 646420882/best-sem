@@ -79,19 +79,27 @@
 .list01_top ul {
 	display: block;
 	float: left;
-	width: 369px;
+	width: 354px;
 	height: 25px;
 	margin-left: 25px;
-	overflow: hidden;
+    border:1px solid #d6d6d6;
+    background:#fff;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    position:relative;
+    z-index: 3;
+    behavior: url(iecss3.htc);
+    overflow: hidden;
 }
 .list01_top ul li {
 	display: block;
 	float: left;
 	height: 25px;
 	line-height: 25px;
-	background: url(/public/img/time_bg_mid.png) repeat;
 	font-size: 12px;
 	font-weight: normal;
+
 }
 .list01_top ul li a {
 	width: 88px;
@@ -99,26 +107,25 @@
 	color: #000000;
 }
 .list01_top ul li a:hover {
-	background: url(/public/img/time_hover.jpg) repeat;
-	color: #fff;
 	text-decoration:none;
 }
 .list01_top ul .current {
-	background: url(/public/img/bg.png) -10px -92px no-repeat;
+	background:#f5b802;
+    color:#fff;
 }
 .list01_top ul .current a {
 	color: #fff;
 	background: url(/public/img/colock.png) 8px 4px no-repeat;
+    text-decoration: none;
 }
-.list01_top ul .current a:hover {
-	background: url(/public/img/colock.png) 8px 4px no-repeat;
+.list01_top ul .current a:hover{
+    text-decoration: none;
+
 }
+
 .list01_top ul .date {
 	position: relative;
-	background: url(/public/img/bg.png) -10px -120px no-repeat;
-}
-.list01_top ul .date a:hover {
-	background: url(/public/img/bg.png) -10px -150px no-repeat;
+
 }
 .list01_top ul .date input {
 	position: absolute;
