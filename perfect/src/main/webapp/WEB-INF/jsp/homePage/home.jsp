@@ -488,17 +488,17 @@
     <a href="#" class="question"></a>
     <ul id="keywordQualityClass">
         <li class="current">
-            <a href="javascript:loadKeywordQualityData(1);">
+            <a onclick="loadKeywordQualityData(this, 1);">
                 昨天
             </a>
         </li>
         <li>
-            <a href="javascript:loadKeywordQualityData(7);">
+            <a onclick="loadKeywordQualityData(this, 7);">
                 近7天
             </a>
         </li>
         <li>
-            <a href="javascript:loadKeywordQualityData(30);">
+            <a onclick="loadKeywordQualityData(this, 30);">
                 近30天
             </a>
         </li>
@@ -506,7 +506,7 @@
             <a>
                 自定义
                 <input name="reservation" class=" fa fa-calendar " type="image"
-                       onclick="javascript:genre = 'keywordQualityCustom';"
+                       onclick="javascript:genre = 'keywordQualityCustom';$(this).parent().parent().addClass('current');changedLiState($(this).parent());"
                        src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
         </li>
@@ -547,36 +547,36 @@
                 &nbsp;<span>展现</span><b>
                 <p>
                     <input class="one" type="button"
-                           onclick="javascript:category = 'impression';sort = -1;loadKeywordQualityData(statDate);"/>
+                           onclick="javascript:category = 'impression';sort = -1;loadKeywordQualityData(null, statDate);"/>
                 </p>
 
                 <p>
                     <input class="two" type="button"
-                           onclick="javascript:category = 'impression';sort = 1;loadKeywordQualityData(statDate);"/>
+                           onclick="javascript:category = 'impression';sort = 1;loadKeywordQualityData(null, statDate);"/>
                 </p></b>
             </li>
             <li>
                 &nbsp;<span>点击</span><b>
                 <p>
                     <input class="one" type="button"
-                           onclick="javascript:category = 'click';sort = -1;loadKeywordQualityData(statDate);"/>
+                           onclick="javascript:category = 'click';sort = -1;loadKeywordQualityData(null, statDate);"/>
                 </p>
 
                 <p>
                     <input class="two" type="button"
-                           onclick="javascript:category = 'click';sort = 1;loadKeywordQualityData(statDate);"/>
+                           onclick="javascript:category = 'click';sort = 1;loadKeywordQualityData(null, statDate);"/>
                 </p></b>
             </li>
             <li>
                 &nbsp;<span>点击率</span><b>
                 <p>
                     <input class="one" type="button"
-                           onclick="javascript:category = 'ctr';sort = -1;loadKeywordQualityData(statDate);"/>
+                           onclick="javascript:category = 'ctr';sort = -1;loadKeywordQualityData(null, statDate);"/>
                 </p>
 
                 <p>
                     <input class="two" type="button"
-                           onclick="javascript:category = 'ctr';sort = 1;loadKeywordQualityData(statDate);"/>
+                           onclick="javascript:category = 'ctr';sort = 1;loadKeywordQualityData(null, statDate);"/>
                 </p></b>
                 <a href="#" class="question">
                 </a>
@@ -585,12 +585,12 @@
                 &nbsp;<span>消费</span><b>
                 <p>
                     <input class="one" type="button"
-                           onclick="javascript:category = 'cost';sort = -1;loadKeywordQualityData(statDate);"/>
+                           onclick="javascript:category = 'cost';sort = -1;loadKeywordQualityData(null, statDate);"/>
                 </p>
 
                 <p>
                     <input class="two" type="button"
-                           onclick="javascript:category = 'cost';sort = 1;loadKeywordQualityData(statDate);"/>
+                           onclick="javascript:category = 'cost';sort = 1;loadKeywordQualityData(null, statDate);"/>
                 </p></b>
                 <a href="#" class="question">
                 </a>
@@ -599,12 +599,12 @@
                 &nbsp;<span>平均点击价格</span><b>
                 <p>
                     <input class="one" type="button"
-                           onclick="javascript:category = 'cpc';sort = -1;loadKeywordQualityData(statDate);"/>
+                           onclick="javascript:category = 'cpc';sort = -1;loadKeywordQualityData(null, statDate);"/>
                 </p>
 
                 <p>
                     <input class="two" type="button"
-                           onclick="javascript:category = 'cpc';sort = 1;loadKeywordQualityData(statDate);"/>
+                           onclick="javascript:category = 'cpc';sort = 1;loadKeywordQualityData(null, statDate);"/>
                 </p></b>
                 <a href="#" class="question"></a>
             </li>
@@ -612,12 +612,12 @@
                 &nbsp;<span>转化</span><b>
                 <p>
                     <input class="one" type="button"
-                           onclick="javascript:category = 'conversion';sort = -1;loadKeywordQualityData(statDate);"/>
+                           onclick="javascript:category = 'conversion';sort = -1;loadKeywordQualityData(null, statDate);"/>
                 </p>
 
                 <p>
                     <input class="two" type="button"
-                           onclick="javascript:category = 'conversion';sort = 1;loadKeywordQualityData(statDate);"/>
+                           onclick="javascript:category = 'conversion';sort = 1;loadKeywordQualityData(null, statDate);"/>
                 </p></b>
                 <a href="#" class="question"></a>
             </li>
@@ -708,7 +708,7 @@
             <dl class="fr">
                 每页显示
                 <select id="keywordQuality1Page"
-                        onchange="javascript:limit = $('#keywordQuality1Page option:selected').val();loadKeywordQualityData(statDate);">
+                        onchange="javascript:limit = $('#keywordQuality1Page option:selected').val();loadKeywordQualityData(null, statDate);">
                     <option selected="selected" value="10">10个</option>
                     <option value="15">15个</option>
                     <option value="20">20个</option>
@@ -2120,14 +2120,14 @@
                     daterangepicker_end_date = date.Format("yyyy-MM-dd");
                     if (genre == "keywordQualityCustom") {
                         //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
-                        loadKeywordQualityData(0);
+                        loadKeywordQualityData(null, 0);
                     }
 
                 }
         );
 
         //默认加载昨天的数据
-        loadKeywordQualityData(1);
+        loadKeywordQualityData(null, 1);
         getImportKeywordDefault(1);
         loadPerformance();
 
@@ -2171,7 +2171,10 @@
     };
 
     //关键词质量度数据加载
-    var loadKeywordQualityData = function (param) {
+    var loadKeywordQualityData = function (obj, param) {
+        if (obj != null) {
+            changedLiState(obj);
+        }
         statDate = param;
         getDateParam(param);
         $.ajax({
@@ -2198,6 +2201,7 @@
             }
         });
     };
+
     var loadPerformance = function () {
         $.ajax({
             url: "/account/performance",
@@ -2338,7 +2342,7 @@
         $(obj).parent().parent().find("li").each(function () {
             $(this).removeClass("current");
         });
-        obj.parent().addClass("current");
+        $(obj).parent().addClass("current");
     }
 
     //数据获取中。。。
