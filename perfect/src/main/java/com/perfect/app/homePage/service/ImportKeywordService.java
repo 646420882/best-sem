@@ -22,7 +22,7 @@ public class ImportKeywordService {
     AccountAnalyzeDAO accountAnalyzeDAO;
     private final String DATE_START="startDate";
     private final String DATE_END="endDate";
-    private final String USER_NAME="groupId";
+    private final String USER_NAME="userTable";
 
     /**
      * 根据时间，用户账号获取最近关键字信息
@@ -30,15 +30,16 @@ public class ImportKeywordService {
      * @return
      */
     public List<KeywordRealTimeDataVOEntity> getList(HttpServletRequest request) {
-        System.out.println(">>>>>>>>>>>>>>>>>>");
         Date[] currDate=getDate(request);
         List<KeywordRealTimeDataVOEntity> lst = new ArrayList<>();
         String newStr=request.getParameter(USER_NAME);
         String newStr_new= getUpCaseWord(newStr);
-        for (int i = 0; i < currDate.length; i++) {
-            String tableName = (newStr_new + "-KeywordRealTimeData-log-" + currDate[i]);
-            List<KeywordRealTimeDataVOEntity> list = accountAnalyzeDAO.performance(tableName);
-            lst.addAll(list);
+        if(currDate.length>0){
+            for (int i = 0; i < currDate.length; i++) {
+                String tableName = (newStr_new + "-KeywordRealTimeData-log-" + currDate[i]);
+                List<KeywordRealTimeDataVOEntity> list = accountAnalyzeDAO.performance(tableName);
+                lst.addAll(list);
+            }
         }
         return lst;
     }
