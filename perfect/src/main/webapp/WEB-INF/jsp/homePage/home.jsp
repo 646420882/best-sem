@@ -3555,7 +3555,7 @@
         </ul>
     </td>
 </tr>
-<tr class="list2_box1" onclick="TestBlack('divf');">
+<tr class="list2_box1" >
     <td>
         <ul>
             <li>
@@ -3610,80 +3610,7 @@
     </td>
 
 </tr>
-<tr id="divf" style="display:none;">
-    <td>
-        <div class="list2_top2">
-            <ul>
-                <li>
-                    <span>关键词数</span>
-                    <a href="#" class="question">
-                    </a>
-                </li>
-                <li>
-                    <span>展现</span>
-                </li>
-                <li>
-                    <span>点击</span>
-                </li>
-                <li>
-                    <span>消费</span>
-                </li>
-                <li>
-                    <span>平均点击价格</span>
-                </li>
-                <li>
-                    <span>点击率</span>
-                </li>
-                <li>
-                    <span>转化</span>
-                </li>
-                <li>
-                    平均排名
-                </li>
 
-            </ul>
-        </div>
-        <div>
-            <ul>
-                <li>
-                    <span>搜索引擎优化</span><span class="green_arrow wd3"></span>
-                </li>
-                <li>
-                    17(0.11%)
-                </li>
-                <li>
-                    17(0.11%)
-                </li>
-                <li>
-                    17(0.11%)
-                </li>
-                <li>
-                    17(0.11%)
-                </li>
-                <li>
-                    17(0.11%)
-                </li>
-                <li>
-                    17(0.11%)
-                </li>
-                <li></li>
-
-            </ul>
-        </div>
-
-
-        <div class="page">
-            <dl class="fr">
-                每页显示
-                <select>
-                    <option>10个</option>
-                    <option>9个</option>
-                    <option>8个</option>
-                </select>
-            </dl>
-        </div>
-    </td>
-</tr>
 
 
 
