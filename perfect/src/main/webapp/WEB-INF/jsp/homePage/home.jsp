@@ -2331,12 +2331,12 @@
     function lisClick(obj, days) {
         htmlLoding();
         getData(days);
-        changedLiState($(obj));
+        changedLiState(obj);
     }
 
     //改变li的样式状态
     function changedLiState(obj) {
-        $("#clickLis li").each(function () {
+        $(obj).parent().parent().find("li").each(function () {
             $(this).removeClass("current");
         });
         obj.parent().addClass("current");
