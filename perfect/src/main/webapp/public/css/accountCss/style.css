@@ -350,6 +350,7 @@
 .list2 table .list2_box1 {
 	background: #f7f9fb;
 }
+.list2 table .list2_box1:hover,.list2 table .list2_box2:hover { background:#e1e4e5;}
 .list2 table .list2_box2 {
 	background: #ecf3f9;
 	border-bottom: 1px solid #ffffff;
