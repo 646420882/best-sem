@@ -2187,8 +2187,8 @@
                 limit: limit
             },
             success: function (data, textStatus, jqXHR) {
+                $("#keywordQuality1").empty();
                 if (data.rows.length > 0) {
-                    $("#keywordQuality1").empty();
                     $.each(data.rows, function (i, item) {
                         var _div = "<div><ul><li></li><li><span>" + item.keywordName + "</span><span class='green_arrow wd3'></span></li>" +
                                 "<li>" + item.impression + "</li><li>" + item.click + "</li><li>" + (item.ctr * 100) + "%</li><li>" + item.cost + "</li>" +
