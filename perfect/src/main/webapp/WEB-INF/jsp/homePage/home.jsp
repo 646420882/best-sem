@@ -4057,9 +4057,6 @@
 
     //获取数据
     function getData(days){
-        daterangepicker_start_date = validateDateIsNull(daterangepicker_start_date);
-        daterangepicker_end_date = validateDateIsNull(daterangepicker_end_date);
-
         $.ajax({
             url:"/account/getAccountOverviewData",
             type:"get",
@@ -4074,15 +4071,6 @@
         });
         daterangepicker_start_date = null;
         daterangepicker_end_date = null;
-    }
-
-
-    //验证日期的是否为空，或者为“”
-    function validateDateIsNull(date){
-        if(date==null||date==""){
-            return new Date().Format("yyyy-MM-dd");
-        }
-        return date;
     }
 
     //初始化账户概览页面数据
