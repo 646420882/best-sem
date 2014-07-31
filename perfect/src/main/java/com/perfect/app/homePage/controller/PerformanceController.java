@@ -5,6 +5,7 @@ import com.mongodb.Cursor;
 import com.mongodb.DBCursor;
 import com.perfect.app.homePage.service.PerformanceService;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ import java.util.Map;
  * Created by SubDong on 2014/7/25.
  */
 @RestController
+@Scope("prototype")
 public class PerformanceController {
     @Resource
     public PerformanceService performanceService;
