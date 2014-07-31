@@ -17,7 +17,8 @@ import java.util.Map;
 @Repository("accountAnalyzeDAO")
 public class AccountAnalyzeDAOImpl implements AccountAnalyzeDAO {
 
-    private String currUserName = AppContext.getUser().toString();
+    String currUserName = AppContext.getUser().toString();
+
     private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(currUserName);
 
     public KeywordRealTimeDataVOEntity findOne(Long aLong) {
