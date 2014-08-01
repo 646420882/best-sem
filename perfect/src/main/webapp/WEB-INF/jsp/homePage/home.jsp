@@ -2378,9 +2378,9 @@
 
     //数据获取中。。。
     function htmlLoding() {
-        $(".impression,.click,.cos,.conversion").html("<span style='font-size: 14px;font-weight: bold;'>加载中...</span>");
+        $(".impression,.click,.cos,.conversion").html("加载中...");
     }
-
+    htmlLoding();
     //获取数据
     function getData() {
         $.ajax({
@@ -2398,7 +2398,7 @@
     }
 
     //初始化账户概览页面数据
-    lisClick($("#clickLis>.current"), 1);//默认显示昨天的汇总数据
+    lisClick($(".current").get(1), 1);//默认显示昨天的汇总数据
 
 
     /*===========================================================账户概览end==============================================*/
