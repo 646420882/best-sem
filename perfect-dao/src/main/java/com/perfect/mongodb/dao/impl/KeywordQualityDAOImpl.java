@@ -10,7 +10,7 @@ import org.springframework.util.Assert;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -122,17 +122,17 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
         }
 
         //点击率和平均点击价格
-        DecimalFormat df = new DecimalFormat("#.00");
+        //DecimalFormat df = new DecimalFormat("#.00");
         for (Map.Entry<String, KeywordRealTimeDataVOEntity> entry : map.entrySet()) {
             KeywordRealTimeDataVOEntity vo = entry.getValue();
             Double cost = vo.getCost();
             Double ctr = (vo.getClick() + 0.) / vo.getImpression();
             Double cpc = 0.;
-            cost = Double.valueOf(df.format(cost));
-            ctr = Double.valueOf(df.format(ctr));
+            cost = new BigDecimal(cost).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            ctr = new BigDecimal(ctr * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             if (vo.getClick() > 0)
                 cpc = vo.getCost() / vo.getClick();
-            cpc = Double.valueOf(df.format(cpc));
+            cpc = new BigDecimal(cpc).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             vo.setCost(cost);
             vo.setCtr(ctr);
             vo.setCpc(cpc);
