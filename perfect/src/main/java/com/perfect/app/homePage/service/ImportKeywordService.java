@@ -27,6 +27,8 @@ public class ImportKeywordService {
     private final String DATE_START = "startDate";
     private final String DATE_END = "endDate";
     private final String USER_NAME = "userTable";
+    private final String ORDER_BY="sort";
+    private final String LIMIT="limit";
     //当前登录用户名
     private static String currLoginUserName;
 
@@ -78,7 +80,7 @@ public class ImportKeywordService {
                             entry.getValue().setCpc(Double.parseDouble(df.format(entry.getValue().getCost() / entry.getValue().getClick().doubleValue())));
                         }
 
-
+                        entry.getValue().setOrderBy(request.getParameter(ORDER_BY));
                     }
 
                 } catch (InterruptedException e) {
@@ -88,7 +90,21 @@ public class ImportKeywordService {
                 }
                 joinPool.shutdown();
             }
+
              list= new ArrayList<>(map.values());
+            List<KeywordRealTimeDataVOEntity> finalList=new ArrayList<>();
+            Integer limit= Integer.parseInt(request.getParameter(LIMIT));
+            if (list.size()>limit){
+                for (int i=0;i<limit;i++){
+                    finalList.add(list.get(i));
+                }
+                Collections.sort(finalList);
+                return finalList;
+            }else{
+                return list;
+            }
+
+
 
         }
         return list;

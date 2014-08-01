@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 /**
  * Created by baizz on 14-7-23.
  */
-public class KeywordRealTimeDataVOEntity {
+public class KeywordRealTimeDataVOEntity implements Comparable<KeywordRealTimeDataVOEntity>{
 
     @Id
     private Long keywordId;
@@ -30,6 +30,8 @@ public class KeywordRealTimeDataVOEntity {
 
     @Field(value = "conv")
     private Double conversion;      //转化
+
+    private String orderBy;
 
     public Long getKeywordId() {
         return keywordId;
@@ -152,4 +154,44 @@ public class KeywordRealTimeDataVOEntity {
                 '}';
     }
 
+    public void setOrderBy(String orderBy){
+        this.orderBy=orderBy;
+    }
+    public String getOrderBy(){
+        return orderBy;
+    }
+    @Override
+    public int compareTo(KeywordRealTimeDataVOEntity o) {
+        switch (o.getOrderBy()){
+            case "1":
+                return this.getImpression().compareTo(o.getImpression());
+            case "2":
+                return this.getClick().compareTo(o.getClick());
+            case "-2":
+                return o.getClick().compareTo(this.getClick());
+            case "3":
+                return this.getCost().compareTo(o.getCost());
+            case "-3":
+                return o.getCost().compareTo(this.getCost());
+            case "4":
+                return this.getCpc().compareTo(o.getCpc());
+            case "-4":
+                return o.getCpc().compareTo(this.getCpc());
+            case "5":
+                return this.getCtr().compareTo(o.getCtr());
+            case "-5":
+                return o.getCtr().compareTo(this.getCtr());
+            case "6":
+                return this.getConversion().compareTo(o.getConversion());
+            case "-6":
+                return o.getConversion().compareTo(this.getConversion());
+            case "7":
+                return this.getPosition().compareTo(o.getPosition());
+            case "-7":
+                return o.getPosition().compareTo(this.getPosition());
+            default:
+                return o.getImpression().compareTo(this.getImpression());
+        }
+
+    }
 }

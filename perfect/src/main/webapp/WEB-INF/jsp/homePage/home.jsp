@@ -1797,17 +1797,17 @@
     <a href="#" class="question"></a>
     <ul>
         <li class="current">
-            <a href="#">
+            <a href="javascript:void(0)" onclick="getImportKeywordDefault(this, 1);">
                 昨天
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="javascript:void(0)" onclick="getImportKeywordDefault(this, 7);">
                 近7天
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="javascript:void(0)" onclick="getImportKeywordDefault(this, 30);">
                 近30天
             </a>
         </li>
@@ -1815,7 +1815,7 @@
             <a href="javascript:void(0)">
                 自定义
                 <input name="reservation" class=" fa fa-calendar " type="image"
-                       onclick="javascript:genre = 'importKeywordDefault';"
+                       onclick="javascript:genre = 'importKeywordDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent());"
                        src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
         </li>
@@ -1829,11 +1829,11 @@
                     <li>
                         &nbsp;<span>关键词</span><b>
                         <p>
-                            <input class="one" type="button">
+                            <input class="one" type="button" >
                         </p>
 
                         <p>
-                            <input class="two" type="button">
+                            <input class="two" type="button" >
                         </p></b>
                         <a href="#" class="question">
                         </a>
@@ -1841,71 +1841,71 @@
                     <li>
                         &nbsp;<span>展现</span><b>
                         <p>
-                            <input class="one" type="button">
+                            <input class="one" type="button"  onclick="javascript:sort = -1;getImportKeywordDefault(null, statDate);">
                         </p>
 
                         <p>
-                            <input class="two" type="button">
+                            <input class="two" type="button" onclick="javascript:sort = 1;getImportKeywordDefault(null, statDate);">
                         </p></b>
                     </li>
                     <li>
                         &nbsp;<span>点击</span><b>
                         <p>
-                            <input class="one" type="button">
+                            <input class="one" type="button" onclick="javascript:sort = -2;getImportKeywordDefault(null, statDate);">
                         </p>
 
                         <p>
-                            <input class="two" type="button">
+                            <input class="two" type="button" onclick="javascript:sort = 2;getImportKeywordDefault(null, statDate);">
                         </p></b>
                     </li>
                     <li>
                         &nbsp;<span>消费</span><b>
                         <p>
-                            <input class="one" type="button">
+                            <input class="one" type="button" onclick="javascript:sort = -3;getImportKeywordDefault(null, statDate);">
                         </p>
 
                         <p>
-                            <input class="two" type="button">
+                            <input class="two" type="button" onclick="javascript:sort = 3;getImportKeywordDefault(null, statDate);">
                         </p></b>
                     </li>
                     <li>
                         &nbsp;<span>平均点击价格</span><b>
                         <p>
-                            <input class="one" type="button">
+                            <input class="one" type="button" onclick="javascript:sort = -4;getImportKeywordDefault(null, statDate);">
                         </p>
 
                         <p>
-                            <input class="two" type="button">
+                            <input class="two" type="button" onclick="javascript:sort = 4;getImportKeywordDefault(null, statDate);">
                         </p></b>
                     </li>
                     <li>
                         &nbsp;<span>点击率</span><b>
                         <p>
-                            <input class="one" type="button">
+                            <input class="one" type="button" onclick="javascript:sort = -5;getImportKeywordDefault(null, statDate);">
                         </p>
 
                         <p>
-                            <input class="two" type="button">
+                            <input class="two" type="button" onclick="javascript:sort = 5;getImportKeywordDefault(null, statDate);">
                         </p></b>
                     </li>
                     <li>
                         &nbsp;<span>转化</span><b>
                         <p>
-                            <input class="one" type="button">
+                            <input class="one" type="button" onclick="javascript:sort = -6;getImportKeywordDefault(null, statDate);">
                         </p>
 
                         <p>
-                            <input class="two" type="button">
+                            <input class="two" type="button" onclick="javascript:sort = 6;getImportKeywordDefault(null, statDate);">
                         </p></b>
                     </li>
                     <li>
                         &nbsp;<span>平均排名</span><b>
                         <p>
-                            <input class="one" type="button">
+                            <input class="one" type="button" onclick="javascript:sort = -7;getImportKeywordDefault(null, statDate);">
                         </p>
 
                         <p>
-                            <input class="two" type="button">
+                            <input class="two" type="button" onclick="javascript:sort = 7;getImportKeywordDefault(null, statDate);">
                         </p></b>
                     </li>
                     <li>
@@ -1939,10 +1939,11 @@
     </table>
     <div class="download over fr">
 									<span>每页显示
-										<select>
-                                            <option>10个</option>
-                                            <option>9个</option>
-                                            <option>8个</option>
+										<select id="importKeywordSel" onchange="selectChange()">
+                                            <option value="10">10个</option>
+                                            <option value="9">9个</option>
+                                            <option value="8">8个</option>
+                                            <option value="2">2个</option>
                                         </select> </span>
         <a href="#">
             下载全部
@@ -2074,7 +2075,7 @@
 
                         loadKeywordQualityData(null, 0);
                     } else if (genre == "importKeywordDefault") {
-                        getImportKeywordDefault(0);
+                        getImportKeywordDefault(null,0);
                     }
 
                 }
@@ -2094,6 +2095,10 @@
         } else {
             obj.style.display = "";
         }
+    }
+    function selectChange(){
+        limit=$("#importKeywordSel :selected").val();
+        getImportKeywordDefault(null,statDate);
     }
 
     /**
@@ -2271,7 +2276,13 @@
     });
 
 
-    var getImportKeywordDefault = function (day) {
+    var getImportKeywordDefault = function (obj,day) {
+        if(obj!=null){
+            changedLiState(obj);
+        }
+        $("#importTr").empty();
+        $("#importTr").append("<td style='color:red;'>加载中....</td>");
+        statDate = day;
         getDateParam(day);
         $.ajax({
             url: "/main/getImportKeywordList",
@@ -2279,11 +2290,15 @@
             dataType: "json",
             data: {
                 startDate: daterangepicker_start_date,
-                endDate: daterangepicker_end_date
+                endDate: daterangepicker_end_date,
+                limit:limit,
+                sort:sort
             },
             success: function (data, textStatus, jqXHR) {
                 var calssStr = "";
+                var _tr= $("#importTr");
                 if (data.length > 0) {
+                    _tr.empty();
                     $.each(data, function (i, item) {
                         if (i % 2 == 0) {
                             calssStr = "list2_box1";
@@ -2292,8 +2307,12 @@
                         }
                         var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.impression + "</li><li> &nbsp;" + item.click + "</li><li> &nbsp;￥" + item.cost + "</li><li> &nbsp;￥" + item.cpc  + "</li>"
                                 + "<li> &nbsp;" + item.ctr *100+ "%</li><li> &nbsp;" + item.conversion + "</li><li> &nbsp;"+item.position+"</li></ul></td></tr>";
-                        $("#importTr").append(_div);
+                        _tr.append(_div);
                     })
+                }else{
+                    _tr.empty();
+                    var _div="<td colspan='9' style='color:royalblue;'>暂无数据哈</td>"
+                    _tr.append(_div);
                 }
             }
         });
