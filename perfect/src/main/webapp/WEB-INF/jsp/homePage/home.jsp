@@ -201,11 +201,11 @@
                 <li class="date">
                     <a href="javascript:" onclick="lisClick(this,null);">
                         自定义
+                        <input name="reservation" class=" fa fa-calendar " type="image"
+                               onclick="javascript:genre = 'accountOverview';changedLiState($(this).parent());"
+                               src="${pageContext.request.contextPath}/public/img/date.png">
 
                     </a>
-                    <input name="reservation" class=" fa fa-calendar " type="image"
-                           src="${pageContext.request.contextPath}/public/img/date.png">
-
                 </li>
             </ul>
         </div>
@@ -1933,8 +1933,6 @@
             </td>
         </tr>
         <tr class="list2_box1" id="importTr">
-         
-
         </tr>
 
 
@@ -2075,7 +2073,7 @@
                         //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
 
                         loadKeywordQualityData(null, 0);
-                    }else if(genre=="importKeywordDefault"){
+                    } else if (genre == "importKeywordDefault") {
                         getImportKeywordDefault(0);
                     }
 
@@ -2305,8 +2303,11 @@
 
     //根据最近几天获取数据
     function lisClick(obj, days) {
+        if (days != null) {
+            getDateParam(days);
+        }
         htmlLoding();
-        getData(days);
+        getData();
         changedLiState(obj);
     }
 
@@ -2320,22 +2321,16 @@
 
     //数据获取中。。。
     function htmlLoding() {
-        $(".impression").html("<h6>数据获取中...</h6>");
-        $(".click").html("<h6>数据获取中...</h6>");
-        $(".cos").html("<h6>数据获取中...</h6>");
-        $(".conversion").html("<h6>数据获取中...</h6>");
+        $(".impression,.click,.cos,.conversion").html("<span style='font-size: 14px;font-weight: bold;'>加载中...</span>");
     }
 
-    //默认为数据获取中
-    htmlLoding();
-
     //获取数据
-    function getData(days) {
+    function getData() {
         $.ajax({
             url: "/account/getAccountOverviewData",
             type: "get",
             dataType: "json",
-            data: {"days": days, "startDate": daterangepicker_start_date, "endDate": daterangepicker_end_date},
+            data: {"startDate": daterangepicker_start_date, "endDate": daterangepicker_end_date},
             success: function (data) {
                 $(".impression").html(data.impression);
                 $(".click").html(data.click);
@@ -2343,12 +2338,10 @@
                 $(".conversion").html(data.conversion);
             }
         });
-        daterangepicker_start_date = null;
-        daterangepicker_end_date = null;
     }
 
     //初始化账户概览页面数据
-    getData(1);//默认显示昨天的汇总数据
+    lisClick($("#clickLis>.current"), 1);//默认显示昨天的汇总数据
 
 
     /*===========================================================账户概览end==============================================*/
