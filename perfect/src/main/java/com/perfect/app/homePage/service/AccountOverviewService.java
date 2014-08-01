@@ -23,7 +23,6 @@ public class AccountOverviewService {
     @Resource
     private AccountAnalyzeDAO accountAnalyzeDAO;
     private static final String table = "-KeywordRealTimeData-log-";
-    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
      * 汇总。。。。
@@ -39,7 +38,8 @@ public class AccountOverviewService {
         //当前登录用户名首字母大写
         currLoginUserName =currLoginUserName.replaceFirst(currLoginUserName.substring(0, 1), currLoginUserName.substring(0, 1).toUpperCase());
 
-        //开始获取数据汇总
+
+         //开始获取数据汇总
         for(String date:dates){
            String userTable = currLoginUserName + table + date;
            List<KeywordRealTimeDataVOEntity> list = accountAnalyzeDAO.performance(userTable);
