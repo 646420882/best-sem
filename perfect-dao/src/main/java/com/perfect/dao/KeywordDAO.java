@@ -1,5 +1,6 @@
 package com.perfect.dao;
 
+import com.perfect.autosdk.sms.v3.KeywordInfo;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.mongodb.utils.Pager;
 
@@ -26,4 +27,6 @@ public interface KeywordDAO extends CrudRepository<KeywordEntity, Long> {
     List<KeywordEntity> getKeywordByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
 
     Pager getKeywordByPager(HttpServletRequest request,Map<String,Object> params,int orderBy);
+
+    List<KeywordInfo> getKeywordInfo();
 }
