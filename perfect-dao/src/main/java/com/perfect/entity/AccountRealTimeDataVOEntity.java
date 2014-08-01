@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Date;
+
 /**
  * Created by baizz on 14-7-30.
  */
@@ -15,7 +17,7 @@ public class AccountRealTimeDataVOEntity {
     @Field(value = "name")
     private String accountName;
 
-    private String date;
+    private Date date;
 
     @Field(value = "impr")
     private Integer impression;     //展现次数
@@ -47,11 +49,11 @@ public class AccountRealTimeDataVOEntity {
         this.accountName = accountName;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -142,7 +144,7 @@ public class AccountRealTimeDataVOEntity {
         return "AccountRealTimeDataVOEntity{" +
                 "accountId=" + accountId +
                 ", accountName='" + accountName + '\'' +
-                ", date='" + date + '\'' +
+                ", date=" + date +
                 ", impression=" + impression +
                 ", click=" + click +
                 ", ctr=" + ctr +
@@ -151,5 +153,4 @@ public class AccountRealTimeDataVOEntity {
                 ", conversion=" + conversion +
                 '}';
     }
-
 }
