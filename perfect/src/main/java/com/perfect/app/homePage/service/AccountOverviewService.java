@@ -25,55 +25,23 @@ public class AccountOverviewService {
     private static final String table = "-KeywordRealTimeData-log-";
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-    //当前登录用户名
-    private static String currLoginUserName;
-    static {
-        currLoginUserName = (currLoginUserName == null) ? CustomUserDetailsService.getUserName() : currLoginUserName;
-    }
-
     /**
      * 汇总。。。。
      * @return
      */
-    public  Map<String,Object> getKeyWordSum(Integer days,String startDate,String endDate){
+    public  Map<String,Object> getKeyWordSum(String currLoginUserName,List<String> dates){
         //各种汇总初始化
         long impressionCount = 0 ;
         long clickCount = 0 ;
         double costCount = 0.0;
         double conversionCount = 0.0;
-        Date start = null;
-        Date end = null;
-        try {
-            start = !"".equals(startDate)?df.parse(startDate):null;
-             end =  !"".equals(endDate)?df.parse(endDate):null;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         //当前登录用户名首字母大写
         currLoginUserName =currLoginUserName.replaceFirst(currLoginUserName.substring(0, 1), currLoginUserName.substring(0, 1).toUpperCase());
 
-        //昨天
-        if(days!=null && days == 1){
-            try {
-                end = new Date(df.parse(df.format(new Date())).getTime()-(1000 * 60 * 60 * 24));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        //选择的一个时间段（startDate至endDate）
-        if( start!=null && end!=null ) {
-            days = new Long((end.getTime()-start.getTime())/(1000 * 60 * 60 * 24)).intValue()+1;
-        }
-
-        Date date = end==null?new Date():end;
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-
-       for(int i = 1;i<=days;i++) {
-           String userTable = currLoginUserName + table + df.format(cal.getTime());
+        //开始获取数据汇总
+        for(String date:dates){
+           String userTable = currLoginUserName + table + date;
            List<KeywordRealTimeDataVOEntity> list = accountAnalyzeDAO.performance(userTable);
            System.out.println("已经统计的表："+userTable);
 
@@ -99,7 +67,6 @@ public class AccountOverviewService {
                    conversionCount += conversion;
                }
            }
-           cal.add(Calendar.DATE, -1);
        }
 
         //数字格式化
