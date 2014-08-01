@@ -1,5 +1,6 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.perfect.autosdk.sms.v3.KeywordInfo;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.DataAttributeInfoEntity;
@@ -67,6 +68,11 @@ public class KeywordDAOImpl implements KeywordDAO {
         int pageSize=Integer.parseInt(request.getParameter(PAGESIZE));
         Pager pager=findByPager(start,pageSize,params,orderBy);
         return pager;
+    }
+
+    @Override
+    public List<KeywordInfo> getKeywordInfo() {
+        return mongoTemplate.findAll(KeywordInfo.class,"KeywordInfo");
     }
 
     public KeywordEntity findOne(Long keywordId) {

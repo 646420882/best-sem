@@ -1932,64 +1932,7 @@
                 </ul>
             </td>
         </tr>
-        <<<<<<< HEAD
         <tr class="list2_box1" id="importTr">
-            =======
-        <tr class="list2_box1">
-            >>>>>>> develop
-            <td>
-                <ul>
-                    <li>
-                        &nbsp;<span>搜索引擎优化1</span><span class="green_arrow wd3"></span>
-                    </li>
-                    <li>
-                        &nbsp;3.902
-                    </li>
-                    <li>
-                        &nbsp;13
-                    </li>
-                    <li>
-                        &nbsp;￥0.91
-                    </li>
-                    <li>
-                        &nbsp;￥0.91
-                    </li>
-                    <li>
-                        &nbsp;0.33%
-                    </li>
-                    <li>
-                        &nbsp;0.00
-                    </li>
-                    <li>
-                        &nbsp;2.24
-                    </li>
-                    <li>
-                        &nbsp;
-                        <ul class="paihang">
-                            <li>
-                                <img src="${pageContext.request.contextPath}/public/img/star.png">
-                            </li>
-                            <li>
-                                <img src="${pageContext.request.contextPath}/public/img/star2.png">
-                            </li>
-                            <li>
-                                <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                            </li>
-                            <li>
-                                <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                            </li>
-                            <li>
-                                <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                            </li>
-                        </ul>
-                        <span>0</span>
-                    </li>
-                    <li>
-                        &nbsp;广泛
-                    </li>
-                </ul>
-            </td>
-
         </tr>
 
 
@@ -2347,8 +2290,8 @@
                         } else {
                             calssStr = "list2_box2";
                         }
-                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.impression + "</li><li> &nbsp;" + item.click + "</li><li> &nbsp;" + item.cost + "</li><li> &nbsp;" + item.ctr * 100 + "%</li>"
-                                + "<li> &nbsp;" + item.cpc + "</li><li> &nbsp;" + item.conversion + "</li></ul></td></tr>";
+                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.impression + "</li><li> &nbsp;" + item.click + "</li><li> &nbsp;￥" + item.cost + "</li><li> &nbsp;￥" + item.cpc  + "</li>"
+                                + "<li> &nbsp;" + item.ctr *100+ "%</li><li> &nbsp;" + item.conversion + "</li><li> &nbsp;"+item.position+"</li></ul></td></tr>";
                         $("#importTr").append(_div);
                     })
                 }

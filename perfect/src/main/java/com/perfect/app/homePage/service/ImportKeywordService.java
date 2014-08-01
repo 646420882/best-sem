@@ -1,15 +1,19 @@
 package com.perfect.app.homePage.service;
 
+import com.perfect.autosdk.sms.v3.KeywordInfo;
 import com.perfect.dao.AccountAnalyzeDAO;
+import com.perfect.dao.KeywordDAO;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
-import org.apache.commons.lang3.StringUtils;
+import com.perfect.mongodb.utils.DateUtil;
+import com.perfect.mongodb.utils.ImportKeywordFork;
 import org.springframework.stereotype.Repository;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 
 /**
  * Created by XiaoWei on 2014/7/29.
@@ -18,6 +22,8 @@ import java.util.*;
 public class ImportKeywordService {
     @Resource
     AccountAnalyzeDAO accountAnalyzeDAO;
+    @Resource
+    KeywordDAO keywordDAO;
     private final String DATE_START = "startDate";
     private final String DATE_END = "endDate";
     private final String USER_NAME = "userTable";
@@ -29,66 +35,72 @@ public class ImportKeywordService {
     }
 
     /**
-     * 获取map对象集合
+     * 获取重点关键字过滤出来的关键字数据
      *
      * @return
      */
     public List<KeywordRealTimeDataVOEntity> getMap(HttpServletRequest request) {
-//        Date[] dates = getDate(request);
-
+        List<Long> keywords=getImportKeywordArray();
         List<KeywordRealTimeDataVOEntity> entities = new ArrayList<>();
+        Map<Long, KeywordRealTimeDataVOEntity> map=new HashMap<>();
+        List<KeywordRealTimeDataVOEntity> importKeywordList=new ArrayList<>();
+        List<KeywordRealTimeDataVOEntity> list=null;
+        List<String> dates=getCurrDate(request);
         if (!currLoginUserName.equals(null) || !currLoginUserName.equals("")) {
-            currLoginUserName=getUpCaseWord(currLoginUserName);
-            entities = accountAnalyzeDAO.performance(currLoginUserName+"-KeywordRealTimeData-log-2014-01-25");
+            currLoginUserName = getUpCaseWord(currLoginUserName);
+            for (int i = 0; i < dates.size(); i++) {
+                entities = accountAnalyzeDAO.performance(currLoginUserName + "-KeywordRealTimeData-log-" + dates.get(i));
+                if(keywords.size()>0){
+                    for (int k=0;k<keywords.size();k++){
+                        for (int j=0;j<entities.size();j++){
+                            if (keywords.get(k).equals(entities.get(j).getKeywordId())){
+                                importKeywordList.add(entities.get(j));
+                            }
+                        }
+                    }
+                }
+            }
+            if (importKeywordList.size()!=0){
+                ForkJoinPool joinPool = new ForkJoinPool();
+                try {
+                    Future<Map<Long, KeywordRealTimeDataVOEntity>> joinTask =joinPool.submit(new ImportKeywordFork(importKeywordList, 0, importKeywordList.size()));
+                    map = joinTask.get();
+                    DecimalFormat df = new DecimalFormat("#.00");
+                    for(Map.Entry<Long,KeywordRealTimeDataVOEntity> entry : map.entrySet()){
+                        if(entry.getValue().getImpression() == 0){
+                            entry.getValue().setCtr(0.00);
+                        }else{
+                            entry.getValue().setCtr(Double.parseDouble(df.format(entry.getValue().getClick().doubleValue() / entry.getValue().getImpression().doubleValue())));
+                        }
+                        if(entry.getValue().getClick() == 0){
+                            entry.getValue().setCpc(0.00);
+                        }else{
+                            entry.getValue().setCpc(Double.parseDouble(df.format(entry.getValue().getCost() / entry.getValue().getClick().doubleValue())));
+                        }
+
+
+                    }
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                joinPool.shutdown();
+            }
+             list= new ArrayList<>(map.values());
+
         }
-
-        return entities;
-
+        return list;
     }
+
+
 
     /**
-     * 根据时间，用户账号获取最近关键字信息
-     *
-     * @param request
+     * 转换首字母大写
+     * @param str
      * @return
      */
-    public List<KeywordRealTimeDataVOEntity> getList(HttpServletRequest request) {
-        Date[] currDate = getDate(request);
-        List<KeywordRealTimeDataVOEntity> lst = new ArrayList<>();
-        String newStr = request.getParameter(USER_NAME);
-        String newStr_new = getUpCaseWord(newStr);
-        if (currDate.length > 0) {
-            for (int i = 0; i < currDate.length; i++) {
-                String tableName = (newStr_new + "-KeywordRealTimeData-log-" + currDate[i]);
-                List<KeywordRealTimeDataVOEntity> list = accountAnalyzeDAO.performance(tableName);
-                lst.addAll(list);
-            }
-        }
-        return lst;
-    }
-
-    /**
-     * 获取时间段
-     *
-     * @param request
-     * @return
-     */
-    private Date[] getDate(HttpServletRequest request) {
-        Date[] date = null;
-        String d_start = request.getParameter(DATE_START);
-        String d_end = request.getParameter(DATE_END);
-        if (StringUtils.isNotEmpty(d_start) && StringUtils.isNotEmpty(d_end)) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                date[0] = sdf.parse(d_start);
-                date[1] = sdf.parse(d_end);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        return date;
-    }
-
     private String getUpCaseWord(String str) {
         if (str.length() > 1) {
             String first = str.substring(0, 1).toUpperCase();
@@ -98,10 +110,25 @@ public class ImportKeywordService {
         return str;
     }
 
-    private String[] dateCurr(HttpServletRequest request) {
+    /**
+     * 获取时间段数组
+     * @param request
+     * @return
+     */
+    private List<String>getCurrDate(HttpServletRequest request) {
         String startDate = request.getParameter(DATE_START);
         String endDate = request.getParameter(DATE_END);
+       List<String> dates= DateUtil.getPeriod(startDate,endDate);
+        return dates;
+    }
 
-        return null;
+    private List<Long> getImportKeywordArray(){
+        List<Long> keywords=new ArrayList<>();
+        List<KeywordInfo> list=keywordDAO.getKeywordInfo();
+        if (list.size()>0){
+            for(KeywordInfo key:list)
+            keywords.add(key.getKeywordId());
+        }
+        return keywords;
     }
 }

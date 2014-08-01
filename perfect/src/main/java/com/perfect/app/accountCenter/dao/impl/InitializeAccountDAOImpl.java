@@ -13,6 +13,8 @@ import com.perfect.mongodb.utils.BaseMongoTemplate;
 import com.perfect.utils.BaiduServiceSupport;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,7 @@ import java.util.List;
  */
 public class InitializeAccountDAOImpl implements InitializeAccountDAO {
 
-    private String currUserName = AppContext.getUser().toString();
+    private String currUserName = "perfect";
 
     private CommonService commonService = BaiduServiceSupport.getCommonService();
 
@@ -115,7 +117,11 @@ public class InitializeAccountDAOImpl implements InitializeAccountDAO {
             AccountRealTimeDataVOEntity vo = new AccountRealTimeDataVOEntity();
             vo.setAccountId(entity.getID());
             vo.setAccountName(entity.getName().get(0));
-            vo.setDate(entity.getDate());
+            try {
+                vo.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(entity.getDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             vo.setImpression(Integer.valueOf(entity.getKPI(0)));
             vo.setClick(Integer.valueOf(entity.getKPI(1)));
             vo.setCtr(Double.valueOf(entity.getKPI(2)));
