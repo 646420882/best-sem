@@ -1,7 +1,6 @@
 package com.perfect.schedule.task.execute;
 
 import com.perfect.autosdk.core.ServiceFactory;
-import com.perfect.autosdk.sms.v3.AccountService;
 import com.perfect.dao.AccountDAO;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
@@ -54,7 +53,7 @@ public class UserTask implements IScheduleTaskDealSingle<SystemUserEntity> {
 
         for (BaiduAccountInfoEntity baiduAccountInfo : baiduAccountInfoList) {
 
-            AccountDataUpdateTask accountDataUpdateTask = new AccountDataUpdateTask(ServiceFactory.getInstance(baiduAccountInfo.getBaiduUserName(), baiduAccountInfo.getBaiduPassword(), baiduAccountInfo.getToken(), null), accountDAO,campaignDAO,adgroupDAO);
+            AccountDataUpdateTask accountDataUpdateTask = new AccountDataUpdateTask(ServiceFactory.getInstance(baiduAccountInfo.getBaiduUserName(), baiduAccountInfo.getBaiduPassword(), baiduAccountInfo.getToken(), null), accountDAO, campaignDAO, adgroupDAO);
 
             WorkPool.pushTask(accountDataUpdateTask);
 

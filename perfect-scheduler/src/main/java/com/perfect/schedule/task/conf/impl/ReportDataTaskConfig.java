@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  *
  * @author yousheng
  */
-public class ReportDataTaskConfig implements TaskConfig{
+public class ReportDataTaskConfig implements TaskConfig {
     protected static transient Logger log = LoggerFactory
             .getLogger(UserUpdateTaskConfig.class);
 

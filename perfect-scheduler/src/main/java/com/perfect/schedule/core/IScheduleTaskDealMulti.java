@@ -1,19 +1,20 @@
 package com.perfect.schedule.core;
 
 /**
- * ¿ÉÅú´¦ÀíµÄÈÎÎñ½Ó¿Ú
- * @author xuannan
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½
  *
- * @param <T>ÈÎÎñÀàÐÍ
+ * @param <T>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * @author xuannan
  */
-public interface IScheduleTaskDealMulti<T>  extends IScheduleTaskDeal<T> {
- 
-/**
- * 	Ö´ÐÐ¸ø¶¨µÄÈÎÎñÊý×é¡£ÒòÎª·ºÐÍ²»Ö§³Önew Êý×é£¬Ö»ÄÜ´«µÝOBJECT[]
- * @param tasks ÈÎÎñÊý×é
- * @param ownSign µ±Ç°»·¾³Ãû³Æ
- * @return
- * @throws Exception
- */
-  public boolean execute(T[] tasks, String ownSign) throws Exception;
+public interface IScheduleTaskDealMulti<T> extends IScheduleTaskDeal<T> {
+
+    /**
+     * Ö´ï¿½Ð¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é¡£ï¿½ï¿½Îªï¿½ï¿½ï¿½Í²ï¿½Ö§ï¿½ï¿½new ï¿½ï¿½ï¿½é£¬Ö»ï¿½Ü´ï¿½ï¿½ï¿½OBJECT[]
+     *
+     * @param tasks   ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     * @param ownSign ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     * @return
+     * @throws Exception
+     */
+    public boolean execute(T[] tasks, String ownSign) throws Exception;
 }

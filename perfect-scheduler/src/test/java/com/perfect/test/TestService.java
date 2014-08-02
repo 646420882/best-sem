@@ -2,22 +2,18 @@ package com.perfect.test;
 
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
-import com.perfect.autosdk.service.BaiduServiceSupport;
 import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.autosdk.sms.v3.AccountService;
 import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
-import com.perfect.mongodb.dao.AccountDAO;
-import com.perfect.mongodb.dao.SystemUserDAO;
-import com.perfect.mongodb.entity.BaiduAccountInfo;
-import com.perfect.mongodb.entity.SystemUser;
+import com.perfect.dao.AccountDAO;
+import com.perfect.dao.SystemUserDAO;
+import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.SystemUserEntity;
 import com.perfect.schedule.core.IScheduleTaskDealSingle;
 import com.perfect.schedule.core.TaskItemDefine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
-import org.unitils.spring.annotation.SpringApplicationContext;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -29,10 +25,10 @@ import java.util.List;
  */
 
 
-public class TestService implements IScheduleTaskDealSingle<SystemUser> {
+public class TestService implements IScheduleTaskDealSingle<SystemUserEntity> {
     protected static transient Logger log = LoggerFactory.getLogger(IScheduleTaskDealSingle.class);
 
-    private static CommonService service = BaiduServiceSupport.getService();
+    private static CommonService service = null;
 
     @Resource
     private AccountDAO accountDAO;
@@ -41,20 +37,20 @@ public class TestService implements IScheduleTaskDealSingle<SystemUser> {
     private SystemUserDAO systemUserDAO;
 
     @Override
-    public boolean execute(SystemUser systemUser, String ownSign) throws Exception {
+    public boolean execute(SystemUserEntity systemUser, String ownSign) throws Exception {
 
 //        SystemUser systemUser = mongoTemplate.findById(userId, SystemUser.class);
 
-        List<BaiduAccountInfo> baiduAccountInfoList = systemUser.getBaiduAccountInfos();
+        List<BaiduAccountInfoEntity> baiduAccountInfoList = systemUser.getBaiduAccountInfoEntities();
 
-        for (BaiduAccountInfo baiduAccountInfo : baiduAccountInfoList) {
+        for (BaiduAccountInfoEntity baiduAccountInfo : baiduAccountInfoList) {
             AccountService accountService = ServiceFactory.getInstance(baiduAccountInfo.getBaiduUserName(), baiduAccountInfo.getBaiduPassword(), baiduAccountInfo.getToken(), null).getService(AccountService.class);
 
             GetAccountInfoRequest getAccountInfoRequest = new GetAccountInfoRequest();
             GetAccountInfoResponse getAccountInfoResponse = accountService.getAccountInfo(getAccountInfoRequest);
 
             AccountInfoType accountInfoType = getAccountInfoResponse.getAccountInfoType();
-            accountDAO.update(accountInfoType, accountInfoType);
+//            accountDAO.update(accountInfoType, accountInfoType);
         }
 
         return true;
@@ -63,9 +59,9 @@ public class TestService implements IScheduleTaskDealSingle<SystemUser> {
     @Override
     public List selectTasks(String taskParameter, String ownSign, int taskItemNum, List<TaskItemDefine> taskItemList, int eachFetchDataNum) throws Exception {
 
-        List<SystemUser> result = new ArrayList<>();
+        List<SystemUserEntity> result = new ArrayList<>();
 
-        List<SystemUser> systemUsers = systemUserDAO.findAll();
+        List<SystemUserEntity> systemUsers = systemUserDAO.findAll();
         return systemUsers;
     }
 

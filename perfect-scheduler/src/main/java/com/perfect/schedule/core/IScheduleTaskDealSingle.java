@@ -1,18 +1,19 @@
 package com.perfect.schedule.core;
 
 /**
- * µ¥¸öÈÎÎñ´¦ÀíµÄ½Ó¿Ú
- * @author xuannan
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä½Ó¿ï¿½
  *
- * @param <T>ÈÎÎñÀàÐÍ
+ * @param <T>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * @author xuannan
  */
 public interface IScheduleTaskDealSingle<T> extends IScheduleTaskDeal<T> {
-  /**
-   * Ö´ÐÐµ¥¸öÈÎÎñ
-   * @param task Object
-   * @param ownSign µ±Ç°»·¾³Ãû³Æ
-   * @throws Exception
-   */
-  public boolean execute(T task, String ownSign) throws Exception;
-  
+    /**
+     * Ö´ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     *
+     * @param task    Object
+     * @param ownSign ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     * @throws Exception
+     */
+    public boolean execute(T task, String ownSign) throws Exception;
+
 }

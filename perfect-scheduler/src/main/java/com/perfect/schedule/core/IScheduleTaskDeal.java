@@ -5,29 +5,31 @@ import java.util.List;
 
 
 /**
- * µ÷¶ÈÆ÷¶ÔÍâµÄ»ù´¡½Ó¿Ú
- * @author xuannan
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½Ó¿ï¿½
  *
- * @param <T> ÈÎÎñÀàÐÍ
+ * @param <T> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * @author xuannan
  */
 public interface IScheduleTaskDeal<T> {
 
-/**
- * ¸ù¾ÝÌõ¼þ£¬²éÑ¯µ±Ç°µ÷¶È·þÎñÆ÷¿É´¦ÀíµÄÈÎÎñ	
- * @param taskParameter ÈÎÎñµÄ×Ô¶¨Òå²ÎÊý
- * @param ownSign µ±Ç°»·¾³Ãû³Æ 
- * @param taskItemNum µ±Ç°ÈÎÎñÀàÐÍµÄÈÎÎñ¶ÓÁÐÊýÁ¿
- * @param taskItemList µ±Ç°µ÷¶È·þÎñÆ÷£¬·ÖÅäµ½µÄ¿É´¦Àí¶ÓÁÐ
- * @param eachFetchDataNum Ã¿´Î»ñÈ¡Êý¾ÝµÄÊýÁ¿
- * @return
- * @throws Exception
- */
-public List<T> selectTasks(String taskParameter, String ownSign, int taskItemNum, List<TaskItemDefine> taskItemList, int eachFetchDataNum) throws Exception;
+    /**
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½Ç°ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     *
+     * @param taskParameter    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     * @param ownSign          ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     * @param taskItemNum      ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     * @param taskItemList     ï¿½ï¿½Ç°ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½äµ½ï¿½Ä¿É´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     * @param eachFetchDataNum Ã¿ï¿½Î»ï¿½È¡ï¿½ï¿½Ýµï¿½ï¿½ï¿½ï¿½ï¿½
+     * @return
+     * @throws Exception
+     */
+    public List<T> selectTasks(String taskParameter, String ownSign, int taskItemNum, List<TaskItemDefine> taskItemList, int eachFetchDataNum) throws Exception;
 
-/**
- * »ñÈ¡ÈÎÎñµÄ±È½ÏÆ÷,Ö÷ÒªÔÚNotSleepÄ£Ê½ÏÂÐèÒªÓÃµ½
- * @return
- */
-public Comparator<T> getComparator();
+    /**
+     * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ä±È½ï¿½ï¿½ï¿½,ï¿½ï¿½Òªï¿½ï¿½NotSleepÄ£Ê½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ãµï¿½
+     *
+     * @return
+     */
+    public Comparator<T> getComparator();
 
 }

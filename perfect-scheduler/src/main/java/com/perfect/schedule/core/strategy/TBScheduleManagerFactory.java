@@ -196,8 +196,8 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
      * @throws Exception
      */
     public void assignScheduleServer() throws Exception {
-        for (ScheduleStrategyRunntime run : this.scheduleStrategyManager.loadAllScheduleStrategyRunntimeByUUID(this.uuid)) {
-            List<ScheduleStrategyRunntime> factoryList = this.scheduleStrategyManager.loadAllScheduleStrategyRunntimeByTaskType(run.getStrategyName());
+        for (ScheduleStrategyRuntime run : this.scheduleStrategyManager.loadAllScheduleStrategyRunntimeByUUID(this.uuid)) {
+            List<ScheduleStrategyRuntime> factoryList = this.scheduleStrategyManager.loadAllScheduleStrategyRunntimeByTaskType(run.getStrategyName());
             if (factoryList.size() == 0 || this.isLeader(this.uuid, factoryList) == false) {
                 continue;
             }
@@ -205,7 +205,7 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
 
             int[] nums = ScheduleUtil.assignTaskNumber(factoryList.size(), scheduleStrategy.getAssignNum(), scheduleStrategy.getNumOfSingleServer());
             for (int i = 0; i < factoryList.size(); i++) {
-                ScheduleStrategyRunntime factory = factoryList.get(i);
+                ScheduleStrategyRuntime factory = factoryList.get(i);
                 //更新请求的服务器数量
                 this.scheduleStrategyManager.updateStrategyRunntimeReqestNum(run.getStrategyName(),
                         factory.getUuid(), nums[i]);
@@ -213,10 +213,10 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
         }
     }
 
-    public boolean isLeader(String uuid, List<ScheduleStrategyRunntime> factoryList) {
+    public boolean isLeader(String uuid, List<ScheduleStrategyRuntime> factoryList) {
         try {
             long no = Long.parseLong(uuid.substring(uuid.lastIndexOf("$") + 1));
-            for (ScheduleStrategyRunntime server : factoryList) {
+            for (ScheduleStrategyRuntime server : factoryList) {
                 if (no > Long.parseLong(server.getUuid().substring(
                         server.getUuid().lastIndexOf("$") + 1))) {
                     return false;
@@ -230,7 +230,7 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
     }
 
     public void reRunScheduleServer() throws Exception {
-        for (ScheduleStrategyRunntime run : this.scheduleStrategyManager.loadAllScheduleStrategyRunntimeByUUID(this.uuid)) {
+        for (ScheduleStrategyRuntime run : this.scheduleStrategyManager.loadAllScheduleStrategyRunntimeByUUID(this.uuid)) {
             List<IStrategyTask> list = this.managerMap.get(run.getStrategyName());
             if (list == null) {
                 list = new ArrayList<IStrategyTask>();

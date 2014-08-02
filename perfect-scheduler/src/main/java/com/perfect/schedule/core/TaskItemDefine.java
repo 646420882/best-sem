@@ -1,31 +1,34 @@
 package com.perfect.schedule.core;
 
 /**
- * ÈÎÎñ¶¨Òå£¬Ìá¹©¹Ø¼üĞÅÏ¢¸øÊ¹ÓÃÕß
- * @author xuannan
+ * ï¿½ï¿½ï¿½ï¿½ï¿½å£¬ï¿½á¹©ï¿½Ø¼ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½
  *
+ * @author xuannan
  */
 public class TaskItemDefine {
-	/**
-	 * ÈÎÎñÏîID
-	 */
-	private String taskItemId;
-	/**
-	 * ÈÎÎñÏî×Ô¶¨Òå²ÎÊı
-	 */
-	private String parameter;
-	
-	public void setParameter(String parameter) {
-		this.parameter = parameter;
-	}
-	public String getParameter() {
-		return parameter;
-	}
-	public void setTaskItemId(String taskItemId) {
-		this.taskItemId = taskItemId;
-	}
-	public String getTaskItemId() {
-		return taskItemId;
-	}
+    /**
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
+     */
+    private String taskItemId;
+    /**
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     */
+    private String parameter;
+
+    public void setParameter(String parameter) {
+        this.parameter = parameter;
+    }
+
+    public String getParameter() {
+        return parameter;
+    }
+
+    public void setTaskItemId(String taskItemId) {
+        this.taskItemId = taskItemId;
+    }
+
+    public String getTaskItemId() {
+        return taskItemId;
+    }
 
 }

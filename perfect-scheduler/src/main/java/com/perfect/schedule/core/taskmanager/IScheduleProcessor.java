@@ -1,25 +1,30 @@
 package com.perfect.schedule.core.taskmanager;
 
 interface IScheduleProcessor {
-	 /**
-	  * ÊÇ·ñÒÑ¾­´¦ÀíÍêÄÚ´æÖÐËùÓÐµÄÊý¾Ý£¬ÔÚ½øÐÐ¶ÓÁÐÇÐ»»µÄÊ±ºò£¬
-	  * ±ØÐë±£Ö¤ËùÓÐÄÚ´æµÄÊý¾Ý´¦ÀíÍê±Ï
-	  * @return
-	  */
-	 public boolean isDealFinishAllData();
-	 /**
-	  * ÅÐ¶Ï½ø³ÌÊÇ·ñ´¦ÓÚÐÝÃß×´Ì¬
-	  * @return
-	  */
-	 public boolean isSleeping();
-	 /**
-	  * Í£Ö¹ÈÎÎñ´¦ÀíÆ÷
-	  * @throws Exception
-	  */
-	 public void stopSchedule() throws Exception;
-	 
-	 /**
-	  * Çå³ýËùÓÐÒÑ¾­È¡µ½ÄÚ´æÖÐµÄÊý¾Ý£¬ÔÚÐÄÌøÏß³ÌÊ§°ÜµÄÊ±ºòµ÷ÓÃ£¬±ÜÃâÊý¾ÝÖØ¸´
-	  */
-	 public void clearAllHasFetchData();
+    /**
+     * ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½Ý£ï¿½ï¿½Ú½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+     * ï¿½ï¿½ï¿½ë±£Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     *
+     * @return
+     */
+    public boolean isDealFinishAllData();
+
+    /**
+     * ï¿½Ð¶Ï½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
+     *
+     * @return
+     */
+    public boolean isSleeping();
+
+    /**
+     * Í£Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     *
+     * @throws Exception
+     */
+    public void stopSchedule() throws Exception;
+
+    /**
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½È¡ï¿½ï¿½ï¿½Ú´ï¿½ï¿½Ðµï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß³ï¿½Ê§ï¿½Üµï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½
+     */
+    public void clearAllHasFetchData();
 }

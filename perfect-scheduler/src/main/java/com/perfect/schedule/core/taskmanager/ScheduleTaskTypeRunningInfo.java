@@ -6,91 +6,104 @@ import java.sql.Timestamp;
 
 
 public class ScheduleTaskTypeRunningInfo {
-	
-	private long id;
-    
-	/**
-     * ÈÎÎñÀàÐÍ£ºÔ­Ê¼ÈÎÎñÀàÐÍ+"-"+ownSign
+
+    private long id;
+
+    /**
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½Ô­Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½+"-"+ownSign
      */
-	private String taskType;
-	
-	/**
-	 * Ô­Ê¼ÈÎÎñÀàÐÍ
-	 */
-	private String baseTaskType;
-	
-	/**
-	 * »·¾³
-	 */
-	private String ownSign;
-	
-	/**
-	 * ×îºóÒ»´ÎÈÎÎñ·ÖÅäµÄÊ±¼ä
-	 */
-	private Timestamp lastAssignTime;
-	
-	/**
-	 * ×îºóÒ»´ÎÖ´ÐÐÈÎÎñ·ÖÅäµÄ·þÎñÆ÷
-	 */
-	private String lastAssignUUID;
-	
-	private Timestamp gmtCreate;
-	
-	private Timestamp gmtModified;
-	
-	public String toString(){
-		return ToStringBuilder.reflectionToString(this);
-	}
-	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public String getOwnSign() {
-		return ownSign;
-	}
-	public void setOwnSign(String ownSign) {
-		this.ownSign = ownSign;
-	}
-	public String getTaskType() {
-		return taskType;
-	}
-	public void setTaskType(String taskType) {
-		this.taskType = taskType;
-	}
-	public Timestamp getLastAssignTime() {
-		return lastAssignTime;
-	}
-	public void setLastAssignTime(Timestamp lastAssignTime) {
-		this.lastAssignTime = lastAssignTime;
-	}
-	public String getLastAssignUUID() {
-		return lastAssignUUID;
-	}
-	public void setLastAssignUUID(String lastAssignUUID) {
-		this.lastAssignUUID = lastAssignUUID;
-	}
-	public Timestamp getGmtCreate() {
-		return gmtCreate;
-	}
-	public void setGmtCreate(Timestamp gmtCreate) {
-		this.gmtCreate = gmtCreate;
-	}
-	public Timestamp getGmtModified() {
-		return gmtModified;
-	}
-	public void setGmtModified(Timestamp gmtModified) {
-		this.gmtModified = gmtModified;
-	}
+    private String taskType;
 
-	public String getBaseTaskType() {
-		return baseTaskType;
-	}
+    /**
+     * Ô­Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     */
+    private String baseTaskType;
 
-	public void setBaseTaskType(String baseTaskType) {
-		this.baseTaskType = baseTaskType;
-	}
-	
+    /**
+     * ï¿½ï¿½ï¿½ï¿½
+     */
+    private String ownSign;
+
+    /**
+     * ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+     */
+    private Timestamp lastAssignTime;
+
+    /**
+     * ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½
+     */
+    private String lastAssignUUID;
+
+    private Timestamp gmtCreate;
+
+    private Timestamp gmtModified;
+
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getOwnSign() {
+        return ownSign;
+    }
+
+    public void setOwnSign(String ownSign) {
+        this.ownSign = ownSign;
+    }
+
+    public String getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(String taskType) {
+        this.taskType = taskType;
+    }
+
+    public Timestamp getLastAssignTime() {
+        return lastAssignTime;
+    }
+
+    public void setLastAssignTime(Timestamp lastAssignTime) {
+        this.lastAssignTime = lastAssignTime;
+    }
+
+    public String getLastAssignUUID() {
+        return lastAssignUUID;
+    }
+
+    public void setLastAssignUUID(String lastAssignUUID) {
+        this.lastAssignUUID = lastAssignUUID;
+    }
+
+    public Timestamp getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setGmtCreate(Timestamp gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
+
+    public Timestamp getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Timestamp gmtModified) {
+        this.gmtModified = gmtModified;
+    }
+
+    public String getBaseTaskType() {
+        return baseTaskType;
+    }
+
+    public void setBaseTaskType(String baseTaskType) {
+        this.baseTaskType = baseTaskType;
+    }
+
 }

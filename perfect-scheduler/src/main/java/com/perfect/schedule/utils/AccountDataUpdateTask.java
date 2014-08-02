@@ -6,6 +6,8 @@ import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.AccountDAO;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
+import com.perfect.entity.AccountInfoEntity;
+import org.springframework.beans.BeanUtils;
 
 /**
  * Created by vbzer_000 on 2014/7/1.
@@ -34,7 +36,10 @@ public class AccountDataUpdateTask implements Runnable {
             GetAccountInfoResponse getAccountInfoResponse = accountService.getAccountInfo(getAccountInfoRequest);
 
             AccountInfoType accountInfoType = getAccountInfoResponse.getAccountInfoType();
-            accountDAO.updateById(accountInfoType);
+
+            AccountInfoEntity accountInfoEntity = new AccountInfoEntity();
+            BeanUtils.copyProperties(accountInfoType,accountInfoEntity);
+            accountDAO.updateById(accountInfoEntity);
 
             CampaignService campaignService = serviceFactory.getService(CampaignService.class);
 

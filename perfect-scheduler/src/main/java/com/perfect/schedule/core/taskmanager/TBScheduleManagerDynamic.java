@@ -6,38 +6,42 @@ import com.perfect.schedule.core.strategy.TBScheduleManagerFactory;
 import java.util.List;
 
 public class TBScheduleManagerDynamic extends TBScheduleManager {
-	//private static transient Log log = LogFactory.getLog(TBScheduleManagerDynamic.class);
-	
-	TBScheduleManagerDynamic(TBScheduleManagerFactory aFactory,
-			String baseTaskType, String ownSign, int managerPort,
-			String jxmUrl, IScheduleDataManager aScheduleCenter) throws Exception {
-		super(aFactory, baseTaskType, ownSign,aScheduleCenter);
-	}
-	public void initial() throws Exception {
-		if (scheduleCenter.isLeader(this.currenScheduleServer.getUuid(),
-				scheduleCenter.loadScheduleServerNames(this.currenScheduleServer.getTaskType()))) {
-			// ÊÇµÚÒ»´ÎÆô¶¯£¬¼ì²é¶ÔÓ¦µÄzkÄ¿Â¼ÊÇ·ñ´æÔÚ
-			this.scheduleCenter.initialRunningInfo4Dynamic(	this.currenScheduleServer.getBaseTaskType(),
-					this.currenScheduleServer.getOwnSign());
-		}
-		computerStart();
-    }
-	
-	public void refreshScheduleServerInfo() throws Exception {
-		throw new Exception("Ã»ÓÐÊµÏÖ");
-	}
+    //private static transient Log log = LogFactory.getLog(TBScheduleManagerDynamic.class);
 
-	public boolean isNeedReLoadTaskItemList() throws Exception {
-		throw new Exception("Ã»ÓÐÊµÏÖ");
-	}
-	public void assignScheduleTask() throws Exception {
-		throw new Exception("Ã»ÓÐÊµÏÖ");
-		
-	}
-	public List<TaskItemDefine> getCurrentScheduleTaskItemList() {
-		throw new RuntimeException("Ã»ÓÐÊµÏÖ");
-	}
-	public int getTaskItemCount() {
-		throw new RuntimeException("Ã»ÓÐÊµÏÖ");
-	}
+    TBScheduleManagerDynamic(TBScheduleManagerFactory aFactory,
+                             String baseTaskType, String ownSign, int managerPort,
+                             String jxmUrl, IScheduleDataManager aScheduleCenter) throws Exception {
+        super(aFactory, baseTaskType, ownSign, aScheduleCenter);
+    }
+
+    public void initial() throws Exception {
+        if (scheduleCenter.isLeader(this.currenScheduleServer.getUuid(),
+                scheduleCenter.loadScheduleServerNames(this.currenScheduleServer.getTaskType()))) {
+            // ï¿½Çµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½zkÄ¿Â¼ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+            this.scheduleCenter.initialRunningInfo4Dynamic(this.currenScheduleServer.getBaseTaskType(),
+                    this.currenScheduleServer.getOwnSign());
+        }
+        computerStart();
+    }
+
+    public void refreshScheduleServerInfo() throws Exception {
+        throw new Exception("Ã»ï¿½ï¿½Êµï¿½ï¿½");
+    }
+
+    public boolean isNeedReLoadTaskItemList() throws Exception {
+        throw new Exception("Ã»ï¿½ï¿½Êµï¿½ï¿½");
+    }
+
+    public void assignScheduleTask() throws Exception {
+        throw new Exception("Ã»ï¿½ï¿½Êµï¿½ï¿½");
+
+    }
+
+    public List<TaskItemDefine> getCurrentScheduleTaskItemList() {
+        throw new RuntimeException("Ã»ï¿½ï¿½Êµï¿½ï¿½");
+    }
+
+    public int getTaskItemCount() {
+        throw new RuntimeException("Ã»ï¿½ï¿½Êµï¿½ï¿½");
+    }
 }

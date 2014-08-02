@@ -10,47 +10,50 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ScheduleWatcher implements Watcher {
-	private static transient Logger log = LoggerFactory.getLogger(ScheduleWatcher.class);
-	private Map<String,Watcher> route = new ConcurrentHashMap<String,Watcher>();
-	private ZKManager manager;
-	public ScheduleWatcher(ZKManager aManager){
-		this.manager = aManager;
-	}
-	public void registerChildrenChanged(String path,Watcher watcher) throws Exception {
-		manager.getZooKeeper().getChildren(path, true);
-		route.put(path,watcher);
-	}
-	public void process(WatchedEvent event) {
-		if(log.isInfoEnabled()){
-			log.info("ÒÑ¾­´¥·¢ÁË" + event.getType() + ":"+ event.getState() + "ÊÂ¼þ£¡" + event.getPath());
-		}
-		if(event.getType() == Event.EventType.NodeChildrenChanged){
-			String path = event.getPath();
-			Watcher watcher = route.get(path);
-			  if( watcher != null ){
-				  try{
-					  watcher.process(event);
-				  }finally{
-					  try{
-						  if(manager.getZooKeeper().exists(path,null) != null){
-							  manager.getZooKeeper().getChildren(path, true);
-						  }
-					  }catch(Exception e){
-						  log.error(path +":" + e.getMessage(),e);
-					  }
-				  }
-			  }else{
-				  log.info("ÒÑ¾­´¥·¢ÁË" + event.getType() + ":"+ event.getState() + "ÊÂ¼þ£¡" + event.getPath());
-			  }
-		}else if (event.getState() == KeeperState.SyncConnected) {
-			log.info("ÊÕµ½ZKÁ¬½Ó³É¹¦ÊÂ¼þ£¡");
-		} else if (event.getState() == KeeperState.Expired) {
-			log.error("»á»°³¬Ê±£¬µÈ´ýÖØÐÂ½¨Á¢ZKÁ¬½Ó...");
-			try {
-				manager.reConnection();
-			} catch (Exception e) {
-				log.error(e.getMessage(),e);
-			}
-		}
-	}
+    private static transient Logger log = LoggerFactory.getLogger(ScheduleWatcher.class);
+    private Map<String, Watcher> route = new ConcurrentHashMap<String, Watcher>();
+    private ZKManager manager;
+
+    public ScheduleWatcher(ZKManager aManager) {
+        this.manager = aManager;
+    }
+
+    public void registerChildrenChanged(String path, Watcher watcher) throws Exception {
+        manager.getZooKeeper().getChildren(path, true);
+        route.put(path, watcher);
+    }
+
+    public void process(WatchedEvent event) {
+        if (log.isInfoEnabled()) {
+            log.info("ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" + event.getType() + ":" + event.getState() + "ï¿½Â¼ï¿½ï¿½ï¿½" + event.getPath());
+        }
+        if (event.getType() == Event.EventType.NodeChildrenChanged) {
+            String path = event.getPath();
+            Watcher watcher = route.get(path);
+            if (watcher != null) {
+                try {
+                    watcher.process(event);
+                } finally {
+                    try {
+                        if (manager.getZooKeeper().exists(path, null) != null) {
+                            manager.getZooKeeper().getChildren(path, true);
+                        }
+                    } catch (Exception e) {
+                        log.error(path + ":" + e.getMessage(), e);
+                    }
+                }
+            } else {
+                log.info("ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" + event.getType() + ":" + event.getState() + "ï¿½Â¼ï¿½ï¿½ï¿½" + event.getPath());
+            }
+        } else if (event.getState() == KeeperState.SyncConnected) {
+            log.info("ï¿½Õµï¿½ZKï¿½ï¿½ï¿½Ó³É¹ï¿½ï¿½Â¼ï¿½ï¿½ï¿½");
+        } else if (event.getState() == KeeperState.Expired) {
+            log.error("ï¿½á»°ï¿½ï¿½Ê±ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½ZKï¿½ï¿½ï¿½ï¿½...");
+            try {
+                manager.reConnection();
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
+        }
+    }
 }
