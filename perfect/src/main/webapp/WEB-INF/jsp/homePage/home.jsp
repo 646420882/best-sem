@@ -2086,6 +2086,8 @@
                     loadKeywordQualityData(null, 0);
                 } else if (genre == "importKeywordDefault") {
                     getImportKeywordDefault(null, 0);
+                }else if(genre == "accountOverview"){
+                    lisClick();
                 }
             }
         });
@@ -2343,7 +2345,9 @@
         });
     };
 
-    /*===========================================================账户概览start================*/
+
+
+
 
     //根据最近几天获取数据
     function lisClick(obj, days) {
@@ -2386,9 +2390,6 @@
 
     //初始化账户概览页面数据
     lisClick($(".current").get(1), 1);//默认显示昨天的汇总数据
-
-
-    /*===========================================================账户概览end==============================================*/
 
 </script>
 

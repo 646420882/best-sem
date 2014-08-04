@@ -43,7 +43,6 @@ public class AccountOverviewService {
         for(String date:dates){
            String userTable = currLoginUserName + table + date;
            List<KeywordRealTimeDataVOEntity> list = accountAnalyzeDAO.performance(userTable);
-           System.out.println("已经统计的表："+userTable);
 
            for (KeywordRealTimeDataVOEntity krt : list) {
                Integer impression = krt.getImpression();
