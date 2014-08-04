@@ -44,7 +44,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
         zkBaseTime = tempStat.getCtime();
         ZKTools.deleteTree(getZooKeeper(), tempPath);
         if(Math.abs(this.zkBaseTime - this.loclaBaseTime) > 5000){
-        	log.error("请注意，Zookeeper服务器时间与本地时间相差 ： " + Math.abs(this.zkBaseTime - this.loclaBaseTime) +" ms");
+        	log.error("" + Math.abs(this.zkBaseTime - this.loclaBaseTime) +" ms");
         }	
 	}	
 	
@@ -54,21 +54,21 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 
 	public void createBaseTaskType(ScheduleTaskType baseTaskType) throws Exception {
 		if(baseTaskType.getBaseTaskType().indexOf("$") > 0){
-			throw new Exception("调度任务" + baseTaskType.getBaseTaskType() +"名称不能包括特殊字符 $");
+			throw new Exception("" + baseTaskType.getBaseTaskType() +"");
 		}
 		String zkPath =	this.PATH_BaseTaskType + "/"+ baseTaskType.getBaseTaskType();
 		String valueString = this.gson.toJson(baseTaskType);
 		if ( this.getZooKeeper().exists(zkPath, false) == null) {
 			this.getZooKeeper().create(zkPath, valueString.getBytes(), this.zkManager.getAcl(),CreateMode.PERSISTENT);
 		} else {
-			throw new Exception("调度任务" + baseTaskType.getBaseTaskType() + "已经存在,如果确认需要重建，请先调用deleteTaskType(String baseTaskType)删除");
+			throw new Exception("" + baseTaskType.getBaseTaskType() + "");
 		}
 	}
 
 	public void updateBaseTaskType(ScheduleTaskType baseTaskType)
 			throws Exception {
 		if(baseTaskType.getBaseTaskType().indexOf("$") > 0){
-			throw new Exception("调度任务" + baseTaskType.getBaseTaskType() +"名称不能包括特殊字符 $");
+			throw new Exception("" + baseTaskType.getBaseTaskType() +"");
 		}
 		String zkPath =	this.PATH_BaseTaskType + "/"+ baseTaskType.getBaseTaskType();
 		String valueString = this.gson.toJson(baseTaskType);
@@ -83,7 +83,6 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 
 	public void initialRunningInfo4Dynamic(String baseTaskType, String ownSign)throws Exception {
 		 String taskType = ScheduleUtil.getTaskTypeByBaseAndOwnSign(baseTaskType, ownSign);
-		 //清除所有的老信息，只有leader能执行此操作
 		 String zkPath = this.PATH_BaseTaskType+"/"+ baseTaskType +"/" + taskType;
 		 if(this.getZooKeeper().exists(zkPath, false) == null){
 			 this.getZooKeeper().create(zkPath,null, this.zkManager.getAcl(),CreateMode.PERSISTENT);
@@ -93,24 +92,24 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 			throws Exception {
 		  
 		 String taskType = ScheduleUtil.getTaskTypeByBaseAndOwnSign(baseTaskType, ownSign);
-		 //清除所有的老信息，只有leader能执行此操作
+
 		 String zkPath = this.PATH_BaseTaskType+"/"+ baseTaskType +"/" + taskType+"/" + this.PATH_TaskItem;
 		 try {
 			 ZKTools.deleteTree(this.getZooKeeper(),zkPath);
 		 } catch (Exception e) {
-				//需要处理zookeeper session过期异常
+
 				if (e instanceof KeeperException
 						&& ((KeeperException) e).code().intValue() == KeeperException.Code.SESSIONEXPIRED.intValue()) {
-					log.warn("delete : zookeeper session已经过期，需要重新连接zookeeper");
+					log.warn("");
 					zkManager.reConnection();
 					ZKTools.deleteTree(this.getZooKeeper(),zkPath);
 				}
 		 }
-		 //创建目录
+
 		 this.getZooKeeper().create(zkPath,null, this.zkManager.getAcl(),CreateMode.PERSISTENT);
-		 //创建静态任务
+
 		 this.createScheduleTaskItem(baseTaskType, ownSign,this.loadTaskTypeBaseInfo(baseTaskType).getTaskItems());
-		 //标记信息初始化成功
+
 		 setInitialRunningInfoSucuss(baseTaskType,taskType,uuid);
 	}
 	
@@ -148,7 +147,6 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
     	return stat.getVersion();
     }
 	/**
-	 * 根据基础配置里面的任务项来创建各个域里面的任务项
 	 * @param baseTaskType
 	 * @param ownSign
 	 * @param baseTaskItems
@@ -175,7 +173,6 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 		createScheduleTaskItem(taskItems);
 	}	
 	/**
-	 * 创建任务项，注意其中的 CurrentSever和RequestServer不会起作用
 	 * @param taskItems
 	 * @throws Exception
 	 */
@@ -210,7 +207,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 	}
 
 	/**
-	 * 删除任务项
+	 * 删锟斤拷锟斤拷锟斤拷锟斤拷
 	 * @param taskType
 	 * @param taskItem
 	 * @throws Exception
@@ -285,7 +282,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 
 	@Override
 	public void clearTaskType(String baseTaskType) throws Exception {
-		//清除所有的Runtime TaskType		
+
 		String zkPath =this.PATH_BaseTaskType+"/" + baseTaskType;
 		List<String> list = this.getZooKeeper().getChildren(zkPath,false);
 		for (String name : list) {
@@ -356,7 +353,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 			}
 		}
 		Collections.sort(result,new ScheduleServerComparator(orderStr));
-		//排序
+
 		return result;
 	}
 
@@ -364,7 +361,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 	public List<ScheduleServer> selectHistoryScheduleServer(
 			String baseTaskType, String ownSign, String ip, String orderStr)
 			throws Exception {
-		throw new Exception("没有实现的方法");
+		throw new Exception("");
 	}
 
 	@Override
@@ -406,7 +403,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 				isModify = true;
 			}
 		 }
-		 if(isModify == true){ //设置需要所有的服务器重新装载任务
+		 if(isModify == true){
 			 this.updateReloadTaskItemFlag(taskType);
 		 }
 	}
@@ -448,7 +445,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 					result++;
 				}
 			} catch (Exception e) {
-				// 当有多台服务器时，存在并发清理的可能，忽略异常
+
 				result++;
 			}
 		}
@@ -583,15 +580,15 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 			List<String> taskServerList) throws Exception {
 		 if(this.isLeader(currentUuid,taskServerList)==false){
 			 if(log.isDebugEnabled()){
-			   log.debug(currentUuid +":不是负责任务分配的Leader,直接返回");
+			   log.debug(currentUuid +"");
 			 }
 			 return;
 		 }
 		 if(log.isDebugEnabled()){
-			   log.debug(currentUuid +":开始重新分配任务......");
+			   log.debug(currentUuid +"");
 		 }		
 		 if(taskServerList.size()<=0){
-			 //在服务器动态调整的时候，可能出现服务器列表为空的清空
+
 			 return;
 		 }
 		 String baseTaskType = ScheduleUtil.splitBaseTaskTypeFromTaskType(taskType);
@@ -602,7 +599,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 		 int[] taskNums = ScheduleUtil.assignTaskNumber(taskServerList.size(), children.size(), maxNumOfOneServer);
 		 int point =0;
 		 int count = 0;
-		 String NO_SERVER_DEAL = "没有分配到服务器";
+		 String NO_SERVER_DEAL = "";
 		 for(int i=0;i <children.size();i++){
 			String name = children.get(i);
 			if(point <taskServerList.size() && i >= count + taskNums[point]){
@@ -620,14 +617,14 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 				this.getZooKeeper().setData(zkPath + "/" + name + "/cur_server",serverName.getBytes(),-1);
 				this.getZooKeeper().setData(zkPath + "/" + name + "/req_server",null,-1);
 			}else if(new String(curServerValue).equals(serverName)==true && reqServerValue == null ){
-				//不需要做任何事情
+
 				unModifyCount = unModifyCount + 1;
 			}else{
 				this.getZooKeeper().setData(zkPath + "/" + name + "/req_server",serverName.getBytes(),-1);
 			}
 		 }	
 		 
-		 if(unModifyCount < children.size()){ //设置需要所有的服务器重新装载任务
+		 if(unModifyCount < children.size()){
 			 this.updateReloadTaskItemFlag(taskType);
 		 }
 		 if(log.isDebugEnabled()){
@@ -642,15 +639,15 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 			List<String> serverList) throws Exception {
 		 if(this.isLeader(currentUuid,serverList)==false){
 			 if(log.isDebugEnabled()){
-			   log.debug(currentUuid +":不是负责任务分配的Leader,直接返回");
+			   log.debug(currentUuid +"");
 			 }
 			 return;
 		 }
 		 if(log.isDebugEnabled()){
-			   log.debug(currentUuid +":开始重新分配任务......");
+			   log.debug(currentUuid +"");
 		 }		
 		 if(serverList.size()<=0){
-			 //在服务器动态调整的时候，可能出现服务器列表为空的清空
+
 			 return;
 		 }
 		 String baseTaskType = ScheduleUtil.splitBaseTaskTypeFromTaskType(taskType);
@@ -666,7 +663,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 				this.getZooKeeper().setData(zkPath + "/" + name + "/cur_server",serverList.get(point).getBytes(),-1);
 				this.getZooKeeper().setData(zkPath + "/" + name + "/req_server",null,-1);
 			}else if(new String(curServerValue).equals(serverList.get(point))==true && reqServerValue == null ){
-				//不需要做任何事情
+
 				unModifyCount = unModifyCount + 1;
 			}else{
 				this.getZooKeeper().setData(zkPath + "/" + name + "/req_server",serverList.get(point).getBytes(),-1);
@@ -674,7 +671,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 			point = (point  + 1) % serverList.size();
 		 }	
 		 
-		 if(unModifyCount < children.size()){ //设置需要所有的服务器重新装载任务
+		 if(unModifyCount < children.size()){
 			 this.updateReloadTaskItemFlag(taskType);
 		 }
 		 if(log.isDebugEnabled()){
@@ -687,7 +684,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 	}
 	public void registerScheduleServer(ScheduleServer server) throws Exception {
 		if(server.isRegister() == true){
-			throw new Exception(server.getUuid() + " 被重复注册");
+			throw new Exception(server.getUuid() + "");
 		}
 		String zkPath = this.PATH_BaseTaskType + "/" + server.getBaseTaskType() +"/" + server.getTaskType();
 		if (this.getZooKeeper().exists(zkPath, false) == null) {
@@ -698,7 +695,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 			this.getZooKeeper().create(zkPath, null, this.zkManager.getAcl(),CreateMode.PERSISTENT);
 		}
 		String realPath = null;
-		//此处必须增加UUID作为唯一性保障
+
 		String zkServerPath = zkPath + "/" + server.getTaskType() + "$"+ server.getIp() + "$"
 				+ (UUID.randomUUID().toString().replaceAll("-", "").toUpperCase())+"$";
 		realPath = this.getZooKeeper().create(zkServerPath, null, this.zkManager.getAcl(),CreateMode.PERSISTENT_SEQUENTIAL);
@@ -717,7 +714,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
     	String zkPath = this.PATH_BaseTaskType + "/" + server.getBaseTaskType() + "/" + server.getTaskType()
     	    + "/" + this.PATH_Server +"/" + server.getUuid();
     	if(this.getZooKeeper().exists(zkPath, false)== null){
-    		//数据可能被清除，先清除内存数据后，重新注册数据
+
     		server.setRegister(false);
     		return false;
     	}else{
@@ -728,7 +725,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
     		try{
     			this.getZooKeeper().setData(zkPath,valueString.getBytes(),-1);
     		}catch(Exception e){
-    			//恢复上次的心跳时间
+
     			server.setHeartBeatTime(oldHeartBeatTime);
     			server.setVersion(server.getVersion() - 1);
     			throw e;

@@ -32,13 +32,12 @@ public class ConsoleManager {
 		scheduleManagerFactory.start = false;
 		
 		if(file.exists() == true){
-			//Console不启动调度能力
 			Properties p = new Properties();
 			FileReader reader = new FileReader(file);
 			p.load(reader);
 			reader.close();
 			scheduleManagerFactory.init(p);
-			log.info("加载Schedule配置文件：" +configFile );
+			log.info("Schedule鍔犺浇" +configFile );
 			return true;
 		}else{
 			return false;
@@ -81,7 +80,7 @@ public class ConsoleManager {
 			p.store(writer, "");
 			writer.close();
 		} catch (Exception ex) {
-			throw new Exception("不能写入配置信息到文件：" + configFile,ex);
+			throw new Exception("涓嶈兘鍐欏叆閰嶇疆淇℃伅鍒版枃浠讹細" + configFile,ex);
 		}
 			if(scheduleManagerFactory == null){
 				initial();

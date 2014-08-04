@@ -4,29 +4,17 @@ import com.perfect.schedule.core.strategy.ScheduleStrategy.Kind;
 
 public class ScheduleStrategyRunntime {
 	
-	/**
-	 * 任务类型
-	 */
 	String strategyName;
 	String uuid;
 	String ip;
 	
 	private Kind kind; 
 	
-	/**
-	 * Schedule Name,Class Name、Bean Name
-	 */
 	private String taskName;
 	
 	private String taskParameter;
 	
-	/**
-	 * 需要的任务数量
-	 */
 	int	requestNum;
-	/**
-	 * 当前的任务数量
-	 */
 	int currentNum;
 	 
 	String message;

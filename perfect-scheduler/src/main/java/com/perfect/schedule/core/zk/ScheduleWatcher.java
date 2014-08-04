@@ -22,7 +22,7 @@ public class ScheduleWatcher implements Watcher {
 	}
 	public void process(WatchedEvent event) {
 		if(log.isInfoEnabled()){
-			log.info("已经触发了" + event.getType() + ":"+ event.getState() + "事件！" + event.getPath());
+			log.info("" + event.getType() + ":"+ event.getState() + "" + event.getPath());
 		}
 		if(event.getType() == Event.EventType.NodeChildrenChanged){
 			String path = event.getPath();
@@ -40,12 +40,12 @@ public class ScheduleWatcher implements Watcher {
 					  }
 				  }
 			  }else{
-				  log.info("已经触发了" + event.getType() + ":"+ event.getState() + "事件！" + event.getPath());
+				  log.info("" + event.getType() + ":"+ event.getState() + "" + event.getPath());
 			  }
 		}else if (event.getState() == KeeperState.SyncConnected) {
-			log.info("收到ZK连接成功事件！");
+			log.info("");
 		} else if (event.getState() == KeeperState.Expired) {
-			log.error("会话超时，等待重新建立ZK连接...");
+			log.error("");
 			try {
 				manager.reConnection();
 			} catch (Exception e) {

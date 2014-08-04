@@ -1,9 +1,7 @@
 package com.perfect.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
 import org.codehaus.jackson.map.DeserializationConfig;
 
 import java.io.IOException;
@@ -20,19 +18,26 @@ public class JSONUtils {
     private static ObjectMapper mapper;
 
     static {
-        if (mapper == null)
+        if (mapper == null) {
             mapper = new ObjectMapper();
+        }
     }
 
     public static Map<String, Object> getJsonMapData(Object[] objects, String... dateFormat) {
         Map<String, Object> attributes = Collections.synchronizedMap(new LinkedHashMap<String, Object>());
         if (objects != null) {
-            JsonConfig jsonConfig = new JsonConfig();
-            if (dateFormat != null && dateFormat.length == 1)
-                jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateProcessor(dateFormat[0]));
-            else
-                jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateProcessor());
-            attributes.put("rows", JSONArray.fromObject(objects, jsonConfig));
+            if (dateFormat != null && dateFormat.length == 1) {
+                mapper.setDateFormat(new SimpleDateFormat(dateFormat[0]));
+//                jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateProcessor(dateFormat[0]));
+            }
+            else {
+//                jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateProcessor());
+            }
+            try {
+                attributes.put("rows", mapper.writeValueAsString(objects));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
         return attributes;
     }

@@ -16,7 +16,7 @@ public class TBScheduleManagerDynamic extends TBScheduleManager {
 	public void initial() throws Exception {
 		if (scheduleCenter.isLeader(this.currenScheduleServer.getUuid(),
 				scheduleCenter.loadScheduleServerNames(this.currenScheduleServer.getTaskType()))) {
-			// 是第一次启动，检查对应的zk目录是否存在
+
 			this.scheduleCenter.initialRunningInfo4Dynamic(	this.currenScheduleServer.getBaseTaskType(),
 					this.currenScheduleServer.getOwnSign());
 		}
@@ -24,20 +24,20 @@ public class TBScheduleManagerDynamic extends TBScheduleManager {
     }
 	
 	public void refreshScheduleServerInfo() throws Exception {
-		throw new Exception("没有实现");
+		throw new Exception("");
 	}
 
 	public boolean isNeedReLoadTaskItemList() throws Exception {
-		throw new Exception("没有实现");
+		throw new Exception("");
 	}
 	public void assignScheduleTask() throws Exception {
-		throw new Exception("没有实现");
+		throw new Exception("");
 		
 	}
 	public List<TaskItemDefine> getCurrentScheduleTaskItemList() {
-		throw new RuntimeException("没有实现");
+		throw new RuntimeException("");
 	}
 	public int getTaskItemCount() {
-		throw new RuntimeException("没有实现");
+		throw new RuntimeException("");
 	}
 }

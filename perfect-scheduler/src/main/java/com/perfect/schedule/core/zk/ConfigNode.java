@@ -1,8 +1,7 @@
 package com.perfect.schedule.core.zk;
 
 /**
- * 配置信息
- * 
+ *
  * @author gjavac@gmail.com
  * @since 2012-2-12
  * @version 1.0
@@ -61,10 +60,10 @@ public class ConfigNode {
 
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("配置根目录：").append(rootPath).append("\n");
-		buffer.append("配置类型：").append(configType).append("\n");
-		buffer.append("任务名称：").append(name).append("\n");
-		buffer.append("配置的值：").append(value).append("\n");
+		buffer.append("rootpath=").append(rootPath).append("\n");
+		buffer.append("configtype=").append(configType).append("\n");
+		buffer.append("name=").append(name).append("\n");
+		buffer.append("value=").append(value).append("\n");
 		return buffer.toString();
 	}
 }

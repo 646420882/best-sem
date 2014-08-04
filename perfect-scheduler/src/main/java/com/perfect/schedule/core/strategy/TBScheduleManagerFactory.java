@@ -20,11 +20,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * 调度服务器构造器
- *
- * @author xuannan
- */
 public class TBScheduleManagerFactory implements ApplicationContextAware {
 
     protected static transient Logger logger = LoggerFactory.getLogger(TBScheduleManagerFactory.class);
@@ -34,15 +29,9 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
     protected ZKManager zkManager;
 
 
-    /**
-     * 是否启动调度管理，如果只是做系统管理，应该设置为false
-     */
     public boolean start = true;
     private int timerInterval = 2000;
 
-    /**
-     * 调度配置中心客服端
-     */
     private IScheduleDataManager scheduleDataManager;
     private ScheduleStrategyDataManager4ZK scheduleStrategyManager;
 
@@ -75,7 +64,7 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
 
     public void reInit(Properties p) throws Exception {
         if (this.start == true || this.timer != null || this.managerMap.size() > 0) {
-            throw new Exception("调度器有任务处理，不能重新初始化");
+            throw new Exception("");
         }
         this.init(p);
     }
@@ -102,17 +91,11 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
         }
     }
 
-    /**
-     * 在Zk状态正常后回调数据初始化
-     *
-     * @throws Exception
-     */
     public void initialData() throws Exception {
         this.zkManager.initial();
         this.scheduleDataManager = new ScheduleDataManager4ZK(this.zkManager);
         this.scheduleStrategyManager = new ScheduleStrategyDataManager4ZK(this.zkManager);
         if (this.start == true) {
-            // 注册调度管理器
             this.scheduleStrategyManager.registerManagerFactory(this);
             if (timer == null) {
                 timer = new Timer("TBScheduleManagerFactory-Timer");
@@ -125,7 +108,6 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
     }
 
     /**
-     * 创建调度服务器
      *
      * @param baseTaskType
      * @param ownSign
@@ -152,7 +134,6 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
     public void refresh() throws Exception {
         this.lock.lock();
         try {
-            // 判断状态是否终止
             ManagerFactoryInfo stsInfo = null;
             boolean isException = false;
             try {
@@ -163,13 +144,13 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
             }
             if (isException == true) {
                 try {
-                    stopServer(null); // 停止所有的调度任务
+                    stopServer(null);
                     this.getScheduleStrategyManager().unRregisterManagerFactory(this);
                 } finally {
                     reRegisterManagerFactory();
                 }
             } else if (stsInfo.isStart() == false) {
-                stopServer(null); // 停止所有的调度任务
+                stopServer(null);
                 this.getScheduleStrategyManager().unRregisterManagerFactory(
                         this);
             } else {
@@ -181,7 +162,6 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
     }
 
     public void reRegisterManagerFactory() throws Exception {
-        //重新分配调度器
         List<String> stopList = this.getScheduleStrategyManager().registerManagerFactory(this);
         for (String strategyName : stopList) {
             this.stopServer(strategyName);
@@ -191,7 +171,6 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
     }
 
     /**
-     * 根据策略重新分配调度任务的机器
      *
      * @throws Exception
      */
@@ -206,7 +185,6 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
             int[] nums = ScheduleUtil.assignTaskNumber(factoryList.size(), scheduleStrategy.getAssignNum(), scheduleStrategy.getNumOfSingleServer());
             for (int i = 0; i < factoryList.size(); i++) {
                 ScheduleStrategyRunntime factory = factoryList.get(i);
-                //更新请求的服务器数量
                 this.scheduleStrategyManager.updateStrategyRunntimeReqestNum(run.getStrategyName(),
                         factory.getUuid(), nums[i]);
             }
@@ -241,10 +219,9 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
                 try {
                     task.stop(run.getStrategyName());
                 } catch (Throwable e) {
-                    logger.error("注销任务错误：" + e.getMessage(), e);
+                    logger.error("" + e.getMessage(), e);
                 }
             }
-            //不足，增加调度器
             ScheduleStrategy strategy = this.scheduleStrategyManager.loadStrategy(run.getStrategyName());
             while (list.size() < run.getRequestNum()) {
                 IStrategyTask result = this.createStrategyTask(strategy);
@@ -254,7 +231,6 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
     }
 
     /**
-     * 终止一类任务
      *
      * @param taskType
      * @throws Exception
@@ -267,7 +243,7 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
                     try {
                         task.stop(strategyName);
                     } catch (Throwable e) {
-                        logger.error("注销任务错误：" + e.getMessage(), e);
+                        logger.error("" + e.getMessage(), e);
                     }
                 }
                 this.managerMap.remove(name);
@@ -279,7 +255,7 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
                     try {
                         task.stop(strategyName);
                     } catch (Throwable e) {
-                        logger.error("注销任务错误：" + e.getMessage(), e);
+                        logger.error("" + e.getMessage(), e);
                     }
                 }
                 this.managerMap.remove(strategyName);
@@ -289,7 +265,6 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
     }
 
     /**
-     * 停止所有调度资源
      */
     public void stopAll() throws Exception {
         try {
@@ -320,16 +295,15 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
                 }
             }
             this.uuid = null;
-            logger.warn("停止服务成功！");
+            logger.warn("");
         } catch (Throwable e) {
-            logger.error("停止服务失败：" + e.getMessage(), e);
+            logger.error("" + e.getMessage(), e);
         } finally {
             lock.unlock();
         }
     }
 
     /**
-     * 重启所有的服务
      *
      * @throws Exception
      */
@@ -349,7 +323,7 @@ public class TBScheduleManagerFactory implements ApplicationContextAware {
             this.uuid = null;
             this.init();
         } catch (Throwable e) {
-            logger.error("重启服务失败：" + e.getMessage(), e);
+            logger.error("" + e.getMessage(), e);
         }
     }
 

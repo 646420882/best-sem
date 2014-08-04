@@ -8,7 +8,6 @@ import org.unitils.spring.annotation.SpringApplicationContext;
 import org.unitils.spring.annotation.SpringBeanByName;
 
 /**
- * µ÷¶È²âÊÔ
  * @author xuannan
  *
  */

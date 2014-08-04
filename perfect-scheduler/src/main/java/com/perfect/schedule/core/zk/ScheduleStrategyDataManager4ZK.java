@@ -20,7 +20,6 @@ public class ScheduleStrategyDataManager4ZK{
 	private String PATH_ManagerFactory;
 	private Gson gson ;
 	
-	//在Spring对象创建完毕后，创建内部对象
     public ScheduleStrategyDataManager4ZK(ZKManager aZkManager) throws Exception {
     	this.zkManager = aZkManager;
 		gson = new GsonBuilder().registerTypeAdapter(Timestamp.class,new TimestampTypeAdapter()).setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -52,7 +51,7 @@ public class ScheduleStrategyDataManager4ZK{
 		if ( this.getZooKeeper().exists(zkPath, false) == null) {
 			this.getZooKeeper().create(zkPath, valueString.getBytes(), this.zkManager.getAcl(), CreateMode.PERSISTENT);
 		} else {
-			throw new Exception("调度策略" + scheduleStrategy.getStrategyName() + "已经存在,如果确认需要重建，请先调用deleteMachineStrategy(String taskType)删除");
+			throw new Exception("" + scheduleStrategy.getStrategyName() + "");
 		}
 	}
 
@@ -84,8 +83,7 @@ public class ScheduleStrategyDataManager4ZK{
 	public void deleteMachineStrategy(String taskType,boolean isForce) throws Exception {
 		String zkPath = this.PATH_Strategy + "/" + taskType;
 		if(isForce == false && this.getZooKeeper().getChildren(zkPath,null).size() >0){
-			throw new Exception("不能删除"+ taskType +"的运行策略，会导致必须重启整个应用才能停止失去控制的调度进程。" +
-					"可以先清空IP地址，等所有的调度器都停止后再删除调度策略");
+			throw new Exception(""+ taskType );
 		}
 		ZKTools.deleteTree(this.getZooKeeper(),zkPath);
 	}
@@ -100,12 +98,6 @@ public class ScheduleStrategyDataManager4ZK{
 		}
 		return result;
 	}
-	/**
-	 * 注册ManagerFactory
-	 * @param managerFactory
-	 * @return 需要全部注销的调度，例如当IP不在列表中
-	 * @throws Exception
-	 */
 	public List<String> registerManagerFactory(TBScheduleManagerFactory managerFactory) throws Exception {
 		
 		if(managerFactory.getUuid() == null){
@@ -123,11 +115,9 @@ public class ScheduleStrategyDataManager4ZK{
 		List<String> result = new ArrayList<String>();
 		for(ScheduleStrategy scheduleStrategy:loadAllScheduleStrategy()){
 			boolean isFind = false;
-			//暂停或者不在IP范围
 			if(ScheduleStrategy.STS_PAUSE.equalsIgnoreCase(scheduleStrategy.getSts()) == false &&  scheduleStrategy.getIPList() != null){
 				for(String ip:scheduleStrategy.getIPList()){
 					if(ip.equals("127.0.0.1") || ip.equalsIgnoreCase("localhost") || ip.equals(managerFactory.getIp())|| ip.equalsIgnoreCase(managerFactory.getHostName())){
-						//添加可管理TaskType
 						String zkPath =	this.PATH_Strategy+"/"+ scheduleStrategy.getStrategyName()+ "/"+ managerFactory.getUuid();
 						if(this.getZooKeeper().exists(zkPath, false)==null){
 							zkPath = this.getZooKeeper().create(zkPath, null, this.zkManager.getAcl(), CreateMode.EPHEMERAL);
@@ -137,7 +127,7 @@ public class ScheduleStrategyDataManager4ZK{
 					}
 				}
 			}
-			if(isFind == false){//清除原来注册的Factory
+			if(isFind == false){
 				String zkPath =	this.PATH_Strategy+"/"+ scheduleStrategy.getStrategyName()+ "/"+ managerFactory.getUuid();
 				if(this.getZooKeeper().exists(zkPath, false)!=null){
 					ZKTools.deleteTree(this.getZooKeeper(), zkPath);
@@ -147,12 +137,6 @@ public class ScheduleStrategyDataManager4ZK{
 		}
 		return result;
 	}
-	/**
-	 * 注销服务，停止调度
-	 * @param managerFactory
-	 * @return
-	 * @throws Exception
-	 */
 	public void unRregisterManagerFactory(TBScheduleManagerFactory managerFactory) throws Exception {
 		for(String taskName:this.getZooKeeper().getChildren(this.PATH_Strategy,false)){
 			String zkPath =	this.PATH_Strategy+"/"+taskName+"/" + managerFactory.getUuid();
@@ -180,11 +164,6 @@ public class ScheduleStrategyDataManager4ZK{
 		return result;
 	}
 	
-	/**
-	 * 装载所有的策略运行状态
-	 * @return
-	 * @throws Exception
-	 */
 	public List<ScheduleStrategyRunntime> loadAllScheduleStrategyRunntime() throws Exception {
 		List<ScheduleStrategyRunntime> result = new ArrayList<ScheduleStrategyRunntime>();
 		String zkPath =	this.PATH_Strategy;
@@ -216,7 +195,6 @@ public class ScheduleStrategyDataManager4ZK{
 			return result;
 		}
 		List<String> uuidList = this.getZooKeeper().getChildren(zkPath + "/" + strategyName, false);
-		//排序
 		Collections.sort(uuidList, new Comparator<String>() {
             public int compare(String u1, String u2) {
                 return u1.substring(u1.lastIndexOf("$") + 1).compareTo(
@@ -229,14 +207,7 @@ public class ScheduleStrategyDataManager4ZK{
 		}
 		return result;
 	}
-	/**
-	 * 更新请求数量
-	 * @param taskType
-	 * @param manangerFactoryUUID
-	 * @param requestNum
-	 * @throws org.apache.zookeeper.KeeperException
-	 * @throws InterruptedException
-	 */
+
 	public void updateStrategyRunntimeReqestNum(String strategyName,String manangerFactoryUUID,int requestNum) throws Exception {
 		String zkPath =	this.PATH_Strategy +"/"+strategyName+"/" + manangerFactoryUUID;
 		ScheduleStrategyRunntime result = null;
@@ -253,13 +224,8 @@ public class ScheduleStrategyDataManager4ZK{
 		String valueString = this.gson.toJson(result);
 		this.getZooKeeper().setData(zkPath,valueString.getBytes(),-1);
 	}
-	/**
-	 * 更新调度过程中的信息
-	 * @param strategyName
-	 * @param manangerFactoryUUID
-	 * @param message
-	 * @throws Exception
-	 */
+
+
 	public void updateStrategyRunntimeErrorMessage(String strategyName,String manangerFactoryUUID,String message) throws Exception {
 		String zkPath =	this.PATH_Strategy +"/"+strategyName+"/" + manangerFactoryUUID;
 		ScheduleStrategyRunntime result = null;
@@ -279,7 +245,7 @@ public class ScheduleStrategyDataManager4ZK{
 	public void updateManagerFactoryInfo(String uuid,boolean isStart) throws Exception {
 		String zkPath = this.PATH_ManagerFactory + "/" + uuid;
 		if(this.getZooKeeper().exists(zkPath, false)==null){
-			throw new Exception("任务管理器不存在:" + uuid);
+			throw new Exception(uuid);
 		}
 		this.getZooKeeper().setData(zkPath, Boolean.toString(isStart).getBytes(),-1);
 	}
@@ -287,7 +253,7 @@ public class ScheduleStrategyDataManager4ZK{
 	public ManagerFactoryInfo loadManagerFactoryInfo(String uuid) throws Exception {
 		String zkPath = this.PATH_ManagerFactory + "/" + uuid;
 		if(this.getZooKeeper().exists(zkPath, false)==null){
-			throw new Exception("任务管理器不存在:" + uuid);
+			throw new Exception("" + uuid);
 		}
 		byte[] value = this.getZooKeeper().getData(zkPath,false,null);
 		ManagerFactoryInfo result = new ManagerFactoryInfo();
@@ -300,14 +266,6 @@ public class ScheduleStrategyDataManager4ZK{
 		return result;
 	}
 	
-	/**
-	 * 导入配置信息【目前支持baseTaskType和strategy数据】
-	 * 
-	 * @param config
-	 * @param writer
-	 * @param isUpdate
-	 * @throws Exception
-	 */
 	public void importConfig(String config, Writer writer, boolean isUpdate)
 			throws Exception {
 		ConfigNode configNode = gson.fromJson(config, ConfigNode.class);
@@ -317,35 +275,28 @@ public class ScheduleStrategyDataManager4ZK{
 			ZKTools.createPath(getZooKeeper(), path, CreateMode.PERSISTENT, zkManager.getAcl());
 			String y_node = path + "/" + configNode.getName();
 			if (getZooKeeper().exists(y_node, false) == null) {
-				writer.append("<font color=\"red\">成功导入新配置信息\n</font>");
+				writer.append("<font color=\"red\">浠ｇ爜淇敼浜嶴cheduleStrategyDataManager4ZK\n</font>");
 				getZooKeeper().create(y_node, configNode.getValue().getBytes(),
 						zkManager.getAcl(), CreateMode.PERSISTENT);
 			} else if (isUpdate) {
-				writer.append("<font color=\"red\">该配置信息已经存在，并且强制更新了\n</font>");
+				writer.append("<font color=\"red\">浠ｇ爜淇敼浜嶴cheduleStrategyDataManager4ZK\n</font>");
 				getZooKeeper().setData(y_node,
 						configNode.getValue().getBytes(), -1);
 			} else {
-				writer.append("<font color=\"red\">该配置信息已经存在，如果需要更新，请配置强制更新\n</font>");
+				writer.append("<font color=\"red\">浠ｇ爜淇敼浜嶴cheduleStrategyDataManager4ZK\n</font>");
 			}
 		}
 		writer.append(configNode.toString());
 	}
 
-	/**
-	 * 输出配置信息【目前备份baseTaskType和strategy数据】
-	 * 
-	 * @param rootPath
-	 * @param writer
-	 * @throws Exception
-	 */
 	public StringBuffer exportConfig(String rootPath, Writer writer)
 			throws Exception {
 		StringBuffer buffer = new StringBuffer();
 		for (String type : new String[] { "baseTaskType", "strategy" }) {
 			if (type.equals("baseTaskType")) {
-				writer.write("<h2>基本任务配置列表：</h2>\n");
+				writer.write("<h2>浠ｇ爜淇敼浜嶴cheduleStrategyDataManager4ZK</h2>\n");
 			} else {
-				writer.write("<h2>基本策略配置列表：</h2>\n");
+				writer.write("<h2>浠ｇ爜淇敼浜嶴cheduleStrategyDataManager4ZK</h2>\n");
 			}
 			String bTTypePath = rootPath + "/" + type;
 			List<String> fNodeList = getZooKeeper().getChildren(bTTypePath,

@@ -9,16 +9,12 @@ class LockObject {
 
 	public void waitCurrentThread() throws Exception {
 		synchronized (m_waitOnObject) {
-			// System.out.println(Thread.currentThread().getName() + ":" +
-			// "休眠当前线程");
 			this.m_waitOnObject.wait();
 		}
 	}
 
 	public void notifyOtherThread() throws Exception {
 		synchronized (m_waitOnObject) {
-			// System.out.println(Thread.currentThread().getName() + ":" +
-			// "唤醒所有等待线程");
 			this.m_waitOnObject.notifyAll();
 		}
 	}
@@ -36,8 +32,7 @@ class LockObject {
 	}
 
 	/**
-	 * 降低线程数量，如果是最后一个线程，则不能休眠
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean realseThreadButNotLast() {

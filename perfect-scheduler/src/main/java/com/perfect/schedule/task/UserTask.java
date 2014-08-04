@@ -54,9 +54,9 @@ public class UserTask implements IScheduleTaskDealSingle<SystemUserEntity> {
 
         for (BaiduAccountInfoEntity baiduAccountInfo : baiduAccountInfoList) {
 
-            AccountDataUpdateTask accountDataUpdateTask = new AccountDataUpdateTask(ServiceFactory.getInstance(baiduAccountInfo.getBaiduUserName(), baiduAccountInfo.getBaiduPassword(), baiduAccountInfo.getToken(), null), accountDAO,campaignDAO,adgroupDAO);
-
-            WorkPool.pushTask(accountDataUpdateTask);
+//            AccountDataUpdateTask accountDataUpdateTask = new AccountDataUpdateTask(ServiceFactory.getInstance(baiduAccountInfo.getBaiduUserName(), baiduAccountInfo.getBaiduPassword(), baiduAccountInfo.getToken(), null), accountDAO,campaignDAO,adgroupDAO);
+//
+//            WorkPool.pushTask(accountDataUpdateTask);
 
         }
 

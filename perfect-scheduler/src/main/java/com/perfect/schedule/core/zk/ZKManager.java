@@ -31,10 +31,6 @@ public class ZKManager{
 		this.connect();
 	}
 	
-	/**
-	 * 重连zookeeper
-	 * @throws Exception
-	 */
 	public synchronized void  reConnection() throws Exception {
 		if (this.zk != null) {
 			this.zk.close();
@@ -70,20 +66,20 @@ public class ZKManager{
 	
 	private void sessionEvent(CountDownLatch connectionLatch, WatchedEvent event) {
 		if (event.getState() == KeeperState.SyncConnected) {
-			log.info("收到ZK连接成功事件！");
+			log.info("");
 			connectionLatch.countDown();
 		} else if (event.getState() == KeeperState.Expired) {
-			log.error("会话超时，等待重新建立ZK连接...");
+			log.error("");
 			try {
 				reConnection();
 			} catch (Exception e) {
 				log.error(e.getMessage(),e);
 			}
-		} // Disconnected：Zookeeper会自动处理Disconnected状态重连
+		}
 	}
 	
 	public void close() throws InterruptedException {
-		log.info("关闭zookeeper连接");
+		log.info("zookeeper closed");
 		this.zk.close();
 	}
 	public static Properties createProperties(){
@@ -111,16 +107,14 @@ public class ZKManager{
 	}
 
 	public void initial() throws Exception {
-		//当zk状态正常后才能调用
 		if(zk.exists(this.getRootPath(), false) == null){
 			ZKTools.createPath(zk, this.getRootPath(), CreateMode.PERSISTENT, acl);
 			if(isCheckParentPath == true){
 			  checkParent(zk,this.getRootPath());
 			}
-			//设置版本信息
 			zk.setData(this.getRootPath(),Version.getVersion().getBytes(),-1);
 		}else{
-			//先校验父亲节点，本身是否已经是schedule的目录
+			//锟斤拷校锟介父锟阶节点，锟斤拷锟斤拷锟角凤拷锟窖撅拷锟斤拷schedule锟斤拷目录
 			if(isCheckParentPath == true){
 			   checkParent(zk,this.getRootPath());
 			}
@@ -130,9 +124,9 @@ public class ZKManager{
 			}else{
 				String dataVersion = new String(value);
 				if(Version.isCompatible(dataVersion)==false){
-					throw new Exception("TBSchedule程序版本 "+ Version.getVersion() +" 不兼容Zookeeper中的数据版本 " + dataVersion );
+					throw new Exception("TBSchedule"+ Version.getVersion() +""  + dataVersion );
 				}
-				log.info("当前的程序版本:" + Version.getVersion() + " 数据版本: " + dataVersion);
+				log.info( Version.getVersion() + dataVersion);
 			}
 		}
 	}

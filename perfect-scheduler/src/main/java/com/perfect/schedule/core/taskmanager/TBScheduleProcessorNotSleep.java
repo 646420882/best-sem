@@ -18,11 +18,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 
 /**
- * ÈÎÎñµ÷¶ÈÆ÷£¬ÔÚTBScheduleManagerµÄ¹ÜÀíÏÂÊµÏÖ¶àÏß³ÌÊı¾İ´¦Àí
- * @author xuannan
- * @param <T>
- * ĞŞ¸Ä¼ÇÂ¼£º
- * 	  ÎªÁË¼ò»¯´¦ÀíÂß¼­£¬È¥´¦°æ±¾¸ÅÂÊ£¬Ôö¼Ó¿ÉÄÜÖØ¸´µÄÊı¾İÁĞ±í   by  ·öËÕ 20110310
  */
 class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 	
@@ -30,22 +25,18 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 	
 	List<Thread> threadList =  Collections.synchronizedList(new ArrayList<Thread>());
 	/**
-	 * ÈÎÎñ¹ÜÀíÆ÷
 	 */
 	protected TBScheduleManager scheduleManager;
 	/**
-	 * ÈÎÎñÀàĞÍ
 	 */
 	ScheduleTaskType taskTypeInfo;
 	
 	
 	/**
-	 * ÈÎÎñ´¦ÀíµÄ½Ó¿ÚÀà
 	 */
 	protected IScheduleTaskDeal<T> taskDealBean;
 	
 	/**
-	 * ÈÎÎñ±È½ÏÆ÷
 	 */
 	Comparator<T> taskComparator;
 
@@ -53,11 +44,9 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 
 	protected List<T> taskList = Collections.synchronizedList(new ArrayList<T>());
 	/**
-	 * ÕıÔÚ´¦ÀíÖĞµÄÈÎÎñ¶ÓÁĞ
 	 */
 	protected List<Object> runningTaskList = Collections.synchronizedList(new ArrayList<Object>());
 	/**
-	 * ÔÚÖØĞÂÈ¡Êı¾İ£¬¿ÉÄÜ»áÖØ¸´µÄÊı¾İ¡£ÔÚÖØĞÂÈ¥Êı¾İÇ°£¬´ÓrunningTaskList¿½±´µÃÀ´
 	 */
 	protected List<T> maybeRepeatTaskList = Collections.synchronizedList(new ArrayList<T>());
 
@@ -65,22 +54,21 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 	Lock lockFetchMutilID = new ReentrantLock();
 	Lock lockLoadData = new ReentrantLock();
 	/**
-	 * ÊÇ·ñ¿ÉÒÔÅú´¦Àí
 	 */
 	boolean isMutilTask = false;
 	
 	/**
-	 * ÊÇ·ñÒÑ¾­»ñµÃÖÕÖ¹µ÷¶ÈĞÅºÅ
+
 	 */
-	boolean isStopSchedule = false;// ÓÃ»§Í£Ö¹¶ÓÁĞµ÷¶È
+	boolean isStopSchedule = false;
 	boolean isSleeping = false;
 	
 	/**
-	 * ´´½¨Ò»¸öµ÷¶È´¦ÀíÆ÷
-	 * @param aManager
-	 * @param aTaskDealBean
-	 * @param aStatisticsInfo
-	 * @throws Exception
+
+
+
+
+
 	 */
 	public TBScheduleProcessorNotSleep(TBScheduleManager aManager,
 			IScheduleTaskDeal<T> aTaskDealBean,StatisticsInfo aStatisticsInfo) throws Exception {
@@ -98,7 +86,7 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 			isMutilTask = true;
 		}
 		if (taskTypeInfo.getFetchDataNumber() < taskTypeInfo.getThreadNumber() * 10) {
-			logger.warn("²ÎÊıÉèÖÃ²»ºÏÀí£¬ÏµÍ³ĞÔÄÜ²»¼Ñ¡£¡¾Ã¿´Î´ÓÊı¾İ¿â»ñÈ¡µÄÊıÁ¿fetchnum¡¿ >= ¡¾Ïß³ÌÊıÁ¿threadnum¡¿ *¡¾×îÉÙÑ­»·´ÎÊı10¡¿ ");
+			logger.warn("");
 		}
 		for (int i = 0; i < taskTypeInfo.getThreadNumber(); i++) {
 			this.startThread(i);
@@ -106,13 +94,13 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 	}
 
 	/**
-	 * ĞèÒª×¢ÒâµÄÊÇ£¬µ÷¶È·şÎñÆ÷´ÓÅäÖÃÖĞĞÄ×¢ÏúµÄ¹¤×÷£¬±ØĞëÔÚËùÓĞÏß³ÌÍË³öµÄÇé¿öÏÂ²ÅÄÜ×ö
+
 	 * @throws Exception
 	 */
 	public void stopSchedule() throws Exception {
-		// ÉèÖÃÍ£Ö¹µ÷¶ÈµÄ±êÖ¾,µ÷¶ÈÏß³Ì·¢ÏÖÕâ¸ö±êÖ¾£¬Ö´ĞĞÍêµ±Ç°ÈÎÎñºó£¬¾ÍÍË³öµ÷¶È
+
 		this.isStopSchedule = true;
-		//Çå³ıËùÓĞÎ´´¦ÀíÈÎÎñ,µ«ÒÑ¾­½øÈë´¦Àí¶ÓÁĞµÄ£¬ĞèÒª´¦ÀíÍê±Ï
+
 		this.taskList.clear();
 	}
 
@@ -142,8 +130,8 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 	}
 
 	/**
-	 * »ñÈ¡µ¥¸öÈÎÎñ£¬×¢ÒâlockÊÇ±ØĞë£¬
-	 * ·ñÔòÔÚmaybeRepeatTaskListµÄÊı¾İ´¦ÀíÉÏ»á³öÏÖ³åÍ»
+
+
 	 * @return
 	 */
 	public T getScheduleTaskId() {
@@ -152,7 +140,7 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 			T result = null;
 			while (true) {
 				if (this.taskList.size() > 0) {
-					result = this.taskList.remove(0); // °´ÕıĞò´¦Àí
+					result = this.taskList.remove(0);
 				} else {
 					return null;
 				}
@@ -165,8 +153,8 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 		}
 	}
 	/**
-	 * »ñÈ¡µ¥¸öÈÎÎñ£¬×¢ÒâlockÊÇ±ØĞë£¬
-	 * ·ñÔòÔÚmaybeRepeatTaskListµÄÊı¾İ´¦ÀíÉÏ»á³öÏÖ³åÍ»
+
+
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -208,20 +196,20 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
     	return this.isSleeping;
     }
     /**
-     * ×°ÔØÊı¾İ
+
      * @return
      */
 	protected int loadScheduleData() {
 		lockLoadData.lock();
 		try {
-			if (this.taskList.size() > 0 || this.isStopSchedule == true) { // ÅĞ¶ÏÊÇ·ñÓĞ±ğµÄÏß³ÌÒÑ¾­×°ÔØ¹ıÁË¡£
+			if (this.taskList.size() > 0 || this.isStopSchedule == true) {
 				return this.taskList.size();
 			}
-			// ÔÚÃ¿´ÎÊı¾İ´¦ÀíÍê±ÏºóĞİÃß¹Ì¶¨µÄÊ±¼ä
+
 			try {
 				if (this.taskTypeInfo.getSleepTimeInterval() > 0) {
 					if (logger.isTraceEnabled()) {
-						logger.trace("´¦ÀíÍêÒ»ÅúÊı¾İºóĞİÃß£º"
+						logger.trace(""
 								+ this.taskTypeInfo.getSleepTimeInterval());
 					}
 					this.isSleeping = true;
@@ -229,19 +217,19 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 					this.isSleeping = false;
 					
 					if (logger.isTraceEnabled()) {
-						logger.trace("´¦ÀíÍêÒ»ÅúÊı¾İºóĞİÃßºó»Ö¸´");
+						logger.trace("");
 					}
 				}
 			} catch (Throwable ex) {
-				logger.error("ĞİÃßÊ±´íÎó", ex);
+				logger.error("", ex);
 			}
 
-			putLastRunningTaskList();// ½«running¶ÓÁĞµÄÊı¾İ¿½±´µ½¿ÉÄÜÖØ¸´µÄ¶ÓÁĞÖĞ
+			putLastRunningTaskList();
 
 			try {
 				List<TaskItemDefine> taskItems = this.scheduleManager
 						.getCurrentScheduleTaskItemList();
-				// ¸ù¾İ¶ÓÁĞĞÅÏ¢²éÑ¯ĞèÒªµ÷¶ÈµÄÊı¾İ£¬È»ºóÔö¼Óµ½ÈÎÎñÁĞ±íÖĞ
+
 				if (taskItems.size() > 0) {
 					List<T> tmpList = this.taskDealBean.selectTasks(
 							taskTypeInfo.getTaskParameter(),
@@ -254,17 +242,17 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 					}
 				} else {
 					if (logger.isDebugEnabled()) {
-						logger.debug("Ã»ÓĞÈÎÎñ·ÖÅä");
+						logger.debug("");
 					}
 				}
 				addFetchNum(taskList.size(),
 						"TBScheduleProcessor.loadScheduleData");
 				if (taskList.size() <= 0) {
-					// ÅĞ¶Ïµ±Ã»ÓĞÊı¾İµÄÊÇ·ñ£¬ÊÇ·ñĞèÒªÍË³öµ÷¶È
+
 					if (this.scheduleManager.isContinueWhenData() == true) {
 						if (taskTypeInfo.getSleepTimeNoData() > 0) {
 							if (logger.isDebugEnabled()) {
-								logger.debug("Ã»ÓĞ¶ÁÈ¡µ½ĞèÒª´¦ÀíµÄÊı¾İ,sleep "
+								logger.debug("sleep "
 										+ taskTypeInfo.getSleepTimeNoData());
 							}
 							this.isSleeping = true;
@@ -275,7 +263,7 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 				}
 				return this.taskList.size();
 			} catch (Throwable ex) {
-				logger.error("»ñÈ¡ÈÎÎñÊı¾İ´íÎó", ex);
+				logger.error("ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ´ï¿½ï¿½ï¿½", ex);
 			}
 			return 0;
 		} finally {
@@ -283,7 +271,7 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 		}
 	}
 	/**
-	 * ½«running¶ÓÁĞµÄÊı¾İ¿½±´µ½¿ÉÄÜÖØ¸´µÄ¶ÓÁĞÖĞ
+
 	 */
 	@SuppressWarnings("unchecked")
 	public void putLastRunningTaskList() {
@@ -310,7 +298,7 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 	}
 	
 	/**
-	 * ÔËĞĞº¯Êı
+
 	 */
 	@SuppressWarnings("unchecked")
 	public void run() {
@@ -319,7 +307,7 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 		Object executeTask = null;
 		while (true) {
 			try {
-				if (this.isStopSchedule == true) { // Í£Ö¹¶ÓÁĞµ÷¶È
+				if (this.isStopSchedule == true) {
 					synchronized (this.threadList) {
 						this.threadList.remove(Thread.currentThread());
 						if(this.threadList.size()==0){
@@ -328,7 +316,7 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 					}
 					return;
 				}
-				// ¼ÓÔØµ÷¶ÈÈÎÎñ
+
 				if (this.isMutilTask == false) {
 					executeTask = this.getScheduleTaskId();
 				} else {
@@ -339,7 +327,7 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 					continue;
 				}
 				
-				try { // ÔËĞĞÏà¹ØµÄ³ÌĞò
+				try {
 					this.runningTaskList.add(executeTask);
 					startTime = scheduleManager.scheduleCenter.getSystemTime();
 					sequence = sequence + 1;
@@ -374,13 +362,13 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 								- startTime,
 								"TBScheduleProcessor.run");
 					}
-					logger.error("Task :" + executeTask + " ´¦ÀíÊ§°Ü", ex);
+					logger.error("Task :" + executeTask + " error", ex);
 				} finally {
 					this.runningTaskList.remove(executeTask);
 				}
 			} catch (Throwable e) {
 				throw new RuntimeException(e);
-				//log.error(e.getMessage(), e);
+
 			}
 		}
 	}
