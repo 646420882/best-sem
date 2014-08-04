@@ -41,10 +41,6 @@
             <url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>
         </repository>
 
-        <repository>
-            <id>jboss-maven2-release-repository</id>
-            <url>http://repository.jboss.org/maven2/</url>
-        </repository>
     </repositories>
 
 </project>

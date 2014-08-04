@@ -109,17 +109,4 @@
         <constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>
     </bean>
 
-    <bean id="scheduleManagerFactory" class="com.taobao.pamirs.schedule.strategy.TBScheduleManagerFactory"
-          init-method="init">
-        <property name="zkConfig">
-            <map>
-                <entry key="zkConnectString" value="115.29.103.38:2181"/>
-                <entry key="rootPath" value="/taobao-pamirs-schedule/perfect"/>
-                <entry key="zkSessionTimeout" value="3000"/>
-                <entry key="userName" value=""/>
-                <entry key="password" value=""/>
-            </map>
-        </property>
-    </bean>
-
 </beans>
