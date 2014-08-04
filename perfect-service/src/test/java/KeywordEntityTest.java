@@ -14,10 +14,10 @@ import java.util.List;
 /**
  * Created by baizz on 2014-7-7.
  */
-@SpringApplicationContext({"spring.xml"})
+//@SpringApplicationContext({"spring.xml"})
 public class KeywordEntityTest extends UnitilsJUnit4 {
 
-    @SpringBeanByName
+    //@SpringBeanByName
     private KeywordDAO keywordDAO;
 
     //@Test
@@ -91,7 +91,7 @@ public class KeywordEntityTest extends UnitilsJUnit4 {
         keywordDAO.delete(keywordEntity);
     }
 
-    @Test
+    //@Test
     public void testQueryKeywordByPage() {
         List<KeywordEntity> list = keywordDAO.find(null, 0, 3);
         for (KeywordEntity entity : list) {

@@ -11,10 +11,10 @@ import java.util.List;
 /**
  * Created by baizz on 2014-7-9.
  */
-@SpringApplicationContext({"spring.xml"})
+//@SpringApplicationContext({"spring.xml"})
 public class AdgroupEntityTest extends UnitilsJUnit4 {
 
-    @SpringBeanByName
+    //@SpringBeanByName
     private AdgroupDAO adgroupDAO;
 
     //@Test
@@ -42,7 +42,7 @@ public class AdgroupEntityTest extends UnitilsJUnit4 {
         adgroupDAO.insertAll(list);
     }
 
-    @Test
+    //@Test
     public void testQueryAdgroup() {
         List<AdgroupEntity> list = adgroupDAO.find(null, 0, 5);
         for (AdgroupEntity entity : list) {
