@@ -1,8 +1,9 @@
-package com.perfect.keywordgroup;
+package com.perfect.service.keywordgroup;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.RecursiveAction;
+
 /**
  * Created by vbzer_000 on 14-7-22.
  */
@@ -12,12 +13,14 @@ public class Task extends RecursiveAction {
     private int start;
     private int end;
     private final int MAX_SIZE = 100;
+
     public Task(Map<String, String> keyGroupMap, Map<String, Set<String>> matchKeySet, int start, int end) {
         this.keyGroupMap = keyGroupMap;
         this.matchKeySet = matchKeySet;
         this.start = start;
         this.end = end;
     }
+
     @Override
     protected void compute() {
         if (end - start > MAX_SIZE) {
@@ -27,14 +30,14 @@ public class Task extends RecursiveAction {
         } else {
             int idx = 0;
             for (Map.Entry<String, String> entry1 : keyGroupMap.entrySet()) {
-                if(idx < start){
+                if (idx < start) {
                     idx++;
                     continue;
                 }
-                if(end < idx){
+                if (end < idx) {
                     break;
                 }
-// 候选关键词
+                // 候选关键词
                 String key = entry1.getKey();
                 for (Map.Entry<String, Set<String>> entrySet : matchKeySet.entrySet()) {
                     for (String toMatch : entrySet.getValue()) {

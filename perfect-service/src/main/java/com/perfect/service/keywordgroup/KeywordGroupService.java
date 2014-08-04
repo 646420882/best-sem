@@ -1,4 +1,4 @@
-package com.perfect.keywordgroup;
+package com.perfect.service.keywordgroup;
 
 import com.google.common.io.Files;
 import jxl.Cell;
@@ -13,7 +13,7 @@ import java.util.concurrent.ForkJoinPool;
 /**
  * Created by vbzer_000 on 2014/7/22.
  */
-public class Application {
+public class KeywordGroupService {
     public static void run(String[] args) throws IOException, BiffException, InterruptedException {
         Map<String, Set<String>> keyMatchMap = getPreMatchWords(args[1]);
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(args[0]), "GBK"));

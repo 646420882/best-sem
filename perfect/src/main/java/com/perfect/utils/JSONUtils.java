@@ -2,6 +2,9 @@ package com.perfect.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 import org.codehaus.jackson.map.DeserializationConfig;
 
 import java.io.IOException;
@@ -29,8 +32,7 @@ public class JSONUtils {
             if (dateFormat != null && dateFormat.length == 1) {
                 mapper.setDateFormat(new SimpleDateFormat(dateFormat[0]));
 //                jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateProcessor(dateFormat[0]));
-            }
-            else {
+            } else {
 //                jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateProcessor());
             }
             try {
