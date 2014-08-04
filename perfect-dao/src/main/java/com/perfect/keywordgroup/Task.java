@@ -1,6 +1,5 @@
-package com.perfect.keywordGroup;
+package com.perfect.keywordgroup;
 
-import com.google.common.collect.Maps;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.RecursiveAction;

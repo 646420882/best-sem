@@ -1,4 +1,4 @@
-package com.perfect.keywordGroup;
+package com.perfect.keywordgroup;
 
 import com.google.common.io.Files;
 import jxl.Cell;
