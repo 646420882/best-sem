@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.perfect.app.homePage.service.AccountOverviewService;
 import com.perfect.app.homePage.service.CustomUserDetailsService;
 import com.perfect.mongodb.utils.DateUtil;
+import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,6 +31,9 @@ public class AccountOverviewController {
     @Resource
     private AccountOverviewService accountOverviewService;
 
+    @Resource
+    private WebContext webContext;
+
     //当前登录用户名
     private static String currLoginUserName;
     static {
@@ -45,18 +49,8 @@ public class AccountOverviewController {
      */
     @RequestMapping(value = "/account/getAccountOverviewData", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccountOverviewData(HttpServletResponse response,String startDate,String endDate){
-
         List<String> dates = DateUtil.getPeriod(startDate,endDate);
-
         Map<String,Object> map = accountOverviewService.getKeyWordSum(currLoginUserName,dates);
-        response.setCharacterEncoding("UTF-8");
-        try {
-            PrintWriter out = response.getWriter();
-            String data = new Gson().toJson(map);
-            out.print(data);
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        webContext.wirteJson(map,response);
     }
 }
