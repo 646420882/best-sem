@@ -11,7 +11,7 @@
  *
  * Dependencies: jquery, jquery UI datepicker, date.js library (included at bottom), jQuery UI CSS Framework
  * Changelog:
- *    2008.10.23 initial Version
+ *  2008.10.23 initial Version
  *  2008.11.12 changed dateFormat option to allow custom date formatting (credit: http://alexgoldstone.com/)
  *  2009.01.04 updated markup to new jQuery UI CSS Framework
  *  2009.01.19 changed presets hash to support different text
@@ -26,8 +26,8 @@ jQuery.fn.daterangepicker = function (settings) {
         rangeStartTitle: '起始时间',
         rangeEndTitle: '结束时间',
         doneButtonText: '确定',
-        earliestDate: Date.parse('-15years'), //earliest date allowed 
-        latestDate: Date.parse('+15years'), //latest date allowed 
+        earliestDate: Date.parse('-15years'), //earliest date allowed
+        latestDate: Date.parse('+15years'), //latest date allowed
         rangeSplitter: '至', //string to use between dates in single input
         dateFormat: 'yy-mm-dd', // date formatting. Available formats: http://docs.jquery.com/UI/Datepicker/%24.datepicker.formatDate
         closeOnSelect: false, //if a complete selection is made, close the menu
@@ -38,6 +38,9 @@ jQuery.fn.daterangepicker = function (settings) {
         onClose: function () {
         },
         onOpen: function () {
+            //坐标定位
+            rp.parent().css('left', _posX);
+            rp.parent().css('top', _posY);
         },
         onChange: function () {
         },
@@ -114,7 +117,7 @@ jQuery.fn.daterangepicker = function (settings) {
 
 
     //build picker divs
-    var rp = jQuery('<div class="ui-daterangepicker ui-widget ui-helper-clearfix ui-widget-content ui-corner-all" style="/*width: 482px; height: 310px*/"></div>');
+    var rp = jQuery('<div class="ui-daterangepicker ui-widget ui-helper-clearfix ui-widget-content ui-corner-all"></div>');
     var rpPickers = jQuery('<div class="ranges ui-widget-header ui-corner-all ui-helper-clearfix"><div class="range-start"><span class="title-start"></span></div><div class="range-end"><span class="title-end"></span></div></div>').appendTo(rp);
     var doneBtn = jQuery('<button class="btnDone ui-state-default ui-corner-all">' + options.doneButtonText + '</button>')
         .click(function () {
@@ -139,8 +142,8 @@ jQuery.fn.daterangepicker = function (settings) {
         rpPickers.find('.title-end').text(options.rangeEndTitle);
     })();
 
-    //function to format a date string        
-    function fDate(date) {
+    //function to format a date string
+    var fDate = function (date) {
         if (!date.getDate()) {
             return '';
         }
@@ -150,7 +153,7 @@ jQuery.fn.daterangepicker = function (settings) {
         month++; // adjust javascript month
         var dateFormat = options.dateFormat;
         return jQuery.datepicker.formatDate(dateFormat, date);
-    }
+    };
 
 
     jQuery.fn.restoreDateFromData = function () {
@@ -158,13 +161,13 @@ jQuery.fn.daterangepicker = function (settings) {
             jQuery(this).datepicker('setDate', jQuery(this).data('saveDate')).removeData('saveDate');
         }
         return this;
-    }
+    };
     jQuery.fn.saveDateToData = function () {
         if (!jQuery(this).data('saveDate')) {
             jQuery(this).data('saveDate', jQuery(this).datepicker('getDate'));
         }
         return this;
-    }
+    };
 
     //show, hide, or toggle rangepicker
     function showRP() {
@@ -207,12 +210,14 @@ jQuery.fn.daterangepicker = function (settings) {
 
     //wrap and position
     rp.wrap('<div class="ui-daterangepickercontain"></div>');
-    if (options.posX) {
-        rp.parent().css('left', options.posX);
-    }
-    if (options.posY) {
-        rp.parent().css('top', options.posY);
-    }
+    /*
+     if (options.posX) {
+     rp.parent().css('left', options.posX);
+     }
+     if (options.posY) {
+     rp.parent().css('top', options.posY);
+     }
+     */
 
     //add arrows (only available on one input)
     if (options.arrows && rangeInput.size() == 1) {
@@ -261,7 +266,7 @@ jQuery.fn.daterangepicker = function (settings) {
         return false;
     }).hide();
     return this;
-}
+};
 
 
 /**
@@ -1187,7 +1192,7 @@ Date.prototype.getOrdinal = function () {
         }
     }};
     var _ = Date.Parsing.Operators, g = Date.Grammar, t = Date.Translator, _fn;
-    g.datePartDelimiter = _.rtoken(/^([\s\-\.\,\/\x27]+)/);
+    g.datePartDelimiter = _.rtoken(/^([\s\,\/\x27]+)/);//-\.\
     g.timePartDelimiter = _.stoken(":");
     g.whiteSpace = _.rtoken(/^\s*/);
     g.generalDelimiter = _.rtoken(/^(([\s\,]|at|on)+)/);
@@ -1352,7 +1357,7 @@ Date.parseExact = function (s, fx) {
  * @website: http://www.datejs.com/
  */
 
-/* 
+/*
  * TimeSpan(milliseconds);
  * TimeSpan(days, hours, minutes, seconds);
  * TimeSpan(days, hours, minutes, seconds, milliseconds);
@@ -1523,7 +1528,7 @@ Date.prototype.getTimeOfDay = function () {
     return new TimeSpan(0, this.getHours(), this.getMinutes(), this.getSeconds(), this.getMilliseconds());
 };
 
-/* 
+/*
  * TimePeriod(startDate, endDate);
  * TimePeriod(years, months, days, hours, minutes, seconds, milliseconds);
  */

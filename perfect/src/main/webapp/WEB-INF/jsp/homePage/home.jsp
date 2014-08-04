@@ -200,7 +200,7 @@
                     <a href="javascript:" onclick="lisClick(this,null);">
                         自定义
                         <input name="reservation" type="image"
-                               onclick="javascript:genre = 'accountOverview';changedLiState($(this).parent());"
+                               onclick="javascript:genre = 'accountOverview';changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                src="${pageContext.request.contextPath}/public/img/date.png">
 
                     </a>
@@ -261,7 +261,7 @@
                     <a href="javascript:void(0)">
                         自定义
                         <input name="reservation" class=" fa fa-calendar " type="image"
-                               onclick="javascript:genre = 'importPerformanceCurveDefault';"
+                               onclick="javascript:genre = 'importPerformanceCurveDefault'; _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                src="${pageContext.request.contextPath}/public/img/date.png">
                     </a>
                 </li>
@@ -290,7 +290,7 @@
                     <a href="javascript:void(0)">
                         自定义
                         <input name="reservation" class=" fa fa-calendar " type="image"
-                               onclick="javascript:genre = 'importPerformanceDefault';"
+                               onclick="javascript:genre = 'importPerformanceDefault'; _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                src="${pageContext.request.contextPath}/public/img/date.png">
                     </a>
                 </li>
@@ -305,51 +305,61 @@
                             <li>
                                 &nbsp;<span>时间</span><b>
                                 <p>
-                                    <input class="one" type="button" onclick="javascript:category = 'date';sort = 0;loadPerformance(statDate)">
+                                    <input class="one" type="button"
+                                           onclick="javascript:category = 'date';sort = 0;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
-                                    <input class="two" type="button" onclick="javascript:category = 'date';sort = 1;loadPerformance(statDate)">
+                                    <input class="two" type="button"
+                                           onclick="javascript:category = 'date';sort = 1;loadPerformance(statDate)">
                                 </p></b>
                             </li>
                             <li>
                                 &nbsp;<span>展现量</span><b>
                                 <p>
-                                    <input class="one" type="button" onclick="javascript:category = 'impression';sort = 0;loadPerformance(statDate)">
+                                    <input class="one" type="button"
+                                           onclick="javascript:category = 'impression';sort = 0;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
-                                    <input class="two" type="button" onclick="javascript:category = 'impression';sort = 1;loadPerformance(statDate)">
+                                    <input class="two" type="button"
+                                           onclick="javascript:category = 'impression';sort = 1;loadPerformance(statDate)">
                                 </p></b>
                             </li>
                             <li>
                                 &nbsp;<span>点击量</span><b>
                                 <p>
-                                    <input class="one" type="button" onclick="javascript:category = 'click';sort = 0;loadPerformance(statDate)">
+                                    <input class="one" type="button"
+                                           onclick="javascript:category = 'click';sort = 0;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
-                                    <input class="two" type="button" onclick="javascript:category = 'click';sort = 1;loadPerformance(statDate)">
+                                    <input class="two" type="button"
+                                           onclick="javascript:category = 'click';sort = 1;loadPerformance(statDate)">
                                 </p></b>
                             </li>
                             <li>
                                 &nbsp;<span>消费</span><b>
                                 <p>
-                                    <input class="one" type="button" onclick="javascript:category = 'cost';sort = 0;loadPerformance(statDate)">
+                                    <input class="one" type="button"
+                                           onclick="javascript:category = 'cost';sort = 0;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
-                                    <input class="two" type="button" onclick="javascript:category = 'cost';sort = 1;loadPerformance(statDate)">
+                                    <input class="two" type="button"
+                                           onclick="javascript:category = 'cost';sort = 1;loadPerformance(statDate)">
                                 </p></b>
                             </li>
                             <li>
                                 &nbsp;<span>点击率</span><b>
                                 <p>
-                                    <input class="one" type="button" onclick="javascript:category = 'ctr';sort = 0;loadPerformance(statDate)">
+                                    <input class="one" type="button"
+                                           onclick="javascript:category = 'ctr';sort = 0;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
-                                    <input class="two" type="button" onclick="javascript:category = 'ctr';sort = 1;loadPerformance(statDate)">
+                                    <input class="two" type="button"
+                                           onclick="javascript:category = 'ctr';sort = 1;loadPerformance(statDate)">
                                 </p></b>
                                 <a href="#" class="question">
                                 </a>
@@ -357,11 +367,13 @@
                             <li>
                                 &nbsp;<span>平均点击价格</span><b>
                                 <p>
-                                    <input class="one" type="button" onclick="javascript:category = 'cpc';sort = 0;loadPerformance(statDate)">
+                                    <input class="one" type="button"
+                                           onclick="javascript:category = 'cpc';sort = 0;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
-                                    <input class="two" type="button" onclick="javascript:category = 'cpc';sort = 1;loadPerformance(statDate)">
+                                    <input class="two" type="button"
+                                           onclick="javascript:category = 'cpc';sort = 1;loadPerformance(statDate)">
                                 </p></b>
                                 <a href="#" class="question">
                                 </a>
@@ -369,11 +381,13 @@
                             <li>
                                 &nbsp;<span>转化(页面)</span><b>
                                 <p>
-                                    <input class="one" type="button" onclick="javascript:category = 'conversion';sort = 0;loadPerformance(statDate)">
+                                    <input class="one" type="button"
+                                           onclick="javascript:category = 'conversion';sort = 0;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
-                                    <input class="two" type="button" onclick="javascript:category = 'conversion';sort = 1;loadPerformance(statDate)">
+                                    <input class="two" type="button"
+                                           onclick="javascript:category = 'conversion';sort = 1;loadPerformance(statDate)">
                                 </p></b>
                                 <a href="#" class="question">
                                 </a>
@@ -425,7 +439,7 @@
             <a>
                 自定义
                 <input name="reservation" type="image"
-                       onclick="javascript:genre = 'keywordQualityCustom';$(this).parent().parent().addClass('current');changedLiState($(this).parent());"
+                       onclick="javascript:genre = 'keywordQualityCustom';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                        src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
         </li>
@@ -1734,7 +1748,7 @@
                 <a href="javascript:void(0)">
                     自定义
                     <input name="reservation" type="image"
-                           onclick="javascript:genre = 'importKeywordDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent());"
+                           onclick="javascript:genre = 'importKeywordDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                            src="${pageContext.request.contextPath}/public/img/date.png">
                 </a>
             </li>
@@ -1969,6 +1983,9 @@
     //查询类别区分
     var genre = "";
 
+    //日期控件坐标定位
+    var _posX = 0, _posY = 0;
+
     $(function () {
         var $tab_li = $('.tab_menu li');
         $('.tab_menu li').click(function () {
@@ -2007,32 +2024,17 @@
                     loadKeywordQualityData(null, 0);
                 } else if (genre == "importKeywordDefault") {
                     getImportKeywordDefault(null, 0);
-                } else if(genre == "accountOverview"){
+                } else if (genre == "accountOverview") {
                     lisClick();
                 } else if (genre == "importPerformanceDefault") {
-                    category="data";
+                    category = "data";
                     loadPerformance(0);
-                } else if(genre == "importPerformanceCurveDefault"){
-                    category="data";
+                } else if (genre == "importPerformanceCurveDefault") {
+                    category = "data";
                     loadPerformanceCurve(0);
                 }
             }
         });
-        /*$("input[name=reservation]").daterangepicker({}, function (startDate, endDate) {
-         var date = new Date();
-         date.setTime(startDate);
-         daterangepicker_start_date = date.Format("yyyy-MM-dd");
-         date.setTime(endDate);
-         daterangepicker_end_date = date.Format("yyyy-MM-dd");
-         if (genre == "keywordQualityCustom") {
-         //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
-         loadKeywordQualityData(null, 0);
-         } else if (genre == "importKeywordDefault") {
-         getImportKeywordDefault(null, 0);
-         }
-
-         }
-         );*/
 
         //默认加载昨天的数据
         loadKeywordQualityData(null, 1);
@@ -2315,94 +2317,91 @@ var loadPerformanceCurve = function (date) {
 }
 
 
-    var getImportKeywordDefault = function (obj, day) {
-        if (obj != null) {
-            changedLiState(obj);
-        }
-        $("#importTr").empty();
-        $("#importTr").append("<td style='color:red;'>加载中....</td>");
-        statDate = day;
-        getDateParam(day);
-        $.ajax({
-            url: "/main/getImportKeywordList",
-            type: "GET",
-            dataType: "json",
-            data: {
-                startDate: daterangepicker_start_date,
-                endDate: daterangepicker_end_date,
-                limit: limit,
-                sort: sort
-            },
-            success: function (data, textStatus, jqXHR) {
-                var calssStr = "";
-                var _tr = $("#importTr");
-                if (data.length > 0) {
-                    _tr.empty();
-                    $.each(data, function (i, item) {
-                        if (i % 2 == 0) {
-                            calssStr = "list2_box1";
-                        } else {
-                            calssStr = "list2_box2";
-                        }
-                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.impression + "</li><li> &nbsp;" + item.click + "</li><li> &nbsp;￥" + item.cost + "</li><li> &nbsp;￥" + item.cpc + "</li>"
-                                + "<li> &nbsp;" + item.ctr * 100 + "%</li><li> &nbsp;" + item.conversion + "</li><li> &nbsp;" + item.position + "</li></ul></td></tr>";
-                        $("#importTr").append(_div);
-
-                    })
-                } else {
-                    _tr.empty();
-                    var _div = "<td colspan='9' style='color:royalblue;'>暂无数据哈</td>"
-                    _tr.append(_div);
-                }
-            }
-        });
-    };
-
-
-
-
-
-    //根据最近几天获取数据
-    function lisClick(obj, days) {
-        if (days != null) {
-            getDateParam(days);
-        }
-        htmlLoding();
-        getData();
+var getImportKeywordDefault = function (obj, day) {
+    if (obj != null) {
         changedLiState(obj);
     }
+    $("#importTr").empty();
+    $("#importTr").append("<td style='color:red;'>加载中....</td>");
+    statDate = day;
+    getDateParam(day);
+    $.ajax({
+        url: "/main/getImportKeywordList",
+        type: "GET",
+        dataType: "json",
+        data: {
+            startDate: daterangepicker_start_date,
+            endDate: daterangepicker_end_date,
+            limit: limit,
+            sort: sort
+        },
+        success: function (data, textStatus, jqXHR) {
+            var calssStr = "";
+            var _tr = $("#importTr");
+            if (data.length > 0) {
+                _tr.empty();
+                $.each(data, function (i, item) {
+                    if (i % 2 == 0) {
+                        calssStr = "list2_box1";
+                    } else {
+                        calssStr = "list2_box2";
+                    }
+                    var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.impression + "</li><li> &nbsp;" + item.click + "</li><li> &nbsp;￥" + item.cost + "</li><li> &nbsp;￥" + item.cpc + "</li>"
+                            + "<li> &nbsp;" + item.ctr * 100 + "%</li><li> &nbsp;" + item.conversion + "</li><li> &nbsp;" + item.position + "</li></ul></td></tr>";
+                    $("#importTr").append(_div);
 
-    //改变li的样式状态
-    function changedLiState(obj) {
-        $(obj).parent().parent().find("li").each(function () {
-            $(this).removeClass("current");
-        });
-        $(obj).parent().addClass("current");
-    }
+                })
+            } else {
+                _tr.empty();
+                var _div = "<td colspan='9' style='color:royalblue;'>暂无数据哈</td>"
+                _tr.append(_div);
+            }
+        }
+    });
+};
 
-    //数据获取中。。。
-    function htmlLoding() {
-        $(".impression,.click,.cos,.conversion").html("加载中...");
+
+//根据最近几天获取数据
+function lisClick(obj, days) {
+    if (days != null) {
+        getDateParam(days);
     }
     htmlLoding();
-    //获取数据
-    function getData() {
-        $.ajax({
-            url: "/account/getAccountOverviewData",
-            type: "get",
-            dataType: "json",
-            data: {"startDate": daterangepicker_start_date, "endDate": daterangepicker_end_date},
-            success: function (data) {
-                $(".impression").html(data.impression);
-                $(".click").html(data.click);
-                $(".cos").html(data.cos);
-                $(".conversion").html(data.conversion);
-            }
-        });
-    }
+    getData();
+    changedLiState(obj);
+}
 
-    //初始化账户概览页面数据
-    lisClick($(".current").get(1), 1);//默认显示昨天的汇总数据
+//改变li的样式状态
+function changedLiState(obj) {
+    $(obj).parent().parent().find("li").each(function () {
+        $(this).removeClass("current");
+    });
+    $(obj).parent().addClass("current");
+}
+
+//数据获取中。。。
+function htmlLoding() {
+    $(".impression,.click,.cos,.conversion").html("加载中...");
+}
+htmlLoding();
+//获取数据
+function getData() {
+    $.ajax({
+        url: "/account/getAccountOverviewData",
+        type: "get",
+        dataType: "json",
+        data: {"startDate": daterangepicker_start_date, "endDate": daterangepicker_end_date},
+        success: function (data) {
+            $(".impression").html(data.impression);
+            $(".click").html(data.click);
+            $(".cos").html(data.cos);
+            $(".conversion").html(data.conversion);
+        }
+    });
+}
+
+//初始化账户概览页面数据
+lisClick($(".current").get(1), 1);//默认显示昨天的汇总数据
 
 </script>
 
