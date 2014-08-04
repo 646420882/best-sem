@@ -5,9 +5,11 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
+
 /**
  * Created by vbzer_000 on 2014/7/22.
  */
@@ -47,15 +49,16 @@ public class Application {
         while (!task.isDone()) {
             Thread.sleep(500);
         }
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(args[0]+"_output"), "GBK"));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(args[0] + "_output"), "GBK"));
         for (Map.Entry<String, String> entrySet : keywordLineMap.entrySet()) {
-// System.out.println(entrySet.getKey() + "==" + entrySet.getValue());
+            // System.out.println(entrySet.getKey() + "==" + entrySet.getValue());
             bw.write(entrySet.getValue());
             bw.newLine();
         }
         bw.flush();
         bw.close();
     }
+
     public static Map<String, Set<String>> getPreMatchWords(String preMatch) throws IOException, BiffException {
         String ext = Files.getFileExtension(preMatch);
         Map<String, Set<String>> keyGroupMap = new HashMap<String, Set<String>>();
@@ -68,11 +71,11 @@ public class Application {
                 String groupName = group.getContents();
                 Cell[] rowArray = sheet.getRow(row++);
                 HashSet<String> hashSet = new HashSet<String>(rowArray.length - 1);
-                for(int i = 1; i < rowArray.length ; i++){
+                for (int i = 1; i < rowArray.length; i++) {
                     Cell rowCell = rowArray[i];
                     hashSet.add(rowCell.getContents());
                 }
-                keyGroupMap.put(groupName,hashSet);
+                keyGroupMap.put(groupName, hashSet);
             }
         } else {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(preMatch), "UTF-8"));
@@ -81,7 +84,7 @@ public class Application {
                 if (s.isEmpty()) {
                     continue;
                 }
-// System.out.println(s);
+                // System.out.println(s);
                 String[] keyValue = s.split("=");
                 String key = keyValue[0];
                 String value = keyValue[1];
@@ -93,5 +96,10 @@ public class Application {
             br.close();
         }
         return keyGroupMap;
+    }
+
+    public static Map<String, Set<String>> getWordRoot() {
+        Map<String, Set<String>> wordRootMap = new HashMap<>();
+        return wordRootMap;
     }
 }
