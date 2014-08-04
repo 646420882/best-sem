@@ -114,8 +114,8 @@ jQuery.fn.daterangepicker = function (settings) {
 
 
     //build picker divs
-    var rp = jQuery('<div class="ui-daterangepicker ui-widget ui-helper-clearfix ui-widget-content ui-corner-all" style="width: 400px; height: 221px"></div>');
-    var rpPickers = jQuery('<div class="ranges ui-widget-header ui-corner-all ui-helper-clearfix" style="margin-left: -5px; margin-top: -5px"><div class="range-start"><span class="title-start"></span></div><div class="range-end"><span class="title-end"></span></div></div>').appendTo(rp);
+    var rp = jQuery('<div class="ui-daterangepicker ui-widget ui-helper-clearfix ui-widget-content ui-corner-all" style="/*width: 482px; height: 310px*/"></div>');
+    var rpPickers = jQuery('<div class="ranges ui-widget-header ui-corner-all ui-helper-clearfix"><div class="range-start"><span class="title-start"></span></div><div class="range-end"><span class="title-end"></span></div></div>').appendTo(rp);
     var doneBtn = jQuery('<button class="btnDone ui-state-default ui-corner-all">' + options.doneButtonText + '</button>')
         .click(function () {
             rp.find('.ui-datepicker-current-day').trigger('click');
