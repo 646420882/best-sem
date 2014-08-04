@@ -3,16 +3,17 @@ package com.perfect.app.homePage.service;
 
 
 import com.perfect.dao.AccountAnalyzeDAO;
+import com.perfect.entity.AccountRealTimeDataVOEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import com.perfect.mongodb.utils.Performance;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.*;
 
 /**
@@ -73,6 +74,51 @@ public class PerformanceService{
         }
         List<KeywordRealTimeDataVOEntity> list = new ArrayList<>(map.values());
         return list;
+    }
+
+    /**
+     * 获取账户表现中的所有数据
+     * @return
+     */
+    public List<AccountRealTimeDataVOEntity> performanceUser(Date startDate, Date endDate,String fieldName,int Sorted,int limit){
+
+        List<AccountRealTimeDataVOEntity> listUser = accountAnalyzeDAO.performaneUser(startDate,endDate,fieldName,Sorted,limit);
+        DecimalFormat df = new DecimalFormat("#.00");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        for(AccountRealTimeDataVOEntity list : listUser){
+            String cpc = df.format(list.getCpc());
+            String ctr = df.format(list.getCtr());
+
+            BigDecimal ctrBig = new BigDecimal(ctr);
+            BigDecimal big = new BigDecimal(100);
+            double divide = ctrBig.multiply(big).doubleValue();
+            double doubleCpc = Double.parseDouble(cpc);
+            list.setCpc(doubleCpc);
+            list.setCtr(divide);
+        }
+        return listUser;
+    }
+
+    /**
+     * 获取账户表现中的曲线图所有数据
+     * @return
+     */
+    public List<AccountRealTimeDataVOEntity> performanceCurve(Date startDate,Date endDate){
+
+        List<AccountRealTimeDataVOEntity> listUser = accountAnalyzeDAO.performaneCurve(startDate,endDate);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DecimalFormat df = new DecimalFormat("#.00");
+        for(AccountRealTimeDataVOEntity list : listUser){
+            String cpc = df.format(list.getCpc());
+            String ctr = df.format(list.getCtr());
+            BigDecimal ctrBig = new BigDecimal(ctr);
+            BigDecimal big = new BigDecimal(100);
+            double divide = ctrBig.multiply(big).doubleValue();
+            double doubleCpc = Double.parseDouble(cpc);
+            list.setCpc(doubleCpc);
+            list.setCtr(divide);
+        }
+        return listUser;
     }
 }
 

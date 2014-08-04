@@ -14,11 +14,9 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="all"
-          href="${pageContext.request.contextPath}/public/css/accountCss/daterangepicker-bs3.css"/>
-
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
 </head>
 <body>
 <div class="top over">
@@ -201,7 +199,7 @@
                 <li class="date">
                     <a href="javascript:" onclick="lisClick(this,null);">
                         自定义
-                        <input name="reservation" class=" fa fa-calendar " type="image"
+                        <input name="reservation" type="image"
                                onclick="javascript:genre = 'accountOverview';changedLiState($(this).parent());"
                                src="${pageContext.request.contextPath}/public/img/date.png">
 
@@ -244,243 +242,164 @@
     </div>
 </div>
 <div class="containers  hides over">
-<div class="list01 over" style="border-bottom:1px solid #d5d5d8;">
-    <div class="list01_top over">
-        <Span>账户趋势图</Span>
-        <a href="#" class="question"></a>
-        <ul>
-            <li class="current">
-                <a href="#">
-                    昨天
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    近7天
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    近30天
-                </a>
-            </li>
-            <li class="date">
-                <a href="#">
-                    自定义
-                    <input name="reservation" class=" fa fa-calendar " type="image"
-                           src="${pageContext.request.contextPath}/public/img/date.png">
-                </a>
-            </li>
-        </ul>
+    <div class="list01 over" style="border-bottom:1px solid #d5d5d8;">
+        <div class="list01_top over">
+            <Span>账户趋势图</Span>
+            <a href="#" class="question"></a>
+            <ul>
+                <li>
+                    <a href="javascript:void(0)" onclick="loadPerformanceCurve(7)">
+                        近7天
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" onclick="loadPerformanceCurve(30)">
+                        近30天
+                    </a>
+                </li>
+                <li class="date">
+                    <a href="javascript:void(0)">
+                        自定义
+                        <input name="reservation" class=" fa fa-calendar " type="image"
+                               onclick="javascript:genre = 'importPerformanceCurveDefault';"
+                               src="${pageContext.request.contextPath}/public/img/date.png">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="shuju">
+            <div id="container" style="width:1077px;height:400px"></div>
+        </div>
     </div>
-    <div class="shuju">
-        <img src="images/tu.jpg">
-    </div>
-</div>
-<div class="list01_under3 over">
-<div class="list01_top over">
-    <Span>分日表现</Span>
-    <a href="#" class="question"></a>
-    <ul>
-        <li class="current">
-            <a href="#">
-                昨天
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                近7天
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                近30天
-            </a>
-        </li>
-        <li class="date">
-            <a href="#">
-                自定义
-                <input name="reservation" class=" fa fa-calendar " type="image"
-                       src="${pageContext.request.contextPath}/public/img/date.png">
-            </a>
-        </li>
-    </ul>
-</div>
-<div class="list2 wd">
-    <table border="0" cellspacing="0" cellspacing="0">
-        <thead>
-        <tr class="list2_top">
-            <td>
-                <ul>
-                    <li>
-                        &nbsp;<span>时间</span><b>
-                        <p>
-                            <input class="one" type="button">
-                        </p>
+    <div class="list01_under3 over">
+        <div class="list01_top over">
+            <Span>分日表现</Span>
+            <a href="#" class="question"></a>
+            <ul>
+                <li>
+                    <a href="javascript:void(0)" onclick="loadPerformance(7)">
+                        近7天
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" onclick="loadPerformance(30)">
+                        近30天
+                    </a>
+                </li>
+                <li class="date">
+                    <a href="javascript:void(0)">
+                        自定义
+                        <input name="reservation" class=" fa fa-calendar " type="image"
+                               onclick="javascript:genre = 'importPerformanceDefault';"
+                               src="${pageContext.request.contextPath}/public/img/date.png">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="list2 wd">
+            <table border="0" cellspacing="0" cellspacing="0">
+                <thead>
+                <tr class="list2_top">
+                    <td>
+                        <ul>
+                            <li>
+                                &nbsp;<span>时间</span><b>
+                                <p>
+                                    <input class="one" type="button" onclick="javascript:category = 'date';sort = 0;loadPerformance(statDate)">
+                                </p>
 
-                        <p>
-                            <input class="two" type="button">
-                        </p></b>
-                    </li>
-                    <li>
-                        &nbsp;<span>展现量</span><b>
-                        <p>
-                            <input class="one" type="button">
-                        </p>
+                                <p>
+                                    <input class="two" type="button" onclick="javascript:category = 'date';sort = 1;loadPerformance(statDate)">
+                                </p></b>
+                            </li>
+                            <li>
+                                &nbsp;<span>展现量</span><b>
+                                <p>
+                                    <input class="one" type="button" onclick="javascript:category = 'impression';sort = 0;loadPerformance(statDate)">
+                                </p>
 
-                        <p>
-                            <input class="two" type="button">
-                        </p></b>
-                    </li>
-                    <li>
-                        &nbsp;<span>点击量</span><b>
-                        <p>
-                            <input class="one" type="button">
-                        </p>
+                                <p>
+                                    <input class="two" type="button" onclick="javascript:category = 'impression';sort = 1;loadPerformance(statDate)">
+                                </p></b>
+                            </li>
+                            <li>
+                                &nbsp;<span>点击量</span><b>
+                                <p>
+                                    <input class="one" type="button" onclick="javascript:category = 'click';sort = 0;loadPerformance(statDate)">
+                                </p>
 
-                        <p>
-                            <input class="two" type="button">
-                        </p></b>
-                    </li>
-                    <li>
-                        &nbsp;<span>消费</span><b>
-                        <p>
-                            <input class="one" type="button">
-                        </p>
+                                <p>
+                                    <input class="two" type="button" onclick="javascript:category = 'click';sort = 1;loadPerformance(statDate)">
+                                </p></b>
+                            </li>
+                            <li>
+                                &nbsp;<span>消费</span><b>
+                                <p>
+                                    <input class="one" type="button" onclick="javascript:category = 'cost';sort = 0;loadPerformance(statDate)">
+                                </p>
 
-                        <p>
-                            <input class="two" type="button">
-                        </p></b>
-                    </li>
-                    <li>
-                        &nbsp;<span>点击率</span><b>
-                        <p>
-                            <input class="one" type="button">
-                        </p>
+                                <p>
+                                    <input class="two" type="button" onclick="javascript:category = 'cost';sort = 1;loadPerformance(statDate)">
+                                </p></b>
+                            </li>
+                            <li>
+                                &nbsp;<span>点击率</span><b>
+                                <p>
+                                    <input class="one" type="button" onclick="javascript:category = 'ctr';sort = 0;loadPerformance(statDate)">
+                                </p>
 
-                        <p>
-                            <input class="two" type="button">
-                        </p></b>
-                        <a href="#" class="question">
-                        </a>
-                    </li>
-                    <li>
-                        &nbsp;<span>平均点击价格</span><b>
-                        <p>
-                            <input class="one" type="button">
-                        </p>
+                                <p>
+                                    <input class="two" type="button" onclick="javascript:category = 'ctr';sort = 1;loadPerformance(statDate)">
+                                </p></b>
+                                <a href="#" class="question">
+                                </a>
+                            </li>
+                            <li>
+                                &nbsp;<span>平均点击价格</span><b>
+                                <p>
+                                    <input class="one" type="button" onclick="javascript:category = 'cpc';sort = 0;loadPerformance(statDate)">
+                                </p>
 
-                        <p>
-                            <input class="two" type="button">
-                        </p></b>
-                        <a href="#" class="question">
-                        </a>
-                    </li>
-                    <li>
-                        &nbsp;<span>平均排名</span><b>
-                        <p>
-                            <input class="one" type="button">
-                        </p>
+                                <p>
+                                    <input class="two" type="button" onclick="javascript:category = 'cpc';sort = 1;loadPerformance(statDate)">
+                                </p></b>
+                                <a href="#" class="question">
+                                </a>
+                            </li>
+                            <li>
+                                &nbsp;<span>转化(页面)</span><b>
+                                <p>
+                                    <input class="one" type="button" onclick="javascript:category = 'conversion';sort = 0;loadPerformance(statDate)">
+                                </p>
 
-                        <p>
-                            <input class="two" type="button">
-                        </p></b>
-                        <a href="#" class="question"></a>
-                    </li>
-                    <li>
-                        &nbsp;<span>转化(页面)</span><b>
-                        <p>
-                            <input class="one" type="button">
-                        </p>
+                                <p>
+                                    <input class="two" type="button" onclick="javascript:category = 'conversion';sort = 1;loadPerformance(statDate)">
+                                </p></b>
+                                <a href="#" class="question">
+                                </a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                </thead>
+                <tbody id="performance">
 
-                        <p>
-                            <input class="two" type="button">
-                        </p></b>
-                        <a href="#" class="question">
-                        </a>
-                    </li>
-                </ul>
-            </td>
-        </tr>
-        </thead>
-        <tbody id="performance">
-        <tr class="list2_box1">
-            <td>
-                <ul>
-                    <li>
-                        &nbsp;2014年6月9日
-                    </li>
-                    <li>
-                        &nbsp;3.902
-                    </li>
-                    <li>
-                        &nbsp;3.902
-                    </li>
-                    <li>
-                        &nbsp;13
-                    </li>
-                    <li>
-                        &nbsp;￥0.91
-                    </li>
-                    <li>
-                        &nbsp;￥0.91
-                    </li>
-                    <li>
-                        &nbsp;0.33%
-                    </li>
-                    <li>
-                        &nbsp;0.00
-                    </li>
-
-                </ul>
-            </td>
-        </tr>
-        <tr class="list2_box2" onclick="TestBlack('divc1');">
-            <td>
-                <ul>
-                    <li>
-                        &nbsp;2014年6月9日
-                    </li>
-                    <li>
-                        &nbsp;3.902
-                    </li>
-                    <li>
-                        &nbsp;3.902
-                    </li>
-                    <li>
-                        &nbsp;13
-                    </li>
-                    <li>
-                        &nbsp;￥0.91
-                    </li>
-                    <li>
-                        &nbsp;￥0.91
-                    </li>
-                    <li>
-                        &nbsp;0.33%
-                    </li>
-                    <li>
-                        &nbsp;0.00
-                    </li>
-
-                </ul>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="download over fr">
+                </tbody>
+            </table>
+            <div class="download over fr">
 										<span>每页显示
-											<select>
-                                                <option>10个</option>
-                                                <option>9个</option>
-                                                <option>8个</option>
+											<select id="performanceLimit"
+                                                    onchange="javascript:limit = $('#performanceLimit option:selected').val();loadPerformance(statDate);">
+                                                <option selected="selected" value="10">10个</option>
+                                                <option value="20">20个</option>
+                                                <option value="30">30个</option>
                                             </select> </span>
-        <a href="#">
-            下载全部
-        </a>
+                <a href="#">
+                    下载全部
+                </a>
+            </div>
+        </div>
     </div>
-</div>
-</div>
 </div>
 <div class="containers hides over">
 <div class="list01_top over">
@@ -505,7 +424,7 @@
         <li class="date">
             <a>
                 自定义
-                <input name="reservation" class=" fa fa-calendar " type="image"
+                <input name="reservation" type="image"
                        onclick="javascript:genre = 'keywordQualityCustom';$(this).parent().parent().addClass('current');changedLiState($(this).parent());"
                        src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
@@ -1814,7 +1733,7 @@
             <li class="date">
                 <a href="javascript:void(0)">
                     自定义
-                    <input name="reservation" class=" fa fa-calendar " type="image"
+                    <input name="reservation" type="image"
                            onclick="javascript:genre = 'importKeywordDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent());"
                            src="${pageContext.request.contextPath}/public/img/date.png">
                 </a>
@@ -1995,13 +1914,11 @@
 
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.10.4.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
-<script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/accountJs/moment.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/accountJs/daterangepicker.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
 <script type="text/javascript">
@@ -2078,27 +1995,52 @@
         });
 
         //加载日历控件
-        $("input[name=reservation]").daterangepicker({}, function (startDate, endDate) {
-                    var date = new Date();
-                    date.setTime(startDate);
-                    daterangepicker_start_date = date.Format("yyyy-MM-dd");
-                    date.setTime(endDate);
-                    daterangepicker_end_date = date.Format("yyyy-MM-dd");
-                    if (genre == "keywordQualityCustom") {
-                        //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
-
-                        loadKeywordQualityData(null, 0);
-                    } else if (genre == "importKeywordDefault") {
-                        getImportKeywordDefault(null, 0);
-                    }
-
+        $("input[name=reservation]").daterangepicker();
+        $(".btnDone").on('click', function () {
+            var _startDate = $('.range-start').datepicker('getDate');
+            var _endDate = $('.range-end').datepicker('getDate');
+            if (_startDate != null && _endDate != null) {
+                daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
+                daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
+                if (genre == "keywordQualityCustom") {
+                    //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
+                    loadKeywordQualityData(null, 0);
+                } else if (genre == "importKeywordDefault") {
+                    getImportKeywordDefault(null, 0);
+                } else if(genre == "accountOverview"){
+                    lisClick();
+                } else if (genre == "importPerformanceDefault") {
+                    category="data";
+                    loadPerformance(0);
+                } else if(genre == "importPerformanceCurveDefault"){
+                    category="data";
+                    loadPerformanceCurve(0);
                 }
-        );
+            }
+        });
+        /*$("input[name=reservation]").daterangepicker({}, function (startDate, endDate) {
+         var date = new Date();
+         date.setTime(startDate);
+         daterangepicker_start_date = date.Format("yyyy-MM-dd");
+         date.setTime(endDate);
+         daterangepicker_end_date = date.Format("yyyy-MM-dd");
+         if (genre == "keywordQualityCustom") {
+         //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
+         loadKeywordQualityData(null, 0);
+         } else if (genre == "importKeywordDefault") {
+         getImportKeywordDefault(null, 0);
+         }
+
+         }
+         );*/
 
         //默认加载昨天的数据
         loadKeywordQualityData(null, 1);
         getImportKeywordDefault(1);
-        loadPerformance();
+        //账户表现-----默认加载7天数据
+        loadPerformance(7);
+        //曲线图表现-----默认加载7天数据
+        loadPerformanceCurve(7);
 
     });
 
@@ -2175,26 +2117,33 @@
         });
     };
 
-    var loadPerformance = function () {
+    /**
+     * 分日表现数据加载
+     * */
+    var loadPerformance = function (date) {
+        getDateParam(date);
         $.ajax({
-            url: "/account/performance",
+            url: "/account/getPerformanceUser",
             type: "GET",
             dataType: "json",
             data: {
                 startDate: daterangepicker_start_date,
                 endDate: daterangepicker_end_date,
-                fieldName: category
+                fieldName: category,
+                sort: sort,
+                limit: limit
             },
-            success: function (data, textStatus, jqXHR) {
+            success: function (data) {
                 var calssStr = "";
-                if (data.length > 0) {
-                    $.each(data, function (i, item) {
+                if (data.rows.length > 0) {
+                    $("#performance").empty();
+                    $.each(data.rows, function (i, item) {
                         if (i % 2 == 0) {
                             calssStr = "list2_box1";
                         } else {
                             calssStr = "list2_box2";
                         }
-                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.impression + "</li><li> &nbsp;" + item.click + "</li><li> &nbsp;" + item.cost + "</li><li> &nbsp;" + item.ctr * 100 + "%</li>"
+                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.date + "</li><li> &nbsp;" + item.impression + "</li><li> &nbsp;" + item.click + "</li><li> &nbsp;" + item.cost + "</li><li> &nbsp;" + item.ctr + "%</li>"
                                 + "<li> &nbsp;" + item.cpc + "</li><li> &nbsp;" + item.conversion + "</li></ul></td></tr>";
                         $("#performance").append(_div);
                     })
@@ -2204,90 +2153,166 @@
     };
 </script>
 <script>
-    /*曲线图数据配置*/
-    $(function () {
-        $('#container').highcharts({
-            chart: {
-                zoomType: 'xy'
-            },
-            title: {
-                text: 'Average Monthly Temperature and Rainfall in Tokyo'
-            },
-            subtitle: {
-                text: 'Source: WorldClimate.com'
-            },
-            xAxis: [
-                {
-                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                }
-            ],
-            yAxis: [
-                { // Primary yAxis
-                    labels: {
-                        format: '{value}°C',
-                        style: {
-                            color: '#89A54E'
-                        }
-                    },
-                    title: {
-                        text: 'Temperature',
-                        style: {
-                            color: '#89A54E'
-                        }
-                    }
-                },
-                { // Secondary yAxis
-                    title: {
-                        text: 'Rainfall',
-                        style: {
-                            color: '#4572A7'
-                        }
-                    },
-                    labels: {
-                        format: '{value} mm',
-                        style: {
-                            color: '#4572A7'
-                        }
-                    },
-                    opposite: true
-                }
-            ],
-            tooltip: {
-                shared: true
-            },
-            legend: {
-                layout: 'vertical',
-                align: 'left',
-                x: 920,
-                verticalAlign: 'top',
-                y: 100,
-                floating: true,
-                backgroundColor: '#FFFFFF'
-            },
-            series: [
-                {
-                    name: '点击率',
-                    color: '#4572A7',
-                    type: 'spline',
-                    data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-                    tooltip: {
-                        valueSuffix: ' mm'
-                    }
+/**
+ * 曲线图数据配置
+ * **/
+var loadPerformanceCurve = function (date) {
+    getDateParam(date);
+    //日期
+    var t_date = new Array();
+    //展现
+    var t_impr = new Array();
+    //点击数
+    var t_clicks = new Array();
+    //消费
+    var t_cost = new Array();
+    //点击率
+    var t_ctr = new Array();
+    //平均点击价格
+    var t_cpc = new Array();
+    //转化
+    var t_conversion = new Array();
 
+    $.ajax({
+        url: "/account/getPerformanceCurve",
+        type: "GET",
+        dataType: "json",
+        cache: false,
+        async: false,
+        data: {
+            startDate: daterangepicker_start_date,
+            endDate: daterangepicker_end_date
+        },
+        success: function (data) {
+            if (data.rows.length > 0) {
+                $.each(data.rows, function (i, item) {
+                    t_date.push(item.date);
+                    t_impr.push(item.impression);
+                    t_clicks.push(item.click);
+                    t_cost.push(item.cost);
+                    t_ctr.push(item.ctr);
+                    t_cpc.push(item.cpc);
+                    t_conversion.push(item.conversion);
+                })
+            }
+        }
+    });
+    $('#container').highcharts({
+        chart: {
+            zoomType: 'xy'
+        },
+        title: {
+            text: ' d'
+        },
+        subtitle: {
+            text: ' d'
+        },
+        xAxis: [
+            {
+                categories: t_date
+            }
+        ],
+        yAxis: [
+            { // Primary yAxis
+                labels: {
+                    format: '{value}°C',
+                    style: {
+                        color: '#89A54E'
+                    }
                 },
-                {
-                    name: 'Temperature',
-                    color: '#89A54E',
-                    type: 'spline',
-                    data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
-                    tooltip: {
-                        valueSuffix: '°C'
+                title: {
+                    text: 'Temperature',
+                    style: {
+                        color: '#89A54E'
                     }
                 }
-            ]
-        });
+            },
+            { // Secondary yAxis
+                title: {
+                    text: 'Rainfall',
+                    style: {
+                        color: '#4572A7'
+                    }
+                },
+                labels: {
+                    format: '{value} mm',
+                    style: {
+                        color: '#4572A7'
+                    }
+                },
+                opposite: true
+            }
+        ],
+        tooltip: {
+            shared: true
+        },
+        legend: {
+            align: 'left',
+            x: 10,
+            verticalAlign: 'top',
+            y: -10,
+            floating: true,
+            backgroundColor: '#FFFFFF',
+            itemDistance: 20,
+            borderRadius: 5
+
+        },
+        series: [
+            {
+                name: '展现',
+                color: '#4572A7',
+                type: 'spline',
+                data: t_impr,
+                tooltip: {
+                    valueSuffix: ' 次'
+                }
+
+            },
+            {
+                name: '点击',
+                color: '#89A54E',
+                type: 'spline',
+                data: t_clicks,
+                tooltip: {
+                    valueSuffix: '次'
+                }
+            },
+            {
+                name: '消费',
+                color: '#ED561B',
+                type: 'spline',
+                data: t_cost,
+                tooltip: {
+                    valueSuffix: '￥'
+                }
+            },
+            {
+                name: '点击率',
+                color: '#24CBE5',
+                type: 'spline',
+                data: t_ctr,
+                tooltip: {
+                    valueSuffix: '%'
+                }
+            },
+            {
+                name: '平均点击价格',
+                color: '#64E572',
+                type: 'spline',
+                data: t_cpc,
+                tooltip: {
+                    valueSuffix: '￥'
+                }
+            },
+            {
+                name: '转化',
+                color: '#DDDF00',
+                type: 'spline',
+                data: t_conversion
+            }
+        ]
     });
+}
 
 
     var getImportKeywordDefault = function (obj, day) {
@@ -2333,7 +2358,9 @@
         });
     };
 
-    /*===========================================================账户概览start================*/
+
+
+
 
     //根据最近几天获取数据
     function lisClick(obj, days) {
@@ -2376,9 +2403,6 @@
 
     //初始化账户概览页面数据
     lisClick($(".current").get(1), 1);//默认显示昨天的汇总数据
-
-
-    /*===========================================================账户概览end==============================================*/
 
 </script>
 

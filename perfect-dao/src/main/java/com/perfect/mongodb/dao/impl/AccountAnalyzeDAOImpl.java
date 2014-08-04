@@ -6,8 +6,15 @@ import com.perfect.entity.AccountRealTimeDataVOEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -64,19 +71,33 @@ public class AccountAnalyzeDAOImpl implements AccountAnalyzeDAO {
     public void deleteAll() {
 
     }
+
     public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
         return null;
     }
 
     @Override
     public List<KeywordRealTimeDataVOEntity> performance(String userTable) {
-        List<KeywordRealTimeDataVOEntity> list = mongoTemplate.findAll(KeywordRealTimeDataVOEntity.class,userTable);
+        List<KeywordRealTimeDataVOEntity> list = mongoTemplate.findAll(KeywordRealTimeDataVOEntity.class, userTable);
         return list;
     }
 
     @Override
-    public List<AccountRealTimeDataVOEntity> performaneUser() {
-        List<AccountRealTimeDataVOEntity> list = mongoTemplate.findAll(AccountRealTimeDataVOEntity.class,"AccountRealTimeData");
+    public List<AccountRealTimeDataVOEntity> performaneUser(Date startDate, Date endDate,String fieldName,int Sorted, int limit) {
+        Sort sort = null;
+        if(Sorted == 0){
+            sort =  new Sort(Sort.Direction.ASC,fieldName);
+        }else{
+            sort = new Sort(Sort.Direction.DESC,fieldName);
+        }
+        List<AccountRealTimeDataVOEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(sort).skip(0).limit(limit),AccountRealTimeDataVOEntity.class, "AccountRealTimeData");
+        return list;
+    }
+
+    @Override
+    public List<AccountRealTimeDataVOEntity> performaneCurve(Date startDate, Date endDate) {
+
+        List<AccountRealTimeDataVOEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.ASC,"date")),AccountRealTimeDataVOEntity.class, "AccountRealTimeData");
         return list;
     }
 }
