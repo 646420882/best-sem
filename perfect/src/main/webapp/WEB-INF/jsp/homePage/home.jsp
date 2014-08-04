@@ -59,7 +59,7 @@
                     </li>
                     <li>
                         <span class="list2"></span>
-                        <a href="#">
+                        <a href="/upload/uploadIndex">
                             批量上传
                         </a>
                     </li>
@@ -2326,7 +2326,7 @@ var getImportKeywordDefault = function (obj, day) {
     statDate = day;
     getDateParam(day);
     $.ajax({
-        url: "/main/getImportKeywordList",
+        url: "/import/getImportKeywordList",
         type: "GET",
         dataType: "json",
         data: {
