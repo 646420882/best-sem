@@ -30,6 +30,7 @@
 	color: #6f6f6f;
 	background: url(/public/img/border.png) right no-repeat;
 	font-size: 14px;
+    cursor: pointer;
 }
 .tab_box {
 	clear: both;
@@ -102,9 +103,10 @@
 
 }
 .list01_top ul li a {
-	width: 88px;
+	width: 88.5px;
 	text-align: center;
 	color: #000000;
+    cursor:default ;
 }
 .list01_top ul li a:hover {
 	text-decoration:none;
@@ -275,6 +277,7 @@
 	width: 100%;
 	line-height: 30px;
 	background: #fff;
+
 	overflow: hidden;
 }
 .list2 table tr td {
