@@ -72,6 +72,7 @@ html {
 	height: 32px;
 	line-height: 32px;
 	background: url(/public/img/user_bg.jpg) repeat-x;
+    padding: 0 5%;
 }
 .on_title {
 	padding-left: 20px;
@@ -86,9 +87,7 @@ html {
 .on_title span {
 	color: #8e8e8e;
 }
-.user_img {
-	margin-left: 20px;
-}
+
 .user_img span {
 	display: block;
 	float: left;
@@ -98,11 +97,9 @@ html {
 	font-family: "微软雅黑";
 }
 .user_img .img {
-/*	padding-top: 5px;
-*/}
-.user_close {
-	padding-right: 12px;
+	padding-top: 4px;
 }
+
 .user_close a {
 	color: #252525;
 }
