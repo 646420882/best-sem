@@ -14,11 +14,9 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="all"
-          href="${pageContext.request.contextPath}/public/css/accountCss/daterangepicker-bs3.css"/>
-
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
 </head>
 <body>
 <div class="top over">
@@ -201,7 +199,7 @@
                 <li class="date">
                     <a href="javascript:" onclick="lisClick(this,null);">
                         自定义
-                        <input name="reservation" class=" fa fa-calendar " type="image"
+                        <input name="reservation" type="image"
                                onclick="javascript:genre = 'accountOverview';changedLiState($(this).parent());"
                                src="${pageContext.request.contextPath}/public/img/date.png">
 
@@ -267,7 +265,7 @@
             <li class="date">
                 <a href="#">
                     自定义
-                    <input name="reservation" class=" fa fa-calendar " type="image"
+                    <input name="reservation" type="image"
                            src="${pageContext.request.contextPath}/public/img/date.png">
                 </a>
             </li>
@@ -300,7 +298,7 @@
         <li class="date">
             <a href="#">
                 自定义
-                <input name="reservation" class=" fa fa-calendar " type="image"
+                <input name="reservation" type="image"
                        src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
         </li>
@@ -505,7 +503,7 @@
         <li class="date">
             <a>
                 自定义
-                <input name="reservation" class=" fa fa-calendar " type="image"
+                <input name="reservation" type="image"
                        onclick="javascript:genre = 'keywordQualityCustom';$(this).parent().parent().addClass('current');changedLiState($(this).parent());"
                        src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
@@ -1814,7 +1812,7 @@
             <li class="date">
                 <a href="javascript:void(0)">
                     自定义
-                    <input name="reservation" class=" fa fa-calendar " type="image"
+                    <input name="reservation" type="image"
                            onclick="javascript:genre = 'importKeywordDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent());"
                            src="${pageContext.request.contextPath}/public/img/date.png">
                 </a>
@@ -1995,13 +1993,11 @@
 
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.10.4.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
-<script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/accountJs/moment.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/accountJs/daterangepicker.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
 <script type="text/javascript">
@@ -2078,22 +2074,36 @@
         });
 
         //加载日历控件
-        $("input[name=reservation]").daterangepicker({}, function (startDate, endDate) {
-                    var date = new Date();
-                    date.setTime(startDate);
-                    daterangepicker_start_date = date.Format("yyyy-MM-dd");
-                    date.setTime(endDate);
-                    daterangepicker_end_date = date.Format("yyyy-MM-dd");
-                    if (genre == "keywordQualityCustom") {
-                        //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
-
-                        loadKeywordQualityData(null, 0);
-                    } else if (genre == "importKeywordDefault") {
-                        getImportKeywordDefault(null, 0);
-                    }
-
+        $("input[name=reservation]").daterangepicker();
+        $(".btnDone").on('click', function () {
+            var _startDate = $('.range-start').datepicker('getDate');
+            var _endDate = $('.range-end').datepicker('getDate');
+            if (_startDate != null && _endDate != null) {
+                daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
+                daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
+                if (genre == "keywordQualityCustom") {
+                    //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
+                    loadKeywordQualityData(null, 0);
+                } else if (genre == "importKeywordDefault") {
+                    getImportKeywordDefault(null, 0);
                 }
-        );
+            }
+        });
+        /*$("input[name=reservation]").daterangepicker({}, function (startDate, endDate) {
+         var date = new Date();
+         date.setTime(startDate);
+         daterangepicker_start_date = date.Format("yyyy-MM-dd");
+         date.setTime(endDate);
+         daterangepicker_end_date = date.Format("yyyy-MM-dd");
+         if (genre == "keywordQualityCustom") {
+         //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
+         loadKeywordQualityData(null, 0);
+         } else if (genre == "importKeywordDefault") {
+         getImportKeywordDefault(null, 0);
+         }
+
+         }
+         );*/
 
         //默认加载昨天的数据
         loadKeywordQualityData(null, 1);
