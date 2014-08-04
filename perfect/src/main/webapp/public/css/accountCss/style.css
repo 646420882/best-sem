@@ -494,3 +494,40 @@
 .list03 table tr td span strong {
 	color: #ee410c;
 }
+/**曲线图顶部**/
+.tu_top ul li{
+    display:block;
+    float:left;
+    margin-left:3px;
+}
+.tu_top ul li input ,.tu_top ul li span ,.tu_top ul li b{
+    display:block;
+    float:left;
+    font-weight:normal;
+    margin:0 2px;
+}
+.tu_top ul li span{
+    width:13px;
+    height:13px;
+}
+.tu_top ul li .blue{
+    background:#078cc7;
+}
+.tu_top ul li .green{
+    background:#40bc2a;
+}
+.tu_top ul li .red{
+    background:#f1521b;
+}
+.tu_top ul li .blue2{
+    background:#26cae5;
+}
+.tu_top ul li .green2{
+    background:#60e47e;
+}
+.tu_top ul li .yellow{
+    background:#dedf00;
+}
+.tu_top ul li .orange{ 
+    background:#de833a;
+}
