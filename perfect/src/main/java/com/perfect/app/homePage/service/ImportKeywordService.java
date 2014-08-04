@@ -101,6 +101,7 @@ public class ImportKeywordService {
                 Collections.sort(finalList);
                 return finalList;
             }else{
+                Collections.sort(list);
                 return list;
             }
 
