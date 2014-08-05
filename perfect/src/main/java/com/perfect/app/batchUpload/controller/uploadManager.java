@@ -11,13 +11,14 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @RestController
 @Scope("prototype")
-public class uploadManager extends WebContextSupport{
+public class uploadManager extends WebContextSupport {
     /**
      * 跳转至批量上传页面
+     *
      * @return
      */
     @RequestMapping(value = "/upload/uploadIndex")
-    public ModelAndView convertUploadPage(){
+    public ModelAndView convertUploadPage() {
         return new ModelAndView("upload/uploadMain");
     }
 }

@@ -30,7 +30,7 @@ function fileQueued(file) {
 		// progress.  Then you'll want to put code in the Queue Complete handler to "unblock" the form
 		var progress = new FileProgress(file, this.customSettings.progressTarget);
 		//progress.setStatus("Pending...");
-		progress.setStatus("µÈ´ı...");
+		progress.setStatus("Pending...");
 		progress.toggleCancel(true, this);
 
 	} catch (ex) {
@@ -43,7 +43,7 @@ function fileQueueError(file, errorCode, message) {
 	try {
 		if (errorCode === SWFUpload.QUEUE_ERROR.QUEUE_LIMIT_EXCEEDED) {
 			//alert("You have attempted to queue too many files.\n" + (message === 0 ? "You have reached the upload limit." : "You may select " + (message > 1 ? "up to " + message + " files." : "one file.")));
-			alert("Ìí¼ÓµÄÎÄ¼ş¹ı¶à.\n" + (message === 0 ? "You have reached the upload limit." : "Äã¿ÉÒÔ×î¶à " + (message > 1 ? "Ñ¡Ôñ " + message + " ¸öÎÄ¼ş." : "1¸öÎÄ¼ş.")));
+			alert("You have attempted to queue too many files.\n" + (message === 0 ? "You have reached the upload limit." : "You may select " + (message > 1 ? "up to " + message + " files." : "one file.")));
 			return;
 		}
 
@@ -54,26 +54,26 @@ function fileQueueError(file, errorCode, message) {
 		switch (errorCode) {
 		case SWFUpload.QUEUE_ERROR.FILE_EXCEEDS_SIZE_LIMIT:
 			//progress.setStatus("File is too big.");
-			progress.setStatus("ÎÄ¼şÌ«´ó.");
+			progress.setStatus("æ–‡ä»¶å¤ªå¤§");
 			this.debug("Error Code: File too big, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		case SWFUpload.QUEUE_ERROR.ZERO_BYTE_FILE:
 			//progress.setStatus("Cannot upload Zero Byte files.");
-			progress.setStatus("²»ÄÜÉÏ´«´óĞ¡Îª0BµÄÎÄ¼ş.");
+			progress.setStatus("ä¸èƒ½ä¸Šä¼ ç©ºæ–‡ä»¶");
 			this.debug("Error Code: Zero byte file, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		case SWFUpload.QUEUE_ERROR.INVALID_FILETYPE:
 			//progress.setStatus("Invalid File Type.");
-			progress.setStatus("ÎÄ¼şÀàĞÍÎŞĞ§.");
+			progress.setStatus("æ–‡ä»¶ç±»å‹ä¸æ­£ç¡®");
 			this.debug("Error Code: Invalid File Type, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		case SWFUpload.QUEUE_ERROR.QUEUE_LIMIT_EXCEEDED:
 			//alert("You have selected too many files.  " +  (message > 1 ? "You may only add " +  message + " more files" : "You cannot add any more files."));
-			alert("ÉÏ´«ÎÄ¼şÑ¡µÄ¹ı¶à¡£");
+			alert("æ·»åŠ çš„æ–‡ä»¶å¤ªå¤š");
 			break;
 		default:
 			if (file !== null) {
-				progress.setStatus("Î´Öª´íÎó.");
+				progress.setStatus("æœªçŸ¥é”™è¯¯");
 			}
 			this.debug("Error Code: " + errorCode + ", File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
@@ -102,7 +102,7 @@ function uploadStart(file) {
 		var progress = new FileProgress(file, this.customSettings.progressTarget);
 		
 		//progress.setStatus("Uploading...");
-		progress.setStatus("ÉÏ´«ÖĞ...");
+		progress.setStatus("ä¸Šä¼ ä¸­...");
 		progress.toggleCancel(true, this);
 		this.setPostParams({ 
 			  'fileName':encodeURIComponent(file.name) 
@@ -130,7 +130,7 @@ function uploadProgress(file, bytesLoaded, bytesTotal) {
 		var progress = new FileProgress(file, this.customSettings.progressTarget);
 		progress.setProgress(percent);
 		//progress.setStatus("Uploading...");
-		progress.setStatus("ÉÏ´«ÖĞ...");
+		progress.setStatus("ä¸Šä¼ ä¸­...");
 	} catch (ex) {
 		this.debug(ex);
 	}
@@ -140,7 +140,7 @@ function uploadSuccess(file, serverData) {
 	try {
 		var progress = new FileProgress(file, this.customSettings.progressTarget);
 		progress.setComplete();
-		progress.setStatus("Complete.");
+		progress.setStatus("å®Œæˆ.");
 		progress.toggleCancel(false);
 		
 		
@@ -178,32 +178,32 @@ function uploadError(file, errorCode, message) {
 			break;
 		case SWFUpload.UPLOAD_ERROR.MISSING_UPLOAD_URL:
 			//progress.setStatus("Configuration Error");
-			progress.setStatus("ÅäÖÃ´íÎó.");
+			progress.setStatus("é…ç½®é”™è¯¯.");
 			this.debug("Error Code: No backend file, File name: " + file.name + ", Message: " + message);
 			break;
 		case SWFUpload.UPLOAD_ERROR.UPLOAD_FAILED:
 			//progress.setStatus("Upload Failed.");
-			progress.setStatus("ÉÏ´«Ê§°Ü.");
+			progress.setStatus("ä¸Šä¼ å¤±è´¥.");
 			this.debug("Error Code: Upload Failed, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		case SWFUpload.UPLOAD_ERROR.IO_ERROR:
 			//progress.setStatus("Server (IO) Error");
-			progress.setStatus("·şÎñÆ÷ (IO) ´íÎó.");
+			progress.setStatus("æœåŠ¡å™¨ (IO) é”™è¯¯");
 			this.debug("Error Code: IO Error, File name: " + file.name + ", Message: " + message);
 			break;
 		case SWFUpload.UPLOAD_ERROR.SECURITY_ERROR:
 			//progress.setStatus("Security Error");
-			progress.setStatus("°²È«´íÎó.");
+			progress.setStatus("å®‰å…¨å¼‚å¸¸.");
 			this.debug("Error Code: Security Error, File name: " + file.name + ", Message: " + message);
 			break;
 		case SWFUpload.UPLOAD_ERROR.UPLOAD_LIMIT_EXCEEDED:
 			//progress.setStatus("Upload limit exceeded.");
-			progress.setStatus("ÉÏ´«µÄÎÄ¼ş¹ı¶à.");
+			progress.setStatus("è¶…å‡ºä¸Šä¼ æœ€å¤§æ•°é‡.");
 			this.debug("Error Code: Upload Limit Exceeded, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		case SWFUpload.UPLOAD_ERROR.SPECIFIED_FILE_ID_NOT_FOUND:
 			//progress.setStatus("File not found.");
-			progress.setStatus("ÕÒ²»µ½ÎÄ¼ş.");
+			progress.setStatus("æ–‡ä»¶æœªæ‰¾åˆ°.");
 			this.debug("Error Code: The file was not found, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		case SWFUpload.UPLOAD_ERROR.FILE_VALIDATION_FAILED:
@@ -215,12 +215,12 @@ function uploadError(file, errorCode, message) {
 				document.getElementById(this.customSettings.cancelButtonId).disabled = true;
 			}
 			//progress.setStatus("Cancelled");
-			progress.setStatus("È¡ÏûÉÏ´«");
+			progress.setStatus("å–æ¶ˆ");
 			progress.setCancelled();
 			break;
 		case SWFUpload.UPLOAD_ERROR.UPLOAD_STOPPED:
 			//progress.setStatus("Stopped");
-			progress.setStatus("ÒÑÍ£Ö¹");
+			progress.setStatus("åœæ­¢");
 			break;
 		default:
 			progress.setStatus("Unhandled Error: " + error_code);
