@@ -28,7 +28,7 @@ public class ImportKeywordManager  extends WebContextSupport{
     @Resource
     public ImportKeywordService importKeywordService;
 
-    @RequestMapping(value="/main/getImportKeywordList",method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value="/import/getImportKeywordList",method = {RequestMethod.GET, RequestMethod.POST})
     public void getImportKeywordList(HttpServletRequest request,HttpServletResponse response,ModelMap modelMap){
        List<KeywordRealTimeDataVOEntity> list=importKeywordService.getMap(request);
         String data=new Gson().toJson(list);

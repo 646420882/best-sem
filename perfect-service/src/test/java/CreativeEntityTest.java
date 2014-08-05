@@ -10,10 +10,10 @@ import java.util.List;
 /**
  * Created by baizz on 2014-7-10.
  */
-@SpringApplicationContext({"spring.xml"})
+//@SpringApplicationContext({"spring.xml"})
 public class CreativeEntityTest extends UnitilsJUnit4 {
 
-    @SpringBeanByName
+    //@SpringBeanByName
     private CreativeDAO creativeDAO;
 
     //@Test
@@ -34,7 +34,7 @@ public class CreativeEntityTest extends UnitilsJUnit4 {
         creativeDAO.update(creativeEntity);
     }
 
-    @Test
+    //@Test
     public void testQueryCreative() {
         List<CreativeEntity> list = creativeDAO.find(null, 0, 5);
         for (CreativeEntity entity : list) {

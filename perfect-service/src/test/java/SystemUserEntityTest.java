@@ -11,20 +11,20 @@ import org.unitils.spring.annotation.SpringBeanByName;
  * Created by vbzer_000 on 2014-6-19.
  */
 
-@SpringApplicationContext({"spring.xml"})
+//@SpringApplicationContext({"spring.xml"})
 public class SystemUserEntityTest extends UnitilsJUnit4 {
 
-    @SpringBeanByName
+    //@SpringBeanByName
     private SystemUserDAO systemUserDAO;
 
-    @Test
+    //@Test
     public void init() {
 
-//        systemUserDAO.deleteAll();
+        systemUserDAO.deleteAll();
 
         SystemUserEntity systemUserEntity = new SystemUserEntity();
         systemUserEntity.setUserName("perfect");
-        MD5 md5 = new MD5("test", "perfect");
+        MD5 md5 = new MD5("123", "perfect");
         systemUserEntity.setPassword(md5.getMD5());
 
         BaiduAccountInfoEntity baiduAccountInfoEntity = new BaiduAccountInfoEntity();

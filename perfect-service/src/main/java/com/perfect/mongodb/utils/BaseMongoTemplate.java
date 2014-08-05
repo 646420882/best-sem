@@ -27,7 +27,7 @@ public class BaseMongoTemplate {
         MongoDbFactory mongoDbFactory = null;
 
         try {
-            mongoDbFactory = new SimpleMongoDbFactory(new MongoClient("115.29.103.38", 27017), databaseName);
+            mongoDbFactory = new SimpleMongoDbFactory(new MongoClient("182.92.188.177", 27017), databaseName);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }

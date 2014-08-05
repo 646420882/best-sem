@@ -10,10 +10,10 @@ import java.util.List;
 /**
  * Created by baizz on 2014-7-10.
  */
-@SpringApplicationContext({"spring.xml"})
+//@SpringApplicationContext({"spring.xml"})
 public class CampaignEntityTest extends UnitilsJUnit4 {
 
-    @SpringBeanByName
+    //@SpringBeanByName
     private CampaignDAO campaignDAO;
 
     //@Test
@@ -33,7 +33,7 @@ public class CampaignEntityTest extends UnitilsJUnit4 {
         campaignDAO.update(entity);
     }
 
-    @Test
+    //@Test
     public void testQueryCampaign() {
         List<CampaignEntity> list = campaignDAO.find(null, 0, 5);
         for (CampaignEntity entity : list) {
