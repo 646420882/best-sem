@@ -98,8 +98,45 @@ public class KeywordGroupService {
         return keyGroupMap;
     }
 
-    public static Map<String, Set<String>> getWordRoot() {
+    public static Map<String, Set<String>> getWordRoot(String excelFilePath) throws IOException, BiffException {
+        String ext = Files.getFileExtension(excelFilePath);
         Map<String, Set<String>> wordRootMap = new HashMap<>();
+
+        //ReadExcel
+        if (ext.equals("xls") || ext.equals("xlsx")) {
+            Workbook workbook = Workbook.getWorkbook(new File(excelFilePath));
+            Sheet sheet = workbook.getSheet(0);
+            Cell[] groupArray = sheet.getColumn(0);
+            int row = 0;
+            for (Cell group : groupArray) {
+                String groupName = group.getContents();
+                Cell[] rowArray = sheet.getRow(row++);
+                Set<String> set = new HashSet<>(rowArray.length - 1);
+                for (int i = 1, l = rowArray.length; i < l; i++) {
+                    Cell rowCell = rowArray[i];
+                    set.add(rowCell.getContents());
+                }
+                wordRootMap.put(groupName, set);
+            }
+        }
+
+        for (Map.Entry<String, Set<String>> entry : wordRootMap.entrySet()) {
+            for (Iterator<String> iterator = entry.getValue().iterator(); iterator.hasNext(); ) {
+                System.out.println(entry.getKey() + "," + iterator.next());
+            }
+        }
+
         return wordRootMap;
+    }
+
+    //Test
+    public static void main(String[] args) {
+        try {
+            KeywordGroupService.getWordRoot("/home/baizz/教育行业词根20140725.xls");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (BiffException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -91,8 +91,9 @@
                        auto-connect-retry="true"/>
     </mongo:mongo>
 
-    <mongo:db-factory id="mongoDbFactory" dbname="perfect_sys" mongo-ref="mongo"/>
-    <mongo:db-factory id="log4MongoDbFactory" dbname="perfect_log" mongo-ref="mongo"/>
+    <mongo:db-factory id="mongoDbFactory" dbname="perfect_sys" mongo-ref="mongo" username="perfect" password="perfect"/>
+    <mongo:db-factory id="log4MongoDbFactory" dbname="perfect_log" mongo-ref="mongo" username="perfect"
+                      password="perfect"/>
 
     <mongo:mapping-converter id="mongoConverter"/>
     <bean id="noClassMongoConverter" class="com.perfect.mongodb.base.MongoConverterEnhanceFactoryBean">
