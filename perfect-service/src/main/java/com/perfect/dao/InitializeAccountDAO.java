@@ -1,4 +1,4 @@
-package com.perfect.app.accountCenter.dao;
+package com.perfect.dao;
 
 /**
  * Created by baizz on 14-7-23.

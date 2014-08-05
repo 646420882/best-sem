@@ -1,7 +1,6 @@
-package com.perfect.app.accountCenter.dao.impl;
+package com.perfect.mongodb.dao.impl;
 
-import com.perfect.app.accountCenter.dao.AccountManageDAO;
-import com.perfect.app.homePage.service.CustomUserDetailsService;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
@@ -9,10 +8,10 @@ import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.autosdk.sms.v3.AccountService;
 import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
+import com.perfect.core.AppContext;
+import com.perfect.dao.AccountManageDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -25,6 +24,8 @@ import java.util.List;
 @Repository(value = "accountManageDAO")
 public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEntity> {
 
+    private String currUserName = AppContext.getUser().toString();
+
     @Resource(name = "systemUserDAO")
     private SystemUserDAO systemUserDAO;
 
@@ -35,8 +36,8 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
      * @return
      */
     @Override
-    public JSONArray getAccountTree(List<BaiduAccountInfoEntity> list) {
-        JSONArray jsonArray = new JSONArray();
+    public ArrayNode getAccountTree(List<BaiduAccountInfoEntity> list) {
+        /*JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject;
         for (BaiduAccountInfoEntity account : list) {
             jsonObject = new JSONObject();
@@ -45,8 +46,8 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
             jsonObject.put("name", account.getBaiduUserName());
             jsonArray.add(jsonObject);
             jsonObject = null;
-        }
-        return jsonArray;
+        }*/
+        return null;
     }
 
     /**
@@ -71,7 +72,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
      */
     @Override
     public BaiduAccountInfoEntity findByBaiduUserId(Long baiduUserId) {
-        List<BaiduAccountInfoEntity> list = getBaiduAccountItems(CustomUserDetailsService.getUserName());
+        List<BaiduAccountInfoEntity> list = getBaiduAccountItems(currUserName);
         BaiduAccountInfoEntity baiduAccount = new BaiduAccountInfoEntity();
         for (BaiduAccountInfoEntity entity : list) {
             if (baiduUserId.equals(entity.getId())) {

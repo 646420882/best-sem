@@ -1,6 +1,6 @@
-package com.perfect.app.accountCenter.dao;
+package com.perfect.dao;
 
-import net.sf.json.JSONArray;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface AccountManageDAO<T> {
      * @param t
      * @return
      */
-    JSONArray getAccountTree(List<T> t);
+    ArrayNode getAccountTree(List<T> t);
 
     /**
      * 获取新增的百度账户信息

@@ -1,94 +1,74 @@
 package com.perfect.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
-import org.codehaus.jackson.map.DeserializationConfig;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by baizz on 2014-6-5.
+ * Created by baizz on 2014-08-05.
  */
 public class JSONUtils {
     private static ObjectMapper mapper;
 
     static {
-        if (mapper == null) {
+        if (mapper == null)
             mapper = new ObjectMapper();
-        }
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
     }
 
-    public static Map<String, Object> getJsonMapData(Object[] objects, String... dateFormat) {
-        Map<String, Object> attributes = Collections.synchronizedMap(new LinkedHashMap<String, Object>());
-        if (objects != null) {
-            if (dateFormat != null && dateFormat.length == 1) {
-                mapper.setDateFormat(new SimpleDateFormat(dateFormat[0]));
-//                jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateProcessor(dateFormat[0]));
-            } else {
-//                jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateProcessor());
-            }
-            try {
-                attributes.put("rows", mapper.writeValueAsString(objects));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+    public static Map<String, Object> getJsonMapData(Object o) {
+        Map<String, Object> attributes = new LinkedHashMap<>();
+        try {
+            JsonNode jsonNode = mapper.readTree(mapper.writeValueAsBytes(o));
+            attributes.put("rows", jsonNode);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return attributes;
     }
 
-    //返回JSON对象数组
-    public static JSONArray getJSONArrayData(Object[] objects, String... dateFormat) {
-        JSONArray jsonArray = new JSONArray();
-        if (objects != null) {
-            JsonConfig jsonConfig = new JsonConfig();
-            if (dateFormat != null && dateFormat.length == 1)
-                jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateProcessor(dateFormat[0]));
-            else
-                jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateProcessor());
-            jsonArray = JSONArray.fromObject(objects, jsonConfig);
+    //获取JSON对象数组
+    public static ArrayNode getJsonObjectArray(Object o) {
+        ArrayNode arrayNode = mapper.createArrayNode();
+        try {
+            JsonNode jsonNodes = mapper.readTree(mapper.writeValueAsBytes(o));
+            for (JsonNode jn : jsonNodes) {
+                arrayNode.add(jn);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return jsonArray;
+        return arrayNode;
     }
 
-    //返回JSON对象
-    public static JSONObject getJSONObject(Object object, String... dateFormat) {
-        JSONObject jsonObject = new JSONObject();
-        if (object != null) {
-            JsonConfig jsonConfig = new JsonConfig();
-            if (dateFormat != null && dateFormat.length == 1)
-                jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateProcessor(dateFormat[0]));
-            else
-                jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateProcessor());
-            jsonObject = JSONObject.fromObject(object, jsonConfig);
+    //获取JSON对象
+    public static JsonNode getJsonObject(Object o) {
+        JsonNode jsonObj = null;
+        try {
+            jsonObj = mapper.readTree(mapper.writeValueAsBytes(o));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return jsonObject;
+        return jsonObj;
     }
 
     //将JSON字符串转换为对应的Java Bean
-    public static Object getObjectByJSON(String objStr, Class _class, String... dateFormat) {
-        DateFormat df;
-        if (dateFormat != null && dateFormat.length == 1)
-            df = new SimpleDateFormat(dateFormat[0]);
-        else
-            df = new SimpleDateFormat("yyyy-M-d");
-        org.codehaus.jackson.map.ObjectMapper mapper = new org.codehaus.jackson.map.ObjectMapper();
-        mapper.disable(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.setDateFormat(df);
+    public static Object getObjectByJson(String jsonStr, Class _class) {
         Object obj = null;
         try {
-            obj = mapper.readValue(objStr, _class);
+            obj = mapper.readValue(jsonStr, _class);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return obj;
     }
+
 }

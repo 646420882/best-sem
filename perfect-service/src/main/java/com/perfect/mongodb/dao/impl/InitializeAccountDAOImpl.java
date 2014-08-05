@@ -1,16 +1,15 @@
-package com.perfect.app.accountCenter.dao.impl;
+package com.perfect.mongodb.dao.impl;
 
 import com.perfect.api.baidu.AccountRealTimeData;
 import com.perfect.api.baidu.KeywordRealTimeData;
-import com.perfect.app.accountCenter.dao.InitializeAccountDAO;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.core.AppContext;
+import com.perfect.dao.InitializeAccountDAO;
 import com.perfect.entity.AccountRealTimeDataVOEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
+import com.perfect.mongodb.utils.BaseBaiduService;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
-import com.perfect.utils.BaiduServiceSupport;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.text.ParseException;
@@ -25,7 +24,7 @@ public class InitializeAccountDAOImpl implements InitializeAccountDAO {
 
     private String currUserName = "perfect";
 
-    private CommonService commonService = BaiduServiceSupport.getCommonService();
+    private CommonService commonService = BaseBaiduService.getCommonService();
 
     private List<Long> list = new ArrayList<>();
 
@@ -64,7 +63,7 @@ public class InitializeAccountDAOImpl implements InitializeAccountDAO {
     }
 
     public void getBeforeKeywordRealTimeType() {
-        List<RealTimeResultType> list1 = KeywordRealTimeData.getKeywordRealTimeData(list, "2014-01-25", "2014-02-15");
+        List<RealTimeResultType> list1 = KeywordRealTimeData.getKeywordRealTimeData(list, "2014-01-25", "2014-02-25");
         if (list1.size() == 0)
             return;
 

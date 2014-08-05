@@ -37,7 +37,7 @@ public class KeywordController {
                                               @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
         AbstractView jsonView = new MappingJackson2JsonView();
         List<KeywordEntity> list = keywordDAO.getKeywordByAdgroupId(adgroupId, null, skip, limit);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list.toArray(new KeywordEntity[list.size()]));
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }
@@ -46,7 +46,7 @@ public class KeywordController {
     public ModelAndView getKeywordIdByAdgroupId(@PathVariable Long adgroupId) {
         AbstractView jsonView = new MappingJackson2JsonView();
         List<Long> list = keywordDAO.getKeywordIdByAdgroupId(adgroupId);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list.toArray(new Long[list.size()]));
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }
@@ -56,7 +56,7 @@ public class KeywordController {
                                    @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
         AbstractView jsonView = new MappingJackson2JsonView();
         List<KeywordEntity> list = keywordDAO.find(null, skip, limit);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list.toArray(new KeywordEntity[list.size()]));
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }
@@ -78,7 +78,7 @@ public class KeywordController {
 
     @RequestMapping(value = "/{keywordId}/update", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView update(@PathVariable Long keywordId, @RequestParam(value = "keywordEntity") String keywordStr) {
-        KeywordEntity keywordEntity = (KeywordEntity) JSONUtils.getObjectByJSON(keywordStr, KeywordEntity.class);
+        KeywordEntity keywordEntity = (KeywordEntity) JSONUtils.getObjectByJson(keywordStr, KeywordEntity.class);
         keywordDAO.update(keywordEntity);
         return new ModelAndView(getJsonView());
     }
