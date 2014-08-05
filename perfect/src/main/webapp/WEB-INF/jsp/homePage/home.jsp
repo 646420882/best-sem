@@ -268,6 +268,7 @@
             </ul>
         </div>
         <div class="shuju">
+            <div id="containerLegend"></div>
             <div id="container" style="width:1077px;height:400px"></div>
         </div>
     </div>
@@ -2155,13 +2156,33 @@
     };
 </script>
 <script>
+
+/**初始化曲线图共用变量**/
+/*初始化数据变量*/
+var dataOne = "";
+var dataTow = "";
+//日期
+var t_date = new Array();
+var colorOne = "#4572A7";
+var colorTow = "#40BC2A";
+/**初始化结束**/
 /**
  * 曲线图数据配置
  * **/
 var loadPerformanceCurve = function (date) {
+    colorOne = "#4572A7";
+    colorTow = "#40BC2A";
+    $("#containerLegend").empty();
+    /*初始化曲线图所用需求*/
+    $("#containerLegend").append("<div class='tu_top over'><ul><li>展示曲线</li>"
+            +"<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
+            +"<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
+            +"<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
+            +"<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
+            +"<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
+            +"<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+
     getDateParam(date);
-    //日期
-    var t_date = new Array();
     //展现
     var t_impr = new Array();
     //点击数
@@ -2199,15 +2220,295 @@ var loadPerformanceCurve = function (date) {
             }
         }
     });
+    dataOne = {
+        name: '展现',
+        color: '#4572A7',
+        type: 'spline',
+        yAxis: 1,
+        data: t_impr,
+        tooltip: {
+            valueSuffix: ' 次'
+        }
+    }
+    dataTow = {
+        name: '点击',
+        color: '#40BC2A',
+        type: 'spline',
+        data: t_clicks,
+        tooltip: {
+            valueSuffix: '次'
+        }
+    }
+    $("input[cname=impr]").attr("xname","dataOne");
+    $("input[cname=clicks]").attr("xname","dataTow");
+
+    $("input[name=check]").click(function(){
+        var name = $(this).attr("cname");
+        if($("input[type='checkbox']:checked").length <= 2){
+            if(name=="impr"){
+                if($(this).is(':checked')){
+                    if(dataOne == ""){
+                        $(this).attr("xname","dataOne");
+                        colorOne = "#078CC7";
+                        dataOne = {
+                            name: '展现',
+                            color: '#078CC7',
+                            type: 'spline',
+                            yAxis: 1,
+                            data: t_impr,
+                            tooltip: {
+                                valueSuffix: ' 次'
+                            }
+                        };
+                        curve();
+                    }else if(dataTow == ""){
+                        $(this).attr("xname","dataTow");
+                        colorTow = "#078CC7"
+                        dataTow = {
+                            name: '展现',
+                            color: '#078CC7',
+                            type: 'spline',
+                            data: t_impr,
+                            tooltip: {
+                                valueSuffix: ' 次'
+                            }
+                        };
+                        curve();
+                    }
+                }else{
+                    if($(this).attr("xname") == "dataOne"){
+                        dataOne = "";
+                        $(this).attr("xname","");
+                        curve();
+                    }else if($(this).attr("xname") == "dataTow"){
+                        dataTow = "";
+                        $(this).attr("xname","");
+                        curve();
+                    }
+                }
+            }else if(name=="clicks"){
+                if($(this).is(':checked')){
+                    if(dataOne == ""){
+                        $(this).attr("xname","dataOne");
+                        colorOne = "#40BC2A";
+                        dataOne = {
+                            name: '点击',
+                            color: '#40BC2A',
+                            type: 'spline',
+                            yAxis: 1,
+                            data: t_clicks,
+                            tooltip: {
+                                valueSuffix: ' 次'
+                            }
+                        };
+                        curve();
+                    }else if(dataTow == ""){
+                        $(this).attr("xname","dataTow");
+                        colorTow = "#40BC2A";
+                        dataTow = {
+                            name: '点击',
+                            color: '#40BC2A',
+                            type: 'spline',
+                            data: t_clicks,
+                            tooltip: {
+                                valueSuffix: ' 次'
+                            }
+                        };
+                        curve();
+                    }
+                }else{
+                    if($(this).attr("xname") == "dataOne"){
+                        dataOne = "";
+                        $(this).attr("xname","");
+                        curve();
+                    }else if($(this).attr("xname") == "dataTow"){
+                        dataTow = "";
+                        $(this).attr("xname","");
+                        curve();
+                    }
+                }
+            }else if(name=="cost"){
+                if($(this).is(':checked')){
+                    if(dataOne == ""){
+                        $(this).attr("xname","dataOne");
+                        colorOne = "#F1521B";
+                        dataOne = {
+                            name: '消费',
+                            color: '#F1521B',
+                            type: 'spline',
+                            yAxis: 1,
+                            data: t_cost,
+                            tooltip: {
+                                valueSuffix: ' ￥'
+                            }
+                        };
+                        curve();
+                    }else if(dataTow == ""){
+                        $(this).attr("xname","dataTow");
+                        colorTow = "#F1521B";
+                        dataTow = {
+                            name: '消费',
+                            color: '#F1521B',
+                            type: 'spline',
+                            data: t_cost,
+                            tooltip: {
+                                valueSuffix: ' ￥'
+                            }
+                        };
+                        curve();
+                    }
+                }else{
+                    if($(this).attr("xname") == "dataOne"){
+                        dataOne = "";
+                        $(this).attr("xname","");
+                        curve();
+                    }else if($(this).attr("xname") == "dataTow"){
+                        dataTow = "";
+                        $(this).attr("xname","");
+                        curve();
+                    }
+                }
+            }else if(name=="ctr"){
+                if($(this).is(':checked')){
+                    if(dataOne == ""){
+                        $(this).attr("xname","dataOne");
+                        colorOne = "#26CAE5";
+                        dataOne = {
+                            name: '点击率',
+                            color: '#26CAE5',
+                            type: 'spline',
+                            yAxis: 1,
+                            data: t_ctr,
+                            tooltip: {
+                                valueSuffix: ' %'
+                            }
+                        };
+                        curve();
+                    }else if(dataTow == ""){
+                        $(this).attr("xname","dataTow");
+                        colorTow = "#26CAE5";
+                        dataTow = {
+                            name: '点击率',
+                            color: '#26CAE5',
+                            type: 'spline',
+                            data: t_ctr,
+                            tooltip: {
+                                valueSuffix: ' %'
+                            }
+                        };
+                        curve();
+                    }
+                }else{
+                    if($(this).attr("xname") == "dataOne"){
+                        dataOne = "";
+                        $(this).attr("xname","");
+                        curve();
+                    }else if($(this).attr("xname") == "dataTow"){
+                        dataTow = "";
+                        $(this).attr("xname","");
+                        curve();
+                    }
+                }
+            }else if(name=="cpc"){
+                if($(this).is(':checked')){
+                    $(this).attr("xname","dataOne");
+                    colorOne = "#60E47E";
+                    if(dataOne == ""){
+                        dataOne = {
+                            name: '平均点击价格',
+                            color: '#60E47E',
+                            type: 'spline',
+                            yAxis: 1,
+                            data: t_cpc,
+                            tooltip: {
+                                valueSuffix: ' ￥'
+                            }
+                        };
+                        curve();
+                    }else if(dataTow == ""){
+                        $(this).attr("xname","dataTow");
+                        colorTow = "#60E47E";
+                        dataTow = {
+                            name: '平均点击价格',
+                            color: '#60E47E',
+                            type: 'spline',
+                            data: t_cpc,
+                            tooltip: {
+                                valueSuffix: ' ￥'
+                            }
+                        };
+                        curve();
+                    }
+                }else{
+                    if($(this).attr("xname") == "dataOne"){
+                        dataOne = "";
+                        $(this).attr("xname","");
+                        curve();
+                    }else if($(this).attr("xname") == "dataTow"){
+                        dataTow = "";
+                        $(this).attr("xname","");
+                        curve();
+                    }
+                }
+            }else if(name=="conv"){
+                if($(this).is(':checked')){
+                    $(this).attr("xname","dataOne");
+                    colorOne = "#DEDF00";
+                    if(dataOne == ""){
+                        dataOne = {
+                            name: '转化',
+                            color: '#DEDF00',
+                            type: 'spline',
+                            yAxis: 1,
+                            data: t_conversion,
+                            tooltip: {
+                                valueSuffix: ''
+                            }
+                        };
+                        curve();
+                    }else if(dataTow == ""){
+                        $(this).attr("xname","dataTow");
+                        colorTow = "#DEDF00";
+                        dataTow = {
+                            name: '转化',
+                            color: '#DEDF00',
+                            type: 'spline',
+                            data: t_conversion,
+                            tooltip: {
+                                valueSuffix: ''
+                            }
+                        };
+                        curve();
+                    }
+                }else{
+                    if($(this).attr("xname") == "dataOne"){
+                        dataOne = "";
+                        $(this).attr("xname","");
+                        curve();
+                    }else if($(this).attr("xname") == "dataTow"){
+                        dataTow = "";
+                        $(this).attr("xname","");
+                        curve();
+                    }
+                }
+            }
+        }else{
+            $(this).attr("checked",false);
+        }
+    });
+    curve();
+}
+
+var curve = function(){
     $('#container').highcharts({
         chart: {
             zoomType: 'xy'
         },
         title: {
-            text: ' d'
+            text: ''
         },
         subtitle: {
-            text: ' d'
+            text: ''
         },
         xAxis: [
             {
@@ -2217,29 +2518,17 @@ var loadPerformanceCurve = function (date) {
         yAxis: [
             { // Primary yAxis
                 labels: {
-                    format: '{value}°C',
+                    format: '{value}',
                     style: {
-                        color: '#89A54E'
-                    }
-                },
-                title: {
-                    text: 'Temperature',
-                    style: {
-                        color: '#89A54E'
+                        color: colorTow
                     }
                 }
             },
             { // Secondary yAxis
-                title: {
-                    text: 'Rainfall',
-                    style: {
-                        color: '#4572A7'
-                    }
-                },
                 labels: {
-                    format: '{value} mm',
+                    format: '{value}',
                     style: {
-                        color: '#4572A7'
+                        color:colorOne
                     }
                 },
                 opposite: true
@@ -2256,66 +2545,15 @@ var loadPerformanceCurve = function (date) {
             floating: true,
             backgroundColor: '#FFFFFF',
             itemDistance: 20,
-            borderRadius: 5
-
+            borderRadius: 5,
+            enabled:false
         },
         series: [
-            {
-                name: '展现',
-                color: '#4572A7',
-                type: 'spline',
-                data: t_impr,
-                tooltip: {
-                    valueSuffix: ' 次'
-                }
-
-            },
-            {
-                name: '点击',
-                color: '#89A54E',
-                type: 'spline',
-                data: t_clicks,
-                tooltip: {
-                    valueSuffix: '次'
-                }
-            },
-            {
-                name: '消费',
-                color: '#ED561B',
-                type: 'spline',
-                data: t_cost,
-                tooltip: {
-                    valueSuffix: '￥'
-                }
-            },
-            {
-                name: '点击率',
-                color: '#24CBE5',
-                type: 'spline',
-                data: t_ctr,
-                tooltip: {
-                    valueSuffix: '%'
-                }
-            },
-            {
-                name: '平均点击价格',
-                color: '#64E572',
-                type: 'spline',
-                data: t_cpc,
-                tooltip: {
-                    valueSuffix: '￥'
-                }
-            },
-            {
-                name: '转化',
-                color: '#DDDF00',
-                type: 'spline',
-                data: t_conversion
-            }
+            dataOne,
+            dataTow
         ]
     });
 }
-
 
 var getImportKeywordDefault = function (obj, day) {
     if (obj != null) {
