@@ -36,7 +36,7 @@ public class BaseMongoTemplate {
         MappingMongoConverter mongoConverter = new MappingMongoConverter(new DefaultDbRefResolver(mongoDbFactory), new MongoMappingContext());
         mongoConverter.setTypeMapper(new DefaultMongoTypeMapper(null));
 
-        baseMongoTemplate = new Log4MongoTemplate(mongoDbFactory, mongoConverter);
+        baseMongoTemplate = new MongoTemplate(mongoDbFactory, mongoConverter);
     }
 
     public static MongoTemplate getMongoTemplate(String databaseName) {

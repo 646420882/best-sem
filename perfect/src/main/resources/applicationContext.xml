@@ -14,7 +14,7 @@
     <description>Spring public settings</description>
 
     <context:property-placeholder ignore-resource-not-found="true"
-                                  location="classpath:jdbc.properties"/>
+                                  location="classpath:jdbc.properties,classpath:mongodb.properties"/>
 
     <bean id="data_source" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClass}"/>
@@ -91,7 +91,9 @@
                        auto-connect-retry="true"/>
     </mongo:mongo>
 
-    <mongo:db-factory id="mongoDbFactory" dbname="perfect_sys" mongo-ref="mongo" username="perfect" password="perfect"/>
+    <mongo:db-factory id="mongoDbFactory" dbname="perfect_sys" mongo-ref="mongo"
+                      host="${mongo.host}" port="${mongo.port}"
+                      username="${mongo.username}" password="${mongo.password}"/>
     <mongo:db-factory id="log4MongoDbFactory" dbname="perfect_log" mongo-ref="mongo" username="perfect"
                       password="perfect"/>
 
