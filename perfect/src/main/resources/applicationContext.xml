@@ -109,7 +109,7 @@
         <constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>
     </bean>
 
-    <bean id="scheduleManagerFactory" class="com.perfect.schedule.core.strategy.TBScheduleManagerFactory"
+    <!--<bean id="scheduleManagerFactory" class="com.perfect.schedule.core.strategy.TBScheduleManagerFactory"
           init-method="init">
         <property name="zkConfig">
             <map>
@@ -120,7 +120,7 @@
                 <entry key="password" value=""/>
             </map>
         </property>
-    </bean>
+    </bean>-->
 
     <import resource="applicationContext-security.xml"/>
 
