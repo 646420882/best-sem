@@ -112,7 +112,7 @@ public class PerformanceController {
 
         Map<String, Object> attributes = null;
         if (jsonMapList != null)
-            attributes = JSONUtils.getJsonMapData(jsonMapList.toArray(), "MM-dd");
+            attributes = JSONUtils.getJsonMapData(jsonMapList.toArray()/*, "MM-dd"*/);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }
