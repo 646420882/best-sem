@@ -7,7 +7,7 @@ import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.InitializeAccountDAO;
 import com.perfect.entity.AccountRealTimeDataVOEntity;
-import com.perfect.entity.KeywordRealTimeDataVOEntity;
+import com.perfect.entity.KCRealTimeDataEntity;
 import com.perfect.mongodb.utils.BaseBaiduService;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -18,11 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by baizz on 2014-7-23.
+ * Created by baizz on 2014-07-23.
  */
 public class InitializeAccountDAOImpl implements InitializeAccountDAO {
-
-    private String currUserName = "perfect";
 
     private CommonService commonService = BaseBaiduService.getCommonService();
 
@@ -43,9 +41,9 @@ public class InitializeAccountDAOImpl implements InitializeAccountDAO {
         }
 
         //获取账户ID
-        GetAccountInfoRequest getAccountInfoRequest = new GetAccountInfoRequest();
-        GetAccountInfoResponse getAccountInfoResponse = accountService.getAccountInfo(getAccountInfoRequest);
-        baiduAccountUserId = getAccountInfoResponse.getAccountInfoType().getUserid();
+        //GetAccountInfoRequest getAccountInfoRequest = new GetAccountInfoRequest();
+        //GetAccountInfoResponse getAccountInfoResponse = accountService.getAccountInfo(getAccountInfoRequest);
+        //baiduAccountUserId = getAccountInfoResponse.getAccountInfoType().getUserid();
 
         GetAllAdgroupIdRequest getAllAdgroupIdRequest = new GetAllAdgroupIdRequest();
         GetAllAdgroupIdResponse getAllAdgroupIdResponse = adgroupService.getAllAdgroupId(getAllAdgroupIdRequest);
@@ -68,20 +66,21 @@ public class InitializeAccountDAOImpl implements InitializeAccountDAO {
             return;
 
         //数据存储处理
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("perfect");
-        List<KeywordRealTimeDataVOEntity> listVO = new ArrayList<>();
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_perfect_report");
+        List<KCRealTimeDataEntity> listVO = new ArrayList<>();
 
         String logDate = list1.get(0).getDate();
 
-        currUserName = "perfect";
-        currUserName = currUserName.substring(0, 1).toUpperCase() + currUserName.substring(1, currUserName.length());
         //创建collection
-        String collectionName = currUserName + "-KeywordRealTimeData-log-" + logDate;
+        String collectionName = logDate + "-KC";
         for (RealTimeResultType entity : list1) {
             //创建日志内容
-            KeywordRealTimeDataVOEntity vo = new KeywordRealTimeDataVOEntity();
+            KCRealTimeDataEntity vo = new KCRealTimeDataEntity();
             vo.setKeywordId(entity.getID());
             vo.setKeywordName(entity.getName().get(3));
+            vo.setAdgroupName(entity.getName().get(2));
+            vo.setCampaignName(entity.getName().get(1));
+            vo.setType(1);
             vo.setImpression(Integer.valueOf(entity.getKPI(0)));
             vo.setClick(Integer.valueOf(entity.getKPI(1)));
             vo.setCtr(Double.valueOf(entity.getKPI(2)));
@@ -93,7 +92,7 @@ public class InitializeAccountDAOImpl implements InitializeAccountDAO {
             if (!logDate.equals(entity.getDate())) {
                 mongoTemplate.insert(listVO, collectionName);
                 logDate = entity.getDate();
-                collectionName = currUserName + "-KeywordRealTimeData-log-" + logDate;
+                collectionName = logDate + "-KC";
                 listVO.clear();
                 continue;
             }
@@ -108,7 +107,7 @@ public class InitializeAccountDAOImpl implements InitializeAccountDAO {
             return;
 
         //数据存储处理
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("perfect");
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_perfect_report");
         List<AccountRealTimeDataVOEntity> listVO = new ArrayList<>();
 
         for (RealTimeResultType entity : list1) {

@@ -2,7 +2,7 @@ package com.perfect.mongodb.dao.impl;
 
 import com.perfect.core.AppContext;
 import com.perfect.dao.KeywordQualityDAO;
-import com.perfect.entity.KeywordRealTimeDataVOEntity;
+import com.perfect.entity.KCRealTimeDataEntity;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
@@ -20,18 +20,16 @@ import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveTask;
 
 /**
- * Created by baizz on 2014-7-24.
+ * Created by baizz on 2014-07-24.
  */
 @Repository("KeywordQualityDAO")
 public class KeywordQualityDAOImpl implements KeywordQualityDAO {
 
-    private static final String logName = "-KeywordRealTimeData-log-";
-
     private String currUserName = AppContext.getUser().toString();
 
-    private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(currUserName);
+    private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_perfect_report");
 
-    private Class<KeywordRealTimeDataVOEntity> _class = KeywordRealTimeDataVOEntity.class;
+    private Class<KCRealTimeDataEntity> _class = KCRealTimeDataEntity.class;
 
     private Method getMethod;
 
@@ -40,7 +38,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
     private int topN;
 
     @Override
-    public KeywordRealTimeDataVOEntity[] find(String _startDate, String _endDate, String fieldName, int limit, int sort) {
+    public KCRealTimeDataEntity[] find(String _startDate, String _endDate, String fieldName, int limit, int sort) {
         this.sort = sort;
         this.topN = limit;
         currUserName = currUserName.substring(0, 1).toUpperCase() + currUserName.substring(1, currUserName.length());
@@ -74,17 +72,17 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
             }
         }
 
-        List<KeywordRealTimeDataVOEntity> list;
-        Map<String, KeywordRealTimeDataVOEntity> map = null;
+        List<KCRealTimeDataEntity> list;
+        Map<String, KCRealTimeDataEntity> map = null;
         List<String> names = new ArrayList<>();     //待查询的collectionName
 
         if (isLoadYesterdayData) {
-            String name = currUserName + logName + _startDate;
+            String name = _startDate + "-KC";
             names.add(name);
         } else {
             if (_startDate.equals(_endDate)) {
                 //查询的是某一天的数据
-                String name = currUserName + logName + _startDate;
+                String name = _startDate + "-KC";
                 names.add(name);
             } else {
                 //查询的是某一个时间段的数据
@@ -92,7 +90,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
                 cal1.setTime(startDate);
                 while (cal1.getTime().getTime() <= endDate.getTime()) {
                     cal1.setTime(startDate);
-                    names.add(currUserName + logName + sdf.format(cal1.getTime()));
+                    names.add(sdf.format(cal1.getTime()) + "-KC");
                     cal1.add(Calendar.DATE, 1);
                     startDate = cal1.getTime();
                 }
@@ -105,13 +103,13 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         try {
             QueryTask task1 = new QueryTask(names, 0, names.size());
-            Future<List<KeywordRealTimeDataVOEntity>> voResult = forkJoinPool.submit(task1);
+            Future<List<KCRealTimeDataEntity>> voResult = forkJoinPool.submit(task1);
             list = voResult.get();
             if (list.size() == 0)
                 return null;
 
             CalculateTask task2 = new CalculateTask(list, 0, list.size());
-            Future<Map<String, KeywordRealTimeDataVOEntity>> result = forkJoinPool.submit(task2);
+            Future<Map<String, KCRealTimeDataEntity>> result = forkJoinPool.submit(task2);
             map = result.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -123,8 +121,8 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
 
         //点击率和平均点击价格
         //DecimalFormat df = new DecimalFormat("#.00");
-        for (Map.Entry<String, KeywordRealTimeDataVOEntity> entry : map.entrySet()) {
-            KeywordRealTimeDataVOEntity vo = entry.getValue();
+        for (Map.Entry<String, KCRealTimeDataEntity> entry : map.entrySet()) {
+            KCRealTimeDataEntity vo = entry.getValue();
             Double cost = vo.getCost();
             Double ctr = (vo.getClick() + 0.) / vo.getImpression();
             Double cpc = 0.;
@@ -139,8 +137,8 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
             entry.setValue(vo);
         }
 
-        List<KeywordRealTimeDataVOEntity> list1 = new ArrayList<>(map.values());
-        KeywordRealTimeDataVOEntity[] topNData = topN(list1.toArray(new KeywordRealTimeDataVOEntity[list1.size()]), topN, fieldName);
+        List<KCRealTimeDataEntity> list1 = new ArrayList<>(map.values());
+        KCRealTimeDataEntity[] topNData = topN(list1.toArray(new KCRealTimeDataEntity[list1.size()]), topN, fieldName);
         return topNData;
     }
 
@@ -152,7 +150,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
      * @param fieldName
      */
     @SuppressWarnings("unchecked")
-    private KeywordRealTimeDataVOEntity[] topN(KeywordRealTimeDataVOEntity[] objects, int n, String fieldName) {
+    private KCRealTimeDataEntity[] topN(KCRealTimeDataEntity[] objects, int n, String fieldName) {
         try {
             StringBuilder fieldGetterName = new StringBuilder("get");
             fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
@@ -162,7 +160,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
         }
 
         //TopN数组
-        KeywordRealTimeDataVOEntity[] topNData = Arrays.copyOf(objects, n);
+        KCRealTimeDataEntity[] topNData = Arrays.copyOf(objects, n);
 
         //采用快速排序
         quickSort(topNData, 0, topNData.length - 1);
@@ -192,7 +190,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
      * @param low
      * @param high
      */
-    private void quickSort(KeywordRealTimeDataVOEntity arr[], int low, int high) {
+    private void quickSort(KCRealTimeDataEntity arr[], int low, int high) {
         int l = low;
         int h = high;
 
@@ -206,7 +204,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
             while (l != h) {
                 if (((Comparable) getMethod.invoke(arr[l])).compareTo(getMethod.invoke(arr[h])) == sort) {
                     //交换数据
-                    KeywordRealTimeDataVOEntity tempObj = arr[l];
+                    KCRealTimeDataEntity tempObj = arr[l];
                     arr[l] = arr[h];
                     arr[h] = tempObj;
                     //决定下标移动, 还是上标移动
@@ -232,7 +230,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
         quickSort(arr, h, high);
     }
 
-    private class QueryTask extends RecursiveTask<List<KeywordRealTimeDataVOEntity>> {
+    private class QueryTask extends RecursiveTask<List<KCRealTimeDataEntity>> {
 
         private static final int threshold = 4;
 
@@ -247,8 +245,8 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
         }
 
         @Override
-        protected List<KeywordRealTimeDataVOEntity> compute() {
-            List<KeywordRealTimeDataVOEntity> voList = new ArrayList<>();
+        protected List<KCRealTimeDataEntity> compute() {
+            List<KCRealTimeDataEntity> voList = new ArrayList<>();
             boolean stat = (last - first) < threshold;
             if (stat) {
                 for (int i = first; i < last; i++)
@@ -266,29 +264,29 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
         }
     }
 
-    private class CalculateTask extends RecursiveTask<Map<String, KeywordRealTimeDataVOEntity>> {
+    private class CalculateTask extends RecursiveTask<Map<String, KCRealTimeDataEntity>> {
 
         private static final int threshold = 100;
 
         private int first;
         private int last;
-        private List<KeywordRealTimeDataVOEntity> list;
+        private List<KCRealTimeDataEntity> list;
 
-        CalculateTask(List<KeywordRealTimeDataVOEntity> list, int first, int last) {
+        CalculateTask(List<KCRealTimeDataEntity> list, int first, int last) {
             this.first = first;
             this.last = last;
             this.list = list;
         }
 
         @Override
-        protected Map<String, KeywordRealTimeDataVOEntity> compute() {
-            Map<String, KeywordRealTimeDataVOEntity> map = new HashMap<>();
+        protected Map<String, KCRealTimeDataEntity> compute() {
+            Map<String, KCRealTimeDataEntity> map = new HashMap<>();
             boolean stat = (last - first) < threshold;
             if (stat) {
                 for (int i = first; i < last; i++) {
-                    KeywordRealTimeDataVOEntity vo = list.get(i);
+                    KCRealTimeDataEntity vo = list.get(i);
                     String keywordId = vo.getKeywordId().toString();
-                    KeywordRealTimeDataVOEntity _vo = map.get(keywordId);
+                    KCRealTimeDataEntity _vo = map.get(keywordId);
                     if (_vo != null) {
                         _vo.setImpression(_vo.getImpression() + vo.getImpression());
                         _vo.setClick(_vo.getClick() + vo.getClick());
@@ -316,12 +314,12 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
             return map;
         }
 
-        private Map<String, KeywordRealTimeDataVOEntity> mergeMap(Map<String, KeywordRealTimeDataVOEntity> map1, Map<String, KeywordRealTimeDataVOEntity> map2) {
-            Map<String, KeywordRealTimeDataVOEntity> _map = new HashMap<>();
-            for (Iterator<Map.Entry<String, KeywordRealTimeDataVOEntity>> iterator1 = map1.entrySet().iterator(); iterator1.hasNext(); ) {
-                KeywordRealTimeDataVOEntity vo = iterator1.next().getValue();
-                for (Iterator<Map.Entry<String, KeywordRealTimeDataVOEntity>> iterator2 = map2.entrySet().iterator(); iterator2.hasNext(); ) {
-                    KeywordRealTimeDataVOEntity _vo = iterator2.next().getValue();
+        private Map<String, KCRealTimeDataEntity> mergeMap(Map<String, KCRealTimeDataEntity> map1, Map<String, KCRealTimeDataEntity> map2) {
+            Map<String, KCRealTimeDataEntity> _map = new HashMap<>();
+            for (Iterator<Map.Entry<String, KCRealTimeDataEntity>> iterator1 = map1.entrySet().iterator(); iterator1.hasNext(); ) {
+                KCRealTimeDataEntity vo = iterator1.next().getValue();
+                for (Iterator<Map.Entry<String, KCRealTimeDataEntity>> iterator2 = map2.entrySet().iterator(); iterator2.hasNext(); ) {
+                    KCRealTimeDataEntity _vo = iterator2.next().getValue();
                     if (_vo.getKeywordId().compareTo(vo.getKeywordId()) == 0) {
                         _vo.setImpression(_vo.getImpression() + vo.getImpression());
                         _vo.setClick(_vo.getClick() + vo.getClick());
@@ -338,13 +336,13 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
                 }
             }
 
-            for (Map.Entry<String, KeywordRealTimeDataVOEntity> entry : map1.entrySet()) {
-                KeywordRealTimeDataVOEntity vo = entry.getValue();
+            for (Map.Entry<String, KCRealTimeDataEntity> entry : map1.entrySet()) {
+                KCRealTimeDataEntity vo = entry.getValue();
                 _map.put(vo.getKeywordId().toString(), vo);
             }
 
-            for (Map.Entry<String, KeywordRealTimeDataVOEntity> entry : map2.entrySet()) {
-                KeywordRealTimeDataVOEntity vo = entry.getValue();
+            for (Map.Entry<String, KCRealTimeDataEntity> entry : map2.entrySet()) {
+                KCRealTimeDataEntity vo = entry.getValue();
                 _map.put(vo.getKeywordId().toString(), vo);
             }
 
