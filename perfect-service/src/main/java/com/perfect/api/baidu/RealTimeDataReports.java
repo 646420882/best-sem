@@ -8,10 +8,7 @@ import org.springframework.util.Assert;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by SubDong on 2014/8/7.
@@ -26,6 +23,59 @@ public class RealTimeDataReports {
     private static Date endDate = null;
 
     private static ReportService reportService = null;
+
+    //关键字
+    private static List<Long> listKey = new ArrayList<>();
+    //创意
+    private static List<Long> listCreative = new ArrayList<>();
+    //单元
+    private static List<Long> allAdgroupId = new ArrayList<>();
+
+    {
+        AccountService accountService = null;
+        KeywordService keywordService = null;
+        AdgroupService adgroupService = null;
+        CreativeService creativeService = null;
+        try {
+            accountService = service.getService(AccountService.class);
+            keywordService = service.getService(KeywordService.class);
+            adgroupService = service.getService(AdgroupService.class);
+            creativeService = service.getService(CreativeService.class);
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+        //获取账户ID
+        //GetAccountInfoRequest getAccountInfoRequest = new GetAccountInfoRequest();
+        //GetAccountInfoResponse getAccountInfoResponse = accountService.getAccountInfo(getAccountInfoRequest);
+        //baiduAccountUserId = getAccountInfoResponse.getAccountInfoType().getUserid();
+
+
+
+        //单元
+        GetAllAdgroupIdRequest getAllAdgroupIdRequest = new GetAllAdgroupIdRequest();
+        GetAllAdgroupIdResponse getAllAdgroupIdResponse = adgroupService.getAllAdgroupId(getAllAdgroupIdRequest);
+
+        for (CampaignAdgroupId entity : getAllAdgroupIdResponse.getCampaignAdgroupIds()) {
+            allAdgroupId.addAll(entity.getAdgroupIds());
+        }
+
+        //创意
+        GetCreativeIdByAdgroupIdRequest getCreativeIdByAdgroupIdRequest = new GetCreativeIdByAdgroupIdRequest();
+        getCreativeIdByAdgroupIdRequest.setAdgroupIds(allAdgroupId);
+        GetCreativeIdByAdgroupIdResponse getCreativeIdByAdgroupIdResponse = creativeService.getCreativeIdByAdgroupId(getCreativeIdByAdgroupIdRequest);
+        for (GroupCreativeId entity : getCreativeIdByAdgroupIdResponse.getGroupCreativeIds()){
+            listCreative.addAll(entity.getCreativeIds());
+        }
+
+        //关键字
+        GetKeywordIdByAdgroupIdRequest getKeywordIdByAdgroupIdRequest = new GetKeywordIdByAdgroupIdRequest();
+        getKeywordIdByAdgroupIdRequest.setAdgroupIds(allAdgroupId);
+        GetKeywordIdByAdgroupIdResponse getKeywordIdByAdgroupIdResponse = keywordService.getKeywordIdByAdgroupId(getKeywordIdByAdgroupIdRequest);
+        for (GroupKeywordId entity : getKeywordIdByAdgroupIdResponse.getGroupKeywordIds()) {
+            listKey.addAll(entity.getKeywordIds());
+        }
+    }
 
     /**
      * 初始化API中需要共用到的属性
@@ -113,6 +163,8 @@ public class RealTimeDataReports {
         //指定返回数据类型
         requestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "ctr", "cost", "cpc", "position", "conversion"}));
 
+        //关键词统计范围下的id集合
+        requestType.setStatIds(listKey);
         // 指定返回的数据层级
         // 默认为账户
         // 2：账户粒度 3：计划粒度 5：单元粒度 7：创意粒度 11：关键词(keywordid)粒度 12：关键词(keywordid)+创意粒度 6：关键词(wordid)粒度
@@ -150,6 +202,8 @@ public class RealTimeDataReports {
         //指定返回数据类型
         requestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "ctr", "cost", "cpc", "position", "conversion"}));
 
+        //关键词统计范围下的id集合
+        requestType.setStatIds(listKey);
         // 指定返回的数据层级
         // 默认为账户
         // 2：账户粒度 3：计划粒度 5：单元粒度 7：创意粒度 11：关键词(keywordid)粒度 12：关键词(keywordid)+创意粒度 6：关键词(wordid)粒度
@@ -186,6 +240,8 @@ public class RealTimeDataReports {
         //指定返回数据类型
         requestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "ctr", "cost", "cpc", "position", "conversion"}));
 
+        //关键词统计范围下的id集合
+        requestType.setStatIds(allAdgroupId);
         // 指定返回的数据层级
         // 默认为账户
         // 2：账户粒度 3：计划粒度 5：单元粒度 7：创意粒度 11：关键词(keywordid)粒度 12：关键词(keywordid)+创意粒度 6：关键词(wordid)粒度
@@ -222,6 +278,8 @@ public class RealTimeDataReports {
         //指定返回数据类型
         requestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "ctr", "cost", "cpc", "position", "conversion"}));
 
+        //关键词统计范围下的id集合
+        requestType.setStatIds(allAdgroupId);
         // 指定返回的数据层级
         // 默认为账户
         // 2：账户粒度 3：计划粒度 5：单元粒度 7：创意粒度 11：关键词(keywordid)粒度 12：关键词(keywordid)+创意粒度 6：关键词(wordid)粒度
@@ -258,6 +316,8 @@ public class RealTimeDataReports {
         //指定返回数据类型
         requestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "ctr", "cost", "cpc", "position", "conversion"}));
 
+        //关键词统计范围下的id集合
+        requestType.setStatIds(listCreative);
         // 指定返回的数据层级
         // 默认为账户
         // 2：账户粒度 3：计划粒度 5：单元粒度 7：创意粒度 11：关键词(keywordid)粒度 12：关键词(keywordid)+创意粒度 6：关键词(wordid)粒度
@@ -294,6 +354,8 @@ public class RealTimeDataReports {
         //指定返回数据类型
         requestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "ctr", "cost", "cpc", "position", "conversion"}));
 
+        //关键词统计范围下的id集合
+        requestType.setStatIds(listCreative);
         // 指定返回的数据层级
         // 默认为账户
         // 2：账户粒度 3：计划粒度 5：单元粒度 7：创意粒度 11：关键词(keywordid)粒度 12：关键词(keywordid)+创意粒度 6：关键词(wordid)粒度
@@ -330,6 +392,8 @@ public class RealTimeDataReports {
         //指定返回数据类型
         requestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "ctr", "cost", "cpc", "position", "conversion"}));
 
+        //关键词统计范围下的id集合
+        requestType.setStatIds(allAdgroupId);
         // 指定返回的数据层级
         // 默认为账户
         // 2：账户粒度 3：计划粒度 5：单元粒度 7：创意粒度 11：关键词(keywordid)粒度 12：关键词(keywordid)+创意粒度 6：关键词(wordid)粒度
@@ -366,6 +430,8 @@ public class RealTimeDataReports {
         //指定返回数据类型
         requestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "ctr", "cost", "cpc", "position", "conversion"}));
 
+        //关键词统计范围下的id集合
+        requestType.setStatIds(allAdgroupId);
         // 指定返回的数据层级
         // 默认为账户
         // 2：账户粒度 3：计划粒度 5：单元粒度 7：创意粒度 11：关键词(keywordid)粒度 12：关键词(keywordid)+创意粒度 6：关键词(wordid)粒度
@@ -387,13 +453,4 @@ public class RealTimeDataReports {
         List<RealTimeResultType> list = dataResponse.getRealTimeResultTypes();
         return list;
     }
-
-    public static void main(String[] args) {
-        List<RealTimeResultType> list = RealTimeDataReports.getAccountRealTimeData("2014-01-25", "2014-01-25");
-        List<RealTimeResultType> listPC = RealTimeDataReports.getRegionalRealTimeDataPC("2014-01-25", "2014-01-25");
-        int dd = list.size();
-        int ddpc = listPC.size();
-        System.out.println(list);
-    }
-
 }
