@@ -191,7 +191,7 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
     public boolean isDealFinishAllData(){
     	return this.taskList.size() == 0 && this.runningTaskList.size() ==0;  
     }
-    
+
     public boolean isSleeping(){
     	return this.isSleeping;
     }
@@ -389,18 +389,20 @@ class TBScheduleProcessorNotSleep<T> implements IScheduleProcessor, Runnable {
 	}
 	
     class MYComparator implements Comparator<T> {
-    	Comparator<T> comparator;
-    	public MYComparator(Comparator<T> aComparator){
-    		this.comparator = aComparator;
-    	}
+        Comparator<T> comparator;
 
-		public int compare(T o1, T o2) {
-			statisticsInfo.addOtherCompareCount(1);
-			return this.comparator.compare(o1, o2);
-		}
-    	public  boolean equals(Object obj){
-    	 return this.comparator.equals(obj);
-    	}
+        public MYComparator(Comparator<T> aComparator) {
+            this.comparator = aComparator;
+        }
+
+        public int compare(T o1, T o2) {
+            statisticsInfo.addOtherCompareCount(1);
+            return this.comparator.compare(o1, o2);
+        }
+
+        public boolean equals(Object obj) {
+            return this.comparator.equals(obj);
+        }
     }
-    
+
 }

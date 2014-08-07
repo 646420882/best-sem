@@ -14,18 +14,18 @@ import java.sql.Timestamp;
 import java.util.*;
 
 public class ScheduleStrategyDataManager4ZK{
-	
+
 	private ZKManager zkManager;
 	private String PATH_Strategy;
 	private String PATH_ManagerFactory;
 	private Gson gson ;
-	
+
     public ScheduleStrategyDataManager4ZK(ZKManager aZkManager) throws Exception {
     	this.zkManager = aZkManager;
 		gson = new GsonBuilder().registerTypeAdapter(Timestamp.class,new TimestampTypeAdapter()).setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 		this.PATH_Strategy = this.zkManager.getRootPath() +  "/strategy";
 		this.PATH_ManagerFactory = this.zkManager.getRootPath() +  "/factory";
-		
+
 		if (this.getZooKeeper().exists(this.PATH_Strategy, false) == null) {
 			ZKTools.createPath(getZooKeeper(),this.PATH_Strategy, CreateMode.PERSISTENT, this.zkManager.getAcl());
 		}
@@ -201,7 +201,7 @@ public class ScheduleStrategyDataManager4ZK{
                         u2.substring(u2.lastIndexOf("$") + 1));
             }
         });
-		
+
 		for (String uuid :uuidList) {
 			result.add(loadScheduleStrategyRunntime(strategyName,uuid));
 		}

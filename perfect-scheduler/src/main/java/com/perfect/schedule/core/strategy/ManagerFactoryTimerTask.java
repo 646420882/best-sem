@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 public class ManagerFactoryTimerTask extends java.util.TimerTask {
     private static transient Logger log = LoggerFactory.getLogger(ManagerFactoryTimerTask.class);
     TBScheduleManagerFactory factory;
-    int count =0;
+    int count = 0;
 
     public ManagerFactoryTimerTask(TBScheduleManagerFactory aFactory) {
         this.factory = aFactory;
@@ -19,15 +19,15 @@ public class ManagerFactoryTimerTask extends java.util.TimerTask {
     public void run() {
         try {
             Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            if(this.factory.zkManager.checkZookeeperState() == false){
-                if(count > 5){
+            if (this.factory.zkManager.checkZookeeperState() == false) {
+                if (count > 5) {
                     log.error("Zookeeper连接失败，关闭所有的任务后，重新连接Zookeeper服务器......");
                     this.factory.reStart();
 
-                }else{
+                } else {
                     count = count + 1;
                 }
-            }else{
+            } else {
                 count = 0;
                 this.factory.refresh();
             }

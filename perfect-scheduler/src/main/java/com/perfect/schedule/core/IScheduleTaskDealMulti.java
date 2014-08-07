@@ -6,8 +6,13 @@ package com.perfect.schedule.core;
  */
 public interface IScheduleTaskDealMulti<T>  extends IScheduleTaskDeal<T> {
  
-/**
- * @throws Exception
- */
-  public boolean execute(T[] tasks, String ownSign) throws Exception;
+    /**
+     * ִ�и���������顣��Ϊ���Ͳ�֧��new ���飬ֻ�ܴ���OBJECT[]
+     *
+     * @param tasks   ��������
+     * @param ownSign ��ǰ�������
+     * @return
+     * @throws Exception
+     */
+    public boolean execute(T[] tasks, String ownSign) throws Exception;
 }

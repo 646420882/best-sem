@@ -1,6 +1,7 @@
 package com.perfect.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
@@ -19,10 +20,12 @@ public class KeywordRealTimeDataVOEntity implements Comparable<KeywordRealTimeDa
 
     private Integer click;      //点击次数
 
+    @Transient
     private Double ctr;     //点击率=点击次数/展现次数
 
     private Double cost;        //消费
 
+    @Transient
     private Double cpc;     //平均点击价格=消费/点击次数
 
     @Field(value = "posi")

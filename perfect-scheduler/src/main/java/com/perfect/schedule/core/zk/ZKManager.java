@@ -16,7 +16,7 @@ import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 public class ZKManager{
-	
+
 	private static transient Logger log = LoggerFactory.getLogger(ZKManager.class);
 	private ZooKeeper zk;
 	private List<ACL> acl = new ArrayList<ACL>();
@@ -30,7 +30,7 @@ public class ZKManager{
 		this.properties = aProperties;
 		this.connect();
 	}
-	
+
 	public synchronized void  reConnection() throws Exception {
 		if (this.zk != null) {
 			this.zk.close();
@@ -38,13 +38,13 @@ public class ZKManager{
 			this.connect() ;
 		}
 	}
-	
+
 	private void connect() throws Exception {
 		CountDownLatch connectionLatch = new CountDownLatch(1);
 		createZookeeper(connectionLatch);
 		connectionLatch.await();
 	}
-	
+
 	private void createZookeeper(final CountDownLatch connectionLatch) throws Exception {
 		zk = new ZooKeeper(this.properties.getProperty(keys.zkConnectString
 				.toString()), Integer.parseInt(this.properties
@@ -63,7 +63,7 @@ public class ZKManager{
 				DigestAuthenticationProvider.generateDigest(authString))));
 		acl.add(new ACL(ZooDefs.Perms.READ, Ids.ANYONE_ID_UNSAFE));
 	}
-	
+
 	private void sessionEvent(CountDownLatch connectionLatch, WatchedEvent event) {
 		if (event.getState() == KeeperState.SyncConnected) {
 			log.info("");

@@ -11,7 +11,7 @@ import java.util.List;
  *
  */
 public class ScheduleTaskType implements java.io.Serializable {
-	
+
 	/**
 
 	 */
@@ -23,36 +23,36 @@ public class ScheduleTaskType implements java.io.Serializable {
     /**
 
      */
-    private long heartBeatRate = 5*1000;//1����
-    
+    private long heartBeatRate = 5*1000;
+
     /**
 
      */
-    private long judgeDeadInterval = 1*60*1000;//2����
-    
+    private long judgeDeadInterval = 1*60*1000;
+
     /**
 
 
      */
     private int sleepTimeNoData = 500;
-    
+
     /**
 
      */
     private int sleepTimeInterval = 0;
-    
+
     /**
 
      */
     private int fetchDataNumber = 500;
-    
+
     /**
 
      */
     private int executeNumber =1;
-    
+
     private int threadNumber = 5;
-    
+
     /**
 
      */
@@ -65,12 +65,12 @@ public class ScheduleTaskType implements java.io.Serializable {
 
      */
     private String permitRunEndTime;
-    
+
     /**
 
      */
     private double expireOwnSignInterval = 1;
-    
+
     /**
 
      */
@@ -79,19 +79,18 @@ public class ScheduleTaskType implements java.io.Serializable {
 
      */
     private String taskParameter;
-    
-    //�������ͣ���̬static,��̬dynamic
+
     private String taskKind = TASKKIND_STATIC;
-    
+
     public static String TASKKIND_STATIC="static";
     public static String TASKKIND_DYNAMIC="dynamic";
- 
-    
+
+
     /**
 
      */
     private String[] taskItems;
-    
+
     /**
 
      */
@@ -100,15 +99,15 @@ public class ScheduleTaskType implements java.io.Serializable {
 
      */
     private long version;
-    
+
     /**
 
      */
     private String sts = STS_RESUME;
-	
+
     public static String STS_PAUSE="pause";
     public static String STS_RESUME="resume";
-    
+
     public static String[] splitTaskItem(String str){
     	List<String> list = new ArrayList<String>();
 		int start = 0;
@@ -124,7 +123,7 @@ public class ScheduleTaskType implements java.io.Serializable {
     					break;
     				}
     			}
-    			index = index + 1; //����
+    			index = index + 1;
     			start = index;
     		}else if(str.charAt(index)==','){
     			list.add(str.substring(start,index).trim());
@@ -135,7 +134,7 @@ public class ScheduleTaskType implements java.io.Serializable {
     					break;
     				}
     			}
-    			index = index + 1; //����
+    			index = index + 1;
     			start = index;
     		}else{
     			index = index + 1;
@@ -146,7 +145,7 @@ public class ScheduleTaskType implements java.io.Serializable {
     	}
     	return (String[]) list.toArray(new String[0]);
      }
-    
+
 	public long getVersion() {
 		return version;
 	}

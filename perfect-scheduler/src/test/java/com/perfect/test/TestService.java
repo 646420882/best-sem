@@ -1,20 +1,19 @@
-package com.perfect.schedule.task;
+package com.perfect.test;
 
+import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
+import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.autosdk.sms.v3.AccountService;
+import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
+import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
 import com.perfect.dao.AccountDAO;
-import com.perfect.dao.AdgroupDAO;
-import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 import com.perfect.schedule.core.IScheduleTaskDealSingle;
 import com.perfect.schedule.core.TaskItemDefine;
-import com.perfect.schedule.utils.AccountDataUpdateTask;
-import com.perfect.schedule.utils.WorkPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -25,39 +24,33 @@ import java.util.List;
  * Created by vbzer_000 on 2014/6/18.
  */
 
-@Component("userUpdateTask")
-public class UserTask implements IScheduleTaskDealSingle<SystemUserEntity> {
+
+public class TestService implements IScheduleTaskDealSingle<SystemUserEntity> {
     protected static transient Logger log = LoggerFactory.getLogger(IScheduleTaskDealSingle.class);
+
+    private static CommonService service = null;
 
     @Resource
     private AccountDAO accountDAO;
 
     @Resource
-    private CampaignDAO campaignDAO;
-
-    @Resource
     private SystemUserDAO systemUserDAO;
-
-    @Resource
-    private AdgroupDAO adgroupDAO;
-
-    @Resource
 
     @Override
     public boolean execute(SystemUserEntity systemUser, String ownSign) throws Exception {
 
+//        SystemUser systemUser = mongoTemplate.findById(userId, SystemUser.class);
+
         List<BaiduAccountInfoEntity> baiduAccountInfoList = systemUser.getBaiduAccountInfoEntities();
 
-        if (baiduAccountInfoList == null) {
-            return false;
-        }
-
         for (BaiduAccountInfoEntity baiduAccountInfo : baiduAccountInfoList) {
+            AccountService accountService = ServiceFactory.getInstance(baiduAccountInfo.getBaiduUserName(), baiduAccountInfo.getBaiduPassword(), baiduAccountInfo.getToken(), null).getService(AccountService.class);
 
-//            AccountDataUpdateTask accountDataUpdateTask = new AccountDataUpdateTask(ServiceFactory.getInstance(baiduAccountInfo.getBaiduUserName(), baiduAccountInfo.getBaiduPassword(), baiduAccountInfo.getToken(), null), accountDAO,campaignDAO,adgroupDAO);
-//
-//            WorkPool.pushTask(accountDataUpdateTask);
+            GetAccountInfoRequest getAccountInfoRequest = new GetAccountInfoRequest();
+            GetAccountInfoResponse getAccountInfoResponse = accountService.getAccountInfo(getAccountInfoRequest);
 
+            AccountInfoType accountInfoType = getAccountInfoResponse.getAccountInfoType();
+//            accountDAO.update(accountInfoType, accountInfoType);
         }
 
         return true;

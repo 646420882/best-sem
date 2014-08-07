@@ -10,23 +10,23 @@ public class ScheduleStrategy {
 
 	private int numOfSingleServer;
 	private int assignNum;
-	
-	private Kind kind; 
-	
+
+	private Kind kind;
+
 	private String taskName;
-	
+
 	private String taskParameter;
-	
+
     private String sts = STS_RESUME;
 
     public static String STS_PAUSE="pause";
     public static String STS_RESUME="resume";
 
-	
+
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-	
+
 	public String getStrategyName() {
 		return strategyName;
 	}
@@ -85,5 +85,5 @@ public class ScheduleStrategy {
 
 	public void setSts(String sts) {
 		this.sts = sts;
-	}	
+	}
 }

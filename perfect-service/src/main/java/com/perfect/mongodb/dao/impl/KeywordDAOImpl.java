@@ -133,6 +133,9 @@ public class KeywordDAOImpl implements KeywordDAO {
                 StringBuilder fieldGetterName = new StringBuilder("get");
                 fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
                 Method method = _class.getDeclaredMethod(fieldGetterName.toString());
+                if(method == null)
+                    continue;
+
                 Object after = method.invoke(keywordEntity);
                 if (after != null) {
                     update.set(field.getName(), after);

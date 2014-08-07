@@ -6,27 +6,27 @@ import java.sql.Timestamp;
 
 
 public class ScheduleTaskTypeRunningInfo {
-	
+
 	private long id;
-    
+
 	private String taskType;
-	
+
 	private String baseTaskType;
-	
+
 	private String ownSign;
-	
+
 	private Timestamp lastAssignTime;
-	
+
 	private String lastAssignUUID;
-	
+
 	private Timestamp gmtCreate;
-	
+
 	private Timestamp gmtModified;
-	
+
 	public String toString(){
 		return ToStringBuilder.reflectionToString(this);
 	}
-	
+
 	public long getId() {
 		return id;
 	}
@@ -77,5 +77,5 @@ public class ScheduleTaskTypeRunningInfo {
 	public void setBaseTaskType(String baseTaskType) {
 		this.baseTaskType = baseTaskType;
 	}
-	
+
 }

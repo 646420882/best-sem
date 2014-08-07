@@ -22,19 +22,19 @@ public class ScheduleTaskItem {
 
 	 */
 	private TaskItemSts sts = TaskItemSts.ACTIVTE;
-	
+
 	/**
 
 	 */
 	private String dealParameter="";
-	
+
 	/**
 
 	 */
 	private String dealDesc="";
-	
-	
-	
+
+
+
   public String getBaseTaskType() {
 		return baseTaskType;
 	}
@@ -47,7 +47,7 @@ public class ScheduleTaskItem {
 
    */
   private String ownSign;
-  
+
   /**
 
    */
@@ -60,7 +60,7 @@ public class ScheduleTaskItem {
 
    */
   private String requestScheduleServer;
-  
+
   /**
 
    */
@@ -114,7 +114,7 @@ public void setOwnSign(String ownSign) {
 	this.ownSign = ownSign;
 }
 public String toString(){
-	return "TASK_TYPE=" + this.taskType +":TASK_ITEM="  + this.taskItem 
+	return "TASK_TYPE=" + this.taskType +":TASK_ITEM="  + this.taskItem
 	       + ":CUR_SERVER=" + this.currentScheduleServer + ":REQ_SERVER=" + this.requestScheduleServer+":DEAL_PARAMETER="+this.dealParameter;
 }
 
@@ -141,5 +141,5 @@ public void setDealParameter(String dealParameter) {
 public String getDealParameter() {
 	return dealParameter;
 }
-  
+
 }

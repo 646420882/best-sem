@@ -5,6 +5,7 @@ package com.perfect.entity;
 
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "KeywordType")
 public class KeywordEntity extends BinlogEntity {
@@ -14,11 +15,16 @@ public class KeywordEntity extends BinlogEntity {
 
     //KeywordType Attributes
     @Indexed(unique = true)
+    @Field("id")
     private Long keywordId;
+    @Field("agid")
     private Long adgroupId;
+    @Field("name")
     private String keyword;
     private Double price;
+    @Field("pc")
     private String pcDestinationUrl;
+    @Field("mobile")
     private String mobileDestinationUrl;
     private Integer matchType;
     private Boolean pause;

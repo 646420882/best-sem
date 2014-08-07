@@ -11,14 +11,14 @@
 		http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"
        default-lazy-init="true" default-autowire="byName">
 
-    <bean id="userUpdateTask" class="com.perfect.schedule.task.UserTask"/>
+    <bean id="userUpdateTask" class="com.perfect.schedule.task.execute.UserTask"/>
 
     <bean id="scheduleManagerFactory" class="com.perfect.schedule.core.strategy.TBScheduleManagerFactory"
           init-method="init">
         <property name="zkConfig">
             <map>
-                <entry key="zkConnectString" value="115.29.103.38:2181"/>
-                <entry key="rootPath" value="/perfect/task"/>
+                <entry key="zkConnectString" value="192.168.1.103:2181"/>
+                <entry key="rootPath" value="/perfect/TEST"/>
                 <entry key="zkSessionTimeout" value="60000"/>
                 <entry key="userName" value=""/>
                 <entry key="password" value=""/>

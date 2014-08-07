@@ -1,11 +1,11 @@
 package com.perfect.schedule.core.taskmanager;
 
 interface IScheduleProcessor {
-	 /**
+    /**
 
 
 
-	  */
+     */
 	 public boolean isDealFinishAllData();
 	 /**
 

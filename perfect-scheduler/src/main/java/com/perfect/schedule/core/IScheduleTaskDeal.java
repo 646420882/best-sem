@@ -5,29 +5,17 @@ import java.util.List;
 
 
 /**
-
-
- *
-
  */
 public interface IScheduleTaskDeal<T> {
 
-/**
+    /**
+     */
+    public List<T> selectTasks(String taskParameter, String ownSign, int taskItemNum, List<TaskItemDefine> taskItemList, int eachFetchDataNum) throws Exception;
+
+    /**
 
 
-
-
-
-
-
-
- */
-public List<T> selectTasks(String taskParameter, String ownSign, int taskItemNum, List<TaskItemDefine> taskItemList, int eachFetchDataNum) throws Exception;
-
-/**
-
-
- */
-public Comparator<T> getComparator();
+     */
+    public Comparator<T> getComparator();
 
 }

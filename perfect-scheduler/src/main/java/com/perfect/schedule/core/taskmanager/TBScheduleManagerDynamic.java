@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TBScheduleManagerDynamic extends TBScheduleManager {
 	//private static transient Log log = LogFactory.getLog(TBScheduleManagerDynamic.class);
-	
+
 	TBScheduleManagerDynamic(TBScheduleManagerFactory aFactory,
 			String baseTaskType, String ownSign, int managerPort,
 			String jxmUrl, IScheduleDataManager aScheduleCenter) throws Exception {

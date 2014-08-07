@@ -1,9 +1,8 @@
 package com.perfect.schedule.core;
 
 /**
-
-
  *
+ * @author xuannan
  */
 public class TaskItemDefine {
 	/**

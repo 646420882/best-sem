@@ -31,9 +31,9 @@ public class ScheduleServer {
 	private Timestamp centerServerTime;
 
 	private long version;
-	
+
 	private boolean isRegister;
-	
+
 	private String managerFactoryUUID;
 
 	public ScheduleServer() {

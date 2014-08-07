@@ -295,7 +295,7 @@ class TBScheduleProcessorSleep<T> implements IScheduleProcessor,Runnable {
 	    }
 
 	public void addFetchNum(long num, String addr) {
-		
+
         this.statisticsInfo.addFetchDataCount(1);
         this.statisticsInfo.addFetchDataNum(num);
 	}

@@ -8,50 +8,51 @@ import java.util.Date;
 
 
 /**
-
-
  *
+ * @author xuannan
  */
 public class ScheduleUtil {
-	public static String OWN_SIGN_BASE ="BASE";
+    public static String OWN_SIGN_BASE = "BASE";
 
-	public static String getLocalHostName() {
-		try {
-			return InetAddress.getLocalHost().getHostName();
-		} catch (Exception e) {
-			return "";
-		}
-	}
+    public static String getLocalHostName() {
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        } catch (Exception e) {
+            return "";
+        }
+    }
 
-	public static int getFreeSocketPort() {
-		try {
-			ServerSocket ss = new ServerSocket(0);
-			int freePort = ss.getLocalPort();
-			ss.close();
-			return freePort;
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
-		}
-	}
+    public static int getFreeSocketPort() {
+        try {
+            ServerSocket ss = new ServerSocket(0);
+            int freePort = ss.getLocalPort();
+            ss.close();
+            return freePort;
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
-	public static String getLocalIP() {
-		try {
-			return InetAddress.getLocalHost().getHostAddress();
-		} catch (Exception e) {
-			return "";
-		}
-	}
+    public static String getLocalIP() {
+        try {
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (Exception e) {
+            return "";
+        }
+    }
 
-	public static String transferDataToString(Date d){
-		SimpleDateFormat DATA_FORMAT_yyyyMMddHHmmss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static String transferDataToString(Date d) {
+        SimpleDateFormat DATA_FORMAT_yyyyMMddHHmmss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return DATA_FORMAT_yyyyMMddHHmmss.format(d);
-	}
-	public static Date transferStringToDate(String d) throws ParseException {
-		SimpleDateFormat DATA_FORMAT_yyyyMMddHHmmss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }
+
+    public static Date transferStringToDate(String d) throws ParseException {
+        SimpleDateFormat DATA_FORMAT_yyyyMMddHHmmss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return DATA_FORMAT_yyyyMMddHHmmss.parse(d);
-	}
-	public static Date transferStringToDate(String d,String formate) throws ParseException {
-		SimpleDateFormat FORMAT = new SimpleDateFormat(formate);
+    }
+
+    public static Date transferStringToDate(String d, String formate) throws ParseException {
+        SimpleDateFormat FORMAT = new SimpleDateFormat(formate);
         return FORMAT.parse(d);
 	}
 	public static String getTaskTypeByBaseAndOwnSign(String baseType,String ownSign){

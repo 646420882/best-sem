@@ -13,13 +13,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
-public class ConsoleManager {	
+public class ConsoleManager {
 	protected static transient Logger log = LoggerFactory.getLogger(ConsoleManager.class);
 	public final static String configFile = System.getProperty("user.dir") + File.separator
 			+ "pamirsScheduleConfig.properties";
 
-	private static TBScheduleManagerFactory scheduleManagerFactory;	
-    
+	private static TBScheduleManagerFactory scheduleManagerFactory;
+
 	public static boolean isInitial() throws Exception {
 		return scheduleManagerFactory != null;
 	}
@@ -30,7 +30,7 @@ public class ConsoleManager {
 		File file = new File(configFile);
 		scheduleManagerFactory = new TBScheduleManagerFactory();
 		scheduleManagerFactory.start = false;
-		
+
 		if(file.exists() == true){
 			Properties p = new Properties();
 			FileReader reader = new FileReader(file);

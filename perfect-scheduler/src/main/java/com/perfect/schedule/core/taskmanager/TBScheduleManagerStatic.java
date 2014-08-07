@@ -8,14 +8,11 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 public class TBScheduleManagerStatic extends TBScheduleManager {
-	private static transient Logger log = LoggerFactory.getLogger(TBScheduleManagerStatic.class);
-    /**
-
-	 */
-    protected int taskItemCount =0;
+    private static transient Logger log = LoggerFactory.getLogger(TBScheduleManagerStatic.class);
+    protected int taskItemCount = 0;
 
     protected long lastFetchVersion = -1;
-    
+
     private final Object NeedReloadTaskItemLock = new Object();
 
 	public TBScheduleManagerStatic(TBScheduleManagerFactory aFactory,
