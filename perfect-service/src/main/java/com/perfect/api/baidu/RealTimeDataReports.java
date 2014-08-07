@@ -238,7 +238,7 @@ public class RealTimeDataReports {
         //得到设置返回数据工厂
         RealTimeRequestType requestType = new RealTimeRequestType();
         //指定返回数据类型
-        requestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "ctr", "cost", "cpc", "position", "conversion"}));
+        requestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "ctr", "cost", "cpc", "conversion"}));
 
         //关键词统计范围下的id集合
         requestType.setStatIds(allAdgroupId);
@@ -276,7 +276,7 @@ public class RealTimeDataReports {
         //得到设置返回数据工厂
         RealTimeRequestType requestType = new RealTimeRequestType();
         //指定返回数据类型
-        requestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "ctr", "cost", "cpc", "position", "conversion"}));
+        requestType.setPerformanceData(Arrays.asList(new String[]{"impression", "click", "ctr", "cost", "cpc", "conversion"}));
 
         //关键词统计范围下的id集合
         requestType.setStatIds(allAdgroupId);
