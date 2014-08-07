@@ -47,18 +47,18 @@
     </script>
 </head>
 <body>
-<h1>Spring MVC - jQuery File Upload</h1>
+<h4>Spring MVC - jQuery File Upload</h4>
 <div style="width:500px;padding:20px">
 
     <input id="fileupload" type="file" name="files[]" data-url="/upload/up" multiple>
 
-    <div id="dropzone">Drop files here</div>
+    <div id="dropzone" class="fade well">Drop files here</div>
 
-    <div id="progress" class="bar">
-        <div style="width: 0%;"></div>
+    <div id="progress" class="progress">
+        <div style="width: 0%;" class="bar"></div>
     </div>
 
-    <table id="uploaded-files">
+    <table id="uploaded-files" class="table">
         <tr>
             <th>File Name</th>
             <th>File Size</th>

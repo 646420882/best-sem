@@ -1,6 +1,9 @@
 package com.perfect.app.batchUpload.controller;
 
+import com.google.common.io.Files;
 import com.perfect.app.batchUpload.vo.FileMeta;
+import com.perfect.entity.CSVEntity;
+import com.perfect.utils.ReadCSV;
 import com.perfect.utils.web.WebContextSupport;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by XiaoWei on 2014/8/4.
@@ -24,8 +28,10 @@ import java.util.LinkedList;
 @Controller
 @RequestMapping("/upload")
 public class uploadManager extends WebContextSupport {
-      LinkedList<FileMeta> files = new LinkedList<FileMeta>();
-      FileMeta fileMeta = null;
+    private final static String  DIR="D:/temp/files/";
+    LinkedList<FileMeta> files = new LinkedList<FileMeta>();
+    FileMeta fileMeta = null;
+
     /**
      * 跳转至批量上传页面
      *
@@ -39,51 +45,55 @@ public class uploadManager extends WebContextSupport {
     @RequestMapping(value = "/up", method = RequestMethod.POST)
     public @ResponseBody LinkedList<FileMeta> upload(MultipartHttpServletRequest request, HttpServletResponse response) {
         //1. build an iterator
-        Iterator<String> itr =  request.getFileNames();
+        Iterator<String> itr = request.getFileNames();
         MultipartFile mpf = null;
+        String fileName=null;
         //2. get each file
-        while(itr.hasNext()){
-
+        while (itr.hasNext()) {
             //2.1 get next MultipartFile
             mpf = request.getFile(itr.next());
-            System.out.println(mpf.getOriginalFilename() +" uploaded! "+files.size());
+            System.out.println(mpf.getOriginalFilename() + " uploaded! " + files.size());
 
             //2.2 if files > 10 remove the first from the list
-            if(files.size() >= 10)
+            if (files.size() >= 10)
                 files.pop();
 
             //2.3 create new fileMeta
             fileMeta = new FileMeta();
             fileMeta.setFileName(mpf.getOriginalFilename());
-            fileMeta.setFileSize(mpf.getSize()/1024+" Kb");
+            fileMeta.setFileSize(mpf.getSize() / 1024 + " Kb");
             fileMeta.setFileType(mpf.getContentType());
 
             try {
                 fileMeta.setBytes(mpf.getBytes());
-
-                // copy file to local disk (make sure the path "e.g. D:/temp/files" exists)
-                FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream("D:/temp/files/" + mpf.getOriginalFilename()));
+                fileName=mpf.getOriginalFilename();
+                FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(DIR+ mpf.getOriginalFilename()));
 
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            //2.4 add to files
             files.add(fileMeta);
+            String realPath=DIR+fileName;
+            ReadCSV p=new ReadCSV(realPath,"GBK");
+            List<CSVEntity> list=p.getList();
+            for (CSVEntity m:list){
+                System.out.println(m.getLineNumber()+">>");
+            }
         }
+
         // result will be like this
         // [{"fileName":"app_engine-85x77.png","fileSize":"8 Kb","fileType":"image/png"},...]
         return files;
     }
+
     @RequestMapping(value = "/get/{value}", method = RequestMethod.GET)
-    public void get(HttpServletResponse response,@PathVariable String value){
+    public void get(HttpServletResponse response, @PathVariable String value) {
         FileMeta getFile = files.get(Integer.parseInt(value));
         try {
             response.setContentType(getFile.getFileType());
-            response.setHeader("Content-disposition", "attachment; filename=\""+getFile.getFileName()+"\"");
+            response.setHeader("Content-disposition", "attachment; filename=\"" + getFile.getFileName() + "\"");
             FileCopyUtils.copy(getFile.getBytes(), response.getOutputStream());
-        }catch (IOException e) {
-            // TODO Auto-generated catch block
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
