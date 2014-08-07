@@ -96,6 +96,7 @@ $.fn.extend({
 
             function gridClass(){
                 this.load = function (start){
+                    alert(start);
                     if(start==-1){
                         start = 1;
                         currentPage = 0;
@@ -103,7 +104,7 @@ $.fn.extend({
                     }
 
                     var param = config.where?config.where():{};
-                    param["pageSize"] =15;// config.pageSize;
+                    param["pageSize"] =config.pageSize;
                     if(maxPage==0||(start!=currentPage&&start>=1&&start<=maxPage)){
                         param.start = start;
                         $.get(config.url,param,function(json){

@@ -1,17 +1,17 @@
 /***mid***/
 .mid {
 	width: 85%;
-	background: url(/public/img/concent_bg.jpg) repeat;
-	position: relative;
-	min-height: 1140px;
+    min-height:901px;
 }
 .concent {
-	min-height: 800px;
+	position: relative;
+	background: url(/public/img/concent_bg.jpg) repeat;
 	font-family:"微软雅黑";
 	font-size:12px;
+
 }
 #tab {
-	padding-bottom: 80px;
+    padding-bottom:30px;
 	overflow: hidden;
 }
 .tab_menu {
@@ -30,6 +30,7 @@
 	color: #6f6f6f;
 	background: url(/public/img/border.png) right no-repeat;
 	font-size: 14px;
+    cursor: pointer;
 }
 .tab_box {
 	clear: both;
@@ -44,6 +45,7 @@
 }
 .tab_box {
 	padding: 20px 3%;
+	margin-bottom:80px;
 }
 .list01 {
 	padding-top: 50px;
@@ -78,46 +80,53 @@
 .list01_top ul {
 	display: block;
 	float: left;
-	width: 369px;
 	height: 25px;
 	margin-left: 25px;
-	overflow: hidden;
+    border:1px solid #d6d6d6;
+    background:#fff;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    position:relative;
+    z-index: 3;
+    behavior: url(iecss3.htc);
+    overflow: hidden;
 }
 .list01_top ul li {
 	display: block;
 	float: left;
 	height: 25px;
 	line-height: 25px;
-	background: url(/public/img/time_bg_mid.png) repeat;
 	font-size: 12px;
 	font-weight: normal;
+
 }
 .list01_top ul li a {
-	width: 88px;
+	width: 88.5px;
 	text-align: center;
 	color: #000000;
+    cursor:default ;
 }
 .list01_top ul li a:hover {
-	background: url(/public/img/time_hover.jpg) repeat;
-	color: #fff;
 	text-decoration:none;
 }
 .list01_top ul .current {
-	background: url(/public/img/bg.png) -10px -92px no-repeat;
+	background:#f5b802;
+    color:#fff;
 }
 .list01_top ul .current a {
 	color: #fff;
 	background: url(/public/img/colock.png) 8px 4px no-repeat;
+    text-decoration: none;
 }
-.list01_top ul .current a:hover {
-	background: url(/public/img/colock.png) 8px 4px no-repeat;
+.list01_top ul .current a:hover{
+    text-decoration: none;
+
 }
+
 .list01_top ul .date {
 	position: relative;
-	background: url(/public/img/bg.png) -10px -120px no-repeat;
-}
-.list01_top ul .date a:hover {
-	background: url(/public/img/bg.png) -10px -150px no-repeat;
+
 }
 .list01_top ul .date input {
 	position: absolute;
@@ -267,6 +276,7 @@
 	width: 100%;
 	line-height: 30px;
 	background: #fff;
+
 	overflow: hidden;
 }
 .list2 table tr td {
@@ -281,7 +291,7 @@
 	float: left;
 	width: 100%;
 	height: 30px;
-	border-bottom:0px;
+	margin-bottom:0px;
 	overflow: hidden;
 }
 .list2 table tr td ul li {
@@ -292,6 +302,7 @@
 	padding-left: 10px;
 	overflow: hidden;
 }
+.list2 table tr td ul li p{ margin:0px;}
 .list2 table tr td ul li ul {
 	width: 50%;
 }
@@ -308,6 +319,7 @@
  *display:inline-block;
 *float:none;
 }
+.list2 table p{ margin:0px;}
 .list2 table b {
 	display: block;
 	float: left;
@@ -328,8 +340,7 @@
 .list2 table .list2_top input {
 	display: block;
 	width: 7px;
-	/*height: 5px;
-	*/
+	height: 5px;
 	border: 0px;
 	margin-left: 4px;
 	margin-top: 2px;
@@ -348,6 +359,7 @@
 .list2 table .list2_box1 {
 	background: #f7f9fb;
 }
+.list2 table .list2_box1:hover,.list2 table .list2_box2:hover { background:#e1e4e5;}
 .list2 table .list2_box2 {
 	background: #ecf3f9;
 	border-bottom: 1px solid #ffffff;
@@ -480,4 +492,41 @@
 }
 .list03 table tr td span strong {
 	color: #ee410c;
+}
+/**曲线图顶部**/
+.tu_top ul li{
+    display:block;
+    float:left;
+    margin-left:3px;
+}
+.tu_top ul li input ,.tu_top ul li span ,.tu_top ul li b{
+    display:block;
+    float:left;
+    font-weight:normal;
+    margin:0 2px;
+}
+.tu_top ul li span{
+    width:13px;
+    height:13px;
+}
+.tu_top ul li .blue{
+    background:#078cc7;
+}
+.tu_top ul li .green{
+    background:#40bc2a;
+}
+.tu_top ul li .red{
+    background:#f1521b;
+}
+.tu_top ul li .blue2{
+    background:#26cae5;
+}
+.tu_top ul li .green2{
+    background:#60e47e;
+}
+.tu_top ul li .yellow{
+    background:#dedf00;
+}
+.tu_top ul li .orange{ 
+    background:#de833a;
 }

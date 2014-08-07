@@ -5,7 +5,6 @@ import com.perfect.schedule.core.strategy.ScheduleStrategy.Kind;
 public class ScheduleStrategyRuntime {
 
     /**
-     * ��������
      */
     String strategyName;
     String uuid;
@@ -14,18 +13,15 @@ public class ScheduleStrategyRuntime {
     private Kind kind;
 
     /**
-     * Schedule Name,Class Name��Bean Name
      */
     private String taskName;
 
     private String taskParameter;
 
     /**
-     * ��Ҫ����������
      */
     int requestNum;
     /**
-     * ��ǰ����������
      */
     int currentNum;
 

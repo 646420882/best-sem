@@ -6,7 +6,9 @@
 a {
 	text-decoration: none;
 }
-a:hover{text-decoration: none;}
+a:hover {
+	text-decoration: none;
+}
 ul, li, h1, h2, h3, h4, h5, h6 {
 	list-style: none;
 }
@@ -57,7 +59,7 @@ html {
 .logo img {
 	width: 151px;
 	hright: 53px;
-	*margin-top:-10px;
+ *margin-top:-10px;
 }
 .logo_text {
 	color: #fff;
@@ -70,6 +72,7 @@ html {
 	height: 32px;
 	line-height: 32px;
 	background: url(/public/img/user_bg.jpg) repeat-x;
+    padding: 0 5%;
 }
 .on_title {
 	padding-left: 20px;
@@ -84,9 +87,7 @@ html {
 .on_title span {
 	color: #8e8e8e;
 }
-.user_img {
-	margin-left: 20px;
-}
+
 .user_img span {
 	display: block;
 	float: left;
@@ -96,11 +97,9 @@ html {
 	font-family: "微软雅黑";
 }
 .user_img .img {
-	padding-top: 5px;
+	padding-top: 4px;
 }
-.user_close {
-	padding-right: 12px;
-}
+
 .user_close a {
 	color: #252525;
 }
@@ -111,9 +110,12 @@ html {
 .nav {
 	width: 15%;
 	border-top: 1px solid #48464c;
-	
+	max-height: 900px;
+   *max-height:902px;
 }
-.nav_left { width:97%;}
+.nav_left {
+	width: 97%;
+}
 .nav_top {
 	height: 34px;
 	line-height: 34px;
@@ -130,17 +132,15 @@ html {
 	height: 9px;
 	background: url(/public/img/bg.png) -74px -10px no-repeat;
 }
-.nav_mid{
-	padding-top:10px;
+.nav_mid {
+	padding-top: 10px;
 	background: #272537 url(/public/img/nav_bg.jpg) top no-repeat;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
 	min-height: 1140px;
-	
-
-	}
+}
 .nav_under {
 	padding: 0 10%;
 }
@@ -158,7 +158,7 @@ html {
 }
 .nav_under ul li a:hover {
 	color: #fff;
-	text-decoration:none;
+	text-decoration: none;
 }
 .nav_under ul li span {
 	display: block;
@@ -204,5 +204,20 @@ html {
 	background: url(/public/img/bg.png) -73px -71px no-repeat;
 }
 /*底部*/
-.footer{width:100%; margin-top:80px; height:80px; padding-top:20px; border-top:1px solid #d1d1d1; text-align:center; line-height:30px; color:#999999;	font-family: "微软雅黑"; position:absolute;bottom:0px; }
-.footer a{color:#999999; padding:0 10px;}
+.footer {
+	width: 85%;
+	height: 80px;
+	padding-top: 20px;
+	border-top: 1px solid #d1d1d1;
+	text-align: center;
+	line-height: 30px;
+	color: #999999;
+	font-family: "微软雅黑";
+	position: absolute;
+   bottom: 20px;
+    margin-top: 80px;
+}
+.footer a {
+	color: #999999;
+	padding: 0 10px;
+}

@@ -38,7 +38,7 @@ public class AdgroupController {
                                                @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
         AbstractView jsonView = new MappingJackson2JsonView();
         List<AdgroupEntity> list = adgroupDAO.getAdgroupByCampaignId(campaignId, null, skip, limit);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list.toArray(new AdgroupEntity[list.size()]));
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }
@@ -47,7 +47,7 @@ public class AdgroupController {
     public ModelAndView getAdgroupIdByCampaignId(@PathVariable Long campaignId) {
         AbstractView jsonView = new MappingJackson2JsonView();
         List<Long> list = adgroupDAO.getAdgroupIdByCampaignId(campaignId);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list.toArray(new Long[list.size()]));
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }
@@ -66,7 +66,7 @@ public class AdgroupController {
                                    @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
         AbstractView jsonView = new MappingJackson2JsonView();
         List<AdgroupEntity> list = adgroupDAO.find(null, skip, limit);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list.toArray(new AdgroupEntity[list.size()]));
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }
@@ -79,7 +79,7 @@ public class AdgroupController {
 
     @RequestMapping(value = "/{adgroupId}/update", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView update(@PathVariable Long adgroupId, @RequestParam(value = "adgroupEntity") String adgroupStr) {
-        AdgroupEntity adgroupEntity = (AdgroupEntity) JSONUtils.getObjectByJSON(adgroupStr, AdgroupEntity.class);
+        AdgroupEntity adgroupEntity = (AdgroupEntity) JSONUtils.getObjectByJson(adgroupStr, AdgroupEntity.class);
         adgroupDAO.update(adgroupEntity);
         return new ModelAndView(getJsonView());
     }

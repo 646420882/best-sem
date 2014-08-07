@@ -44,7 +44,7 @@ public class CampaignController {
     public ModelAndView getAllCampaign() {
         AbstractView jsonView = new MappingJackson2JsonView();
         List<CampaignEntity> list = campaignDAO.findAll();
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list.toArray(new CampaignEntity[list.size()]));
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }
@@ -57,7 +57,7 @@ public class CampaignController {
 
     @RequestMapping(value = "/{campaignId}/update", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView update(@PathVariable Long campaignId, @RequestParam(value = "campaignEntity") String campaignStr) {
-        CampaignEntity campaignEntity = (CampaignEntity) JSONUtils.getObjectByJSON(campaignStr, CampaignEntity.class);
+        CampaignEntity campaignEntity = (CampaignEntity) JSONUtils.getObjectByJson(campaignStr, CampaignEntity.class);
         campaignDAO.update(campaignEntity);
         return new ModelAndView(getJsonView());
     }

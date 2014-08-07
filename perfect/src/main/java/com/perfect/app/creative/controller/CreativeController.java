@@ -36,7 +36,7 @@ public class CreativeController {
     public ModelAndView getCreativeIdByAdgroupId(@PathVariable Long adgroupId) {
         AbstractView jsonView = new MappingJackson2JsonView();
         List<Long> creativeIds = creativeDAO.getCreativeIdByAdgroupId(adgroupId);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(creativeIds.toArray(new Long[creativeIds.size()]));
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(creativeIds);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }
@@ -47,7 +47,7 @@ public class CreativeController {
                                                @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
         AbstractView jsonView = new MappingJackson2JsonView();
         List<CreativeEntity> list = creativeDAO.getCreativeByAdgroupId(adgroupId, null, skip, limit);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list.toArray(new CreativeEntity[list.size()]));
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }
@@ -65,7 +65,7 @@ public class CreativeController {
                                    @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
         AbstractView jsonView = new MappingJackson2JsonView();
         List<CreativeEntity> _list = creativeDAO.find(null, skip, limit);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(_list.toArray(new CreativeEntity[_list.size()]));
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(_list);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }
@@ -78,7 +78,7 @@ public class CreativeController {
 
     @RequestMapping(value = "/{creativeId}/update", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView update(@PathVariable Long creativeId, @RequestParam(value = "creativeEntity") String creativeStr) {
-        CreativeEntity creativeEntity = (CreativeEntity) JSONUtils.getObjectByJSON(creativeStr, CreativeEntity.class);
+        CreativeEntity creativeEntity = (CreativeEntity) JSONUtils.getObjectByJson(creativeStr, CreativeEntity.class);
         creativeDAO.update(creativeEntity);
         return new ModelAndView(getJsonView());
     }

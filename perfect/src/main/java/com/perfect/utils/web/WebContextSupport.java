@@ -1,6 +1,9 @@
 package com.perfect.utils.web;
 
-import net.sf.json.JSONSerializer;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Repository;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -8,7 +11,8 @@ import java.io.IOException;
 /**
  * Created by XiaoWei on 2014/7/28.
  */
-public class WebContextSupport implements  WebContext {
+@Repository(value = "webContext")
+public class WebContextSupport implements WebContext {
     @Override
     public void writeHtml(String html, HttpServletResponse response) {
         try {
@@ -26,11 +30,16 @@ public class WebContextSupport implements  WebContext {
 
     @Override
     public void writeObject(Object obj, HttpServletResponse res) {
-        writeObject(obj,res);
+        writeObject(obj, res);
     }
 
     @Override
     public void wirteJson(Object obj, HttpServletResponse res) {
-        writeHtml(JSONSerializer.toJSON(obj).toString(),res);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            writeHtml(objectMapper.writeValueAsString(obj), res);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 }

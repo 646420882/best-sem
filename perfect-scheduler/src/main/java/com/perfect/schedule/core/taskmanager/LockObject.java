@@ -9,16 +9,12 @@ class LockObject {
 
     public void waitCurrentThread() throws Exception {
         synchronized (m_waitOnObject) {
-            // System.out.println(Thread.currentThread().getName() + ":" +
-            // "���ߵ�ǰ�߳�");
             this.m_waitOnObject.wait();
         }
     }
 
     public void notifyOtherThread() throws Exception {
         synchronized (m_waitOnObject) {
-            // System.out.println(Thread.currentThread().getName() + ":" +
-            // "�������еȴ��߳�");
             this.m_waitOnObject.notifyAll();
         }
     }
@@ -36,7 +32,6 @@ class LockObject {
     }
 
     /**
-     * �����߳���������������һ���̣߳���������
      *
      * @return boolean
      */
