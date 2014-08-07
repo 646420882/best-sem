@@ -87,12 +87,8 @@ public class BiddingRuleDAOImpl extends AbstractBaseDAOImpl<BiddingRuleEntity> i
     private Update getUpdate(BiddingRuleEntity entity) {
         Update update = new Update();
 
-        if (entity.getStartTime() > 0) {
-            update = update.addToSet("start", entity.getStartTime());
-        }
-
-        if (entity.getEndTime() > 0) {
-            update = update.addToSet("end", entity.getEndTime());
+        if (entity.getNextRunTime() > 0) {
+            update = update.addToSet("next", entity.getNextRunTime());
         }
 
         if (entity.getPosition() > 0) {
