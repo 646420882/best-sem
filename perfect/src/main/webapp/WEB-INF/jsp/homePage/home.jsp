@@ -92,7 +92,7 @@
                     </li>
                     <li>
                         <span class="list7"></span>
-                        <a href="#">
+                        <a href="/keyword_group">
                             智能分组
                         </a>
                     </li>
