@@ -17,29 +17,28 @@
  */
 package com.perfect.autosdk.core;
 
+import com.perfect.autosdk.exception.ApiException;
+import com.perfect.autosdk.util.PrintUtil;
+import com.perfect.redis.JRedisUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import redis.clients.jedis.Jedis;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.perfect.autosdk.exception.ApiException;
-import com.perfect.autosdk.util.PrintUtil;
-
 
 /**
  * @author @author@ (@author-email@)
- * 
  * @version @version@, $Date: 2011-5-10$
- * 
  */
 public class JsonProxy<I> implements InvocationHandler {
     protected static final Log log = LogFactory.getLog(JsonProxy.class);
-    
+
     private Class<I> interfaces;
     private CommonService service;
-    
+
     /**
      * @param interfaces
      */
@@ -51,13 +50,13 @@ public class JsonProxy<I> implements InvocationHandler {
 
     /**
      * Create the proxy instance of api client stub. Proxied by JsonProxy.
-     * 
-     * @param <T> The proxy instannce type.
+     *
+     * @param <T>        The proxy instannce type.
      * @param interfaces The proxy instannce type class.
-     * @param service The original object.
+     * @param service    The original object.
      * @return The proxied object.
-     * @throws ApiException 
-     * @throws Throwable 
+     * @throws ApiException
+     * @throws Throwable
      */
     @SuppressWarnings("unchecked")
     public static <T> T createProxy(Class<T> interfaces, CommonService service) throws ApiException {
@@ -78,18 +77,21 @@ public class JsonProxy<I> implements InvocationHandler {
         conn.setConnectTimeout(service.connectTimeoutMills);
         conn.setReadTimeout(service.readTimeoutMills);
         conn.sendRequest(makeRequest(args[0]));
+        Jedis jedis = JRedisUtils.get();
+        long v = jedis.incr("PEI_E");
+        if (v == 1)
+            jedis.expire("PEI_E", 7 * 24 * 60 * 60);
         JsonEnvelop<ResHeader, ?> response = conn.readResponse(ResHeader.class, method.getReturnType());
         ResHeaderUtil.resHeader.set(response.getHeader());
         return response.getBody();
     }
-    
+
     private <K> JsonEnvelop<?, ?> makeRequest(Object args) {
         JsonEnvelop<AuthHeader, Object> body = new JsonEnvelop<AuthHeader, Object>();
         body.setHeader(service.authHeader);
         body.setBody(args);
         return body;
     }
-    
-    
+
 
 }
