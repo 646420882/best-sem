@@ -4,6 +4,7 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.KeywordQualityDAO;
 import com.perfect.entity.KCRealTimeDataEntity;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
+import com.perfect.utils.UserUtil;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -25,9 +26,7 @@ import java.util.concurrent.RecursiveTask;
 @Repository("KeywordQualityDAO")
 public class KeywordQualityDAOImpl implements KeywordQualityDAO {
 
-    private String currUserName = AppContext.getUser().toString();
-
-    private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_perfect_report");
+    private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(UserUtil.getDatabaseName(AppContext.getUser().toString(), "report"));
 
     private Class<KCRealTimeDataEntity> _class = KCRealTimeDataEntity.class;
 
@@ -41,7 +40,6 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
     public KCRealTimeDataEntity[] find(String _startDate, String _endDate, String fieldName, int limit, int sort) {
         this.sort = sort;
         this.topN = limit;
-        currUserName = currUserName.substring(0, 1).toUpperCase() + currUserName.substring(1, currUserName.length());
         Date startDate = null, endDate = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
