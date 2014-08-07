@@ -7,7 +7,7 @@ import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.InitializeAccountDAO;
 import com.perfect.entity.AccountRealTimeDataVOEntity;
-import com.perfect.entity.KCRealTimeDataEntity;
+import com.perfect.entity.KeywordRealTimeDataEntity;
 import com.perfect.mongodb.utils.BaseBaiduService;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -67,7 +67,7 @@ public class InitializeAccountDAOImpl implements InitializeAccountDAO {
 
         //数据存储处理
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_perfect_report");
-        List<KCRealTimeDataEntity> listVO = new ArrayList<>();
+        List<KeywordRealTimeDataEntity> listVO = new ArrayList<>();
 
         String logDate = list1.get(0).getDate();
 
@@ -75,19 +75,18 @@ public class InitializeAccountDAOImpl implements InitializeAccountDAO {
         String collectionName = logDate + "-KC";
         for (RealTimeResultType entity : list1) {
             //创建日志内容
-            KCRealTimeDataEntity vo = new KCRealTimeDataEntity();
+            KeywordRealTimeDataEntity vo = new KeywordRealTimeDataEntity();
             vo.setKeywordId(entity.getID());
             vo.setKeywordName(entity.getName().get(3));
             vo.setAdgroupName(entity.getName().get(2));
             vo.setCampaignName(entity.getName().get(1));
-            vo.setType(1);
-            vo.setImpression(Integer.valueOf(entity.getKPI(0)));
-            vo.setClick(Integer.valueOf(entity.getKPI(1)));
-            vo.setCtr(Double.valueOf(entity.getKPI(2)));
-            vo.setCost(Double.valueOf(entity.getKPI(3)));
-            vo.setCpc(Double.valueOf(entity.getKPI(4)));
-            vo.setPosition(Double.valueOf(entity.getKPI(5)));
-            vo.setConversion(Double.valueOf(entity.getKPI(6)));
+            vo.setPcImpression(Integer.valueOf(entity.getKPI(0)));
+            vo.setPcClick(Integer.valueOf(entity.getKPI(1)));
+            vo.setPcCtr(Double.valueOf(entity.getKPI(2)));
+            vo.setPcCost(Double.valueOf(entity.getKPI(3)));
+            vo.setPcCpc(Double.valueOf(entity.getKPI(4)));
+            vo.setPcPosition(Double.valueOf(entity.getKPI(5)));
+            vo.setPcConversion(Double.valueOf(entity.getKPI(6)));
             //日期
             if (!logDate.equals(entity.getDate())) {
                 mongoTemplate.insert(listVO, collectionName);
