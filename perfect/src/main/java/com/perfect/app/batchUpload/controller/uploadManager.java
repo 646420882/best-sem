@@ -48,17 +48,16 @@ public class uploadManager extends WebContextSupport {
         Iterator<String> itr = request.getFileNames();
         MultipartFile mpf = null;
         String fileName=null;
-        //2. get each file
+
         while (itr.hasNext()) {
-            //2.1 get next MultipartFile
+
             mpf = request.getFile(itr.next());
             System.out.println(mpf.getOriginalFilename() + " uploaded! " + files.size());
 
-            //2.2 if files > 10 remove the first from the list
+
             if (files.size() >= 10)
                 files.pop();
 
-            //2.3 create new fileMeta
             fileMeta = new FileMeta();
             fileMeta.setFileName(mpf.getOriginalFilename());
             fileMeta.setFileSize(mpf.getSize() / 1024 + " Kb");
@@ -74,11 +73,11 @@ public class uploadManager extends WebContextSupport {
             }
             files.add(fileMeta);
             String realPath=DIR+fileName;
-            ReadCSV p=new ReadCSV(realPath,"GBK");
-            List<CSVEntity> list=p.getList();
-            for (CSVEntity m:list){
-                System.out.println(m.getLineNumber()+">>");
-            }
+            /**
+             * 获取CSVEntity
+             */
+//            ReadCSV p=new ReadCSV(realPath,"GBK");
+//            List<CSVEntity> list=p.getList();
         }
 
         // result will be like this
