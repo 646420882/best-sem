@@ -12,15 +12,17 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <style type="text/css">
-        .list2 table tr td ul li{
-            width:19%;
+        .list2 table tr td ul li {
+            width: 19%;
 
         }
-        .download{
-            margin-left:20px;
+
+        .download {
+            margin-left: 20px;
         }
-        .download a{
-            margin-right:20px;
+
+        .download a {
+            margin-right: 20px;
         }
 
     </style>
@@ -80,7 +82,7 @@
             <div class="k_top2_text fl">
                 <div class="k_top2_text1"><textarea> </textarea></div>
                 <p>可输入词根99/100</p>
-                <a href="#" class="become2">开始拓词</a>
+                <a href="javascript: findWord();" class="become2">开始拓词</a>
 
             </div>
             <div class="K_top2_detali fr over">
@@ -291,18 +293,33 @@
 </div>
 </div>
 </div>
+<iframe id="tmp_downloadhelper_iframe" style="display: none">#document</iframe>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript">
     $(function () {
         var $tab_li = $('.tab_menu2 li');
-        $('.tab_menu2 li').click(function(){
+        $('.tab_menu2 li').click(function () {
             $(this).addClass('current').siblings().removeClass('current');
             var index = $tab_li.index(this);
             $('div.table_concent2  > div').eq(index).show().siblings().hide();
         });
     });
+
+    var findWord = function () {
+        var krFilePath = "";
+        $.ajax({
+            url: "/getKRWords",
+            type: "GET",
+            async: false,
+            data: {},
+            success: function (data, textStatus, jqXHR) {
+                krFilePath = data.filePath;
+            }
+        });
+        document.getElementById("tmp_downloadhelper_iframe").src = krFilePath;
+    };
 </script>
 </body>
 </html>

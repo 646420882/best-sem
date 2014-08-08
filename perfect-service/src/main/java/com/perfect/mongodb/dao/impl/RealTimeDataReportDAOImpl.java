@@ -131,6 +131,9 @@ public class RealTimeDataReportDAOImpl implements RealTimeDataReportDAO {
                 AdgroupRealTimeDataHandler task2 = new AdgroupRealTimeDataHandler(pcList, middle, last);
 
                 invokeAll(task1, task2);
+                list.clear();
+                list.addAll(task1.join());
+                list.addAll(task2.join());
             }
             System.out.println(list.size() + "***********************");
             return list;
