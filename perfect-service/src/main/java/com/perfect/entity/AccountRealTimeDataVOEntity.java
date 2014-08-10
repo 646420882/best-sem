@@ -1,15 +1,14 @@
 package com.perfect.entity;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
 /**
- * Created by baizz on 14-7-30.
+ * Created by baizz on 2014-07-30.
  */
-@Document(collection = "AccountRealTimeData")
+@Document(collection = "accountRealTimeData")
 public class AccountRealTimeDataVOEntity {
 
     private Long accountId;

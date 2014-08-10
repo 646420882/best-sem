@@ -17,18 +17,18 @@
  */
 package com.perfect.autosdk.core;
 
-import java.util.Properties;
-import java.util.Map.Entry;
-
 import com.perfect.autosdk.exception.ApiException;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * The Service Factory, please use this class to create client side service stub.
- * 
+ *
  * @author @author@ (@author-email@)
- * 
  * @version @version@, $Date: 2010-7-30$
- * 
  */
 public class ServiceFactory extends CommonService {
 
@@ -44,7 +44,8 @@ public class ServiceFactory extends CommonService {
 
     /**
      * Create ServiceFactory by default properties file: baidu-api.properties
-     * @throws ApiException 
+     *
+     * @throws ApiException
      */
     public ServiceFactory() throws ApiException {
         this("/baidu-api.properties");
@@ -52,16 +53,27 @@ public class ServiceFactory extends CommonService {
 
     /**
      * Create ServiceFactory by the given properties file.
-     * 
-     * @param propertiesFileName
-     *            The configuration file name. This file must be put in the classpath.
-     * @throws ApiException 
+     *
+     * @param propertiesFileName The configuration file name. This file must be put in the classpath.
+     * @throws ApiException
      */
     public ServiceFactory(String propertiesFileName) throws ApiException {
         super();
         Properties props = new Properties();
         try {
-            props.load(ServiceFactory.class.getResourceAsStream(propertiesFileName));
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    ServiceFactory.class.getResourceAsStream(propertiesFileName), "UTF-8"));
+            String str;
+            int index;
+            while ((str = br.readLine()) != null) {
+                if (str.startsWith("#")) {
+                    continue;
+                }
+                index = str.indexOf("=");
+                props.put(str.substring(0, index), str.substring(index + 1));
+            }
+            br.close();
+            //props.load(ServiceFactory.class.getResourceAsStream(propertiesFileName));
             readConfig(props);
             if (disableCNCheck) {
                 // Pass the Host name Verifier, always return true.
@@ -75,9 +87,9 @@ public class ServiceFactory extends CommonService {
 
     /**
      * Get an instance of ServiceFactory, use <code>baidu-api.properties</code> as the configuration file.
-     * 
+     *
      * @return ServiceFactory
-     * @throws ApiException 
+     * @throws ApiException
      */
     public static ServiceFactory getInstance() throws ApiException {
         return new ServiceFactory();
@@ -85,10 +97,10 @@ public class ServiceFactory extends CommonService {
 
     /**
      * Get an instance of ServiceFactory, use the configuration file you provided.
-     * 
+     *
      * @param propertiesFileName
      * @return ServiceFactory
-     * @throws ApiException 
+     * @throws ApiException
      */
     public static ServiceFactory getInstance(String propertiesFileName) throws ApiException {
         return new ServiceFactory(propertiesFileName);
@@ -115,7 +127,7 @@ public class ServiceFactory extends CommonService {
     }
 
     public static ServiceFactory getInstance(String username, String password, String token, String target,
-            boolean isSoap) throws ApiException {
+                                             boolean isSoap) throws ApiException {
         ServiceFactory service = new ServiceFactory();
         service.setUsername(username);
         service.setPassword(password);

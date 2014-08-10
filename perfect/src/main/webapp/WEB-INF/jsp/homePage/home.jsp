@@ -92,7 +92,7 @@
                     </li>
                     <li>
                         <span class="list7"></span>
-                        <a href="#">
+                        <a href="/keyword_group">
                             智能分组
                         </a>
                     </li>
@@ -189,7 +189,7 @@
             </ul>
         </div>
     </div>
-    <div class="list01 over" style="border-top:1px solid #d5d5d8;">
+    <div class="list01 over" style="border-top:1px solid #d5d5d8; padding-top:20px;">
         <div class="list01_top over">
             <Span>近期概览</Span>
             <ul id="clickLis">
@@ -245,15 +245,15 @@
     <div class="list01 over" style="border-bottom:1px solid #d5d5d8;">
         <div class="list01_top over">
             <Span>账户趋势图</Span>
-            <a href="#" class="question"></a>
+            <a href="javascript:void(0)" class="question"></a>
             <ul>
-                <li>
-                    <a href="javascript:void(0)" onclick="loadPerformanceCurve(7)">
+                <li class="current" style="cursor: pointer">
+                    <a onclick="loadPerformanceCurve(7)">
                         近7天
                     </a>
                 </li>
-                <li>
-                    <a href="javascript:void(0)" onclick="loadPerformanceCurve(30)">
+                <li style="cursor: pointer">
+                    <a onclick="loadPerformanceCurve(30)">
                         近30天
                     </a>
                 </li>
@@ -269,21 +269,21 @@
         </div>
         <div class="shuju">
             <div id="containerLegend"></div>
-            <div id="container" style="width:1077px;height:400px"></div>
+            <div id="container" style="width:100%;height:400px"></div>
         </div>
     </div>
     <div class="list01_under3 over">
         <div class="list01_top over">
             <Span>分日表现</Span>
-            <a href="#" class="question"></a>
+            <a href="javascript:void(0)" class="question"></a>
             <ul>
-                <li>
-                    <a href="javascript:void(0)" onclick="loadPerformance(7)">
+                <li class="current" style="cursor: pointer">
+                    <a onclick="loadPerformance(7)" style="cursor:pointer">
                         近7天
                     </a>
                 </li>
-                <li>
-                    <a href="javascript:void(0)" onclick="loadPerformance(30)">
+                <li style="cursor: pointer">
+                    <a onclick="loadPerformance(30)" style="cursor:pointer">
                         近30天
                     </a>
                 </li>
@@ -2163,6 +2163,7 @@ var dataOne = "";
 var dataTow = "";
 //日期
 var t_date = new Array();
+var dateInterval = 0;
 var colorOne = "#4572A7";
 var colorTow = "#40BC2A";
 /**初始化结束**/
@@ -2218,8 +2219,13 @@ var loadPerformanceCurve = function (date) {
                     t_conversion.push(item.conversion);
                 })
             }
+            if(data.rows.length > 10){
+                dateInterval = 5;
+            }
         }
     });
+
+    dateInterval
     dataOne = {
         name: '展现',
         color: '#4572A7',
@@ -2510,11 +2516,10 @@ var curve = function(){
         subtitle: {
             text: ''
         },
-        xAxis: [
-            {
-                categories: t_date
-            }
-        ],
+        xAxis: {
+            categories: t_date,
+            tickInterval: (dateInterval)// 每个间隔
+        },
         yAxis: [
             { // Primary yAxis
                 labels: {
@@ -2534,6 +2539,9 @@ var curve = function(){
                 opposite: true
             }
         ],
+        credits:{
+            enabled:false
+        },
         tooltip: {
             shared: true
         },

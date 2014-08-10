@@ -1,7 +1,9 @@
 package com.perfect.app.homePage.service;
 
 import com.mongodb.DBObject;
+import com.perfect.api.baidu.AccountRealTimeData;
 import com.perfect.dao.AccountAnalyzeDAO;
+import com.perfect.entity.AccountRealTimeDataVOEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,33 +24,33 @@ public class AccountOverviewService {
 
     @Resource
     private AccountAnalyzeDAO accountAnalyzeDAO;
-    private static final String table = "-KeywordRealTimeData-log-";
 
+    private  DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     /**
      * 汇总。。。。
      * @return
      */
-    public  Map<String,Object> getKeyWordSum(String currLoginUserName,List<String> dates){
+    public  Map<String,Object> getKeyWordSum(String startDate,String endDate){
         //各种汇总初始化
         long impressionCount = 0 ;
         long clickCount = 0 ;
         double costCount = 0.0;
         double conversionCount = 0.0;
 
-        //当前登录用户名首字母大写
-        currLoginUserName =currLoginUserName.replaceFirst(currLoginUserName.substring(0, 1), currLoginUserName.substring(0, 1).toUpperCase());
-
 
          //开始获取数据汇总
-        for(String date:dates){
-           String userTable = currLoginUserName + table + date;
-           List<KeywordRealTimeDataVOEntity> list = accountAnalyzeDAO.performance(userTable);
+        List<AccountRealTimeDataVOEntity> list = null;
+        try {
+            list = accountAnalyzeDAO.performaneCurve(df.parse(startDate),df.parse(endDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-           for (KeywordRealTimeDataVOEntity krt : list) {
-               Integer impression = krt.getImpression();
-               Integer click = krt.getClick();
-               Double cost = krt.getCost();
-               Double conversion = krt.getConversion();
+        for (AccountRealTimeDataVOEntity ard : list) {
+               Integer impression = ard.getImpression();
+               Integer click = ard.getClick();
+               Double cost = ard.getCost();
+               Double conversion = ard.getConversion();
 
                if (impression != null) {
                    impressionCount += impression;
@@ -66,7 +68,6 @@ public class AccountOverviewService {
                    conversionCount += conversion;
                }
            }
-       }
 
         //数字格式化
         DecimalFormat decimalFormat = new DecimalFormat("#,##,###");

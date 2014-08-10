@@ -14,7 +14,7 @@
     <description>Spring public settings</description>
 
     <context:property-placeholder ignore-resource-not-found="true"
-                                  location="classpath:jdbc.properties"/>
+                                  location="classpath:jdbc.properties,classpath:mongodb.properties"/>
 
     <bean id="data_source" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClass}"/>
@@ -80,22 +80,25 @@
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+
     <!-- 使用annotation自动注册bean -->
     <context:annotation-config/>
     <context:component-scan base-package="com.perfect.*"/>
 
     <!-- MongoDB配置 -->
-    <mongo:mongo id="mongo" replica-set="182.92.188.177:27017">
-        <mongo:options connections-per-host="8"
-                       threads-allowed-to-block-for-connection-multiplier="4"
+    <mongo:mongo id="mongo" replica-set="${mongo.host}:${mongo.port}">
+        <mongo:options connections-per-host="20"
+                       threads-allowed-to-block-for-connection-multiplier="5"
                        auto-connect-retry="true"/>
     </mongo:mongo>
 
-    <mongo:db-factory id="mongoDbFactory" dbname="perfect_sys" mongo-ref="mongo" username="perfect" password="perfect"/>
-    <mongo:db-factory id="log4MongoDbFactory" dbname="perfect_log" mongo-ref="mongo" username="perfect"
-                      password="perfect"/>
+    <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"
+                      host="${mongo.host}" port="${mongo.port}"/>
+    <mongo:db-factory id="log4MongoDbFactory" dbname="user_perfect" mongo-ref="mongo"
+                      host="${mongo.host}" port="${mongo.port}"/>
 
     <mongo:mapping-converter id="mongoConverter"/>
+
     <bean id="noClassMongoConverter" class="com.perfect.mongodb.base.MongoConverterEnhanceFactoryBean">
         <property name="mongoConverter" ref="mongoConverter"/>
     </bean>

@@ -16,14 +16,15 @@
 
     <!-- MongoDBÅäÖÃ -->
     <mongo:mongo id="mongo" replica-set="182.92.188.177:27017">
-        <mongo:options connections-per-host="8"
-                       threads-allowed-to-block-for-connection-multiplier="4"
+        <mongo:options connections-per-host="20"
+                       threads-allowed-to-block-for-connection-multiplier="5"
                        auto-connect-retry="true"/>
     </mongo:mongo>
-    <mongo:db-factory id="mongoDbFactory" dbname="perfect_sys" mongo-ref="mongo"/>
-    <mongo:db-factory id="log4MongoDbFactory" dbname="perfect_log" mongo-ref="mongo"/>
+    <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"/>
+    <mongo:db-factory id="log4MongoDbFactory" dbname="user_perfect" mongo-ref="mongo"/>
 
     <mongo:mapping-converter id="mongoConverter"/>
+
     <bean id="noClassMongoConverter" class="com.perfect.mongodb.base.MongoConverterEnhanceFactoryBean">
         <property name="mongoConverter" ref="mongoConverter"/>
     </bean>

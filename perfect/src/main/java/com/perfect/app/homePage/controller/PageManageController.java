@@ -62,4 +62,14 @@ public class PageManageController {
         return new ModelAndView("homePage/home");
     }
 
+    /**
+     * 智能分组页面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/keyword_group", method = RequestMethod.GET)
+    public ModelAndView getKeywordGroupPage() {
+        return new ModelAndView("keywordGroup/keyword");
+    }
+
 }
