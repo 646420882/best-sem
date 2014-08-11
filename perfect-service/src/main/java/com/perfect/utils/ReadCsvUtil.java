@@ -2,6 +2,8 @@ package com.perfect.utils;
 
 
 import com.perfect.entity.CSVEntity;
+import com.perfect.entity.CSVTotalEntity;
+import com.perfect.entity.CSVUrlEntity;
 import org.apache.log4j.Logger;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;
@@ -12,13 +14,13 @@ import java.util.*;
 /**
  * Created by XiaoWei on 2014/8/7.
  */
-public class ReadCSV implements Iterator<List<String>> {
-    private static final Logger logger = Logger.getLogger(ReadCSV.class);
+public class ReadCsvUtil implements Iterator<List<String>> {
+    private static final Logger logger = Logger.getLogger(ReadCsvUtil.class);
     private CsvListReader reader = null;
     private List<String> row = null;
     private String encoding;
     private String csvFile;
-    public ReadCSV(String csvFile, String encoding) {
+    public ReadCsvUtil(String csvFile, String encoding) {
         super();
         try {
             this.encoding=encoding;
@@ -33,7 +35,7 @@ public class ReadCSV implements Iterator<List<String>> {
     @Override
     public boolean hasNext() {
         try {
-            if(reader.getLineNumber() == 0){//
+            if(reader.getLineNumber() == 0){
                 row = reader.read();
             }
             row = reader.read();
@@ -66,11 +68,11 @@ public class ReadCSV implements Iterator<List<String>> {
     }
 
     /**
-     * 获取list集合的对象
+     * 获取关键词CSV文件的list集合的对象
      * @return
      */
     public List<CSVEntity> getList(){
-        List<CSVEntity> list=new ArrayList<>();
+        List<CSVEntity> list=new LinkedList<>();
         while (hasNext()){
             List<String> row=next();
             CSVEntity csvEntity=new CSVEntity();
@@ -90,11 +92,11 @@ public class ReadCSV implements Iterator<List<String>> {
             csvEntity.setKeywordId(next().get(12));
             list.add(csvEntity);
         }
+        close();
         return list;
     }
-
     /**
-     * 获取map对象的CSV集合
+     * 获取关键词CSV文件的map对象的CSV集合
      * @return
      */
     public Map<Integer,CSVEntity> getMap(){
@@ -118,7 +120,34 @@ public class ReadCSV implements Iterator<List<String>> {
             csvEntity.setKeywordId(next().get(12));
             map.put(getLineNumber(),csvEntity);
         }
+        close();
         return map;
+    }
+
+    /**
+     * 获取CSVUrl地址的关键词中的数据
+     * @return  List<CSVUrlEntity>
+     */
+    public List<CSVUrlEntity> getUrlList(){
+        List<CSVUrlEntity> list=new LinkedList<>();
+        while (hasNext()){
+            CSVUrlEntity csvUrlEntity=new CSVUrlEntity();
+
+            list.add(csvUrlEntity);
+        }
+        close();
+        return list;
+    }
+
+    public List<CSVTotalEntity> getTotalList(){
+        List<CSVTotalEntity> list=new LinkedList<>();
+        while (hasNext()){
+            CSVTotalEntity csvTotalEntity=new CSVTotalEntity();
+
+            list.add(csvTotalEntity);
+        }
+        close();
+        return list;
     }
 
 }

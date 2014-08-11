@@ -1,9 +1,15 @@
 package com.perfect.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.io.Serializable;
+
 /**
  * Created by XiaoWei on 2014/8/7.
  */
-public class CSVEntity {
+@Document(collection = "cvsKeyword")
+public class CSVEntity implements Serializable{
     Integer lineNumber;//行号，也就是索引
     String account;//账号
     String plan;//计划
