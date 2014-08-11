@@ -13,7 +13,7 @@ import java.util.concurrent.ForkJoinPool;
 /**
  * Created by vbzer_000 on 2014/7/22.
  */
-public class KeywordGroupService {
+public class KeywordGroupService1 {
     public static void run(String[] args) throws IOException, BiffException, InterruptedException {
         Map<String, Set<String>> keyMatchMap = getPreMatchWords(args[1]);
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(args[0]), "GBK"));
@@ -132,7 +132,7 @@ public class KeywordGroupService {
     //Test
     public static void main(String[] args) {
         try {
-            KeywordGroupService.getWordRoot("/home/baizz/教育行业词根20140725.xls");
+            KeywordGroupService1.getWordRoot("/home/baizz/教育行业词根20140725.xls");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (BiffException e) {

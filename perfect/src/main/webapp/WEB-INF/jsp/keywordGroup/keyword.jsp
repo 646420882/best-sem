@@ -14,7 +14,6 @@
     <style type="text/css">
         .list2 table tr td ul li {
             width: 19%;
-
         }
 
         .download {
@@ -80,9 +79,9 @@
     <div class="table_concent2 over">
         <div class="k_r_top2 over">
             <div class="k_top2_text fl">
-                <div class="k_top2_text1"><textarea> </textarea></div>
+                <div class="k_top2_text1"><textarea id="textarea1"></textarea></div>
                 <p>可输入词根99/100</p>
-                <a href="javascript: findWord();" class="become2">开始拓词</a>
+                <a href="javascript: findWordFromBaidu();" class="become2">开始拓词</a>
 
             </div>
             <div class="K_top2_detali fr over">
@@ -293,11 +292,14 @@
 </div>
 </div>
 </div>
-<iframe id="tmp_downloadhelper_iframe" style="display: none">#document</iframe>
+<!--<iframe id="tmp_downloadhelper_iframe" style="display: none">#document</iframe>-->
 <script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript">
+
+    var krFileId;
+
     $(function () {
         var $tab_li = $('.tab_menu2 li');
         $('.tab_menu2 li').click(function () {
@@ -307,18 +309,36 @@
         });
     });
 
-    var findWord = function () {
-        var krFilePath = "";
+    var findWordFromBaidu = function () {
+        var seedWords = "";
+        var words = $("#textarea1").val().split("\n");//种子词数组
+        for (var i = 0, l = words.length; i < l; i++) {
+            if (words[i].trim().length == 0) {
+                continue;
+            }
+            if (i == 0)
+                seedWords += words[i];
+            else
+                seedWords += "," + words[i];
+
+        }
+
         $.ajax({
-            url: "/getKRWords",
+            url: "/getKRWords/bd",
             type: "GET",
             async: false,
-            data: {},
+            data: {
+                "seedWords": seedWords,
+                "skip": 0,
+                "limit": 10,
+                "krFileId": krFileId
+            },
             success: function (data, textStatus, jqXHR) {
-                krFilePath = data.filePath;
+                krFileId = data.krFileId;
+                alert(krFileId);
+                alert(JSON.stringify(data.rows));
             }
         });
-        document.getElementById("tmp_downloadhelper_iframe").src = krFilePath;
     };
 </script>
 </body>

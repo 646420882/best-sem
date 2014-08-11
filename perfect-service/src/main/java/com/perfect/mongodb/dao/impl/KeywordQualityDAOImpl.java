@@ -4,7 +4,7 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.KeywordQualityDAO;
 import com.perfect.entity.KeywordRealTimeDataEntity;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
-import com.perfect.utils.UserUtil;
+import com.perfect.utils.DBNameUtil;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -27,7 +27,7 @@ import java.util.concurrent.RecursiveTask;
 public class KeywordQualityDAOImpl implements KeywordQualityDAO {
 
     private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(
-            UserUtil.getDatabaseName(AppContext.getUser().toString(), "report"));
+            DBNameUtil.getReportDBName(AppContext.getUser().toString()));
 
     private Class<KeywordRealTimeDataEntity> _class = KeywordRealTimeDataEntity.class;
 
