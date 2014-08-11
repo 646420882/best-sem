@@ -2,7 +2,7 @@ package com.perfect.mongodb.dao.impl;
 
 import com.perfect.api.baidu.AsynchronousReport;
 import com.perfect.autosdk.sms.v3.RealTimeResultType;
-import com.perfect.dao.RealTimeDataReportDAO;
+import com.perfect.dao.AsynchronousReportDAO;
 import com.perfect.entity.AdgroupRealTimeDataEntity;
 import com.perfect.entity.CreativeRealTimeDataEntity;
 import com.perfect.entity.KeywordRealTimeDataEntity;
@@ -22,7 +22,7 @@ import java.util.concurrent.RecursiveTask;
  * Created by baizz on 2014-08-07.
  */
 @Repository("realTimeDataReportDAO")
-public class AsynchronousReportDAOImpl implements RealTimeDataReportDAO {
+public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     /*private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(
             UserUtil.getDatabaseName(AppContext.getUser().toString(), "report"));*/
