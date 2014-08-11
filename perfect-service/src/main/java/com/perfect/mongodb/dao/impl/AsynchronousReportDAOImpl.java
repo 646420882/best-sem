@@ -1,6 +1,6 @@
 package com.perfect.mongodb.dao.impl;
 
-import com.perfect.api.baidu.RealTimeDataReports;
+import com.perfect.api.baidu.AsynchronousReport;
 import com.perfect.autosdk.sms.v3.RealTimeResultType;
 import com.perfect.dao.RealTimeDataReportDAO;
 import com.perfect.entity.AdgroupRealTimeDataEntity;
@@ -22,18 +22,20 @@ import java.util.concurrent.RecursiveTask;
  * Created by baizz on 2014-08-07.
  */
 @Repository("realTimeDataReportDAO")
-public class RealTimeDataReportDAOImpl implements RealTimeDataReportDAO {
+public class AsynchronousReportDAOImpl implements RealTimeDataReportDAO {
 
     /*private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(
             UserUtil.getDatabaseName(AppContext.getUser().toString(), "report"));*/
 
     private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_perfect_report");
 
-    private List<RealTimeResultType> mobileList;
+    private String mobileFilePath;
 
     public void getAdgroupRealTimeData() {
-        List<RealTimeResultType> pcList = RealTimeDataReports.getUnitRealTimeDataPC("2014-01-25", "2014-02-25");
-        mobileList = RealTimeDataReports.getUnitRealTimeDataMobile("2014-01-25", "2014-02-25");
+        AsynchronousReport report = new AsynchronousReport();
+        String pcFilePath = report.getUnitRealTimeDataPC(null,null,"2014-01-25", "2014-02-25");
+        mobileFilePath = report.getUnitRealTimeDataMobile(null,null,"2014-01-25", "2014-02-25");
+
         List<AdgroupRealTimeDataEntity> list;
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         AdgroupRealTimeDataHandler task1 = new AdgroupRealTimeDataHandler(pcList, 0, pcList.size());
@@ -46,24 +48,26 @@ public class RealTimeDataReportDAOImpl implements RealTimeDataReportDAO {
         } catch (ExecutionException e) {
             e.printStackTrace();
         } finally {
-            mobileList.clear();
             forkJoinPool.shutdown();
         }
     }
 
     public void getCreativeRealTimeData() {
-        List<RealTimeResultType> pcList = RealTimeDataReports.getCreativeRealTimeDataPC("2014-01-25", "2014-02-25");
-        mobileList = RealTimeDataReports.getCreativeRealTimeDataMobile("2014-01-25", "2014-02-25");
+        AsynchronousReport report = new AsynchronousReport();
+        String pcFilePath = report.getCreativeRealTimeDataPC(null,null,"2014-01-25", "2014-02-25");
+        mobileFilePath = report.getCreativeRealTimeDataMobile(null,null,"2014-01-25", "2014-02-25");
     }
 
     public void getKeywordRealTimeData() {
-        List<RealTimeResultType> pcList = RealTimeDataReports.getKeyWordidRealTimeDataPC("2014-01-25", "2014-02-25");
-        mobileList = RealTimeDataReports.getKeyWordidRealTimeDataMobile("2014-01-25", "2014-02-25");
+        AsynchronousReport report = new AsynchronousReport();
+        String FilePath = report.getKeyWordidRealTimeDataPC(null,null,"2014-01-25", "2014-02-25");
+        mobileFilePath = report.getKeyWordidRealTimeDataMobile(null,null,"2014-01-25", "2014-02-25");
     }
 
     public void getRegionRealTimeData() {
-        List<RealTimeResultType> pcList = RealTimeDataReports.getRegionalRealTimeDataPC("2014-01-25", "2014-02-25");
-        mobileList = RealTimeDataReports.getRegionalRealTimeDataMobile("2014-01-25", "2014-02-25");
+        AsynchronousReport report = new AsynchronousReport();
+        String FilePath = report.getRegionalRealTimeDataPC(null,null,"2014-01-25", "2014-02-25");
+        mobileFilePath = report.getRegionalRealTimeDataMobile(null,null,"2014-01-25", "2014-02-25");
     }
 
     class AdgroupRealTimeDataHandler extends RecursiveTask<List<AdgroupRealTimeDataEntity>> {
@@ -369,6 +373,6 @@ public class RealTimeDataReportDAOImpl implements RealTimeDataReportDAO {
     }
 
     public static void main(String[] args) {
-        new RealTimeDataReportDAOImpl().getAdgroupRealTimeData();
+        new AsynchronousReportDAOImpl().getAdgroupRealTimeData();
     }
 }
