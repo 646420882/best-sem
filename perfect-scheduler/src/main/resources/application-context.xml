@@ -35,7 +35,7 @@
           init-method="init">
         <property name="zkConfig">
             <map>
-                <entry key="zkConnectString" value="115.29.103.38:2181"/>
+                <entry key="zkConnectString" value="182.92.188.177:2181"/>
                 <entry key="rootPath" value="/perfect/TASK"/>
                 <entry key="zkSessionTimeout" value="60000"/>
                 <entry key="userName" value=""/>
