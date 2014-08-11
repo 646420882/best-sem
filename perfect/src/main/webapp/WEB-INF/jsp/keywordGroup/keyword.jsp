@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <style type="text/css">
         .list2 table tr td ul li {
-            width: 19%;
+            width: 23%;
         }
 
         .download {
@@ -154,7 +154,6 @@
             <tr class="list2_top">
                 <td>
                     <ul>
-                        <li><span>分组</span></li>
                         <li><span>种子词</span></li>
                         <li><span>关键词</span></li>
                         <li><span>日均搜索量</span></li>
@@ -165,7 +164,6 @@
             <tr class="list2_box1">
                 <td>
                     <ul>
-                        <li>上海&二手车</li>
                         <li>二手车买卖</li>
                         <li>上海二手买卖</li>
                         <li>11</li>
@@ -176,7 +174,6 @@
             <tr class="list2_box2">
                 <td>
                     <ul>
-                        <li>上海&二手车</li>
                         <li>二手车买卖</li>
                         <li>上海二手买卖</li>
                         <li>11</li>
@@ -187,7 +184,6 @@
             <tr class="list2_box1">
                 <td>
                     <ul>
-                        <li>上海&二手车</li>
                         <li>二手车买卖</li>
                         <li>上海二手买卖</li>
                         <li>11</li>
@@ -198,7 +194,6 @@
             <tr class="list2_box2">
                 <td>
                     <ul>
-                        <li>上海&二手车</li>
                         <li>二手车买卖</li>
                         <li>上海二手买卖</li>
                         <li>11</li>
@@ -209,7 +204,6 @@
             <tr class="list2_box1">
                 <td>
                     <ul>
-                        <li>上海&二手车</li>
                         <li>二手车买卖</li>
                         <li>上海二手买卖</li>
                         <li>11</li>
@@ -220,7 +214,6 @@
             <tr class="list2_box2">
                 <td>
                     <ul>
-                        <li>上海&二手车</li>
                         <li>二手车买卖</li>
                         <li>上海二手买卖</li>
                         <li>11</li>
@@ -231,7 +224,6 @@
             <tr class="list2_box1">
                 <td>
                     <ul>
-                        <li>上海&二手车</li>
                         <li>二手车买卖</li>
                         <li>上海二手买卖</li>
                         <li>11</li>
@@ -242,7 +234,6 @@
             <tr class="list2_box2">
                 <td>
                     <ul>
-                        <li>上海&二手车</li>
                         <li>二手车买卖</li>
                         <li>上海二手买卖</li>
                         <li>11</li>
@@ -253,7 +244,6 @@
             <tr class="list2_box1">
                 <td>
                     <ul>
-                        <li>上海&二手车</li>
                         <li>二手车买卖</li>
                         <li>上海二手买卖</li>
                         <li>11</li>
@@ -264,18 +254,6 @@
             <tr class="list2_box2">
                 <td>
                     <ul>
-                        <li>上海&二手车</li>
-                        <li>二手车买卖</li>
-                        <li>上海二手买卖</li>
-                        <li>11</li>
-                        <li>否</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr class="list2_box1">
-                <td>
-                    <ul>
-                        <li>上海&二手车</li>
                         <li>二手车买卖</li>
                         <li>上海二手买卖</li>
                         <li>11</li>
@@ -287,6 +265,9 @@
         </table>
 
     </div>
+</div>
+<div class="page2">
+    <a href="#">上一页</a><a href="#">下一页</a><span style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
 
 </div>
 </div>
