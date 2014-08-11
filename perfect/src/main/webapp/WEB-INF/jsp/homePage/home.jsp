@@ -19,127 +19,9 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
 </head>
 <body>
-<div class="top over">
-    <div class="logo fl">
-        <img src="${pageContext.request.contextPath}/public/img/logo.png">
-    </div>
-    <div class="logo_text fl">
-        大数据智能营销
-    </div>
-</div>
+<jsp:include page="pageBlock/head.jsp" />
 <div class="concent over">
-<div class="nav fl">
-    <div class="nav_left over fl">
-        <div class="user over">
-            <div class="user_img fl">
-							<span class="img">
-								<img src="${pageContext.request.contextPath}/public/img/user.png">
-							</span><span class="name"> JOHN DOE </span>
-            </div>
-            <div class="user_close fr">
-                <a href="#">
-                    退出
-                </a>
-            </div>
-        </div>
-        <div class="nav_mid">
-            <div class="nav_top">
-                帐户全景<span></span>
-            </div>
-            <div class="nav_under over">
-                <ul>
-                    <li>
-                        <h3>推广助手</h3>
-                    </li>
-                    <li>
-                        <span class="list1"></span>
-                        <a href="#">
-                            账户预警
-                        </a>
-                    </li>
-                    <li>
-                        <span class="list2"></span>
-                        <a href="/upload/uploadIndex">
-                            批量上传
-                        </a>
-                    </li>
-                    <li>
-                        <span class="list3"></span>
-                        <a href="#">
-                            批量操作
-                        </a>
-                    </li>
-                    <li>
-                        <span class="list4"></span>
-                        <a href="#">
-                            关键词查找
-                        </a>
-                    </li>
-                    <li>
-                        <span class="list5"></span>
-                        <a href="#">
-                            推广查询
-                        </a>
-                    </li>
-                    <li>
-                        <h3>智能结构</h3>
-                    </li>
-                    <li>
-                        <span class="list6"></span>
-                        <a href="#">
-                            关键词拓展
-                        </a>
-                    </li>
-                    <li>
-                        <span class="list7"></span>
-                        <a href="/keyword_group">
-                            智能分组
-                        </a>
-                    </li>
-                    <li>
-                        <h3>智能竞价</h3>
-                    </li>
-                    <li>
-                        <span class="list8"></span>
-                        <a href="#">
-                            诊断关键词
-                        </a>
-                    </li>
-                    <li>
-                        <span class="list9"></span>
-                        <a href="#">
-                            筛选关键词
-                        </a>
-                    </li>
-                    <li>
-                        <span class="list10"></span>
-                        <a href="#">
-                            设置规则
-                        </a>
-                    </li>
-                    <li>
-                        <h3>数据报告</h3>
-                    </li>
-                    <li>
-                        <span class="list11"></span>
-                        <a href="#">
-                            基础报告
-                        </a>
-                    </li>
-                    <li>
-                        <span class="list12"></span>
-                        <a href="#">
-                            定制报告
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="tips fl">
-        <input type="image" src="${pageContext.request.contextPath}/public/img/button2.png">
-    </div>
-</div>
+<jsp:include page="pageBlock/nav.jsp" />
 
 <div class="mid over fr">
 <div class="on_title over">
@@ -1901,29 +1783,9 @@
 </div>
 </div>
 </div>
-<div class="footer">
-    <p>
-        <a href="#">
-            关于我们
-        </a>
-        |
-        <a href="#">
-            联系我们
-        </a>
-        |
-        <a href="#">
-            隐私条款
-        </a>
-        |
-        <a href="#">
-            诚聘英才
-        </a>
-    </p>
 
-    <p>
-        Copyright@2013 perfect-cn.cn All Copyright Reserved. 版权所有：北京普菲特广告有限公司京ICP备***号
-    </p>
-</div>
+
+<jsp:include page="pageBlock/footer.jsp" />
 </div>
 </div>
 
