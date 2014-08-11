@@ -23,4 +23,22 @@ public class BaseBaiduService {
         }
         return commonService;
     }
+
+
+    public synchronized static CommonService getCommonServiceUser(String userName,String pwd,String toked,String target) {
+        if (commonService == null) {
+            String targetString = "";
+            try {
+                if(target.equals("") || target == null){
+                    targetString = null;
+                }else{
+                    targetString = target;
+                }
+                commonService = ServiceFactory.getInstance(userName,pwd,toked,targetString);
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+        }
+        return commonService;
+    }
 }
