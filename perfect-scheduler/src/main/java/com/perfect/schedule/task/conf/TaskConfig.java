@@ -7,7 +7,7 @@ package com.perfect.schedule.task.conf;
  */
 public interface TaskConfig {
 
-    public final String TASK_DOMAIN = "perfect";
+    public final String TASK_DOMAIN = "SYSTEM";
 
     public final String[] ALL_MACHINES = new String[]{"127.0.0.1"};
 

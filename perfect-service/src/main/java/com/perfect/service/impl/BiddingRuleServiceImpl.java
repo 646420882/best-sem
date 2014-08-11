@@ -26,4 +26,12 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     public BiddingRuleEntity getBiddingRuleByKeywordId(String keywordId) {
         return biddingRuleDAO.getBiddingRuleByKeywordId(keywordId);
     }
+
+    @Override
+    public BiddingRuleEntity updateToNextTime(BiddingRuleEntity biddingRuleEntity) {
+
+
+
+        return null;
+    }
 }

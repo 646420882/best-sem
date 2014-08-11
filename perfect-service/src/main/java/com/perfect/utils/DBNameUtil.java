@@ -5,23 +5,48 @@ package com.perfect.utils;
  */
 public class DBNameUtil {
 
-    public static final String SYS_DB_NAME = "sys";
+    public static final String DB_REPORT = "_report";
 
-    private static final String DEFAULT_TYPE = "report";
+    /**
+     * @param args
+     * @return
+     */
+    public static String getDatabaseName(String... args) {
+        String databaseName = null;
 
-    public static String getUserDBName(String username, String dbType) {
-        if (username != null && dbType != null) {
-            return "user_" + username + "_" + dbType;       //如: user_perfect_report
+        if (args.length == 0) {
+            databaseName = "sys";
+        } else if (args.length == 1) {
+            //只传用户名
+            databaseName = "user_" + args[0];   //如: user_perfect
+        } else if (args.length == 2) {
+            databaseName = "user_" + args[0] + "_" + args[1];   //如: user_perfect_report
         }
-        if (username != null) {
-            return "user_" + username;      //如: user_perfect
+
+        return databaseName;
+    }
+
+
+    public static String getSysDBName() {
+        return "sys";
+    }
+
+    public static String getUserDBName(String userName, String dbType) {
+        if (userName != null && dbType != null) {
+            //只传用户名
+            return "user_" + userName + "_" + dbType;     //如: user_perfect_report
+        }
+
+        if (userName != null) {
+            return "user_" + userName; //如: user_perfect
         }
 
         return null;
     }
 
-    public static String getReportDBName(String username) {
-        return getUserDBName(username, DEFAULT_TYPE);
+
+    public static String getReportDBName(String userName) {
+        return getUserDBName(userName, DB_REPORT);
     }
 
 }
