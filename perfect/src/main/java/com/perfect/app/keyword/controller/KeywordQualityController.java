@@ -1,7 +1,7 @@
 package com.perfect.app.keyword.controller;
 
 import com.perfect.dao.KeywordQualityDAO;
-import com.perfect.entity.KeywordRealTimeDataEntity;
+import com.perfect.entity.KeywordReportEntity;
 import com.perfect.utils.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +31,7 @@ public class KeywordQualityController {
                                            @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit,
                                            @RequestParam(value = "sort", required = false, defaultValue = "-1") Integer sort) {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        KeywordRealTimeDataEntity[] voEntities = keywordQualityDAO.find(startDate, endDate, fieldName, limit, sort);
+        KeywordReportEntity[] voEntities = keywordQualityDAO.find(startDate, endDate, fieldName, limit, sort);
         Map<String, Object> attributes = null;
         if (voEntities != null)
             attributes = JSONUtils.getJsonMapData(voEntities);

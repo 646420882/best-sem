@@ -7,7 +7,7 @@ import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.InitializeAccountDAO;
 import com.perfect.entity.AccountRealTimeDataVOEntity;
-import com.perfect.entity.KeywordRealTimeDataEntity;
+import com.perfect.entity.KeywordReportEntity;
 import com.perfect.mongodb.utils.BaseBaiduService;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -67,7 +67,7 @@ public class InitializeAccountDAOImpl implements InitializeAccountDAO {
 
         //数据存储处理
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_perfect_report");
-        List<KeywordRealTimeDataEntity> listVO = new ArrayList<>();
+        List<KeywordReportEntity> listVO = new ArrayList<>();
 
         String logDate = list1.get(0).getDate();
 
@@ -75,7 +75,7 @@ public class InitializeAccountDAOImpl implements InitializeAccountDAO {
         String collectionName = logDate + "-KC";
         for (RealTimeResultType entity : list1) {
             //创建日志内容
-            KeywordRealTimeDataEntity vo = new KeywordRealTimeDataEntity();
+            KeywordReportEntity vo = new KeywordReportEntity();
             vo.setKeywordId(entity.getID());
             vo.setKeywordName(entity.getName().get(3));
             vo.setAdgroupName(entity.getName().get(2));
