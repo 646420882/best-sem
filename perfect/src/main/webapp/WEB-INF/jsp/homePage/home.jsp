@@ -128,14 +128,14 @@
         <div class="list01_top over">
             <Span>账户趋势图</Span>
             <a href="javascript:void(0)" class="question"></a>
-            <ul>
-                <li class="current" style="cursor: pointer">
-                    <a onclick="loadPerformanceCurve(7)">
+            <ul id="clickqushi">
+                <li class="current">
+                    <a onclick="loadPerformanceCurve(this,7)">
                         近7天
                     </a>
                 </li>
-                <li style="cursor: pointer">
-                    <a onclick="loadPerformanceCurve(30)">
+                <li>
+                    <a onclick="loadPerformanceCurve(this,30)">
                         近30天
                     </a>
                 </li>
@@ -143,7 +143,7 @@
                     <a href="javascript:void(0)">
                         自定义
                         <input name="reservation" class=" fa fa-calendar " type="image"
-                               onclick="javascript:genre = 'importPerformanceCurveDefault'; _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                               onclick="javascript:genre = 'importPerformanceCurveDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                src="${pageContext.request.contextPath}/public/img/date.png">
                     </a>
                 </li>
@@ -158,14 +158,14 @@
         <div class="list01_top over">
             <Span>分日表现</Span>
             <a href="javascript:void(0)" class="question"></a>
-            <ul>
-                <li class="current" style="cursor: pointer">
-                    <a onclick="loadPerformance(7)" style="cursor:pointer">
+            <ul id="clickfenri">
+                <li class="current">
+                    <a onclick="loadPerformance(this,7)">
                         近7天
                     </a>
                 </li>
-                <li style="cursor: pointer">
-                    <a onclick="loadPerformance(30)" style="cursor:pointer">
+                <li>
+                    <a onclick="loadPerformance(this,30)">
                         近30天
                     </a>
                 </li>
@@ -173,7 +173,7 @@
                     <a href="javascript:void(0)">
                         自定义
                         <input name="reservation" class=" fa fa-calendar " type="image"
-                               onclick="javascript:genre = 'importPerformanceDefault'; _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                               onclick="javascript:genre = 'importPerformanceDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                src="${pageContext.request.contextPath}/public/img/date.png">
                     </a>
                 </li>
@@ -1985,7 +1985,10 @@
     /**
      * 分日表现数据加载
      * */
-    var loadPerformance = function (date) {
+    var loadPerformance = function (obj,date) {
+        if (obj != null) {
+            changedLiState(obj);
+        }
         getDateParam(date);
         $.ajax({
             url: "/account/getPerformanceUser",
@@ -2032,7 +2035,10 @@ var colorTow = "#40BC2A";
 /**
  * 曲线图数据配置
  * **/
-var loadPerformanceCurve = function (date) {
+var loadPerformanceCurve = function (obj,date) {
+    if (obj != null) {
+        changedLiState(obj);
+    }
     colorOne = "#4572A7";
     colorTow = "#40BC2A";
     $("#containerLegend").empty();

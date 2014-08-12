@@ -1,6 +1,6 @@
 package com.perfect.utils;
 
-import com.perfect.entity.KeywordRealTimeDataVOEntity;
+import com.perfect.entity.StructureReportEntity;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,93 +12,56 @@ import java.util.concurrent.RecursiveTask;
 /**
  * Created by SubDong on 2014/8/8.
  */
-public class BasisReportDefaultUtil extends RecursiveTask<Map<Long, KeywordRealTimeDataVOEntity>> {
+public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureReportEntity>> {
 
     private final int threshold = 100;
 
     private int endNumber;
     private int begin;
+    private int terminal;
 
-    private List<KeywordRealTimeDataVOEntity> objectList;
-    private int categoryTime;
+    private List<StructureReportEntity> objectList;
 
-    public BasisReportDefaultUtil(List<KeywordRealTimeDataVOEntity> objects, int begin, int endNumber, int categoryTime){
-        this.categoryTime = categoryTime;
+    public BasisReportDefaultUtil(List<StructureReportEntity> objects, int begin, int endNumber){
         this.objectList = objects;
         this.endNumber = endNumber;
         this.begin = begin;
     }
 
     @Override
-    protected Map<Long, KeywordRealTimeDataVOEntity> compute() {
-        Map<Long, KeywordRealTimeDataVOEntity> map = new HashMap<>();
+    protected Map<String, StructureReportEntity> compute() {
+        Map<String , StructureReportEntity> map = new HashMap<>();
         if ((endNumber - begin) < threshold) {
-            //时间按默认生成报告
-            if(categoryTime == 0){
                 for (int i = begin; i < endNumber; i++) {
-                    if (map.get(objectList.get(i).getKeywordId()) != null) {
-                        Long keyId = objectList.get(i).getKeywordId();
-                        KeywordRealTimeDataVOEntity voEntity = map.get(keyId);
-                        voEntity.setImpression(voEntity.getImpression() + map.get(keyId).getImpression());
-                        voEntity.setClick(voEntity.getClick() + map.get(keyId).getClick());
-                        voEntity.setCost(voEntity.getCost() + map.get(keyId).getCost());
-                        voEntity.setCtr(0d);
-                        voEntity.setCpc(0d);
-                        voEntity.setPosition(voEntity.getPosition() + map.get(keyId).getPosition());
-                        voEntity.setConversion(voEntity.getConversion() + map.get(keyId).getConversion());
-                        map.put(objectList.get(i).getKeywordId(), voEntity);
+                    if (map.get(objectList.get(i).getAdgroupName()) != null) {
+                        String adgroupName = objectList.get(i).getAdgroupName();
+                        StructureReportEntity voEntity = map.get(adgroupName);
+                        voEntity.setMobileClick(voEntity.getMobileClick() + map.get(adgroupName).getMobileClick());
+                        voEntity.setMobileConversion(voEntity.getMobileConversion() + map.get(adgroupName).getMobileConversion());
+                        voEntity.setMobileCost(voEntity.getMobileCost() + map.get(adgroupName).getMobileCost());
+                        voEntity.setMobileCtr(0d);
+                        voEntity.setMobileCpc(0d);
+                        voEntity.setMobileImpression(voEntity.getMobileImpression() + map.get(adgroupName).getMobileImpression());
+                        voEntity.setPcClick(voEntity.getPcClick() + map.get(adgroupName).getPcClick());
+                        voEntity.setPcConversion(voEntity.getPcConversion() + map.get(adgroupName).getPcConversion());
+                        voEntity.setPcCost(voEntity.getPcCost() + map.get(adgroupName).getPcCost());
+                        voEntity.setPcCtr(0d);
+                        voEntity.setPcCpc(0d);
+                        voEntity.setPcImpression(voEntity.getPcImpression() + map.get(adgroupName).getPcImpression());
+                        map.put(objectList.get(i).getAdgroupName()+"", voEntity);
                     } else {
-                        map.put(objectList.get(i).getKeywordId(), objectList.get(i));
+                        map.put(objectList.get(i).getAdgroupName()+"", objectList.get(i));
                     }
                 }
-            }
-            //时间按周生成报告
-            if(categoryTime == 2){
-                for (int i = begin; i < endNumber; i++) {
-                    if (map.get(objectList.get(i).getKeywordId()) != null) {
-                        Long keyId = objectList.get(i).getKeywordId();
-                        KeywordRealTimeDataVOEntity voEntity = map.get(keyId);
-                        voEntity.setImpression(voEntity.getImpression() + map.get(keyId).getImpression());
-                        voEntity.setClick(voEntity.getClick() + map.get(keyId).getClick());
-                        voEntity.setCost(voEntity.getCost() + map.get(keyId).getCost());
-                        voEntity.setCtr(0d);
-                        voEntity.setCpc(0d);
-                        voEntity.setPosition(voEntity.getPosition() + map.get(keyId).getPosition());
-                        voEntity.setConversion(voEntity.getConversion() + map.get(keyId).getConversion());
-                        map.put(objectList.get(i).getKeywordId(), voEntity);
-                    } else {
-                        map.put(objectList.get(i).getKeywordId(), objectList.get(i));
-                    }
-                }
-            }
-            //时间按月生成报告
-            if(categoryTime == 3){
-                for (int i = begin; i < endNumber; i++) {
-                    if (map.get(objectList.get(i).getKeywordId()) != null) {
-                        Long keyId = objectList.get(i).getKeywordId();
-                        KeywordRealTimeDataVOEntity voEntity = map.get(keyId);
-                        voEntity.setImpression(voEntity.getImpression() + map.get(keyId).getImpression());
-                        voEntity.setClick(voEntity.getClick() + map.get(keyId).getClick());
-                        voEntity.setCost(voEntity.getCost() + map.get(keyId).getCost());
-                        voEntity.setCtr(0d);
-                        voEntity.setCpc(0d);
-                        voEntity.setPosition(voEntity.getPosition() + map.get(keyId).getPosition());
-                        voEntity.setConversion(voEntity.getConversion() + map.get(keyId).getConversion());
-                        map.put(objectList.get(i).getKeywordId(), voEntity);
-                    } else {
-                        map.put(objectList.get(i).getKeywordId(), objectList.get(i));
-                    }
-                }
-            }
             return map;
         } else {
             int midpoint = (begin + endNumber) / 2;
-            BasisReportDefaultUtil left = new BasisReportDefaultUtil(objectList, begin, midpoint,categoryTime);
-            BasisReportDefaultUtil right = new BasisReportDefaultUtil(objectList, midpoint, endNumber, categoryTime);
+            BasisReportDefaultUtil left = new BasisReportDefaultUtil(objectList, begin, midpoint);
+            BasisReportDefaultUtil right = new BasisReportDefaultUtil(objectList, midpoint, endNumber);
             invokeAll(left, right);
             try {
-                Map<Long, KeywordRealTimeDataVOEntity> leftMap = left.get();
-                Map<Long, KeywordRealTimeDataVOEntity> rightMap = right.get();
+                Map<String, StructureReportEntity> leftMap = left.get();
+                Map<String, StructureReportEntity> rightMap = right.get();
                 map.putAll(merge(leftMap, rightMap));
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -110,26 +73,30 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<Long, KeywordRealT
     }
 
 
-    public Map<Long, KeywordRealTimeDataVOEntity> merge(Map<Long, KeywordRealTimeDataVOEntity> leftMap, Map<Long, KeywordRealTimeDataVOEntity> rightMap) {
-        Map<Long, KeywordRealTimeDataVOEntity> dataMap = new HashMap<>();
+    public Map<String, StructureReportEntity> merge(Map<String, StructureReportEntity> leftMap, Map<String, StructureReportEntity> rightMap) {
+        Map<String, StructureReportEntity> dataMap = new HashMap<>();
 
-        for (Iterator<Map.Entry<Long, KeywordRealTimeDataVOEntity>> entry1 = leftMap.entrySet().iterator();entry1.hasNext();) {
+        for (Iterator<Map.Entry<String, StructureReportEntity>> entry1 = leftMap.entrySet().iterator();entry1.hasNext();) {
 
-            KeywordRealTimeDataVOEntity mapValue1 = entry1.next().getValue();
+            StructureReportEntity mapValue1 = entry1.next().getValue();
 
-            for (Iterator<Map.Entry<Long,KeywordRealTimeDataVOEntity>> entry2 = rightMap.entrySet().iterator();entry2.hasNext();) {
+            for (Iterator<Map.Entry<String,StructureReportEntity>> entry2 = rightMap.entrySet().iterator();entry2.hasNext();) {
 
-                KeywordRealTimeDataVOEntity mapValue2 = entry2.next().getValue();
+                StructureReportEntity mapValue2 = entry2.next().getValue();
 
-                if (mapValue1.getKeywordId() == mapValue2.getKeywordId()) {
-                    mapValue1.setImpression(mapValue1.getImpression() + mapValue2.getImpression());
-                    mapValue1.setClick(mapValue1.getClick() + mapValue2.getClick());
-                    mapValue1.setCost(mapValue1.getCost() + mapValue2.getCost());
-                    mapValue1.setCtr(0d);
-                    mapValue1.setCpc(0d);
-                    mapValue1.setPosition(mapValue1.getPosition() + mapValue2.getPosition());
-                    mapValue1.setConversion(mapValue1.getConversion() + mapValue2.getConversion());
-                    dataMap.put(mapValue1.getImpression().longValue(), mapValue1);
+                if (mapValue1.getAdgroupName().equals(mapValue2.getAdgroupName())) {
+                    mapValue1.setMobileClick(mapValue1.getMobileClick() + mapValue2.getMobileClick());
+                    mapValue1.setMobileConversion(mapValue1.getMobileConversion() + mapValue2.getMobileConversion());
+                    mapValue1.setMobileCost(mapValue1.getMobileCost() + mapValue2.getMobileCost());
+                    mapValue1.setMobileCtr(0d);
+                    mapValue1.setMobileCtr(0d);
+                    mapValue1.setMobileImpression(mapValue1.getMobileImpression() + mapValue2.getMobileImpression());
+                    mapValue1.setPcClick(mapValue1.getPcClick() + mapValue2.getPcClick());
+                    mapValue1.setPcConversion(mapValue1.getPcConversion() + mapValue2.getPcConversion());
+                    mapValue1.setPcCost(mapValue1.getPcCost() + mapValue2.getPcCost());
+                    mapValue1.setPcCtr(0d);
+                    mapValue1.setPcCpc(0d);
+                    mapValue1.setPcImpression(mapValue1.getPcImpression() + mapValue2.getPcImpression());
                     entry1.remove();
                     entry2.remove();
                     break;

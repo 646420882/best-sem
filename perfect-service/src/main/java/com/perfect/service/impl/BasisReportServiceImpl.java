@@ -2,14 +2,22 @@ package com.perfect.service.impl;
 
 import com.perfect.dao.BasisReportDAO;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
+import com.perfect.entity.StructureReportEntity;
 import com.perfect.service.BasisReportService;
+import com.perfect.utils.BasisReportDefaultUtil;
 
 import javax.annotation.Resource;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 
 /**
- * Created by john on 2014/8/6.
+ * Created by SubDong on 2014/8/6.
  */
 public class BasisReportServiceImpl implements BasisReportService{
     @Resource
@@ -21,31 +29,75 @@ public class BasisReportServiceImpl implements BasisReportService{
      * @param categoryTime 分类时间  0、默认 1、分日 2、分周 3、分月
      * @return
      */
-    public List<Object> getUnitReportDate(String terminal,String[] date,int categoryTime){
-        List<Object> objectsList = new ArrayList<>();
+    public List<StructureReportEntity> getUnitReportDate(String[] date,int terminal,int categoryTime){
+        List<StructureReportEntity> objectsList = new ArrayList<>();
 
         switch (categoryTime){
             case 0:
-                for (int i=0; i<=date.length;i++){
-                    List<Object> object = basisReportDAO.getUnitReportDate(terminal,date[i]+"Unit");
+                Map<String, StructureReportEntity> map = new HashMap<>();
+                for (int i=0; i< date.length;i++){
+                    List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i]+"-adgroup");
                     objectsList.addAll(object);
+                }
+                int s = objectsList.size();
+                    try {
+                        ForkJoinPool joinPool = new ForkJoinPool();
+                        Future<Map<String, StructureReportEntity>> joinTask = joinPool.submit(new BasisReportDefaultUtil(objectsList,0,objectsList.size()));
+                        map = joinTask.get();
+                        DecimalFormat df = new DecimalFormat("#.00");
+                        for (Map.Entry<String, StructureReportEntity> voEntity : map.entrySet()){
+                            if(voEntity.getValue().getMobileImpression() == 0){
+                                voEntity.getValue().setMobileCtr(0.00);
+                            }else{
+                                voEntity.getValue().setMobileCtr(Double.parseDouble(df.format(voEntity.getValue().getMobileClick().doubleValue() / voEntity.getValue().getMobileImpression().doubleValue())));
+                            }
+                            if(voEntity.getValue().getMobileClick() == 0){
+                                voEntity.getValue().setMobileCpc(0.00);
+                            }else{
+                                voEntity.getValue().setMobileCpc(Double.parseDouble(df.format(voEntity.getValue().getMobileCost() / voEntity.getValue().getMobileClick().doubleValue())));
+                            }
+
+                            if(voEntity.getValue().getPcImpression() == 0){
+                                voEntity.getValue().setPcCtr(0.00);
+                            }else{
+                                voEntity.getValue().setPcCtr(Double.parseDouble(df.format(voEntity.getValue().getPcClick().doubleValue() / voEntity.getValue().getPcImpression().doubleValue())));
+                            }
+                            if(voEntity.getValue().getPcClick() == 0){
+                                voEntity.getValue().setPcCpc(0.00);
+                            }else{
+                                voEntity.getValue().setPcCpc(Double.parseDouble(df.format(voEntity.getValue().getPcCost() / voEntity.getValue().getPcClick().doubleValue())));
+                            }
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                if(terminal == 0){
+
                 }
                 return objectsList;
             case 1:
                 for (int i=0; i<=date.length;i++){
-                    List<Object> object = basisReportDAO.getUnitReportDate(terminal,date[i]+"Unit");
+                    List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i]+"Unit");
+                    for (StructureReportEntity o : object){
+
+                    }
                     objectsList.addAll(object);
+                }
+                if (terminal == 0){
+
                 }
                 return objectsList;
             case 2:
                 for (int i=0; i<=date.length;i++){
-                    List<Object> object = basisReportDAO.getUnitReportDate(terminal,date[i]+"Unit");
+                    List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i]+"Unit");
                     objectsList.addAll(object);
                 }
                 return objectsList;
             case 3:
                 for (int i=0; i<=date.length;i++){
-                    List<Object> object = basisReportDAO.getUnitReportDate(terminal,date[i]+"Unit");
+                    List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i]+"Unit");
                     objectsList.addAll(object);
                 }
                 return objectsList;
@@ -54,6 +106,4 @@ public class BasisReportServiceImpl implements BasisReportService{
 
         return null;
     }
-
-
 }
