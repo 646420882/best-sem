@@ -4,18 +4,18 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
- * Created by baizz on 2014-08-07.
+ * Created by baizz on 2014-08-06.
  */
-public class RegionRealTimeDataEntity {
+public class KeywordReportEntity {
 
     @Id
     private String id;
 
-    @Field(value = "rgid")
-    private Long regionId;
+    @Field(value = "kwid")
+    private Long keywordId;
 
-    @Field(value = "rgna")
-    private String regionName;
+    @Field(value = "kwna")
+    private String keywordName;
 
     @Field(value = "agna")
     private String adgroupName;
@@ -38,11 +38,14 @@ public class RegionRealTimeDataEntity {
     @Field(value = "pccpc")
     private Double pcCpc;     //PC平均点击价格=消费/点击次数
 
-    @Field(value = "pcpt")
-    private Double pcPosition;       //PC平均排名
+    @Field(value = "pccpm")
+    private Double pcCpm;       //PC千次展现消费
 
     @Field(value = "pccs")
     private Double pcConversion;      //PC转化
+
+    @Field(value = "pcpt")
+    private Double pcPosition;       //PC平均排名
 
     @Field(value = "mis")
     private Integer mobileImpression;
@@ -59,11 +62,14 @@ public class RegionRealTimeDataEntity {
     @Field(value = "mcpc")
     private Double mobileCpc;
 
-    @Field(value = "mpt")
-    private Double mobilePosition;
+    @Field(value = "mcpm")
+    private Double mobileCpm;
 
     @Field(value = "mcs")
     private Double mobileConversion;
+
+    @Field(value = "mpt")
+    private Double mobilePosition;
 
     public String getId() {
         return id;
@@ -73,20 +79,20 @@ public class RegionRealTimeDataEntity {
         this.id = id;
     }
 
-    public Long getRegionId() {
-        return regionId;
+    public Long getKeywordId() {
+        return keywordId;
     }
 
-    public void setRegionId(Long regionId) {
-        this.regionId = regionId;
+    public void setKeywordId(Long keywordId) {
+        this.keywordId = keywordId;
     }
 
-    public String getRegionName() {
-        return regionName;
+    public String getKeywordName() {
+        return keywordName;
     }
 
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
+    public void setKeywordName(String keywordName) {
+        this.keywordName = keywordName;
     }
 
     public String getAdgroupName() {
@@ -145,12 +151,12 @@ public class RegionRealTimeDataEntity {
         this.pcCpc = pcCpc;
     }
 
-    public Double getPcPosition() {
-        return pcPosition;
+    public Double getPcCpm() {
+        return pcCpm;
     }
 
-    public void setPcPosition(Double pcPosition) {
-        this.pcPosition = pcPosition;
+    public void setPcCpm(Double pcCpm) {
+        this.pcCpm = pcCpm;
     }
 
     public Double getPcConversion() {
@@ -159,6 +165,14 @@ public class RegionRealTimeDataEntity {
 
     public void setPcConversion(Double pcConversion) {
         this.pcConversion = pcConversion;
+    }
+
+    public Double getPcPosition() {
+        return pcPosition;
+    }
+
+    public void setPcPosition(Double pcPosition) {
+        this.pcPosition = pcPosition;
     }
 
     public Integer getMobileImpression() {
@@ -201,12 +215,12 @@ public class RegionRealTimeDataEntity {
         this.mobileCpc = mobileCpc;
     }
 
-    public Double getMobilePosition() {
-        return mobilePosition;
+    public Double getMobileCpm() {
+        return mobileCpm;
     }
 
-    public void setMobilePosition(Double mobilePosition) {
-        this.mobilePosition = mobilePosition;
+    public void setMobileCpm(Double mobileCpm) {
+        this.mobileCpm = mobileCpm;
     }
 
     public Double getMobileConversion() {
@@ -217,21 +231,32 @@ public class RegionRealTimeDataEntity {
         this.mobileConversion = mobileConversion;
     }
 
+    public Double getMobilePosition() {
+        return mobilePosition;
+    }
+
+    public void setMobilePosition(Double mobilePosition) {
+        this.mobilePosition = mobilePosition;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RegionRealTimeDataEntity that = (RegionRealTimeDataEntity) o;
+        KeywordReportEntity that = (KeywordReportEntity) o;
 
         if (adgroupName != null ? !adgroupName.equals(that.adgroupName) : that.adgroupName != null) return false;
         if (campaignName != null ? !campaignName.equals(that.campaignName) : that.campaignName != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (keywordId != null ? !keywordId.equals(that.keywordId) : that.keywordId != null) return false;
+        if (keywordName != null ? !keywordName.equals(that.keywordName) : that.keywordName != null) return false;
         if (mobileClick != null ? !mobileClick.equals(that.mobileClick) : that.mobileClick != null) return false;
         if (mobileConversion != null ? !mobileConversion.equals(that.mobileConversion) : that.mobileConversion != null)
             return false;
         if (mobileCost != null ? !mobileCost.equals(that.mobileCost) : that.mobileCost != null) return false;
         if (mobileCpc != null ? !mobileCpc.equals(that.mobileCpc) : that.mobileCpc != null) return false;
+        if (mobileCpm != null ? !mobileCpm.equals(that.mobileCpm) : that.mobileCpm != null) return false;
         if (mobileCtr != null ? !mobileCtr.equals(that.mobileCtr) : that.mobileCtr != null) return false;
         if (mobileImpression != null ? !mobileImpression.equals(that.mobileImpression) : that.mobileImpression != null)
             return false;
@@ -241,11 +266,10 @@ public class RegionRealTimeDataEntity {
         if (pcConversion != null ? !pcConversion.equals(that.pcConversion) : that.pcConversion != null) return false;
         if (pcCost != null ? !pcCost.equals(that.pcCost) : that.pcCost != null) return false;
         if (pcCpc != null ? !pcCpc.equals(that.pcCpc) : that.pcCpc != null) return false;
+        if (pcCpm != null ? !pcCpm.equals(that.pcCpm) : that.pcCpm != null) return false;
         if (pcCtr != null ? !pcCtr.equals(that.pcCtr) : that.pcCtr != null) return false;
         if (pcImpression != null ? !pcImpression.equals(that.pcImpression) : that.pcImpression != null) return false;
         if (pcPosition != null ? !pcPosition.equals(that.pcPosition) : that.pcPosition != null) return false;
-        if (regionId != null ? !regionId.equals(that.regionId) : that.regionId != null) return false;
-        if (regionName != null ? !regionName.equals(that.regionName) : that.regionName != null) return false;
 
         return true;
     }
@@ -253,8 +277,8 @@ public class RegionRealTimeDataEntity {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (regionId != null ? regionId.hashCode() : 0);
-        result = 31 * result + (regionName != null ? regionName.hashCode() : 0);
+        result = 31 * result + (keywordId != null ? keywordId.hashCode() : 0);
+        result = 31 * result + (keywordName != null ? keywordName.hashCode() : 0);
         result = 31 * result + (adgroupName != null ? adgroupName.hashCode() : 0);
         result = 31 * result + (campaignName != null ? campaignName.hashCode() : 0);
         result = 31 * result + (pcImpression != null ? pcImpression.hashCode() : 0);
@@ -262,24 +286,26 @@ public class RegionRealTimeDataEntity {
         result = 31 * result + (pcCtr != null ? pcCtr.hashCode() : 0);
         result = 31 * result + (pcCost != null ? pcCost.hashCode() : 0);
         result = 31 * result + (pcCpc != null ? pcCpc.hashCode() : 0);
-        result = 31 * result + (pcPosition != null ? pcPosition.hashCode() : 0);
+        result = 31 * result + (pcCpm != null ? pcCpm.hashCode() : 0);
         result = 31 * result + (pcConversion != null ? pcConversion.hashCode() : 0);
+        result = 31 * result + (pcPosition != null ? pcPosition.hashCode() : 0);
         result = 31 * result + (mobileImpression != null ? mobileImpression.hashCode() : 0);
         result = 31 * result + (mobileClick != null ? mobileClick.hashCode() : 0);
         result = 31 * result + (mobileCtr != null ? mobileCtr.hashCode() : 0);
         result = 31 * result + (mobileCost != null ? mobileCost.hashCode() : 0);
         result = 31 * result + (mobileCpc != null ? mobileCpc.hashCode() : 0);
-        result = 31 * result + (mobilePosition != null ? mobilePosition.hashCode() : 0);
+        result = 31 * result + (mobileCpm != null ? mobileCpm.hashCode() : 0);
         result = 31 * result + (mobileConversion != null ? mobileConversion.hashCode() : 0);
+        result = 31 * result + (mobilePosition != null ? mobilePosition.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "RegionRealTimeDataEntity{" +
+        return "KeywordReportEntity{" +
                 "id='" + id + '\'' +
-                ", regionId=" + regionId +
-                ", regionName='" + regionName + '\'' +
+                ", keywordId=" + keywordId +
+                ", keywordName='" + keywordName + '\'' +
                 ", adgroupName='" + adgroupName + '\'' +
                 ", campaignName='" + campaignName + '\'' +
                 ", pcImpression=" + pcImpression +
@@ -287,15 +313,17 @@ public class RegionRealTimeDataEntity {
                 ", pcCtr=" + pcCtr +
                 ", pcCost=" + pcCost +
                 ", pcCpc=" + pcCpc +
-                ", pcPosition=" + pcPosition +
+                ", pcCpm=" + pcCpm +
                 ", pcConversion=" + pcConversion +
+                ", pcPosition=" + pcPosition +
                 ", mobileImpression=" + mobileImpression +
                 ", mobileClick=" + mobileClick +
                 ", mobileCtr=" + mobileCtr +
                 ", mobileCost=" + mobileCost +
                 ", mobileCpc=" + mobileCpc +
-                ", mobilePosition=" + mobilePosition +
+                ", mobileCpm=" + mobileCpm +
                 ", mobileConversion=" + mobileConversion +
+                ", mobilePosition=" + mobilePosition +
                 '}';
     }
 }

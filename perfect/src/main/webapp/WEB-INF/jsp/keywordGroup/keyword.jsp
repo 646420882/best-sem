@@ -27,8 +27,18 @@
     </style>
 </head>
 <body>
-
+<jsp:include page="../homePage/pageBlock/head.jsp" />
+<div class="concent over">
+<jsp:include page="../homePage/pageBlock/nav.jsp" />
 <div class="mid over fr">
+<div class="on_title over">
+    <a href="#">
+        账户全景
+    </a>
+    &nbsp;&nbsp;&gt;&nbsp;&nbsp;<span>账户分析</span>
+</div>
+<div id="tab">
+<div class="tab_box">
 <div class="list01_top over"><Span>关键词拓展</Span> <a href="#" class="question"></a></div>
 <div class="keyword over">
 <div class="keyword_left fl over">
@@ -71,205 +81,209 @@
 
 </div>
 <div class="keyword_right fr over">
-<div class="k_r_top over">
-    <ul class="tab_menu2 over">
-        <li class="current"><a>词根拓词</a></li>
-        <li><a>行业拓词</a></li>
-    </ul>
-    <div class="table_concent2 over">
-        <div class="k_r_top2 over">
-            <div class="k_top2_text fl">
-                <div class="k_top2_text1"><textarea id="textarea1"></textarea></div>
-                <p>可输入词根99/100</p>
-                <a href="javascript: findWordFromBaidu();" class="become2">开始拓词</a>
+    <div class="k_r_top over">
+        <ul class="tab_menu2 over">
+            <li class="current"><a>词根拓词</a></li>
+            <li><a>行业拓词</a></li>
+        </ul>
+        <div class="table_concent2 over">
+            <div class="k_r_top2 over">
+                <div class="k_top2_text fl">
+                    <div class="k_top2_text1"><textarea id="textarea1"></textarea></div>
+                    <p>可输入词根99/100</p>
+                    <a href="javascript: findWordFromBaidu();" class="become2">开始拓词</a>
 
-            </div>
-            <div class="K_top2_detali fr over">
-                <div class="k_top2_detali2 over">
-                    <div class="list01_top2 over">
-                        <span>重点关键词监控</span>
-                        <a href="#" class="question"></a>
-                    </div>
-                    <ul>
-                        <li>· 搜索引擎（baidu，google）APP</li>
-                        <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
-                        <li>· 普菲特智能词库</li>
-                    </ul>
                 </div>
-                <div class="k_top2_detali2 over">
-                    <div class="list01_top2 over">
-                        <span>智能过滤</span>
-                        <a href="#" class="question"></a>
+                <div class="K_top2_detali fr over">
+                    <div class="k_top2_detali2 over">
+                        <div class="list01_top2 over">
+                            <span>重点关键词监控</span>
+                            <a href="#" class="question"></a>
+                        </div>
+                        <ul>
+                            <li>· 搜索引擎（baidu，google）APP</li>
+                            <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
+                            <li>· 普菲特智能词库</li>
+                        </ul>
                     </div>
-                    <ul>
-                        <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
-                        <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
-                    </ul>
+                    <div class="k_top2_detali2 over">
+                        <div class="list01_top2 over">
+                            <span>智能过滤</span>
+                            <a href="#" class="question"></a>
+                        </div>
+                        <ul>
+                            <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
+                            <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="k_r_top2  hides over">
+                <div class="k_top2_text fl">
+                    <div class="k_top2_text1">
+                        <select>
+                            <option>请选择行业</option>
+                        </select>
+                    </div>
+
+                    <a href="#" class="become2">开始拓词</a>
+                </div>
+                <div class="K_top2_detali fr over">
+                    <div class="k_top2_detali2 over">
+                        <div class="list01_top2 over">
+                            <span>拓词来源</span>
+                            <a href="#" class="question"></a>
+                        </div>
+                        <ul>
+                            <li>· 搜索引擎（baidu，google）APP</li>
+                            <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
+                            <li>· 普菲特智能词库</li>
+                        </ul>
+                    </div>
+                    <div class="k_top2_detali2 over">
+                        <div class="list01_top2 over">
+                            <span>智能过滤</span>
+                            <a href="#" class="question"></a>
+                        </div>
+                        <ul>
+                            <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
+                            <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="k_r_top2  hides over">
-            <div class="k_top2_text fl">
-                <div class="k_top2_text1">
-                    <select>
-                        <option>请选择行业</option>
-                    </select>
-                </div>
+    </div>
+    <div class="k_r_under over">
+        <div class="download over ">
+            <a href="#"> 添加全部</a><a href="#">下载全部</a>
+        </div>
+        <div class="list2">
+            <table border="0" cellspacing="0">
+                <tbody>
+                <tr class="list2_top">
+                    <td>
+                        <ul>
+                            <li><span>种子词</span></li>
+                            <li><span>关键词</span></li>
+                            <li><span>日均搜索量</span></li>
+                            <li><span>是否已购买</span></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr class="list2_box1">
+                    <td>
+                        <ul>
+                            <li>二手车买卖</li>
+                            <li>上海二手买卖</li>
+                            <li>11</li>
+                            <li>否</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr class="list2_box2">
+                    <td>
+                        <ul>
+                            <li>二手车买卖</li>
+                            <li>上海二手买卖</li>
+                            <li>11</li>
+                            <li>否</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr class="list2_box1">
+                    <td>
+                        <ul>
+                            <li>二手车买卖</li>
+                            <li>上海二手买卖</li>
+                            <li>11</li>
+                            <li>否</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr class="list2_box2">
+                    <td>
+                        <ul>
+                            <li>二手车买卖</li>
+                            <li>上海二手买卖</li>
+                            <li>11</li>
+                            <li>否</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr class="list2_box1">
+                    <td>
+                        <ul>
+                            <li>二手车买卖</li>
+                            <li>上海二手买卖</li>
+                            <li>11</li>
+                            <li>否</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr class="list2_box2">
+                    <td>
+                        <ul>
+                            <li>二手车买卖</li>
+                            <li>上海二手买卖</li>
+                            <li>11</li>
+                            <li>否</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr class="list2_box1">
+                    <td>
+                        <ul>
+                            <li>二手车买卖</li>
+                            <li>上海二手买卖</li>
+                            <li>11</li>
+                            <li>否</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr class="list2_box2">
+                    <td>
+                        <ul>
+                            <li>二手车买卖</li>
+                            <li>上海二手买卖</li>
+                            <li>11</li>
+                            <li>否</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr class="list2_box1">
+                    <td>
+                        <ul>
+                            <li>二手车买卖</li>
+                            <li>上海二手买卖</li>
+                            <li>11</li>
+                            <li>否</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr class="list2_box2">
+                    <td>
+                        <ul>
+                            <li>二手车买卖</li>
+                            <li>上海二手买卖</li>
+                            <li>11</li>
+                            <li>否</li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-                <a href="#" class="become2">开始拓词</a>
-            </div>
-            <div class="K_top2_detali fr over">
-                <div class="k_top2_detali2 over">
-                    <div class="list01_top2 over">
-                        <span>拓词来源</span>
-                        <a href="#" class="question"></a>
-                    </div>
-                    <ul>
-                        <li>· 搜索引擎（baidu，google）APP</li>
-                        <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
-                        <li>· 普菲特智能词库</li>
-                    </ul>
-                </div>
-                <div class="k_top2_detali2 over">
-                    <div class="list01_top2 over">
-                        <span>智能过滤</span>
-                        <a href="#" class="question"></a>
-                    </div>
-                    <ul>
-                        <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
-                        <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
-                    </ul>
-                </div>
-            </div>
         </div>
     </div>
-</div>
-<div class="k_r_under over">
-    <div class="download over ">
-        <a href="#"> 添加全部</a><a href="#">下载全部</a>
-    </div>
-    <div class="list2">
-        <table border="0" cellspacing="0">
-            <tbody>
-            <tr class="list2_top">
-                <td>
-                    <ul>
-                        <li><span>种子词</span></li>
-                        <li><span>关键词</span></li>
-                        <li><span>日均搜索量</span></li>
-                        <li><span>是否已购买</span></li>
-                    </ul>
-                </td>
-            </tr>
-            <tr class="list2_box1">
-                <td>
-                    <ul>
-                        <li>二手车买卖</li>
-                        <li>上海二手买卖</li>
-                        <li>11</li>
-                        <li>否</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr class="list2_box2">
-                <td>
-                    <ul>
-                        <li>二手车买卖</li>
-                        <li>上海二手买卖</li>
-                        <li>11</li>
-                        <li>否</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr class="list2_box1">
-                <td>
-                    <ul>
-                        <li>二手车买卖</li>
-                        <li>上海二手买卖</li>
-                        <li>11</li>
-                        <li>否</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr class="list2_box2">
-                <td>
-                    <ul>
-                        <li>二手车买卖</li>
-                        <li>上海二手买卖</li>
-                        <li>11</li>
-                        <li>否</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr class="list2_box1">
-                <td>
-                    <ul>
-                        <li>二手车买卖</li>
-                        <li>上海二手买卖</li>
-                        <li>11</li>
-                        <li>否</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr class="list2_box2">
-                <td>
-                    <ul>
-                        <li>二手车买卖</li>
-                        <li>上海二手买卖</li>
-                        <li>11</li>
-                        <li>否</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr class="list2_box1">
-                <td>
-                    <ul>
-                        <li>二手车买卖</li>
-                        <li>上海二手买卖</li>
-                        <li>11</li>
-                        <li>否</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr class="list2_box2">
-                <td>
-                    <ul>
-                        <li>二手车买卖</li>
-                        <li>上海二手买卖</li>
-                        <li>11</li>
-                        <li>否</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr class="list2_box1">
-                <td>
-                    <ul>
-                        <li>二手车买卖</li>
-                        <li>上海二手买卖</li>
-                        <li>11</li>
-                        <li>否</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr class="list2_box2">
-                <td>
-                    <ul>
-                        <li>二手车买卖</li>
-                        <li>上海二手买卖</li>
-                        <li>11</li>
-                        <li>否</li>
-                    </ul>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="page2">
+        <a href="#">上一页</a><a href="#">下一页</a><span style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
 
     </div>
 </div>
-<div class="page2">
-    <a href="#">上一页</a><a href="#">下一页</a><span style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
-
 </div>
+</div>
+<jsp:include page="../homePage/pageBlock/footer.jsp" />
 </div>
 </div>
 </div>

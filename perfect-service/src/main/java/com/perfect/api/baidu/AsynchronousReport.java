@@ -14,6 +14,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static java.lang.System.*;
+
 /**
  * Created by SubDong on 2014/8/7.
  */
@@ -122,7 +124,7 @@ public class AsynchronousReport {
             e.printStackTrace();
         }
         int isGenerated = 0;
-        int sleepTime = 15 * 1000;
+        int sleepTime = 30 * 1000;
         int views = 0;
         isGenerated = reportStateResponse.getIsGenerated();
 
@@ -134,7 +136,8 @@ public class AsynchronousReport {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                isGenerated = reportStateResponse.getIsGenerated();
+                GetReportStateResponse reportState = reportService.getReportState(reportStateRequest);
+                isGenerated = reportState.getIsGenerated();
                 views++;
                 continue;
             } else if (isGenerated == 2) {
@@ -143,7 +146,8 @@ public class AsynchronousReport {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                isGenerated = reportStateResponse.getIsGenerated();
+                GetReportStateResponse state = reportService.getReportState(reportStateRequest);
+                isGenerated = state.getIsGenerated();
                 views++;
                 continue;
             } else if (isGenerated == 3) {
@@ -323,5 +327,11 @@ public class AsynchronousReport {
         String resultTypes = RealTime(listKey, 1, 5, dates[0], dates[1], 3, 2,PerformanceData);
 
         return resultTypes;
+    }
+
+    public static void main(String[] args) {
+        AsynchronousReport asynchronousReport = new AsynchronousReport();
+        String s =asynchronousReport.getRegionalRealTimeDataPC(null, null, "2014-08-08", "2014-08-10");
+        out.println(s);
     }
 }
