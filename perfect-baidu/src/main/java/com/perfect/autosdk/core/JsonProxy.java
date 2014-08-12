@@ -77,10 +77,19 @@ public class JsonProxy<I> implements InvocationHandler {
         conn.setConnectTimeout(service.connectTimeoutMills);
         conn.setReadTimeout(service.readTimeoutMills);
         conn.sendRequest(makeRequest(args[0]));
-        Jedis jedis = JRedisUtils.get();
-        long v = jedis.incr("PEI_E");
-        if (v == 1)
-            jedis.expire("PEI_E", 7 * 24 * 60 * 60);
+        // JRedis example
+        Jedis jedis = null;
+        try {
+            jedis = JRedisUtils.get();
+            long v = jedis.incr("PEI_E");
+            if (v == 1)
+                jedis.expire("PEI_E", 7 * 24 * 60 * 60);
+        } catch (Exception e) {
+
+        } finally {
+            JRedisUtils.returnJedis(jedis);
+        }
+
         JsonEnvelop<ResHeader, ?> response = conn.readResponse(ResHeader.class, method.getReturnType());
         ResHeaderUtil.resHeader.set(response.getHeader());
         return response.getBody();

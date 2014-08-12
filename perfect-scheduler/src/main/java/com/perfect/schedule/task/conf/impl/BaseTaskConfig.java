@@ -107,7 +107,7 @@ public class BaseTaskConfig implements TaskConfig {
             strategy.setNumOfSingleServer(1);
             strategy.setAssignNum(10);
             strategy.setIPList("127.0.0.1".split(","));
-        }else{
+        } else {
             strategy.setNumOfSingleServer(strategyConfig.getNumOfSingleServer());
             strategy.setAssignNum(strategyConfig.getAssignNum());
             strategy.setIPList(strategyConfig.getIpList());

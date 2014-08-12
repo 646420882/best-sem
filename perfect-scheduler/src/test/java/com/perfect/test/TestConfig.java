@@ -1,9 +1,7 @@
 package com.perfect.test;
 
-import com.perfect.schedule.core.strategy.ScheduleStrategy;
 import com.perfect.schedule.core.strategy.TBScheduleManagerFactory;
-import com.perfect.schedule.core.taskmanager.ScheduleTaskType;
-import com.perfect.schedule.task.conf.CronExpressionConstant;
+import com.perfect.schedule.task.core.CronExpression;
 import com.perfect.schedule.task.conf.impl.BaseTaskConfig;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -31,7 +29,7 @@ public class TestConfig extends UnitilsJUnit4 {
     @Test
     public void init() throws Exception {
         String taskDefItem = "0:{NAME=Jason},1:{NAME=Daisy}";
-        BaseTaskConfig baseTaskConfig = new BaseTaskConfig("BaseTaskConfig","TEST","empty", CronExpressionConstant.CRON_EVERY_MINUTE,taskDefItem.split(","));
+        BaseTaskConfig baseTaskConfig = new BaseTaskConfig("BaseTaskConfig","TEST","empty", CronExpression.CRON_EVERY_MINUTE,taskDefItem.split(","));
         baseTaskConfig.setScheduleManagerFactory(scheduleManagerFactory);
         baseTaskConfig.createTask();
     }

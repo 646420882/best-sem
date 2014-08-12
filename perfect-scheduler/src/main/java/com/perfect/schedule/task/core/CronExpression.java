@@ -1,11 +1,11 @@
-package com.perfect.schedule.task.conf;
+package com.perfect.schedule.task.core;
 
 /**
  * Created by yousheng on 2014/8/1.
  *
  * @author yousheng
  */
-public class CronExpressionConstant {
+public class CronExpression {
     // every day fired once
     public static final String CRON_DAILY_START = "0 0 0 ? * *";
 

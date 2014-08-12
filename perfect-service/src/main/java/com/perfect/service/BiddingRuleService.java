@@ -12,4 +12,6 @@ public interface BiddingRuleService {
     public void createBiddingRule(BiddingRuleEntity biddingRuleEntity);
 
     public BiddingRuleEntity getBiddingRuleByKeywordId(String keywordId);
+
+    public BiddingRuleEntity updateToNextTime(BiddingRuleEntity biddingRuleEntity);
 }

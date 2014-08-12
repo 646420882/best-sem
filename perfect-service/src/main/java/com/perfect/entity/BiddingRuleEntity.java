@@ -65,56 +65,27 @@ public class BiddingRuleEntity {
     private int position;
 
 
-    @Field("times")
-    private List<TimeRange> times;
+    @Field("us")
+    private int upStartHour;
 
-    @Field("start")
-    private long startTime;
+    @Field("ue")
+    private int upEndHour;
 
-    @Field("end")
-    private long endTime;
+    @Field("ms")
+    private int middleStartHour;
+    @Field("me")
+    private int middleEndHour;
+
+    @Field("ls")
+    private int lastStartHour;
+    @Field("le")
+    private int lastEndHour;
+
+    @Field("next")
+    private long nextRunTime;
 
     @Field("priority")
     private int priority;
-
-
-    class TimeRange {
-        private short startTime;
-        private short endTime;
-
-        public short getStartTime() {
-            return startTime;
-        }
-
-        public void setStartTime(short startTime) {
-            this.startTime = startTime;
-        }
-
-        public short getEndTime() {
-            return endTime;
-        }
-
-        public void setEndTime(short endTime) {
-            this.endTime = endTime;
-        }
-    }
-
-    public void addRange(short start, short end) {
-        TimeRange tr = new TimeRange();
-        tr.startTime = start;
-        tr.endTime = end;
-
-        if (times == null) {
-            times = new ArrayList<TimeRange>(1);
-        }
-        times.add(tr);
-    }
-
-    public void clearTimes() {
-        if (times != null) {
-            times.clear();
-        }
-    }
 
     public long getTimestamp() {
         return timestamp;
@@ -164,20 +135,12 @@ public class BiddingRuleEntity {
         this.interval = interval;
     }
 
-    public long getStartTime() {
-        return startTime;
+    public long getNextRunTime() {
+        return nextRunTime;
     }
 
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
-    }
-
-    public long getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(long endTime) {
-        this.endTime = endTime;
+    public void setNextRunTime(long nextRunTime) {
+        this.nextRunTime = nextRunTime;
     }
 
     public int getPosition() {
