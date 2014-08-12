@@ -66,7 +66,7 @@ public class ServiceFactory extends CommonService {
             String str;
             int index;
             while ((str = br.readLine()) != null) {
-                if (str.startsWith("#")) {
+                if (str.startsWith("#") || str.trim().length() == 0) {
                     continue;
                 }
                 index = str.indexOf("=");
