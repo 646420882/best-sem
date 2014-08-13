@@ -29,23 +29,19 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * Created by baizz on 2014-7-7.
+ * Created by baizz on 2014-07-07.
  */
 @Repository("keywordDAO")
 public class KeywordDAOImpl implements KeywordDAO {
 
     @Resource
-    private MongoTemplate mongoTemplate;
-
-    @Resource
     private LogProcessingDAO logProcessingDAO;
 
     public List<Long> getKeywordIdByAdgroupId(Long adgroupId) {
-        Query query = new BasicQuery("{}", "{keywordId : 1}");
-        query.addCriteria(Criteria.where("adgroupId").is(adgroupId));
-
-        MongoTemplate userMongo = BaseMongoTemplate.getUserMongo();
-        List<KeywordEntity> list = userMongo.find(query, KeywordEntity.class, "KeywordType");
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Query query = new BasicQuery("{}", "{kwid : 1}");
+        query.addCriteria(Criteria.where("adid").is(adgroupId));
+        List<KeywordEntity> list = mongoTemplate.find(query, KeywordEntity.class, "keyword");
         List<Long> keywordIds = new ArrayList<>(list.size());
         for (KeywordEntity type : list)
             keywordIds.add(type.getKeywordId());
@@ -53,63 +49,70 @@ public class KeywordDAOImpl implements KeywordDAO {
     }
 
     public List<KeywordEntity> getKeywordByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
-        Criteria criteria = Criteria.where("adgroupId").is(adgroupId);
+        Criteria criteria = Criteria.where("adid").is(adgroupId);
         if (params != null && params.size() > 0) {
             for (Map.Entry<String, Object> entry : params.entrySet())
                 criteria.and(entry.getKey()).is(entry.getValue());
         }
         query.addCriteria(criteria);
         query.with(new PageRequest(skip, limit, new Sort(Sort.Direction.DESC, "price")));
-        List<KeywordEntity> _list = mongoTemplate.find(query, KeywordEntity.class, "KeywordType");
+        List<KeywordEntity> _list = mongoTemplate.find(query, KeywordEntity.class, "keyword");
         return _list;
     }
 
     @Override
-    public Pager getKeywordByPager(HttpServletRequest request, Map<String, Object> params,int orderBy) {
-        int start=Integer.parseInt(request.getParameter(START));
-        int pageSize=Integer.parseInt(request.getParameter(PAGESIZE));
-        Pager pager=findByPager(start,pageSize,params,orderBy);
+    public Pager getKeywordByPager(HttpServletRequest request, Map<String, Object> params, int orderBy) {
+        int start = Integer.parseInt(request.getParameter(START));
+        int pageSize = Integer.parseInt(request.getParameter(PAGESIZE));
+        Pager pager = findByPager(start, pageSize, params, orderBy);
         return pager;
     }
 
     @Override
     public List<KeywordInfo> getKeywordInfo() {
-        return mongoTemplate.findAll(KeywordInfo.class,"KeywordInfo");
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return mongoTemplate.findAll(KeywordInfo.class, "KeywordInfo");
     }
 
     public KeywordEntity findOne(Long keywordId) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         KeywordEntity entity = mongoTemplate.
-                findOne(new Query(Criteria.where("keywordId").is(keywordId)), KeywordEntity.class, "KeywordType");
+                findOne(new Query(Criteria.where("kwid").is(keywordId)), KeywordEntity.class, "keyword");
         return entity;
     }
 
     public List<KeywordEntity> findAll() {
-        List<KeywordEntity> keywordEntityList = mongoTemplate.findAll(KeywordEntity.class, "KeywordType");
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        List<KeywordEntity> keywordEntityList = mongoTemplate.findAll(KeywordEntity.class, "keyword");
         return keywordEntityList;
     }
 
     public List<KeywordEntity> find(Map<String, Object> params, int skip, int limit) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
         if (params != null && params.size() > 0) {
-            Criteria criteria = Criteria.where("keywordId").ne(null);
+            Criteria criteria = Criteria.where("kwid").ne(null);
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 criteria.and(entry.getKey()).is(entry.getValue());
             }
             query.addCriteria(criteria);
         }
         query.with(new PageRequest(skip, limit, new Sort(Sort.Direction.DESC, "price")));
-        List<KeywordEntity> list = mongoTemplate.find(query, KeywordEntity.class, "KeywordType");
+        List<KeywordEntity> list = mongoTemplate.find(query, KeywordEntity.class, "keyword");
         return list;
     }
 
     public void insert(KeywordEntity keywordEntity) {
-        mongoTemplate.insert(keywordEntity, "KeywordType");
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.insert(keywordEntity, "keyword");
         DataOperationLogEntity log = logProcessingDAO.getLog(keywordEntity.getKeywordId(), KeywordEntity.class, null, keywordEntity);
         logProcessingDAO.insert(log);
     }
 
     public void insertAll(List<KeywordEntity> entities) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insertAll(entities);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (KeywordEntity entity : entities) {
@@ -121,9 +124,10 @@ public class KeywordDAOImpl implements KeywordDAO {
 
     @SuppressWarnings("unchecked")
     public void update(KeywordEntity keywordEntity) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Long id = keywordEntity.getKeywordId();
         Query query = new Query();
-        query.addCriteria(Criteria.where("keywordId").is(id));
+        query.addCriteria(Criteria.where("kwid").is(id));
         Update update = new Update();
         DataOperationLogEntity log = null;
         try {
@@ -131,12 +135,12 @@ public class KeywordDAOImpl implements KeywordDAO {
             Field[] fields = _class.getDeclaredFields();//get object's fields by reflect
             for (Field field : fields) {
                 String fieldName = field.getName();
-                if ("keywordId".equals(fieldName))
+                if ("kwid".equals(fieldName))
                     continue;
                 StringBuilder fieldGetterName = new StringBuilder("get");
                 fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
                 Method method = _class.getDeclaredMethod(fieldGetterName.toString());
-                if(method == null)
+                if (method == null)
                     continue;
 
                 Object after = method.invoke(keywordEntity);
@@ -147,14 +151,10 @@ public class KeywordDAOImpl implements KeywordDAO {
                     break;
                 }
             }
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        mongoTemplate.updateFirst(query, update, KeywordEntity.class, "KeywordType");
+        mongoTemplate.updateFirst(query, update, KeywordEntity.class, "keyword");
         logProcessingDAO.insert(log);
     }
 
@@ -165,14 +165,15 @@ public class KeywordDAOImpl implements KeywordDAO {
 
     @SuppressWarnings("unchecked")
     public void updateMulti(String fieldName, String seedWord, Object value) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Class _class = KeywordEntity.class;
         Query query = new Query();
         query.addCriteria(Criteria.where("keyword").
                 regex(Pattern.compile("^.*?" + seedWord + ".*$", Pattern.CASE_INSENSITIVE)));
-        List<KeywordEntity> keywordEntities = mongoTemplate.find(query, _class, "KeywordType");
+        List<KeywordEntity> keywordEntities = mongoTemplate.find(query, _class, "keyword");
         Update update = new Update();
         update.set(fieldName, value);
-        mongoTemplate.updateMulti(query, update, "KeywordType");
+        mongoTemplate.updateMulti(query, update, "keyword");
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         try {
             DataOperationLogEntity logEntity;
@@ -186,26 +187,24 @@ public class KeywordDAOImpl implements KeywordDAO {
                 logEntity = logProcessingDAO.getLog(entity.getKeywordId(), _class, attribute, null);
                 logEntities.add(logEntity);
             }
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         logProcessingDAO.insertAll(logEntities);
     }
 
     public void deleteById(Long id) {
-        mongoTemplate.remove(new Query(Criteria.where("keywordId").is(id)), KeywordEntity.class, "KeywordType");
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.remove(new Query(Criteria.where("kwid").is(id)), KeywordEntity.class, "keyword");
         DataOperationLogEntity log = logProcessingDAO.getLog(id, KeywordEntity.class, null, null);
         logProcessingDAO.insert(log);
     }
 
     public void deleteByIds(List<Long> ids) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<DataOperationLogEntity> list = new LinkedList<>();
         for (Long id : ids) {
-            mongoTemplate.remove(new Query(Criteria.where("keywordId").is(id)), KeywordEntity.class, "KeywordType");
+            mongoTemplate.remove(new Query(Criteria.where("kwid").is(id)), KeywordEntity.class, "keyword");
             DataOperationLogEntity log = logProcessingDAO.getLog(id, KeywordEntity.class, null, null);
             list.add(log);
         }
@@ -217,6 +216,7 @@ public class KeywordDAOImpl implements KeywordDAO {
     }
 
     public void deleteAll() {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<KeywordEntity> keywordEntities = findAll();
         mongoTemplate.dropCollection(KeywordEntity.class);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
@@ -228,43 +228,47 @@ public class KeywordDAOImpl implements KeywordDAO {
     }
 
     @Override
-    public Pager findByPager(int start, int pageSize, Map<String,Object> params,int orderBy) {
-        Query q=new Query();
-        List<KeywordEntity> list=null;
-         if (params!=null&&params.size()>0){
-             q.skip(start);
-             q.limit(pageSize);
-             Criteria where=Criteria.where("keywordId").ne(null);
-               for (Map.Entry<String,Object> m:params.entrySet()){
-                    where.and(m.getKey()).is(m.getValue());
-               }
-             q.addCriteria(where);
-         }
-        addOrder(orderBy,q);
-        list=mongoTemplate.find(q,KeywordEntity.class,"keywordType");
-        Pager p=new Pager();
-        p.setRows(list);
-
-        return p;
-    }
-    private int getCount(Map<String,Object> params,String collections,String nell){
-        Query q=new Query();
-        if (params!=null&&params.size()>0){
-            Criteria where=nell!=null?Criteria.where(nell).ne(null):null;
-            for (Map.Entry<String,Object> m:params.entrySet()){
+    public Pager findByPager(int start, int pageSize, Map<String, Object> params, int orderBy) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Query q = new Query();
+        List<KeywordEntity> list;
+        if (params != null && params.size() > 0) {
+            q.skip(start);
+            q.limit(pageSize);
+            Criteria where = Criteria.where("kwid").ne(null);
+            for (Map.Entry<String, Object> m : params.entrySet()) {
                 where.and(m.getKey()).is(m.getValue());
             }
             q.addCriteria(where);
         }
-        return (int) mongoTemplate.count(q,collections);
+        addOrder(orderBy, q);
+        list = mongoTemplate.find(q, KeywordEntity.class, "keyword");
+        Pager p = new Pager();
+        p.setRows(list);
+
+        return p;
     }
-    private void addOrder(int orderBy,Query q){
-        switch (orderBy){
+
+    private int getCount(Map<String, Object> params, String collections, String nell) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Query q = new Query();
+        if (params != null && params.size() > 0) {
+            Criteria where = nell != null ? Criteria.where(nell).ne(null) : null;
+            for (Map.Entry<String, Object> m : params.entrySet()) {
+                where.and(m.getKey()).is(m.getValue());
+            }
+            q.addCriteria(where);
+        }
+        return (int) mongoTemplate.count(q, collections);
+    }
+
+    private void addOrder(int orderBy, Query q) {
+        switch (orderBy) {
             case 1:
-                q.with(new Sort(Sort.Direction.DESC,"price"));
+                q.with(new Sort(Sort.Direction.DESC, "price"));
                 break;
             default:
-                q.with(new Sort(Sort.Direction.DESC,"price"));
+                q.with(new Sort(Sort.Direction.DESC, "price"));
                 break;
         }
     }

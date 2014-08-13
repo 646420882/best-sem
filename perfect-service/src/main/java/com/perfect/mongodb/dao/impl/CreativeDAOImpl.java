@@ -5,6 +5,7 @@ import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
+import com.perfect.mongodb.utils.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -24,21 +25,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by baizz on 2014-7-10.
+ * Created by baizz on 2014-07-10.
  */
 @Repository("creativeDAO")
 public class CreativeDAOImpl implements CreativeDAO {
 
     @Resource
-    private MongoTemplate mongoTemplate;
-
-    @Resource
     private LogProcessingDAO logProcessingDAO;
 
     public List<Long> getCreativeIdByAdgroupId(Long adgroupId) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new BasicQuery("{}", "{creativeId : 1}");
-        query.addCriteria(Criteria.where("adgroupId").is(adgroupId));
-        List<CreativeEntity> types = mongoTemplate.find(query, CreativeEntity.class, "CreativeType");
+        query.addCriteria(Criteria.where("adid").is(adgroupId));
+        List<CreativeEntity> types = mongoTemplate.find(query, CreativeEntity.class, "creative");
         List<Long> creativeIds = new ArrayList<>(types.size());
         for (CreativeEntity type : types)
             creativeIds.add(type.getCreativeId());
@@ -46,30 +45,34 @@ public class CreativeDAOImpl implements CreativeDAO {
     }
 
     public List<CreativeEntity> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
-        Criteria criteria = Criteria.where("adgroupId").is(adgroupId);
+        Criteria criteria = Criteria.where("adid").is(adgroupId);
         if (params != null && params.size() > 0) {
             for (Map.Entry<String, Object> entry : params.entrySet())
                 criteria.and(entry.getKey()).is(entry.getValue());
         }
         query.addCriteria(criteria);
         query.with(new PageRequest(skip, limit));
-        List<CreativeEntity> list = mongoTemplate.find(query, CreativeEntity.class, "CreativeType");
+        List<CreativeEntity> list = mongoTemplate.find(query, CreativeEntity.class, "creative");
         return list;
     }
 
     public CreativeEntity findOne(Long creativeId) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         CreativeEntity entity = mongoTemplate.findOne(
-                new Query(Criteria.where("creativeId").is(creativeId)), CreativeEntity.class, "CreativeType");
+                new Query(Criteria.where("creativeId").is(creativeId)), CreativeEntity.class, "creative");
         return entity;
     }
 
     public List<CreativeEntity> findAll() {
-        List<CreativeEntity> entityList = mongoTemplate.findAll(CreativeEntity.class, "CreativeType");
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        List<CreativeEntity> entityList = mongoTemplate.findAll(CreativeEntity.class, "creative");
         return entityList;
     }
 
     public List<CreativeEntity> find(Map<String, Object> params, int skip, int limit) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
         if (params != null && params.size() > 0) {
             Criteria criteria = Criteria.where("creativeId").ne(null);
@@ -79,17 +82,19 @@ public class CreativeDAOImpl implements CreativeDAO {
             query.addCriteria(criteria);
         }
         query.with(new PageRequest(skip, limit));
-        List<CreativeEntity> list = mongoTemplate.find(query, CreativeEntity.class, "CreativeType");
+        List<CreativeEntity> list = mongoTemplate.find(query, CreativeEntity.class, "creative");
         return list;
     }
 
     public void insert(CreativeEntity creativeEntity) {
-        mongoTemplate.insert(creativeEntity, "CreativeType");
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.insert(creativeEntity, "creative");
         DataOperationLogEntity logEntity = logProcessingDAO.getLog(creativeEntity.getCreativeId(), CreativeEntity.class, null, creativeEntity);
         logProcessingDAO.insert(logEntity);
     }
 
     public void insertAll(List<CreativeEntity> entities) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insertAll(entities);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (CreativeEntity entity : entities) {
@@ -101,6 +106,7 @@ public class CreativeDAOImpl implements CreativeDAO {
 
     @SuppressWarnings("unchecked")
     public void update(CreativeEntity creativeEntity) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Long id = creativeEntity.getCreativeId();
         Query query = new Query();
         query.addCriteria(Criteria.where("creativeId").is(id));
@@ -120,18 +126,15 @@ public class CreativeDAOImpl implements CreativeDAO {
                 if (after != null) {
                     update.set(field.getName(), after);
                     Object before = method.invoke(findOne(id));
-                    log = logProcessingDAO.getLog(id, CreativeEntity.class, new DataAttributeInfoEntity(field.getName(), before, after), null);
+                    log = logProcessingDAO.getLog(id, CreativeEntity.class,
+                            new DataAttributeInfoEntity(field.getName(), before, after), null);
                     break;
                 }
             }
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        mongoTemplate.updateFirst(query, update, CreativeEntity.class, "CreativeType");
+        mongoTemplate.updateFirst(query, update, CreativeEntity.class, "creative");
         logProcessingDAO.insert(log);
     }
 
@@ -141,15 +144,17 @@ public class CreativeDAOImpl implements CreativeDAO {
     }
 
     public void deleteById(Long creativeId) {
-        mongoTemplate.remove(new Query(Criteria.where("creativeId").is(creativeId)), CreativeEntity.class, "CreativeType");
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.remove(new Query(Criteria.where("creativeId").is(creativeId)), CreativeEntity.class, "creative");
         DataOperationLogEntity log = logProcessingDAO.getLog(creativeId, CreativeEntity.class, null, null);
         logProcessingDAO.insert(log);
     }
 
     public void deleteByIds(List<Long> creativeIds) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<DataOperationLogEntity> list = new LinkedList<>();
         for (Long id : creativeIds) {
-            mongoTemplate.remove(new Query(Criteria.where("creativeId").is(id)), CreativeEntity.class, "CreativeType");
+            mongoTemplate.remove(new Query(Criteria.where("creativeId").is(id)), CreativeEntity.class, "creative");
             DataOperationLogEntity log = logProcessingDAO.getLog(id, CreativeEntity.class, null, null);
             list.add(log);
         }
@@ -161,6 +166,7 @@ public class CreativeDAOImpl implements CreativeDAO {
     }
 
     public void deleteAll() {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<CreativeEntity> creativeEntityList = findAll();
         mongoTemplate.dropCollection(CreativeEntity.class);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
@@ -172,7 +178,7 @@ public class CreativeDAOImpl implements CreativeDAO {
     }
 
     @Override
-    public Pager findByPager(int start, int pageSize, Map<String,Object> q,int orderBy) {
+    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
         return null;
     }
 }
