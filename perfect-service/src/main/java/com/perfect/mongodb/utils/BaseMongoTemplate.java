@@ -2,6 +2,8 @@ package com.perfect.mongodb.utils;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.perfect.core.AppContext;
+import com.perfect.utils.DBNameUtils;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
@@ -44,5 +46,17 @@ public class BaseMongoTemplate {
         mongoConverter.setTypeMapper(new DefaultMongoTypeMapper(null));
 
         return new MongoTemplate(mongoDbFactory, mongoConverter);
+    }
+
+    public static MongoTemplate getUserMongo() {
+        return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getUserDBName(AppContext.getUser().toString(), null));
+    }
+
+    public static MongoTemplate getUserMongo(String userName) {
+        return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getUserDBName(userName, null));
+    }
+
+    public static MongoTemplate getUserMongo(String userName, String type) {
+        return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getUserDBName(userName, type));
     }
 }

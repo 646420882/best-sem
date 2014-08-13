@@ -113,4 +113,6 @@ public interface CrudRepository<T, ID extends Serializable> extends Repository<T
      * @return
      */
     Pager findByPager(int start,int pageSize,Map<String,Object> q,int orderBy);
+
+
 }

@@ -46,7 +46,8 @@ public abstract class JacksonUtil {
     public static final void writeObj(OutputStream out, Object value) throws JsonGenerationException,
             JsonMappingException, IOException {
         mapper.writeValue(out, value);
-        System.out.println(mapper.writeValueAsString(value));
+        // yousheng 关闭打印
+//        System.out.println(mapper.writeValueAsString(value));
     }
 
     public static final <T> T str2Obj(String s, Class<T> valueType) throws JsonParseException, JsonMappingException,

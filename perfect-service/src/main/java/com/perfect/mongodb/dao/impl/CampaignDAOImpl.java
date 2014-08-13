@@ -172,4 +172,5 @@ public class CampaignDAOImpl implements CampaignDAO {
         }
         logProcessingDAO.insertAll(logEntities);
     }
+
 }
