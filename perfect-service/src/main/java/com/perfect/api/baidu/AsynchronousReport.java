@@ -168,19 +168,37 @@ public class AsynchronousReport {
     }
 
     /**
-     * 获取账户数据
+     * 获取账户PC端数据
      *
      * @param _startDate
      * @param _endDate
      * @return
      */
-    public String getAccountRealTimeData(String[] PerformanceData,String _startDate, String _endDate) {
+    public String getAccountReportDataPC(String[] PerformanceData,String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
          * RealTime(需要查询ID，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(null, 0, 2, dates[0], dates[1], 2, 0,PerformanceData);
+        String resultTypes = RealTime(null, 0, 2, dates[0], dates[1], 2, 1,PerformanceData);
+
+        return resultTypes;
+    }
+
+    /**
+     * 获取账户移动端数据
+     *
+     * @param _startDate
+     * @param _endDate
+     * @return
+     */
+    public String getAccountReportDataMobile(String[] PerformanceData,String _startDate, String _endDate) {
+        //初始化时间
+        Date[] dates = processingTime(_startDate, _endDate);
+        /**
+         * RealTime(需要查询ID，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
+         */
+        String resultTypes = RealTime(null, 0, 2, dates[0], dates[1], 2, 2,PerformanceData);
 
         return resultTypes;
     }
@@ -192,7 +210,7 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getKeyWordidRealTimeDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getKeyWordidReportDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
@@ -210,7 +228,7 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getKeyWordidRealTimeDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getKeyWordidReportDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
@@ -228,7 +246,7 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getUnitRealTimeDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getUnitReportDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
@@ -246,7 +264,7 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getUnitRealTimeDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getUnitReportDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
@@ -264,7 +282,7 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getCreativeRealTimeDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getCreativeReportDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
@@ -282,7 +300,7 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getCreativeRealTimeDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getCreativeReportDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
@@ -300,7 +318,7 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getRegionalRealTimeDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getRegionalReportDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
@@ -318,7 +336,7 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getRegionalRealTimeDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getRegionalReportDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
@@ -330,13 +348,13 @@ public class AsynchronousReport {
     }
 
     /**
-     * 获取地域移动端数据
+     * 获取计划移动端数据
      *
      * @param _startDate
      * @param _endDate
      * @return
      */
-    public String getPlanRealTimeDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getCampaignReportDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
@@ -347,13 +365,13 @@ public class AsynchronousReport {
         return resultTypes;
     }
     /**
-     * 获取地域移动端数据
+     * 获取计划PC端数据
      *
      * @param _startDate
      * @param _endDate
      * @return
      */
-    public String getPlanRealTimeDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getCampaignReportDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
@@ -362,11 +380,5 @@ public class AsynchronousReport {
         String resultTypes = RealTime(listKey, 1, 5, dates[0], dates[1], 10, 1,PerformanceData);
 
         return resultTypes;
-    }
-
-    public static void main(String[] args) {
-        AsynchronousReport asynchronousReport = new AsynchronousReport();
-        String s =asynchronousReport.getRegionalRealTimeDataPC(null, null, "2014-08-08", "2014-08-10");
-        out.println(s);
     }
 }

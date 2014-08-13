@@ -3,7 +3,8 @@ package com.perfect.service.impl;
 import com.perfect.dao.BasisReportDAO;
 import com.perfect.entity.StructureReportEntity;
 import com.perfect.service.BasisReportService;
-import com.perfect.utils.BasisReportDefaultUtil;
+import com.perfect.utils.reportUtil.BasisReportDefaultUtil;
+import com.perfect.utils.reportUtil.BasistReportPCPlusMobUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -36,6 +37,7 @@ public class BasisReportServiceImpl implements BasisReportService{
         switch (categoryTime){
             case 0:
                 Map<String, StructureReportEntity> map = new HashMap<>();
+                List<StructureReportEntity> returnList = new ArrayList<>();
                 Map<String, List<StructureReportEntity>> listMap = new HashMap<>();
                 for (int i=0; i< date.length;i++){
                     List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i]+"-adgroup");
@@ -47,8 +49,8 @@ public class BasisReportServiceImpl implements BasisReportService{
                         Future<Map<String, StructureReportEntity>> joinTask = joinPool.submit(new BasisReportDefaultUtil(objectsList,0,objectsList.size()));
                         map = joinTask.get();
                         DecimalFormat df = new DecimalFormat("#.00");
-                        for (Map.Entry<String, StructureReportEntity> voEntity : map.entrySet()){
-                            if(voEntity.getValue().getMobileImpression() == 0){
+                                for (Map.Entry<String, StructureReportEntity> voEntity : map.entrySet()){
+                                    if(voEntity.getValue().getMobileImpression() == 0){
                                 voEntity.getValue().setMobileCtr(0.00);
                             }else{
                                 voEntity.getValue().setMobileCtr(Double.parseDouble(df.format(voEntity.getValue().getMobileClick().doubleValue() / voEntity.getValue().getMobileImpression().doubleValue())));
@@ -76,13 +78,23 @@ public class BasisReportServiceImpl implements BasisReportService{
                         e.printStackTrace();
                     }
                     joinPool.shutdown();
+                List<StructureReportEntity> list = new ArrayList<>(map.values());
 
                 if(terminal == 0){
-
+                    Future<List<StructureReportEntity>> joinTask = joinPool.submit(new BasistReportPCPlusMobUtil(objectsList,0,objectsList.size()));
+                    try {
+                        returnList = joinTask.get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    listMap.put(date[0]+"-至-"+date[date.length],list);
+                    return listMap;
+                }else{
+                    listMap.put(date[0]+"-至-"+date[date.length],list);
+                    return listMap;
                 }
-                List<StructureReportEntity> list = new ArrayList<>(map.values());
-                listMap.put(date[0]+"-至-"+date[date.length],list);
-                return listMap;
             case 1:
                 for (int i=0; i<=date.length;i++){
                     List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i]+"Unit");

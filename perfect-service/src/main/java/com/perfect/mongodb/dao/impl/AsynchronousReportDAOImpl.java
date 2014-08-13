@@ -49,8 +49,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     public void getAccountReportData(String dateStr) {
         AsynchronousReport report = new AsynchronousReport();
-        String pcFilePath = "";//report.getUnitRealTimeDataPC(null, null, dateStr, dateStr);
-        String mobileFilePath = "";//report.getUnitRealTimeDataMobile(null, null, dateStr, dateStr);
+        String pcFilePath = report.getAccountReportDataPC(null, dateStr, dateStr);
+        String mobileFilePath = report.getAccountReportDataMobile(null, dateStr, dateStr);
 
         List<AccountReportEntity> pcList = httpFileHandler.getAccountReport(pcFilePath, 1);
         acrmList = httpFileHandler.getAccountReport(mobileFilePath, 2);
@@ -71,8 +71,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     public void getCampaignReportData(String dateStr) {
         AsynchronousReport report = new AsynchronousReport();
-        String pcFilePath = "";//report.getUnitRealTimeDataPC(null, null, dateStr, dateStr);
-        String mobileFilePath = "";//report.getUnitRealTimeDataMobile(null, null, dateStr, dateStr);
+        String pcFilePath = report.getCampaignReportDataPC(null, null, dateStr, dateStr);
+        String mobileFilePath = report.getCampaignReportDataMobile(null, null, dateStr, dateStr);
 
         List<CampaignReportEntity> pcList = httpFileHandler.getCampaignReport(pcFilePath, 1);
         cprmList = httpFileHandler.getCampaignReport(mobileFilePath, 2);
@@ -93,8 +93,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     public void getAdgroupReportData(String dateStr) {
         AsynchronousReport report = new AsynchronousReport();
-        String pcFilePath = report.getUnitRealTimeDataPC(null, null, dateStr, dateStr);
-        String mobileFilePath = report.getUnitRealTimeDataMobile(null, null, dateStr, dateStr);
+        String pcFilePath = report.getUnitReportDataPC(null, null, dateStr, dateStr);
+        String mobileFilePath = report.getUnitReportDataMobile(null, null, dateStr, dateStr);
 
         List<AdgroupReportEntity> pcList = httpFileHandler.getAdgroupReport(pcFilePath, 1);
         armList = httpFileHandler.getAdgroupReport(mobileFilePath, 2);
@@ -115,8 +115,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     public void getCreativeReportData(String dateStr) {
         AsynchronousReport report = new AsynchronousReport();
-        String pcFilePath = report.getCreativeRealTimeDataPC(null, null, dateStr, dateStr);
-        String mobileFilePath = report.getCreativeRealTimeDataMobile(null, null, dateStr, dateStr);
+        String pcFilePath = report.getCreativeReportDataPC(null, null, dateStr, dateStr);
+        String mobileFilePath = report.getCreativeReportDataMobile(null, null, dateStr, dateStr);
 
         List<CreativeReportEntity> pcList = httpFileHandler.getCreativeReport(pcFilePath, 1);
         crmList = httpFileHandler.getCreativeReport(mobileFilePath, 2);
@@ -137,8 +137,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     public void getKeywordReportData(String dateStr) {
         AsynchronousReport report = new AsynchronousReport();
-        String pcFilePath = report.getKeyWordidRealTimeDataPC(null, null, dateStr, dateStr);
-        String mobileFilePath = report.getKeyWordidRealTimeDataMobile(null, null, dateStr, dateStr);
+        String pcFilePath = report.getKeyWordidReportDataPC(null, null, dateStr, dateStr);
+        String mobileFilePath = report.getKeyWordidReportDataMobile(null, null, dateStr, dateStr);
 
         List<KeywordReportEntity> pcList = httpFileHandler.getKeywordReport(pcFilePath, 1);
         krmList = httpFileHandler.getKeywordReport(mobileFilePath, 2);
@@ -159,8 +159,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     public void getRegionReportData(String dateStr) {
         AsynchronousReport report = new AsynchronousReport();
-        String pcFilePath = report.getRegionalRealTimeDataPC(null, null, dateStr, dateStr);
-        String mobileFilePath = report.getRegionalRealTimeDataMobile(null, null, dateStr, dateStr);
+        String pcFilePath = report.getRegionalReportDataPC(null, null, dateStr, dateStr);
+        String mobileFilePath = report.getRegionalReportDataMobile(null, null, dateStr, dateStr);
 
         List<RegionReportEntity> pcList = httpFileHandler.getRegionReport(pcFilePath, 1);
         rrmList = httpFileHandler.getRegionReport(mobileFilePath, 2);
@@ -1024,9 +1024,5 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
             }
             return list;
         }
-    }
-
-    public static void main(String[] args) {
-        new AsynchronousReportDAOImpl().getAdgroupReportData("2014-08-12");
     }
 }

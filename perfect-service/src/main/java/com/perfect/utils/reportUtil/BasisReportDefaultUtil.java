@@ -1,4 +1,4 @@
-package com.perfect.utils;
+package com.perfect.utils.reportUtil;
 
 import com.perfect.entity.StructureReportEntity;
 
