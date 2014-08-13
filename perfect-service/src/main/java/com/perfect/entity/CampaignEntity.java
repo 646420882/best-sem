@@ -2,37 +2,71 @@ package com.perfect.entity;
 
 import com.perfect.autosdk.sms.v3.OfflineTimeType;
 import com.perfect.autosdk.sms.v3.ScheduleType;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
 /**
  * Created by vbzer_000 on 2014-6-26.
  */
-@Document(collection = "CampaginType")
+@Document(collection = "campaign")
 public class CampaignEntity {
 
+    @Id
+    private ObjectId id;
     //CampaignType Attributes
     @Indexed(unique = true)
+    @Field("cid")
     private Long campaignId;
 
     //------------------------
     // MEMBER VARIABLES
     //------------------------
+
+    @Field("name")
     private String campaignName;
+
+    @Field("b")
     private Double budget;
+
+    @Field("rt")
     private List<Integer> regionTarget;
+
+    @Field("exip")
     private List<String> excludeIp;
+
+    @Field("neg")
     private List<String> negativeWords;
+
+    @Field("exneg")
     private List<String> exactNegativeWords;
+
+    @Field("sd")
     private List<ScheduleType> schedule;
+
+    @Field("off")
     private List<OfflineTimeType> budgetOfflineTime;
+
+    @Field("sp")
     private Integer showProb;
+
+    @Field("d")
     private Integer device;
+
+    @Field("pr")
     private Double priceRatio;
+
+    @Field("p")
     private Boolean pause;
+
+    @Field("s")
     private Integer status;
+
+    @Field("idc")
     private Boolean isDynamicCreative;
 
     public boolean setCampaignId(Long aCampaignId) {
@@ -397,4 +431,11 @@ public class CampaignEntity {
     }
 
 
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
 }

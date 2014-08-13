@@ -6,7 +6,7 @@ package com.perfect.entity;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "CreativeType")
+@Document(collection = "creative")
 public class CreativeEntity {
     //CreativeType Attributes
     @Indexed(unique = true)

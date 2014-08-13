@@ -6,6 +6,7 @@ import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
 import com.perfect.entity.KeywordEntity;
+import com.perfect.mongodb.utils.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -42,7 +43,9 @@ public class KeywordDAOImpl implements KeywordDAO {
     public List<Long> getKeywordIdByAdgroupId(Long adgroupId) {
         Query query = new BasicQuery("{}", "{keywordId : 1}");
         query.addCriteria(Criteria.where("adgroupId").is(adgroupId));
-        List<KeywordEntity> list = mongoTemplate.find(query, KeywordEntity.class, "KeywordType");
+
+        MongoTemplate userMongo = BaseMongoTemplate.getUserMongo();
+        List<KeywordEntity> list = userMongo.find(query, KeywordEntity.class, "KeywordType");
         List<Long> keywordIds = new ArrayList<>(list.size());
         for (KeywordEntity type : list)
             keywordIds.add(type.getKeywordId());

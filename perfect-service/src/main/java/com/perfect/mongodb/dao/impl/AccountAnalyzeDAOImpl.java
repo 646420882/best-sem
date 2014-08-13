@@ -6,7 +6,7 @@ import com.perfect.entity.AccountRealTimeDataVOEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
-import com.perfect.utils.DBNameUtil;
+import com.perfect.utils.DBNameUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class AccountAnalyzeDAOImpl implements AccountAnalyzeDAO {
 
     private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(
-            DBNameUtil.getReportDBName(AppContext.getUser().toString()));
+            DBNameUtils.getReportDBName(AppContext.getUser().toString()));
 
     public KeywordRealTimeDataVOEntity findOne(Long aLong) {
         return null;

@@ -4,29 +4,55 @@
 package com.perfect.entity;
 
 import com.perfect.autosdk.common.OptType;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
-@Document(collection = "AdgroupType")
+@Document(collection = "adgroup")
 public class AdgroupEntity {
+
+    @Id
+    private ObjectId id;
 
     //AdgroupType Attributes
     @Indexed(unique = true)
+    @Field("adid")
     private Long adgroupId;
 
     //------------------------
     // MEMBER VARIABLES
     //------------------------
+    @Field("cid")
     private Long campaignId;
+
+    @Field("name")
     private String adgroupName;
+
+    @Field("max")
     private Double maxPrice;
+
+    @Field("neg")
     private List<String> negativeWords;
+
+    @Field("exneg")
     private List<String> exactNegativeWords;
+
+    @Field("res")
     private String reserved;
+
+    @Field("p")
     private Boolean pause;
+
+    @Field("s")
     private Integer status;
+
+    @Field("o")
     private OptType opt;
 
     public boolean setAdgroupId(Long aAdgroupId) {
@@ -218,5 +244,11 @@ public class AdgroupEntity {
                 + outputString;
     }
 
+    public ObjectId getId() {
+        return id;
+    }
 
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
 }

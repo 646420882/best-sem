@@ -3,19 +3,25 @@
 
 package com.perfect.entity;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection = "KeywordType")
+@Document(collection = "keyword")
 public class KeywordEntity extends BinlogEntity {
     //------------------------
     // MEMBER VARIABLES
     //------------------------
 
+    @Id
+    private ObjectId id;
+
     //KeywordType Attributes
     @Indexed(unique = true)
-    @Field("id")
+    @Field("kwid")
     private Long keywordId;
     @Field("agid")
     private Long adgroupId;
@@ -26,9 +32,17 @@ public class KeywordEntity extends BinlogEntity {
     private String pcDestinationUrl;
     @Field("mobile")
     private String mobileDestinationUrl;
+
+    @Field("mt")
     private Integer matchType;
+
+    @Field("p")
     private Boolean pause;
+
+    @Field("s")
     private Integer status;
+
+    @Field("pt")
     private Integer phraseType;
 
     //------------------------
@@ -164,5 +178,13 @@ public class KeywordEntity extends BinlogEntity {
                 "status" + ":" + getStatus() + "," +
                 "phraseType" + ":" + getPhraseType() + "]"
                 + outputString;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 }

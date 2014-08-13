@@ -3,9 +3,9 @@ package com.perfect.utils;
 /**
  * Created by baizz on 2014-08-07.
  */
-public class DBNameUtil {
+public class DBNameUtils {
 
-    public static final String DB_REPORT = "_report";
+    public static final String DB_REPORT = "report";
 
     /**
      * @param args
