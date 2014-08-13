@@ -17,8 +17,20 @@ public class KeywordReportEntity {
     @Field(value = "kwna")
     private String keywordName;
 
+    @Field(value = "agid")
+    private Long adgroupId;
+
     @Field(value = "agna")
     private String adgroupName;
+
+    @Field(value = "acid")
+    private Long accountId;
+
+    @Field(value = "acna")
+    private String accountName;
+
+    @Field(value = "cpid")
+    private Long campaignId;
 
     @Field(value = "cpna")
     private String campaignName;
@@ -95,12 +107,44 @@ public class KeywordReportEntity {
         this.keywordName = keywordName;
     }
 
+    public Long getAdgroupId() {
+        return adgroupId;
+    }
+
+    public void setAdgroupId(Long adgroupId) {
+        this.adgroupId = adgroupId;
+    }
+
     public String getAdgroupName() {
         return adgroupName;
     }
 
     public void setAdgroupName(String adgroupName) {
         this.adgroupName = adgroupName;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public Long getCampaignId() {
+        return campaignId;
+    }
+
+    public void setCampaignId(Long campaignId) {
+        this.campaignId = campaignId;
     }
 
     public String getCampaignName() {
@@ -246,7 +290,11 @@ public class KeywordReportEntity {
 
         KeywordReportEntity that = (KeywordReportEntity) o;
 
+        if (accountId != null ? !accountId.equals(that.accountId) : that.accountId != null) return false;
+        if (accountName != null ? !accountName.equals(that.accountName) : that.accountName != null) return false;
+        if (adgroupId != null ? !adgroupId.equals(that.adgroupId) : that.adgroupId != null) return false;
         if (adgroupName != null ? !adgroupName.equals(that.adgroupName) : that.adgroupName != null) return false;
+        if (campaignId != null ? !campaignId.equals(that.campaignId) : that.campaignId != null) return false;
         if (campaignName != null ? !campaignName.equals(that.campaignName) : that.campaignName != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (keywordId != null ? !keywordId.equals(that.keywordId) : that.keywordId != null) return false;
@@ -279,7 +327,11 @@ public class KeywordReportEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (keywordId != null ? keywordId.hashCode() : 0);
         result = 31 * result + (keywordName != null ? keywordName.hashCode() : 0);
+        result = 31 * result + (adgroupId != null ? adgroupId.hashCode() : 0);
         result = 31 * result + (adgroupName != null ? adgroupName.hashCode() : 0);
+        result = 31 * result + (accountId != null ? accountId.hashCode() : 0);
+        result = 31 * result + (accountName != null ? accountName.hashCode() : 0);
+        result = 31 * result + (campaignId != null ? campaignId.hashCode() : 0);
         result = 31 * result + (campaignName != null ? campaignName.hashCode() : 0);
         result = 31 * result + (pcImpression != null ? pcImpression.hashCode() : 0);
         result = 31 * result + (pcClick != null ? pcClick.hashCode() : 0);
@@ -306,7 +358,11 @@ public class KeywordReportEntity {
                 "id='" + id + '\'' +
                 ", keywordId=" + keywordId +
                 ", keywordName='" + keywordName + '\'' +
+                ", adgroupId=" + adgroupId +
                 ", adgroupName='" + adgroupName + '\'' +
+                ", accountId=" + accountId +
+                ", accountName='" + accountName + '\'' +
+                ", campaignId=" + campaignId +
                 ", campaignName='" + campaignName + '\'' +
                 ", pcImpression=" + pcImpression +
                 ", pcClick=" + pcClick +

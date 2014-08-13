@@ -5,7 +5,7 @@ package com.perfect.utils;
  */
 public class DBNameUtil {
 
-    public static final String DB_REPORT = "_report";
+    public static final String DB_REPORT = "report";
 
     /**
      * @param args

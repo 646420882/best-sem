@@ -5,6 +5,10 @@ package com.perfect.dao;
  */
 public interface AsynchronousReportDAO {
 
+    void getAccountReportData(String dateStr);
+
+    void getCampaignReportData(String dateStr);
+
     void getAdgroupReportData(String dateStr);
 
     void getCreativeReportData(String dateStr);
