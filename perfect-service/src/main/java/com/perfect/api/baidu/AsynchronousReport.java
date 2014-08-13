@@ -324,7 +324,42 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(listKey, 1, 5, dates[0], dates[1], 3, 2,PerformanceData);
+        String resultTypes = RealTime(listKey, 0, 3, dates[0], dates[1], 3, 2,PerformanceData);
+
+        return resultTypes;
+    }
+
+    /**
+     * 获取地域移动端数据
+     *
+     * @param _startDate
+     * @param _endDate
+     * @return
+     */
+    public String getPlanRealTimeDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+        //初始化时间
+        Date[] dates = processingTime(_startDate, _endDate);
+        /**
+         * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
+         */
+        String resultTypes = RealTime(listKey, 0, 3, dates[0], dates[1], 10, 2,PerformanceData);
+
+        return resultTypes;
+    }
+    /**
+     * 获取地域移动端数据
+     *
+     * @param _startDate
+     * @param _endDate
+     * @return
+     */
+    public String getPlanRealTimeDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+        //初始化时间
+        Date[] dates = processingTime(_startDate, _endDate);
+        /**
+         * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
+         */
+        String resultTypes = RealTime(listKey, 1, 5, dates[0], dates[1], 10, 1,PerformanceData);
 
         return resultTypes;
     }

@@ -1,10 +1,10 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.BasisReportDAO;
-import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import com.perfect.entity.StructureReportEntity;
 import com.perfect.service.BasisReportService;
 import com.perfect.utils.BasisReportDefaultUtil;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
@@ -19,6 +19,7 @@ import java.util.concurrent.Future;
 /**
  * Created by SubDong on 2014/8/6.
  */
+@Repository("basisReportService")
 public class BasisReportServiceImpl implements BasisReportService{
     @Resource
     private BasisReportDAO basisReportDAO;
@@ -29,19 +30,20 @@ public class BasisReportServiceImpl implements BasisReportService{
      * @param categoryTime 分类时间  0、默认 1、分日 2、分周 3、分月
      * @return
      */
-    public List<StructureReportEntity> getUnitReportDate(String[] date,int terminal,int categoryTime){
+    public Map<String,List<StructureReportEntity>> getUnitReportDate(String[] date,int terminal,int categoryTime){
         List<StructureReportEntity> objectsList = new ArrayList<>();
 
         switch (categoryTime){
             case 0:
                 Map<String, StructureReportEntity> map = new HashMap<>();
+                Map<String, List<StructureReportEntity>> listMap = new HashMap<>();
                 for (int i=0; i< date.length;i++){
                     List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i]+"-adgroup");
                     objectsList.addAll(object);
                 }
                 int s = objectsList.size();
+                ForkJoinPool joinPool = new ForkJoinPool();
                     try {
-                        ForkJoinPool joinPool = new ForkJoinPool();
                         Future<Map<String, StructureReportEntity>> joinTask = joinPool.submit(new BasisReportDefaultUtil(objectsList,0,objectsList.size()));
                         map = joinTask.get();
                         DecimalFormat df = new DecimalFormat("#.00");
@@ -73,10 +75,14 @@ public class BasisReportServiceImpl implements BasisReportService{
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
+                    joinPool.shutdown();
+
                 if(terminal == 0){
 
                 }
-                return objectsList;
+                List<StructureReportEntity> list = new ArrayList<>(map.values());
+                listMap.put(date[0]+"-至-"+date[date.length],list);
+                return listMap;
             case 1:
                 for (int i=0; i<=date.length;i++){
                     List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i]+"Unit");
@@ -88,19 +94,19 @@ public class BasisReportServiceImpl implements BasisReportService{
                 if (terminal == 0){
 
                 }
-                return objectsList;
+                return null;
             case 2:
                 for (int i=0; i<=date.length;i++){
                     List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i]+"Unit");
                     objectsList.addAll(object);
                 }
-                return objectsList;
+                return null;
             case 3:
                 for (int i=0; i<=date.length;i++){
                     List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i]+"Unit");
                     objectsList.addAll(object);
                 }
-                return objectsList;
+                return null;
         }
 
 

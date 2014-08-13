@@ -36,18 +36,18 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
                     if (map.get(objectList.get(i).getAdgroupName()) != null) {
                         String adgroupName = objectList.get(i).getAdgroupName();
                         StructureReportEntity voEntity = map.get(adgroupName);
-                        voEntity.setMobileClick(voEntity.getMobileClick() + map.get(adgroupName).getMobileClick());
-                        voEntity.setMobileConversion(voEntity.getMobileConversion() + map.get(adgroupName).getMobileConversion());
-                        voEntity.setMobileCost(voEntity.getMobileCost() + map.get(adgroupName).getMobileCost());
+                        voEntity.setMobileClick(voEntity.getMobileClick() + ((map.get(adgroupName).getMobileClick() == null) ? 0 : map.get(adgroupName).getMobileClick()));
+                        voEntity.setMobileConversion(voEntity.getMobileConversion() + ((map.get(adgroupName).getMobileConversion() == null) ? 0 :map.get(adgroupName).getMobileClick()));
+                        voEntity.setMobileCost(voEntity.getMobileCost() + ((map.get(adgroupName).getMobileCost() == null) ? 0 : map.get(adgroupName).getMobileCost()));
                         voEntity.setMobileCtr(0d);
                         voEntity.setMobileCpc(0d);
-                        voEntity.setMobileImpression(voEntity.getMobileImpression() + map.get(adgroupName).getMobileImpression());
-                        voEntity.setPcClick(voEntity.getPcClick() + map.get(adgroupName).getPcClick());
-                        voEntity.setPcConversion(voEntity.getPcConversion() + map.get(adgroupName).getPcConversion());
-                        voEntity.setPcCost(voEntity.getPcCost() + map.get(adgroupName).getPcCost());
+                        voEntity.setMobileImpression(voEntity.getMobileImpression() + ((map.get(adgroupName).getMobileImpression() == null) ? 0 : map.get(adgroupName).getMobileImpression()));
+                        voEntity.setPcClick(voEntity.getPcClick() + ((map.get(adgroupName).getPcClick() == null) ? 0 : map.get(adgroupName).getPcClick()));
+                        voEntity.setPcConversion(voEntity.getPcConversion() + ((map.get(adgroupName).getPcConversion() == null) ? 0 : map.get(adgroupName).getPcConversion()));
+                        voEntity.setPcCost(voEntity.getPcCost() + ((map.get(adgroupName).getPcCost() == null)? 0 : map.get(adgroupName).getPcCost()));
                         voEntity.setPcCtr(0d);
                         voEntity.setPcCpc(0d);
-                        voEntity.setPcImpression(voEntity.getPcImpression() + map.get(adgroupName).getPcImpression());
+                        voEntity.setPcImpression(voEntity.getPcImpression() + ((map.get(adgroupName).getPcImpression() == null) ? 0 : map.get(adgroupName).getPcImpression()));
                         map.put(objectList.get(i).getAdgroupName()+"", voEntity);
                     } else {
                         map.put(objectList.get(i).getAdgroupName()+"", objectList.get(i));

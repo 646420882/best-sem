@@ -3,6 +3,7 @@ package com.perfect.service;
 import com.perfect.entity.StructureReportEntity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by SubDong on 2014/8/8.
@@ -15,5 +16,5 @@ public interface BasisReportService {
      * @param categoryTime 分类时间  0、默认 1、分日 2、分周 3、分月
      * @return
      */
-    public List<StructureReportEntity> getUnitReportDate(String[] date,int terminal,int categoryTime);
+    public Map<String,List<StructureReportEntity>> getUnitReportDate(String[] date,int terminal,int categoryTime);
 }
