@@ -1,10 +1,10 @@
 package com.perfect.service.impl;
 
-import com.perfect.api.baidu.ResultUtils;
 import com.perfect.autosdk.core.CommonService;
-import com.perfect.autosdk.core.ServiceFactory;
-import com.perfect.autosdk.exception.ApiException;
-import com.perfect.autosdk.sms.v3.*;
+import com.perfect.autosdk.sms.v3.AdgroupType;
+import com.perfect.autosdk.sms.v3.CampaignAdgroup;
+import com.perfect.autosdk.sms.v3.CampaignType;
+import com.perfect.autosdk.sms.v3.KeywordType;
 import com.perfect.entity.*;
 import com.perfect.main.BaiduApiService;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
@@ -12,7 +12,6 @@ import com.perfect.service.AccountDataService;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.BaiduServiceSupport;
 import com.perfect.utils.EntityConvertUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ import java.util.List;
  *
  * @author yousheng
  */
-@Service
+@Service("accountDataService")
 public class AccountDataServiceImpl implements AccountDataService {
 
     @Resource
@@ -46,8 +45,12 @@ public class AccountDataServiceImpl implements AccountDataService {
         }
 
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(userName);
+        clearCollection(mongoTemplate);
 
         for (BaiduAccountInfoEntity baiduAccountInfoEntity : baiduAccountInfoEntityList) {
+
+            Long aid = baiduAccountInfoEntity.getId();
+
             CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
             BaiduApiService apiService = new BaiduApiService(commonService);
 
@@ -55,20 +58,11 @@ public class AccountDataServiceImpl implements AccountDataService {
 
             List<CampaignEntity> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
 
-            if (mongoTemplate.collectionExists(CampaignEntity.class)) {
-                mongoTemplate.dropCollection(CampaignEntity.class);
-            }
-            // 保存数据
-//            mongoTemplate.insertAll(campaignEntities);
-
-//            campaignEntities = mongoTemplate.findAll(CampaignEntity.class);
-
-
             // 查询推广单元
-
             List<Long> ids = new ArrayList<>(campaignEntities.size());
 
             for (CampaignEntity campaignEntity : campaignEntities) {
+                campaignEntity.setAccountId(aid);
                 ids.add(campaignEntity.getCampaignId());
             }
 
@@ -77,46 +71,51 @@ public class AccountDataServiceImpl implements AccountDataService {
 
             List<AdgroupType> adgroupTypeList = new ArrayList<>(campaignAdgroupList.size() << 1);
 
-            ids.clear();
             for (CampaignAdgroup campaignAdgroup : campaignAdgroupList) {
                 List<AdgroupType> adgroupTypes = campaignAdgroup.getAdgroupTypes();
                 adgroupTypeList.addAll(adgroupTypes);
             }
-            List<AdgroupEntity> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
 
+            List<AdgroupEntity> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
+            ids.clear();
+            for (AdgroupEntity adgroupEntity : adgroupEntities) {
+                adgroupEntity.setAccountId(aid);
+                ids.add(adgroupEntity.getAdgroupId());
+            }
 
             List<KeywordType> keywordTypes = apiService.getAllKeyword(ids);
 
             List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
 
+            for (KeywordEntity keywordEntity : keywordEntities) {
+                keywordEntity.setAccountId(aid);
+            }
 
             // 开始保存数据
             // 保存推广计划
             mongoTemplate.insertAll(campaignEntities);
             mongoTemplate.insertAll(adgroupEntities);
             mongoTemplate.insertAll(keywordEntities);
+        }
+    }
 
-//            Map<Long, CampaignEntity> campaignEntityMap = new HashMap<>(campaignEntities.size());
-//            for (CampaignEntity campaignEntity : campaignEntities) {
-//                campaignEntityMap.put(campaignEntity.getCampaignId(), campaignEntity);
-//            }
-
-            // 设置推广计划和推广单元的关联
-//            for (AdgroupEntity adgroupEntity : adgroupEntities) {
-//                ids.add(adgroupEntity.getAdgroupId());
-//            }
-
-//            Map<Long, AdgroupEntity> adgroupEntityMap = new HashMap<>(adgroupTypeList.size());
-//            for (AdgroupEntity adgroupEntity : adgroupEntities) {
-//                adgroupEntityMap.put(adgroupEntity.getAdgroupId(), adgroupEntity);
-//            }
-
-
-//            for (KeywordEntity keywordEntity : keywordEntities) {
-//                keywordEntity.setAdgroupEntity(adgroupEntityMap.get(keywordEntity.getAdgroupId()));
-//            }
+    // 清除账户数据
+    private void clearCollection(MongoTemplate mongoTemplate) {
+        if (mongoTemplate.collectionExists(CampaignEntity.class)) {
+            mongoTemplate.dropCollection(CampaignEntity.class);
         }
 
+        if (mongoTemplate.collectionExists(AdgroupEntity.class)) {
+            mongoTemplate.dropCollection(AdgroupEntity.class);
+        }
+
+        if (mongoTemplate.collectionExists(KeywordEntity.class)) {
+            mongoTemplate.dropCollection(KeywordEntity.class);
+        }
+
+        if (mongoTemplate.collectionExists(CreativeEntity.class)) {
+            mongoTemplate.dropCollection(CreativeEntity.class);
+        }
     }
 
 }

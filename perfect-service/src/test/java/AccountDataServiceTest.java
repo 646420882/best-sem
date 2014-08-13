@@ -1,5 +1,6 @@
 import com.perfect.service.AccountDataService;
 import org.junit.Test;
+import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;
 import org.unitils.spring.annotation.SpringBeanByName;
 
@@ -10,7 +11,7 @@ import org.unitils.spring.annotation.SpringBeanByName;
  */
 
 @SpringApplicationContext({"spring.xml"})
-public class AccountDataServiceTest {
+public class AccountDataServiceTest extends UnitilsJUnit4{
 
     @SpringBeanByName
     private AccountDataService accountDataService;

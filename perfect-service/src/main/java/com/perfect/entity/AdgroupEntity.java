@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.List;
 
 @Document(collection = "adgroup")
-public class AdgroupEntity {
+public class AdgroupEntity extends AccountIdEntity{
 
     @Id
     private ObjectId id;

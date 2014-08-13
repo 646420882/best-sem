@@ -298,6 +298,7 @@
 	float: left;
 	height: 30px;
 	width: 11%;
+    font-size:12px;
 	padding-left: 10px;
 	overflow: hidden;
 }

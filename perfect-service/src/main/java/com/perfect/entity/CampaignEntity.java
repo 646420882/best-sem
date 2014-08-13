@@ -14,7 +14,7 @@ import java.util.List;
  * Created by vbzer_000 on 2014-6-26.
  */
 @Document(collection = "campaign")
-public class CampaignEntity {
+public class CampaignEntity extends AccountIdEntity{
 
     @Id
     private ObjectId id;

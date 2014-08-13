@@ -52,8 +52,7 @@ public class BaiduServiceSupport {
             return ServiceFactory.getInstance(baiduAccountInfoEntity.getBaiduUserName(), baiduAccountInfoEntity.getBaiduPassword(), baiduAccountInfoEntity.getToken(), null);
         } catch (ApiException e) {
             e.printStackTrace();
-        } finally {
-            return null;
         }
+        return null;
     }
 }

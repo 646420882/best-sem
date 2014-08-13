@@ -5,7 +5,7 @@ import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.sms.v3.RealTimeResultType;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.KeywordRealTimeDataEntity;
+import com.perfect.entity.KeywordReportEntity;
 import com.perfect.entity.SystemUserEntity;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
 import com.perfect.schedule.core.IScheduleTaskDealSingle;
@@ -94,13 +94,13 @@ public class ReportDataTask implements IScheduleTaskDealSingle<SystemUserEntity>
 
     public void pushReport(List<RealTimeResultType> aList, List<RealTimeResultType> bList, final String userName, final String collectionName) {
 
-        List<KeywordRealTimeDataEntity> list = new ArrayList<KeywordRealTimeDataEntity>(aList.size());
+        List<KeywordReportEntity> list = new ArrayList<KeywordReportEntity>(aList.size());
 
-        Map<Long, KeywordRealTimeDataEntity> dataEntityMap = new HashMap<>(list.size() / 2);
+        Map<Long, KeywordReportEntity> dataEntityMap = new HashMap<>(list.size() / 2);
 
         // 查询PC统计数据
         for (RealTimeResultType resultType : aList) {
-            KeywordRealTimeDataEntity dataEntity = new KeywordRealTimeDataEntity();
+            KeywordReportEntity dataEntity = new KeywordReportEntity();
 
             dataEntity.setKeywordId(resultType.getID());
 
@@ -113,6 +113,7 @@ public class ReportDataTask implements IScheduleTaskDealSingle<SystemUserEntity>
             dataEntity.setPcCpc(NumberUtils.parseDouble(resultType.getKPI(IDX_CPC)));
             dataEntity.setPcCtr(NumberUtils.parseDouble(resultType.getKPI(IDX_CTR)));
             dataEntity.setPcImpression(NumberUtils.parseInt(resultType.getKPI(IDX_IMPRESSION)));
+            dataEntity.setPcCpm(NumberUtils.parseDouble(resultType.getKPI(IDX_CPM)));
             dataEntity.setPcPosition(NumberUtils.parseDouble(resultType.getKPI(IDX_POSITION)));
             dataEntity.setPcConversion(NumberUtils.parseDouble(resultType.getKPI(IDX_CONVERSION)));
 
@@ -123,11 +124,11 @@ public class ReportDataTask implements IScheduleTaskDealSingle<SystemUserEntity>
 
         for (RealTimeResultType resultType : bList) {
 
-            KeywordRealTimeDataEntity dataEntity = null;
+            KeywordReportEntity dataEntity = null;
             if (dataEntityMap.containsKey(dataEntity.getKeywordId())) {
                 dataEntity = dataEntityMap.get(dataEntity.getKeywordId());
             } else {
-                dataEntity = new KeywordRealTimeDataEntity();
+                dataEntity = new KeywordReportEntity();
                 dataEntity.setKeywordId(resultType.getID());
                 list.add(dataEntity);
                 dataEntityMap.put(dataEntity.getKeywordId(), dataEntity);
@@ -142,6 +143,7 @@ public class ReportDataTask implements IScheduleTaskDealSingle<SystemUserEntity>
             dataEntity.setMobileCpc(NumberUtils.parseDouble(resultType.getKPI(IDX_CPC)));
             dataEntity.setMobileCtr(NumberUtils.parseDouble(resultType.getKPI(IDX_CTR)));
             dataEntity.setMobileImpression(NumberUtils.parseInt(resultType.getKPI(IDX_IMPRESSION)));
+            dataEntity.setMobileCpm(NumberUtils.parseDouble(resultType.getKPI(IDX_CPM)));
             dataEntity.setMobilePosition(NumberUtils.parseDouble(resultType.getKPI(IDX_POSITION)));
             dataEntity.setMobileConversion(NumberUtils.parseDouble(resultType.getKPI(IDX_CONVERSION)));
 

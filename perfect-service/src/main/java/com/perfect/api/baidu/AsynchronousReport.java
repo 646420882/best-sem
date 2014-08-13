@@ -14,6 +14,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static java.lang.System.*;
+
 /**
  * Created by SubDong on 2014/8/7.
  */
@@ -122,7 +124,7 @@ public class AsynchronousReport {
             e.printStackTrace();
         }
         int isGenerated = 0;
-        int sleepTime = 15 * 1000;
+        int sleepTime = 30 * 1000;
         int views = 0;
         isGenerated = reportStateResponse.getIsGenerated();
 
@@ -134,7 +136,8 @@ public class AsynchronousReport {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                isGenerated = reportStateResponse.getIsGenerated();
+                GetReportStateResponse reportState = reportService.getReportState(reportStateRequest);
+                isGenerated = reportState.getIsGenerated();
                 views++;
                 continue;
             } else if (isGenerated == 2) {
@@ -143,7 +146,8 @@ public class AsynchronousReport {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                isGenerated = reportStateResponse.getIsGenerated();
+                GetReportStateResponse state = reportService.getReportState(reportStateRequest);
+                isGenerated = state.getIsGenerated();
                 views++;
                 continue;
             } else if (isGenerated == 3) {
@@ -320,8 +324,49 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(listKey, 1, 5, dates[0], dates[1], 3, 2,PerformanceData);
+        String resultTypes = RealTime(listKey, 0, 3, dates[0], dates[1], 3, 2,PerformanceData);
 
         return resultTypes;
+    }
+
+    /**
+     * 获取地域移动端数据
+     *
+     * @param _startDate
+     * @param _endDate
+     * @return
+     */
+    public String getPlanRealTimeDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+        //初始化时间
+        Date[] dates = processingTime(_startDate, _endDate);
+        /**
+         * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
+         */
+        String resultTypes = RealTime(listKey, 0, 3, dates[0], dates[1], 10, 2,PerformanceData);
+
+        return resultTypes;
+    }
+    /**
+     * 获取地域移动端数据
+     *
+     * @param _startDate
+     * @param _endDate
+     * @return
+     */
+    public String getPlanRealTimeDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+        //初始化时间
+        Date[] dates = processingTime(_startDate, _endDate);
+        /**
+         * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
+         */
+        String resultTypes = RealTime(listKey, 1, 5, dates[0], dates[1], 10, 1,PerformanceData);
+
+        return resultTypes;
+    }
+
+    public static void main(String[] args) {
+        AsynchronousReport asynchronousReport = new AsynchronousReport();
+        String s =asynchronousReport.getRegionalRealTimeDataPC(null, null, "2014-08-08", "2014-08-10");
+        out.println(s);
     }
 }

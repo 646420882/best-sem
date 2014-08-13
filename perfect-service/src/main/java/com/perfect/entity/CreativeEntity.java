@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "creative")
-public class CreativeEntity {
+public class CreativeEntity extends AccountIdEntity {
     //CreativeType Attributes
     @Indexed(unique = true)
     private Long creativeId;

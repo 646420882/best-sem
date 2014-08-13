@@ -3,6 +3,7 @@ package com.perfect.app.batchUpload.controller;
 import com.perfect.app.batchUpload.vo.FileMeta;
 import com.perfect.dao.CSVKeywordDAO;
 import com.perfect.entity.CSVEntity;
+import com.perfect.entity.CSVUrlEntity;
 import com.perfect.utils.CsvLinkedSupport;
 import com.perfect.utils.ReadCsvUtil;
 import com.perfect.utils.web.WebContextSupport;
@@ -26,7 +27,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/upload")
-public class UploadManager extends WebContextSupport {
+ public class uploadManager extends WebContextSupport {
     private final static String DIR = "D:/temp/files/";
     LinkedList<FileMeta> files = new LinkedList<FileMeta>();
     FileMeta fileMeta = null;
@@ -79,9 +80,13 @@ public class UploadManager extends WebContextSupport {
              * 获取CSVEntity
              */
             ReadCsvUtil p = new ReadCsvUtil(realPath, "GBK");
-            List<CSVEntity> list = p.getList();
+//            List<CSVEntity> list = p.getList();
+            List<CSVUrlEntity> csvUrlEntityList=p.getUrlList();
 //            CsvLinkedSupport.saveToDB(list);
-            cSVKeywordDAO.insertAll(list);
+//            cSVKeywordDAO.insertAll(list);
+            for (CSVUrlEntity cu:csvUrlEntityList){
+                System.out.println(cu.getKeyword()+">>");
+            }
         }
         return files;
     }

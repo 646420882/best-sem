@@ -32,9 +32,8 @@ public class BaiduApiService {
             return response.getCampaignTypes();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            return Collections.EMPTY_LIST;
         }
+        return Collections.EMPTY_LIST;
     }
 
 
@@ -48,9 +47,8 @@ public class BaiduApiService {
             return response.getCampaignIds();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            return Collections.EMPTY_LIST;
         }
+        return Collections.EMPTY_LIST;
     }
 
 
@@ -66,9 +64,8 @@ public class BaiduApiService {
             return response.getCampaignAdgroups();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            return Collections.EMPTY_LIST;
         }
+        return Collections.EMPTY_LIST;
     }
 
 
@@ -97,9 +94,8 @@ public class BaiduApiService {
             return response1.getKeywordTypes();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            return Collections.EMPTY_LIST;
         }
+        return Collections.EMPTY_LIST;
     }
 
 }

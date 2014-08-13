@@ -5,11 +5,11 @@ package com.perfect.dao;
  */
 public interface AsynchronousReportDAO {
 
-    void getAdgroupRealTimeData();
+    void getAdgroupReportData(String dateStr);
 
-    void getCreativeRealTimeData();
+    void getCreativeReportData(String dateStr);
 
-    void getKeywordRealTimeData();
+    void getKeywordReportData(String dateStr);
 
-    void getRegionRealTimeData();
+    void getRegionReportData(String dateStr);
 }

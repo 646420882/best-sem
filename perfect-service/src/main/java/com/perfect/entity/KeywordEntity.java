@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "keyword")
-public class KeywordEntity extends BinlogEntity {
+public class KeywordEntity extends AccountIdEntity {
     //------------------------
     // MEMBER VARIABLES
     //------------------------

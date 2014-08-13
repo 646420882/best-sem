@@ -11,12 +11,15 @@
 		http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"
        default-lazy-init="true" default-autowire="byName">
 
-    <bean id="userUpdateTask" class="com.perfect.schedule.task.execute.UserTask"/>
+    <bean id="senderTask" class="com.perfect.schedule.task.execute.SenderTask"/>
+
+    <bean id="demoTaskBean" class="com.taobao.pamirs.schedule.test.DemoTaskBean" />
 
     <bean id="scheduleManagerFactory" class="com.perfect.schedule.core.strategy.TBScheduleManagerFactory"
           init-method="init">
         <property name="zkConfig">
             <map>
+               <!-- <entry key="zkConnectString" value="192.168.1.103:2181"/>-->
                 <entry key="zkConnectString" value="182.92.188.177:2181"/>
                 <entry key="rootPath" value="/perfect/test"/>
                 <entry key="zkSessionTimeout" value="60000"/>
@@ -31,6 +34,7 @@
     <context:component-scan base-package="com.perfect"/>
 
     <!-- MongoDBÅäÖÃ -->
+    <!--<mongo:mongo id="mongo" replica-set="115.29.103.38:27017">-->
     <mongo:mongo id="mongo" replica-set="182.92.188.177:27017">
         <mongo:options connections-per-host="8"
                        threads-allowed-to-block-for-connection-multiplier="4"
