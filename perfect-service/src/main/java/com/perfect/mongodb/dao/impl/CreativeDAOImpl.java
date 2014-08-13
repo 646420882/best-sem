@@ -7,6 +7,7 @@ import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.utils.LogUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -89,7 +90,7 @@ public class CreativeDAOImpl implements CreativeDAO {
     public void insert(CreativeEntity creativeEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insert(creativeEntity, "creative");
-        DataOperationLogEntity logEntity = logProcessingDAO.getLog(creativeEntity.getCreativeId(), CreativeEntity.class, null, creativeEntity);
+        DataOperationLogEntity logEntity = LogUtils.getLog(creativeEntity.getCreativeId(), CreativeEntity.class, null, creativeEntity);
         logProcessingDAO.insert(logEntity);
     }
 
@@ -98,7 +99,7 @@ public class CreativeDAOImpl implements CreativeDAO {
         mongoTemplate.insertAll(entities);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (CreativeEntity entity : entities) {
-            DataOperationLogEntity log = logProcessingDAO.getLog(entity.getCreativeId(), CreativeEntity.class, null, entity);
+            DataOperationLogEntity log = LogUtils.getLog(entity.getCreativeId(), CreativeEntity.class, null, entity);
             logEntities.add(log);
         }
         logProcessingDAO.insertAll(logEntities);
@@ -126,7 +127,7 @@ public class CreativeDAOImpl implements CreativeDAO {
                 if (after != null) {
                     update.set(field.getName(), after);
                     Object before = method.invoke(findOne(id));
-                    log = logProcessingDAO.getLog(id, CreativeEntity.class,
+                    log = LogUtils.getLog(id, CreativeEntity.class,
                             new DataAttributeInfoEntity(field.getName(), before, after), null);
                     break;
                 }
@@ -146,7 +147,7 @@ public class CreativeDAOImpl implements CreativeDAO {
     public void deleteById(Long creativeId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.remove(new Query(Criteria.where("creativeId").is(creativeId)), CreativeEntity.class, "creative");
-        DataOperationLogEntity log = logProcessingDAO.getLog(creativeId, CreativeEntity.class, null, null);
+        DataOperationLogEntity log = LogUtils.getLog(creativeId, CreativeEntity.class, null, null);
         logProcessingDAO.insert(log);
     }
 
@@ -155,7 +156,7 @@ public class CreativeDAOImpl implements CreativeDAO {
         List<DataOperationLogEntity> list = new LinkedList<>();
         for (Long id : creativeIds) {
             mongoTemplate.remove(new Query(Criteria.where("creativeId").is(id)), CreativeEntity.class, "creative");
-            DataOperationLogEntity log = logProcessingDAO.getLog(id, CreativeEntity.class, null, null);
+            DataOperationLogEntity log = LogUtils.getLog(id, CreativeEntity.class, null, null);
             list.add(log);
         }
         logProcessingDAO.insertAll(list);
@@ -171,7 +172,7 @@ public class CreativeDAOImpl implements CreativeDAO {
         mongoTemplate.dropCollection(CreativeEntity.class);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (CreativeEntity entity : creativeEntityList) {
-            DataOperationLogEntity log = logProcessingDAO.getLog(entity.getCreativeId(), CreativeEntity.class, null, null);
+            DataOperationLogEntity log = LogUtils.getLog(entity.getCreativeId(), CreativeEntity.class, null, null);
             logEntities.add(log);
         }
         logProcessingDAO.insertAll(logEntities);

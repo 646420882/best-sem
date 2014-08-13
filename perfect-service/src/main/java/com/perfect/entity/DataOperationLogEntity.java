@@ -6,9 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.Date;
 
 /**
- * Created by baizz on 2014-7-2.
+ * Created by baizz on 2014-07-02.
  */
-@Document(collection = "DataOperationLog")
+@Document(collection = "logs")
 public class DataOperationLogEntity {
 
     private Long dataId;    //数据的ID

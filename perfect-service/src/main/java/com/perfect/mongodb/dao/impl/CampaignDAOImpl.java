@@ -5,6 +5,7 @@ import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.*;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.utils.LogUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -74,7 +75,7 @@ public class CampaignDAOImpl implements CampaignDAO {
     public void insert(CampaignEntity campaignEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insert(campaignEntity, "campaign");
-        DataOperationLogEntity log = logProcessingDAO.getLog(campaignEntity.getCampaignId(), CampaignEntity.class, null, campaignEntity);
+        DataOperationLogEntity log = LogUtils.getLog(campaignEntity.getCampaignId(), CampaignEntity.class, null, campaignEntity);
         logProcessingDAO.insert(log);
     }
 
@@ -83,7 +84,7 @@ public class CampaignDAOImpl implements CampaignDAO {
         mongoTemplate.insertAll(entities);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (CampaignEntity entity : entities) {
-            DataOperationLogEntity log = logProcessingDAO.getLog(entity.getCampaignId(), CampaignEntity.class, null, entity);
+            DataOperationLogEntity log = LogUtils.getLog(entity.getCampaignId(), CampaignEntity.class, null, entity);
             logEntities.add(log);
         }
         logProcessingDAO.insertAll(logEntities);
@@ -111,7 +112,7 @@ public class CampaignDAOImpl implements CampaignDAO {
                 if (after != null) {
                     update.set(field.getName(), after);
                     Object before = method.invoke(findOne(id));
-                    log = logProcessingDAO.getLog(id, CampaignEntity.class,
+                    log = LogUtils.getLog(id, CampaignEntity.class,
                             new DataAttributeInfoEntity(field.getName(), before, after), null);
                     break;
                 }
@@ -179,7 +180,7 @@ public class CampaignDAOImpl implements CampaignDAO {
         mongoTemplate.remove(new Query(Criteria.where("adid").in(adgroupIds)), CreativeEntity.class, "creative");
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (Long id : campaignIds) {
-            DataOperationLogEntity log = logProcessingDAO.getLog(id, CampaignEntity.class, null, null);
+            DataOperationLogEntity log = LogUtils.getLog(id, CampaignEntity.class, null, null);
             logEntities.add(log);
         }
         logProcessingDAO.insertAll(logEntities);

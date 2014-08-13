@@ -8,6 +8,7 @@ import com.perfect.entity.DataOperationLogEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.utils.LogUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -107,7 +108,7 @@ public class KeywordDAOImpl implements KeywordDAO {
     public void insert(KeywordEntity keywordEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insert(keywordEntity, "keyword");
-        DataOperationLogEntity log = logProcessingDAO.getLog(keywordEntity.getKeywordId(), KeywordEntity.class, null, keywordEntity);
+        DataOperationLogEntity log = LogUtils.getLog(keywordEntity.getKeywordId(), KeywordEntity.class, null, keywordEntity);
         logProcessingDAO.insert(log);
     }
 
@@ -116,7 +117,7 @@ public class KeywordDAOImpl implements KeywordDAO {
         mongoTemplate.insertAll(entities);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (KeywordEntity entity : entities) {
-            DataOperationLogEntity log = logProcessingDAO.getLog(entity.getKeywordId(), KeywordEntity.class, null, entity);
+            DataOperationLogEntity log = LogUtils.getLog(entity.getKeywordId(), KeywordEntity.class, null, entity);
             logEntities.add(log);
         }
         logProcessingDAO.insertAll(logEntities);
@@ -147,7 +148,7 @@ public class KeywordDAOImpl implements KeywordDAO {
                 if (after != null) {
                     update.set(field.getName(), after);
                     Object before = method.invoke(findOne(id));
-                    log = logProcessingDAO.getLog(id, KeywordEntity.class, new DataAttributeInfoEntity(field.getName(), before, after), null);
+                    log = LogUtils.getLog(id, KeywordEntity.class, new DataAttributeInfoEntity(field.getName(), before, after), null);
                     break;
                 }
             }
@@ -184,7 +185,7 @@ public class KeywordDAOImpl implements KeywordDAO {
                 Method method = _class.getDeclaredMethod(fieldGetterName.toString());
                 Object before = method.invoke(entity);
                 attribute = new DataAttributeInfoEntity(fieldName, before, value);
-                logEntity = logProcessingDAO.getLog(entity.getKeywordId(), _class, attribute, null);
+                logEntity = LogUtils.getLog(entity.getKeywordId(), _class, attribute, null);
                 logEntities.add(logEntity);
             }
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
@@ -196,7 +197,7 @@ public class KeywordDAOImpl implements KeywordDAO {
     public void deleteById(Long id) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.remove(new Query(Criteria.where("kwid").is(id)), KeywordEntity.class, "keyword");
-        DataOperationLogEntity log = logProcessingDAO.getLog(id, KeywordEntity.class, null, null);
+        DataOperationLogEntity log = LogUtils.getLog(id, KeywordEntity.class, null, null);
         logProcessingDAO.insert(log);
     }
 
@@ -205,7 +206,7 @@ public class KeywordDAOImpl implements KeywordDAO {
         List<DataOperationLogEntity> list = new LinkedList<>();
         for (Long id : ids) {
             mongoTemplate.remove(new Query(Criteria.where("kwid").is(id)), KeywordEntity.class, "keyword");
-            DataOperationLogEntity log = logProcessingDAO.getLog(id, KeywordEntity.class, null, null);
+            DataOperationLogEntity log = LogUtils.getLog(id, KeywordEntity.class, null, null);
             list.add(log);
         }
         logProcessingDAO.insertAll(list);
@@ -221,7 +222,7 @@ public class KeywordDAOImpl implements KeywordDAO {
         mongoTemplate.dropCollection(KeywordEntity.class);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (KeywordEntity entity : keywordEntities) {
-            DataOperationLogEntity log = logProcessingDAO.getLog(entity.getKeywordId(), KeywordEntity.class, null, null);
+            DataOperationLogEntity log = LogUtils.getLog(entity.getKeywordId(), KeywordEntity.class, null, null);
             logEntities.add(log);
         }
         logProcessingDAO.insertAll(logEntities);

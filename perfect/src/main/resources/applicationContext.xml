@@ -94,22 +94,14 @@
 
     <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"
                       host="${mongo.host}" port="${mongo.port}"/>
-    <mongo:db-factory id="log4MongoDbFactory" dbname="user_perfect" mongo-ref="mongo"
-                      host="${mongo.host}" port="${mongo.port}"/>
-
     <mongo:mapping-converter id="mongoConverter"/>
 
     <bean id="noClassMongoConverter" class="com.perfect.mongodb.base.MongoConverterEnhanceFactoryBean">
         <property name="mongoConverter" ref="mongoConverter"/>
     </bean>
+
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-        <constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>
-    </bean>
-
-    <!-- 数据操作日志记录 -->
-    <bean id="log4MongoTemplate" class="com.perfect.mongodb.utils.Log4MongoTemplate" scope="singleton">
-        <constructor-arg name="mongoDbFactory" ref="log4MongoDbFactory"/>
         <constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>
     </bean>
 

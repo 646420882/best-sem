@@ -1,60 +1,24 @@
 package com.perfect.mongodb.dao.impl;
 
 import com.perfect.dao.LogProcessingDAO;
-import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
-import com.perfect.mongodb.utils.Log4MongoTemplate;
+import com.perfect.mongodb.utils.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by baizz on 2014-7-4.
+ * Created by baizz on 2014-07-04.
  */
 @Repository("logProcessingDAO")
 public class LogProcessingDAOImpl implements LogProcessingDAO {
-
-    @Resource
-    private Log4MongoTemplate log4MongoTemplate;
-
-    /**
-     * 创建日志
-     * =======
-     * # 新增数据
-     * attribute = null
-     * # 修改数据
-     * instance = null
-     * # 删除数据
-     * attribute = null, instance = null
-     *
-     * @param dataId
-     * @param _class
-     * @param attribute
-     * @param instance
-     * @return
-     */
-    public DataOperationLogEntity getLog(Long dataId, Class _class, DataAttributeInfoEntity attribute, Object instance) {
-        DataOperationLogEntity log = new DataOperationLogEntity();
-        log.setDataId(dataId);
-        log.setType(_class.getSimpleName());
-        log.setTime(new Date());
-        log.setStatus(0);   //默认为0, 还未进行数据同步
-        if (attribute != null && instance == null)
-            //更新
-            log.setAttribute(attribute);
-        else if (instance != null && attribute == null)
-            //新增
-            log.setInstance(instance);
-        return log;
-    }
 
     /**
      * 按类型查找
@@ -63,10 +27,11 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      * @return
      */
     public List<DataOperationLogEntity> findByType(String type) {
-        List<DataOperationLogEntity> list = log4MongoTemplate.find(
+        MongoTemplate log4Mongo = BaseMongoTemplate.getUserMongo();
+        List<DataOperationLogEntity> list = log4Mongo.find(
                 new Query(Criteria.where("type").is(type)).with(new Sort(Sort.Direction.ASC, "time")),
                 DataOperationLogEntity.class,
-                "DataOperationLogEntity");
+                "logs");
         return list;
     }
 
@@ -80,22 +45,23 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      * @return
      */
     public List<DataOperationLogEntity> findAll(Integer status) {
+        MongoTemplate log4Mongo = BaseMongoTemplate.getUserMongo();
         if (status == -1) {
             Query query = new Query();
             query.with(new Sort(Sort.Direction.ASC, "time"));
-            List<DataOperationLogEntity> list = log4MongoTemplate.find(query, DataOperationLogEntity.class, "DataOperationLogEntity");
+            List<DataOperationLogEntity> list = log4Mongo.find(query, DataOperationLogEntity.class, "logs");
             return list;
         } else if (status == 0) {
-            List<DataOperationLogEntity> list1 = log4MongoTemplate.find(
+            List<DataOperationLogEntity> list1 = log4Mongo.find(
                     new Query(Criteria.where("status").is(0)).with(new Sort(Sort.Direction.ASC, "time")),
                     DataOperationLogEntity.class,
-                    "DataOperationLogEntity");
+                    "logs");
             return list1;
         } else if (status == 1) {
-            List<DataOperationLogEntity> list2 = log4MongoTemplate.find(
+            List<DataOperationLogEntity> list2 = log4Mongo.find(
                     new Query(Criteria.where("status").is(1)).with(new Sort(Sort.Direction.ASC, "time")),
                     DataOperationLogEntity.class,
-                    "DataOperationLogEntity");
+                    "logs");
             return list2;
         }
         return null;
@@ -108,10 +74,11 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      * @return
      */
     public DataOperationLogEntity findOne(Long dataId) {
-        List<DataOperationLogEntity> list = log4MongoTemplate.find(
+        MongoTemplate log4Mongo = BaseMongoTemplate.getUserMongo();
+        List<DataOperationLogEntity> list = log4Mongo.find(
                 Query.query(Criteria.where("dataId").is(dataId)).with(new Sort(Sort.Direction.DESC, "time")),
                 DataOperationLogEntity.class,
-                "DataOperationLogEntity");
+                "logs");
         if (list != null && list.size() > 0)
             return list.get(0);
         else
@@ -134,10 +101,11 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      * @return
      */
     public List<DataOperationLogEntity> findAll() {
+        MongoTemplate log4Mongo = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
         query.with(new Sort(Sort.Direction.ASC, "time"));
-        List<DataOperationLogEntity> list = log4MongoTemplate
-                .find(query, DataOperationLogEntity.class, "DataOperationLogEntity");
+        List<DataOperationLogEntity> list = log4Mongo
+                .find(query, DataOperationLogEntity.class, "logs");
         return list;
     }
 
@@ -148,47 +116,48 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      * @param log
      */
     public void insert(DataOperationLogEntity log) {
+        MongoTemplate log4Mongo = BaseMongoTemplate.getUserMongo();
         Long dataId = log.getDataId();
-        List<DataOperationLogEntity> list = log4MongoTemplate.find(
+        List<DataOperationLogEntity> list = log4Mongo.find(
                 new Query(Criteria.where("dataId").is(dataId).and("obj").ne(null)),
                 DataOperationLogEntity.class,
-                "DataOperationLogEntity");
+                "logs");
         if (!isExists(log)) {
             if (log.getAttribute() == null && log.getInstance() == null) {
                 if (list.size() == 1) {
                     //新增的数据还未同步, 则删除数据库中所有dataId为log.getDataId()的日志记录
-                    log4MongoTemplate.remove(new Query(Criteria.where("dataId").is(dataId)),
-                            DataOperationLogEntity.class, "DataOperationLogEntity");
+                    log4Mongo.remove(new Query(Criteria.where("dataId").is(dataId)),
+                            DataOperationLogEntity.class, "logs");
                 } else {
                     /*
                      * 新增的数据已经同步, 若要删除数据需要同步到凤巢.
                      * 只保留删除数据的那条日志记录.
                      */
-                    log4MongoTemplate.remove(new Query(Criteria.where("dataId").is(dataId)),
-                            DataOperationLogEntity.class, "DataOperationLogEntity");
-                    log4MongoTemplate.insert(log, "DataOperationLogEntity");
+                    log4Mongo.remove(new Query(Criteria.where("dataId").is(dataId)),
+                            DataOperationLogEntity.class, "logs");
+                    log4Mongo.insert(log, "logs");
                 }
             } else if (log.getAttribute() != null && log.getInstance() == null) {
                 //数据新增之后还未进行同步, 又需要对其进行修改
                 Update update = new Update();
                 update.set("time", log.getTime());
                 update.set("obj." + log.getAttribute().getName(), log.getAttribute().getAfter());
-                log4MongoTemplate.updateFirst(
+                log4Mongo.updateFirst(
                         new Query(Criteria.where("dataId").is(dataId)),
                         update,
-                        "DataOperationLogEntity");
+                        "logs");
             } else {
-                log4MongoTemplate.insert(log, "DataOperationLogEntity");
+                log4Mongo.insert(log, "logs");
             }
         } else {
             if (log.getAttribute() != null) {
                 Update update = new Update();
                 update.set("time", log.getTime());
                 update.set("attr", log.getAttribute());
-                log4MongoTemplate.updateFirst(
+                log4Mongo.updateFirst(
                         new Query(Criteria.where("dataId").is(dataId)),
                         update,
-                        "DataOperationLogEntity");
+                        "logs");
             }
         }
     }
@@ -209,13 +178,14 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      * @param log
      */
     public void update(DataOperationLogEntity log) {
+        MongoTemplate log4Mongo = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
         query.addCriteria(Criteria.where("dataId").is(log.getDataId()));
         Update update = new Update();
         update.set("time", log.getTime());
         update.set("status", 1);
         update.set("msg", log.getMessage());
-        log4MongoTemplate.updateFirst(query, update, "DataOperationLogEntity");
+        log4Mongo.updateFirst(query, update, "logs");
     }
 
     /**
@@ -234,10 +204,11 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      * @param dataId
      */
     public void deleteById(Long dataId) {
-        log4MongoTemplate.remove(
+        MongoTemplate log4Mongo = BaseMongoTemplate.getUserMongo();
+        log4Mongo.remove(
                 new Query(Criteria.where("dataId").is(dataId)),
                 DataOperationLogEntity.class,
-                "DataOperationLogEntity");
+                "logs");
     }
 
     /**
@@ -246,11 +217,12 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      * @param dataIds
      */
     public void deleteByIds(List<Long> dataIds) {
+        MongoTemplate log4Mongo = BaseMongoTemplate.getUserMongo();
         for (Long dataId : dataIds)
-            log4MongoTemplate.remove(
+            log4Mongo.remove(
                     new Query(Criteria.where("dataId").is(dataId)),
                     DataOperationLogEntity.class,
-                    "DataOperationLogEntity");
+                    "logs");
     }
 
     /**
@@ -259,7 +231,8 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      * @param log
      */
     public void delete(DataOperationLogEntity log) {
-        log4MongoTemplate.remove(log, "DataOperationLogEntity");
+        MongoTemplate log4Mongo = BaseMongoTemplate.getUserMongo();
+        log4Mongo.remove(log, "logs");
     }
 
     /**
@@ -268,8 +241,9 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      * @param logs
      */
     public void delete(List<DataOperationLogEntity> logs) {
+        MongoTemplate log4Mongo = BaseMongoTemplate.getUserMongo();
         for (DataOperationLogEntity log : logs)
-            log4MongoTemplate.remove(log, "DataOperationLogEntity");
+            log4Mongo.remove(log, "logs");
     }
 
     public void deleteAll() {
@@ -277,7 +251,7 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
     }
 
     @Override
-    public Pager findByPager(int start, int pageSize, Map<String,Object> q,int orderBy) {
+    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
         return null;
     }
 
@@ -288,28 +262,29 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
      * @return
      */
     private boolean isExists(DataOperationLogEntity log) {
+        MongoTemplate log4Mongo = BaseMongoTemplate.getUserMongo();
         List<DataOperationLogEntity> list;
         if (log.getAttribute() != null)
-            list = log4MongoTemplate.find(
+            list = log4Mongo.find(
                     new Query(Criteria.where("dataId").is(log.getDataId())
                             .and("attr.name").is(log.getAttribute().getName())
                             .and("obj").is(null)),
                     DataOperationLogEntity.class,
-                    "DataOperationLogEntity");
+                    "logs");
         else if (log.getInstance() != null)
-            list = log4MongoTemplate.find(
+            list = log4Mongo.find(
                     new Query(Criteria.where("dataId").is(log.getDataId())
                             .and("attr").is(null)
                             .and("obj").ne(null)),
                     DataOperationLogEntity.class,
-                    "DataOperationLogEntity");
+                    "logs");
         else
-            list = log4MongoTemplate.find(
+            list = log4Mongo.find(
                     new Query(Criteria.where("dataId").is(log.getDataId())
                             .and("attr").is(null)
                             .and("obj").is(null)),
                     DataOperationLogEntity.class,
-                    "DataOperationLogEntity");
+                    "logs");
 
         return list.size() == 1;
     }

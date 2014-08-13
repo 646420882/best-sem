@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by baizz on 2014-7-4.
+ * Created by baizz on 2014-07-04.
  */
 public interface LogProcessingDAO extends CrudRepository<DataOperationLogEntity, Long> {
 
@@ -34,16 +34,4 @@ public interface LogProcessingDAO extends CrudRepository<DataOperationLogEntity,
      * @param logs
      */
     void delete(List<DataOperationLogEntity> logs);
-
-    /**
-     * 创建日志
-     * <br>------------------------------<br>
-     *
-     * @param id
-     * @param _class
-     * @param attribute
-     * @param instance
-     * @return
-     */
-    DataOperationLogEntity getLog(Long id, Class _class, DataAttributeInfoEntity attribute, Object instance);
 }

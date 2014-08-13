@@ -5,6 +5,7 @@ import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.*;
 import com.perfect.mongodb.utils.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.utils.LogUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -108,7 +109,7 @@ public class AdgroupDAOImpl implements AdgroupDAO {
     public void insert(AdgroupEntity adgroupEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insert(adgroupEntity, "adgroup");
-        DataOperationLogEntity logEntity = logProcessingDAO.getLog(adgroupEntity.getAdgroupId(), AdgroupEntity.class, null, adgroupEntity);
+        DataOperationLogEntity logEntity = LogUtils.getLog(adgroupEntity.getAdgroupId(), AdgroupEntity.class, null, adgroupEntity);
         logProcessingDAO.insert(logEntity);
     }
 
@@ -117,7 +118,7 @@ public class AdgroupDAOImpl implements AdgroupDAO {
         mongoTemplate.insertAll(entities);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (AdgroupEntity entity : entities) {
-            DataOperationLogEntity logEntity = logProcessingDAO.getLog(entity.getAdgroupId(), AdgroupEntity.class, null, entity);
+            DataOperationLogEntity logEntity = LogUtils.getLog(entity.getAdgroupId(), AdgroupEntity.class, null, entity);
             logEntities.add(logEntity);
         }
         logProcessingDAO.insertAll(logEntities);
@@ -145,7 +146,7 @@ public class AdgroupDAOImpl implements AdgroupDAO {
                 if (after != null) {
                     update.set(field.getName(), after);
                     Object before = method.invoke(findOne(id));
-                    log = logProcessingDAO.getLog(id, AdgroupEntity.class,
+                    log = LogUtils.getLog(id, AdgroupEntity.class,
                             new DataAttributeInfoEntity(field.getName(), before, after), null);
                     break;
                 }
@@ -231,7 +232,7 @@ public class AdgroupDAOImpl implements AdgroupDAO {
         mongoTemplate.remove(new Query(Criteria.where("adid").in(adgroupIds)), CreativeEntity.class, "creative");
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (Long id : adgroupIds) {
-            DataOperationLogEntity log = logProcessingDAO.getLog(id, AdgroupEntity.class, null, null);
+            DataOperationLogEntity log = LogUtils.getLog(id, AdgroupEntity.class, null, null);
             logEntities.add(log);
         }
         logProcessingDAO.insertAll(logEntities);
