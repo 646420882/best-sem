@@ -14,9 +14,9 @@
     <description>Spring public settings</description>
 
     <context:property-placeholder ignore-resource-not-found="true"
-                                  location="classpath:jdbc.properties,classpath:mongodb.properties"/>
+                                  location="classpath:mongodb.properties"/>
 
-    <bean id="data_source" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    <!--<bean id="data_source" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClass}"/>
         <property name="url" value="${jdbc.jdbcUrl}"/>
         <property name="username" value="${jdbc.username}"/>
@@ -28,31 +28,31 @@
             </props>
         </property>
 
-        <!-- 配置初始化大小、最小、最大 -->
+        &lt;!&ndash; 配置初始化大小、最小、最大 &ndash;&gt;
         <property name="initialSize" value="1"/>
         <property name="minIdle" value="1"/>
         <property name="maxActive" value="20"/>
 
-        <!-- 配置获取连接等待超时的时间 -->
+        &lt;!&ndash; 配置获取连接等待超时的时间 &ndash;&gt;
         <property name="maxWait" value="60000"/>
 
-        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        &lt;!&ndash; 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 &ndash;&gt;
         <property name="timeBetweenEvictionRunsMillis" value="60000"/>
 
-        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        &lt;!&ndash; 配置一个连接在池中最小生存的时间，单位是毫秒 &ndash;&gt;
         <property name="minEvictableIdleTimeMillis" value="300000"/>
         <property name="testWhileIdle" value="true"/>
         <property name="testOnBorrow" value="true"/>
         <property name="testOnReturn" value="false"/>
         <property name="validationQuery" value="SELECT 'x' FROM DUAL"/>
-        <!-- 打开 PSCache -->
+        &lt;!&ndash; 打开 PSCache &ndash;&gt;
         <property name="poolPreparedStatements" value="true"/>
-        <!-- 指定每个连接上PSCache的大小 -->
+        &lt;!&ndash; 指定每个连接上PSCache的大小 &ndash;&gt;
         <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
 
-        <!-- 配置监控统计拦截的filters -->
-        <!--wall:防御SQL注入攻击,stat:监控统计,slf4j:日志记录,mergeStat:监控统计合并SQL-->
-        <!--<property name="filters" value="wall,mergeStat,slf4j"/>-->
+        &lt;!&ndash; 配置监控统计拦截的filters &ndash;&gt;
+        &lt;!&ndash;wall:防御SQL注入攻击,stat:监控统计,slf4j:日志记录,mergeStat:监控统计合并SQL&ndash;&gt;
+        &lt;!&ndash;<property name="filters" value="wall,mergeStat,slf4j"/>&ndash;&gt;
         <property name="proxyFilters">
             <list>
                 <bean class="com.alibaba.druid.filter.stat.StatFilter">
@@ -79,7 +79,7 @@
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    </bean>-->
 
     <!-- 使用annotation自动注册bean -->
     <context:annotation-config/>
@@ -113,7 +113,7 @@
         <constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>
     </bean>
 
-    <!--<bean id="scheduleManagerFactory" class="com.perfect.schedule.core.strategy.TBScheduleManagerFactory"
+    <bean id="scheduleManagerFactory" class="com.perfect.schedule.core.strategy.TBScheduleManagerFactory"
           init-method="init">
         <property name="zkConfig">
             <map>
@@ -124,7 +124,7 @@
                 <entry key="password" value=""/>
             </map>
         </property>
-    </bean>-->
+    </bean>
 
     <import resource="applicationContext-security.xml"/>
 
