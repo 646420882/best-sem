@@ -7,6 +7,8 @@ import com.perfect.dao.AccountDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
+import com.perfect.mongodb.utils.BaseMongoTemplate;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -21,6 +23,7 @@ import java.util.List;
  */
 @Repository("systemUserDAO")
 public class SystemUserDAOImpl extends AbstractBaseDAOImpl<SystemUserEntity> implements SystemUserDAO {
+    private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("sys");
 
     @Resource
     private AccountDAO accountDAO;
@@ -102,7 +105,7 @@ public class SystemUserDAOImpl extends AbstractBaseDAOImpl<SystemUserEntity> imp
 
     @Override
     public List<SystemUserEntity> findAll() {
-        return getMongoTemplate().findAll(SystemUserEntity.class, "SystemUser");
+        return mongoTemplate.findAll(SystemUserEntity.class, "sys_user");
     }
 
     @Override

@@ -144,8 +144,8 @@ public class BaseTaskConfig implements TaskConfig {
         ScheduleTaskType baseTaskType = new ScheduleTaskType();
         baseTaskType.setBaseTaskType(baseTaskName);
         baseTaskType.setDealBeanName(dealBean);
-        baseTaskType.setHeartBeatRate(2000);
-        baseTaskType.setJudgeDeadInterval(10000);
+        baseTaskType.setHeartBeatRate(5000);
+        baseTaskType.setJudgeDeadInterval(60000);
         baseTaskType.setPermitRunStartTime(cronExp);
         baseTaskType.setTaskItems(taskDef);
         return baseTaskType;

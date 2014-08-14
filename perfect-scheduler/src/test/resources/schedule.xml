@@ -12,6 +12,7 @@
        default-lazy-init="true" default-autowire="byName">
 
     <bean id="senderTask" class="com.perfect.schedule.task.execute.SenderTask"/>
+    <bean id="countYesterdayCostTask" class="com.perfect.schedule.task.execute.CountYesterdayCostTask"/>
 
     <bean id="demoTaskBean" class="com.taobao.pamirs.schedule.test.DemoTaskBean" />
 
