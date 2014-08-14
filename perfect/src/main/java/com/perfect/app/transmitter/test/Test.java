@@ -11,7 +11,7 @@ public class Test {
         mailInfo.setMailServerPort("25");
         mailInfo.setValidate(true);
         mailInfo.setUserName("15923844052@163.com");
-        mailInfo.setPassword("xj691864758xk.");//您的邮箱密码
+        mailInfo.setPassword("*******");//您的邮箱密码
         mailInfo.setFromAddress("15923844052@163.com");
         mailInfo.setToAddress("691864758@qq.com");
         mailInfo.setSubject("我的测试邮件");
