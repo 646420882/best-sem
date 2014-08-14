@@ -530,7 +530,7 @@
 .tu_top ul li .orange{ 
     background:#de833a;
 }
-****智能分组****/
+/****智能分组****/
 .team ul {
     width: 105%;
     overflow: hidden;
@@ -538,7 +538,7 @@
 .team ul li {
     display: block;
     float: left;
-    width: 30%;
+    width: 22%;
     margin-right: 5%;
     margin: 0 1.4% 26px 0.5%;
     height: 260px;

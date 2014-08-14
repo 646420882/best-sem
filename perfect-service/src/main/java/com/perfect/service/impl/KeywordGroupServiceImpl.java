@@ -85,34 +85,36 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         GetKRFileIdbySeedWordRequest getKRFileIdbySeedWordRequest = new GetKRFileIdbySeedWordRequest();
         getKRFileIdbySeedWordRequest.setSeedWords(seedWordList);
         GetKRFileIdbySeedWordResponse getKRFileIdbySeedWordResponse = krService.getKRFileIdbySeedWord(getKRFileIdbySeedWordRequest);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         String krFileId = getKRFileIdbySeedWordResponse.getKrFileId();
-
-        //检查关键词推荐结果文件是否生成
-        GetKRFileStateRequest getKRFileStateRequest = new GetKRFileStateRequest();
-        getKRFileStateRequest.setKrFileId(krFileId);
-        GetKRFileStateResponse getKRFileStateResponse = krService.getKRFileState(getKRFileStateRequest);
-
         Map<String, Object> attributes = null;
         String krFilePath;
 
-        if (getKRFileStateResponse.getIsGenerated().compareTo(3) == 0) {
-            _krFileId = krFileId;
-            GetKRFilePathRequest getKRFilePathRequest = new GetKRFilePathRequest();
-            getKRFilePathRequest.setKrFileId(krFileId);
-            GetKRFilePathResponse getKRFilePathResponse = krService.getKRFilePath(getKRFilePathRequest);
-            krFilePath = getKRFilePathResponse.getFilePath();
-            //拓展词文件解析
-            Map<String, String> redisMap = httpFileHandler(krFilePath);
-            this.redisMapSize = redisMap.size();
-            List<String> list = new ArrayList<>(redisMap.values());
-            List<KeywordVO> voList = paging(list, _skip, _limit);
-            attributes = JSONUtils.getJsonMapData(voList);
+        //检查关键词推荐结果文件是否生成
+        for (int i = 0; i < 3; i++) {
+            GetKRFileStateRequest getKRFileStateRequest = new GetKRFileStateRequest();
+            getKRFileStateRequest.setKrFileId(krFileId);
+            GetKRFileStateResponse getKRFileStateResponse = krService.getKRFileState(getKRFileStateRequest);
+            if (getKRFileStateResponse.getIsGenerated().compareTo(3) == 0) {
+                _krFileId = krFileId;
+                GetKRFilePathRequest getKRFilePathRequest = new GetKRFilePathRequest();
+                getKRFilePathRequest.setKrFileId(krFileId);
+                GetKRFilePathResponse getKRFilePathResponse = krService.getKRFilePath(getKRFilePathRequest);
+                krFilePath = getKRFilePathResponse.getFilePath();
+                //拓展词文件解析
+                Map<String, String> redisMap = httpFileHandler(krFilePath);
+                this.redisMapSize = redisMap.size();
+                List<String> list = new ArrayList<>(redisMap.values());
+                List<KeywordVO> voList = paging(list, _skip, _limit);
+                attributes = JSONUtils.getJsonMapData(voList);
+                break;
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
         return attributes;
     }
 
