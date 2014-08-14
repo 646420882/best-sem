@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <style type="text/css">
         .list2 table tr td ul li {
-            /*width: 23%;*/
+            width: 12%;
         }
 
         .download {
@@ -22,6 +22,17 @@
 
         .download a {
             margin-right: 20px;
+        }
+
+        .team_box {
+            background: #fff;
+            left: 25%;
+            position: absolute;
+            top: 100px;
+            padding: 20px;
+            width: 60%;
+            z-index: 999;
+            border-radius: 10px;
         }
 
     </style>
@@ -47,13 +58,11 @@
                         </div>
                         <p>每行一个关键词，每个最多20个汉字或40个英文。</p>
 
-                        <div class="keyworld_text over">
+                        <div class="keyworld_text over" style="overflow:auto">
                             <div class="keyworld_text1 fl">
                             </div>
-                            <textarea class="keyworld_text2 fl">
-                                <ul>
-                                    <li></li>
-                                </ul>
+                            <textarea class="keyworld_text2 fl"
+                                      style="overflow-y:visible; resize: none; line-height:2.0">
                             </textarea>
                         </div>
                         <p>请您认真复核将使用的关键词，确保其不违法、侵权，
@@ -62,7 +71,8 @@
                         <div class="k_l_under over">
                             <div class="k_l_under1 over">
                                 <ul>
-                                    <li><span class="team03"><input type="image" src="public/img/team_input1.png">&nbsp;&nbsp;自动分组</span><a
+                                    <li><span class="team03"><input name="autoGroup" type="image"
+                                                                    src="public/img/team_input1.png">&nbsp;&nbsp;自动分组</span><a
                                             href="#" class="question"></a></li>
                                     <li><select id="campaign" class="team04">
                                     </select>
@@ -87,8 +97,10 @@
                             <div class="table_concent2 over">
                                 <div class="k_r_top2 over">
                                     <div class="k_top2_text fl">
-                                        <div class="k_top2_text1"><textarea id="textarea1"></textarea></div>
-                                        <p>可输入词根99/100</p>
+                                        <div class="k_top2_text1"><textarea id="textarea1"
+                                                                            style="overflow:auto; resize: none"></textarea>
+                                        </div>
+                                        <p>可输入词根10/10</p>
                                         <a href="javascript: findWordFromBaidu();" class="become2">开始拓词</a>
 
                                     </div>
@@ -164,7 +176,6 @@
                                     <tr class="list2_top">
                                         <td>
                                             <ul>
-                                                <li><span>分组</span></li>
                                                 <li><span>种子词</span></li>
                                                 <li><span>关键词</span></li>
                                                 <li><span>日均搜索量</span></li>
@@ -195,8 +206,188 @@
         </div>
     </div>
 </div>
+<%--底部弹窗--%>
+<div id="TB_overlayBG"></div>
+
+<div class="team_box" id="team_box" style="display: none">
+    <div id="list01_top" class="list01_top over" style="height: 30px">
+        <span>智能分组</span>
+        <a href="#" class="question"></a>
+        <a href="#" class="close" style="display:block;float:right;">关闭</a>
+    </div>
+    <div class="team over">
+        <ul>
+            <li>
+                <div class="team_top">
+                    <span class="fl"> 新建计划>小商品</span>
+                    <a href="#" class="fr">编辑</a>
+                </div>
+                <div class="team_under">
+                    <ul>
+                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr team"
+                                                                                             type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                    </ul>
+                </div>
+
+            </li>
+            <li>
+                <div class="team_top">
+                    <span class="fl"> 新建计划>小商品</span>
+                    <a href="#" class="fr">编辑</a>
+                </div>
+                <div class="team_under">
+                    <ul>
+                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
+                                                                                             type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                    </ul>
+                </div>
+
+            </li>
+            <li>
+                <div class="team_top">
+                    <span class="fl"> 新建计划>小商品</span>
+                    <a href="#" class="fr">编辑</a>
+                </div>
+                <div class="team_under">
+                    <ul>
+                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
+                                                                                             type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                    </ul>
+                </div>
+
+            </li>
+            <li>
+                <div class="team_top">
+                    <span class="fl"> 新建计划>小商品</span>
+                    <a href="#" class="fr">编辑</a>
+                </div>
+                <div class="team_under">
+                    <ul>
+                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
+                                                                                             type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                    </ul>
+                </div>
+
+            </li>
+            <li>
+                <div class="team_top">
+                    <span class="fl"> 新建计划>小商品</span>
+                    <a href="#" class="fr">编辑</a>
+                </div>
+                <div class="team_under">
+                    <ul>
+                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
+                                                                                             type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                    </ul>
+                </div>
+
+            </li>
+            <li>
+                <div class="team_top">
+                    <span class="fl"> 新建计划>小商品</span>
+                    <a href="#" class="fr">编辑</a>
+                </div>
+                <div class="team_under">
+                    <ul>
+                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
+                                                                                             type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                    </ul>
+                </div>
+
+            </li>
+            <li>
+                <div class="team_top">
+                    <span class="fl"> 新建计划>小商品</span>
+                    <a href="#" class="fr">编辑</a>
+                </div>
+                <div class="team_under">
+                    <ul>
+                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
+                                                                                             type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                    </ul>
+                </div>
+
+            </li>
+            <li>
+                <div class="team_top">
+                    <span class="fl"> 新建计划>小商品</span>
+                    <a href="#" class="fr">编辑</a>
+                </div>
+                <div class="team_under">
+                    <ul>
+                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
+                                                                                             type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
+                    </ul>
+                </div>
+
+            </li>
+
+        </ul>
+
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+
+            <ul>
+                <li class="current">保存</li>
+                <li class="close">取消</li>
+
+            </ul>
+        </div>
+    </div>
+
+</div>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc-min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript">
 
@@ -209,6 +400,10 @@ var skip = 0;
 var limit = 10;
 
 var total = 0;
+
+window.onload = function () {
+    rDrag.init(document.getElementById('list01_top'));
+};
 
 $(function () {
     var $tab_li = $('.tab_menu2 li');
@@ -249,6 +444,25 @@ $(function () {
 
     $("#addAll").on('click', function () {
         addAllWords();
+    });
+
+    $("#textarea1").change(function () {
+        var seedWords = $("#textarea1").val().split("\n");
+        $("#textarea1").parent().next().text("可输入词根" + (10 - seedWords.length) + "/10");
+    });
+
+    //弹窗
+    $(".team03").click(function () {
+        $("#TB_overlayBG").css({
+            display: "block", height: $(document).height()
+        });
+        $("#team_box").css({
+            display: "block"
+        });
+    });
+    $(".close").click(function () {
+        $("#TB_overlayBG").css("display", "none");
+        $("#team_box ").css("display", "none");
     });
 });
 
@@ -296,7 +510,6 @@ var findWordFromBaidu = function () {
                     }
 
                     var newTr = "<tr class='" + _class + "'><td><ul>" +
-                            "<li>" + item.groupName + "</li>" +
                             "<li>" + item.seedWord + "</li>" +
                             "<li>" + item.keywordName + "</li>" +
                             "<li>" + item.dsQuantity + "</li>" +
@@ -342,7 +555,6 @@ var toPrevPage = function () {
                     }
 
                     var newTr = "<tr class='" + _class + "'><td><ul>" +
-                            "<li>" + item.groupName + "</li>" +
                             "<li>" + item.seedWord + "</li>" +
                             "<li>" + item.keywordName + "</li>" +
                             "<li>" + item.dsQuantity + "</li>" +
@@ -388,7 +600,6 @@ var toNextPage = function () {
                     }
 
                     var newTr = "<tr class='" + _class + "'><td><ul>" +
-                            "<li>" + item.groupName + "</li>" +
                             "<li>" + item.seedWord + "</li>" +
                             "<li>" + item.keywordName + "</li>" +
                             "<li>" + item.dsQuantity + "</li>" +
@@ -456,15 +667,22 @@ var addAllWords = function () {
     var trs = $("tbody").find("tr");
     trs.each(function (i) {
         if (i == 0) {
-            var str = $("#textarea1").text();
-            if (str == null || str.trim().length == 0)
-                $("#textarea1").text($(this).find("td").eq(0).text());
-            else
-                $("#textarea1").text(str + "\n" + $(this).find("td").eq(0).text());
+            var str = $(".keyworld_text2").text();
+            if (str == null || str.trim().length == 0) {
+                $(".keyworld_text2").text($(this).find("li").eq(1).text());
+                $(".keyworld_text1").append("<ul><li>" + (i + 1) + "</li></ul>");
+            }
+            else {
+                $(".keyworld_text2").text(str + "\n" + $(this).find("li").eq(1).text());
+                $(".keyworld_text1").append("<ul><li>" + (i + 1) + "</li></ul>");
+            }
             return true;
         }
-        var _str = $("#textarea1").text();
-        $("#textarea1").text(_str + "\n" + $(this).find("td").eq(0).text());
+        var _str = $(".keyworld_text2").text();
+        $(".keyworld_text2").text(_str + "\n" + $(this).find("li").eq(1).text());
+
+        //添加列标
+        $(".keyworld_text1").append("<ul><li>" + (i + 1) + "</li></ul>");
     });
 };
 </script>
