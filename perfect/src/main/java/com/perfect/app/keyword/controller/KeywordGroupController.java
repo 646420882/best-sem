@@ -1,12 +1,10 @@
 package com.perfect.app.keyword.controller;
 
+import com.perfect.entity.KeywordEntity;
 import com.perfect.service.KeywordGroupService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -38,4 +36,27 @@ public class KeywordGroupController {
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }
+
+    @RequestMapping(value = "/group", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView autoGroup(@RequestParam(value = "words", required = false) String words) {
+        List<String> wordList = new ArrayList<>(Arrays.asList(words.split(";")));
+        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> attributes = keywordGroupService.autoGroupByBaidu(wordList);
+        jsonView.setAttributesMap(attributes);
+        return new ModelAndView(jsonView);
+    }
+
+   /* //添加关键词
+    @RequestMapping(value = "/addKeywords", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView addKeywords(@RequestBody List<KeywordEntity> list) {
+        return new ModelAndView();
+    }*/
+
+   //添加关键词
+   @RequestMapping(value = "/addKeywords", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+   public ModelAndView addKeywords(@RequestParam(value = "keywords") String jsonArrays) {
+       keywordGroupService.addKeywords(jsonArrays);
+       System.out.println("************");
+       return new ModelAndView();
+   }
 }

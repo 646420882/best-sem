@@ -36,8 +36,74 @@
         }
 
     </style>
+
+    <!--文本框插件-->
+    <style type="text/css">
+        input {
+            height: auto;
+            font-size: 14px;
+            font-weight: bold;
+            color: #000
+        }
+
+        textarea {
+            resize: none;
+            border: 1px solid #7f9db9;
+            font-size: 14px;
+            width: 448px;
+            color: #000
+        }
+
+        input {
+            font-size: 14px;
+            color: #000
+        }
+
+        .grey {
+            color: #000
+        }
+
+        em {
+            font-style: normal;
+            color: #f00;
+            font-size: 12px;
+        }
+
+        #ol {
+            position: absolute;
+            z-index: 1;
+            padding: 0px;
+            margin: 0px;
+            border: 0px;
+            background: #ecf0f5;
+            width: 23px;
+            text-align: left;
+        }
+
+        #li {
+            background: #ecf0f5;
+            height: 160px;
+            overflow: hidden;
+            width: 32px;
+            min-height: 500px;
+            border-right: 0;
+            line-height: 20px;
+            text-align: center
+        }
+
+        #c2 {
+            font-family: Arial, Helvetica, sans-serif;
+            height: 160px;
+            margin: 0px;
+            width: 420px;
+            min-height: 500px;
+            padding: 0 0 0 32px;
+            overflow-x: hidden;
+            line-height: 20px;
+        }
+    </style>
 </head>
-<body>
+<body onLoad=keyUp()>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
     <jsp:include page="../homePage/pageBlock/nav.jsp"/>
@@ -59,11 +125,16 @@
                         <p>每行一个关键词，每个最多20个汉字或40个英文。</p>
 
                         <div class="keyworld_text over" style="overflow:auto">
-                            <div class="keyworld_text1 fl">
+                            <div id="ol"><textarea cols="2" rows="10" id="li" disabled></textarea></div>
+                            <textarea name="co" cols="60" rows="10" wrap="off" id="c2" onblur="check('2')"
+                                      onkeyup="keyUp()" onFocus="clearValue('2')"
+                                      onscroll="G('li').scrollTop = this.scrollTop;" oncontextmenu="return false"
+                                      class="grey"></textarea>
+                            <%--<div class="keyworld_text1 fl">
                             </div>
                             <textarea class="keyworld_text2 fl"
-                                      style="overflow-y:visible; resize: none; line-height:2.0">
-                            </textarea>
+                                      style="overflow-y:hidden; resize: none; line-height:2.0">
+                            </textarea>--%>
                         </div>
                         <p>请您认真复核将使用的关键词，确保其不违法、侵权，
                             且与您的网页信息相关。</p>
@@ -215,8 +286,9 @@
         <a href="#" class="question"></a>
         <a href="#" class="close" style="display:block;float:right;">关闭</a>
     </div>
-    <div class="team over">
+    <div id="group_list" class="team over">
         <ul>
+            <!--
             <li>
                 <div class="team_top">
                     <span class="fl"> 新建计划>小商品</span>
@@ -369,6 +441,7 @@
                 </div>
 
             </li>
+            -->
 
         </ul>
 
@@ -377,7 +450,7 @@
         <div class="w_list03">
 
             <ul>
-                <li class="current">保存</li>
+                <li id="save_auto_group" class="current">保存</li>
                 <li class="close">取消</li>
 
             </ul>
@@ -403,6 +476,16 @@ var total = 0;
 
 window.onload = function () {
     rDrag.init(document.getElementById('list01_top'));
+};
+
+String.prototype.trim2 = function () {
+    return this.replace(/(^\s*)|(\s*$)/g, "");
+};
+var F = function (objid) {
+    return document.getElementById(objid).value;
+};
+var G = function (objid) {
+    return document.getElementById(objid);
 };
 
 $(function () {
@@ -451,11 +534,19 @@ $(function () {
         $("#textarea1").parent().next().text("可输入词根" + (10 - seedWords.length) + "/10");
     });
 
+    $("#save_auto_group").on('click', function () {
+        alert("********");
+        saveAutoGroup();
+    });
+
     //弹窗
     $(".team03").click(function () {
+        autoGroup();
+
         $("#TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
+
         $("#team_box").css({
             display: "block"
         });
@@ -489,7 +580,6 @@ var findWordFromBaidu = function () {
     $.ajax({
         url: "/getKRWords/bd",
         type: "GET",
-        async: false,
         data: {
             "seedWords": seedWords,
             "skip": skip,
@@ -628,7 +718,7 @@ var toAnyPage = function () {
         type: "GET",
         async: false,
         data: {
-            "seedWords": null,
+            "seedWords": getSeedWords,
             "skip": skip,
             "limit": limit,
             "krFileId": krFileId
@@ -664,27 +754,183 @@ var toAnyPage = function () {
 
 //添加全部关键词到左侧textarea
 var addAllWords = function () {
-    var trs = $("tbody").find("tr");
-    trs.each(function (i) {
-        if (i == 0) {
-            var str = $(".keyworld_text2").text();
-            if (str == null || str.trim().length == 0) {
-                $(".keyworld_text2").text($(this).find("li").eq(1).text());
-                $(".keyworld_text1").append("<ul><li>" + (i + 1) + "</li></ul>");
+    $.ajax({
+        url: "/getKRWords/" + type,
+        type: "GET",
+        async: false,
+        data: {
+            "seedWords": getSeedWords,
+            "skip": skip,
+            "limit": 500,
+            "krFileId": krFileId
+        },
+        success: function (data, textStatus, jqXHR) {
+            if (data.rows.length > 0) {
+                krFileId = data.krFileId;
+                $.each(data.rows, function (i, item) {
+                    if (i == 0) {
+                        var str = $("#c2").text();
+                        if (str == null || str.trim().length == 0) {
+                            $("#c2").text(item.keywordName);
+                            keyUp();
+                        }
+                        else {
+                            $("#c2").text(str + "\n" + item.keywordName);
+                            keyUp();
+                        }
+                        return true;
+                    }
+                    var _str = $("#c2").text();
+                    $("#c2").text(_str + "\n" + item.keywordName);
+                    keyUp();
+                });
             }
-            else {
-                $(".keyworld_text2").text(str + "\n" + $(this).find("li").eq(1).text());
-                $(".keyworld_text1").append("<ul><li>" + (i + 1) + "</li></ul>");
-            }
-            return true;
         }
-        var _str = $(".keyworld_text2").text();
-        $(".keyworld_text2").text(_str + "\n" + $(this).find("li").eq(1).text());
-
-        //添加列标
-        $(".keyworld_text1").append("<ul><li>" + (i + 1) + "</li></ul>");
     });
 };
+
+//自动分组
+var autoGroup = function () {
+    var str = $("#c2").text();
+    if (str == null || str.trim().length == 0) {
+        alert("没有合法的关键词可供分组");
+        return;
+    }
+    var _str = str.split("\n");
+    var words = "";
+    for (var i = 0, l = _str.length; i < l; i++) {
+        if (i == 0) {
+            words += _str[i];
+            continue;
+        }
+        words += ";" + _str[i];
+    }
+
+    $.ajax({
+        url: "/getKRWords/group",
+        type: "POST",
+        data: {
+            "words": words
+        },
+        async: false,
+        dataType: "json",
+        success: function (data, textStatus, jqXHR) {
+            $("#group_list ul").empty();
+            $.each(data.rows, function (i, item) {
+                var _li = "" +
+                        "<li>" +
+                        "<div class='team_top'>" +
+                        "<span class='fl'> 新建计划>" + item.adgroupName + "</span>" +
+                        "<a href='#' class='fr'>编辑</a>" +
+                        "</div>" +
+                        "<div class='team_under'>" +
+                        "<ul>";
+                var _keywords = item.keywords;
+                var lis = "";
+                for (var j = 0, l = _keywords.length; j < l; j++) {
+                    if (j == 0) {
+                        lis = "<li class='current'><a class='fl' href='#'>" + _keywords[j] + "</a><input class='fr team' type='button'></li>";
+                        continue;
+                    }
+                    lis += "<li><a class='fl' href='#'>" + _keywords[j] + "</a><input class='fr team' type='button'></li>";
+                }
+                _li += lis + "</ul></div></li>";
+                $("#group_list ul").append(_li);
+            });
+        }
+    });
+};
+
+var saveAutoGroup = function () {
+    var keywords = [];
+    var lis = $("#group_list ul>li");
+    alert(lis.length);
+    $.each(lis, function (i, item) {
+        ;
+    });
+};
+
+</script>
+<!-- textarea js -->
+<script type="text/javascript">
+    var msgA = ["msg1", "msg2", "msg3", "msg4"];
+    var c = ["c1", "c2", "c3", "c4"];
+    var slen = [50, 20000, 20000, 60];  //最大可设置行数
+    var num = "";
+    var isfirst = [0, 0, 0, 0, 0, 0];
+    function isEmpty(strVal) {
+        return strVal == "";
+    }
+    function isBlank(testVal) {
+        var regVal = /^\s*$/;
+        return (regVal.test(testVal))
+    }
+    function chLen(strVal) {
+        strVal = strVal.trim2();
+        var cArr = strVal.match(/[^\x00-\xff]/ig);
+        return strVal.length + (cArr == null ? 0 : cArr.length);
+    }
+    function check(i) {
+        var iValue = F("c" + i);
+        var iObj = G("msg" + i);
+        var n = (chLen(iValue) > slen[i - 1]);
+        if (iObj != null) {
+            if ((isBlank(iValue) == true) || (isEmpty(iValue) == true) || n == true) {
+                iObj.style.display = "block";
+            } else {
+                iObj.style.display = "none";
+            }
+        }
+    }
+    function checkAll() {
+        for (var i = 0; i < msgA.length; i++) {
+            check(i + 1);
+            if (G(msgA[i]).style.display == "none") {
+                continue;
+            } else {
+                return;
+            }
+        }
+    }
+    function clearValue(i) {
+        G(c[i - 1]).style.color = "#000";
+        keyUp();
+        if (isfirst[i] == 0) {
+            //G(c[i - 1]).value = "";
+        }
+        isfirst[i] = 1;
+    }
+    function keyUp() {
+        var obj = G("c2");
+        var str = obj.value;
+        str = str.replace(/\r/gi, "");
+        str = str.split("\n");
+        n = str.length;
+        line(n);
+    }
+    function line(n) {
+        var lineobj = G("li");
+        for (var i = 1; i <= n; i++) {
+            if (document.all) {
+                num += i + "\r\n";
+            } else {
+                num += i + "\n";
+            }
+        }
+        lineobj.value = num;
+        num = "";
+    }
+    function autoScroll() {
+        var nV = 0;
+        if (!document.all) {
+            nV = G("c2").scrollTop;
+            G("li").scrollTop = nV;
+            setTimeout("autoScroll()", 20);
+        }
+    }
+    if (!document.all) {
+        window.addEventListener("load", autoScroll, false);
+    }
 </script>
 </body>
 </html>

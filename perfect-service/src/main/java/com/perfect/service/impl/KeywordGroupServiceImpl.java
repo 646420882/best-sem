@@ -3,6 +3,8 @@ package com.perfect.service.impl;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.dao.KeywordDAO;
+import com.perfect.entity.KeywordEntity;
 import com.perfect.mongodb.utils.BaseBaiduService;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.KeywordGroupService;
@@ -15,6 +17,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
+import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,6 +28,9 @@ import java.util.*;
  */
 @Service("keywordGroupService")
 public class KeywordGroupServiceImpl implements KeywordGroupService {
+
+    @Resource
+    private KeywordDAO keywordDAO;
 
     private String _krFileId;
 
@@ -116,6 +122,27 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         }
 
         return attributes;
+    }
+
+    //基于百度的关键词自动分组
+    public Map<String, Object> autoGroupByBaidu(List<String> words) {
+        KRService krService = getKRService();
+        GetAdGroupBySeedWordsRequest request = new GetAdGroupBySeedWordsRequest();
+        request.setSeedWords(words);
+        request.setAdGroupIds(null);
+        GetAdGroupBySeedWordsResponse response = krService.getAdGroupBySeedWords(request);
+        List<AutoAdGroupResult> list = response.getAutoAdGroupResults();
+        Map<String, Object> values = JSONUtils.getJsonMapData(list);
+        return values;
+    }
+
+    public void addKeywords(String jsonArrays) {
+        //String jsonWords = "";
+        KeywordEntity[] arr = (KeywordEntity[]) JSONUtils.getObjectsByJsonArrays(jsonArrays, KeywordEntity[].class);
+        for (KeywordEntity entity : arr) {
+            System.out.println(entity.toString());
+        }
+        //keywordDAO.insertAll(list);
     }
 
     private KRService getKRService() {
