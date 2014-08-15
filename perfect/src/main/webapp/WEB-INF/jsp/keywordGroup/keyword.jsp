@@ -835,7 +835,7 @@ var autoGroup = function () {
                     lis += "<li><a class='fl' href='#'>" + _keywords[j] + "</a><input class='fr team' type='button'></li>";
                 }
                 _li += lis + "</ul></div></li>";
-                $("#group_list ul").append(_li);
+                $("#group_list>ul").append(_li);
             });
         }
     });
@@ -843,10 +843,8 @@ var autoGroup = function () {
 
 var saveAutoGroup = function () {
     var keywords = [];
-    var lis = $("#group_list ul>li");
-    alert(lis.length);
+    var lis = $("#group_list>ul>li");
     $.each(lis, function (i, item) {
-        ;
     });
 };
 
