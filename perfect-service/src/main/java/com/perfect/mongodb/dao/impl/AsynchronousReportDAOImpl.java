@@ -477,15 +477,15 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     }
                     String[] arr = str.split("\\t");
                     RegionReportEntity entity1 = new RegionReportEntity();
-                    entity1.setRegionId(Long.valueOf(arr[7]));
-                    entity1.setRegionName(arr[8]);
                     entity1.setAccountId(Long.valueOf(arr[1]));
                     entity1.setAccountName(arr[2]);
                     entity1.setCampaignId(Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
-                    entity1.setAdgroupId(Long.valueOf(arr[5]));
-                    entity1.setAdgroupName(arr[6]);
                     if (type == 1) {
+                        entity1.setAdgroupId(Long.valueOf(arr[5]));
+                        entity1.setAdgroupName(arr[6]);
+                        entity1.setRegionId(Long.valueOf(arr[7]));
+                        entity1.setRegionName(arr[8]);
                         entity1.setPcImpression(Integer.valueOf(arr[9]));
                         entity1.setPcClick(Integer.valueOf(arr[10]));
                         entity1.setPcCost(Double.valueOf(arr[11]));
@@ -495,14 +495,15 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         entity1.setPcConversion(Double.valueOf(arr[15]));
                         entity1.setPcPosition(Double.valueOf(arr[16]));
                     } else if (type == 2) {
-                        entity1.setMobileImpression(Integer.valueOf(arr[9]));
-                        entity1.setMobileClick(Integer.valueOf(arr[10]));
-                        entity1.setMobileCost(Double.valueOf(arr[11]));
-                        entity1.setMobileCtr(Double.valueOf(arr[12].substring(0, arr[12].length() - 1)));
-                        entity1.setMobileCpc(Double.valueOf(arr[13]));
-                        entity1.setMobileCpm(Double.valueOf(arr[14]));
-                        entity1.setMobileConversion(Double.valueOf(arr[15]));
-                        entity1.setMobilePosition(Double.valueOf(arr[16]));
+                        entity1.setRegionId(Long.valueOf(arr[5]));
+                        entity1.setRegionName(arr[6]);
+                        entity1.setMobileImpression(Integer.valueOf(arr[7]));
+                        entity1.setMobileClick(Integer.valueOf(arr[8]));
+                        entity1.setMobileCost(Double.valueOf(arr[9]));
+                        entity1.setMobileCtr(Double.valueOf(arr[10].substring(0, arr[10].length() - 1)));
+                        entity1.setMobileCpc(Double.valueOf(arr[11]));
+                        entity1.setMobileCpm(Double.valueOf(arr[12]));
+                        entity1.setMobileConversion(Double.valueOf(arr[13]));
                     }
                     list.add(entity1);
                     index++;
