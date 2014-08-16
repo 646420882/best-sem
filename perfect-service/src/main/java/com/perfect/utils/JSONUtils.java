@@ -71,15 +71,4 @@ public class JSONUtils {
         return obj;
     }
 
-    //将JSON字符数组转换为对应的Java Bean集合
-    public static Object[] getObjectsByJsonArrays(String jsonArrays, Class<? extends Object[]> _class) {
-        Object[] objects = null;
-        try {
-            objects = mapper.readValue(jsonArrays, _class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return objects;
-    }
-
 }

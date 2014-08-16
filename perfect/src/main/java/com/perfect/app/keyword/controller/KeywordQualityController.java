@@ -1,9 +1,8 @@
 package com.perfect.app.keyword.controller;
 
-import com.perfect.dao.KeywordQualityDAO;
-import com.perfect.entity.KeywordReportEntity;
-import com.perfect.utils.JSONUtils;
+import com.perfect.service.KeywordQualityService;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,20 +21,17 @@ import java.util.Map;
 public class KeywordQualityController {
 
     @Resource
-    private KeywordQualityDAO keywordQualityDAO;
+    private KeywordQualityService keywordQualityService;
 
-    @RequestMapping(value = "/keywordQuality/list", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/keywordQuality/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView findKeywordQuality(@RequestParam(value = "startDate", required = false) String startDate,
                                            @RequestParam(value = "endDate", required = false) String endDate,
                                            @RequestParam(value = "fieldName", required = false, defaultValue = "impression") String fieldName,
                                            @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit,
                                            @RequestParam(value = "sort", required = false, defaultValue = "-1") Integer sort) {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        KeywordReportEntity[] voEntities = keywordQualityDAO.find(startDate, endDate, fieldName, limit, sort);
-        Map<String, Object> attributes = null;
-        if (voEntities != null)
-            attributes = JSONUtils.getJsonMapData(voEntities);
-        jsonView.setAttributesMap(attributes);
+        Map<String, Object> values = keywordQualityService.find(startDate, endDate, fieldName, limit, sort);
+        jsonView.setAttributesMap(values);
         return new ModelAndView(jsonView);
     }
 }

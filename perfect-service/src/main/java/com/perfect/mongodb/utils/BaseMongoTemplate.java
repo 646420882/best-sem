@@ -52,6 +52,10 @@ public class BaseMongoTemplate {
         return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getUserDBName(AppContext.getUser().toString(), null));
     }
 
+    public static MongoTemplate getUserReportMongo() {
+        return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(AppContext.getUser().toString()));
+    }
+
     public static MongoTemplate getUserMongo(String userName) {
         return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getUserDBName(userName, null));
     }
