@@ -1,5 +1,8 @@
 package com.perfect.service;
 
+import com.perfect.entity.AdgroupEntity;
+import com.perfect.entity.KeywordEntity;
+
 import java.util.List;
 import java.util.Map;
 
@@ -31,5 +34,11 @@ public interface KeywordGroupService {
      */
     Map<String, Object> autoGroupByBaidu(List<String> words);
 
-    void addKeywords(String jsonArrays);
+    /**
+     * 添加关键词
+     *
+     * @param list1
+     * @param list2
+     */
+    void addKeywords(List<AdgroupEntity> list1, List<KeywordEntity> list2);
 }

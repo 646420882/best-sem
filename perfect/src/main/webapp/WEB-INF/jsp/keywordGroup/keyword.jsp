@@ -85,7 +85,7 @@
             height: 160px;
             overflow: hidden;
             width: 32px;
-            min-height: 500px;
+            min-height: 350px;
             border-right: 0;
             line-height: 20px;
             text-align: center
@@ -96,7 +96,7 @@
             height: 160px;
             margin: 0px;
             width: 420px;
-            min-height: 500px;
+            min-height: 350px;
             padding: 0 0 0 32px;
             overflow-x: hidden;
             line-height: 20px;
@@ -535,7 +535,6 @@ $(function () {
     });
 
     $("#save_auto_group").on('click', function () {
-        alert("********");
         saveAutoGroup();
     });
 
@@ -835,18 +834,53 @@ var autoGroup = function () {
                     lis += "<li><a class='fl' href='#'>" + _keywords[j] + "</a><input class='fr team' type='button'></li>";
                 }
                 _li += lis + "</ul></div></li>";
-                $("#group_list ul").append(_li);
+                $("#group_list>ul").append(_li);
             });
         }
     });
 };
 
 var saveAutoGroup = function () {
+    var adgroups = [];
     var keywords = [];
-    var lis = $("#group_list ul>li");
-    alert(lis.length);
-    $.each(lis, function (i, item) {
-        ;
+    var lis1 = $("#group_list>ul>li");
+    $.each(lis1, function (i) {
+        var adgroup = {};
+        var adgroupName = $(this).find("span").text();
+        adgroupName = adgroupName.substring(adgroupName.indexOf(">") + 1);
+        adgroup["adgroupId"] = (i + 1);
+        adgroup["adgroupName"] = adgroupName;
+        adgroups.push(adgroup);
+        var lis2 = $(this).find("ul>li");
+        $.each(lis2, function () {
+            var keywordEntity = {};
+            keywordEntity["adgroupId"] = (i + 1);
+            keywordEntity["keyword"] = $(this).find("a").text();
+            keywords.push(keywordEntity);
+        });
+    });
+
+    $.ajax({
+        url: "/getKRWords/addAdgroups",
+        type: "POST",
+        data: JSON.stringify(adgroups),
+        async: false,
+        dataType: "json",
+        contentType: "application/json;charset=UTF-8",
+        success: function (data, textStatus, jqXHR) {
+        }
+    });
+
+    $.ajax({
+        url: "/getKRWords/addKeywords",
+        type: "POST",
+        data: JSON.stringify(keywords),
+        async: false,
+        dataType: "json",
+        contentType: "application/json;charset=UTF-8",
+        success: function (data, textStatus, jqXHR) {
+            alert(data.statusText);
+        }
     });
 };
 

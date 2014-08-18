@@ -1,5 +1,6 @@
 package com.perfect.app.keyword.controller;
 
+import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.service.KeywordGroupService;
 import org.springframework.context.annotation.Scope;
@@ -9,10 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by baizz on 2014-08-08.
@@ -25,6 +23,15 @@ public class KeywordGroupController {
     @Resource
     private KeywordGroupService keywordGroupService;
 
+    /**
+     * 从百度获取关键词
+     *
+     * @param seedWords
+     * @param skip
+     * @param limit
+     * @param krFileId
+     * @return
+     */
     @RequestMapping(value = "/bd", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getKeywordFromBaidu(@RequestParam(value = "seedWords", required = false) String seedWords,
                                             @RequestParam(value = "skip", required = false, defaultValue = "0") int skip,
@@ -37,6 +44,12 @@ public class KeywordGroupController {
         return new ModelAndView(jsonView);
     }
 
+    /**
+     * 自动分组
+     *
+     * @param words
+     * @return
+     */
     @RequestMapping(value = "/group", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView autoGroup(@RequestParam(value = "words", required = false) String words) {
         List<String> wordList = new ArrayList<>(Arrays.asList(words.split(";")));
@@ -46,17 +59,23 @@ public class KeywordGroupController {
         return new ModelAndView(jsonView);
     }
 
-   /* //添加关键词
+    //添加关键词
     @RequestMapping(value = "/addKeywords", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView addKeywords(@RequestBody List<KeywordEntity> list) {
-        return new ModelAndView();
-    }*/
+        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+        keywordGroupService.addKeywords(null, list);
+        Map<String, Object> attributes = new HashMap<String, Object>() {{
+            put("statusText", "保存成功!");
+        }};
+        jsonView.setAttributesMap(attributes);
+        return new ModelAndView(jsonView);
+    }
 
-   //添加关键词
-   @RequestMapping(value = "/addKeywords", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-   public ModelAndView addKeywords(@RequestParam(value = "keywords") String jsonArrays) {
-       keywordGroupService.addKeywords(jsonArrays);
-       System.out.println("************");
-       return new ModelAndView();
-   }
+    //添加推广单元
+    @RequestMapping(value = "/addAdgroups", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView addAdgroups(@RequestBody List<AdgroupEntity> list) {
+        keywordGroupService.addKeywords(list, null);
+        return new ModelAndView();
+    }
+
 }

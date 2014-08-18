@@ -19,9 +19,9 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
 </head>
 <body>
-<jsp:include page="pageBlock/head.jsp" />
+<jsp:include page="pageBlock/head.jsp"/>
 <div class="concent over">
-<jsp:include page="pageBlock/nav.jsp" />
+<jsp:include page="pageBlock/nav.jsp"/>
 
 <div class="mid over fr">
 <div class="on_title over">
@@ -1785,7 +1785,7 @@
 </div>
 
 
-<jsp:include page="pageBlock/footer.jsp" />
+<jsp:include page="pageBlock/footer.jsp"/>
 </div>
 </div>
 
@@ -1973,8 +1973,8 @@
                 if (data.rows.length > 0) {
                     $.each(data.rows, function (i, item) {
                         var _div = "<div><ul><li></li><li><span>" + item.keywordName + "</span><span class='green_arrow wd3'></span></li>" +
-                                "<li>" + item.impression + "</li><li>" + item.click + "</li><li>" + item.ctr + "%</li><li>" + item.cost + "</li>" +
-                                "<li>" + item.cpc + "</li><li>" + item.conversion + "</li></ul></div>";
+                                "<li>" + item.pcImpression + "</li><li>" + item.pcClick + "</li><li>" + item.pcCtr + "%</li><li>" + item.pcCost + "</li>" +
+                                "<li>" + item.pcCpc + "</li><li>" + item.pcConversion + "</li></ul></div>";
                         $("#keywordQuality1").append(_div);
                     })
                 }
@@ -1985,7 +1985,7 @@
     /**
      * 分日表现数据加载
      * */
-    var loadPerformance = function (obj,date) {
+    var loadPerformance = function (obj, date) {
         if (obj != null) {
             changedLiState(obj);
         }
@@ -2035,7 +2035,7 @@ var colorTow = "#40BC2A";
 /**
  * 曲线图数据配置
  * **/
-var loadPerformanceCurve = function (obj,date) {
+var loadPerformanceCurve = function (obj, date) {
     if (obj != null) {
         changedLiState(obj);
     }
@@ -2044,12 +2044,12 @@ var loadPerformanceCurve = function (obj,date) {
     $("#containerLegend").empty();
     /*初始化曲线图所用需求*/
     $("#containerLegend").append("<div class='tu_top over'><ul><li>展示曲线</li>"
-            +"<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
-            +"<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
-            +"<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
-            +"<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
-            +"<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
-            +"<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+            + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
+            + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
+            + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
+            + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
+            + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
+            + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
 
     getDateParam(date);
     //展现
@@ -2087,7 +2087,7 @@ var loadPerformanceCurve = function (obj,date) {
                     t_conversion.push(item.conversion);
                 })
             }
-            if(data.rows.length > 10){
+            if (data.rows.length > 10) {
                 dateInterval = 5;
             }
         }
@@ -2113,16 +2113,16 @@ var loadPerformanceCurve = function (obj,date) {
             valueSuffix: '次'
         }
     }
-    $("input[cname=impr]").attr("xname","dataOne");
-    $("input[cname=clicks]").attr("xname","dataTow");
+    $("input[cname=impr]").attr("xname", "dataOne");
+    $("input[cname=clicks]").attr("xname", "dataTow");
 
-    $("input[name=check]").click(function(){
+    $("input[name=check]").click(function () {
         var name = $(this).attr("cname");
-        if($("input[type='checkbox']:checked").length <= 2){
-            if(name=="impr"){
-                if($(this).is(':checked')){
-                    if(dataOne == ""){
-                        $(this).attr("xname","dataOne");
+        if ($("input[type='checkbox']:checked").length <= 2) {
+            if (name == "impr") {
+                if ($(this).is(':checked')) {
+                    if (dataOne == "") {
+                        $(this).attr("xname", "dataOne");
                         colorOne = "#078CC7";
                         dataOne = {
                             name: '展现',
@@ -2135,8 +2135,8 @@ var loadPerformanceCurve = function (obj,date) {
                             }
                         };
                         curve();
-                    }else if(dataTow == ""){
-                        $(this).attr("xname","dataTow");
+                    } else if (dataTow == "") {
+                        $(this).attr("xname", "dataTow");
                         colorTow = "#078CC7"
                         dataTow = {
                             name: '展现',
@@ -2149,21 +2149,21 @@ var loadPerformanceCurve = function (obj,date) {
                         };
                         curve();
                     }
-                }else{
-                    if($(this).attr("xname") == "dataOne"){
+                } else {
+                    if ($(this).attr("xname") == "dataOne") {
                         dataOne = "";
-                        $(this).attr("xname","");
+                        $(this).attr("xname", "");
                         curve();
-                    }else if($(this).attr("xname") == "dataTow"){
+                    } else if ($(this).attr("xname") == "dataTow") {
                         dataTow = "";
-                        $(this).attr("xname","");
+                        $(this).attr("xname", "");
                         curve();
                     }
                 }
-            }else if(name=="clicks"){
-                if($(this).is(':checked')){
-                    if(dataOne == ""){
-                        $(this).attr("xname","dataOne");
+            } else if (name == "clicks") {
+                if ($(this).is(':checked')) {
+                    if (dataOne == "") {
+                        $(this).attr("xname", "dataOne");
                         colorOne = "#40BC2A";
                         dataOne = {
                             name: '点击',
@@ -2176,8 +2176,8 @@ var loadPerformanceCurve = function (obj,date) {
                             }
                         };
                         curve();
-                    }else if(dataTow == ""){
-                        $(this).attr("xname","dataTow");
+                    } else if (dataTow == "") {
+                        $(this).attr("xname", "dataTow");
                         colorTow = "#40BC2A";
                         dataTow = {
                             name: '点击',
@@ -2190,21 +2190,21 @@ var loadPerformanceCurve = function (obj,date) {
                         };
                         curve();
                     }
-                }else{
-                    if($(this).attr("xname") == "dataOne"){
+                } else {
+                    if ($(this).attr("xname") == "dataOne") {
                         dataOne = "";
-                        $(this).attr("xname","");
+                        $(this).attr("xname", "");
                         curve();
-                    }else if($(this).attr("xname") == "dataTow"){
+                    } else if ($(this).attr("xname") == "dataTow") {
                         dataTow = "";
-                        $(this).attr("xname","");
+                        $(this).attr("xname", "");
                         curve();
                     }
                 }
-            }else if(name=="cost"){
-                if($(this).is(':checked')){
-                    if(dataOne == ""){
-                        $(this).attr("xname","dataOne");
+            } else if (name == "cost") {
+                if ($(this).is(':checked')) {
+                    if (dataOne == "") {
+                        $(this).attr("xname", "dataOne");
                         colorOne = "#F1521B";
                         dataOne = {
                             name: '消费',
@@ -2217,8 +2217,8 @@ var loadPerformanceCurve = function (obj,date) {
                             }
                         };
                         curve();
-                    }else if(dataTow == ""){
-                        $(this).attr("xname","dataTow");
+                    } else if (dataTow == "") {
+                        $(this).attr("xname", "dataTow");
                         colorTow = "#F1521B";
                         dataTow = {
                             name: '消费',
@@ -2231,21 +2231,21 @@ var loadPerformanceCurve = function (obj,date) {
                         };
                         curve();
                     }
-                }else{
-                    if($(this).attr("xname") == "dataOne"){
+                } else {
+                    if ($(this).attr("xname") == "dataOne") {
                         dataOne = "";
-                        $(this).attr("xname","");
+                        $(this).attr("xname", "");
                         curve();
-                    }else if($(this).attr("xname") == "dataTow"){
+                    } else if ($(this).attr("xname") == "dataTow") {
                         dataTow = "";
-                        $(this).attr("xname","");
+                        $(this).attr("xname", "");
                         curve();
                     }
                 }
-            }else if(name=="ctr"){
-                if($(this).is(':checked')){
-                    if(dataOne == ""){
-                        $(this).attr("xname","dataOne");
+            } else if (name == "ctr") {
+                if ($(this).is(':checked')) {
+                    if (dataOne == "") {
+                        $(this).attr("xname", "dataOne");
                         colorOne = "#26CAE5";
                         dataOne = {
                             name: '点击率',
@@ -2258,8 +2258,8 @@ var loadPerformanceCurve = function (obj,date) {
                             }
                         };
                         curve();
-                    }else if(dataTow == ""){
-                        $(this).attr("xname","dataTow");
+                    } else if (dataTow == "") {
+                        $(this).attr("xname", "dataTow");
                         colorTow = "#26CAE5";
                         dataTow = {
                             name: '点击率',
@@ -2272,22 +2272,22 @@ var loadPerformanceCurve = function (obj,date) {
                         };
                         curve();
                     }
-                }else{
-                    if($(this).attr("xname") == "dataOne"){
+                } else {
+                    if ($(this).attr("xname") == "dataOne") {
                         dataOne = "";
-                        $(this).attr("xname","");
+                        $(this).attr("xname", "");
                         curve();
-                    }else if($(this).attr("xname") == "dataTow"){
+                    } else if ($(this).attr("xname") == "dataTow") {
                         dataTow = "";
-                        $(this).attr("xname","");
+                        $(this).attr("xname", "");
                         curve();
                     }
                 }
-            }else if(name=="cpc"){
-                if($(this).is(':checked')){
-                    $(this).attr("xname","dataOne");
+            } else if (name == "cpc") {
+                if ($(this).is(':checked')) {
+                    $(this).attr("xname", "dataOne");
                     colorOne = "#60E47E";
-                    if(dataOne == ""){
+                    if (dataOne == "") {
                         dataOne = {
                             name: '平均点击价格',
                             color: '#60E47E',
@@ -2299,8 +2299,8 @@ var loadPerformanceCurve = function (obj,date) {
                             }
                         };
                         curve();
-                    }else if(dataTow == ""){
-                        $(this).attr("xname","dataTow");
+                    } else if (dataTow == "") {
+                        $(this).attr("xname", "dataTow");
                         colorTow = "#60E47E";
                         dataTow = {
                             name: '平均点击价格',
@@ -2313,22 +2313,22 @@ var loadPerformanceCurve = function (obj,date) {
                         };
                         curve();
                     }
-                }else{
-                    if($(this).attr("xname") == "dataOne"){
+                } else {
+                    if ($(this).attr("xname") == "dataOne") {
                         dataOne = "";
-                        $(this).attr("xname","");
+                        $(this).attr("xname", "");
                         curve();
-                    }else if($(this).attr("xname") == "dataTow"){
+                    } else if ($(this).attr("xname") == "dataTow") {
                         dataTow = "";
-                        $(this).attr("xname","");
+                        $(this).attr("xname", "");
                         curve();
                     }
                 }
-            }else if(name=="conv"){
-                if($(this).is(':checked')){
-                    $(this).attr("xname","dataOne");
+            } else if (name == "conv") {
+                if ($(this).is(':checked')) {
+                    $(this).attr("xname", "dataOne");
                     colorOne = "#DEDF00";
-                    if(dataOne == ""){
+                    if (dataOne == "") {
                         dataOne = {
                             name: '转化',
                             color: '#DEDF00',
@@ -2340,8 +2340,8 @@ var loadPerformanceCurve = function (obj,date) {
                             }
                         };
                         curve();
-                    }else if(dataTow == ""){
-                        $(this).attr("xname","dataTow");
+                    } else if (dataTow == "") {
+                        $(this).attr("xname", "dataTow");
                         colorTow = "#DEDF00";
                         dataTow = {
                             name: '转化',
@@ -2354,26 +2354,26 @@ var loadPerformanceCurve = function (obj,date) {
                         };
                         curve();
                     }
-                }else{
-                    if($(this).attr("xname") == "dataOne"){
+                } else {
+                    if ($(this).attr("xname") == "dataOne") {
                         dataOne = "";
-                        $(this).attr("xname","");
+                        $(this).attr("xname", "");
                         curve();
-                    }else if($(this).attr("xname") == "dataTow"){
+                    } else if ($(this).attr("xname") == "dataTow") {
                         dataTow = "";
-                        $(this).attr("xname","");
+                        $(this).attr("xname", "");
                         curve();
                     }
                 }
             }
-        }else{
-            $(this).attr("checked",false);
+        } else {
+            $(this).attr("checked", false);
         }
     });
     curve();
 }
 
-var curve = function(){
+var curve = function () {
     $('#container').highcharts({
         chart: {
             zoomType: 'xy'
@@ -2401,14 +2401,14 @@ var curve = function(){
                 labels: {
                     format: '{value}',
                     style: {
-                        color:colorOne
+                        color: colorOne
                     }
                 },
                 opposite: true
             }
         ],
-        credits:{
-            enabled:false
+        credits: {
+            enabled: false
         },
         tooltip: {
             shared: true
@@ -2422,7 +2422,7 @@ var curve = function(){
             backgroundColor: '#FFFFFF',
             itemDistance: 20,
             borderRadius: 5,
-            enabled:false
+            enabled: false
         },
         series: [
             dataOne,

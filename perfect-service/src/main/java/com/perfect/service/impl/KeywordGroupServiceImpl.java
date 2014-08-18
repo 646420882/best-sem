@@ -3,7 +3,9 @@ package com.perfect.service.impl;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.KeywordDAO;
+import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.mongodb.utils.BaseBaiduService;
 import com.perfect.redis.JRedisUtils;
@@ -31,6 +33,9 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
 
     @Resource
     private KeywordDAO keywordDAO;
+
+    @Resource
+    private AdgroupDAO adgroupDAO;
 
     private String _krFileId;
 
@@ -136,13 +141,11 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         return values;
     }
 
-    public void addKeywords(String jsonArrays) {
-        //String jsonWords = "";
-        KeywordEntity[] arr = (KeywordEntity[]) JSONUtils.getObjectsByJsonArrays(jsonArrays, KeywordEntity[].class);
-        for (KeywordEntity entity : arr) {
-            System.out.println(entity.toString());
-        }
-        //keywordDAO.insertAll(list);
+    public void addKeywords(List<AdgroupEntity> list1, List<KeywordEntity> list2) {
+        if (list1 != null)
+            adgroupDAO.insertAll(list1);
+        else if (list2 != null)
+            keywordDAO.insertAll(list2);
     }
 
     private KRService getKRService() {
