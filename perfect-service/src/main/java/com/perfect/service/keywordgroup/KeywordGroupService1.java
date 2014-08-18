@@ -101,10 +101,10 @@ public class KeywordGroupService1 {
     public static Map<String, Set<String>> getWordRoot(String excelFilePath) throws IOException, BiffException {
         String ext = Files.getFileExtension(excelFilePath);
         Map<String, Set<String>> wordRootMap = new HashMap<>();
-
+        InputStream is=new FileInputStream(excelFilePath);
         //ReadExcel
         if (ext.equals("xls") || ext.equals("xlsx")) {
-            Workbook workbook = Workbook.getWorkbook(new File(excelFilePath));
+            Workbook workbook = Workbook.getWorkbook(is);
             Sheet sheet = workbook.getSheet(0);
             Cell[] groupArray = sheet.getColumn(0);
             int row = 0;
@@ -132,7 +132,7 @@ public class KeywordGroupService1 {
     //Test
     public static void main(String[] args) {
         try {
-            KeywordGroupService1.getWordRoot("/home/baizz/教育行业词根20140725.xls");
+            KeywordGroupService1.getWordRoot("D://temp//files//aaa.xlsx");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (BiffException e) {

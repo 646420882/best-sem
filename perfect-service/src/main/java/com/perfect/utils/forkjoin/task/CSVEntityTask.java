@@ -1,6 +1,6 @@
 package com.perfect.utils.forkjoin.task;
 
-import com.perfect.entity.CSVEntity;
+import com.perfect.utils.vo.CSVEntity;
 
 import java.util.*;
 import java.util.concurrent.RecursiveTask;

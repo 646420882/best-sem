@@ -1,9 +1,8 @@
 package com.perfect.utils;
 
-import com.perfect.entity.CSVEntity;
+import com.perfect.utils.vo.CSVEntity;
 import com.perfect.utils.forkjoin.task.CSVEntityTask;
 
-import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -30,27 +29,10 @@ public class CsvLinkedSupport {
         }finally {
             forkJoinPool.shutdown();
         }
-        for (CSVEntity cs:csvEntities){
-            System.out.println(cs.getKeyword()+">>");
-        }
-
     }
     public static   boolean saveToDB(Map<Integer,CSVEntity> csvEntityMap){
         return  false;
     }
 
-    public static void main(String[] agrs){
-        List<String> A=new LinkedList<>();
-        List<String> B=new LinkedList<>();
-        A.add("aaa");
-        A.add("bbb");
-        B.add("aaa");
-        B.add("bbb");
-        B.add("ccc");
-        A.removeAll(B);
-        A.addAll(B);
-        for (String s:A){
-            System.out.println(s);
-        }
-    }
+
 }

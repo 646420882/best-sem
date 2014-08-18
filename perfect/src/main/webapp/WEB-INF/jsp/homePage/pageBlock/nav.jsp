@@ -37,7 +37,7 @@
                     </li>
                     <li>
                         <span class="list2"></span>
-                        <a href="/upload/uploadIndex">
+                        <a href="/upload/uploadManager">
                             批量上传
                         </a>
                     </li>
