@@ -1,6 +1,6 @@
-package com.perfect.app.promotionAssistant.controller;
+package com.perfect.app.accountWarnings.controller;
 
-import com.perfect.app.promotionAssistant.service.AccountWarningService;
+import com.perfect.app.accountWarnings.service.AccountWarningService;
 import com.perfect.core.AppContext;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.SystemUserEntity;

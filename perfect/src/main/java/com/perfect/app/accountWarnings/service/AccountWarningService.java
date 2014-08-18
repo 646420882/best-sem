@@ -1,4 +1,4 @@
-package com.perfect.app.promotionAssistant.service;
+package com.perfect.app.accountWarnings.service;
 
 import com.perfect.dao.AccountWarningDAO;
 import com.perfect.entity.WarningRuleEntity;
