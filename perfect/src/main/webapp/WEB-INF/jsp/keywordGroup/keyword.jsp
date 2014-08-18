@@ -768,19 +768,19 @@ var addAllWords = function () {
                 krFileId = data.krFileId;
                 $.each(data.rows, function (i, item) {
                     if (i == 0) {
-                        var str = $("#c2").text();
+                        var str = $("#c2").val();
                         if (str == null || str.trim().length == 0) {
-                            $("#c2").text(item.keywordName);
+                            $("#c2").val(item.keywordName);
                             keyUp();
                         }
                         else {
-                            $("#c2").text(str + "\n" + item.keywordName);
+                            $("#c2").val(str + "\n" + item.keywordName);
                             keyUp();
                         }
                         return true;
                     }
-                    var _str = $("#c2").text();
-                    $("#c2").text(_str + "\n" + item.keywordName);
+                    var _str = $("#c2").val();
+                    $("#c2").val(_str + "\n" + item.keywordName);
                     keyUp();
                 });
             }
