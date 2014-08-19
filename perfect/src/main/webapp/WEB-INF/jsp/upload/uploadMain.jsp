@@ -14,28 +14,49 @@
     <script type="text/javascript" src="/public/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/public/plugs/uploadify/jquery.uploadify.min.js"></script>
     <script type="text/javascript">
-        $(function(){
+        $(function () {
+            loadFileList();
             $("#file_upload").uploadify({
-                'buttonText' : '请选择',
-                'height' : 30,
-                'swf' : '/public/plugs/uploadify/uploadify.swf',
-                'uploader' : '/upload/uploadFile?jsessionid=<%=request.getSession().getId()%>',
-                'width' : 120,
-                'auto':false,
-                'fileObjName'   : 'file',
-                'onUploadSuccess' : function(file, data, response) {
-                    if(data=="1"){
-                    alert(file.name+"上传成功");
-                    }else{
-                        alert(file.name+"文件后缀名不正确!!");
+                'buttonText': '请选择',
+                'height': 30,
+                'swf': '/public/plugs/uploadify/uploadify.swf',
+                'uploader': '/upload/uploadFile?jsessionid=<%=request.getSession().getId()%>',
+                'width': 120,
+                'auto': false,
+                'fileObjName': 'file',
+                'onUploadSuccess': function (file, data, response) {
+                    if (data == "1") {
+                        loadFileList();
+                        alert(file.name + "上传成功");
+
                     }
                 }
             });
         });
+        function loadFileList(){
+            $("#t1").remove("tr:gt(0)");
+            $.get("/upload/tmpList", function (result) {
+                var json = eval("(" + result + ")");
+                for (var i = 0; i < json.length; i++) {
+                    var _tr = "<tr>";
+                    var td="<td>"+json[i].fileName+"</td><td>"+json[i].fileSize+"</td><td>"+json[i].fileExt+"</td><td><a href='/upload/get?value="+json[i].fileName+"'>下载</a></td>";
+                    var _etr="</tr>";
+                    $("#t1").append(_tr+td+_etr);
+                }
+
+            });
+        }
     </script>
 </head>
 <body>
-<input type="file" name="fileName" id="file_upload" />
-<a href="javascript:$('#file_upload').uploadify('upload', '*')">上传文件</a> | <a href="javascript:$('#file_upload').uploadify('stop')">停止上传!</a>
+<input type="file" name="fileName" id="file_upload"/>
+<a href="javascript:$('#file_upload').uploadify('upload', '*')">上传文件</a> | <a
+        href="javascript:$('#file_upload').uploadify('stop')">停止上传!</a>
+
+<div style="width:400px;height: 200px;overflow: auto;border: 1px solid lightgrey;">
+    <table id="t1" border="1">
+        <tr> <td>文件名</td><td>文件大小</td><td>文件类型</td><td>操作</td></tr><tr>
+    </table>
+</div>
 </body>
 </html>
