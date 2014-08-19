@@ -2,7 +2,6 @@ package com.perfect.utils;
 
 import com.google.common.io.Files;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.*;
@@ -23,26 +22,21 @@ public class UploadHelper {
         return tempPath;
     }
 
-    public String getExt(MultipartFile file) {
-        return Files.getFileExtension(file.getOriginalFilename());
+    public String getExt(String fileName) {
+        return Files.getFileExtension(fileName);
     }
 
-    public String getFileName(MultipartFile file) {
-        return file.getOriginalFilename();
-    }
 
     /**
      * 执行上传操作
      *
-     * @param file
+     * @param bytes
      * @return
      */
-    public boolean upLoad(MultipartFile file) {
-        byte[] bytes = new byte[0];
+    public boolean upLoad(byte[] bytes,String fileName) {
         try {
-            bytes = file.getBytes();
             File dirPath = new File(tempPath);
-            File uploadedFile = new File(tempPath + "\\" + file.getOriginalFilename());
+            File uploadedFile = new File(tempPath + "\\" +fileName);
             FileCopyUtils.copy(bytes, uploadedFile);
             return true;
         } catch (IOException e) {
@@ -110,5 +104,14 @@ public class UploadHelper {
             fileSizeString = df.format((double) fileS / 1073741824) + "Git";
         }
         return fileSizeString;
+    }
+
+    /**
+     * 获取文件大小
+     * @param filePath
+     * @return
+     */
+    public long getFileLength(String filePath){
+        return new File(filePath).length();
     }
 }

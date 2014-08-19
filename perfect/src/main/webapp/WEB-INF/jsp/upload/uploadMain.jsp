@@ -33,18 +33,31 @@
                 }
             });
         });
-        function loadFileList(){
+        function loadFileList() {
             $("#t1").remove("tr:gt(0)");
             $.get("/upload/tmpList", function (result) {
                 var json = eval("(" + result + ")");
                 for (var i = 0; i < json.length; i++) {
                     var _tr = "<tr>";
-                    var td="<td>"+json[i].fileName+"</td><td>"+json[i].fileSize+"</td><td>"+json[i].fileExt+"</td><td><a href='/upload/get?value="+json[i].fileName+"'>下载</a></td>";
-                    var _etr="</tr>";
-                    $("#t1").append(_tr+td+_etr);
+                    var td = "<td>" + json[i].fileName + "</td><td>" + json[i].fileSize + "</td><td>" + json[i].fileExt + "</td><td><a href='/upload/get?fileName=" + json[i].fileName + "'>下载</a>" +
+                            "&nbsp;<a href='javascript:void(0)' step='" + json[i].fileName + "' onclick='delFile(this)'>删除</a></td>";
+                    var _etr = "</tr>";
+                    $("#t1").append(_tr + td + _etr);
                 }
 
             });
+        }
+        function delFile(res) {
+            var _this = $(res);
+            var parents = _this.parents("tr");
+            var conf = confirm("是否删除？");
+            if (conf) {
+                $.get("/upload/del", {fileName: $(res).attr("step")}, function (result) {
+                    if (result == "1") {
+                        parents.remove();
+                    }
+                });
+            }
         }
     </script>
 </head>
@@ -55,7 +68,13 @@
 
 <div style="width:400px;height: 200px;overflow: auto;border: 1px solid lightgrey;">
     <table id="t1" border="1">
-        <tr> <td>文件名</td><td>文件大小</td><td>文件类型</td><td>操作</td></tr><tr>
+        <tr>
+            <td>文件名</td>
+            <td>文件大小</td>
+            <td>文件类型</td>
+            <td>操作</td>
+        </tr>
+        <tr>
     </table>
 </div>
 </body>

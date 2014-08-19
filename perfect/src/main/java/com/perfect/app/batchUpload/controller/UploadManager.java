@@ -39,14 +39,21 @@ public class UploadManager extends WebContextSupport {
     public ModelAndView convertUploadExcel() {
         return new ModelAndView("upload/uploadMain");
     }
+    @RequestMapping(value = "/uploadTotal")
+    public ModelAndView convertUploadTotal(){return new ModelAndView("upload/uploadTotal");}
 
+    /**
+     * 加载处理好的文件
+     *
+     * @param response
+     */
     @RequestMapping(value = "/tmpList")
     public void tmpList(HttpServletResponse response) {
         String filePath = new UploadHelper().getTempPath();
         List<FileAttribute> fileAttributes = new ArrayList<>();
         File file = new File(filePath);
         for (File s : file.listFiles()) {
-            String ext=Files.getFileExtension(s.getName());
+            String ext = Files.getFileExtension(s.getName());
             if (ext.equals("xlsx") || ext.equals("xls")) {
                 FileAttribute fa = new FileAttribute();
                 fa.setFileName(s.getName());
@@ -71,36 +78,68 @@ public class UploadManager extends WebContextSupport {
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     public void uploadFile(HttpServletResponse response, HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, String jsessionid) throws IOException {
         UploadHelper upload = new UploadHelper();
-        String ext = upload.getExt(file);
+        String ext = upload.getExt(file.getOriginalFilename());
         if (ext.equals("xls") || ext.equals("xlsx")) {
             excelSupport(upload, file, response);
-        }
-        else if (ext.equals("csv")) {
+        } else if (ext.equals("csv")) {
             csvSupport(upload, file, response);
         }
-
     }
-    @RequestMapping(value = "/get",method = RequestMethod.GET)
-    public void getIndex(HttpServletRequest request,HttpServletResponse response, String value){
-        UploadHelper uh=new UploadHelper();
-        String filePath=uh.getTempPath()+"/"+value;
-        System.out.println(filePath+">><");
-        byte[] bytes=uh.getBytes(filePath);
+
+    /**
+     * 获取下载文件
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public ModelAndView getIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String fileName = request.getParameter("fileName");
+        response.setContentType("text/html;charset=utf-8");
+        request.setCharacterEncoding("UTF-8");
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        UploadHelper uh = new UploadHelper();
+        String filePath = uh.getTempPath() + "\\" + fileName;
+        System.out.println(filePath);
         try {
-            response.setContentType(Files.getFileExtension(value));
-            response.setHeader("Content-disposition", "attachment; filename=\"" + value + "\"");
-            FileCopyUtils.copy(bytes, response.getOutputStream());
+            long fileLength = uh.getFileLength(filePath);
+            response.setContentType("application/x-msdownload;");
+            response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes("utf-8"), "ISO8859-1") + "");
+            response.setHeader("Content-Length", String.valueOf(fileLength));
+//            FileCopyUtils.copy(bytes, response.getOutputStream());
+            bis = new BufferedInputStream(new FileInputStream(filePath));
+            bos = new BufferedOutputStream(response.getOutputStream());
+            byte[] buffer = new byte[2048];
+            int byteRead;
+            while (-1 != (byteRead = bis.read(buffer, 0, buffer.length))) {
+                bos.write(buffer, 0, buffer.length);
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } finally {
+            if (bis != null)
+                bis.close();
+            if (bos != null)
+                bos.close();
 
+        }
+        return null;
     }
 
-
-    private void excelSupport(UploadHelper upload, MultipartFile file, HttpServletResponse response) {
-        boolean bol = upload.upLoad(file);
+    /**
+     * excel文件处理
+     *
+     * @param upload
+     * @param file
+     * @param response
+     */
+    private void excelSupport(UploadHelper upload, MultipartFile file, HttpServletResponse response) throws IOException {
+        boolean bol = upload.upLoad(file.getBytes(),file.getOriginalFilename());
         if (bol) {
-            String fileName = upload.getFileName(file);
+            String fileName =file.getOriginalFilename();
             ExcelReadUtil.checkUrl(new UploadHelper().getTempPath() + "/" + fileName);
             writeHtml(SUCCESS, response);
         } else {
@@ -108,10 +147,17 @@ public class UploadManager extends WebContextSupport {
         }
     }
 
-    private void csvSupport(UploadHelper upload, MultipartFile file, HttpServletResponse response) {
-        boolean bol = upload.upLoad(file);
+    /**
+     * csv文件处理
+     *
+     * @param upload
+     * @param file
+     * @param response
+     */
+    private void csvSupport(UploadHelper upload, MultipartFile file, HttpServletResponse response) throws IOException {
+        boolean bol = upload.upLoad(file.getBytes(),file.getOriginalFilename());
         if (bol) {
-            String fileName = upload.getFileName(file);
+            String fileName = file.getOriginalFilename();
             CsvReadUtil csvReadUtil = new CsvReadUtil(new UploadHelper().getTempPath() + "/" + fileName, CsvReadUtil.ENCODING_GBK);
             List<KeywordEntity> keywordEntityList = csvReadUtil.getList();
             cSVKeywordDAO.insertAll(keywordEntityList);
@@ -122,6 +168,30 @@ public class UploadManager extends WebContextSupport {
 
     }
 
+    /**
+     * 删除没用文件
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/del", method = RequestMethod.GET)
+    public ModelAndView delFile(HttpServletRequest request, HttpServletResponse response) {
+        String fileName = request.getParameter("fileName");
+        UploadHelper up = new UploadHelper();
+        String filePath = up.getTempPath() + "\\" + fileName;
+        File file = new File(filePath);
+        if (file.exists()) {
+            file.delete();
+            writeHtml(SUCCESS, response);
+        } else {
+            writeHtml(EXCEPTION, response);
+        }
+        return null;
+    }
+
+    /**
+     * 文件属性实体类
+     */
     class FileAttribute {
         private String fileName;
         private String fileSize;
