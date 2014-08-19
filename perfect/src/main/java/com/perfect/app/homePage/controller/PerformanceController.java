@@ -1,21 +1,16 @@
 package com.perfect.app.homePage.controller;
 
 import com.google.gson.Gson;
-import com.mongodb.Cursor;
-import com.mongodb.DBCursor;
-import com.perfect.app.homePage.service.PerformanceService;
 import com.perfect.entity.AccountRealTimeDataVOEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
+import com.perfect.service.PerformanceService;
 import com.perfect.utils.JSONUtils;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.MediaType;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
@@ -23,7 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by SubDong on 2014/7/25.

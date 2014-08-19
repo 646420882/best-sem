@@ -1,0 +1,223 @@
+/*公共部分*/
+* {
+	margin: 0;
+	padding: 0;
+}
+a {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+}
+ul, li, h1, h2, h3, h4, h5, h6 {
+	list-style: none;
+}
+body {
+	font-family: "微软雅黑";
+	font-size: 12px;
+}
+img {
+	border: none;
+}
+/*html5*/
+article, aside, dialog, footer, header, section, footer, nav, figure, menu {
+	display: block;
+}
+/*设置居中*/
+.over {
+	overflow: hidden;
+}
+html {
+	-webkit-text-size-adjust: none;
+}
+/*浮动*/
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}
+/*top*/
+.top {
+	height: 77px;
+	line-height: 77px;
+	background: url(/public/img/top_bg.jpg) center repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	vertical-align: middle;
+}
+.logo {
+	height: 53px;
+	margin-top: 10px;
+	padding-left: 2%;
+	line-height: 77px;
+	padding-right: 40px;
+	border-right: 1px dotted #646464;
+}
+.logo img {
+	width: 151px;
+	hright: 53px;
+ *margin-top:-10px;
+}
+.logo_text {
+	color: #fff;
+	font-family: "微软雅黑";
+	font-size: 22px;
+	margin-left: 36px;
+}
+/*title*/
+.user {
+	height: 32px;
+	line-height: 32px;
+	background: url(/public/img/user_bg.jpg) repeat-x;
+    padding: 0 5%;
+}
+.on_title {
+	padding-left: 20px;
+	height: 32px;
+	line-height: 32px;
+	background: url(/public/img/title_bg.jpg) repeat-x;
+	border-bottom: 1px solid #abafbc;
+}
+.on_title a {
+	color: #000000;
+}
+.on_title span {
+	color: #8e8e8e;
+}
+
+.user_img span {
+	display: block;
+	float: left;
+	margin-right: 10px;
+	color: #664b02;
+	font-weight: bold;
+	font-family: "微软雅黑";
+}
+.user_img .img {
+	padding-top: 4px;
+}
+
+.user_close a {
+	color: #252525;
+}
+.user_close a:hover {
+	color: #fff;
+}
+/*nav*/
+.nav {
+	width: 15%;
+	border-top: 1px solid #48464c;
+	max-height: 900px;
+   *max-height:902px;
+}
+.nav_left {
+	width: 97%;
+}
+.nav_top {
+	height: 34px;
+	line-height: 34px;
+	color: #f0b004;
+	font-size: 14px;
+	background: url(/public/img/nav_top_bg.png) repeat-x;
+	padding: 0 10%;
+}
+.nav_top span {
+	display: block;
+	float: right;
+	margin-top: 12px;
+	width: 9px;
+	height: 9px;
+	background: url(/public/img/bg.png) -74px -10px no-repeat;
+}
+.nav_mid {
+	padding-top: 10px;
+	background: #272537 url(/public/img/nav_bg.jpg) top no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	min-height: 1140px;
+}
+.nav_under {
+	padding: 0 10%;
+}
+.nav_under ul li {
+	margin-top: 10px;
+}
+.nav_under ul li h3 {
+	font-size: 14px;
+	color: #959cad;
+	margin: 20px 0 10px 0;
+}
+.nav_under ul li a {
+	font-size: 12px;
+	color: #c9c9cc;
+}
+.nav_under ul li a:hover {
+	color: #fff;
+	text-decoration: none;
+}
+.nav_under ul li span {
+	display: block;
+	float: left;
+	width: 18px;
+	height: 18px;
+	margin: 0 8px 0 16px;
+}
+.nav_under ul li .list1 {
+	background: url(/public/img/bg.png) -10px -29px no-repeat;
+}
+.nav_under ul li .list2 {
+	background: url(/public/img/bg.png) -28px -29px no-repeat;
+}
+.nav_under ul li .list3 {
+	background: url(/public/img/bg.png) -50px -29px no-repeat;
+}
+.nav_under ul li .list4 {
+	background: url(/public/img/bg.png) -74px -29px no-repeat;
+}
+.nav_under ul li .list5 {
+	background: url(/public/img/bg.png) -10px -49px no-repeat;
+}
+.nav_under ul li .list6 {
+	background: url(/public/img/bg.png) -28px -49px no-repeat;
+}
+.nav_under ul li .list7 {
+	background: url(/public/img/bg.png) -50px -49px no-repeat;
+}
+.nav_under ul li .list8 {
+	background: url(/public/img/bg.png) -74px -49px no-repeat;
+}
+.nav_under ul li .list9 {
+	background: url(/public/img/bg.png) -10px -71px no-repeat;
+}
+.nav_under ul li .list10 {
+	background: url(/public/img/bg.png) -28px -71px no-repeat;
+}
+.nav_under ul li .list11 {
+	background: url(/public/img/bg.png) -50px -71px no-repeat;
+}
+.nav_under ul li .list12 {
+	background: url(/public/img/bg.png) -73px -71px no-repeat;
+}
+/*底部*/
+.footer {
+	width: 85%;
+	height: 80px;
+	padding-top: 20px;
+	border-top: 1px solid #d1d1d1;
+	text-align: center;
+	line-height: 30px;
+	color: #999999;
+	font-family: "微软雅黑";
+	position: absolute;
+   bottom: 20px;
+    margin-top: 80px;
+}
+.footer a {
+	color: #999999;
+	padding: 0 10px;
+}
