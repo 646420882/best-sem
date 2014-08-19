@@ -61,8 +61,8 @@ public class TestService implements IScheduleTaskDealSingle<SystemUserEntity> {
 
         List<SystemUserEntity> result = new ArrayList<>();
 
-        List<SystemUserEntity> systemUsers = systemUserDAO.findAll();
-        return systemUsers;
+        Iterable<SystemUserEntity> systemUsers = systemUserDAO.findAll();
+        return (List) systemUsers;
     }
 
     @Override

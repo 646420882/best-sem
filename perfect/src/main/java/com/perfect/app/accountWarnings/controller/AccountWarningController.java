@@ -97,7 +97,7 @@ public class AccountWarningController {
      */
     @RequestMapping(value = "assistant/showAllWarningRule",method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView showAllWarningRule(ModelMap model){
-        List<WarningRuleEntity> list = accountWarningService.findAllWarningRule();
+        Iterable<WarningRuleEntity> list = accountWarningService.findAllWarningRule();
         model.addAttribute("list",list);
         return new ModelAndView("promotionAssistant/showWarningRule");
     }

@@ -104,4 +104,9 @@ public abstract class AbstractSysBaseDAOImpl<T, ID extends Serializable> extends
     public long count() {
         return getSysMongoTemplate().count(null, getEntityClass());
     }
+
+    @Override
+    public void update(T t) {
+        getSysMongoTemplate().save(t);
+    }
 }

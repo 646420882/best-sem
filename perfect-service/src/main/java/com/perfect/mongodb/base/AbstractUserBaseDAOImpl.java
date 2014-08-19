@@ -1,7 +1,6 @@
 package com.perfect.mongodb.base;
 
 import com.perfect.dao.MongoCrudRepository;
-import com.perfect.mongodb.base.BaseMongoTemplate;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -18,6 +17,10 @@ public abstract class AbstractUserBaseDAOImpl<T, ID extends Serializable> implem
 
 
     public abstract Class<T> getEntityClass();
+
+    public String getId() {
+        return "_id";
+    }
 
     @Resource
     private MongoTemplate mongoSysTemplate;
@@ -44,7 +47,13 @@ public abstract class AbstractUserBaseDAOImpl<T, ID extends Serializable> implem
 
     @Override
     public void delete(ID id) {
-        getMongoTemplate().remove(Query.query(Criteria.where("id").is(id)), getEntityClass());
+        getMongoTemplate().remove(Query.query(Criteria.where(getId()).is(id)), getEntityClass());
+    }
+
+
+    @Override
+    public void deleteByIds(List<ID> ids) {
+        getMongoTemplate().remove(Query.query(Criteria.where(getId()).in(ids)), getEntityClass());
     }
 
     @Override
@@ -97,7 +106,7 @@ public abstract class AbstractUserBaseDAOImpl<T, ID extends Serializable> implem
 
     @Override
     public T findOne(ID id) {
-        return getMongoTemplate().findOne(Query.query(Criteria.where("id").is(id)), getEntityClass());
+        return getMongoTemplate().findOne(Query.query(Criteria.where(getId()).is(id)), getEntityClass());
     }
 
 
@@ -108,16 +117,22 @@ public abstract class AbstractUserBaseDAOImpl<T, ID extends Serializable> implem
 
     @Override
     public Iterable<T> findAll(Iterable<ID> ids) {
-        return getMongoTemplate().find(Query.query(Criteria.where("id").in(ids)), getEntityClass());
+        return getMongoTemplate().find(Query.query(Criteria.where(getId()).in(ids)), getEntityClass());
     }
 
     @Override
     public boolean exists(ID id) {
-        return getMongoTemplate().exists(Query.query(Criteria.where("id").is(id)), getEntityClass());
+        return getMongoTemplate().exists(Query.query(Criteria.where(getId()).is(id)), getEntityClass());
     }
 
     @Override
     public long count() {
         return getMongoTemplate().count(null, getEntityClass());
+    }
+
+
+    @Override
+    public void update(T t) {
+        getMongoTemplate().save(t);
     }
 }

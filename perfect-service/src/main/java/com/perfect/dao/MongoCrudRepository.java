@@ -3,7 +3,6 @@ package com.perfect.dao;
 import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.Repository;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,8 +14,8 @@ import java.util.Map;
 @NoRepositoryBean
 public interface MongoCrudRepository<T, ID extends Serializable> extends CrudRepository<T, ID> {
 
-    public   final String START="start";
-    public   final String PAGESIZE="pageSize";
+    public final String START = "start";
+    public final String PAGESIZE = "pageSize";
 
 
     /**
@@ -46,13 +45,13 @@ public interface MongoCrudRepository<T, ID extends Serializable> extends CrudRep
      */
     void insertAll(List<T> entities);
 
-//    /**
-//     * 更新
-//     * <br>------------------------------<br>
-//     *
-//     * @param t
-//     */
-//    void update(T t);
+    /**
+     * 更新
+     * <br>------------------------------<br>
+     *
+     * @param t
+     */
+    void update(T t);
 //
 //    /**
 //     * 批量更新
@@ -70,22 +69,22 @@ public interface MongoCrudRepository<T, ID extends Serializable> extends CrudRep
 //     */
 //    void deleteById(ID id);
 //
-//    /**
-//     * 批量删除
-//     * <br>------------------------------<br>
-//     *
-//     * @param ids
-//     */
-//    void deleteByIds(List<ID> ids);
 
     /**
+     * 批量删除
+     * <br>------------------------------<br>
      *
-     * @param start 开始页数
+     * @param ids
+     */
+    void deleteByIds(List<ID> ids);
+
+    /**
+     * @param start    开始页数
      * @param pageSize 每页数量
-     * @param q 查询参数
+     * @param q        查询参数
      * @return
      */
-    Pager findByPager(int start,int pageSize,Map<String,Object> q,int orderBy);
+    Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy);
 
 
 }

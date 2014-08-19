@@ -61,7 +61,7 @@ public class AssistantCampaignController {
         campaignEntity.setBudget(budget);
         campaignEntity.setPriceRatio(priceRatio);
 
-        campaignDAO.update(campaignEntity);
+        campaignDAO.save(campaignEntity);
         return new ModelAndView();
     }
 
@@ -77,7 +77,7 @@ public class AssistantCampaignController {
         CampaignEntity campaignEntity = new CampaignEntity();
         campaignEntity.setCampaignId(cid);
         campaignEntity.setRegionTarget(Arrays.asList(regionTarget));
-        campaignDAO.update(campaignEntity);
+        campaignDAO.save(campaignEntity);
 
         return new ModelAndView();
     }

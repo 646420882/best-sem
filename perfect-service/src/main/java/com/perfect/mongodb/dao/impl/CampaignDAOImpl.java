@@ -151,6 +151,11 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
         return CampaignEntity.class;
     }
 
+    @Override
+    public String getId() {
+        return "cid";
+    }
+
     public void delete(CampaignEntity campaignEntity) {
         deleteById(campaignEntity.getCampaignId());
     }

@@ -9,4 +9,5 @@ import java.util.List;
 public interface CampaignDAO extends MongoCrudRepository<CampaignEntity, Long> {
 
     List<Long> getAllCampaignId();
+
 }

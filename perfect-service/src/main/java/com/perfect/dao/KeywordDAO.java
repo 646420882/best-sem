@@ -29,4 +29,5 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
     Pager getKeywordByPager(HttpServletRequest request,Map<String,Object> params,int orderBy);
 
     List<KeywordInfo> getKeywordInfo();
+
 }

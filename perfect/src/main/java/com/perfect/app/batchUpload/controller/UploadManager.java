@@ -1,15 +1,16 @@
 package com.perfect.app.batchUpload.controller;
 
 import com.google.common.io.Files;
-import com.perfect.dao.CSVKeywordDAO;
+import com.perfect.dao.KeywordDAO;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.utils.CsvReadUtil;
 import com.perfect.utils.ExcelReadUtil;
 import com.perfect.utils.UploadHelper;
 import com.perfect.utils.web.WebContextSupport;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,7 +29,7 @@ import java.util.List;
 public class UploadManager extends WebContextSupport {
 
     @Resource
-    CSVKeywordDAO cSVKeywordDAO;
+    KeywordDAO keywordDAO;
 
     /**
      * 跳转至Excel文件上传
@@ -39,8 +40,11 @@ public class UploadManager extends WebContextSupport {
     public ModelAndView convertUploadExcel() {
         return new ModelAndView("upload/uploadMain");
     }
+
     @RequestMapping(value = "/uploadTotal")
-    public ModelAndView convertUploadTotal(){return new ModelAndView("upload/uploadTotal");}
+    public ModelAndView convertUploadTotal() {
+        return new ModelAndView("upload/uploadTotal");
+    }
 
     /**
      * 加载处理好的文件
@@ -137,9 +141,9 @@ public class UploadManager extends WebContextSupport {
      * @param response
      */
     private void excelSupport(UploadHelper upload, MultipartFile file, HttpServletResponse response) throws IOException {
-        boolean bol = upload.upLoad(file.getBytes(),file.getOriginalFilename());
+        boolean bol = upload.upLoad(file.getBytes(), file.getOriginalFilename());
         if (bol) {
-            String fileName =file.getOriginalFilename();
+            String fileName = file.getOriginalFilename();
             ExcelReadUtil.checkUrl(new UploadHelper().getTempPath() + "/" + fileName);
             writeHtml(SUCCESS, response);
         } else {
@@ -155,21 +159,21 @@ public class UploadManager extends WebContextSupport {
      * @param response
      */
     private void csvSupport(UploadHelper upload, MultipartFile file, HttpServletResponse response) throws IOException {
-        boolean bol = upload.upLoad(file.getBytes(),file.getOriginalFilename());
+        boolean bol = upload.upLoad(file.getBytes(), file.getOriginalFilename());
         if (bol) {
             String fileName = file.getOriginalFilename();
             CsvReadUtil csvReadUtil = new CsvReadUtil(new UploadHelper().getTempPath() + "/" + fileName, CsvReadUtil.ENCODING_GBK);
             List<KeywordEntity> keywordEntityList = csvReadUtil.getList();
-            cSVKeywordDAO.insertAll(keywordEntityList);
+            keywordDAO.insertAll(keywordEntityList);
             writeHtml(SUCCESS, response);
         } else {
             writeHtml(EXCEPTION, response);
         }
-
     }
 
     /**
      * 删除没用文件
+     *
      * @param request
      * @param response
      * @return

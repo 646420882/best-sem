@@ -202,6 +202,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         logProcessingDAO.insert(log);
     }
 
+    @Override
     public void deleteByIds(List<Long> ids) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<DataOperationLogEntity> list = new LinkedList<>();

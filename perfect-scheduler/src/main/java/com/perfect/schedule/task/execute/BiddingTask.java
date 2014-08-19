@@ -159,7 +159,7 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
     @Override
     public List<TaskObject> selectTasks(String taskParameter, String ownSign, int taskItemNum, List<TaskItemDefine> taskItemList, int eachFetchDataNum) throws Exception {
 
-        List<SystemUserEntity> userEntityList = systemUserService.getAllUser();
+        Iterable<SystemUserEntity> userEntityList = systemUserService.getAllUser();
 
         List<TaskObject> objectList = new ArrayList<>();
         for (SystemUserEntity userEntity : userEntityList) {

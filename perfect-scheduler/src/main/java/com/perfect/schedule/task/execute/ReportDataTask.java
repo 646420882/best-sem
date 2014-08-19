@@ -83,8 +83,8 @@ public class ReportDataTask implements IScheduleTaskDealSingle<SystemUserEntity>
             return Collections.emptyList();
         }
 
-        List<SystemUserEntity> userEntityList = systemUserDAO.findAll();
-        return userEntityList;
+        Iterable<SystemUserEntity> userEntityList = systemUserDAO.findAll();
+        return (List) userEntityList;
     }
 
     @Override

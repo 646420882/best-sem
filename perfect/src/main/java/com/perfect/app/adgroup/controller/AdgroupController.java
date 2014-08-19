@@ -86,7 +86,7 @@ public class AdgroupController {
 
     @RequestMapping(value = "/{adgroupId}/del", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView deleteById(@PathVariable Long adgroupId) {
-        adgroupDAO.deleteById(adgroupId);
+        adgroupDAO.delete(adgroupId);
         return new ModelAndView(getJsonView());
     }
 

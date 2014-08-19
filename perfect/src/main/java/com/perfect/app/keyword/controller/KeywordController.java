@@ -79,7 +79,7 @@ public class KeywordController {
     @RequestMapping(value = "/{keywordId}/update", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView update(@PathVariable Long keywordId, @RequestParam(value = "keywordEntity") String keywordStr) {
         KeywordEntity keywordEntity = (KeywordEntity) JSONUtils.getObjectByJson(keywordStr, KeywordEntity.class);
-        keywordDAO.update(keywordEntity);
+        keywordDAO.save(keywordEntity);
         return new ModelAndView(getJsonView());
     }
 
@@ -93,7 +93,7 @@ public class KeywordController {
 
     @RequestMapping(value = "/{keywordId}/del", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView deleteById(@PathVariable Long keywordId) {
-        keywordDAO.deleteById(keywordId);
+        keywordDAO.delete(keywordId);
         return new ModelAndView(getJsonView());
     }
 
