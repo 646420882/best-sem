@@ -29,4 +29,10 @@ public interface KeywordDAO extends CrudRepository<KeywordEntity, Long> {
     Pager getKeywordByPager(HttpServletRequest request,Map<String,Object> params,int orderBy);
 
     List<KeywordInfo> getKeywordInfo();
+
+    /**
+     * 安全添加
+     * @param keywordEntity
+     */
+    public void insertAndQuery(List<KeywordEntity> keywordEntity);
 }

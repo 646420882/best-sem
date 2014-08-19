@@ -1,7 +1,7 @@
 package com.perfect.app.batchUpload.controller;
 
 import com.google.common.io.Files;
-import com.perfect.dao.CSVKeywordDAO;
+import com.perfect.dao.KeywordDAO;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.utils.CsvReadUtil;
 import com.perfect.utils.ExcelReadUtil;
@@ -28,7 +28,7 @@ import java.util.List;
 public class UploadManager extends WebContextSupport {
 
     @Resource
-    CSVKeywordDAO cSVKeywordDAO;
+    KeywordDAO keywordDAO;
 
     /**
      * 跳转至Excel文件上传
@@ -160,7 +160,7 @@ public class UploadManager extends WebContextSupport {
             String fileName = file.getOriginalFilename();
             CsvReadUtil csvReadUtil = new CsvReadUtil(new UploadHelper().getTempPath() + "/" + fileName, CsvReadUtil.ENCODING_GBK);
             List<KeywordEntity> keywordEntityList = csvReadUtil.getList();
-            cSVKeywordDAO.insertAll(keywordEntityList);
+            keywordDAO.insertAndQuery(keywordEntityList);
             writeHtml(SUCCESS, response);
         } else {
             writeHtml(EXCEPTION, response);

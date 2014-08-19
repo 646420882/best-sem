@@ -77,6 +77,19 @@ public class KeywordDAOImpl implements KeywordDAO {
         return mongoTemplate.findAll(KeywordInfo.class, "KeywordInfo");
     }
 
+    @Override
+    public void insertAndQuery(List<KeywordEntity> keywordEntity) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        for (KeywordEntity key : keywordEntity) {
+            Query q = new Query(Criteria.where("kwid").is(key.getKeywordId()));
+            if (!mongoTemplate.exists(q, KeywordEntity.class)) {
+                mongoTemplate.insert(key, "keyword");
+                DataOperationLogEntity log = LogUtils.getLog(key.getKeywordId(), KeywordEntity.class, null, key);
+                logProcessingDAO.insert(log);
+            }
+        }
+    }
+
     public KeywordEntity findOne(Long keywordId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         KeywordEntity entity = mongoTemplate.
