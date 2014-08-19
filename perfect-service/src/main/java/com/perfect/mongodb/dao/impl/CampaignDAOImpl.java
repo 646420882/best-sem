@@ -3,6 +3,7 @@ package com.perfect.mongodb.dao.impl;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.*;
+import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -22,17 +23,14 @@ import java.util.*;
  * Created by vbzer_000 on 2014-6-27.
  */
 @Repository("campaignDAO")
-public class CampaignDAOImpl implements CampaignDAO {
-
-    @Resource
-    private MongoTemplate mongoTemplate;
+public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Long> implements CampaignDAO {
 
     @Resource
     private LogProcessingDAO logProcessingDAO;
 
     public List<Long> getAllCampaignId() {
         Query query = new BasicQuery("{}", "{campaignId : 1}");
-        List<CampaignEntity> list = mongoTemplate.find(query, CampaignEntity.class, "CampaginType");
+        List<CampaignEntity> list = getMongoTemplate().find(query, CampaignEntity.class, "CampaginType");
         List<Long> campaignIds = new ArrayList<>(list.size());
         for (CampaignEntity type : list)
             campaignIds.add(type.getCampaignId());
@@ -40,7 +38,7 @@ public class CampaignDAOImpl implements CampaignDAO {
     }
 
     public CampaignEntity findOne(Long campaignId) {
-        CampaignEntity campaignEntity = mongoTemplate.findOne(
+        CampaignEntity campaignEntity = getMongoTemplate().findOne(
                 new Query(Criteria.where("campaignId").is(campaignId)),
                 CampaignEntity.class,
                 "CampaginType");
@@ -48,7 +46,7 @@ public class CampaignDAOImpl implements CampaignDAO {
     }
 
     public List<CampaignEntity> findAll() {
-        List<CampaignEntity> list = mongoTemplate.findAll(CampaignEntity.class, "CampaginType");
+        List<CampaignEntity> list = getMongoTemplate().findAll(CampaignEntity.class, "CampaginType");
         return list;
     }
 
@@ -62,18 +60,18 @@ public class CampaignDAOImpl implements CampaignDAO {
             query.addCriteria(criteria);
         }
         query.with(new PageRequest(skip, limit));
-        List<CampaignEntity> list = mongoTemplate.find(query, CampaignEntity.class, "CampaginType");
+        List<CampaignEntity> list = getMongoTemplate().find(query, CampaignEntity.class, "CampaginType");
         return list;
     }
 
     public void insert(CampaignEntity campaignEntity) {
-        mongoTemplate.insert(campaignEntity, "CampaginType");
+        getMongoTemplate().insert(campaignEntity, "CampaginType");
         DataOperationLogEntity log = logProcessingDAO.getLog(campaignEntity.getCampaignId(), CampaignEntity.class, null, campaignEntity);
         logProcessingDAO.insert(log);
     }
 
     public void insertAll(List<CampaignEntity> entities) {
-        mongoTemplate.insertAll(entities);
+        getMongoTemplate().insertAll(entities);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (CampaignEntity entity : entities) {
             DataOperationLogEntity log = logProcessingDAO.getLog(entity.getCampaignId(), CampaignEntity.class, null, entity);
@@ -114,7 +112,7 @@ public class CampaignDAOImpl implements CampaignDAO {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-        mongoTemplate.updateFirst(query, update, CampaignEntity.class);
+        getMongoTemplate().updateFirst(query, update, CampaignEntity.class);
         logProcessingDAO.insert(log);
     }
 
@@ -124,15 +122,20 @@ public class CampaignDAOImpl implements CampaignDAO {
     }
 
     public void deleteById(Long campaignId) {
-        mongoTemplate.remove(
+        getMongoTemplate().remove(
                 new Query(Criteria.where("campaignId").is(campaignId)), CampaignEntity.class, "CampaginType");
         deleteSub(Arrays.asList(new Long[]{campaignId}));
     }
 
     public void deleteByIds(List<Long> campaignIds) {
-        mongoTemplate.remove(
+        getMongoTemplate().remove(
                 new Query(Criteria.where("campaignId").in(campaignIds)), CampaignEntity.class, "CampaginType");
         deleteSub(campaignIds);
+    }
+
+    @Override
+    public Class<CampaignEntity> getEntityClass() {
+        return CampaignEntity.class;
     }
 
     public void delete(CampaignEntity campaignEntity) {
@@ -140,19 +143,19 @@ public class CampaignDAOImpl implements CampaignDAO {
     }
 
     public void deleteAll() {
-        mongoTemplate.dropCollection("CampaginType");
+        getMongoTemplate().dropCollection("CampaginType");
         deleteSub(getAllCampaignId());
     }
 
     @Override
-    public Pager findByPager(int start, int pageSize, Map<String,Object> q,int orderBy) {
+    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
         return null;
     }
 
     private List<Long> getAdgroupIdByCampaignId(List<Long> campaignIds) {
         Query query = new BasicQuery("{}", "{adgroupId : 1}");
         query.addCriteria(Criteria.where("campaignId").in(campaignIds));
-        List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class, "AdgroupType");
+        List<AdgroupEntity> list = getMongoTemplate().find(query, AdgroupEntity.class, "AdgroupType");
         List<Long> adgroupIds = new ArrayList<>(list.size());
         for (AdgroupEntity type : list)
             adgroupIds.add(type.getAdgroupId());
@@ -162,9 +165,9 @@ public class CampaignDAOImpl implements CampaignDAO {
     //删除下级内容
     private void deleteSub(List<Long> campaignIds) {
         List<Long> adgroupIds = getAdgroupIdByCampaignId(campaignIds);
-        mongoTemplate.remove(new Query(Criteria.where("adgroupId").in(adgroupIds)), AdgroupEntity.class, "AdgroupType");
-        mongoTemplate.remove(new Query(Criteria.where("adgroupId").in(adgroupIds)), KeywordEntity.class, "KeywordType");
-        mongoTemplate.remove(new Query(Criteria.where("adgroupId").in(adgroupIds)), CreativeEntity.class, "CreativeType");
+        getMongoTemplate().remove(new Query(Criteria.where("adgroupId").in(adgroupIds)), AdgroupEntity.class, "AdgroupType");
+        getMongoTemplate().remove(new Query(Criteria.where("adgroupId").in(adgroupIds)), KeywordEntity.class, "KeywordType");
+        getMongoTemplate().remove(new Query(Criteria.where("adgroupId").in(adgroupIds)), CreativeEntity.class, "CreativeType");
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (Long id : campaignIds) {
             DataOperationLogEntity log = logProcessingDAO.getLog(id, CampaignEntity.class, null, null);

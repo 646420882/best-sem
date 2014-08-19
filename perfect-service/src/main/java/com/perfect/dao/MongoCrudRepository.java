@@ -1,6 +1,7 @@
 package com.perfect.dao;
 
 import com.perfect.mongodb.utils.Pager;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 
@@ -12,25 +13,11 @@ import java.util.Map;
  * Created by baizz on 2014-7-4.
  */
 @NoRepositoryBean
-public interface CrudRepository<T, ID extends Serializable> extends Repository<T, ID> {
+public interface MongoCrudRepository<T, ID extends Serializable> extends CrudRepository<T, ID> {
 
     public   final String START="start";
     public   final String PAGESIZE="pageSize";
-    /**
-     * <br>------------------------------<br>
-     *
-     * @param id
-     * @return
-     */
-    T findOne(ID id);
 
-    /**
-     * 查询全部
-     * <br>------------------------------<br>
-     *
-     * @return
-     */
-    List<T> findAll();
 
     /**
      * 按条件查询
@@ -59,51 +46,37 @@ public interface CrudRepository<T, ID extends Serializable> extends Repository<T
      */
     void insertAll(List<T> entities);
 
-    /**
-     * 更新
-     * <br>------------------------------<br>
-     *
-     * @param t
-     */
-    void update(T t);
+//    /**
+//     * 更新
+//     * <br>------------------------------<br>
+//     *
+//     * @param t
+//     */
+//    void update(T t);
+//
+//    /**
+//     * 批量更新
+//     * <br>------------------------------<br>
+//     *
+//     * @param entities
+//     */
+//    void update(List<T> entities);
 
-    /**
-     * 批量更新
-     * <br>------------------------------<br>
-     *
-     * @param entities
-     */
-    void update(List<T> entities);
-
-    /**
-     * 根据id删除
-     * <br>------------------------------<br>
-     *
-     * @param id
-     */
-    void deleteById(ID id);
-
-    /**
-     * 批量删除
-     * <br>------------------------------<br>
-     *
-     * @param ids
-     */
-    void deleteByIds(List<ID> ids);
-
-    /**
-     * 按条件删除
-     * <br>------------------------------<br>
-     *
-     * @param t
-     */
-    void delete(T t);
-
-    /**
-     * 删除全部
-     * <br>------------------------------<br>
-     */
-    void deleteAll();
+//    /**
+//     * 根据id删除
+//     * <br>------------------------------<br>
+//     *
+//     * @param id
+//     */
+//    void deleteById(ID id);
+//
+//    /**
+//     * 批量删除
+//     * <br>------------------------------<br>
+//     *
+//     * @param ids
+//     */
+//    void deleteByIds(List<ID> ids);
 
     /**
      *

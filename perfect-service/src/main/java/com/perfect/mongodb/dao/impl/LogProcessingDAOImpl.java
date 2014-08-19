@@ -3,6 +3,7 @@ package com.perfect.mongodb.dao.impl;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
+import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.utils.Log4MongoTemplate;
 import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.Sort;
@@ -20,7 +21,7 @@ import java.util.Map;
  * Created by baizz on 2014-7-4.
  */
 @Repository("logProcessingDAO")
-public class LogProcessingDAOImpl implements LogProcessingDAO {
+public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationLogEntity, Long> implements LogProcessingDAO {
 
     @Resource
     private Log4MongoTemplate log4MongoTemplate;
@@ -253,6 +254,11 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
                     "DataOperationLogEntity");
     }
 
+    @Override
+    public Class<DataOperationLogEntity> getEntityClass() {
+        return DataOperationLogEntity.class;
+    }
+
     /**
      * 用于数据更新操作同步成功后删除日志
      *
@@ -277,7 +283,7 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
     }
 
     @Override
-    public Pager findByPager(int start, int pageSize, Map<String,Object> q,int orderBy) {
+    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
         return null;
     }
 

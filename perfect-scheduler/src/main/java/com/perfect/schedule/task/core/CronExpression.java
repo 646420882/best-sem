@@ -13,7 +13,7 @@ public class CronExpression {
 
     public static final String CRON_EVERY_HALF_HOUR = "0 0/30 ? * * *";
 
-    public static final String CRON_EVERY_MINUTE = "0 ? * * * *";
+    public static final String CRON_EVERY_MINUTE = "0 0/1 * * * ?";
 
     public static final String CRON_EVERY_HALF_MINUTE = "0/30 ? * * * *";
 }

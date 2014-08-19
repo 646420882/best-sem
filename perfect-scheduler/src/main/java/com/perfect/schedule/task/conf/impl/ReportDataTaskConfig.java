@@ -33,9 +33,4 @@ public class ReportDataTaskConfig extends BaseTaskConfig {
         this.scheduleManagerFactory = tbScheduleManagerFactory;
     }
 
-
-    @Override
-    public void createTask() {
-
-    }
 }

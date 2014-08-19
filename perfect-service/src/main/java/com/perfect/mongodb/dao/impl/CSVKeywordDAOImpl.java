@@ -2,11 +2,10 @@ package com.perfect.mongodb.dao.impl;
 
 import com.perfect.dao.CSVKeywordDAO;
 import com.perfect.entity.CSVEntity;
-import com.perfect.mongodb.utils.BaseMongoTemplate;
+import com.perfect.mongodb.base.BaseMongoTemplate;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**

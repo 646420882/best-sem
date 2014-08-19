@@ -3,28 +3,53 @@
 
 package com.perfect.entity;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "creative")
 public class CreativeEntity extends AccountIdEntity {
     //CreativeType Attributes
+    @Id
+    private Object id;
+
     @Indexed(unique = true)
     private Long creativeId;
 
     //------------------------
     // MEMBER VARIABLES
     //------------------------
+    @Field("agid")
     private Long adgroupId;
+    @Field("t")
     private String title;
+
+    @Field("desc1")
     private String description1;
+
+    @Field("desc2")
     private String description2;
+
+    @Field("pc")
     private String pcDestinationUrl;
+
+    @Field("pcd")
     private String pcDisplayUrl;
+
+    @Field("m")
     private String mobileDestinationUrl;
+
+    @Field("md")
     private String mobileDisplayUrl;
+
+    @Field("p")
     private Boolean pause;
+
+    @Field("s")
     private Integer status;
+
+    @Field("d")
     private Integer devicePreference;
 
     public boolean setCreativeId(Long aCreativeId) {

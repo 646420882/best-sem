@@ -11,9 +11,9 @@
 		http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"
        default-lazy-init="true" default-autowire="byName">
 
-    <bean id="senderTask" class="com.perfect.schedule.task.execute.SenderTask"/>
+    <!--<bean id="senderTask" class="com.perfect.schedule.task.execute.SenderTask"/>-->
 
-    <bean id="demoTaskBean" class="com.taobao.pamirs.schedule.test.DemoTaskBean" />
+    <bean id="demoTaskBeaN" class="com.taobao.pamirs.schedule.test.DemoTaskBean" />
 
     <bean id="scheduleManagerFactory" class="com.perfect.schedule.core.strategy.TBScheduleManagerFactory"
           init-method="init">

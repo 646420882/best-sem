@@ -1,4 +1,4 @@
-package com.perfect.mongodb.utils;
+package com.perfect.mongodb.base;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -22,6 +23,9 @@ import java.util.Properties;
 public class BaseMongoTemplate {
 
     private static Mongo mongo;
+
+    @Resource
+    private MongoTemplate mongoSysTemplate;
 
     static {
         InputStream is = BaseMongoTemplate.class.getResourceAsStream("/mongodb.properties");
@@ -37,6 +41,9 @@ public class BaseMongoTemplate {
     private BaseMongoTemplate() {
     }
 
+    public MongoTemplate getSysMongoTemplate() {
+        return mongoSysTemplate;
+    }
 
     public static MongoTemplate getMongoTemplate(String databaseName) {
         MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongo, databaseName);

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by baizz on 14-7-25.
  */
-public interface AccountAnalyzeDAO extends CrudRepository<KeywordRealTimeDataVOEntity, Long> {
+public interface AccountAnalyzeDAO extends MongoCrudRepository<KeywordRealTimeDataVOEntity, Long> {
     List<KeywordRealTimeDataVOEntity> performance(String userTable);
 
      /**

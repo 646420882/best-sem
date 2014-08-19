@@ -92,7 +92,7 @@
                        auto-connect-retry="true"/>
     </mongo:mongo>
 
-    <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"
+    <mongo:db-factory id="mongoSysDbFactory" dbname="sys" mongo-ref="mongo"
                       host="${mongo.host}" port="${mongo.port}"/>
     <mongo:db-factory id="log4MongoDbFactory" dbname="user_perfect" mongo-ref="mongo"
                       host="${mongo.host}" port="${mongo.port}"/>
@@ -103,7 +103,12 @@
         <property name="mongoConverter" ref="mongoConverter"/>
     </bean>
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+        <constructor-arg name="mongoDbFactory" ref="mongoSysDbFactory"/>
+        <constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>
+    </bean>
+
+    <bean id="mongoSysTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoSysDbFactory"/>
         <constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>
     </bean>
 

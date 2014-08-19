@@ -5,6 +5,7 @@ import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
+import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -27,10 +28,7 @@ import java.util.Map;
  * Created by baizz on 2014-7-10.
  */
 @Repository("creativeDAO")
-public class CreativeDAOImpl implements CreativeDAO {
-
-    @Resource
-    private MongoTemplate mongoTemplate;
+public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Long> implements CreativeDAO {
 
     @Resource
     private LogProcessingDAO logProcessingDAO;
@@ -38,7 +36,7 @@ public class CreativeDAOImpl implements CreativeDAO {
     public List<Long> getCreativeIdByAdgroupId(Long adgroupId) {
         Query query = new BasicQuery("{}", "{creativeId : 1}");
         query.addCriteria(Criteria.where("adgroupId").is(adgroupId));
-        List<CreativeEntity> types = mongoTemplate.find(query, CreativeEntity.class, "CreativeType");
+        List<CreativeEntity> types = getMongoTemplate().find(query, CreativeEntity.class, "CreativeType");
         List<Long> creativeIds = new ArrayList<>(types.size());
         for (CreativeEntity type : types)
             creativeIds.add(type.getCreativeId());
@@ -54,18 +52,18 @@ public class CreativeDAOImpl implements CreativeDAO {
         }
         query.addCriteria(criteria);
         query.with(new PageRequest(skip, limit));
-        List<CreativeEntity> list = mongoTemplate.find(query, CreativeEntity.class, "CreativeType");
+        List<CreativeEntity> list = getMongoTemplate().find(query, CreativeEntity.class, "CreativeType");
         return list;
     }
 
     public CreativeEntity findOne(Long creativeId) {
-        CreativeEntity entity = mongoTemplate.findOne(
+        CreativeEntity entity = getMongoTemplate().findOne(
                 new Query(Criteria.where("creativeId").is(creativeId)), CreativeEntity.class, "CreativeType");
         return entity;
     }
 
     public List<CreativeEntity> findAll() {
-        List<CreativeEntity> entityList = mongoTemplate.findAll(CreativeEntity.class, "CreativeType");
+        List<CreativeEntity> entityList = getMongoTemplate().findAll(CreativeEntity.class, "CreativeType");
         return entityList;
     }
 
@@ -79,18 +77,18 @@ public class CreativeDAOImpl implements CreativeDAO {
             query.addCriteria(criteria);
         }
         query.with(new PageRequest(skip, limit));
-        List<CreativeEntity> list = mongoTemplate.find(query, CreativeEntity.class, "CreativeType");
+        List<CreativeEntity> list = getMongoTemplate().find(query, CreativeEntity.class, "CreativeType");
         return list;
     }
 
     public void insert(CreativeEntity creativeEntity) {
-        mongoTemplate.insert(creativeEntity, "CreativeType");
+        getMongoTemplate().insert(creativeEntity, "CreativeType");
         DataOperationLogEntity logEntity = logProcessingDAO.getLog(creativeEntity.getCreativeId(), CreativeEntity.class, null, creativeEntity);
         logProcessingDAO.insert(logEntity);
     }
 
     public void insertAll(List<CreativeEntity> entities) {
-        mongoTemplate.insertAll(entities);
+        getMongoTemplate().insertAll(entities);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (CreativeEntity entity : entities) {
             DataOperationLogEntity log = logProcessingDAO.getLog(entity.getCreativeId(), CreativeEntity.class, null, entity);
@@ -131,7 +129,7 @@ public class CreativeDAOImpl implements CreativeDAO {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-        mongoTemplate.updateFirst(query, update, CreativeEntity.class, "CreativeType");
+        getMongoTemplate().updateFirst(query, update, CreativeEntity.class, "CreativeType");
         logProcessingDAO.insert(log);
     }
 
@@ -141,7 +139,7 @@ public class CreativeDAOImpl implements CreativeDAO {
     }
 
     public void deleteById(Long creativeId) {
-        mongoTemplate.remove(new Query(Criteria.where("creativeId").is(creativeId)), CreativeEntity.class, "CreativeType");
+        getMongoTemplate().remove(new Query(Criteria.where("creativeId").is(creativeId)), CreativeEntity.class, "CreativeType");
         DataOperationLogEntity log = logProcessingDAO.getLog(creativeId, CreativeEntity.class, null, null);
         logProcessingDAO.insert(log);
     }
@@ -149,11 +147,16 @@ public class CreativeDAOImpl implements CreativeDAO {
     public void deleteByIds(List<Long> creativeIds) {
         List<DataOperationLogEntity> list = new LinkedList<>();
         for (Long id : creativeIds) {
-            mongoTemplate.remove(new Query(Criteria.where("creativeId").is(id)), CreativeEntity.class, "CreativeType");
+            getMongoTemplate().remove(new Query(Criteria.where("creativeId").is(id)), CreativeEntity.class, "CreativeType");
             DataOperationLogEntity log = logProcessingDAO.getLog(id, CreativeEntity.class, null, null);
             list.add(log);
         }
         logProcessingDAO.insertAll(list);
+    }
+
+    @Override
+    public Class<CreativeEntity> getEntityClass() {
+        return CreativeEntity.class;
     }
 
     public void delete(CreativeEntity creativeEntity) {
@@ -162,7 +165,7 @@ public class CreativeDAOImpl implements CreativeDAO {
 
     public void deleteAll() {
         List<CreativeEntity> creativeEntityList = findAll();
-        mongoTemplate.dropCollection(CreativeEntity.class);
+        getMongoTemplate().dropCollection(CreativeEntity.class);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (CreativeEntity entity : creativeEntityList) {
             DataOperationLogEntity log = logProcessingDAO.getLog(entity.getCreativeId(), CreativeEntity.class, null, null);
@@ -172,7 +175,7 @@ public class CreativeDAOImpl implements CreativeDAO {
     }
 
     @Override
-    public Pager findByPager(int start, int pageSize, Map<String,Object> q,int orderBy) {
+    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
         return null;
     }
 }
