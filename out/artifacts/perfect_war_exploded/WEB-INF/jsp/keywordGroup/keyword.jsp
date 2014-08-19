@@ -118,48 +118,7 @@
             <div class="tab_box">
                 <div class="list01_top over"><Span>关键词拓展</Span> <a href="#" class="question"></a></div>
                 <div class="keyword over">
-                    <div class="keyword_left fl over">
-                        <div class="k_l_top over">
-                            <Span>待添加关键词（1/500）</Span> <a href="#" class="question"></a>
-                        </div>
-                        <p>每行一个关键词，每个最多20个汉字或40个英文。</p>
-
-                        <div class="keyworld_text over" style="overflow:auto">
-                            <div id="ol"><textarea cols="2" rows="10" id="li" disabled></textarea></div>
-                            <textarea name="co" cols="60" rows="10" wrap="off" id="c2" onblur="check('2')"
-                                      onkeyup="keyUp()" onFocus="clearValue('2')"
-                                      onscroll="G('li').scrollTop = this.scrollTop;" oncontextmenu="return false"
-                                      class="grey"></textarea>
-                            <%--<div class="keyworld_text1 fl">
-                            </div>
-                            <textarea class="keyworld_text2 fl"
-                                      style="overflow-y:hidden; resize: none; line-height:2.0">
-                            </textarea>--%>
-                        </div>
-                        <p>请您认真复核将使用的关键词，确保其不违法、侵权，
-                            且与您的网页信息相关。</p>
-
-                        <div class="k_l_under over">
-                            <div class="k_l_under1 over">
-                                <ul>
-                                    <li><span class="team03"><input name="autoGroup" type="image"
-                                                                    src="public/img/team_input1.png">&nbsp;&nbsp;自动分组</span><a
-                                            href="#" class="question"></a></li>
-                                    <li><select id="campaign" class="team04">
-                                    </select>
-                                        <select id="adgroup" class="team04">
-                                        </select>
-                                    </li>
-                                    <li><select class="team05">
-                                        <option>保存</option>
-                                    </select>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="keyword_right fr over">
+                    <div class="keyword_right over">
                         <div class="k_r_top over">
                             <ul class="tab_menu2 over">
                                 <li class="current"><a>词根拓词</a></li>
