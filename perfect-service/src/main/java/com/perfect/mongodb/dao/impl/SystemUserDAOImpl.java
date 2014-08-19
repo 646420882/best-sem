@@ -27,9 +27,6 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, 
 
 
     @Resource
-    private AccountDAO accountDAO;
-
-    @Resource
     private BaiduService baiduService;
 
     @Override

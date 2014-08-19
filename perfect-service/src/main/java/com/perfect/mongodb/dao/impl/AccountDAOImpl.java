@@ -17,7 +17,6 @@ import java.util.Map;
  * Created by vbzer_000 on 2014/6/18.
  */
 @Deprecated
-@Repository("accountDAO")
 public class AccountDAOImpl {
 
 //    @Override

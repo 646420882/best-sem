@@ -22,9 +22,6 @@ import java.util.List;
 @Component
 public class BaiduService {
 
-    @Resource(name = "accountDAO")
-    private AccountDAO accountDAO;
-
     @Resource(name = "campaignDAO")
     private CampaignDAO campaignDAO;
 
@@ -51,10 +48,10 @@ public class BaiduService {
         BeanUtils.copyProperties(accountInfoType, accountInfoEntity);
 
         // 检查账户是否已经存在，如果存在就取消初始化
-        if (!accountDAO.isExists(accountInfoEntity.getUserid().toString())) {
-            accountDAO.insert(accountInfoEntity);
-            initCampagin(serviceFactory);
-        }
+//        if (!accountDAO.isExists(accountInfoEntity.getUserid().toString())) {
+//            accountDAO.insert(accountInfoEntity);
+//            initCampagin(serviceFactory);
+//        }
     }
 
     private void initCampagin(ServiceFactory serviceFactory) throws ApiException {

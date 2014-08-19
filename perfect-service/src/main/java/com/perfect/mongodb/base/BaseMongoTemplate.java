@@ -24,7 +24,7 @@ public class BaseMongoTemplate {
 
     private static Mongo mongo;
 
-    @Resource
+    @Resource(name = "mongoSysTemplate")
     private MongoTemplate mongoSysTemplate;
 
     static {
@@ -53,6 +53,10 @@ public class BaseMongoTemplate {
         mongoConverter.setTypeMapper(new DefaultMongoTypeMapper(null));
 
         return new MongoTemplate(mongoDbFactory, mongoConverter);
+    }
+
+    public static MongoTemplate getSysMongo() {
+        return new BaseMongoTemplate().mongoSysTemplate;
     }
 
     public static MongoTemplate getUserMongo() {
