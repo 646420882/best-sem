@@ -165,7 +165,6 @@ public class UploadManager extends WebContextSupport {
             CsvReadUtil csvReadUtil = new CsvReadUtil(new UploadHelper().getTempPath() + "/" + fileName, CsvReadUtil.ENCODING_GBK);
             List<KeywordEntity> keywordEntityList = csvReadUtil.getList();
             keywordDAO.insertAndQuery(keywordEntityList);
-            writeHtml(SUCCESS, response);
         } else {
             writeHtml(EXCEPTION, response);
         }
