@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-7-7.
  */
-public interface KeywordDAO extends CrudRepository<KeywordEntity, Long> {
+public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
     /**
      * 按条件批量更新
      * <br>------------------------------<br>

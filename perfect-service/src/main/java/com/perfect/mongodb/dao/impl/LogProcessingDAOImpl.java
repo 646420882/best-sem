@@ -2,7 +2,8 @@ package com.perfect.mongodb.dao.impl;
 
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.DataOperationLogEntity;
-import com.perfect.mongodb.utils.BaseMongoTemplate;
+import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -18,7 +19,7 @@ import java.util.Map;
  * Created by baizz on 2014-07-04.
  */
 @Repository("logProcessingDAO")
-public class LogProcessingDAOImpl implements LogProcessingDAO {
+public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationLogEntity, Long> implements LogProcessingDAO {
 
     /**
      * 按类型查找
@@ -223,6 +224,11 @@ public class LogProcessingDAOImpl implements LogProcessingDAO {
                     new Query(Criteria.where("dataId").is(dataId)),
                     DataOperationLogEntity.class,
                     "logs");
+    }
+
+    @Override
+    public Class<DataOperationLogEntity> getEntityClass() {
+        return DataOperationLogEntity.class;
     }
 
     /**

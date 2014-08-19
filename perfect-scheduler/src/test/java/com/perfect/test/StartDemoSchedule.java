@@ -22,7 +22,6 @@ public class StartDemoSchedule {
         this.scheduleManagerFactory = tbScheduleManagerFactory;
     }
 
-
     public static void main(String args[]) throws InterruptedException {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("schedule.xml");
         StartDemoSchedule startDemoSchedule = new StartDemoSchedule();

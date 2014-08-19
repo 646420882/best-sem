@@ -4,7 +4,7 @@ import com.perfect.api.baidu.AccountRealTimeData;
 import com.perfect.autosdk.sms.v3.RealTimeResultType;
 import com.perfect.dao.GetRealTimeDataDAO;
 import com.perfect.entity.AccountRealTimeDataVOEntity;
-import com.perfect.mongodb.utils.BaseMongoTemplate;
+import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.utils.DBNameUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;

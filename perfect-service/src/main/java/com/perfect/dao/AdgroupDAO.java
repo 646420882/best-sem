@@ -7,7 +7,7 @@ import com.perfect.entity.AdgroupEntity;
 import java.util.List;
 import java.util.Map;
 
-public interface AdgroupDAO extends CrudRepository<AdgroupEntity, Long> {
+public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
 
     List<Long> getAllAdgroupId();
 

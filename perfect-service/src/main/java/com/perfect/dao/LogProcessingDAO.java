@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by baizz on 2014-07-04.
  */
-public interface LogProcessingDAO extends CrudRepository<DataOperationLogEntity, Long> {
+public interface LogProcessingDAO extends MongoCrudRepository<DataOperationLogEntity, Long> {
 
     /**
      * 按类型查找

@@ -3,7 +3,8 @@ package com.perfect.mongodb.dao.impl;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.*;
-import com.perfect.mongodb.utils.BaseMongoTemplate;
+import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
 import com.perfect.utils.LogUtils;
 import org.springframework.data.domain.PageRequest;
@@ -30,7 +31,7 @@ import static com.perfect.constants.AdgroupEntityConstant.*;
  * Created by vbzer_000 on 2014-07-02.
  */
 @Repository("adgroupDAO")
-public class AdgroupDAOImpl implements AdgroupDAO {
+public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long> implements AdgroupDAO {
 
     @Resource
     private LogProcessingDAO logProcessingDAO;
@@ -175,6 +176,11 @@ public class AdgroupDAOImpl implements AdgroupDAO {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.remove(new Query(Criteria.where("adid").in(adgroupIds)), AdgroupEntity.class, "adgroup");
         deleteSub(adgroupIds);
+    }
+
+    @Override
+    public Class<AdgroupEntity> getEntityClass() {
+        return AdgroupEntity.class;
     }
 
     public void delete(AdgroupEntity adgroupEntity) {

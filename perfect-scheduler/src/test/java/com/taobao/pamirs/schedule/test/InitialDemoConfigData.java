@@ -24,7 +24,7 @@ public class InitialDemoConfigData extends UnitilsJUnit4 {
 
 	@Test
 	public void initialConfigData() throws Exception {
-		String baseTaskTypeName = "DemoTask";
+		String baseTaskTypeName = "DemoTask1";
 		while(this.scheduleManagerFactory.isZookeeperInitialSucess() == false){
 			Thread.sleep(1000);
 		}
@@ -39,7 +39,7 @@ public class InitialDemoConfigData extends UnitilsJUnit4 {
 		// �����������DemoTask�Ļ���Ϣ
 		ScheduleTaskType baseTaskType = new ScheduleTaskType();
 		baseTaskType.setBaseTaskType(baseTaskTypeName);
-		baseTaskType.setDealBeanName("demoTaskBean");
+		baseTaskType.setDealBeanName("demoTaskBeaN");
 		baseTaskType.setHeartBeatRate(2000);
 		baseTaskType.setJudgeDeadInterval(10000);
 		baseTaskType.setTaskParameter("AREA=����,YEAR>30");

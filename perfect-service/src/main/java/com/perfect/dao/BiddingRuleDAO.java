@@ -1,6 +1,6 @@
 package com.perfect.dao;
 
-import com.perfect.entity.BiddingRuleEntity;
+import com.perfect.entity.bidding.BiddingRuleEntity;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author yousheng
  */
-public interface BiddingRuleDAO {
+public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, String> {
 
     public void createBidding(BiddingRuleEntity biddingRuleEntity);
 
@@ -18,4 +18,12 @@ public interface BiddingRuleDAO {
     public void updateBiddingRule(BiddingRuleEntity biddingRuleEntity);
 
     public BiddingRuleEntity getBiddingRuleByKeywordId(String keywordId);
+
+    public List<BiddingRuleEntity> getReadyRule();
+
+    public boolean disableRule(String id);
+
+    public List<BiddingRuleEntity> getNextRunByGroupId(String userName, Long id, int gid);
+
+    void updateToNextRunTime(List<BiddingRuleEntity> tasks);
 }

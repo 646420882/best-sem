@@ -1,6 +1,7 @@
 package com.perfect.main;
 
 import com.perfect.autosdk.core.CommonService;
+import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 
 import java.util.ArrayList;
@@ -21,6 +22,20 @@ public class BaiduApiService {
         this.commonService = commonService;
     }
 
+    public AccountInfoType getAccountInfo() {
+        try {
+            GetAccountInfoRequest request = new GetAccountInfoRequest();
+            AccountService accountService = commonService.getService(AccountService.class);
+            GetAccountInfoResponse response = accountService.getAccountInfo(request);
+
+            AccountInfoType infoType = response.getAccountInfoType();
+            return infoType;
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public List<CampaignType> getAllCampaign() {
         try {
@@ -98,4 +113,22 @@ public class BaiduApiService {
         return Collections.EMPTY_LIST;
     }
 
+
+    public List<KeywordType> setKeywordPrice(List<KeywordType> list) {
+        if (list == null || list.size() == 0) {
+            return Collections.EMPTY_LIST;
+        }
+        UpdateKeywordRequest request = new UpdateKeywordRequest();
+        request.setKeywordTypes(list);
+
+        try {
+            KeywordService keywordService = commonService.getService(KeywordService.class);
+            UpdateKeywordResponse response = keywordService.updateKeyword(request);
+            return response.getKeywordTypes();
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+        return Collections.EMPTY_LIST;
+    }
 }

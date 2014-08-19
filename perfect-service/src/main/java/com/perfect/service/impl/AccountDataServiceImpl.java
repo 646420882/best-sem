@@ -1,18 +1,17 @@
 package com.perfect.service.impl;
 
 import com.perfect.autosdk.core.CommonService;
-import com.perfect.autosdk.sms.v3.AdgroupType;
-import com.perfect.autosdk.sms.v3.CampaignAdgroup;
-import com.perfect.autosdk.sms.v3.CampaignType;
-import com.perfect.autosdk.sms.v3.KeywordType;
+import com.perfect.autosdk.sms.v3.*;
 import com.perfect.entity.*;
 import com.perfect.main.BaiduApiService;
-import com.perfect.mongodb.utils.BaseMongoTemplate;
+import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.BaiduServiceSupport;
 import com.perfect.utils.EntityConvertUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,7 +23,7 @@ import java.util.List;
  *
  * @author yousheng
  */
-@Service("accountDataService")
+@Component("accountDataService")
 public class AccountDataServiceImpl implements AccountDataService {
 
     @Resource
@@ -53,6 +52,10 @@ public class AccountDataServiceImpl implements AccountDataService {
 
             CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
             BaiduApiService apiService = new BaiduApiService(commonService);
+
+            // 初始化账户数据
+            AccountInfoType accountInfoType = apiService.getAccountInfo();
+            BeanUtils.copyProperties(accountInfoType,baiduAccountInfoEntity);
 
             List<CampaignType> campaignTypes = apiService.getAllCampaign();
 
@@ -92,11 +95,13 @@ public class AccountDataServiceImpl implements AccountDataService {
             }
 
             // 开始保存数据
+
             // 保存推广计划
             mongoTemplate.insertAll(campaignEntities);
             mongoTemplate.insertAll(adgroupEntities);
             mongoTemplate.insertAll(keywordEntities);
         }
+        systemUserService.save(systemUserEntity);
     }
 
     // 清除账户数据

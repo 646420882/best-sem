@@ -3,7 +3,7 @@ package com.perfect.mongodb.dao.impl;
 import com.perfect.api.baidu.AsynchronousReport;
 import com.perfect.dao.AsynchronousReportDAO;
 import com.perfect.entity.*;
-import com.perfect.mongodb.utils.BaseMongoTemplate;
+import com.perfect.mongodb.base.BaseMongoTemplate;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
