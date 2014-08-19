@@ -5,7 +5,6 @@ import com.perfect.entity.WarningRuleEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * Created by john on 2014/8/5.
@@ -16,18 +15,18 @@ public class AccountWarningService {
     @Resource
     AccountWarningDAO accountWarningDAO;
 
-    public void saveWarningRule(WarningRuleEntity warningRule){
-        accountWarningDAO.insert(warningRule);
+    public void saveWarningRule(WarningRuleEntity warningRule) {
+        accountWarningDAO.save(warningRule);
     }
 
-    public List<WarningRuleEntity> findAllWarningRule() {
+    public Iterable<WarningRuleEntity> findAllWarningRule() {
         return accountWarningDAO.findAll();
     }
 
     public void updateWarningRuleOfIsEnbled(String id, Integer isEnbled) {
-       WarningRuleEntity warningRuleEntity = new WarningRuleEntity();
+        WarningRuleEntity warningRuleEntity = new WarningRuleEntity();
         warningRuleEntity.setId(id);
         warningRuleEntity.setIsEnable(isEnbled);
-        accountWarningDAO.update(warningRuleEntity);
+        accountWarningDAO.save(warningRuleEntity);
     }
 }

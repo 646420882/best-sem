@@ -6,7 +6,8 @@ import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
 import com.perfect.entity.KeywordEntity;
-import com.perfect.mongodb.utils.BaseMongoTemplate;
+import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
 import com.perfect.utils.LogUtils;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +34,7 @@ import java.util.regex.Pattern;
  * Created by baizz on 2014-07-07.
  */
 @Repository("keywordDAO")
-public class KeywordDAOImpl implements KeywordDAO {
+public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long> implements KeywordDAO {
 
     @Resource
     private LogProcessingDAO logProcessingDAO;
@@ -214,6 +215,7 @@ public class KeywordDAOImpl implements KeywordDAO {
         logProcessingDAO.insert(log);
     }
 
+    @Override
     public void deleteByIds(List<Long> ids) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<DataOperationLogEntity> list = new LinkedList<>();
@@ -225,6 +227,11 @@ public class KeywordDAOImpl implements KeywordDAO {
         logProcessingDAO.insertAll(list);
     }
 
+    @Override
+    public Class<KeywordEntity> getEntityClass() {
+        return KeywordEntity.class;
+    }
+
     public void delete(KeywordEntity keywordEntity) {
         deleteById(keywordEntity.getKeywordId());
     }
@@ -232,7 +239,7 @@ public class KeywordDAOImpl implements KeywordDAO {
     public void deleteAll() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<KeywordEntity> keywordEntities = findAll();
-        mongoTemplate.dropCollection(KeywordEntity.class);
+        getMongoTemplate().dropCollection(KeywordEntity.class);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (KeywordEntity entity : keywordEntities) {
             DataOperationLogEntity log = LogUtils.getLog(entity.getKeywordId(), KeywordEntity.class, null, null);

@@ -7,7 +7,7 @@ import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.KeywordReportEntity;
 import com.perfect.entity.SystemUserEntity;
-import com.perfect.mongodb.utils.BaseMongoTemplate;
+import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.schedule.core.IScheduleTaskDealSingle;
 import com.perfect.schedule.task.conf.TaskConfig;
 import com.perfect.utils.CollectionNameUtils;
@@ -83,8 +83,8 @@ public class ReportDataTask implements IScheduleTaskDealSingle<SystemUserEntity>
             return Collections.emptyList();
         }
 
-        List<SystemUserEntity> userEntityList = systemUserDAO.findAll();
-        return userEntityList;
+        Iterable<SystemUserEntity> userEntityList = systemUserDAO.findAll();
+        return (List) userEntityList;
     }
 
     @Override

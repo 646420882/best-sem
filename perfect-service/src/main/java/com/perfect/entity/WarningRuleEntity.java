@@ -6,6 +6,7 @@ import java.util.Date;
  * 预警规则
  * Created by john on 2014/8/5.
  */
+
 public class WarningRuleEntity {
 
     private String id;

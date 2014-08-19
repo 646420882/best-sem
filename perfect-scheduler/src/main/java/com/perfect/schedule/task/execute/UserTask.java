@@ -1,6 +1,5 @@
 package com.perfect.schedule.task.execute;
 
-import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.dao.AccountDAO;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
@@ -9,8 +8,6 @@ import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 import com.perfect.schedule.core.IScheduleTaskDealSingle;
 import com.perfect.schedule.core.TaskItemDefine;
-import com.perfect.schedule.utils.AccountDataUpdateTask;
-import com.perfect.schedule.utils.WorkPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -67,8 +64,8 @@ public class UserTask implements IScheduleTaskDealSingle<SystemUserEntity> {
 
         List<SystemUserEntity> result = new ArrayList<>();
 
-        List<SystemUserEntity> systemUsers = systemUserDAO.findAll();
-        return systemUsers;
+        Iterable<SystemUserEntity> systemUsers = systemUserDAO.findAll();
+        return (List) systemUsers;
     }
 
     @Override

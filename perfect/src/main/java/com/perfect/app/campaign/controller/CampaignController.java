@@ -43,7 +43,7 @@ public class CampaignController {
     @RequestMapping(value = "/getAllCampaign", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView getAllCampaign() {
         AbstractView jsonView = new MappingJackson2JsonView();
-        List<CampaignEntity> list = campaignDAO.findAll();
+        Iterable<CampaignEntity> list = campaignDAO.findAll();
         Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
@@ -64,7 +64,7 @@ public class CampaignController {
 
     @RequestMapping(value = "/{campaignId}/del", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView deleteById(@PathVariable Long campaignId) {
-        campaignDAO.deleteById(campaignId);
+        campaignDAO.delete(campaignId);
         return new ModelAndView(getJsonView());
     }
 

@@ -6,7 +6,8 @@ import com.perfect.entity.CampaignEntity;
 
 import java.util.List;
 
-public interface CampaignDAO extends CrudRepository<CampaignEntity, Long> {
+public interface CampaignDAO extends MongoCrudRepository<CampaignEntity, Long> {
 
     List<Long> getAllCampaignId();
+
 }

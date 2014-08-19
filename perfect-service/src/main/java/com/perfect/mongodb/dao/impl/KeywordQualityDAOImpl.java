@@ -2,7 +2,7 @@ package com.perfect.mongodb.dao.impl;
 
 import com.perfect.dao.KeywordQualityDAO;
 import com.perfect.entity.KeywordReportEntity;
-import com.perfect.mongodb.utils.BaseMongoTemplate;
+import com.perfect.mongodb.base.BaseMongoTemplate;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;

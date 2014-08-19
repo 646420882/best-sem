@@ -2,13 +2,14 @@ package com.perfect.dao;
 
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
 /**
  * Created by vbzer_000 on 2014/6/18.
  */
-public interface SystemUserDAO extends BaseDAO<SystemUserEntity> {
+public interface SystemUserDAO extends MongoCrudRepository<SystemUserEntity, String> {
 
     /**
      * 根据用户名查询
@@ -28,4 +29,7 @@ public interface SystemUserDAO extends BaseDAO<SystemUserEntity> {
     void addBaiduAccount(List<BaiduAccountInfoEntity> list, String currSystemUserName);
 
     void updateAccount(String userName);
+
+    SystemUserEntity findByAid(long aid);
+
 }

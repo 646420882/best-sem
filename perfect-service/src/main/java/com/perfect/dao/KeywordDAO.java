@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-7-7.
  */
-public interface KeywordDAO extends CrudRepository<KeywordEntity, Long> {
+public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
     /**
      * 按条件批量更新
      * <br>------------------------------<br>
@@ -29,10 +29,10 @@ public interface KeywordDAO extends CrudRepository<KeywordEntity, Long> {
     Pager getKeywordByPager(HttpServletRequest request,Map<String,Object> params,int orderBy);
 
     List<KeywordInfo> getKeywordInfo();
-
     /**
      * 安全添加
      * @param keywordEntity
      */
     public void insertAndQuery(List<KeywordEntity> keywordEntity);
+
 }

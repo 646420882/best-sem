@@ -16,7 +16,6 @@ import javax.annotation.Resource;
  *
  * @author yousheng
  */
-@Component
 public class BaseTaskConfig implements TaskConfig {
 
     private final String baseTaskName;
@@ -144,8 +143,8 @@ public class BaseTaskConfig implements TaskConfig {
         ScheduleTaskType baseTaskType = new ScheduleTaskType();
         baseTaskType.setBaseTaskType(baseTaskName);
         baseTaskType.setDealBeanName(dealBean);
-        baseTaskType.setHeartBeatRate(5000);
-        baseTaskType.setJudgeDeadInterval(60000);
+        baseTaskType.setHeartBeatRate(20000);
+        baseTaskType.setJudgeDeadInterval(100000);
         baseTaskType.setPermitRunStartTime(cronExp);
         baseTaskType.setTaskItems(taskDef);
         return baseTaskType;

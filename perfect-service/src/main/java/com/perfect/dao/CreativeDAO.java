@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-7-10.
  */
-public interface CreativeDAO extends CrudRepository<CreativeEntity, Long> {
+public interface CreativeDAO extends MongoCrudRepository<CreativeEntity, Long> {
 
     List<Long> getCreativeIdByAdgroupId(Long adgroupId);
 

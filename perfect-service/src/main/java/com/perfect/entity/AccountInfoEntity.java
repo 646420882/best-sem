@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+@Deprecated
 @Document(collection = "AccountInfoType")
 public class AccountInfoEntity {
     private Long userid;

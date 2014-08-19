@@ -18,7 +18,7 @@ public class AssistantKeywordService {
     private KeywordDAO keywordDAO;
 
 
-    public List<KeywordEntity> getAllKeywordList(){
+    public Iterable<KeywordEntity> getAllKeywordList(){
         return keywordDAO.findAll();
     }
 

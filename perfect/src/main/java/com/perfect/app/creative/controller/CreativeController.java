@@ -85,7 +85,7 @@ public class CreativeController {
 
     @RequestMapping(value = "/{creativeId}/del", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView deleteById(@PathVariable Long creativeId) {
-        creativeDAO.deleteById(creativeId);
+        creativeDAO.delete(creativeId);
         return new ModelAndView(getJsonView());
     }
 

@@ -22,4 +22,19 @@ public class SystemUserServiceImpl implements SystemUserService {
     public SystemUserEntity getSystemUser(String userName) {
         return systemUserDAO.findByUserName(userName);
     }
+
+    @Override
+    public SystemUserEntity getSystemUser(long aid) {
+        return systemUserDAO.findByAid(aid);
+    }
+
+    @Override
+    public Iterable<SystemUserEntity> getAllUser() {
+        return systemUserDAO.findAll();
+    }
+
+    @Override
+    public void save(SystemUserEntity systemUserEntity) {
+        systemUserDAO.save(systemUserEntity);
+    }
 }

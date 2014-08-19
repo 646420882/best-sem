@@ -5,7 +5,8 @@ import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
-import com.perfect.mongodb.utils.BaseMongoTemplate;
+import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
 import com.perfect.utils.LogUtils;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +30,7 @@ import java.util.Map;
  * Created by baizz on 2014-07-10.
  */
 @Repository("creativeDAO")
-public class CreativeDAOImpl implements CreativeDAO {
+public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Long> implements CreativeDAO {
 
     @Resource
     private LogProcessingDAO logProcessingDAO;
@@ -162,6 +163,11 @@ public class CreativeDAOImpl implements CreativeDAO {
         logProcessingDAO.insertAll(list);
     }
 
+    @Override
+    public Class<CreativeEntity> getEntityClass() {
+        return CreativeEntity.class;
+    }
+
     public void delete(CreativeEntity creativeEntity) {
         deleteById(creativeEntity.getCreativeId());
     }
@@ -169,7 +175,7 @@ public class CreativeDAOImpl implements CreativeDAO {
     public void deleteAll() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<CreativeEntity> creativeEntityList = findAll();
-        mongoTemplate.dropCollection(CreativeEntity.class);
+        getMongoTemplate().dropCollection(CreativeEntity.class);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (CreativeEntity entity : creativeEntityList) {
             DataOperationLogEntity log = LogUtils.getLog(entity.getCreativeId(), CreativeEntity.class, null, null);
