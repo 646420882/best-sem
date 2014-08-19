@@ -1,7 +1,6 @@
 package com.perfect.app.assistantCampaign.controller;
 
 import com.perfect.dao.CampaignDAO;
-import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
@@ -38,28 +37,48 @@ public class AssistantCampaignController {
 
 
     /**
-     * 根据cid删除推广计划
+     * 根据一个或多个cid删除推广计划
      * @param cid
      * @return
      */
     @RequestMapping(value = "assistantCampaign/delete",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView deleteCampaignById(@RequestParam(value = "cid" ,required = false) Long cid){
+    public ModelAndView deleteCampaignById(@RequestParam(value = "cid" ,required = false) Long[] cid){
         campaignDAO.deleteByIds(Arrays.asList(cid));
         return new ModelAndView();
     }
 
 
     /**
-     * 修改计划名称，每日预算，出价比例
+     * 修改以下参数的信息
+     * @param cid
+     * @param adgroupName
+     * @param budget
+     * @param priceRatio
+     * @param regionTarget
+     * @param isDynamicCreative
+     * @param negativeWords
+     * @param exactNegativeWords
+     * @param excludeIp
+     * @param showProb
+     * @param pause
      * @return
      */
-    @RequestMapping(value = "assistantCampaign/updateNameOrBudgetOrPriceRatio")
-    public ModelAndView updateNameOrBudgetOrPriceRatio(Long cid,String adgroupName,Double budget,Double priceRatio){
-         CampaignEntity campaignEntity = new CampaignEntity();
+    @RequestMapping(value = "assistantCampaign/update*",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView updateNameOrBudgetOrPriceRatio(Long cid,String adgroupName,Double budget,Double priceRatio,Integer[] regionTarget,Boolean isDynamicCreative,
+                                                       String[] negativeWords,String[] exactNegativeWords,String[] excludeIp,Integer showProb,Boolean pause
+                                                       ) {
+        CampaignEntity campaignEntity = new CampaignEntity();
         campaignEntity.setCampaignId(cid);
         campaignEntity.setCampaignName(adgroupName);
         campaignEntity.setBudget(budget);
         campaignEntity.setPriceRatio(priceRatio);
+        campaignEntity.setRegionTarget(regionTarget==null?null:Arrays.asList(regionTarget));
+        campaignEntity.setIsDynamicCreative(isDynamicCreative);
+        campaignEntity.setNegativeWords(negativeWords==null?null:Arrays.asList(negativeWords));
+        campaignEntity.setExactNegativeWords(exactNegativeWords==null?null:Arrays.asList(exactNegativeWords));
+        campaignEntity.setExcludeIp(excludeIp==null?null:Arrays.asList(excludeIp));
+        campaignEntity.setShowProb(showProb);
+        campaignEntity.setPause(pause);
 
         campaignDAO.save(campaignEntity);
         return new ModelAndView();
@@ -82,8 +101,6 @@ public class AssistantCampaignController {
         return new ModelAndView();
     }
 
-    
-
 
 
 
@@ -91,8 +108,8 @@ public class AssistantCampaignController {
      * 添加一条推广计划(!!!)
      * @return
      */
-    @RequestMapping(value = "assistantCampaign/add")
-    public ModelAndView addCampaign( String campaignName,Double budget,Double priceRatio,Boolean pause, Integer showProb,/*String[] schedule,*/Integer[] regionTarget,
+  /*  @RequestMapping(value = "assistantCampaign/add")
+    public ModelAndView addCampaign( String campaignName,Double budget,Double priceRatio,Boolean pause, Integer showProb,*//*String[] schedule,*//*Integer[] regionTarget,
                                      String[] negativeWords,String[] excludeIp,
                                      String adgroupName,Double maxPrice,Boolean pause2
                                     ){
@@ -112,5 +129,5 @@ public class AssistantCampaignController {
         adgroupEntity.setPause(pause2);
 
         return new ModelAndView();
-    }
+    }*/
 }

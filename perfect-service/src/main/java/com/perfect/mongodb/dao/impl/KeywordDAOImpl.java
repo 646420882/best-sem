@@ -293,4 +293,11 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
                 break;
         }
     }
+
+
+    public void remove(Query query){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.remove(query, KeywordEntity.class, "keyword");
+    }
+
 }

@@ -4,6 +4,7 @@ import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.*;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
 import com.perfect.utils.LogUtils;
 import org.springframework.data.domain.PageRequest;
@@ -72,6 +73,13 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
         List<CampaignEntity> list = mongoTemplate.find(query, CampaignEntity.class, "campaign");
         return list;
     }
+
+    //x
+    public List<CampaignEntity> find(Query query){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return mongoTemplate.find(query,CampaignEntity.class);
+    }
+
 
     public void insert(CampaignEntity campaignEntity) {
         MongoTemplate mongoTemplate = getMongoTemplate();

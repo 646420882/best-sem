@@ -1,10 +1,11 @@
 package com.perfect.app.accountWarnings.controller;
 
-import com.perfect.app.accountWarnings.service.AccountWarningService;
 import com.perfect.core.AppContext;
+import com.perfect.dao.AccountWarningDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.SystemUserEntity;
 import com.perfect.entity.WarningRuleEntity;
+import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by john on 2014/8/4.
@@ -30,10 +31,13 @@ public class AccountWarningController {
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     @Resource
-    AccountWarningService accountWarningService;
+    AccountWarningDAO accountWarningDAO;
 
     @Resource
     private SystemUserDAO systemUserDAO;
+
+    @Resource
+    private WebContext webContext;
 
     //当前登录用户名
     private static String currLoginUserName;
@@ -84,22 +88,29 @@ public class AccountWarningController {
         warningRuleEntity.setStartTime(new Date());
         warningRuleEntity.setDayCountDate(new Date());
 
-        accountWarningService.saveWarningRule(warningRuleEntity);
+        accountWarningDAO.save(warningRuleEntity);
 
-        return new ModelAndView("redirect:/assistant/showAllWarningRule");
+        return new ModelAndView("redirect:/assistant/showWarningRulePage");
     }
 
 
     /**
-     * 显示已经设置了的预警规则
-     * @param model
+     * 显示预警规则的页面
      * @return
      */
-    @RequestMapping(value = "assistant/showAllWarningRule",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView showAllWarningRule(ModelMap model){
-        Iterable<WarningRuleEntity> list = accountWarningService.findAllWarningRule();
-        model.addAttribute("list",list);
+    @RequestMapping(value = "assistant/showWarningRulePage",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView showWarningRulePage(){
         return new ModelAndView("promotionAssistant/showWarningRule");
+    }
+
+    /**
+     * 显示已经设置了的预警规则
+     * @return
+     */
+    @RequestMapping(value = "assistant/getAllWarningRule",method = {RequestMethod.GET,RequestMethod.POST})
+    public void showAllWarningRule(HttpServletResponse response){
+       Iterable<WarningRuleEntity> list = accountWarningDAO.findAll();
+        webContext.wirteJson(list,response);
     }
 
 
@@ -110,10 +121,12 @@ public class AccountWarningController {
      * @return
      */
     @RequestMapping(value = "assistant/updateWarningRuleOfIsEnbled",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView updateWarningRuleOfIsEnbled(@RequestParam(value = "id",required = false)String id,
+    public void updateWarningRuleOfIsEnbled(@RequestParam(value = "id",required = false)String id,
                                                     @RequestParam(value = "isEnbled",required = false)Integer isEnbled){
-        accountWarningService.updateWarningRuleOfIsEnbled(id,isEnbled);
-        return new ModelAndView("redirect:/assistant/showAllWarningRule");
+        WarningRuleEntity warningRuleEntity = new WarningRuleEntity();
+        warningRuleEntity.setId(id);
+        warningRuleEntity.setIsEnable(isEnbled);
+        accountWarningDAO.update(warningRuleEntity);
     }
 
 }

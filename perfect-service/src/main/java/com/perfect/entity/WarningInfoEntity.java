@@ -1,28 +1,42 @@
 package com.perfect.entity;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.util.Date;
 
 /**
  * 预警信息
  * Created by john on 2014/8/8.
  */
+@Document(collection = "warning_info")
 public class WarningInfoEntity {
 
+    @Id
     private String id;
 
+    @Field("accountId")
     private Long accountId;//百度账户id
 
+    @Field("percent")
     private Double percent;//百分率
 
+    @Field("warningState")
     private String warningState;//预警状态（有：警示状态，预警边缘， 发展状态良好， 警示状态）
 
+    @Field("createTime")
     private Date createTime;//创建时间
 
+    @Field("warningSign")
     private String warningSign;//预警标志(有:红色标记(red) 黄色标记(yellow) 绿色标记(green) 黑色标记(black))分别对应上面的预警状态
 
+    @Field("suggest")
     private String suggest;//建议
 
+    @Field("Budget")
     private Double Budget;
+
 
     public WarningInfoEntity(String id, Long accountId, Double percent, String warningState, Date createTime, String warningSign, String suggest, Double budget) {
         this.id = id;
