@@ -28,11 +28,6 @@ import java.util.List;
 public class TestService implements IScheduleTaskDealSingle<SystemUserEntity> {
     protected static transient Logger log = LoggerFactory.getLogger(IScheduleTaskDealSingle.class);
 
-    private static CommonService service = null;
-
-    @Resource
-    private AccountDAO accountDAO;
-
     @Resource
     private SystemUserDAO systemUserDAO;
 

@@ -26,18 +26,7 @@ public class UserTask implements IScheduleTaskDealSingle<SystemUserEntity> {
     protected static transient Logger log = LoggerFactory.getLogger(IScheduleTaskDealSingle.class);
 
     @Resource
-    private AccountDAO accountDAO;
-
-    @Resource
-    private CampaignDAO campaignDAO;
-
-    @Resource
     private SystemUserDAO systemUserDAO;
-
-    @Resource
-    private AdgroupDAO adgroupDAO;
-
-    @Resource
 
     @Override
     public boolean execute(SystemUserEntity systemUser, String ownSign) throws Exception {
