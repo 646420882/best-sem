@@ -5,7 +5,7 @@
 }
 .concent {
     position: relative;
-    background: url(public/concent_bg.jpg) repeat;
+    background: url(/public/img/concent_bg.jpg) repeat;
     font-family: "微软雅黑";
     font-size: 12px;
 }
@@ -17,7 +17,7 @@
     width: 100%;
     float: left;
     height: 62px;
-    background: url(public/tab_bg.jpg) repeat-x;
+    background: url(/public/img/tab_bg.jpg) repeat-x;
     z-index: 1;
     overflow: hidden;
 }
@@ -27,7 +27,7 @@
     padding: 0 40px;
     line-height: 62px;
     color: #6f6f6f;
-    background: url(public/border.png) right no-repeat;
+    background: url(/public/img/border.png) right no-repeat;
     font-size: 14px;
     cursor: pointer;
 }
@@ -35,7 +35,7 @@
     clear: both;
 }
 .tab_menu .selected {
-    background: url(public/table_current.jpg) repeat-x;
+    background: url(/public/img/table_current.jpg) repeat-x;
     color: #030303;
     font-weight: bold;
 }
@@ -61,7 +61,7 @@
     float: left;
 }
 .list01_top span {
-    background: url(public/point.png) left no-repeat;
+    background: url(/public/img/point.png) left no-repeat;
     padding-left: 20px;
     overflow: hidden;
 }
@@ -73,7 +73,7 @@
     width: 14px;
     height: 12px;
     margin: 8px 0 0 5px;
-    background: url(public/bg.png) -10px -10px no-repeat;
+    background: url(/public/img/bg.png) -10px -10px no-repeat;
 }
 .list01_top ul {
     display: block;
@@ -113,7 +113,7 @@
 }
 .list01_top ul .current a {
     color: #fff;
-    background: url(public/colock.png) 8px 4px no-repeat;
+    background: url(/public/img/colock.png) 8px 4px no-repeat;
     text-decoration: none;
 }
 .list01_top ul .current a:hover {
@@ -149,10 +149,10 @@
     margin-left: 7px;
 }
 .list01_under ul .week {
-    background: url(public/zhou.png) left no-repeat;
+    background: url(/public/img/zhou.png) left no-repeat;
 }
 .list01_under ul .months {
-    background: url(public/yue.png) left no-repeat;
+    background: url(/public/img/yue.png) left no-repeat;
 }
 /***近期概览***/
 .wd {
@@ -194,25 +194,25 @@
     font-siae: 14px;
 }
 .list01_under2 ul li .blue1 {
-    background: #34befe url(public/blue1.png) center no-repeat;
+    background: #34befe url(/public/img/blue1.png) center no-repeat;
 }
 .list01_under2 ul li .blue2 {
     background: #30b0eb;
 }
 .list01_under2 ul li .green1 {
-    background: #48c9b0 url(public/geen1.png) center no-repeat
+    background: #48c9b0 url(/public/img/geen1.png) center no-repeat
 }
 .list01_under2 ul li .green2 {
     background: #43bca5;
 }
 .list01_under2 ul li .red1 {
-    background: #ff6600 url(public/red1.png) center no-repeat
+    background: #ff6600 url(/public/img/red1.png) center no-repeat
 }
 .list01_under2 ul li .red2 {
     background: #ed5f01;
 }
 .list01_under2 ul li .yellow1 {
-    background: #ffd055 url(public/yellow1.png) center no-repeat
+    background: #ffd055 url(/public/img/yellow1.png) center no-repeat
 }
 .list01_under2 ul li .yellow2 {
     background: #e1b749;
@@ -232,7 +232,7 @@
     height: 20px;
     font-size: 12px;
     font-family: "微软雅黑";
-    background: url(public/download_bg.jpg) repeat;
+    background: url(/public/img/download_bg.jpg) repeat;
     text-align: center;
     border: 1px solid #bdbdbd;
     line-height: 20px;
@@ -353,10 +353,10 @@
     overflow: hidden;
 }
 .one {
-    background: url(public/button.png) no-repeat;
+    background: url(/public/img/button.png) no-repeat;
 }
 .two {
-    background: url(public/button.png) left -6px no-repeat;
+    background: url(/public/img/button.png) left -6px no-repeat;
     line-height: 20px;
 }
 .list2_top2 {
@@ -390,15 +390,15 @@
     margin: 10px 0 0 8px;
 }
 .green_arrow {
-    background: url(public/bg.png) -26px -10px no-repeat;
+    background: url(/public/img/bg.png) -26px -10px no-repeat;
 }
 .red_arrow {
-    background: url(public/bg.png) -38px -10px no-repeat;
+    background: url(/public/img/bg.png) -38px -10px no-repeat;
 }
 .hot {
     width: 20px;
     height: 11px;
-    background: url(public/bg.png) -50px -10px no-repeat;
+    background: url(/public/img/bg.png) -50px -10px no-repeat;
     margin-left: 8px;
     margin: 10px 0 0 8px;
 }
@@ -407,7 +407,7 @@
 }
 .tips {
     width: 3%;
-    background: url(public/tips_bg_03.png) repeat;
+    background: url(/public/img/tips_bg_03.png) repeat;
     min-height: 1140px;
 }
 .tips input {
@@ -461,10 +461,10 @@
     margin-top: 29px;
     color: #000;
     text-align: center;
-    background: url(public/bg.png) -10px -180px no-repeat;
+    background: url(/public/img/bg.png) -10px -180px no-repeat;
 }
 .become:hover {
-    background: url(public/bg.png) -10px -215px no-repeat;
+    background: url(/public/img/bg.png) -10px -215px no-repeat;
     color: #fff;
 }
 .tubiao2 {
@@ -573,7 +573,7 @@
     font-size: 14px;
     font-weight: bold;
     color: #454545;
-    background: url(public/team_top.png) left no-repeat;
+    background: url(/public/img/team_top.png) left no-repeat;
 }
 .team_top a {
     padding-right: 2%;
@@ -621,11 +621,11 @@
     width: 11px;
     height: 11px;
     margin-top: 5px;
-    background: url(public/team_input2.png) no-repeat;
+    background: url(/public/img/team_input2.png) no-repeat;
     border: none;
 }
 .team_under ul .current input {
-    background: url(public/team_input1.png) no-repeat;
+    background: url(/public/img/team_input1.png) no-repeat;
 }
 /**关键词拓展****/
 
@@ -652,7 +652,7 @@
 .k_l_top span {
     display: block;
     float: left;
-    background: url(public/keyword_add.png) no-repeat;
+    background: url(/public/img/keyword_add.png) no-repeat;
     padding-left: 26px;
     color: #454545;
     font-size: 14px;
@@ -711,7 +711,7 @@
     line-height: 24px;
     padding-left: 16px;
     border: 1px solid #bdc1c4;
-    background: url(public/team03_bg.png) repeat;
+    background: url(/public/img/team03_bg.png) repeat;
 }
 .k_l_under1 {
     margin-bottom: 60px;
@@ -746,7 +746,7 @@
     cursor: pointer;
 }
 .tab_menu2 .current {
-    background: url(public/bg.png) -10px -253px no-repeat;
+    background: url(/public/img/bg.png) -10px -253px no-repeat;
     color: #000000;
 }
 .table_concent2 {
@@ -784,11 +784,11 @@
     margin-top: 20px;
     line-height: 31px;
     text-align: center;
-    background: url(public/bg.png) -10px -282px no-repeat;
+    background: url(/public/img/bg.png) -10px -282px no-repeat;
     color: #000000;
 }
 .become2:hover {
-    background: url(public/bg.png) -10px -320px no-repeat;
+    background: url(/public/img/bg.png) -10px -320px no-repeat;
     color: #fff;
 }
 .K_top2_detali {
@@ -876,7 +876,7 @@
     padding: 0 0 0 18px
 }
 .ztree li ul.line {
-    background: url(./img/line_conn.gif) 0 0 repeat-y;
+    background: url(/public/img/img/line_conn.gif) 0 0 repeat-y;
 }
 .ztree li a {
     padding: 1px 3px 0 0;
@@ -949,7 +949,7 @@
     background-color: transparent;
     background-repeat: no-repeat;
     background-attachment: scroll;
-    background-image: url(public/bg.png);
+    background-image: url(/public/img/bg.png);
 }
 .ztree li span.button.chk {
     width: 13px;
@@ -1082,7 +1082,7 @@
 .ztree li span.button.ico_docu {
     margin-right: 2px;
     background-position: -110px -32px;
-    background-image: url(public/zTreeStandard.png);
+    background-image: url(/public/img/zTreeStandard.png);
     vertical-align: top;
     *vertical-align:middle
 }
@@ -1100,7 +1100,7 @@
 }
 .ztree li span.button.ico_loading {
     margin-right: 2px;
-    background: url(./img/loading.gif) no-repeat scroll 0 0 transparent;
+    background: url(/public/img/img/loading.gif) no-repeat scroll 0 0 transparent;
     vertical-align: top;
     *vertical-align:middle
 }
@@ -1121,8 +1121,8 @@ span.tmpzTreeMove_arrow {
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-position: -110px -80px;
-    background-image: url(public/zTreeStandard.png);
-    *background-image:url(public/zTreeStandard.gif)
+    background-image: url(/public/img/zTreeStandard.png);
+    *background-image:url(/public/img/zTreeStandard.gif)
 }
 ul.ztree.zTreeDragUL {
     margin: 0;
@@ -1189,7 +1189,7 @@ ul.ztree.zTreeDragUL {
     width: 14px;
     height: 14px;
     margin: 3px;
-    background: url(public/new.png);
+    background: url(/public/img/new.png);
     border: none;
 }
 .price, .price2 {
@@ -1224,7 +1224,7 @@ ul.ztree.zTreeDragUL {
     margin-right: 15px;
     line-height: 24px;
     border: 1px solid #bdc1c4;
-    background: url(public/team03_bg.png) repeat;
+    background: url(/public/img/team03_bg.png) repeat;
     cursor: pointer;
     overflow: hidden;
 }
@@ -1258,7 +1258,7 @@ ul.ztree.zTreeDragUL {
     border-right: 1px solid #ffffff;
     border-bottom: 1px solid #ffffff;
     cursor: Default;
-    white-space: nowrap;
+    /*	white-space: nowrap;*/
     overflow: hidden;
 }
 .list02_top {
@@ -1284,7 +1284,7 @@ ul.ztree.zTreeDragUL {
     margin-right: 8px;
     line-height: 24px;
     padding: 0 8px;
-    background: url(public/team03_bg.png) repeat;
+    background: url(/public/img/team03_bg.png) repeat;
     color: #000;
     border: 1px solid #e6e6e6;
     border-radius: 2px;
@@ -1302,13 +1302,13 @@ ul.ztree.zTreeDragUL {
     margin-top: 4px;
     width: 7px;
     height: 14px;
-    background: url(public/button2.png) no-repeat;
+    background: url(/public/img/button2.png) no-repeat;
 }
 .page2 .nextpage2 span {
-    background: url(public/button3.png) no-repeat;
+    background: url(/public/img/button3.png) no-repeat;
 }
 /* 弹出层 */
-.box, .box3 {
+.box, .box3 ,.box4{
     position: absolute;
     width: 540px;
     border-radius: 5px;
@@ -1318,7 +1318,7 @@ ul.ztree.zTreeDragUL {
     background-color: #fff;
     overflow: hidden;
 }
-.box h2, .box3 h2 {
+.box h2, .box3 h2 ,.box4 h2{
     height: 46px;
     font-size: 14px;
     background-color: #282538;
@@ -1328,7 +1328,7 @@ ul.ztree.zTreeDragUL {
     color: #fff;
     cursor: Move;
 }
-.box h2 a, .box3 h2 a {
+.box h2 a, .box3 h2 a ,.box4 h2 a {
     position: absolute;
     right: 15px;
     font-size: 12px;
@@ -1389,7 +1389,7 @@ ul.ztree.zTreeDragUL {
 .zhushou_menu {
     height: 75px;
     border-top: 1px solid #abafbc;
-    background: url(public/zhuahsou_top_-bg.png) repeat-x;
+    background: url(/public/img/zhuahsou_top_-bg.png) repeat-x;
 }
 .zhushou_menu ul {
     display: block;
@@ -1404,7 +1404,7 @@ ul.ztree.zTreeDragUL {
     z-index: 9;
 }
 .zhushou_menu ul .current {
-    background: url(public/zhuahsou_top_hover.png) repeat-x;
+    background: url(/public/img/zhuahsou_top_hover.png) repeat-x;
 }
 .zhushou_menu ul li span {
     display: block;
@@ -1459,7 +1459,7 @@ ul.ztree.zTreeDragUL {
     overflow: hidden;
 }
 .zs_concent_top ul .current {
-    background: url(public/bg.png) -10px -378px no-repeat;
+    background: url(/public/img/bg.png) -10px -378px no-repeat;
 }
 .zs_line {
     height: 1px;
@@ -1474,7 +1474,7 @@ ul.ztree.zTreeDragUL {
 .zs_function {
     height: 34px;
     padding: 0 12px;
-    background: url(public/zs_function_bg.png) repeat-x;
+    background: url(/public/img/zs_function_bg.png) repeat-x;
     border-top: 1px solid #cfcfcf;
 }
 .zs_function ul li {
@@ -1505,12 +1505,12 @@ ul.ztree.zTreeDragUL {
     z-index: 1;
 }
 .zs_top {
-    background: url(public/bg.png) -10px -420px no-repeat;
+    background: url(/public/img/bg.png) -10px -420px no-repeat;
 }
 .z_function_hover {
     width: 15px;
     height: 15px;
-    background: url(public/bg.png) -38px -420px no-repeat;
+    background: url(/public/img/bg.png) -38px -420px no-repeat;
 }
 .zs_function ul li span img {
     position: absolute;
@@ -1529,7 +1529,7 @@ ul.ztree.zTreeDragUL {
     position: absolute;
     width: 26px;
     height: 11px;
-    background: url(public/zh_bottom.jpg) no-repeat;
+    background: url(/public/img/zh_bottom.jpg) no-repeat;
     margin-left: 30%;
 }
 .zs_bottom {
@@ -1582,7 +1582,7 @@ ul.ztree.zTreeDragUL {
     width: 11px;
     height: 11px;
     position: relative;
-    background: url(public/zs_table_input.png) no-repeat;
+    background: url(/public/img/zs_table_input.png) no-repeat;
     cursor: pointer;
 }
 .zs_input2 {
@@ -1591,7 +1591,7 @@ ul.ztree.zTreeDragUL {
     margin-left: 10px;
     line-height: 24px;
     border: 1px solid #bdc1c4;
-    background: url(public/team03_bg.png) repeat;
+    background: url(/public/img/team03_bg.png) repeat;
 }
 @media screen and (max-width :1370px) {
     .zs_input2 {
@@ -1601,7 +1601,7 @@ ul.ztree.zTreeDragUL {
 .set {
     width: 25px;
     height: 28px;
-    background: url(public/bg.png) -10px -440px no-repeat;
+    background: url(/public/img/bg.png) -10px -440px no-repeat;
 }
 .w_list03 {
     width: 50%;
@@ -1665,7 +1665,7 @@ ul.ztree.zTreeDragUL {
 }
 .w_list04 ul .current {
     font-weight: bold;
-    background: url(public/list06_point.png) center bottom no-repeat;
+    background: url(/public/img/list06_point.png) center bottom no-repeat;
 }
 .list06_textarea {
     width: 600px;
@@ -1679,7 +1679,7 @@ ul.ztree.zTreeDragUL {
     height: 34px;
     line-height: 34px;
     padding: 0 12px;
-    background: url(public/zhuahsou_top_hover.png) repeat-x;
+    background: url(/public/img/zhuahsou_top_hover.png) repeat-x;
     border-bottom: 1px solid #da9309;
 }
 .zh_top span {
@@ -1728,4 +1728,33 @@ ul.ztree.zTreeDragUL {
 }
 .zs_sets2{
     margin:10px 0 0 10px;
+}
+.mainlist em{
+    color:#949494;
+    font-weight:normal;
+    font-style:normal;
+
+}
+.zs_input5{
+    display:block;
+    width:345px;
+    height:134px;
+    padding:10px;
+    overflow:auto;
+
+}
+.gusuan_bottom1{ width:370px; line-height:24px;}
+.gusuan_bottom2{
+    width:110px;
+    line-height:20px;
+}
+.gusuan_bottom2 em{
+    color:#005ffe;
+}
+.gusuan_under span{
+    display:inline-block;
+    height:24px;
+    line-height:24px;
+    background:#cbd2e4;
+
 }
