@@ -37,6 +37,12 @@ html {
 .fr {
 	float: right;
 }
+textarea{
+    resize: none;
+}
+table{
+    overflow:auto;
+}
 /*top*/
 .top {
 	height: 77px;
