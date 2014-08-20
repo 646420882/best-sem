@@ -297,7 +297,8 @@
     display: block;
     float: left;
     height: 30px;
-    width: 11%;
+    min-width: 130px;
+    max-width:200px;
     font-size: 12px;
     padding-left: 10px;
     overflow: hidden;
@@ -750,10 +751,14 @@
     background: url(/public/img/bg.png) -10px -253px no-repeat;
     color: #000000;
 }
-.table_concent2 {
+.k_r_middle{
     height: 315px;
     background: #e4eafa;
     padding: 20px 4%;
+
+}
+.table_concent2 {
+
 }
 .k_top2_text {
     width: 40%;
@@ -767,9 +772,11 @@
 }
 .k_top2_text select {
     width: 100%;
-    height: 20px;
+    height: 30px;
     border: 1px solid #dadadd;
     color: #8d8d8d;
+    margin-bottom:10px;
+    max-width: 300px;
 }
 .k_top2_text p {
     color: #ff0000;
@@ -1242,6 +1249,7 @@ ul.ztree.zTreeDragUL {
     color: #454545;
 }
 .list4 {
+    height:524px;
     overflow: auto;
 }
 .list4 table {
@@ -1390,7 +1398,6 @@ ul.ztree.zTreeDragUL {
 /* 推广助手*/
 .zhushou_menu {
     height: 75px;
-    border-top: 1px solid #abafbc;
     background: url(/public/img/zhuahsou_top_-bg.png) repeat-x;
 }
 .zhushou_menu ul {
