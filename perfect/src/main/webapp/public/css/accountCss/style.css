@@ -249,20 +249,24 @@
 .download a:hover {
     background: #efefef;
 }
-.list2 table ,.list3 table {
+.list2 table, .list3 table {
     width: 100%;
     margin-top: 10px;
     border: 1px solid #eaf0f3;
-    table-layout: auto
+    table-layout: auto;
+    font-size:12px;
 }
-.list2 table td, th ,.list3 table td{
+.list2 table td, th, .list3 table td {
     line-height: 30px;
     *line-height: inherit;
 }
-.list2 table td  ,.list3table td{
+.list2 table td, .list3table td {
     line-height: 30px;
     color: #454545;
     overflow: hidden;
+}
+.list3 table td {
+    max-width:120px;
 }
 .list2 table tr td dl {
     margin-right: 10px;
@@ -311,22 +315,20 @@
 .list2_top2 {
     height: 30px;
 }
-.list2 table span ,.list3 table span {
-
+.list2 table span, .list3 table span {
     display: block;
     float: left;
     *display:inline-block;
     *float:none;
-    color:#fff;
-
+    color: #fff;
 }
-.list3 table span{
+.list3 table span {
     padding-left: 4px;
 }
-.list2 table p ,.list3 table p{
+.list2 table p, .list3 table p {
     margin: 0px;
 }
-.list2 table b ,.list3 table b{
+.list2 table b, .list3 table b {
     display: block;
     float: left;
     margin-top: 8px;
@@ -334,7 +336,7 @@
     *float:none;
     *margin-top:0px;
 }
-.list2 table .list2_top ,.list2_top {
+.list2 table .list2_top, .list2_top {
     height: 30px;
     background: #272537;
     font-weight: bold;
@@ -343,7 +345,7 @@
 .list2 table .list2_top td, th {
     color: #fff;
 }
-.list2 table .list2_top input ,.list2_top input {
+.list2 table .list2_top input, .list2_top input {
     display: block;
     width: 7px;
     height: 5px;
@@ -663,7 +665,6 @@
     line-height: 26px;
 }
 .keyword_right {
-
 }
 .keyworld_text {
     margin: 10px 2% 20px 2%;
@@ -876,7 +877,7 @@
     padding: 0 0 0 18px
 }
 .ztree li ul.line {
-    background: url(/public/img/img/line_conn.gif) 0 0 repeat-y;
+    background: url(./img/line_conn.gif) 0 0 repeat-y;
 }
 .ztree li a {
     padding: 1px 3px 0 0;
@@ -1071,43 +1072,43 @@
     margin-right: 2px;
     background-position: -26px -355px;
     vertical-align: top;
-    *vertical-align:middle
+    *vertical-align:middle;
 }
 .ztree li span.button.ico_close {
     margin-right: 2px;
     background-position: -26px -355px;
     vertical-align: top;
-    *vertical-align:middle
+    *vertical-align:middle;
 }
 .ztree li span.button.ico_docu {
     margin-right: 2px;
     background-position: -110px -32px;
     background-image: url(/public/img/zTreeStandard.png);
     vertical-align: top;
-    *vertical-align:middle
+    *vertical-align:middle;
 }
 .ztree li span.button.edit {
     margin-right: 2px;
     background-position: -110px -48px;
     vertical-align: top;
-    *vertical-align:middle
+    *vertical-align:middle;
 }
 .ztree li span.button.remove {
     margin-right: 2px;
     background-position: -110px -64px;
     vertical-align: top;
-    *vertical-align:middle
+    *vertical-align:middle;
 }
 .ztree li span.button.ico_loading {
     margin-right: 2px;
-    background: url(/public/img/img/loading.gif) no-repeat scroll 0 0 transparent;
+    background: url(./img/loading.gif) no-repeat scroll 0 0 transparent;
     vertical-align: top;
-    *vertical-align:middle
+    *vertical-align:middle;
 }
 ul.tmpTargetzTree {
     background-color: #FFE6B0;
     opacity: 0.8;
-    filter: alpha(opacity=80)
+    filter: alpha(opacity=80);
 }
 span.tmpzTreeMove_arrow {
     width: 16px;
@@ -1122,7 +1123,7 @@ span.tmpzTreeMove_arrow {
     background-attachment: scroll;
     background-position: -110px -80px;
     background-image: url(/public/img/zTreeStandard.png);
-    *background-image:url(/public/img/zTreeStandard.gif)
+    *background-image:url(/public/img/zTreeStandard.gif);
 }
 ul.ztree.zTreeDragUL {
     margin: 0;
@@ -1141,7 +1142,7 @@ ul.ztree.zTreeDragUL {
     background-color: #cfcfcf;
     opacity: 0.0;
     filter: alpha(opacity=0);
-    position: absolute
+    position: absolute;
 }
 /*****树形菜单结束****/
 .wrap_list01 {
@@ -1245,6 +1246,7 @@ ul.ztree.zTreeDragUL {
 }
 .list4 table {
     border: 1px solid #eaf0f3;
+    width: 1130px;
     overflow: auto;
 }
 .list4 table thead {
@@ -1308,7 +1310,7 @@ ul.ztree.zTreeDragUL {
     background: url(/public/img/button3.png) no-repeat;
 }
 /* 弹出层 */
-.box, .box3 ,.box4{
+.box, .box3, .box4 {
     position: absolute;
     width: 540px;
     border-radius: 5px;
@@ -1318,7 +1320,7 @@ ul.ztree.zTreeDragUL {
     background-color: #fff;
     overflow: hidden;
 }
-.box h2, .box3 h2 ,.box4 h2{
+.box h2, .box3 h2, .box4 h2 {
     height: 46px;
     font-size: 14px;
     background-color: #282538;
@@ -1328,7 +1330,7 @@ ul.ztree.zTreeDragUL {
     color: #fff;
     cursor: Move;
 }
-.box h2 a, .box3 h2 a ,.box4 h2 a {
+.box h2 a, .box3 h2 a, .box4 h2 a {
     position: absolute;
     right: 15px;
     font-size: 12px;
@@ -1560,8 +1562,10 @@ ul.ztree.zTreeDragUL {
     height: 22px;
     border: 1px solid #cfcfcf;
 }
+
 .zs_input3 {
     width: 140px;
+    height: 22px;
 }
 .zs_input4 {
     display: block;
@@ -1655,6 +1659,13 @@ ul.ztree.zTreeDragUL {
 .cy_bottom1 {
     margin-right: 20px;
 }
+@media screen and (max-width :1300px) {
+    .cy_bottom1 {
+        margin-bottom: 10px;
+    }
+
+
+}
 .w_list04 ul li {
     width: inherit;
     display: block;
@@ -1723,38 +1734,64 @@ ul.ztree.zTreeDragUL {
 .zs_ses1 ul .current {
     background: #f8f9fb;
 }
-.zs_set{
-    margin-top:10px;
+.zs_set {
+    margin-top: 10px;
 }
-.zs_sets2{
-    margin:10px 0 0 10px;
+.zs_sets2 {
+    margin: 10px 0 0 10px;
 }
-.mainlist em{
-    color:#949494;
-    font-weight:normal;
-    font-style:normal;
-
+.mainlist em {
+    color: #949494;
+    font-weight: normal;
+    font-style: normal;
 }
-.zs_input5{
-    display:block;
-    width:345px;
-    height:134px;
-    padding:10px;
-    overflow:auto;
-
+.zs_input5 {
+    display: block;
+    width: 345px;
+    height: 134px;
+    padding: 10px;
+    overflow: auto;
 }
-.gusuan_bottom1{ width:370px; line-height:24px;}
-.gusuan_bottom2{
-    width:110px;
-    line-height:20px;
+.gusuan_bottom1 {
+    width: 370px;
+    line-height: 24px;
 }
-.gusuan_bottom2 em{
-    color:#005ffe;
+.gusuan_bottom2 {
+    width: 110px;
+    line-height: 20px;
 }
-.gusuan_under span{
-    display:inline-block;
-    height:24px;
-    line-height:24px;
-    background:#cbd2e4;
-
+.gusuan_bottom2 em {
+    color: #005ffe;
+}
+.gs_remind {
+    display: inline-block;
+    height: 24px;
+    padding: 0 10px;
+    line-height: 24px;
+    background: #cbd2e4;
+}
+.gusuan_under2 {
+    position: relative;
+}
+.gusuan_under2 table {
+    position: relative;
+    border: 3px solid #cbd2e4;
+    height: 87px;
+}
+.gusuan_under2 table tr {
+    height: 27px;
+    line-height: 27px;
+}
+.gusuan_under2 table tbody {
+    background: #fff;
+    height: 87px;
+    overflow: auto;
+}
+.gusuan_under3 {
+    display: block;
+    width: 24px;
+    height: 11px;
+    background: url(/public/img/gusuan_under2.jpg) no-repeat;
+    position: absolute;
+    top: -11px;
 }
