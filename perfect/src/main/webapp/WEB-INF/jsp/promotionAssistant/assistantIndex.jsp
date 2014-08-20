@@ -23,6 +23,11 @@
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 
 <div class="mid over fr">
+<div class="on_title over">
+    <a href="#">
+        推广助手
+    </a>
+</div>
 <div id="tab">
 <div class="tab_box">
 <div class=" jiangjia_concent over">

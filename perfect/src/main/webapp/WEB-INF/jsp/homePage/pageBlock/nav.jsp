@@ -27,7 +27,7 @@
             <div class="nav_under over">
                 <ul>
                     <a href="/assistant/index">
-                        <li class="nav_top">
+                        <li>
                             <h3>推广助手</h3>
                         </li>
                     </a>
@@ -61,7 +61,7 @@
                             推广查询
                         </a>
                     </li>
-                    <li class="nav_top">
+                    <li>
                         <h3>智能结构</h3>
                     </li>
                     <li>
@@ -76,7 +76,7 @@
                             智能分组
                         </a>
                     </li>
-                    <li class="nav_top">
+                    <li>
                         <h3>智能竞价</h3>
                     </li>
                     <li>
@@ -97,7 +97,7 @@
                             设置规则
                         </a>
                     </li>
-                    <li class="nav_top">
+                    <li>
                         <h3>数据报告</h3>
                     </li>
                     <li>
