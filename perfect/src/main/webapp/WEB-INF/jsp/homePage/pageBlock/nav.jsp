@@ -120,3 +120,19 @@
         <input type="image" src="${pageContext.request.contextPath}/public/img/button2.png">
     </div>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var navH = $(".nav").offset().top;
+        $(window).scroll(function(){
+            var scroH = $(this).scrollTop();
+            if(scroH>=navH){
+                $(".nav").css({"position":"fixed","top":"0"});
+            }else{
+                $(".nav").css({"position":"static","margin":"0 auto"});
+            }
+            console.log(scroH==navH);
+        });
+    });
+
+</script>
