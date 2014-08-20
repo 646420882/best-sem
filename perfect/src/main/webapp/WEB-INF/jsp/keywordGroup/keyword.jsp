@@ -126,109 +126,148 @@
                             </ul>
                             <div class="table_concent2 over">
                                 <div class="k_r_top2 over">
-                                    <div class="k_top2_text fl">
-                                        <div class="k_top2_text1"><textarea id="textarea1"
-                                                                            style="overflow:auto; resize: none"></textarea>
-                                        </div>
-                                        <p>可输入词根10/10</p>
-                                        <a href="javascript: findWordFromBaidu();" class="become2">开始拓词</a>
+                                        <div class="k_r_middle over">
+                                            <div class="k_top2_text fl">
+                                                <div class="k_top2_text1"><textarea id="textarea1"
+                                                                                    style="overflow:auto; resize: none"></textarea>
+                                                </div>
+                                                <p>可输入词根10/10</p>
+                                                <a href="javascript: findWordFromBaidu();" class="become2">开始拓词</a>
+                                            </div>
+                                            <div class="K_top2_detali fr over">
+                                                <div class="k_top2_detali2 over">
+                                                    <div class="list01_top2 over">
+                                                        <span>重点关键词监控</span>
+                                                        <a href="#" class="question"></a>
+                                                    </div>
+                                                    <ul>
+                                                        <li>· 搜索引擎（baidu，google）APP</li>
+                                                        <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
+                                                        <li>· 普菲特智能词库</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="k_top2_detali2 over">
 
+                                                    <div class="list01_top2 over">
+                                                        <span>智能过滤</span>
+                                                        <a href="#" class="question"></a>
+                                                    </div>
+                                                    <ul>
+                                                        <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
+                                                        <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    <div class="k_r_under over">
+                                        <div class="download over ">
+                                            <%--<a id="addAll" href="#"> 添加全部</a>--%><a href="javascript: downloadCSV();">下载全部</a>
+                                        </div>
+                                        <div class="list2 over">
+                                            <table border="0" cellspacing="0">
+                                                <thead>
+                                                <tr class="list2_top">
+                                                    <td>
+                                                        <ul>
+                                                            <li><span>分组</span></li>
+                                                            <li><span>种子词</span></li>
+                                                            <li><span>关键词</span></li>
+                                                            <li><span>日均搜索量</span></li>
+                                                            <li><span>竞争激烈程度</span></li>
+                                                            <li><span>一级推荐理由</span></li>
+                                                            <li><span>二级推荐理由</span></li>
+                                                            <li><span>是否已购买</span></li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
                                     </div>
-                                    <div class="K_top2_detali fr over">
-                                        <div class="k_top2_detali2 over">
-                                            <div class="list01_top2 over">
-                                                <span>重点关键词监控</span>
-                                                <a href="#" class="question"></a>
-                                            </div>
-                                            <ul>
-                                                <li>· 搜索引擎（baidu，google）APP</li>
-                                                <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
-                                                <li>· 普菲特智能词库</li>
-                                            </ul>
-                                        </div>
-                                        <div class="k_top2_detali2 over">
-                                            <div class="list01_top2 over">
-                                                <span>智能过滤</span>
-                                                <a href="#" class="question"></a>
-                                            </div>
-                                            <ul>
-                                                <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
-                                                <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
-                                                </li>
-                                            </ul>
-                                        </div>
+                                    <div class="page2">
+                                        <a href="javascript:toPrevPage();">上一页</a><a href="javascript:toNextPage();">下一页</a><span
+                                            style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
+                                            href="javascript:toAnyPage();"> GO</a>
                                     </div>
                                 </div>
                                 <div class="k_r_top2  hides over">
-                                    <div class="k_top2_text fl">
-                                        <div class="k_top2_text1">
-                                            <select>
-                                                <option>请选择行业</option>
-                                            </select>
+                                    <div class="k_r_middle over">
+                                        <div class="k_top2_text fl">
+                                            <div class="k_top2_text1">
+                                                <select>
+                                                    <option>请选择行业</option>
+                                                </select>
+                                                <select>
+                                                    <option>服装</option>
+                                                </select>
+                                            </div>
+                                            <a href="#" class="become2">开始拓词</a>
                                         </div>
+                                        <div class="K_top2_detali fr over">
+                                            <div class="k_top2_detali2 over">
+                                                <div class="list01_top2 over">
+                                                    <span>拓词来源</span>
+                                                    <a href="#" class="question"></a>
+                                                </div>
+                                                <ul>
+                                                    <li>· 搜索引擎（baidu，google）APP</li>
+                                                    <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
+                                                    <li>· 普菲特智能词库</li>
+                                                </ul>
+                                            </div>
+                                            <div class="k_top2_detali2 over">
+                                                <div class="list01_top2 over">
+                                                    <span>智能过滤</span>
+                                                    <a href="#" class="question"></a>
+                                                </div>
+                                                <ul>
+                                                    <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
+                                                    <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="k_r_under over">
+                                        <div class="download over ">
+                                            <%--<a id="addAll" href="#"> 添加全部</a>--%><a href="javascript: downloadCSV();">下载全部</a>
+                                        </div>
+                                        <div class="list2 over">
+                                            <table border="0" cellspacing="0">
+                                                <thead>
+                                                <tr class="list2_top">
+                                                    <td>
+                                                        <ul>
+                                                            <li><span>行业</span></li>
+                                                            <li><span>计划</span></li>
+                                                            <li><span>单元</span></li>
+                                                            <li><span>关键词</span></li>
 
-                                        <a href="#" class="become2">开始拓词</a>
-                                    </div>
-                                    <div class="K_top2_detali fr over">
-                                        <div class="k_top2_detali2 over">
-                                            <div class="list01_top2 over">
-                                                <span>拓词来源</span>
-                                                <a href="#" class="question"></a>
-                                            </div>
-                                            <ul>
-                                                <li>· 搜索引擎（baidu，google）APP</li>
-                                                <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
-                                                <li>· 普菲特智能词库</li>
-                                            </ul>
-                                        </div>
-                                        <div class="k_top2_detali2 over">
-                                            <div class="list01_top2 over">
-                                                <span>智能过滤</span>
-                                                <a href="#" class="question"></a>
-                                            </div>
-                                            <ul>
-                                                <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
-                                                <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
-                                                </li>
-                                            </ul>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+
                                         </div>
                                     </div>
+                                    <div class="page2">
+                                        <a href="javascript:toPrevPage();">上一页</a><a href="javascript:toNextPage();">下一页</a><span
+                                            style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
+                                            href="javascript:toAnyPage();"> GO</a>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
-                        <div class="k_r_under over">
-                            <div class="download over ">
-                                <%--<a id="addAll" href="#"> 添加全部</a>--%><a href="javascript: downloadCSV();">下载全部</a>
-                            </div>
-                            <div class="list2">
-                                <table border="0" cellspacing="0">
-                                    <thead>
-                                    <tr class="list2_top">
-                                        <td>
-                                            <ul>
-                                                <li><span>种子词</span></li>
-                                                <li><span>关键词</span></li>
-                                                <li><span>日均搜索量</span></li>
-                                                <li><span>竞争激烈程度</span></li>
-                                                <li><span>一级推荐理由</span></li>
-                                                <li><span>二级推荐理由</span></li>
-                                                <li><span>是否已购买</span></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
 
-                            </div>
-                        </div>
-                        <div class="page2">
-                            <a href="javascript:toPrevPage();">上一页</a><a href="javascript:toNextPage();">下一页</a><span
-                                style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
-                                href="javascript:toAnyPage();"> GO</a>
-
-                        </div>
                     </div>
                 </div>
             </div>
