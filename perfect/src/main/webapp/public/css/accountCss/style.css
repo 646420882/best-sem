@@ -297,11 +297,15 @@
     display: block;
     float: left;
     height: 30px;
-    min-width: 130px;
-    max-width:200px;
+    width: 9%;
     font-size: 12px;
     padding-left: 10px;
     overflow: hidden;
+}
+@media screen and (max-width :1270px) {
+    .list2 table tr td ul li {
+        width: 8%;
+    }
 }
 .list2 table tr td ul li p {
     margin: 0px;
