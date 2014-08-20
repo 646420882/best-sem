@@ -1,8 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.entity.AdgroupEntity;
-import com.perfect.entity.KeywordEntity;
-
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +9,13 @@ import java.util.Map;
  */
 public interface KeywordGroupService {
 
-    Map<String, Object> getKRResult(String seedWord);
-
-    Map<String, Object> getKRResult(List<String> seedWordList);
+    /**
+     * <br>-----------------------</br>
+     *
+     * @param seedWordList
+     * @return
+     */
+    Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit);
 
     /**
      * 从百度词库获取关键词
@@ -27,18 +29,15 @@ public interface KeywordGroupService {
     Map<String, Object> getKeywordFromBaidu(List<String> seedWordList, int skip, int limit, String reportId);
 
     /**
-     * 基于百度的词库分组
+     * 从系统词库获取关键词
      *
-     * @param words
+     * @param trade
+     * @param category
+     * @param skip
+     * @param limit
      * @return
      */
-    Map<String, Object> autoGroupByBaidu(List<String> words);
+    Map<String, Object> getKeywordFromPerfect(String trade, String category, int skip, int limit);
 
-    /**
-     * 添加关键词
-     *
-     * @param list1
-     * @param list2
-     */
-    void addKeywords(List<AdgroupEntity> list1, List<KeywordEntity> list2);
+    void downloadCSV(String trade, String category, OutputStream os);
 }

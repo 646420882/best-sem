@@ -198,7 +198,7 @@
                         </div>
                         <div class="k_r_under over">
                             <div class="download over ">
-                                <a id="addAll" href="#"> 添加全部</a><a href="#">下载全部</a>
+                                <%--<a id="addAll" href="#"> 添加全部</a>--%><a href="javascript: downloadCSV();">下载全部</a>
                             </div>
                             <div class="list2">
                                 <table border="0" cellspacing="0">
@@ -417,13 +417,14 @@
     </div>
 
 </div>
+<iframe id="downloadhelper_iframe" style="display: none">#document</iframe>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc-min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript">
 
-var type = "bd";    //bd, baidu; lc, local
+var type = "bd";    //bd, baidu; p, local
 
 var krFileId;
 
@@ -514,6 +515,12 @@ $(function () {
         $("#team_box ").css("display", "none");
     });
 });
+
+
+var downloadCSV = function () {
+    var _url = "/getKRWords/downloadCSV?trade=" + "电商行业" + "&category=" + "团购";
+    document.getElementById("downloadhelper_iframe").src = _url;
+};
 
 var findWordFromBaidu = function () {
     var seedWords = "";

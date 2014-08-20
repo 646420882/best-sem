@@ -52,7 +52,6 @@ public class XLSBlockReaderImpl extends BaseBlockReader implements XLSLoopBlockR
         }
         int rowNum = cursor.getSheet().getPhysicalNumberOfRows();
 
-
         ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors() + 1);
 
         XLSTask task = new XLSTask(cursor.getSheet(), beans, beanCellMapping, var, varType, 0, rowNum - 1);
@@ -61,6 +60,7 @@ public class XLSBlockReaderImpl extends BaseBlockReader implements XLSLoopBlockR
         beans.put(items, result);
 
         cursor.setCurrentRowNum(rowNum - 1);
+
         pool.shutdown();
         return readStatus;
 
@@ -94,6 +94,7 @@ public class XLSBlockReaderImpl extends BaseBlockReader implements XLSLoopBlockR
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void addBlockReader(XLSBlockReader reader) {
         innerBlockReaders.add(reader);
     }
@@ -226,12 +227,7 @@ public class XLSBlockReaderImpl extends BaseBlockReader implements XLSLoopBlockR
                         break;
                     case Cell.CELL_TYPE_FORMULA:
                         // attempt to read formula cell as numeric cell
-                        try {
-                            dataString = readNumericCell(cell);
-                        } catch (final Exception e) {
-                            e.printStackTrace();
-                        }
-
+                        dataString = readNumericCell(cell);
                         break;
                     default:
                         break;
@@ -239,7 +235,6 @@ public class XLSBlockReaderImpl extends BaseBlockReader implements XLSLoopBlockR
             }
             return dataString;
         }
-
 
         private String readNumericCell(Cell cell) {
             double value;

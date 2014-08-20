@@ -3,10 +3,8 @@ package com.perfect.service.impl;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.dao.AdgroupDAO;
-import com.perfect.dao.KeywordDAO;
-import com.perfect.entity.AdgroupEntity;
-import com.perfect.entity.KeywordEntity;
+import com.perfect.entity.LexiconEntity;
+import com.perfect.mongodb.dao.impl.KeywordGroupDAOImpl;
 import com.perfect.mongodb.utils.BaseBaiduService;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.KeywordGroupService;
@@ -23,6 +21,7 @@ import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.*;
 
 /**
@@ -32,24 +31,15 @@ import java.util.*;
 public class KeywordGroupServiceImpl implements KeywordGroupService {
 
     @Resource
-    private KeywordDAO keywordDAO;
-
-    @Resource
-    private AdgroupDAO adgroupDAO;
+    private KeywordGroupDAOImpl keywordGroupDAO;
 
     private String _krFileId;
-
-    private int _skip;
-
-    private int _limit;
 
     private int redisMapSize;
 
     public Map<String, Object> getKeywordFromBaidu(List<String> seedWordList, int skip, int limit, String krFileId) {
-        _skip = skip;
-        _limit = limit;
         if (krFileId == null) {
-            Map<String, Object> map = getKRResult(seedWordList);
+            Map<String, Object> map = getKRResult(seedWordList, skip, limit);
             map.put("krFileId", _krFileId);
             map.put("total", redisMapSize);
             return map;
@@ -59,7 +49,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
             try {
                 jedis = JRedisUtils.get();
                 if (jedis.ttl(krFileId) == -1) {
-                    Map<String, Object> map = getKRResult(seedWordList);
+                    Map<String, Object> map = getKRResult(seedWordList, skip, limit);
                     map.put("krFileId", _krFileId);
                     map.put("total", redisMapSize);
                     return map;
@@ -82,16 +72,46 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         }
     }
 
-    public Map<String, Object> getKRResult(String seedWord) {
-        KRService krService = getKRService();
-        GetKRbySeedWordRequest getKRbySeedWordRequest = new GetKRbySeedWordRequest();
-        getKRbySeedWordRequest.setSeedWord(seedWord);
-        GetKRbySeedWordResponse getKRbySeedWordResponse = krService.getKRbySeedWord(getKRbySeedWordRequest);
-        List<KRResult> krResult = getKRbySeedWordResponse.getKrResult();
-        return null;
+    public Map<String, Object> getKeywordFromPerfect(String trade, String category, int skip, int limit) {
+        //查询参数
+        Map<String, Object> params = new HashMap<>();
+        if (trade != null) {
+            params.put("tr", trade);
+        }
+        if (category != null) {
+            params.put("cg", category);
+        }
+
+        List<LexiconEntity> list = keywordGroupDAO.find(params, skip, limit);
+        return JSONUtils.getJsonMapData(list);
     }
 
-    public Map<String, Object> getKRResult(List<String> seedWordList) {
+    public void downloadCSV(String trade, String category, OutputStream os) {
+        //查询参数
+        Map<String, Object> params = new HashMap<>();
+        if (trade != null) {
+            params.put("tr", trade);
+        }
+        if (category != null) {
+            params.put("cg", category);
+        }
+
+        List<LexiconEntity> list = keywordGroupDAO.find(params, -1, -1);
+
+        //CSV文件处理
+        byte[] bytes = ("行业" + "," + "计划" + "," + "单元" + "," + "关键词" + "\r\n").getBytes();
+        try {
+            os.write(bytes);
+            for (LexiconEntity entity : list) {
+                bytes = (entity.getTrade().substring(0, entity.getTrade().length() - 2) + "," + entity.getCategory() + "," + entity.getGroup() + "," + entity.getKeyword() + "\r\n").getBytes();
+                os.write(bytes);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit) {
         KRService krService = getKRService();
         GetKRFileIdbySeedWordRequest getKRFileIdbySeedWordRequest = new GetKRFileIdbySeedWordRequest();
         getKRFileIdbySeedWordRequest.setSeedWords(seedWordList);
@@ -101,7 +121,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         String krFilePath;
 
         //检查关键词推荐结果文件是否生成
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             GetKRFileStateRequest getKRFileStateRequest = new GetKRFileStateRequest();
             getKRFileStateRequest.setKrFileId(krFileId);
             GetKRFileStateResponse getKRFileStateResponse = krService.getKRFileState(getKRFileStateRequest);
@@ -115,7 +135,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
                 Map<String, String> redisMap = httpFileHandler(krFilePath);
                 this.redisMapSize = redisMap.size();
                 List<String> list = new ArrayList<>(redisMap.values());
-                List<KeywordVO> voList = paging(list, _skip, _limit);
+                List<KeywordVO> voList = paging(list, skip, limit);
                 attributes = JSONUtils.getJsonMapData(voList);
                 break;
             }
@@ -127,25 +147,6 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         }
 
         return attributes;
-    }
-
-    //基于百度的关键词自动分组
-    public Map<String, Object> autoGroupByBaidu(List<String> words) {
-        KRService krService = getKRService();
-        GetAdGroupBySeedWordsRequest request = new GetAdGroupBySeedWordsRequest();
-        request.setSeedWords(words);
-        request.setAdGroupIds(null);
-        GetAdGroupBySeedWordsResponse response = krService.getAdGroupBySeedWords(request);
-        List<AutoAdGroupResult> list = response.getAutoAdGroupResults();
-        Map<String, Object> values = JSONUtils.getJsonMapData(list);
-        return values;
-    }
-
-    public void addKeywords(List<AdgroupEntity> list1, List<KeywordEntity> list2) {
-        if (list1 != null)
-            adgroupDAO.insertAll(list1);
-        else if (list2 != null)
-            keywordDAO.insertAll(list2);
     }
 
     private KRService getKRService() {

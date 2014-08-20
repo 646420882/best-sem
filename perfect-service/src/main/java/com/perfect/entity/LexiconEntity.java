@@ -1,6 +1,7 @@
 package com.perfect.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -18,14 +19,15 @@ public class LexiconEntity implements Serializable {
     @Field("tr")
     private String trade;   //行业
 
-    @Field("cago")
-    private String category;    //网类
+    @Field("cg")
+    private String category;
 
-    @Field("grna")
-    private String groupName;   //组标识
+    @Field("gr")
+    private String group;
 
     @Field("kw")
-    private String keyword;     //关键词
+    @Indexed
+    private String keyword;
 
     public String getId() {
         return id;
@@ -51,12 +53,12 @@ public class LexiconEntity implements Serializable {
         this.category = category;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getGroup() {
+        return group;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     public String getKeyword() {
@@ -72,13 +74,13 @@ public class LexiconEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        LexiconEntity that = (LexiconEntity) o;
+        LexiconEntity entity = (LexiconEntity) o;
 
-        if (category != null ? !category.equals(that.category) : that.category != null) return false;
-        if (groupName != null ? !groupName.equals(that.groupName) : that.groupName != null) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (keyword != null ? !keyword.equals(that.keyword) : that.keyword != null) return false;
-        if (trade != null ? !trade.equals(that.trade) : that.trade != null) return false;
+        if (category != null ? !category.equals(entity.category) : entity.category != null) return false;
+        if (group != null ? !group.equals(entity.group) : entity.group != null) return false;
+        if (id != null ? !id.equals(entity.id) : entity.id != null) return false;
+        if (keyword != null ? !keyword.equals(entity.keyword) : entity.keyword != null) return false;
+        if (trade != null ? !trade.equals(entity.trade) : entity.trade != null) return false;
 
         return true;
     }
@@ -88,7 +90,7 @@ public class LexiconEntity implements Serializable {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (trade != null ? trade.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
-        result = 31 * result + (groupName != null ? groupName.hashCode() : 0);
+        result = 31 * result + (group != null ? group.hashCode() : 0);
         result = 31 * result + (keyword != null ? keyword.hashCode() : 0);
         return result;
     }
@@ -99,7 +101,7 @@ public class LexiconEntity implements Serializable {
                 "id='" + id + '\'' +
                 ", trade='" + trade + '\'' +
                 ", category='" + category + '\'' +
-                ", groupName='" + groupName + '\'' +
+                ", group='" + group + '\'' +
                 ", keyword='" + keyword + '\'' +
                 '}';
     }
