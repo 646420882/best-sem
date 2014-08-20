@@ -27,7 +27,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/upload")
 public class UploadManager extends WebContextSupport {
-
+    /**
+     * DEFAULT 默认在Perfect目录下
+     * TOTAL Total目录下，表示是用户上传的需要统计的文件
+     */
+   public enum OutType {
+        DEFAULT,
+        TOTAL;
+    }
     @Resource
     KeywordDAO keywordDAO;
 
@@ -47,26 +54,22 @@ public class UploadManager extends WebContextSupport {
     }
 
     /**
-     * 加载处理好的文件
+     * 加载一般文件
      *
      * @param response
      */
     @RequestMapping(value = "/tmpList")
     public void tmpList(HttpServletResponse response) {
-        String filePath = new UploadHelper().getTempPath();
-        List<FileAttribute> fileAttributes = new ArrayList<>();
-        File file = new File(filePath);
-        for (File s : file.listFiles()) {
-            String ext = Files.getFileExtension(s.getName());
-            if (ext.equals("xlsx") || ext.equals("xls")) {
-                FileAttribute fa = new FileAttribute();
-                fa.setFileName(s.getName());
-                fa.setFileSize(new UploadHelper().getFileSize(s.length()));
-                fa.setFileExt(Files.getFileExtension(s.getName()));
-                fileAttributes.add(fa);
-            }
-        }
-        wirteJson(fileAttributes, response);
+        getFileList(OutType.DEFAULT,response);
+    }
+    /**
+     * 加载统计文件
+     *
+     * @param response
+     */
+    @RequestMapping(value = "/talList")
+    public void talList(HttpServletResponse response) {
+        getFileList(OutType.TOTAL,response);
     }
 
 
@@ -90,24 +93,67 @@ public class UploadManager extends WebContextSupport {
         }
     }
 
+    @RequestMapping(value = "/upTotal",method = RequestMethod.POST)
+    public void upTotal(HttpServletRequest request,HttpServletResponse response,@RequestParam(value = "file",required = false) MultipartFile file,String jsessionid) throws IOException {
+        String fileName=file.getOriginalFilename();
+        UploadHelper upload=new UploadHelper();
+        if (upload.totalUpload(file.getBytes(),fileName)){
+            writeHtml(SUCCESS, response);
+        }else{
+            writeHtml(EXCEPTION,response);
+        }
+
+    }
+
     /**
-     * 获取下载文件
-     *
+     *  下载普通文件
      * @param request
      * @param response
      * @return
-     * @throws IOException
      */
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public ModelAndView getIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @RequestMapping(value = "/getDefault", method = RequestMethod.GET)
+    public ModelAndView getDefault(HttpServletRequest request, HttpServletResponse response)  {
+        download(OutType.DEFAULT, request, response);
+        return null;
+    }
+
+    /**
+     * 下载求和后的文件
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/getTotal", method = RequestMethod.GET)
+    public ModelAndView getTotal(HttpServletRequest request, HttpServletResponse response)  {
+        download(OutType.TOTAL, request, response);
+        return null;
+    }
+
+    /**
+     *  下载文件方法
+     * @param outType 下载的文件类型
+     * @param request
+     * @param response
+     */
+    private void download(OutType outType, HttpServletRequest request, HttpServletResponse response) {
         String fileName = request.getParameter("fileName");
         response.setContentType("text/html;charset=utf-8");
-        request.setCharacterEncoding("UTF-8");
+        try {
+            request.setCharacterEncoding("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         UploadHelper uh = new UploadHelper();
-        String filePath = uh.getTempPath() + "\\" + fileName;
-        System.out.println(filePath);
+        String filePath =null;
+        switch (outType){
+            case DEFAULT:
+                filePath = uh.getDefaultTempPath() + "\\" + fileName;
+                break;
+            case TOTAL:
+                filePath = uh.getTotalTempPath() + "\\" + fileName;
+        }
         try {
             long fileLength = uh.getFileLength(filePath);
             response.setContentType("application/x-msdownload;");
@@ -125,14 +171,20 @@ public class UploadManager extends WebContextSupport {
             e.printStackTrace();
         } finally {
             if (bis != null)
-                bis.close();
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             if (bos != null)
-                bos.close();
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
         }
-        return null;
     }
-
     /**
      * excel文件处理
      *
@@ -141,10 +193,10 @@ public class UploadManager extends WebContextSupport {
      * @param response
      */
     private void excelSupport(UploadHelper upload, MultipartFile file, HttpServletResponse response) throws IOException {
-        boolean bol = upload.upLoad(file.getBytes(), file.getOriginalFilename());
+        boolean bol = upload.defaultUpload(file.getBytes(), file.getOriginalFilename());
         if (bol) {
             String fileName = file.getOriginalFilename();
-            ExcelReadUtil.checkUrl(new UploadHelper().getTempPath() + "/" + fileName);
+            ExcelReadUtil.checkUrl(new UploadHelper().getDefaultTempPath() + "/" + fileName);
             writeHtml(SUCCESS, response);
         } else {
             writeHtml(EXCEPTION, response);
@@ -159,29 +211,86 @@ public class UploadManager extends WebContextSupport {
      * @param response
      */
     private void csvSupport(UploadHelper upload, MultipartFile file, HttpServletResponse response) throws IOException {
-        boolean bol = upload.upLoad(file.getBytes(), file.getOriginalFilename());
+        boolean bol = upload.defaultUpload(file.getBytes(), file.getOriginalFilename());
         if (bol) {
             String fileName = file.getOriginalFilename();
-            CsvReadUtil csvReadUtil = new CsvReadUtil(new UploadHelper().getTempPath() + "/" + fileName, CsvReadUtil.ENCODING_GBK);
+            CsvReadUtil csvReadUtil = new CsvReadUtil(new UploadHelper().getDefaultTempPath() + "/" + fileName, CsvReadUtil.ENCODING_GBK);
             List<KeywordEntity> keywordEntityList = csvReadUtil.getList();
-            keywordDAO.insertAndQuery(keywordEntityList);
+//            keywordDAO.insertAndQuery(keywordEntityList);
         } else {
             writeHtml(EXCEPTION, response);
         }
     }
+    private void getFileList(OutType outType,HttpServletResponse response){
+        String filePath=null;
+        switch (outType){
+            case DEFAULT:
+                filePath = new UploadHelper().getDefaultTempPath();
+                break;
+            case TOTAL:
+                filePath = new UploadHelper().getTotalTempPath();
+                break;
+        }
+        List<FileAttribute> fileAttributes = new ArrayList<>();
+        File file = new File(filePath);
+        for (File s : file.listFiles()) {
+            String ext = Files.getFileExtension(s.getName());
+            if (ext.equals("xlsx") || ext.equals("xls")) {
+                FileAttribute fa = new FileAttribute();
+                fa.setFileName(s.getName());
+                fa.setFileSize(new UploadHelper().getFileSize(s.length()));
+                fa.setFileExt(Files.getFileExtension(s.getName()));
+                fileAttributes.add(fa);
+            }
+        }
+        wirteJson(fileAttributes, response);
+    }
 
     /**
-     * 删除没用文件
+     * 删除普通文件
      *
      * @param request
      * @param response
      * @return
      */
-    @RequestMapping(value = "/del", method = RequestMethod.GET)
-    public ModelAndView delFile(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/delDefault", method = RequestMethod.GET)
+    public ModelAndView delDefaultFile(HttpServletRequest request, HttpServletResponse response) {
+        deleteFile(OutType.DEFAULT,request,response);
+        return null;
+    }
+
+    /**
+     * 删除统计文件
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/delTotal", method = RequestMethod.GET)
+    public ModelAndView delTotalFile(HttpServletRequest request, HttpServletResponse response) {
+        deleteFile(OutType.TOTAL,request,response);
+        return null;
+    }
+
+
+
+    /**
+     * 删除文件方法
+     * @param outType 删除文件目录
+     * @param request
+     * @param response
+     */
+    private void deleteFile(OutType outType,HttpServletRequest request,HttpServletResponse response){
         String fileName = request.getParameter("fileName");
         UploadHelper up = new UploadHelper();
-        String filePath = up.getTempPath() + "\\" + fileName;
+        String filePath =null;
+        switch (outType){
+            case DEFAULT:
+                filePath = up.getDefaultTempPath() + "\\" + fileName;
+                break;
+            case TOTAL:
+                filePath = up.getTotalTempPath() + "\\" + fileName;
+                break;
+        }
         File file = new File(filePath);
         if (file.exists()) {
             file.delete();
@@ -189,7 +298,6 @@ public class UploadManager extends WebContextSupport {
         } else {
             writeHtml(EXCEPTION, response);
         }
-        return null;
     }
 
     /**

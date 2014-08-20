@@ -1,15 +1,14 @@
 <%--
   Created by IntelliJ IDEA.
   User: XiaoWei
-  Date: 2014/8/15
-  Time: 18:57
+  Date: 2014/8/19
+  Time: 12:15
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <html>
 <head>
-    <title>URL地址检测</title>
+    <title>统计</title>
     <link href="/public/plugs/uploadify/uploadify.css" rel="stylesheet"/>
     <script type="text/javascript" src="/public/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/public/plugs/uploadify/jquery.uploadify.min.js"></script>
@@ -20,7 +19,7 @@
                 'buttonText': '请选择',
                 'height': 30,
                 'swf': '/public/plugs/uploadify/uploadify.swf',
-                'uploader': '/upload/uploadFile?jsessionid=<%=request.getSession().getId()%>',
+                'uploader': '/upload/upTotal?jsessionid=<%=request.getSession().getId()%>',
                 'width': 120,
                 'auto': false,
                 'fileObjName': 'file',
@@ -28,18 +27,18 @@
                     if (data == "1") {
                         loadFileList();
                         alert(file.name + "上传成功");
-
+                        loadFileList();
                     }
                 }
             });
         });
         function loadFileList() {
             $("#t1").remove("tr:gt(0)");
-            $.get("/upload/tmpList", function (result) {
+            $.get("/upload/talList", function (result) {
                 var json = eval("(" + result + ")");
                 for (var i = 0; i < json.length; i++) {
                     var _tr = "<tr>";
-                    var td = "<td>" + json[i].fileName + "</td><td>" + json[i].fileSize + "</td><td>" + json[i].fileExt + "</td><td><a href='/upload/getDefault?fileName=" + json[i].fileName + "'>下载</a>" +
+                    var td = "<td>" + json[i].fileName + "</td><td>" + json[i].fileSize + "</td><td>" + json[i].fileExt + "</td><td><a href='/upload/getTotal?fileName=" + json[i].fileName + "'>下载</a>" +
                             "&nbsp;<a href='javascript:void(0)' step='" + json[i].fileName + "' onclick='delFile(this)'>删除</a></td>";
                     var _etr = "</tr>";
                     $("#t1").append(_tr + td + _etr);
@@ -52,7 +51,7 @@
             var parents = _this.parents("tr");
             var conf = confirm("是否删除？");
             if (conf) {
-                $.get("/upload/delDefault", {fileName: $(res).attr("step")}, function (result) {
+                $.get("/upload/delTotal", {fileName: $(res).attr("step")}, function (result) {
                     if (result == "1") {
                         parents.remove();
                     }

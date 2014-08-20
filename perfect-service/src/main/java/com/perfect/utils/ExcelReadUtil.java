@@ -86,7 +86,6 @@ public class ExcelReadUtil {
             XSSFWorkbook xwb = new XSSFWorkbook(new FileInputStream(sourceFile));
             XSSFSheet sheet = xwb.getSheetAt(0);
             XSSFRow row;
-            String cell;
             for (int i = sheet.getFirstRowNum() + 1; i < sheet.getLastRowNum()+1; i++) {
                 row = sheet.getRow(i);
                 CSVUrlEntity csvUrls = new CSVUrlEntity();

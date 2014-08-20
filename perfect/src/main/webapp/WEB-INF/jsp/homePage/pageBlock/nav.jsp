@@ -21,14 +21,16 @@
             </div>
         </div>
         <div class="nav_mid">
-            <div class="nav_top">
-                帐户全景<span></span>
-            </div>
+            <a href="/home"><div class="nav_top">
+             帐户全景<span></span>
+            </div></a>
             <div class="nav_under over">
                 <ul>
-                    <li>
-                        <h3>推广助手</h3>
-                    </li>
+                    <a href="/assistant/index">
+                        <li class="nav_top">
+                            <h3>推广助手</h3>
+                        </li>
+                    </a>
                     <li>
                         <span class="list1"></span>
                         <a href="#">
@@ -43,7 +45,7 @@
                     </li>
                     <li>
                         <span class="list3"></span>
-                        <a href="#">
+                        <a href="/upload/uploadTotal">
                             批量操作
                         </a>
                     </li>
@@ -59,7 +61,7 @@
                             推广查询
                         </a>
                     </li>
-                    <li>
+                    <li class="nav_top">
                         <h3>智能结构</h3>
                     </li>
                     <li>
@@ -74,7 +76,7 @@
                             智能分组
                         </a>
                     </li>
-                    <li>
+                    <li class="nav_top">
                         <h3>智能竞价</h3>
                     </li>
                     <li>
@@ -95,7 +97,7 @@
                             设置规则
                         </a>
                     </li>
-                    <li>
+                    <li class="nav_top">
                         <h3>数据报告</h3>
                     </li>
                     <li>

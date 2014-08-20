@@ -455,10 +455,10 @@
                         <img src="${pageContext.request.contextPath}/public/img/star3.png">
                     </li>
                     <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star4.png">
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
                     </li>
                     <li>
-                        <img src="${pageContext.request.contextPath}/public/img/star5.png">
+                        <img src="${pageContext.request.contextPath}/public/img/star3.png">
                     </li>
                 </ul>
                 <span>0</span>
