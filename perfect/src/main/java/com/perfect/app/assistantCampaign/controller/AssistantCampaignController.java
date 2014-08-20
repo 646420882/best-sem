@@ -3,10 +3,11 @@ package com.perfect.app.assistantCampaign.controller;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.entity.CampaignEntity;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,18 +21,21 @@ import java.util.Arrays;
 @Scope("prototype")
 public class AssistantCampaignController {
 
+    //当前的账户id test
+    Long currentAccountId = 6243012L;
+
     @Resource
     private CampaignDAO campaignDAO;
 
 
     /**
-     * 得到所有的推广计划的list
+     *根据当前账户得到推广计划
      * @param model
      * @return
      */
     @RequestMapping(value = "assistantCampaign/list" ,method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView getAllCampaignList(ModelMap model){
-        model.addAttribute("list",campaignDAO.findAll());
+        model.addAttribute("list",campaignDAO.find(new Query().addCriteria(Criteria.where("aid").is(currentAccountId))));
         return new ModelAndView();
     }
 
@@ -42,7 +46,7 @@ public class AssistantCampaignController {
      * @return
      */
     @RequestMapping(value = "assistantCampaign/delete",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView deleteCampaignById(@RequestParam(value = "cid" ,required = false) Long[] cid){
+    public ModelAndView deleteCampaignById(Long[] cid){
         campaignDAO.deleteByIds(Arrays.asList(cid));
         return new ModelAndView();
     }
@@ -80,28 +84,9 @@ public class AssistantCampaignController {
         campaignEntity.setShowProb(showProb);
         campaignEntity.setPause(pause);
 
-        campaignDAO.save(campaignEntity);
+        campaignDAO.update(campaignEntity);
         return new ModelAndView();
     }
-
-
-    /**
-     * 修改推广地域
-     * @param cid
-     * @param regionTarget
-     * @return
-     */
-    @RequestMapping(value = "assistantCampaign/updateRegionTarget")
-    public ModelAndView updateRegionTarget(Long cid,Integer[] regionTarget){
-        CampaignEntity campaignEntity = new CampaignEntity();
-        campaignEntity.setCampaignId(cid);
-        campaignEntity.setRegionTarget(Arrays.asList(regionTarget));
-        campaignDAO.save(campaignEntity);
-
-        return new ModelAndView();
-    }
-
-
 
 
     /**

@@ -1,5 +1,7 @@
 package com.perfect.app.assistantKeyword.controller;
 
+import com.google.gson.Gson;
+import com.perfect.app.assistantKeyword.vo.CampaignTree;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.service.AssistantKeywordService;
 import org.springframework.context.annotation.Scope;
@@ -11,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by john on 2014/8/14.
@@ -20,17 +23,21 @@ import java.util.Arrays;
 public class AssistantKeywordController {
 
 
+    //当前的账户id test
+    Long currentAccountId = 6243012L;
+
+
     @Resource
     private AssistantKeywordService assistantKeywordService;
 
 
     /**
-     * 得到所有的关键词
+     * 得到当前账户所有的关键词
      * @return
      */
     @RequestMapping(value = "assistantKeyword/list",method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView getAllKeywordList(ModelMap model){
-        model.addAttribute("list",assistantKeywordService.getAllKeyWord());
+        model.addAttribute("list",assistantKeywordService.getAllKeyWord(currentAccountId));
         return new ModelAndView("");
     }
 
@@ -49,15 +56,16 @@ public class AssistantKeywordController {
     /**
      * 修改以下参数的信息(!!!)
      * @param kwid
-     * @param price
+     * @param price ?
      * @param pcDestinationUrl
      * @param mobileDestinationUrl
      * @param phraseType
+     * @param status
      * @param pause
      * @return
      */
     @RequestMapping(value = "assistantKeyword/update*",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView updateKeywordName(Long kwid,Double price,String pcDestinationUrl,String mobileDestinationUrl,Integer phraseType,Boolean pause){
+    public ModelAndView updateKeywordName(Long kwid,Double price,String pcDestinationUrl,String mobileDestinationUrl,Integer phraseType,Integer status,Boolean pause){
         KeywordEntity keywordEntity = new KeywordEntity();
         keywordEntity.setKeywordId(kwid);
         keywordEntity.setPrice(price);
@@ -81,24 +89,42 @@ public class AssistantKeywordController {
 
 
     /**
-     * 批量删除关键词(第二种方式)
+     * 得到当前账户的推广计划的树形列表数据
      * @return
      */
-    @RequestMapping(value = "assistantKeyword/deleteByName")
-    public ModelAndView deleteKeywordByNames(String deleteInfos){
-        String[] everyDeleInfo = deleteInfos.split("\r\n");
+    @RequestMapping(value = "assistantKeyword/campaignTree",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView getCampaignTree(ModelMap modelMap){
+        List<CampaignTree> treeList = assistantKeywordService.getCampaignTree(currentAccountId);
 
-        for(String str:everyDeleInfo){
-            String[] fields = str.split(",|\t");
-//                List<CampaignEntity> campaignEntityList = assistantKeywordService.find(new Query().addCriteria(Criteria.where("name").is(fields[0])));
-//                CampaignEntity campaignEntity = campaignEntityList==null||campaignEntityList.size()==0?null:campaignEntityList.get(0);
+        String  gson = new Gson().toJson(treeList);
+        System.out.println(gson);
 
-           /* if(campaignEntity != null){
+        return new ModelAndView();
+    }
 
-            }*/
+    /**
+     *(选择计划和单元，只输入关键词名称的方式)
+     * 根据用户的选择计划和单元，以及输入的关键词名称进行批量删除关键词
+     * @param chooseInfos 用户选择的一个或多个计划和单元
+     * @param keywordNames 用户输入的一个或多个的关键词名称
+     * @return
+     */
+    @RequestMapping(value = "assistantKeyword/deleteByNameChoose",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView deleteKeywordByNamesChoose(String chooseInfos,String keywordNames){
+        assistantKeywordService.deleteKeywordByNamesChoose(currentAccountId,chooseInfos,keywordNames);
+        return new ModelAndView();
+    }
 
-        }
 
+
+    /**（输入的方式）
+     *根据用户输入的删除信息（计划名称，单元名称，关键词名称）批量删除关键词
+     * @param deleteInfos 用户输入的一系列的计划名称，单元名称，关键词名称
+     * @return
+     */
+    @RequestMapping(value = "assistantKeyword/deleteByNameInput",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView deleteKeywordByNamesInput(String deleteInfos){
+        assistantKeywordService.deleteKeywordByNamesInput(currentAccountId, deleteInfos);
         return new ModelAndView();
     }
 

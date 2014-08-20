@@ -39,4 +39,7 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
 
     void remove(Query query);
+
+    List<KeywordEntity> findByQuery(Query query);
+
 }
