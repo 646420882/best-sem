@@ -34,7 +34,7 @@
 <div class="jingjia_left fl over">
     <div class="j_l_top over">
         <span class="fl"><h3>账户目录</h3></span>
-        <a href="#" class="fr">刷新</a>
+        <a href="javascript:void(0)" onclick="loadData()" class="fr">刷新</a>
     </div>
     <div class="j_l_top2 over">
         <span class="fl">查找计划单元</span>
@@ -312,10 +312,10 @@
 </div>
 <div class="more_list over" style="display:none;">
     <ul>
-        <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加创意</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除创意</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证创意</b></li>
-        <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原创意</b></li>
+        <li class="current" ><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加关键词</b></li>
+        <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除关键词</b></li>
+        <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证关键词</b></li>
+        <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原关键词</b></li>
         <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
         <li><span class="zs_top"><img src="../public/img/zs_function14.png"></span><b>剪贴</b></li>
         <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
@@ -406,162 +406,11 @@
             <td>&nbsp;<a href="#">http://tthunbohui.com </a><span class="editor"></span></td>
             <td>&nbsp;九星词<span class="editor"></span>	</td>
         </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
         </tbody>
     </table>
     <div class="more_list over" style="display:none;">
         <ul>
-            <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加创意</b></li>
+            <li class="current" onclick="alert(123);"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加创意</b></li>
             <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除创意</b></li>
             <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证创意</b></li>
             <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原创意</b></li>
@@ -1920,6 +1769,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
+<%--AssistantCreative Js--%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantCreative/creative.js"></script>
 <script type="text/javascript" >
 
     <!--

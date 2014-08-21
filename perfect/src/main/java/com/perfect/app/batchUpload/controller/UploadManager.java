@@ -37,7 +37,6 @@ public class UploadManager extends WebContextSupport {
     }
     @Resource
     KeywordDAO keywordDAO;
-
     /**
      * 跳转至Excel文件上传
      *
@@ -102,7 +101,14 @@ public class UploadManager extends WebContextSupport {
         }else{
             writeHtml(EXCEPTION,response);
         }
-
+    }
+    @RequestMapping(value = "/getSum",method = RequestMethod.GET)
+    public ModelAndView getSum(HttpServletRequest request,String fileNames,HttpServletResponse response){
+        String[] fileListNames=fileNames.split(",");
+        if (new ExcelReadUtil().invokeSum(request.getSession().getId(),fileListNames)){
+            writeHtml(SUCCESS,response);
+        }
+        return null;
     }
 
     /**
@@ -221,6 +227,13 @@ public class UploadManager extends WebContextSupport {
             writeHtml(EXCEPTION, response);
         }
     }
+
+
+    /**
+     * 获取文件列表
+     * @param outType
+     * @param response
+     */
     private void getFileList(OutType outType,HttpServletResponse response){
         String filePath=null;
         switch (outType){
@@ -239,11 +252,11 @@ public class UploadManager extends WebContextSupport {
                 FileAttribute fa = new FileAttribute();
                 fa.setFileName(s.getName());
                 fa.setFileSize(new UploadHelper().getFileSize(s.length()));
-                fa.setFileExt(Files.getFileExtension(s.getName()));
+                fa.setFileExt("." + Files.getFileExtension(s.getName()));
                 fileAttributes.add(fa);
             }
         }
-        wirteJson(fileAttributes, response);
+        writeJson(fileAttributes, response);
     }
 
     /**

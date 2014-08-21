@@ -26,7 +26,6 @@
                 'fileObjName': 'file',
                 'onUploadSuccess': function (file, data, response) {
                     if (data == "1") {
-                        loadFileList();
                         alert(file.name + "上传成功");
 
                     }

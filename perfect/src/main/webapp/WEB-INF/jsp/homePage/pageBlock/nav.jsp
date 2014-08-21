@@ -15,7 +15,7 @@
 							</span><span class="name"> JOHN DOE </span>
             </div>
             <div class="user_close fr">
-                <a href="#">
+                <a href="/logout">
                     退出
                 </a>
             </div>

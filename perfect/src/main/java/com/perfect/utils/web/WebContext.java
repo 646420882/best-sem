@@ -26,7 +26,7 @@ public interface WebContext {
      * @param obj 返回Json对象
      * @param res
      */
-        public void wirteJson(Object obj,HttpServletResponse res);
+        public void writeJson(Object obj, HttpServletResponse res);
 
 
 
