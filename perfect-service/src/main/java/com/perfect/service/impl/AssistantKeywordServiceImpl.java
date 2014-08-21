@@ -1,12 +1,12 @@
 package com.perfect.service.impl;
 
-import com.perfect.app.assistantKeyword.vo.CampaignTree;
 import com.perfect.autosdk.sms.v3.KeywordInfo;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
+import com.perfect.entity.CampaignTreeVoEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.service.AssistantKeywordService;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -80,18 +80,17 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService{
      * @return
      */
     @Override
-    public List<CampaignTree> getCampaignTree(Long accountId){
-        List<CampaignTree> campaignTreeList = new ArrayList<>();
+    public List<CampaignTreeVoEntity> getCampaignTree(Long accountId){
+        List<CampaignTreeVoEntity> campaignTreeList = new ArrayList<>();
         List<CampaignEntity> campaignList = campaignDAO.find(new Query().addCriteria(Criteria.where("aid").is(accountId)));
 
         for(CampaignEntity campaignEntity:campaignList){
             List<AdgroupEntity> adgroupList = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where("cid").is(campaignEntity.getCampaignId()).and("aid").is(accountId)));
-            CampaignTree campaignTree = new CampaignTree();
+            CampaignTreeVoEntity campaignTree = new CampaignTreeVoEntity();
             campaignTree.setRootNode(campaignEntity);//设置根节点
             campaignTree.setChildNode(adgroupList);//设置子节点
             campaignTreeList.add(campaignTree);
         }
-
         return campaignTreeList;
     }
 
@@ -138,6 +137,32 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService{
                 if(adgroupEntity!=null){
                     keywordDAO.remove(new Query().addCriteria(Criteria.where("aid").is(accountId).and("agid").is(adgroupEntity.getAdgroupId()).and("name").is(fields[2])));
                 }
+            }
+
+        }
+
+    }
+
+
+    /**
+     * （输入的方式）
+     * 将用户输入的关键词信息添加或更新到数据库
+     * @param accountId 当前账户id
+     * @param isReplace 是否将用户输入的信息替换该单元下相应的内容
+     * @param keywordInfos 用户输入的多个关键词信息
+     * @return
+     */
+    @Override
+    public void batchAddOrUpdateKeywordByInput(Long accountId, Boolean isReplace, String keywordInfos){
+        String[] everyRow = keywordInfos.split("\r\n");
+
+        for(String row:everyRow){
+            String[] fileds = row.split(",|\t");
+            List<AdgroupEntity> adgrounp = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where("name").is(fileds[1])));
+            AdgroupEntity adgroupEntity = adgrounp==null||adgrounp.size()==0?null:adgrounp.get(0);
+
+            if(adgroupEntity!=null){
+                KeywordEntity keywordEntity = new KeywordEntity();
             }
 
         }

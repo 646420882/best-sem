@@ -1,7 +1,7 @@
 package com.perfect.app.assistantKeyword.controller;
 
 import com.google.gson.Gson;
-import com.perfect.app.assistantKeyword.vo.CampaignTree;
+import com.perfect.entity.CampaignTreeVoEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.service.AssistantKeywordService;
 import org.springframework.context.annotation.Scope;
@@ -94,7 +94,7 @@ public class AssistantKeywordController {
      */
     @RequestMapping(value = "assistantKeyword/campaignTree",method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView getCampaignTree(ModelMap modelMap){
-        List<CampaignTree> treeList = assistantKeywordService.getCampaignTree(currentAccountId);
+        List<CampaignTreeVoEntity> treeList = assistantKeywordService.getCampaignTree(currentAccountId);
 
         String  gson = new Gson().toJson(treeList);
         System.out.println(gson);
@@ -125,6 +125,20 @@ public class AssistantKeywordController {
     @RequestMapping(value = "assistantKeyword/deleteByNameInput",method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView deleteKeywordByNamesInput(String deleteInfos){
         assistantKeywordService.deleteKeywordByNamesInput(currentAccountId, deleteInfos);
+        return new ModelAndView();
+    }
+
+
+    /**
+     * （输入的方式）
+     * 将用户输入的关键词信息添加或更新到数据库
+     * @param isReplace 是否将用户输入的信息替换该单元下相应的内容
+     * @param keywordInfos 用户输入的多个关键词信息
+     * @return
+     */
+    @RequestMapping(value = "assistantKeyword/addOrUpdateKeywordByInput",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView batchAddOrUpdateKeywordByInput(Boolean isReplace,String keywordInfos){
+        assistantKeywordService.batchAddOrUpdateKeywordByInput(currentAccountId,isReplace,keywordInfos);
         return new ModelAndView();
     }
 

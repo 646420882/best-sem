@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.app.assistantKeyword.vo.CampaignTree;
+import com.perfect.entity.CampaignTreeVoEntity;
 import com.perfect.entity.KeywordEntity;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -22,6 +22,7 @@ public interface AssistantKeywordService {
 
     void deleteKeywordByNamesChoose(Long accountId,String chooseInfos, String keywordNames);
 
-    List<CampaignTree> getCampaignTree(Long accountId);
+    List<CampaignTreeVoEntity> getCampaignTree(Long accountId);
 
+    void batchAddOrUpdateKeywordByInput(Long accountId, Boolean isReplace, String keywordInfos);
 }

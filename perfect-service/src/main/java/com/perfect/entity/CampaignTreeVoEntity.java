@@ -1,25 +1,22 @@
-package com.perfect.app.assistantKeyword.vo;
-
-import com.perfect.entity.AdgroupEntity;
-import com.perfect.entity.CampaignEntity;
+package com.perfect.entity;
 
 import java.util.List;
 
 /**
  * Created by john on 2014/8/20.
  */
-public class CampaignTree {
+public class CampaignTreeVoEntity {
 
     private CampaignEntity rootNode;
 
     private List<AdgroupEntity> childNode;
 
-    public CampaignTree(CampaignEntity rootNode, List<AdgroupEntity> childNode) {
+    public CampaignTreeVoEntity(CampaignEntity rootNode, List<AdgroupEntity> childNode) {
         this.rootNode = rootNode;
         this.childNode = childNode;
     }
 
-    public CampaignTree() {
+    public CampaignTreeVoEntity() {
     }
 
     public CampaignEntity getRootNode() {
