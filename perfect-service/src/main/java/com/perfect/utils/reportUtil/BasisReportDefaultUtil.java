@@ -19,50 +19,79 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
     private int endNumber;
     private int begin;
     private int terminal;
+    private int report;
 
     private List<StructureReportEntity> objectList;
 
-    public BasisReportDefaultUtil(List<StructureReportEntity> objects, int begin, int endNumber){
+    public BasisReportDefaultUtil(List<StructureReportEntity> objects, int begin, int endNumber,int report){
         this.objectList = objects;
         this.endNumber = endNumber;
         this.begin = begin;
+        this.report = report;
     }
 
     @Override
     protected Map<String, StructureReportEntity> compute() {
         Map<String , StructureReportEntity> map = new HashMap<>();
         if ((endNumber - begin) < threshold) {
-                for (int i = begin; i < endNumber; i++) {
-                    if (map.get(objectList.get(i).getAdgroupName()) != null) {
-                        String adgroupName = objectList.get(i).getAdgroupName();
-                        StructureReportEntity voEntity = map.get(adgroupName);
-                        voEntity.setMobileClick(voEntity.getMobileClick() + ((map.get(adgroupName).getMobileClick() == null) ? 0 : map.get(adgroupName).getMobileClick()));
-                        voEntity.setMobileConversion(voEntity.getMobileConversion() + ((map.get(adgroupName).getMobileConversion() == null) ? 0 :map.get(adgroupName).getMobileClick()));
-                        voEntity.setMobileCost(voEntity.getMobileCost() + ((map.get(adgroupName).getMobileCost() == null) ? 0 : map.get(adgroupName).getMobileCost()));
-                        voEntity.setMobileCtr(0d);
-                        voEntity.setMobileCpc(0d);
-                        voEntity.setMobileImpression(voEntity.getMobileImpression() + ((map.get(adgroupName).getMobileImpression() == null) ? 0 : map.get(adgroupName).getMobileImpression()));
-                        voEntity.setPcClick(voEntity.getPcClick() + ((map.get(adgroupName).getPcClick() == null) ? 0 : map.get(adgroupName).getPcClick()));
-                        voEntity.setPcConversion(voEntity.getPcConversion() + ((map.get(adgroupName).getPcConversion() == null) ? 0 : map.get(adgroupName).getPcConversion()));
-                        voEntity.setPcCost(voEntity.getPcCost() + ((map.get(adgroupName).getPcCost() == null)? 0 : map.get(adgroupName).getPcCost()));
-                        voEntity.setPcCtr(0d);
-                        voEntity.setPcCpc(0d);
-                        voEntity.setPcImpression(voEntity.getPcImpression() + ((map.get(adgroupName).getPcImpression() == null) ? 0 : map.get(adgroupName).getPcImpression()));
-                        map.put(objectList.get(i).getAdgroupName()+"", voEntity);
-                    } else {
-                        map.put(objectList.get(i).getAdgroupName()+"", objectList.get(i));
+            for (int i = begin; i < endNumber; i++) {
+                if (map.get(objectList.get(i).getAdgroupName()) != null) {
+                    String adgroupName = objectList.get(i).getAdgroupName();
+                    StructureReportEntity voEntity = map.get(adgroupName);
+                    voEntity.setMobileClick(((voEntity.getMobileClick()== null)? 0:voEntity.getMobileClick())  + ((map.get(adgroupName).getMobileClick() == null) ? 0 : map.get(adgroupName).getMobileClick()));
+                    voEntity.setMobileConversion((voEntity.getMobileConversion()==null ? 0:voEntity.getMobileConversion()) + ((map.get(adgroupName).getMobileConversion() == null) ? 0 :map.get(adgroupName).getMobileClick()));
+                    voEntity.setMobileCost((voEntity.getMobileCost()==null ? 0 : voEntity.getMobileCost())  + ((map.get(adgroupName).getMobileCost() == null) ? 0 : map.get(adgroupName).getMobileCost()));
+                    voEntity.setMobileCtr(0d);
+                    voEntity.setMobileCpc(0d);
+                    voEntity.setMobileImpression((voEntity.getMobileImpression()==null?0:voEntity.getMobileImpression()) + ((map.get(adgroupName).getMobileImpression() == null) ? 0 : map.get(adgroupName).getMobileImpression()));
+                    voEntity.setPcClick((voEntity.getPcClick()==null?0:voEntity.getPcClick()) + ((map.get(adgroupName).getPcClick() == null) ? 0 : map.get(adgroupName).getPcClick()));
+                    voEntity.setPcConversion((voEntity.getPcConversion()==null?0:voEntity.getPcConversion()) + ((map.get(adgroupName).getPcConversion() == null) ? 0 : map.get(adgroupName).getPcConversion()));
+                    voEntity.setPcCost((voEntity.getPcCost()==null?0:voEntity.getPcCost()) + ((map.get(adgroupName).getPcCost() == null)? 0 : map.get(adgroupName).getPcCost()));
+                    voEntity.setPcCtr(0d);
+                    voEntity.setPcCpc(0d);
+                    voEntity.setPcImpression((voEntity.getPcImpression()==null?0:voEntity.getPcImpression()) + ((map.get(adgroupName).getPcImpression() == null) ? 0 : map.get(adgroupName).getPcImpression()));
+                    switch (report){
+                        case 1:
+                            map.put(objectList.get(i).getAdgroupName(), voEntity);
+                            break;
+                        case 2:
+                            map.put(objectList.get(i).getKeywordName(), voEntity);
+                            break;
+                        case 3:
+                            map.put(objectList.get(i).getCreativeId().toString(), voEntity);
+                            break;
+                        case 4:
+                            map.put(objectList.get(i).getRegionName(), voEntity);
+                            break;
+                    }
+
+                } else {
+                    switch (report){
+                        case 1:
+                            map.put(objectList.get(i).getAdgroupName(), objectList.get(i));
+                            break;
+                        case 2:
+                            map.put(objectList.get(i).getKeywordName(), objectList.get(i));
+                            break;
+                        case 3:
+                            map.put(objectList.get(i).getCreativeId().toString(), objectList.get(i));
+                            break;
+                        case 4:
+                            map.put(objectList.get(i).getRegionName(), objectList.get(i));
+                            break;
                     }
                 }
+            }
             return map;
         } else {
             int midpoint = (begin + endNumber) / 2;
-            BasisReportDefaultUtil left = new BasisReportDefaultUtil(objectList, begin, midpoint);
-            BasisReportDefaultUtil right = new BasisReportDefaultUtil(objectList, midpoint, endNumber);
+            BasisReportDefaultUtil left = new BasisReportDefaultUtil(objectList, begin, midpoint,report);
+            BasisReportDefaultUtil right = new BasisReportDefaultUtil(objectList, midpoint, endNumber,report);
             invokeAll(left, right);
             try {
                 Map<String, StructureReportEntity> leftMap = left.get();
                 Map<String, StructureReportEntity> rightMap = right.get();
-                map.putAll(merge(leftMap, rightMap));
+                map.putAll(merge(leftMap, rightMap,report));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -73,8 +102,10 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
     }
 
 
-    public Map<String, StructureReportEntity> merge(Map<String, StructureReportEntity> leftMap, Map<String, StructureReportEntity> rightMap) {
+    public Map<String, StructureReportEntity> merge(Map<String, StructureReportEntity> leftMap, Map<String, StructureReportEntity> rightMap,int reportType) {
         Map<String, StructureReportEntity> dataMap = new HashMap<>();
+
+
 
         for (Iterator<Map.Entry<String, StructureReportEntity>> entry1 = leftMap.entrySet().iterator();entry1.hasNext();) {
 
@@ -83,20 +114,35 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
             for (Iterator<Map.Entry<String,StructureReportEntity>> entry2 = rightMap.entrySet().iterator();entry2.hasNext();) {
 
                 StructureReportEntity mapValue2 = entry2.next().getValue();
-
-                if (mapValue1.getAdgroupName().equals(mapValue2.getAdgroupName())) {
-                    mapValue1.setMobileClick(mapValue1.getMobileClick() + mapValue2.getMobileClick());
-                    mapValue1.setMobileConversion(mapValue1.getMobileConversion() + mapValue2.getMobileConversion());
-                    mapValue1.setMobileCost(mapValue1.getMobileCost() + mapValue2.getMobileCost());
+                boolean repotr = false;
+                switch (report){
+                    case 1:
+                        repotr = mapValue1.getAdgroupName().equals(mapValue2.getAdgroupName());
+                        break;
+                    case 2:
+                        repotr = mapValue1.getKeywordName().equals(mapValue2.getKeywordName());
+                        break;
+                    case 3:
+                        repotr = mapValue1.getCreativeId().equals (mapValue2.getCreativeId());
+                        break;
+                    case 4:
+                        repotr = mapValue1.getRegionName().equals(mapValue2.getRegionName());
+                        break;
+                }
+                if (repotr) {
+                    mapValue1.setMobileClick((mapValue1.getMobileClick()==null?0:mapValue1.getMobileClick()) + (mapValue2.getMobileClick()==null?0:mapValue2.getMobileClick()));
+                    mapValue1.setMobileConversion((mapValue1.getMobileConversion()==null?0:mapValue1.getMobileConversion()) + (mapValue2.getMobileConversion()==null?0:mapValue2.getMobileConversion()));
+                    mapValue1.setMobileCost((mapValue1.getMobileCost()==null?0:mapValue1.getMobileCost()) + (mapValue2.getMobileCost()==null?0:mapValue2.getMobileCost()));
                     mapValue1.setMobileCtr(0d);
                     mapValue1.setMobileCtr(0d);
-                    mapValue1.setMobileImpression(mapValue1.getMobileImpression() + mapValue2.getMobileImpression());
-                    mapValue1.setPcClick(mapValue1.getPcClick() + mapValue2.getPcClick());
-                    mapValue1.setPcConversion(mapValue1.getPcConversion() + mapValue2.getPcConversion());
-                    mapValue1.setPcCost(mapValue1.getPcCost() + mapValue2.getPcCost());
+                    mapValue1.setMobileImpression((mapValue1.getMobileImpression()==null?0:mapValue1.getMobileImpression()) + (mapValue2.getMobileImpression()==null?0:mapValue2.getMobileImpression()));
+                    mapValue1.setPcClick((mapValue1.getPcClick()==null?0:mapValue1.getPcClick()) + (mapValue2.getPcClick()==null?0:mapValue2.getPcClick()));
+                    mapValue1.setPcConversion((mapValue1.getPcConversion()==null?0:mapValue1.getPcConversion()) + (mapValue2.getPcConversion()==null?0:mapValue2.getPcConversion()));
+                    mapValue1.setPcCost((mapValue1.getPcCost()==null?0:mapValue1.getPcCost()) + (mapValue2.getPcCost()==null?0:mapValue2.getPcCost()));
                     mapValue1.setPcCtr(0d);
                     mapValue1.setPcCpc(0d);
-                    mapValue1.setPcImpression(mapValue1.getPcImpression() + mapValue2.getPcImpression());
+                    mapValue1.setPcImpression((mapValue1.getPcImpression()==null?0:mapValue1.getPcImpression()) + (mapValue2.getPcImpression()==null?0:mapValue2.getPcImpression()));
+                    dataMap.put(mapValue1.getAdgroupName(), mapValue1);
                     entry1.remove();
                     entry2.remove();
                     break;

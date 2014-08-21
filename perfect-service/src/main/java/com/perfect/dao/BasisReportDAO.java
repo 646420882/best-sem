@@ -1,8 +1,6 @@
 package com.perfect.dao;
 
-import com.perfect.entity.AccountRealTimeDataVOEntity;
-import com.perfect.entity.KeywordRealTimeDataVOEntity;
-import com.perfect.entity.StructureReportEntity;
+import com.perfect.entity.*;
 
 import java.util.Date;
 import java.util.List;
@@ -12,30 +10,51 @@ import java.util.List;
  */
 public interface BasisReportDAO{
     /**
-     * 单元报告
+     * 基础报告
      * @param userTable 数据表名
      * @return
      */
     public List<StructureReportEntity> getUnitReportDate(String userTable);
 
     /**
-     * 关键词报告
-     * @param userTable 数据表名
+     * 	                 _ooOoo_
+     *                  o8888888o
+     *                  88" . "88
+     *                  (| -_- |)
+     *                  O\  =  /O
+     *               ____/`---'\____
+     *             .'  \\|     |//  `.
+     *            /  \\|||  :  |||//  \
+     *           /  _||||| -:- |||||-  \
+     *           |   | \\\  -  /// |   |
+     *           | \_|  ''\---/''  |_/ |
+     *           \  .-\__  '-'  ___/-. /
+     *          __'. .'  /--.--\  `. .' __
+     *      ."" '<  `.___\_<|>_/___.'  >'"".
+     *     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+     *     \  \ `-.   \_ __\ /__ _/   .-` /  /
+     *======`-.____`-.___\_____/___.-`____.-'======
+     *                   `=---='
+     * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     *           佛祖保佑       永无BUG
+     * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     * 获取账户所有数据
      * @return
      */
-    public List<StructureReportEntity> getKeywordsReportDate(String userTable);
+    public List<AccountReportResponse> getAccountReport(int Sorted,String fieldName);
 
     /**
-     * 创意报告
-     * @param userTable 数据表名
+     * 得到用户数据条数
      * @return
      */
-    public List<StructureReportEntity> getCreativeReportDate(String userTable);
+    public long getAccountCount();
 
     /**
-     * 地域报告
-     * @param userTable 数据表名
+     * 时间范围获取账户数据
+     * @param startDate 开始时间
+     * @param endDate 结束时间
      * @return
      */
-    public List<StructureReportEntity> getRegionalReportDate(String userTable);
+    public List<AccountReportResponse> getAccountReport(Date startDate,Date endDate);
+
 }
