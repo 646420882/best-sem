@@ -102,7 +102,7 @@
                     </li>
                     <li>
                         <span class="list11"></span>
-                        <a href="#">
+                        <a href="/reportIndex">
                             基础报告
                         </a>
                     </li>
@@ -122,18 +122,6 @@
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">
-/*    $(function(){
-        var navH = $(".nav").offset().top;
-        $(window).scroll(function(){
-            var scroH = $(this).scrollTop();
-            if(scroH>=navH){
-                $(".nav").css({"position":"fixed","top":"77"});
-            }else{
-                $(".nav").css({"position":"static","margin":"0 auto"});
-            }
-            console.log(scroH==navH);
-        });
-    });*/
     $(function(){
         var navH = $(".on_title").offset().top;
         $(window).scroll(function(){

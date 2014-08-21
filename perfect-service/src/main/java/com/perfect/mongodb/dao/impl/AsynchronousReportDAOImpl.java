@@ -15,7 +15,10 @@ import org.springframework.stereotype.Repository;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
@@ -162,6 +165,9 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
         String pcFilePath = report.getRegionalReportDataPC(null, null, dateStr, dateStr);
         String mobileFilePath = report.getRegionalReportDataMobile(null, null, dateStr, dateStr);
 
+        System.out.println("PC"+pcFilePath);
+        System.out.println("Mobile:"+mobileFilePath);
+
         List<RegionReportEntity> pcList = httpFileHandler.getRegionReport(pcFilePath, 1);
         rrmList = httpFileHandler.getRegionReport(mobileFilePath, 2);
 
@@ -198,6 +204,9 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     }
                     String[] arr = str.split("\\t");
                     AccountReportEntity entity1 = new AccountReportEntity();
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = format.parse(arr[0]);
+                    entity1.setDate(date);
                     entity1.setAccountId(Long.valueOf(arr[1]));
                     entity1.setAccountName(arr[2]);
                     if (type == 1) {
@@ -221,6 +230,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     index++;
                 }
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
                 e.printStackTrace();
             } finally {
                 try {
@@ -495,7 +506,11 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         entity1.setPcConversion(Double.valueOf(arr[15]));
                         entity1.setPcPosition(Double.valueOf(arr[16]));
                     } else if (type == 2) {
-                        entity1.setRegionId(Long.valueOf(arr[5]));
+                        if(arr[5].equals("-")){
+                            entity1.setRegionId(-1l);
+                        }else{
+                            entity1.setRegionId(Long.valueOf(arr[5]));
+                        }
                         entity1.setRegionName(arr[6]);
                         entity1.setMobileImpression(Integer.valueOf(arr[7]));
                         entity1.setMobileClick(Integer.valueOf(arr[8]));
@@ -546,6 +561,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     for (AccountReportEntity type : acrmList) {
                         if (entity.getAccountId().compareTo(type.getAccountId()) == 0) {
                             AccountReportEntity _entity = new AccountReportEntity();
+                            _entity.setDate(entity.getDate());
                             _entity.setAccountId(entity.getAccountId());
                             _entity.setAccountName(entity.getAccountName());
                             _entity.setPcImpression(entity.getPcImpression());
@@ -569,6 +585,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     }
                     if (temp) {
                         AccountReportEntity _entity = new AccountReportEntity();
+                        _entity.setDate(entity.getDate());
                         _entity.setAccountId(entity.getAccountId());
                         _entity.setAccountName(entity.getAccountName());
                         _entity.setPcImpression(entity.getPcImpression());

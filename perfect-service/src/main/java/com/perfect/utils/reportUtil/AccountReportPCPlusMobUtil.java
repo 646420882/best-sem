@@ -1,16 +1,21 @@
 package com.perfect.utils.reportUtil;
 
+import com.perfect.entity.AccountReportEntity;
+import com.perfect.entity.AccountReportResponse;
 import com.perfect.entity.StructureReportEntity;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
 /**
  * Created by SubDong on 2014/8/13.
  */
-public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureReportEntity>>{
+public class AccountReportPCPlusMobUtil extends RecursiveTask<List<AccountReportResponse>>{
 
         private final int threshold = 100;
 
@@ -18,20 +23,22 @@ public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureRepor
         private int begin;
         private int terminal;
 
-        private List<StructureReportEntity> objectList;
+        private List<AccountReportResponse> objectList;
 
-        public BasistReportPCPlusMobUtil(List<StructureReportEntity> objects, int begin, int endNumber){
+        public AccountReportPCPlusMobUtil(List<AccountReportResponse> objects, int begin, int endNumber){
             this.objectList = objects;
             this.endNumber = endNumber;
             this.begin = begin;
         }
 
         @Override
-        protected List<StructureReportEntity> compute() {
-            List<StructureReportEntity> list = new ArrayList<>();
+        protected List<AccountReportResponse> compute() {
+            List<AccountReportResponse> list = new ArrayList<>();
             if ((endNumber - begin) < threshold) {
                 DecimalFormat df = new DecimalFormat("#.00");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 for (int i = begin; i < endNumber; i++) {
+                    objectList.get(i).setDateRep(dateFormat.format(objectList.get(i).getDate()));
                     objectList.get(i).setPcClick(objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()));
                     objectList.get(i).setPcConversion(objectList.get(i).getPcConversion() + ((objectList.get(i).getMobileConversion() == null) ? 0 : objectList.get(i).getMobileClick()));
                     objectList.get(i).setPcCost(objectList.get(i).getPcCost() + ((objectList.get(i).getMobileCost() == null) ? 0 : objectList.get(i).getMobileCost()));
@@ -76,8 +83,8 @@ public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureRepor
                 return list;
             } else {
                 int midpoint = (begin + endNumber) / 2;
-                BasistReportPCPlusMobUtil left = new BasistReportPCPlusMobUtil(objectList, begin, midpoint);
-                BasistReportPCPlusMobUtil right = new BasistReportPCPlusMobUtil(objectList, midpoint, endNumber);
+                AccountReportPCPlusMobUtil left = new AccountReportPCPlusMobUtil(objectList, begin, midpoint);
+                AccountReportPCPlusMobUtil right = new AccountReportPCPlusMobUtil(objectList, midpoint, endNumber);
                 left.fork();
                 right.fork();
                 list.addAll(left.join());

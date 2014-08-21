@@ -786,7 +786,6 @@
             var index = $tab_li.index(this);
             $('div.tab_box > div').eq(index).show().siblings().hide();
         });
-
         //加载日历控件
         $("input[name=reservation]").daterangepicker();
         $(".btnDone").on('click', function () {
