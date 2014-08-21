@@ -143,7 +143,6 @@
             }else{
                 $(".on_title").css({"position":"static","margin":"0 auto"});
             }
-            console.log(scroH==navH);
         });
     });
 

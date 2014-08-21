@@ -109,13 +109,13 @@ $('div.zs_box > div').eq(index).show().siblings().hide();
 });
 /*******表格****/
 $(function(){  
-          var items = $(".list4 table tbody tr ");  
-          items.each(function(i) {  
-            var t = $(this);  
-            t.click(function(){  
-                t.addClass("list2_box3");  
-                t.siblings().removeClass("list2_box3"); 
-            });  
+          var items = $(".list4 table tbody tr ");
+          items.each(function(i) {
+            var t = $(this);
+            t.click(function(){
+                t.addClass("list2_box3");
+                t.siblings().removeClass("list2_box3");
+            });
           });
     $("#tbodyClick tr").click(function(){
     	$("#tbodyClick tr").find("td").find("span").remove();
