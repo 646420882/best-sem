@@ -27,6 +27,8 @@ public class ImportLexiconExcel {
             trade = entry.getKey();
         }
         trade = trade.substring(0, trade.indexOf("."));
+        trade = trade.substring(0, trade.length() - 2);
+//        System.out.println("***********************");
 
         ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors() + 1);
         try {
@@ -59,8 +61,9 @@ public class ImportLexiconExcel {
                     entity.setTrade(trade);
                     list.add(entity);
                 }
-                MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+                MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("sys");
                 mongoTemplate.insertAll(list);
+//                System.out.println("=======================" + first);
             } else {
                 int middle = (last - first) / 2;
                 LexiconTask task1 = new LexiconTask(entityList, first, middle + first);

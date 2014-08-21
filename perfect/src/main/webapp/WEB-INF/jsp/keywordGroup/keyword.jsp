@@ -24,86 +24,10 @@
             margin-right: 20px;
         }
 
-        .team_box {
-            background: #fff;
-            left: 25%;
-            position: absolute;
-            top: 100px;
-            padding: 20px;
-            width: 60%;
-            z-index: 999;
-            border-radius: 10px;
-        }
-
     </style>
 
-    <!--文本框插件-->
-    <style type="text/css">
-        input {
-            height: auto;
-            font-size: 14px;
-            font-weight: bold;
-            color: #000
-        }
-
-        textarea {
-            resize: none;
-            border: 1px solid #7f9db9;
-            font-size: 14px;
-            width: 448px;
-            color: #000
-        }
-
-        input {
-            font-size: 14px;
-            color: #000
-        }
-
-        .grey {
-            color: #000
-        }
-
-        em {
-            font-style: normal;
-            color: #f00;
-            font-size: 12px;
-        }
-
-        #ol {
-            position: absolute;
-            z-index: 1;
-            padding: 0px;
-            margin: 0px;
-            border: 0px;
-            background: #ecf0f5;
-            width: 23px;
-            text-align: left;
-        }
-
-        #li {
-            background: #ecf0f5;
-            height: 160px;
-            overflow: hidden;
-            width: 32px;
-            min-height: 350px;
-            border-right: 0;
-            line-height: 20px;
-            text-align: center
-        }
-
-        #c2 {
-            font-family: Arial, Helvetica, sans-serif;
-            height: 160px;
-            margin: 0px;
-            width: 420px;
-            min-height: 350px;
-            padding: 0 0 0 32px;
-            overflow-x: hidden;
-            line-height: 20px;
-        }
-    </style>
 </head>
-<body onLoad=keyUp()>
+<body>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
     <jsp:include page="../homePage/pageBlock/nav.jsp"/>
@@ -126,87 +50,89 @@
                             </ul>
                             <div class="table_concent2 over">
                                 <div class="k_r_top2 over">
-                                        <div class="k_r_middle over">
-                                            <div class="k_top2_text fl">
-                                                <div class="k_top2_text1"><textarea id="textarea1"
-                                                                                    style="overflow:auto; resize: none"></textarea>
-                                                </div>
-                                                <p>可输入词根10/10</p>
-                                                <a href="javascript: findWordFromBaidu();" class="become2">开始拓词</a>
+                                    <div class="k_r_middle over">
+                                        <div class="k_top2_text fl">
+                                            <div class="k_top2_text1"><textarea id="textarea1"
+                                                                                style="overflow:auto; resize: none"></textarea>
                                             </div>
-                                            <div class="K_top2_detali fr over">
-                                                <div class="k_top2_detali2 over">
-                                                    <div class="list01_top2 over">
-                                                        <span>重点关键词监控</span>
-                                                        <a href="#" class="question"></a>
-                                                    </div>
-                                                    <ul>
-                                                        <li>· 搜索引擎（baidu，google）APP</li>
-                                                        <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
-                                                        <li>· 普菲特智能词库</li>
-                                                    </ul>
-                                                </div>
-                                                <div class="k_top2_detali2 over">
-
-                                                    <div class="list01_top2 over">
-                                                        <span>智能过滤</span>
-                                                        <a href="#" class="question"></a>
-                                                    </div>
-                                                    <ul>
-                                                        <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
-                                                        <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
+                                            <p>可输入词根100/100</p>
+                                            <a href="javascript: findWordFromBaidu();" class="become2">开始拓词</a>
                                         </div>
+                                        <div class="K_top2_detali fr over">
+                                            <div class="k_top2_detali2 over">
+                                                <div class="list01_top2 over">
+                                                    <span>重点关键词监控</span>
+                                                    <a href="#" class="question"></a>
+                                                </div>
+                                                <ul>
+                                                    <li>· 搜索引擎（baidu，google）APP</li>
+                                                    <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
+                                                    <li>· 普菲特智能词库</li>
+                                                </ul>
+                                            </div>
+                                            <div class="k_top2_detali2 over">
+
+                                                <div class="list01_top2 over">
+                                                    <span>智能过滤</span>
+                                                    <a href="#" class="question"></a>
+                                                </div>
+                                                <ul>
+                                                    <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
+                                                    <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                     <div class="k_r_under over">
                                         <div class="download over ">
-                                            <%--<a id="addAll" href="#"> 添加全部</a>--%><a href="javascript: downloadCSV();">下载全部</a>
+                                            <a href="javascript: downloadCSV();">下载全部</a>
                                         </div>
-                                        <div class="list2 over">
+                                        <div class="list3 over">
                                             <table border="0" cellspacing="0">
                                                 <thead>
                                                 <tr class="list2_top">
-                                                    <td>
-                                                        <ul>
-                                                            <li><span>分组</span></li>
-                                                            <li><span>种子词</span></li>
-                                                            <li><span>关键词</span></li>
-                                                            <li><span>日均搜索量</span></li>
-                                                            <li><span>竞争激烈程度</span></li>
-                                                            <li><span>一级推荐理由</span></li>
-                                                            <li><span>二级推荐理由</span></li>
-                                                            <li><span>是否已购买</span></li>
-                                                        </ul>
-                                                    </td>
+                                                    <td><span>分组</span></td>
+                                                    <td><span>种子词</span></td>
+                                                    <td><span>关键词</span></td>
+                                                    <td><span>日均搜索量</span></td>
+                                                    <td><span>竞争激烈程度</span></td>
+                                                    <td><span>一级推荐理由</span></td>
+                                                    <td><span>二级推荐理由</span></td>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="tbody1">
                                                 </tbody>
                                             </table>
 
                                         </div>
                                     </div>
                                     <div class="page2">
-                                        <a href="javascript:toPrevPage();">上一页</a><a href="javascript:toNextPage();">下一页</a><span
+                                        <a href="javascript:toPrevPage();">上一页</a><a
+                                            href="javascript:toNextPage();">下一页</a><span
                                             style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
                                             href="javascript:toAnyPage();"> GO</a>
+                                        <a href="#"><span>共计</span><span><b
+                                                id="totalPage1"></b></span><span>页</span></a>
                                     </div>
                                 </div>
                                 <div class="k_r_top2  hides over">
                                     <div class="k_r_middle over">
                                         <div class="k_top2_text fl">
                                             <div class="k_top2_text1">
-                                                <select>
-                                                    <option>请选择行业</option>
+                                                <select id="trade">
+                                                    <option selected="selected" value="">请选择行业</option>
+                                                    <option value="电商">电商</option>
+                                                    <option value="房产">房产</option>
+                                                    <option value="教育">教育</option>
+                                                    <option value="金融">金融</option>
+                                                    <option value="旅游">旅游</option>
                                                 </select>
-                                                <select>
-                                                    <option>服装</option>
+                                                <select id="category">
                                                 </select>
                                             </div>
-                                            <a href="#" class="become2">开始拓词</a>
+                                            <a href="javascript:findWordFromPerfect();" class="become2">开始拓词</a>
                                         </div>
                                         <div class="K_top2_detali fr over">
                                             <div class="k_top2_detali2 over">
@@ -235,33 +161,31 @@
                                     </div>
                                     <div class="k_r_under over">
                                         <div class="download over ">
-                                            <%--<a id="addAll" href="#"> 添加全部</a>--%><a href="javascript: downloadCSV();">下载全部</a>
+                                            <a href="javascript: downloadCSV();">下载全部</a>
                                         </div>
-                                        <div class="list2 over">
+                                        <div class="list3 over">
                                             <table border="0" cellspacing="0">
                                                 <thead>
                                                 <tr class="list2_top">
-                                                    <td>
-                                                        <ul>
-                                                            <li><span>行业</span></li>
-                                                            <li><span>计划</span></li>
-                                                            <li><span>单元</span></li>
-                                                            <li><span>关键词</span></li>
-
-                                                        </ul>
-                                                    </td>
+                                                    <td><span>行业</span></td>
+                                                    <td><span>计划</span></td>
+                                                    <td><span>单元</span></td>
+                                                    <td><span>关键词</span></td>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="tbody2">
                                                 </tbody>
                                             </table>
 
                                         </div>
                                     </div>
                                     <div class="page2">
-                                        <a href="javascript:toPrevPage();">上一页</a><a href="javascript:toNextPage();">下一页</a><span
+                                        <a href="javascript:toPrevPage();">上一页</a><a
+                                            href="javascript:toNextPage();">下一页</a><span
                                             style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
                                             href="javascript:toAnyPage();"> GO</a>
+                                        <a href="#"><span>共计</span><span><b
+                                                id="totalPage2"></b></span><span>页</span></a>
                                     </div>
 
                                 </div>
@@ -275,195 +199,14 @@
         </div>
     </div>
 </div>
-<%--底部弹窗--%>
-<div id="TB_overlayBG"></div>
-
-<div class="team_box" id="team_box" style="display: none">
-    <div id="list01_top" class="list01_top over" style="height: 30px">
-        <span>智能分组</span>
-        <a href="#" class="question"></a>
-        <a href="#" class="close" style="display:block;float:right;">关闭</a>
-    </div>
-    <div id="group_list" class="team over">
-        <ul>
-            <!--
-            <li>
-                <div class="team_top">
-                    <span class="fl"> 新建计划>小商品</span>
-                    <a href="#" class="fr">编辑</a>
-                </div>
-                <div class="team_under">
-                    <ul>
-                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr team"
-                                                                                             type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                    </ul>
-                </div>
-
-            </li>
-            <li>
-                <div class="team_top">
-                    <span class="fl"> 新建计划>小商品</span>
-                    <a href="#" class="fr">编辑</a>
-                </div>
-                <div class="team_under">
-                    <ul>
-                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
-                                                                                             type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                    </ul>
-                </div>
-
-            </li>
-            <li>
-                <div class="team_top">
-                    <span class="fl"> 新建计划>小商品</span>
-                    <a href="#" class="fr">编辑</a>
-                </div>
-                <div class="team_under">
-                    <ul>
-                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
-                                                                                             type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                    </ul>
-                </div>
-
-            </li>
-            <li>
-                <div class="team_top">
-                    <span class="fl"> 新建计划>小商品</span>
-                    <a href="#" class="fr">编辑</a>
-                </div>
-                <div class="team_under">
-                    <ul>
-                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
-                                                                                             type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                    </ul>
-                </div>
-
-            </li>
-            <li>
-                <div class="team_top">
-                    <span class="fl"> 新建计划>小商品</span>
-                    <a href="#" class="fr">编辑</a>
-                </div>
-                <div class="team_under">
-                    <ul>
-                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
-                                                                                             type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                    </ul>
-                </div>
-
-            </li>
-            <li>
-                <div class="team_top">
-                    <span class="fl"> 新建计划>小商品</span>
-                    <a href="#" class="fr">编辑</a>
-                </div>
-                <div class="team_under">
-                    <ul>
-                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
-                                                                                             type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                    </ul>
-                </div>
-
-            </li>
-            <li>
-                <div class="team_top">
-                    <span class="fl"> 新建计划>小商品</span>
-                    <a href="#" class="fr">编辑</a>
-                </div>
-                <div class="team_under">
-                    <ul>
-                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
-                                                                                             type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                    </ul>
-                </div>
-
-            </li>
-            <li>
-                <div class="team_top">
-                    <span class="fl"> 新建计划>小商品</span>
-                    <a href="#" class="fr">编辑</a>
-                </div>
-                <div class="team_under">
-                    <ul>
-                        <li class="current"><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr"
-                                                                                             type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                        <li><a class="fl" href="#">浙江义乌小商品批发市场附近酒店</a><input class="fr" type="button"></li>
-                    </ul>
-                </div>
-
-            </li>
-            -->
-
-        </ul>
-
-    </div>
-    <div class="main_bottom">
-        <div class="w_list03">
-
-            <ul>
-                <li id="save_auto_group" class="current">保存</li>
-                <li class="close">取消</li>
-
-            </ul>
-        </div>
-    </div>
-
-</div>
 <iframe id="downloadhelper_iframe" style="display: none">#document</iframe>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc-min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript">
 
-var type = "bd";    //bd, baidu; p, local
+var type = 1;    //1, baidu; 2, perfect
 
 var krFileId;
 
@@ -473,19 +216,9 @@ var limit = 10;
 
 var total = 0;
 
-window.onload = function () {
-    rDrag.init(document.getElementById('list01_top'));
-};
+var _trade;
 
-String.prototype.trim2 = function () {
-    return this.replace(/(^\s*)|(\s*$)/g, "");
-};
-var F = function (objid) {
-    return document.getElementById(objid).value;
-};
-var G = function (objid) {
-    return document.getElementById(objid);
-};
+var _category;
 
 $(function () {
     var $tab_li = $('.tab_menu2 li');
@@ -495,73 +228,57 @@ $(function () {
         $('div.table_concent2  > div').eq(index).show().siblings().hide();
     });
 
-    $.getJSON("/campaign/getAllCampaign", null, function (data) {
-        if (data.rows.length > 0) {
-            var campaigns = "", datas = data.rows;
-            campaigns += "<option value='' selected='selected'>请选择推广单元</option>";
-            for (var i = 0, l = datas.length; i < l; i++)
-                campaigns += "<option value=" + datas[i].campaignId + ">" + datas[i].campaignName + "</option>";
-            $("#campaign").empty();
-            $("#campaign").append(campaigns);
-        }
-    });
-
-    $("#campaign").change(function () {
-        var campaignId = $("#campaign option:selected").val();
-        $.getJSON("/adgroup/getAdgroupByCampaignId/" + campaignId,
-                {
-                    campaignId: campaignId,
-                    skip: 0,
-                    limit: 100
-                },
+    $("#trade").change(function () {
+        var trade = $("#trade option:selected").val();
+        _trade = trade;
+        $.getJSON("/getKRWords/getCategories",
+                {trade: trade},
                 function (data) {
-                    var adgroups = "", datas = data.rows;
-                    adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
-                    for (var i = 0, l = datas.length; i < l; i++)
-                        adgroups += "<option value=" + datas[i].adgroupId + ">" + datas[i].adgroupName + "</option>";
-                    $("#adgroup").empty();
-                    $("#adgroup").append(adgroups);
+                    var category = "", datas = data.rows;
+                    category += "<option value='' selected='selected'></option>";
+                    for (var i = 0, l = datas.length; i < l; i++) {
+                        if (i == 0) {
+                            category += "<option value='" + datas[i].category + "' selected='selected'>" + datas[i].category + "</option>";
+                            _category = datas[i].category;
+                            continue;
+                        }
+                        category += "<option value='" + datas[i].category + "'>" + datas[i].category + "</option>";
+                    }
+
+                    $("#category").empty();
+                    $("#category").append(category);//休闲鞋-疑问-什么品牌好
                 });
     });
 
-    $("#addAll").on('click', function () {
-        addAllWords();
+    $("#category").change(function () {
+        var category = $("#category option:selected").val();
+        _category = category;
     });
 
-    $("#textarea1").change(function () {
-        var seedWords = $("#textarea1").val().split("\n");
-        $("#textarea1").parent().next().text("可输入词根" + (10 - seedWords.length) + "/10");
-    });
-
-    $("#save_auto_group").on('click', function () {
-        saveAutoGroup();
-    });
-
-    //弹窗
-    $(".team03").click(function () {
-        autoGroup();
-
-        $("#TB_overlayBG").css({
-            display: "block", height: $(document).height()
-        });
-
-        $("#team_box").css({
-            display: "block"
-        });
-    });
-    $(".close").click(function () {
-        $("#TB_overlayBG").css("display", "none");
-        $("#team_box ").css("display", "none");
+    $("#textarea1").livequery('keyup', function () {
+        var seedWords = $("#textarea1").val().trim().split("\n");
+        $("#textarea1").parent().next().text("可输入词根" + (100 - seedWords.length) + "/100");
     });
 });
 
 
 var downloadCSV = function () {
-    var _url = "/getKRWords/downloadCSV?trade=" + "电商行业" + "&category=" + "团购";
-    document.getElementById("downloadhelper_iframe").src = _url;
+    var _url;
+    if (type == 1) {
+        $.getJSON("/getKRWords/getBaiduCSVFilePath",
+                {krFileId: krFileId},
+                function (data) {
+                    _url = data.path;
+                    document.getElementById("downloadhelper_iframe").src = _url;
+                });
+    } else if (type == 2) {
+        _url = "/getKRWords/downloadCSV?trade=" + _trade + "&category=" + _category;
+        document.getElementById("downloadhelper_iframe").src = _url;
+    }
 };
 
 var findWordFromBaidu = function () {
+    type = 1;
     var seedWords = "";
     var words = $("#textarea1").val().split("\n");//种子词数组
     for (var i = 0, l = words.length; i < l; i++) {
@@ -591,10 +308,11 @@ var findWordFromBaidu = function () {
             "krFileId": krFileId
         },
         success: function (data, textStatus, jqXHR) {
-            $("tbody").empty();
+            $("#tbody1").empty();
             if (data.rows.length > 0) {
                 krFileId = data.krFileId;
                 total = data.total;
+                $("#totalPage1").text(Math.ceil(total / limit));
                 var _class = "";
                 $.each(data.rows, function (i, item) {
                     if (i % 2 == 0) {
@@ -603,16 +321,55 @@ var findWordFromBaidu = function () {
                         _class = "list2_box2";
                     }
 
-                    var newTr = "<tr class='" + _class + "'><td><ul>" +
-                            "<li>" + item.seedWord + "</li>" +
-                            "<li>" + item.keywordName + "</li>" +
-                            "<li>" + item.dsQuantity + "</li>" +
-                            "<li>" + item.competition + "</li>" +
-                            "<li>" + item.recommendReason1 + "</li>" +
-                            "<li>" + item.recommendReason2 + "</li>" +
-                            "<li>" + "否" + "</li>" +
-                            "</ul></td></tr>";
-                    $("tbody").append(newTr);
+                    var newTr = "<tr class='" + _class + "'>" +
+                            "<td>" + item.groupName + "</td>" +
+                            "<td>" + item.seedWord + "</td>" +
+                            "<td>" + item.keywordName + "</td>" +
+                            "<td>" + item.dsQuantity + "</td>" +
+                            "<td>" + item.competition + "</td>" +
+                            "<td>" + item.recommendReason1 + "</td>" +
+                            "<td>" + item.recommendReason2 + "</td>" +
+                            "</tr>";
+                    $("#tbody1").append(newTr);
+                });
+            }
+        }
+    });
+};
+
+var findWordFromPerfect = function () {
+    type = 2;
+    var trade = $("#trade option:selected").val();
+    var category = $("#category option:selected").val();
+    $.ajax({
+        url: "/getKRWords/p",
+        type: "GET",
+        data: {
+            "trade": trade,
+            "category": category,
+            "skip": skip,
+            "limit": limit
+        },
+        success: function (data, textStatus, jqXHR) {
+            $("#tbody2").empty();
+            if (data.rows.length > 0) {
+                total = data.total;
+                $("#totalPage2").text(Math.ceil(total / limit));
+                var _class = "";
+                $.each(data.rows, function (i, item) {
+                    if (i % 2 == 0) {
+                        _class = "list2_box1";
+                    } else {
+                        _class = "list2_box2";
+                    }
+
+                    var newTr = "<tr class='" + _class + "'>" +
+                            "<td>" + _trade + "</td>" +
+                            "<td>" + _category + "</td>" +
+                            "<td>" + item.group + "</td>" +
+                            "<td>" + (item.keyword == null ? "" : item.keyword) + "</td>" +
+                            "</tr>";
+                    $("#tbody2").append(newTr);
                 });
             }
         }
@@ -626,42 +383,77 @@ var toPrevPage = function () {
 
     skip--;
 
-    $.ajax({
-        url: "/getKRWords/" + type,
-        type: "GET",
-        async: false,
-        data: {
-            "seedWords": getSeedWords,
-            "skip": skip,
-            "limit": limit,
-            "krFileId": krFileId
-        },
-        success: function (data, textStatus, jqXHR) {
-            $("tbody").empty();
-            if (data.rows.length > 0) {
-                krFileId = data.krFileId;
-                var _class = "";
-                $.each(data.rows, function (i, item) {
-                    if (i % 2 == 0) {
-                        _class = "list2_box1";
-                    } else {
-                        _class = "list2_box2";
-                    }
+    if (type == 1) {
+        $.ajax({
+            url: "/getKRWords/bd",
+            type: "GET",
+            async: false,
+            data: {
+                "seedWords": getSeedWords,
+                "skip": skip,
+                "limit": limit,
+                "krFileId": krFileId
+            },
+            success: function (data, textStatus, jqXHR) {
+                $("#tbody1").empty();
+                if (data.rows.length > 0) {
+                    krFileId = data.krFileId;
+                    var _class = "";
+                    $.each(data.rows, function (i, item) {
+                        if (i % 2 == 0) {
+                            _class = "list2_box1";
+                        } else {
+                            _class = "list2_box2";
+                        }
 
-                    var newTr = "<tr class='" + _class + "'><td><ul>" +
-                            "<li>" + item.seedWord + "</li>" +
-                            "<li>" + item.keywordName + "</li>" +
-                            "<li>" + item.dsQuantity + "</li>" +
-                            "<li>" + item.competition + "</li>" +
-                            "<li>" + item.recommendReason1 + "</li>" +
-                            "<li>" + item.recommendReason2 + "</li>" +
-                            "<li>" + "否" + "</li>" +
-                            "</ul></td></tr>";
-                    $("tbody").append(newTr);
-                });
+                        var newTr = "<tr class='" + _class + "'>" +
+                                "<td>" + item.groupName + "</td>" +
+                                "<td>" + item.seedWord + "</td>" +
+                                "<td>" + item.keywordName + "</td>" +
+                                "<td>" + item.dsQuantity + "</td>" +
+                                "<td>" + item.competition + "</td>" +
+                                "<td>" + item.recommendReason1 + "</td>" +
+                                "<td>" + item.recommendReason2 + "</td>" +
+                                "</tr>";
+                        $("#tbody1").append(newTr);
+                    });
+                }
             }
-        }
-    });
+        });
+    } else {
+        $.ajax({
+            url: "/getKRWords/p",
+            type: "GET",
+            data: {
+                "trade": _trade,
+                "category": _category,
+                "skip": skip,
+                "limit": limit,
+                "status": 1
+            },
+            success: function (data, textStatus, jqXHR) {
+                $("#tbody2").empty();
+                if (data.rows.length > 0) {
+                    var _class = "";
+                    $.each(data.rows, function (i, item) {
+                        if (i % 2 == 0) {
+                            _class = "list2_box1";
+                        } else {
+                            _class = "list2_box2";
+                        }
+
+                        var newTr = "<tr class='" + _class + "'>" +
+                                "<td>" + _trade + "</td>" +
+                                "<td>" + _category + "</td>" +
+                                "<td>" + item.group + "</td>" +
+                                "<td>" + (item.keyword == null ? "" : item.keyword) + "</td>" +
+                                "</tr>";
+                        $("#tbody2").append(newTr);
+                    });
+                }
+            }
+        });
+    }
 };
 
 var toNextPage = function () {
@@ -671,42 +463,77 @@ var toNextPage = function () {
 
     skip++;
 
-    $.ajax({
-        url: "/getKRWords/" + type,
-        type: "GET",
-        async: false,
-        data: {
-            "seedWords": getSeedWords,
-            "skip": skip,
-            "limit": limit,
-            "krFileId": krFileId
-        },
-        success: function (data, textStatus, jqXHR) {
-            $("tbody").empty();
-            if (data.rows.length > 0) {
-                krFileId = data.krFileId;
-                var _class = "";
-                $.each(data.rows, function (i, item) {
-                    if (i % 2 == 0) {
-                        _class = "list2_box1";
-                    } else {
-                        _class = "list2_box2";
-                    }
+    if (type == 1) {
+        $.ajax({
+            url: "/getKRWords/bd",
+            type: "GET",
+            async: false,
+            data: {
+                "seedWords": getSeedWords,
+                "skip": skip,
+                "limit": limit,
+                "krFileId": krFileId
+            },
+            success: function (data, textStatus, jqXHR) {
+                $("#tbody1").empty();
+                if (data.rows.length > 0) {
+                    krFileId = data.krFileId;
+                    var _class = "";
+                    $.each(data.rows, function (i, item) {
+                        if (i % 2 == 0) {
+                            _class = "list2_box1";
+                        } else {
+                            _class = "list2_box2";
+                        }
 
-                    var newTr = "<tr class='" + _class + "'><td><ul>" +
-                            "<li>" + item.seedWord + "</li>" +
-                            "<li>" + item.keywordName + "</li>" +
-                            "<li>" + item.dsQuantity + "</li>" +
-                            "<li>" + item.competition + "</li>" +
-                            "<li>" + item.recommendReason1 + "</li>" +
-                            "<li>" + item.recommendReason2 + "</li>" +
-                            "<li>" + "否" + "</li>" +
-                            "</ul></td></tr>";
-                    $("tbody").append(newTr);
-                });
+                        var newTr = "<tr class='" + _class + "'>" +
+                                "<td>" + item.groupName + "</td>" +
+                                "<td>" + item.seedWord + "</td>" +
+                                "<td>" + item.keywordName + "</td>" +
+                                "<td>" + item.dsQuantity + "</td>" +
+                                "<td>" + item.competition + "</td>" +
+                                "<td>" + item.recommendReason1 + "</td>" +
+                                "<td>" + item.recommendReason2 + "</td>" +
+                                "</tr>";
+                        $("#tbody1").append(newTr);
+                    });
+                }
             }
-        }
-    });
+        });
+    } else {
+        $.ajax({
+            url: "/getKRWords/p",
+            type: "GET",
+            data: {
+                "trade": _trade,
+                "category": _category,
+                "skip": skip,
+                "limit": limit,
+                "status": 1
+            },
+            success: function (data, textStatus, jqXHR) {
+                $("#tbody2").empty();
+                if (data.rows.length > 0) {
+                    var _class = "";
+                    $.each(data.rows, function (i, item) {
+                        if (i % 2 == 0) {
+                            _class = "list2_box1";
+                        } else {
+                            _class = "list2_box2";
+                        }
+
+                        var newTr = "<tr class='" + _class + "'>" +
+                                "<td>" + _trade + "</td>" +
+                                "<td>" + _category + "</td>" +
+                                "<td>" + item.group + "</td>" +
+                                "<td>" + (item.keyword == null ? "" : item.keyword) + "</td>" +
+                                "</tr>";
+                        $("#tbody2").append(newTr);
+                    });
+                }
+            }
+        });
+    }
 };
 
 var toAnyPage = function () {
@@ -717,259 +544,79 @@ var toAnyPage = function () {
 
     skip--;
 
-    $.ajax({
-        url: "/getKRWords/" + type,
-        type: "GET",
-        async: false,
-        data: {
-            "seedWords": getSeedWords,
-            "skip": skip,
-            "limit": limit,
-            "krFileId": krFileId
-        },
-        success: function (data, textStatus, jqXHR) {
-            $("tbody").empty();
-            if (data.rows.length > 0) {
-                krFileId = data.krFileId;
-                var _class = "";
-                $.each(data.rows, function (i, item) {
-                    if (i % 2 == 0) {
-                        _class = "list2_box1";
-                    } else {
-                        _class = "list2_box2";
-                    }
-
-                    var newTr = "<tr class='" + _class + "'><td><ul>" +
-                            "<li>" + item.groupName + "</li>" +
-                            "<li>" + item.seedWord + "</li>" +
-                            "<li>" + item.keywordName + "</li>" +
-                            "<li>" + item.dsQuantity + "</li>" +
-                            "<li>" + item.competition + "</li>" +
-                            "<li>" + item.recommendReason1 + "</li>" +
-                            "<li>" + item.recommendReason2 + "</li>" +
-                            "<li>" + "否" + "</li>" +
-                            "</ul></td></tr>";
-                    $("tbody").append(newTr);
-                });
-            }
-        }
-    });
-};
-
-//添加全部关键词到左侧textarea
-var addAllWords = function () {
-    $.ajax({
-        url: "/getKRWords/" + type,
-        type: "GET",
-        async: false,
-        data: {
-            "seedWords": getSeedWords,
-            "skip": skip,
-            "limit": 500,
-            "krFileId": krFileId
-        },
-        success: function (data, textStatus, jqXHR) {
-            if (data.rows.length > 0) {
-                krFileId = data.krFileId;
-                $.each(data.rows, function (i, item) {
-                    if (i == 0) {
-                        var str = $("#c2").val();
-                        if (str == null || str.trim().length == 0) {
-                            $("#c2").val(item.keywordName);
-                            keyUp();
+    if (type == 1) {
+        $.ajax({
+            url: "/getKRWords/bd",
+            type: "GET",
+            async: false,
+            data: {
+                "seedWords": getSeedWords,
+                "skip": skip,
+                "limit": limit,
+                "krFileId": krFileId
+            },
+            success: function (data, textStatus, jqXHR) {
+                $("#tbody1").empty();
+                if (data.rows.length > 0) {
+                    krFileId = data.krFileId;
+                    var _class = "";
+                    $.each(data.rows, function (i, item) {
+                        if (i % 2 == 0) {
+                            _class = "list2_box1";
+                        } else {
+                            _class = "list2_box2";
                         }
-                        else {
-                            $("#c2").val(str + "\n" + item.keywordName);
-                            keyUp();
-                        }
-                        return true;
-                    }
-                    var _str = $("#c2").val();
-                    $("#c2").val(_str + "\n" + item.keywordName);
-                    keyUp();
-                });
-            }
-        }
-    });
-};
 
-//自动分组
-var autoGroup = function () {
-    var str = $("#c2").text();
-    if (str == null || str.trim().length == 0) {
-        alert("没有合法的关键词可供分组");
-        return;
-    }
-    var _str = str.split("\n");
-    var words = "";
-    for (var i = 0, l = _str.length; i < l; i++) {
-        if (i == 0) {
-            words += _str[i];
-            continue;
-        }
-        words += ";" + _str[i];
-    }
-
-    $.ajax({
-        url: "/getKRWords/group",
-        type: "POST",
-        data: {
-            "words": words
-        },
-        async: false,
-        dataType: "json",
-        success: function (data, textStatus, jqXHR) {
-            $("#group_list ul").empty();
-            $.each(data.rows, function (i, item) {
-                var _li = "" +
-                        "<li>" +
-                        "<div class='team_top'>" +
-                        "<span class='fl'> 新建计划>" + item.adgroupName + "</span>" +
-                        "<a href='#' class='fr'>编辑</a>" +
-                        "</div>" +
-                        "<div class='team_under'>" +
-                        "<ul>";
-                var _keywords = item.keywords;
-                var lis = "";
-                for (var j = 0, l = _keywords.length; j < l; j++) {
-                    if (j == 0) {
-                        lis = "<li class='current'><a class='fl' href='#'>" + _keywords[j] + "</a><input class='fr team' type='button'></li>";
-                        continue;
-                    }
-                    lis += "<li><a class='fl' href='#'>" + _keywords[j] + "</a><input class='fr team' type='button'></li>";
+                        var newTr = "<tr class='" + _class + "'>" +
+                                "<td>" + item.groupName + "</td>" +
+                                "<td>" + item.seedWord + "</td>" +
+                                "<td>" + item.keywordName + "</td>" +
+                                "<td>" + item.dsQuantity + "</td>" +
+                                "<td>" + item.competition + "</td>" +
+                                "<td>" + item.recommendReason1 + "</td>" +
+                                "<td>" + item.recommendReason2 + "</td>" +
+                                "</tr>";
+                        $("#tbody1").append(newTr);
+                    });
                 }
-                _li += lis + "</ul></div></li>";
-                $("#group_list>ul").append(_li);
-            });
-        }
-    });
-};
-
-var saveAutoGroup = function () {
-    var adgroups = [];
-    var keywords = [];
-    var lis1 = $("#group_list>ul>li");
-    $.each(lis1, function (i) {
-        var adgroup = {};
-        var adgroupName = $(this).find("span").text();
-        adgroupName = adgroupName.substring(adgroupName.indexOf(">") + 1);
-        adgroup["adgroupId"] = (i + 1);
-        adgroup["adgroupName"] = adgroupName;
-        adgroups.push(adgroup);
-        var lis2 = $(this).find("ul>li");
-        $.each(lis2, function () {
-            var keywordEntity = {};
-            keywordEntity["adgroupId"] = (i + 1);
-            keywordEntity["keyword"] = $(this).find("a").text();
-            keywords.push(keywordEntity);
+            }
         });
-    });
+    } else {
+        $.ajax({
+            url: "/getKRWords/p",
+            type: "GET",
+            data: {
+                "trade": _trade,
+                "category": _category,
+                "skip": skip,
+                "limit": limit,
+                "status": 1
+            },
+            success: function (data, textStatus, jqXHR) {
+                $("#tbody2").empty();
+                if (data.rows.length > 0) {
+                    var _class = "";
+                    $.each(data.rows, function (i, item) {
+                        if (i % 2 == 0) {
+                            _class = "list2_box1";
+                        } else {
+                            _class = "list2_box2";
+                        }
 
-    $.ajax({
-        url: "/getKRWords/addAdgroups",
-        type: "POST",
-        data: JSON.stringify(adgroups),
-        async: false,
-        dataType: "json",
-        contentType: "application/json;charset=UTF-8",
-        success: function (data, textStatus, jqXHR) {
-        }
-    });
-
-    $.ajax({
-        url: "/getKRWords/addKeywords",
-        type: "POST",
-        data: JSON.stringify(keywords),
-        async: false,
-        dataType: "json",
-        contentType: "application/json;charset=UTF-8",
-        success: function (data, textStatus, jqXHR) {
-            alert(data.statusText);
-        }
-    });
+                        var newTr = "<tr class='" + _class + "'>" +
+                                "<td>" + _trade + "</td>" +
+                                "<td>" + _category + "</td>" +
+                                "<td>" + item.group + "</td>" +
+                                "<td>" + (item.keyword == null ? "" : item.keyword) + "</td>" +
+                                "</tr>";
+                        $("#tbody2").append(newTr);
+                    });
+                }
+            }
+        });
+    }
 };
 
-</script>
-<!-- textarea js -->
-<script type="text/javascript">
-    var msgA = ["msg1", "msg2", "msg3", "msg4"];
-    var c = ["c1", "c2", "c3", "c4"];
-    var slen = [50, 20000, 20000, 60];  //最大可设置行数
-    var num = "";
-    var isfirst = [0, 0, 0, 0, 0, 0];
-    function isEmpty(strVal) {
-        return strVal == "";
-    }
-    function isBlank(testVal) {
-        var regVal = /^\s*$/;
-        return (regVal.test(testVal))
-    }
-    function chLen(strVal) {
-        strVal = strVal.trim2();
-        var cArr = strVal.match(/[^\x00-\xff]/ig);
-        return strVal.length + (cArr == null ? 0 : cArr.length);
-    }
-    function check(i) {
-        var iValue = F("c" + i);
-        var iObj = G("msg" + i);
-        var n = (chLen(iValue) > slen[i - 1]);
-        if (iObj != null) {
-            if ((isBlank(iValue) == true) || (isEmpty(iValue) == true) || n == true) {
-                iObj.style.display = "block";
-            } else {
-                iObj.style.display = "none";
-            }
-        }
-    }
-    function checkAll() {
-        for (var i = 0; i < msgA.length; i++) {
-            check(i + 1);
-            if (G(msgA[i]).style.display == "none") {
-                continue;
-            } else {
-                return;
-            }
-        }
-    }
-    function clearValue(i) {
-        G(c[i - 1]).style.color = "#000";
-        keyUp();
-        if (isfirst[i] == 0) {
-            //G(c[i - 1]).value = "";
-        }
-        isfirst[i] = 1;
-    }
-    function keyUp() {
-        var obj = G("c2");
-        var str = obj.value;
-        str = str.replace(/\r/gi, "");
-        str = str.split("\n");
-        n = str.length;
-        line(n);
-    }
-    function line(n) {
-        var lineobj = G("li");
-        for (var i = 1; i <= n; i++) {
-            if (document.all) {
-                num += i + "\r\n";
-            } else {
-                num += i + "\n";
-            }
-        }
-        lineobj.value = num;
-        num = "";
-    }
-    function autoScroll() {
-        var nV = 0;
-        if (!document.all) {
-            nV = G("c2").scrollTop;
-            G("li").scrollTop = nV;
-            setTimeout("autoScroll()", 20);
-        }
-    }
-    if (!document.all) {
-        window.addEventListener("load", autoScroll, false);
-    }
 </script>
 </body>
 </html>

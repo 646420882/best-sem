@@ -64,13 +64,50 @@ public class KeywordGroupController {
     public ModelAndView getKeywordFromPerfect(@RequestParam(value = "trade", required = false) String trade,
                                               @RequestParam(value = "category", required = false) String category,
                                               @RequestParam(value = "skip", required = false, defaultValue = "0") Integer skip,
-                                              @RequestParam(value = "limit", required = false, defaultValue = "1000") Integer limit) {
+                                              @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit,
+                                              @RequestParam(value = "status", required = false, defaultValue = "0") Integer status) {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> values = keywordGroupService.getKeywordFromPerfect(trade, category, skip, limit);
+        Map<String, Object> values = keywordGroupService.getKeywordFromPerfect(trade, category, skip, limit, status);
         jsonView.setAttributesMap(values);
         return new ModelAndView(jsonView);
     }
 
+    /**
+     * 获取行业词库下的类别
+     *
+     * @param trade
+     * @return
+     */
+    @RequestMapping(value = "/getCategories", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getCategories(@RequestParam(value = "trade") String trade) {
+        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> values = keywordGroupService.findCategories(trade);
+        jsonView.setAttributesMap(values);
+        return new ModelAndView(jsonView);
+    }
+
+    /**
+     * 获取百度CSV文件下载路径
+     *
+     * @param krFileId
+     * @return
+     */
+    @RequestMapping(value = "/getBaiduCSVFilePath", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getBaiduCSVFilePath(@RequestParam(value = "krFileId") String krFileId) {
+        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> values = keywordGroupService.getBaiduCSVFilePath(krFileId);
+        jsonView.setAttributesMap(values);
+        return new ModelAndView(jsonView);
+    }
+
+    /**
+     * 下载CSV词库文件
+     *
+     * @param response
+     * @param trade
+     * @param category
+     * @return
+     */
     @RequestMapping(value = "/downloadCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ModelAndView downloadCSV(HttpServletResponse response,
                                     @RequestParam(value = "trade", required = false) String trade,

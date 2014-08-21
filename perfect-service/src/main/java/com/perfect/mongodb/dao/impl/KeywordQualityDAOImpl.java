@@ -115,7 +115,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
             List<KeywordReportEntity> voList = new ArrayList<>();
             boolean status = (last - first) < threshold;
             if (status) {
-                MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_shangpin_report");
+                MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
                 for (int i = first; i < last; i++) {
                     voList.addAll(mongoTemplate.findAll(KeywordReportEntity.class, collectionNameList.get(i)));
                 }

@@ -1,7 +1,8 @@
 package com.perfect.entity;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -11,6 +12,9 @@ import java.io.Serializable;
  * Created by baizz on 2014-08-18.
  */
 @Document(collection = "sys_keyword")
+@CompoundIndexes({
+        @CompoundIndex(name = "keyword_index", def = "{tr : 1, kw : 1}")
+})
 public class LexiconEntity implements Serializable {
 
     @Id
@@ -26,7 +30,6 @@ public class LexiconEntity implements Serializable {
     private String group;
 
     @Field("kw")
-    @Indexed
     private String keyword;
 
     public String getId() {

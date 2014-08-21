@@ -1,5 +1,6 @@
 package com.perfect.service.impl;
 
+import com.google.common.collect.Maps;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
@@ -72,7 +73,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         }
     }
 
-    public Map<String, Object> getKeywordFromPerfect(String trade, String category, int skip, int limit) {
+    public Map<String, Object> getKeywordFromPerfect(String trade, String category, int skip, int limit, int status) {
         //查询参数
         Map<String, Object> params = new HashMap<>();
         if (trade != null) {
@@ -83,7 +84,59 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         }
 
         List<LexiconEntity> list = keywordGroupDAO.find(params, skip, limit);
-        return JSONUtils.getJsonMapData(list);
+        Map<String, Object> values = Maps.newHashMap(JSONUtils.getJsonMapData(list));
+
+        //获取记录总数
+        if (status == 1) {//在进行分页操作
+            Jedis jedis = null;
+            try {
+                jedis = JRedisUtils.get();
+                if (jedis.ttl("keyword_total") == -1) {
+                    Integer total = keywordGroupDAO.getCurrentRowsSize(params);
+                    Map<String, String> tempMap = new HashMap<>();
+                    tempMap.put("total", total.toString());
+                    saveToRedis("keyword_total", tempMap);
+                    values.put("total", total);
+                }
+                values.put("total", jedis.hgetAll("keyword_total").get("total"));
+            } catch (final Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (jedis != null) {
+                    JRedisUtils.returnJedis(jedis);
+                }
+            }
+        } else {//在进行查询操作
+            Jedis jedis = null;
+            try {
+                jedis = JRedisUtils.get();
+                Integer total = keywordGroupDAO.getCurrentRowsSize(params);
+                Map<String, String> tempMap = new HashMap<>();
+                tempMap.put("total", total.toString());
+                saveToRedis("keyword_total", tempMap);
+                values.put("total", total);
+            } catch (final Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (jedis != null) {
+                    JRedisUtils.returnJedis(jedis);
+                }
+            }
+        }
+
+
+        return values;
+    }
+
+    public Map<String, Object> getBaiduCSVFilePath(String krFileId) {
+        KRService krService = getKRService();
+        Map<String, Object> values = new HashMap<>();
+        GetKRFilePathRequest getKRFilePathRequest = new GetKRFilePathRequest();
+        getKRFilePathRequest.setKrFileId(krFileId);
+        GetKRFilePathResponse getKRFilePathResponse = krService.getKRFilePath(getKRFilePathRequest);
+        String krFilePath = getKRFilePathResponse.getFilePath();
+        values.put("path", krFilePath);
+        return values;
     }
 
     public void downloadCSV(String trade, String category, OutputStream os) {
@@ -103,12 +156,16 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         try {
             os.write(bytes);
             for (LexiconEntity entity : list) {
-                bytes = (entity.getTrade().substring(0, entity.getTrade().length() - 2) + "," + entity.getCategory() + "," + entity.getGroup() + "," + entity.getKeyword() + "\r\n").getBytes();
+                bytes = (entity.getTrade() + "," + entity.getCategory() + "," + entity.getGroup() + "," + entity.getKeyword() + "\r\n").getBytes();
                 os.write(bytes);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Map<String, Object> findCategories(String trade) {
+        return JSONUtils.getJsonMapData(keywordGroupDAO.findCategories(trade));
     }
 
     public Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit) {
@@ -206,12 +263,12 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         return redisMap;
     }
 
-    private void saveToRedis(String krFileId, Map<String, String> redisMap) {
+    private void saveToRedis(String id, Map<String, String> redisMap) {
         Jedis jedis = null;
         try {
             jedis = JRedisUtils.get();
-            jedis.hmset(krFileId, redisMap);
-            jedis.expire(krFileId, 300);
+            jedis.hmset(id, redisMap);
+            jedis.expire(id, 600);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
