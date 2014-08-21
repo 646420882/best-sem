@@ -5,6 +5,8 @@
 }
 .concent {
     position: relative;
+    margin-top:77px;
+    *padding-top:77px;
     background: url(/public/img/concent_bg.jpg) repeat;
     font-family: "微软雅黑";
     font-size: 12px;

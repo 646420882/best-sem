@@ -45,7 +45,11 @@ table{
 }
 /*top*/
 .top {
-	height: 77px;
+    width:100%;
+    height: 77px;
+    position:fixed;
+    top:0px;
+    left:0px;
 	line-height: 77px;
 	background: url(/public/img/top_bg.jpg) center repeat;
 	-webkit-background-size: cover;
@@ -53,6 +57,8 @@ table{
 	-o-background-size: cover;
 	background-size: cover;
 	vertical-align: middle;
+    z-index:98;
+
 }
 .logo {
 	height: 53px;
@@ -81,11 +87,13 @@ table{
     padding: 0 5%;
 }
 .on_title {
+    width:100%;
 	padding-left: 20px;
 	height: 32px;
 	line-height: 32px;
 	background: url(/public/img/title_bg.jpg) repeat-x;
 	border-bottom: 1px solid #abafbc;
+    z-index:98;
 }
 .on_title a {
 	color: #000000;
@@ -115,9 +123,10 @@ table{
 /*nav*/
 .nav {
 	width: 15%;
-	border-top: 1px solid #48464c;
 	max-height: 900px;
    *max-height:902px;
+    position:fixed;
+    *padding-top:77px;
 }
 .nav_left {
 	width: 97%;
