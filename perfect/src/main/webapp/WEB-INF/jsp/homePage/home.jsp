@@ -787,23 +787,6 @@
             $('div.tab_box > div').eq(index).show().siblings().hide();
         });
 
-        var navH = $(".nav").offset().top;
-        $(window).scroll(function () {
-            var scroH = $(this).scrollTop();
-            if (scroH >= navH) {
-                $(".nav").css({
-                    "position": "fixed",
-                    "top": "0"
-                });
-            } else {
-                $(".nav").css({
-                    "position": "static",
-                    "margin": "0 auto"
-                });
-            }
-            console.log(scroH == navH);
-        });
-
         //加载日历控件
         $("input[name=reservation]").daterangepicker();
         $(".btnDone").on('click', function () {
