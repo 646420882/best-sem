@@ -1,17 +1,14 @@
 package com.perfect.entity;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
 /**
- * Created by baizz on 2014-08-13.
+ * Created by john on 2014/8/21.
  */
-@Document(collection = "account_report")
-public class AccountReportEntity {
-
+public class AccountReportResponse {
     @Id
     private String id;
 
@@ -65,6 +62,10 @@ public class AccountReportEntity {
 
     @Field(value = "mcs")
     private Double mobileConversion;
+
+    private long count;
+
+    private String dateRep;
 
     public String getId() {
         return id;
@@ -210,16 +211,34 @@ public class AccountReportEntity {
         this.mobileConversion = mobileConversion;
     }
 
+    public long getCount() {
+        return count;
+    }
+
+    public void setCount(long count) {
+        this.count = count;
+    }
+
+    public String getDateRep() {
+        return dateRep;
+    }
+
+    public void setDateRep(String dateRep) {
+        this.dateRep = dateRep;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AccountReportEntity that = (AccountReportEntity) o;
+        AccountReportResponse that = (AccountReportResponse) o;
 
+        if (count != that.count) return false;
         if (accountId != null ? !accountId.equals(that.accountId) : that.accountId != null) return false;
         if (accountName != null ? !accountName.equals(that.accountName) : that.accountName != null) return false;
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (dateRep != null ? !dateRep.equals(that.dateRep) : that.dateRep != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (mobileClick != null ? !mobileClick.equals(that.mobileClick) : that.mobileClick != null) return false;
         if (mobileConversion != null ? !mobileConversion.equals(that.mobileConversion) : that.mobileConversion != null)
@@ -261,12 +280,14 @@ public class AccountReportEntity {
         result = 31 * result + (mobileCpc != null ? mobileCpc.hashCode() : 0);
         result = 31 * result + (mobileCpm != null ? mobileCpm.hashCode() : 0);
         result = 31 * result + (mobileConversion != null ? mobileConversion.hashCode() : 0);
+        result = 31 * result + (int) (count ^ (count >>> 32));
+        result = 31 * result + (dateRep != null ? dateRep.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "AccountReportEntity{" +
+        return "AccountReportResponse{" +
                 "id='" + id + '\'' +
                 ", accountId=" + accountId +
                 ", accountName='" + accountName + '\'' +
@@ -285,8 +306,8 @@ public class AccountReportEntity {
                 ", mobileCpc=" + mobileCpc +
                 ", mobileCpm=" + mobileCpm +
                 ", mobileConversion=" + mobileConversion +
+                ", count=" + count +
+                ", dateRep='" + dateRep + '\'' +
                 '}';
     }
-
-
 }

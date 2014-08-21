@@ -47,14 +47,14 @@ public class AccountAnalyzeDAOImpl extends AbstractUserBaseDAOImpl<KeywordRealTi
         } else {
             sort = new Sort(Sort.Direction.DESC, fieldName);
         }
-        List<AccountRealTimeDataVOEntity> list = getMongoTemplate().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(sort).skip(0).limit(limit), AccountRealTimeDataVOEntity.class, "accountRealTimeData");
+        List<AccountRealTimeDataVOEntity> list = getMongoTemplate().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(sort).skip(0).limit(limit), AccountRealTimeDataVOEntity.class, "account_report");
         return list;
     }
 
     @Override
     public List<AccountRealTimeDataVOEntity> performaneCurve(Date startDate, Date endDate) {
 
-        List<AccountRealTimeDataVOEntity> list = getMongoTemplate().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.ASC, "date")), AccountRealTimeDataVOEntity.class, "accountRealTimeData");
+        List<AccountRealTimeDataVOEntity> list = getMongoTemplate().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.ASC, "date")), AccountRealTimeDataVOEntity.class, "account_report");
         return list;
     }
 }

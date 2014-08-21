@@ -21,6 +21,27 @@ public class StructureReportEntity {
     @Field(value = "cpna")
     private String campaignName; //计划
 
+    @Field(value = "kwna")
+    private String keywordName; //关键字
+
+    @Field(value = "crid")
+    private Long creativeId;    //创意ID
+
+    @Field(value = "crtl")
+    private String creativeTitle; //创意标题
+
+    @Field(value = "des1")
+    private String description1;//创意内容1
+
+    @Field(value = "des2")
+    private String description2;//创意内容2
+
+    @Field(value = "rgid")
+    private Long regionId; //地域ID
+
+    @Field(value = "rgna")
+    private String regionName; //地域名称
+
     @Field(value = "pcis")
     private Integer pcImpression;     //PC展现次数
 
@@ -101,6 +122,62 @@ public class StructureReportEntity {
 
     public void setCampaignName(String campaignName) {
         this.campaignName = campaignName;
+    }
+
+    public String getKeywordName() {
+        return keywordName;
+    }
+
+    public void setKeywordName(String keywordName) {
+        this.keywordName = keywordName;
+    }
+
+    public Long getCreativeId() {
+        return creativeId;
+    }
+
+    public void setCreativeId(Long creativeId) {
+        this.creativeId = creativeId;
+    }
+
+    public String getCreativeTitle() {
+        return creativeTitle;
+    }
+
+    public void setCreativeTitle(String creativeTitle) {
+        this.creativeTitle = creativeTitle;
+    }
+
+    public String getDescription1() {
+        return description1;
+    }
+
+    public void setDescription1(String description1) {
+        this.description1 = description1;
+    }
+
+    public String getDescription2() {
+        return description2;
+    }
+
+    public void setDescription2(String description2) {
+        this.description2 = description2;
+    }
+
+    public Long getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Long regionId) {
+        this.regionId = regionId;
+    }
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
     }
 
     public Integer getPcImpression() {
@@ -220,29 +297,42 @@ public class StructureReportEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        StructureReportEntity that = (StructureReportEntity) o;
+        StructureReportEntity entity = (StructureReportEntity) o;
 
-        if (adgroupId != null ? !adgroupId.equals(that.adgroupId) : that.adgroupId != null) return false;
-        if (adgroupName != null ? !adgroupName.equals(that.adgroupName) : that.adgroupName != null) return false;
-        if (campaignName != null ? !campaignName.equals(that.campaignName) : that.campaignName != null) return false;
-        if (date != null ? !date.equals(that.date) : that.date != null) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (mobileClick != null ? !mobileClick.equals(that.mobileClick) : that.mobileClick != null) return false;
-        if (mobileConversion != null ? !mobileConversion.equals(that.mobileConversion) : that.mobileConversion != null)
+        if (adgroupId != null ? !adgroupId.equals(entity.adgroupId) : entity.adgroupId != null) return false;
+        if (adgroupName != null ? !adgroupName.equals(entity.adgroupName) : entity.adgroupName != null) return false;
+        if (campaignName != null ? !campaignName.equals(entity.campaignName) : entity.campaignName != null)
             return false;
-        if (mobileCost != null ? !mobileCost.equals(that.mobileCost) : that.mobileCost != null) return false;
-        if (mobileCpc != null ? !mobileCpc.equals(that.mobileCpc) : that.mobileCpc != null) return false;
-        if (mobileCpm != null ? !mobileCpm.equals(that.mobileCpm) : that.mobileCpm != null) return false;
-        if (mobileCtr != null ? !mobileCtr.equals(that.mobileCtr) : that.mobileCtr != null) return false;
-        if (mobileImpression != null ? !mobileImpression.equals(that.mobileImpression) : that.mobileImpression != null)
+        if (creativeId != null ? !creativeId.equals(entity.creativeId) : entity.creativeId != null) return false;
+        if (creativeTitle != null ? !creativeTitle.equals(entity.creativeTitle) : entity.creativeTitle != null)
             return false;
-        if (pcClick != null ? !pcClick.equals(that.pcClick) : that.pcClick != null) return false;
-        if (pcConversion != null ? !pcConversion.equals(that.pcConversion) : that.pcConversion != null) return false;
-        if (pcCost != null ? !pcCost.equals(that.pcCost) : that.pcCost != null) return false;
-        if (pcCpc != null ? !pcCpc.equals(that.pcCpc) : that.pcCpc != null) return false;
-        if (pcCpm != null ? !pcCpm.equals(that.pcCpm) : that.pcCpm != null) return false;
-        if (pcCtr != null ? !pcCtr.equals(that.pcCtr) : that.pcCtr != null) return false;
-        if (pcImpression != null ? !pcImpression.equals(that.pcImpression) : that.pcImpression != null) return false;
+        if (date != null ? !date.equals(entity.date) : entity.date != null) return false;
+        if (description1 != null ? !description1.equals(entity.description1) : entity.description1 != null)
+            return false;
+        if (description2 != null ? !description2.equals(entity.description2) : entity.description2 != null)
+            return false;
+        if (id != null ? !id.equals(entity.id) : entity.id != null) return false;
+        if (keywordName != null ? !keywordName.equals(entity.keywordName) : entity.keywordName != null) return false;
+        if (mobileClick != null ? !mobileClick.equals(entity.mobileClick) : entity.mobileClick != null) return false;
+        if (mobileConversion != null ? !mobileConversion.equals(entity.mobileConversion) : entity.mobileConversion != null)
+            return false;
+        if (mobileCost != null ? !mobileCost.equals(entity.mobileCost) : entity.mobileCost != null) return false;
+        if (mobileCpc != null ? !mobileCpc.equals(entity.mobileCpc) : entity.mobileCpc != null) return false;
+        if (mobileCpm != null ? !mobileCpm.equals(entity.mobileCpm) : entity.mobileCpm != null) return false;
+        if (mobileCtr != null ? !mobileCtr.equals(entity.mobileCtr) : entity.mobileCtr != null) return false;
+        if (mobileImpression != null ? !mobileImpression.equals(entity.mobileImpression) : entity.mobileImpression != null)
+            return false;
+        if (pcClick != null ? !pcClick.equals(entity.pcClick) : entity.pcClick != null) return false;
+        if (pcConversion != null ? !pcConversion.equals(entity.pcConversion) : entity.pcConversion != null)
+            return false;
+        if (pcCost != null ? !pcCost.equals(entity.pcCost) : entity.pcCost != null) return false;
+        if (pcCpc != null ? !pcCpc.equals(entity.pcCpc) : entity.pcCpc != null) return false;
+        if (pcCpm != null ? !pcCpm.equals(entity.pcCpm) : entity.pcCpm != null) return false;
+        if (pcCtr != null ? !pcCtr.equals(entity.pcCtr) : entity.pcCtr != null) return false;
+        if (pcImpression != null ? !pcImpression.equals(entity.pcImpression) : entity.pcImpression != null)
+            return false;
+        if (regionId != null ? !regionId.equals(entity.regionId) : entity.regionId != null) return false;
+        if (regionName != null ? !regionName.equals(entity.regionName) : entity.regionName != null) return false;
 
         return true;
     }
@@ -254,6 +344,13 @@ public class StructureReportEntity {
         result = 31 * result + (adgroupId != null ? adgroupId.hashCode() : 0);
         result = 31 * result + (adgroupName != null ? adgroupName.hashCode() : 0);
         result = 31 * result + (campaignName != null ? campaignName.hashCode() : 0);
+        result = 31 * result + (keywordName != null ? keywordName.hashCode() : 0);
+        result = 31 * result + (creativeId != null ? creativeId.hashCode() : 0);
+        result = 31 * result + (creativeTitle != null ? creativeTitle.hashCode() : 0);
+        result = 31 * result + (description1 != null ? description1.hashCode() : 0);
+        result = 31 * result + (description2 != null ? description2.hashCode() : 0);
+        result = 31 * result + (regionId != null ? regionId.hashCode() : 0);
+        result = 31 * result + (regionName != null ? regionName.hashCode() : 0);
         result = 31 * result + (pcImpression != null ? pcImpression.hashCode() : 0);
         result = 31 * result + (pcClick != null ? pcClick.hashCode() : 0);
         result = 31 * result + (pcCtr != null ? pcCtr.hashCode() : 0);
@@ -279,6 +376,13 @@ public class StructureReportEntity {
                 ", adgroupId=" + adgroupId +
                 ", adgroupName='" + adgroupName + '\'' +
                 ", campaignName='" + campaignName + '\'' +
+                ", keywordName='" + keywordName + '\'' +
+                ", creativeId=" + creativeId +
+                ", creativeTitle='" + creativeTitle + '\'' +
+                ", description1='" + description1 + '\'' +
+                ", description2='" + description2 + '\'' +
+                ", regionId=" + regionId +
+                ", regionName='" + regionName + '\'' +
                 ", pcImpression=" + pcImpression +
                 ", pcClick=" + pcClick +
                 ", pcCtr=" + pcCtr +
