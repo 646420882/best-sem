@@ -1572,7 +1572,7 @@
 
      });*/
 
-<<<<<<< Updated upstream
+
     /*function loadReady() {
      var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
      htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
@@ -1581,18 +1581,14 @@
      if (h < 1000) h = 1000;
      demoIframe.height(h);
      }*/
-=======
+
 </script>
 
 <style type="text/css">
     .tab_box {
         padding: 0px 3% 0 0;
     }
->>>>>>> Stashed changes
-
 </script>
-<%--AssistantCreative Js--%>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/assistantCreative/creative.js"></script>
+
 </body>
 </html>
