@@ -146,7 +146,7 @@ $(document).ready(function()
 	  {
 		  if ($(".more_list").css("display") == "none") 
 			 {
-                 $(".more_list").css({ top: e.pageY + 70 + "px", left: e.pageX });
+                 $(".more_list").css({ top: e.pageY + -70 + "px", left: e.pageX });
                  $(".more_list").show();
 				  $(".more_list ").mouseleave(function(){
                  $(".more_list").css("display","none");
