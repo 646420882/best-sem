@@ -137,28 +137,26 @@ $(function(){
     	$("#tbodyClick5 tr").find("td").find("span").remove();
 		$(this).find("td").append("<span class='editor'></span>");
 	 });
+
+    //小窗口切换
+    $('.editor').livequery("click",function(e)
+    {
+        if ($(".more_list").css("display") == "none")
+        {
+            $(".more_list").css({ top: e.pageY + 70 + "px", left: e.pageX });
+            $(".more_list").show();
+            $(".more_list ").mouseleave(function(){
+                $(".more_list").css("display","none");
+            });
+        }
+        else
+        {
+            $(".more_list").hide();
+
+        }
+    });
 });
-/*******小功能窗口****/
-  
-$(document).ready(function()
-	{
-	  $('.editor').live("click",function(e)
-	  {
-		  if ($(".more_list").css("display") == "none") 
-			 {
-                 $(".more_list").css({ top: e.pageY + 10 + "px", left: e.pageX });
-                 $(".more_list").show();
-				  $(".more_list ").mouseleave(function(){
-                 $(".more_list").css("display","none");
-           });
-			 }
-		  else
-		     {
-				 $(".more_list").hide();
-				 
-			 }		 
-      }); 
-   });
+
 /*******弹窗切换****/
 $(document).ready(function(){
 $('.more_list ul li').click(function(){
