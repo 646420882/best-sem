@@ -977,18 +977,6 @@ function TestBlack(TagName) {
         obj.style.display = "";
     }
 }
-$(function () {
-    var navH = $(".nav").offset().top;
-    $(window).scroll(function () {
-        var scroH = $(this).scrollTop();
-        if (scroH >= navH) {
-            $(".nav").css({"position": "fixed", "top": "0"});
-        } else {
-            $(".nav").css({"position": "static", "margin": "0 auto"});
-        }
-        console.log(scroH == navH);
-    });
-});
 
 
 </script>
