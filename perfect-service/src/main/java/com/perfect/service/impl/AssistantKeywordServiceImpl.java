@@ -144,6 +144,43 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService{
     }
 
 
+
+    /**
+     * （用户选择计划，单元，输入关键词的方式）
+     * 将用户输入的关键词信息添加或更新到数据库
+     * @param accountId 当前账户id
+     * @param isReplace 是否将用户输入的信息替换该单元下相应的内容
+     * @param chooseInfos 用户选择的推广计划和退关单元
+     * @param keywordInfos 用户输入的多个关键词信息
+     * @return
+     */
+    public void batchAddOrUpdateKeywordByChoose(Long accountId, Boolean isReplace, String chooseInfos, String keywordInfos){
+        String[] everyRow = chooseInfos.split("-");
+        String[] everyInfo = keywordInfos.split("\r\n");
+
+        for(String row:everyRow){
+            //切割出推广计划和推广单元ID
+            String[] fieds = row.split(",");
+            for (String info:everyInfo) {
+                //若为true，将现在的关键词替换该单元下的所有相应内容,为false时，就将现在输入的关键词添加到数据库
+                if(isReplace==true){
+                    //删除该单元下的所有相应的关键词
+                    keywordDAO.remove(new Query().addCriteria(Criteria.where("aid").is(accountId).and("agid").is(fieds[1])));
+
+                    //开始添加现在用户输入的关键词
+
+                }else{
+                    //开始添加现在用户输入的关键词
+
+                }
+            }
+        }
+
+    }
+
+
+
+
     /**
      * （输入的方式）
      * 将用户输入的关键词信息添加或更新到数据库
@@ -158,13 +195,33 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService{
 
         for(String row:everyRow){
             String[] fileds = row.split(",|\t");
-            List<AdgroupEntity> adgrounp = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where("name").is(fileds[1])));
-            AdgroupEntity adgroupEntity = adgrounp==null||adgrounp.size()==0?null:adgrounp.get(0);
 
-            if(adgroupEntity!=null){
-                KeywordEntity keywordEntity = new KeywordEntity();
+            //根据计划名称得到一个推广计划对象
+            List<CampaignEntity> campaignEntityList = campaignDAO.find(new Query().addCriteria(Criteria.where("aid").is(accountId).and("name").is(fileds[0])));
+            CampaignEntity campaignEntity = campaignEntityList==null||campaignEntityList.size()==0?null:campaignEntityList.get(0);
+
+            if(campaignEntity!=null){
+
+                //根据单元名称得到一个推广单元对象
+                List<AdgroupEntity> adgrounp = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where("aid").is(accountId).and("name").is(fileds[1]).and("cid").is(campaignEntity.getCampaignId())));
+                AdgroupEntity adgroupEntity = adgrounp==null||adgrounp.size()==0?null:adgrounp.get(0);
+
+                if(adgroupEntity!=null){
+
+                    //若为true，将现在的关键词替换该单元下的所有相应内容,为false时，就将现在输入的关键词添加到数据库
+                    if(isReplace==true){
+                        //删除现在该单元下的所有关键词
+                        keywordDAO.remove(new Query().addCriteria(Criteria.where("aid").is(accountId).and("agid").is(adgroupEntity.getAdgroupId())));
+
+                        //开始添加现在用户输入的关键词
+
+                    }else{
+                        //开始添加现在用户输入的关键词
+                    }
+
+                }
+
             }
-
         }
 
     }

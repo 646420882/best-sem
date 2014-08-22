@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.perfect.entity.CampaignTreeVoEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.service.AssistantKeywordService;
+import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,15 +32,18 @@ public class AssistantKeywordController {
     @Resource
     private AssistantKeywordService assistantKeywordService;
 
+    @Resource
+    private WebContext webContext;
+
 
     /**
      * 得到当前账户所有的关键词
      * @return
      */
     @RequestMapping(value = "assistantKeyword/list",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView getAllKeywordList(ModelMap model){
-        model.addAttribute("list",assistantKeywordService.getAllKeyWord(currentAccountId));
-        return new ModelAndView("");
+    public void getAllKeywordList(HttpServletResponse response){
+        Iterable<KeywordEntity>  list = assistantKeywordService.getAllKeyWord(currentAccountId);
+        webContext.writeJson(list,response);
     }
 
     /**
@@ -129,6 +134,23 @@ public class AssistantKeywordController {
     }
 
 
+    //未完成
+    /**
+     * （用户选择计划，单元，输入关键词的方式）
+     * 将用户输入的关键词信息添加或更新到数据库
+     * @param isReplace 是否将用户输入的信息替换该单元下相应的内容
+     * @param chooseInfos 用户选择的推广计划和退关单元
+     * @param keywordInfos 用户输入的多个关键词信息
+     * @return
+     */
+    @RequestMapping(value = "assistantKeyword/addOrUpdateKeywordByChoose",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView batchAddOrUpdateKeywordByChoose(Boolean isReplace,String chooseInfos,String keywordInfos){
+        assistantKeywordService.batchAddOrUpdateKeywordByChoose(currentAccountId,isReplace,chooseInfos,keywordInfos);
+        return new ModelAndView();
+    }
+
+
+    //未完成
     /**
      * （输入的方式）
      * 将用户输入的关键词信息添加或更新到数据库

@@ -121,198 +121,7 @@
 </tr>
 </thead>
 <tbody id="tbodyClick">
-<tr class="list2_box3">
-    <td>&nbsp;北京{婚博会}<span class="editor"></span></td>
-    <td>&nbsp;有效<span class="editor"></span></td>
-    <td>&nbsp;启用<span class="editor"></span></td>
-    <td>&nbsp;一星<span class="editor"></span></td>
-    <td>&nbsp;一星<span class="editor"></span></td>
-    <td>&nbsp;短语-核心包含<span class="editor"></span></td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com </a><span class="editor"></span></td>
-    <td>&nbsp;九星词<span class="editor"></span></td>
-    <td>&nbsp;<span class="editor"></span></td>
-    <td>&nbsp;婚博会<span class="editor"></span></td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
+
 </tbody>
 </table>
 </div>
@@ -1132,246 +941,7 @@
 </tr>
 </thead>
 <tbody id="tbodyClick5">
-<tr class="list2_box3">
-    <td>&nbsp;婚博会<span class="editor"></span></td>
-    <td>&nbsp;暂停推广<span class="editor"></span></td>
-    <td>&nbsp;暂停<span class="editor"></span></td>
-    <td>&nbsp;
-        不限定<span class="editor"></span>
-    </td>
-    <td>&nbsp;优选<span class="editor"></span></td>
-    <td>&nbsp;开启<span class="editor"></span></td>
-    <td>&nbsp;全部<span class="editor"></span></td>
-    <td>&nbsp;使用账户推广…<span class="editor"></span></td>
-    <td>&nbsp;未设置<span class="editor"></span></td>
-    <td>&nbsp;0<span class="editor"></span></td>
-    <td>&nbsp;-<span class="editor"></span></td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<td>&nbsp;婚博会</td>
-<td>&nbsp;婚博会</td>
-<td>&nbsp;暂停推广</td>
-<td>&nbsp;暂停</td>
-<td>&nbsp;
-    不限定
-</td>
-<td>&nbsp;优选</td>
-<td>&nbsp;开启</td>
-<td>&nbsp;全部</td>
-<td>&nbsp;使用账户推广…</td>
-<td>&nbsp;未设置</td>
-<td>&nbsp;0</td>
-<td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        不限定
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
+
 </tbody>
 </table>
 </div>
@@ -1896,9 +1466,15 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
-<script type="text/javascript">
-    <%-- 账户树加载 --%>
 
+<%--AssistantCreative Js--%>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/assistantCreative/creative.js"></script>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantKeyword.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantCampaign.js"></script>
+
+<script type="text/javascript" >
     var campaignId;
 
     var adgroupId;
@@ -1996,6 +1572,7 @@
 
      });*/
 
+<<<<<<< Updated upstream
     /*function loadReady() {
      var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
      htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
@@ -2004,6 +1581,14 @@
      if (h < 1000) h = 1000;
      demoIframe.height(h);
      }*/
+=======
+</script>
+
+<style type="text/css">
+    .tab_box {
+        padding: 0px 3% 0 0;
+    }
+>>>>>>> Stashed changes
 
 </script>
 <%--AssistantCreative Js--%>

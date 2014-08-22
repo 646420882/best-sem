@@ -2,17 +2,19 @@ package com.perfect.app.assistantCampaign.controller;
 
 import com.perfect.dao.CampaignDAO;
 import com.perfect.entity.CampaignEntity;
+import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by john on 2014/8/15.
@@ -27,16 +29,18 @@ public class AssistantCampaignController {
     @Resource
     private CampaignDAO campaignDAO;
 
+    @Resource
+    private WebContext webContext;
+
 
     /**
-     *根据当前账户得到推广计划
-     * @param model
-     * @return
+     * 得到当前账户的所有推广计划
+     * @param response
      */
     @RequestMapping(value = "assistantCampaign/list" ,method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView getAllCampaignList(ModelMap model){
-        model.addAttribute("list",campaignDAO.find(new Query().addCriteria(Criteria.where("aid").is(currentAccountId))));
-        return new ModelAndView();
+    public void getAllCampaignList(HttpServletResponse response){
+        List<CampaignEntity> list = campaignDAO.find(new Query().addCriteria(Criteria.where("aid").is(currentAccountId)));
+        webContext.writeJson(list,response);
     }
 
 
