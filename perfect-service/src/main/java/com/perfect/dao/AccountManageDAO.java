@@ -15,7 +15,7 @@ public interface AccountManageDAO<T> {
      * @param t
      * @return
      */
-    ArrayNode getAccountTree(List<T> t);
+    ArrayNode getAccountTree(T t);
 
     /**
      * 获取新增的百度账户信息

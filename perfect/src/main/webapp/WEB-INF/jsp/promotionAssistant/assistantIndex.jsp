@@ -42,7 +42,7 @@
         <input class="fr" type="image" src="../public/img/search.png">
     </div>
     <div class="j_list01 over">
-        <ul id="tree" class="ztree over">
+        <ul id="zTree" class="ztree over">
         </ul>
     </div>
     <div class="j_l_under over">
@@ -121,198 +121,7 @@
 </tr>
 </thead>
 <tbody id="tbodyClick">
-<tr class="list2_box3">
-    <td>&nbsp;北京{婚博会}<span class="editor"></span></td>
-    <td>&nbsp;有效<span class="editor"></span></td>
-    <td>&nbsp;启用<span class="editor"></span></td>
-    <td>&nbsp;一星<span class="editor"></span></td>
-    <td>&nbsp;一星<span class="editor"></span></td>
-    <td>&nbsp;短语-核心包含<span class="editor"></span></td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com </a><span class="editor"></span></td>
-    <td>&nbsp;九星词<span class="editor"></span></td>
-    <td>&nbsp;<span class="editor"></span></td>
-    <td>&nbsp;婚博会<span class="editor"></span></td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;北京{婚博会}</td>
-    <td>&nbsp;有效</td>
-    <td>&nbsp;启用</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;一星</td>
-    <td>&nbsp;短语-核心包含</td>
-    <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;婚博会</td>
-</tr>
+
 </tbody>
 </table>
 </div>
@@ -391,10 +200,12 @@
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
                     type="image" src="../public/img/zs_input.png"></b></a></li>
             <li><a href="#"><span class="z_function_hover"><img
-                    src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
+                    src="../public/img/zs_function9.png"></span><b>还原</b></a>
+            </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
             <li><a href="#"><span class="z_function_hover"><img
-                    src="../public/img/zs_function11.png"></span><b>激活</b></a></li>
+                    src="../public/img/zs_function11.png"></span><b>激活</b></a>
+            </li>
 
         </ul>
         <span class="fr">1/10</span>
@@ -899,7 +710,7 @@
             </td>
         </tr>
         </thead>
-        <tbody id="tbodyClick4">
+        <tbody id="tbodyClick_campaign">
         <tr class="list2_box3">
             <td>&nbsp;北京{婚博会}<span class="editor"></span></td>
             <td>&nbsp;有效<span class="editor"></span></td>
@@ -1130,246 +941,7 @@
 </tr>
 </thead>
 <tbody id="tbodyClick5">
-<tr class="list2_box3">
-    <td>&nbsp;婚博会<span class="editor"></span></td>
-    <td>&nbsp;暂停推广<span class="editor"></span></td>
-    <td>&nbsp;暂停<span class="editor"></span></td>
-    <td>&nbsp;
-        <不限定><span class="editor"></span>
-    </td>
-    <td>&nbsp;优选<span class="editor"></span></td>
-    <td>&nbsp;开启<span class="editor"></span></td>
-    <td>&nbsp;全部<span class="editor"></span></td>
-    <td>&nbsp;使用账户推广…<span class="editor"></span></td>
-    <td>&nbsp;未设置<span class="editor"></span></td>
-    <td>&nbsp;0<span class="editor"></span></td>
-    <td>&nbsp;-<span class="editor"></span></td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<td>&nbsp;婚博会</td>
-<td>&nbsp;婚博会</td>
-<td>&nbsp;暂停推广</td>
-<td>&nbsp;暂停</td>
-<td>&nbsp;
-    <不限定>
-</td>
-<td>&nbsp;优选</td>
-<td>&nbsp;开启</td>
-<td>&nbsp;全部</td>
-<td>&nbsp;使用账户推广…</td>
-<td>&nbsp;未设置</td>
-<td>&nbsp;0</td>
-<td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;婚博会</td>
-    <td>&nbsp;暂停推广</td>
-    <td>&nbsp;暂停</td>
-    <td>&nbsp;
-        <不限定>
-    </td>
-    <td>&nbsp;优选</td>
-    <td>&nbsp;开启</td>
-    <td>&nbsp;全部</td>
-    <td>&nbsp;使用账户推广…</td>
-    <td>&nbsp;未设置</td>
-    <td>&nbsp;0</td>
-    <td>&nbsp;-</td>
-</tr>
+
 </tbody>
 </table>
 </div>
@@ -1887,147 +1459,130 @@
 
 
 <!-- javascript -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
+
 <%--AssistantCreative Js--%>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/assistantCreative/creative.js"></script>
-<script type="text/javascript">
 
-    <!--
-    var zTree;
-    var demoIframe;
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantKeyword.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantCampaign.js"></script>
+
+<script type="text/javascript" >
+    var campaignId;
+
+    var adgroupId;
 
     var setting = {
         view: {
-            dblClickExpand: false,
-            showLine: true,
+            showLine: false,
             selectedMulti: false
         },
         data: {
             simpleData: {
-                enable: true,
-                idKey: "id",
-                pIdKey: "pId",
-                rootPId: ""
+                enable: true
             }
         },
         callback: {
-            beforeClick: function (treeId, treeNode) {
-                var zTree = $.fn.zTree.getZTreeObj("tree");
-                if (treeNode.isParent) {
-                    zTree.expandNode(treeNode);
-                    return false;
-                } else {
-                    demoIframe.attr("src", treeNode.file + ".html");
-                    return true;
-                }
-            }
+            beforeClick: beforeClick,
+            beforeAsync: beforeAsync,
+            onAsyncError: onAsyncError,
+            onAsyncSuccess: onAsyncSuccess
         }
     };
+    var zNodes = "";
 
-    var zNodes = [
-        {id: 1, pId: 0, name: "[core] 基本功能 演示", open: true},
-        {id: 101, pId: 1, name: "最简单的树 --  标准 JSON 数据", file: "core/standardData"},
-        {id: 102, pId: 1, name: "最简单的树 --  简单 JSON 数据", file: "core/simpleData"},
-        {id: 103, pId: 1, name: "不显示 连接线", file: "core/noline"},
-        {id: 104, pId: 1, name: "不显示 节点 图标", file: "core/noicon"},
-        {id: 105, pId: 1, name: "自定义图标 --  icon 属性", file: "core/custom_icon"},
-        {id: 106, pId: 1, name: "自定义图标 --  iconSkin 属性", file: "core/custom_iconSkin"},
-        {id: 107, pId: 1, name: "自定义字体", file: "core/custom_font"},
-        {id: 115, pId: 1, name: "超链接演示", file: "core/url"},
-        {id: 108, pId: 1, name: "异步加载 节点数据", file: "core/async"},
-        {id: 109, pId: 1, name: "用 zTree 方法 异步加载 节点数据", file: "core/async_fun"},
-        {id: 110, pId: 1, name: "用 zTree 方法 更新 节点数据", file: "core/update_fun"},
-        {id: 111, pId: 1, name: "单击 节点 控制", file: "core/click"},
-        {id: 112, pId: 1, name: "展开 / 折叠 父节点 控制", file: "core/expand"},
-        {id: 113, pId: 1, name: "根据 参数 查找 节点", file: "core/searchNodes"},
-        {id: 114, pId: 1, name: "其他 鼠标 事件监听", file: "core/otherMouse"},
+    function filter(treeId, parentNode, childNodes) {
+        if (!childNodes) return null;
+        for (var i = 0, l = childNodes.length; i < l; i++) {
+            childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+        }
+        return childNodes;
+    }
+    function beforeClick(treeId, treeNode) {
+        if (treeNode.level == 0) {
+            //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
+            alert(treeNode.id + "," + treeNode.name);
+            campaignId = treeNode.id + "," + "0";
+            //事件处理
+        } else if (treeNode.level == 1) {
+            //点击的是子节点(推广单元),则应该展示其下属的关键词数据
+            alert(treeNode.id + "," + treeNode.name);
+            adgroupId = treeNode.id + "," + "1";
+            //事件处理
+        }
+    }
+    var log, className = "dark";
+    function beforeAsync(treeId, treeNode) {
+        className = (className === "dark" ? "" : "dark");
+        showLog("[ " + getTime() + " beforeAsync ]&nbsp;&nbsp;&nbsp;&nbsp;" + ((!!treeNode && !!treeNode.name) ? treeNode.name : "root"));
+        return true;
+    }
+    function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+        showLog("[ " + getTime() + " onAsyncError ]&nbsp;&nbsp;&nbsp;&nbsp;" + ((!!treeNode && !!treeNode.name) ? treeNode.name : "root"));
+    }
+    function onAsyncSuccess(event, treeId, treeNode, msg) {
+        showLog("[ " + getTime() + " onAsyncSuccess ]&nbsp;&nbsp;&nbsp;&nbsp;" + ((!!treeNode && !!treeNode.name) ? treeNode.name : "root"));
+    }
 
-        {id: 2, pId: 0, name: "[excheck] 复/单选框功能 演示", open: false},
-        {id: 201, pId: 2, name: "Checkbox 勾选操作", file: "excheck/checkbox"},
-        {id: 206, pId: 2, name: "Checkbox nocheck 演示", file: "excheck/checkbox_nocheck"},
-        {id: 207, pId: 2, name: "Checkbox chkDisabled 演示", file: "excheck/checkbox_chkDisabled"},
-        {id: 208, pId: 2, name: "Checkbox halfCheck 演示", file: "excheck/checkbox_halfCheck"},
-        {id: 202, pId: 2, name: "Checkbox 勾选统计", file: "excheck/checkbox_count"},
-        {id: 203, pId: 2, name: "用 zTree 方法 勾选 Checkbox", file: "excheck/checkbox_fun"},
-        {id: 204, pId: 2, name: "Radio 勾选操作", file: "excheck/radio"},
-        {id: 209, pId: 2, name: "Radio nocheck 演示", file: "excheck/radio_nocheck"},
-        {id: 210, pId: 2, name: "Radio chkDisabled 演示", file: "excheck/radio_chkDisabled"},
-        {id: 211, pId: 2, name: "Radio halfCheck 演示", file: "excheck/radio_halfCheck"},
-        {id: 205, pId: 2, name: "用 zTree 方法 勾选 Radio", file: "excheck/radio_fun"},
+    function showLog(str) {
+        if (!log) log = $("#log");
+        log.append("<li class='" + className + "'>" + str + "</li>");
+        if (log.children("li").length > 8) {
+            log.get(0).removeChild(log.children("li")[0]);
+        }
+    }
+    function getTime() {
+        var now = new Date(),
+                h = now.getHours(),
+                m = now.getMinutes(),
+                s = now.getSeconds(),
+                ms = now.getMilliseconds();
+        return (h + ":" + m + ":" + s + " " + ms);
+    }
 
-        {id: 3, pId: 0, name: "[exedit] 编辑功能 演示", open: false},
-        {id: 301, pId: 3, name: "拖拽 节点 基本控制", file: "exedit/drag"},
-        {id: 302, pId: 3, name: "拖拽 节点 高级控制", file: "exedit/drag_super"},
-        {id: 303, pId: 3, name: "用 zTree 方法 移动 / 复制 节点", file: "exedit/drag_fun"},
-        {id: 304, pId: 3, name: "基本 增 / 删 / 改 节点", file: "exedit/edit"},
-        {id: 305, pId: 3, name: "高级 增 / 删 / 改 节点", file: "exedit/edit_super"},
-        {id: 306, pId: 3, name: "用 zTree 方法 增 / 删 / 改 节点", file: "exedit/edit_fun"},
-        {id: 307, pId: 3, name: "异步加载 & 编辑功能 共存", file: "exedit/async_edit"},
-        {id: 308, pId: 3, name: "多棵树之间 的 数据交互", file: "exedit/multiTree"},
-
-        {id: 4, pId: 0, name: "大数据量 演示", open: false},
-        {id: 401, pId: 4, name: "一次性加载大数据量", file: "bigdata/common"},
-        {id: 402, pId: 4, name: "分批异步加载大数据量", file: "bigdata/diy_async"},
-        {id: 403, pId: 4, name: "分批异步加载大数据量", file: "bigdata/page"},
-
-        {id: 5, pId: 0, name: "组合功能 演示", open: false},
-        {id: 501, pId: 5, name: "冻结根节点", file: "super/oneroot"},
-        {id: 502, pId: 5, name: "单击展开/折叠节点", file: "super/oneclick"},
-        {id: 503, pId: 5, name: "保持展开单一路径", file: "super/singlepath"},
-        {id: 504, pId: 5, name: "添加 自定义控件", file: "super/diydom"},
-        {id: 505, pId: 5, name: "checkbox / radio 共存", file: "super/checkbox_radio"},
-        {id: 506, pId: 5, name: "左侧菜单", file: "super/left_menu"},
-        {id: 513, pId: 5, name: "OutLook 样式的左侧菜单", file: "super/left_menuForOutLook"},
-        {id: 507, pId: 5, name: "下拉菜单", file: "super/select_menu"},
-        {id: 509, pId: 5, name: "带 checkbox 的多选下拉菜单", file: "super/select_menu_checkbox"},
-        {id: 510, pId: 5, name: "带 radio 的单选下拉菜单", file: "super/select_menu_radio"},
-        {id: 508, pId: 5, name: "右键菜单 的 实现", file: "super/rightClickMenu"},
-        {id: 511, pId: 5, name: "与其他 DOM 拖拽互动", file: "super/dragWithOther"},
-        {id: 512, pId: 5, name: "异步加载模式下全部展开", file: "super/asyncForAll"},
-
-        {id: 6, pId: 0, name: "其他扩展功能 演示", open: false},
-        {id: 601, pId: 6, name: "隐藏普通节点", file: "exhide/common"},
-        {id: 602, pId: 6, name: "配合 checkbox 的隐藏", file: "exhide/checkbox"},
-        {id: 603, pId: 6, name: "配合 radio 的隐藏", file: "exhide/radio"}
-    ];
-
-    $(document).ready(function () {
-        var t = $("#tree");
-        t = $.fn.zTree.init(t, setting, zNodes);
-        demoIframe = $("#testIframe");
-        demoIframe.bind("load", loadReady);
-        var zTree = $.fn.zTree.getZTreeObj("tree");
-        zTree.selectNode(zTree.getNodeByParam("id", 101));
-
+    $(function () {
+        //获取账户树数据
+        $.ajax({
+            url: "/account/get_tree",
+            type: "GET",
+            dataType: "json",
+            async: false,
+            success: function (data, textStatus, jqXHR) {
+                zNodes = data.trees;
+            }
+        });
+        //加载树
+        $.fn.zTree.init($("#zTree"), setting, zNodes);
     });
 
-    function loadReady() {
-        var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
-                htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
-                maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
-                h = demoIframe.height() >= maxH ? minH : maxH;
-        if (h < 1000) h = 1000;
-        demoIframe.height(h);
-    }
+    /*$(function () {
+     var t = $("#tree");
+     t = $.fn.zTree.init(t, setting, zNodes);
+     demoIframe = $("#testIframe");
+     demoIframe.bind("load", loadReady);
+     var zTree = $.fn.zTree.getZTreeObj("zTree");
+     zTree.selectNode(zTree.getNodeByParam("id", 101));
 
-    //-->
+     });*/
+
+
+    /*function loadReady() {
+     var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
+     htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
+     maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
+     h = demoIframe.height() >= maxH ? minH : maxH;
+     if (h < 1000) h = 1000;
+     demoIframe.height(h);
+     }*/
 
 </script>
-<style type="text/css">
-    .tab_box {
-        padding: 0px 3% 0 0;
-    }
 
-    .w_list01 {
-        text-align: left;
-        width: 100px;
-    }
-</style>
 </body>
 </html>

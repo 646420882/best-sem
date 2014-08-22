@@ -25,4 +25,6 @@ public interface AssistantKeywordService {
     List<CampaignTreeVoEntity> getCampaignTree(Long accountId);
 
     void batchAddOrUpdateKeywordByInput(Long accountId, Boolean isReplace, String keywordInfos);
+
+    void batchAddOrUpdateKeywordByChoose(Long accountId, Boolean isReplace, String chooseInfos, String keywordInfos);
 }
