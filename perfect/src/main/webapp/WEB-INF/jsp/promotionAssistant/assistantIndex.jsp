@@ -1459,7 +1459,7 @@
 
 
 <!-- javascript -->
-<script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
@@ -1582,12 +1582,6 @@
      demoIframe.height(h);
      }*/
 
-</script>
-
-<style type="text/css">
-    .tab_box {
-        padding: 0px 3% 0 0;
-    }
 </script>
 
 </body>

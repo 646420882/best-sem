@@ -13,12 +13,12 @@
 
 
     <!-- MongoDB配置 -->
-    <mongo:mongo id="mongo" replica-set="182.92.188.177:27017">
+    <mongo:mongo id="mongo" replica-set="115.29.103.38:27017">
         <mongo:options connections-per-host="8"
                        threads-allowed-to-block-for-connection-multiplier="4"
                        auto-connect-retry="true"/>
     </mongo:mongo>
-    <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"/>
+    <mongo:db-factory id="mongoDbFactory" dbname="baidu_spread" mongo-ref="mongo"/>
     <mongo:mapping-converter id="mongoConverter"/>
     <bean id="noClassMongoConverter" class="com.perfect.db.MongoConverterEnhanceFactoryBean">
         <property name="mongoConverter" ref="mongoConverter"/>
