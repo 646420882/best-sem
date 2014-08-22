@@ -411,9 +411,7 @@
     margin-left: 8px;
     margin: 10px 0 0 8px;
 }
-.list01_under3 {
-    margin-top: 40px;
-}
+
 .tips {
     width: 3%;
     background: url(/public/img/tips_bg_03.png) repeat;
@@ -483,6 +481,7 @@
 .list03 table {
     width: 100%;
     border: 6px solid #eaf0f3;
+    font-size:12px;
 }
 .list03 table tr {
     height: 30px;
