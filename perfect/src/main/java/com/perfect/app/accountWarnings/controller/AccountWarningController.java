@@ -110,7 +110,7 @@ public class AccountWarningController {
     @RequestMapping(value = "assistant/getAllWarningRule",method = {RequestMethod.GET,RequestMethod.POST})
     public void showAllWarningRule(HttpServletResponse response){
        Iterable<WarningRuleEntity> list = accountWarningDAO.findAll();
-        webContext.wirteJson(list,response);
+        webContext.writeJson(list, response);
     }
 
 

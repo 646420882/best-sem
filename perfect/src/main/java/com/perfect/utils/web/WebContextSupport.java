@@ -37,7 +37,7 @@ public class WebContextSupport implements WebContext {
     }
 
     @Override
-    public void wirteJson(Object obj, HttpServletResponse res) {
+    public void writeJson(Object obj, HttpServletResponse res) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             writeHtml(objectMapper.writeValueAsString(obj), res);

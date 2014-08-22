@@ -377,7 +377,7 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(listKey, 1, 5, dates[0], dates[1], 10, 1,PerformanceData);
+        String resultTypes = RealTime(listKey, 0, 3, dates[0], dates[1], 10, 1,PerformanceData);
 
         return resultTypes;
     }

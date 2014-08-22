@@ -1,6 +1,7 @@
 package com.perfect.utils;
 
 import com.google.common.io.Files;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.FileCopyUtils;
 
 
@@ -10,6 +11,7 @@ import java.text.DecimalFormat;
 /**
  * Created by XiaoWei on 2014/8/18.
  */
+@Repository("uploadHelper")
 public class UploadHelper {
     private static String default_tempPath;
     private static String total_tempPath;

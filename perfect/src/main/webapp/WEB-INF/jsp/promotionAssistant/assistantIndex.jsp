@@ -14,7 +14,8 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
 </head>
 <body>
@@ -34,7 +35,7 @@
 <div class="jingjia_left fl over">
     <div class="j_l_top over">
         <span class="fl"><h3>账户目录</h3></span>
-        <a href="#" class="fr">刷新</a>
+        <a href="javascript:void(0)" onclick="loadCreativeData()" class="fr">刷新</a>
     </div>
     <div class="j_l_top2 over">
         <span class="fl">查找计划单元</span>
@@ -317,10 +318,10 @@
 </div>
 <div class="more_list over" style="display:none;">
     <ul>
-        <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加创意</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除创意</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证创意</b></li>
-        <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原创意</b></li>
+        <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加关键词</b></li>
+        <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除关键词</b></li>
+        <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证关键词</b></li>
+        <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原关键词</b></li>
         <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
         <li><span class="zs_top"><img src="../public/img/zs_function14.png"></span><b>剪贴</b></li>
         <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
@@ -381,284 +382,144 @@
 </div>
 <!--普通创意-->
 <div class="containers  over hides">
-<div class="zs_function over">
-    <ul class="fl">
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-        <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                type="image" src="../public/img/zs_input.png"></b></a></li>
-        <li><a href="#"><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原</b></a>
-        </li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
-        <li><a href="#"><span class="z_function_hover"><img src="../public/img/zs_function11.png"></span><b>激活</b></a>
-        </li>
+    <div class="zs_function over">
+        <ul class="fl">
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+            <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a>
+            </li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
+                    type="image" src="../public/img/zs_input.png"></b></a></li>
+            <li><a href="#"><span class="z_function_hover"><img
+                    src="../public/img/zs_function9.png"></span><b>还原</b></a>
+            </li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+            <li><a href="#"><span class="z_function_hover"><img
+                    src="../public/img/zs_function11.png"></span><b>激活</b></a>
+            </li>
 
-    </ul>
-    <span class="fr">1/10</span>
-</div>
-<div class="list4">
-    <table border="0" cellspacing="0" width="100%">
-        <thead>
-        <tr class="list02_top">
-            <td>&nbsp;创意标题</td>
-            <td>&nbsp;创意描述1</td>
-            <td>&nbsp;创意描述2</td>
-            <td>&nbsp;默认访问URL</td>
-            <td>&nbsp;默认显示URL</td>
-            <td>&nbsp;移动显示URL</td>
-            <td>&nbsp;创意状态</td>
-            <td>&nbsp;启用/暂停
-                <div class="set fr"></div>
-            </td>
-        </tr>
-        </thead>
-        <tbody id="tbodyClick2">
-        <tr class="list2_box3">
-            <td>&nbsp;北京{婚博会}<span class="editor"></span></td>
-            <td>&nbsp;有效<span class="editor"></span></td>
-            <td>&nbsp;启用<span class="editor"></span></td>
-            <td>&nbsp;一星<span class="editor"></span></td>
-            <td>&nbsp;一星<span class="editor"></span></td>
-            <td>&nbsp;短语-核心包含<span class="editor"></span></td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com </a><span class="editor"></span></td>
-            <td>&nbsp;九星词<span class="editor"></span></td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-            <td>&nbsp;九星词</td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="more_list over" style="display:none;">
-        <ul>
-            <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加创意</b></li>
-            <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除创意</b></li>
-            <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证创意</b></li>
-            <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原创意</b></li>
-            <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
-            <li><span class="zs_top"><img src="../public/img/zs_function14.png"></span><b>剪贴</b></li>
-            <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
-            <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
         </ul>
+        <span class="fr">1/10</span>
     </div>
-</div>
-<div class="zhanghu_input"></div>
-<div class="zs_bottom over">
-    <div class="zs_bottom1 over fl ">
-        <ul>
-            <li>
-                <div class="w_list01 fl over">创意标题：</div>
-                <div class="w_list02 fl over"><input type="text" class="zs_input1"><input type="button" value="{}插入通配符"
-                                                                                          class="zs_input2"><span>49/50</span>
-                </div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">创意描述1：</div>
-                <div class="w_list02 fl over"><input type="text" class="zs_input1"><input type="button" value="{}插入通配符"
-                                                                                          class="zs_input2"><span>49/50</span>
-                </div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">创意描述2：</div>
-                <div class="w_list02 fl over"><input type="text" class="zs_input1"><input type="button" value="{}插入通配符"
-                                                                                          class="zs_input2"><span>49/50</span>
-                </div>
-            </li>
-            <li>
-                <div class="w_list03 fl over">
-                    <div class="w_list01 fl over">默认访问URL：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input3"><span>49/50</span></div>
-                </div>
-                <div class="w_list03 fr over">
-                    <div class="w_list01 fl over">默认显示URL：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input3"><span>49/50</span></div>
-                </div>
-            </li>
-            <li>
-                <div class="w_list03 fl over">
-                    <div class="w_list01 fl over">移动访问URL：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input3"><span>49/50</span></div>
-                </div>
-                <div class="w_list03 fr over">
-                    <div class="w_list01 fl over">移动显示URL：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input3"><span>49/50</span></div>
-                </div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">创意预览：</div>
-                <div class="w_list02 fl over"><textarea class="zs_input4"></textarea></div>
-            </li>
-        </ul>
+    <div class="list4">
+        <table border="0" cellspacing="0" width="100%" id="createTable">
+            <thead>
+            <tr class="list02_top">
+                <td>&nbsp;创意标题</td>
+                <td>&nbsp;创意描述1</td>
+                <td>&nbsp;创意描述2</td>
+                <td>&nbsp;默认访问URL</td>
+                <td>&nbsp;默认显示URL</td>
+                <td>&nbsp;移动显示URL</td>
+                <td>&nbsp;创意状态</td>
+                <td>&nbsp;启用/暂停
+                    <div class="set fr"></div>
+                </td>
+            </tr>
+            </thead>
+            <tbody id="tbodyClick2">
+            <%--<tr class="list2_box3">--%>
+            <%--<td>&nbsp;北京{婚博会}<span class="editor"></span></td>--%>
+            <%--<td>&nbsp;有效<span class="editor"></span></td>--%>
+            <%--<td>&nbsp;启用<span class="editor"></span></td>--%>
+            <%--<td>&nbsp;一星<span class="editor"></span></td>--%>
+            <%--<td>&nbsp;一星<span class="editor"></span></td>--%>
+            <%--<td>&nbsp;短语-核心包含<span class="editor"></span></td>--%>
+            <%--<td>&nbsp;<a href="#">http://tthunbohui.com </a><span class="editor"></span></td>--%>
+            <%--<td>&nbsp;九星词<span class="editor"></span>	</td>--%>
+            <%--</tr>--%>
+            </tbody>
+        </table>
+        <div class="more_list over" style="display:none;">
+            <ul>
+                <li class="current" onclick="alert(123);"><span class="zs_top"><img
+                        src="../public/img/zs_function1.png"></span><b>添加创意</b></li>
+                <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除创意</b></li>
+                <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证创意</b></li>
+                <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原创意</b></li>
+                <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
+                <li><span class="zs_top"><img src="../public/img/zs_function14.png"></span><b>剪贴</b></li>
+                <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
+                <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
+            </ul>
+        </div>
     </div>
-    <div class="zs_bottom2 over fr" style="border:none;">
-        <ul>
-            <li>
-                <div class="w_list01 fl over">状态：</div>
-                <div class="w_list02 fl over"><b>有效</b></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">设备偏好：</div>
-                <div class="w_list02 fl over"><select>
-                    <option>全部</option>
-                </select></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">启用/暂停：</div>
-                <div class="w_list02 fl over"><select>
-                    <option>启用</option>
-                </select></div>
-            </li>
-        </ul>
+    <div class="zhanghu_input"></div>
+    <div class="zs_bottom over">
+        <div class="zs_bottom1 over fl " id="sDiv">
+            <ul>
+                <li>
+                    <div class="w_list01 fl over">创意标题：</div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sTitle"><input type="button"
+                                                                                                          value="{}插入通配符"
+                                                                                                          class="zs_input2"><span>49/50</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">创意描述1：</div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sDes1"><input type="button"
+                                                                                                         value="{}插入通配符"
+                                                                                                         class="zs_input2"><span>49/50</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">创意描述2：</div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sDes2"><input type="button"
+                                                                                                         value="{}插入通配符"
+                                                                                                         class="zs_input2"><span>49/50</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="w_list03 fl over">
+                        <div class="w_list01 fl over">默认访问URL：</div>
+                        <div class="w_list02 fl over"><input type="text" class="zs_input3"
+                                                             id="sDefUrl"><span>49/50</span></div>
+                    </div>
+                    <div class="w_list03 fr over">
+                        <div class="w_list01 fl over">默认显示URL：</div>
+                        <div class="w_list02 fl over"><input type="text" class="zs_input3"
+                                                             id="sDefDisUrl"><span>49/50</span></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="w_list03 fl over">
+                        <div class="w_list01 fl over">移动访问URL：</div>
+                        <div class="w_list02 fl over"><input type="text" class="zs_input3"
+                                                             id="sMibUrl"><span>49/50</span></div>
+                    </div>
+                    <div class="w_list03 fr over">
+                        <div class="w_list01 fl over">移动显示URL：</div>
+                        <div class="w_list02 fl over"><input type="text" class="zs_input3"
+                                                             id="sMibDisUrl"><span>49/50</span></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">创意预览：</div>
+                    <div class="w_list02 fl over"><textarea class="zs_input4" id="sPreview"></textarea></div>
+                </li>
+            </ul>
+        </div>
+        <div class="zs_bottom2 over fr" style="border:none;">
+            <ul>
+                <li>
+                    <div class="w_list01 fl over">状态：</div>
+                    <div class="w_list02 fl over"><b>有效</b></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">设备偏好：</div>
+                    <div class="w_list02 fl over"><select>
+                        <option>全部</option>
+                    </select></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">启用/暂停：</div>
+                    <div class="w_list02 fl over"><select>
+                        <option>启用</option>
+                    </select></div>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
 </div>
 <!--附加创意-->
 <div class="containers  over hides">
@@ -1040,7 +901,7 @@
             </td>
         </tr>
         </thead>
-        <tbody id="tbodyClick4">
+        <tbody id="tbodyClick_campaign">
         <tr class="list2_box3">
             <td>&nbsp;北京{婚博会}<span class="editor"></span></td>
             <td>&nbsp;有效<span class="editor"></span></td>
@@ -1276,7 +1137,7 @@
     <td>&nbsp;暂停推广<span class="editor"></span></td>
     <td>&nbsp;暂停<span class="editor"></span></td>
     <td>&nbsp;
-        <不限定><span class="editor"></span>
+        不限定<span class="editor"></span>
     </td>
     <td>&nbsp;优选<span class="editor"></span></td>
     <td>&nbsp;开启<span class="editor"></span></td>
@@ -1291,7 +1152,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -1306,7 +1167,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -1321,7 +1182,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -1336,7 +1197,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -1351,7 +1212,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -1366,7 +1227,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -1381,7 +1242,7 @@
 <td>&nbsp;暂停推广</td>
 <td>&nbsp;暂停</td>
 <td>&nbsp;
-    <不限定>
+    不限定
 </td>
 <td>&nbsp;优选</td>
 <td>&nbsp;开启</td>
@@ -1396,7 +1257,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -1411,7 +1272,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -1426,7 +1287,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -1441,7 +1302,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -1456,7 +1317,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -1471,7 +1332,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -1486,7 +1347,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -1501,7 +1362,7 @@
     <td>&nbsp;暂停推广</td>
     <td>&nbsp;暂停</td>
     <td>&nbsp;
-        <不限定>
+        不限定
     </td>
     <td>&nbsp;优选</td>
     <td>&nbsp;开启</td>
@@ -2034,6 +1895,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript">
     <%-- 账户树加载 --%>
 
@@ -2124,75 +1986,28 @@
         $.fn.zTree.init($("#zTree"), setting, zNodes);
     });
 
+    /*$(function () {
+     var t = $("#tree");
+     t = $.fn.zTree.init(t, setting, zNodes);
+     demoIframe = $("#testIframe");
+     demoIframe.bind("load", loadReady);
+     var zTree = $.fn.zTree.getZTreeObj("zTree");
+     zTree.selectNode(zTree.getNodeByParam("id", 101));
+
+     });*/
+
+    /*function loadReady() {
+     var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
+     htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
+     maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
+     h = demoIframe.height() >= maxH ? minH : maxH;
+     if (h < 1000) h = 1000;
+     demoIframe.height(h);
+     }*/
+
 </script>
-<%--<script type="text/javascript">
-
-    <!--
-    var zTree;
-    var demoIframe;
-
-    var setting = {
-        view: {
-            dblClickExpand: false,
-            showLine: true,
-            selectedMulti: false
-        },
-        data: {
-            simpleData: {
-                enable: true,
-                idKey: "id",
-                pIdKey: "pId",
-                rootPId: ""
-            }
-        },
-        callback: {
-            beforeClick: function (treeId, treeNode) {
-                var zTree = $.fn.zTree.getZTreeObj("tree");
-                if (treeNode.isParent) {
-                    zTree.expandNode(treeNode);
-                    return false;
-                } else {
-                    demoIframe.attr("src", treeNode.file + ".html");
-                    return true;
-                }
-            }
-        }
-    };
-
-    var zNodes = "";
-
-    $(function () {
-        //获取账户树数据
-        $.ajax({
-            url: "/account/get_tree",
-            type: "GET",
-            dataType: "json",
-            async: false,
-            success: function (data, textStatus, jqXHR) {
-                zNodes = data.trees;
-            }
-        });
-        //
-        var t = $("#zTree");
-        t = $.fn.zTree.init(t, setting, zNodes);
-        /*demoIframe = $("#testIframe");
-        demoIframe.bind("load", loadReady);
-        var zTree = $.fn.zTree.getZTreeObj("zTree");
-        zTree.selectNode(zTree.getNodeByParam("id", 101));*/
-
-    });
-
-    function loadReady() {
-        var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
-                htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
-                maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
-                h = demoIframe.height() >= maxH ? minH : maxH;
-        if (h < 1000) h = 1000;
-        demoIframe.height(h);
-    }
-
-    //-->
-
-</script>--%>
+<%--AssistantCreative Js--%>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/assistantCreative/creative.js"></script>
 </body>
 </html>
