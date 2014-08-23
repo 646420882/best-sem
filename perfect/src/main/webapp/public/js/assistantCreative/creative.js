@@ -3,38 +3,6 @@
  */
 $(function () {
     loadCreativeData();
-    $("#creativeDiv").contextPopup({
-        title: 'My Popup Menu',
-        items: [
-            {label: 'Some Item', icon: '../../public/plugs/jQuery-rightMenu/icons/shopping-basket.png', action: function (e) {
-                var _e=$(e);
-                e
-            } },
-            {label: 'Another Thing', icon: '../../public/plugs/jQuery-rightMenu/icons/receipt-text.png', action: function () {
-                alert('clicked 2')
-            } },
-            {label: 'Blah Blah', icon: '../../public/plugs/jQuery-rightMenu/icons/book-open-list.png', action: function () {
-                alert('clicked 3')
-            } },
-            null, // divider
-            {label: 'Sheep', icon: '../../public/plugs/jQuery-rightMenu/icons/application-monitor.png', action: function () {
-                alert('clicked 4')
-            } },
-            {label: 'Cheese', icon: '../../public/plugs/jQuery-rightMenu/icons/bin-metal.png', action: function () {
-                alert('clicked 5')
-            } },
-            {label: 'Bacon', icon: '../../public/plugs/jQuery-rightMenu/icons/magnifier-zoom-actual-equal.png', action: function () {
-                alert('clicked 6')
-            } },
-            null, // divider
-            {label: 'Onwards', icon: '../../public/plugs/jQuery-rightMenu/icons/application-table.png', action: function () {
-                alert('clicked 7')
-            } },
-            {label: 'Flutters', icon: '../../public/plugs/jQuery-rightMenu/icons/cassette.png', action: function () {
-                alert('clicked 8')
-            } }
-        ]
-    });
 });
 
 function loadCreativeData() {
