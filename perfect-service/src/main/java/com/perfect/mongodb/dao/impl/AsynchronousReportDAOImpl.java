@@ -2,8 +2,10 @@ package com.perfect.mongodb.dao.impl;
 
 import com.perfect.api.baidu.AsynchronousReport;
 import com.perfect.dao.AsynchronousReportDAO;
+import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.*;
 import com.perfect.mongodb.base.BaseMongoTemplate;
+import com.perfect.utils.DBNameUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -12,6 +14,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,13 +34,11 @@ import java.util.concurrent.RecursiveTask;
 @Repository("asynchronousReportDAO")
 public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
-    /*private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(
-            DBNameUtil.getReportDBName(AppContext.getUser().toString()));*/
-
-    private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_shangpin_report");
-
     private HttpFileHandler httpFileHandler = new HttpFileHandler();
 
+    @Resource
+    private SystemUserDAO systemUserDAO;
+    
     private List<AccountReportEntity> acrmList;
 
     private List<CampaignReportEntity> cprmList;
@@ -51,137 +52,183 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     private List<RegionReportEntity> rrmList;
 
     public void getAccountReportData(String dateStr) {
-        AsynchronousReport report = new AsynchronousReport();
-        String pcFilePath = report.getAccountReportDataPC(null, dateStr, dateStr);
-        String mobileFilePath = report.getAccountReportDataMobile(null, dateStr, dateStr);
+        MongoTemplate mongoTemplate = null;
+        Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+        for(SystemUserEntity systemUser : entities){
+            mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
+            for(BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()){
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(),entity.getBaiduPassword(),entity.getToken(),null);
+                String pcFilePath = report.getAccountReportDataPC(null, dateStr, dateStr);
+                String mobileFilePath = report.getAccountReportDataMobile(null, dateStr, dateStr);
 
-        List<AccountReportEntity> pcList = httpFileHandler.getAccountReport(pcFilePath, 1);
-        acrmList = httpFileHandler.getAccountReport(mobileFilePath, 2);
+                List<AccountReportEntity> pcList = httpFileHandler.getAccountReport(pcFilePath, 1);
+                acrmList = httpFileHandler.getAccountReport(mobileFilePath, 2);
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        AccountReportHandler task = new AccountReportHandler(pcList, 0, pcList.size());
-        Future<List<AccountReportEntity>> voResult = forkJoinPool.submit(task);
-        List<AccountReportEntity> list;
-        try {
-            list = voResult.get();
-            mongoTemplate.insert(list, "account_report");
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        } finally {
-            forkJoinPool.shutdown();
+                ForkJoinPool forkJoinPool = new ForkJoinPool();
+                AccountReportHandler task = new AccountReportHandler(pcList, 0, pcList.size());
+                Future<List<AccountReportEntity>> voResult = forkJoinPool.submit(task);
+                List<AccountReportEntity> list;
+                try {
+                    list = voResult.get();
+                    mongoTemplate.insert(list, "account_report");
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                } finally {
+                    forkJoinPool.shutdown();
+                }
+            }
         }
     }
 
     public void getCampaignReportData(String dateStr) {
-        AsynchronousReport report = new AsynchronousReport();
-        String pcFilePath = report.getCampaignReportDataPC(null, null, dateStr, dateStr);
-        String mobileFilePath = report.getCampaignReportDataMobile(null, null, dateStr, dateStr);
+        MongoTemplate mongoTemplate = null;
+        Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+        for(SystemUserEntity systemUser : entities){
+            mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
+            for(BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()){
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(),entity.getBaiduPassword(),entity.getToken(),null);
+                String pcFilePath = report.getCampaignReportDataPC(null, null, dateStr, dateStr);
+                String mobileFilePath = report.getCampaignReportDataMobile(null, null, dateStr, dateStr);
 
-        List<CampaignReportEntity> pcList = httpFileHandler.getCampaignReport(pcFilePath, 1);
-        cprmList = httpFileHandler.getCampaignReport(mobileFilePath, 2);
+                List<CampaignReportEntity> pcList = httpFileHandler.getCampaignReport(pcFilePath, 1);
+                cprmList = httpFileHandler.getCampaignReport(mobileFilePath, 2);
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        CampaignReportHandler task = new CampaignReportHandler(pcList, 0, pcList.size());
-        Future<List<CampaignReportEntity>> voResult = forkJoinPool.submit(task);
-        List<CampaignReportEntity> list;
-        try {
-            list = voResult.get();
-            mongoTemplate.insert(list, dateStr + "-campaign");
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        } finally {
-            forkJoinPool.shutdown();
+                ForkJoinPool forkJoinPool = new ForkJoinPool();
+                CampaignReportHandler task = new CampaignReportHandler(pcList, 0, pcList.size());
+                Future<List<CampaignReportEntity>> voResult = forkJoinPool.submit(task);
+                List<CampaignReportEntity> list;
+                try {
+                    list = voResult.get();
+                    mongoTemplate.insert(list, dateStr + "-campaign");
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                } finally {
+                    forkJoinPool.shutdown();
+                }
+            }
         }
     }
 
     public void getAdgroupReportData(String dateStr) {
-        AsynchronousReport report = new AsynchronousReport();
-        String pcFilePath = report.getUnitReportDataPC(null, null, dateStr, dateStr);
-        String mobileFilePath = report.getUnitReportDataMobile(null, null, dateStr, dateStr);
+        MongoTemplate mongoTemplate = null;
+        Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+        for (SystemUserEntity systemUser : entities) {
+            mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
+            for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
 
-        List<AdgroupReportEntity> pcList = httpFileHandler.getAdgroupReport(pcFilePath, 1);
-        armList = httpFileHandler.getAdgroupReport(mobileFilePath, 2);
+                String pcFilePath = report.getUnitReportDataPC(null, null, dateStr, dateStr);
+                String mobileFilePath = report.getUnitReportDataMobile(null, null, dateStr, dateStr);
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        AdgroupReportHandler task = new AdgroupReportHandler(pcList, 0, pcList.size());
-        Future<List<AdgroupReportEntity>> voResult = forkJoinPool.submit(task);
-        List<AdgroupReportEntity> list;
-        try {
-            list = voResult.get();
-            mongoTemplate.insert(list, dateStr + "-adgroup");
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        } finally {
-            forkJoinPool.shutdown();
+                List<AdgroupReportEntity> pcList = httpFileHandler.getAdgroupReport(pcFilePath, 1);
+                armList = httpFileHandler.getAdgroupReport(mobileFilePath, 2);
+
+                ForkJoinPool forkJoinPool = new ForkJoinPool();
+                AdgroupReportHandler task = new AdgroupReportHandler(pcList, 0, pcList.size());
+                Future<List<AdgroupReportEntity>> voResult = forkJoinPool.submit(task);
+                List<AdgroupReportEntity> list;
+                try {
+                    list = voResult.get();
+                    mongoTemplate.insert(list, dateStr + "-adgroup");
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                } finally {
+                    forkJoinPool.shutdown();
+                }
+            }
         }
     }
 
     public void getCreativeReportData(String dateStr) {
-        AsynchronousReport report = new AsynchronousReport();
-        String pcFilePath = report.getCreativeReportDataPC(null, null, dateStr, dateStr);
-        String mobileFilePath = report.getCreativeReportDataMobile(null, null, dateStr, dateStr);
+        MongoTemplate mongoTemplate = null;
+        Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+        for (SystemUserEntity systemUser : entities) {
+            mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
+            for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
 
-        List<CreativeReportEntity> pcList = httpFileHandler.getCreativeReport(pcFilePath, 1);
-        crmList = httpFileHandler.getCreativeReport(mobileFilePath, 2);
+                String pcFilePath = report.getCreativeReportDataPC(null, null, dateStr, dateStr);
+                String mobileFilePath = report.getCreativeReportDataMobile(null, null, dateStr, dateStr);
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        CreativeReportHandler task = new CreativeReportHandler(pcList, 0, pcList.size());
-        Future<List<CreativeReportEntity>> voResult = forkJoinPool.submit(task);
-        List<CreativeReportEntity> list;
-        try {
-            list = voResult.get();
-            mongoTemplate.insert(list, dateStr + "-creative");
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        } finally {
-            forkJoinPool.shutdown();
+                List<CreativeReportEntity> pcList = httpFileHandler.getCreativeReport(pcFilePath, 1);
+                crmList = httpFileHandler.getCreativeReport(mobileFilePath, 2);
+
+                ForkJoinPool forkJoinPool = new ForkJoinPool();
+                CreativeReportHandler task = new CreativeReportHandler(pcList, 0, pcList.size());
+                Future<List<CreativeReportEntity>> voResult = forkJoinPool.submit(task);
+                List<CreativeReportEntity> list;
+                try {
+                    list = voResult.get();
+                    mongoTemplate.insert(list, dateStr + "-creative");
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                } finally {
+                    forkJoinPool.shutdown();
+                }
+            }
         }
     }
 
     public void getKeywordReportData(String dateStr) {
-        AsynchronousReport report = new AsynchronousReport();
-        String pcFilePath = report.getKeyWordidReportDataPC(null, null, dateStr, dateStr);
-        String mobileFilePath = report.getKeyWordidReportDataMobile(null, null, dateStr, dateStr);
+        MongoTemplate mongoTemplate = null;
+        Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+        for (SystemUserEntity systemUser : entities) {
+            mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
+            for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
 
-        List<KeywordReportEntity> pcList = httpFileHandler.getKeywordReport(pcFilePath, 1);
-        krmList = httpFileHandler.getKeywordReport(mobileFilePath, 2);
+                String pcFilePath = report.getKeyWordidReportDataPC(null, null, dateStr, dateStr);
+                String mobileFilePath = report.getKeyWordidReportDataMobile(null, null, dateStr, dateStr);
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        KeywordReportHandler task = new KeywordReportHandler(pcList, 0, pcList.size());
-        Future<List<KeywordReportEntity>> voResult = forkJoinPool.submit(task);
-        List<KeywordReportEntity> list;
-        try {
-            list = voResult.get();
-            mongoTemplate.insert(list, dateStr + "-keyword");
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        } finally {
-            forkJoinPool.shutdown();
+                List<KeywordReportEntity> pcList = httpFileHandler.getKeywordReport(pcFilePath, 1);
+                krmList = httpFileHandler.getKeywordReport(mobileFilePath, 2);
+
+                ForkJoinPool forkJoinPool = new ForkJoinPool();
+                KeywordReportHandler task = new KeywordReportHandler(pcList, 0, pcList.size());
+                Future<List<KeywordReportEntity>> voResult = forkJoinPool.submit(task);
+                List<KeywordReportEntity> list;
+                try {
+                    list = voResult.get();
+                    mongoTemplate.insert(list, dateStr + "-keyword");
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                } finally {
+                    forkJoinPool.shutdown();
+                }
+            }
         }
     }
 
     public void getRegionReportData(String dateStr) {
-        AsynchronousReport report = new AsynchronousReport();
-        String pcFilePath = report.getRegionalReportDataPC(null, null, dateStr, dateStr);
-        String mobileFilePath = report.getRegionalReportDataMobile(null, null, dateStr, dateStr);
+        MongoTemplate mongoTemplate = null;
+        Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+        for (SystemUserEntity systemUser : entities) {
+            mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
+            for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
 
-        System.out.println("PC"+pcFilePath);
-        System.out.println("Mobile:"+mobileFilePath);
+                String pcFilePath = report.getRegionalReportDataPC(null, null, dateStr, dateStr);
+                String mobileFilePath = report.getRegionalReportDataMobile(null, null, dateStr, dateStr);
 
-        List<RegionReportEntity> pcList = httpFileHandler.getRegionReport(pcFilePath, 1);
-        rrmList = httpFileHandler.getRegionReport(mobileFilePath, 2);
+                System.out.println("PC" + pcFilePath);
+                System.out.println("Mobile:" + mobileFilePath);
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        RegionReportHandler task = new RegionReportHandler(pcList, 0, pcList.size());
-        Future<List<RegionReportEntity>> voResult = forkJoinPool.submit(task);
-        List<RegionReportEntity> list;
-        try {
-            list = voResult.get();
-            mongoTemplate.insert(list, dateStr + "-region");
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        } finally {
-            forkJoinPool.shutdown();
+                List<RegionReportEntity> pcList = httpFileHandler.getRegionReport(pcFilePath, 1);
+                rrmList = httpFileHandler.getRegionReport(mobileFilePath, 2);
+
+                ForkJoinPool forkJoinPool = new ForkJoinPool();
+                RegionReportHandler task = new RegionReportHandler(pcList, 0, pcList.size());
+                Future<List<RegionReportEntity>> voResult = forkJoinPool.submit(task);
+                List<RegionReportEntity> list;
+                try {
+                    list = voResult.get();
+                    mongoTemplate.insert(list, dateStr + "-region");
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                } finally {
+                    forkJoinPool.shutdown();
+                }
+            }
         }
     }
 
