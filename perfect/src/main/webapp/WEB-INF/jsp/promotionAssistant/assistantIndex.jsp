@@ -77,117 +77,119 @@
         <li>推广计划</li>
         <li>账户</li>
     </ul>
-    <span class="fr">查看搜索推广报告&nbsp;<input type="image" src="../public/img/zs_input.png"></span>
 </div>
 <div class="zs_line"></div>
 <div class="zs_box over">
 <!--关键词-->
 <div class="containers  over">
-<div class="zs_function over">
-    <ul class="fl">
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                type="image" src="../public/img/zs_input.png"></b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function8.png"></span><b>监控</b></a></li>
-        <li><a href="#"><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原</b></a>
-        </li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
-        <li><a href="#"><span class="z_function_hover"><img src="../public/img/zs_function11.png"></span><b>激活</b></a>
-        </li>
-    </ul>
-    <span class="fr">1/10</span>
-</div>
-<div class="list4">
-<table border="0" cellspacing="0" width="100%">
-<thead>
-<tr class="list02_top">
-    <td>&nbsp;关键词名称</td>
-    <td>&nbsp;关键词状态</td>
-    <td>&nbsp;启动/暂停</td>
-    <td>&nbsp;出价</td>
-    <td>&nbsp;计算机质量度</td>
-    <td>&nbsp;移动质量度</td>
-    <td>&nbsp;匹配模式</td>
-    <td>&nbsp;访问URL</td>
-    <td>&nbsp;移动访问URL</td>
-    <td>&nbsp;推广计划名称
-        <div class="set fr"></div>
-    </td>
-</tr>
-</thead>
-<tbody id="tbodyClick">
+    <div class="zs_function over">
+        <ul class="fl">
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a>
+            </li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
+                    type="image" src="../public/img/zs_input.png"></b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function8.png"></span><b>监控</b></a></li>
+            <li><a href="#"><span class="z_function_hover"><img
+                    src="../public/img/zs_function9.png"></span><b>还原</b></a>
+            </li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+            <li><a href="#"><span class="z_function_hover"><img
+                    src="../public/img/zs_function11.png"></span><b>激活</b></a>
+            </li>
+        </ul>
+        <span class="fr">1/10</span>
+    </div>
+    <div class="list4">
+        <table border="0" cellspacing="0" width="100%">
+            <thead>
+            <tr class="list02_top">
+                <td>&nbsp;关键词名称</td>
+                <td>&nbsp;关键词状态</td>
+                <td>&nbsp;启动/暂停</td>
+                <td>&nbsp;出价</td>
+                <td>&nbsp;计算机质量度</td>
+                <td>&nbsp;移动质量度</td>
+                <td>&nbsp;匹配模式</td>
+                <td>&nbsp;访问URL</td>
+                <td>&nbsp;移动访问URL</td>
+                <td>&nbsp;推广计划名称
+                    <div class="set fr"></div>
+                </td>
+            </tr>
+            </thead>
+            <tbody id="tbodyClick">
 
-</tbody>
-</table>
-</div>
-<div class="more_list over" style="display:none;">
-    <ul>
-        <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加关键词</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除关键词</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证关键词</b></li>
-        <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原关键词</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function14.png"></span><b>剪贴</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
-    </ul>
-</div>
-<div class="zhanghu_input"></div>
-<div class="zs_bottom over">
-    <div class="zs_bottom1 over fl ">
+            </tbody>
+        </table>
+    </div>
+    <div class="more_list over" style="display:none;">
         <ul>
-            <li>
-                <div class="w_list01 fl over">关键词名称：</div>
-                <div class="w_list02 fl over"><input type="text" class="zs_input1"></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">出价：</div>
-                <div class="w_list02 fl over"><input type="text" class="zs_input1"></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">访问URL</div>
-                <div class="w_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">移动访问URL：</div>
-                <div class="w_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
-            </li>
+            <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加关键词</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除关键词</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证关键词</b></li>
+            <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原关键词</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function14.png"></span><b>剪贴</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
         </ul>
     </div>
-    <div class="zs_bottom2 over fr">
-        <ul>
-            <li>
-                <div class="w_list01 fl over">所属监控文件夹：</div>
-                <div class="w_list02 fl over"><em>0个</em></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">匹配模式：</div>
-                <div class="w_list02 fl over"><em>短语-核心包含</em></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">状态：</div>
-                <div class="w_list02 fl over"><b>有效</b></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">设备偏好：</div>
-                <div class="w_list02 fl over"><select>
-                    <option>全部</option>
-                </select></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">启用/暂停：</div>
-                <div class="w_list02 fl over"><select>
-                    <option>启用</option>
-                </select></div>
-            </li>
-        </ul>
+    <div class="zhanghu_input"></div>
+    <div class="zs_bottom over">
+        <div class="zs_bottom1 over fl ">
+            <ul>
+                <li>
+                    <div class="w_list01 fl over">关键词名称：</div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input1"></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">出价：</div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input1"></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">访问URL:</div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">移动访问URL：</div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
+                </li>
+            </ul>
+        </div>
+        <div class="zs_bottom2 over fr">
+            <ul>
+                <li>
+                    <div class="w_list01 fl over">所属监控文件夹：</div>
+                    <div class="w_list02 fl over"><em>0个</em></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">匹配模式：</div>
+                    <div class="w_list02 fl over"><em>短语-核心包含</em></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">状态：</div>
+                    <div class="w_list02 fl over"><b>有效</b></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">设备偏好：</div>
+                    <div class="w_list02 fl over"><select>
+                        <option>全部</option>
+                    </select></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">启用/暂停：</div>
+                    <div class="w_list02 fl over"><select>
+                        <option>启用</option>
+                    </select></div>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
 </div>
 <!--普通创意-->
 <div class="containers  over hides">
@@ -261,35 +263,43 @@
             <ul>
                 <li>
                     <div class="w_list01 fl over">创意标题：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sTitle" maxlength='50'><input type="button"
-                                                                                                          value="{}插入通配符" onclick="addTb(this)"
-                                                                                                          class="zs_input2"><span><span id="sTitle_size">49</span>/50</span>
+
+                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sTitle"><input type="button"
+                                                                                                          value="{}插入通配符"
+                                                                                                          onclick="addTb(this)"
+                                                                                                          class="zs_input2"><span><span
+                            id="sTitle_size">49</span>/50</span>
                     </div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">创意描述1：</div>
                     <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sDes1" maxlength='80'><input type="button"
                                                                                                          value="{}插入通配符"
-                                                                                                         class="zs_input2"><span><span id="sDes1_size">49</span>/80</span>
+                                                                                                         class="zs_input2"><span><span
+                            id="sDes1_size">49</span>/80</span>
                     </div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">创意描述2：</div>
                     <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sDes2" maxlength='80'><input type="button"
                                                                                                          value="{}插入通配符"
-                                                                                                         class="zs_input2"><span><span id="sDes2_size">49</span>/80</span>
+                                                                                                         class="zs_input2"><span><span
+                            id="sDes2_size">49</span>/80</span>
                     </div>
                 </li>
                 <li>
                     <div class="w_list03 fl over">
                         <div class="w_list01 fl over">默认访问URL：</div>
-                        <div class="w_list02 fl over"><input type="text" class="zs_input3" id="sPc"
-                                                             id="sDefUrl" maxlength='1024'><span><span id="sPc_size">49</span>/1024</span></div>
+                        <div class="w_list02 fl over">
+                            <input type="text" class="zs_input3" id="sPc" maxlength='1024'>
+                            <span><span id="sPc_size">49</span>/1024</span></div>
                     </div>
                     <div class="w_list03 fr over">
                         <div class="w_list01 fl over">默认显示URL：</div>
-                        <div class="w_list02 fl over"><input type="text" class="zs_input3" id="sPcs"
-                                                             id="sDefDisUrl" maxlength='36'><span><span id="sPcs_size">35</span>/36</span></div>
+                        <div class="w_list02 fl over">
+                            <input type="text" class="zs_input3" id="sPcs" maxlength='36'>
+                            <span><span id="sPcs_size">35</span>/36</span></div>
+
                     </div>
                 </li>
                 <li>
@@ -914,390 +924,168 @@
 </div>
 <!--推广计划-->
 <div class="containers  over hides">
-<div class="zs_function over">
-    <ul class="fl">
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a></li>
+    <div class="zs_function over">
+        <ul class="fl">
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a>
+            </li>
 
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
 
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                type="image" src="../public/img/zs_input.png"></b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
+                    type="image" src="../public/img/zs_input.png"></b></a></li>
 
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
-    </ul>
-    <span class="fr">1/10</span>
-</div>
-<div class="list4">
-<table border="0" cellspacing="0" width="100%">
-<thead>
-<tr class="list02_top">
-    <td>&nbsp;推广计划名称</td>
-    <td>&nbsp;推广计划状态</td>
-    <td>&nbsp;启用/暂停</td>
-    <td>&nbsp;每日预算</td>
-    <td>&nbsp;创意展现方式</td>
-    <td>&nbsp;动态创意状态</td>
-    <td>&nbsp;推广时段</td>
-    <td>&nbsp;推广地域</td>
-    <td>&nbsp;否定关键词</td>
-    <td>&nbsp;IP排除</td>
-    <td>&nbsp;到达预算下线时间
-        <div class="set fr"></div>
-    </td>
-</tr>
-</thead>
-<tbody id="tbodyClick5">
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+        </ul>
+        <span class="fr">1/10</span>
+    </div>
+    <div class="list4">
+        <table border="0" cellspacing="0" width="100%">
+            <thead>
+            <tr class="list02_top">
+                <td>&nbsp;推广计划名称</td>
+                <td>&nbsp;推广计划状态</td>
+                <td>&nbsp;启用/暂停</td>
+                <td>&nbsp;每日预算</td>
+                <td>&nbsp;创意展现方式</td>
+                <td>&nbsp;动态创意状态</td>
+                <td>&nbsp;推广时段</td>
+                <td>&nbsp;推广地域</td>
+                <td>&nbsp;否定关键词</td>
+                <td>&nbsp;IP排除</td>
+                <td>&nbsp;到达预算下线时间
+                    <div class="set fr"></div>
+                </td>
+            </tr>
+            </thead>
+            <tbody id="tbodyClick5">
 
-</tbody>
-</table>
-</div>
-<div class="more_list over" style="display:none;">
-    <ul>
-        <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加推广计划</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除推广计划</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证推广计划</b></li>
-        <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原推广计划</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
-    </ul>
-</div>
-<div class="zhanghu_input"></div>
-<div class="zs_bottom over">
-    <div class="zs_bottom2 over fl " style="border-right: 1px solid #e7e7e7;">
+            </tbody>
+        </table>
+    </div>
+    <div class="more_list over" style="display:none;">
         <ul>
-            <li>
-                <div class="w_list01 fl over">名称：</div>
-                <div class="w_list02 fl over"><input type="text" class="zs_input3" value="婚博会"></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">每日预算：</div>
-                <div class="w_list02 fl over"><input type="text" class="zs_input3"></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">移动出价比例：</div>
-                <div class="w_list02 fl over"><input type="text" class="zs_input3"><span>59/1024</span></div>
-            </li>
+            <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加推广计划</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除推广计划</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证推广计划</b></li>
+            <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原推广计划</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
         </ul>
     </div>
-    <div class="zs_bottom1 over fr" style="border-right:none;">
-        <ul class="z_bottom3 fl">
-            <li>
-                <div class="w_list01 fl over">推广时段：</div>
-                <div class="w_list02 fl over"><em>全部</em></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">推广地域：</div>
-                <div class="w_list02 fl over"><em>使用账户推广地域</em></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">动态创意状态：</div>
-                <div class="w_list02 fl over"><b>开启</b></div>
-            </li>
-        </ul>
-        <ul class="z_bottom3 fl">
-            <li>
-                <div class="w_list01 fl over">否定关键词：</div>
-                <div class="w_list02 fl over"><em>未设置</em></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">IP排除：</div>
-                <div class="w_list02 fl over"><em>未设置</em></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">创意展现方式：</div>
-                <div class="w_list02 fl over"><select>
-                    <option>优选</option>
-                </select></div>
-            </li>
-        </ul>
-        <ul class="z_bottom3 fl">
-            <li>
-                <div class="w_list01 fl over">状态：</div>
-                <div class="w_list02 fl over"><b>暂停推广</b></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">IP排除：</div>
-                <div class="w_list02 fl over"><span> 0次</span></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">启用/暂停：</div>
-                <div class="w_list02 fl over"><select>
-                    <option>启用</option>
-                </select></div>
-            </li>
-        </ul>
+    <div class="zhanghu_input"></div>
+    <div class="zs_bottom over">
+        <div class="zs_bottom2 over fl " style="border-right: 1px solid #e7e7e7;">
+            <ul>
+                <li>
+                    <div class="w_list01 fl over">名称：</div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input3" value="婚博会"></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">每日预算：</div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input3"></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">移动出价比例：</div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input3"><span>59/1024</span></div>
+                </li>
+            </ul>
+        </div>
+        <div class="zs_bottom1 over fr" style="border-right:none;">
+            <ul class="z_bottom3 fl">
+                <li>
+                    <div class="w_list01 fl over">推广时段：</div>
+                    <div class="w_list02 fl over"><em>全部</em></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">推广地域：</div>
+                    <div class="w_list02 fl over"><em>使用账户推广地域</em></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">动态创意状态：</div>
+                    <div class="w_list02 fl over"><b>开启</b></div>
+                </li>
+            </ul>
+            <ul class="z_bottom3 fl">
+                <li>
+                    <div class="w_list01 fl over">否定关键词：</div>
+                    <div class="w_list02 fl over"><em>未设置</em></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">IP排除：</div>
+                    <div class="w_list02 fl over"><em>未设置</em></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">创意展现方式：</div>
+                    <div class="w_list02 fl over"><select>
+                        <option>优选</option>
+                    </select></div>
+                </li>
+            </ul>
+            <ul class="z_bottom3 fl">
+                <li>
+                    <div class="w_list01 fl over">状态：</div>
+                    <div class="w_list02 fl over"><b>暂停推广</b></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">IP排除：</div>
+                    <div class="w_list02 fl over"><span> 0次</span></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">启用/暂停：</div>
+                    <div class="w_list02 fl over"><select>
+                        <option>启用</option>
+                    </select></div>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
 </div>
 <!--账户-->
 <div class="containers  over hides">
-<div class="zh_top over">
-    <div class="fl"><span><b>baidu-bjtthunbohui2134115</b></span><span><a href="#">还原帐户</a> <input type="checkbox"
-                                                                                                   checked="checkde">验证帐户</span>
+    <div class="zh_top over">
+        <div class="fl"><span><b>baidu-bjtthunbohui2134115</b></span><span><a href="#">还原帐户</a> <input type="checkbox"
+                                                                                                       checked="checkde">验证帐户</span>
+        </div>
+        <div class="fr"><input type="image" src="../public/img/shuaxin.png"></div>
     </div>
-    <div class="fr"><input type="image" src="../public/img/shuaxin.png"></div>
-</div>
-<div class="zh_list02 over">
-    <ul>
-        <li>
-            <span>帐户余额：<b>￥38678.1</b></span>
-            <span>昨日消费：<b>暂无数据</b></span>
-            <span>消费升降：<b>暂无数据</b></span>
-            <span>动态创意:<a href="#">开启</a></span>
-        </li>
-        <li>
-            <span>帐户预算：<b>不限定</b><a href="#">修改</a></span>
-            <span>到达预算：<b>-</b></span>
-            <span>IP排除：<a href="#">未设置</a></span>
-            <span>推广地域：<a href="#">北京</a></span>
-        </li>
-    </ul>
-</div>
-<div class="zh_list over">
-    <div class="zs_function over">
-        <ul class="fl">
-            <li><b>账户表现</b></li>
-            <li>最近7天&nbsp;<input type="image" src="../public/img/zs_input.png"></li>
-            <li><input type="checkbox" name="zs_time"> 展现</li>
-            <li><input type="checkbox" name="zs_time"> 点击</li>
-            <li><input type="checkbox" name="zs_time"> 点击率</li>
-            <li><input type="checkbox" name="zs_time"> 转化</li>
-            <li><input type="checkbox" checked="checked" name="zs_time">消费</li>
+    <div class="zh_list02 over">
+        <ul>
+            <li>
+                <span>帐户余额：<b>￥38678.1</b></span>
+                <span>昨日消费：<b>暂无数据</b></span>
+                <span>消费升降：<b>暂无数据</b></span>
+                <span>动态创意:<a href="#">开启</a></span>
+            </li>
+            <li>
+                <span>帐户预算：<b>不限定</b><a href="#">修改</a></span>
+                <span>到达预算：<b>-</b></span>
+                <span>IP排除：<a href="#">未设置</a></span>
+                <%--    <span>推广地域：<a>北京</a></span>--%>
+            </li>
         </ul>
+    </div>
+    <div class="zh_list over">
+        <div class="zs_function over">
+            <ul class="fl">
+                <li><b>账户表现</b></li>
+                <li>最近7天&nbsp;<input type="image" src="../public/img/zs_input.png"></li>
+                <li><input type="checkbox" name="zs_time"> 展现</li>
+                <li><input type="checkbox" name="zs_time"> 点击</li>
+                <li><input type="checkbox" name="zs_time"> 点击率</li>
+                <li><input type="checkbox" name="zs_time"> 转化</li>
+                <li><input type="checkbox" checked="checked" name="zs_time">消费</li>
+            </ul>
                                                         <span class="fr">
                                                         <input type="image" src="../public/img/zs_input2.png">
                                                         </span>
+        </div>
+        <div class="zs_list over">
+            <img src="../public/images/zs_list.png">
+        </div>
     </div>
-    <div class="zs_list over">
-        <img src="../public/images/zs_list.png">
-    </div>
-</div>
-<div class="zh_list over">
-<div class="zs_function over">
-    <ul class="fl">
-        <li><b>账户表现</b></li>
-        <li><span>昨日&nbsp;</span><input type="image" src="../public/img/zs_input.png"></li>
-        <li><span>账户&nbsp;</span><input type="image" src="../public/img/zs_input.png"></li>
-        <li><span>前10&nbsp;</span><input type="image" src="../public/img/zs_input.png"></li>
-        <li><span><a href="#">按消费降序</a></span></li>
-    </ul>
-</div>
-<div class="list4">
-<table border="0" cellspacing="0" width="100%">
-<thead>
-<tr class="list02_top">
-    <td>&nbsp;账户名称</td>
-    <td>&nbsp;展现</td>
-    <td>&nbsp;点击</td>
-    <td>&nbsp;点击率</td>
-    <td>&nbsp;转化</td>
-    <td>&nbsp;消费</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-</thead>
-<tbody>
-<tr class="list2_box3">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -1481,7 +1269,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantKeyword.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantCampaign.js"></script>
 
-<script type="text/javascript" >
+<script type="text/javascript">
+    <%-- 账户树加载 --%>
+
     var campaignId;
 
     var adgroupId;
@@ -1567,6 +1357,7 @@
         });
         //加载树
         $.fn.zTree.init($("#zTree"), setting, zNodes);
+
     });
 
     /*$(function () {
