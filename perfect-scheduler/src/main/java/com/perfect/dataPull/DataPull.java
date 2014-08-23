@@ -13,6 +13,9 @@ import java.util.List;
  */
 public class DataPull {
 
+    /**
+     * 每天晚上凌晨1点拉取全账户数据
+     */
     public void getFullAccountDataPull(){
         AsynchronousReportDAO dao = new AsynchronousReportDAOImpl();
         Calendar cal   =   Calendar.getInstance();
