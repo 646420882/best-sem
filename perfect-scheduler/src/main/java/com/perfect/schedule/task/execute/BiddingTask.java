@@ -1,12 +1,13 @@
 package com.perfect.schedule.task.execute;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.sms.v3.GetPreviewRequest;
 import com.perfect.autosdk.sms.v3.KeywordType;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.entity.*;
 import com.perfect.entity.bidding.BiddingRuleEntity;
-import com.perfect.entity.bidding.StrategyEntity;
 import com.perfect.main.BaiduApiService;
 import com.perfect.schedule.core.IScheduleTaskDealMulti;
 import com.perfect.schedule.core.TaskItemDefine;
@@ -21,23 +22,16 @@ import javax.annotation.Resource;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
-
-import static com.perfect.constants.BiddingStrategyConstants.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by yousheng on 2014/8/14.
  *
  * @author yousheng
  */
-@Component
+@Component("biddingTask")
 public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObject> {
-
-    private final int gid;
-
-    private Map<String, CronExpression> CACHE = new WeakHashMap<>(2 << 5);
-
-    private Map<Long, BaiduApiService> API_CACHE = new WeakHashMap<>(2 << 5);
-
 
     @Resource
     private SystemUserService systemUserService;
@@ -48,14 +42,11 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
     @Resource
     private KeywordDAO keywordDAO;
 
-    public BiddingTask(int gid) {
-        this.gid = gid;
-    }
+    private Executor executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
 
     @Override
     public boolean execute(TaskObject[] tasks, String ownSign) throws Exception {
-        Date date = Calendar.getInstance().getTime();
-
+        int num = 0;
         // 调度策略
         for (TaskObject task : tasks) {
 
@@ -71,87 +62,33 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
             List<KeywordType> keywordTypes = new ArrayList<>(biddingRuleEntityList.size());
 
             HTMLAnalyseService htmlAnalyseService = HTMLAnalyseServiceImpl.createService(service);
+
+            Map<String, KeywordEntity> keywordEntityMap = new HashMap<>(5);
+            List<BiddingRuleEntity> subList = new ArrayList<>(5);
+
             for (BiddingRuleEntity biddingRuleEntity : biddingRuleEntityList) {
 
+                subList.add(biddingRuleEntity);
                 KeywordEntity keywordEntity = keywordDAO.findOne(biddingRuleEntity.getKeywordId());
+                keywordEntityMap.put(keywordEntity.getKeyword(), keywordEntity);
 
                 GetPreviewRequest getPreviewRequest = new GetPreviewRequest();
                 getPreviewRequest.setKeyWords(Arrays.asList(new String[]{keywordEntity.getKeyword()}));
 
-                List<HTMLAnalyseServiceImpl.PreviewData> datas = htmlAnalyseService.getPageData(getPreviewRequest);
-
-                if (datas == null || datas.isEmpty()) {
-                    continue;
+                if (num == 5) {
+                    // 生成一个任务
+                    BiddingSubTask biddingSubTask = new BiddingSubTask(apiService, htmlAnalyseService, Lists.newArrayList(biddingRuleEntityList), Maps.newHashMap(keywordEntityMap), new ArrayList<KeywordType>());
+                    keywordEntityMap.clear();
+                    subList.clear();
+                    executor.execute(biddingSubTask);
                 }
-
-
-                HTMLAnalyseServiceImpl.PreviewData data = datas.get(0);
-                int leftpos = getRank(data.getLeft(), keywordEntity);
-                int rightpos = getRank(data.getRight(),keywordEntity);
-
-                //排名分析
-                StrategyEntity strategyEntity = biddingRuleEntity.getStrategyEntity();
-
-                int positionStrategy = strategyEntity.getPositionStrategy();
-
-
-                if (positionStrategy == POS_LEFT_1.value()) {
-                    List<CreativeVOEntity> list = data.getLeft();
-                    for (CreativeVOEntity entity : list) {
-                        if (keywordEntity.getPcDestinationUrl().contains(entity.getUrl())) {
-
-                        }
-                    }
-                } else if (positionStrategy == POS_LEFT_2_3.value()) {
-
-                } else if (positionStrategy == POS_RIGHT_1_3.value()) {
-
-                } else if (positionStrategy == POS_RIGHT_OTHERS.value()) {
-
-                }
-
-                String cronExpStr = strategyEntity.getCron();
-                CronExpression cronExpression;
-                if (CACHE.containsKey(cronExpStr)) {
-                    cronExpression = CACHE.get(cronExpStr);
-                } else {
-                    cronExpression = new CronExpression(cronExpStr);
-                    CACHE.put(cronExpStr, cronExpression);
-                }
-
-                Date nextDate = cronExpression.getNextValidTimeAfter(date);
-
-                biddingRuleEntity.setNextTime(nextDate.getTime());
-
-
-                double cur = biddingRuleEntity.getCurrentPrice();
-
-                if (cur != strategyEntity.getMaxPrice()) {
-
-                    if (strategyEntity.getSpd() == SPD_ECONOMIC.value()) {
-                        cur = cur + 0.05;
-
-                    } else if (strategyEntity.getSpd() == SPD_FAST.value()) {
-                        cur = cur + 0.1;
-                    }
-                    if (cur > strategyEntity.getMaxPrice()) {
-                        cur = strategyEntity.getMaxPrice();
-                    }
-
-                    biddingRuleEntity.setCurrentPrice(cur);
-                }
-
-                KeywordType type = new KeywordType();
-                type.setKeywordId(biddingRuleEntity.getKeywordId());
-                type.setPrice(cur);
-
-                keywordTypes.add(type);
             }
 
-            apiService.setKeywordPrice(keywordTypes);
+            if (!subList.isEmpty()) {
+                BiddingSubTask biddingSubTask = new BiddingSubTask(apiService, htmlAnalyseService, Lists.newArrayList(biddingRuleEntityList), Maps.newHashMap(keywordEntityMap), new ArrayList<KeywordType>());
+                executor.execute(biddingSubTask);
+            }
 
-
-            biddingRuleService.updateRule(biddingRuleEntityList);
         }
         return false;
     }
@@ -165,15 +102,13 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
         for (SystemUserEntity userEntity : userEntityList) {
             List<BaiduAccountInfoEntity> accountInfoEntityList = userEntity.getBaiduAccountInfoEntities();
             for (BaiduAccountInfoEntity baiduAccountInfoEntity : accountInfoEntityList) {
-                List<BiddingRuleEntity> biddingRuleEntityList = biddingRuleService.getNextRunByGroupId(userEntity.getUserName(), baiduAccountInfoEntity.getId(), gid);
+                List<BiddingRuleEntity> biddingRuleEntityList = biddingRuleService.getTaskByAccountId(userEntity.getUserName(), baiduAccountInfoEntity.getId());
+
                 if (biddingRuleEntityList != null && !biddingRuleEntityList.isEmpty()) {
                     objectList.add(new TaskObject(userEntity.getUserName(), baiduAccountInfoEntity, biddingRuleEntityList));
                 }
-
             }
-
         }
-
 
         return objectList;
     }
@@ -208,7 +143,7 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
         return null;
     }
 
-    static class TaskObject {
+    public static class TaskObject {
 
         private final List<BiddingRuleEntity> list;
         private final BaiduAccountInfoEntity account;

@@ -1,6 +1,7 @@
 package com.perfect.mongodb.base;
 
 import com.perfect.dao.MongoCrudRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -86,7 +87,7 @@ public abstract class AbstractUserBaseDAOImpl<T, ID extends Serializable> implem
     }
 
     @Override
-    public List<T> find(Map<String, Object> params, int skip, int limit) {
+    public List<T> find(Map<String, Object> params, int skip, int limit, String sort, Sort.Direction direction) {
         Query query = new Query();
         Criteria criteria = null;
         for (Map.Entry<String, Object> param : params.entrySet()) {
@@ -100,6 +101,9 @@ public abstract class AbstractUserBaseDAOImpl<T, ID extends Serializable> implem
         }
 
         query.addCriteria(criteria).skip(skip).limit(limit);
+        if (sort != null) {
+            query.with(new Sort(Sort.Direction.ASC, sort));
+        }
 
         return getMongoTemplate().find(query, getEntityClass());
     }
@@ -134,5 +138,51 @@ public abstract class AbstractUserBaseDAOImpl<T, ID extends Serializable> implem
     @Override
     public void update(T t) {
         getMongoTemplate().save(t);
+    }
+
+
+    /**
+     * 查询包含关键字的实体，并附加params提交的分页方法
+     *
+     * @param params
+     * @param q
+     * @param skip
+     * @param limit
+     * @param sort
+     * @param direction
+     * @return
+     */
+
+    @Override
+    public List<T> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, Sort.Direction direction) {
+
+        Query query = new Query();
+        Criteria criteria = null;
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            if (criteria == null) {
+                criteria = new Criteria(param.getKey());
+                criteria.is(param.getValue());
+                continue;
+            }
+
+            criteria.and(param.getKey()).is(param.getValue());
+        }
+
+        if (fieldName != null && q != null) {
+            criteria.and(fieldName).regex(".*(" + q.replaceAll(" ", "|") + ").*");
+        }
+
+        query.addCriteria(criteria).skip(skip).limit(limit);
+        if (sort != null) {
+            query.with(new Sort(Sort.Direction.ASC, sort));
+        }
+
+        return getMongoTemplate().find(query, getEntityClass());
+
+    }
+
+
+    String getMatchReg(String query) {
+        return ".*(" + query.replaceAll(" ", "|") + ").*";
     }
 }

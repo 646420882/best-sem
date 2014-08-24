@@ -15,10 +15,10 @@ import java.util.List;
  */
 @Repository("basisReportDAO")
 public class BasisReportDAOImpl implements BasisReportDAO {
-    String currUserName = AppContext.getUser().toString();
+    String currUserName = AppContext.getUser();
 
     private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(
-            DBNameUtils.getUserDBName(AppContext.getUser().toString(), "report"));
+            DBNameUtils.getUserDBName(AppContext.getUser(), "report"));
 
     @Override
     public List<StructureReportEntity> getUnitReportDate(String userTable) {

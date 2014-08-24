@@ -24,7 +24,7 @@ import java.util.List;
 @Repository(value = "accountManageDAO")
 public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEntity> {
 
-    private String currUserName = AppContext.getUser().toString();
+    private String currUserName = AppContext.getUser();
 
     @Resource(name = "systemUserDAO")
     private SystemUserDAO systemUserDAO;

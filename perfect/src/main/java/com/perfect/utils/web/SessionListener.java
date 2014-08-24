@@ -1,5 +1,9 @@
 package com.perfect.utils.web;
 
+import com.perfect.core.AppContext;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
@@ -11,16 +15,15 @@ public class SessionListener implements HttpSessionListener {
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
-        if (se != null) {
-            sessionContext.setSession(se.getSession());
-        }
+
+        Object ctx = se.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
+
+        System.out.println("ctx = " + ctx);
+        System.out.println("Session created : id is " + se.getSession().getId());
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
-        if (se != null) {
-            sessionContext.delSession(se.getSession());
-        }
-
+        AppContext.remove(se.getSession().getId());
     }
 }

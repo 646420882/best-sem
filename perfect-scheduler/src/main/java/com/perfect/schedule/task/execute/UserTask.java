@@ -1,6 +1,5 @@
 package com.perfect.schedule.task.execute;
 
-import com.perfect.dao.AccountDAO;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.SystemUserDAO;
@@ -24,9 +23,6 @@ import java.util.List;
 @Component("userUpdateTask")
 public class UserTask implements IScheduleTaskDealSingle<SystemUserEntity> {
     protected static transient Logger log = LoggerFactory.getLogger(IScheduleTaskDealSingle.class);
-
-    @Resource
-    private AccountDAO accountDAO;
 
     @Resource
     private CampaignDAO campaignDAO;

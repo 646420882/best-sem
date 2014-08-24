@@ -1,8 +1,11 @@
 package com.perfect.service;
 
+import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yousheng on 2014/7/30.
@@ -15,19 +18,23 @@ public interface BiddingRuleService {
 
     public BiddingRuleEntity getBiddingRuleByKeywordId(String keywordId);
 
-    public BiddingRuleEntity updateToNextTime(BiddingRuleEntity biddingRuleEntity);
+    void updateToNextTime(BiddingRuleEntity biddingRuleEntity, long time);
 
-    public boolean createRule(BiddingRuleEntity entity);
+    public void createRule(BiddingRuleEntity entity);
 
-    public boolean disableRule(String id);
+    public void disableRule(String id);
 
-    public boolean enableRule(String id);
+    public void enableRule(String id);
 
     public void updateRule(BiddingRuleEntity entity);
 
     public List<BiddingRuleEntity> getReadyRule();
 
-    public List<BiddingRuleEntity> getNextRunByGroupId(String userName, Long id, int gid);
+    public List<BiddingRuleEntity> getTaskByAccountId(String userName, Long id);
 
     void updateRule(List<BiddingRuleEntity> tasks);
+
+    List<BiddingRuleEntity> findRules(Map<String, Object> q, int skip, int limit, String sort, Sort.Direction direction);
+
+    List<BiddingRuleEntity> findRules(Map<String, Object> q, String kw, String query, int skip, int limit, String sort, Sort.Direction direction);
 }

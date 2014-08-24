@@ -31,7 +31,7 @@ public class AccountOverviewController {
     private static String currLoginUserName;
 
     static {
-        currLoginUserName = (currLoginUserName == null) ? AppContext.getUser().toString() : currLoginUserName;
+        currLoginUserName = (currLoginUserName == null) ? AppContext.getUser() : currLoginUserName;
     }
 
 

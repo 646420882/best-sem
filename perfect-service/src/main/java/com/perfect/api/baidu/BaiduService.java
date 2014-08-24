@@ -3,7 +3,6 @@ package com.perfect.api.baidu;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.dao.AccountDAO;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.entity.AccountInfoEntity;
@@ -21,9 +20,6 @@ import java.util.List;
  */
 @Component
 public class BaiduService {
-
-    @Resource(name = "accountDAO")
-    private AccountDAO accountDAO;
 
     @Resource(name = "campaignDAO")
     private CampaignDAO campaignDAO;
@@ -51,10 +47,10 @@ public class BaiduService {
         BeanUtils.copyProperties(accountInfoType, accountInfoEntity);
 
         // 检查账户是否已经存在，如果存在就取消初始化
-        if (!accountDAO.isExists(accountInfoEntity.getUserid().toString())) {
-            accountDAO.insert(accountInfoEntity);
-            initCampagin(serviceFactory);
-        }
+//        if (!accountDAO.isExists(accountInfoEntity.getUserid().toString())) {
+//            accountDAO.insert(accountInfoEntity);
+//            initCampagin(serviceFactory);
+//        }
     }
 
     private void initCampagin(ServiceFactory serviceFactory) throws ApiException {

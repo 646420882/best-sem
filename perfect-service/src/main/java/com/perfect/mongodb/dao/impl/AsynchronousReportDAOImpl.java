@@ -29,7 +29,7 @@ import java.util.concurrent.RecursiveTask;
 public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     /*private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(
-            DBNameUtil.getReportDBName(AppContext.getUser().toString()));*/
+            DBNameUtil.getReportDBName(AppContext.getUser()));*/
 
     private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_shangpin_report");
 

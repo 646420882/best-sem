@@ -1,6 +1,7 @@
 package com.perfect.app.homePage.service;
 
 import com.perfect.dao.SystemUserDAO;
+import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +22,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private static String userName;     //当前登录的用户名
 
+    private static long accid;
+
     @Resource(name = "systemUserDAO")
     private SystemUserDAO systemUserDAO;
 
@@ -29,6 +32,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserDetails user;
         SystemUserEntity systemUser = systemUserDAO.findByUserName(s);
         userName = systemUser.getUserName();
+        for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+            if (entity.isDfault()) {
+                accid = entity.getId();
+                break;
+            }
+        }
+
         user = new User(
                 systemUser.getUserName(),
                 systemUser.getPassword().toLowerCase(),

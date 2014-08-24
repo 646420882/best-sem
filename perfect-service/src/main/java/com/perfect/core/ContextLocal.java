@@ -1,22 +1,15 @@
 package com.perfect.core;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by yousheng on 2014/7/25.
  *
  * @author yousheng
  */
-public class ContextLocal extends ThreadLocal<Map<String,Object>> {
+public class ContextLocal extends ThreadLocal<SessionObject> {
 
     @Override
-    protected Map<String, Object> initialValue() {
-        return new HashMap<String,Object>();
+    protected SessionObject initialValue() {
+        return null;
     }
 
-
-    public void clear(){
-        get().clear();
-    }
 }

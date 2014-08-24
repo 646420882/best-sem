@@ -23,7 +23,11 @@ public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, S
 
     public boolean disableRule(String id);
 
-    public List<BiddingRuleEntity> getNextRunByGroupId(String userName, Long id, int gid);
+    public int startRule(List<String> id);
+
+    public List<BiddingRuleEntity> getNextRunByGroupId(String userName, Long id);
 
     void updateToNextRunTime(List<BiddingRuleEntity> tasks);
+
+    void enableRule(String id);
 }

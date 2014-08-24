@@ -3,7 +3,6 @@ package com.perfect.mongodb.dao.impl;
 import com.perfect.api.baidu.BaiduService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
-import com.perfect.dao.AccountDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
@@ -24,10 +23,6 @@ import java.util.Map;
  */
 @Repository("systemUserDAO")
 public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, String> implements SystemUserDAO {
-
-
-    @Resource
-    private AccountDAO accountDAO;
 
     @Resource
     private BaiduService baiduService;

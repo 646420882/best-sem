@@ -1,9 +1,11 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.mongodb.WriteResult;
 import com.perfect.dao.BiddingRuleDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -31,26 +33,6 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     }
 
     @Override
-    public BiddingRuleEntity findOne(String s) {
-        return getMongoTemplate().findOne(Query.query(Criteria.where("id").is(s)), BiddingRuleEntity.class);
-    }
-
-    @Override
-    public boolean exists(String s) {
-        return getMongoTemplate().exists(Query.query(Criteria.where("id").is(s)), BiddingRuleEntity.class);
-    }
-
-    @Override
-    public List<BiddingRuleEntity> findAll() {
-        return getMongoTemplate().findAll(BiddingRuleEntity.class);
-    }
-
-    @Override
-    public Iterable<BiddingRuleEntity> findAll(Iterable<String> strings) {
-        return getMongoTemplate().find(Query.query(Criteria.where("id").in(strings)), BiddingRuleEntity.class);
-    }
-
-    @Override
     public List<BiddingRuleEntity> find(Map<String, Object> params, int skip, int limit) {
         Query query = new Query();
         Criteria criteria = null;
@@ -74,33 +56,6 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
         return BiddingRuleEntity.class;
     }
 
-    @Override
-    public void delete(Iterable<? extends BiddingRuleEntity> entities) {
-
-    }
-
-//    @Override
-//    public void createBidding(BiddingRuleEntity biddingRuleEntity) {
-//        getMongoTemplate().insert(biddingRuleEntity);
-//
-//    }
-//
-//    @Override
-//    public void batchCreate(List<BiddingRuleEntity> biddingRuleEntityList) {
-//        getMongoTemplate().insertAll(biddingRuleEntityList);
-//    }
-
-//    @Override
-//    public void updateBiddingRule(BiddingRuleEntity biddingRuleEntity) {
-//        updateById(biddingRuleEntity);
-//    }
-
-//    @Override
-//    public BiddingRuleEntity getBiddingRuleByKeywordId(String keywordId) {
-//        Query query = new Query(Criteria.where("kw.id").is(keywordId));
-//
-//        return getMongoTemplate().findOne(query, BiddingRuleEntity.class);
-//    }
 
     /**
      * 获取当前所有需要执行的竞价规则
@@ -135,7 +90,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
 //    }
 //
 //    @Override
-//    public List<BiddingRuleEntity> getNextRunByGroupId(String userName, Long id, int gid) {
+//    public List<BiddingRuleEntity> getTaskByAccountId(String userName, Long id, int gid) {
 //
 //        List<BiddingRuleEntity> biddingRuleEntityList = new ArrayList<>();
 //
@@ -202,22 +157,22 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
 
     @Override
     public void createBidding(BiddingRuleEntity biddingRuleEntity) {
-
+        save(biddingRuleEntity);
     }
 
     @Override
     public void batchCreate(List<BiddingRuleEntity> biddingRuleEntityList) {
-
+        save(biddingRuleEntityList);
     }
 
     @Override
     public void updateBiddingRule(BiddingRuleEntity biddingRuleEntity) {
-
+        save(biddingRuleEntity);
     }
 
     @Override
     public BiddingRuleEntity getBiddingRuleByKeywordId(String keywordId) {
-        return null;
+        return findOne(keywordId);
     }
 
     @Override
@@ -231,8 +186,17 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     }
 
     @Override
-    public List<BiddingRuleEntity> getNextRunByGroupId(String userName, Long id, int gid) {
-        return null;
+    public int startRule(List<String> id) {
+        WriteResult wr = getMongoTemplate().updateMulti(Query.query(Criteria.where("_id").in(id)), Update.update("ebl", true), BiddingRuleEntity.class);
+        return wr.getN();
+    }
+
+    @Override
+    public List<BiddingRuleEntity> getNextRunByGroupId(String userName, Long id) {
+
+        Long time = System.currentTimeMillis();
+        Query query = Query.query(Criteria.where("ebl").is(true).and("next").lte(time).and("aid").is(id));
+        return BaseMongoTemplate.getUserMongo(userName).find(query, getEntityClass());
     }
 
     @Override

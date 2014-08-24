@@ -23,11 +23,17 @@ public class BiddingRuleEntity extends AccountIdEntity {
     @Field("kwid")
     private long keywordId;
 
+    @Field("kw")
+    private String keyword;
+
     @Field("stgy")
     private StrategyEntity strategyEntity;
 
     @Field("cp")
     private double currentPrice;
+
+    @Field("cpos")
+    private int currentPos;
 
     @Field("next")
     private long nextTime;
@@ -101,5 +107,21 @@ public class BiddingRuleEntity extends AccountIdEntity {
 
     public void setCurrentPrice(double currentPrice) {
         this.currentPrice = currentPrice;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public int getCurrentPos() {
+        return currentPos;
+    }
+
+    public void setCurrentPos(int currentPos) {
+        this.currentPos = currentPos;
     }
 }

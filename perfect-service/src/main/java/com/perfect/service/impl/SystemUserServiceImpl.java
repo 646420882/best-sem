@@ -3,6 +3,7 @@ package com.perfect.service.impl;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.SystemUserEntity;
 import com.perfect.service.SystemUserService;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -12,7 +13,7 @@ import javax.annotation.Resource;
  *
  * @author yousheng
  */
-@Service
+@Component
 public class SystemUserServiceImpl implements SystemUserService {
 
     @Resource
