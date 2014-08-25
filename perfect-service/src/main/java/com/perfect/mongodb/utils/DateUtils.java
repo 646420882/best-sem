@@ -4,15 +4,12 @@ import org.springframework.util.Assert;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by baizz on 2014-8-1.
  */
-public class DateUtil {
+public class DateUtils {
 
     public static List<String> getPeriod(String _startDate, String _endDate) {
         if (_startDate == null) {
@@ -50,6 +47,33 @@ public class DateUtil {
         }
 
         return dateStrList;
+    }
+
+    public static Map<String, Object> getsLatestSevenDays() {
+        return getsLatestAnyDays(7);
+    }
+
+    public static Map<String, Object> getsLatestAnyDays(int num) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
+        List<String> anyDays = new ArrayList<>();
+        List<Date> dates = new ArrayList<>();
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        for (int i = -num; i < 0; i++) {
+            cal.add(Calendar.DATE, -1);
+            dates.add(cal.getTime());
+            anyDays.add(sdf.format(cal.getTime()));
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("_string", anyDays);
+        map.put("_date", dates);
+        return map;
     }
 
 }
