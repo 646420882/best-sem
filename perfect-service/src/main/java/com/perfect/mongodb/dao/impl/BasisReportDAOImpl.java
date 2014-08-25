@@ -26,40 +26,44 @@ import java.util.Map;
 @Repository("basisReportDAO")
 
 public class BasisReportDAOImpl extends AbstractUserBaseDAOImpl<StructureReportEntity,Long> implements BasisReportDAO {
-
     @Override
     public List<StructureReportEntity> getUnitReportDate(String userTable) {
-        List<StructureReportEntity> objectList = getMongoTemplate().findAll(StructureReportEntity.class, userTable);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+        List<StructureReportEntity> objectList = mongoTemplate.findAll(StructureReportEntity.class, userTable);
         return objectList;
     }
 
     @Override
     public List<AccountReportResponse> getAccountReport(int Sorted,String fieldName) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
         Sort sort = null;
         if (Sorted == 0) {
             sort = new Sort(Sort.Direction.ASC, fieldName);
         } else {
             sort = new Sort(Sort.Direction.DESC, fieldName);
         }
-        List<AccountReportResponse> reportEntities = getMongoTemplate().find(new Query().with(sort), AccountReportResponse.class, "account_report");
+        List<AccountReportResponse> reportEntities = mongoTemplate.find(new Query().with(sort), AccountReportResponse.class, "account_report");
         return reportEntities;
     }
 
     @Override
     public long getAccountCount() {
-        long account_report = getMongoTemplate().count(new Query(), "account_report");
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+        long account_report = mongoTemplate.count(new Query(), "account_report");
         return account_report;
     }
 
     @Override
     public List<AccountReportResponse> getAccountReport(Date startDate, Date endDate) {
-        List<AccountReportResponse> reportResponses = getMongoTemplate().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)),AccountReportResponse.class, "account_report");
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+        List<AccountReportResponse> reportResponses = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)),AccountReportResponse.class, "account_report");
         return reportResponses;
     }
 
     @Override
     public List<StructureReportEntity> getKeywordReport(Long[] id,String table) {
-        List<StructureReportEntity> entityList = getMongoTemplate().find(new Query(Criteria.where("kwid").in(id)),StructureReportEntity.class,table);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+        List<StructureReportEntity> entityList = mongoTemplate.find(new Query(Criteria.where("kwid").in(id)),StructureReportEntity.class,table);
         return  entityList;
     }
 

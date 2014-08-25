@@ -146,20 +146,20 @@
         <div class="zs_bottom1 over fl ">
             <ul>
                 <li>
-                    <div class="w_list01 fl over">关键词名称：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1"></div>
+                    <div class="t_list01 fl over">关键词名称：</div>
+                    <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">出价：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1"></div>
+                    <div class="t_list01 fl over">出价：</div>
+                    <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">访问URL:</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
+                    <div class="t_list01 fl over">访问URL:</div>
+                    <div class="t_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">移动访问URL：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
+                    <div class="t_list01 fl over">移动访问URL：</div>
+                    <div class="t_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
                 </li>
             </ul>
         </div>
@@ -264,56 +264,52 @@
         <div class="zs_bottom1 over fl " id="sDiv">
             <ul>
                 <li>
-                    <div class="w_list01 fl over">创意标题：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sTitle"><input type="button"
-                                                                                                          value="{}插入通配符"
-                                                                                                          onclick="addTb(this)"
-                                                                                                          class="zs_input2"><span><span
+                    <div class="t_list01 fl over">创意标题：</div>
+                    <div class="t_list03 fl over">
+                        <input type="text" class="zs_input1" id="sTitle"><input type="button" value="{}插入通配符" onclick="addTb(this)" class="zs_input2"><span><span
                             id="sTitle_size">49</span>/50</span>
                     </div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">创意描述1：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sDes1"><input type="button"
-                                                                                                         value="{}插入通配符"
-                                                                                                         class="zs_input2"><span><span
+                    <div class="t_list01 fl over">创意描述1：</div>
+                    <div class="t_list03 fl over">
+                        <input type="text" class="zs_input1" id="sDes1"><input type="button" value="{}插入通配符"  class="zs_input2"><span><span
                             id="sDes1_size">49</span>/80</span>
                     </div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">创意描述2：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sDes2"><input type="button"
-                                                                                                         value="{}插入通配符"
-                                                                                                         class="zs_input2"><span><span
-                            id="sDes2_size">49</span>/80</span>
+                    <div class="t_list01 fl over">创意描述2：</div>
+                    <div class="t_list03 fl over">
+                        <input type="text" class="zs_input1" id="sDes2"><input type="button" value="{}插入通配符" class="zs_input2"><span><span
+                        id="sDes2_size">49</span>/80</span>
                     </div>
                 </li>
                 <li>
-                    <div class="w_list03 fl over">
-                        <div class="w_list01 fl over">默认访问URL：</div>
-                        <div class="w_list02 fl over"><input type="text" class="zs_input3" id="sPc"/><span><span id="sPc_size">0</span>/1024</span>
+                    <div class="t_list04 fl over">
+                        <div class="t_list01 fl over">默认访问URL：</div>
+                        <div class="t_list02 fl over"><input type="text" class="zs_input3" id="sPc"/><span><span id="sPc_size">0</span>/1024</span>
                         </div>
                     </div>
-                    <div class="w_list03 fr over">
-                        <div class="w_list01 fl over">默认显示URL：</div>
-                        <div class="w_list02 fl over"><input type="text" class="zs_input3" id="sPcs"/><span><span
+                    <div class="t_list04 fr over">
+                        <div class="t_list01 fl over">默认显示URL：</div>
+                        <div class="t_list02 fl over"><input type="text" class="zs_input3" id="sPcs"/><span><span
                                 id="sPcs_size">49</span>/50</span></div>
                     </div>
                 </li>
                 <li>
-                    <div class="w_list03 fl over">
-                        <div class="w_list01 fl over">移动访问URL：</div>
-                        <div class="w_list02 fl over"><input type="text" class="zs_input3"
+                    <div class="t_list04 fl over">
+                        <div class="t_list01 fl over">移动访问URL：</div>
+                        <div class="t_list02 fl over"><input type="text" class="zs_input3"
                                                              id="sMib"><span><span id="sMib_size">49</span>/1024</span></div>
                     </div>
-                    <div class="w_list03 fr over">
-                        <div class="w_list01 fl over">移动显示URL：</div>
-                        <div class="w_list02 fl over"><input type="text" class="zs_input3"  id="sMibs"><span><span id="sMibs_size">35</span>/36</span></div>
+                    <div class="t_list04 fr over">
+                        <div class="t_list01 fl over">移动显示URL：</div>
+                        <div class="t_list02 fl over"><input type="text" class="zs_input3"  id="sMibs"><span><span id="sMibs_size">35</span>/36</span></div>
                     </div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">创意预览：</div>
-                 <div class="w_list01 fl over" id="sPreview" style="width:557px;height: 98px;border:1px solid #CCC;"></div>
+                    <div class="t_list01 fl over">创意预览：</div>
+                    <div class="t_list02 fl over" id="sPreview" style="width:557px;height: 98px;border:1px solid #CCC;"></div>
                 </li>
             </ul>
         </div>
@@ -595,52 +591,42 @@
         <ul>
             <li>
                 <div class="cy_bottom1 fl over">
-                    <div class="w_list01 fl over"><span>子链一 名称</span></div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input3">&nbsp;<span>0/16</span></div>
+                    <span>子链一 名称 </span><input type="text" class="zs_input3">&nbsp;<span>0/16</span>
                 </div>
                 <div class="cy_bottom1 fl over">
-                    <div class="w_list02 fl over"><span>URL：</span><input type="text" class="zs_input1">&nbsp;<span>0/1024</span>
-                    </div>
+                    <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
                 </div>
             </li>
             <li>
                 <div class="cy_bottom1 fl over">
-                    <div class="w_list01 fl over"><span>子链一 名称</span></div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input3">&nbsp;<span>0/16</span></div>
+                    <span>子链一 名称 </span><input type="text" class="zs_input3"> &nbsp;<span>0/16</span>
                 </div>
                 <div class="cy_bottom1 fl over">
-                    <div class="w_list02 fl over"><span>URL：</span><input type="text" class="zs_input1">&nbsp;<span>0/1024</span>
-                    </div>
+                <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
                 </div>
             </li>
             <li>
                 <div class="cy_bottom1 fl over">
-                    <div class="w_list01 fl over"><span>子链一 名称</span></div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input3">&nbsp;<span>0/16</span></div>
+                  <span>子链一 名称 </span><input type="text" class="zs_input3">&nbsp;<span>0/16</span>
                 </div>
                 <div class="cy_bottom1 fl over">
-                    <div class="w_list02 fl over"><span>URL：</span><input type="text" class="zs_input1">&nbsp;<span>0/1024</span>
-                    </div>
+                  <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
                 </div>
             </li>
             <li>
                 <div class="cy_bottom1 fl over">
-                    <div class="w_list01 fl over"><span>子链一 名称</span></div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input3">&nbsp;<span>0/16</span></div>
+                    <span>子链一 名称 </span><input type="text" class="zs_input3">&nbsp;<span>0/16</span>
                 </div>
                 <div class="cy_bottom1 fl over">
-                    <div class="w_list02 fl over"><span>URL：</span><input type="text" class="zs_input1">&nbsp;<span>0/1024</span>
-                    </div>
+                    <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
                 </div>
             </li>
             <li>
                 <div class="cy_bottom1 fl over">
-                    <div class="w_list01 fl over"><span>子链一 名称</span></div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input3">&nbsp;<span>0/16</span></div>
+                    <span>子链一 名称 </span><input type="text" class="zs_input3">&nbsp;<span>0/16</span>
                 </div>
                 <div class="cy_bottom1 fl over">
-                    <div class="w_list02 fl over"><span>URL：</span><input type="text" class="zs_input1">&nbsp;<span>0/1024</span>
-                    </div>
+                   <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
                 </div>
             </li>
         </ul>
@@ -884,16 +870,16 @@
     <div class="zs_bottom1 over fl ">
         <ul>
             <li>
-                <div class="w_list01 fl over">名称：</div>
-                <div class="w_list02 fl over"><input type="text" class="zs_input1"></div>
+                <div class="t_list01 fl over">名称：</div>
+                <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
             </li>
             <li>
-                <div class="w_list01 fl over">出价：</div>
-                <div class="w_list02 fl over"><input type="text" class="zs_input1"></div>
+                <div class="t_list01 fl over">出价：</div>
+                <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
             </li>
             <li>
-                <div class="w_list01 fl over">移动出价比例：</div>
-                <div class="w_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
+                <div class="t_list01 fl over">移动出价比例：</div>
+                <div class="t_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
             </li>
         </ul>
     </div>

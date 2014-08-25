@@ -1228,6 +1228,7 @@ ul.ztree.zTreeDragUL {
     border-radius: 5px;
 }
 .w_list03 ul {
+    margin-bottom:10px;
     overflow: hidden;
 }
 .w_list03 ul li {
@@ -1325,8 +1326,8 @@ ul.ztree.zTreeDragUL {
 }
 /* 弹出层 */
 .box, .box2 ,.box3, .box4 ,.box5 ,.box6 ,.box7 ,.box8 ,.box9 ,.box10 {
+   min-width:400px;
     position: absolute;
-    width: 540px;
     border-radius: 5px;
     left: 50%;
     height: auto;
@@ -1344,7 +1345,7 @@ ul.ztree.zTreeDragUL {
     color: #fff;
     cursor: Move;
 }
-.close{
+h2 .close{
     position: absolute;
     right: 15px;
     font-size: 12px;
@@ -1361,9 +1362,16 @@ ul.ztree.zTreeDragUL {
     overflow: hidden;
 }
 .mainlist li span {
-    margin: 0 0 0 10px;
+    margin: 0 10px;
     font-size: 12px;
     font-weight: 400;
+}
+.right_stes{
+    margin-top:10px;
+}
+.define{
+    width:100px;
+
 }
 .mainlist select {
     border: 1px solid #cfcfcf;
@@ -1594,7 +1602,7 @@ ul.ztree.zTreeDragUL {
     margin-bottom:10px;
 }
 @media screen and (max-width:1450px){
-    .t_list03 ,.t_list04  {
+    .t_list03 ,.t_list04 ,.t_list01  {
         width: 100%;
         text-align:left;
     }
@@ -1836,5 +1844,35 @@ ul.ztree.zTreeDragUL {
     background: url(/public/img/gusuan_under2.jpg) no-repeat;
     position: absolute;
     top: -11px;}
+/* 智能竞价新增*/
+.Screening{
+    padding:20px;
+    background:#e4eafa;
+    position:relative;
+}
+.Screening_row{
+    margin-left:20px;
+    width:12px;
+    height:6px;
+    background:url(../img/Screening_row.png) no-repeat;
+
+    z-index:5;
+}
+.Screening select{
+    width:200px;
+    height:22px;
+    border:1px solid #cfcfcf;
+}
+.Screening_input ,.Screening_input1{
+    font-weight:bold;
+    color:#000;
+    padding:0 2px;
+}
+.Screening_input1{
+    color:#a5a5a5;
+}
+.Screening span{
+    padding-right:10px;
+}
 
 

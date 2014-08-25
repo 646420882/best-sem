@@ -140,7 +140,7 @@ public class BasisReportController {
     }
     @RequestMapping(value = "/account/test", method = RequestMethod.GET)
     public void test(HttpServletResponse response){
-        Long[] id = {4377017918l, 8071527386l, 7891147472l};
+        Long[] id = {4377017918l, 8071527386l, 4377019004l};
         Map<String, List<StructureReportEntity>> entityList = basisReportService.getKeywordReport(id, "2014-08-01", "2014-08-01", 1);
 
     }
