@@ -74,10 +74,10 @@ public class AssistantKeywordController {
     public ModelAndView updateKeywordName(Long kwid,String name,Double price,String pcDestinationUrl,String mobileDestinationUrl,Integer matchType,Integer phraseType,Boolean pause){
         KeywordEntity keywordEntity = new KeywordEntity();
         keywordEntity.setKeywordId(kwid);
-        keywordEntity.setKeyword(name);
+        keywordEntity.setKeyword(name.equals("")?null:name);
         keywordEntity.setPrice(price);
-        keywordEntity.setPcDestinationUrl(pcDestinationUrl);
-        keywordEntity.setMobileDestinationUrl(mobileDestinationUrl);
+        keywordEntity.setPcDestinationUrl(pcDestinationUrl.equals("")?null:pcDestinationUrl);
+        keywordEntity.setMobileDestinationUrl(mobileDestinationUrl.equals("")?null:mobileDestinationUrl);
         keywordEntity.setMatchType(matchType);
         keywordEntity.setPhraseType(phraseType);
         keywordEntity.setPause(pause);
