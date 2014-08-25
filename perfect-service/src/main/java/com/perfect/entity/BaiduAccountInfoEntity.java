@@ -19,6 +19,8 @@ public class BaiduAccountInfoEntity {
 
     private String token;
 
+    @Field("dft")
+    private boolean dfault = false;
 
     @Field("b")
     private Double balance;
@@ -215,5 +217,13 @@ public class BaiduAccountInfoEntity {
 
     public void setOpt(OptType opt) {
         this.opt = opt;
+    }
+
+    public boolean isDfault() {
+        return dfault;
+    }
+
+    public void setDfault(boolean dfault) {
+        this.dfault = dfault;
     }
 }

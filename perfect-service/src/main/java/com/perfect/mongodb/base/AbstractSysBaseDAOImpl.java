@@ -1,5 +1,6 @@
 package com.perfect.mongodb.base;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -61,7 +62,7 @@ public abstract class AbstractSysBaseDAOImpl<T, ID extends Serializable> extends
     }
 
     @Override
-    public List<T> find(Map<String, Object> params, int skip, int limit) {
+    public List<T> find(Map<String, Object> params, int skip, int limit, String order, Sort.Direction direction) {
         Query query = new Query();
         Criteria criteria = null;
         for (Map.Entry<String, Object> param : params.entrySet()) {
@@ -76,6 +77,9 @@ public abstract class AbstractSysBaseDAOImpl<T, ID extends Serializable> extends
 
         query.addCriteria(criteria).skip(skip).limit(limit);
 
+        if (order != null) {
+            query.with(new Sort(direction, order));
+        }
         return getSysMongoTemplate().find(query, getEntityClass());
     }
 

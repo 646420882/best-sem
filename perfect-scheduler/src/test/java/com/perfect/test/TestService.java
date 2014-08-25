@@ -6,7 +6,6 @@ import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.autosdk.sms.v3.AccountService;
 import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
-import com.perfect.dao.AccountDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
@@ -27,6 +26,8 @@ import java.util.List;
 
 public class TestService implements IScheduleTaskDealSingle<SystemUserEntity> {
     protected static transient Logger log = LoggerFactory.getLogger(IScheduleTaskDealSingle.class);
+
+    private static CommonService service = null;
 
     @Resource
     private SystemUserDAO systemUserDAO;

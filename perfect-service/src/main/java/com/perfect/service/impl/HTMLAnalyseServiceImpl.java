@@ -54,6 +54,9 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
 
         Map<String, String> htmls = getHTML(getPreviewRequest, serviceFactory);
 
+        if (htmls == null)
+            return Collections.EMPTY_LIST;
+
         List<PreviewData> previewDatas = new ArrayList<>(htmls.size());
 
         for (Map.Entry<String, String> htmlEntry : htmls.entrySet()) {
@@ -68,6 +71,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
 
             previewData.setLeft(leftCreativeVOList);
             previewData.setRight(rightCreativeVOList);
+            previewDatas.add(previewData);
         }
 
         return previewDatas;
@@ -128,7 +132,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
 
         //获取左侧推广数据
         if (_temp1 && div_left.size() > 0) {
-            if ("推广链接".equals(div_left.select("table").first().select("a").first().text())) {
+            if (div_left.select("table").size() > 0 && "推广链接".equals(div_left.select("table").first().select("a").first().text())) {
                 List<Element> elementList = new ArrayList<>();
                 for (Element _e : div_left) {
                     if ("table".equals(_e.tagName())) {

@@ -1,6 +1,5 @@
 package com.perfect.schedule.task.execute;
 
-import com.perfect.dao.AccountDAO;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.SystemUserDAO;

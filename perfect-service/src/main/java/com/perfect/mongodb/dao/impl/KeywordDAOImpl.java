@@ -104,7 +104,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         return keywordEntityList;
     }
 
-    public List<KeywordEntity> find(Map<String, Object> params, int skip, int limit) {
+    public List<KeywordEntity> find(Map<String, Object> params, int skip, int limit, String order ) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
         if (params != null && params.size() > 0) {
@@ -114,7 +114,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
             }
             query.addCriteria(criteria);
         }
-        query.with(new PageRequest(skip, limit, new Sort(Sort.Direction.DESC, "price")));
+        query.with(new PageRequest(skip, limit, new Sort(Sort.Direction.DESC, order)));
         List<KeywordEntity> list = mongoTemplate.find(query, KeywordEntity.class, "keyword");
         return list;
     }

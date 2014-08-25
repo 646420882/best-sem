@@ -1,6 +1,5 @@
 package com.perfect.mongodb.dao.impl;
 
-import com.perfect.dao.AccountDAO;
 import com.perfect.entity.AccountInfoEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.utils.Pager;

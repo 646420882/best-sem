@@ -2,9 +2,11 @@ package com.perfect.utils;
 
 import com.perfect.autosdk.sms.v3.AdgroupType;
 import com.perfect.autosdk.sms.v3.CampaignType;
+import com.perfect.autosdk.sms.v3.CreativeType;
 import com.perfect.autosdk.sms.v3.KeywordType;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
+import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.KeywordEntity;
 import org.springframework.beans.BeanUtils;
 
@@ -66,6 +68,24 @@ public class EntityConvertUtils {
         }
 
         return entities;
+    }
+
+    public static List<CreativeEntity> convertToCrEntity(List<CreativeType> list) {
+        List<CreativeEntity> entities = new ArrayList<>(list.size());
+
+        for (CreativeType creativeType : list) {
+            entities.add(convertToEntity(creativeType));
+        }
+
+        return entities;
+    }
+
+    private static CreativeEntity convertToEntity(CreativeType creativeType) {
+        CreativeEntity creativeEntity = new CreativeEntity();
+
+        BeanUtils.copyProperties(creativeType, creativeEntity);
+
+        return creativeEntity;
     }
 
 

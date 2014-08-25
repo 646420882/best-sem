@@ -32,12 +32,6 @@ public class ImportKeywordServiceImpl implements ImportKeywordService{
     private final String USER_NAME = "userTable";
     private final String ORDER_BY = "sort";
     private final String LIMIT = "limit";
-    //当前登录用户名
-    private static String currLoginUserName;
-
-    static {
-        currLoginUserName = (currLoginUserName == null) ? AppContext.getUser().toString() : currLoginUserName;
-    }
 
     /**
      * 获取重点关键字过滤出来的关键字数据
@@ -52,6 +46,7 @@ public class ImportKeywordServiceImpl implements ImportKeywordService{
         List<KeywordRealTimeDataVOEntity> importKeywordList = new ArrayList<>();
         List<KeywordRealTimeDataVOEntity> list = null;
         List<String> dates = getCurrDate(request);
+        String currLoginUserName = AppContext.getUser();
         if (!currLoginUserName.equals(null) || !currLoginUserName.equals("")) {
             currLoginUserName = getUpCaseWord(currLoginUserName);
             for (int i = 0; i < dates.size(); i++) {

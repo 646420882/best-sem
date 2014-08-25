@@ -1,6 +1,7 @@
 package com.perfect.dao;
 
 import com.perfect.mongodb.utils.Pager;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
@@ -27,8 +28,10 @@ public interface MongoCrudRepository<T, ID extends Serializable> extends CrudRep
      * @param limit
      * @return
      */
-    List<T> find(Map<String, Object> params, int skip, int limit);
+    List<T> find(Map<String, Object> params, int skip, int limit, String sort, Sort.Direction direction);
 
+
+    List<T> find(Map<String, Object> params, int skip, int limit);
     /**
      * 新增
      * <br>------------------------------<br>
@@ -44,6 +47,7 @@ public interface MongoCrudRepository<T, ID extends Serializable> extends CrudRep
      * @param entities
      */
     void insertAll(List<T> entities);
+
 
     /**
      * 更新
@@ -85,6 +89,9 @@ public interface MongoCrudRepository<T, ID extends Serializable> extends CrudRep
      * @return
      */
     Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy);
+
+
+    List<T> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, Sort.Direction direction);
 
 
 }

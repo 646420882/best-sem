@@ -25,14 +25,6 @@ public class AccountOverviewController {
     @Resource
     private WebContext webContext;
 
-    //当前登录用户名
-    private static String currLoginUserName;
-
-    static {
-        currLoginUserName = (currLoginUserName == null) ? AppContext.getUser().toString() : currLoginUserName;
-    }
-
-
     /**
      * 账户概览(获取汇总数据)
      *

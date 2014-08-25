@@ -2,6 +2,8 @@ package com.perfect.entity.bidding;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.List;
+
 /**
  * Created by yousheng on 2014/8/14.
  *
@@ -45,8 +47,8 @@ public class StrategyEntity {
     @Field("failed")
     private int failedStrategy;
 
-    @Field("c")
-    private String cron;
+    @Field("t")
+    private List<Integer> time;
 
     @Field("pos")
     private int position;
@@ -123,11 +125,11 @@ public class StrategyEntity {
         this.position = position;
     }
 
-    public String getCron() {
-        return cron;
+    public List<Integer> getTime() {
+        return time;
     }
 
-    public void setCron(String cron) {
-        this.cron = cron;
+    public void setTime(List<Integer> time) {
+        this.time = time;
     }
 }

@@ -60,11 +60,11 @@ public class BaseMongoTemplate {
     }
 
     public static MongoTemplate getUserMongo() {
-        return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getUserDBName(AppContext.getUser().toString(), null));
+        return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getUserDBName(AppContext.getUser(), null));
     }
 
     public static MongoTemplate getUserReportMongo() {
-        return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(AppContext.getUser().toString()));
+        return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(AppContext.getUser()));
     }
 
     public static MongoTemplate getUserMongo(String userName) {

@@ -113,6 +113,53 @@ public class BaiduApiService {
         return Collections.EMPTY_LIST;
     }
 
+    public List<CreativeType> getAllCreative(List<Long> adgroupIds) {
+        List<CreativeType> creativeTypes = new ArrayList<>();
+
+        try {
+            CreativeService creativeService = commonService.getService(CreativeService.class);
+
+            GetCreativeByAdgroupIdRequest getCreativeByAdgroupIdRequest = new GetCreativeByAdgroupIdRequest();
+            List<Long> subList = null;
+            for (Long l : adgroupIds) {
+                if (subList == null) {
+                    subList = new ArrayList<>(4);
+                }
+                subList.add(l);
+                if (subList.size() == 4) {
+                    getCreativeByAdgroupIdRequest.setAdgroupIds(subList);
+                    GetCreativeByAdgroupIdResponse response = creativeService.getCreativeByAdgroupId(getCreativeByAdgroupIdRequest);
+
+                    if (response != null) {
+                        List<GroupCreative> creatives = response.getGroupCreatives();
+                        for(GroupCreative groupCreative : creatives) {
+                            creativeTypes.addAll(groupCreative.getCreativeTypes());
+                        }
+                    }
+                    subList.clear();
+                }
+            }
+
+            if (subList.size() > 0) {
+                getCreativeByAdgroupIdRequest.setAdgroupIds(subList);
+                GetCreativeByAdgroupIdResponse response = creativeService.getCreativeByAdgroupId(getCreativeByAdgroupIdRequest);
+
+                if (response != null) {
+                    List<GroupCreative> creatives = response.getGroupCreatives();
+
+                    for(GroupCreative groupCreative : creatives){
+                        List<CreativeType> types = groupCreative.getCreativeTypes();
+                        creativeTypes.addAll(types);
+                    }
+                }
+                subList.clear();
+            }
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+        return creativeTypes;
+    }
 
     public List<KeywordType> setKeywordPrice(List<KeywordType> list) {
         if (list == null || list.size() == 0) {

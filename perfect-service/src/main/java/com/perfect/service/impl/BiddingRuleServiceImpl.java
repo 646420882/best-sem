@@ -3,10 +3,12 @@ package com.perfect.service.impl;
 import com.perfect.dao.BiddingRuleDAO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.service.BiddingRuleService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yousheng on 2014/7/30.
@@ -30,28 +32,29 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public BiddingRuleEntity updateToNextTime(BiddingRuleEntity biddingRuleEntity) {
-        return null;
+    public void updateToNextTime(BiddingRuleEntity biddingRuleEntity, long time) {
+        biddingRuleEntity.setNextTime(time);
+        biddingRuleDAO.save(biddingRuleEntity);
     }
 
     @Override
-    public boolean createRule(BiddingRuleEntity entity) {
-        return false;
+    public void createRule(BiddingRuleEntity entity) {
+        biddingRuleDAO.save(entity);
     }
 
     @Override
-    public boolean disableRule(String id) {
+    public void disableRule(String id) {
         biddingRuleDAO.disableRule(id);
-        return false;
     }
 
     @Override
-    public boolean enableRule(String id) {
-        return false;
+    public void enableRule(String id) {
+        biddingRuleDAO.enableRule(id);
     }
 
     @Override
     public void updateRule(BiddingRuleEntity entity) {
+        biddingRuleDAO.save(entity);
     }
 
     @Override
@@ -60,12 +63,27 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public List<BiddingRuleEntity> getNextRunByGroupId(String userName, Long id, int gid) {
-        return biddingRuleDAO.getNextRunByGroupId(userName,id,gid);
+    public List<BiddingRuleEntity> getTaskByAccountId(String userName, Long id) {
+        return biddingRuleDAO.getNextRunByGroupId(userName, id);
     }
 
     @Override
     public void updateRule(List<BiddingRuleEntity> tasks) {
         biddingRuleDAO.updateToNextRunTime(tasks);
+    }
+
+    @Override
+    public List<BiddingRuleEntity> findRules(Map<String, Object> q, int skip, int limit, String sort, Sort.Direction direction) {
+        return biddingRuleDAO.find(q, skip, limit, sort, direction);
+    }
+
+    @Override
+    public List<BiddingRuleEntity> findRules(Map<String, Object> q, String kw, String query, int skip, int limit, String sort, Sort.Direction direction) {
+        return biddingRuleDAO.find(q, kw, query, skip, limit, sort, direction);
+    }
+
+
+    public long countRule(String userName) {
+        return biddingRuleDAO.count();
     }
 }

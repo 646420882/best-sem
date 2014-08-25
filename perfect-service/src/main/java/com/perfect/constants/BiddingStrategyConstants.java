@@ -18,7 +18,7 @@ public enum BiddingStrategyConstants {
 
     FAILED_KEEP(11),FAILED_ROLLBACK(12),
 
-
+    TYPE_PC(10000), TYPE_MOBILE(10001),
 
     SPD_FAST(101), SPD_ECONOMIC(102);
     private final int value;

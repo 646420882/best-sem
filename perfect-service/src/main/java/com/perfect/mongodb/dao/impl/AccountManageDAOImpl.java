@@ -62,7 +62,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
     }
 
     /**
-     * 百度账户树
+     * 百度账户
      *
      * @param entity
      * @return
@@ -83,7 +83,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
                 group("cid", "name"),
                 sort(Sort.Direction.ASC, "cid")
         );
-        //推广计划树
+        //推广计划
         AggregationResults<CampaignVO> results1 = mongoTemplate.aggregate(aggregation1, "campaign", CampaignVO.class);
         for (CampaignVO vo : Lists.newArrayList(results1.iterator())) {
             objectNode = mapper.createObjectNode();
@@ -100,7 +100,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
                 group("cid", "adid", "name"),
                 sort(Sort.Direction.ASC, "adid")
         );
-        //推广单元树
+        //推广单元
         AggregationResults<AdgroupVO> results2 = mongoTemplate.aggregate(aggregation2, "adgroup", AdgroupVO.class);
         for (AdgroupVO vo : Lists.newArrayList(results2.iterator())) {
             objectNode = mapper.createObjectNode();

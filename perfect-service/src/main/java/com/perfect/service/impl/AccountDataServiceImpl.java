@@ -12,7 +12,6 @@ import com.perfect.utils.EntityConvertUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public class AccountDataServiceImpl implements AccountDataService {
 
             // 初始化账户数据
             AccountInfoType accountInfoType = apiService.getAccountInfo();
-            BeanUtils.copyProperties(accountInfoType,baiduAccountInfoEntity);
+            BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
 
             List<CampaignType> campaignTypes = apiService.getAllCampaign();
 
@@ -94,12 +93,21 @@ public class AccountDataServiceImpl implements AccountDataService {
                 keywordEntity.setAccountId(aid);
             }
 
+
+            List<CreativeType> creativeTypes = apiService.getAllCreative(ids);
+
+            List<CreativeEntity> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
+
+            for (CreativeEntity creativeEntity : creativeEntityList) {
+                creativeEntity.setAccountId(aid);
+            }
             // 开始保存数据
 
             // 保存推广计划
             mongoTemplate.insertAll(campaignEntities);
             mongoTemplate.insertAll(adgroupEntities);
             mongoTemplate.insertAll(keywordEntities);
+            mongoTemplate.insertAll(creativeEntityList);
         }
         systemUserService.save(systemUserEntity);
     }

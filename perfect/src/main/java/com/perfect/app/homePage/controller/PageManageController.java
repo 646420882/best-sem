@@ -1,6 +1,7 @@
 package com.perfect.app.homePage.controller;
 
 import com.perfect.app.homePage.service.CustomUserDetailsService;
+import com.perfect.core.AppContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class PageManageController {
 
 
-    private static String currLoginUserName;
 
-    static {
-        currLoginUserName = (currLoginUserName == null) ? CustomUserDetailsService.getUserName() : currLoginUserName;
-    }
 
     /**
      * 登录页面
@@ -58,7 +55,7 @@ public class PageManageController {
      */
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getHomePage(ModelMap modelMap) {
-        modelMap.put("currSystemUserName", currLoginUserName);
+        modelMap.put("currSystemUserName", AppContext.getUser());
         return new ModelAndView("homePage/home");
     }
 
