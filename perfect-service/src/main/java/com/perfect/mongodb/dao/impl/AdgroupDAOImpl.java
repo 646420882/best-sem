@@ -107,6 +107,15 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
         return list;
     }
 
+    /**
+     * 条件查询
+     * @param query
+     * @return
+     */
+    public  List<AdgroupEntity> findByQuery(Query query){
+        return BaseMongoTemplate.getUserMongo().find(query,AdgroupEntity.class);
+    }
+
     public void insert(AdgroupEntity adgroupEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insert(adgroupEntity, "adgroup");

@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface AccountWarningDAO extends CrudRepository<WarningRuleEntity,Long> {
         List<WarningRuleEntity> find(Query query,Class entityClass);
+
+        void update(WarningRuleEntity warningRuleEntity);
 }

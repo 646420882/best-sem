@@ -3,6 +3,7 @@
 package com.perfect.dao;
 
 import com.perfect.entity.AdgroupEntity;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 import java.util.Map;
@@ -14,5 +15,7 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
     List<Long> getAdgroupIdByCampaignId(Long campaignId);
 
     List<AdgroupEntity> getAdgroupByCampaignId(Long campaignId, Map<String, Object> params, int skip, int limit);
+
+    List<AdgroupEntity> findByQuery(Query query);
 
 }

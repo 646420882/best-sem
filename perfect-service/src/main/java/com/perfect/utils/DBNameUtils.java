@@ -35,6 +35,7 @@ public class DBNameUtils {
         if (userName != null && dbType != null) {
             //只传用户名
             return "user_" + userName + "_" + dbType;     //如: user_perfect_report
+
         }
 
         if (userName != null) {

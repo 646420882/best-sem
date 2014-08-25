@@ -137,34 +137,6 @@ public class CsvReadUtil implements Iterator<List<String>> {
         return map;
     }
 
-    /**
-     * 获取CSVUrl地址的关键词中的数据
-     *
-     * @return List<CSVUrlEntity>
-     */
-    public List<CSVUrlEntity> getUrlList() {
-        List<CSVUrlEntity> list = new LinkedList<>();
-        while (hasNext()) {
-            CSVUrlEntity csvUrlEntity = new CSVUrlEntity();
-            csvUrlEntity.setLineNumber(getLineNumber());
-            csvUrlEntity.setKeyword(next().get(0));
-            csvUrlEntity.setKeywordURL(next().get(1));
-            csvUrlEntity.setFactURL(next().get(2));
-            list.add(csvUrlEntity);
-        }
-        close();
-        return list;
-    }
 
-    public List<CSVTotalEntity> getTotalList() {
-        List<CSVTotalEntity> list = new LinkedList<>();
-        while (hasNext()) {
-            CSVTotalEntity csvTotalEntity = new CSVTotalEntity();
-
-            list.add(csvTotalEntity);
-        }
-        close();
-        return list;
-    }
 
 }

@@ -1,6 +1,7 @@
 package com.perfect.utils;
 
 import com.google.common.io.Files;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.FileCopyUtils;
 
 
@@ -10,39 +11,61 @@ import java.text.DecimalFormat;
 /**
  * Created by XiaoWei on 2014/8/18.
  */
+@Repository("uploadHelper")
 public class UploadHelper {
-    private static String tempPath;
-
+    private static String default_tempPath;
+    private static String total_tempPath;
     public UploadHelper() {
-        tempPath = System.getProperty("java.io.tmpdir") + "\\Perfect\\";
-        existFileDirs(tempPath);
+        default_tempPath = System.getProperty("java.io.tmpdir") + "\\Perfect\\";
+        total_tempPath=default_tempPath+"\\Total\\";
+        existFileDirs(default_tempPath);
+        existFileDirs(total_tempPath);
     }
 
-    public String getTempPath() {
-        return tempPath;
+    public String getDefaultTempPath() {
+        return default_tempPath;
     }
-
+    public String getTotalTempPath(){return  total_tempPath;}
     public String getExt(String fileName) {
         return Files.getFileExtension(fileName);
     }
 
 
     /**
-     * 执行上传操作
-     *
+     * 执行普通文件上传
      * @param bytes
+     * @param fileName
      * @return
      */
-    public boolean upLoad(byte[] bytes,String fileName) {
+    public boolean defaultUpload(byte[] bytes, String fileName) {
         try {
-            File dirPath = new File(tempPath);
-            File uploadedFile = new File(tempPath + "\\" +fileName);
+            File dirPath = new File(default_tempPath);
+            File uploadedFile = new File(default_tempPath + "\\" +fileName);
             FileCopyUtils.copy(bytes, uploadedFile);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * 执行统计excel文件上传
+     * @param bytes
+     * @param fileName
+     * @return
+     */
+    public boolean totalUpload(byte[] bytes,String fileName){
+        try {
+            File dirPath = new File(total_tempPath);
+            File uploadedFile = new File(total_tempPath + "\\" +fileName);
+            FileCopyUtils.copy(bytes, uploadedFile);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     /**

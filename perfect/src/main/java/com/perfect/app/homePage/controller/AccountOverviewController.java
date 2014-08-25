@@ -1,8 +1,7 @@
 package com.perfect.app.homePage.controller;
 
-import com.perfect.app.homePage.service.AccountOverviewService;
 import com.perfect.core.AppContext;
-import com.perfect.mongodb.utils.DateUtil;
+import com.perfect.service.AccountOverviewService;
 import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +43,6 @@ public class AccountOverviewController {
     @RequestMapping(value = "/account/getAccountOverviewData", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccountOverviewData(HttpServletResponse response, String startDate, String endDate) {
         Map<String, Object> map = accountOverviewService.getKeyWordSum(startDate,endDate);
-        webContext.wirteJson(map, response);
+        webContext.writeJson(map, response);
     }
 }

@@ -1,6 +1,8 @@
 package com.perfect.app.accountCenter.controller;
 
 import com.perfect.dao.SystemUserDAO;
+import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.service.AccountManageService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * Created by baizz on 2014-6-25.
@@ -21,6 +25,9 @@ public class AccountManageController {
 
     @Resource(name = "systemUserDAO")
     private SystemUserDAO systemUserDAO;
+
+    @Resource
+    private AccountManageService<BaiduAccountInfoEntity> service;
 
     //@Resource(name = "accountManageDAO")
     //private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
@@ -71,5 +78,24 @@ public class AccountManageController {
     @RequestMapping(value = "/updateBaiduAccount", method = {RequestMethod.GET, RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView updateBaiduAccount() {
         return null;
+    }
+
+    /**
+     * 获取账户树
+     *
+     * @return
+     */
+    @RequestMapping(value = "/get_tree", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getAccountTree() {
+        //Test========================
+        BaiduAccountInfoEntity entity = new BaiduAccountInfoEntity();
+        entity.setId(6243012l);
+        entity.setBaiduUserName("baidu-bjtthunbohui2134115");
+        entity.setBaiduPassword("Bjhunbohui7");
+        //Test========================
+        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> trees = service.getAccountTree(entity);
+        jsonView.setAttributesMap(trees);
+        return new ModelAndView(jsonView);
     }
 }

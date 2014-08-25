@@ -26,7 +26,6 @@
                 'fileObjName': 'file',
                 'onUploadSuccess': function (file, data, response) {
                     if (data == "1") {
-                        loadFileList();
                         alert(file.name + "上传成功");
 
                     }
@@ -39,7 +38,7 @@
                 var json = eval("(" + result + ")");
                 for (var i = 0; i < json.length; i++) {
                     var _tr = "<tr>";
-                    var td = "<td>" + json[i].fileName + "</td><td>" + json[i].fileSize + "</td><td>" + json[i].fileExt + "</td><td><a href='/upload/get?fileName=" + json[i].fileName + "'>下载</a>" +
+                    var td = "<td>" + json[i].fileName + "</td><td>" + json[i].fileSize + "</td><td>" + json[i].fileExt + "</td><td><a href='/upload/getDefault?fileName=" + json[i].fileName + "'>下载</a>" +
                             "&nbsp;<a href='javascript:void(0)' step='" + json[i].fileName + "' onclick='delFile(this)'>删除</a></td>";
                     var _etr = "</tr>";
                     $("#t1").append(_tr + td + _etr);
@@ -52,7 +51,7 @@
             var parents = _this.parents("tr");
             var conf = confirm("是否删除？");
             if (conf) {
-                $.get("/upload/del", {fileName: $(res).attr("step")}, function (result) {
+                $.get("/upload/delDefault", {fileName: $(res).attr("step")}, function (result) {
                     if (result == "1") {
                         parents.remove();
                     }

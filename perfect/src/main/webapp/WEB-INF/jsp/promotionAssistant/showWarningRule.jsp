@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html>
 <head>
@@ -14,10 +13,6 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
-
 
     <style type="text/css">
         .title{
@@ -173,7 +168,7 @@
 
         <div class="title"><span>消费提醒</span></div>
         <div><br/>
-            <table border="1">
+            <table id = "table" border="1">
                 <thead>
                     <tr>
                         <td>百度账户ID</td>
@@ -185,38 +180,12 @@
                         <td>是否启用</td>
                     </tr>
                 </thead>
-                <c:forEach items="${list}" var="va">
-                <tr>
-                    <td><c:out value="${va.id}"/></td>
-                    <td><c:out value="${va.budgetType}"/></td>
-                    <td><c:out value="${va.budget}"/></td>
-                    <td><c:out value="${va.warningPercent}"/></td>
-                    <td><c:out value="${va.tels}"/></td>
-                    <td><c:out value="${va.mails}"/></td>
-                    <td>
-                        <select onchange=" window.location.href='/assistant/updateWarningRuleOfIsEnbled?id=${va.id}'+'&isEnbled='+this.value;">
-                            <c:if test="va.isEnable==0">
-                                <option value = "0" selected="true">禁用</option>
-                                <option value = "1">启用</option>
-                            </c:if>
-                                <c:if test="va.isEnable==1">
-                                    <option value = "0">禁用</option>
-                                    <option value = "1" selected="true">启用</option>
-                                </c:if>
-                            </select>
-                    </td>
-                </tr>
-                </c:forEach>
+                <tbody id = "warningTr">
+
+                </tbody>
             </table>
 
         </div>
-
-
-
-
-
-
-
 
 
 
@@ -247,5 +216,68 @@
         </div>
     </div>
 </div>
+
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+    /**
+    *得到预警规则信息
+     */
+    function getWarningRuleData(){
+        $.ajax({
+            url:"/assistant/getAllWarningRule",
+            type:"POST",
+            data:{},
+            dataType:"json",
+            success:function(data){
+                for(var i=0;i<data.length;i++){
+                    var html = "";
+                    html = html+"<tr><td>"+data[i].accountId+"</td>";
+
+                    if(data[i].budgetType==0){
+                        html = html+"<td>不设置预算</td>";
+                    }else if(data[i].budgetType==1){
+                        html = html+"<td>日预算</td>";
+                    }else{
+                        html = html+"<td>周预算</td>";
+                    }
+
+                    html = html+"<td>"+data[i].budget+"</td>";
+                    html = html+"<td>"+data[i].warningPercent+"%</td>";
+                    html = html+"<td>"+data[i].tels+"</td>";
+                    html = html+"<td>"+data[i].mails+"</td>";
+
+                    if(data[i].isEnable==0){
+                        html = html+"<td><select class='enbled' name='"+data[i].id+"'><option value = '0' selected='true'>禁用</option> <option value = '1'>启用</option></select></td></tr>";
+                    }else{
+                        html = html+"<td><select class='enbled' name='"+data[i].id+"'><option value = '0'>禁用</option> <option value = '1'  selected='true'>启用</option></select></td></tr>";
+                    }
+                    $("#warningTr").append(html);
+                }
+                $("#table").append("<a href='/assistant/accountWarning'>去设置预警</a>");
+            }
+
+        });
+    }
+    getWarningRuleData();
+
+
+
+    /**
+    *修改启用或者禁用
+    * @param id
+    * @param value
+     */
+
+    $("#table").delegate(".enbled","change",function(){
+        $.ajax({
+         url:"/assistant/updateWarningRuleOfIsEnbled",
+         type:"post",
+         data:{"id":$(this).attr("name"),"isEnbled":$(this).val()}
+         });
+    });
+
+</script>
+
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.perfect.service;
 
+import com.perfect.entity.AccountReportEntity;
+import com.perfect.entity.AccountReportResponse;
 import com.perfect.entity.StructureReportEntity;
 
 import java.util.List;
@@ -16,5 +18,13 @@ public interface BasisReportService {
      * @param categoryTime 分类时间  0、默认 1、分日 2、分周 3、分月
      * @return
      */
-    public Map<String,List<StructureReportEntity>> getUnitReportDate(String[] date,int terminal,int categoryTime);
+    public Map<String,List<StructureReportEntity>> getUnitReportDate(String[] date,int terminal,int categoryTime,int reportType,int reportNumber);
+
+    /**
+     * 获取用户所有数据
+     * @param Sorted
+     * @param fieldName
+     * @return
+     */
+    public Map<String,List<AccountReportResponse>> getAccountAll(int Sorted,String fieldName);
 }

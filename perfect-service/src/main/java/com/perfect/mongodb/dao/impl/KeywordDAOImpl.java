@@ -119,6 +119,13 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         return list;
     }
 
+
+    //x
+    public  List<KeywordEntity> findByQuery(Query query){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+       return mongoTemplate.find(query,KeywordEntity.class);
+    }
+
     public void insert(KeywordEntity keywordEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insert(keywordEntity, "keyword");
@@ -236,6 +243,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         deleteById(keywordEntity.getKeywordId());
     }
 
+
     public void deleteAll() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<KeywordEntity> keywordEntities = findAll();
@@ -293,4 +301,11 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
                 break;
         }
     }
+
+
+    public void remove(Query query){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.remove(query, KeywordEntity.class, "keyword");
+    }
+
 }

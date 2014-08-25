@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Date;
+
 /**
  * Created by baizz on 2014-08-13.
  */
@@ -18,6 +20,9 @@ public class AccountReportEntity {
 
     @Field(value = "acna")
     private String accountName;
+
+    @Field(value = "date")
+    private Date date;
 
     @Field(value = "pcis")
     private Integer pcImpression;     //PC展现次数
@@ -83,6 +88,14 @@ public class AccountReportEntity {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Integer getPcImpression() {
@@ -206,6 +219,7 @@ public class AccountReportEntity {
 
         if (accountId != null ? !accountId.equals(that.accountId) : that.accountId != null) return false;
         if (accountName != null ? !accountName.equals(that.accountName) : that.accountName != null) return false;
+        if (date != null ? !date.equals(that.date) : that.date != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (mobileClick != null ? !mobileClick.equals(that.mobileClick) : that.mobileClick != null) return false;
         if (mobileConversion != null ? !mobileConversion.equals(that.mobileConversion) : that.mobileConversion != null)
@@ -232,6 +246,7 @@ public class AccountReportEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (accountId != null ? accountId.hashCode() : 0);
         result = 31 * result + (accountName != null ? accountName.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (pcImpression != null ? pcImpression.hashCode() : 0);
         result = 31 * result + (pcClick != null ? pcClick.hashCode() : 0);
         result = 31 * result + (pcCtr != null ? pcCtr.hashCode() : 0);
@@ -255,6 +270,7 @@ public class AccountReportEntity {
                 "id='" + id + '\'' +
                 ", accountId=" + accountId +
                 ", accountName='" + accountName + '\'' +
+                ", date=" + date +
                 ", pcImpression=" + pcImpression +
                 ", pcClick=" + pcClick +
                 ", pcCtr=" + pcCtr +
@@ -271,4 +287,6 @@ public class AccountReportEntity {
                 ", mobileConversion=" + mobileConversion +
                 '}';
     }
+
+
 }

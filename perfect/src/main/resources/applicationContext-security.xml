@@ -17,6 +17,7 @@
     <security:http pattern="/js/*.js" security="none"/>
     <security:http pattern="/login" security="none"/>
     <security:http pattern="/upload/uploadFile" security="none"/>
+    <security:http pattern="/upload/upTotal" security="none"/>
 
     <security:http auto-config="true" use-expressions="true">
         <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>

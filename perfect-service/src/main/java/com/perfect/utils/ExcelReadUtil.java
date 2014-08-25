@@ -7,9 +7,9 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.annotation.Resource;
 import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
@@ -19,7 +19,10 @@ import java.util.concurrent.Future;
  */
 public class ExcelReadUtil {
 
-    public static XSSFWorkbook getBook(List<CSVUrlEntity> csvUrlEntityList){
+    @Resource
+    private UploadHelper uploadHelper;
+
+    public static XSSFWorkbook getBook(List<CSVUrlEntity> csvUrlEntityList) {
         XSSFWorkbook hwb = new XSSFWorkbook();
 
         XSSFSheet sheet = hwb.createSheet();
@@ -54,20 +57,21 @@ public class ExcelReadUtil {
         }
         return hwb;
     }
+
     public static void checkUrl(String readFile) {
         List<CSVUrlEntity> list = getData(readFile);
-        List<CSVUrlEntity> forkList=new LinkedList<>();
-        ForkJoinPool pool=new ForkJoinPool();
-        ExcelCheckUrlTask task=new ExcelCheckUrlTask(0,list.size(),list);
-        Future<List<CSVUrlEntity>> future=pool.submit(task);
+        List<CSVUrlEntity> forkList = new LinkedList<>();
+        ForkJoinPool pool = new ForkJoinPool();
+        ExcelCheckUrlTask task = new ExcelCheckUrlTask(0, list.size(), list);
+        Future<List<CSVUrlEntity>> future = pool.submit(task);
         try {
-            forkList=future.get();
+            forkList = future.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        XSSFWorkbook hwb =getBook(forkList);
+        XSSFWorkbook hwb = getBook(forkList);
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(readFile);
@@ -79,6 +83,34 @@ public class ExcelReadUtil {
         }
     }
 
+    public boolean invokeSum(String session, String[] fileName) {
+        Map<String, List<String>> fileMap = getMap(session, fileName);
+        try {
+            if (!session.equals("") || session != null) {
+                List<String> fileNames = fileMap.get(session);
+                    List<TotalEntity> totalEntities = getSource(fileNames.get(0));
+                    for (int i=0;i<totalEntities.size();i++){
+//                        System.out.println("账号："+totalEntities.get(i).getAccountName()+",本周："+totalEntities.get(i).getThisWeekPrice()+",上周"+totalEntities.get(i).getLastWeekPrice());
+                    }
+
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static Map<String, List<String>> getMap(String session, String[] fileName) {
+        Map<String, List<String>> map = new HashMap<>();
+        List<String> fileNames = new ArrayList<>();
+        UploadHelper upload = new UploadHelper();
+        for (int i = 0; i < fileName.length; i++) {
+            fileNames.add(upload.getTotalTempPath() + "\\" + fileName[i]);
+        }
+        map.put(session, fileNames);
+        return map;
+    }
 
     private static List<CSVUrlEntity> getData(String sourceFile) {
         List<CSVUrlEntity> ls = new LinkedList<>();
@@ -86,8 +118,7 @@ public class ExcelReadUtil {
             XSSFWorkbook xwb = new XSSFWorkbook(new FileInputStream(sourceFile));
             XSSFSheet sheet = xwb.getSheetAt(0);
             XSSFRow row;
-            String cell;
-            for (int i = sheet.getFirstRowNum() + 1; i < sheet.getLastRowNum()+1; i++) {
+            for (int i = sheet.getFirstRowNum() + 1; i < sheet.getLastRowNum() + 1; i++) {
                 row = sheet.getRow(i);
                 CSVUrlEntity csvUrls = new CSVUrlEntity();
                 csvUrls.setLineNumber(i);
@@ -97,10 +128,80 @@ public class ExcelReadUtil {
                 csvUrls.setKeywordURL(row.getCell(3).toString());
                 ls.add(csvUrls);
             }
+
             return ls;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return ls;
     }
+
+    private List<TotalEntity> getSource(String sourceFile) {
+        List<TotalEntity> totalEntities = new LinkedList<>();
+        try {
+            XSSFWorkbook xwb = new XSSFWorkbook(new FileInputStream(sourceFile));
+            int sheetIndex = xwb.getNumberOfSheets();
+            if (sheetIndex > 0) {
+                TotalEntity total=new TotalEntity();
+                double thisWeekPrice=0.0;
+                double lastWeekPrice=0.0;
+                for (int h = 0; h < sheetIndex; h++) {
+                    XSSFSheet sheet = xwb.getSheetAt(h);
+                    XSSFRow row;
+                    for (int i = sheet.getFirstRowNum() + 3; i < sheet.getLastRowNum(); i++) {
+                        row = sheet.getRow(i);
+                         TotalEntity totalEntity = new TotalEntity();
+                        totalEntity.setAccountName(row.getCell(0).toString());
+                        totalEntity.setThisWeekPrice(Double.parseDouble(row.getCell(1).toString()));
+                        totalEntity.setLastWeekPrice(Double.parseDouble(row.getCell(2).toString()));
+                        total.setAccountName(row.getCell(0).toString());
+//                        thisWeekPrice+=Double.parseDouble(row.getCell(1).toString());
+//                        lastWeekPrice+=Double.parseDouble(row.getCell(2).toString());
+//                        totalEntities.add(totalEntity);
+
+                    }
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return totalEntities;
+    }
+
+    class TotalEntity {
+        private String accountName;
+        private double thisWeekPrice;
+        private double lastWeekPrice;
+
+        public String getAccountName() {
+            return accountName;
+        }
+
+        public void setAccountName(String accountName) {
+            this.accountName = accountName;
+        }
+
+        public double getThisWeekPrice() {
+            return thisWeekPrice;
+        }
+
+        public void setThisWeekPrice(double thisWeekPrice) {
+            this.thisWeekPrice = thisWeekPrice;
+        }
+
+        public double getLastWeekPrice() {
+            return lastWeekPrice;
+        }
+
+        public void setLastWeekPrice(double lastWeekPrice) {
+            this.lastWeekPrice = lastWeekPrice;
+        }
+    }
+
+    public static void main(String[] args) {
+
+    }
+
 }

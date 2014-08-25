@@ -77,7 +77,7 @@ public class AsynchronousReport {
         return date;
     }
 
-    private String RealTime(List<Long> listKey, int format, int granularity, Date startDate, Date endDate, int dataType, int device,String[] PerformanceData) {
+    private String realTime(List<Long> listKey, int format, int granularity, Date startDate, Date endDate, int dataType, int device,String[] PerformanceData) {
         //得到设置返回数据工厂
         ReportRequestType requestType = new ReportRequestType();
         //指定返回数据类型
@@ -157,12 +157,12 @@ public class AsynchronousReport {
                 fileUrl = stateResponse.getReportFilePath();
                 break;
             } else {
-                fileUrl = "Error:Report generation fails !!";
+                fileUrl = "-1";
                 break;
             }
         } while (views < 3);
         if(isGenerated != 3){
-            fileUrl = "Error:Request timed out !!";
+            fileUrl = "-1";
         }
         return fileUrl;
     }
@@ -180,7 +180,7 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(null, 0, 2, dates[0], dates[1], 2, 1,PerformanceData);
+        String resultTypes = realTime(null, 0, 2, dates[0], dates[1], 2, 1,PerformanceData);
 
         return resultTypes;
     }
@@ -198,7 +198,7 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(null, 0, 2, dates[0], dates[1], 2, 2,PerformanceData);
+        String resultTypes = realTime(null, 0, 2, dates[0], dates[1], 2, 2,PerformanceData);
 
         return resultTypes;
     }
@@ -216,7 +216,7 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(listKey, 1, 11, dates[0], dates[1], 14, 1,PerformanceData);
+        String resultTypes = realTime(listKey, 1, 11, dates[0], dates[1], 14, 1,PerformanceData);
 
         return resultTypes;
     }
@@ -234,7 +234,7 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(listKey, 1, 11, dates[0], dates[1], 14, 2,PerformanceData);
+        String resultTypes = realTime(listKey, 1, 11, dates[0], dates[1], 14, 2,PerformanceData);
 
         return resultTypes;
     }
@@ -252,7 +252,7 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(listKey, 0, 5, dates[0], dates[1], 11, 1,PerformanceData);
+        String resultTypes = realTime(listKey, 0, 5, dates[0], dates[1], 11, 1,PerformanceData);
 
         return resultTypes;
     }
@@ -270,7 +270,7 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(listKey, 0, 5, dates[0], dates[1], 11, 2,PerformanceData);
+        String resultTypes = realTime(listKey, 0, 5, dates[0], dates[1], 11, 2,PerformanceData);
 
         return resultTypes;
     }
@@ -288,7 +288,7 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(listKey, 1, 7, dates[0], dates[1], 12, 1,PerformanceData);
+        String resultTypes = realTime(listKey, 1, 7, dates[0], dates[1], 12, 1,PerformanceData);
 
         return resultTypes;
     }
@@ -306,7 +306,7 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(listKey, 1, 7, dates[0], dates[1], 12, 2,PerformanceData);
+        String resultTypes = realTime(listKey, 1, 7, dates[0], dates[1], 12, 2,PerformanceData);
 
         return resultTypes;
     }
@@ -324,7 +324,7 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(listKey, 1, 5, dates[0], dates[1], 3, 1,PerformanceData);
+        String resultTypes = realTime(listKey, 1, 5, dates[0], dates[1], 3, 1,PerformanceData);
 
         return resultTypes;
     }
@@ -342,7 +342,7 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(listKey, 0, 3, dates[0], dates[1], 3, 2,PerformanceData);
+        String resultTypes = realTime(listKey, 0, 3, dates[0], dates[1], 3, 2,PerformanceData);
 
         return resultTypes;
     }
@@ -360,7 +360,7 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(listKey, 0, 3, dates[0], dates[1], 10, 2,PerformanceData);
+        String resultTypes = realTime(listKey, 0, 3, dates[0], dates[1], 10, 2,PerformanceData);
 
         return resultTypes;
     }
@@ -377,7 +377,7 @@ public class AsynchronousReport {
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = RealTime(listKey, 1, 5, dates[0], dates[1], 10, 1,PerformanceData);
+        String resultTypes = realTime(listKey, 0, 3, dates[0], dates[1], 10, 1,PerformanceData);
 
         return resultTypes;
     }
