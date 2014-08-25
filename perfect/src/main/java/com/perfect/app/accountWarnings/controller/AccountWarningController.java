@@ -39,20 +39,13 @@ public class AccountWarningController {
     @Resource
     private WebContext webContext;
 
-    //当前登录用户名
-    private static String currLoginUserName;
-
-    static {
-        currLoginUserName = (currLoginUserName == null) ? AppContext.getUser() : currLoginUserName;
-    }
-
     /**
      * 设置提醒页面
      * @return
      */
     @RequestMapping(value = "assistant/accountWarning" , method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView setWarningPage(ModelMap model){
-        SystemUserEntity systemUserEntity = systemUserDAO.findByUserName(currLoginUserName);
+        SystemUserEntity systemUserEntity = systemUserDAO.findByUserName(AppContext.getUser());
         model.addAttribute("list",systemUserEntity.getBaiduAccountInfoEntities());
         return new ModelAndView("promotionAssistant/setWarning");
     }

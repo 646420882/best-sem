@@ -30,6 +30,8 @@ public interface MongoCrudRepository<T, ID extends Serializable> extends CrudRep
      */
     List<T> find(Map<String, Object> params, int skip, int limit, String sort, Sort.Direction direction);
 
+
+    List<T> find(Map<String, Object> params, int skip, int limit);
     /**
      * 新增
      * <br>------------------------------<br>

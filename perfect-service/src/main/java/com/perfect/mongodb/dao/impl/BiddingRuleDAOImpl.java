@@ -203,4 +203,10 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     public void updateToNextRunTime(List<BiddingRuleEntity> tasks) {
 
     }
+
+
+    @Override
+    public void enableRule(String id) {
+        getMongoTemplate().findAndModify(Query.query(Criteria.where(getId()).is(id)), Update.update("ebl", 1), getEntityClass());
+    }
 }

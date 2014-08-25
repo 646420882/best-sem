@@ -11,15 +11,9 @@ import javax.servlet.http.HttpSessionListener;
  * Created by XiaoWei on 2014/8/18.
  */
 public class SessionListener implements HttpSessionListener {
-    private SessionContext sessionContext = SessionContext.getInstence();
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
-
-        Object ctx = se.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
-
-        System.out.println("ctx = " + ctx);
-        System.out.println("Session created : id is " + se.getSession().getId());
     }
 
     @Override

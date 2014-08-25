@@ -23,10 +23,6 @@ public class BiddingTest extends UnitilsJUnit4 {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("schedule.xml");
         BiddingTask biddingTask = (BiddingTask) applicationContext.getBean("biddingTask");
 
-        AppContext.setUser("perfect");
-
-
-
 //        createEntity(applicationContext);
         List<BiddingTask.TaskObject> list = null;
         try {

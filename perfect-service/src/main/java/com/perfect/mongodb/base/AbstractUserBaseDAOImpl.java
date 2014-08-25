@@ -1,6 +1,7 @@
 package com.perfect.mongodb.base;
 
 import com.perfect.dao.MongoCrudRepository;
+import com.perfect.entity.bidding.BiddingRuleEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -181,6 +182,23 @@ public abstract class AbstractUserBaseDAOImpl<T, ID extends Serializable> implem
 
     }
 
+    public List<T> find(Map<String, Object> params, int skip, int limit) {
+        Query query = new Query();
+        Criteria criteria = null;
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            if (criteria == null) {
+                criteria = new Criteria(param.getKey());
+                criteria.is(param.getValue());
+                continue;
+            }
+
+            criteria.and(param.getKey()).is(param.getValue());
+        }
+
+        query.addCriteria(criteria).skip(skip).limit(limit);
+
+        return getMongoTemplate().find(query, getEntityClass());
+    }
 
     String getMatchReg(String query) {
         return ".*(" + query.replaceAll(" ", "|") + ").*";
