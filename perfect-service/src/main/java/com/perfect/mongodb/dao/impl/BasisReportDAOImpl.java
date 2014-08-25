@@ -5,7 +5,9 @@ import com.perfect.dao.BasisReportDAO;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.AccountReportResponse;
 import com.perfect.entity.StructureReportEntity;
+import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
+import com.perfect.mongodb.utils.Pager;
 import com.perfect.utils.DBNameUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -16,19 +18,18 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by SubDong on 2014/8/6.
  */
 @Repository("basisReportDAO")
-public class BasisReportDAOImpl implements BasisReportDAO {
 
-    private MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(
-            DBNameUtils.getUserDBName(AppContext.getUser(), "report"));
+public class BasisReportDAOImpl extends AbstractUserBaseDAOImpl<StructureReportEntity,Long> implements BasisReportDAO {
 
     @Override
     public List<StructureReportEntity> getUnitReportDate(String userTable) {
-        List<StructureReportEntity> objectList = mongoTemplate.findAll(StructureReportEntity.class, userTable);
+        List<StructureReportEntity> objectList = getMongoTemplate().findAll(StructureReportEntity.class, userTable);
         return objectList;
     }
 
@@ -40,19 +41,35 @@ public class BasisReportDAOImpl implements BasisReportDAO {
         } else {
             sort = new Sort(Sort.Direction.DESC, fieldName);
         }
-        List<AccountReportResponse> reportEntities = mongoTemplate.find(new Query().with(sort), AccountReportResponse.class, "account_report");
+        List<AccountReportResponse> reportEntities = getMongoTemplate().find(new Query().with(sort), AccountReportResponse.class, "account_report");
         return reportEntities;
     }
 
     @Override
     public long getAccountCount() {
-        long account_report = mongoTemplate.count(new Query(), "account_report");
+        long account_report = getMongoTemplate().count(new Query(), "account_report");
         return account_report;
     }
 
     @Override
     public List<AccountReportResponse> getAccountReport(Date startDate, Date endDate) {
-        return null;
+        List<AccountReportResponse> reportResponses = getMongoTemplate().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)),AccountReportResponse.class, "account_report");
+        return reportResponses;
     }
 
+    @Override
+    public List<StructureReportEntity> getKeywordReport(Long[] id,String table) {
+        List<StructureReportEntity> entityList = getMongoTemplate().find(new Query(Criteria.where("kwid").in(id)),StructureReportEntity.class,table);
+        return  entityList;
+    }
+
+    @Override
+    public Class<StructureReportEntity> getEntityClass() {
+        return StructureReportEntity.class;
+    }
+
+    @Override
+    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
+        return null;
+    }
 }

@@ -15,8 +15,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Created by SubDong on 2014/8/12.
@@ -50,7 +55,7 @@ public class BasisReportController {
                                @RequestParam(value = "reportNumber", required = false, defaultValue = "10") int reportNumber) {
         List<String> list = DateUtils.getPeriod(startDate, endDate);
         String[] newDate = list.toArray(new String[list.size()]);
-        Map<String, List<StructureReportEntity>> responseDate = basisReportService.getUnitReportDate(newDate, devices, dateType, reportPageType,reportNumber);
+        Map<String, List<StructureReportEntity>> responseDate = basisReportService.getReportDate(newDate, devices, dateType, reportPageType,reportNumber);
         int totalRows =0;
         for(List<StructureReportEntity> entity : responseDate.values()){
             totalRows = totalRows + ((entity==null)?0:entity.size());
@@ -95,4 +100,48 @@ public class BasisReportController {
         }
     }
 
+    @RequestMapping(value = "/account/accountDateVs", method = RequestMethod.GET)
+    public void getAccountDateVs(HttpServletResponse response,
+                                 @RequestParam(value = "date1", required = false) String date1,
+                                 @RequestParam(value = "date2", required = false) String date2,
+                                 @RequestParam(value = "date3", required = false) String date3,
+                                 @RequestParam(value = "dateType", required = false) int dateType,
+                                 @RequestParam(value = "devices", required = false) int devices){
+
+        Map<String, List<Object>> returnAccount = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date endDate1 = dateFormat.parse(date1);
+            Date endDate2 = dateFormat.parse(date2);
+            Date endDate3 = dateFormat.parse(date3);
+
+            Calendar cal = Calendar.getInstance();
+            long kk = endDate3.getTime() + (endDate2.getTime()-endDate1.getTime());
+            cal.setTimeInMillis(kk);
+            Date endDate4 = cal.getTime();
+
+            returnAccount = basisReportService.getAccountDateVS(endDate1,endDate2,endDate3,endDate4,dateType,devices);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String data=new Gson().toJson(returnAccount);
+
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            response.setHeader("Pragma", "No-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            response.getWriter().write(data);
+            response.getWriter().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @RequestMapping(value = "/account/test", method = RequestMethod.GET)
+    public void test(HttpServletResponse response){
+        Long[] id = {4377017918l, 8071527386l, 7891147472l};
+        Map<String, List<StructureReportEntity>> entityList = basisReportService.getKeywordReport(id, "2014-08-01", "2014-08-01", 1);
+
+    }
 }

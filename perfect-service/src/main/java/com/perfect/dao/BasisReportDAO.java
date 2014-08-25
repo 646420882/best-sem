@@ -57,4 +57,14 @@ public interface BasisReportDAO{
      */
     public List<AccountReportResponse> getAccountReport(Date startDate,Date endDate);
 
+
+    /**********API接口*********/
+    /**
+     * 关键字查询
+     * @param id
+     * @param table
+     * @return
+     */
+    public List<StructureReportEntity> getKeywordReport(Long[] id,String table);
+
 }

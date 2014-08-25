@@ -21,6 +21,9 @@ public class StructureReportEntity {
     @Field(value = "cpna")
     private String campaignName; //计划
 
+    @Field("kwid")
+    private Long keywordId;  //关键词ID
+
     @Field(value = "kwna")
     private String keywordName; //关键字
 
@@ -122,6 +125,14 @@ public class StructureReportEntity {
 
     public void setCampaignName(String campaignName) {
         this.campaignName = campaignName;
+    }
+
+    public Long getKeywordId() {
+        return keywordId;
+    }
+
+    public void setKeywordId(Long keywordId) {
+        this.keywordId = keywordId;
     }
 
     public String getKeywordName() {
@@ -312,6 +323,7 @@ public class StructureReportEntity {
         if (description2 != null ? !description2.equals(entity.description2) : entity.description2 != null)
             return false;
         if (id != null ? !id.equals(entity.id) : entity.id != null) return false;
+        if (keywordId != null ? !keywordId.equals(entity.keywordId) : entity.keywordId != null) return false;
         if (keywordName != null ? !keywordName.equals(entity.keywordName) : entity.keywordName != null) return false;
         if (mobileClick != null ? !mobileClick.equals(entity.mobileClick) : entity.mobileClick != null) return false;
         if (mobileConversion != null ? !mobileConversion.equals(entity.mobileConversion) : entity.mobileConversion != null)
@@ -344,6 +356,7 @@ public class StructureReportEntity {
         result = 31 * result + (adgroupId != null ? adgroupId.hashCode() : 0);
         result = 31 * result + (adgroupName != null ? adgroupName.hashCode() : 0);
         result = 31 * result + (campaignName != null ? campaignName.hashCode() : 0);
+        result = 31 * result + (keywordId != null ? keywordId.hashCode() : 0);
         result = 31 * result + (keywordName != null ? keywordName.hashCode() : 0);
         result = 31 * result + (creativeId != null ? creativeId.hashCode() : 0);
         result = 31 * result + (creativeTitle != null ? creativeTitle.hashCode() : 0);
@@ -376,6 +389,7 @@ public class StructureReportEntity {
                 ", adgroupId=" + adgroupId +
                 ", adgroupName='" + adgroupName + '\'' +
                 ", campaignName='" + campaignName + '\'' +
+                ", keywordId=" + keywordId +
                 ", keywordName='" + keywordName + '\'' +
                 ", creativeId=" + creativeId +
                 ", creativeTitle='" + creativeTitle + '\'' +
