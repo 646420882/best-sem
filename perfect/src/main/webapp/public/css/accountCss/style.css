@@ -1602,7 +1602,7 @@ h2 .close{
     margin-bottom:10px;
 }
 @media screen and (max-width:1450px){
-    .t_list03 ,.t_list04  {
+    .t_list03 ,.t_list04 ,.t_list01  {
         width: 100%;
         text-align:left;
     }
