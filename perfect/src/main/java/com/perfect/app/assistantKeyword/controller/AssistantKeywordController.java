@@ -59,23 +59,26 @@ public class AssistantKeywordController {
 
 
     /**
-     * 修改以下参数的信息(!!!)
+     * 修改以下参数的信息
      * @param kwid
-     * @param price ?
+     * @param name
+     * @param price
      * @param pcDestinationUrl
      * @param mobileDestinationUrl
+     * @param matchType
      * @param phraseType
-     * @param status
      * @param pause
      * @return
      */
-    @RequestMapping(value = "assistantKeyword/update*",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView updateKeywordName(Long kwid,Double price,String pcDestinationUrl,String mobileDestinationUrl,Integer phraseType,Integer status,Boolean pause){
+    @RequestMapping(value = "assistantKeyword/edit",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView updateKeywordName(Long kwid,String name,Double price,String pcDestinationUrl,String mobileDestinationUrl,Integer matchType,Integer phraseType,Boolean pause){
         KeywordEntity keywordEntity = new KeywordEntity();
         keywordEntity.setKeywordId(kwid);
+        keywordEntity.setKeyword(name);
         keywordEntity.setPrice(price);
         keywordEntity.setPcDestinationUrl(pcDestinationUrl);
         keywordEntity.setMobileDestinationUrl(mobileDestinationUrl);
+        keywordEntity.setMatchType(matchType);
         keywordEntity.setPhraseType(phraseType);
         keywordEntity.setPause(pause);
         assistantKeywordService.updateKeyword(keywordEntity);
@@ -127,9 +130,9 @@ public class AssistantKeywordController {
      * @param deleteInfos 用户输入的一系列的计划名称，单元名称，关键词名称
      * @return
      */
-    @RequestMapping(value = "assistantKeyword/deleteByNameInput",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView deleteKeywordByNamesInput(String deleteInfos){
-        assistantKeywordService.deleteKeywordByNamesInput(currentAccountId, deleteInfos);
+    @RequestMapping(value = "assistantKeyword/validateDeleteByInput",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView validateDeleteByInput(String deleteInfos){
+        assistantKeywordService.validateDeleteByInput(currentAccountId, deleteInfos);
         return new ModelAndView();
     }
 

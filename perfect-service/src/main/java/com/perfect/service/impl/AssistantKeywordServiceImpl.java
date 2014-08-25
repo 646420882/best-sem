@@ -1,13 +1,9 @@
 package com.perfect.service.impl;
 
-import com.perfect.autosdk.sms.v3.KeywordInfo;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.KeywordDAO;
-import com.perfect.entity.AdgroupEntity;
-import com.perfect.entity.CampaignEntity;
-import com.perfect.entity.CampaignTreeVoEntity;
-import com.perfect.entity.KeywordEntity;
+import com.perfect.entity.*;
 import com.perfect.service.AssistantKeywordService;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -15,7 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by john on 2014/8/19.
@@ -121,10 +119,17 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService{
      * @param deleteInfos
      */
     @Override
-    public void deleteKeywordByNamesInput(Long accountId,String deleteInfos) {
+    public Map<String,Object> validateDeleteByInput(Long accountId,String deleteInfos) {
+        Map<String,Object> map = new HashMap<>();
+
+        //被忽略删除的关键词
+        List<AssistantkwdIgnoreDeleEntity> ignoreList = new ArrayList<>();
+
+        //可删除的关键词集合
+        Map<String,Object> deleteKwd = new HashMap<>();
+
         String[] everyDeleInfo = deleteInfos.split("\r\n");
 
-        KeywordInfo keywordInfo;
         for(String str:everyDeleInfo){
             String[] fields = str.split(",|\t");
             List<CampaignEntity> campaignEntityList = findByQuery(new Query().addCriteria(Criteria.where("aid").is(accountId).and("name").is(fields[0])));
@@ -135,13 +140,38 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService{
                 AdgroupEntity adgroupEntity = adgroupList==null||adgroupList.size()==0?null:adgroupList.get(0);
 
                 if(adgroupEntity!=null){
-                    keywordDAO.remove(new Query().addCriteria(Criteria.where("aid").is(accountId).and("agid").is(adgroupEntity.getAdgroupId()).and("name").is(fields[2])));
+                    List<KeywordEntity> keywordList = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where("aid").is(accountId).and("agid").is(adgroupEntity.getAdgroupId())));
+                    if(keywordList.size()!=0){
+                        deleteKwd.put("campaign",fields[0]);
+                        deleteKwd.put("adgroup",fields[1]);
+                        deleteKwd.put("list",keywordList);
+                    }else{
+                        ignoreList.add(setFiledIgnore(fields));
+                    }
+                }else{
+                    ignoreList.add(setFiledIgnore(fields));
                 }
+            }else{
+                ignoreList.add(setFiledIgnore(fields));
             }
-
         }
 
+        map.put("ignoreList",ignoreList);
+        map.put("deleteKwd",deleteKwd);
+
+        return map;
     }
+
+
+    public AssistantkwdIgnoreDeleEntity setFiledIgnore(String[] fields){
+        AssistantkwdIgnoreDeleEntity ignoreDeleEntity = new AssistantkwdIgnoreDeleEntity();
+        ignoreDeleEntity.setCampaignName(fields[0]);
+        ignoreDeleEntity.setAdgroupName(fields[1]);
+        ignoreDeleEntity.setKeywordName(fields[2]);
+        ignoreDeleEntity.setMatchModel("广泛");
+        return ignoreDeleEntity;
+    }
+
 
 
 
@@ -164,10 +194,14 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService{
             for (String info:everyInfo) {
                 //若为true，将现在的关键词替换该单元下的所有相应内容,为false时，就将现在输入的关键词添加到数据库
                 if(isReplace==true){
+                    String[] kwInfo = info.split(",|\t");
                     //删除该单元下的所有相应的关键词
                     keywordDAO.remove(new Query().addCriteria(Criteria.where("aid").is(accountId).and("agid").is(fieds[1])));
 
                     //开始添加现在用户输入的关键词
+                    KeywordEntity keywordEntity = new KeywordEntity();
+                    keywordEntity.setAdgroupId(Long.parseLong(fieds[1]));
+                    keywordEntity.setKeyword(kwInfo[0]);
 
                 }else{
                     //开始添加现在用户输入的关键词

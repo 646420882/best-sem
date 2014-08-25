@@ -28,7 +28,7 @@ public class GetRealTimeDataDAOImpl implements GetRealTimeDataDAO {
      */
     public List<AccountRealTimeDataVOEntity> getLocalAccountRealData(String userName,Date startDate,Date endDate){
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(userName));
-        List<AccountRealTimeDataVOEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.ASC, "date")), AccountRealTimeDataVOEntity.class, "accountRealTimeData");
+        List<AccountRealTimeDataVOEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.ASC, "date")), AccountRealTimeDataVOEntity.class, "account_report");
         return list;
     }
 

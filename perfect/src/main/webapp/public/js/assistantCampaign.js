@@ -28,11 +28,11 @@ function campaignDataToHtml(obj,index){
     var html = "";
 
     if(index==0){
-        html = html+"<tr class='list2_box3'>";
+        html = html+"<tr class='list2_box3' onclick='setCampaignValue(this)'>";
     }else if(index%2!=0){
-        html = html+"<tr class='list2_box2'>";
+        html = html+"<tr class='list2_box2' onclick='setCampaignValue(this)'>";
     }else{
-        html = html+"<tr class='list2_box1'>";
+        html = html+"<tr class='list2_box1' onclick='setCampaignValue(this)'>";
     }
 
     html = html+"<td>"+obj.campaignName+"</td>";
@@ -101,10 +101,50 @@ function campaignDataToHtml(obj,index){
         html = html+"<td>"+obj.budgetOfflineTime.length+"</td>";
     }
 
+    //!!!!!!
+    html = html+"<input type='hidden' value="+obj.priceRatio+" class='hidden'/>";
+
     html = html+"</tr>";
 
     $("#tbodyClick5").append(html);
 }
 
-
+//加载该页面就开始加载数据
 getCampaignList();
+
+
+/**
+ *单击某一行的时候设置文本框值
+ */
+function setCampaignValue(obj){
+    var _tr = $(obj);
+    $(".campaignName_5").val(_tr.find("td:eq(0)").html());
+    $(".budget_5").val(_tr.find("td:eq(3)").html());
+    $(".priceRatio_5").val(_tr.find(".hidden").val());
+    $(".schedule_5").html("<a>"+_tr.find("td:eq(6)").html()+"</a>");
+    $(".regionTarget_5").html("<a>"+_tr.find("td:eq(7)").html()+"</a>");
+    $(".isDynamicCreative_5").html("<a>"+_tr.find("td:eq(5)").html()+"</a>");
+    until.convert(_tr.find("td:eq(8)").html()!="未设置","<a>已设置("+_tr.find("td:eq(8)").html()+")</a>:<a>未设置</a>");
+    until.convert(_tr.find("td:eq(9)").html()=="0","<a>未设置</a>"+":"+"<a>已设置("+_tr.find("td:eq(9)").html()+")</a>");
+
+    if(_tr.find("td:eq(4)").html()=="优选"){
+        $(".selectShowProb_5").html("<option value = '1' selected='selected'>优选</option><option value='2'>轮显</option>");
+    }else{
+        $(".selectShowProb_5").html("<option value = '1' >优选</option><option value='2' selected='selected'>轮显</option>");
+    }
+
+    $(".status_5").html(_tr.find("td:eq(1)").html());
+
+    //IP排除??
+
+    //推广计划状态
+     if(_tr.find("td:eq(2)").html()=="启用"){
+        $(".selectPause_5").html("<option value = 'false' selected='selected'>启用</option><option value='true'>暂停</option>");
+     }else{
+         $(".selectPause_5").html("<option value = 'false' >启用</option><option value='true' selected='selected'>暂停</option>");
+     }
+}
+
+
+
+

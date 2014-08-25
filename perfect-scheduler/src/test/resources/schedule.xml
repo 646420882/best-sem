@@ -36,7 +36,7 @@
 
     <!-- MongoDBÅäÖÃ -->
     <!--<mongo:mongo id="mongo" replica-set="115.29.103.38:27017">-->
-    <mongo:mongo id="mongo" replica-set="182.92.188.177:27017">
+    <mongo:mongo id="mongo" replica-set="182.92.188.177:23135">
         <mongo:options connections-per-host="8"
                        threads-allowed-to-block-for-connection-multiplier="4"
                        auto-connect-retry="true"/>

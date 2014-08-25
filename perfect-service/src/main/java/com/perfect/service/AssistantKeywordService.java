@@ -5,6 +5,7 @@ import com.perfect.entity.KeywordEntity;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by john on 2014/8/19.
@@ -18,7 +19,7 @@ public interface AssistantKeywordService {
 
     List findByQuery(Query query);
 
-    void deleteKeywordByNamesInput(Long accountId,String deleteInfos);
+    Map<String,Object> validateDeleteByInput(Long accountId,String deleteInfos);
 
     void deleteKeywordByNamesChoose(Long accountId,String chooseInfos, String keywordNames);
 
