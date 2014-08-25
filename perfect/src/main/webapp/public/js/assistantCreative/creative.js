@@ -3,8 +3,37 @@
  */
 $(function () {
     loadCreativeData();
+    InitMenu();
 });
 
+var add = {
+    text: "添加创意",
+    func: function () {
+        addCreative();
+    }
+}, del = {
+    text: "删除创意",
+    func: function () {
+        alert("删除");
+    }
+}, update = {
+    text: "验证创意",
+    func: function () {
+        alert("验证");
+    }
+}
+var menuData = [
+    [add, del,update]
+];
+function InitMenu() {
+    $("#creativeDiv tbody").smartMenu(menuData, {
+        name: "creative",
+        beforeShow:function(){
+            $.smartMenu.remove();
+            alert($(this).html());
+        }
+    });
+}
 function loadCreativeData() {
     $.get("/assistantCreative/getList", function (result) {
         var json = eval("(" + result + ")");

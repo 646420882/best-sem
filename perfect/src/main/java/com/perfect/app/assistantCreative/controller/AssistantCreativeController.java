@@ -1,7 +1,6 @@
 package com.perfect.app.assistantCreative.controller;
 
 import com.perfect.dao.CreativeDAO;
-import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.utils.web.WebContextSupport;
 import org.springframework.stereotype.Controller;
@@ -29,7 +28,9 @@ public class AssistantCreativeController  extends WebContextSupport{
     public ModelAndView getCreativeList(HttpServletRequest request, HttpServletResponse response, ModelMap map){
         List<CreativeEntity> creativeEntityList=creativeDAO.find(null,0,10);
 //        CampaignEntity
-        writeJson(creativeEntityList,response);
-        return null;
+//        writeJson(creativeEntityList,response);
+        ModelAndView mv=new ModelAndView("promotionAssistant/data/creativeData");
+        mv.addObject("list",creativeEntityList);
+        return mv;
     }
 }

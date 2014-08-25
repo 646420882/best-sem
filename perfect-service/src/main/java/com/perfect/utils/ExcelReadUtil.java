@@ -88,10 +88,41 @@ public class ExcelReadUtil {
         try {
             if (!session.equals("") || session != null) {
                 List<String> fileNames = fileMap.get(session);
-                    List<TotalEntity> totalEntities = getSource(fileNames.get(0));
-                    for (int i=0;i<totalEntities.size();i++){
-//                        System.out.println("账号："+totalEntities.get(i).getAccountName()+",本周："+totalEntities.get(i).getThisWeekPrice()+",上周"+totalEntities.get(i).getLastWeekPrice());
+                Map<Integer, List<TotalEntity>> totalMap = getSource(fileNames.get(0));
+                List<TotalEntity> finalList = new LinkedList<>();
+                if (totalMap.size() == 2) {
+                    for (Map.Entry<Integer,List<TotalEntity>> t:totalMap.entrySet()){
+                        if(t.getValue().get(0).getAccountName().equals(t.getValue().get(1).getAccountName())){
+                            TotalEntity total=new TotalEntity();
+                            total.setAccountName(t.getValue().get(0).getAccountName());
+                            total.setThisWeekPrice(t.getValue().get(0).getThisWeekPrice()+t.getValue().get(1).getThisWeekPrice());
+                            total.setLastWeekPrice(t.getValue().get(0).getLastWeekPrice()+t.getValue().get(1).getLastWeekPrice());
+                            finalList.add(total);
+                        }
                     }
+                } else if(totalMap.size()>2) {
+                    TotalEntity total=new TotalEntity();
+                    for (Map.Entry<Integer, List<TotalEntity>> t : totalMap.entrySet()) {
+                        total.setAccountName(t.getValue().get(0).getAccountName());
+                        total.setThisWeekPrice(t.getValue().get(0).getThisWeekPrice());
+                        total.setLastWeekPrice(t.getValue().get(0).getLastWeekPrice());
+                        for (int i = 1; i < t.getValue().size(); i++) {
+                            if (total.getAccountName().equals(t.getValue().get(i).getAccountName())){
+                                total.setThisWeekPrice(total.getThisWeekPrice()+t.getValue().get(i).getThisWeekPrice());
+                                total.setLastWeekPrice(total.getLastWeekPrice()+t.getValue().get(i).getLastWeekPrice());
+                                finalList.add(total);
+                            }else{
+                                TotalEntity totalNew=new TotalEntity();
+                                totalNew.setAccountName(t.getValue().get(i).getAccountName());
+                                totalNew.setThisWeekPrice(t.getValue().get(i).getThisWeekPrice());
+                                totalNew.setLastWeekPrice(t.getValue().get(i).getLastWeekPrice());
+                                finalList.add(totalNew);
+                            }
+                        }
+                    }
+                }else{
+                    finalList=totalMap.get(0);
+                }
 
             }
             return true;
@@ -136,30 +167,29 @@ public class ExcelReadUtil {
         return ls;
     }
 
-    private List<TotalEntity> getSource(String sourceFile) {
-        List<TotalEntity> totalEntities = new LinkedList<>();
+    private Map<Integer, List<TotalEntity>> getSource(String sourceFile) {
+        Map<Integer, List<TotalEntity>> finalMap = new LinkedHashMap<>();
         try {
             XSSFWorkbook xwb = new XSSFWorkbook(new FileInputStream(sourceFile));
             int sheetIndex = xwb.getNumberOfSheets();
             if (sheetIndex > 0) {
-                TotalEntity total=new TotalEntity();
-                double thisWeekPrice=0.0;
-                double lastWeekPrice=0.0;
+
+                double thisWeekPrice = 0.0;
+                double lastWeekPrice = 0.0;
+
                 for (int h = 0; h < sheetIndex; h++) {
                     XSSFSheet sheet = xwb.getSheetAt(h);
                     XSSFRow row;
+                    List<TotalEntity> totalEntities = new LinkedList<>();
                     for (int i = sheet.getFirstRowNum() + 3; i < sheet.getLastRowNum(); i++) {
                         row = sheet.getRow(i);
-                         TotalEntity totalEntity = new TotalEntity();
+                        TotalEntity totalEntity = new TotalEntity();
                         totalEntity.setAccountName(row.getCell(0).toString());
                         totalEntity.setThisWeekPrice(Double.parseDouble(row.getCell(1).toString()));
                         totalEntity.setLastWeekPrice(Double.parseDouble(row.getCell(2).toString()));
-                        total.setAccountName(row.getCell(0).toString());
-//                        thisWeekPrice+=Double.parseDouble(row.getCell(1).toString());
-//                        lastWeekPrice+=Double.parseDouble(row.getCell(2).toString());
-//                        totalEntities.add(totalEntity);
-
+                        totalEntities.add(totalEntity);
                     }
+                    finalMap.put(h, totalEntities);
                 }
 
             }
@@ -167,7 +197,7 @@ public class ExcelReadUtil {
             e.printStackTrace();
         }
 
-        return totalEntities;
+        return finalMap;
     }
 
     class TotalEntity {
