@@ -7,10 +7,10 @@ var until = {
             if (str.length > count) {
                 return str.substring(0, count) + "<a href='javascript:;;' title='" + str + "'>...</a>";
             } else {
-                return str;
+                return "<span>"+str+"</span>";
             }
         }else{
-            return "空";
+            return "<span>空</span>";
         }
     },
     convert:function(bol,format) {

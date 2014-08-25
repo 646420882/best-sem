@@ -195,7 +195,7 @@
 <div class="containers  over hides">
     <div class="zs_function over">
         <ul class="fl">
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="javascript:void(0)" onclick="addCreative();"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
             <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a>
             </li>
@@ -212,15 +212,17 @@
         </ul>
         <span class="fr">1/10</span>
     </div>
-    <div class="list4">
+    <div class="list4" id="creativeDiv">
         <table border="0" cellspacing="0" width="100%" id="createTable">
             <thead>
             <tr class="list02_top">
+                <td>&nbsp;操作</td>
                 <td>&nbsp;创意标题</td>
                 <td>&nbsp;创意描述1</td>
                 <td>&nbsp;创意描述2</td>
                 <td>&nbsp;默认访问URL</td>
                 <td>&nbsp;默认显示URL</td>
+                <td>&nbsp;移动访问URL</td>
                 <td>&nbsp;移动显示URL</td>
                 <td>&nbsp;创意状态</td>
                 <td>&nbsp;启用/暂停
@@ -261,6 +263,7 @@
             <ul>
                 <li>
                     <div class="w_list01 fl over">创意标题：</div>
+
                     <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sTitle"><input type="button"
                                                                                                           value="{}插入通配符"
                                                                                                           onclick="addTb(this)"
@@ -270,7 +273,7 @@
                 </li>
                 <li>
                     <div class="w_list01 fl over">创意描述1：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sDes1"><input type="button"
+                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sDes1" maxlength='80'><input type="button"
                                                                                                          value="{}插入通配符"
                                                                                                          class="zs_input2"><span><span
                             id="sDes1_size">49</span>/80</span>
@@ -278,7 +281,7 @@
                 </li>
                 <li>
                     <div class="w_list01 fl over">创意描述2：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sDes2"><input type="button"
+                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sDes2" maxlength='80'><input type="button"
                                                                                                          value="{}插入通配符"
                                                                                                          class="zs_input2"><span><span
                             id="sDes2_size">49</span>/80</span>
@@ -287,32 +290,39 @@
                 <li>
                     <div class="w_list03 fl over">
                         <div class="w_list01 fl over">默认访问URL：</div>
-                        <div class="w_list02 fl over"><input type="text" class="zs_input3" id="sPc"
-                                                             id="sDefUrl"><span><span id="sPc_size">49</span>/50</span>
-                        </div>
+                        <div class="w_list02 fl over">
+                            <input type="text" class="zs_input3" id="sPc" maxlength='1024'>
+                            <span><span id="sPc_size">49</span>/1024</span></div>
                     </div>
                     <div class="w_list03 fr over">
                         <div class="w_list01 fl over">默认显示URL：</div>
-                        <div class="w_list02 fl over"><input type="text" class="zs_input3" id="sMib"
-                                                             id="sDefDisUrl"><span><span
-                                id="sMib_size">49</span>/50</span></div>
+                        <div class="w_list02 fl over">
+                            <input type="text" class="zs_input3" id="sPcs" maxlength='36'>
+                            <span><span id="sPcs_size">35</span>/36</span></div>
+
                     </div>
                 </li>
                 <li>
                     <div class="w_list03 fl over">
                         <div class="w_list01 fl over">移动访问URL：</div>
                         <div class="w_list02 fl over"><input type="text" class="zs_input3"
-                                                             id="sMibUrl"><span>49/50</span></div>
+                                                             id="sMib" maxlength='1024'><span><span id="sMib_size">0</span>/1024</span></div>
                     </div>
                     <div class="w_list03 fr over">
                         <div class="w_list01 fl over">移动显示URL：</div>
                         <div class="w_list02 fl over"><input type="text" class="zs_input3"
-                                                             id="sMibDisUrl"><span>49/50</span></div>
+                                                             id="sMibs" maxlength='36'><span><span id="sMibs_size">0</span>/36</span></div>
                     </div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">创意预览：</div>
-                    <div class="w_list02 fl over"><textarea class="zs_input4" id="sPreview"></textarea></div>
+                    <div class="w_list02 fl over">
+                      <div id="sPreview" style="width: 557px;height: 98px;border:1px solid #ccc;'">
+
+
+                      </div>
+
+                    </div>
                 </li>
             </ul>
         </div>
@@ -1252,7 +1262,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
-
 <%--AssistantCreative Js--%>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/assistantCreative/creative.js"></script>

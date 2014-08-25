@@ -1323,7 +1323,7 @@ ul.ztree.zTreeDragUL {
     background: url(/public/img/button3.png) no-repeat;
 }
 /* 弹出层 */
-.box, .box2 .box3, .box4 ,.box5 ,.box6 ,.box7 ,.box8 ,.box9 ,.box10 {
+.box, .box2 ,.box3, .box4 ,.box5 ,.box6 ,.box7 ,.box8 ,.box9 ,.box10 {
     position: absolute;
     width: 540px;
     border-radius: 5px;
@@ -1333,7 +1333,7 @@ ul.ztree.zTreeDragUL {
     background-color: #fff;
     overflow: hidden;
 }
-.box h2, .box2 h2 .box3 h2, .box4 h2 ,.box5 h2 ,.box6 h2 ,.box7 h2 ,.box8 h2 ,.box9 h2 ,.box10 h2 {
+.box h2, .box2 h2 ,.box3 h2, .box4 h2 ,.box5 h2 ,.box6 h2 ,.box7 h2 ,.box8 h2 ,.box9 h2 ,.box10 h2 {
     height: 46px;
     font-size: 14px;
     background-color: #282538;
