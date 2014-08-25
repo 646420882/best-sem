@@ -8,633 +8,623 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
-
-
 </head>
 <body>
-
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
-
-
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-
 <div class="mid over fr">
     <div class="on_title over">
         <a href="#">
             推广助手
         </a>
     </div>
-    <div id="tab">
+     <div id="tab">
         <ul class="tab_menu">
             <li class="selected">智能竞价</li>
             <li>重点关键词监控</li>
         </ul>
     <div class="tab_box">
-    <div class="containers over">
-<div class="list01_top over"><Span>智能竞价</Span> <a href="#" class="question"></a></div>
-<div class=" jiangjia_concent over">
+        <div class="containers over">
+            <div class="list01_top over"><Span>智能竞价</Span> <a href="#" class="question"></a></div>
+               <div class=" jiangjia_concent over">
+                    <div class="jingjia_left fl over">
+                        <div class="j_l_top over">
+                            <span class="fl"><h3>账户目录</h3></span>
+                            <a href="#" class="fr">刷新</a>
+                        </div>
+                        <div class="j_l_top2 over">
+                            <span class="fl">查找计划单元</span>
+                            <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png">
+                        </div>
+                        <div class="j_list01 over">
+                            <ul id="zTree" class="ztree over">
 
-<div class="jingjia_left fl over">
-    <div class="j_l_top over">
-        <span class="fl"><h3>账户目录</h3></span>
-        <a href="#" class="fr">刷新</a>
-    </div>
-    <div class="j_l_top2 over">
-        <span class="fl">查找计划单元</span>
-        <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png">
-    </div>
-    <div class="j_list01 over">
-        <ul id="zTree" class="ztree over">
+                            </ul>
+                        </div>
+                        <div class="j_l_under over">
+                            <a href="#">监控文件夹</a>
 
-        </ul>
-    </div>
-    <div class="j_l_under over">
-        <a href="#">监控文件夹</a>
-
-    </div>
-</div>
-<div class="jingjia_right fr over">
-<div ID="testIframe" Name="testIframe" width="100%" onLoad="iFrameHeight()">
-<div class="content_wraps over">
-<div class="wrap_list01 over wd ">
-    <ul>
-        <li>
-            <div class="w_list01 fl over">是否参与竞价：</div>
-            <div class="w_list02 fl over">
-                <span>
-                    <form><input type="radio" checked="checked" name="no">&nbsp;未参与 &nbsp;<input type="radio"
-                                                                                                   name="no"> &nbsp;已参加
-                    &nbsp;<input type="radio" name="no">&nbsp;全部
-                     </form>
-                </span>
-				<span>
-                       <dl><input type="image" src="${pageContext.request.contextPath}/public/img/search2.png"></dl>
-                       <dl><input type="checkbox" style=" margin-top:5px;"></dl>
-                        <dl>
-                        <input type="text" class="w_text" value="关键词精准查询，多个关键词用半角逗号隔开"
-                          onfocus="if(value=='关键词精准查询，多个关键词用半角逗号隔开') {value=''}"
-                          onblur="if (value=='') {value='关键词精准查询，多个关键词用半角逗号隔开'}">
-                        <input type="image" src="${pageContext.request.contextPath}/public/img/search3.png"></dl>
-                  </span>
-                  <span>
-                      <input type="button" value="高级搜索" class="advanced_search">
-				</span>
-            </div>
-        </li>
-    </ul>
-    <div class="Senior over hides">
-            <ul>
-                <li>
-                    <div class="w_list01 fl over">账户余额：</div>
-                    <div class="w_list02 fl over">
-                        <span><input type="checkbox" checked="checked">&nbsp;精准</span>
-                        <span><input type="checkbox" checked="checked">&nbsp;短语-核心</span>
-                        <span><input type="checkbox" checked="checked">&nbsp;短语-精准</span>
-                        <span><input type="checkbox" checked="checked">&nbsp;短语-同义</span>
-                        <span><input type="checkbox" checked="checked">&nbsp;广泛</span>
+                        </div>
                     </div>
-                </li>
-                <li>
-                    <div class="w_list01 fl over">质量度：</div>
-                    <div class="w_list02 fl over">
-                        <ul>
-                            <li>
+                        <div class="jingjia_right fr over">
+                        <div class="content_wraps over">
+                        <div class="wrap_list01 over wd ">
+                            <ul>
+                                <li>
+                                    <div class="w_list01 fl over">是否参与竞价：</div>
+                                    <div class="w_list02 fl over">
+                                        <span>
+                                            <form><input type="radio" checked="checked" name="no">&nbsp;未参与 &nbsp;<input type="radio"
+                                                                                                                           name="no"> &nbsp;已参加
+                                            &nbsp;<input type="radio" name="no">&nbsp;全部
+                                             </form>
+                                        </span>
+                                        <span>
+                                               <dl><input type="image" src="${pageContext.request.contextPath}/public/img/search2.png"></dl>
+                                               <dl><input type="checkbox" style=" margin-top:5px;"></dl>
+                                                <dl>
+                                                <input type="text" class="w_text" value="关键词精准查询，多个关键词用半角逗号隔开"
+                                                  onfocus="if(value=='关键词精准查询，多个关键词用半角逗号隔开') {value=''}"
+                                                  onblur="if (value=='') {value='关键词精准查询，多个关键词用半角逗号隔开'}">
+                                                <input type="image" src="${pageContext.request.contextPath}/public/img/search3.png"></dl>
+                                          </span>
+                                          <span>
+                                              <input type="button" value="高级搜索" class="advanced_search">
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="Senior over hides">
+                                    <ul>
+                                        <li>
+                                            <div class="w_list01 fl over">账户余额：</div>
+                                            <div class="w_list02 fl over">
+                                                <span><input type="checkbox" checked="checked">&nbsp;精准</span>
+                                                <span><input type="checkbox" checked="checked">&nbsp;短语-核心</span>
+                                                <span><input type="checkbox" checked="checked">&nbsp;短语-精准</span>
+                                                <span><input type="checkbox" checked="checked">&nbsp;短语-同义</span>
+                                                <span><input type="checkbox" checked="checked">&nbsp;广泛</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="w_list01 fl over">质量度：</div>
+                                            <div class="w_list02 fl over">
+                                                <ul>
+                                                    <li>
 
-                                <span><input type="checkbox" checked="checked">&nbsp;一星词</span>
-                                <span><input type="checkbox" checked="checked">&nbsp;二星词</span>
-                                <span><input type="checkbox" checked="checked">&nbsp;三星词</span>
-                                <span><input type="checkbox" checked="checked">&nbsp;四星词</span>
-                                <span><input type="checkbox" checked="checked">&nbsp;五星词</span>
-                            </li>
-                            <li>
-                                <span><input type="checkbox" checked="checked">&nbsp;六星词</span>
-                                <span><input type="checkbox" checked="checked">&nbsp;七星词</span>
-                                <span><input type="checkbox" checked="checked">&nbsp;八星词</span>
-                                <span><input type="checkbox" checked="checked">&nbsp;九星词</span>
-                                <span><input type="checkbox" checked="checked">&nbsp;十星词</span>
-                            </li>
+                                                        <span><input type="checkbox" checked="checked">&nbsp;一星词</span>
+                                                        <span><input type="checkbox" checked="checked">&nbsp;二星词</span>
+                                                        <span><input type="checkbox" checked="checked">&nbsp;三星词</span>
+                                                        <span><input type="checkbox" checked="checked">&nbsp;四星词</span>
+                                                        <span><input type="checkbox" checked="checked">&nbsp;五星词</span>
+                                                    </li>
+                                                    <li>
+                                                        <span><input type="checkbox" checked="checked">&nbsp;六星词</span>
+                                                        <span><input type="checkbox" checked="checked">&nbsp;七星词</span>
+                                                        <span><input type="checkbox" checked="checked">&nbsp;八星词</span>
+                                                        <span><input type="checkbox" checked="checked">&nbsp;九星词</span>
+                                                        <span><input type="checkbox" checked="checked">&nbsp;十星词</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <div class="w_list01 fl over">出价：</div>
+                                            <div class="w_list02 fl over">
+                                               <span>
+                                                   <input type="text" class="price"> - 　
+                                                   <input type="text" class="price">
+                                               </span></div>
+                                        </li>
+                                    </ul>
+
+                            </div>
+                        </div>
+                        <div class="w_list03 ">
+                        <ul class="jiangjia_list">
+                            <li class="current showbox">设置规则</li>
+                            <li >检查当前排名</li>
+                            <li class="showbox2">修改出价</li>
+                            <li  class="showbox3">修改匹配模式</li>
+                            <li class="showbox4">修改访问网址</li>
+                            <li class="showbox5">分组</li>
+                            <li class="showbox6">自定义列</li>
                         </ul>
+                        <div class="over wd">
+                            <span class="fl">账户余额： <span>381.1元</span></span>
+                            <span class="fr">当前显示数据日期：昨天</span>
+                        </div>
+                        <div class="list4">
+                            <table border="0" cellspacing="0" width="101%">
+                            <tbody>
+                            <tr class="list02_top">
+                                <td>&nbsp;<input type="checkbox" id="checkAll"> 序号</td>
+                                <td>&nbsp;关键词</td>
+                                <td>&nbsp;消费</td>
+                                <td>&nbsp;当前排名</td>
+                                <td>&nbsp;展现量</td>
+                                <td>&nbsp;点击率</td>
+                                <td>&nbsp;出价</td>
+                                <td>&nbsp;质量度</td>
+                                <td>&nbsp;移动端质量度</td>
+                                <td>&nbsp;状态</td>
+                                <td>&nbsp;竞价规则</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;81</td>
+                                <td>&nbsp;1380.69</td>
+                                <td>&nbsp;6.20%</td>
+                                <td>&nbsp;17</td>
+                                <td>&nbsp;九星词</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr class="list2_box2">
+                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;81</td>
+                                <td>&nbsp;1380.69</td>
+                                <td>&nbsp;6.20%</td>
+                                <td>&nbsp;17</td>
+                                <td>&nbsp;九星词</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr class="list2_box2">
+                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;81</td>
+                                <td>&nbsp;1380.69</td>
+                                <td>&nbsp;6.20%</td>
+                                <td>&nbsp;17</td>
+                                <td>&nbsp;九星词</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr class="list2_box2">
+                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;81</td>
+                                <td>&nbsp;1380.69</td>
+                                <td>&nbsp;6.20%</td>
+                                <td>&nbsp;17</td>
+                                <td>&nbsp;九星词</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr class="list2_box2">
+                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;81</td>
+                                <td>&nbsp;1380.69</td>
+                                <td>&nbsp;6.20%</td>
+                                <td>&nbsp;17</td>
+                                <td>&nbsp;九星词</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr class="list2_box2">
+                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;81</td>
+                                <td>&nbsp;1380.69</td>
+                                <td>&nbsp;6.20%</td>
+                                <td>&nbsp;17</td>
+                                <td>&nbsp;九星词</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr class="list2_box2">
+                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr class="list2_box2">
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            </tbody>
+                            </table>
+
+                        </div>
+                        <div class="page2">
+                            <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a
+                                href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="nextpage2"><span></span></a><span
+                                style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
+
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+
+                </div>
+       </div>
+        <div class="containers over hides">
+            <div class="list01_top over"> <Span>智能竞价</Span>   <a href="#" class="question"></a></div>
+                <div class=" jiangjia_concent over">
+                    <div class="jingjia_left fl over">
+                        <div class="j_l_top over">
+                            <span class="fl"><h3>账户目录</h3></span>
+                            <a href="#" class="fr">刷新</a>
+                        </div>
+                        <div class="j_l_top2 over">
+                            <span class="fl">查找计划单元</span>
+                            <input class="fr" type="image" src="public/img/search.png">
+                        </div>
+                        <div class="j_list01 over">
+                            <ul id="tree2" class="ztree over">
+                            </ul>
+                        </div>
+                        <div class="j_l_under over">
+                            <a href="#">监控文件夹</a>
+                        </div>
                     </div>
-                </li>
+                    <div class="jingjia_right fr over" >
+                    <div>
+                    <div class="content_wraps over">
+                    <div class="w_list03">
+                    <ul class="jiangjia_list">
+                        <li class="current Screenings">筛选</li>
+                        <li class="showbox2">修改出价</li>
+                        <li  class="showbox3">修改匹配模式</li>
+                        <li class="showbox4">修改访问网址</li>
+                        <li class="showbox5">分组</li>
+                        <li class="showbox6">自定义列</li>
+                    </ul>
+                    <div class="Screening_concent over">
+                        <div class="Screening_row over">
+                        </div>
+                        <div class="Screening over wd">
+                            筛选设置：<span><input type="checkbox">&nbsp;<select><option>按计划</option></select>&nbsp;<input type="button" value="+" class="Screening_input"></span>
+                            <span><input type="checkbox">&nbsp;<select><option>按单元</option></select>&nbsp;<input type="button" value="+" class="Screening_input1"></span>
+                            <span><input type="checkbox">&nbsp;<input type="text" class="sc_input3" value="如何在网上推广" onfocus="if(value=='如何在网上推广') {value=''}" onblur="if (value=='') {value='如何在网上推广'}"></span>
 
-                <li>
-                    <div class="w_list01 fl over">出价：</div>
-                    <div class="w_list02 fl over">
-                       <span>
-                           <input type="text" class="price"> - 　
-                           <input type="text" class="price">
-                       </span></div>
-                </li>
-            </ul>
+                        </div>
+                    </div>
 
+                    <div class="list4">
+                    <table border="0" cellspacing="0" width = "101%">
+                        <tbody>
+                            <tr class="list02_top">
+                                <td>&nbsp;<input type="checkbox" id="checkAll2"> </td>
+                                <td>&nbsp; 序号</td>
+                                <td>&nbsp;关键词</td>
+                                <td>&nbsp;消费</td>
+                                <td>&nbsp;当前排名</td>
+                                <td>&nbsp;展现量</td>
+                                <td>&nbsp;点击率</td>
+                                <td>&nbsp;出价</td>
+                                <td>&nbsp;质量度</td>
+                                <td>&nbsp;移动端质量度</td>
+                                <td>&nbsp;状态</td>
+                                <td>&nbsp;竞价规则</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;81</td>
+                                <td>&nbsp;1380.69</td>
+                                <td>&nbsp;6.20%</td>
+                                <td>&nbsp;17</td>
+                                <td>&nbsp;九星词</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box2">
+                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;81</td>
+                                <td>&nbsp;1380.69</td>
+                                <td>&nbsp;6.20%</td>
+                                <td>&nbsp;17</td>
+                                <td>&nbsp;九星词</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box2">
+                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;81</td>
+                                <td>&nbsp;1380.69</td>
+                                <td>&nbsp;6.20%</td>
+                                <td>&nbsp;17</td>
+                                <td>&nbsp;九星词</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box2">
+                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;81</td>
+                                <td>&nbsp;1380.69</td>
+                                <td>&nbsp;6.20%</td>
+                                <td>&nbsp;17</td>
+                                <td>&nbsp;九星词</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box2">
+                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;81</td>
+                                <td>&nbsp;1380.69</td>
+                                <td>&nbsp;6.20%</td>
+                                <td>&nbsp;17</td>
+                                <td>&nbsp;九星词</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box2">
+                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;81</td>
+                                <td>&nbsp;1380.69</td>
+                                <td>&nbsp;6.20%</td>
+                                <td>&nbsp;17</td>
+                                <td>&nbsp;九星词</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box2">
+                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
+                                <td>&nbsp;贷款</td>
+                                <td>&nbsp;1307</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;1331</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box1">
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="list2_box2">
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    <div class="page2">
+                        <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#"  class="nextpage2"><span></span></a><span style="margin-right:10px;">跳转到 <input type= "text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
+
+                    </div>
+                 </div>
+             </div>
+          </div>
+       </div>
     </div>
-</div>
-<div class="w_list03 ">
-<ul class="jiangjia_list">
-    <li class="current showbox">设置规则</li>
-    <li >检查当前排名</li>
-    <li class="showbox2">修改出价</li>
-    <li  class="showbox3">修改匹配模式</li>
-    <li class="showbox4">修改访问网址</li>
-    <li class="showbox5">分组</li>
-    <li class="showbox6">自定义列</li>
-</ul>
-<div class="over wd">
-    <span class="fl">账户余额： <span>381.1元</span></span>
-    <span class="fr">当前显示数据日期：昨天</span>
-</div>
-<div class="list4">
-<table border="0" cellspacing="0" width="101%">
-<tbody>
-<tr class="list02_top">
-    <td>&nbsp;<input type="checkbox" id="checkAll"> 序号</td>
-    <td>&nbsp;关键词</td>
-    <td>&nbsp;消费</td>
-    <td>&nbsp;当前排名</td>
-    <td>&nbsp;展现量</td>
-    <td>&nbsp;点击率</td>
-    <td>&nbsp;出价</td>
-    <td>&nbsp;质量度</td>
-    <td>&nbsp;移动端质量度</td>
-    <td>&nbsp;状态</td>
-    <td>&nbsp;竞价规则</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;<input type="checkbox" name="subbox"></td>
-    <td>&nbsp;贷款</td>
-    <td>&nbsp;1307</td>
-    <td>&nbsp;81</td>
-    <td>&nbsp;1380.69</td>
-    <td>&nbsp;6.20%</td>
-    <td>&nbsp;17</td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-
-<tr class="list2_box2">
-    <td>&nbsp;<input type="checkbox" name="subbox"></td>
-    <td>&nbsp;贷款</td>
-    <td>&nbsp;1307</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;<input type="checkbox" name="subbox"></td>
-    <td>&nbsp;贷款</td>
-    <td>&nbsp;1307</td>
-    <td>&nbsp;81</td>
-    <td>&nbsp;1380.69</td>
-    <td>&nbsp;6.20%</td>
-    <td>&nbsp;17</td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-
-<tr class="list2_box2">
-    <td>&nbsp;<input type="checkbox" name="subbox"></td>
-    <td>&nbsp;贷款</td>
-    <td>&nbsp;1307</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;<input type="checkbox" name="subbox"></td>
-    <td>&nbsp;贷款</td>
-    <td>&nbsp;1307</td>
-    <td>&nbsp;81</td>
-    <td>&nbsp;1380.69</td>
-    <td>&nbsp;6.20%</td>
-    <td>&nbsp;17</td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-
-<tr class="list2_box2">
-    <td>&nbsp;<input type="checkbox" name="subbox"></td>
-    <td>&nbsp;贷款</td>
-    <td>&nbsp;1307</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;<input type="checkbox" name="subbox"></td>
-    <td>&nbsp;贷款</td>
-    <td>&nbsp;1307</td>
-    <td>&nbsp;81</td>
-    <td>&nbsp;1380.69</td>
-    <td>&nbsp;6.20%</td>
-    <td>&nbsp;17</td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-
-<tr class="list2_box2">
-    <td>&nbsp;<input type="checkbox" name="subbox"></td>
-    <td>&nbsp;贷款</td>
-    <td>&nbsp;1307</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;<input type="checkbox" name="subbox"></td>
-    <td>&nbsp;贷款</td>
-    <td>&nbsp;1307</td>
-    <td>&nbsp;81</td>
-    <td>&nbsp;1380.69</td>
-    <td>&nbsp;6.20%</td>
-    <td>&nbsp;17</td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-
-<tr class="list2_box2">
-    <td>&nbsp;<input type="checkbox" name="subbox"></td>
-    <td>&nbsp;贷款</td>
-    <td>&nbsp;1307</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;<input type="checkbox" name="subbox"></td>
-    <td>&nbsp;贷款</td>
-    <td>&nbsp;1307</td>
-    <td>&nbsp;81</td>
-    <td>&nbsp;1380.69</td>
-    <td>&nbsp;6.20%</td>
-    <td>&nbsp;17</td>
-    <td>&nbsp;九星词</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-
-<tr class="list2_box2">
-    <td>&nbsp;<input type="checkbox" name="subbox"></td>
-    <td>&nbsp;贷款</td>
-    <td>&nbsp;1307</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;1331</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-<div class="page2">
-    <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a
-        href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="nextpage2"><span></span></a><span
-        style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
-
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-    <div class="containers over hides">
-    <div class="list01_top over"> <Span>智能竞价</Span>   <a href="#" class="question"></a></div>
-    <div class=" jiangjia_concent over">
-    <div class="jingjia_left fl over">
-        <div class="j_l_top over">
-            <span class="fl"><h3>账户目录</h3></span>
-            <a href="#" class="fr">刷新</a>
-        </div>
-        <div class="j_l_top2 over">
-            <span class="fl">查找计划单元</span>
-            <input class="fr" type="image" src="public/img/search.png">
-        </div>
-        <div class="j_list01 over">
-            <ul id="tree2" class="ztree over">
-            </ul>
-        </div>
-        <div class="j_l_under over">
-            <a href="#">监控文件夹</a>
-        </div>
-    </div>
-    <div class="jingjia_right fr over" >
-    <div>
-    <div class="content_wraps over">
-    <div class="w_list03">
-    <ul class="jiangjia_list">
-        <li class="current Screenings">筛选</li>
-        <li>检查当前排名</li>
-        <li class="showbox2">修改出价</li>
-        <li >修改匹配模式</li>
-        <li class="showbox3">修改访问网址</li>
-        <li>分组</li>
-        <li>自定义列</li>
-    </ul>
-    <div class="Screening_concent over">
-        <div class="Screening_row over">
-        </div>
-        <div class="Screening over wd">
-            筛选设置：<span><input type="checkbox">&nbsp;<select><option>按计划</option></select>&nbsp;<input type="button" value="+" class="Screening_input"></span>
-            <span><input type="checkbox">&nbsp;<select><option>按单元</option></select>&nbsp;<input type="button" value="+" class="Screening_input1"></span>
-            <span><input type="checkbox">&nbsp;<input type="text" class="sc_input3" value="如何在网上推广" onfocus="if(value=='如何在网上推广') {value=''}" onblur="if (value=='') {value='如何在网上推广'}"></span>
-
-        </div>
-    </div>
-
-    <div class="list4">
-    <table border="0" cellspacing="0" width = "101%">
-    <tbody>
-    <tr class="list02_top">
-        <td>&nbsp;<input type="checkbox" id="checkAll2"> </td>
-        <td>&nbsp; 序号</td>
-        <td>&nbsp;关键词</td>
-        <td>&nbsp;消费</td>
-        <td>&nbsp;当前排名</td>
-        <td>&nbsp;展现量</td>
-        <td>&nbsp;点击率</td>
-        <td>&nbsp;出价</td>
-        <td>&nbsp;质量度</td>
-        <td>&nbsp;移动端质量度</td>
-        <td>&nbsp;状态</td>
-        <td>&nbsp;竞价规则</td>
-    </tr>
-    <tr class="list2_box1">
-        <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-        <td>&nbsp;贷款</td>
-        <td>&nbsp;1307</td>
-        <td>&nbsp;81</td>
-        <td>&nbsp;1380.69</td>
-        <td>&nbsp;6.20%</td>
-        <td>&nbsp;17</td>
-        <td>&nbsp;九星词</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr class="list2_box2">
-        <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-        <td>&nbsp;贷款</td>
-        <td>&nbsp;1307</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr class="list2_box1">
-        <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-        <td>&nbsp;贷款</td>
-        <td>&nbsp;1307</td>
-        <td>&nbsp;81</td>
-        <td>&nbsp;1380.69</td>
-        <td>&nbsp;6.20%</td>
-        <td>&nbsp;17</td>
-        <td>&nbsp;九星词</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr class="list2_box2">
-        <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-        <td>&nbsp;贷款</td>
-        <td>&nbsp;1307</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr class="list2_box1">
-        <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-        <td>&nbsp;贷款</td>
-        <td>&nbsp;1307</td>
-        <td>&nbsp;81</td>
-        <td>&nbsp;1380.69</td>
-        <td>&nbsp;6.20%</td>
-        <td>&nbsp;17</td>
-        <td>&nbsp;九星词</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr class="list2_box2">
-        <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-        <td>&nbsp;贷款</td>
-        <td>&nbsp;1307</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr class="list2_box1">
-        <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-        <td>&nbsp;贷款</td>
-        <td>&nbsp;1307</td>
-        <td>&nbsp;81</td>
-        <td>&nbsp;1380.69</td>
-        <td>&nbsp;6.20%</td>
-        <td>&nbsp;17</td>
-        <td>&nbsp;九星词</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr class="list2_box2">
-        <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-        <td>&nbsp;贷款</td>
-        <td>&nbsp;1307</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr class="list2_box1">
-        <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-        <td>&nbsp;贷款</td>
-        <td>&nbsp;1307</td>
-        <td>&nbsp;81</td>
-        <td>&nbsp;1380.69</td>
-        <td>&nbsp;6.20%</td>
-        <td>&nbsp;17</td>
-        <td>&nbsp;九星词</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr class="list2_box2">
-        <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-        <td>&nbsp;贷款</td>
-        <td>&nbsp;1307</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr class="list2_box1">
-        <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-        <td>&nbsp;贷款</td>
-        <td>&nbsp;1307</td>
-        <td>&nbsp;81</td>
-        <td>&nbsp;1380.69</td>
-        <td>&nbsp;6.20%</td>
-        <td>&nbsp;17</td>
-        <td>&nbsp;九星词</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr class="list2_box2">
-        <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-        <td>&nbsp;贷款</td>
-        <td>&nbsp;1307</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;1331</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr class="list2_box1">
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr class="list2_box2">
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    </tbody>
-    </table>
-    </div>
-    <div class="page2">
-        <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#"  class="nextpage2"><span></span></a><span style="margin-right:10px;">跳转到 <input type= "text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
-
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-
-    </div>
+ </div>
 
 <jsp:include page="../homePage/pageBlock/footer.jsp"/>
 </div>
