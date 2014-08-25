@@ -26,7 +26,8 @@ import java.util.Map;
  *
  * @author yousheng
  */
-@Controller("/bidding")
+@Controller
+@RequestMapping("/bidding")
 public class BiddingController {
 
 
@@ -38,7 +39,13 @@ public class BiddingController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public void save(HttpServletRequest request, @ModelAttribute("biddingModel") BiddingRuleEntity entity) {
+//        AppContext.setUser(WebUtils.;
         biddingRuleService.createBiddingRule(entity);
+    }
+
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public ModelAndView index() {
+        return new ModelAndView("bidding/jingjia");
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")

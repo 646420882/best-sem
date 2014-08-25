@@ -1,7 +1,9 @@
 package com.perfect.utils.web;
 
+import com.perfect.core.AppContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,9 +11,16 @@ import org.springframework.stereotype.Component;
  *
  * @author yousheng
  */
+@Component
 public class ApplicationEventHandler implements ApplicationListener {
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
-        System.out.println("event = " + event);
+        if (event instanceof InteractiveAuthenticationSuccessEvent) {
+            InteractiveAuthenticationSuccessEvent interactiveAuthenticationSuccessEvent = (InteractiveAuthenticationSuccessEvent) event;
+
+
+            String userName = interactiveAuthenticationSuccessEvent.getAuthentication().getName();
+            AppContext.setUser(userName);
+        }
     }
 }

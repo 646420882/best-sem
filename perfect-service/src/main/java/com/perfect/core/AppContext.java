@@ -28,7 +28,6 @@ public class AppContext {
     }
 
 
-
     public static void setSessionObject(String sessionId, SessionObject so) {
         if (sessionId == null || so == null) {
             return;
@@ -49,6 +48,12 @@ public class AppContext {
 
     public static void setLocal(String sessionId) {
         SessionObject so = sessionMap.get(sessionId);
+        contextMap.set(so);
+    }
+
+    public static void setUser(String userName) {
+        SessionObject so = new SessionObject();
+        so.setUserName(userName);
         contextMap.set(so);
     }
 

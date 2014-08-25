@@ -1,194 +1,14 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>大数据智能营销</title>
-    <link rel="stylesheet" type="text/css" href="public/css/public.css">
-    <link rel="stylesheet" type="text/css" href="public/css/style.css">
-    <script type="text/javascript" src="public/js/jquery-1.4.4.min.js"></script>
-    <script type="text/javascript" src="public/js/jquery.ztree.core-3.5.min.js"></script>
-    <script type="text/javascript" src="public/js/tc.min.js"></script>
-    <SCRIPT type="text/javascript">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
 
-        <!--
-        var zTree;
-        var demoIframe;
-
-        var setting = {
-            view: {
-                dblClickExpand: false,
-                showLine: true,
-                selectedMulti: false
-            },
-            data: {
-                simpleData: {
-                    enable: true,
-                    idKey: "id",
-                    pIdKey: "pId",
-                    rootPId: ""
-                }
-            },
-            callback: {
-                beforeClick: function (treeId, treeNode) {
-                    var zTree = $.fn.zTree.getZTreeObj("tree");
-                    if (treeNode.isParent) {
-                        zTree.expandNode(treeNode);
-                        return false;
-                    } else {
-                        demoIframe.attr("src", treeNode.file + ".html");
-                        return true;
-                    }
-                }
-            }
-        };
-
-        var zNodes = [
-            {id: 1, pId: 0, name: "[core] 基本功能 演示", open: true},
-            {id: 101, pId: 1, name: "最简单的树 --  标准 JSON 数据", file: "core/standardData"},
-            {id: 102, pId: 1, name: "最简单的树 --  简单 JSON 数据", file: "core/simpleData"},
-            {id: 103, pId: 1, name: "不显示 连接线", file: "core/noline"},
-            {id: 104, pId: 1, name: "不显示 节点 图标", file: "core/noicon"},
-            {id: 105, pId: 1, name: "自定义图标 --  icon 属性", file: "core/custom_icon"},
-            {id: 106, pId: 1, name: "自定义图标 --  iconSkin 属性", file: "core/custom_iconSkin"},
-            {id: 107, pId: 1, name: "自定义字体", file: "core/custom_font"},
-            {id: 115, pId: 1, name: "超链接演示", file: "core/url"},
-            {id: 108, pId: 1, name: "异步加载 节点数据", file: "core/async"},
-            {id: 109, pId: 1, name: "用 zTree 方法 异步加载 节点数据", file: "core/async_fun"},
-            {id: 110, pId: 1, name: "用 zTree 方法 更新 节点数据", file: "core/update_fun"},
-            {id: 111, pId: 1, name: "单击 节点 控制", file: "core/click"},
-            {id: 112, pId: 1, name: "展开 / 折叠 父节点 控制", file: "core/expand"},
-            {id: 113, pId: 1, name: "根据 参数 查找 节点", file: "core/searchNodes"},
-            {id: 114, pId: 1, name: "其他 鼠标 事件监听", file: "core/otherMouse"},
-
-            {id: 2, pId: 0, name: "[excheck] 复/单选框功能 演示", open: false},
-            {id: 201, pId: 2, name: "Checkbox 勾选操作", file: "excheck/checkbox"},
-            {id: 206, pId: 2, name: "Checkbox nocheck 演示", file: "excheck/checkbox_nocheck"},
-            {id: 207, pId: 2, name: "Checkbox chkDisabled 演示", file: "excheck/checkbox_chkDisabled"},
-            {id: 208, pId: 2, name: "Checkbox halfCheck 演示", file: "excheck/checkbox_halfCheck"},
-            {id: 202, pId: 2, name: "Checkbox 勾选统计", file: "excheck/checkbox_count"},
-            {id: 203, pId: 2, name: "用 zTree 方法 勾选 Checkbox", file: "excheck/checkbox_fun"},
-            {id: 204, pId: 2, name: "Radio 勾选操作", file: "excheck/radio"},
-            {id: 209, pId: 2, name: "Radio nocheck 演示", file: "excheck/radio_nocheck"},
-            {id: 210, pId: 2, name: "Radio chkDisabled 演示", file: "excheck/radio_chkDisabled"},
-            {id: 211, pId: 2, name: "Radio halfCheck 演示", file: "excheck/radio_halfCheck"},
-            {id: 205, pId: 2, name: "用 zTree 方法 勾选 Radio", file: "excheck/radio_fun"},
-
-            {id: 3, pId: 0, name: "[exedit] 编辑功能 演示", open: false},
-            {id: 301, pId: 3, name: "拖拽 节点 基本控制", file: "exedit/drag"},
-            {id: 302, pId: 3, name: "拖拽 节点 高级控制", file: "exedit/drag_super"},
-            {id: 303, pId: 3, name: "用 zTree 方法 移动 / 复制 节点", file: "exedit/drag_fun"},
-            {id: 304, pId: 3, name: "基本 增 / 删 / 改 节点", file: "exedit/edit"},
-            {id: 305, pId: 3, name: "高级 增 / 删 / 改 节点", file: "exedit/edit_super"},
-            {id: 306, pId: 3, name: "用 zTree 方法 增 / 删 / 改 节点", file: "exedit/edit_fun"},
-            {id: 307, pId: 3, name: "异步加载 & 编辑功能 共存", file: "exedit/async_edit"},
-            {id: 308, pId: 3, name: "多棵树之间 的 数据交互", file: "exedit/multiTree"},
-
-            {id: 4, pId: 0, name: "大数据量 演示", open: false},
-            {id: 401, pId: 4, name: "一次性加载大数据量", file: "bigdata/common"},
-            {id: 402, pId: 4, name: "分批异步加载大数据量", file: "bigdata/diy_async"},
-            {id: 403, pId: 4, name: "分批异步加载大数据量", file: "bigdata/page"},
-
-            {id: 5, pId: 0, name: "组合功能 演示", open: false},
-            {id: 501, pId: 5, name: "冻结根节点", file: "super/oneroot"},
-            {id: 502, pId: 5, name: "单击展开/折叠节点", file: "super/oneclick"},
-            {id: 503, pId: 5, name: "保持展开单一路径", file: "super/singlepath"},
-            {id: 504, pId: 5, name: "添加 自定义控件", file: "super/diydom"},
-            {id: 505, pId: 5, name: "checkbox / radio 共存", file: "super/checkbox_radio"},
-            {id: 506, pId: 5, name: "左侧菜单", file: "super/left_menu"},
-            {id: 513, pId: 5, name: "OutLook 样式的左侧菜单", file: "super/left_menuForOutLook"},
-            {id: 507, pId: 5, name: "下拉菜单", file: "super/select_menu"},
-            {id: 509, pId: 5, name: "带 checkbox 的多选下拉菜单", file: "super/select_menu_checkbox"},
-            {id: 510, pId: 5, name: "带 radio 的单选下拉菜单", file: "super/select_menu_radio"},
-            {id: 508, pId: 5, name: "右键菜单 的 实现", file: "super/rightClickMenu"},
-            {id: 511, pId: 5, name: "与其他 DOM 拖拽互动", file: "super/dragWithOther"},
-            {id: 512, pId: 5, name: "异步加载模式下全部展开", file: "super/asyncForAll"},
-
-            {id: 6, pId: 0, name: "其他扩展功能 演示", open: false},
-            {id: 601, pId: 6, name: "隐藏普通节点", file: "exhide/common"},
-            {id: 602, pId: 6, name: "配合 checkbox 的隐藏", file: "exhide/checkbox"},
-            {id: 603, pId: 6, name: "配合 radio 的隐藏", file: "exhide/radio"}
-        ];
-
-        $(document).ready(function () {
-            var t = $("#tree");
-            t = $.fn.zTree.init(t, setting, zNodes);
-            demoIframe = $("#testIframe");
-            demoIframe.bind("load", loadReady);
-            var zTree = $.fn.zTree.getZTreeObj("tree");
-            zTree.selectNode(zTree.getNodeByParam("id", 101));
-
-        });
-
-        function loadReady() {
-            var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
-                    htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
-                    maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
-                    h = demoIframe.height() >= maxH ? minH : maxH;
-            if (h < 1000) h = 1000;
-            demoIframe.height(h);
-        }
-
-        //-->
-
-    </SCRIPT>
-    <script type="text/javascript" language="javascript">
-
-        /*******弹窗**************/
-
-        window.onload = function () {
-            rDrag.init(document.getElementById('box'));
-        };
-
-        $(function () {
-            $(".showbox").click(function () {
-                $(".TB_overlayBG").css({
-                    display: "block", height: $(document).height()
-                });
-                $(".box").css({
-                    left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
-                    top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
-                    display: "block"
-                });
-            });
-            $(".close").click(function () {
-                $(".TB_overlayBG").css("display", "none");
-                $(".box ").css("display", "none");
-            });
-        })
-        /*******切换*****/
-        $(document).ready(function () {
-            $(".time_sl").click(function () {
-                $(".time_select").show();
-                $(".time_select01").hide();
-            });
-            $(".time_sl1").click(function () {
-                $(".time_select01").show();
-                $(".time_select").hide();
-            });
-        })
-        /*******全选*****/
-        $(function () {
-            $("#checkAll input[type=checkbox]").click(function () {
-                if ($(this).is(":checked") == true) {
-                    $(this).parent("tr").next("td").find("input[type=checkbox]").prop("checked", "true");
-                } else {
-                    $(this).parent("tr").next("td").find("input[type=checkbox]").removeAttr("checked");
-                }
-            });
-        })
-
-        /* $(function() {
-         $("#checkAll").click(function() {
-
-         $('input[name="subBox"]').attr("checked",this.checked);
-         alert("");
-         });
-         var $subBox = $("input[name='subBox']");
-         $subBox.click(function(){
-         $("#checkAll").attr("checked",$subBox.length == $("input[name='subBox']:checked").length ? true : false);
-         });
-         });*/
-    </script>
 </head>
 <body>
 
@@ -211,10 +31,10 @@
     </div>
     <div class="j_l_top2 over">
         <span class="fl">查找计划单元</span>
-        <input class="fr" type="image" src="public/img/search.png">
+        <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png">
     </div>
     <div class="j_list01 over">
-        <ul id="tree" class="ztree over">
+        <ul id="zTree" class="ztree over">
 
         </ul>
     </div>
@@ -230,7 +50,7 @@
     <ul>
         <li>
             <div class="w_list01 fl over">账户余额：</div>
-            <div class="w_list02 fl over"><span>381.1元</span> <span><input type="image" src="public/img/new.png"> 每日预算：￥<input
+            <div class="w_list02 fl over"><span>381.1元</span> <span><input type="image" src="${pageContext.request.contextPath}/public/img/new.png"> 每日预算：￥<input
                     type="text" class="price"></span><span>推广地域:<b>上海</b><b>北京</b></span></div>
 
         </li>
@@ -242,13 +62,13 @@
                     &nbsp;<input type="radio" name="no">&nbsp;全部
                 </form></span>
 									<span>
-										<dl><input type="image" src="public/img/search2.png"></dl>
+										<dl><input type="image" src="${pageContext.request.contextPath}/public/img/search2.png"></dl>
 										<dl><input type="checkbox" style=" margin-top:5px;"></dl>
 										<dl>
                                             <input type="text" class="w_text" value="关键词精准查询，多个关键词用半角逗号隔开"
                                                    onfocus="if(value=='关键词精准查询，多个关键词用半角逗号隔开') {value=''}"
                                                    onblur="if (value=='') {value='关键词精准查询，多个关键词用半角逗号隔开'}">
-                                            <input type="image" src="public/img/search3.png"></dl>
+                                            <input type="image" src="${pageContext.request.contextPath}/public/img/search3.png"></dl>
 										</span>
 										<span>
 											<input type="button" value="高级搜索" class="advanced_search">
@@ -665,6 +485,176 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
+
+<script type="text/javascript" language="javascript">
+
+    /*******弹窗**************/
+
+    window.onload = function () {
+        rDrag.init(document.getElementById('box'));
+    };
+
+    $(function () {
+        $(".showbox").click(function () {
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });
+            $(".box").css({
+                left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });
+        });
+        $(".close").click(function () {
+            $(".TB_overlayBG").css("display", "none");
+            $(".box ").css("display", "none");
+        });
+    })
+    /*******切换*****/
+    $(document).ready(function () {
+        $(".time_sl").click(function () {
+            $(".time_select").show();
+            $(".time_select01").hide();
+        });
+        $(".time_sl1").click(function () {
+            $(".time_select01").show();
+            $(".time_select").hide();
+        });
+    })
+    /*******全选*****/
+    $(function () {
+        $("#checkAll input[type=checkbox]").click(function () {
+            if ($(this).is(":checked") == true) {
+                $(this).parent("tr").next("td").find("input[type=checkbox]").prop("checked", "true");
+            } else {
+                $(this).parent("tr").next("td").find("input[type=checkbox]").removeAttr("checked");
+            }
+        });
+    })
+
+    /* $(function() {
+     $("#checkAll").click(function() {
+
+     $('input[name="subBox"]').attr("checked",this.checked);
+     alert("");
+     });
+     var $subBox = $("input[name='subBox']");
+     $subBox.click(function(){
+     $("#checkAll").attr("checked",$subBox.length == $("input[name='subBox']:checked").length ? true : false);
+     });
+     });*/
+</script>
+<SCRIPT type="text/javascript">
+
+    <!--
+
+    /******************zTree********************/
+
+    var setting = {
+        view: {
+            showLine: false,
+            selectedMulti: false
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            beforeClick: beforeClick,
+            beforeAsync: beforeAsync,
+            onAsyncError: onAsyncError,
+            onAsyncSuccess: onAsyncSuccess
+        }
+    };
+    var zNodes = "";
+
+    function filter(treeId, parentNode, childNodes) {
+        if (!childNodes) return null;
+        for (var i = 0, l = childNodes.length; i < l; i++) {
+            childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+        }
+        return childNodes;
+    }
+    function beforeClick(treeId, treeNode) {
+        if (treeNode.level == 0) {
+            //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
+            
+            alert(treeNode.id + "," + treeNode.name);
+            campaignId = treeNode.id + "," + "0";
+            //事件处理
+        } else if (treeNode.level == 1) {
+            //点击的是子节点(推广单元),则应该展示其下属的关键词数据
+            alert(treeNode.id + "," + treeNode.name);
+            adgroupId = treeNode.id + "," + "1";
+            //事件处理
+        }
+    }
+    var log, className = "dark";
+    function beforeAsync(treeId, treeNode) {
+        className = (className === "dark" ? "" : "dark");
+        showLog("[ " + getTime() + " beforeAsync ]&nbsp;&nbsp;&nbsp;&nbsp;" + ((!!treeNode && !!treeNode.name) ? treeNode.name : "root"));
+        return true;
+    }
+    function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+        showLog("[ " + getTime() + " onAsyncError ]&nbsp;&nbsp;&nbsp;&nbsp;" + ((!!treeNode && !!treeNode.name) ? treeNode.name : "root"));
+    }
+    function onAsyncSuccess(event, treeId, treeNode, msg) {
+        showLog("[ " + getTime() + " onAsyncSuccess ]&nbsp;&nbsp;&nbsp;&nbsp;" + ((!!treeNode && !!treeNode.name) ? treeNode.name : "root"));
+    }
+
+    function showLog(str) {
+        if (!log) log = $("#log");
+        log.append("<li class='" + className + "'>" + str + "</li>");
+        if (log.children("li").length > 8) {
+            log.get(0).removeChild(log.children("li")[0]);
+        }
+    }
+    function getTime() {
+        var now = new Date(),
+                h = now.getHours(),
+                m = now.getMinutes(),
+                s = now.getSeconds(),
+                ms = now.getMilliseconds();
+        return (h + ":" + m + ":" + s + " " + ms);
+    }
+    //================================================
+
+
+    $(document).ready(function () {
+
+        //获取账户树数据
+        $.ajax({
+            url: "/account/get_tree",
+            type: "GET",
+            dataType: "json",
+            async: false,
+            success: function (data, textStatus, jqXHR) {
+                zNodes = data.trees;
+            }
+        });
+        //加载账户树
+        $.fn.zTree.init($("#zTree"), setting, zNodes);
+
+    });
+
+    function loadReady() {
+        var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
+                htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
+                maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
+                h = demoIframe.height() >= maxH ? minH : maxH;
+        if (h < 1000) h = 1000;
+        demoIframe.height(h);
+    }
+
+    //-->
+
+</SCRIPT>
+
+
 <script type="text/javascript">
 
     $(function(){

@@ -7,6 +7,8 @@ package com.perfect.service;
  */
 public interface AccountDataService {
 
-    public void initAccountData(String userName);
+    public void initAccountData(String userName, long accountId);
+
+    public void updateAccountData(String userName, long accountId);
 
 }

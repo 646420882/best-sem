@@ -77,7 +77,7 @@
                         </a>
                     </li>
                     <li>
-                        <h3><a href="/bidding/jingjia">智能竞价</a></h3>
+                        <h3><a href="/bidding/index">智能竞价</a></h3>
                     </li>
                     <li>
                         <span class="list8"></span>
