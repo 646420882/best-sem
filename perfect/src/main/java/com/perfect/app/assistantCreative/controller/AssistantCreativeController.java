@@ -1,5 +1,6 @@
 package com.perfect.app.assistantCreative.controller;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.CreativeDAO;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.utils.web.WebContextSupport;
@@ -27,10 +28,7 @@ public class AssistantCreativeController  extends WebContextSupport{
     @RequestMapping(value = "/getList")
     public ModelAndView getCreativeList(HttpServletRequest request, HttpServletResponse response, ModelMap map){
         List<CreativeEntity> creativeEntityList=creativeDAO.find(null,0,10);
-//        CampaignEntity
-//        writeJson(creativeEntityList,response);
-        ModelAndView mv=new ModelAndView("promotionAssistant/data/creativeData");
-        mv.addObject("list",creativeEntityList);
-        return mv;
+        writeJson(creativeEntityList,response);
+        return null;
     }
 }

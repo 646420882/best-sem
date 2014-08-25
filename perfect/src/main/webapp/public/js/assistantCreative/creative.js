@@ -4,6 +4,9 @@
 $(function () {
     loadCreativeData();
     InitMenu();
+    $("#createTable").find("td").click(function () {
+        alert($(this).html());
+    });
 });
 
 var add = {
@@ -13,8 +16,8 @@ var add = {
     }
 }, del = {
     text: "删除创意",
-    func: function () {
-        alert("删除");
+    func: function (e) {
+
     }
 }, update = {
     text: "验证创意",
@@ -23,15 +26,18 @@ var add = {
     }
 }
 var menuData = [
-    [add, del,update]
+    [add, del, update]
 ];
 function InitMenu() {
-    $("#creativeDiv tbody").smartMenu(menuData, {
-        name: "creative",
-        beforeShow:function(){
-            $.smartMenu.remove();
-            alert($(this).html());
-        }
+    $("#createTable").live("tr",function(){
+            $(this).smartMenu(menuData, {
+                name: "creative",
+                beforeShow: function () {
+                    var _this=$(this);
+                    alert(_this.html());
+                    this.smartMenu.remove();
+                }
+            })
     });
 }
 function loadCreativeData() {
@@ -44,16 +50,16 @@ function loadCreativeData() {
             for (var i = 0; i < json.length; i++) {
                 _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                 var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                    "<td>&nbsp;<span></span></td>" +
-                    "<td>" + until.substring(10, json[i].title) + "</td>" +
-                    " <td>" + until.substring(10, json[i].description1) + "</td>" +
-                    " <td>" + until.substring(10, json[i].description2) + "</td>" +
-                    " <td><a href='" + json[i].pcDestinationUrl + "'>" + until.substring(10, json[i].pcDestinationUrl) + "</a></td>" +
-                    " <td>" + until.substring(10, json[i].pcDisplayUrl) + "</td>" +
-                    " <td>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
-                    " <td>" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
-                    " <td>" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
-                    " <td>" + until.getCreativeStatus(json[i].status) + "</td>" +
+                    "<td ondblclick='edit(this);'>&nbsp;<span></span></td>" +
+                    "<td ondblclick='edit(this);'>" + until.substring(10, json[i].title) + "</td>" +
+                    " <td ondblclick='edit(this);'>" + until.substring(10, json[i].description1) + "</td>" +
+                    " <td ondblclick='edit(this);'>" + until.substring(10, json[i].description2) + "</td>" +
+                    " <td ondblclick='edit(this);'><a href='" + json[i].pcDestinationUrl + "' target='_blank'>" + until.substring(10, json[i].pcDestinationUrl) + "</a></td>" +
+                    " <td ondblclick='edit(this);'>" + until.substring(10, json[i].pcDisplayUrl) + "</td>" +
+                    " <td ondblclick='edit(this);'>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
+                    " <td ondblclick='edit(this);'>" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
+                    " <td ondblclick='edit(this);'>" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
+                    " <td ondblclick='edit(this);'>" + until.getCreativeStatus(json[i].status) + "</td>" +
                     "</tr>";
                 _createTable.append(_tbody);
             }
@@ -61,7 +67,16 @@ function loadCreativeData() {
     });
 }
 
+function trStyle(rs) {
+    var _this = $(rs);
+    var _tr_size = _this.parents("table").find("tr").size();
+    for (var i = 0; i < _tr_size; i++) {
+        _this.parents("table").find("tr").attr("style", i % 2 == 0 ? "list2_box1" : "list2_box2");
+    }
+    _this.css("background", "#FCEFC5");
+}
 function on(obj) {
+    trStyle(obj);
     preview(obj);
     $("#sDiv input[type='text']").val("");
     var _this = $(obj);
@@ -117,13 +132,13 @@ function addCreative() {
     var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
     var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
         "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span></td>" +
-        "<td><input name='title' onkeyup='onKey(this);' maxlength='50'></td>" +
-        " <td><input name='description1' onkeyup='onKey(this);'  maxlength='80'></td>" +
-        " <td><input name='description2' onkeyup='onKey(this);'  maxlength='80'></td>" +
-        " <td><input name='pcDestinationUrl' onkeyup='onKey(this);'  maxlength='1024'></td>" +
-        " <td><input name='pcDisplayUrl' onkeyup='onKey(this);'  maxlength='36'></td>" +
-        " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' maxlength='1024'></td>" +
-        " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' maxlength='36'></td>" +
+        "<td><input name='title' onkeyup='onKey(this);' style='width:140px;' maxlength='50'></td>" +
+        " <td><input name='description1' onkeyup='onKey(this);' style='width:140px;'  maxlength='80'></td>" +
+        " <td><input name='description2' onkeyup='onKey(this);'  style='width:140px;' maxlength='80'></td>" +
+        " <td><input name='pcDestinationUrl' onkeyup='onKey(this);' style='width:40px;'  maxlength='1024'></td>" +
+        " <td><input name='pcDisplayUrl' onkeyup='onKey(this);' style='width:40px;'  maxlength='36'></td>" +
+        " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='1024'></td>" +
+        " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='36'></td>" +
         " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
         " <td><select name='status'>" + getStatus();
     +"</select></td>" +
@@ -186,7 +201,7 @@ function onKey(rs) {
 
 }
 function toolBarInit() {
-    $("#sDiv input").val("");
+    $("#sDiv input[type='text']").val("");
     var span_size = $("#sDiv span").length;
     for (var i = 0; i < span_size; i++) {
         if (i % 2 != 0) {
@@ -213,6 +228,18 @@ function preview(obj) {
         "<span style='color:black;'>" + de2 + "<span></br>" +
         "<span style='color:green;font-size: 12px;'>" + pc + "<span></br>";
     previeBody.append(h3);
+}
+/**
+ * 编辑方法，传入td内容
+ * @param rs
+ */
+var tmp = null;
+function edit(rs) {
+    var _this = $(rs);
+    var _tr = _this.parents("tr");
+    tmp = _tr.html();
+    var _td = _tr.find("td:eq(1)").html();
+    alert(_td);
 }
 
 
