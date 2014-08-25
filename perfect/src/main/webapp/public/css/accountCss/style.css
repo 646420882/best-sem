@@ -89,7 +89,7 @@
     border-radius: 15px;
     position: relative;
     z-index: 3;
-    behavior: url(iecss3.htc);
+/*    behavior: url(iecss3.htc);*/
     overflow: hidden;
 }
 .list01_top ul li {
@@ -101,7 +101,7 @@
     font-weight: normal;
 }
 .list01_top ul li a {
-    width: 88.5px;
+    width:88.5px;
     text-align: center;
     color: #000000;
     cursor: default;
@@ -612,11 +612,11 @@
     padding: 0 2%;
     color: #454545;
     border: 1px solid #e4e4e4;
-    box-shadow: inherit;
+    box-shadow:inherit;
     background: #f8f8f8;
-    background-image: -moz-linear-gradient(top, #fcfcfc, #f6f6f6); /* Firefox */
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fcfcfc), color-stop(1, #f6f6f6)); /* Saf4+, Chrome */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fcfcfc', endColorstr='#f6f6f6', GradientType='0'); /* IE*/
+    background-image: -moz-linear-gradient(top, #fcfcfc, #f6f6f6);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fcfcfc), color-stop(1, #f6f6f6));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fcfcfc', endColorstr='#f6f6f6', GradientType='0');
 }
 .team_under ul li a {
     color: #454545;
@@ -851,12 +851,12 @@
     color: #9b9b9b;
 }
 .jingjia_left {
-    width: 25%;
+    width: 22%;
     padding: 12px 0.5%;
     background: #e4eafa;
 }
 .jingjia_right {
-    width: 72%;
+    width: 75%;
 }
 .j_list01 {
     width: 100%;
@@ -889,7 +889,7 @@
     padding: 0 0 0 18px
 }
 .ztree li ul.line {
-    background: url(./img/line_conn.gif) 0 0 repeat-y;
+    background: url(/public/img/line_conn.gif) 0 0 repeat-y;
 }
 .ztree li a {
     padding: 1px 3px 0 0;
@@ -1060,10 +1060,10 @@
     background-position: -10px -355px
 }
 .ztree li span.button.noline_open {
-    background-position: -92px -72px
+    background-position: -10px -355px;
 }
 .ztree li span.button.noline_close {
-    background-position: -74px -72px
+    background-position: -10px -355px;
 }
 .ztree li span.button.root_docu {
     background: none;
@@ -1078,7 +1078,7 @@
     background-position: -56px -18px
 }
 .ztree li span.button.noline_docu {
-    background: none;
+    background-position: -56px -18px;
 }
 .ztree li span.button.ico_open {
     margin-right: 2px;
@@ -1113,7 +1113,7 @@
 }
 .ztree li span.button.ico_loading {
     margin-right: 2px;
-    background: url(./img/loading.gif) no-repeat scroll 0 0 transparent;
+    background: url(/public/img/loading.gif) no-repeat scroll 0 0 transparent;
     vertical-align: top;
     *vertical-align:middle;
 }
@@ -1215,9 +1215,10 @@ ul.ztree.zTreeDragUL {
     width: 26px;
 }
 .w_list01 {
-    width: 90px;
-    text-align: right;
+    width: 100px;
+ /*   text-align: right;*/
 }
+
 .advanced_search {
     display: block;
     width: 114px;
@@ -1570,13 +1571,44 @@ ul.ztree.zTreeDragUL {
     overflow: hidden;
 }
 .zs_input1 {
-    width: 400px;
+    width: 87%;
     height: 22px;
     border: 1px solid #cfcfcf;
 }
+.t_list03 .zs_input1{
+    width:72%;
+}
 
+.w_list04{
+    width:100%;
+}
+.t_list01{
+    width:90px;
+    text-align: right;
+}
+.t_list02 ,.t_list03{
+    width:75%;
+}
+.t_list04{
+    width:50%;
+    margin-bottom:10px;
+}
+@media screen and (max-width:1450px){
+    .t_list03 ,.t_list04  {
+        width: 100%;
+        text-align:left;
+    }
+    .zs_input2{
+        margin-top:10px;
+
+    }
+}
+.w_list02{
+    margin-left:10px;
+
+}
 .zs_input3 {
-    width: 140px;
+    width: 70%;
     height: 22px;
 }
 .zs_input4 {
@@ -1611,7 +1643,7 @@ ul.ztree.zTreeDragUL {
 }
 @media screen and (max-width :1370px) {
     .zs_input2 {
-        margin: 10px 0 0 0;
+        margin: 10px 0 0 3px;
     }
 }
 .set {
@@ -1667,7 +1699,7 @@ ul.ztree.zTreeDragUL {
     border-radius: 10px;
 }
 .cy_bottom1 {
-    margin-right: 20px;
+    width:48%;
 }
 @media screen and (max-width :1300px) {
     .cy_bottom1 {
@@ -1689,7 +1721,7 @@ ul.ztree.zTreeDragUL {
     background: url(/public/img/list06_point.png) center bottom no-repeat;
 }
 .list06_textarea {
-    width: 600px;
+    width: 98%;
     height: 142px;
     border-top: 2px solid #555555;
     border-left: 1px solid #cfcfcf;
@@ -1803,5 +1835,6 @@ ul.ztree.zTreeDragUL {
     height: 11px;
     background: url(/public/img/gusuan_under2.jpg) no-repeat;
     position: absolute;
-    top: -11px;
-}
+    top: -11px;}
+
+
