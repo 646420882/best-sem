@@ -1086,7 +1086,7 @@
 </div>
 <!---------下载账户----------->
 <div class="TB_overlayBG"></div>
-<div class="box" style="display:none">
+<div class="box" style="display:none" id="download">
     <h2 id="box2">账户下载<a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
@@ -1288,7 +1288,24 @@
         </div>
     </div>
 </div>
+<div  class="box" style="display:none" id="jcAdd">
+    <h2 id="jcBox">添加创意<a href="#" class="close">关闭</a></h2>
 
+    <div class="mainlist">
+        选择要添加的
+        <ul class="zs_set">
+            <li><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</li>
+        </ul>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li class="current">确认</li>
+                <li class="close">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>

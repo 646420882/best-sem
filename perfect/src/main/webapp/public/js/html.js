@@ -27,9 +27,9 @@ $(function(){
         $(".TB_overlayBG").css({
             display:"block",height:$(document).height()
         });
-        $(".box").css({
-            left:($("body").width()-$(".box").width())/2-20+"px",
-            top:($(window).height()-$(".box").height())/2+$(window).scrollTop()+"px",
+        $("#download").css({
+            left:($("body").width()-$("#download").width())/2-20+"px",
+            top:($(window).height()-$("#download").height())/2+$(window).scrollTop()+"px",
             display:"block"
         });
     });

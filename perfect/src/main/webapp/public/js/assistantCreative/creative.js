@@ -12,11 +12,12 @@ var add = {
     text: "添加创意",
     func: function () {
         addCreative();
+        creativeAddBoxShow();
     }
 }, del = {
     text: "删除创意",
     func: function (e) {
-    alert(tmp.html());
+   removeThe(tmp);
     }
 }, update = {
     text: "验证创意",
@@ -133,6 +134,7 @@ function addTb(rs) {
     var val = _this.prev("input");
 }
 function addCreative() {
+    creativeAddBoxShow();
     var i = $("#createTable tbody tr").size();
     var _createTable = $("#createTable tbody");
     var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
@@ -151,6 +153,16 @@ function addCreative() {
     "</tr>";
     _createTable.append(_tbody);
 }
+function creativeAddBoxShow(){
+    $(".TB_overlayBG").css({
+        display:"block",height:$(document).height()
+    });
+    $("#jcAdd").css({
+        left:($("body").width()-$("#jcAdd").width())/2-20+"px",
+        top:($(window).height()-$("#jcAdd").height())/2+$(window).scrollTop()+"px",
+        display:"block"
+    });
+}
 /**
  *
  * @returns {string}动态获取创意添加选择状态
@@ -168,6 +180,7 @@ function getStatus() {
 function removeThe(rs) {
     var _this = $(rs);
     _this.parents("tr").remove();
+    _this.remove();
     toolBarInit();
 }
 function onKey(rs) {
