@@ -1,5 +1,6 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.KeywordQualityDAO;
 import com.perfect.entity.KeywordReportEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
@@ -85,7 +86,8 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
         //查询
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         try {
-            QueryTask task = new QueryTask(names, 0, names.size());
+            String userName = AppContext.getUser();
+            QueryTask task = new QueryTask(userName,names, 0, names.size());
             Future<List<KeywordReportEntity>> voResult = forkJoinPool.submit(task);
             list = voResult.get();
         } catch (InterruptedException | ExecutionException e) {
@@ -99,19 +101,23 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
     class QueryTask extends RecursiveTask<List<KeywordReportEntity>> {
 
         private static final int threshold = 4;
+        private final String userName;
 
         private int first;
         private int last;
         private List<String> collectionNameList;
 
-        QueryTask(List<String> collectionNameList, int first, int last) {
+        QueryTask(String userName, List<String> collectionNameList, int first, int last) {
             this.first = first;
             this.last = last;
             this.collectionNameList = collectionNameList;
+            this.userName = userName;
         }
 
         @Override
         protected List<KeywordReportEntity> compute() {
+            AppContext.setUser(userName);
+
             List<KeywordReportEntity> voList = new ArrayList<>();
             boolean status = (last - first) < threshold;
             if (status) {
@@ -121,8 +127,8 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
                 }
             } else {
                 int middle = (first + last) / 2;
-                QueryTask task1 = new QueryTask(collectionNameList, first, middle);
-                QueryTask task2 = new QueryTask(collectionNameList, middle, last);
+                QueryTask task1 = new QueryTask(userName, collectionNameList, first, middle);
+                QueryTask task2 = new QueryTask(userName, collectionNameList, middle, last);
                 task1.fork();
                 task2.fork();
                 voList.addAll(task1.join());
