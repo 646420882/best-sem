@@ -1,10 +1,9 @@
 package com.perfect.app.homePage.controller;
 
 import com.google.gson.Gson;
-import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.AccountReportResponse;
 import com.perfect.entity.StructureReportEntity;
-import com.perfect.mongodb.utils.DateUtil;
+import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.service.BasisReportService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +48,7 @@ public class BasisReportController {
                                @RequestParam(value = "devices", required = false, defaultValue = "0") int devices,
                                @RequestParam(value = "dateType", required = false, defaultValue = "0") int dateType,
                                @RequestParam(value = "reportNumber", required = false, defaultValue = "10") int reportNumber) {
-        List<String> list = DateUtil.getPeriod(startDate, endDate);
+        List<String> list = DateUtils.getPeriod(startDate, endDate);
         String[] newDate = list.toArray(new String[list.size()]);
         Map<String, List<StructureReportEntity>> responseDate = basisReportService.getUnitReportDate(newDate, devices, dateType, reportPageType,reportNumber);
         int totalRows =0;

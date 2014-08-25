@@ -5,7 +5,7 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.AccountAnalyzeDAO;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
-import com.perfect.mongodb.utils.DateUtil;
+import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.mongodb.utils.ImportKeywordFork;
 import com.perfect.service.ImportKeywordService;
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ import java.util.concurrent.Future;
  * Created by XiaoWei on 2014/7/29.
  */
 @Repository("importKeywordService")
-public class ImportKeywordServiceImpl implements ImportKeywordService{
+public class ImportKeywordServiceImpl implements ImportKeywordService {
     @Resource
     AccountAnalyzeDAO accountAnalyzeDAO;
     @Resource
@@ -132,7 +132,7 @@ public class ImportKeywordServiceImpl implements ImportKeywordService{
     private List<String> getCurrDate(HttpServletRequest request) {
         String startDate = request.getParameter(DATE_START);
         String endDate = request.getParameter(DATE_END);
-        List<String> dates = DateUtil.getPeriod(startDate, endDate);
+        List<String> dates = DateUtils.getPeriod(startDate, endDate);
         return dates;
     }
 

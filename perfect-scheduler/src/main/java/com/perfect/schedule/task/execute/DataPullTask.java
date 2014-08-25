@@ -1,7 +1,7 @@
 package com.perfect.schedule.task.execute;
 
 import com.perfect.dao.AsynchronousReportDAO;
-import com.perfect.mongodb.utils.DateUtil;
+import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.schedule.core.IScheduleTaskDealSingle;
 import com.perfect.schedule.core.TaskItemDefine;
 import org.springframework.stereotype.Component;
@@ -10,14 +10,17 @@ import javax.annotation.Resource;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by john on 2014/8/23.
  * 定时拉取数据任务
  */
 @Component("dataPullTask")
-public class DataPullTask implements IScheduleTaskDealSingle<String>{
+public class DataPullTask implements IScheduleTaskDealSingle<String> {
 
 
     @Resource
@@ -25,11 +28,11 @@ public class DataPullTask implements IScheduleTaskDealSingle<String>{
 
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-    private  Date date;
+    private Date date;
 
     {
         try {
-             date = df.parse(df.format(new Date().getTime()-(1000*60*60*24)));
+            date = df.parse(df.format(new Date().getTime() - (1000 * 60 * 60 * 24)));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -54,9 +57,9 @@ public class DataPullTask implements IScheduleTaskDealSingle<String>{
         List<String> list = new ArrayList<>();
         Date today = df.parse(df.format(new Date()));
 
-        if(today.getTime()>date.getTime()){
-            String yesterday = new SimpleDateFormat( "yyyy-MM-dd ").format(date.getTime());
-            list.addAll(DateUtil.getPeriod(yesterday, yesterday));
+        if (today.getTime() > date.getTime()) {
+            String yesterday = new SimpleDateFormat("yyyy-MM-dd ").format(date.getTime());
+            list.addAll(DateUtils.getPeriod(yesterday, yesterday));
             date = df.parse(df.format(new Date()));//标记为今天,代表着当天已经拉取过
         }
         return list;
