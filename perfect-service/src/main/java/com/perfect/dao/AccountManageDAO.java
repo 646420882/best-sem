@@ -1,7 +1,9 @@
 package com.perfect.dao;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.perfect.entity.AccountReportEntity;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +44,25 @@ public interface AccountManageDAO<T> {
      */
     T findByBaiduUserId(Long baiduUserId);
 
+    /**
+     * 更新百度账户信息
+     *
+     * @param t
+     */
+    void updateBaiduAccountInfo(T t);
 
-    void updateAccountData(Long baiduUserId);
+    /**
+     * 根据当前登录的系统用户下指定的百度账号获取账户报告
+     *
+     * @param dates
+     * @return
+     */
+    List<AccountReportEntity> getAccountReports(List<Date> dates);
+
+    /**
+     * 获取账户昨日消费
+     *
+     * @return
+     */
+    Double getYesterdayCost();
 }
