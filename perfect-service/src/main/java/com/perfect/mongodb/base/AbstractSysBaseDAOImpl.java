@@ -96,12 +96,12 @@ public abstract class AbstractSysBaseDAOImpl<T, ID extends Serializable> extends
 
     @Override
     public Iterable<T> findAll(Iterable<ID> ids) {
-        return getSysMongoTemplate().find(Query.query(Criteria.where("id").in(ids)), getEntityClass());
+        return getSysMongoTemplate().find(Query.query(Criteria.where(getId()).in(ids)), getEntityClass());
     }
 
     @Override
     public boolean exists(ID id) {
-        return getSysMongoTemplate().exists(Query.query(Criteria.where("id").is(id)), getEntityClass());
+        return getSysMongoTemplate().exists(Query.query(Criteria.where(getId()).is(id)), getEntityClass());
     }
 
     @Override

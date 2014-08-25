@@ -49,7 +49,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
     public List<CreativeEntity> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
-        Criteria criteria = Criteria.where("adid").is(adgroupId);
+        Criteria criteria = Criteria.where("agid").is(adgroupId);
         if (params != null && params.size() > 0) {
             for (Map.Entry<String, Object> entry : params.entrySet())
                 criteria.and(entry.getKey()).is(entry.getValue());
@@ -58,6 +58,11 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
         query.with(new PageRequest(skip, limit));
         List<CreativeEntity> list = mongoTemplate.find(query, CreativeEntity.class, "creative");
         return list;
+    }
+
+    @Override
+    public List<CreativeEntity> getAllsByAdgroupIds(List<Long> l) {
+        return BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where("agid").in(l)),CreativeEntity.class,"creative");
     }
 
     public CreativeEntity findOne(Long creativeId) {

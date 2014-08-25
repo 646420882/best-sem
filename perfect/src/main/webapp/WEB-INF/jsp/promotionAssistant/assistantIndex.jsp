@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/smartMenu.css">
 </head>
 <body>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
@@ -36,7 +37,7 @@
 <div class="jingjia_left fl over">
     <div class="j_l_top over">
         <span class="fl"><h3>账户目录</h3></span>
-        <a href="javascript:void(0)" onclick="loadCreativeData()" class="fr">刷新</a>
+        <a href="javascript:void(0)" onclick="loadCreativeData(sparams)" class="fr">刷新</a>
     </div>
     <div class="j_l_top2 over">
         <span class="fl">查找计划单元</span>
@@ -1308,6 +1309,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/highcharts.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/jquery-smartMenu.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
@@ -1374,12 +1376,14 @@ function filter(treeId, parentNode, childNodes) {
 function beforeClick(treeId, treeNode) {
     if (treeNode.level == 0) {
         //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
-        alert(treeNode.id + "," + treeNode.name);
+//        alert(treeNode.id + "," + treeNode.name);
+        getCreativePlan(treeNode.id);
         campaignId = treeNode.id + "," + "0";
         //事件处理
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元),则应该展示其下属的关键词数据
-        alert(treeNode.id + "," + treeNode.name);
+        getCreativeUnit({cid:treeNode.getParentNode().id,aid:treeNode.id});
+//        alert(treeNode.id + "," + treeNode.name+"parents"+treeNode.getParentNode().id);
         adgroupId = treeNode.id + "," + "1";
         //事件处理
     }

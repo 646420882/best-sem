@@ -1,12 +1,11 @@
 /**
  * Created by XiaoWei on 2014/8/21.
  */
+var sparams={aid:null,cid:null};
 $(function () {
-    loadCreativeData();
+    loadCreativeData(sparams);
     InitMenu();
-    $("#createTable").find("td").click(function () {
-        alert($(this).html());
-    });
+    rDrag.init($("#jcBox"));
 });
 
 var add = {
@@ -17,7 +16,7 @@ var add = {
 }, del = {
     text: "删除创意",
     func: function (e) {
-
+    alert(tmp.html());
     }
 }, update = {
     text: "验证创意",
@@ -28,22 +27,25 @@ var add = {
 var menuData = [
     [add, del, update]
 ];
+var tmp=null;
+var menuExt={
+    name: "creative",
+    beforeShow: function () {
+        var _this=$(this);
+        tmp=_this;
+        $.smartMenu.remove();
+    }
+};
 function InitMenu() {
-    $("#createTable").live("tr",function(){
-            $(this).smartMenu(menuData, {
-                name: "creative",
-                beforeShow: function () {
-                    var _this=$(this);
-                    alert(_this.html());
-                    this.smartMenu.remove();
-                }
-            })
+    $("#createTable").on("mousedown","tr",function(){
+        $(this).smartMenu(menuData,menuExt);
     });
 }
-function loadCreativeData() {
-    $.get("/assistantCreative/getList", function (result) {
-        var json = eval("(" + result + ")");
+function loadCreativeData(params) {
+    $.get("/assistantCreative/getList",params,function (result) {
         var _createTable = $("#createTable tbody");
+        if(result!="[]"){
+        var json = eval("(" + result + ")");
         if (json.length > 0) {
             _createTable.empty();
             var _trClass = "";
@@ -63,6 +65,10 @@ function loadCreativeData() {
                     "</tr>";
                 _createTable.append(_tbody);
             }
+        }
+        }else{
+            _createTable.empty();
+            _createTable.append("<tr><td>暂无数据</td></tr>");
         }
     });
 }
@@ -233,13 +239,19 @@ function preview(obj) {
  * 编辑方法，传入td内容
  * @param rs
  */
-var tmp = null;
 function edit(rs) {
     var _this = $(rs);
     var _tr = _this.parents("tr");
-    tmp = _tr.html();
     var _td = _tr.find("td:eq(1)").html();
     alert(_td);
+}
+function getCreativePlan(cid){
+    sparams={cid:cid,aid:null};
+    loadCreativeData(sparams);
+}
+function getCreativeUnit(con){
+    sparams={cid:con.cid,aid:con.aid}
+    loadCreativeData(sparams);
 }
 
 
