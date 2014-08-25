@@ -591,7 +591,17 @@ public class BasisReportServiceImpl implements BasisReportService {
                     responseMapTow1.put(dateFormat.format(listEnd.getDate()),list);
                 }
                 if(devices == 0){
+                    Map<String, List<AccountReportResponse>> responseMapDevicesOne = getPcPlusMobileDate(null);
+                    Map<String, List<AccountReportResponse>> responseMapDevicesTow = getPcPlusMobileDate(null);
+                    List<Object> objectList1 = new ArrayList<>();
+                    objectList1.add(responseMapOne1);
+                    objectList1.add(responseMapTow1);
+                    objectListDateOne1.add(dateOne[0]+" 至 "+dateOne[1]);/***********************/
+                    objectListDateOne1.add(dateTow[0]+" 至 "+dateTow[1]);
+                    retrunMap1.put("rows",objectList1);
+                    retrunMap1.put("date",objectListDateOne1);
 
+                    return retrunMap1;
                 }
 
                 List<Object> objectList1 = new ArrayList<>();
@@ -602,7 +612,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 retrunMap1.put("rows",objectList1);
                 retrunMap1.put("date",objectListDateOne1);
 
-                return null;
+                return retrunMap1;
             case 2:
 
                 return null;
