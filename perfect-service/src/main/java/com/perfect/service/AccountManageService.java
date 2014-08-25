@@ -14,4 +14,27 @@ public interface AccountManageService<T> {
      * @return
      */
     Map<String, Object> getAccountTree(T t);
+
+    /**
+     * 根据百度账户id获取其账户信息
+     *
+     * @param baiduUserId
+     * @return
+     */
+    Map<String, Object> getBaiduAccountInfoByUserId(Long baiduUserId);
+
+    /**
+     * 更新百度账户数据
+     *
+     * @param t
+     */
+    void updateBaiduAccount(T t);
+
+    /**
+     * 获取百度账户数据报告
+     *
+     * @param number
+     * @return
+     */
+    Map<String, Object> getAccountReports(int number);
 }

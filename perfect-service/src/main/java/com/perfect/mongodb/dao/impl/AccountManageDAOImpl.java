@@ -13,11 +13,12 @@ import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AccountManageDAO;
-import com.perfect.dao.AdgroupDAO;
-import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.SystemUserDAO;
+import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.SystemUserEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
+import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.utils.DBNameUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -25,10 +26,13 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
@@ -38,43 +42,24 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
  */
 @Repository(value = "accountManageDAO")
 public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEntity> {
-    private static ObjectMapper mapper;
-
-    static {
-        mapper = (mapper == null) ? new ObjectMapper() : mapper;
-    }
-
-    @Resource(name = "systemUserDAO")
+    @Resource
     private SystemUserDAO systemUserDAO;
 
-    @Resource
-    private CampaignDAO campaignDAO;
-
-    @Resource
-    private AdgroupDAO adgroupDAO;
-
-    public static void main(String[] args) {
-        BaiduAccountInfoEntity entity = new BaiduAccountInfoEntity();
-        entity.setId(6243012l);
-        entity.setBaiduUserName("baidu-bjtthunbohui2134115");
-        entity.setBaiduPassword("Bjhunbohui7");
-        new AccountManageDAOImpl().getAccountTree(entity);
-    }
-
     /**
-     * 百度账户
+     * 百度账户树
      *
      * @param entity
      * @return
      */
     @Override
     public ArrayNode getAccountTree(BaiduAccountInfoEntity entity) {
+        ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
         ObjectNode objectNode;
 
         Long id = entity.getId();
-//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getUserDBName("perfect", null));
+        MongoTemplate mongoTemplate = BaseMongoTemplate.
+                getMongoTemplate(DBNameUtils.getUserDBName("perfect", null));
 
         List<Long> campaignIds = new ArrayList<>();
         Aggregation aggregation1 = Aggregation.newAggregation(
@@ -83,7 +68,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
                 group("cid", "name"),
                 sort(Sort.Direction.ASC, "cid")
         );
-        //推广计划
+        //推广计划树
         AggregationResults<CampaignVO> results1 = mongoTemplate.aggregate(aggregation1, "campaign", CampaignVO.class);
         for (CampaignVO vo : Lists.newArrayList(results1.iterator())) {
             objectNode = mapper.createObjectNode();
@@ -100,7 +85,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
                 group("cid", "adid", "name"),
                 sort(Sort.Direction.ASC, "adid")
         );
-        //推广单元
+        //推广单元树
         AggregationResults<AdgroupVO> results2 = mongoTemplate.aggregate(aggregation2, "adgroup", AdgroupVO.class);
         for (AdgroupVO vo : Lists.newArrayList(results2.iterator())) {
             objectNode = mapper.createObjectNode();
@@ -114,7 +99,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
     }
 
     /**
-     * ---
+     * 获取当前登录用户的所有百度账户信息
      *
      * @param currUserName
      * @return
@@ -128,29 +113,78 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
     }
 
     /**
-     * ---
+     * 根据百度账户id获取账户信息
      *
      * @param baiduUserId
      * @return
      */
     @Override
     public BaiduAccountInfoEntity findByBaiduUserId(Long baiduUserId) {
-        List<BaiduAccountInfoEntity> list = getBaiduAccountItems(AppContext.getUser().toString());
-        BaiduAccountInfoEntity baiduAccount = new BaiduAccountInfoEntity();
-        for (BaiduAccountInfoEntity entity : list) {
-            if (baiduUserId.equals(entity.getId())) {
-                baiduAccount.setId(baiduUserId);
-                baiduAccount.setBaiduUserName(entity.getBaiduUserName());
-                baiduAccount.setBaiduPassword(entity.getBaiduPassword());
-                baiduAccount.setToken(entity.getToken());
-                break;
-            }
-        }
-        return baiduAccount;
+        //
+        String currUser = "perfect";
+        //
+        List<BaiduAccountInfoEntity> list = getBaiduAccountItems(currUser);
+//        BaiduAccountInfoEntity baiduAccount = new BaiduAccountInfoEntity();
+//        for (BaiduAccountInfoEntity entity : list) {
+//            if (baiduUserId.equals(entity.getId())) {
+//                baiduAccount.setId(baiduUserId);
+//                baiduAccount.setBaiduUserName(entity.getBaiduUserName());
+//                baiduAccount.setBaiduPassword(entity.getBaiduPassword());
+//                baiduAccount.setToken(entity.getToken());
+//                break;
+//            }
+//        }
+        return list.get(0);
     }
 
     @Override
-    public void updateAccountData(Long baiduUserId) {
+    public void updateBaiduAccountInfo(BaiduAccountInfoEntity entity) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+//        String currUser = AppContext.getUser();
+        String currUser = "perfect";
+        Update update = new Update();
+        if (entity.getBudget() != null) {
+            update.set("bdAccounts.$.bgt", entity.getBudget());
+        }
+        if (entity.getIsDynamicCreative() != null) {
+            update.set("bdAccounts.$.dc", entity.getIsDynamicCreative());
+        }
+        if (entity.getExcludeIp() != null) {
+            update.set("bdAccounts.$.exIp", entity.getExcludeIp());
+        }
+        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(currUser).and("bdAccounts.id").is(entity.getId())), update, SystemUserEntity.class);
+    }
+
+    /**
+     * @param dates
+     * @return
+     */
+    @Override
+    public List<AccountReportEntity> getAccountReports(List<Date> dates) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName("shangpin"));
+//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+//        String currUser = AppContext.getUser();
+//        Long baiduAccountId = AppContext.get().getAccountId();
+        String currUser = "shangpin";
+        Long baiduAccountId = 2565730l;
+        List<AccountReportEntity> reportEntities = mongoTemplate.
+                find(Query.query(Criteria.where("date").in(dates)), AccountReportEntity.class);
+        return reportEntities;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Double getYesterdayCost() {
+        //
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_shangpin_report");
+        //
+//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+//        String currUser = AppContext.getUser();
+//        Long baiduAccountId = AppContext.get().getAccountId();
+        String currUser = "shangpin";
+        Long baiduAccountId = 2565730l;
+        Date date = ((List<Date>) DateUtils.getsLatestAnyDays(1).get("_date")).get(0);
+        return mongoTemplate.findOne(Query.query(Criteria.where("date").is(date).and("acid").is(baiduAccountId)), AccountReportEntity.class).getPcCost();
     }
 
     /**
@@ -181,7 +215,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
      * @return
      */
     private Long getBaiduAccountId(String username, String password, String token) {
-        CommonService service = null;
+        CommonService service;
         Long baiduAccountId = null;
         try {
             service = ServiceFactory.getInstance(username, password, token, null);
