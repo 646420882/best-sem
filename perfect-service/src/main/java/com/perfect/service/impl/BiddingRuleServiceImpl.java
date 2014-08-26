@@ -74,12 +74,32 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
 
     @Override
     public List<BiddingRuleEntity> findRules(Map<String, Object> q, int skip, int limit, String sort, Sort.Direction direction) {
+
+        if (q.containsKey("cp")) {
+
+        }
+
         return biddingRuleDAO.find(q, skip, limit, sort, direction);
     }
 
     @Override
     public List<BiddingRuleEntity> findRules(Map<String, Object> q, String kw, String query, int skip, int limit, String sort, Sort.Direction direction) {
         return biddingRuleDAO.find(q, kw, query, skip, limit, sort, direction);
+    }
+
+    @Override
+    public List<BiddingRuleEntity> findRules(List<Long> ids) {
+        return biddingRuleDAO.find(ids);
+    }
+
+    @Override
+    public void remove(String id) {
+        biddingRuleDAO.delete(id);
+    }
+
+    @Override
+    public void removeByKeywordId(Long id) {
+        biddingRuleDAO.removeByKeywordId(id);
     }
 
 

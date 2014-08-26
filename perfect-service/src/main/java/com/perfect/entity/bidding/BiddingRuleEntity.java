@@ -17,8 +17,11 @@ public class BiddingRuleEntity extends AccountIdEntity {
     @Id
     private ObjectId id;
 
-    @Field("gid")
-    private int gid;
+    @Field("cid")
+    private long cid;
+
+    @Field("agid")
+    private long agid;
 
     @Field("kwid")
     private long keywordId;
@@ -51,14 +54,6 @@ public class BiddingRuleEntity extends AccountIdEntity {
 
     public void setId(ObjectId id) {
         this.id = id;
-    }
-
-    public int getGid() {
-        return gid;
-    }
-
-    public void setGid(int gid) {
-        this.gid = gid;
     }
 
     public long getKeywordId() {
@@ -123,5 +118,21 @@ public class BiddingRuleEntity extends AccountIdEntity {
 
     public void setCurrentPos(int currentPos) {
         this.currentPos = currentPos;
+    }
+
+    public long getCid() {
+        return cid;
+    }
+
+    public void setCid(long cid) {
+        this.cid = cid;
+    }
+
+    public long getAgid() {
+        return agid;
+    }
+
+    public void setAgid(long agid) {
+        this.agid = agid;
     }
 }

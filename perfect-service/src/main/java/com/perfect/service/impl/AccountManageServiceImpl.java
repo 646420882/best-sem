@@ -47,10 +47,10 @@ public class AccountManageServiceImpl implements AccountManageService<BaiduAccou
 
     @SuppressWarnings("unchecked")
     public Map<String, Object> getAccountReports(int number) {
-        List<Date> dates = (List<Date>) DateUtils.getsLatestAnyDays(number).get("_date");
+        List<Date> dates = (List<Date>) DateUtils.getsLatestAnyDays("MM-dd", number).get(DateUtils.KEY_DATE);
         List<AccountReportEntity> list = accountManageDAO.getAccountReports(dates);
         Map<String, Object> values = JSONUtils.getJsonMapData(list);
-        values.put("dates", JSONUtils.getJsonObjectArray(DateUtils.getsLatestAnyDays(7).get("_string")));
+        values.put("dates", JSONUtils.getJsonObjectArray(DateUtils.getsLatestAnyDays("MM-dd", 7).get(DateUtils.KEY_STRING)));
         return values;
     }
 }

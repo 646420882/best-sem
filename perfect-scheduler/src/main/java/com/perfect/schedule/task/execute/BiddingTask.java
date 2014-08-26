@@ -8,14 +8,13 @@ import com.perfect.autosdk.sms.v3.KeywordType;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.entity.*;
 import com.perfect.entity.bidding.BiddingRuleEntity;
-import com.perfect.main.BaiduApiService;
+import com.perfect.service.BaiduApiService;
 import com.perfect.schedule.core.IScheduleTaskDealMulti;
 import com.perfect.schedule.core.TaskItemDefine;
 import com.perfect.service.BiddingRuleService;
 import com.perfect.service.HTMLAnalyseService;
 import com.perfect.service.SystemUserService;
 import com.perfect.service.impl.HTMLAnalyseServiceImpl;
-import org.quartz.CronExpression;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

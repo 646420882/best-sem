@@ -11,6 +11,10 @@ import java.util.*;
  */
 public class DateUtils {
 
+    public static final String KEY_STRING = "_string";
+
+    public static final String KEY_DATE = "_date";
+
     public static List<String> getPeriod(String _startDate, String _endDate) {
         if (_startDate == null) {
             Assert.notNull(_startDate, "_startDate must not be null!");
@@ -43,18 +47,17 @@ public class DateUtils {
                 cal1.add(Calendar.DATE, 1);
                 startDate = cal1.getTime();
             }
-
         }
 
         return dateStrList;
     }
 
-    public static Map<String, Object> getsLatestSevenDays() {
-        return getsLatestAnyDays(7);
+    public static Map<String, List> getsLatestSevenDays() {
+        return getsLatestAnyDays("MM-dd", 7);
     }
 
-    public static Map<String, Object> getsLatestAnyDays(int num) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
+    public static Map<String, List> getsLatestAnyDays(String format, int num) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
         List<String> anyDays = new ArrayList<>();
         List<Date> dates = new ArrayList<>();
 
@@ -70,10 +73,14 @@ public class DateUtils {
             anyDays.add(sdf.format(cal.getTime()));
         }
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("_string", anyDays);
-        map.put("_date", dates);
+        Map<String, List> map = new HashMap<>(2);
+        map.put(KEY_STRING, anyDays);
+        map.put(KEY_DATE, dates);
         return map;
     }
 
+
+    public static Date getYesterday() {
+        return (Date) getsLatestAnyDays("yyyy-MM-dd", 1).get(KEY_DATE).get(0);
+    }
 }

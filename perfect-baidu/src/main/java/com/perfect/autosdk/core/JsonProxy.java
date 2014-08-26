@@ -18,11 +18,8 @@
 package com.perfect.autosdk.core;
 
 import com.perfect.autosdk.exception.ApiException;
-import com.perfect.autosdk.util.PrintUtil;
-import com.perfect.redis.JRedisUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import redis.clients.jedis.Jedis;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -71,26 +68,24 @@ public class JsonProxy<I> implements InvocationHandler {
      */
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         String addr = service.serverUrl + AddressUtil.getJsonAddr(interfaces) + '/' + method.getName();
-        log.info("Current Calling URL: " + addr);
-        PrintUtil.println("Current Calling URL: " + addr);
+        if (log.isDebugEnabled())
+            log.debug("Current Calling URL: " + addr);
         JsonConnection conn = new GZIPJsonConnection(addr);
         conn.setConnectTimeout(service.connectTimeoutMills);
         conn.setReadTimeout(service.readTimeoutMills);
         conn.sendRequest(makeRequest(args[0]));
-        // JRedis example
-        Jedis jedis = null;
-        try {
-            jedis = JRedisUtils.get();
-            long v = jedis.incr("PEI_E");
-            if (v == 1)
-                jedis.expire("PEI_E", 7 * 24 * 60 * 60);
-        } catch (Exception e) {
-
-        } finally {
-            JRedisUtils.returnJedis(jedis);
-        }
-
         JsonEnvelop<ResHeader, ?> response = conn.readResponse(ResHeader.class, method.getReturnType());
+        ResHeader resHeader = response.getHeader();
+        if (!resHeader.getFailures().isEmpty()) {
+            if (log.isErrorEnabled()) {
+                log.error("Call Error: Head info = " + response.getHeader() + "\n" +
+                                "account info = " + service.getUsername() + "\n" +
+                                "request info = " + addr + "\n" +
+                                "request param = " + args[0]
+                );
+            }
+
+        }
         ResHeaderUtil.resHeader.set(response.getHeader());
         return response.getBody();
     }

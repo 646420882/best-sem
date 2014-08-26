@@ -125,9 +125,9 @@
                         <div class="w_list03 ">
                         <ul class="jiangjia_list">
                             <li class="current showbox">设置规则</li>
-                            <li >检查当前排名</li>
+                            <li onclick="return checkrank();">检查当前排名</li>
                             <li class="showbox2">修改出价</li>
-                            <li  class="showbox3">修改匹配模式</li>
+                            <li class="showbox3">修改匹配模式</li>
                             <li class="showbox4">修改访问网址</li>
                             <li class="showbox5">分组</li>
                             <li class="showbox6">自定义列</li>
@@ -367,7 +367,7 @@
                         </div>
                         <div class="j_l_top2 over">
                             <span class="fl">查找计划单元</span>
-                            <input class="fr" type="image" src="public/img/search.png">
+                            <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png">
                         </div>
                         <div class="j_list01 over">
                             <ul id="tree2" class="ztree over">
@@ -902,16 +902,35 @@
     function beforeClick(treeId, treeNode) {
         if (treeNode.level == 0) {
             //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
-            
+
             alert(treeNode.id + "," + treeNode.name);
             campaignId = treeNode.id + "," + "0";
             //事件处理
+            $.ajax({
+                url: "/bidding/list?cp="+ treeNode.id,
+                type: "GET",
+                dataType : "json",
+                async: false,
+                success: function(datas){
+                    console.log(datas);
+                }
+            })
         } else if (treeNode.level == 1) {
             //点击的是子节点(推广单元),则应该展示其下属的关键词数据
             alert(treeNode.id + "," + treeNode.name);
             adgroupId = treeNode.id + "," + "1";
             //事件处理
+            $.ajax({
+                url: "/bidding/list?ag="+ treeNode.id,
+                type: "GET",
+                dataType : "json",
+                async: false,
+                success: function(datas){
+                    console.log(datas);
+                }
+            })
         }
+
     }
     var log, className = "dark";
     function beforeAsync(treeId, treeNode) {
@@ -946,6 +965,11 @@
 
     $(document).ready(function () {
 
+//        $.ajax({
+//            url: "/account"
+//        })
+
+
         //获取账户树数据
         $.ajax({
             url: "/account/get_tree",
@@ -970,43 +994,22 @@
         demoIframe.height(h);
     }
 
+    function checkrank(){
+        var boxes = $("input[name='subbox'][checked]")
+        var ids = [];
+        $(boxes).each(function(){
+            ids.push($(this).val())
+        })
+
+        $.post({
+            url: "/bidding/checkrank",
+            data: { ids: ids.join(","),
+        })
+    }
     //-->
 
 </SCRIPT>
 
 
-<%--<script type="text/javascript">
-
-    $(function(){
-        var lis = $("#pos").children();
-        lis.each(function(){
-            var checkbox = $(this).children().first();
-
-            checkbox.click(function(){
-                // var lis = $("#pos").children();
-                // lis.each(function(){
-
-                var checkbox = $(this);
-
-
-
-                console.log(checkbox.attr("id"));s
-                var id = checkbox.attr("id");
-
-                $(".price2").each(function(){
-
-                    if($(this).data("idx") == "price" + id.charAt(2)){
-                        $(this).removeAttr("disabled");
-                    }else{
-                        $(this).attr("disabled","true");
-                    }
-                    // });
-                })
-
-            })
-
-        });
-    });
-</script>--%>
 </body>
 </html>
