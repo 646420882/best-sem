@@ -1,6 +1,8 @@
 package com.perfect.dao;
 
+import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -12,6 +14,8 @@ import java.util.List;
 public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, String> {
 
     public void createBidding(BiddingRuleEntity biddingRuleEntity);
+
+    public List<BiddingRuleEntity> findByCampagainId(long cid, int skip, int limit, String field, Sort.Direction direction);
 
     public void batchCreate(List<BiddingRuleEntity> biddingRuleEntityList);
 
@@ -30,4 +34,8 @@ public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, S
     void updateToNextRunTime(List<BiddingRuleEntity> tasks);
 
     void enableRule(String id);
+
+    List<BiddingRuleEntity> find(List<Long> ids);
+
+    void removeByKeywordId(Long id);
 }
