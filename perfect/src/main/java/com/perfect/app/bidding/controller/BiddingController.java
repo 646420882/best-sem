@@ -1,47 +1,103 @@
 package com.perfect.app.bidding.controller;
 
+import com.perfect.app.bidding.dto.BiddingRuleDTO;
+import com.perfect.autosdk.core.CommonService;
+import com.perfect.autosdk.core.ServiceFactory;
+import com.perfect.autosdk.exception.ApiException;
+import com.perfect.core.AppContext;
+import com.perfect.dao.CampaignDAO;
+import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.CampaignEntity;
+import com.perfect.entity.StructureReportEntity;
+import com.perfect.entity.SystemUserEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
+import com.perfect.mongodb.utils.DateUtils;
+import com.perfect.service.BaiduApiService;
 import com.perfect.service.BasisReportService;
 import com.perfect.service.BiddingRuleService;
+import com.perfect.service.SystemUserService;
 import com.perfect.utils.JSONUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by yousheng on 2014/8/22.
  *
  * @author yousheng
  */
+
+@RestController
 @Controller
 @RequestMapping("/bidding")
 public class BiddingController {
 
+    @Resource
+    private SystemUserService systemUserService;
 
     @Resource
     private BiddingRuleService biddingRuleService;
 
     @Resource
+    private CampaignDAO campaignDAO;
+
+    @Resource
     private BasisReportService basisReportService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public void save(HttpServletRequest request, @ModelAttribute("biddingModel") BiddingRuleEntity entity) {
+    public void save(HttpServletRequest request, @RequestBody BiddingRuleEntity entity) {
 //        AppContext.setUser(WebUtils.;
         biddingRuleService.createBiddingRule(entity);
     }
+
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public void get(HttpServletRequest request) {
+
+    }
+
+    @RequestMapping(value = "/keyword/{id}", method = RequestMethod.DELETE)
+    public ModelAndView delete(@PathVariable Long id) {
+        biddingRuleService.removeByKeywordId(id);
+
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> attribute = new HashMap<>();
+
+        attribute.put("success", true);
+        jsonView.setAttributesMap(attribute);
+
+        return new ModelAndView(jsonView);
+    }
+
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ModelAndView delete(@PathVariable String id) {
+        biddingRuleService.remove(id);
+
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> attribute = new HashMap<>();
+
+        attribute.put("success", true);
+        jsonView.setAttributesMap(attribute);
+
+        return new ModelAndView(jsonView);
+    }
+
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    public void delete(HttpServletRequest request, @RequestBody BiddingRuleEntity biddingRuleEntity) {
+        biddingRuleService.createBiddingRule(biddingRuleEntity);
+    }
+
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index() {
@@ -50,39 +106,116 @@ public class BiddingController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView home(HttpServletRequest request,
-                             @RequestParam("ag") long agid,
-                             @RequestParam("q") String query,
-                             @RequestParam("s") int skip,
-                             @RequestParam("l") int limit, @RequestParam("sort") String sort,
-                             @RequestParam("o") boolean asc) {
+                             @RequestParam(value = "cp", required = false) String cp,
+                             @RequestParam(value = "ag", required = false) String agid,
+                             @RequestParam(value = "s", required = false, defaultValue = "0") int skip,
+                             @RequestParam(value = "l", required = false, defaultValue = "20") int limit,
+                             @RequestParam(value = "sort", required = false, defaultValue = "kw") String sort,
+                             @RequestParam(value = "o", required = false, defaultValue = "true") boolean asc) {
 
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> q = new HashMap<>();
-        if (agid > 0) {
+        if (cp != null) {
+            q.put("cid", cp);
+        }
+
+        if (agid != null) {
             q.put("agid", agid);
         }
 
         List<BiddingRuleEntity> entities = null;
 
-        if (query == null) {
-            entities = biddingRuleService.findRules(q, skip, limit, sort, (asc) ? Sort.Direction.ASC : Sort.Direction.DESC);
-        } else {
-            entities = biddingRuleService.findRules(q, "kw", query, skip, limit, sort, (asc) ? Sort.Direction.ASC : Sort.Direction.DESC);
-        }
+        entities = biddingRuleService.findRules(q, skip, limit, sort, (asc) ? Sort.Direction.ASC : Sort.Direction.DESC);
         List<Long> ids = new ArrayList<>();
+
+        Map<Long, BiddingRuleDTO> biddingRuleDTOs = new HashMap<>();
 
         for (BiddingRuleEntity entity : entities) {
             ids.add(entity.getKeywordId());
+
+            BiddingRuleDTO dto = new BiddingRuleDTO();
+            BeanUtils.copyProperties(entity, dto);
+
+            biddingRuleDTOs.put(entity.getKeywordId(), dto);
+        }
+        String yesterday = DateUtils.getYesterday().toString();
+
+        Map<String, List<StructureReportEntity>> reports = basisReportService.getKeywordReport(ids.toArray(new Long[]{}), yesterday, yesterday, 0);
+        List<StructureReportEntity> list = reports.get(yesterday);
+
+        for (StructureReportEntity entity : list) {
+            long kwid = entity.getKeywordId();
+            BiddingRuleDTO dto = biddingRuleDTOs.get(kwid);
+            dto.setClick(entity.getPcClick());
+            dto.setConversion(entity.getPcConversion());
+            dto.setCost(entity.getPcCost());
+            dto.setCpc(entity.getPcCpc());
+            dto.setCpm(entity.getPcCpm());
+            dto.setCtr(entity.getPcCtr());
+            dto.setImpression(entity.getPcImpression());
         }
 
-
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(entities);
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(biddingRuleDTOs);
         jsonView.setAttributesMap(attributes);
-
-        String yesterday = "";
 
         // 获取报告信息
 
+        return new ModelAndView(jsonView);
+    }
+
+    @RequestMapping(value = "/rank", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView checkCurrentRank(HttpServletRequest request,
+                                         @RequestParam(value = "acid", required = true) Long accid,
+                                         @RequestParam(value = "ids", required = true) Long[] ids,
+                                         @RequestParam(value = "cid", required = true) Long cid
+    ) {
+
+        AbstractView jsonView = new MappingJackson2JsonView();
+
+        List<Integer> result = Collections.EMPTY_LIST;
+        if (accid == null) {
+            return new ModelAndView(jsonView);
+        }
+
+        CampaignEntity campaignEntity = campaignDAO.findOne(cid);
+
+        if (campaignEntity == null) {
+            return new ModelAndView(jsonView);
+        }
+        String userName = AppContext.getUser();
+
+        SystemUserEntity systemUserEntity = systemUserService.getSystemUser(userName);
+        if (systemUserEntity == null) {
+            return new ModelAndView(jsonView);
+        }
+
+        CommonService commonService = null;
+        String host = null;
+        for (BaiduAccountInfoEntity infoEntity : systemUserEntity.getBaiduAccountInfoEntities()) {
+            if (infoEntity.getId().longValue() == accid) {
+                try {
+                    host = infoEntity.getRegDomain();
+                    commonService = ServiceFactory.getInstance(infoEntity.getBaiduUserName(), infoEntity.getBaiduPassword(), infoEntity.getToken(), null);
+                    break;
+                } catch (ApiException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+        if (commonService == null) {
+            return new ModelAndView(jsonView);
+        }
+
+        List<BiddingRuleEntity> list = biddingRuleService.findRules(Arrays.asList(ids));
+
+        BaiduApiService baiduApiService = new BaiduApiService(commonService);
+
+        Map<String, Integer> rankMap = baiduApiService.checkKeywordRank(list, host);
+
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(rankMap);
+        jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }
 }

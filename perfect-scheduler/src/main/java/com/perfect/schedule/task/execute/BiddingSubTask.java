@@ -7,7 +7,7 @@ import com.perfect.entity.CreativeVOEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.entity.bidding.StrategyEntity;
-import com.perfect.main.BaiduApiService;
+import com.perfect.service.BaiduApiService;
 import com.perfect.service.BiddingRuleService;
 import com.perfect.service.HTMLAnalyseService;
 import com.perfect.service.impl.HTMLAnalyseServiceImpl;

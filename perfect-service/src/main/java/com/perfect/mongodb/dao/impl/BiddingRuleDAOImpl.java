@@ -7,6 +7,7 @@ import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -161,6 +162,11 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     }
 
     @Override
+    public List<BiddingRuleEntity> findByCampagainId(long cid, int skip, int limit, String field, Sort.Direction direction) {
+        return null;
+    }
+
+    @Override
     public void batchCreate(List<BiddingRuleEntity> biddingRuleEntityList) {
         save(biddingRuleEntityList);
     }
@@ -208,5 +214,15 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     @Override
     public void enableRule(String id) {
         getMongoTemplate().findAndModify(Query.query(Criteria.where(getId()).is(id)), Update.update("ebl", 1), getEntityClass());
+    }
+
+    @Override
+    public List<BiddingRuleEntity> find(List<Long> ids) {
+        return getMongoTemplate().find(Query.query(Criteria.where("kwid").in(ids)), BiddingRuleEntity.class);
+    }
+
+    @Override
+    public void removeByKeywordId(Long id) {
+        getMongoTemplate().remove(Query.query(Criteria.where("kwid").is(id)), getEntityClass());
     }
 }

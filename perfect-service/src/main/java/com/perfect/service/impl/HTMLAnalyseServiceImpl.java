@@ -582,7 +582,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
             GetPreviewRequest request = new GetPreviewRequest();
 
             request.setDevice(0);
-            request.setRegion(28226);
+            request.setRegion(28000);
 
 
             request.setKeyWords(Arrays.asList(new String[]{"车展"}));

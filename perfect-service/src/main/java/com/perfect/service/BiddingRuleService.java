@@ -3,6 +3,7 @@ package com.perfect.service;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 import java.util.Map;
@@ -37,4 +38,10 @@ public interface BiddingRuleService {
     List<BiddingRuleEntity> findRules(Map<String, Object> q, int skip, int limit, String sort, Sort.Direction direction);
 
     List<BiddingRuleEntity> findRules(Map<String, Object> q, String kw, String query, int skip, int limit, String sort, Sort.Direction direction);
+
+    List<BiddingRuleEntity> findRules(List<Long> ids);
+
+    void remove(String id);
+
+    void removeByKeywordId(Long id);
 }
