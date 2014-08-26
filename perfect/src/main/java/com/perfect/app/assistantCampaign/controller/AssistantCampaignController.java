@@ -88,7 +88,7 @@ public class AssistantCampaignController {
         campaignEntity.setShowProb(showProb);
         campaignEntity.setPause(pause);
 
-//        campaignDAO.update(campaignEntity);
+        campaignDAO.update(campaignEntity);
     }
 
 

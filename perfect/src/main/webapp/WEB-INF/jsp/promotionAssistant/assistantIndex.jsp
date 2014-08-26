@@ -142,23 +142,24 @@
     </div>
     <div class="zhanghu_input"></div>
     <div class="zs_bottom over">
+        <input type = "hidden" id="hiddenkwid_1" />
         <div class="zs_bottom1 over fl ">
             <ul>
                 <li>
                     <div class="w_list01 fl over">关键词名称：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1"></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(1,this.value)" onkeydown="missBlur(event,this)" class="zs_input1 keyword_1"></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">出价：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1"></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(2,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 price_1"></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">访问URL:</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(3,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 pcurl_1"><span class="pcurlSize_1">59/1024</span></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">移动访问URL：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(4,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 mourl_1"><span class="mourlSize_1">59/1024</span></div>
                 </li>
             </ul>
         </div>
@@ -170,21 +171,15 @@
                 </li>
                 <li>
                     <div class="w_list01 fl over">匹配模式：</div>
-                    <div class="w_list02 fl over"><em>短语-核心包含</em></div>
+                    <div class="w_list02 fl over"><em class="matchModel_1">短语-核心包含</em></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">状态：</div>
-                    <div class="w_list02 fl over"><b>有效</b></div>
-                </li>
-                <li>
-                    <div class="w_list01 fl over">设备偏好：</div>
-                    <div class="w_list02 fl over"><select>
-                        <option>全部</option>
-                    </select></div>
+                    <div class="w_list02 fl over"><b class="status_1">有效</b></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">启用/暂停：</div>
-                    <div class="w_list02 fl over"><select>
+                    <div class="w_list02 fl over"><select class="pause_1" onchange="whenBlurEditKeyword(7,this.value)">
                         <option>启用</option>
                     </select></div>
                 </li>
@@ -972,19 +967,20 @@
     </div>
     <div class="zhanghu_input"></div>
     <div class="zs_bottom over">
+        <input type = "hidden" id="hiddenCampaignId" />
         <div class="zs_bottom2 over fl " style="border-right: 1px solid #e7e7e7;">
             <ul>
                 <li>
                     <div class="w_list01 fl over">名称：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input3" value="婚博会"></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditCampaign(1,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 campaignName_5"></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">每日预算：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input3"></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditCampaign(2,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 budget_5"></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">移动出价比例：</div>
-                    <div class="w_list02 fl over"><input type="text" class="zs_input3"><span>59/1024</span></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditCampaign(3,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 priceRatio_5"><span>59/1024</span></div>
                 </li>
             </ul>
         </div>
@@ -992,29 +988,29 @@
             <ul class="z_bottom3 fl">
                 <li>
                     <div class="w_list01 fl over">推广时段：</div>
-                    <div class="w_list02 fl over"><em>全部</em></div>
+                    <div class="w_list02 fl over"><em class="schedule_5">全部</em></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">推广地域：</div>
-                    <div class="w_list02 fl over"><em>使用账户推广地域</em></div>
+                    <div class="w_list02 fl over"><em class="regionTarget_5">使用账户推广地域</em></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">动态创意状态：</div>
-                    <div class="w_list02 fl over"><b>开启</b></div>
+                    <div class="w_list02 fl over"><b class="isDynamicCreative_5">开启</b></div>
                 </li>
             </ul>
             <ul class="z_bottom3 fl">
                 <li>
                     <div class="w_list01 fl over">否定关键词：</div>
-                    <div class="w_list02 fl over "><em>未设置</em></div>
+                    <div class="w_list02 fl over "><em class="negativeWords_5">未设置</em></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">IP排除：</div>
-                    <div class="w_list02 fl over"><em>未设置</em></div>
+                    <div class="w_list02 fl over"><em class="excluedIp_5">未设置</em></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">创意展现方式：</div>
-                    <div class="w_list02 fl over"><select>
+                    <div class="w_list02 fl over"><select class="selectShowProb_5" onchange="whenBlurEditCampaign(10,this.value);">
                         <option>优选</option>
                     </select></div>
                 </li>
@@ -1022,7 +1018,7 @@
             <ul class="z_bottom3 fl">
                 <li>
                     <div class="w_list01 fl over">状态：</div>
-                    <div class="w_list02 fl over"><b>暂停推广</b></div>
+                    <div class="w_list02 fl over"><b class="status_5">暂停推广</b></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">IP排除：</div>
@@ -1030,7 +1026,7 @@
                 </li>
                 <li>
                     <div class="w_list01 fl over">启用/暂停：</div>
-                    <div class="w_list02 fl over"><select>
+                    <div class="w_list02 fl over"><select class="selectPause_5" onchange="whenBlurEditCampaign(11,this.value);">
                         <option>启用</option>
                     </select></div>
                 </li>
@@ -1310,9 +1306,11 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantCreative/creative.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantKeyword.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantCampaign.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantGlobal/global.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantKeyword/assistantKeyword.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantCampaign/assistantCampaign.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantAccount.js"></script>
 
 </body>
