@@ -1,6 +1,10 @@
 /**
  * Created by XiaoWei on 2014/8/21.
  */
+/**
+ * 树加载数据需要的计划，单元参数，默认都为空
+ * @type {{aid: null, cid: null}}
+ */
 var sparams={aid:null,cid:null};
 $(function () {
     loadCreativeData(sparams);
@@ -8,6 +12,10 @@ $(function () {
     rDrag.init($("#jcBox"));
 });
 
+/**
+ * 菜单名，方法
+ * @type {{text: string, func: func}}
+ */
 var add = {
     text: "添加创意",
     func: function () {
@@ -25,10 +33,22 @@ var add = {
         alert("验证");
     }
 }
+/**
+ * 右键菜单显示的选项
+ * @type {*[]}
+ */
 var menuData = [
     [add, del, update]
 ];
+/**
+ * 用户缓存右键点击的对象
+ * @type {null}
+ */
 var tmp=null;
+/**
+ * 菜单name值，标识唯一，beforeShow显示完成后方法
+ * @type {{name: string, beforeShow: beforeShow}}
+ */
 var menuExt={
     name: "creative",
     beforeShow: function () {
@@ -37,11 +57,19 @@ var menuExt={
         $.smartMenu.remove();
     }
 };
+/**
+ * 初始化右键菜单
+ * @constructor
+ */
 function InitMenu() {
     $("#createTable").on("mousedown","tr",function(){
         $(this).smartMenu(menuData,menuExt);
     });
 }
+/**
+ * 加载创意数据
+ * @param params
+ */
 function loadCreativeData(params) {
     $.get("/assistantCreative/getList",params,function (result) {
         var _createTable = $("#createTable tbody");
@@ -73,7 +101,10 @@ function loadCreativeData(params) {
         }
     });
 }
-
+/**
+ * 动态改变样式效果，如:选中
+ * @param rs
+ */
 function trStyle(rs) {
     var _this = $(rs);
     var _tr_size = _this.parents("table").find("tr").size();
@@ -82,6 +113,10 @@ function trStyle(rs) {
     }
     _this.css("background", "#FCEFC5");
 }
+/**
+ * 鼠标单击显示详细信息
+ * @param obj
+ */
 function on(obj) {
     trStyle(obj);
     preview(obj);
@@ -129,12 +164,20 @@ function on(obj) {
     });
     $("#sMibs_size").text(mibs.length);
 }
+/**
+ * 未知方法，待继续编码
+ * @param rs
+ */
 function addTb(rs) {
     var _this = $(rs);
     var val = _this.prev("input");
 }
+/**
+ * 添加创意
+ */
 function addCreative() {
-    creativeAddBoxShow();
+    var jcBox=$("#jcUl");
+    if(sparams.cid!=null&&sparams.aid!=null){
     var i = $("#createTable tbody tr").size();
     var _createTable = $("#createTable tbody");
     var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
@@ -152,7 +195,24 @@ function addCreative() {
     +"</select></td>" +
     "</tr>";
     _createTable.append(_tbody);
+    }else if(sparams.cid!=null&&sparams.aid==null){
+        jcBox.empty();
+        jcBox.append("<li>推广单元<select id='sPlan'></select><li>");
+        creativeAddBoxShow();
+    }else if(sparams.cid==null&&sparams.aid==null){
+        jcBox.empty();
+        jcBox.append("<li>推广计划<select id='sPlan'><option value='1'>1</option></select><li>");
+        jcBox.append("<li>推广单元<select id='sUnit'><option value='1'>1</option></select><li>");
+        creativeAddBoxShow();
+    }
 }
+/**
+ * 查询所有计划，生成select的Option对象
+ */
+function getAllPlan(){}
+/**
+ * 添加创意时，如果没有选择计划或者单元，弹出框显示
+ */
 function creativeAddBoxShow(){
     $(".TB_overlayBG").css({
         display:"block",height:$(document).height()
@@ -177,12 +237,20 @@ function getStatus() {
         "<option value='56'>部分无效</option>";
     return op;
 }
+/**
+ * 右键删除，点击删除
+ * @param rs
+ */
 function removeThe(rs) {
     var _this = $(rs);
     _this.parents("tr").remove();
     _this.remove();
     toolBarInit();
 }
+/**
+ * 动态添加的文本域数据数据时显示的字数多少
+ * @param rs
+ */
 function onKey(rs) {
     var val = rs.value;
     var _this = $(rs).parents("td").find("input");
@@ -219,6 +287,9 @@ function onKey(rs) {
     }
 
 }
+/**
+ * 初始化工具栏
+ */
 function toolBarInit() {
     $("#sDiv input[type='text']").val("");
     var span_size = $("#sDiv span").length;
@@ -228,6 +299,10 @@ function toolBarInit() {
         }
     }
 }
+/**
+ * 加载预览效果
+ * @param obj
+ */
 function preview(obj) {
     var _this = $(obj);
     var previeBody = $("#sPreview");
@@ -258,10 +333,18 @@ function edit(rs) {
     var _td = _tr.find("td:eq(1)").html();
     alert(_td);
 }
+/**
+ * 动态更新创意中的数据，如果 是点击计划树
+ * @param cid
+ */
 function getCreativePlan(cid){
     sparams={cid:cid,aid:null};
     loadCreativeData(sparams);
 }
+/**
+ * 动态更新创意中的数据，如果点击单元树
+ * @param con
+ */
 function getCreativeUnit(con){
     sparams={cid:con.cid,aid:con.aid}
     loadCreativeData(sparams);

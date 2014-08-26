@@ -1292,9 +1292,9 @@
     <h2 id="jcBox">添加创意<a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
-        选择要添加的
-        <ul class="zs_set">
-            <li><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</li>
+        选择要添加到的计划或者单元!
+        <ul class="zs_set" id="jcUl">
+            <%--<li><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</li>--%>
         </ul>
     </div>
     <div class="main_bottom">
