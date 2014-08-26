@@ -28,6 +28,9 @@ function keywordDataToHtml(obj, index) {
         html = html + "<tr class='list2_box1' onclick='setKwdValue(this,"+obj.keywordId+")'>";
     }
 
+    //kwid
+    html = html + "<input type='hidden' value = "+obj.keywordId+" />";
+
     html = html + "<td>" + obj.keyword + "</td>";
 
     switch (obj.status) {
@@ -193,6 +196,26 @@ function editKwdInfo(){
 
 
 /**
+ * 控件失去焦点时候触发
+ * @param num
+ * @param value
+ */
+function whenBlurEditKeyword(num,value){
+    switch (num){
+        case 1:kwd_name = value;break;
+        case 2:kwd_price = value;break;
+        case 3:kwd_pcDestinationUrl = value;break;
+        case 4:kwd_mobileDestinationUrl = value;break;
+        case 5:kwd_matchType = value;break;
+        case 6:kwd_phraseType = value;break;
+        case 7:kwd_pause = value;break;
+    }
+    editKwdInfo();
+}
+
+
+
+/**
  * 失去焦点
  */
 function missBlur(even,obj){
@@ -200,6 +223,8 @@ function missBlur(even,obj){
         obj.blur();
     }
 }
+
+
 
 
 /**

@@ -2,6 +2,7 @@ package com.perfect.app.accountCenter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.perfect.dao.AccountManageDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.service.AccountManageService;
 import org.springframework.context.annotation.Scope;
@@ -24,6 +25,9 @@ public class AccountManageController {
     @Resource
     private AccountManageService<BaiduAccountInfoEntity> service;
 
+    @Resource
+    private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
+
     /**
      * 获取账户树
      *
@@ -31,12 +35,7 @@ public class AccountManageController {
      */
     @RequestMapping(value = "/get_tree", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getAccountTree() {
-        //Test========================
-        BaiduAccountInfoEntity entity = new BaiduAccountInfoEntity();
-        entity.setId(6243012l);
-        entity.setBaiduUserName("baidu-bjtthunbohui2134115");
-        entity.setBaiduPassword("Bjhunbohui7");
-        //Test========================
+        BaiduAccountInfoEntity entity = accountManageDAO.findByBaiduUserId(null);
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
         Map<String, Object> trees = service.getAccountTree(entity);
         jsonView.setAttributesMap(trees);

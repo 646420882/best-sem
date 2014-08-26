@@ -52,7 +52,7 @@ public class DataPullTask implements IScheduleTaskDealSingle<String> {
         Date today = df.parse(df.format(new Date()));
 
         if (today.getTime() > date.getTime()) {
-            String yesterday = new SimpleDateFormat("yyyy-MM-dd ").format(date.getTime());
+            String yesterday = df.format(date.getTime());
             list.addAll(DateUtils.getPeriod(yesterday, yesterday));
             date = df.parse(df.format(new Date()));//标记为今天,代表着当天已经拉取过
         }

@@ -117,15 +117,15 @@ public class AssistantKeywordController {
      * @param keywordNames 用户输入的一个或多个的关键词名称
      * @return
      */
-    @RequestMapping(value = "assistantKeyword/deleteByNameChoose",method = {RequestMethod.GET,RequestMethod.POST})
+   /* @RequestMapping(value = "assistantKeyword/deleteByNameChoose",method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView deleteKeywordByNamesChoose(String chooseInfos,String keywordNames){
         assistantKeywordService.deleteKeywordByNamesChoose(currentAccountId,chooseInfos,keywordNames);
         return new ModelAndView();
-    }
+    }*/
 
 
 
-    /**（输入的方式）
+    /**（输入的方式）(未测试)
      *根据用户输入的删除信息（计划名称，单元名称，关键词名称）批量删除关键词
      * @param deleteInfos 用户输入的一系列的计划名称，单元名称，关键词名称
      * @return
@@ -146,11 +146,11 @@ public class AssistantKeywordController {
      * @param keywordInfos 用户输入的多个关键词信息
      * @return
      */
-    @RequestMapping(value = "assistantKeyword/addOrUpdateKeywordByChoose",method = {RequestMethod.GET,RequestMethod.POST})
+   /* @RequestMapping(value = "assistantKeyword/addOrUpdateKeywordByChoose",method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView batchAddOrUpdateKeywordByChoose(Boolean isReplace,String chooseInfos,String keywordInfos){
         assistantKeywordService.batchAddOrUpdateKeywordByChoose(currentAccountId,isReplace,chooseInfos,keywordInfos);
         return new ModelAndView();
-    }
+    }*/
 
 
     //未完成
@@ -161,10 +161,10 @@ public class AssistantKeywordController {
      * @param keywordInfos 用户输入的多个关键词信息
      * @return
      */
-    @RequestMapping(value = "assistantKeyword/addOrUpdateKeywordByInput",method = {RequestMethod.GET,RequestMethod.POST})
+   /* @RequestMapping(value = "assistantKeyword/addOrUpdateKeywordByInput",method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView batchAddOrUpdateKeywordByInput(Boolean isReplace,String keywordInfos){
         assistantKeywordService.batchAddOrUpdateKeywordByInput(currentAccountId,isReplace,keywordInfos);
         return new ModelAndView();
-    }
+    }*/
 
 }

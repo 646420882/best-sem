@@ -169,4 +169,22 @@ function editCampaignInfo() {
 }
 
 
+function whenBlurEditCampaign(num,value){
+    switch (num){
+        case 1:cp_campaignName = value;break;
+        case 2:cp_budget = value;break;
+        case 3:cp_priceRatio = value;break;
+        case 4:cp_schedule = value;break;
+        case 5:cp_regionTarget = value;break;
+        case 6:cp_isDynamicCreative = value;break;
+        case 7:cp_negativeWords = value;break;
+        case 8:cp_exactNegativeWords = value;break;
+        case 9:cp_excludeIp = value;break;
+        case 10:cp_showProb = value;break;
+        case 11:cp_pause = value;break;
+    }
+    editCampaignInfo();
+}
+
+
 

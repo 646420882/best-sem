@@ -18,7 +18,6 @@
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/smartMenu.css">
 </head>
 <body>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
@@ -37,7 +36,7 @@
 <div class="jingjia_left fl over">
     <div class="j_l_top over">
         <span class="fl"><h3>账户目录</h3></span>
-        <a href="javascript:void(0)" onclick="loadCreativeData(sparams)" class="fr">刷新</a>
+        <a href="javascript:void(0)" onclick="loadCreativeData()" class="fr">刷新</a>
     </div>
     <div class="j_l_top2 over">
         <span class="fl">查找计划单元</span>
@@ -143,24 +142,24 @@
     </div>
     <div class="zhanghu_input"></div>
     <div class="zs_bottom over">
+        <input type = "hidden" id="hiddenkwid_1" />
         <div class="zs_bottom1 over fl ">
-            <input type="hidden" id="hiddenkwid_1" />
             <ul>
                 <li>
                     <div class="w_list01 fl over">关键词名称：</div>
-                    <div class="w_list02 fl over"><input type="text" readonly="true" class="zs_input1 keyword_1"></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(1,this.value)" onkeydown="missBlur(event,this)" class="zs_input1 keyword_1"></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">出价：</div>
-                    <div class="w_list02 fl over"><input type="text" onblur="javascript:kwd_price=this.value;editKwdInfo();" onkeydown="missBlur(event,this)" class="zs_input1 price_1"></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(2,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 price_1"></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">访问URL:</div>
-                    <div class="w_list02 fl over"><input type="text" onblur="javascript:kwd_pcDestinationUrl=this.value;editKwdInfo();" onkeydown="missBlur(event,this)" class="zs_input1 pcurl_1"><span class="pcurlSize_1">0/1024</span></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(3,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 pcurl_1"><span class="pcurlSize_1">59/1024</span></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">移动访问URL：</div>
-                    <div class="w_list02 fl over"><input type="text" onblur="javascript:kwd_mobileDestinationUrl=this.value;editKwdInfo();" onkeydown="missBlur(event,this)" class="zs_input1 mourl_1"><span class="mourlSize_1">0/1017</span></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(4,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 mourl_1"><span class="mourlSize_1">59/1024</span></div>
                 </li>
             </ul>
         </div>
@@ -180,7 +179,7 @@
                 </li>
                 <li>
                     <div class="w_list01 fl over">启用/暂停：</div>
-                    <div class="w_list02 fl over"><select class="pause_1" onchange="javascript:kwd_pause=this.value;editKwdInfo();">
+                    <div class="w_list02 fl over"><select class="pause_1" onchange="whenBlurEditKeyword(7,this.value)">
                         <option>启用</option>
                     </select></div>
                 </li>
@@ -192,7 +191,8 @@
 <div class="containers  over hides">
     <div class="zs_function over">
         <ul class="fl">
-            <li><a href="javascript:void(0)" onclick="addCreative();"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="javascript:void(0)" onclick="addCreative();"><span class="zs_top"><img
+                    src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
             <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a>
             </li>
@@ -259,52 +259,60 @@
         <div class="zs_bottom1 over fl " id="sDiv">
             <ul>
                 <li>
-                    <div class="t_list01 fl over">创意标题：</div>
-                    <div class="t_list03 fl over">
-                        <input type="text" class="zs_input1" id="sTitle"><input type="button" value="{}插入通配符" onclick="addTb(this)" class="zs_input2"><span><span
+                    <div class="w_list01 fl over">创意标题：</div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sTitle"><input type="button"
+                                                                                                          value="{}插入通配符"
+                                                                                                          onclick="addTb(this)"
+                                                                                                          class="zs_input2"><span><span
                             id="sTitle_size">49</span>/50</span>
                     </div>
                 </li>
                 <li>
-                    <div class="t_list01 fl over">创意描述1：</div>
-                    <div class="t_list03 fl over">
-                        <input type="text" class="zs_input1" id="sDes1"><input type="button" value="{}插入通配符"  class="zs_input2"><span><span
+                    <div class="w_list01 fl over">创意描述1：</div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sDes1"><input type="button"
+                                                                                                         value="{}插入通配符"
+                                                                                                         class="zs_input2"><span><span
                             id="sDes1_size">49</span>/80</span>
                     </div>
                 </li>
                 <li>
-                    <div class="t_list01 fl over">创意描述2：</div>
-                    <div class="t_list03 fl over">
-                        <input type="text" class="zs_input1" id="sDes2"><input type="button" value="{}插入通配符" class="zs_input2"><span><span
-                        id="sDes2_size">49</span>/80</span>
+                    <div class="w_list01 fl over">创意描述2：</div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input1" id="sDes2"><input type="button"
+                                                                                                         value="{}插入通配符"
+                                                                                                         class="zs_input2"><span><span
+                            id="sDes2_size">49</span>/80</span>
                     </div>
                 </li>
                 <li>
-                    <div class="t_list04 fl over">
-                        <div class="t_list01 fl over">默认访问URL：</div>
-                        <div class="t_list02 fl over"><input type="text" class="zs_input3" id="sPc"/><span><span id="sPc_size">0</span>/1024</span>
+                    <div class="w_list03 fl over">
+                        <div class="w_list01 fl over">默认访问URL：</div>
+                        <div class="w_list02 fl over"><input type="text" class="zs_input3" id="sPc"/><span><span
+                                id="sPc_size">0</span>/1024</span>
                         </div>
                     </div>
-                    <div class="t_list04 fr over">
-                        <div class="t_list01 fl over">默认显示URL：</div>
-                        <div class="t_list02 fl over"><input type="text" class="zs_input3" id="sPcs"/><span><span
+                    <div class="w_list03 fr over">
+                        <div class="w_list01 fl over">默认显示URL：</div>
+                        <div class="w_list02 fl over"><input type="text" class="zs_input3" id="sPcs"/><span><span
                                 id="sPcs_size">49</span>/50</span></div>
                     </div>
                 </li>
                 <li>
-                    <div class="t_list04 fl over">
-                        <div class="t_list01 fl over">移动访问URL：</div>
-                        <div class="t_list02 fl over"><input type="text" class="zs_input3"
-                                                             id="sMib"><span><span id="sMib_size">49</span>/1024</span></div>
+                    <div class="w_list03 fl over">
+                        <div class="w_list01 fl over">移动访问URL：</div>
+                        <div class="w_list02 fl over"><input type="text" class="zs_input3"
+                                                             id="sMib"><span><span id="sMib_size">49</span>/1024</span>
+                        </div>
                     </div>
-                    <div class="t_list04 fr over">
-                        <div class="t_list01 fl over">移动显示URL：</div>
-                        <div class="t_list02 fl over"><input type="text" class="zs_input3"  id="sMibs"><span><span id="sMibs_size">35</span>/36</span></div>
+                    <div class="w_list03 fr over">
+                        <div class="w_list01 fl over">移动显示URL：</div>
+                        <div class="w_list02 fl over"><input type="text" class="zs_input3" id="sMibs"><span><span
+                                id="sMibs_size">35</span>/36</span></div>
                     </div>
                 </li>
                 <li>
-                    <div class="t_list01 fl over">创意预览：</div>
-                    <div class="t_list02 fl over" id="sPreview" style="width:557px;height: 98px;border:1px solid #CCC;"></div>
+                    <div class="w_list01 fl over">创意预览：</div>
+                    <div class="w_list01 fl over" id="sPreview"
+                         style="width:557px;height: 98px;border:1px solid #CCC;"></div>
                 </li>
             </ul>
         </div>
@@ -589,42 +597,52 @@
         <ul>
             <li>
                 <div class="cy_bottom1 fl over">
-                    <span>子链一 名称 </span><input type="text" class="zs_input3">&nbsp;<span>0/16</span>
+                    <div class="w_list01 fl over"><span>子链一 名称</span></div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input3">&nbsp;<span>0/16</span></div>
                 </div>
                 <div class="cy_bottom1 fl over">
-                    <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
-                </div>
-            </li>
-            <li>
-                <div class="cy_bottom1 fl over">
-                    <span>子链一 名称 </span><input type="text" class="zs_input3"> &nbsp;<span>0/16</span>
-                </div>
-                <div class="cy_bottom1 fl over">
-                <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
+                    <div class="w_list02 fl over"><span>URL：</span><input type="text" class="zs_input1">&nbsp;<span>0/1024</span>
+                    </div>
                 </div>
             </li>
             <li>
                 <div class="cy_bottom1 fl over">
-                  <span>子链一 名称 </span><input type="text" class="zs_input3">&nbsp;<span>0/16</span>
+                    <div class="w_list01 fl over"><span>子链一 名称</span></div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input3">&nbsp;<span>0/16</span></div>
                 </div>
                 <div class="cy_bottom1 fl over">
-                  <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
-                </div>
-            </li>
-            <li>
-                <div class="cy_bottom1 fl over">
-                    <span>子链一 名称 </span><input type="text" class="zs_input3">&nbsp;<span>0/16</span>
-                </div>
-                <div class="cy_bottom1 fl over">
-                    <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
+                    <div class="w_list02 fl over"><span>URL：</span><input type="text" class="zs_input1">&nbsp;<span>0/1024</span>
+                    </div>
                 </div>
             </li>
             <li>
                 <div class="cy_bottom1 fl over">
-                    <span>子链一 名称 </span><input type="text" class="zs_input3">&nbsp;<span>0/16</span>
+                    <div class="w_list01 fl over"><span>子链一 名称</span></div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input3">&nbsp;<span>0/16</span></div>
                 </div>
                 <div class="cy_bottom1 fl over">
-                   <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
+                    <div class="w_list02 fl over"><span>URL：</span><input type="text" class="zs_input1">&nbsp;<span>0/1024</span>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cy_bottom1 fl over">
+                    <div class="w_list01 fl over"><span>子链一 名称</span></div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input3">&nbsp;<span>0/16</span></div>
+                </div>
+                <div class="cy_bottom1 fl over">
+                    <div class="w_list02 fl over"><span>URL：</span><input type="text" class="zs_input1">&nbsp;<span>0/1024</span>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cy_bottom1 fl over">
+                    <div class="w_list01 fl over"><span>子链一 名称</span></div>
+                    <div class="w_list02 fl over"><input type="text" class="zs_input3">&nbsp;<span>0/16</span></div>
+                </div>
+                <div class="cy_bottom1 fl over">
+                    <div class="w_list02 fl over"><span>URL：</span><input type="text" class="zs_input1">&nbsp;<span>0/1024</span>
+                    </div>
                 </div>
             </li>
         </ul>
@@ -868,16 +886,16 @@
     <div class="zs_bottom1 over fl ">
         <ul>
             <li>
-                <div class="t_list01 fl over">名称：</div>
-                <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
+                <div class="w_list01 fl over">名称：</div>
+                <div class="w_list02 fl over"><input type="text" class="zs_input1"></div>
             </li>
             <li>
-                <div class="t_list01 fl over">出价：</div>
-                <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
+                <div class="w_list01 fl over">出价：</div>
+                <div class="w_list02 fl over"><input type="text" class="zs_input1"></div>
             </li>
             <li>
-                <div class="t_list01 fl over">移动出价比例：</div>
-                <div class="t_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
+                <div class="w_list01 fl over">移动出价比例：</div>
+                <div class="w_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
             </li>
         </ul>
     </div>
@@ -957,15 +975,15 @@
             <ul>
                 <li>
                     <div class="w_list01 fl over">名称：</div>
-                    <div class="w_list02 fl over"><input type="text" onblur="javascript:cp_campaignName=this.value;editCampaignInfo()" onkeydown="missBlur(event,this);" class="zs_input3 campaignName_5" value="婚博会"></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditCampaign(1,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 campaignName_5"></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">每日预算：</div>
-                    <div class="w_list02 fl over"><input type="text" onblur="javascript:cp_budget=this.value;editCampaignInfo()" onkeydown="missBlur(event,this);" class="zs_input3 budget_5"></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditCampaign(2,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 budget_5"></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">移动出价比例：</div>
-                    <div class="w_list02 fl over"><input type="text" onblur="javascript:cp_priceRatio=this.value;editCampaignInfo()" onkeydown="missBlur(event,this);" class="zs_input3 priceRatio_5"><span>59/1024</span></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditCampaign(3,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 priceRatio_5"><span>59/1024</span></div>
                 </li>
             </ul>
         </div>
@@ -987,7 +1005,7 @@
             <ul class="z_bottom3 fl">
                 <li>
                     <div class="w_list01 fl over">否定关键词：</div>
-                    <div class="w_list02 fl over"><em class="negativeWords_5">未设置</em></div>
+                    <div class="w_list02 fl over "><em class="negativeWords_5">未设置</em></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">IP排除：</div>
@@ -995,7 +1013,7 @@
                 </li>
                 <li>
                     <div class="w_list01 fl over">创意展现方式：</div>
-                    <div class="w_list02 fl over"><select class="selectShowProb_5" onchange="javascript:cp_showProb=this.value;editCampaignInfo()">
+                    <div class="w_list02 fl over"><select class="selectShowProb_5" onchange="whenBlurEditCampaign(10,this.value);">
                         <option>优选</option>
                     </select></div>
                 </li>
@@ -1011,7 +1029,7 @@
                 </li>
                 <li>
                     <div class="w_list01 fl over">启用/暂停：</div>
-                    <div class="w_list02 fl over"><select class="selectPause_5" onchange="javascript:cp_pause=this.value;editCampaignInfo()">
+                    <div class="w_list02 fl over"><select class="selectPause_5" onchange="whenBlurEditCampaign(11,this.value);">
                         <option>启用</option>
                     </select></div>
                 </li>
@@ -1024,53 +1042,29 @@
     <div class="zh_top over">
         <div class="fl">
             <span><b>baidu-bjtthunbohui2134115</b></span>
-            <span><a href="#">还原帐户</a><input type="checkbox" checked="checkde"/>验证帐户</span>
+            <%--            <span><a href="#">还原帐户</a><input type="checkbox" checked="checkde"/>验证帐户</span>--%>
         </div>
         <div class="fr"><input type="image" src="../public/img/shuaxin.png"></div>
     </div>
     <div class="zh_list02 over">
         <ul>
             <li>
-                <span>帐户余额：<b id="balance">￥38678.1</b></span>
-                <span>昨日消费：<b id="cost">暂无数据</b></span>
-                <span>消费升降：<b id="costStatus">暂无数据</b></span>
+                <span>帐户余额：<b id="balance" class="blue">￥38678.1</b></span>
+                <span>昨日消费：<b id="cost" class="blue">暂无数据</b></span>
+                <span>消费升降：<b id="costStatus" class="blue">暂无数据</b></span>
                 <span>动态创意:<a href="#" class="showbox7">开启</a></span>
             </li>
             <li>
                 <span>帐户预算：<b id="accountBudget">不限定</b><a href="#" class="showbox5">修改</a></span>
-                <span>到达预算：<b id="reachBudget">-</b></span>
-                <span>IP排除：<a href="#" class="showbox6">未设置</a></span>
+                <span>到达预算：<b id="reachBudget" class="blue">-</b></span>
+                <span>IP排除：<a href="#" class="showbox6">设置</a></span>
             </li>
         </ul>
     </div>
     <div class="zh_list over">
         <div id="containerLegend" class="zs_function over">
-            <%--<ul>
-                <li><b>账户表现</b></li>
-                &lt;%&ndash;<li>最近7天&nbsp;<input type='image' src='../public/img/zs_input.png'/></li>&ndash;%&gt;
-                <li><input name='chartcheckbox' type='checkbox' checked='checked'><span style='background-color: #5bc0de'></span><b>展现</b></li>
-                <li><input name='chartcheckbox' type='checkbox' checked='checked'><span style='background-color: #000000'></span><b>点击</b></li>
-                <li><input name='chartcheckbox' type='checkbox'><span style="background-color: #008000"></span><b>点击率</b></li>
-                <li><input name='chartcheckbox' type='checkbox'><span style="background-color: #ffA500"></span><b>消费</b></li>
-                <li><input name='chartcheckbox' type='checkbox'><span style='background-color: #8D67E0'></span><b>转化</b></li>
-            </ul>--%>
-            <%--<ul class="fl">
-                <li><b>账户表现</b></li>
-                <li>最近7天&nbsp;<input type="image" src="../public/img/zs_input.png"></li>
-                <li><input type="checkbox" name="zs_time"> 展现</li>
-                <li><input type="checkbox" name="zs_time"> 点击</li>
-                <li><input type="checkbox" name="zs_time"> 点击率</li>
-                <li><input type="checkbox" name="zs_time"> 转化</li>
-                <li><input type="checkbox" checked="checked" name="zs_time">消费</li>
-            </ul>
-            <span class="fr">
-                <input type="image" src="../public/img/zs_input2.png">
-            </span>--%>
         </div>
-        <div id="container" style="width: 58%; height: 40%"></div>
-        <%--<div class="zs_list over">
-            <img src="../public/images/zs_list.png">
-        </div>--%>
+        <div id="container" style="width: 60%; height: 40%"></div>
     </div>
 </div>
 </div>
@@ -1287,6 +1281,19 @@
         </div>
     </div>
 </div>
+
+<div id="reachBudget1" class="box" style="display:none; width: 600px">
+    <h2 id="reachBudget_head">账户预算<a href="#" class="close">关闭</a></h2>
+    <div class="mainlist">
+        <div class="tu_top over">
+            <ul id="budgetList" class="zs_set">
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
 <div  class="box" style="display:none" id="jcAdd">
     <h2 id="jcBox">添加创意<a href="#" class="close">关闭</a></h2>
 
@@ -1311,438 +1318,16 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/highcharts.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/jquery-smartMenu.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantCreative/creative.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantKeyword.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantCampaign.js"></script>
-
-<script type="text/javascript">
-    // 对Date的扩展，将 Date 转化为指定格式的String
-    // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
-    // 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
-    // 例子：
-    // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2013-06-08 08:09:04.423
-    // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2013-6-8 8:9:4.18
-    Date.prototype.Format = function (fmt) {
-        var o = {
-            "M+": this.getMonth() + 1,                 //月份
-            "d+": this.getDate(),                    //日
-            "h+": this.getHours(),                   //小时
-            "m+": this.getMinutes(),                 //分
-            "s+": this.getSeconds(),                 //秒
-            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-            "S": this.getMilliseconds()             //毫秒
-        };
-        if (/(y+)/.test(fmt))
-            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-        for (var k in o)
-            if (new RegExp("(" + k + ")").test(fmt))
-                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-        return fmt;
-    }
-</script>
-<script type="text/javascript">
-
-/******************zTree********************/
-
-var setting = {
-    view: {
-        showLine: false,
-        selectedMulti: false
-    },
-    data: {
-        simpleData: {
-            enable: true
-        }
-    },
-    callback: {
-        beforeClick: beforeClick,
-        beforeAsync: beforeAsync,
-        onAsyncError: onAsyncError,
-        onAsyncSuccess: onAsyncSuccess
-    }
-};
-var zNodes = "";
-
-function filter(treeId, parentNode, childNodes) {
-    if (!childNodes) return null;
-    for (var i = 0, l = childNodes.length; i < l; i++) {
-        childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
-    }
-    return childNodes;
-}
-function beforeClick(treeId, treeNode) {
-    if (treeNode.level == 0) {
-        //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
-//        alert(treeNode.id + "," + treeNode.name);
-        getCreativePlan(treeNode.id);
-        campaignId = treeNode.id + "," + "0";
-        //事件处理
-    } else if (treeNode.level == 1) {
-        //点击的是子节点(推广单元),则应该展示其下属的关键词数据
-        getCreativeUnit({cid:treeNode.getParentNode().id,aid:treeNode.id});
-//        alert(treeNode.id + "," + treeNode.name+"parents"+treeNode.getParentNode().id);
-        adgroupId = treeNode.id + "," + "1";
-        //事件处理
-    }
-}
-var log, className = "dark";
-function beforeAsync(treeId, treeNode) {
-    className = (className === "dark" ? "" : "dark");
-    showLog("[ " + getTime() + " beforeAsync ]&nbsp;&nbsp;&nbsp;&nbsp;" + ((!!treeNode && !!treeNode.name) ? treeNode.name : "root"));
-    return true;
-}
-function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
-    showLog("[ " + getTime() + " onAsyncError ]&nbsp;&nbsp;&nbsp;&nbsp;" + ((!!treeNode && !!treeNode.name) ? treeNode.name : "root"));
-}
-function onAsyncSuccess(event, treeId, treeNode, msg) {
-    showLog("[ " + getTime() + " onAsyncSuccess ]&nbsp;&nbsp;&nbsp;&nbsp;" + ((!!treeNode && !!treeNode.name) ? treeNode.name : "root"));
-}
-
-function showLog(str) {
-    if (!log) log = $("#log");
-    log.append("<li class='" + className + "'>" + str + "</li>");
-    if (log.children("li").length > 8) {
-        log.get(0).removeChild(log.children("li")[0]);
-    }
-}
-function getTime() {
-    var now = new Date(),
-            h = now.getHours(),
-            m = now.getMinutes(),
-            s = now.getSeconds(),
-            ms = now.getMilliseconds();
-    return (h + ":" + m + ":" + s + " " + ms);
-}
-//================================================
-
-/******************highcharts********************/
-
-var start_date;
-var end_date;
-
-/**
- * 获取昨天, 近七天, 近30天日期
- * 参数为1, 昨天
- * 参数为7, 7天
- * 参数为30, 近30天
- * @param day
- */
-var getDateParam = function (day) {
-    var currDate = new Date();
-    if (day == 1) {
-        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
-        start_date = currDate.Format("yyyy-MM-dd");
-        end_date = start_date;
-    } else if (day == 7) {
-        currDate = new Date();
-        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
-        end_date = currDate.Format("yyyy-MM-dd");
-        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24 * 6);
-        start_date = currDate.Format("yyyy-MM-dd");
-    } else if (day == 30) {
-        currDate = new Date();
-        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
-        end_date = currDate.Format("yyyy-MM-dd");
-        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24 * 29);
-        start_date = currDate.Format("yyyy-MM-dd");
-    }
-};
-
-//定义展现、点击、点击率、消费、转化数组
-var arr_impr = [7.0, 25, 9.5, 14.5, 18.2, 21.5, 100.2];
-var arr_click = [0.2, 85, 5.7, 50.3, 17.0, 22.0, 24.8];
-var arr_ctr = [0.9, 0.6, 95, 75, 13.5, 17.0, 18.6];
-var arr_cost = [3.9, 10, 5.7, 8.5, 11.9, 65, 17.0];
-var arr_conv = [115, 54, 77, 8.5, 130, 96, 100.0];
-
-var xAxis_categories = [];
-
-var AccountPerformance = function () {
-    $("#containerLegend").empty();
-    $("#containerLegend").append("<div class='tu_top over'><ul><li><b>账户表现<b/></li>"
-//            + "<li>最近7天&nbsp;<input type='image' src='../public/img/zs_input.png'/></li>"
-            + "<li><input id='impression' name='chartcheckbox' type='checkbox' checked='checked'><span class='orange'></span><b>展现</b></li>"
-            + "<li><input id='click' name='chartcheckbox' type='checkbox'><span class='orange'></span><b>点击</b></li>"
-            + "<li><input id='ctr' name='chartcheckbox' type='checkbox'><span class='orange'></span><b>点击率</b></li>"
-            + "<li><input id='cost' name='chartcheckbox' type='checkbox'><span class='orange'></span><b>消费</b></li>"
-            + "<li><input id='conversion' name='chartcheckbox' type='checkbox'><span class='orange'></span><b>转化</b></li></ul></div>");
-
-    getDateParam(7);
-
-    var containerWidth = $('#container').width();
-
-    //加载账户表现曲线图
-    $('#container').highcharts({
-        chart: {
-            type: 'line'
-        },
-        title: {
-            text: ''
-        },
-        credits: {
-            enabled: false
-        },
-        xAxis: {
-            categories: ['08-01', '08-02', '08-03', '08-04', '08-05', '08-06', '08-07']
-        },
-        yAxis: {
-            title: {
-                text: 'Value'
-            },
-            plotLines: [
-                {
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }
-            ],
-            min: 0,
-            gridLineWidth: 0
-        },
-        exporting: {
-            enabled: false
-        },
-        tooltip: {
-            shared: true
-        },
-        legend: {
-            align: 'left',
-            x: 10,
-            verticalAlign: 'top',
-            y: -10,
-            floating: true,
-            itemDistance: 20,
-            borderRadius: 5,
-            enabled: false
-        },
-        series: [
-            {
-                name: 'impression',
-                data: arr_impr
-            }
-        ]
-    });
-
-};
-
-var reloadhighcharts = function () {
-    var chart = $('#container').highcharts();
-    while (chart.series.length > 0) {
-        chart.series[0].remove();
-    }
-    var arr_checkbox = $("input[name=chartcheckbox]:checkbox");
-    for (var i = 0, l = arr_checkbox.length; i < l; i++) {
-        if (arr_checkbox[i].checked) {
-            var attrValue = arr_checkbox.eq(i).attr("id");
-            if (attrValue == "impression") {
-                chart.addSeries({
-                    name: attrValue,
-                    data: arr_impr
-                });
-            } else if (attrValue == "click") {
-                chart.addSeries({
-                    name: attrValue,
-                    data: arr_click
-                });
-            } else if (attrValue == "ctr") {
-                chart.addSeries({
-                    name: attrValue,
-                    data: arr_ctr
-                });
-            } else if (attrValue == "cost") {
-                chart.addSeries({
-                    name: attrValue,
-                    data: arr_cost
-                });
-            } else if (attrValue == "conversion") {
-                chart.addSeries({
-                    name: attrValue,
-                    data: arr_conv
-                });
-            }
-        }
-    }
-};
-
-var loadAccountReports = function () {
-    $.ajax({
-        url: "/account/getReports",
-        type: "GET",
-        dataType: "json",
-        data: {
-            "startDate": start_date,
-            "endDate": end_date
-        },
-        async: false,
-        success: function (data, textStatus, jqXHR) {
-            xAxis_categories = data.dates;
-            var results = data.rows;
-            if (results != null && results.length > 0) {
-                $.each(results, function (i, item) {
-                    arr_impr.push(item.pcImpression);
-                    arr_click.push(item.pcClick);
-                    arr_ctr.push(item.pcCtr);
-                    arr_cost.push(item.pcCost);
-                    arr_conv.push(item.pcConversion);
-                });
-            }
-        }
-    });
-};
-
-//================================================
-
-var campaignId;
-
-var adgroupId;
-
-$(function () {
-    //获取账户树数据
-    $.ajax({
-        url: "/account/get_tree",
-        type: "GET",
-        dataType: "json",
-        async: false,
-        success: function (data, textStatus, jqXHR) {
-            zNodes = data.trees;
-        }
-    });
-    //加载账户树
-    $.fn.zTree.init($("#zTree"), setting, zNodes);
-
-    loadAccountData();
-
-    //loadAccountReports();
-
-    $("#box7").text(loadDynamicCreativeStatus());
-
-    $("#dynamicCreative").livequery('click', function () {
-        $(".TB_overlayBG").css("display", "none");
-        $(".box7").css("display", "none");
-        dynamicCreativeStatus = (dynamicCreativeStatus == 0 ? 1 : 0);
-        changeDynamicCreativeStatus();
-    });
-
-    $("#modifyAccountBudget_ok").livequery('click', function () {
-        $(".TB_overlayBG").css("display", "none");
-        $(".box5").css("display", "none");
-        modifyAccountBudget();
-    });
-
-    $("#excludeIP_ok").livequery('click', function () {
-        $(".TB_overlayBG").css("display", "none");
-        $(".box6").css("display", "none");
-        excludeIP();
-    });
-
-    AccountPerformance();
-
-    $("input[name=chartcheckbox]:checkbox").livequery('click', function () {
-        reloadhighcharts();
-    });
-});
-
-var loadAccountData = function () {
-    $.ajax({
-        url: "/account/getBaiduAccountInfoByUserId",
-        dataType: "json",
-        success: function (data, textStatus, jqXHR) {
-            var results = data.rows;
-            if (results != null && results.length > 0) {
-                $.each(results, function (i, item) {
-                    $("#balance").text(item.balance);
-                    $("#cost").text(data.cost);
-                    $(".showbox7").text((item.isDynamicCreative == false) ? "开启" : "关闭");
-                    $("#accountBudget").text(item.budget);
-                    dynamicCreativeStatus = (item.isDynamicCreative == false) ? 0 : 1;
-                    return false;
-                });
-            }
-        }
-    });
-};
-
-//动态创意状态标识
-var dynamicCreativeStatus;
-var loadDynamicCreativeStatus = function () {
-    var _content = "";
-    if (dynamicCreativeStatus == 0)
-        _content = "您确定要开启动态创意么?";
-    else if (dynamicCreativeStatus == 1)
-        _content = "您确定要关闭动态创意么?";
-
-    return _content;
-};
-
-//开启或关闭动态创意
-var changeDynamicCreativeStatus = function () {
-    var jsonEntity = {};
-    jsonEntity["isDynamicCreative"] = (dynamicCreativeStatus == 1);
-    $.ajax({
-        url: "/account/update",
-        dateType: "json",
-        data: JSON.stringify(jsonEntity),
-        success: function (data, textStatus, jqXHR) {
-            alert("******");
-        }
-    });
-};
-
-//修改账户预算
-var modifyAccountBudget = function () {
-    var _budget = $("#budget_text").val();
-    $("#accountBudget").text(_budget);
-    var jsonEntity = {};
-    jsonEntity["budget"] = _budget;
-    $.ajax({
-        url: "/account/update",
-        dateType: "json",
-        data: JSON.stringify(jsonEntity),
-        success: function (data, textStatus, jqXHR) {
-            alert("******");
-        }
-    });
-};
-
-//IP排除
-var excludeIP = function () {
-    var jsonEntity = {};
-    $.ajax({
-        url: "/account/update",
-        dateType: "json",
-        data: JSON.stringify(jsonEntity),
-        success: function (data, textStatus, jqXHR) {
-            alert("******");
-        }
-    });
-};
-
-/*$(function () {
- var t = $("#tree");
- t = $.fn.zTree.init(t, setting, zNodes);
- demoIframe = $("#testIframe");
- demoIframe.bind("load", loadReady);
- var zTree = $.fn.zTree.getZTreeObj("zTree");
- zTree.selectNode(zTree.getNodeByParam("id", 101));
-
- });*/
-
-
-/*function loadReady() {
- var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
- htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
- maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
- h = demoIframe.height() >= maxH ? minH : maxH;
- if (h < 1000) h = 1000;
- demoIframe.height(h);
- }*/
-
-</script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantGlobal/global.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantKeyword/assistantKeyword.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantCampaign/assistantCampaign.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantAccount.js"></script>
 
 </body>
 </html>
