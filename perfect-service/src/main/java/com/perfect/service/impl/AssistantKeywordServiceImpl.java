@@ -3,6 +3,7 @@ package com.perfect.service.impl;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.KeywordDAO;
+import com.perfect.dto.AssistantkwdIgnoreDeleDTO;
 import com.perfect.entity.*;
 import com.perfect.service.AssistantKeywordService;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -123,7 +124,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService{
         Map<String,Object> map = new HashMap<>();
 
         //被忽略删除的关键词
-        List<AssistantkwdIgnoreDeleEntity> ignoreList = new ArrayList<>();
+        List<AssistantkwdIgnoreDeleDTO> ignoreList = new ArrayList<>();
 
         //可删除的关键词集合
         Map<String,Object> deleteKwd = new HashMap<>();
@@ -163,8 +164,8 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService{
     }
 
 
-    public AssistantkwdIgnoreDeleEntity setFiledIgnore(String[] fields){
-        AssistantkwdIgnoreDeleEntity ignoreDeleEntity = new AssistantkwdIgnoreDeleEntity();
+    public AssistantkwdIgnoreDeleDTO setFiledIgnore(String[] fields){
+        AssistantkwdIgnoreDeleDTO ignoreDeleEntity = new AssistantkwdIgnoreDeleDTO();
         ignoreDeleEntity.setCampaignName(fields[0]);
         ignoreDeleEntity.setAdgroupName(fields[1]);
         ignoreDeleEntity.setKeywordName(fields[2]);

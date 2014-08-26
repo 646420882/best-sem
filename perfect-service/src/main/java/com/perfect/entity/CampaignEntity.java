@@ -17,7 +17,7 @@ import java.util.List;
 public class CampaignEntity extends AccountIdEntity{
 
     @Id
-    private ObjectId id;
+    private String id;
     //CampaignType Attributes
     @Indexed(unique = true)
     @Field("cid")
@@ -431,11 +431,11 @@ public class CampaignEntity extends AccountIdEntity{
     }
 
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

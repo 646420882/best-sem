@@ -6,6 +6,7 @@ import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.sms.v3.GetPreviewRequest;
 import com.perfect.autosdk.sms.v3.KeywordType;
 import com.perfect.dao.KeywordDAO;
+import com.perfect.dto.CreativeDTO;
 import com.perfect.entity.*;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.service.BaiduApiService;
@@ -112,9 +113,9 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
         return objectList;
     }
 
-    private int getRank(List<CreativeVOEntity> data, KeywordEntity keywordEntity) {
+    private int getRank(List<CreativeDTO> data, KeywordEntity keywordEntity) {
         int rank = 1;
-        for (CreativeVOEntity entity : data) {
+        for (CreativeDTO entity : data) {
             try {
                 URL url = new URL(keywordEntity.getPcDestinationUrl());
                 if (url.getHost().equals(entity.getUrl())) {

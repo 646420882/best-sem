@@ -3,7 +3,7 @@ package com.perfect.entity;
 /**
  * 抓取每个排名的关键词，创意，广告主等信息
  * Created by yousheng on 2014/8/18.
- *
+ * TODO
  * @author yousheng
  */
 public class RankEntity {

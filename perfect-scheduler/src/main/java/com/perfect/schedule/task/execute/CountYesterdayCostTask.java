@@ -68,7 +68,7 @@ public class CountYesterdayCostTask implements IScheduleTaskDealSingle<Map<Strin
             for (WarningRuleEntity wre : warningRuleList) {
                 for (AccountRealTimeDataVOEntity art : accountYesTerdayDataList) {
                     WarningInfoEntity warningInfo = new WarningInfoEntity();
-                    if (wre.getAccountId().longValue() == art.getAccountId().longValue()) {
+                    if (wre.getAccountId().longValue() == art.getAccountId()) {
                         //算出日预算实现率
                         double percent = art.getCost() / wre.getBudget() * 100;
                         warningInfo.setAccountId(wre.getAccountId());

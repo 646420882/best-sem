@@ -1,66 +1,41 @@
-package com.perfect.entity;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
+package com.perfect.dto;
 
 import java.util.Date;
 
 /**
  * Created by john on 2014/8/21.
  */
-public class AccountReportResponse {
-    @Id
+public class AccountReportDTO extends AccountIdDTO{
     private String id;
 
-    @Field(value = "acid")
-    private Long accountId;
-
-    @Field(value = "acna")
-    private String accountName;
-
-    @Field(value = "date")
     private Date date;
 
-    @Field(value = "pcis")
     private Integer pcImpression;     //PC展现次数
 
-    @Field(value = "pccli")
     private Integer pcClick;      //PC点击次数
 
-    @Field(value = "pcctr")
     private Double pcCtr;     //PC点击率=点击次数/展现次数
 
-    @Field(value = "pccost")
     private Double pcCost;        //PC消费
 
-    @Field(value = "pccpc")
     private Double pcCpc;     //PC平均点击价格=消费/点击次数
 
-    @Field(value = "pccpm")
     private Double pcCpm;       //PC千次展现消费
 
-    @Field(value = "pccs")
     private Double pcConversion;      //PC转化
 
-    @Field(value = "mis")
     private Integer mobileImpression;
 
-    @Field(value = "mcli")
     private Integer mobileClick;
 
-    @Field(value = "mctr")
     private Double mobileCtr;
 
-    @Field(value = "mcost")
     private Double mobileCost;
 
-    @Field(value = "mcpc")
     private Double mobileCpc;
 
-    @Field(value = "mcpm")
     private Double mobileCpm;
 
-    @Field(value = "mcs")
     private Double mobileConversion;
 
     private long count;
@@ -73,22 +48,6 @@ public class AccountReportResponse {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
-
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
     }
 
     public Date getDate() {
@@ -232,11 +191,9 @@ public class AccountReportResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AccountReportResponse that = (AccountReportResponse) o;
+        AccountReportDTO that = (AccountReportDTO) o;
 
         if (count != that.count) return false;
-        if (accountId != null ? !accountId.equals(that.accountId) : that.accountId != null) return false;
-        if (accountName != null ? !accountName.equals(that.accountName) : that.accountName != null) return false;
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
         if (dateRep != null ? !dateRep.equals(that.dateRep) : that.dateRep != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
@@ -263,8 +220,6 @@ public class AccountReportResponse {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (accountId != null ? accountId.hashCode() : 0);
-        result = 31 * result + (accountName != null ? accountName.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (pcImpression != null ? pcImpression.hashCode() : 0);
         result = 31 * result + (pcClick != null ? pcClick.hashCode() : 0);
@@ -289,8 +244,7 @@ public class AccountReportResponse {
     public String toString() {
         return "AccountReportResponse{" +
                 "id='" + id + '\'' +
-                ", accountId=" + accountId +
-                ", accountName='" + accountName + '\'' +
+                ", accountId=" + getAccountId() +
                 ", date=" + date +
                 ", pcImpression=" + pcImpression +
                 ", pcClick=" + pcClick +

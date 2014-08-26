@@ -2,6 +2,7 @@ package com.perfect.entity;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Deprecated
 @Document(collection = "logs")
 public class LogEntity {
 

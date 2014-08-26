@@ -1,10 +1,10 @@
-package com.perfect.entity;
+package com.perfect.dto;
 
 /**
  * Created by john on 2014/8/22.
  * 推广助手关键字忽略批量删除信息
  */
-public class AssistantkwdIgnoreDeleEntity {
+public class AssistantkwdIgnoreDeleDTO {
     private String campaignName;
 
     private String adgroupName;
@@ -13,14 +13,14 @@ public class AssistantkwdIgnoreDeleEntity {
 
     private String matchModel;
 
-    public AssistantkwdIgnoreDeleEntity(String campaignName, String adgroupName, String keywordName, String matchModel) {
+    public AssistantkwdIgnoreDeleDTO(String campaignName, String adgroupName, String keywordName, String matchModel) {
         this.campaignName = campaignName;
         this.adgroupName = adgroupName;
         this.keywordName = keywordName;
         this.matchModel = matchModel;
     }
 
-    public AssistantkwdIgnoreDeleEntity() {
+    public AssistantkwdIgnoreDeleDTO() {
     }
 
     public String getCampaignName() {

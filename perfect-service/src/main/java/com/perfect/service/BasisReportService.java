@@ -1,7 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.entity.AccountReportEntity;
-import com.perfect.entity.AccountReportResponse;
+import com.perfect.dto.AccountReportDTO;
 import com.perfect.entity.StructureReportEntity;
 
 import java.util.Date;
@@ -27,7 +26,7 @@ public interface BasisReportService {
      * @param fieldName
      * @return
      */
-    public Map<String,List<AccountReportResponse>> getAccountAll(int Sorted,String fieldName);
+    public Map<String,List<AccountReportDTO>> getAccountAll(int Sorted,String fieldName);
 
     /**
      *

@@ -1,21 +1,18 @@
 package com.perfect.utils.reportUtil;
 
-import com.perfect.entity.AccountReportEntity;
-import com.perfect.entity.AccountReportResponse;
-import com.perfect.entity.StructureReportEntity;
+import com.perfect.dto.AccountReportDTO;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
 /**
  * Created by SubDong on 2014/8/13.
  */
-public class AccountReportPCPlusMobUtil extends RecursiveTask<List<AccountReportResponse>>{
+public class AccountReportPCPlusMobUtil extends RecursiveTask<List<AccountReportDTO>>{
 
         private final int threshold = 100;
 
@@ -23,17 +20,17 @@ public class AccountReportPCPlusMobUtil extends RecursiveTask<List<AccountReport
         private int begin;
         private int terminal;
 
-        private List<AccountReportResponse> objectList;
+        private List<AccountReportDTO> objectList;
 
-        public AccountReportPCPlusMobUtil(List<AccountReportResponse> objects, int begin, int endNumber){
+        public AccountReportPCPlusMobUtil(List<AccountReportDTO> objects, int begin, int endNumber){
             this.objectList = objects;
             this.endNumber = endNumber;
             this.begin = begin;
         }
 
         @Override
-        protected List<AccountReportResponse> compute() {
-            List<AccountReportResponse> list = new ArrayList<>();
+        protected List<AccountReportDTO> compute() {
+            List<AccountReportDTO> list = new ArrayList<>();
             if ((endNumber - begin) < threshold) {
                 DecimalFormat df = new DecimalFormat("#.00");
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

@@ -4,7 +4,7 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.entity.CreativeVOEntity;
+import com.perfect.dto.CreativeDTO;
 import com.perfect.service.HTMLAnalyseService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -49,8 +49,8 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
 
     //从模拟页面获取推广链接和关键词
     public List<PreviewData> getPageData(GetPreviewRequest getPreviewRequest) {
-        List<CreativeVOEntity> leftCreativeVOList = new ArrayList<>();
-        List<CreativeVOEntity> rightCreativeVOList = new ArrayList<>();
+        List<CreativeDTO> leftCreativeVOList = new ArrayList<>();
+        List<CreativeDTO> rightCreativeVOList = new ArrayList<>();
 
         Map<String, String> htmls = getHTML(getPreviewRequest, serviceFactory);
 
@@ -77,7 +77,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
         return previewDatas;
     }
 
-    private void handleRight(Document doc, final List<CreativeVOEntity> rightCreativeVOList) {
+    private void handleRight(Document doc, final List<CreativeDTO> rightCreativeVOList) {
         Elements div_right = null;
         boolean _temp2 = (doc.getElementById("ec_im_container") != null) && (doc.getElementById("ec_im_container").children().size() > 0);
 
@@ -96,14 +96,14 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
 
         //获取右侧推广数据
         if (_temp2 && div_right.size() > 0) {
-            CreativeVOEntity creativeVO = null;
+            CreativeDTO creativeVO = null;
             for (Element e : div_right) {
                 String _title = e.select("a").first().text();
                 String _description = e.select("a").get(1).text();
                 String _url = e.select("a").get(1).select("font").last().text();
                 _description.replace(_url, "");
 
-                creativeVO = new CreativeVOEntity();
+                creativeVO = new CreativeDTO();
                 creativeVO.setTitle(_title);
                 creativeVO.setDescription(_description);
                 creativeVO.setUrl(_url);
@@ -112,7 +112,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
         }
     }
 
-    private void handleLeft(Document doc, final List<CreativeVOEntity> leftCreativeVOList) {
+    private void handleLeft(Document doc, final List<CreativeDTO> leftCreativeVOList) {
         Elements div_left = null;
         boolean _temp1 = (doc.getElementById("content_left") != null) && (doc.getElementById("content_left").children().size() > 0);
 
@@ -141,11 +141,11 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                 }
                 div_left = new Elements(elementList.subList(0, elementList.size() / 2));
                 //table
-                CreativeVOEntity creativeVO = null;
+                CreativeDTO creativeVO = null;
 
                 for (Element e : div_left) {
                     if (e.child(0).select("table").size() > 0) {//one of conditions -> 搜索"去哪儿旅游"
-                        creativeVO = new CreativeVOEntity();
+                        creativeVO = new CreativeDTO();
                         String _title = e.select("tr").get(1).child(0).text();
                         String _description = e.child(0).select("table").select("td").get(1).child(0).child(0).text();
                         String _url = e.child(0).select("table").select("td").get(1).child(0).children().last().child(0).text();
@@ -177,7 +177,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
 
                     if (_e1.select("a").size() == 1 && _e2.select("a").size() == 0) {
                         //only description
-                        creativeVO = new CreativeVOEntity();
+                        creativeVO = new CreativeDTO();
                         _description = _e1.select("a").text();
                         creativeVO.setTitle(_title);
                         creativeVO.setDescription(_description);
@@ -185,7 +185,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                         leftCreativeVOList.add(creativeVO);
                     } else if (_e1.select("div").size() == 1) {
                         //only sublink(ul-li)
-                        creativeVO = new CreativeVOEntity();
+                        creativeVO = new CreativeDTO();
 
                         //get sublink
                         List<SublinkInfo> list = new ArrayList<>();
@@ -207,7 +207,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                         leftCreativeVOList.add(creativeVO);
                     } else if (_e1.select("a").size() > 0 && _e2.select("a").size() == 0) {
                         //only sublink(a)
-                        creativeVO = new CreativeVOEntity();
+                        creativeVO = new CreativeDTO();
 
                         //get sublink
                         Elements _elements = _e1.select("a");
@@ -228,7 +228,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                         leftCreativeVOList.add(creativeVO);
                     } else if (_e2.select("div").size() == 1) {
                         //description & sublink(ul-li)
-                        creativeVO = new CreativeVOEntity();
+                        creativeVO = new CreativeDTO();
                         _description = _e1.select("a").text();
 
                         //get sublink
@@ -252,7 +252,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                         leftCreativeVOList.add(creativeVO);
                     } else if (_e2.select("a").size() > 0) {
                         //description & sublink(a)
-                        creativeVO = new CreativeVOEntity();
+                        creativeVO = new CreativeDTO();
                         _description = _e1.select("a").text();
 
                         //get sublink
@@ -277,7 +277,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                 }
             } else {
                 //div
-                CreativeVOEntity creativeVO = null;
+                CreativeDTO creativeVO = null;
 
                 for (Element e : div_left) {
                     if (!e.tagName().equals("div")) {
@@ -285,7 +285,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                     }
                     Elements elements_div = e.children();
                     if (elements_div.size() == 2) {//one of conditions -> 搜索"上海婚博会"
-                        creativeVO = new CreativeVOEntity();
+                        creativeVO = new CreativeDTO();
                         String _title = elements_div.first().select("a").first().text();
                         String _description = elements_div.get(1).select("tr").first()
                                 .select("td").get(1).children().get(0).children().get(0).text();
@@ -347,7 +347,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                     String _url;
                     if (_elements1.select("div").size() == 0 && elements_div.size() == 3) {
                         //only description
-                        creativeVO = new CreativeVOEntity();
+                        creativeVO = new CreativeDTO();
                         _description = elements_div.get(1).text();
                         _url = elements_div.get(2).child(0).text();
                         creativeVO.setTitle(_title);
@@ -356,7 +356,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                         leftCreativeVOList.add(creativeVO);
                     } else if (_elements1.size() == 1 && "div".equals(_elements1.get(0).tagName()) && elements_div.size() == 3 && _elements1.first().select("ul").size() == 1) {
                         //only sublink(ul-li)
-                        creativeVO = new CreativeVOEntity();
+                        creativeVO = new CreativeDTO();
                         _url = elements_div.get(2).child(0).text();
 
                         //get sublink
@@ -380,7 +380,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                         leftCreativeVOList.add(creativeVO);
                     } else if (elements1AllIsA && elements_div.size() == 3) {
                         //only sublink(a)
-                        creativeVO = new CreativeVOEntity();
+                        creativeVO = new CreativeDTO();
                         _url = elements_div.get(2).child(0).text();
 
                         //get sublink
@@ -417,7 +417,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                                  *</div>
                                  */
                                 Elements elements_1 = elements1.first().select("a");
-                                creativeVO = new CreativeVOEntity();
+                                creativeVO = new CreativeDTO();
                                 _url = elements_div.get(2).child(0).text();
 
                                 List<SublinkInfo> list = new ArrayList<>(elements_1.size());
@@ -440,7 +440,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                         }
                     } else if (_elements1.select("div").size() == 0 && elements_div.size() == 4 && _elements2AllIsA) {
                         //description & sublink(a)
-                        creativeVO = new CreativeVOEntity();
+                        creativeVO = new CreativeDTO();
                         _description = elements_div.get(1).text();
                         _url = elements_div.get(3).child(0).text();
 
@@ -463,7 +463,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                         leftCreativeVOList.add(creativeVO);
                     } else if (_elements1.select("div").size() == 0 && elements_div.size() == 4 && _elements3.size() == 1 && "div".equals(_elements3.get(0).tagName()) && _elements3.first().select("ul").size() == 1) {
                         //description & sublink(ul-li)
-                        creativeVO = new CreativeVOEntity();
+                        creativeVO = new CreativeDTO();
                         _description = elements_div.get(1).text();
                         _url = elements_div.get(3).child(0).text();
 
@@ -541,23 +541,23 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
 
         private String keyword;
 
-        private List<CreativeVOEntity> left;
+        private List<CreativeDTO> left;
 
-        private List<CreativeVOEntity> right;
+        private List<CreativeDTO> right;
 
-        public List<CreativeVOEntity> getLeft() {
+        public List<CreativeDTO> getLeft() {
             return left;
         }
 
-        public void setLeft(List<CreativeVOEntity> left) {
+        public void setLeft(List<CreativeDTO> left) {
             this.left = left;
         }
 
-        public List<CreativeVOEntity> getRight() {
+        public List<CreativeDTO> getRight() {
             return right;
         }
 
-        public void setRight(List<CreativeVOEntity> right) {
+        public void setRight(List<CreativeDTO> right) {
             this.right = right;
         }
 

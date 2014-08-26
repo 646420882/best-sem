@@ -17,7 +17,7 @@ public class KeywordEntity extends AccountIdEntity {
     //------------------------
 
     @Id
-    private ObjectId id;
+    private String id;
 
     //KeywordType Attributes
     @Indexed(unique = true)
@@ -180,11 +180,11 @@ public class KeywordEntity extends AccountIdEntity {
                 + outputString;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

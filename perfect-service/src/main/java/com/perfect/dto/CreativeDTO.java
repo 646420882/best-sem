@@ -1,4 +1,4 @@
-package com.perfect.entity;
+package com.perfect.dto;
 
 import com.perfect.autosdk.sms.v3.SublinkInfo;
 
@@ -8,7 +8,8 @@ import java.util.List;
 /**
  * Created by baizz on 2014-08-18.
  */
-public class CreativeVOEntity implements Serializable {
+public class CreativeDTO implements Serializable {
+
 
     private String title;
 
@@ -55,7 +56,7 @@ public class CreativeVOEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CreativeVOEntity that = (CreativeVOEntity) o;
+        CreativeDTO that = (CreativeDTO) o;
 
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (sublinkInfos != null ? !sublinkInfos.equals(that.sublinkInfos) : that.sublinkInfos != null) return false;

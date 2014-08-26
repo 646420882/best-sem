@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 /**
  * Created by baizz on 2014-08-06.
  */
-public class KeywordReportEntity {
+public class KeywordReportEntity extends AccountIdEntity {
 
     @Id
     private String id;
@@ -22,12 +22,6 @@ public class KeywordReportEntity {
 
     @Field(value = "agna")
     private String adgroupName;
-
-    @Field(value = "acid")
-    private Long accountId;
-
-    @Field(value = "acna")
-    private String accountName;
 
     @Field(value = "cpid")
     private Long campaignId;
@@ -121,22 +115,6 @@ public class KeywordReportEntity {
 
     public void setAdgroupName(String adgroupName) {
         this.adgroupName = adgroupName;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
-
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
     }
 
     public Long getCampaignId() {
@@ -290,8 +268,6 @@ public class KeywordReportEntity {
 
         KeywordReportEntity that = (KeywordReportEntity) o;
 
-        if (accountId != null ? !accountId.equals(that.accountId) : that.accountId != null) return false;
-        if (accountName != null ? !accountName.equals(that.accountName) : that.accountName != null) return false;
         if (adgroupId != null ? !adgroupId.equals(that.adgroupId) : that.adgroupId != null) return false;
         if (adgroupName != null ? !adgroupName.equals(that.adgroupName) : that.adgroupName != null) return false;
         if (campaignId != null ? !campaignId.equals(that.campaignId) : that.campaignId != null) return false;
@@ -329,8 +305,6 @@ public class KeywordReportEntity {
         result = 31 * result + (keywordName != null ? keywordName.hashCode() : 0);
         result = 31 * result + (adgroupId != null ? adgroupId.hashCode() : 0);
         result = 31 * result + (adgroupName != null ? adgroupName.hashCode() : 0);
-        result = 31 * result + (accountId != null ? accountId.hashCode() : 0);
-        result = 31 * result + (accountName != null ? accountName.hashCode() : 0);
         result = 31 * result + (campaignId != null ? campaignId.hashCode() : 0);
         result = 31 * result + (campaignName != null ? campaignName.hashCode() : 0);
         result = 31 * result + (pcImpression != null ? pcImpression.hashCode() : 0);
@@ -360,8 +334,6 @@ public class KeywordReportEntity {
                 ", keywordName='" + keywordName + '\'' +
                 ", adgroupId=" + adgroupId +
                 ", adgroupName='" + adgroupName + '\'' +
-                ", accountId=" + accountId +
-                ", accountName='" + accountName + '\'' +
                 ", campaignId=" + campaignId +
                 ", campaignName='" + campaignName + '\'' +
                 ", pcImpression=" + pcImpression +
