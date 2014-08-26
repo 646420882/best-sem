@@ -53,6 +53,9 @@ public class StrategyEntity {
     @Field("pos")
     private int position;
 
+    @Field("rt")
+    private int regionTarget;
+
     public int getStrategy() {
         return strategy;
     }
@@ -131,5 +134,13 @@ public class StrategyEntity {
 
     public void setTime(List<Integer> time) {
         this.time = time;
+    }
+
+    public int getRegionTarget() {
+        return regionTarget;
+    }
+
+    public void setRegionTarget(int regionTarget) {
+        this.regionTarget = regionTarget;
     }
 }
