@@ -65,4 +65,11 @@ public interface AccountManageDAO<T> {
      * @return
      */
     Double getYesterdayCost();
+
+    /**
+     * 获取账户的消费升降情况
+     *
+     * @return
+     */
+    Double getCostRate();
 }

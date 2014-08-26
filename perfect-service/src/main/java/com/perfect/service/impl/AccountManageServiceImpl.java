@@ -1,6 +1,13 @@
 package com.perfect.service.impl;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.perfect.autosdk.core.CommonService;
+import com.perfect.autosdk.core.ServiceFactory;
+import com.perfect.autosdk.exception.ApiException;
+import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.AccountManageDAO;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.BaiduAccountInfoEntity;
@@ -10,10 +17,9 @@ import com.perfect.utils.JSONUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by baizz on 2014-8-21.
@@ -32,12 +38,26 @@ public class AccountManageServiceImpl implements AccountManageService<BaiduAccou
     }
 
     public Map<String, Object> getBaiduAccountInfoByUserId(Long baiduUserId) {
-        //
-        baiduUserId = 2565730l;
-        //
         BaiduAccountInfoEntity entity = accountManageDAO.findByBaiduUserId(baiduUserId);
         Map<String, Object> results = JSONUtils.getJsonMapData(entity);
         results.put("cost", accountManageDAO.getYesterdayCost());
+        results.put("costRate", accountManageDAO.getCostRate());
+        //从凤巢获取budgetOfflineTime
+        try {
+            CommonService service = ServiceFactory.getInstance(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
+            AccountService accountService = service.getService(AccountService.class);
+            GetAccountInfoRequest request = new GetAccountInfoRequest();
+            GetAccountInfoResponse response = accountService.getAccountInfo(request);
+            AccountInfoType accountInfo = response.getAccountInfoType();
+            List<OfflineTimeType> list = accountInfo.getBudgetOfflineTime();
+            if (list.size() == 0) {
+                results.put("budgetOfflineTime", "");
+            } else {
+                results.put("budgetOfflineTime", getJson(list));
+            }
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
         return results;
     }
 
@@ -52,5 +72,20 @@ public class AccountManageServiceImpl implements AccountManageService<BaiduAccou
         Map<String, Object> values = JSONUtils.getJsonMapData(list);
         values.put("dates", JSONUtils.getJsonObjectArray(DateUtils.getsLatestAnyDays(7).get("_string")));
         return values;
+    }
+
+    protected JsonNode getJson(Object o) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd/HH"));
+        Map<String, Object> values = new LinkedHashMap<>();
+        try {
+            JsonNode jsonNode = mapper.readTree(mapper.writeValueAsBytes(o));
+            return jsonNode;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -31,6 +31,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -121,7 +122,6 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
     @Override
     public BaiduAccountInfoEntity findByBaiduUserId(Long baiduUserId) {
         String currUser = AppContext.getUser();
-        baiduUserId = AppContext.get().getAccountId();
         List<BaiduAccountInfoEntity> list = getBaiduAccountItems(currUser);
 
         BaiduAccountInfoEntity baiduAccount = null;
@@ -177,6 +177,26 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
             return reportEntity.getPcCost();
         else
             return 0d;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Double getCostRate() {
+        Double cost1 = getYesterdayCost();
+        Double cost2 = 0d;
+        Double costRate;
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+        Long baiduAccountId = AppContext.get().getAccountId();
+        Date date = ((List<Date>) DateUtils.getsLatestAnyDays(2).get("_date")).get(1);
+        AccountReportEntity reportEntity = mongoTemplate.
+                findOne(Query.query(Criteria.where("date").is(date).and("acid").is(baiduAccountId)), AccountReportEntity.class);
+        if (reportEntity != null)
+            cost2 = reportEntity.getPcCost();
+        if (cost2 == 0d)
+            return 0d;
+        costRate = (cost1 - cost2) / cost2;
+        costRate = new BigDecimal(costRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return costRate;
     }
 
     /**
