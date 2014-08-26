@@ -409,21 +409,23 @@ var loadAccountData = function () {
         async: false,
         success: function (data, textStatus, jqXHR) {
             var result = data.rows;
-            $("#cost").text("￥" + data.cost);
-            $("#balance").text("￥" + result.balance);
-            $("#accountBudget").text(result.budget);
-            if (result.excludeIp.length > 0) {
-                for (var i = 0, l = result.excludeIp.length; i < l; i++) {
-                    var temp = result.excludeIp;
-                    var _val = $("#excludeIP_ta").val();
-                    if (_val == null || _val.trim().length == 0)
-                        $("#excludeIP_ta").val(temp[i]);
-                    else
-                        $("#excludeIP_ta").val(_val + "\n" + temp[i]);
+            if(result != null){
+                $("#cost").text("￥" + data.cost);
+                $("#balance").text("￥" + result.balance);
+                $("#accountBudget").text(result.budget);
+                if (result.excludeIp.length > 0) {
+                    for (var i = 0, l = result.excludeIp.length; i < l; i++) {
+                        var temp = result.excludeIp;
+                        var _val = $("#excludeIP_ta").val();
+                        if (_val == null || _val.trim().length == 0)
+                            $("#excludeIP_ta").val(temp[i]);
+                        else
+                            $("#excludeIP_ta").val(_val + "\n" + temp[i]);
+                    }
                 }
+                dynamicCreativeStatus = (result.isDynamicCreative == null || result.isDynamicCreative == false) ? 0 : 1;
+                $(".showbox7").text((dynamicCreativeStatus == 0) ? "开启" : "关闭");
             }
-            dynamicCreativeStatus = (result.isDynamicCreative == null || result.isDynamicCreative == false) ? 0 : 1;
-            $(".showbox7").text((dynamicCreativeStatus == 0) ? "开启" : "关闭");
         }
     });
 };
