@@ -50,8 +50,8 @@ var add = {
     }
 }, del = {
     text: "删除创意",
-    func: function (e) {
-        removeThe(tmp);
+    func: function () {
+        deleteByObjectId(tmp);
     }
 }, update = {
     text: "验证创意",
@@ -149,7 +149,7 @@ function loadCreativeData(params) {
                 for (var i = 0; i < json.length; i++) {
                     _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                     var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                        "<td ondblclick='edit(this);'>&nbsp;<span></span></td>" +
+                        "<td ondblclick='edit(this);'>&nbsp;<input type='hidden' value='"+json[i].id+"'/></td>" +
                         "<td ondblclick='edit(this);'>" + until.substring(10, json[i].title) + "</td>" +
                         " <td ondblclick='edit(this);'>" + until.substring(10, json[i].description1) + "</td>" +
                         " <td ondblclick='edit(this);'>" + until.substring(10, json[i].description2) + "</td>" +
@@ -501,6 +501,15 @@ function loadTree(rs){
         var cid=$("#sPlan :selected").val()==undefined?sparams.cid:$("#sPlan :selected").val();
     sparams = {cid: cid, aid: rs};
     loadCreativeData(sparams);
+    }
+}
+function deleteByObjectId(temp){
+    var oid=temp.find("td:eq(0) input").val();
+    var con=confirm("是否删除该创意？");
+    if(con){
+        $.get("/assistantCreative/del",{oid:oid},function(rs){
+            alert(rs);
+        });
     }
 }
 

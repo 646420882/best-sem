@@ -3,6 +3,7 @@ package com.perfect.utils.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.perfect.utils.JSONUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.servlet.http.HttpServletResponse;
@@ -39,10 +40,6 @@ public class WebContextSupport implements WebContext {
     @Override
     public void writeJson(Object obj, HttpServletResponse res) {
         ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            writeHtml(objectMapper.writeValueAsString(obj), res);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+            writeHtml(JSONUtils.getJsonObject(obj).toString(), res);
     }
 }

@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class CreativeEntity extends AccountIdEntity {
     //CreativeType Attributes
     @Id
-    private ObjectId id;
+    private String id;
 
     @Indexed(unique = true)
     private Long creativeId;
@@ -59,6 +59,7 @@ public class CreativeEntity extends AccountIdEntity {
         wasSet = true;
         return wasSet;
     }
+
 
     //------------------------
     // INTERFACE
@@ -211,14 +212,11 @@ public class CreativeEntity extends AccountIdEntity {
     }
 
 
-    @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-    public @interface umplesourcefile {
-        int[] line();
+    public String getId() {
+        return id;
+    }
 
-        String[] file();
-
-        int[] javaline();
-
-        int[] length();
+    public void setId(String id) {
+        this.id = id;
     }
 }

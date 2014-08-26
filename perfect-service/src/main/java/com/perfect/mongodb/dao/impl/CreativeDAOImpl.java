@@ -65,6 +65,12 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
         return BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where("agid").in(l)),CreativeEntity.class,"creative");
     }
 
+    @Override
+    public void deleteByObjectId(String objectId) {
+       BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(getId()).is(objectId)),CreativeEntity.class,"creative");
+
+    }
+
     public CreativeEntity findOne(Long creativeId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         CreativeEntity entity = mongoTemplate.findOne(

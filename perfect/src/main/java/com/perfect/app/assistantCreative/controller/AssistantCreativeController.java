@@ -44,14 +44,15 @@ public class AssistantCreativeController extends WebContextSupport {
                                         @RequestParam(value = "aid", required = false) String aid) {
         List<CreativeEntity> creativeEntityList= new ArrayList<>();
         if (aid != "" || !aid.equals("")) {
-            creativeEntityList= creativeDAO.getCreativeByAdgroupId(Long.parseLong(aid), null, 0, 20);
+            creativeEntityList= creativeDAO.getCreativeByAdgroupId(Long.parseLong(aid), null, 0, 10);
         }else if(!cid.equals("")&&aid.equals("")){
             List<Long> adgroupIds=adgroupDAO.getAdgroupIdByCampaignId(Long.parseLong(cid));
             creativeEntityList= (List<CreativeEntity>) creativeDAO.getAllsByAdgroupIds(adgroupIds);
 
         }else{
-            creativeEntityList=creativeDAO.find(null,0,20);
+            creativeEntityList=creativeDAO.find(null,0,200);
         }
+
         writeJson(creativeEntityList, response);
         return null;
     }
@@ -110,7 +111,7 @@ public class AssistantCreativeController extends WebContextSupport {
     }
     @RequestMapping(value = "/del")
     public ModelAndView del(HttpServletResponse response,@RequestParam(value = "oid",required = true)String oid){
-        creativeDAO.delete(Long.valueOf(oid));
+        creativeDAO.deleteByObjectId(oid);
         return null;
     }
 }
