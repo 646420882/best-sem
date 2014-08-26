@@ -1,14 +1,12 @@
 package com.perfect.app.accountCenter.controller;
 
-import com.perfect.dao.SystemUserDAO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.service.AccountManageService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -23,62 +21,8 @@ import java.util.Map;
 @RequestMapping(value = "/account")
 public class AccountManageController {
 
-    @Resource(name = "systemUserDAO")
-    private SystemUserDAO systemUserDAO;
-
     @Resource
     private AccountManageService<BaiduAccountInfoEntity> service;
-
-    //@Resource(name = "accountManageDAO")
-    //private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
-
-    @RequestMapping(value = "/getAllBaiduAccount", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getAllBaiduAccount() {
-        ModelAndView mav = new ModelAndView();
-        /*MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<BaiduAccountInfoEntity> baiduAccountList = systemUserDAO.findByUserName(CustomUserDetailsService.getUserName()).getBaiduAccountInfoEntities();
-        Map<String, Object> attributes = new LinkedHashMap<>();
-        attributes.put("tree", accountManageDAO.getAccountTree(baiduAccountList));
-        jsonView.setAttributesMap(attributes);
-        mav.setView(jsonView);*/
-        return mav;
-    }
-
-    @RequestMapping(value = "/getBaiduAccountItems", method = RequestMethod.GET, produces = "application/json")
-    public ModelAndView getBaiduAccountItems() {
-        ModelAndView mav = new ModelAndView();
-        /*MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<BaiduAccountInfoEntity> list = accountManageDAO.getBaiduAccountItems(CustomUserDetailsService.getUserName());
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list.toArray(new BaiduAccountInfoEntity[list.size()]));
-        jsonView.setAttributesMap(attributes);
-        mav.setView(jsonView);*/
-        return mav;
-    }
-
-    @RequestMapping(value = "/deleteBaiduAccount", method = {RequestMethod.GET, RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView deleteBaiduAccount() {
-        return null;
-    }
-
-    @RequestMapping(value = "/addBaiduAccount", method = {RequestMethod.GET, RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView addBaiduAccount(@RequestParam(value = "baiduAccountName") String name,
-                                        @RequestParam(value = "baiduAccountPasswd") String passwd,
-                                        @RequestParam(value = "baiduAccountToken") String token,
-                                        @RequestParam(value = "currSystemUserName") String currSystemUserName) {
-        ModelAndView mav = new ModelAndView();
-        /*MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> attributes = new TreeMap<>();
-        systemUserDAO.addBaiduAccount(accountManageDAO.getBaiduAccountInfos(name, passwd, token), currSystemUserName);
-        attributes.put("status", true);
-        jsonView.setAttributesMap(attributes);
-        mav.setView(jsonView);*/
-        return mav;
-    }
-
-    @RequestMapping(value = "/updateBaiduAccount", method = {RequestMethod.GET, RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView updateBaiduAccount() {
-        return null;
-    }
 
     /**
      * 获取账户树
@@ -98,4 +42,60 @@ public class AccountManageController {
         jsonView.setAttributesMap(trees);
         return new ModelAndView(jsonView);
     }
+
+    /**
+     * 根据百度账户id获取其账户信息
+     *
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/getBaiduAccountInfoByUserId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getBaiduAccountInfoByUserId(@RequestParam(value = "userId", required = false) Long userId) {
+        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> result = service.getBaiduAccountInfoByUserId(userId);
+        jsonView.setAttributesMap(result);
+        return new ModelAndView(jsonView);
+    }
+
+    /**
+     * 获取百度账户报告
+     *
+     * @param number
+     * @return
+     */
+    @RequestMapping(value = "/get_reports", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getBaiduAccountReports(@RequestParam(value = "number", required = false) Integer number) {
+        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> results = service.getAccountReports(number);
+        jsonView.setAttributesMap(results);
+        return new ModelAndView(jsonView);
+    }
+
+    /**
+     * 更新百度账户信息
+     *
+     * @param entity
+     * @return
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String updateBaiduAccount(@RequestBody BaiduAccountInfoEntity entity) {
+        service.updateBaiduAccount(entity);
+        ObjectNode json_string = new ObjectMapper().createObjectNode();
+        json_string.put("status", true);
+        return json_string.toString();
+    }
+
+    @RequestMapping(value = "/addBaiduAccount", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView addBaiduAccount(@RequestParam(value = "baiduAccountName") String name,
+                                        @RequestParam(value = "baiduAccountPasswd") String passwd,
+                                        @RequestParam(value = "baiduAccountToken") String token,
+                                        @RequestParam(value = "currSystemUserName") String currSystemUserName) {
+        return null;
+    }
+
+    @RequestMapping(value = "/deleteBaiduAccount", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView deleteBaiduAccount(@RequestParam(value = "userId") Long userId) {
+        return null;
+    }
+
 }

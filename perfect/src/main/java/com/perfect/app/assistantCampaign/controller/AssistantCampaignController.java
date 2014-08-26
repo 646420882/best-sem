@@ -59,7 +59,7 @@ public class AssistantCampaignController {
     /**
      * 修改以下参数的信息
      * @param cid
-     * @param adgroupName
+     * @param campaignName
      * @param budget
      * @param priceRatio
      * @param regionTarget
@@ -71,25 +71,24 @@ public class AssistantCampaignController {
      * @param pause
      * @return
      */
-    @RequestMapping(value = "assistantCampaign/update*",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView updateNameOrBudgetOrPriceRatio(Long cid,String adgroupName,Double budget,Double priceRatio,Integer[] regionTarget,Boolean isDynamicCreative,
+    @RequestMapping(value = "assistantCampaign/edit",method = {RequestMethod.GET,RequestMethod.POST})
+    public void updateNameOrBudgetOrPriceRatio(Long cid,String campaignName,Double budget,Double priceRatio,Integer[] regionTarget,Boolean isDynamicCreative,
                                                        String[] negativeWords,String[] exactNegativeWords,String[] excludeIp,Integer showProb,Boolean pause
                                                        ) {
         CampaignEntity campaignEntity = new CampaignEntity();
         campaignEntity.setCampaignId(cid);
-        campaignEntity.setCampaignName(adgroupName);
+        campaignEntity.setCampaignName(campaignName.equals("")?null:campaignName);
         campaignEntity.setBudget(budget);
         campaignEntity.setPriceRatio(priceRatio);
-        campaignEntity.setRegionTarget(regionTarget==null?null:Arrays.asList(regionTarget));
+        campaignEntity.setRegionTarget(regionTarget==null||regionTarget.length==0?null:Arrays.asList(regionTarget));
         campaignEntity.setIsDynamicCreative(isDynamicCreative);
-        campaignEntity.setNegativeWords(negativeWords==null?null:Arrays.asList(negativeWords));
-        campaignEntity.setExactNegativeWords(exactNegativeWords==null?null:Arrays.asList(exactNegativeWords));
-        campaignEntity.setExcludeIp(excludeIp==null?null:Arrays.asList(excludeIp));
+        campaignEntity.setNegativeWords(negativeWords==null||negativeWords.length==0?null:Arrays.asList(negativeWords));
+        campaignEntity.setExactNegativeWords(exactNegativeWords==null||exactNegativeWords.length==0?null:Arrays.asList(exactNegativeWords));
+        campaignEntity.setExcludeIp(excludeIp==null||excludeIp.length==0?null:Arrays.asList(excludeIp));
         campaignEntity.setShowProb(showProb);
         campaignEntity.setPause(pause);
 
-        campaignDAO.update(campaignEntity);
-        return new ModelAndView();
+//        campaignDAO.update(campaignEntity);
     }
 
 

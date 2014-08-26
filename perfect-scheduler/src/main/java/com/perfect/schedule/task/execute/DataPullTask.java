@@ -8,12 +8,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by john on 2014/8/23.
@@ -31,11 +27,9 @@ public class DataPullTask implements IScheduleTaskDealSingle<String> {
     private Date date;
 
     {
-        try {
-            date = df.parse(df.format(new Date().getTime() - (1000 * 60 * 60 * 24)));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        date = cal.getTime();
     }
 
 

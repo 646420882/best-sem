@@ -21,11 +21,11 @@ function getKwdList() {
 function keywordDataToHtml(obj, index) {
     var html = "";
     if (index == 0) {
-        html = html + "<tr class='list2_box3' onclick='setKwdValue(this)'>";
+        html = html + "<tr class='list2_box3 firstKeyword' onclick='setKwdValue(this,"+obj.keywordId+")'>";
     } else if (index % 2 != 0) {
-        html = html + "<tr class='list2_box2' onclick='setKwdValue(this)'>";
+        html = html + "<tr class='list2_box2' onclick='setKwdValue(this,"+obj.keywordId+")'>";
     } else {
-        html = html + "<tr class='list2_box1' onclick='setKwdValue(this)'>";
+        html = html + "<tr class='list2_box1' onclick='setKwdValue(this,"+obj.keywordId+")'>";
     }
 
     html = html + "<td>" + obj.keyword + "</td>";
@@ -65,7 +65,7 @@ function keywordDataToHtml(obj, index) {
 
     html = html + "<td>"+until.convert(obj.pause,"暂停:启用")+"</td>";
 
-    html = html + "<td>" + obj.price + "</td>";
+    html = html + until.convert(obj.price==null,"<td><0.10></td>:<td>"+obj.price + "</td>");
 
     //质量度
     html = html + "<td>一星</td>";
@@ -108,7 +108,10 @@ function keywordDataToHtml(obj, index) {
     html = html + "<td>推广单元名称</td>";
     html = html + "</tr>";
     $("#tbodyClick").append(html);
-    setKwdValue($(".list2_box3"));
+
+    if(index==0){
+        setKwdValue($(".firstKeyword"),obj.keywordId);
+    }
 }
 
 
@@ -118,7 +121,8 @@ getKwdList();
 /*加载列表数据end*/
 
 
-function setKwdValue(obj){
+function setKwdValue(obj,kwid){
+    $("#hiddenkwid_1").val(kwid);
     $(".keyword_1").val($(obj).find("td:eq(0)").html());
     $(".price_1").val($(obj).find("td:eq(3)").html());
     if($(obj).find("td:eq(7) a").attr("href")!=undefined){
@@ -141,43 +145,60 @@ function setKwdValue(obj){
     $(".status_1").html($(obj).find("td:eq(1)").html());
 
     if($(obj).find("td:eq(2)").html()=="启用"){
-        $(".pause_1").html("");
         $(".pause_1").html("<option value='true'>暂停</option><option value='false' selected='selected'>启用</option>");
     }else{
-        $(".pause_1").html("");
         $(".pause_1").html("<option value='true' selected='selected'>暂停</option><option value='false' >启用</option>");
     }
 }
 
-var kwid_kwd = null;
-var name_kwd = null;
-var price_kwd = null;
-var pcDestinationUrl_kwd = null;
-var mobileDestinationUrl_kwd = null;
-var matchType_kwd = null;
-var phraseType_kwd = null;
-var pause_kwd = null;
+var kwd_kwdid = null;
+var kwd_name = null;
+var kwd_price = null;
+var kwd_pcDestinationUrl = null;
+var kwd_mobileDestinationUrl = null;
+var kwd_matchType = null;
+var kwd_phraseType = null;
+var kwd_pause = null;
 
 /**
  * 编辑关键词信息
  * @param value
  */
 function editKwdInfo(){
+    kwd_kwdid = $("#hiddenkwid_1").val();
     $.ajax({
         url:"/assistantKeyword/edit",
         type:"post",
         data:{
-            "kwid":kwid_kwd,
-            "name":name_kwd,
-            "price":price_kwd,
-            "pcDestinationUrl":pcDestinationUrl_kwd,
-            "mobileDestinationUrl":mobileDestinationUrl_kwd,
-            "matchType":matchType_kwd,
-            "phraseType":phraseType_kwd,
-            "pause":pause_kwd
+            "kwid":kwd_kwdid,
+            "name":kwd_name,
+            "price":kwd_price,
+            "pcDestinationUrl":kwd_pcDestinationUrl,
+            "mobileDestinationUrl":kwd_mobileDestinationUrl,
+            "matchType":kwd_matchType,
+            "phraseType":kwd_phraseType,
+            "pause":kwd_pause
         }
     });
 
+     kwd_kwdid = null;
+     kwd_name = null;
+     kwd_price = null;
+     kwd_pcDestinationUrl = null;
+     kwd_mobileDestinationUrl = null;
+     kwd_matchType = null;
+     kwd_phraseType = null;
+     kwd_pause = null;
+}
+
+
+/**
+ * 失去焦点
+ */
+function missBlur(even,obj){
+    if(even.keyCode==13){
+        obj.blur();
+    }
 }
 
 

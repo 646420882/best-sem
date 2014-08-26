@@ -28,11 +28,11 @@ function campaignDataToHtml(obj,index){
     var html = "";
 
     if(index==0){
-        html = html+"<tr class='list2_box3' onclick='setCampaignValue(this)'>";
+        html = html+"<tr class='list2_box3 firstCampaign' onclick='setCampaignValue(this,"+obj.campaignId+")'>";
     }else if(index%2!=0){
-        html = html+"<tr class='list2_box2' onclick='setCampaignValue(this)'>";
+        html = html+"<tr class='list2_box2' onclick='setCampaignValue(this,"+obj.campaignId+")'>";
     }else{
-        html = html+"<tr class='list2_box1' onclick='setCampaignValue(this)'>";
+        html = html+"<tr class='list2_box1' onclick='setCampaignValue(this,"+obj.campaignId+")'>";
     }
 
     html = html+"<td>"+obj.campaignName+"</td>";
@@ -45,68 +45,33 @@ function campaignDataToHtml(obj,index){
         case 25: html = html+"<td>账户预算不足</td>";break;
     }
 
-    if(obj.pause==true){
-        html = html+"<td>暂停</td>";
-    }else{
-        html = html+"<td>启用</td>";
-    }
-
-    if(obj.budget==null){
-        html = html+"<td>&lt;不限定&gt;</td>";
-    }else{
-        html = html+"<td>"+obj.budget+"</td>";
-    }
-
-    if(obj.showProb==1){
-        html = html+"<td>优选</td>";
-    }else{
-        html = html+"<td>轮显</td>";
-    }
-
-    if(obj.isDynamicCreative==true){
-        html = html+"<td>开启</td>";
-    }else{
-        html = html+"<td>关闭</td>";
-    }
-
-    if(obj.schedule==null){
-        html = html+"<td>全部</td>";
-    }else{
-        html = html+"<td>已设置</td>";
-    }
+    html = html+until.convert(obj.pause==true,"<td>暂停</td>:"+"<td>启用</td>")
+    html = html+until.convert(obj.budget==null,"<td><不限定></td>:"+"<td>"+obj.budget+"</td>")
+    html = html+until.convert(obj.showProb==1,"<td>优选</td>:"+"<td>轮显</td>")
+    html = html+until.convert(obj.isDynamicCreative==true,"<td>开启</td>:"+"<td>关闭</td>");
+    html = html+until.convert(obj.schedule==null,"<td>全部</td>:"+"<td>已设置</td>");
 
 
     //推广地域！！！！！！！！！！！！
-    if(obj.regionTarget==null){
-        html = html+"<td>使用账户推广地域</td>";
-    }else{
-        html = html+"<td>使用账户推广地域</td>";
-    }
+    html = html+until.convert(obj.regionTarget==null,"<td>使用账户推广地域</td>:"+"<td>使用账户推广地域</td>");
 
 
     var fd = obj.negativeWords.length;
     var jqfd = obj.exactNegativeWords.length;
-
-    if(fd==0&&jqfd==0){
-        html = html+"<td>未设置</td>";
-    }else{
-        html = html+"<td>"+fd+":"+jqfd+"</td>";
-    }
+    html = html+until.convert(fd==0&&jqfd==0,"<td>未设置</td>:"+"<td>"+fd+":"+jqfd+"</td>");
 
     html = html+"<td>"+obj.excludeIp.length+"</td>";
 
-    if(obj.budgetOfflineTime==null){
-        html = html+"<td>-</td>";
-    }else{
-        html = html+"<td>"+obj.budgetOfflineTime.length+"</td>";
-    }
+    html = html+until.convert(obj.budgetOfflineTime==null,"<td>-</td>:"+"<td>"+obj.budgetOfflineTime.length+"</td>");
 
     //!!!!!!
     html = html+"<input type='hidden' value="+obj.priceRatio+" class='hidden'/>";
-
     html = html+"</tr>";
-
     $("#tbodyClick5").append(html);
+
+    if(index==0){
+        setCampaignValue(".firstCampaign",obj.campaignId);
+    }
 }
 
 //加载该页面就开始加载数据
@@ -116,16 +81,23 @@ getCampaignList();
 /**
  *单击某一行的时候设置文本框值
  */
-function setCampaignValue(obj){
+function setCampaignValue(obj,campaignId){
+    $("#hiddenCampaignId").val(campaignId);
     var _tr = $(obj);
     $(".campaignName_5").val(_tr.find("td:eq(0)").html());
-    $(".budget_5").val(_tr.find("td:eq(3)").html());
+
+    if(/^[0-9]+.[0-9]*$/.test(_tr.find("td:eq(3)").html())){
+        $(".budget_5").val(_tr.find("td:eq(3)").html());
+    }else{
+        $(".budget_5").val("<不限定>");
+    }
+
     $(".priceRatio_5").val(_tr.find(".hidden").val());
     $(".schedule_5").html("<a>"+_tr.find("td:eq(6)").html()+"</a>");
     $(".regionTarget_5").html("<a>"+_tr.find("td:eq(7)").html()+"</a>");
     $(".isDynamicCreative_5").html("<a>"+_tr.find("td:eq(5)").html()+"</a>");
-    until.convert(_tr.find("td:eq(8)").html()!="未设置","<a>已设置("+_tr.find("td:eq(8)").html()+")</a>:<a>未设置</a>");
-    until.convert(_tr.find("td:eq(9)").html()=="0","<a>未设置</a>"+":"+"<a>已设置("+_tr.find("td:eq(9)").html()+")</a>");
+    $(".negativeWords_5").html(until.convert(_tr.find("td:eq(8)").html()!="未设置","<a>已设置("+_tr.find("td:eq(8)").html()+")</a>:<a>未设置</a>"));
+    $(".excluedIp_5").html(until.convert(_tr.find("td:eq(9)").html()=="0","<a>未设置</a>"+":"+"<a>已设置("+_tr.find("td:eq(9)").html()+")</a>"));
 
     if(_tr.find("td:eq(4)").html()=="优选"){
         $(".selectShowProb_5").html("<option value = '1' selected='selected'>优选</option><option value='2'>轮显</option>");
@@ -145,6 +117,56 @@ function setCampaignValue(obj){
      }
 }
 
+
+var cp_campaignId = null;
+var cp_campaignName = null;
+var cp_budget = null;
+var cp_priceRatio = null;
+var cp_schedule = null;
+var cp_regionTarget = null;
+var cp_isDynamicCreative = null;
+var cp_negativeWords = null;
+var cp_exactNegativeWords = null;
+var cp_excludeIp = null;
+var cp_showProb = null;
+var cp_pause = null;
+/**
+ * 编辑推广计划信息
+ */
+function editCampaignInfo() {
+    cp_campaignId = $("#hiddenCampaignId").val();
+    $.ajax({
+        url:"/assistantCampaign/edit",
+        type:"post",
+        data:{
+            "cid":cp_campaignId,
+            "campaignName":cp_campaignName,
+            "budget":cp_budget,
+            "priceRatio":cp_priceRatio,
+            "schedule":cp_schedule,
+            "regionTarget":cp_regionTarget,
+            "isDynamicCreative":cp_isDynamicCreative,
+            "negativeWords":cp_negativeWords,
+            "exactNegativeWords":cp_exactNegativeWords,
+            "excludeIp":cp_excludeIp,
+            "showProb":cp_showProb,
+            "pause":cp_pause
+        }
+    });
+
+     cp_campaignId = null;
+     cp_campaignName = null;
+     cp_budget = null;
+     cp_priceRatio = null;
+     cp_schedule = null;
+     cp_regionTarget = null;
+     cp_isDynamicCreative = null;
+     cp_negativeWords = null;
+     cp_exactNegativeWords = null;
+     cp_excludeIp = null;
+     cp_showProb = null;
+     cp_pause = null;
+}
 
 
 
