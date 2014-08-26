@@ -38,9 +38,10 @@ public interface BasisReportService {
      * @param endDate1   数据2 结束时间
      * @param dateType  时间类型  默认：0  分日:1  分周：2 分月：3
      * @param devices   推广设备 0、全部  1、PC端 2、移动端
+     * @param compare 是否需要数据比较 1、比较 0、不比较
      * @return
      */
-    public Map<String,List<Object>> getAccountDateVS(Date startDate, Date endDate,Date startDate1, Date endDate1,int dateType,int devices);
+    public Map<String,List<Object>> getAccountDateVS(Date startDate, Date endDate,Date startDate1, Date endDate1,int dateType,int devices,int compare);
 
 
 /*******************************************AIP***************************************************/

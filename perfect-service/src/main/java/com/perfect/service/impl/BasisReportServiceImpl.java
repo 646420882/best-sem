@@ -27,6 +27,7 @@ public class BasisReportServiceImpl implements BasisReportService {
     @Resource
     private BasisReportDAO basisReportDAO;
 
+
     /**
      * 获取单元报告
      *
@@ -529,96 +530,280 @@ public class BasisReportServiceImpl implements BasisReportService {
     }
 
     @Override
-    public Map<String, List<Object>> getAccountDateVS(Date startDate, Date endDate, Date startDate1, Date endDate1, int dateType,int devices) {
+    public Map<String, List<Object>> getAccountDateVS(Date startDate, Date endDate, Date startDate1, Date endDate1, int dateType,int devices,int compare) {
         Date[] dateOne = getDateProcessing(startDate, endDate);
         Date[] dateTow = getDateProcessing(startDate1, endDate1);
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         switch (dateType) {
             case 0:
+                //默认
                 Map<String, List<Object>> retrunMap = new HashMap<>();
-                List<Object> objectListDate = new ArrayList<>();
-                List<AccountReportDTO> listOne = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
-                List<AccountReportDTO> listTow = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
+                List<Object> objectListDate1 = new ArrayList<>();
+                List<Object> objectListDate2 = new ArrayList<>();
                 //获取数据
+                List<AccountReportDTO> listOne = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
+                //统计数据
                 Map<String, List<AccountReportDTO>> responseMapOne =  getUserDataPro(listOne,dateOne[0], dateOne[1]);
-                Map<String, List<AccountReportDTO>> responseMapTow =  getUserDataPro(listTow,dateTow[0], dateTow[1]);
-
+                Map<String, List<AccountReportDTO>> responseMapTow = null;
+                //比较数据
+                if(compare == 1) {
+                    List<AccountReportDTO> listTow = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
+                    responseMapTow = getUserDataPro(listTow, dateTow[0], dateTow[1]);
+                }
                 //如果要求是全部数据
                 if(devices == 0){
                     Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne);
-                    Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(responseMapTow);
                     List<Object> objectList = new ArrayList<>();
-                    objectList.add(responseMapDevicesOne);
-                    objectList.add(responseMapDevicesTow);
-                    objectListDate.add(dateOne[0]+" 至 "+dateOne[1]);
-                    objectListDate.add(dateTow[0]+" 至 "+dateTow[1]);
+
+                    //比较数据
+                    if(compare == 1){
+                        Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(responseMapTow);
+                        objectList.add(responseMapDevicesTow);
+                        objectListDate2.add(dateFormat.format(dateTow[0])+" 至 "+dateFormat.format(dateTow[1]));
+                        retrunMap.put("date",objectListDate2);
+                    }
+                    //计算点击率、平均价格
+                    Map<String, List<AccountReportDTO>> responseMapAverageOne = getAverage(responseMapDevicesOne);
+
+                    objectList.add(responseMapAverageOne);
+                    objectListDate1.add(dateFormat.format(dateOne[0])+" 至 "+dateFormat.format(dateOne[1]));
                     retrunMap.put("rows",objectList);
-                    retrunMap.put("date",objectListDate);
+                    retrunMap.put("date",objectListDate1);
 
                     return retrunMap;
                 }
 
                 //计算点击率、平均价格
                 Map<String, List<AccountReportDTO>> responseMapAverageOne = getAverage(responseMapOne);
-                Map<String, List<AccountReportDTO>> responseMapAverageTow = getAverage(responseMapTow);
-
                 List<Object> objectList = new ArrayList<>();
                 objectList.add(responseMapAverageOne);
-                objectList.add(responseMapAverageTow);
-                objectListDate.add(dateOne[0]+" 至 "+dateOne[1]);
-                objectListDate.add(dateTow[0]+" 至 "+dateTow[1]);
+
+                //比较数据
+                if(compare == 1) {
+                    Map<String, List<AccountReportDTO>> responseMapAverageTow = getAverage(responseMapTow);
+                    objectList.add(responseMapAverageTow);
+                    objectListDate2.add(dateTow[0] + " 至 " + dateTow[1]);
+                    retrunMap.put("date", objectListDate2);
+                }
+
+                objectListDate1.add(dateOne[0]+" 至 "+dateOne[1]);
                 retrunMap.put("rows",objectList);
-                retrunMap.put("date",objectListDate);
+                retrunMap.put("date",objectListDate1);
+
 
                 return retrunMap;
             case 1:
+                //分日
                 Map<String, List<Object>> retrunMap1 = new HashMap<>();
                 Map<String, List<AccountReportDTO>> responseMapOne1 = new HashMap<>();
                 Map<String, List<AccountReportDTO>> responseMapTow1 = new HashMap<>();
+
                 List<AccountReportDTO> listOne1 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
-                List<AccountReportDTO> listTow1 = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
                 List<Object> objectListDateOne1 = new ArrayList<>();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                List<Object> objectListDateTow1 = new ArrayList<>();
                 for (AccountReportDTO listEnd:listOne1){
                     List<AccountReportDTO> list = new ArrayList<>();
                     list.add(listEnd);
                     responseMapOne1.put(dateFormat.format(listEnd.getDate()),list);
+                    objectListDateOne1.add(dateFormat.format(listEnd.getDate()));
                 }
-                for (AccountReportDTO listEnd:listTow1){
-                    List<AccountReportDTO> list = new ArrayList<>();
-                    list.add(listEnd);
-                    responseMapTow1.put(dateFormat.format(listEnd.getDate()),list);
+
+
+                //比较数据
+                if(compare == 1) {
+                    List<AccountReportDTO> listTow1 = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
+                    for (AccountReportDTO listEnd : listTow1) {
+                        List<AccountReportDTO> list = new ArrayList<>();
+                        list.add(listEnd);
+                        responseMapTow1.put(dateFormat.format(listEnd.getDate()), list);
+                        objectListDateTow1.add(dateFormat.format(listEnd.getDate()));
+                    }
                 }
                 if(devices == 0){
-                    Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(null);
-                    Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(null);
+                    Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne1);
                     List<Object> objectList1 = new ArrayList<>();
-                    objectList1.add(responseMapOne1);
-                    objectList1.add(responseMapTow1);
-                    objectListDateOne1.add(dateOne[0]+" 至 "+dateOne[1]);/***********************/
-                    objectListDateOne1.add(dateTow[0]+" 至 "+dateTow[1]);
+                    objectList1.add(responseMapDevicesOne);
+
+                    //比较数据
+                    if(compare == 1) {
+                        Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(responseMapTow1);
+                        objectList1.add(responseMapDevicesTow);
+                        retrunMap1.put("date2", objectListDateTow1);
+                    }
                     retrunMap1.put("rows",objectList1);
                     retrunMap1.put("date",objectListDateOne1);
+
 
                     return retrunMap1;
                 }
 
                 List<Object> objectList1 = new ArrayList<>();
+                //比较数据
+                if(compare == 1) {
+                    objectList1.add(responseMapTow1);
+                    retrunMap1.put("date2", objectListDateTow1);
+                }
                 objectList1.add(responseMapOne1);
-                objectList1.add(responseMapTow1);
-                objectListDateOne1.add(dateOne[0]+" 至 "+dateOne[1]);/***********************/
-                objectListDateOne1.add(dateTow[0]+" 至 "+dateTow[1]);
                 retrunMap1.put("rows",objectList1);
                 retrunMap1.put("date",objectListDateOne1);
-
                 return retrunMap1;
             case 2:
+                ///分周
+                Map<String, List<Object>> retrunMap2 = new HashMap<>();
 
-                return null;
+                List<Object> objectListDateOne2 = new ArrayList<>();
+                List<Object> objectListDateTow2 = new ArrayList<>();
+                List<Object> objectListDateOne21 = new ArrayList<>();
+                List<Object> objectListDateTow21 = new ArrayList<>();
+
+                List<AccountReportDTO> listOne2 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
+
+
+                for(AccountReportDTO responseZou:listOne2){
+                    objectListDateOne2.add(responseZou.getDate());
+                }
+
+                List<Object> objectList2 = new ArrayList<>();
+                List<AccountReportDTO> listTow2 = null;
+                //比较数据
+                if(compare == 1) {
+                    listTow2 = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
+
+                    for (AccountReportDTO responseTowZou : listTow2) {
+                        objectListDateTow2.add(responseTowZou.getDate());
+                    }
+                }
+
+                int s = 0;
+                int endNumber = 0;
+                for(int i=0; i< ((objectListDateOne2.size()/7)+1) ;i++){
+                    List<AccountReportDTO> listDateOne = new ArrayList<>();
+                    List<AccountReportDTO> listDateTow = new ArrayList<>();
+                    Date[] newDateOne = null;
+                    Date[] newDateTow = null;
+                    for (s = endNumber ; s< endNumber+7 ; s++){
+                        listDateOne.add(listOne2.get(s));
+                        //比较数据
+                        if(compare == 1) {
+                            listDateTow.add(listTow2.get(i));
+                        }
+                    }
+                    Map<String, List<AccountReportDTO>> responseMapTow3 = null;
+                    //获取数据
+                    Map<String, List<AccountReportDTO>> responseMapOne3 =  getUserDataPro(listDateOne,listDateOne.get(0).getDate(), listDateOne.get(listDateOne.size()-1).getDate());
+                    newDateOne = new Date[]{listDateOne.get(0).getDate(), listDateOne.get(listDateOne.size()-1).getDate()};
+
+                    //比较数据
+                    if(compare == 1) {
+                        responseMapTow3 = getUserDataPro(listDateTow, listDateTow.get(0).getDate(), listDateTow.get(listDateOne.size()-1).getDate());
+                        newDateTow = new Date[]{listDateTow.get(0).getDate(), listDateTow.get(listDateOne.size()-1).getDate()};
+                    }
+                    if(devices == 0){
+                        Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne3);
+
+                        //比较数据
+                        if(compare == 1) {
+                            Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(responseMapTow3);
+                            objectList2.add(responseMapDevicesTow);
+                            objectListDateTow21.add(newDateTow[0] + " 至 " + newDateTow[1]);
+                        }
+
+                        objectList2.add(responseMapDevicesOne);
+                        objectListDateOne21.add(newDateOne[0] +" 至 "+newDateOne[1]);
+                    }else{
+                        //比较数据
+                        if(compare == 1) {
+                            objectList2.add(responseMapTow3);
+                            objectListDateTow21.add(newDateTow[0] + " 至 " + newDateTow[1]);
+                        }
+                        objectList2.add(responseMapOne3);
+                        objectListDateOne21.add(newDateOne[0] +" 至 "+newDateOne[1]);
+                    }
+                }
+                retrunMap2.put("rows",objectList2);
+                retrunMap2.put("date",objectListDateOne21);
+                //比较数据
+                if(compare == 1) {
+                    retrunMap2.put("date2", objectListDateTow21);
+                }
+                return retrunMap2;
             case 3:
+                //分月
+                Map<String, List<Object>> retrunMap3 = new HashMap<>();
 
-                return null;
+                List<Object> objectListDateOne3 = new ArrayList<>();
+                List<Object> objectListDateTow3 = new ArrayList<>();
+                List<Object> objectListDateOne31 = new ArrayList<>();
+                List<Object> objectListDateTow31 = new ArrayList<>();
+                List<AccountReportDTO> listOne3 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
+
+
+                for(AccountReportDTO responseYue:listOne3){
+                    objectListDateOne3.add(responseYue.getDate());
+                }
+                List<AccountReportDTO> listTow3 = null;
+                //比较数据
+                if(compare == 1) {
+                    listTow3 = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
+                    for (AccountReportDTO responseTowYue:listTow3) {
+                        objectListDateTow3.add(responseTowYue.getDate());
+                    }
+                }
+
+                List<Object> objectList3 = new ArrayList<>();
+                int y = 0;
+                int endNumber1 = 0;
+                for(int i=0; i< ((objectListDateOne3.size()/30)+1) ;i++){
+                    List<AccountReportDTO> listDateOne1 = new ArrayList<>();
+                    List<AccountReportDTO> listDateTow1 = new ArrayList<>();
+                    Date[] newDateOne = null;
+                    Date[] newDateTow = null;
+                    for (y = endNumber1 ; y< endNumber1+30 ; y++) {
+                        listDateOne1.add(listOne3.get(y));
+                        //比较数据
+                        if(compare == 1) {
+                            listDateTow1.add(listTow3.get(i));
+                        }
+                    }
+                    //获取数据
+                    Map<String, List<AccountReportDTO>> responseMapOne4 =  getUserDataPro(listDateOne1,listDateOne1.get(0).getDate(), listDateOne1.get(listDateOne1.size()-1).getDate());
+                    newDateOne = new Date[]{listDateOne1.get(0).getDate(),listDateOne1.get(listDateOne1.size()-1).getDate()};
+
+                    //比较数据
+                    Map<String, List<AccountReportDTO>> responseMapTow4 = null;
+                    if(compare == 1) {
+                        responseMapTow4 = getUserDataPro(listDateTow1, listDateTow1.get(0).getDate(), listDateTow1.get(listDateTow1.size()-1).getDate());
+                        newDateTow = new Date[]{listDateTow1.get(0).getDate(),listDateTow1.get(listDateTow1.size()-1).getDate()};
+                    }
+
+                    if(devices == 0){
+                        Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne4);
+                        objectList3.add(responseMapDevicesOne);
+                        objectListDateOne31.add(newDateOne[0] +" 至 "+newDateOne[1]);
+                        //比较数据
+                        if(compare == 1) {
+                            Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(responseMapTow4);
+                            objectList3.add(responseMapDevicesTow);
+                            objectListDateTow31.add(newDateTow[0] + " 至 " + newDateTow[1]);
+                        }
+                    }else{
+                        objectList3.add(responseMapOne4);
+                        objectListDateOne31.add(newDateOne[0] +" 至 "+ newDateOne[1]);
+                        //比较数据
+                        if(compare == 1) {
+                            objectList3.add(responseMapTow4);
+                            objectListDateTow31.add(newDateTow[0] + " 至 " + newDateTow[1]);
+                        }
+                    }
+                }
+                retrunMap3.put("rows",objectList3);
+                retrunMap3.put("date",objectListDateOne31);
+                //比较数据
+                if(compare == 1) {
+                    retrunMap3.put("date2", objectListDateTow31);
+                }
+                return retrunMap3;
         }
 
         return null;
@@ -665,34 +850,22 @@ public class BasisReportServiceImpl implements BasisReportService {
                 response.setPcClick(response.getPcClick() + ((response.getMobileClick() == null)?0:response.getMobileClick()));
                 response.setPcCost(response.getPcCost() + ((response.getMobileCost() == null)?0:response.getMobileCost()));
                 //计算点击率
-                if(((response.getMobileImpression() == null) ? 0 : response.getMobileImpression()) == 0){
-                    response.setPcCtr(0.00);
                     if(((response.getPcImpression() == null) ? 0 : response.getPcImpression()) == 0){
                         response.setPcCtr(0.00);
                     }else{
-                        BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format((response.getPcClick() / response.getPcImpression()))));
+                        BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format((response.getPcClick().doubleValue() / response.getPcImpression().doubleValue()))));
                         BigDecimal big = new BigDecimal(100);
                         double divide = ctrBig.multiply(big).doubleValue();
                         response.setPcCtr(divide);
                     }
-                }else{
-                    double newNumber = Double.parseDouble(df.format((response.getPcClick() + ((response.getMobileClick() == null) ? 0 : response.getMobileClick()))/(response.getMobileImpression() + ((response.getMobileImpression() == null) ? 0 : response.getMobileImpression()))));
-                    BigDecimal ctrBig = new BigDecimal(newNumber);
-                    BigDecimal big = new BigDecimal(100);
-                    double divide = ctrBig.multiply(big).doubleValue();
-                    response.setPcCtr(divide);
-                }
+
                 //计算平均点击价格
-                if(((response.getMobileClick() == null) ? 0 : response.getMobileClick()) == 0){
                     if(((response.getPcClick() == null) ? 0 : response.getPcClick()) == 0){
                         response.setPcCpc(0d);
                     }else{
-                        response.setPcCpc(Double.parseDouble(df.format((response.getPcCost()/response.getPcClick()))));
+                        response.setPcCpc(Double.parseDouble(df.format((response.getPcCost().doubleValue()/response.getPcClick().doubleValue()))));
                     }
-                }else{
-                    double newNumber =  Double.parseDouble(df.format((response.getPcCost() + ((response.getMobileCost() == null) ? 0 : response.getMobileCost()))/(response.getPcClick() + ((response.getMobileClick() == null) ? 0 : response.getMobileClick()))));
-                    response.setPcCpc(newNumber);
-                }
+
                 response.setMobileImpression(null);
                 response.setMobileClick(null);
                 response.setMobileConversion(null);
@@ -774,7 +947,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 responseList.add(enit);
             }
         }
-        responseMap.put(dateFormat.format(date1)+ "至" +dateFormat.format(date2),responseList);
+        responseMap.put(dateFormat.format(date1)+ " 至 " +dateFormat.format(date2),responseList);
         return responseMap;
     }
 
@@ -788,15 +961,18 @@ public class BasisReportServiceImpl implements BasisReportService {
     private Date[] getDateProcessing(Date startDate, Date endDate) {
         Date dateOne = null;
         Date dateTow = null;
-        if (startDate == null) {
+        if (startDate == null && endDate != null) {
             dateOne = endDate;
         }
-        if (endDate == null) {
+        if (endDate == null && startDate != null) {
             dateTow = startDate;
         }
         if (startDate == null && endDate == null) {
             dateOne = new Date();
             dateTow = new Date();
+        }else{
+            dateOne = startDate;
+            dateTow = endDate;
         }
         Date[] dates = {dateOne, dateTow};
         return dates;

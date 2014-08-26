@@ -38,7 +38,7 @@ public class AccountOverviewServiceImpl implements AccountOverviewService{
 
 
          //开始获取数据汇总
-        List<AccountRealTimeDataVOEntity> list = null;
+        /*List<AccountRealTimeDataVOEntity> list = null;
         try {
             list = accountAnalyzeDAO.performaneCurve(df.parse(startDate),df.parse(endDate));
         } catch (ParseException e) {
@@ -66,7 +66,7 @@ public class AccountOverviewServiceImpl implements AccountOverviewService{
                if (conversion != null) {
                    conversionCount += conversion;
                }
-           }
+           }*/
 
         //数字格式化
         DecimalFormat decimalFormat = new DecimalFormat("#,##,###");

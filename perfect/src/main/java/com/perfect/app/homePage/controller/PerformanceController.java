@@ -1,7 +1,7 @@
 package com.perfect.app.homePage.controller;
 
 import com.google.gson.Gson;
-import com.perfect.entity.AccountRealTimeDataVOEntity;
+import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import com.perfect.service.PerformanceService;
 import com.perfect.utils.JSONUtils;
@@ -81,7 +81,7 @@ public class PerformanceController {
             e.printStackTrace();
         }
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<AccountRealTimeDataVOEntity> jsonMapList = performanceService.performanceUser(startDates, endDates, fieldName, Sorted,limit);
+        List<AccountReportEntity> jsonMapList = performanceService.performanceUser(startDates, endDates, fieldName, Sorted,limit);
 
         Map<String, Object> attributes = null;
         if (jsonMapList != null)
@@ -105,7 +105,7 @@ public class PerformanceController {
             e.printStackTrace();
         }
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<AccountRealTimeDataVOEntity> jsonMapList = performanceService.performanceCurve(startDates, endDates);
+        List<AccountReportEntity> jsonMapList = performanceService.performanceCurve(startDates, endDates);
 
         Map<String, Object> attributes = null;
         if (jsonMapList != null)

@@ -35,7 +35,7 @@
     <li class="selected">
         账户概览
     </li>
-    <li>
+    <li id="liClick">
         账户表现
     </li>
     <li>
@@ -129,12 +129,12 @@
             <Span>账户趋势图</Span>
             <a href="javascript:void(0)" class="question"></a>
             <ul id="clickqushi">
-                <li class="current">
+                <li>
                     <a onclick="loadPerformanceCurve(this,7)">
                         近7天
                     </a>
                 </li>
-                <li>
+                <li class="current" >
                     <a onclick="loadPerformanceCurve(this,30)">
                         近30天
                     </a>
@@ -815,9 +815,9 @@
         loadKeywordQualityData(null, 1);
         getImportKeywordDefault(1);
         //账户表现-----默认加载7天数据
-        loadPerformance(7);
+        loadPerformance(null,7);
         //曲线图表现-----默认加载7天数据
-        loadPerformanceCurve(7);
+        loadPerformanceCurve(null,7);
 
     });
 
@@ -923,8 +923,8 @@
                         } else {
                             calssStr = "list2_box2";
                         }
-                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.date + "</li><li> &nbsp;" + item.impression + "</li><li> &nbsp;" + item.click + "</li><li> &nbsp;" + item.cost + "</li><li> &nbsp;" + item.ctr + "%</li>"
-                                + "<li> &nbsp;" + item.cpc + "</li><li> &nbsp;" + item.conversion + "</li></ul></td></tr>";
+                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.date + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;" + item.pcCost + "</li><li> &nbsp;" + item.pcCtr + "%</li>"
+                                + "<li> &nbsp;" + item.pcCpc + "</li><li> &nbsp;" + item.pcConversion + "</li></ul></td></tr>";
                         $("#performance").append(_div);
                     })
                 }
@@ -936,6 +936,7 @@
 
 /**初始化曲线图共用变量**/
 /*初始化数据变量*/
+var goLi = 0;
 var dataOne = "";
 var dataTow = "";
 //日期
@@ -991,12 +992,12 @@ var loadPerformanceCurve = function (obj, date) {
             if (data.rows.length > 0) {
                 $.each(data.rows, function (i, item) {
                     t_date.push(item.date);
-                    t_impr.push(item.impression);
-                    t_clicks.push(item.click);
-                    t_cost.push(item.cost);
-                    t_ctr.push(item.ctr);
-                    t_cpc.push(item.cpc);
-                    t_conversion.push(item.conversion);
+                    t_impr.push(item.pcImpression);
+                    t_clicks.push(item.pcClick);
+                    t_cost.push(item.pcCost);
+                    t_ctr.push(item.pcCtr);
+                    t_cpc.push(item.pcCpc);
+                    t_conversion.push(item.pcConversion);
                 })
             }
             if (data.rows.length > 10) {
@@ -1005,7 +1006,6 @@ var loadPerformanceCurve = function (obj, date) {
         }
     });
 
-    dateInterval
     dataOne = {
         name: '展现',
         color: '#4572A7',
@@ -1282,9 +1282,14 @@ var loadPerformanceCurve = function (obj, date) {
             $(this).attr("checked", false);
         }
     });
-    curve();
+    if(goLi>0){
+        curve();
+    }
 }
-
+$("#liClick").click(function(){
+    setTimeout("curve()",200);
+    goLi++;
+});
 var curve = function () {
     $('#container').highcharts({
         chart: {

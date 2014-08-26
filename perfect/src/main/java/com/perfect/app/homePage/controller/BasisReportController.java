@@ -106,21 +106,27 @@ public class BasisReportController {
                                  @RequestParam(value = "date2", required = false) String date2,
                                  @RequestParam(value = "date3", required = false) String date3,
                                  @RequestParam(value = "dateType", required = false) int dateType,
-                                 @RequestParam(value = "devices", required = false) int devices){
+                                 @RequestParam(value = "devices", required = false) int devices,
+                                 @RequestParam(value = "compare", required = false) int compare){
 
         Map<String, List<Object>> returnAccount = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date endDate1 = dateFormat.parse(date1);
             Date endDate2 = dateFormat.parse(date2);
-            Date endDate3 = dateFormat.parse(date3);
+            Date endDate3;
+            Date endDate4 = null;
+            if(date3 == null || date3.equals("")){
+                endDate3 = null;
+            }else{
+                endDate3 = dateFormat.parse(date3);
+                Calendar cal = Calendar.getInstance();
+                long kk = endDate3.getTime() + (endDate2.getTime()-endDate1.getTime());
+                cal.setTimeInMillis(kk);
+                endDate4 = cal.getTime();
+            }
 
-            Calendar cal = Calendar.getInstance();
-            long kk = endDate3.getTime() + (endDate2.getTime()-endDate1.getTime());
-            cal.setTimeInMillis(kk);
-            Date endDate4 = cal.getTime();
-
-            returnAccount = basisReportService.getAccountDateVS(endDate1,endDate2,endDate3,endDate4,dateType,devices);
+            returnAccount = basisReportService.getAccountDateVS(endDate1,endDate2,endDate3,endDate4,dateType,devices,compare);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -142,6 +148,5 @@ public class BasisReportController {
     public void test(HttpServletResponse response){
         Long[] id = {4377017918l, 8071527386l, 4377019004l};
         Map<String, List<StructureReportEntity>> entityList = basisReportService.getKeywordReport(id, "2014-08-01", "2014-08-01", 1);
-
     }
 }

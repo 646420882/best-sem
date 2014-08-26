@@ -26,17 +26,17 @@ public class AsynchronousReport {
 
     private ReportService reportService = null;
 
-    public AsynchronousReport(){
+    public AsynchronousReport() {
         service = BaseBaiduService.getCommonService();
         init();
     }
 
-    public AsynchronousReport(String userName,String password, String token, String target)
-    {
-        service = BaseBaiduService.getCommonServiceUser(userName,password,token,target);
+    public AsynchronousReport(String userName, String password, String token, String target) {
+        service = BaseBaiduService.getCommonServiceUser(userName, password, token, target);
         init();
     }
-    public void init(){
+
+    public void init() {
         try {
             reportService = service.getService(ReportService.class);
         } catch (ApiException e) {
@@ -77,17 +77,17 @@ public class AsynchronousReport {
         return date;
     }
 
-    private String realTime(List<Long> listKey, int format, int granularity, Date startDate, Date endDate, int dataType, int device,String[] PerformanceData) {
+    private String realTime(List<Long> listKey, int format, int granularity, Date startDate, Date endDate, int dataType, int device, String[] PerformanceData) {
         //得到设置返回数据工厂
         ReportRequestType requestType = new ReportRequestType();
         //指定返回数据类型
-        if(PerformanceData != null){
+        if (PerformanceData != null) {
             requestType.setPerformanceData(Arrays.asList(PerformanceData));
-        }else{
-            if(format == 0){
+        } else {
+            if (format == 0) {
                 requestType.setPerformanceData(Arrays.asList(new String[]{"cost", "cpc", "click", "impression", "ctr", "cpm", "conversion"}));
-            }else{
-                requestType.setPerformanceData(Arrays.asList(new String[]{"cost", "cpc", "click", "impression", "ctr", "cpm","position", "conversion"}));
+            } else {
+                requestType.setPerformanceData(Arrays.asList(new String[]{"cost", "cpc", "click", "impression", "ctr", "cpm", "position", "conversion"}));
             }
         }
         //关键词统计范围下的id集合
@@ -113,11 +113,42 @@ public class AsynchronousReport {
         GetProfessionalReportIdRequest dataRequest = new GetProfessionalReportIdRequest();
         dataRequest.setReportRequestType(requestType);
         GetProfessionalReportIdResponse dataResponse = reportService.getProfessionalReportId(dataRequest);
+
+        int reTime = 0;
+        while (dataResponse == null) {
+            if (reTime >= 5) {
+                return null;
+            }
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            dataResponse = reportService.getProfessionalReportId(dataRequest);
+            reTime++;
+        }
+
         String reportId = dataResponse.getReportId();
 
         GetReportStateRequest reportStateRequest = new GetReportStateRequest();
         reportStateRequest.setReportId(reportId);
+
         GetReportStateResponse reportStateResponse = reportService.getReportState(reportStateRequest);
+
+        int reTimeTow = 0;
+        while (reportStateResponse == null) {
+            if (reTimeTow >= 5) {
+                return null;
+            }
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            reportStateResponse = reportService.getReportState(reportStateRequest);
+            reTimeTow++;
+        }
+
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
@@ -130,40 +161,32 @@ public class AsynchronousReport {
 
         String fileUrl = null;
         do {
-            if (isGenerated == 1) {
+            if (isGenerated == 1 || isGenerated == 2) {
                 try {
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 GetReportStateResponse reportState = reportService.getReportState(reportStateRequest);
-                isGenerated = reportState.getIsGenerated();
                 views++;
-                continue;
-            } else if (isGenerated == 2) {
-                try {
-                    Thread.sleep(sleepTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (reportState == null) {
+                    continue;
                 }
-                GetReportStateResponse state = reportService.getReportState(reportStateRequest);
-                isGenerated = state.getIsGenerated();
-                views++;
-                continue;
+                isGenerated = reportState.getIsGenerated();
             } else if (isGenerated == 3) {
                 GetReportFileUrlRequest fileUrlRequest = new GetReportFileUrlRequest();
                 fileUrlRequest.setReportId(reportId);
                 GetReportFileUrlResponse stateResponse = reportService.getReportFileUrl(fileUrlRequest);
-                fileUrl = stateResponse.getReportFilePath();
+                if (stateResponse == null) {
+                    fileUrl = null;
+                } else
+                    fileUrl = stateResponse.getReportFilePath();
                 break;
             } else {
-                fileUrl = "-1";
                 break;
             }
         } while (views < 3);
-        if(isGenerated != 3){
-            fileUrl = "-1";
-        }
+
         return fileUrl;
     }
 
@@ -174,13 +197,13 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getAccountReportDataPC(String[] PerformanceData,String _startDate, String _endDate) {
+    public String getAccountReportDataPC(String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
          * RealTime(需要查询ID，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = realTime(null, 0, 2, dates[0], dates[1], 2, 1,PerformanceData);
+        String resultTypes = realTime(null, 0, 2, dates[0], dates[1], 2, 1, PerformanceData);
 
         return resultTypes;
     }
@@ -192,13 +215,13 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getAccountReportDataMobile(String[] PerformanceData,String _startDate, String _endDate) {
+    public String getAccountReportDataMobile(String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
          * RealTime(需要查询ID，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = realTime(null, 0, 2, dates[0], dates[1], 2, 2,PerformanceData);
+        String resultTypes = realTime(null, 0, 2, dates[0], dates[1], 2, 2, PerformanceData);
 
         return resultTypes;
     }
@@ -210,13 +233,13 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getKeyWordidReportDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getKeyWordidReportDataPC(List<Long> listKey, String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
          * RealTime(需要查询ID，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = realTime(listKey, 1, 11, dates[0], dates[1], 14, 1,PerformanceData);
+        String resultTypes = realTime(listKey, 1, 11, dates[0], dates[1], 14, 1, PerformanceData);
 
         return resultTypes;
     }
@@ -228,13 +251,13 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getKeyWordidReportDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getKeyWordidReportDataMobile(List<Long> listKey, String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
          * RealTime(需要查询ID，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = realTime(listKey, 1, 11, dates[0], dates[1], 14, 2,PerformanceData);
+        String resultTypes = realTime(listKey, 1, 11, dates[0], dates[1], 14, 2, PerformanceData);
 
         return resultTypes;
     }
@@ -246,13 +269,13 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getUnitReportDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getUnitReportDataPC(List<Long> listKey, String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = realTime(listKey, 0, 5, dates[0], dates[1], 11, 1,PerformanceData);
+        String resultTypes = realTime(listKey, 0, 5, dates[0], dates[1], 11, 1, PerformanceData);
 
         return resultTypes;
     }
@@ -264,13 +287,13 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getUnitReportDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getUnitReportDataMobile(List<Long> listKey, String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = realTime(listKey, 0, 5, dates[0], dates[1], 11, 2,PerformanceData);
+        String resultTypes = realTime(listKey, 0, 5, dates[0], dates[1], 11, 2, PerformanceData);
 
         return resultTypes;
     }
@@ -282,13 +305,13 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getCreativeReportDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getCreativeReportDataPC(List<Long> listKey, String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = realTime(listKey, 1, 7, dates[0], dates[1], 12, 1,PerformanceData);
+        String resultTypes = realTime(listKey, 1, 7, dates[0], dates[1], 12, 1, PerformanceData);
 
         return resultTypes;
     }
@@ -300,13 +323,13 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getCreativeReportDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getCreativeReportDataMobile(List<Long> listKey, String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = realTime(listKey, 1, 7, dates[0], dates[1], 12, 2,PerformanceData);
+        String resultTypes = realTime(listKey, 1, 7, dates[0], dates[1], 12, 2, PerformanceData);
 
         return resultTypes;
     }
@@ -318,13 +341,13 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getRegionalReportDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getRegionalReportDataPC(List<Long> listKey, String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = realTime(listKey, 1, 5, dates[0], dates[1], 3, 1,PerformanceData);
+        String resultTypes = realTime(listKey, 1, 5, dates[0], dates[1], 3, 1, PerformanceData);
 
         return resultTypes;
     }
@@ -336,13 +359,13 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getRegionalReportDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getRegionalReportDataMobile(List<Long> listKey, String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = realTime(listKey, 0, 3, dates[0], dates[1], 3, 2,PerformanceData);
+        String resultTypes = realTime(listKey, 0, 3, dates[0], dates[1], 3, 2, PerformanceData);
 
         return resultTypes;
     }
@@ -354,16 +377,17 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getCampaignReportDataMobile(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getCampaignReportDataMobile(List<Long> listKey, String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = realTime(listKey, 0, 3, dates[0], dates[1], 10, 2,PerformanceData);
+        String resultTypes = realTime(listKey, 0, 3, dates[0], dates[1], 10, 2, PerformanceData);
 
         return resultTypes;
     }
+
     /**
      * 获取计划PC端数据
      *
@@ -371,13 +395,13 @@ public class AsynchronousReport {
      * @param _endDate
      * @return
      */
-    public String getCampaignReportDataPC(List<Long> listKey,String[] PerformanceData, String _startDate, String _endDate) {
+    public String getCampaignReportDataPC(List<Long> listKey, String[] PerformanceData, String _startDate, String _endDate) {
         //初始化时间
         Date[] dates = processingTime(_startDate, _endDate);
         /**
          * RealTime(需要查询ID ，返回数据格式，粒度，开始时间，结束时间，实时数据类型)
          */
-        String resultTypes = realTime(listKey, 0, 3, dates[0], dates[1], 10, 1,PerformanceData);
+        String resultTypes = realTime(listKey, 0, 3, dates[0], dates[1], 10, 1, PerformanceData);
 
         return resultTypes;
     }

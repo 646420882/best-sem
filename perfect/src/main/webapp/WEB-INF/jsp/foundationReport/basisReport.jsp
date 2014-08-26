@@ -10,14 +10,12 @@
 <head>
     <meta charset="utf-8">
     <title></title>
+
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
-    <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
-    <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
 
     <style type="text/css">
         .tab_box {
@@ -160,31 +158,51 @@
         </div>
         <div class="shuju_detali over">
             <ul>
-                <li>选择时间范围：<input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31"> <input
-                        type="image" src="public/img/date.png"><input type="checkbox" style="margin:6px 3px 0px 5px; ">比较范围<input
-                        type="text" class="time_input"><input type="image" src="public/img/date.png"></li>
-                <li>选择推广设备：<a href="#" class="current">全部</a><span>|</span><a href="#">计算机</a><span>|</span><a href="#">移动设备</a>
+                <li class="date">选择时间范围：<input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31">
+                    <input name="reservation" type="image" cname="dateClick" onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                           src="${pageContext.request.contextPath}/public/img/date.png">
+                                  <input type="checkbox" id="checkboxInput" style="margin:6px 3px 0px 5px; ">
+
+                                  比较范围<input type="text" id="bijiao" id="inputOne" class="time_input" disabled>
+
+                            <input name="reservation" type="image" id="inputTow" cname="dateClick" style="display:none" onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                           src="${pageContext.request.contextPath}/public/img/date.png"></li>
+                <li id="deviceUser">选择推广设备：
+                    <a href="javascroit:" class="current" cname="0">全部</a><span>|</span>
+                    <a href="javascript:" cname="1">计算机</a><span>|</span>
+                    <a href="javascript:" cname="2">移动设备</a>
                 </li>
-                <li>选择时间单位：<a href="#" class="current">默认</a><span>|</span><a href="time.html">分日</a><span>|</span><a
-                        href="#">分周</a><span>|</span><a href="#">分月</a></li>
+                <li id="dateLiUser">选择时间单位：
+                    <a href="javascript:" class="current" cname="0">默认</a><span>|</span>
+                    <a href="javascript:" cname="1">分日</a><span>|</span>
+                    <a href="javascript:" cname="2">分周</a><span>|</span>
+                    <a href="javascript:" cname="3">分月</a></li>
             </ul>
-            <a href="#" class="become"> 生成报告</a>
+
+            <input type="" id="devicesUser" value="0">
+            <input type="" id="dateLisUser" value="0">
+            <input type="" id="checkboxhidden" value="0">
+            <input type="" id="date3" value="">
+            <a href="javascript:" id="userClick" class="become"> 生成报告</a>
         </div>
     </div>
     <div class="list01_under3 over">
         <div class="list03 wd">
             <table border="0" cellspacing="0" cellspacing="0">
-                <tr class="list03_top">
+                <thead>
+                <tr class="list03_top" id="trTop">
                     <td>&nbsp;时间</td>
                     <td>&nbsp;展现</td>
                     <td>&nbsp;点击</td>
                     <td>&nbsp;消费</td>
+                    <td>&nbsp;点击率</td>
+                    <td>&nbsp;平均点击价格</td>
                     <td>&nbsp;转化(页面)</td>
                     <td>&nbsp;转化(商桥)</td>
                     <td>&nbsp;转化(电话)</td>
-                    <td>&nbsp;点击率</td>
-                    <td>&nbsp;平均点击价格</td>
                 </tr>
+                </thead>
+                <tbody id="userTbody">
                 <tr>
                     <td>&nbsp;2014-01-30至2014-01-31</td>
                     <td>&nbsp;<span>530</span><span class="green_arrow wd3"></span><span><b>60.18%</b></span></td>
@@ -211,6 +229,7 @@
                     <td>&nbsp;1331</td>
                     <td>&nbsp;1331</td>
                 </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -278,6 +297,39 @@
 </div>
 </div>
 </body>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
+<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
+<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
+<script type="text/javascript">
+    // 对Date的扩展，将 Date 转化为指定格式的String
+    // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
+    // 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
+    // 例子：
+    // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2014-07-02 08:09:04.423
+    // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2014-7-2 8:9:4.18
+    Date.prototype.Format = function (fmt) {
+        var o = {
+            "M+": this.getMonth() + 1,                 //月份
+            "d+": this.getDate(),                    //日
+            "h+": this.getHours(),                   //小时
+            "m+": this.getMinutes(),                 //分
+            "s+": this.getSeconds(),                 //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds()             //毫秒
+        };
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+</script>
 <script type="text/javascript">
 /*初始化数据变量*/
 var dataOne = "";
@@ -310,8 +362,95 @@ var ts_conversion = 0;
 
 var fieldName ='date';
 
-var sort = 0
+var sort = 0;
+var dateclicks="";
+
+//日期控件-开始日期
+var daterangepicker_start_date = null;
+
+//日期控件-结束日期
+var daterangepicker_end_date = null;
 $(document).ready(function () {
+    //加载日历控件
+    $("input[name=reservation]").daterangepicker();
+    $("input[cname=dateClick]").click(function(){
+        dateclicks = $(this)
+    });
+    $(".btnDone").on('click', function () {
+        var _startDate = $('.range-start').datepicker('getDate');
+        var _endDate = $('.range-end').datepicker('getDate');
+        if (_startDate != null && _endDate != null) {
+            daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
+            daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
+            if($("#checkboxhidden").val() == 1){
+                $("#date3").val(daterangepicker_start_date);
+            }
+            dateclicks.prev().val(daterangepicker_start_date+" 至 "+daterangepicker_end_date);
+
+            /*if (genre == "keywordQualityCustom") {
+                //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
+                loadKeywordQualityData(null, 0);
+            } */
+        }
+    });
+
+        $("#userClick").click(function(){
+            var date3 = $("#date3").val();
+            var devicesUser = $("#devicesUser").val();
+            var dateLisUser = $("#dateLisUser").val();
+            var checkboxhidden = $("#checkboxhidden").val();
+            $.ajax({
+                url: "/account/accountDateVs",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    date1: daterangepicker_start_date,
+                    date2: daterangepicker_end_date,
+                    date3: date3,
+                    dateType: dateLisUser,
+                    devices: devicesUser,
+                    compare: checkboxhidden
+                },
+                success: function (data) {
+                    $("#userTbody").empty();
+                    if(checkboxhidden == 0) {
+                        $("#trTop").removeAttr("class");
+                        $("#trTop").addClass("list02_top");
+                        $.each(data.date, function (i, item) {
+                            $.each(data.rows, function (i, items1) {
+                                $.each(items1[item], function (i, items) {
+                                    var html_User= "";
+                                    if (i % 2 == 0) {
+                                        if (devicesUser == 2) {
+                                            html_User = "<tr class='list2_box1'><td>" + item + "</td>"
+                                                    + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                                    + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                        } else {
+                                            html_User = "<tr class='list2_box1'><td>" + item + "</td>"
+                                                    + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                                    + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                        }
+                                    } else {
+                                        if (devices == 2) {
+                                            html_User = "<tr class='list2_box2'><td>" + item + "</td>"
+                                                    + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                                    + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                        } else {
+                                            html_User = "<tr class='list2_box2'><td>" + item + "</td>"
+                                                    + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                                    + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                        }
+                                    }
+                                    $("#userTbody").append(html_User);
+                                });
+                            });
+                        });
+                    }
+                }
+            });
+        });
+
+
     var $tab_li = $('.tab_menu li');
     $('.tab_menu li').click(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
@@ -333,6 +472,29 @@ $(document).ready(function () {
         $(this).addClass("current");
         $("#dateLis").val($(this).attr("cname"));
     })
+    $("#deviceUser>a").click(function () {
+        $("#deviceUser>a").removeClass("current");
+        $(this).addClass("current");
+        $("#devicesUser").val($(this).attr("cname"));
+    });
+    $("#dateLiUser>a").click(function () {
+        $("#dateLiUser>a").removeClass("current");
+        $(this).addClass("current");
+        $("#dateLisUser").val($(this).attr("cname"));
+    });
+    $("#checkboxInput").click(function(){
+       if($(this).is(":checked")){
+           $("#inputTow").removeAttr("style","display:");
+           $("#inputOne").removeAttr("disabled");
+           $("#checkboxhidden").val(1);
+       }else{
+           $("#inputTow").attr("style","display:none");
+           $("#inputOne").attr("disabled","disabled");
+           $("#checkboxhidden").val(0);
+           $("#date3").val("");
+           $("#bijiao").val("");
+       }
+    });
 
     //初始化基础统计
     accountBasisReport();

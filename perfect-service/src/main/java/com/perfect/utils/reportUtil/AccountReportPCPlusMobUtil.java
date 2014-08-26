@@ -45,7 +45,7 @@ public class AccountReportPCPlusMobUtil extends RecursiveTask<List<AccountReport
                         if(((objectList.get(i).getPcImpression() == null) ? 0 : objectList.get(i).getPcImpression()) == 0){
                             objectList.get(i).setPcCtr(0d);
                         }else{
-                            BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format((objectList.get(i).getPcClick() / objectList.get(i).getPcImpression()))));
+                            BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format((objectList.get(i).getPcClick().doubleValue() / objectList.get(i).getPcImpression().doubleValue()))));
                             BigDecimal big = new BigDecimal(100);
                             double divide = ctrBig.multiply(big).doubleValue();
                             objectList.get(i).setPcCtr(divide);
@@ -62,7 +62,7 @@ public class AccountReportPCPlusMobUtil extends RecursiveTask<List<AccountReport
                         if(((objectList.get(i).getPcClick() == null) ? 0 : objectList.get(i).getPcClick()) == 0){
                             objectList.get(i).setPcCpc(0d);
                         }else{
-                            objectList.get(i).setPcCpc(Double.parseDouble(df.format((objectList.get(i).getPcCost()/objectList.get(i).getPcClick()))));
+                            objectList.get(i).setPcCpc(Double.parseDouble(df.format((objectList.get(i).getPcCost().doubleValue()/objectList.get(i).getPcClick().doubleValue()))));
                         }
                     }else{
                         double newNumber =  Double.parseDouble(df.format((objectList.get(i).getPcCost() + ((objectList.get(i).getMobileCost() == null) ? 0 : objectList.get(i).getMobileCost()))/(objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()))));

@@ -38,7 +38,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     @Resource
     private SystemUserDAO systemUserDAO;
-    
+
     private List<AccountReportEntity> acrmList;
 
     private List<CampaignReportEntity> cprmList;
@@ -54,13 +54,15 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     public void getAccountReportData(String dateStr) {
         MongoTemplate mongoTemplate = null;
         Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
-        for(SystemUserEntity systemUser : entities){
+        for (SystemUserEntity systemUser : entities) {
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
-            for(BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()){
-                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(),entity.getBaiduPassword(),entity.getToken(),null);
+            for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
                 String pcFilePath = report.getAccountReportDataPC(null, dateStr, dateStr);
                 String mobileFilePath = report.getAccountReportDataMobile(null, dateStr, dateStr);
-
+                if (pcFilePath == null || mobileFilePath == null) {
+                    continue;
+                }
                 List<AccountReportEntity> pcList = httpFileHandler.getAccountReport(pcFilePath, 1);
                 acrmList = httpFileHandler.getAccountReport(mobileFilePath, 2);
 
@@ -83,13 +85,15 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     public void getCampaignReportData(String dateStr) {
         MongoTemplate mongoTemplate = null;
         Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
-        for(SystemUserEntity systemUser : entities){
+        for (SystemUserEntity systemUser : entities) {
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
-            for(BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()){
-                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(),entity.getBaiduPassword(),entity.getToken(),null);
+            for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
                 String pcFilePath = report.getCampaignReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getCampaignReportDataMobile(null, null, dateStr, dateStr);
-
+                if (pcFilePath == null || mobileFilePath == null) {
+                    continue;
+                }
                 List<CampaignReportEntity> pcList = httpFileHandler.getCampaignReport(pcFilePath, 1);
                 cprmList = httpFileHandler.getCampaignReport(mobileFilePath, 2);
 
@@ -119,7 +123,9 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
                 String pcFilePath = report.getUnitReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getUnitReportDataMobile(null, null, dateStr, dateStr);
-
+                if (pcFilePath == null || mobileFilePath == null) {
+                    continue;
+                }
                 List<AdgroupReportEntity> pcList = httpFileHandler.getAdgroupReport(pcFilePath, 1);
                 armList = httpFileHandler.getAdgroupReport(mobileFilePath, 2);
 
@@ -149,7 +155,9 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
                 String pcFilePath = report.getCreativeReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getCreativeReportDataMobile(null, null, dateStr, dateStr);
-
+                if (pcFilePath == null || mobileFilePath == null) {
+                    continue;
+                }
                 List<CreativeReportEntity> pcList = httpFileHandler.getCreativeReport(pcFilePath, 1);
                 crmList = httpFileHandler.getCreativeReport(mobileFilePath, 2);
 
@@ -179,7 +187,9 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
                 String pcFilePath = report.getKeyWordidReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getKeyWordidReportDataMobile(null, null, dateStr, dateStr);
-
+                if (pcFilePath == null || mobileFilePath == null) {
+                    continue;
+                }
                 List<KeywordReportEntity> pcList = httpFileHandler.getKeywordReport(pcFilePath, 1);
                 krmList = httpFileHandler.getKeywordReport(mobileFilePath, 2);
 
@@ -209,7 +219,9 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
                 String pcFilePath = report.getRegionalReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getRegionalReportDataMobile(null, null, dateStr, dateStr);
-
+                if (pcFilePath == null || mobileFilePath == null) {
+                    continue;
+                }
                 System.out.println("PC" + pcFilePath);
                 System.out.println("Mobile:" + mobileFilePath);
 
@@ -553,9 +565,9 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         entity1.setPcConversion(Double.valueOf(arr[15]));
                         entity1.setPcPosition(Double.valueOf(arr[16]));
                     } else if (type == 2) {
-                        if(arr[5].equals("-")){
+                        if (arr[5].equals("-")) {
                             entity1.setRegionId(-1l);
-                        }else{
+                        } else {
                             entity1.setRegionId(Long.valueOf(arr[5]));
                         }
                         entity1.setRegionName(arr[6]);

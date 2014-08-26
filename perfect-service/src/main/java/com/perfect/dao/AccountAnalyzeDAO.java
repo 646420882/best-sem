@@ -2,7 +2,7 @@ package com.perfect.dao;
 
 
 
-import com.perfect.entity.AccountRealTimeDataVOEntity;
+import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
 
 import java.util.Date;
@@ -19,11 +19,11 @@ public interface AccountAnalyzeDAO extends MongoCrudRepository<KeywordRealTimeDa
      * 获取账户表现数据
      * @return
      */
-    List<AccountRealTimeDataVOEntity> performaneUser(Date startDate, Date endDate,String fieldName,int Sorted,int limit);
+    List<AccountReportEntity> performaneUser(Date startDate, Date endDate,String fieldName,int Sorted,int limit);
 
     /**
      * 获取账户表现数据
      * @return
      */
-    List<AccountRealTimeDataVOEntity> performaneCurve(Date startDate, Date endDate);
+    List<AccountReportEntity> performaneCurve(Date startDate, Date endDate);
 }
