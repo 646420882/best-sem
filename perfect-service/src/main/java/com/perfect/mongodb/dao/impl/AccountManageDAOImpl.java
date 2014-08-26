@@ -120,28 +120,25 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
      */
     @Override
     public BaiduAccountInfoEntity findByBaiduUserId(Long baiduUserId) {
-        //
-        String currUser = "perfect";
-        //
+        String currUser = AppContext.getUser();
+        baiduUserId = AppContext.get().getAccountId();
         List<BaiduAccountInfoEntity> list = getBaiduAccountItems(currUser);
-//        BaiduAccountInfoEntity baiduAccount = new BaiduAccountInfoEntity();
-//        for (BaiduAccountInfoEntity entity : list) {
-//            if (baiduUserId.equals(entity.getId())) {
-//                baiduAccount.setId(baiduUserId);
-//                baiduAccount.setBaiduUserName(entity.getBaiduUserName());
-//                baiduAccount.setBaiduPassword(entity.getBaiduPassword());
-//                baiduAccount.setToken(entity.getToken());
-//                break;
-//            }
-//        }
-        return list.get(0);
+
+        BaiduAccountInfoEntity baiduAccount = null;
+        for (BaiduAccountInfoEntity entity : list) {
+            if (baiduUserId.equals(entity.getId())) {
+                baiduAccount = entity;
+                break;
+            }
+        }
+
+        return baiduAccount;
     }
 
     @Override
     public void updateBaiduAccountInfo(BaiduAccountInfoEntity entity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
-//        String currUser = AppContext.getUser();
-        String currUser = "perfect";
+        String currUser = AppContext.getUser();
         Update update = new Update();
         if (entity.getBudget() != null) {
             update.set("bdAccounts.$.bgt", entity.getBudget());
@@ -161,30 +158,25 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
      */
     @Override
     public List<AccountReportEntity> getAccountReports(List<Date> dates) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName("shangpin"));
-//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-//        String currUser = AppContext.getUser();
-//        Long baiduAccountId = AppContext.get().getAccountId();
-        String currUser = "shangpin";
-        Long baiduAccountId = 2565730l;
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+        Long baiduAccountId = AppContext.get().getAccountId();
         List<AccountReportEntity> reportEntities = mongoTemplate.
-                find(Query.query(Criteria.where("date").in(dates)), AccountReportEntity.class);
+                find(Query.query(Criteria.where("acid").is(baiduAccountId).and("date").in(dates)), AccountReportEntity.class);
         return reportEntities;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public Double getYesterdayCost() {
-        //
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_shangpin_report");
-        //
-//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-//        String currUser = AppContext.getUser();
-//        Long baiduAccountId = AppContext.get().getAccountId();
-        String currUser = "shangpin";
-        Long baiduAccountId = 2565730l;
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+        Long baiduAccountId = AppContext.get().getAccountId();
         Date date = ((List<Date>) DateUtils.getsLatestAnyDays(1).get("_date")).get(0);
-        return mongoTemplate.findOne(Query.query(Criteria.where("date").is(date).and("acid").is(baiduAccountId)), AccountReportEntity.class).getPcCost();
+        AccountReportEntity reportEntity = mongoTemplate.
+                findOne(Query.query(Criteria.where("date").is(date).and("acid").is(baiduAccountId)), AccountReportEntity.class);
+        if (reportEntity != null)
+            return reportEntity.getPcCost();
+        else
+            return 0d;
     }
 
     /**
