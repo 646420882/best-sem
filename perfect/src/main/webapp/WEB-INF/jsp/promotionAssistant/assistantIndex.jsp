@@ -213,7 +213,7 @@
         <table border="0" cellspacing="0" width="100%" id="createTable">
             <thead>
             <tr class="list02_top">
-                <td>&nbsp;</td>
+                <td>&nbsp;操作</td>
                 <td>&nbsp;创意标题</td>
                 <td>&nbsp;创意描述1</td>
                 <td>&nbsp;创意描述2</td>
@@ -221,8 +221,8 @@
                 <td>&nbsp;默认显示URL</td>
                 <td>&nbsp;移动访问URL</td>
                 <td>&nbsp;移动显示URL</td>
-                <td>&nbsp;创意状态</td>
-                <td>&nbsp;启用/暂停
+                <td>&nbsp;启用/暂停</td>
+                <td>&nbsp;创意状态
                     <div class="set fr"></div>
                 </td>
             </tr>
@@ -312,18 +312,21 @@
             <ul>
                 <li>
                     <div class="w_list01 fl over">状态：</div>
-                    <div class="w_list02 fl over"><b>有效</b></div>
+                    <div class="w_list02 fl over"><b id="sStatus">有效</b></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">设备偏好：</div>
-                    <div class="w_list02 fl over"><select>
+                    <div class="w_list02 fl over">
+                        <select>
                         <option>全部</option>
                     </select></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">启用/暂停：</div>
-                    <div class="w_list02 fl over"><select>
-                        <option>启用</option>
+                    <div class="w_list02 fl over" id="sPause">
+                        <select >
+                        <option value="true">启用</option>
+                        <option value="false">暂停</option>
                     </select></div>
                 </li>
             </ul>
@@ -1296,8 +1299,8 @@
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li class="current">确认</li>
-                <li class="close">取消</li>
+                <li onclick="planUnit()">确认</li>
+                <li onclick="closeAlert();">取消</li>
             </ul>
         </div>
     </div>

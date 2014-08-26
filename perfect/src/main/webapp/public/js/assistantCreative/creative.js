@@ -5,11 +5,38 @@
  * 树加载数据需要的计划，单元参数，默认都为空
  * @type {{aid: null, cid: null}}
  */
-var sparams={aid:null,cid:null};
+$.fn.extend({
+    submit:function(url,func){
+        var data={};
+        var inputs=$(this).parents("tr").find("input");
+        for(var i=0;i<inputs.size();i++){
+            if(inputs[i].name){
+                data[inputs[i].name]=inputs[i].value;
+            }
+        }
+        var selects=$(this).parents("tr").find("select");
+        for(var i=0;i<selects.size();i++){
+            if(selects[i].name){
+                data[selects[i].name]=selects[i].value;
+            }
+        }
+        data["aid"]=sparams.aid;
+        $.post(url,data,function(json){
+            if(func)
+            func(json);
+        });
+    }
+});
+var sparams = {aid: null, cid: null};
 $(function () {
     loadCreativeData(sparams);
     InitMenu();
     rDrag.init($("#jcBox"));
+    $("#createTable input").keydown(function(event){
+        if(event.keyCode==13){
+            alert("你干什么？"+$(this).val());
+        }
+    });
 });
 
 /**
@@ -20,12 +47,11 @@ var add = {
     text: "添加创意",
     func: function () {
         addCreative();
-        creativeAddBoxShow();
     }
 }, del = {
     text: "删除创意",
     func: function (e) {
-   removeThe(tmp);
+        removeThe(tmp);
     }
 }, update = {
     text: "验证创意",
@@ -44,16 +70,16 @@ var menuData = [
  * 用户缓存右键点击的对象
  * @type {null}
  */
-var tmp=null;
+var tmp = null;
 /**
  * 菜单name值，标识唯一，beforeShow显示完成后方法
  * @type {{name: string, beforeShow: beforeShow}}
  */
-var menuExt={
+var menuExt = {
     name: "creative",
     beforeShow: function () {
-        var _this=$(this);
-        tmp=_this;
+        var _this = $(this);
+        tmp = _this;
         $.smartMenu.remove();
     }
 };
@@ -62,8 +88,50 @@ var menuExt={
  * @constructor
  */
 function InitMenu() {
-    $("#createTable").on("mousedown","tr",function(){
-        $(this).smartMenu(menuData,menuExt);
+    $("#createTable").on("mousedown", "tr", function () {
+        $(this).smartMenu(menuData, menuExt);
+    });
+    $("#createTable").on("keydown","input",function(event){
+        if(event.keyCode==13){
+            var con=confirm("你确定要添加么？");
+            if(con){
+                var _selects=$(this).parents("tr").find("select");
+                var _input=$(this).parents("tr").find("input");
+                var _tr=$(this).parents("tr");
+                $(this).submit("../assistantCreative/add",function(rs){
+                    if(rs=="1"){
+                        _tr.remove();
+                        var data={};
+                        for(var i=0;i<_input.size();i++){
+                            if(_input[i].name){
+                                data[_input[i].name]=_input[i].value;
+                            }
+                        }
+                        for(var i=0;i<_selects.length;i++){
+                            data[_selects[i].name]=_selects[i].value;
+                        }
+                        var p= data["pause"]=="true"?"启用":"暂停";
+                        var s=until.getCreativeStatus(parseInt(data["status"]));
+                        var _createTable = $("#createTable tbody");
+                        var i = $("#createTable tbody tr").size();
+                        var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+                        var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
+                            "<td ondblclick='edit(this);'>&nbsp;<span></span></td>" +
+                            "<td ondblclick='edit(this);'>" + until.substring(10, data["title"]) + "</td>" +
+                            " <td ondblclick='edit(this);'>" + until.substring(10, data["description1"]) + "</td>" +
+                            " <td ondblclick='edit(this);'>" + until.substring(10, data["description2"]) + "</td>" +
+                            " <td ondblclick='edit(this);'><a href='" + data["pcDestinationUrl"] + "' target='_blank'>" + until.substring(10, data["pcDestinationUrl"]) + "</a></td>" +
+                            " <td ondblclick='edit(this);'>" + until.substring(10, data["pcDisplayUrl"]) + "</td>" +
+                            " <td ondblclick='edit(this);'>" + until.substring(10, data["mobileDestinationUrl"]) + "</td>" +
+                            " <td ondblclick='edit(this);'>" + until.substring(10, data["mobileDisplayUrl"]) + "</td>" +
+                            " <td ondblclick='edit(this);'>" + p+ "</td>" +
+                            " <td ondblclick='edit(this);'>" + s + "</td>" +
+                            "</tr>";
+                        _createTable.append(_tbody);
+                    }
+                });
+            }
+        }
     });
 }
 /**
@@ -71,31 +139,31 @@ function InitMenu() {
  * @param params
  */
 function loadCreativeData(params) {
-    $.get("/assistantCreative/getList",params,function (result) {
+    $.get("/assistantCreative/getList", params, function (result) {
         var _createTable = $("#createTable tbody");
-        if(result!="[]"){
-        var json = eval("(" + result + ")");
-        if (json.length > 0) {
-            _createTable.empty();
-            var _trClass = "";
-            for (var i = 0; i < json.length; i++) {
-                _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-                var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                    "<td ondblclick='edit(this);'>&nbsp;<span></span></td>" +
-                    "<td ondblclick='edit(this);'>" + until.substring(10, json[i].title) + "</td>" +
-                    " <td ondblclick='edit(this);'>" + until.substring(10, json[i].description1) + "</td>" +
-                    " <td ondblclick='edit(this);'>" + until.substring(10, json[i].description2) + "</td>" +
-                    " <td ondblclick='edit(this);'><a href='" + json[i].pcDestinationUrl + "' target='_blank'>" + until.substring(10, json[i].pcDestinationUrl) + "</a></td>" +
-                    " <td ondblclick='edit(this);'>" + until.substring(10, json[i].pcDisplayUrl) + "</td>" +
-                    " <td ondblclick='edit(this);'>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
-                    " <td ondblclick='edit(this);'>" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
-                    " <td ondblclick='edit(this);'>" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
-                    " <td ondblclick='edit(this);'>" + until.getCreativeStatus(json[i].status) + "</td>" +
-                    "</tr>";
-                _createTable.append(_tbody);
+        if (result != "[]") {
+            var json = eval("(" + result + ")");
+            if (json.length > 0) {
+                _createTable.empty();
+                var _trClass = "";
+                for (var i = 0; i < json.length; i++) {
+                    _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+                    var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
+                        "<td ondblclick='edit(this);'>&nbsp;<span></span></td>" +
+                        "<td ondblclick='edit(this);'>" + until.substring(10, json[i].title) + "</td>" +
+                        " <td ondblclick='edit(this);'>" + until.substring(10, json[i].description1) + "</td>" +
+                        " <td ondblclick='edit(this);'>" + until.substring(10, json[i].description2) + "</td>" +
+                        " <td ondblclick='edit(this);'><a href='" + json[i].pcDestinationUrl + "' target='_blank'>" + until.substring(10, json[i].pcDestinationUrl) + "</a></td>" +
+                        " <td ondblclick='edit(this);'>" + until.substring(10, json[i].pcDisplayUrl) + "</td>" +
+                        " <td ondblclick='edit(this);'>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
+                        " <td ondblclick='edit(this);'>" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
+                        " <td ondblclick='edit(this);'>" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
+                        " <td ondblclick='edit(this);'>" + until.getCreativeStatus(json[i].status) + "</td>" +
+                        "</tr>";
+                    _createTable.append(_tbody);
+                }
             }
-        }
-        }else{
+        } else {
             _createTable.empty();
             _createTable.append("<tr><td>暂无数据</td></tr>");
         }
@@ -129,7 +197,10 @@ function on(obj) {
     var pcs = _this.find("td:eq(5) a").attr("title") != undefined ? _this.find("td:eq(5) a").attr("title") : _this.find("td:eq(5) input").val();
     var mib = _this.find("td:eq(6) span:eq(0)").text() != "" ? _this.find("td:eq(6) span:eq(0)").text() : _this.find("td:eq(6) input").val();
     var mibs = _this.find("td:eq(7) span:eq(0)").text() != "" ? _this.find("td:eq(7) span:eq(0)").text() : _this.find("td:eq(7) input").val();
-    $("#sTitle").val(title).keyup(function () {
+    var pause=_this.find("td:eq(8) select")==""?_this.find("td:eq(10)").find("select"):_this.find("td:eq(8)").html();
+    var status=_this.find("td:eq(9) select")==""?_this.find("td:eq(9)").find("select"):_this.find("td:eq(9)").html();
+
+    $("#sTitle").val(title).keyup(function (e) {
         $("#sTitle_size").text($("#sTitle").val().length);
     });
     $("#sTitle_size").text(title.length);
@@ -163,6 +234,9 @@ function on(obj) {
         $("#Mibs_size").text($("#sMibs").val().length);
     });
     $("#sMibs_size").text(mibs.length);
+    $("#sPause").html(pause);
+    $("#sStatus").html(status);
+
 }
 /**
  * 未知方法，待继续编码
@@ -176,51 +250,56 @@ function addTb(rs) {
  * 添加创意
  */
 function addCreative() {
-    var jcBox=$("#jcUl");
-    if(sparams.cid!=null&&sparams.aid!=null){
-    var i = $("#createTable tbody tr").size();
-    var _createTable = $("#createTable tbody");
-    var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-    var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-        "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span></td>" +
-        "<td><input name='title' onkeyup='onKey(this);' style='width:140px;' maxlength='50'></td>" +
-        " <td><input name='description1' onkeyup='onKey(this);' style='width:140px;'  maxlength='80'></td>" +
-        " <td><input name='description2' onkeyup='onKey(this);'  style='width:140px;' maxlength='80'></td>" +
-        " <td><input name='pcDestinationUrl' onkeyup='onKey(this);' style='width:40px;'  maxlength='1024'></td>" +
-        " <td><input name='pcDisplayUrl' onkeyup='onKey(this);' style='width:40px;'  maxlength='36'></td>" +
-        " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='1024'></td>" +
-        " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='36'></td>" +
-        " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
-        " <td><select name='status'>" + getStatus();
-    +"</select></td>" +
-    "</tr>";
-    _createTable.append(_tbody);
-    }else if(sparams.cid!=null&&sparams.aid==null){
+    var jcBox = $("#jcUl");
+    if (sparams.cid != null && sparams.aid != null) {
+        var i = $("#createTable tbody tr").size();
+        var _createTable = $("#createTable tbody");
+        var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+        var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
+            "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span></td>" +
+            "<td><input name='title' onkeyup='onKey(this);' style='width:140px;' maxlength='50'></td>" +
+            " <td><input name='description1' onkeyup='onKey(this);'  style='width:140px;'  maxlength='80'></td>" +
+            " <td><input name='description2' onkeyup='onKey(this);'  style='width:140px;' maxlength='80'></td>" +
+            " <td><input name='pcDestinationUrl' onkeyup='onKey(this);' style='width:40px;'  maxlength='1024'></td>" +
+            " <td><input name='pcDisplayUrl' onkeyup='onKey(this);' style='width:40px;'  maxlength='36'></td>" +
+            " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='1024'></td>" +
+            " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='36'></td>" +
+            " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
+            " <td><select name='status'>" + getStatus();
+        +"</select></td>" +
+        "</tr>";
+        _createTable.append(_tbody);
+    } else if (sparams.cid != null && sparams.aid == null) {
         jcBox.empty();
-        jcBox.append("<li>推广单元<select id='sPlan'></select><li>");
+        loadUnit(sparams.cid);
+        jcBox.append("<li>推广单元<select id='sUnit' onchange='loadTree(this.value)'><option value='-1'>请选择单元</option></select></li>");
         creativeAddBoxShow();
-    }else if(sparams.cid==null&&sparams.aid==null){
+    } else if (sparams.cid == null && sparams.aid == null) {
         jcBox.empty();
-        jcBox.append("<li>推广计划<select id='sPlan'><option value='1'>1</option></select><li>");
-        jcBox.append("<li>推广单元<select id='sUnit'><option value='1'>1</option></select><li>");
+        getPlans();
+        jcBox.append("<li>推广计划<select id='sPlan' onchange='loadUnit(this.value)'><option value='-1'>请选择计划</option></select></li>");
+        jcBox.append("<li>推广单元<select id='sUnit' onchange='loadTree(this.value)'><option value='-1'>请选择单元</option></select></li>");
         creativeAddBoxShow();
+    }else{
+        alert(sparams.cid+":"+sparams.aid);
     }
 }
 /**
  * 查询所有计划，生成select的Option对象
  */
-function getAllPlan(){}
+function getAllPlan() {
+}
 /**
  * 添加创意时，如果没有选择计划或者单元，弹出框显示
  */
-function creativeAddBoxShow(){
+function creativeAddBoxShow() {
     $(".TB_overlayBG").css({
-        display:"block",height:$(document).height()
+        display: "block", height: $(document).height()
     });
     $("#jcAdd").css({
-        left:($("body").width()-$("#jcAdd").width())/2-20+"px",
-        top:($(window).height()-$("#jcAdd").height())/2+$(window).scrollTop()+"px",
-        display:"block"
+        left: ($("body").width() - $("#jcAdd").width()) / 2 - 20 + "px",
+        top: ($(window).height() - $("#jcAdd").height()) / 2 + $(window).scrollTop() + "px",
+        display: "block"
     });
 }
 /**
@@ -314,7 +393,7 @@ function preview(obj) {
     var pcs = _this.find("td:eq(5) a").attr("title") != undefined ? _this.find("td:eq(5) a").attr("title") : _this.find("td:eq(5) input").val();
     var mib = _this.find("td:eq(6) span:eq(0)").text() != "" ? _this.find("td:eq(6) span:eq(0)").text() : _this.find("td:eq(6) input").val();
     var mibs = _this.find("td:eq(7) span:eq(0)").text() != "" ? _this.find("td:eq(7) span:eq(0)").text() : _this.find("td:eq(7) input").val();
-    title = title.replace("{", "<span style='color:red;'>").replace("}", "</span>");
+    title = title.replace("{", "<span style='color:red;'>").replace("}", "</span>").replace("{", "<span style='color:red;'>").replace("}", "</span>");
     de1 = de1.replace("{", "<span style='color:red;'>").replace("}", "</span>");
     de2 = de2.replace("{", "<span style='color:red;'>").replace("}", "</span>");
     var h3 = "<a href='" + pc + "' target='_blank'><h3>" + title + "</h3></a>" +
@@ -337,17 +416,92 @@ function edit(rs) {
  * 动态更新创意中的数据，如果 是点击计划树
  * @param cid
  */
-function getCreativePlan(cid){
-    sparams={cid:cid,aid:null};
+function getCreativePlan(cid) {
+    sparams = {cid: cid, aid: null};
     loadCreativeData(sparams);
 }
 /**
  * 动态更新创意中的数据，如果点击单元树
  * @param con
  */
-function getCreativeUnit(con){
-    sparams={cid:con.cid,aid:con.aid}
+function getCreativeUnit(con) {
+    sparams = {cid: con.cid, aid: con.aid}
     loadCreativeData(sparams);
+}
+/**
+ * 选择推广计划和单元
+ */
+function planUnit() {
+    var cid=$("#sPlan :selected").val()==undefined?sparams.cid:$("#sPlan :selected").val();
+    var aid=$("#sUnit :selected").val()==undefined?sparams.aid:$("#sUnit :selected").val();
+    if(cid=="-1"){
+        alert("请选择计划");
+    }else if(aid=="-1"){
+        alert("请选择单元");
+    }else{
+        sparams.cid=cid;
+        sparams.aid=aid;
+        closeAlert();
+        addCreative();
+    }
+
+
+}
+/**
+ * 关闭弹窗
+ */
+function closeAlert() {
+    $(".TB_overlayBG").css("display", "none");
+    $("#jcAdd ").css("display", "none");
+}
+/**
+ * 获取全部的推广计划，生成select选项
+ */
+function getPlans() {
+    $.get("/assistantCreative/getPlans", function (rs) {
+        var json = eval("(" + rs + ")");
+        if (json.length > 0) {
+            for (var i = 0; i < json.length; i++) {
+                var str = "<option value='" + json[i].campaignId + "'>" + json[i].campaignName + "</option>";
+                $("#sPlan").append(str);
+            }
+        }
+    });
+}
+/**
+ * 根据选择的计划加载单元
+ */
+function loadUnit(rs) {
+    var planId = rs;
+    var _sUnit=$("#sUnit");
+    var _def="<option value='-1'>请选择单元</option>";
+    $.get("/assistantCreative/getUnitsByPlanId", {planId: planId}, function (rs) {
+        if (rs != "[]") {
+            var json = eval("(" + rs + ")");
+            if (json.length > 0) {
+                _sUnit.empty();
+                _sUnit.append(_def);
+                for (var i = 0; i < json.length; i++) {
+                    var str = "<option value='" + json[i].adgroupId + "'>" + json[i].adgroupName + "</option>";
+                    $("#sUnit").append(str);
+                }
+            }
+        } else {
+            _sUnit.empty();
+            _sUnit.append(_def);
+        }
+    });
+}
+/**
+ * 弹出框选择计划或者单元树对应加载
+ * @param rs
+ */
+function loadTree(rs){
+    if(rs!="-1"){
+        var cid=$("#sPlan :selected").val()==undefined?sparams.cid:$("#sPlan :selected").val();
+    sparams = {cid: cid, aid: rs};
+    loadCreativeData(sparams);
+    }
 }
 
 

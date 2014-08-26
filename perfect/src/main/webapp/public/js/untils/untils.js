@@ -35,6 +35,8 @@ var until = {
                 break;
             case 56:
                 return "部分无效";
+            default :
+                return "新增";
                 break;
         }
     }

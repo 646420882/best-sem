@@ -3,6 +3,7 @@
 
 package com.perfect.entity;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class CreativeEntity extends AccountIdEntity {
     //CreativeType Attributes
     @Id
-    private Object id;
+    private ObjectId id;
 
     @Indexed(unique = true)
     private Long creativeId;
