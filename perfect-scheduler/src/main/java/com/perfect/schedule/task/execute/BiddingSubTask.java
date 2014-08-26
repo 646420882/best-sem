@@ -3,7 +3,7 @@ package com.perfect.schedule.task.execute;
 import com.perfect.autosdk.sms.v3.GetPreviewRequest;
 import com.perfect.autosdk.sms.v3.KeywordType;
 import com.perfect.constants.BiddingStrategyConstants;
-import com.perfect.entity.CreativeVOEntity;
+import com.perfect.dto.CreativeDTO;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.entity.bidding.StrategyEntity;
@@ -114,21 +114,21 @@ public class BiddingSubTask implements Runnable {
             }
 
             int pos = strategyEntity.getPositionStrategy();
-            List<CreativeVOEntity> leftList = previewData.getLeft();
-            List<CreativeVOEntity> rightList = previewData.getRight();
-            CreativeVOEntity creativeVOEntity = null;
+            List<CreativeDTO> leftList = previewData.getLeft();
+            List<CreativeDTO> rightList = previewData.getRight();
+            CreativeDTO creativeDTO = null;
 
             if (pos == BiddingStrategyConstants.POS_LEFT_1.value() && leftList.size() > 0) {
-                creativeVOEntity = leftList.get(0);
+                creativeDTO = leftList.get(0);
             } else if (pos == BiddingStrategyConstants.POS_LEFT_2_3.value() && leftList.size() > 1) {
-                creativeVOEntity = leftList.get(1);
+                creativeDTO = leftList.get(1);
             } else if (pos == BiddingStrategyConstants.POS_RIGHT_1_3.value() && rightList.size() > 1) {
-                creativeVOEntity = rightList.get(0);
+                creativeDTO = rightList.get(0);
             } else if (pos == BiddingStrategyConstants.POS_RIGHT_OTHERS.value() && rightList.size() > 3) {
-                creativeVOEntity = rightList.get(3);
+                creativeDTO = rightList.get(3);
             }
 
-            String url = creativeVOEntity.getUrl();
+            String url = creativeDTO.getUrl();
             // 已经达到排名
             if (url.equals(host)) {
                 // 单次竞价或者重复竞价

@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 public class AccountIdEntity {
 
-    @Field("aid")
+    @Field("acid")
     private long accountId;
 
 

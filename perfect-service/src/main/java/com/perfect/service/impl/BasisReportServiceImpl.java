@@ -1,7 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.BasisReportDAO;
-import com.perfect.entity.AccountReportResponse;
+import com.perfect.dto.AccountReportDTO;
 import com.perfect.entity.StructureReportEntity;
 import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.service.BasisReportService;
@@ -504,15 +504,15 @@ public class BasisReportServiceImpl implements BasisReportService {
     }
 
     @Override
-    public Map<String, List<AccountReportResponse>> getAccountAll(int Sorted, String fieldName) {
+    public Map<String, List<AccountReportDTO>> getAccountAll(int Sorted, String fieldName) {
 
-        List<AccountReportResponse> reportEntities = basisReportDAO.getAccountReport(Sorted, fieldName);
+        List<AccountReportDTO> reportEntities = basisReportDAO.getAccountReport(Sorted, fieldName);
 
-        Map<String, List<AccountReportResponse>> map = new HashMap<>();
-        List<AccountReportResponse> entities = new ArrayList<>();
+        Map<String, List<AccountReportDTO>> map = new HashMap<>();
+        List<AccountReportDTO> entities = new ArrayList<>();
         ForkJoinPool joinPoolTow = new ForkJoinPool();
         //开始对数据进行处理
-        Future<List<AccountReportResponse>> joinTask = joinPoolTow.submit(new AccountReportPCPlusMobUtil(reportEntities, 0, reportEntities.size()));
+        Future<List<AccountReportDTO>> joinTask = joinPoolTow.submit(new AccountReportPCPlusMobUtil(reportEntities, 0, reportEntities.size()));
 
         try {
             entities = joinTask.get();
@@ -538,16 +538,16 @@ public class BasisReportServiceImpl implements BasisReportService {
             case 0:
                 Map<String, List<Object>> retrunMap = new HashMap<>();
                 List<Object> objectListDate = new ArrayList<>();
-                List<AccountReportResponse> listOne = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
-                List<AccountReportResponse> listTow = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
+                List<AccountReportDTO> listOne = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
+                List<AccountReportDTO> listTow = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
                 //获取数据
-                Map<String, List<AccountReportResponse>> responseMapOne =  getUserDataPro(listOne,dateOne[0], dateOne[1]);
-                Map<String, List<AccountReportResponse>> responseMapTow =  getUserDataPro(listTow,dateTow[0], dateTow[1]);
+                Map<String, List<AccountReportDTO>> responseMapOne =  getUserDataPro(listOne,dateOne[0], dateOne[1]);
+                Map<String, List<AccountReportDTO>> responseMapTow =  getUserDataPro(listTow,dateTow[0], dateTow[1]);
 
                 //如果要求是全部数据
                 if(devices == 0){
-                    Map<String, List<AccountReportResponse>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne);
-                    Map<String, List<AccountReportResponse>> responseMapDevicesTow = getPcPlusMobileDate(responseMapTow);
+                    Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne);
+                    Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(responseMapTow);
                     List<Object> objectList = new ArrayList<>();
                     objectList.add(responseMapDevicesOne);
                     objectList.add(responseMapDevicesTow);
@@ -560,8 +560,8 @@ public class BasisReportServiceImpl implements BasisReportService {
                 }
 
                 //计算点击率、平均价格
-                Map<String, List<AccountReportResponse>> responseMapAverageOne = getAverage(responseMapOne);
-                Map<String, List<AccountReportResponse>> responseMapAverageTow = getAverage(responseMapTow);
+                Map<String, List<AccountReportDTO>> responseMapAverageOne = getAverage(responseMapOne);
+                Map<String, List<AccountReportDTO>> responseMapAverageTow = getAverage(responseMapTow);
 
                 List<Object> objectList = new ArrayList<>();
                 objectList.add(responseMapAverageOne);
@@ -574,25 +574,25 @@ public class BasisReportServiceImpl implements BasisReportService {
                 return retrunMap;
             case 1:
                 Map<String, List<Object>> retrunMap1 = new HashMap<>();
-                Map<String, List<AccountReportResponse>> responseMapOne1 = new HashMap<>();
-                Map<String, List<AccountReportResponse>> responseMapTow1 = new HashMap<>();
-                List<AccountReportResponse> listOne1 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
-                List<AccountReportResponse> listTow1 = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
+                Map<String, List<AccountReportDTO>> responseMapOne1 = new HashMap<>();
+                Map<String, List<AccountReportDTO>> responseMapTow1 = new HashMap<>();
+                List<AccountReportDTO> listOne1 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
+                List<AccountReportDTO> listTow1 = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
                 List<Object> objectListDateOne1 = new ArrayList<>();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                for (AccountReportResponse listEnd:listOne1){
-                    List<AccountReportResponse> list = new ArrayList<>();
+                for (AccountReportDTO listEnd:listOne1){
+                    List<AccountReportDTO> list = new ArrayList<>();
                     list.add(listEnd);
                     responseMapOne1.put(dateFormat.format(listEnd.getDate()),list);
                 }
-                for (AccountReportResponse listEnd:listTow1){
-                    List<AccountReportResponse> list = new ArrayList<>();
+                for (AccountReportDTO listEnd:listTow1){
+                    List<AccountReportDTO> list = new ArrayList<>();
                     list.add(listEnd);
                     responseMapTow1.put(dateFormat.format(listEnd.getDate()),list);
                 }
                 if(devices == 0){
-                    Map<String, List<AccountReportResponse>> responseMapDevicesOne = getPcPlusMobileDate(null);
-                    Map<String, List<AccountReportResponse>> responseMapDevicesTow = getPcPlusMobileDate(null);
+                    Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(null);
+                    Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(null);
                     List<Object> objectList1 = new ArrayList<>();
                     objectList1.add(responseMapOne1);
                     objectList1.add(responseMapTow1);
@@ -656,10 +656,10 @@ public class BasisReportServiceImpl implements BasisReportService {
      * @param responseMap
      * @return
      */
-    public Map<String, List<AccountReportResponse>> getPcPlusMobileDate(Map<String, List<AccountReportResponse>> responseMap){
+    public Map<String, List<AccountReportDTO>> getPcPlusMobileDate(Map<String, List<AccountReportDTO>> responseMap){
         DecimalFormat df = new DecimalFormat("#.00");
-        for (Map.Entry<String, List<AccountReportResponse>> voEntity : responseMap.entrySet()) {
-            for (AccountReportResponse response : voEntity.getValue()){
+        for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMap.entrySet()) {
+            for (AccountReportDTO response : voEntity.getValue()){
                 response.setPcImpression(response.getPcImpression() + ((response.getMobileImpression() == null)?0:response.getMobileImpression()));
                 response.setPcConversion(response.getPcConversion() + ((response.getMobileConversion() == null)?0:response.getMobileConversion()));
                 response.setPcClick(response.getPcClick() + ((response.getMobileClick() == null)?0:response.getMobileClick()));
@@ -708,10 +708,10 @@ public class BasisReportServiceImpl implements BasisReportService {
     /**
      * 账户计算点击率 平均价格等
      */
-    private Map<String, List<AccountReportResponse>> getAverage(Map<String, List<AccountReportResponse>> responseMap){
+    private Map<String, List<AccountReportDTO>> getAverage(Map<String, List<AccountReportDTO>> responseMap){
         DecimalFormat df = new DecimalFormat("#.00");
-        for (Map.Entry<String, List<AccountReportResponse>> voEntity : responseMap.entrySet()) {
-            for (AccountReportResponse response : voEntity.getValue()){
+        for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMap.entrySet()) {
+            for (AccountReportDTO response : voEntity.getValue()){
                 if (response.getMobileImpression() == null || response.getMobileImpression() == 0) {
                     response.setMobileCtr(0.00);
                 } else {
@@ -751,11 +751,11 @@ public class BasisReportServiceImpl implements BasisReportService {
      * @param date2     数据结束时间
      * @return
      */
-    private Map<String, List<AccountReportResponse>> getUserDataPro(List<AccountReportResponse> responses, Date date1, Date date2) {
-        Map<String, List<AccountReportResponse>> responseMap = new HashMap<>();
-        List<AccountReportResponse> responseList = new ArrayList<>();
+    private Map<String, List<AccountReportDTO>> getUserDataPro(List<AccountReportDTO> responses, Date date1, Date date2) {
+        Map<String, List<AccountReportDTO>> responseMap = new HashMap<>();
+        List<AccountReportDTO> responseList = new ArrayList<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        for (AccountReportResponse enit : responses) {
+        for (AccountReportDTO enit : responses) {
             if (responseList.size() > 0) {
                 responseList.get(0).setPcImpression(responseList.get(0).getPcImpression() + ((enit.getPcImpression() == null)?0:enit.getPcImpression()));
                 responseList.get(0).setPcClick(responseList.get(0).getPcClick() + ((enit.getPcClick() == null) ? 0 : enit.getPcClick()));

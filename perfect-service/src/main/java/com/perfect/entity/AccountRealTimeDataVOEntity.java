@@ -9,9 +9,7 @@ import java.util.Date;
  * Created by baizz on 2014-07-30.
  */
 @Document(collection = "accountRealTimeData")
-public class AccountRealTimeDataVOEntity {
-
-    private Long accountId;
+public class AccountRealTimeDataVOEntity extends AccountIdEntity{
 
     @Field(value = "name")
     private String accountName;
@@ -31,14 +29,6 @@ public class AccountRealTimeDataVOEntity {
 
     @Field(value = "conv")
     private Double conversion;      //转化
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
 
     public String getAccountName() {
         return accountName;
@@ -111,7 +101,6 @@ public class AccountRealTimeDataVOEntity {
 
         AccountRealTimeDataVOEntity that = (AccountRealTimeDataVOEntity) o;
 
-        if (accountId != null ? !accountId.equals(that.accountId) : that.accountId != null) return false;
         if (accountName != null ? !accountName.equals(that.accountName) : that.accountName != null) return false;
         if (click != null ? !click.equals(that.click) : that.click != null) return false;
         if (conversion != null ? !conversion.equals(that.conversion) : that.conversion != null) return false;
@@ -126,8 +115,7 @@ public class AccountRealTimeDataVOEntity {
 
     @Override
     public int hashCode() {
-        int result = accountId != null ? accountId.hashCode() : 0;
-        result = 31 * result + (accountName != null ? accountName.hashCode() : 0);
+        int result = (accountName != null ? accountName.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (impression != null ? impression.hashCode() : 0);
         result = 31 * result + (click != null ? click.hashCode() : 0);
@@ -141,7 +129,7 @@ public class AccountRealTimeDataVOEntity {
     @Override
     public String toString() {
         return "AccountRealTimeDataVOEntity{" +
-                "accountId=" + accountId +
+                "accountId=" + getAccountId() +
                 ", accountName='" + accountName + '\'' +
                 ", date=" + date +
                 ", impression=" + impression +

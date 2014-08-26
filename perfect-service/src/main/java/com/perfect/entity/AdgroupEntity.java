@@ -18,7 +18,7 @@ import java.util.List;
 public class AdgroupEntity extends AccountIdEntity{
 
     @Id
-    private ObjectId id;
+    private String id;
 
     //AdgroupType Attributes
     @Indexed(unique = true)
@@ -244,11 +244,11 @@ public class AdgroupEntity extends AccountIdEntity{
                 + outputString;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

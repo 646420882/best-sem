@@ -187,7 +187,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         Double costRate;
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
         Long baiduAccountId = AppContext.get().getAccountId();
-        Date date = ((List<Date>) DateUtils.getsLatestAnyDays(2).get("_date")).get(1);
+        Date date = ((List<Date>) DateUtils.getsLatestAnyDays("MM-dd",2).get(DateUtils.KEY_DATE)).get(1);
         AccountReportEntity reportEntity = mongoTemplate.
                 findOne(Query.query(Criteria.where("date").is(date).and("acid").is(baiduAccountId)), AccountReportEntity.class);
         if (reportEntity != null)

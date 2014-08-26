@@ -3,7 +3,7 @@ package com.perfect.service;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.entity.CreativeVOEntity;
+import com.perfect.dto.CreativeDTO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.entity.bidding.StrategyEntity;
 import com.perfect.service.impl.HTMLAnalyseServiceImpl;
@@ -289,7 +289,7 @@ public class BaiduApiService {
 
                 int pos = strategyEntity.getPositionStrategy();
                 int rank = 0;
-                for (CreativeVOEntity leftEntity : previewData.getLeft()) {
+                for (CreativeDTO leftEntity : previewData.getLeft()) {
                     rank++;
                     String url = leftEntity.getUrl();
                     if (url.equals(host)) {
@@ -302,7 +302,7 @@ public class BaiduApiService {
                     continue;
                 }
                 rank = 0;
-                for (CreativeVOEntity rightEntity : previewData.getRight()) {
+                for (CreativeDTO rightEntity : previewData.getRight()) {
                     rank--;
                     String url = rightEntity.getUrl();
                     if (url.equals(host)) {

@@ -1,19 +1,15 @@
 package com.perfect.mongodb.dao.impl;
 
-import com.perfect.core.AppContext;
 import com.perfect.dao.BasisReportDAO;
-import com.perfect.entity.AccountReportEntity;
-import com.perfect.entity.AccountReportResponse;
+import com.perfect.dto.AccountReportDTO;
 import com.perfect.entity.StructureReportEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
-import com.perfect.utils.DBNameUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.gridfs.GridFsCriteria;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -34,7 +30,7 @@ public class BasisReportDAOImpl extends AbstractUserBaseDAOImpl<StructureReportE
     }
 
     @Override
-    public List<AccountReportResponse> getAccountReport(int Sorted,String fieldName) {
+    public List<AccountReportDTO> getAccountReport(int Sorted,String fieldName) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
         Sort sort = null;
         if (Sorted == 0) {
@@ -42,7 +38,7 @@ public class BasisReportDAOImpl extends AbstractUserBaseDAOImpl<StructureReportE
         } else {
             sort = new Sort(Sort.Direction.DESC, fieldName);
         }
-        List<AccountReportResponse> reportEntities = mongoTemplate.find(new Query().with(sort), AccountReportResponse.class, "account_report");
+        List<AccountReportDTO> reportEntities = mongoTemplate.find(new Query().with(sort), AccountReportDTO.class, "account_report");
         return reportEntities;
     }
 
@@ -54,9 +50,9 @@ public class BasisReportDAOImpl extends AbstractUserBaseDAOImpl<StructureReportE
     }
 
     @Override
-    public List<AccountReportResponse> getAccountReport(Date startDate, Date endDate) {
+    public List<AccountReportDTO> getAccountReport(Date startDate, Date endDate) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        List<AccountReportResponse> reportResponses = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)),AccountReportResponse.class, "account_report");
+        List<AccountReportDTO> reportResponses = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)),AccountReportDTO.class, "account_report");
         return reportResponses;
     }
 

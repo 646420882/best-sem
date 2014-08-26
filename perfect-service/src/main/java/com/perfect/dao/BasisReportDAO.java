@@ -1,5 +1,6 @@
 package com.perfect.dao;
 
+import com.perfect.dto.AccountReportDTO;
 import com.perfect.entity.*;
 
 import java.util.Date;
@@ -41,7 +42,7 @@ public interface BasisReportDAO{
      * 获取账户所有数据
      * @return
      */
-    public List<AccountReportResponse> getAccountReport(int Sorted,String fieldName);
+    public List<AccountReportDTO> getAccountReport(int Sorted,String fieldName);
 
     /**
      * 得到用户数据条数
@@ -55,7 +56,7 @@ public interface BasisReportDAO{
      * @param endDate 结束时间
      * @return
      */
-    public List<AccountReportResponse> getAccountReport(Date startDate,Date endDate);
+    public List<AccountReportDTO> getAccountReport(Date startDate,Date endDate);
 
 
     /**********API接口*********/

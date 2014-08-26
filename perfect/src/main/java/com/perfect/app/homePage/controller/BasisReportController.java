@@ -1,7 +1,7 @@
 package com.perfect.app.homePage.controller;
 
 import com.google.gson.Gson;
-import com.perfect.entity.AccountReportResponse;
+import com.perfect.dto.AccountReportDTO;
 import com.perfect.entity.StructureReportEntity;
 import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.service.BasisReportService;
@@ -84,7 +84,7 @@ public class BasisReportController {
                                  @RequestParam(value = "Sorted", required = false,defaultValue = "0") int Sorted,
                                  @RequestParam(value = "fieldName", required = false,defaultValue = "date") String fieldName){
 
-        Map<String, List<AccountReportResponse>> returnAccount = basisReportService.getAccountAll(Sorted, fieldName);
+        Map<String, List<AccountReportDTO>> returnAccount = basisReportService.getAccountAll(Sorted, fieldName);
 
         String data=new Gson().toJson(returnAccount);
 

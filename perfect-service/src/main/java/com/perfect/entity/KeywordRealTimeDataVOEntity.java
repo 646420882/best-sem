@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 /**
  * Created by baizz on 14-7-23.
  */
+@Deprecated
 public class KeywordRealTimeDataVOEntity implements Comparable<KeywordRealTimeDataVOEntity>{
 
     @Id
