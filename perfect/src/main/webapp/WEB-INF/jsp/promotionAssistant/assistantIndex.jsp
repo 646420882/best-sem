@@ -1046,14 +1046,14 @@
     <div class="zh_list02 over">
         <ul>
             <li>
-                <span>帐户余额：<b id="balance">￥38678.1</b></span>
-                <span>昨日消费：<b id="cost">暂无数据</b></span>
-                <span>消费升降：<b id="costStatus">暂无数据</b></span>
+                <span>帐户余额：<b id="balance" class="blue">￥38678.1</b></span>
+                <span>昨日消费：<b id="cost" class="blue">暂无数据</b></span>
+                <span>消费升降：<b id="costStatus" class="blue">暂无数据</b></span>
                 <span>动态创意:<a href="#" class="showbox7">开启</a></span>
             </li>
             <li>
                 <span>帐户预算：<b id="accountBudget">不限定</b><a href="#" class="showbox5">修改</a></span>
-                <span>到达预算：<b id="reachBudget">-</b></span>
+                <span>到达预算：<b id="reachBudget" class="blue">-</b></span>
                 <span>IP排除：<a href="#" class="showbox6">设置</a></span>
             </li>
         </ul>
@@ -1278,6 +1278,19 @@
         </div>
     </div>
 </div>
+
+<div id="reachBudget1" class="box" style="display:none; width: 600px">
+    <h2 id="reachBudget_head">账户预算<a href="#" class="close">关闭</a></h2>
+    <div class="mainlist">
+        <div class="tu_top over">
+            <ul id="budgetList" class="zs_set">
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
 <div  class="box" style="display:none" id="jcAdd">
     <h2 id="jcBox">添加创意<a href="#" class="close">关闭</a></h2>
 

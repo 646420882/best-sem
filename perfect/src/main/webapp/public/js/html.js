@@ -23,6 +23,7 @@ window.onload = function () {
     rDrag.init(document.getElementById('box4'));
     rDrag.init(document.getElementById('box5'));
     rDrag.init(document.getElementById('box6'));
+    rDrag.init(document.getElementById('reachBudget_head'));
 };
 $(function () {
     $(".showbox").click(function () {

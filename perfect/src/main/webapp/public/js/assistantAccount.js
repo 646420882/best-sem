@@ -351,17 +351,17 @@ var adgroupId;
 
 $(function () {
     //获取账户树数据
-    $.ajax({
-        url: "/account/get_tree",
-        type: "GET",
-        dataType: "json",
-        async: false,
-        success: function (data, textStatus, jqXHR) {
-            zNodes = data.trees;
-        }
-    });
+//    $.ajax({
+//        url: "/account/get_tree",
+//        type: "GET",
+//        dataType: "json",
+//        async: false,
+//        success: function (data, textStatus, jqXHR) {
+//            zNodes = data.trees;
+//        }
+//    });
     //加载账户树
-    $.fn.zTree.init($("#zTree"), setting, zNodes);
+//    $.fn.zTree.init($("#zTree"), setting, zNodes);
 
     loadAccountData();
 
@@ -397,6 +397,17 @@ $(function () {
         }
         reloadhighcharts(arr_checkbox);
     });
+
+    $("#reachBudget").livequery('click', function () {
+        $(".TB_overlayBG").css({
+            display: "block", height: $(document).height()
+        });
+        $("#reachBudget1").css({
+            left: ($("body").width() - $("#reachBudget1").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#reachBudget1").height()) / 2 + $(window).scrollTop() + "px",
+            display: "block"
+        });
+    });
 });
 
 var loadAccountData = function () {
@@ -409,13 +420,15 @@ var loadAccountData = function () {
         async: false,
         success: function (data, textStatus, jqXHR) {
             var result = data.rows;
-            if(result != null){
+            var _budget = 0;
+            if (result != null) {
                 $("#cost").text("￥" + data.cost);
                 $("#balance").text("￥" + result.balance);
+                _budget = result.balance;
                 $("#accountBudget").text(result.budget);
                 if (result.excludeIp.length > 0) {
+                    var temp = result.excludeIp;
                     for (var i = 0, l = result.excludeIp.length; i < l; i++) {
-                        var temp = result.excludeIp;
                         var _val = $("#excludeIP_ta").val();
                         if (_val == null || _val.trim().length == 0)
                             $("#excludeIP_ta").val(temp[i]);
@@ -425,6 +438,55 @@ var loadAccountData = function () {
                 }
                 dynamicCreativeStatus = (result.isDynamicCreative == null || result.isDynamicCreative == false) ? 0 : 1;
                 $(".showbox7").text((dynamicCreativeStatus == 0) ? "开启" : "关闭");
+            }
+
+            //账户到达预算
+            var _budgetOfflineTime = data.budgetOfflineTime;
+            if (_budgetOfflineTime.trim().length > 0) {
+                $.each(_budgetOfflineTime, function (i, item) {
+                    var _time = parseInt((item.flag.split("/"))[1]);    //当日时间-小时
+                    var _day = (item.flag.split("/"))[0];
+                    if (i == 0) {
+                        $("#reachBudget").text(_day);
+                    }
+                    var _li = "<li><b style='float: left; margin-left: 10px; margin-right: 30px'>" + _day + "</b>";
+                    if (item.flag == 1) {
+                        //上线
+                        for (var k = 0; k <= 23; k++) {
+                            if (k < _time) {
+                                //之前的都是下线
+                                _li += "<span style='background-color: lightgray'></span>";
+                            } else {
+                                _li += "<span style='background-color: orange'></span>";
+                            }
+                        }
+                    } else {
+                        //下线
+                        for (var l = 0; l <= 23; l++) {
+                            if (l < _time) {
+                                //之前的都是上线
+                                _li += "<span style='background-color: orange'></span>";
+                            } else {
+                                _li += "<span style='background-color: lightgray'></span>";
+                            }
+                        }
+                    }
+                    _li += "</li>";
+                    $("#budgetList").append(_li);
+                })
+            } else {
+                $("#reachBudget").text("无");
+            }
+
+            //消费升降
+            if (data.costRate != null && (parseFloat(data.costRate)) != 0) {
+                if (parseFloat(data.costRate) > 0) {
+                    //上升
+                    $("#costStatus").text(data.costRate + "%");
+                } else {
+                    //下降
+                    $("#costStatus").text(-parseFloat(data.costRate) + "%");
+                }
             }
         }
     });
@@ -495,4 +557,22 @@ var excludeIP = function () {
         success: function (data, textStatus, jqXHR) {
         }
     });
+};
+
+Date.prototype.Format = function (fmt) {
+    var o = {
+        "M+": this.getMonth() + 1,                 //月份
+        "d+": this.getDate(),                    //日
+        "h+": this.getHours(),                   //小时
+        "m+": this.getMinutes(),                 //分
+        "s+": this.getSeconds(),                 //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds()             //毫秒
+    };
+    if (/(y+)/.test(fmt))
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
 };
