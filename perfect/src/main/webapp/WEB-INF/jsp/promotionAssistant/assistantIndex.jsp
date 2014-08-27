@@ -1295,9 +1295,9 @@
     </div>
 
 </div>
-
+<%--创意添加选择计划，单元弹出窗口--%>
 <div  class="box" style="display:none" id="jcAdd">
-    <h2 id="jcBox">添加创意<a href="#" class="close">关闭</a></h2>
+    <h2 id="dAdd">添加创意<a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
         选择要添加到的计划或者单元!
@@ -1339,8 +1339,33 @@
         </div>
     </div>
 </div>
+<%--创意修改弹出窗口--%>
+<div  class="box" style="display:none" id="jcUpdate">
+    <h2 id="dUpdate">修改创意<a href="#" class="close">关闭</a></h2>
 
-
+    <div class="mainlist">
+        <form id="cUpdateForm">
+            <input name="oid" type="hidden"/>
+            <label>创意标题:</label><input name="title" maxlength="50"/>
+            <label>创意描述1:</label><input name="description1" maxlength="80"/></br>
+            <label>创意描述2:</label><input name="description2" maxlength="80"/>
+            <label>默认访问URL:</label><input name="pcDestinationUrl" maxlength="1024"/></br>
+            <label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/>
+            <label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></br>
+            <label>移动显示URL:</label><input name="mobileDisplayUrl" maxlength="36"/>
+            <label>创意状态:</label><input name="pause"  readonly="readonly"/></br>
+            <label>是否启用:</label><select name="status"><option value="true">启用</option><option value="false">暂停</option></select>
+        </form>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li onclick="updateOk();">确认</li>
+                <li onclick="closeAlert();">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>

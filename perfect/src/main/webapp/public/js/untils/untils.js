@@ -1,6 +1,44 @@
 /**
  * Created by XiaoWei on 2014/8/21.
  */
+$.fn.extend({
+    submit:function(url,func){
+        var data={};
+        var inputs=$(this).parents("tr").find("input");
+        for(var i=0;i<inputs.size();i++){
+            if(inputs[i].name){
+                data[inputs[i].name]=inputs[i].value;
+            }
+        }
+        var selects=$(this).parents("tr").find("select");
+        for(var i=0;i<selects.size();i++){
+            if(selects[i].name){
+                data[selects[i].name]=selects[i].value;
+            }
+        }
+        data["aid"]=sparams.aid;
+        $.post(url,data,function(json){
+            if(func)
+                func(json);
+        });
+    },
+    formSubmit:function(url,func){
+        var inputs=$(this).find("input");
+        var data={};
+        for(var i=0;i<inputs.length;i++){
+            if(inputs[i].name){
+                data[inputs[i].name]=inputs[i].value;
+            }
+        }
+        var selects=$(this).find("select");
+        for(var i=0;i<selects.length;i++){
+            data[selects[i].name]=selects[i].value;
+        }
+        $.post(url,data,func);
+        if(func)
+            func();
+    }
+});
 var until = {
     substring: function (count, str) {
         if (str != null) {

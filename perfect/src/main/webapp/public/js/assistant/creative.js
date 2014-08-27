@@ -5,38 +5,13 @@
  * 树加载数据需要的计划，单元参数，默认都为空
  * @type {{aid: null, cid: null}}
  */
-$.fn.extend({
-    submit:function(url,func){
-        var data={};
-        var inputs=$(this).parents("tr").find("input");
-        for(var i=0;i<inputs.size();i++){
-            if(inputs[i].name){
-                data[inputs[i].name]=inputs[i].value;
-            }
-        }
-        var selects=$(this).parents("tr").find("select");
-        for(var i=0;i<selects.size();i++){
-            if(selects[i].name){
-                data[selects[i].name]=selects[i].value;
-            }
-        }
-        data["aid"]=sparams.aid;
-        $.post(url,data,function(json){
-            if(func)
-            func(json);
-        });
-    }
-});
+
 var sparams = {aid: null, cid: null};
 $(function () {
     loadCreativeData(sparams);
     InitMenu();
-    rDrag.init($("#jcBox"));
-    $("#createTable input").keydown(function(event){
-        if(event.keyCode==13){
-            alert("你干什么？"+$(this).val());
-        }
-    });
+    rDrag.init(document.getElementById("dAdd"));
+    rDrag.init(document.getElementById("dUpdate"));
 });
 
 /**
@@ -54,9 +29,9 @@ var add = {
         deleteByObjectId(tmp);
     }
 }, update = {
-    text: "验证创意",
+    text: "修改创意",
     func: function () {
-        alert("验证");
+       updateCreatvie(tmp);
     }
 }
 /**
@@ -116,7 +91,7 @@ function InitMenu() {
                         var i = $("#createTable tbody tr").size();
                         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                            "<td ondblclick='edit(this);'>&nbsp;<span></span></td>" +
+                            "<td ondblclick='edit(this);'>&nbsp;<inpu type='hidden' value='"+data["cacheCativeId"]+"'/></td>" +
                             "<td ondblclick='edit(this);'>" + until.substring(10, data["title"]) + "</td>" +
                             " <td ondblclick='edit(this);'>" + until.substring(10, data["description1"]) + "</td>" +
                             " <td ondblclick='edit(this);'>" + until.substring(10, data["description2"]) + "</td>" +
@@ -149,7 +124,7 @@ function loadCreativeData(params) {
                 for (var i = 0; i < json.length; i++) {
                     _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                     var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                        "<td ondblclick='edit(this);'>&nbsp;<input type='hidden' value='"+json[i].id+"'/></td>" +
+                        "<td ondblclick='edit(this);'>&nbsp;<input type='hidden' value='"+json[i].creativeId+"'/></td>" +
                         "<td ondblclick='edit(this);'>" + until.substring(10, json[i].title) + "</td>" +
                         " <td ondblclick='edit(this);'>" + until.substring(10, json[i].description1) + "</td>" +
                         " <td ondblclick='edit(this);'>" + until.substring(10, json[i].description2) + "</td>" +
@@ -190,13 +165,34 @@ function on(obj) {
     preview(obj);
     $("#sDiv input[type='text']").val("");
     var _this = $(obj);
-    var title = _this.find("td:eq(1) a").attr("title") != undefined ? _this.find("td:eq(1) a").attr("title") : _this.find("td:eq(1) input").val();
+    var title = _this.find("td:eq(1) a").attr("title") != undefined ? _this.find("td:eq(1) a").attr("title"): _this.find("td:eq(1) input").val();
+    if(title==undefined){
+        title=_this.find("td:eq(1) span").html();
+    }
     var de1 = _this.find("td:eq(2) a").attr("title") != undefined ? _this.find("td:eq(2) a").attr("title") : _this.find("td:eq(2) input").val();
+    if(de1==undefined){
+        de1=_this.find("td:eq(2) span").html();
+    }
     var de2 = _this.find("td:eq(3) a").attr("title") != undefined ? _this.find("td:eq(3) a").attr("title") : _this.find("td:eq(3) input").val();
+    if(de2==undefined){
+        de2=_this.find("td:eq(3) span").html();
+    }
     var pc = _this.find("td:eq(4) a").attr("href") != undefined ? _this.find("td:eq(4) a").attr("href") : _this.find("td:eq(4) input").val();
+    if(pc==undefined){
+        pc=_this.find("td:eq(4) span").html();
+    }
     var pcs = _this.find("td:eq(5) a").attr("title") != undefined ? _this.find("td:eq(5) a").attr("title") : _this.find("td:eq(5) input").val();
+    if(pcs==undefined){
+        pcs=_this.find("td:eq(5) span").html();
+    }
     var mib = _this.find("td:eq(6) span:eq(0)").text() != "" ? _this.find("td:eq(6) span:eq(0)").text() : _this.find("td:eq(6) input").val();
+    if(mib==undefined){
+        mib=_this.find("td:eq(6) a").attr("title");
+    }
     var mibs = _this.find("td:eq(7) span:eq(0)").text() != "" ? _this.find("td:eq(7) span:eq(0)").text() : _this.find("td:eq(7) input").val();
+    if(mibs==undefined){
+        mibs=_this.find("td:eq(7) a").attr("title");
+    }
     var pause=_this.find("td:eq(8) select")==""?_this.find("td:eq(10)").find("select"):_this.find("td:eq(8)").html();
     var status=_this.find("td:eq(9) select")==""?_this.find("td:eq(9)").find("select"):_this.find("td:eq(9)").html();
 
@@ -256,7 +252,7 @@ function addCreative() {
         var _createTable = $("#createTable tbody");
         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-            "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span></td>" +
+            "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden' name='cacheCativeId' value='"+getCreativeId()+"'/></td>" +
             "<td><input name='title' onkeyup='onKey(this);' style='width:140px;' maxlength='50'></td>" +
             " <td><input name='description1' onkeyup='onKey(this);'  style='width:140px;'  maxlength='80'></td>" +
             " <td><input name='description2' onkeyup='onKey(this);'  style='width:140px;' maxlength='80'></td>" +
@@ -387,8 +383,17 @@ function preview(obj) {
     var previeBody = $("#sPreview");
     previeBody.empty();
     var title = _this.find("td:eq(1) a").attr("title") != undefined ? _this.find("td:eq(1) a").attr("title") : _this.find("td:eq(1) input").val();
+    if(title==undefined){
+        title=_this.find("td:eq(1)").html();
+    }
     var de1 = _this.find("td:eq(2) a").attr("title") != undefined ? _this.find("td:eq(2) a").attr("title") : _this.find("td:eq(2) input").val();
+    if(de1==undefined){
+        de1=_this.find("td:eq(2)").html();
+    }
     var de2 = _this.find("td:eq(3) a").attr("title") != undefined ? _this.find("td:eq(3) a").attr("title") : _this.find("td:eq(3) input").val();
+    if(de2==undefined){
+        de2=_this.find("td:eq(3)").html();
+    }
     var pc = _this.find("td:eq(4) a").attr("href") != undefined ? _this.find("td:eq(4) a").attr("href") : _this.find("td:eq(4) input").val();
     var pcs = _this.find("td:eq(5) a").attr("title") != undefined ? _this.find("td:eq(5) a").attr("title") : _this.find("td:eq(5) input").val();
     var mib = _this.find("td:eq(6) span:eq(0)").text() != "" ? _this.find("td:eq(6) span:eq(0)").text() : _this.find("td:eq(6) input").val();
@@ -410,7 +415,6 @@ function edit(rs) {
     var _this = $(rs);
     var _tr = _this.parents("tr");
     var _td = _tr.find("td:eq(1)").html();
-    alert(_td);
 }
 /**
  * 动态更新创意中的数据，如果 是点击计划树
@@ -453,6 +457,7 @@ function planUnit() {
 function closeAlert() {
     $(".TB_overlayBG").css("display", "none");
     $("#jcAdd ").css("display", "none");
+    $("#jcUpdate ").css("display", "none");
 }
 /**
  * 获取全部的推广计划，生成select选项
@@ -503,8 +508,12 @@ function loadTree(rs){
     loadCreativeData(sparams);
     }
 }
+/**
+ * 根据mongoId 删除创意
+ * @param temp 选择的对象
+ */
 function deleteByObjectId(temp){
-    var oid=temp.find("td:eq(0) input").val();
+    var oid=$(temp).find("td:eq(0) input").val();
     var con=confirm("是否删除该创意？");
     if(con){
         $.get("/assistantCreative/del",{oid:oid},function(rs){
@@ -513,6 +522,58 @@ function deleteByObjectId(temp){
             }
         });
     }
+}
+/**
+ * 修改选中的创意
+ * @param temp
+ */
+function updateCreatvie(temp){
+    var _update=$("#jcUpdate");
+    $(".TB_overlayBG").css({
+        display: "block", height: $(document).height(),
+        opacity:0.2
+    });
+    _update.css({
+        left: ($("body").width() - _update.width()) / 2 - 20 + "px",
+        top: ($(window).height() - _update.height()) / 2 + $(window).scrollTop() + "px",
+        display: "block"
+    });
+    var _tr=$(temp);
+    var creativeId=_tr.find("td:eq(0) input").val();
+    var title=_tr.find("td:eq(1) a").attr("title")!=undefined?_tr.find("td:eq(1) a").attr("title"):_tr.find("td:eq(1) span").html();
+    var description1=_tr.find("td:eq(2) a").attr("title")!=undefined?_tr.find("td:eq(2) a").attr("title"):_tr.find("td:eq(2) span").html();
+    var description2=_tr.find("td:eq(3) a").attr("title")!=undefined?_tr.find("td:eq(3) a").attr("title"):_tr.find("td:eq(3) span").html();
+    var pcDestinationUrl=_tr.find("td:eq(4) a").attr("href")!=undefined?_tr.find("td:eq(4) a").attr("href"):_tr.find("td:eq(4) span").html();
+    var pcDisplayUrl=_tr.find("td:eq(5) a").attr("title")!=undefined?_tr.find("td:eq(5) a").attr("title"):_tr.find("td:eq(5) span").html();
+    var mobileDestinationUrl=_tr.find("td:eq(6) a").attr("title")!=undefined?_tr.find("td:eq(6) a").attr("title"):_tr.find("td:eq(6) span").html();
+    var mobileDisplayUrl=_tr.find("td:eq(7) a").attr("title")!=undefined?_tr.find("td:eq(7) a").attr("title"):_tr.find("td:eq(7) span").html();
+    var status=_tr.find("td:eq(8)").html();
+    var pause=_tr.find("td:eq(9)").html();
+    $("#cUpdateForm input[name='oid']").val(creativeId);
+    $("#cUpdateForm input[name='title']").val(title);
+    $("#cUpdateForm input[name='description1']").val(description1);
+    $("#cUpdateForm input[name='description2']").val(description2);
+    $("#cUpdateForm input[name='pcDestinationUrl']").val(pcDestinationUrl);
+    $("#cUpdateForm input[name='pcDisplayUrl']").val(pcDisplayUrl);
+    $("#cUpdateForm input[name='mobileDestinationUrl']").val(mobileDestinationUrl);
+    $("#cUpdateForm input[name='mobileDisplayUrl']").val(mobileDisplayUrl);
+    $("#cUpdateForm input[name='pause']").val(pause);
+     if(status=="启用"){
+         $("#cUpdateForm select[name='status']").get(0).selectedIndex=0;
+     }else{
+         $("#cUpdateForm select[name='status']").get(0).selectedIndex=1;
+     }
+}
+/**
+ * 修改确认提交方法
+ */
+function updateOk(){
+    $("#cUpdateForm").formSubmit("aaa",function(){
+
+    });
+}
+function getCreativeId(){
+    return Math.floor(Math.random()*100000000)+1;
 }
 
 

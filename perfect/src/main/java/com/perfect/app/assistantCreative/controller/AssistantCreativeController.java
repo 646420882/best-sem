@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by XiaoWei on 2014/8/21.
@@ -81,8 +80,9 @@ public class AssistantCreativeController extends WebContextSupport {
     return null;
     }
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public ModelAndView insertCreative(HttpServletResponse response,
+    public ModelAndView insertCreative(HttpServletRequest request,HttpServletResponse response,
                                        @RequestParam(value = "aid",required = true)String aid,
+                                       @RequestParam(value = "cacheCativeId",required = true)Long cacheCreativeId,
                                        @RequestParam(value = "title",required = false)String title,
                                        @RequestParam(value="description1",required = false)String de1,
                                        @RequestParam(value = "description2",required = false)String de2,
@@ -92,12 +92,11 @@ public class AssistantCreativeController extends WebContextSupport {
                                        @RequestParam(value = "mobileDisplayUrl",required = false)String mibs,
                                        @RequestParam(value = "pause")Boolean bol,
                                        @RequestParam(value = "status")Integer s,
-                                       @RequestParam(value = "d",required = false,defaultValue = "0")Integer d ){
+                                       @RequestParam(value = "d",required = false,defaultValue = "0")Integer d){
         CreativeEntity creativeEntity=new CreativeEntity();
-        creativeEntity.setAccountId(AppContext.get().getAccountId());
+        creativeEntity.setAccountId(AppContext.getAccountId());
         creativeEntity.setTitle(title);
-        Random random=new Random(1000000);
-        creativeEntity.setCreativeId(random.nextLong());
+        creativeEntity.setCreativeId(cacheCreativeId);
         creativeEntity.setDescription1(de1);
         creativeEntity.setDescription2(de2);
         creativeEntity.setPcDestinationUrl(pc);
@@ -114,8 +113,13 @@ public class AssistantCreativeController extends WebContextSupport {
         return null;
     }
     @RequestMapping(value = "/del")
-    public ModelAndView del(HttpServletResponse response,@RequestParam(value = "oid",required = true)String oid){
-        creativeDAO.deleteByObjectId(oid);
+    public ModelAndView del(HttpServletResponse response,@RequestParam(value = "oid",required = true)Long oid){
+        try {
+            creativeDAO.deleteByCacheId(oid);
+            writeHtml(SUCCESS,response);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return null;
     }
 }

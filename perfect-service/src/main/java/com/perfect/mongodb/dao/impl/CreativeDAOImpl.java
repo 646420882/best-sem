@@ -66,9 +66,8 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
     }
 
     @Override
-    public void deleteByObjectId(String objectId) {
-       BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(getId()).is(objectId)),CreativeEntity.class,"creative");
-
+    public void deleteByCacheId(Long objectId) {
+       BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where("creativeId").is(objectId)),CreativeEntity.class,"creative");
     }
 
     public CreativeEntity findOne(Long creativeId) {

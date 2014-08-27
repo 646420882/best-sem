@@ -22,7 +22,7 @@ public class AssistantAdgroupController extends WebContextSupport{
     AdgroupDAO adgroupDAO;
     @RequestMapping(value = "/getList")
     public ModelAndView getList(HttpServletRequest request,HttpServletResponse response){
-        List<AdgroupEntity> list=adgroupDAO.find(null,0,10);
+        List<AdgroupEntity> list=adgroupDAO.find(null,0,15);
         writeJson(list,response);
         return null;
     }
