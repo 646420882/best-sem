@@ -1093,15 +1093,15 @@
             <li><input type="radio" name="no1">&nbsp; 从最新的推广计划列表中选择</li>
         </ul>
         <div class="zs_sets over">
-            <div class="zs_ses1" style="overflow: auto">
+            <div id="allCampaign" class="zs_ses1" style="overflow: auto">
                 <ul>
                 </ul>
             </div>
-            <div class="zs_ses1 hides" style="overflow: auto">
+            <div id="existsCampaign" class="zs_ses1 hides" style="overflow: auto">
                 <ul>
                 </ul>
             </div>
-            <div class="zs_ses1 hides" style="overflow: auto">
+            <div id="newCampaign" class="zs_ses1 hides" style="overflow: auto">
                 <ul>
                 </ul>
             </div>
@@ -1418,6 +1418,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantKeyword.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantCampaign.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantAccount.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
 
 </body>
 </html>
