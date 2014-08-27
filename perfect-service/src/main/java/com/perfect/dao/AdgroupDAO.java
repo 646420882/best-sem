@@ -18,4 +18,7 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
 
     List<AdgroupEntity> findByQuery(Query query);
 
+    List<AdgroupEntity> findByCampaignId(Long cid);
+
+    List<AdgroupEntity> findIdByCampaignId(Long cid);
 }

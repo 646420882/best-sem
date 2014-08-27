@@ -8,7 +8,7 @@ public class FieldConstants {
     public static final String ACCOUNT_ID = "acid";
 
 
-    public static final String ADGROUP_ID = "agid";
+    public static final String ADGROUP_ID = "adid";
     public static final String KEYWORD_ID = "kwid";
     public static final String CREATIVE_ID = "crid";
 
