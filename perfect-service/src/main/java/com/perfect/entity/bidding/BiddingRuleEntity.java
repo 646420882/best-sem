@@ -6,6 +6,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import static com.perfect.mongodb.utils.EntityConstants.CAMPAIGN_ID;
+import static com.perfect.mongodb.utils.EntityConstants.KEYWORD_ID;
 import static com.perfect.mongodb.utils.EntityConstants.TBL_BIDDINGRULE;
 
 /**
@@ -19,13 +21,7 @@ public class BiddingRuleEntity extends AccountIdEntity {
     @Id
     private ObjectId id;
 
-    @Field("cid")
-    private long cid;
-
-    @Field("agid")
-    private long agid;
-
-    @Field("kwid")
+    @Field(KEYWORD_ID)
     private long keywordId;
 
     @Field("kw")
@@ -122,19 +118,4 @@ public class BiddingRuleEntity extends AccountIdEntity {
         this.currentPos = currentPos;
     }
 
-    public long getCid() {
-        return cid;
-    }
-
-    public void setCid(long cid) {
-        this.cid = cid;
-    }
-
-    public long getAgid() {
-        return agid;
-    }
-
-    public void setAgid(long agid) {
-        this.agid = agid;
-    }
 }

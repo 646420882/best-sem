@@ -56,7 +56,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
     public List<Long> getAdgroupIdByCampaignId(Long campaignId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new BasicQuery("{}", "{" + ADGROUP_ID + " : 1}");
-        query.addCriteria(Criteria.where("cid").is(campaignId));
+        query.addCriteria(Criteria.where(CAMPAIGN_ID).is(campaignId));
         List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class, EntityConstants.TBL_ADGROUP);
         List<Long> adgroupIds = new ArrayList<>(list.size());
         for (AdgroupEntity type : list)
@@ -264,8 +264,8 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
 
     private void deleteSub(List<Long> adgroupIds) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(ADGROUP_ID).in(adgroupIds)), KeywordEntity.class, "keyword");
-        mongoTemplate.remove(new Query(Criteria.where(ADGROUP_ID).in(adgroupIds)), CreativeEntity.class, "creative");
+        mongoTemplate.remove(new Query(Criteria.where(ADGROUP_ID).in(adgroupIds)), KeywordEntity.class);
+        mongoTemplate.remove(new Query(Criteria.where(ADGROUP_ID).in(adgroupIds)), CreativeEntity.class);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (Long id : adgroupIds) {
             DataOperationLogEntity log = LogUtils.getLog(id, AdgroupEntity.class, null, null);
