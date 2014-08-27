@@ -38,8 +38,8 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
 
     public List<Long> getCreativeIdByAdgroupId(Long adgroupId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        Query query = new BasicQuery("{}", "{creativeId : 1}");
-        query.addCriteria(Criteria.where("adid").is(adgroupId));
+        Query query = new BasicQuery("{}", "{"+EntityConstants.CREATIVE_ID+" : 1}");
+        query.addCriteria(Criteria.where(EntityConstants.ADGROUP_ID).is(adgroupId));
         List<CreativeEntity> types = mongoTemplate.find(query, CreativeEntity.class, EntityConstants.TBL_CREATIVE);
         List<Long> creativeIds = new ArrayList<>(types.size());
         for (CreativeEntity type : types)
@@ -50,7 +50,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
     public List<CreativeEntity> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
-        Criteria criteria = Criteria.where("agid").is(adgroupId);
+        Criteria criteria = Criteria.where(EntityConstants.ADGROUP_ID).is(adgroupId);
         if (params != null && params.size() > 0) {
             for (Map.Entry<String, Object> entry : params.entrySet())
                 criteria.and(entry.getKey()).is(entry.getValue());
@@ -63,18 +63,18 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
 
     @Override
     public List<CreativeEntity> getAllsByAdgroupIds(List<Long> l) {
-        return BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where("agid").in(l)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        return BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(l)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
     }
 
     @Override
     public void deleteByCacheId(Long objectId) {
-       BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where("creativeId").is(objectId)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+       BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(objectId)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
     }
 
     public CreativeEntity findOne(Long creativeId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         CreativeEntity entity = mongoTemplate.findOne(
-                new Query(Criteria.where("creativeId").is(creativeId)), CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+                new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(creativeId)), CreativeEntity.class,EntityConstants.TBL_CREATIVE);
         return entity;
     }
 
@@ -88,7 +88,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
         if (params != null && params.size() > 0) {
-            Criteria criteria = Criteria.where("creativeId").ne(null);
+            Criteria criteria = Criteria.where(EntityConstants.CREATIVE_ID).ne(null);
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 criteria.and(entry.getKey()).is(entry.getValue());
             }
@@ -101,7 +101,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
 
     public void insert(CreativeEntity creativeEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.insert(creativeEntity, "creative");
+        mongoTemplate.insert(creativeEntity,EntityConstants.TBL_CREATIVE);
         DataOperationLogEntity logEntity = LogUtils.getLog(creativeEntity.getCreativeId(), CreativeEntity.class, null, creativeEntity);
         logProcessingDAO.insert(logEntity);
     }
@@ -122,7 +122,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Long id = creativeEntity.getCreativeId();
         Query query = new Query();
-        query.addCriteria(Criteria.where("creativeId").is(id));
+        query.addCriteria(Criteria.where(EntityConstants.CREATIVE_ID).is(id));
         Update update = new Update();
         DataOperationLogEntity log = null;
         try {
@@ -158,7 +158,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
 
     public void deleteById(Long creativeId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where("creativeId").is(creativeId)), CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(creativeId)), CreativeEntity.class,EntityConstants.TBL_CREATIVE);
         DataOperationLogEntity log = LogUtils.getLog(creativeId, CreativeEntity.class, null, null);
         logProcessingDAO.insert(log);
     }
@@ -167,7 +167,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<DataOperationLogEntity> list = new LinkedList<>();
         for (Long id : creativeIds) {
-            mongoTemplate.remove(new Query(Criteria.where("creativeId").is(id)), CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+            mongoTemplate.remove(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(id)), CreativeEntity.class,EntityConstants.TBL_CREATIVE);
             DataOperationLogEntity log = LogUtils.getLog(id, CreativeEntity.class, null, null);
             list.add(log);
         }
