@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static com.perfect.mongodb.utils.FieldConstants.ADGROUP_ID;
+import static com.perfect.mongodb.utils.EntityConstants.*;
 
 /**
  * Created by baizz on 2014-07-07.
@@ -43,14 +43,14 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     @Override
     public String getId() {
-        return "kwid";
+        return KEYWORD_ID;
     }
 
     public List<Long> getKeywordIdByAdgroupId(Long adgroupId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new BasicQuery("{}", "{" + getId() + " : 1}");
-        query.addCriteria(Criteria.where("adid").is(adgroupId));
-        List<KeywordEntity> list = mongoTemplate.find(query, KeywordEntity.class, "keyword");
+        query.addCriteria(Criteria.where(ADGROUP_ID).is(adgroupId));
+        List<KeywordEntity> list = mongoTemplate.find(query, KeywordEntity.class);
         List<Long> keywordIds = new ArrayList<>(list.size());
         for (KeywordEntity type : list)
             keywordIds.add(type.getKeywordId());
@@ -60,14 +60,14 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     public List<KeywordEntity> getKeywordByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
-        Criteria criteria = Criteria.where("adid").is(adgroupId);
+        Criteria criteria = Criteria.where(ADGROUP_ID).is(adgroupId);
         if (params != null && params.size() > 0) {
             for (Map.Entry<String, Object> entry : params.entrySet())
                 criteria.and(entry.getKey()).is(entry.getValue());
         }
         query.addCriteria(criteria);
         query.with(new PageRequest(skip, limit, new Sort(Sort.Direction.DESC, "price")));
-        List<KeywordEntity> _list = mongoTemplate.find(query, KeywordEntity.class, "keyword");
+        List<KeywordEntity> _list = mongoTemplate.find(query, KeywordEntity.class, TBL_KEYWORD);
         return _list;
     }
 
@@ -79,6 +79,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         return pager;
     }
 
+    // TODO xiaowei 
     @Override
     public List<KeywordInfo> getKeywordInfo() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
@@ -91,7 +92,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         for (KeywordEntity key : keywordEntity) {
             Query q = new Query(Criteria.where(getId()).is(key.getKeywordId()));
             if (!mongoTemplate.exists(q, KeywordEntity.class)) {
-                mongoTemplate.insert(key, "keyword");
+                mongoTemplate.insert(key);
                 DataOperationLogEntity log = LogUtils.getLog(key.getKeywordId(), KeywordEntity.class, null, key);
                 logProcessingDAO.insert(log);
             }
@@ -110,13 +111,13 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     public KeywordEntity findOne(Long keywordId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         KeywordEntity entity = mongoTemplate.
-                findOne(new Query(Criteria.where(getId()).is(keywordId)), KeywordEntity.class, "keyword");
+                findOne(new Query(Criteria.where(getId()).is(keywordId)), KeywordEntity.class, TBL_KEYWORD);
         return entity;
     }
 
     public List<KeywordEntity> findAll() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        List<KeywordEntity> keywordEntityList = mongoTemplate.findAll(KeywordEntity.class, "keyword");
+        List<KeywordEntity> keywordEntityList = mongoTemplate.findAll(KeywordEntity.class, TBL_KEYWORD);
         return keywordEntityList;
     }
 
@@ -131,7 +132,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
             query.addCriteria(criteria);
         }
         query.with(new PageRequest(skip, limit, new Sort(Sort.Direction.DESC, order)));
-        List<KeywordEntity> list = mongoTemplate.find(query, KeywordEntity.class, "keyword");
+        List<KeywordEntity> list = mongoTemplate.find(query, KeywordEntity.class, TBL_KEYWORD);
         return list;
     }
 
@@ -154,7 +155,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     public void insert(KeywordEntity keywordEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.insert(keywordEntity, "keyword");
+        mongoTemplate.insert(keywordEntity, TBL_KEYWORD);
         DataOperationLogEntity log = LogUtils.getLog(keywordEntity.getKeywordId(), KeywordEntity.class, null, keywordEntity);
         logProcessingDAO.insert(log);
     }
@@ -202,7 +203,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        mongoTemplate.updateFirst(query, update, KeywordEntity.class, "keyword");
+        mongoTemplate.updateFirst(query, update, KeywordEntity.class, TBL_KEYWORD);
         logProcessingDAO.insert(log);
     }
 
@@ -216,12 +217,12 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Class _class = KeywordEntity.class;
         Query query = new Query();
-        query.addCriteria(Criteria.where("keyword").
+        query.addCriteria(Criteria.where(TBL_KEYWORD).
                 regex(Pattern.compile("^.*?" + seedWord + ".*$", Pattern.CASE_INSENSITIVE)));
-        List<KeywordEntity> keywordEntities = mongoTemplate.find(query, _class, "keyword");
+        List<KeywordEntity> keywordEntities = mongoTemplate.find(query, _class, TBL_KEYWORD);
         Update update = new Update();
         update.set(fieldName, value);
-        mongoTemplate.updateMulti(query, update, "keyword");
+        mongoTemplate.updateMulti(query, update, TBL_KEYWORD);
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         try {
             DataOperationLogEntity logEntity;
@@ -243,7 +244,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     public void deleteById(Long id) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where("kwid").is(id)), KeywordEntity.class, "keyword");
+        mongoTemplate.remove(new Query(Criteria.where("kwid").is(id)), KeywordEntity.class, TBL_KEYWORD);
         DataOperationLogEntity log = LogUtils.getLog(id, KeywordEntity.class, null, null);
         logProcessingDAO.insert(log);
     }
@@ -253,7 +254,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<DataOperationLogEntity> list = new LinkedList<>();
         for (Long id : ids) {
-            mongoTemplate.remove(new Query(Criteria.where("kwid").is(id)), KeywordEntity.class, "keyword");
+            mongoTemplate.remove(new Query(Criteria.where("kwid").is(id)), KeywordEntity.class, TBL_KEYWORD);
             DataOperationLogEntity log = LogUtils.getLog(id, KeywordEntity.class, null, null);
             list.add(log);
         }
@@ -297,7 +298,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
             q.addCriteria(where);
         }
         addOrder(orderBy, q);
-        list = mongoTemplate.find(q, KeywordEntity.class, "keyword");
+        list = mongoTemplate.find(q, KeywordEntity.class, TBL_KEYWORD);
         Pager p = new Pager();
         p.setRows(list);
 
@@ -331,7 +332,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     public void remove(Query query) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(query, KeywordEntity.class, "keyword");
+        mongoTemplate.remove(query, KeywordEntity.class, TBL_KEYWORD);
     }
 
 }

@@ -2,7 +2,6 @@ package com.perfect.entity;
 
 import com.perfect.autosdk.sms.v3.OfflineTimeType;
 import com.perfect.autosdk.sms.v3.ScheduleType;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,17 +9,20 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
+import static com.perfect.mongodb.utils.EntityConstants.CAMPAIGN_ID;
+import static com.perfect.mongodb.utils.EntityConstants.TBL_CAMPAIGN;
+
 /**
  * Created by vbzer_000 on 2014-6-26.
  */
-@Document(collection = "campaign")
-public class CampaignEntity extends AccountIdEntity{
+@Document(collection = TBL_CAMPAIGN)
+public class CampaignEntity extends AccountIdEntity {
 
     @Id
     private String id;
     //CampaignType Attributes
     @Indexed(unique = true)
-    @Field("cid")
+    @Field(CAMPAIGN_ID)
     private Long campaignId;
 
     //------------------------

@@ -3,14 +3,16 @@
 
 package com.perfect.entity;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection = "keyword")
+import static com.perfect.mongodb.utils.EntityConstants.ADGROUP_ID;
+import static com.perfect.mongodb.utils.EntityConstants.KEYWORD_ID;
+import static com.perfect.mongodb.utils.EntityConstants.TBL_KEYWORD;
+
+@Document(collection = TBL_KEYWORD)
 public class KeywordEntity extends AccountIdEntity {
     //------------------------
     // MEMBER VARIABLES
@@ -21,9 +23,9 @@ public class KeywordEntity extends AccountIdEntity {
 
     //KeywordType Attributes
     @Indexed(unique = true)
-    @Field("kwid")
+    @Field(KEYWORD_ID)
     private Long keywordId;
-    @Field("agid")
+    @Field(ADGROUP_ID)
     private Long adgroupId;
     @Field("name")
     private String keyword;

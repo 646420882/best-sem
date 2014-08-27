@@ -43,6 +43,16 @@ public class ContextInterceptor implements HandlerInterceptor {
             if (entity == null) {
                 return false;
             }
+            if(entity.getBaiduAccountInfoEntities().size() == 0){
+                return false;
+            }
+
+            if(entity.getBaiduAccountInfoEntities().size() == 1){
+                BaiduAccountInfoEntity infoEntity = entity.getBaiduAccountInfoEntities().get(0);
+                WebUtils.setAccountId(request, infoEntity.getId());
+                AppContext.setUser(userName, infoEntity.getId());
+                return true;
+            }
 
             for (BaiduAccountInfoEntity infoEntity : entity.getBaiduAccountInfoEntities()) {
                 if (infoEntity.isDfault()) {

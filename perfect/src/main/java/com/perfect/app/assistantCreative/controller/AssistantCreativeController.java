@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.perfect.mongodb.utils.FieldConstants.*;
+import static com.perfect.mongodb.utils.EntityConstants.*;
 /**
  * Created by XiaoWei on 2014/8/21.
  */

@@ -8,10 +8,9 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import static com.perfect.mongodb.utils.FieldConstants.ADGROUP_ID;
-import static com.perfect.mongodb.utils.FieldConstants.CREATIVE_ID;
+import static com.perfect.mongodb.utils.EntityConstants.*;
 
-@Document(collection = "creative")
+@Document(collection = TBL_CREATIVE)
 public class CreativeEntity extends AccountIdEntity {
     //CreativeType Attributes
     @Id
