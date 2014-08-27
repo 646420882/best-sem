@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by XiaoWei on 2014/8/21.
@@ -95,6 +96,8 @@ public class AssistantCreativeController extends WebContextSupport {
         CreativeEntity creativeEntity=new CreativeEntity();
         creativeEntity.setAccountId(AppContext.get().getAccountId());
         creativeEntity.setTitle(title);
+        Random random=new Random(1000000);
+        creativeEntity.setCreativeId(random.nextLong());
         creativeEntity.setDescription1(de1);
         creativeEntity.setDescription2(de2);
         creativeEntity.setPcDestinationUrl(pc);
@@ -107,6 +110,7 @@ public class AssistantCreativeController extends WebContextSupport {
         creativeEntity.setAdgroupId(Long.parseLong(aid));
         creativeDAO.insert(creativeEntity);
         writeHtml(SUCCESS, response);
+
         return null;
     }
     @RequestMapping(value = "/del")

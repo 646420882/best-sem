@@ -1324,11 +1324,11 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantCreative/creative.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantGlobal/global.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantKeyword/assistantKeyword.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantCampaign/assistantCampaign.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistantAccount.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/creative.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/global.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantKeyword.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantCampaign.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantAccount.js"></script>
 
 </body>
 </html>

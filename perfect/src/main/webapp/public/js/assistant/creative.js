@@ -508,7 +508,9 @@ function deleteByObjectId(temp){
     var con=confirm("是否删除该创意？");
     if(con){
         $.get("/assistantCreative/del",{oid:oid},function(rs){
-            alert(rs);
+            if(rs=="1"){
+                removeThe(temp);
+            }
         });
     }
 }
