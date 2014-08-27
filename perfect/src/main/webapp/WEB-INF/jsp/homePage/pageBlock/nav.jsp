@@ -12,7 +12,7 @@
             <div class="user_img fl">
 							<span class="img">
 								<img src="${pageContext.request.contextPath}/public/img/user.png">
-							</span><span class="name"> JOHN DOE </span>
+							</span><span class="name"> ${currSystemUserName} </span>
             </div>
             <div class="user_close fr">
                 <a href="/logout">

@@ -1,6 +1,10 @@
 package com.perfect.app.homePage.controller;
 
+import com.perfect.app.web.WebUtils;
 import com.perfect.core.AppContext;
+import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.SystemUserEntity;
+import com.perfect.service.SystemUserService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,12 +13,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by baizz on 2014-6-23.
  */
 @RestController
 @Scope("prototype")
-public class PageManageController {
+public class HomePageManageController {
+    @Resource
+    private SystemUserService systemUserService;
+
     /**
      * 登录页面
      *
@@ -49,8 +59,15 @@ public class PageManageController {
      * @return
      */
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView getHomePage(ModelMap modelMap) {
-        modelMap.put("currSystemUserName", "perfect");
+    public ModelAndView getHomePage(HttpServletRequest request, ModelMap modelMap) {
+        String userName = WebUtils.getUserName(request);
+        SystemUserEntity entity = systemUserService.getSystemUser(userName);
+        if (entity == null) {
+            return new ModelAndView("redirect:/logout");
+        }
+
+        modelMap.put("currSystemUserName", userName);
+        modelMap.put("accountList", entity.getBaiduAccountInfoEntities());
         return new ModelAndView("homePage/home");
     }
 

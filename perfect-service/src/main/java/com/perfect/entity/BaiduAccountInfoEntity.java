@@ -20,7 +20,7 @@ public class BaiduAccountInfoEntity {
     private String token;
 
     @Field("dft")
-    private boolean dfault = false;
+    private Boolean dfault = false;
 
     @Field("b")
     private Double balance;

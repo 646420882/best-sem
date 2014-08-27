@@ -350,18 +350,19 @@ var campaignId;
 var adgroupId;
 
 $(function () {
+    alert("hahha");
     //获取账户树数据
-//    $.ajax({
-//        url: "/account/get_tree",
-//        type: "GET",
-//        dataType: "json",
-//        async: false,
-//        success: function (data, textStatus, jqXHR) {
-//            zNodes = data.trees;
-//        }
-//    });
+    $.ajax({
+        url: "/account/get_tree",
+        type: "GET",
+        dataType: "json",
+        async: false,
+        success: function (data, textStatus, jqXHR) {
+            zNodes = data.trees;
+        }
+    });
     //加载账户树
-//    $.fn.zTree.init($("#zTree"), setting, zNodes);
+    $.fn.zTree.init($("#zTree"), setting, zNodes);
 
     loadAccountData();
 

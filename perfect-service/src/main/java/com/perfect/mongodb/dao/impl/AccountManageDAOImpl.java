@@ -49,18 +49,17 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
     /**
      * 百度账户树
      *
-     * @param entity
      * @return
      */
     @Override
-    public ArrayNode getAccountTree(BaiduAccountInfoEntity entity) {
+    public ArrayNode getAccountTree(String userName , Long accountId) {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
         ObjectNode objectNode;
 
-        Long id = entity.getId();
+        Long id = accountId;
         MongoTemplate mongoTemplate = BaseMongoTemplate.
-                getMongoTemplate(DBNameUtils.getUserDBName("perfect", null));
+                getMongoTemplate(DBNameUtils.getUserDBName(userName, null));
 
         List<Long> campaignIds = new ArrayList<>();
         Aggregation aggregation1 = Aggregation.newAggregation(

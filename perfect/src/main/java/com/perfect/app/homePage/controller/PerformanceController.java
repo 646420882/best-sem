@@ -1,6 +1,7 @@
 package com.perfect.app.homePage.controller;
 
 import com.google.gson.Gson;
+import com.perfect.app.web.WebUtils;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import com.perfect.service.PerformanceService;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
@@ -39,9 +41,9 @@ public class PerformanceController {
      * @return
      */
     @RequestMapping(value = "/account/performance", method = RequestMethod.GET)
-    public void getPerformance(HttpServletResponse response) {
+    public void getPerformance(HttpServletRequest request, HttpServletResponse response) {
         String[] date = {"2014-01-25", "2014-01-26"};
-        List<KeywordRealTimeDataVOEntity> jsonMapList = performanceService.performance("Perfect", date);
+        List<KeywordRealTimeDataVOEntity> jsonMapList = performanceService.performance(WebUtils.getUserName(request), date);
         Gson gson = new Gson();
         String ddd = gson.toJson(jsonMapList);
 
@@ -58,19 +60,20 @@ public class PerformanceController {
 
     /**
      * 账户表现
+     *
      * @param response
      * @param startDate 开始时间
-     * @param endDate 结束时间
-     * @param limit 排序字段
-     * @param Sorted 排序方式（0,降序， 1升序）
+     * @param endDate   结束时间
+     * @param limit     排序字段
+     * @param Sorted    排序方式（0,降序， 1升序）
      */
-    @RequestMapping(value = "/account/getPerformanceUser", method = RequestMethod.GET,produces = "application/json")
+    @RequestMapping(value = "/account/getPerformanceUser", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView getPerformanceUser(HttpServletResponse response,
-                                   @RequestParam(value = "startDate", required = false) String startDate,
-                                   @RequestParam(value = "endDate", required = false) String endDate,
-                                   @RequestParam(value = "limit", required = false, defaultValue = "10") int limit,
-                                   @RequestParam(value = "sort", required = false, defaultValue = "0") int Sorted,
-                                   @RequestParam(value = "fieldName", required = false, defaultValue = "date") String fieldName) {
+                                           @RequestParam(value = "startDate", required = false) String startDate,
+                                           @RequestParam(value = "endDate", required = false) String endDate,
+                                           @RequestParam(value = "limit", required = false, defaultValue = "10") int limit,
+                                           @RequestParam(value = "sort", required = false, defaultValue = "0") int Sorted,
+                                           @RequestParam(value = "fieldName", required = false, defaultValue = "date") String fieldName) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date startDates = null;
         Date endDates = null;
@@ -81,7 +84,7 @@ public class PerformanceController {
             e.printStackTrace();
         }
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<AccountReportEntity> jsonMapList = performanceService.performanceUser(startDates, endDates, fieldName, Sorted,limit);
+        List<AccountReportEntity> jsonMapList = performanceService.performanceUser(startDates, endDates, fieldName, Sorted, limit);
 
         Map<String, Object> attributes = null;
         if (jsonMapList != null)
@@ -91,10 +94,10 @@ public class PerformanceController {
 
     }
 
-    @RequestMapping(value = "/account/getPerformanceCurve", method = RequestMethod.GET,produces = "application/json")
+    @RequestMapping(value = "/account/getPerformanceCurve", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView getPerformanceCurve(HttpServletResponse response,
-                                    @RequestParam(value = "startDate", required = false) String startDate,
-                                    @RequestParam(value = "endDate", required = false) String endDate) {
+                                            @RequestParam(value = "startDate", required = false) String startDate,
+                                            @RequestParam(value = "endDate", required = false) String endDate) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date startDates = null;
         Date endDates = null;

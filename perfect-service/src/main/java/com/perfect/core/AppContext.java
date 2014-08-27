@@ -57,7 +57,19 @@ public class AppContext {
         contextMap.set(so);
     }
 
+
+    public static void setUser(String userName, Long accountId) {
+        SessionObject so = new SessionObject();
+        so.setUserName(userName);
+        so.setAccountId(accountId);
+        contextMap.set(so);
+    }
+
     public static String getUser() {
         return contextMap.get().getUserName();
+    }
+
+    public static Long getAccountId() {
+        return contextMap.get().getAccountId();
     }
 }
