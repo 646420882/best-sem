@@ -1078,6 +1078,7 @@
 </div>
 </div>
 </div>
+</div>
 
 <!---------下载账户----------->
 <div class="TB_overlayBG"></div>
@@ -1092,34 +1093,16 @@
             <li><input type="radio" name="no1">&nbsp; 从最新的推广计划列表中选择</li>
         </ul>
         <div class="zs_sets over">
-            <div class="zs_ses1">
+            <div class="zs_ses1" style="overflow: auto">
                 <ul>
-                    <li><input type="checkbox" checked="checked" name="zsets">北京婚博会</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
-                    <li><input type="checkbox" name="zsets">北京婚展</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
-                    <li><input type="checkbox" name="zsets">北京婚展</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
-                    <li><input type="checkbox" name="zsets">北京婚展</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
                 </ul>
             </div>
-            <div class="zs_ses1 hides">
+            <div class="zs_ses1 hides" style="overflow: auto">
                 <ul>
-                    <li><input type="checkbox" checked="checked" name="zsets">北京婚博会</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
-                    <li><input type="checkbox" name="zsets">北京婚展</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
-                    <li><input type="checkbox" name="zsets">北京婚展</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
                 </ul>
             </div>
-            <div class="zs_ses1 hides">
+            <div class="zs_ses1 hides" style="overflow: auto">
                 <ul>
-                    <li><input type="checkbox" checked="checked" name="zsets">北京婚博会</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
-                    <li><input type="checkbox" name="zsets">北京婚展</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
                 </ul>
             </div>
         </div>
