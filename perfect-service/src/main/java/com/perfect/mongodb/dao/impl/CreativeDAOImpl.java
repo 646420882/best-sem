@@ -130,7 +130,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
             Field[] fields = _class.getDeclaredFields();
             for (Field field : fields) {
                 String fieldName = field.getName();
-                if ("creativeId".equals(fieldName))
+                if (EntityConstants.CREATIVE_ID.equals(fieldName))
                     continue;
                 StringBuilder fieldGetterName = new StringBuilder("get");
                 fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
