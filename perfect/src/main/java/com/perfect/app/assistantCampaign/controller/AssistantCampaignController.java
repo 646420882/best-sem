@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.perfect.mongodb.utils.FieldConstants.*;
 /**
  * Created by john on 2014/8/15.
  */
@@ -39,7 +40,7 @@ public class AssistantCampaignController {
      */
     @RequestMapping(value = "assistantCampaign/list" ,method = {RequestMethod.GET,RequestMethod.POST})
     public void getAllCampaignList(HttpServletResponse response){
-        List<CampaignEntity> list = campaignDAO.find(new Query().addCriteria(Criteria.where("aid").is(currentAccountId)));
+        List<CampaignEntity> list = campaignDAO.find(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(currentAccountId)));
         webContext.writeJson(list,response);
     }
 

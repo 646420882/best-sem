@@ -83,4 +83,8 @@ public class DateUtils {
     public static Date getYesterday() {
         return (Date) getsLatestAnyDays("yyyy-MM-dd", 1).get(KEY_DATE).get(0);
     }
+
+    public static String getYesterdayStr() {
+        return getsLatestAnyDays("yyyy-MM-dd", 1).get(KEY_STRING).get(0).toString();
+    }
 }

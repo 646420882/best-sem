@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
+import static com.perfect.mongodb.utils.FieldConstants.*;
 /**
  * Created by yousheng on 2014/8/1.
  *
@@ -201,7 +202,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     public List<BiddingRuleEntity> getNextRunByGroupId(String userName, Long id) {
 
         Long time = System.currentTimeMillis();
-        Query query = Query.query(Criteria.where("ebl").is(true).and("next").lte(time).and("aid").is(id));
+        Query query = Query.query(Criteria.where("ebl").is(true).and("next").lte(time).and(ACCOUNT_ID).is(id));
         return BaseMongoTemplate.getUserMongo(userName).find(query, getEntityClass());
     }
 

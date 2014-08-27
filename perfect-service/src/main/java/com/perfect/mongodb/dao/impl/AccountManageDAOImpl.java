@@ -38,6 +38,7 @@ import java.util.List;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
+import static com.perfect.mongodb.utils.FieldConstants.*;
 /**
  * Created by baizz on 2014-6-25.
  */
@@ -63,8 +64,8 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
 
         List<Long> campaignIds = new ArrayList<>();
         Aggregation aggregation1 = Aggregation.newAggregation(
-                project("aid", "cid", "name"),
-                match(Criteria.where("aid").is(id)),
+                project(ACCOUNT_ID, "cid", "name"),
+                match(Criteria.where("acid").is(id)),
                 group("cid", "name"),
                 sort(Sort.Direction.ASC, "cid")
         );

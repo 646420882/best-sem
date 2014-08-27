@@ -138,7 +138,7 @@ public class BiddingController {
 
             biddingRuleDTOs.put(entity.getKeywordId(), dto);
         }
-        String yesterday = DateUtils.getYesterday().toString();
+        String yesterday = DateUtils.getYesterdayStr());
 
         Map<String, List<StructureReportEntity>> reports = basisReportService.getKeywordReport(ids.toArray(new Long[]{}), yesterday, yesterday, 0);
         List<StructureReportEntity> list = reports.get(yesterday);
