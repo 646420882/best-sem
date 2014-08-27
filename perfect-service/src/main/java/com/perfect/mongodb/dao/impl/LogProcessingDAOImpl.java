@@ -15,6 +15,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 
+import static com.perfect.mongodb.utils.EntityConstants.TBL_LOG;
+
 /**
  * Created by baizz on 2014-07-04.
  */
@@ -32,7 +34,7 @@ public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationL
         List<DataOperationLogEntity> list = log4Mongo.find(
                 new Query(Criteria.where("type").is(type)).with(new Sort(Sort.Direction.ASC, "time")),
                 DataOperationLogEntity.class,
-                "logs");
+                TBL_LOG);
         return list;
     }
 
@@ -50,19 +52,19 @@ public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationL
         if (status == -1) {
             Query query = new Query();
             query.with(new Sort(Sort.Direction.ASC, "time"));
-            List<DataOperationLogEntity> list = log4Mongo.find(query, DataOperationLogEntity.class, "logs");
+            List<DataOperationLogEntity> list = log4Mongo.find(query, DataOperationLogEntity.class, TBL_LOG);
             return list;
         } else if (status == 0) {
             List<DataOperationLogEntity> list1 = log4Mongo.find(
                     new Query(Criteria.where("status").is(0)).with(new Sort(Sort.Direction.ASC, "time")),
                     DataOperationLogEntity.class,
-                    "logs");
+                    TBL_LOG);
             return list1;
         } else if (status == 1) {
             List<DataOperationLogEntity> list2 = log4Mongo.find(
                     new Query(Criteria.where("status").is(1)).with(new Sort(Sort.Direction.ASC, "time")),
                     DataOperationLogEntity.class,
-                    "logs");
+                    TBL_LOG);
             return list2;
         }
         return null;
@@ -79,7 +81,7 @@ public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationL
         List<DataOperationLogEntity> list = log4Mongo.find(
                 Query.query(Criteria.where("dataId").is(dataId)).with(new Sort(Sort.Direction.DESC, "time")),
                 DataOperationLogEntity.class,
-                "logs");
+                TBL_LOG);
         if (list != null && list.size() > 0)
             return list.get(0);
         else
@@ -106,7 +108,7 @@ public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationL
         Query query = new Query();
         query.with(new Sort(Sort.Direction.ASC, "time"));
         List<DataOperationLogEntity> list = log4Mongo
-                .find(query, DataOperationLogEntity.class, "logs");
+                .find(query, DataOperationLogEntity.class, TBL_LOG);
         return list;
     }
 
@@ -122,21 +124,21 @@ public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationL
         List<DataOperationLogEntity> list = log4Mongo.find(
                 new Query(Criteria.where("dataId").is(dataId).and("obj").ne(null)),
                 DataOperationLogEntity.class,
-                "logs");
+                TBL_LOG);
         if (!isExists(log)) {
             if (log.getAttribute() == null && log.getInstance() == null) {
                 if (list.size() == 1) {
                     //新增的数据还未同步, 则删除数据库中所有dataId为log.getDataId()的日志记录
                     log4Mongo.remove(new Query(Criteria.where("dataId").is(dataId)),
-                            DataOperationLogEntity.class, "logs");
+                            DataOperationLogEntity.class, TBL_LOG);
                 } else {
                     /*
                      * 新增的数据已经同步, 若要删除数据需要同步到凤巢.
                      * 只保留删除数据的那条日志记录.
                      */
                     log4Mongo.remove(new Query(Criteria.where("dataId").is(dataId)),
-                            DataOperationLogEntity.class, "logs");
-                    log4Mongo.insert(log, "logs");
+                            DataOperationLogEntity.class, TBL_LOG);
+                    log4Mongo.insert(log, TBL_LOG);
                 }
             } else if (log.getAttribute() != null && log.getInstance() == null) {
                 //数据新增之后还未进行同步, 又需要对其进行修改
@@ -146,9 +148,9 @@ public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationL
                 log4Mongo.updateFirst(
                         new Query(Criteria.where("dataId").is(dataId)),
                         update,
-                        "logs");
+                        TBL_LOG);
             } else {
-                log4Mongo.insert(log, "logs");
+                log4Mongo.insert(log, TBL_LOG);
             }
         } else {
             if (log.getAttribute() != null) {
@@ -158,7 +160,7 @@ public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationL
                 log4Mongo.updateFirst(
                         new Query(Criteria.where("dataId").is(dataId)),
                         update,
-                        "logs");
+                        TBL_LOG);
             }
         }
     }
@@ -186,7 +188,7 @@ public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationL
         update.set("time", log.getTime());
         update.set("status", 1);
         update.set("msg", log.getMessage());
-        log4Mongo.updateFirst(query, update, "logs");
+        log4Mongo.updateFirst(query, update, TBL_LOG);
     }
 
     /**
@@ -209,7 +211,7 @@ public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationL
         log4Mongo.remove(
                 new Query(Criteria.where("dataId").is(dataId)),
                 DataOperationLogEntity.class,
-                "logs");
+                TBL_LOG);
     }
 
     /**
@@ -223,7 +225,7 @@ public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationL
             log4Mongo.remove(
                     new Query(Criteria.where("dataId").is(dataId)),
                     DataOperationLogEntity.class,
-                    "logs");
+                    TBL_LOG);
     }
 
     @Override
@@ -238,7 +240,7 @@ public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationL
      */
     public void delete(DataOperationLogEntity log) {
         MongoTemplate log4Mongo = BaseMongoTemplate.getUserMongo();
-        log4Mongo.remove(log, "logs");
+        log4Mongo.remove(log, TBL_LOG);
     }
 
     /**
@@ -249,7 +251,7 @@ public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationL
     public void delete(List<DataOperationLogEntity> logs) {
         MongoTemplate log4Mongo = BaseMongoTemplate.getUserMongo();
         for (DataOperationLogEntity log : logs)
-            log4Mongo.remove(log, "logs");
+            log4Mongo.remove(log, TBL_LOG);
     }
 
     public void deleteAll() {
@@ -276,21 +278,21 @@ public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationL
                             .and("attr.name").is(log.getAttribute().getName())
                             .and("obj").is(null)),
                     DataOperationLogEntity.class,
-                    "logs");
+                    TBL_LOG);
         else if (log.getInstance() != null)
             list = log4Mongo.find(
                     new Query(Criteria.where("dataId").is(log.getDataId())
                             .and("attr").is(null)
                             .and("obj").ne(null)),
                     DataOperationLogEntity.class,
-                    "logs");
+                    TBL_LOG);
         else
             list = log4Mongo.find(
                     new Query(Criteria.where("dataId").is(log.getDataId())
                             .and("attr").is(null)
                             .and("obj").is(null)),
                     DataOperationLogEntity.class,
-                    "logs");
+                    TBL_LOG);
 
         return list.size() == 1;
     }

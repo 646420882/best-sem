@@ -48,7 +48,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     public List<Long> getKeywordIdByAdgroupId(Long adgroupId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        Query query = new BasicQuery("{}", "{" + getId() + " : 1}");
+        Query query = new BasicQuery("{}", "{" + KEYWORD_ID + " : 1}");
         query.addCriteria(Criteria.where(ADGROUP_ID).is(adgroupId));
         List<KeywordEntity> list = mongoTemplate.find(query, KeywordEntity.class);
         List<Long> keywordIds = new ArrayList<>(list.size());
@@ -83,7 +83,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     @Override
     public List<KeywordInfo> getKeywordInfo() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        return mongoTemplate.findAll(KeywordInfo.class, "KeywordInfo");
+        return mongoTemplate.findAll(KeywordInfo.class, "keywordInfo");
     }
 
     @Override
@@ -244,7 +244,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     public void deleteById(Long id) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where("kwid").is(id)), KeywordEntity.class, TBL_KEYWORD);
+        mongoTemplate.remove(new Query(Criteria.where(KEYWORD_ID).is(id)), KeywordEntity.class, TBL_KEYWORD);
         DataOperationLogEntity log = LogUtils.getLog(id, KeywordEntity.class, null, null);
         logProcessingDAO.insert(log);
     }
@@ -254,7 +254,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<DataOperationLogEntity> list = new LinkedList<>();
         for (Long id : ids) {
-            mongoTemplate.remove(new Query(Criteria.where("kwid").is(id)), KeywordEntity.class, TBL_KEYWORD);
+            mongoTemplate.remove(new Query(Criteria.where(KEYWORD_ID).is(id)), KeywordEntity.class, TBL_KEYWORD);
             DataOperationLogEntity log = LogUtils.getLog(id, KeywordEntity.class, null, null);
             list.add(log);
         }
@@ -291,7 +291,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         if (params != null && params.size() > 0) {
             q.skip(start);
             q.limit(pageSize);
-            Criteria where = Criteria.where("kwid").ne(null);
+            Criteria where = Criteria.where(KEYWORD_ID).ne(null);
             for (Map.Entry<String, Object> m : params.entrySet()) {
                 where.and(m.getKey()).is(m.getValue());
             }

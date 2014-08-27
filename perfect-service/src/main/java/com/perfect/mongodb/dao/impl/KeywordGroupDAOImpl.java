@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 
+import static com.perfect.mongodb.utils.EntityConstants.SYS_KEYWORD;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
@@ -114,7 +115,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
                 sort(Sort.Direction.ASC, "cg"),
                 group("kw").count().as("count")
         );
-        AggregationResults<Object> results = mongoTemplate.aggregate(aggregation, "sys_keyword", Object.class);
+        AggregationResults<Object> results = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, Object.class);
         return results.getMappedResults().size();
     }
 

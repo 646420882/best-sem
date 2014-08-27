@@ -36,9 +36,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.perfect.mongodb.utils.EntityConstants.*;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
-import static com.perfect.mongodb.utils.EntityConstants.*;
 /**
  * Created by baizz on 2014-6-25.
  */
@@ -53,7 +53,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
      * @return
      */
     @Override
-    public ArrayNode getAccountTree(String userName , Long accountId) {
+    public ArrayNode getAccountTree(String userName, Long accountId) {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
         ObjectNode objectNode;
@@ -70,7 +70,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
                 sort(Sort.Direction.ASC, CAMPAIGN_ID)
         );
         //推广计划树
-        AggregationResults<CampaignVO> results1 = mongoTemplate.aggregate(aggregation1, "campaign", CampaignVO.class);
+        AggregationResults<CampaignVO> results1 = mongoTemplate.aggregate(aggregation1, TBL_CAMPAIGN, CampaignVO.class);
         for (CampaignVO vo : Lists.newArrayList(results1.iterator())) {
             objectNode = mapper.createObjectNode();
             objectNode.put("id", vo.getCampaignId());
@@ -87,7 +87,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
                 sort(Sort.Direction.ASC, ADGROUP_ID)
         );
         //推广单元树
-        AggregationResults<AdgroupVO> results2 = mongoTemplate.aggregate(aggregation2, "adgroup", AdgroupVO.class);
+        AggregationResults<AdgroupVO> results2 = mongoTemplate.aggregate(aggregation2, TBL_ADGROUP, AdgroupVO.class);
         for (AdgroupVO vo : Lists.newArrayList(results2.iterator())) {
             objectNode = mapper.createObjectNode();
             objectNode.put("id", vo.getAdgroupId());
@@ -161,7 +161,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
         Long baiduAccountId = AppContext.get().getAccountId();
         List<AccountReportEntity> reportEntities = mongoTemplate.
-                find(Query.query(Criteria.where("acid").is(baiduAccountId).and("date").in(dates)), AccountReportEntity.class);
+                find(Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and("date").in(dates)), AccountReportEntity.class);
         return reportEntities;
     }
 
@@ -172,7 +172,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         Long baiduAccountId = AppContext.get().getAccountId();
         Date date = DateUtils.getYesterday();
         AccountReportEntity reportEntity = mongoTemplate.
-                findOne(Query.query(Criteria.where("date").is(date).and("acid").is(baiduAccountId)), AccountReportEntity.class);
+                findOne(Query.query(Criteria.where("date").is(date).and(ACCOUNT_ID).is(baiduAccountId)), AccountReportEntity.class);
         if (reportEntity != null)
             return reportEntity.getPcCost();
         else
@@ -187,9 +187,9 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         Double costRate;
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
         Long baiduAccountId = AppContext.get().getAccountId();
-        Date date = ((List<Date>) DateUtils.getsLatestAnyDays("MM-dd",2).get(DateUtils.KEY_DATE)).get(1);
+        Date date = ((List<Date>) DateUtils.getsLatestAnyDays("MM-dd", 2).get(DateUtils.KEY_DATE)).get(1);
         AccountReportEntity reportEntity = mongoTemplate.
-                findOne(Query.query(Criteria.where("date").is(date).and("acid").is(baiduAccountId)), AccountReportEntity.class);
+                findOne(Query.query(Criteria.where("date").is(date).and(ACCOUNT_ID).is(baiduAccountId)), AccountReportEntity.class);
         if (reportEntity != null)
             cost2 = reportEntity.getPcCost();
         if (cost2 == 0d)
@@ -245,7 +245,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
 
     class CampaignVO {
 
-        @Field("cid")
+        @Field(CAMPAIGN_ID)
         private Long campaignId;
 
         @Field("name")
@@ -277,13 +277,13 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
 
     class AdgroupVO {
 
-        @Field("adid")
+        @Field(ADGROUP_ID)
         private Long adgroupId;
 
         @Field("name")
         private String adgroupName;
 
-        @Field("cid")
+        @Field(CAMPAIGN_ID)
         private Long campaignId;
 
         public Long getAdgroupId() {
