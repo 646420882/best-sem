@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.perfect.mongodb.utils.EntityConstants.ACCOUNT_ID;
+import static com.perfect.mongodb.utils.EntityConstants.CAMPAIGN_ID;
+import static com.perfect.mongodb.utils.EntityConstants.ADGROUP_ID;
 
 /**
  * Created by john on 2014/8/19.
@@ -38,13 +40,12 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     /**
      * 根据账户id得到关键词
-     *
-     * @param accountId
      * @return
      */
+
     @Override
-    public Iterable<KeywordEntity> getAllKeyWord(Long accountId) {
-        return keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId)));
+    public Iterable<KeywordEntity> getKeyWords(Query query) {
+        return keywordDAO.findByQuery(query);
     }
 
 
@@ -76,8 +77,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * @param query
      * @return
      */
-    @Override
-    public List findByQuery(Query query) {
+    public List<CampaignEntity> findByQuery(Query query) {
         return campaignDAO.find(query);
     }
 
@@ -94,7 +94,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         List<CampaignEntity> campaignList = campaignDAO.find(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId)));
 
         for (CampaignEntity campaignEntity : campaignList) {
-            List<AdgroupEntity> adgroupList = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where("cid").is(campaignEntity.getCampaignId()).and(ACCOUNT_ID).is(accountId)));
+            List<AdgroupEntity> adgroupList = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where(CAMPAIGN_ID).is(campaignEntity.getCampaignId()).and(ACCOUNT_ID).is(accountId)));
             CampaignTreeDTO campaignTree = new CampaignTreeDTO();
             campaignTree.setRootNode(campaignEntity);//设置根节点
             campaignTree.setChildNode(adgroupList);//设置子节点
@@ -118,7 +118,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         for (String row : everyChoose) {
             String[] fileds = row.split(",");//fileds[0]推广计划id，fileds[1]推广单元id
             for (String name : names) {
-                keywordDAO.remove(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and("agid").is(fileds[1]).and("name").is(name)));
+                keywordDAO.remove(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(fileds[1]).and("name").is(name)));
             }
         }
 
@@ -150,11 +150,11 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             CampaignEntity campaignEntity = campaignEntityList == null || campaignEntityList.size() == 0 ? null : campaignEntityList.get(0);
 
             if (campaignEntity != null) {
-                List<AdgroupEntity> adgroupList = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and("cid").is(campaignEntity.getCampaignId()).and("name").is(fields[1])));
+                List<AdgroupEntity> adgroupList = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(CAMPAIGN_ID).is(campaignEntity.getCampaignId()).and("name").is(fields[1])));
                 AdgroupEntity adgroupEntity = adgroupList == null || adgroupList.size() == 0 ? null : adgroupList.get(0);
 
                 if (adgroupEntity != null) {
-                    List<KeywordEntity> keywordList = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and("agid").is(adgroupEntity.getAdgroupId())));
+                    List<KeywordEntity> keywordList = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(adgroupEntity.getAdgroupId())));
                     if (keywordList.size() != 0) {
                         deleteKwd.put("campaign", fields[0]);
                         deleteKwd.put("adgroup", fields[1]);
@@ -199,7 +199,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      */
     public void batchAddOrUpdateKeywordByChoose(Long accountId, Boolean isReplace, String chooseInfos, String keywordInfos) {
         String[] everyRow = chooseInfos.split("-");
-        String[] everyInfo = keywordInfos.split("\r\n");
+        String[] everyInfo = keywordInfos.split("\n");
 
         for (String row : everyRow) {
             //切割出推广计划和推广单元ID
@@ -209,7 +209,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 if (isReplace == true) {
                     String[] kwInfo = info.split(",|\t");
                     //删除该单元下的所有相应的关键词
-                    keywordDAO.remove(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and("agid").is(fieds[1])));
+                    keywordDAO.remove(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(fieds[1])));
 
                     //开始添加现在用户输入的关键词
                     KeywordEntity keywordEntity = new KeywordEntity();
@@ -249,7 +249,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             if (campaignEntity != null) {
 
                 //根据单元名称得到一个推广单元对象
-                List<AdgroupEntity> adgrounp = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and("name").is(fileds[1]).and("cid").is(campaignEntity.getCampaignId())));
+                List<AdgroupEntity> adgrounp = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and("name").is(fileds[1]).and(CAMPAIGN_ID).is(campaignEntity.getCampaignId())));
                 AdgroupEntity adgroupEntity = adgrounp == null || adgrounp.size() == 0 ? null : adgrounp.get(0);
 
                 if (adgroupEntity != null) {
@@ -257,7 +257,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     //若为true，将现在的关键词替换该单元下的所有相应内容,为false时，就将现在输入的关键词添加到数据库
                     if (isReplace == true) {
                         //删除现在该单元下的所有关键词
-                        keywordDAO.remove(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and("agid").is(adgroupEntity.getAdgroupId())));
+                        keywordDAO.remove(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(adgroupEntity.getAdgroupId())));
 
                         //开始添加现在用户输入的关键词
 

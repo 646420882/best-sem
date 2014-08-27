@@ -1366,6 +1366,59 @@
         </div>
     </div>
 </div>
+
+
+<%--推广计划设置IP排除窗口--%>
+<div class="TB_overlayBG"></div>
+<div class="box" style="display:none;" id="setExcludeIp">
+    <h2 id="setExcludeIpDiv">IP排除列表<a href="#" class="close">关闭</a></h2>
+
+    <span>你可将IP最后一段设为*，以屏蔽一段地址内的创意展现。</span><br>
+    <span>每个IP地址占一行。IP排除的数量不能超过20</span>
+
+    <div class="inputIpDiv">
+        <textarea id="IpListTextarea" rows="15" cols="55"></textarea>
+    </div>
+
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li class="current excludeIpOk">确认</li>
+                <li class="close">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<%--推广计划设置推广时段窗口--%>
+<div class="TB_overlayBG"></div>
+<div class="box" style="display:none;" id="setExtension">
+    <h2 id="setExtensionDiv">推广时段管理<a href="#" class="close">关闭</a></h2>
+    <div class="chooseTime">
+        <span>请选择时段</span>
+        <ul>
+            <li class="tfsjd"><span></span>&nbsp;&nbsp;&nbsp;投放时间段</li>
+            <li class="ztsjd"><span></span>&nbsp;&nbsp;&nbsp;暂停时间段</li>
+        </ul>
+    </div><br/>
+    <div class="hours">
+
+    </div>
+
+
+
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li class="current">确认</li>
+                <li class="close">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>

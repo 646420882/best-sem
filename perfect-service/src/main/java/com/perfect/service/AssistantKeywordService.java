@@ -11,13 +11,11 @@ import java.util.Map;
  * Created by john on 2014/8/19.
  */
 public interface AssistantKeywordService {
-    Iterable<KeywordEntity> getAllKeyWord(Long accountId);
+    Iterable<KeywordEntity> getKeyWords(Query query);
 
     void deleteByKwIds(List<Long> kwids);
 
     void updateKeyword( KeywordEntity keywordEntity);
-
-    List findByQuery(Query query);
 
     Map<String,Object> validateDeleteByInput(Long accountId,String deleteInfos);
 

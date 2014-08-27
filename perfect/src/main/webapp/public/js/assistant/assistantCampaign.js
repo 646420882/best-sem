@@ -1,5 +1,12 @@
 //tbodyClick5
 
+//子窗口拖动初始化
+window.onload=function(){
+    rDrag.init(document.getElementById('setFdKeywordDiv'));
+    rDrag.init(document.getElementById('setExcludeIpDiv'));
+    rDrag.init(document.getElementById('setExtensionDiv'));
+}
+
 
 /**
  * 得到所有推广计划
@@ -65,7 +72,6 @@ function campaignDataToHtml(obj,index){
 
     html = html+until.convert(obj.budgetOfflineTime==null,"<td>-</td>:"+"<td>"+obj.budgetOfflineTime.length+"</td>");
 
-    //!!!!!!
     html = html+"<input type='hidden' value="+obj.priceRatio+" class='hidden'/>";
     html = html+"</tr>";
     $("#tbodyClick5").append(html);
@@ -226,21 +232,18 @@ function deleteCampaign(){
 /**
  * 否定关键词设置单击事件
  */
-$(".ntwOk").bind("click",function(){
+$(".ntwOk").click(function(){
     var cid = $("#hiddenCampaignId").val();
     var negativeWords =  $("#ntwTextarea").val();
     var exactNegativeWords =  $("#entwTextarea").val();
-    var ntwArray = negativeWords.split("\n");
-    var entwArray = exactNegativeWords.split("\n");
-    alert(ntwArray);
 
     $.ajax({
         url:"/assistantCampaign/edit",
         type:"post",
-        data:{"cid":cid,"negativeWords":ntwArray,"exactNegativeWords":entwArray},
+        data:{"cid":cid,"negativeWords":negativeWords,"exactNegativeWords":exactNegativeWords},
         dataType:"json",
         success:function(data){
-               $("#setNegtiveWord").hide();
+            $(".TB_overlayBG,#setNegtiveWord").hide(0);
         }
     });
 
@@ -278,13 +281,125 @@ $(".ntwOk").bind("click",function(){
                         $("#entwTextarea").append(exactNegativeWords[i]);
                     }
                 }
-                setDialogCss("setNegtiveWord");
             }
         });
+        setDialogCss("setNegtiveWord");
     });
 
 
+//单击推广计划中的IP排除的事件
+$(".excluedIp_5").click(function () {
+    $("#IpListTextarea").val("");
+    var cid = $("#hiddenCampaignId").val();
 
+    $.ajax({
+        url:"/assistantCampaign/getObject",
+        type:"post",
+        data:{"cid":cid},
+        dataType:"json",
+        success:function(data){
+            var excludeIp = data.excludeIp;
+            for(var i = 0;i<excludeIp.length;i++){
+                if(i<excludeIp.length-1){
+                    $("#IpListTextarea").append(excludeIp[i]+"\r");
+                }else{
+                    $("#IpListTextarea").append(excludeIp[i]);
+                }
+            }
+        }
+    });
+
+    setDialogCss("setExcludeIp");
+});
+
+
+
+
+/**
+ * IP排除设置单击事件
+ */
+$(".excludeIpOk").click(function () {
+    var cid = $("#hiddenCampaignId").val();
+    var ipList =  $("#IpListTextarea").val();
+
+    var ipArray = ipList.split("\n");
+    var errorIp = "";
+    for(var i = 0;i<ipArray.length;i++){
+        if(validateIPFormat(ipArray[i])==false){
+            errorIp = errorIp+"\n"+ipArray[i];
+        }
+    }
+
+    if(errorIp.length!=0){
+        alert("IP地址格式输入不正确!"+errorIp);
+        return;
+    }
+
+    $.ajax({
+        url:"/assistantCampaign/edit",
+        type:"post",
+        data:{"cid":cid,"excludeIp":ipList},
+        dataType:"json",
+        success:function(data){
+            $(".TB_overlayBG,#setExcludeIp").hide(0);
+        }
+    });
+});
+
+
+
+
+//单击推广计划中的推广时段的事件
+$(".schedule_5").click(function(){
+    createChooseTimeUI();
+    setDialogCss("setExtension");
+});
+
+
+
+
+
+
+
+
+
+
+
+function createChooseTimeUI(){
+    var weeks = new Array("星期一","星期二","星期三","星期四","星期五","星期六","星期日");
+    alert(weeks.length);
+    /*var html = "";
+    for(var i = 0;i<weeks.length;i++){
+        for(var j = 0;i<=23;j++){
+            html = html+"<ul>"+"<div><input type='checkbox'/>"+weeks[i]+"</div>";
+            if(j+1%6==0){
+             html = html+"<li style='margin-left: 11px;'>"+j+"</li>";
+            }else{
+              html = html+"<li>"+j+"</li>"
+            }
+        }
+        html = html+"</ul><br/><br/>";
+    }*/
+//    $(".hours").html(html);
+}
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * 验证输入的ip格式是否正确
+ */
+function validateIPFormat(ipAddress) {
+    var regex = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(\*)$/;
+    return regex.test(ipAddress);
+}
 
 
 /**

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,13 +50,7 @@ public class AssistantCampaignController {
      */
     @RequestMapping(value = "assistantCampaign/getObject",method = {RequestMethod.GET,RequestMethod.POST})
     public void getCampaignByCid(HttpServletResponse response,Long cid){
-        List<String> list = new ArrayList<>();
-        list.add("北京");
-        list.add("北2");
-        list.add("北3");
-        list.add("北4");
         CampaignEntity  campaignEntity = campaignDAO.findOne(cid);
-        campaignEntity.setNegativeWords(list);
         webContext.writeJson(campaignEntity,response);
     }
 
@@ -90,7 +83,7 @@ public class AssistantCampaignController {
      */
     @RequestMapping(value = "assistantCampaign/edit",method = {RequestMethod.GET,RequestMethod.POST})
     public void updateById(HttpServletResponse response,Long cid,String campaignName,Double budget,Double priceRatio,Integer[] regionTarget,Boolean isDynamicCreative,
-                                                       String[] negativeWords,String[] exactNegativeWords,String[] excludeIp,Integer showProb,Boolean pause
+                                                       String negativeWords,String exactNegativeWords,String excludeIp,Integer showProb,Boolean pause
                                                        ) {
         CampaignEntity campaignEntity = new CampaignEntity();
         campaignEntity.setCampaignId(cid);
@@ -99,13 +92,13 @@ public class AssistantCampaignController {
         campaignEntity.setPriceRatio(priceRatio);
         campaignEntity.setRegionTarget(regionTarget==null||regionTarget.length==0?null:Arrays.asList(regionTarget));
         campaignEntity.setIsDynamicCreative(isDynamicCreative);
-        campaignEntity.setNegativeWords(negativeWords==null||negativeWords.length==0?null:Arrays.asList(negativeWords));
-        campaignEntity.setExactNegativeWords(exactNegativeWords==null||exactNegativeWords.length==0?null:Arrays.asList(exactNegativeWords));
-        campaignEntity.setExcludeIp(excludeIp==null||excludeIp.length==0?null: Arrays.asList(excludeIp));
+        campaignEntity.setNegativeWords(negativeWords==null||"".equals(negativeWords)?null:Arrays.asList(negativeWords.split("\n")));
+        campaignEntity.setExactNegativeWords(exactNegativeWords==null||"".equals(exactNegativeWords)?null:Arrays.asList(exactNegativeWords.split("\n")));
+        campaignEntity.setExcludeIp(excludeIp==null||"".equals(excludeIp)?null: Arrays.asList(excludeIp.split("\n")));
         campaignEntity.setShowProb(showProb);
         campaignEntity.setPause(pause);
 
-//        campaignDAO.update(campaignEntity);
+        campaignDAO.update(campaignEntity);
         webContext.writeJson("success",response);
     }
 

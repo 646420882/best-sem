@@ -81,12 +81,13 @@ function keywordDataToHtml(obj, index) {
             matchType = "精确";
             break;
         case 2:
+            matchType = "短语";
             if (obj.phraseType == 1) {
-                matchType = "短语-同义包含";
+                matchType = matchType+"-同义包含";
             } else if (obj.phraseType == 2) {
-                matchType = "短语-精确包含";
-            } else {
-                matchType = "短语-核心包含";
+                matchType = matchType+"-精确包含";
+            } else if(obj.phraseType == 3){
+                matchType = matchType+"-核心包含";
             }
             ;
             break;

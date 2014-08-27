@@ -6,6 +6,8 @@ import com.perfect.entity.KeywordEntity;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -41,7 +44,7 @@ public class AssistantKeywordController {
      */
     @RequestMapping(value = "assistantKeyword/list",method = {RequestMethod.GET,RequestMethod.POST})
     public void getAllKeywordList(HttpServletResponse response){
-        Iterable<KeywordEntity>  list = assistantKeywordService.getAllKeyWord(currentAccountId);
+        Iterable<KeywordEntity>  list = assistantKeywordService.getKeyWords(new Query().addCriteria(Criteria.where("acid").is(currentAccountId)).limit(20));
         webContext.writeJson(list,response);
     }
 
@@ -52,7 +55,7 @@ public class AssistantKeywordController {
      */
     @RequestMapping(value = "assistantKeyword/deleteById" ,method = {RequestMethod.GET,RequestMethod.POST})
     public void deleteKeywordById(Long[] kwids){
-        //assistantKeywordService.deleteByKwIds(Arrays.asList(kwids));
+        assistantKeywordService.deleteByKwIds(Arrays.asList(kwids));
     }
 
 

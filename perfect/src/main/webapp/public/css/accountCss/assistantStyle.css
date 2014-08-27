@@ -1,3 +1,4 @@
+/*否定关键词窗口css*/
 #setNegtiveWord>span{
     float:left;
     margin:20px;
@@ -18,4 +19,56 @@
 
 #setNegtiveWord{
     width: 550px;
+}
+
+
+/*ip排除窗口css*/
+#setExcludeIp .inputIpDiv{
+    margin-left: 10px;
+}
+#setExcludeIp>span{
+    margin:20px;
+}
+#setExtension .chooseTime{
+    margin:20px;
+}
+
+#setExtension .chooseTime span{
+    float:left;
+}
+#setExtension .chooseTime ul li{
+    float:right;
+}
+
+.hours>ul li{
+    float:left;
+    width:15px;
+    height:15px;
+    background-color: #00D300;
+    margin-left:2px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.hours>ul div{
+    float:left;
+}
+
+.hours{
+    margin-top: 12px;
+}
+.chooseTime>ul .ztsjd span{
+    width:15px;
+    height:15px;
+    background-color: gray;
+}
+
+.chooseTime>ul .tfsjd span{
+    width:15px;
+    height:15px;
+    background-color: #00D300;
+}
+
+.chooseTime>ul li{
+    margin-left: 20px;
 }
