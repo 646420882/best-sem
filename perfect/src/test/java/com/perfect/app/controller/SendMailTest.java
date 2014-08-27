@@ -1,10 +1,13 @@
-package com.perfect.app.transmitter.test;
+package com.perfect.app.controller;
 
 import com.perfect.app.transmitter.MailSenderInfo;
 import com.perfect.app.transmitter.SimpleMailSender;
+import org.junit.Test;
 
-public class Test {
-    public static void main(String[] args){
+public class SendMailTest {
+
+    @Test
+    public void mail(){
         //这个类主要是设置邮件
         MailSenderInfo mailInfo = new MailSenderInfo();
         mailInfo.setMailServerHost("smtp.163.com");
