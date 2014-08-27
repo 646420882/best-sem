@@ -10,10 +10,12 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
 </head>
 <body>
-<jsp:include page="../homePage/pageBlock/head.jsp"/>
-<div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-<div class="mid over fr">
+
+<div class="concent over fr">
+<jsp:include page="../homePage/pageBlock/head.jsp"/>
+
+<div class="mid over">
     <div class="on_title over">
         <a href="#">
             推广助手

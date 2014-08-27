@@ -7,10 +7,12 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="top over">
-    <div class="logo fl">
-        <img src="${pageContext.request.contextPath}/public/img/logo.png">
-    </div>
-    <div class="logo_text fl">
-        大数据智能营销
+    <div class="top_mid fr over">
+        <div class="logo_text fl">
+            大数据智能营销
+        </div>
+        <div class="logo fl">
+            <img src="${pageContext.request.contextPath}/public/img/logo.png">
+        </div>
     </div>
 </div>

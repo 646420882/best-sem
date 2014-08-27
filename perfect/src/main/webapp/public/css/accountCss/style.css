@@ -1,13 +1,14 @@
 /***mid***/
+.concent{ width: 85%;}
 .mid {
-    width: 85%;
+
     min-height: 901px;
 }
 .concent {
     position: relative;
     margin-top:77px;
     *padding-top:77px;
-    background: url(/public/img/concent_bg.jpg) repeat;
+ /*   background: url(/public/img/concent_bg.jpg) repeat;*/
     font-family: "微软雅黑";
     font-size: 12px;
 }
@@ -18,8 +19,9 @@
 .tab_menu {
     width: 100%;
     float: left;
-    height: 62px;
-    background: url(/public/img/tab_bg.jpg) repeat-x;
+    height: 60px;
+    border-top:1px solid #fff;
+    background: #f6f6f6;
     z-index: 1;
     overflow: hidden;
 }
@@ -37,7 +39,7 @@
     clear: both;
 }
 .tab_menu .selected {
-    background: url(/public/img/table_current.jpg) repeat-x;
+    background:#ffffff url(/public/img/border.png) right no-repeat;
     color: #030303;
     font-weight: bold;
 }
@@ -202,19 +204,19 @@
     background: #30b0eb;
 }
 .list01_under2 ul li .green1 {
-    background: #48c9b0 url(/public/img/geen1.png) center no-repeat
+    background: #48c9b0 url(/public/img/geen1.png) center no-repeat;
 }
 .list01_under2 ul li .green2 {
     background: #43bca5;
 }
 .list01_under2 ul li .red1 {
-    background: #ff6600 url(/public/img/red1.png) center no-repeat
+    background: #ff6600 url(/public/img/red1.png) center no-repeat;
 }
 .list01_under2 ul li .red2 {
     background: #ed5f01;
 }
 .list01_under2 ul li .yellow1 {
-    background: #ffd055 url(/public/img/yellow1.png) center no-repeat
+    background: #ffd055 url(/public/img/yellow1.png) center no-repeat;
 }
 .list01_under2 ul li .yellow2 {
     background: #e1b749;
@@ -229,16 +231,15 @@
 }
 .download a {
     display: block;
-    float: left;
-    width: 74px;
-    height: 20px;
+  /*  float: left;*/
+    height: 26px;
+    padding:0 10px 0 20px;
     font-size: 12px;
     font-family: "微软雅黑";
-    background: url(/public/img/download_bg.jpg) repeat;
+    background: #ffbb04  url(/public/img/new_down.png) 7px 8px no-repeat;
     text-align: center;
-    border: 1px solid #bdbdbd;
-    line-height: 20px;
-    color: #555555;
+    line-height: 26px;
+    color: #000000;
 }
 .download select {
     height: 22px;
@@ -246,10 +247,9 @@
 }
 .download span {
     display: block;
-    float: left;
 }
 .download a:hover {
-    background: #efefef;
+    background: #fdd66d url(/public/img/new_down.png) 7px 8px no-repeat;
 }
 .list2 table, .list3 table {
     width: 100%;
@@ -1292,7 +1292,7 @@ ul.ztree.zTreeDragUL {
     background: #ecf3f9;
 }
 .page2 {
-    margin: 30px 0 0 30%;
+    margin: 0 0 0 30%;
 }
 .page2 a {
     display: block;
@@ -1301,9 +1301,9 @@ ul.ztree.zTreeDragUL {
     margin-right: 8px;
     line-height: 24px;
     padding: 0 8px;
-    background: url(/public/img/team03_bg.png) repeat;
+    background:#e4eafa;
     color: #000;
-    border: 1px solid #e6e6e6;
+    border: 1px solid #f3f5fd;
     border-radius: 2px;
 }
 .page2 span {

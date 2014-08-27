@@ -19,11 +19,10 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
 </head>
 <body>
-<jsp:include page="pageBlock/head.jsp"/>
-<div class="concent over">
 <jsp:include page="pageBlock/nav.jsp"/>
-
-<div class="mid over fr">
+<div class="concent fr over">
+<jsp:include page="pageBlock/head.jsp"/>
+<div class="mid over">
 <div class="on_title over">
     <a href="#">
         账户全景
@@ -154,7 +153,7 @@
             <div id="container" style="width:100%;height:400px"></div>
         </div>
     </div>
-    <div class="list01_under3 over">
+    <div class="list01_under3 over" style=" padding-top:20px;">
         <div class="list01_top over">
             <Span>分日表现</Span>
             <a href="javascript:void(0)" class="question"></a>
@@ -178,6 +177,9 @@
                     </a>
                 </li>
             </ul>
+        </div>
+        <div class="download over">
+            <a href="#" class="fr">下载全部 </a>
         </div>
         <div class="list2 wd">
             <table border="0" cellspacing="0" cellspacing="0">
@@ -283,17 +285,21 @@
 
                 </tbody>
             </table>
-            <div class="download over fr">
-										<span>每页显示
-											<select id="performanceLimit"
-                                                    onchange="javascript:limit = $('#performanceLimit option:selected').val();loadPerformance(statDate);">
-                                                <option selected="selected" value="10">10个</option>
-                                                <option value="20">20个</option>
-                                                <option value="30">30个</option>
-                                            </select> </span>
-                <a href="#">
-                    下载全部
-                </a>
+            <div class="download over">
+                <div class="page2 fl">
+                    <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a
+                        href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="nextpage2"><span></span></a><span
+                        style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
+
+                </div>
+				<span class="fr">每页显示
+                            <select id="performanceLimit"
+                                    onchange="javascript:limit = $('#performanceLimit option:selected').val();loadPerformance(statDate);">
+                                <option selected="selected" value="10">10个</option>
+                                <option value="20">20个</option>
+                                <option value="30">30个</option>
+                            </select> </span>
+
             </div>
         </div>
     </div>
@@ -520,8 +526,19 @@
 
         <div id="keywordQuality1"></div>
 
-        <div>
-            <dl class="fr">
+    </td>
+</tr>
+
+</table>
+<div class="download over">
+    <div class="page2 fl">
+        <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a
+            href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="nextpage2"><span></span></a><span
+            style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
+
+    </div>
+            <span class="fr">每页显示
+                    class="fr">
                 每页显示
                 <select id="keywordQuality1Page"
                         onchange="javascript:limit = $('#keywordQuality1Page option:selected').val();loadKeywordQualityData(null, statDate);">
@@ -529,12 +546,8 @@
                     <option value="15">15个</option>
                     <option value="20">20个</option>
                 </select>
-            </dl>
-        </div>
-    </td>
-</tr>
-
-</table>
+                </span>
+</div>
 </div>
 </div>
 <div class="containers hides over">
@@ -566,6 +579,9 @@
                 </a>
             </li>
         </ul>
+    </div>
+    <div class="download over">
+        <a href="#" class="fr">下载全部 </a>
     </div>
     <div class="list2 wd">
         <table border="0" cellspacing="0" cellspacing="0">
@@ -697,17 +713,23 @@
 
 
         </table>
-        <div class="download over fr">
-									<span>每页显示
-										<select id="importKeywordSel" onchange="selectChange()">
-                                            <option value="10">10个</option>
-                                            <option value="9">9个</option>
-                                            <option value="8">8个</option>
-                                            <option value="2">2个</option>
-                                        </select> </span>
-            <a href="#">
-                下载全部
-            </a>
+        <div class="over">
+
+        </div>
+
+        <div class="download over">
+            <div class="page2 fl">
+                <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a
+                    href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="nextpage2"><span></span></a><span
+                    style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
+
+            </div>
+            <span class="fr">每页显示
+                    <select id="importKeywordSel" onchange="selectChange()">
+                        <option value="20">20个</option>
+                        <option value="50">50个</option>
+                        <option value="100">100个</option>
+                    </select> </span>
         </div>
     </div>
 </div>
@@ -785,6 +807,15 @@
             $(this).addClass('selected').siblings().removeClass('selected');
             var index = $tab_li.index(this);
             $('div.tab_box > div').eq(index).show().siblings().hide();
+        });
+        var navH = $(".on_title").offset().top;
+        $(window).scroll(function(){
+            var scroH = $(this).scrollTop();
+            if(scroH>=navH){
+                $(".on_title").css({"position":"fixed","top":"77"});
+            }else{
+                $(".on_title").css({"position":"static","margin":"0 auto"});
+            }
         });
         //加载日历控件
         $("input[name=reservation]").daterangepicker();
