@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.mongodb.utils.FieldConstants.*;
+import static com.perfect.mongodb.utils.EntityConstants.*;
 /**
  * Created by yousheng on 2014/8/1.
  *

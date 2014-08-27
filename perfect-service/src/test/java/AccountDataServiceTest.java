@@ -18,6 +18,6 @@ public class AccountDataServiceTest extends UnitilsJUnit4{
 
     @Test
     public void test() {
-        accountDataService.initAccountData("shangpin",2565730);
+        accountDataService.initAccountData("perfect",2565730);
     }
 }

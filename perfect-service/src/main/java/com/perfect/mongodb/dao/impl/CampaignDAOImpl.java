@@ -24,6 +24,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static com.perfect.mongodb.utils.EntityConstants.ADGROUP_ID;
+import static com.perfect.mongodb.utils.EntityConstants.CAMPAIGN_ID;
+
 /**
  * Created by baizz on 2014-07-03.
  */
@@ -47,7 +50,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
     public CampaignEntity findOne(Long campaignId) {
         MongoTemplate mongoTemplate = getMongoTemplate();
         CampaignEntity campaignEntity = mongoTemplate.findOne(
-                new Query(Criteria.where("cid").is(campaignId)),
+                new Query(Criteria.where(CAMPAIGN_ID).is(campaignId)),
                 CampaignEntity.class,
                 "campaign");
         return campaignEntity;
@@ -55,7 +58,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
 
     public List<CampaignEntity> findAll() {
         MongoTemplate mongoTemplate = getMongoTemplate();
-        List<CampaignEntity> list = mongoTemplate.findAll(CampaignEntity.class, "campaign");
+        List<CampaignEntity> list = mongoTemplate.findAll(CampaignEntity.class);
         return list;
     }
 
@@ -75,9 +78,9 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
     }
 
     //x
-    public List<CampaignEntity> find(Query query){
+    public List<CampaignEntity> find(Query query) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        return mongoTemplate.find(query,CampaignEntity.class);
+        return mongoTemplate.find(query, CampaignEntity.class);
     }
 
 
@@ -129,7 +132,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        getMongoTemplate().updateFirst(query, update, CampaignEntity.class,"campaign");
+        getMongoTemplate().updateFirst(query, update, CampaignEntity.class, "campaign");
         logProcessingDAO.insert(log);
     }
 
@@ -194,9 +197,9 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
     private void deleteSub(List<Long> campaignIds) {
         MongoTemplate mongoTemplate = getMongoTemplate();
         List<Long> adgroupIds = getAdgroupIdByCampaignId(campaignIds);
-        mongoTemplate.remove(new Query(Criteria.where("adid").in(adgroupIds)), AdgroupEntity.class, "adgroup");
-        mongoTemplate.remove(new Query(Criteria.where("adid").in(adgroupIds)), KeywordEntity.class, "keyword");
-        mongoTemplate.remove(new Query(Criteria.where("adid").in(adgroupIds)), CreativeEntity.class, "creative");
+        mongoTemplate.remove(new Query(Criteria.where(ADGROUP_ID).in(adgroupIds)), AdgroupEntity.class, "adgroup");
+        mongoTemplate.remove(new Query(Criteria.where(ADGROUP_ID).in(adgroupIds)), KeywordEntity.class, "keyword");
+        mongoTemplate.remove(new Query(Criteria.where(ADGROUP_ID).in(adgroupIds)), CreativeEntity.class, "creative");
 
         List<DataOperationLogEntity> logEntities = new LinkedList<>();
         for (Long id : campaignIds) {

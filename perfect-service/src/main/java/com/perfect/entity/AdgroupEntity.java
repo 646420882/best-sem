@@ -4,31 +4,31 @@
 package com.perfect.entity;
 
 import com.perfect.autosdk.common.OptType;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
-@Document(collection = "adgroup")
-public class AdgroupEntity extends AccountIdEntity{
+import static com.perfect.mongodb.utils.EntityConstants.ADGROUP_ID;
+import static com.perfect.mongodb.utils.EntityConstants.CAMPAIGN_ID;
+import static com.perfect.mongodb.utils.EntityConstants.TBL_ADGROUP;
+
+@Document(collection = TBL_ADGROUP)
+public class AdgroupEntity extends AccountIdEntity {
 
     @Id
     private String id;
 
-    //AdgroupType Attributes
     @Indexed(unique = true)
-    @Field("adid")
+    @Field(ADGROUP_ID)
     private Long adgroupId;
 
     //------------------------
     // MEMBER VARIABLES
     //------------------------
-    @Field("cid")
+    @Field(CAMPAIGN_ID)
     private Long campaignId;
 
     @Field("name")
