@@ -1,22 +1,25 @@
-package com.perfect.entity;
+package com.perfect.dto;
+
+import com.perfect.entity.AdgroupEntity;
+import com.perfect.entity.CampaignEntity;
 
 import java.util.List;
 
 /**
  * Created by john on 2014/8/20.
  */
-public class CampaignTreeVoEntity {
+public class CampaignTreeDTO {
 
     private CampaignEntity rootNode;
 
     private List<AdgroupEntity> childNode;
 
-    public CampaignTreeVoEntity(CampaignEntity rootNode, List<AdgroupEntity> childNode) {
+    public CampaignTreeDTO(CampaignEntity rootNode, List<AdgroupEntity> childNode) {
         this.rootNode = rootNode;
         this.childNode = childNode;
     }
 
-    public CampaignTreeVoEntity() {
+    public CampaignTreeDTO() {
     }
 
     public CampaignEntity getRootNode() {

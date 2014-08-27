@@ -35,6 +35,7 @@ function campaignDataToHtml(obj,index){
         html = html+"<tr class='list2_box1' onclick='setCampaignValue(this,"+obj.campaignId+")'>";
     }
 
+    html = html + "<input type='hidden' value = "+obj.campaignId+" />";
     html = html+"<td>"+obj.campaignName+"</td>";
 
     switch (obj.status){
@@ -168,7 +169,11 @@ function editCampaignInfo() {
      cp_pause = null;
 }
 
-
+/**
+ * update
+ * @param num
+ * @param value
+ */
 function whenBlurEditCampaign(num,value){
     switch (num){
         case 1:cp_campaignName = value;break;
@@ -186,5 +191,115 @@ function whenBlurEditCampaign(num,value){
     editCampaignInfo();
 }
 
+/**
+ * 删除推广计划
+ */
+function deleteCampaign(){
+    var cids = new Array();
+
+    $("#tbodyClick5").find(".list2_box3").each(function(){
+        cids.push($(this).find("input[type=hidden]").val());
+    });
+    if(cids.length==0){
+        alert("请选择行再操作!");
+        return;
+    }
+
+    var isDel = window.confirm("您确定要删除推广计划吗?");
+    if(isDel==false){
+        return;
+    }
+
+    $.ajax({
+        url:"/assistantCampaign/delete",
+        type:"post",
+        data:{"cid":cids}
+    });
+    $("#tbodyClick5").find(".list2_box3").remove();
+    setCampaignValue($("#tbodyClick5 tr:eq(0)"),$("#tbodyClick5 tr:eq(0)").find("input[type=hidden]").val());
+}
+
+
+
+
+
+/**
+ * 否定关键词设置单击事件
+ */
+$(".ntwOk").bind("click",function(){
+    var cid = $("#hiddenCampaignId").val();
+    var negativeWords =  $("#ntwTextarea").val();
+    var exactNegativeWords =  $("#entwTextarea").val();
+    var ntwArray = negativeWords.split("\n");
+    var entwArray = exactNegativeWords.split("\n");
+    alert(ntwArray);
+
+    $.ajax({
+        url:"/assistantCampaign/edit",
+        type:"post",
+        data:{"cid":cid,"negativeWords":ntwArray,"exactNegativeWords":entwArray},
+        dataType:"json",
+        success:function(data){
+               $("#setNegtiveWord").hide();
+        }
+    });
+
+
+});
+
+
+
+
+    //单击推广计划中的否定关键词设置的事件
+    $(".negativeWords_5").click(function () {
+        $("#ntwTextarea").val("");
+        $("#entwTextarea").val("");
+        var cid = $("#hiddenCampaignId").val();
+        $.ajax({
+            url:"/assistantCampaign/getObject",
+            type:"post",
+            data:{"cid":cid},
+            dataType:"json",
+            success:function(data){
+                var negativeWords = data.negativeWords;
+                var exactNegativeWords = data.exactNegativeWords;
+
+                for(var i = 0;i<negativeWords.length;i++){
+                    if(i<negativeWords.length-1){
+                        $("#ntwTextarea").append(negativeWords[i]+"\r");
+                    }else{
+                        $("#ntwTextarea").append(negativeWords[i]);
+                    }
+                }
+                for(var i = 0;i<exactNegativeWords.length;i++){
+                    if(i<exactNegativeWords.length-1){
+                        $("#entwTextarea").append(exactNegativeWords[i]+"\r");
+                    }else{
+                        $("#entwTextarea").append(exactNegativeWords[i]);
+                    }
+                }
+                setDialogCss("setNegtiveWord");
+            }
+        });
+    });
+
+
+
+
+
+/**
+ * 设置弹出框css
+ * @param idSelector id选择器
+ */
+function setDialogCss(idSelector){
+    $(".TB_overlayBG").css({
+        display: "block", height: $(document).height()
+    });
+    $("#"+idSelector).css({
+        left:($("body").width()-$("#"+idSelector).width())/2-20+"px",
+        top:($(window).height()-$("#"+idSelector).height())/2+$(window).scrollTop()+"px",
+        display:"block"
+    });
+}
 
 

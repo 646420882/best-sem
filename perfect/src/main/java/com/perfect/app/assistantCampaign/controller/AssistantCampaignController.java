@@ -9,10 +9,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,14 +45,30 @@ public class AssistantCampaignController {
 
 
     /**
+     * 根据推广计划id查找
+     * @param response
+     */
+    @RequestMapping(value = "assistantCampaign/getObject",method = {RequestMethod.GET,RequestMethod.POST})
+    public void getCampaignByCid(HttpServletResponse response,Long cid){
+        List<String> list = new ArrayList<>();
+        list.add("北京");
+        list.add("北2");
+        list.add("北3");
+        list.add("北4");
+        CampaignEntity  campaignEntity = campaignDAO.findOne(cid);
+        campaignEntity.setNegativeWords(list);
+        webContext.writeJson(campaignEntity,response);
+    }
+
+
+    /**
      * 根据一个或多个cid删除推广计划
      * @param cid
      * @return
      */
     @RequestMapping(value = "assistantCampaign/delete",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView deleteCampaignById(Long[] cid){
-        campaignDAO.deleteByIds(Arrays.asList(cid));
-        return new ModelAndView();
+    public void deleteCampaignById(Long[] cid){
+//        campaignDAO.deleteByIds(Arrays.asList(cid));
     }
 
 
@@ -72,23 +88,24 @@ public class AssistantCampaignController {
      * @return
      */
     @RequestMapping(value = "assistantCampaign/edit",method = {RequestMethod.GET,RequestMethod.POST})
-    public void updateNameOrBudgetOrPriceRatio(Long cid,String campaignName,Double budget,Double priceRatio,Integer[] regionTarget,Boolean isDynamicCreative,
+    public void updateById(HttpServletResponse response,Long cid,String campaignName,Double budget,Double priceRatio,Integer[] regionTarget,Boolean isDynamicCreative,
                                                        String[] negativeWords,String[] exactNegativeWords,String[] excludeIp,Integer showProb,Boolean pause
                                                        ) {
         CampaignEntity campaignEntity = new CampaignEntity();
         campaignEntity.setCampaignId(cid);
-        campaignEntity.setCampaignName(campaignName.equals("")?null:campaignName);
+        campaignEntity.setCampaignName("".equals(campaignName)?null:campaignName);
         campaignEntity.setBudget(budget);
         campaignEntity.setPriceRatio(priceRatio);
         campaignEntity.setRegionTarget(regionTarget==null||regionTarget.length==0?null:Arrays.asList(regionTarget));
         campaignEntity.setIsDynamicCreative(isDynamicCreative);
         campaignEntity.setNegativeWords(negativeWords==null||negativeWords.length==0?null:Arrays.asList(negativeWords));
         campaignEntity.setExactNegativeWords(exactNegativeWords==null||exactNegativeWords.length==0?null:Arrays.asList(exactNegativeWords));
-        campaignEntity.setExcludeIp(excludeIp==null||excludeIp.length==0?null:Arrays.asList(excludeIp));
+        campaignEntity.setExcludeIp(excludeIp==null||excludeIp.length==0?null: Arrays.asList(excludeIp));
         campaignEntity.setShowProb(showProb);
         campaignEntity.setPause(pause);
 
-        campaignDAO.update(campaignEntity);
+//        campaignDAO.update(campaignEntity);
+        webContext.writeJson("success",response);
     }
 
 

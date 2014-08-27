@@ -11,13 +11,10 @@ import java.util.Date;
  * Created by john on 2014/8/8.
  */
 @Document(collection = "warning_info")
-public class WarningInfoEntity {
+public class WarningInfoEntity extends AccountIdEntity{
 
     @Id
     private String id;
-
-    @Field("accountId")
-    private Long accountId;//百度账户id
 
     @Field("percent")
     private Double percent;//百分率
@@ -38,9 +35,8 @@ public class WarningInfoEntity {
     private Double Budget;
 
 
-    public WarningInfoEntity(String id, Long accountId, Double percent, String warningState, Date createTime, String warningSign, String suggest, Double budget) {
+    public WarningInfoEntity(String id, Double percent, String warningState, Date createTime, String warningSign, String suggest, Double budget) {
         this.id = id;
-        this.accountId = accountId;
         this.percent = percent;
         this.warningState = warningState;
         this.createTime = createTime;
@@ -58,14 +54,6 @@ public class WarningInfoEntity {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
     }
 
     public Double getPercent() {

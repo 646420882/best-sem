@@ -15,6 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
@@ -87,7 +88,7 @@
     <div class="zs_function over">
         <ul class="fl">
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+            <li><a href="javascript:deleteKwd()"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a>
             </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
@@ -924,7 +925,7 @@
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a>
             </li>
 
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+            <li><a href="javascript:deleteCampaign();"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
 
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
                     type="image" src="../public/img/zs_input.png"></b></a></li>
@@ -1313,6 +1314,33 @@
         </div>
     </div>
 </div>
+
+<%--推广计划设置否定关键词窗口--%>
+<div class="TB_overlayBG"></div>
+<div class="box" style="display:none;" id="setNegtiveWord">
+    <h2 id="setFdKeywordDiv">否定关键词设置<a href="#" class="close">关闭</a></h2>
+
+   <span>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，没词20汉字以内，最多200项。</span>
+
+        <div class="inputKwdDiv">
+            <div><span>否定关键词</span><span>(0/200)</span></div>
+            <textarea id="ntwTextarea" rows="15" cols="30"></textarea>
+        </div>
+        <div class="inputKwdDiv">
+            <div><span>精确否定关键词</span><span>(0/200)</span></div>
+            <textarea id = "entwTextarea" rows="15" cols="30"></textarea>
+        </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li class="current ntwOk">确认</li>
+                <li class="close">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>

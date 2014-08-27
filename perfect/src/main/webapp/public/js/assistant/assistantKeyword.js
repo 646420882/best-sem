@@ -214,6 +214,38 @@ function whenBlurEditKeyword(num,value){
 }
 
 
+/**
+ * 删除关键词
+ */
+function deleteKwd(){
+    var ids = new Array();
+    $("#tbodyClick").find(".list2_box3").each(function(){
+        ids.push($(this).find("input[type=hidden]").val());
+    });
+
+    if(ids.length==0){
+        alert("请选择行再操作!");
+        return;
+    }
+
+    var isDel = window.confirm("您确定要删除关键词吗?");
+    if(isDel==false){
+        return;
+    }
+    $.ajax({
+        url:"/assistantKeyword/deleteById",
+        type:"post",
+        data:{"kwids":ids}
+    });
+
+    $("#tbodyClick").find(".list2_box3").remove();
+
+    setKwdValue($("#tbodyClick tr:eq(0)"),$("#tbodyClick tr:eq(0)").find("input[type=hidden]").val());
+}
+
+
+
+
 
 /**
  * 失去焦点
@@ -223,7 +255,6 @@ function missBlur(even,obj){
         obj.blur();
     }
 }
-
 
 
 

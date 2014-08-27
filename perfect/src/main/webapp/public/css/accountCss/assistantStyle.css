@@ -1,0 +1,21 @@
+#setNegtiveWord>span{
+    float:left;
+    margin:20px;
+}
+
+#setNegtiveWord .main_bottom{
+   float:left;
+}
+
+
+.inputKwdDiv{
+    width:250px;
+}
+#setNegtiveWord .inputKwdDiv{
+    float:left;
+    margin-left: 16px;
+}
+
+#setNegtiveWord{
+    width: 550px;
+}

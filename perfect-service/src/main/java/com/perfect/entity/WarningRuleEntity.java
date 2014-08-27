@@ -11,13 +11,10 @@ import java.util.Date;
  * Created by john on 2014/8/5.
  */
 @Document(collection = "sys_warning")
-public class WarningRuleEntity {
+public class WarningRuleEntity extends AccountIdEntity{
 
     @Id
     private String id;
-
-    @Field("accountId")
-    private Long accountId;//百度账户id
 
     @Field("budgetType")
     private Integer budgetType;//预算类型
@@ -47,9 +44,8 @@ public class WarningRuleEntity {
     private Integer isEnable;//是否启用
 
 
-    public WarningRuleEntity(String id, Long accountId, Integer budgetType, Double budget, Double warningPercent, String tels, String mails, Date startTime, Date dayCountDate, Integer isWarninged, Integer isEnable) {
+    public WarningRuleEntity(String id, Integer budgetType, Double budget, Double warningPercent, String tels, String mails, Date startTime, Date dayCountDate, Integer isWarninged, Integer isEnable) {
         this.id = id;
-        this.accountId = accountId;
         this.budgetType = budgetType;
         this.budget = budget;
         this.warningPercent = warningPercent;
@@ -70,14 +66,6 @@ public class WarningRuleEntity {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
     }
 
     public Integer getBudgetType() {
