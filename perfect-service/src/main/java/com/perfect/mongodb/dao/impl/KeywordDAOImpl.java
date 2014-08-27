@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static com.perfect.mongodb.utils.FieldConstants.ADGROUP_ID;
+
 /**
  * Created by baizz on 2014-07-07.
  */
@@ -138,6 +140,16 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     public List<KeywordEntity> findByQuery(Query query) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         return mongoTemplate.find(query, KeywordEntity.class);
+    }
+
+    @Override
+    public List<KeywordEntity> findByAdgroupId(Long adgroupId) {
+        return getMongoTemplate().find(Query.query(Criteria.where(ADGROUP_ID).is(adgroupId)), getEntityClass());
+    }
+
+    @Override
+    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds) {
+        return getMongoTemplate().find(Query.query(Criteria.where(ADGROUP_ID).in(adgroupIds)), getEntityClass());
     }
 
     public void insert(KeywordEntity keywordEntity) {

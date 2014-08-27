@@ -44,4 +44,7 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
     List<KeywordEntity> findByQuery(Query query);
 
+    List<KeywordEntity> findByAdgroupId(Long adgroupId);
+
+    List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds);
 }
