@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.perfect.mongodb.utils.EntityConstants.*;
 /**
  * 获取账户完整数据的方法
  * 更新账户数据逻辑的方法
@@ -220,7 +221,7 @@ public class AccountDataServiceImpl implements AccountDataService {
             // 开始保存数据
 
             // 保存推广计划
-            mongoTemplate.findAllAndRemove(Query.query(Criteria.where("cid").in(camIds)), CampaignEntity.class);
+            mongoTemplate.findAllAndRemove(Query.query(Criteria.where(CAMPAIGN_ID).in(camIds)), CampaignEntity.class);
             mongoTemplate.insertAll(campaignEntities);
 
             mongoTemplate.insertAll(adgroupEntities);

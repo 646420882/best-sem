@@ -27,7 +27,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveTask;
-
+import static com.perfect.mongodb.utils.EntityConstants.*;
 /**
  * Created by baizz on 2014-08-07.
  */
@@ -72,7 +72,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 List<AccountReportEntity> list;
                 try {
                     list = voResult.get();
-                    mongoTemplate.insert(list, "account_report");
+                    mongoTemplate.insert(list, TBL_ACCOUNT_REPORT);
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {

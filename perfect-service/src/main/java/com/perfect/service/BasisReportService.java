@@ -46,11 +46,14 @@ public interface BasisReportService {
 
 /*******************************************AIP***************************************************/
     /**
-     *
+     *关键字查询
      * @param id 需要查询的ID
      * @param startDate  开始时间
      * @param endDate    结束时间
      * @param devices    需要推广数据设备 0、整合数据  1、PC，移动 端数据独立
+     *                   注：当devices为0时返回实体中直接 getPc 及是整合数据
+     *                       当devices为1时返回实体中PC 和 Mobile 数据时独立分开
+     *                       PC  及getPc  Mobile 及 getMobile
      * @return
      */
     public Map<String,List<StructureReportEntity>> getKeywordReport(Long[] id,String startDate,String endDate, int devices);

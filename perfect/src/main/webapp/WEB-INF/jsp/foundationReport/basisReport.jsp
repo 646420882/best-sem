@@ -126,12 +126,12 @@
                     <td>&nbsp;<span>转化(网页)</span><b>
                         <p>
                             <input class="one" type="button"
-                                   <%--onclick="javascript:fieldName = 'pcConversion';sort = 0;accountBasisReport();"--%>>
+                            <%--onclick="javascript:fieldName = 'pcConversion';sort = 0;accountBasisReport();"--%>>
                         </p>
 
                         <p>
                             <input class="two" type="button"
-                                   <%--onclick="javascript:fieldName = 'pcConversion';sort = 1;accountBasisReport();"--%>>
+                            <%--onclick="javascript:fieldName = 'pcConversion';sort = 1;accountBasisReport();"--%>>
                         </p>
                     </b> <a href="#" class="question"></a></td>
                     <td>&nbsp;<span>转化(商桥)</span><b>
@@ -159,13 +159,15 @@
         <div class="shuju_detali over">
             <ul>
                 <li class="date">选择时间范围：<input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31">
-                    <input name="reservation" type="image" cname="dateClick" onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                    <input name="reservation" type="image" cname="dateClick"
+                           onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                            src="${pageContext.request.contextPath}/public/img/date.png">
-                                  <input type="checkbox" id="checkboxInput" style="margin:6px 3px 0px 5px; ">
+                    <input type="checkbox" id="checkboxInput" style="margin:6px 3px 0px 5px; ">
 
-                                  比较范围<input type="text" id="bijiao" id="inputOne" class="time_input" disabled>
+                    比较范围<input type="text" id="bijiao" id="inputOne" class="time_input" disabled>
 
-                            <input name="reservation" type="image" id="inputTow" cname="dateClick" style="display:none" onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                    <input name="reservation" type="image" id="inputTow" cname="dateClick" style="display:none"
+                           onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                            src="${pageContext.request.contextPath}/public/img/date.png"></li>
                 <li id="deviceUser">选择推广设备：
                     <a href="javascroit:" class="current" cname="0">全部</a><span>|</span>
@@ -360,10 +362,10 @@ var t_conversion = new Array();
 var ts_conversion = 0;
 
 
-var fieldName ='date';
+var fieldName = 'date';
 
 var sort = 0;
-var dateclicks="";
+var dateclicks = "";
 
 //日期控件-开始日期
 var daterangepicker_start_date = null;
@@ -373,7 +375,7 @@ var daterangepicker_end_date = null;
 $(document).ready(function () {
     //加载日历控件
     $("input[name=reservation]").daterangepicker();
-    $("input[cname=dateClick]").click(function(){
+    $("input[cname=dateClick]").click(function () {
         dateclicks = $(this)
     });
     $(".btnDone").on('click', function () {
@@ -382,44 +384,46 @@ $(document).ready(function () {
         if (_startDate != null && _endDate != null) {
             daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
             daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
-            if($("#checkboxhidden").val() == 1){
-                $("#date3").val(daterangepicker_start_date);
-            }
-            dateclicks.prev().val(daterangepicker_start_date+" 至 "+daterangepicker_end_date);
+            /*if($("#checkboxhidden").val() == 1){
+             $("#date3").val(daterangepicker_start_date);
+             }*/
+            dateclicks.prev().val(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
 
             /*if (genre == "keywordQualityCustom") {
-                //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
-                loadKeywordQualityData(null, 0);
-            } */
+             //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
+             loadKeywordQualityData(null, 0);
+             } */
         }
     });
 
-        $("#userClick").click(function(){
-            var date3 = $("#date3").val();
-            var devicesUser = $("#devicesUser").val();
-            var dateLisUser = $("#dateLisUser").val();
-            var checkboxhidden = $("#checkboxhidden").val();
-            $.ajax({
-                url: "/account/accountDateVs",
-                type: "GET",
-                dataType: "json",
-                data: {
-                    date1: daterangepicker_start_date,
-                    date2: daterangepicker_end_date,
-                    date3: date3,
-                    dateType: dateLisUser,
-                    devices: devicesUser,
-                    compare: checkboxhidden
-                },
-                success: function (data) {
-                    $("#userTbody").empty();
-                    if(checkboxhidden == 0) {
-                        $("#trTop").removeAttr("class");
-                        $("#trTop").addClass("list02_top");
-                        $.each(data.date, function (i, item) {
-                            $.each(data.rows, function (i, items1) {
-                                $.each(items1[item], function (i, items) {
-                                    var html_User= "";
+    $("#userClick").click(function () {
+        var date3 = "2014-08-04";
+        /*$("#date3").val()*/
+        var devicesUser = $("#devicesUser").val();
+        var dateLisUser = $("#dateLisUser").val();
+        var checkboxhidden = $("#checkboxhidden").val();
+        $.ajax({
+            url: "/account/accountDateVs",
+            type: "GET",
+            dataType: "json",
+            data: {
+                date1: daterangepicker_start_date,
+                date2: daterangepicker_end_date,
+                date3: date3,
+                dateType: dateLisUser,
+                devices: devicesUser,
+                compare: checkboxhidden
+            },
+            success: function (data) {
+                $("#userTbody").empty();
+                if (checkboxhidden == 0) {
+                    $("#trTop").removeAttr("class");
+                    $("#trTop").addClass("list02_top");
+                    $.each(data.date, function (i, item) {
+                        $.each(data.rows, function (z, items1) {
+                            if (items1[item] != null) {
+                                $.each(items1[item], function (s, items) {
+                                    var html_User = "";
                                     if (i % 2 == 0) {
                                         if (devicesUser == 2) {
                                             html_User = "<tr class='list2_box1'><td>" + item + "</td>"
@@ -443,12 +447,100 @@ $(document).ready(function () {
                                     }
                                     $("#userTbody").append(html_User);
                                 });
-                            });
+                            }
                         });
+                    });
+                } else {
+                    $("#trTop").removeAttr("class");
+                    $("#trTop").addClass("list03_top");
+                    var dateEach = new Array(), impression = new Array(), click = new Array(), cost = new Array(), ctr = new Array(), cpc = new Array(), conversion = new Array();
+                    var dateEach1= new Array(), impression1= new Array(), click1= new Array(), cost1= new Array(), ctr1= new Array(), cpc1= new Array(), conversion1= new Array();
+                    $.each(data.date, function (i, item) {
+                        dateEach.push(item);
+                        $.each(data.rows, function (i, item1) {
+                            if (item1[item] != null) {
+                                $.each(item1[item], function (i, items) {
+                                    if (item1[item] != null) {
+                                        alert(1);
+                                        if (devicesUser == 2) {
+                                            impression.push(items.mobileImpression);
+                                            click.push(items.mobileClick);
+                                            cost.push(Math.round(items.mobileCost * 100) / 100);
+                                            ctr.push(Math.round(items.mobileCtr));
+                                            cpc.push(Math.round(items.mobileCpc * 100) / 100);
+                                            conversion.push(items.mobileConversion);
+                                        } else {
+                                            impression.push(items.pcImpression);
+                                            click.push(items.pcClick);
+                                            cost.push(Math.round(items.pcCost * 100) / 100);
+                                            ctr.push(Math.round(items.pcCtr));
+                                            cpc.push(Math.round(items.pcCpc * 100) / 100);
+                                            conversion.push(items.pcConversion);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    $.each(data.date1, function (i, item) {
+                        dateEach1.push(item)
+                        $.each(data.rows, function (i, item1) {
+                            if (item1[item] != null) {
+                                $.each(item1[item], function (i, items) {
+                                    if (item1[item] != null) {
+                                        if (devicesUser == 2) {
+                                            impression1.push(items.mobileImpression);
+                                            click1.push(items.mobileClick);
+                                            cost1.push(Math.round(items.mobileCost * 100) / 100);
+                                            ctr1.push(Math.round(items.mobileCtr));
+                                            cpc1.push(Math.round(items.mobileCpc * 100) / 100);
+                                            conversion1.push(items.mobileConversion);
+                                        } else {
+                                            impression1.push(items.pcImpression);
+                                            click1.push(items.pcClick);
+                                            cost1.push(Math.round(items.pcCost * 100) / 100);
+                                            ctr1.push(Math.round(items.pcCtr));
+                                            cpc1.push(Math.round(items.pcCpc * 100) / 100);
+                                            conversion1.push(items.pcConversion);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    for (var i = 0; i < impression.length; i++) {
+                        //alert(impression.length);
+                        var html_User1 = "";
+                        var html_User2 = "";
+                        if (i % 2 == 0) {
+                            html_User1 = "<tr class='list2_box1'><td>" + dateEach[i] + "</td>"
+                                    + "<td>" + impression[i] + "</td><td>" + click[i] + "</td><td>" + cost[i] + "</td>"
+                                    + "<td>" + ctr[i] + "%</td><td>" + cpc[i] + "</td><td>" + conversion[i] + "</td><td>-</td><td>-</td></tr>"
+                                    + "<tr><td colspan='9'>&nbsp;<img src='public/img/vs.png'></td></tr>";
+
+                            html_User2 = "<tr class='list2_box1'><td>" + dateEach1[i] + "</td>"
+                                    + "<td>" + impression1[i] + "</td><td>" + click1[i] + "</td><td>" + cost1[i] + "</td>"
+                                    + "<td>" + ctr1[i] + "%</td><td>" + cpc1[i] + "</td><td>" + conversion1[i] + "</td><td>-</td><td>-</td></tr>"
+                                    + "<tr><td colspan='9'>&nbsp;</td></tr>";
+                        } else {
+                            html_User1 = "<tr class='list2_box2'><td>" + dateEach[i] + "</td>"
+                                    + "<td>" + impression[i] + "</td><td>" + click[i] + "</td><td>" + cost[i] + "</td>"
+                                    + "<td>" + ctr[i] + "%</td><td>" + cpc[i] + "</td><td>" + conversion[i] + "</td><td>-</td><td>-</td></tr>"
+                                    + "<tr><td colspan='9'>&nbsp;<img src='public/img/vs.png'></td></tr>";
+
+                            html_User2 = "<tr class='list2_box2'><td>" + dateEach1[i] + "</td>"
+                                    + "<td>" + impression1[i] + "</td><td>" + click1[i] + "</td><td>" + cost1[i] + "</td>"
+                                    + "<td>" + ctr1[i] + "%</td><td>" + cpc1[i] + "</td><td>" + conversion1[i] + "</td><td>-</td><td>-</td></tr>"
+                                    + "<tr><td colspan='9'>&nbsp;</td></tr>";
+                        }
+
+                        $("#userTbody").append(html_User1);
+                        $("#userTbody").append(html_User2);
                     }
                 }
-            });
+            }
         });
+    });
 
 
     var $tab_li = $('.tab_menu li');
@@ -482,18 +574,18 @@ $(document).ready(function () {
         $(this).addClass("current");
         $("#dateLisUser").val($(this).attr("cname"));
     });
-    $("#checkboxInput").click(function(){
-       if($(this).is(":checked")){
-           $("#inputTow").removeAttr("style","display:");
-           $("#inputOne").removeAttr("disabled");
-           $("#checkboxhidden").val(1);
-       }else{
-           $("#inputTow").attr("style","display:none");
-           $("#inputOne").attr("disabled","disabled");
-           $("#checkboxhidden").val(0);
-           $("#date3").val("");
-           $("#bijiao").val("");
-       }
+    $("#checkboxInput").click(function () {
+        if ($(this).is(":checked")) {
+            $("#inputTow").removeAttr("style", "display:");
+            $("#inputOne").removeAttr("disabled");
+            $("#checkboxhidden").val(1);
+        } else {
+            $("#inputTow").attr("style", "display:none");
+            $("#inputOne").attr("disabled", "disabled");
+            $("#checkboxhidden").val(0);
+            $("#date3").val("");
+            $("#bijiao").val("");
+        }
     });
 
     //初始化基础统计
@@ -1114,15 +1206,15 @@ var accountBasisReport = function () {
             var basisHtml = "";
             $("#basisAccount").empty();
             $.each(data.rows, function (i, item) {
-                var ctr = item.pcClick/item.pcImpression;
-                var cpc = item.pcCost/item.pcClick;
+                var ctr = item.pcClick / item.pcImpression;
+                var cpc = item.pcCost / item.pcClick;
                 if (i % 2 == 0) {
                     basisHtml = "<tr class='list2_box1'><td>&nbsp;" + item.dateRep + "</td><td>&nbsp;" + item.pcImpression + "</td><td>&nbsp;" + item.pcClick + "</td>"
-                            + "<td>&nbsp;" + Math.round(item.pcCost*100)/100 + "</td><td>&nbsp;" + Math.round(ctr*10000)/100 + "%</td><td>&nbsp;" + Math.round(cpc*100)/100 + "</td><td>&nbsp;" + item.pcConversion + "</td>"
+                            + "<td>&nbsp;" + Math.round(item.pcCost * 100) / 100 + "</td><td>&nbsp;" + Math.round(ctr * 10000) / 100 + "%</td><td>&nbsp;" + Math.round(cpc * 100) / 100 + "</td><td>&nbsp;" + item.pcConversion + "</td>"
                             + "<td>&nbsp;-</td></tr>"
                 } else {
                     basisHtml = "<tr class='list2_box2'><td>&nbsp;" + item.dateRep + "</td><td>&nbsp;" + item.pcImpression + "</td><td>&nbsp;" + item.pcClick + "</td>"
-                            + "<td>&nbsp;" + Math.round(item.pcCost*100)/100 + "</td><td>&nbsp;" + Math.round(ctr*10000)/100 + "%</td><td>&nbsp;" + Math.round(cpc*100)/100 + "</td><td>&nbsp;" + item.pcConversion + "</td>"
+                            + "<td>&nbsp;" + Math.round(item.pcCost * 100) / 100 + "</td><td>&nbsp;" + Math.round(ctr * 10000) / 100 + "%</td><td>&nbsp;" + Math.round(cpc * 100) / 100 + "</td><td>&nbsp;" + item.pcConversion + "</td>"
                             + "<td>&nbsp;-</td></tr>"
                 }
                 $("#basisAccount").append(basisHtml);

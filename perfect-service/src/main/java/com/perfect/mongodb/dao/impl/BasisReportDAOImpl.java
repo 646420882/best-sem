@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
+import static com.perfect.mongodb.utils.EntityConstants.*;
 /**
  * Created by SubDong on 2014/8/6.
  */
@@ -38,28 +38,28 @@ public class BasisReportDAOImpl extends AbstractUserBaseDAOImpl<StructureReportE
         } else {
             sort = new Sort(Sort.Direction.DESC, fieldName);
         }
-        List<AccountReportDTO> reportEntities = mongoTemplate.find(new Query().with(sort), AccountReportDTO.class, "account_report");
+        List<AccountReportDTO> reportEntities = mongoTemplate.find(new Query().with(sort), AccountReportDTO.class, TBL_ACCOUNT_REPORT);
         return reportEntities;
     }
 
     @Override
     public long getAccountCount() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        long account_report = mongoTemplate.count(new Query(), "account_report");
+        long account_report = mongoTemplate.count(new Query(), TBL_ACCOUNT_REPORT);
         return account_report;
     }
 
     @Override
     public List<AccountReportDTO> getAccountReport(Date startDate, Date endDate) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        List<AccountReportDTO> reportResponses = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)),AccountReportDTO.class, "account_report");
+        List<AccountReportDTO> reportResponses = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)),AccountReportDTO.class, TBL_ACCOUNT_REPORT);
         return reportResponses;
     }
 
     @Override
     public List<StructureReportEntity> getKeywordReport(Long[] id,String table) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        List<StructureReportEntity> entityList = mongoTemplate.find(new Query(Criteria.where("kwid").in(id)),StructureReportEntity.class,table);
+        List<StructureReportEntity> entityList = mongoTemplate.find(new Query(Criteria.where(KEYWORD_ID).in(id)),StructureReportEntity.class,table);
         return  entityList;
     }
 
