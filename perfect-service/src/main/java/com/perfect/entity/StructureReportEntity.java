@@ -15,20 +15,23 @@ public class StructureReportEntity {
     @Field(value = "agid")
     private Long adgroupId;
 
+    @Field("kwid")
+    private Long keywordId;  //关键词ID
+
+    @Field(value = "crid")
+    private Long creativeId;    //创意ID
+
+    @Field(value = "rgid")
+    private Long regionId; //地域ID
+
     @Field(value = "agna")
     private String adgroupName; //单元
 
     @Field(value = "cpna")
     private String campaignName; //计划
 
-    @Field("kwid")
-    private Long keywordId;  //关键词ID
-
     @Field(value = "kwna")
     private String keywordName; //关键字
-
-    @Field(value = "crid")
-    private Long creativeId;    //创意ID
 
     @Field(value = "crtl")
     private String creativeTitle; //创意标题
@@ -38,9 +41,6 @@ public class StructureReportEntity {
 
     @Field(value = "des2")
     private String description2;//创意内容2
-
-    @Field(value = "rgid")
-    private Long regionId; //地域ID
 
     @Field(value = "rgna")
     private String regionName; //地域名称
