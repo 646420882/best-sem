@@ -3,6 +3,8 @@ package com.perfect.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import static com.perfect.mongodb.utils.EntityConstants.*;
+
 /**
  * Created by baizz on 2014-08-06.
  */
@@ -11,19 +13,19 @@ public class KeywordReportEntity extends AccountIdEntity {
     @Id
     private String id;
 
-    @Field(value = "kwid")
+    @Field(KEYWORD_ID)
     private Long keywordId;
 
     @Field(value = "kwna")
     private String keywordName;
 
-    @Field(value = "agid")
+    @Field(ADGROUP_ID)
     private Long adgroupId;
 
     @Field(value = "agna")
     private String adgroupName;
 
-    @Field(value = "cpid")
+    @Field(CAMPAIGN_ID)
     private Long campaignId;
 
     @Field(value = "cpna")

@@ -5,13 +5,15 @@ package com.perfect.mongodb.utils;
  */
 public class EntityConstants {
 
+    //SYS
+    public static final String SYS_KEYWORD = "sys_keyword";
+
     // Tables
     public static final String TBL_CAMPAIGN = "campaign";
     public static final String TBL_ADGROUP = "adgroup";
     public static final String TBL_KEYWORD = "keyword";
     public static final String TBL_CREATIVE = "creative";
     public static final String TBL_BIDDINGRULE = "bidrule";
-    public static final String SYS_KEYWORD = "sys_keyword";
     public static final String TBL_LOG = "logs";
     public static final String TBL_ACCOUNT_REPORT = "account_report";
 
@@ -22,6 +24,7 @@ public class EntityConstants {
     public static final String KEYWORD_ID = "kwid";
     public static final String CREATIVE_ID = "crid";
     public static final String CAMPAIGN_ID = "cid";
+    public static final String REGION_ID = "rgid";
 
 
 }

@@ -3,8 +3,7 @@ package com.perfect.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import static com.perfect.mongodb.utils.EntityConstants.TBL_ADGROUP;
-import static com.perfect.mongodb.utils.EntityConstants.TBL_CAMPAIGN;
+import static com.perfect.mongodb.utils.EntityConstants.*;
 
 /**
  * Created by baizz on 2014-08-07.
@@ -14,7 +13,7 @@ public class RegionReportEntity extends AccountIdEntity {
     @Id
     private String id;
 
-    @Field(value = "rgid")
+    @Field(REGION_ID)
     private Long regionId;
 
     @Field(value = "rgna")
