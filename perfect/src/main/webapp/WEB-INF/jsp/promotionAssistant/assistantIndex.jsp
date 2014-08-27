@@ -26,7 +26,7 @@
 
 <div class="concent fr over">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
-
+<jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
 <div class="mid over">
 <div class="on_title over">
     <a href="#">
@@ -230,16 +230,6 @@
             </tr>
             </thead>
             <tbody id="tbodyClick2">
-            <%--<tr class="list2_box3">--%>
-            <%--<td>&nbsp;北京{婚博会}<span class="editor"></span></td>--%>
-            <%--<td>&nbsp;有效<span class="editor"></span></td>--%>
-            <%--<td>&nbsp;启用<span class="editor"></span></td>--%>
-            <%--<td>&nbsp;一星<span class="editor"></span></td>--%>
-            <%--<td>&nbsp;一星<span class="editor"></span></td>--%>
-            <%--<td>&nbsp;短语-核心包含<span class="editor"></span></td>--%>
-            <%--<td>&nbsp;<a href="#">http://tthunbohui.com </a><span class="editor"></span></td>--%>
-            <%--<td>&nbsp;九星词<span class="editor"></span>	</td>--%>
-            <%--</tr>--%>
             </tbody>
         </table>
         <div class="more_list over" style="display:none;">
@@ -697,7 +687,7 @@
 <div class="containers  over hides">
 <div class="zs_function over">
     <ul class="fl">
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+        <li><a href="javascript:void(0)" onclick="addAdgroup()"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
         <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
         <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a></li>
         <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
@@ -709,9 +699,10 @@
     <span class="fr">1/10</span>
 </div>
 <div class="list4">
-    <table border="0" cellspacing="0" width="100%">
+    <table border="0" cellspacing="0" width="100%" id="adGroupTable">
         <thead>
         <tr class="list02_top">
+            <td>&nbsp;操作</td>
             <td>&nbsp;推广单元名称</td>
             <td>&nbsp;推广单元状态</td>
             <td>&nbsp;启动/暂停</td>
@@ -724,150 +715,15 @@
         </tr>
         </thead>
         <tbody id="tbodyClick_campaign">
-        <tr class="list2_box3">
-            <td>&nbsp;北京{婚博会}<span class="editor"></span></td>
-            <td>&nbsp;有效<span class="editor"></span></td>
-            <td>&nbsp;启用<span class="editor"></span></td>
-            <td>&nbsp;一星<span class="editor"></span></td>
-            <td>&nbsp;一星<span class="editor"></span></td>
-            <td>&nbsp;短语-核心包含<span class="editor"></span></td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com </a><span class="editor"></span></td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a></td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;北京{婚博会}</td>
-            <td>&nbsp;有效</td>
-            <td>&nbsp;启用</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;一星</td>
-            <td>&nbsp;短语-核心包含</td>
-            <td>&nbsp;<a href="#">http://tthunbohui.com</a>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr class="list2_box1">
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr class="list2_box2">
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
+        <%--<tr class="list2_box3">--%>
+            <%--<td>&nbsp;北京{婚博会}<span class="editor"></span></td>--%>
+            <%--<td>&nbsp;有效<span class="editor"></span></td>--%>
+            <%--<td>&nbsp;启用<span class="editor"></span></td>--%>
+            <%--<td>&nbsp;一星<span class="editor"></span></td>--%>
+            <%--<td>&nbsp;一星<span class="editor"></span></td>--%>
+            <%--<td>&nbsp;短语-核心包含<span class="editor"></span></td>--%>
+            <%--<td>&nbsp;<a href="#">http://tthunbohui.com </a><span class="editor"></span></td>--%>
+        <%--</tr>--%>
         </tbody>
     </table>
 </div>
@@ -1435,6 +1291,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantKeyword.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantCampaign.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantAccount.js"></script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/adgroup.js"></script>
 </body>
 </html>

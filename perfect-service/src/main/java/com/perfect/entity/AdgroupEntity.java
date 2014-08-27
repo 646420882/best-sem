@@ -55,6 +55,16 @@ public class AdgroupEntity extends AccountIdEntity {
     @Field("o")
     private OptType opt;
 
+    public String getCampaignName() {
+        return campaignName;
+    }
+
+    public void setCampaignName(String campaignName) {
+        this.campaignName = campaignName;
+    }
+
+    private String campaignName;
+
     public boolean setAdgroupId(Long aAdgroupId) {
         boolean wasSet = false;
         adgroupId = aAdgroupId;

@@ -167,7 +167,7 @@ $(function () {
     items.each(function (i) {
         var t = $(this);
         t.click(function () {
-            alert("a");
+
             t.addClass("list2_box3");
             t.siblings().removeClass("list2_box3");
         });
