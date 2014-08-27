@@ -5,6 +5,7 @@ import com.perfect.autosdk.core.ResHeaderUtil;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.entity.*;
 import com.perfect.mongodb.base.BaseMongoTemplate;
+import com.perfect.mongodb.dao.impl.CampaignDAOImpl;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.BaiduApiService;
 import com.perfect.service.SystemUserService;
@@ -16,10 +17,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,6 +39,9 @@ public class AccountDataServiceImpl implements AccountDataService {
 
     @Resource
     private SystemUserService systemUserService;
+
+    @Resource
+    private CampaignDAOImpl campaignDAO;
 
     @Override
     public void initAccountData(String userName, long accountId) {
@@ -100,17 +106,17 @@ public class AccountDataServiceImpl implements AccountDataService {
                 adgroupEntity.setAccountId(aid);
                 ids.add(adgroupEntity.getAdgroupId());
             }
-
-//            logger.info("查询账户推广关键词...");
-//            List<KeywordType> keywordTypes = apiService.getAllKeyword(ids);
-//            logger.info("查询结束: 关键词数=" + keywordTypes.size());
 //
-//            List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
-//
-//            for (KeywordEntity keywordEntity : keywordEntities) {
-//                keywordEntity.setAccountId(aid);
-//            }
+            logger.info("查询账户推广关键词...");
+            List<KeywordType> keywordTypes = apiService.getAllKeyword(ids);
+            logger.info("查询结束: 关键词数=" + keywordTypes.size());
 
+            List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+
+            for (KeywordEntity keywordEntity : keywordEntities) {
+                keywordEntity.setAccountId(aid);
+            }
+//
 
             logger.info("查询账户推广创意...");
             List<CreativeType> creativeTypes = apiService.getAllCreative(ids);
@@ -126,7 +132,7 @@ public class AccountDataServiceImpl implements AccountDataService {
             // 保存推广计划
             mongoTemplate.insertAll(campaignEntities);
             mongoTemplate.insertAll(adgroupEntities);
-//            mongoTemplate.insertAll(keywordEntities);
+            mongoTemplate.insertAll(keywordEntities);
             mongoTemplate.insertAll(creativeEntityList);
         }
         systemUserService.save(systemUserEntity);
@@ -222,6 +228,170 @@ public class AccountDataServiceImpl implements AccountDataService {
             mongoTemplate.insertAll(creativeEntityList);
         }
         systemUserService.save(systemUserEntity);
+    }
+
+    @Override
+    public void updateAccountData(String userName, long accountId, List<Long> camIds) {
+        SystemUserEntity systemUserEntity = systemUserService.getSystemUser(userName);
+
+        if (systemUserEntity == null) {
+            return;
+        }
+
+        List<BaiduAccountInfoEntity> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccountInfoEntities();
+
+        if (baiduAccountInfoEntityList == null || baiduAccountInfoEntityList.isEmpty()) {
+            return;
+        }
+
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(userName);
+        BaiduAccountInfoEntity baiduAccountInfoEntity = null;
+        for (BaiduAccountInfoEntity entity : baiduAccountInfoEntityList) {
+            if (Long.valueOf(accountId).compareTo(entity.getId()) == 0) {
+                baiduAccountInfoEntity = entity;
+                break;
+            }
+        }
+
+        Long acid = baiduAccountInfoEntity.getId();
+
+        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
+        BaiduApiService apiService = new BaiduApiService(commonService);
+
+        // 初始化账户数据
+        AccountInfoType accountInfoType = apiService.getAccountInfo();
+        BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
+
+        //获取指定id的推广计划
+        List<CampaignType> campaignTypes = apiService.getCampaignById(camIds);
+
+        //转换成本地系统的实体
+        List<CampaignEntity> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
+
+        // 查询推广单元
+//        List<Long> camIds = new ArrayList<>(campaignEntities.size());
+
+        //凤巢返回回来的计划实体id
+        List<Long> campaignIds = new ArrayList<>(campaignEntities.size());
+
+        for (CampaignEntity campaignEntity : campaignEntities) {
+            campaignEntity.setAccountId(acid);
+            campaignIds.add(campaignEntity.getCampaignId());
+        }
+
+        List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(campaignIds);
+
+        List<AdgroupEntity> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
+
+        List<Long> adgroupdIds = new ArrayList<>();
+        for (AdgroupEntity adgroupEntity : adgroupEntities) {
+            adgroupEntity.setAccountId(acid);
+            adgroupdIds.add(adgroupEntity.getAdgroupId());
+        }
+
+        List<KeywordType> keywordTypes = apiService.getAllKeyword(adgroupdIds);
+
+        List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+
+        List<Long> kwids = new ArrayList<>(keywordEntities.size());
+        for (KeywordEntity keywordEntity : keywordEntities) {
+            keywordEntity.setAccountId(acid);
+            kwids.add(keywordEntity.getKeywordId());
+        }
+
+        List<CreativeType> creativeTypes = apiService.getAllCreative(adgroupdIds);
+
+        List<CreativeEntity> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
+
+        List<Long> creativeIds = new ArrayList<>(creativeEntityList.size());
+        for (CreativeEntity creativeEntity : creativeEntityList) {
+            creativeEntity.setAccountId(acid);
+            creativeIds.add(creativeEntity.getCreativeId());
+        }
+
+        //clear data
+        clearCollectionData(mongoTemplate, accountId);
+        //update cakc data
+        mongoTemplate.insertAll(campaignEntities);
+
+        mongoTemplate.insertAll(adgroupEntities);
+        mongoTemplate.insertAll(keywordEntities);
+        mongoTemplate.insertAll(creativeEntityList);
+
+        //update account data
+        Update update1 = new Update();
+        update1.unset("bdAccounts.$");
+        mongoTemplate.updateFirst(
+                Query.query(
+                        Criteria.where("bdAccounts._id").is(baiduAccountInfoEntity.getId())),
+                update1, SystemUserEntity.class);
+        Update update2 = new Update();
+        update2.addToSet("bdAccounts", baiduAccountInfoEntity);
+        mongoTemplate.updateFirst(
+                Query.query(
+                        Criteria.where("userName").is(systemUserEntity.getUserName())),
+                update2, SystemUserEntity.class);
+
+
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<CampaignEntity> getCampaign(String userName, long accountId) {
+        SystemUserEntity systemUserEntity = systemUserService.getSystemUser(userName);
+
+        if (systemUserEntity == null) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<BaiduAccountInfoEntity> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccountInfoEntities();
+
+        if (baiduAccountInfoEntityList == null || baiduAccountInfoEntityList.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(userName);
+        BaiduAccountInfoEntity baiduAccountInfoEntity = null;
+        for (BaiduAccountInfoEntity entity : baiduAccountInfoEntityList) {
+            if (Long.valueOf(accountId).compareTo(entity.getId()) == 0) {
+                baiduAccountInfoEntity = entity;
+                break;
+            }
+        }
+
+        Long acid = baiduAccountInfoEntity.getId();
+
+        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
+        BaiduApiService apiService = new BaiduApiService(commonService);
+
+        //本地的推广单元
+        List<CampaignEntity> campaignEntityList = campaignDAO.findAll();
+
+        List<CampaignType> campaignTypes = apiService.getAllCampaign();
+
+        List<CampaignEntity> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
+
+        //凤巢中的推广单元
+        for (CampaignEntity campaignEntity : campaignEntities) {
+            campaignEntity.setAccountId(acid);
+        }
+
+        List<CampaignEntity> sumList = new ArrayList<>(campaignEntityList);
+        sumList.addAll(campaignEntities);
+        for (int i = sumList.size() - 1; i >= 0; i--) {
+            for (CampaignEntity entity : campaignEntityList) {
+                if (sumList.get(i).getCampaignId().compareTo(entity.getCampaignId()) == 0) {
+                    sumList.remove(i);
+                    break;
+                }
+            }
+        }
+
+        if (sumList.size() == 0) {
+            return Collections.EMPTY_LIST;
+        } else {
+            return sumList;
+        }
     }
 
     // 清除账户数据

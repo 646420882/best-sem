@@ -45,6 +45,7 @@ public class BaiduApiService {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     public List<CampaignType> getAllCampaign() {
         try {
             CampaignService campaignService = commonService.getService(CampaignService.class);
@@ -61,7 +62,24 @@ public class BaiduApiService {
         return Collections.EMPTY_LIST;
     }
 
+    @SuppressWarnings("unchecked")
+    public List<CampaignType> getCampaignById(List<Long> camIds) {
+        try {
+            CampaignService campaignService = commonService.getService(CampaignService.class);
+            GetCampaignByCampaignIdRequest request = new GetCampaignByCampaignIdRequest();
+            request.setCampaignIds(camIds);
+            GetCampaignByCampaignIdResponse response = campaignService.getCampaignByCampaignId(request);
+            if (response == null) {
+                return Collections.EMPTY_LIST;
+            }
+            return response.getCampaignTypes();
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.EMPTY_LIST;
+    }
 
+    @SuppressWarnings("unchecked")
     public List<Long> getAllCampaignId() {
         try {
             CampaignService campaignService = commonService.getService(CampaignService.class);
