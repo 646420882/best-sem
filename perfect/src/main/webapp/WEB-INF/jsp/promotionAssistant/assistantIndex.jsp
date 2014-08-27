@@ -1110,7 +1110,7 @@
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li class="current">确认</li>
+                <li id="downloadAccount" class="current">确认</li>
                 <li class="close">取消</li>
             </ul>
         </div>

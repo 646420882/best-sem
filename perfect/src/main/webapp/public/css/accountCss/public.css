@@ -229,12 +229,21 @@ table{
     font-size:1.3em;
     color:#f2ab00;
 }
-.nav_under ul li .list1 {
-	background: url(/public/img/bg.png) -10px -551px no-repeat;}
-.nav_under ul .current{background:#1f1c24 url(/public/img/boder_top_img.jpg) repeat-x;
+.nav_under{
+    padding-top:6px;
+    background: url(/public/img/boder_top_img.jpg) top repeat-x;
+
 }
-.nav_under ul .current a{ color:#ffb500;
-    background:url(/public/img/jiantou.png) right no-repeat;;}
+.nav_under ul li .list1 {
+	background: url(/public/img/bg.png) -10px -551px no-repeat;
+}
+.nav_under ul .current{
+    background:#1f1c24;
+}
+.nav_under ul .current a{
+    color:#ffb500;
+    background:url(/public/img/jiantou.png) right no-repeat;
+}
 
 .nav_under ul .current .list1{
     background: url(/public/img/bg.png) -10px -515px no-repeat;
