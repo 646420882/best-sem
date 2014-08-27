@@ -6,4 +6,13 @@ package com.perfect.mongodb.utils;
 public class FieldConstants {
 
     public static final String ACCOUNT_ID = "acid";
+
+
+    public static final String ADGROUP_ID = "agid";
+    public static final String KEYWORD_ID = "kwid";
+    public static final String CREATIVE_ID = "crid";
+
+    public static final String CAMPAIGN_ID = "cid";
+
+
 }
