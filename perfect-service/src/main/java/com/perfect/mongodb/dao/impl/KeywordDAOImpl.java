@@ -79,7 +79,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         return pager;
     }
 
-    // TODO xiaowei 
+    // TODO xiaowei
     @Override
     public List<KeywordInfo> getKeywordInfo() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();

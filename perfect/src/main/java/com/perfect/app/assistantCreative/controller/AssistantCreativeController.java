@@ -43,7 +43,7 @@ public class AssistantCreativeController extends WebContextSupport {
     @RequestMapping(value = "/getList")
     public ModelAndView getCreativeList(HttpServletRequest request, HttpServletResponse response,
                                         @RequestParam(value = "cid", required = false) String cid,
-                                        @RequestParam(value = ACCOUNT_ID, required = false) String aid) {
+                                        @RequestParam(value = "aid", required = false) String aid) {
         List<CreativeEntity> creativeEntityList= new ArrayList<>();
         if (aid != "" || !aid.equals("")) {
             creativeEntityList= creativeDAO.getCreativeByAdgroupId(Long.parseLong(aid), null, 0, 10);
@@ -77,7 +77,7 @@ public class AssistantCreativeController extends WebContextSupport {
      */
     @RequestMapping(value = "/getUnitsByPlanId")
     public ModelAndView getUnitsByPlanId(HttpServletResponse response,@RequestParam(value = "planId",required = true)String planId){
-        List<AdgroupEntity> adgroupEntities=adgroupDAO.findByQuery(new Query(Criteria.where("cid").is(Long.parseLong(planId))));
+        List<AdgroupEntity> adgroupEntities=adgroupDAO.findByQuery(new Query(Criteria.where(CAMPAIGN_ID).is(Long.parseLong(planId))));
         writeJson(adgroupEntities,response);
     return null;
     }
