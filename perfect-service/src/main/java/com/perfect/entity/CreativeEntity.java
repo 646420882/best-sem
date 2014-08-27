@@ -3,11 +3,13 @@
 
 package com.perfect.entity;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import static com.perfect.mongodb.utils.FieldConstants.ADGROUP_ID;
+import static com.perfect.mongodb.utils.FieldConstants.CREATIVE_ID;
 
 @Document(collection = "creative")
 public class CreativeEntity extends AccountIdEntity {
@@ -16,12 +18,13 @@ public class CreativeEntity extends AccountIdEntity {
     private String id;
 
     @Indexed(unique = true)
+    @Field(CREATIVE_ID)
     private Long creativeId;
 
     //------------------------
     // MEMBER VARIABLES
     //------------------------
-    @Field("agid")
+    @Field(ADGROUP_ID)
     private Long adgroupId;
     @Field("t")
     private String title;

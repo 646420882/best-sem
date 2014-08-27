@@ -9,11 +9,17 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
 </head>
+<style type="text/css">
+    .tab_box{ padding:10px 0 0 2px;}
+
+</style>
 <body>
-<jsp:include page="../homePage/pageBlock/head.jsp"/>
-<div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-<div class="mid over fr">
+
+<div class="concent over fr">
+<jsp:include page="../homePage/pageBlock/head.jsp"/>
+
+<div class="mid over">
     <div class="on_title over">
         <a href="#">
             推广助手
@@ -24,9 +30,8 @@
             <li class="selected">智能竞价</li>
             <li>重点词竞价</li>
         </ul>
-    <div class="tab_box">
+    <div class="tab_box" >
         <div class="containers over">
-            <div class="list01_top over"><Span>智能竞价</Span> <a href="#" class="question"></a></div>
                <div class=" jiangjia_concent over">
                     <div class="jingjia_left fl over">
                         <div class="j_l_top over">
@@ -358,7 +363,6 @@
                 </div>
        </div>
         <div class="containers over hides">
-            <div class="list01_top over"> <Span>智能竞价</Span>   <a href="#" class="question"></a></div>
                 <div class=" jiangjia_concent over">
                     <div class="jingjia_left fl over">
                         <div class="j_l_top over">

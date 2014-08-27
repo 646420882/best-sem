@@ -8,116 +8,75 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="nav fl">
     <div class="nav_left over fl">
+        <div class="nav_bg">
+            <img src="${pageContext.request.contextPath}/public/img/nav_bg.jpg" width="100%" height="100%">
+
+        </div>
         <div class="user over">
-            <div class="user_img fl">
-							<span class="img">
-								<img src="${pageContext.request.contextPath}/public/img/user.png">
-							</span><span class="name"> ${currSystemUserName} </span>
+            <div class="nav_bg">
+                <img src="${pageContext.request.contextPath}/public/img/user_bg.png" width="100%" height="100%">
             </div>
-            <div class="user_close fr">
-                <a href="/logout">
-                    退出
-                </a>
+            <div class="user_mid over">
+                <div class="user_logo over">
+                    <div class="user_logo1">
+                        <div class="user_img fl over">
+                            <span> <img src="${pageContext.request.contextPath}/public/images/yixin_logo.png"></span>
+                        </div>
+                        <div class="user_text fl">
+                            <p>上午，好！</p>
+                            <h3>${currSystemUserName}</h3>
+
+                        </div>
+
+                    </div>
+                    <div class="user_logo2">
+                        <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png">
+
+                    </div>
+
+                </div>
+
+                <div class="user_detali over">
+                    <ul>
+                        <li>推广额度：<b><a href="#">37287.13</a></b> 元</li>
+                        <li>余额预计可消费：18天 </li>
+                        <li>日预算：26000.00元 </li>
+                    </ul>
+
+                </div>
             </div>
         </div>
         <div class="nav_mid">
-            <a href="/home"><div class="nav_top">
-             帐户全景<span></span>
-            </div></a>
             <div class="nav_under over">
                 <ul>
-                    <a href="/assistant/index">
-                        <li>
-                            <h3>推广助手</h3>
-                        </li>
-                    </a>
+                    <li class="current">
+                        <a href="/home" >
+                            <span class="list1"></span><h3>帐户全景</h3>
+                        </a>
+                    </li>
+
                     <li>
-                        <span class="list1"></span>
-                        <a href="#">
-                            账户预警
+                        <a href="/assistant/index">
+                            <span class="list2"></span><h3>推广助手</h3>
                         </a>
                     </li>
                     <li>
-                        <span class="list2"></span>
-                        <a href="/upload/uploadManager">
-                            批量上传
-                        </a>
+                        <a href="#"><span class="list3"></span><h3>智能结构</h3></a>
                     </li>
+
                     <li>
-                        <span class="list3"></span>
-                        <a href="/upload/uploadTotal">
-                            批量操作
-                        </a>
+                        <a href="/bidding/index"><span class="list4"></span><h3>智能竞价</h3></a>
                     </li>
+
                     <li>
-                        <span class="list4"></span>
-                        <a href="#">
-                            关键词查找
-                        </a>
+                        <a href="#"><span class="list5"></span> <h3>数据报告</h3></a>
                     </li>
-                    <li>
-                        <span class="list5"></span>
-                        <a href="#">
-                            推广查询
-                        </a>
-                    </li>
-                    <li>
-                        <h3>智能结构</h3>
-                    </li>
-                    <li>
-                        <span class="list6"></span>
-                        <a href="#">
-                            关键词拓展
-                        </a>
-                    </li>
-                    <li>
-                        <span class="list7"></span>
-                        <a href="/keyword_group">
-                            智能分组
-                        </a>
-                    </li>
-                    <li>
-                        <h3><a href="/bidding/index">智能竞价</a></h3>
-                    </li>
-                    <li>
-                        <span class="list8"></span>
-                        <a href="#">
-                            诊断关键词
-                        </a>
-                    </li>
-                    <li>
-                        <span class="list9"></span>
-                        <a href="#">
-                            筛选关键词
-                        </a>
-                    </li>
-                    <li>
-                        <span class="list10"></span>
-                        <a href="#">
-                            设置规则
-                        </a>
-                    </li>
-                    <li>
-                        <h3>数据报告</h3>
-                    </li>
-                    <li>
-                        <span class="list11"></span>
-                        <a href="/reportIndex">
-                            基础报告
-                        </a>
-                    </li>
-                    <li>
-                        <span class="list12"></span>
-                        <a href="#">
-                            定制报告
-                        </a>
-                    </li>
+
                 </ul>
             </div>
         </div>
     </div>
     <div class="tips fl">
-        <input type="image" src="${pageContext.request.contextPath}/public/img/button2.png">
     </div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
@@ -132,6 +91,10 @@
                 $(".on_title").css({"position":"static","margin":"0 auto"});
             }
         });
+        $('.nav_under ul li').click(function () {
+            $(this).addClass('current').siblings().removeClass('current');
+        });
+
     });
 
 </script>

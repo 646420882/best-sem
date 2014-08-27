@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.perfect.mongodb.utils.FieldConstants.*;
 /**
  * Created by XiaoWei on 2014/8/21.
  */
@@ -30,6 +31,7 @@ import java.util.List;
 public class AssistantCreativeController extends WebContextSupport {
 
     private static long accountId=6243012L;
+
 
     @Resource
     CreativeDAO creativeDAO;
@@ -41,7 +43,7 @@ public class AssistantCreativeController extends WebContextSupport {
     @RequestMapping(value = "/getList")
     public ModelAndView getCreativeList(HttpServletRequest request, HttpServletResponse response,
                                         @RequestParam(value = "cid", required = false) String cid,
-                                        @RequestParam(value = "aid", required = false) String aid) {
+                                        @RequestParam(value = ACCOUNT_ID, required = false) String aid) {
         List<CreativeEntity> creativeEntityList= new ArrayList<>();
         if (aid != "" || !aid.equals("")) {
             creativeEntityList= creativeDAO.getCreativeByAdgroupId(Long.parseLong(aid), null, 0, 10);
@@ -81,7 +83,7 @@ public class AssistantCreativeController extends WebContextSupport {
     }
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public ModelAndView insertCreative(HttpServletRequest request,HttpServletResponse response,
-                                       @RequestParam(value = "aid",required = true)String aid,
+                                       @RequestParam(value = ACCOUNT_ID,required = true)String aid,
                                        @RequestParam(value = "cacheCativeId",required = true)Long cacheCreativeId,
                                        @RequestParam(value = "title",required = false)String title,
                                        @RequestParam(value="description1",required = false)String de1,
