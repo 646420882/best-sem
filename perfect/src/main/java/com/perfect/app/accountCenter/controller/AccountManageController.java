@@ -99,14 +99,14 @@ public class AccountManageController {
      * @return
      */
     @RequestMapping(value = "/updateAccountData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String updateAccountData(@RequestParam(value = "campaignIds") String[] campaignIds) {
+    public String updateAccountData(@RequestParam(value = "campaignIds") String campaignIds) {
         //数据预处理
-        /*List<Long> camIds = new ArrayList<>(campaignIds.split(",").length);
+        List<Long> camIds = new ArrayList<>(campaignIds.split(",").length);
         for (String str : campaignIds.split(",")) {
             camIds.add(Long.valueOf(str));
-        }*/
+        }
 
-        accountDataService.updateAccountData(AppContext.getUser(), AppContext.getAccountId(), null);
+        accountDataService.updateAccountData(AppContext.getUser(), AppContext.getAccountId(), camIds);
         ObjectNode json_string = new ObjectMapper().createObjectNode();
         json_string.put("status", true);
         return json_string.toString();
