@@ -22,7 +22,7 @@
      <div id="tab">
         <ul class="tab_menu">
             <li class="selected">智能竞价</li>
-            <li>重点关键词监控</li>
+            <li>重点词竞价</li>
         </ul>
     <div class="tab_box">
         <div class="containers over">
@@ -370,7 +370,7 @@
                             <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png">
                         </div>
                         <div class="j_list01 over">
-                            <ul id="tree2" class="ztree over">
+                            <ul id="zTree2" class="ztree over">
                             </ul>
                         </div>
                         <div class="j_l_under over">
@@ -963,7 +963,7 @@
     //================================================
 
 
-    $(document).ready(function () {
+    $(function () {
 
 //        $.ajax({
 //            url: "/account"
@@ -982,7 +982,7 @@
         });
         //加载账户树
         $.fn.zTree.init($("#zTree"), setting, zNodes);
-
+        $.fn.zTree.init($("#zTree2"), setting, zNodes);
     });
 
     function loadReady() {
@@ -1001,10 +1001,10 @@
             ids.push($(this).val())
         })
 
-        $.post({
-            url: "/bidding/checkrank",
-            data: { ids: ids.join(","),
-        })
+//        $.post({
+//            url: "/bidding/checkrank",
+//            data: { ids: ids.join(",")
+//        });
     }
     //-->
 

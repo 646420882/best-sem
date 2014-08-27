@@ -2,7 +2,7 @@ package com.perfect.app.accountCenter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.perfect.dao.AccountManageDAO;
+import com.perfect.app.web.WebUtils;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.service.AccountManageService;
 import org.springframework.context.annotation.Scope;
@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -23,10 +24,7 @@ import java.util.Map;
 public class AccountManageController {
 
     @Resource
-    private AccountManageService<BaiduAccountInfoEntity> service;
-
-    @Resource
-    private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
+    private AccountManageService service;
 
     /**
      * 获取账户树
@@ -34,10 +32,13 @@ public class AccountManageController {
      * @return
      */
     @RequestMapping(value = "/get_tree", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getAccountTree() {
-        BaiduAccountInfoEntity entity = accountManageDAO.findByBaiduUserId(null);
+    public ModelAndView getAccountTree(HttpServletRequest request) {
+
+        Long accountId = WebUtils.getAccountId(request);
+        String userName = WebUtils.getUserName(request);
+
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> trees = service.getAccountTree(entity);
+        Map<String, Object> trees = service.getAccountTree(userName, accountId);
         jsonView.setAttributesMap(trees);
         return new ModelAndView(jsonView);
     }
@@ -45,12 +46,12 @@ public class AccountManageController {
     /**
      * 根据百度账户id获取其账户信息
      *
-     * @param userId
      * @return
      */
     @RequestMapping(value = "/getBaiduAccountInfoByUserId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getBaiduAccountInfoByUserId(@RequestParam(value = "userId", required = false) Long userId) {
+    public ModelAndView getBaiduAccountInfoByUserId(HttpServletRequest request) {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+        Long userId = WebUtils.getAccountId(request);
         Map<String, Object> result = service.getBaiduAccountInfoByUserId(userId);
         jsonView.setAttributesMap(result);
         return new ModelAndView(jsonView);

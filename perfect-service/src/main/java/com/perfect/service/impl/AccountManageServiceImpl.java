@@ -25,13 +25,13 @@ import java.util.*;
  * Created by baizz on 2014-8-21.
  */
 @Service("accountManageService")
-public class AccountManageServiceImpl implements AccountManageService<BaiduAccountInfoEntity> {
+public class AccountManageServiceImpl implements AccountManageService {
 
     @Resource
     private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
 
-    public Map<String, Object> getAccountTree(BaiduAccountInfoEntity o) {
-        ArrayNode treeNodes = accountManageDAO.getAccountTree(o);
+    public Map<String, Object> getAccountTree(String userName, Long accountId) {
+        ArrayNode treeNodes = accountManageDAO.getAccountTree(userName, accountId);
         Map<String, Object> trees = new HashMap<>();
         trees.put("trees", treeNodes);
         return trees;
