@@ -321,7 +321,6 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     String[] arr = str.split("\\t");
                     CampaignReportEntity entity1 = new CampaignReportEntity();
                     entity1.setAccountId(Long.valueOf(arr[1]));
-                    entity1.setAccountName(arr[2]);
                     entity1.setCampaignId(Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
                     if (type == 1) {
@@ -374,7 +373,6 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     String[] arr = str.split("\\t");
                     AdgroupReportEntity entity1 = new AdgroupReportEntity();
                     entity1.setAccountId(Long.valueOf(arr[1]));
-                    entity1.setAccountName(arr[2]);
                     entity1.setCampaignId(Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
                     entity1.setAdgroupId(Long.valueOf(arr[5]));
@@ -434,7 +432,6 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     entity1.setDescription2(arr[10]);
                     entity1.setShowUrl(arr[11]);
                     entity1.setAccountId(Long.valueOf(arr[1]));
-                    entity1.setAccountName(arr[2]);
                     entity1.setCampaignId(Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
                     entity1.setAdgroupId(Long.valueOf(arr[5]));
@@ -548,7 +545,6 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     String[] arr = str.split("\\t");
                     RegionReportEntity entity1 = new RegionReportEntity();
                     entity1.setAccountId(Long.valueOf(arr[1]));
-                    entity1.setAccountName(arr[2]);
                     entity1.setCampaignId(Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
                     if (type == 1) {
@@ -697,7 +693,6 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         if (entity.getCampaignId().compareTo(type.getCampaignId()) == 0) {
                             CampaignReportEntity _entity = new CampaignReportEntity();
                             _entity.setAccountId(entity.getAccountId());
-                            _entity.setAccountName(entity.getAccountName());
                             _entity.setCampaignId(entity.getCampaignId());
                             _entity.setCampaignName(entity.getCampaignName());
                             _entity.setPcImpression(entity.getPcImpression());
@@ -722,7 +717,6 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     if (temp) {
                         CampaignReportEntity _entity = new CampaignReportEntity();
                         _entity.setAccountId(entity.getAccountId());
-                        _entity.setAccountName(entity.getAccountName());
                         _entity.setCampaignId(entity.getCampaignId());
                         _entity.setCampaignName(entity.getCampaignName());
                         _entity.setPcImpression(entity.getPcImpression());
@@ -777,7 +771,6 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                             _entity.setAdgroupId(entity.getAdgroupId());
                             _entity.setAdgroupName(entity.getAdgroupName());
                             _entity.setAccountId(entity.getAccountId());
-                            _entity.setAccountName(entity.getAccountName());
                             _entity.setCampaignId(entity.getCampaignId());
                             _entity.setCampaignName(entity.getCampaignName());
                             _entity.setPcImpression(entity.getPcImpression());
@@ -804,7 +797,6 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         _entity.setAdgroupId(entity.getAdgroupId());
                         _entity.setAdgroupName(entity.getAdgroupName());
                         _entity.setAccountId(entity.getAccountId());
-                        _entity.setAccountName(entity.getAccountName());
                         _entity.setCampaignId(entity.getCampaignId());
                         _entity.setCampaignName(entity.getCampaignName());
                         _entity.setPcImpression(entity.getPcImpression());
@@ -866,7 +858,6 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                             _entity.setAdgroupId(entity.getAdgroupId());
                             _entity.setAdgroupName(entity.getAdgroupName());
                             _entity.setAccountId(entity.getAccountId());
-                            _entity.setAccountName(entity.getAccountName());
                             _entity.setCampaignId(entity.getCampaignId());
                             _entity.setCampaignName(entity.getCampaignName());
                             _entity.setPcImpression(entity.getPcImpression());
@@ -898,7 +889,6 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         _entity.setAdgroupId(entity.getAdgroupId());
                         _entity.setAdgroupName(entity.getAdgroupName());
                         _entity.setAccountId(entity.getAccountId());
-                        _entity.setAccountName(entity.getAccountName());
                         _entity.setCampaignId(entity.getCampaignId());
                         _entity.setCampaignName(entity.getCampaignName());
                         _entity.setPcImpression(entity.getPcImpression());
@@ -1042,7 +1032,6 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                             _entity.setAdgroupId(entity.getAdgroupId());
                             _entity.setAdgroupName(entity.getAdgroupName());
                             _entity.setAccountId(entity.getAccountId());
-                            _entity.setAccountName(entity.getAccountName());
                             _entity.setCampaignId(entity.getCampaignId());
                             _entity.setCampaignName(entity.getCampaignName());
                             _entity.setPcImpression(entity.getPcImpression());
@@ -1073,7 +1062,6 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         _entity.setAdgroupId(entity.getAdgroupId());
                         _entity.setAdgroupName(entity.getAdgroupName());
                         _entity.setAccountId(entity.getAccountId());
-                        _entity.setAccountName(entity.getAccountName());
                         _entity.setCampaignId(entity.getCampaignId());
                         _entity.setCampaignName(entity.getCampaignName());
                         _entity.setPcImpression(entity.getPcImpression());
