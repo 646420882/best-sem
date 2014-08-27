@@ -1603,7 +1603,7 @@ h2 .close{
 }
 @media screen and (max-width:1450px){
     .t_list03 ,.t_list04 ,.t_list01  {
-        width: 100%;
+
         text-align:left;
     }
     .zs_input2{
@@ -1854,7 +1854,7 @@ h2 .close{
     margin-left:20px;
     width:12px;
     height:6px;
-    background:url(../img/Screening_row.png) no-repeat;
+    background:url(/public/img/Screening_row.png) no-repeat;
 
     z-index:5;
 }
