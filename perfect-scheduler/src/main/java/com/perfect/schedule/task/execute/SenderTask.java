@@ -59,7 +59,7 @@ public class SenderTask implements IScheduleTaskDealSingle<WarningRuleEntity> {
             //根据不同的比例和预算金额算出当天消费的金额
             double cost = wre.getWarningPercent() / 100 * wre.getBudget();
             for (RealTimeResultType rtr : todayAccountRealDataList) {
-                if (wre.getAccountId().longValue() == rtr.getID().longValue()) {
+                if (wre.getAccountId() == rtr.getID().longValue()) {
                     if (Double.parseDouble(rtr.getKPI(3)) >= cost) {
                         executeList.add(wre);
                     }
