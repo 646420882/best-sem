@@ -4,6 +4,7 @@ import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.dto.AssistantkwdIgnoreDeleDTO;
+import com.perfect.dto.CampaignTreeDTO;
 import com.perfect.entity.*;
 import com.perfect.service.AssistantKeywordService;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -79,13 +80,13 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService{
      * @return
      */
     @Override
-    public List<CampaignTreeVoEntity> getCampaignTree(Long accountId){
-        List<CampaignTreeVoEntity> campaignTreeList = new ArrayList<>();
+    public List<CampaignTreeDTO> getCampaignTree(Long accountId){
+        List<CampaignTreeDTO> campaignTreeList = new ArrayList<>();
         List<CampaignEntity> campaignList = campaignDAO.find(new Query().addCriteria(Criteria.where("aid").is(accountId)));
 
         for(CampaignEntity campaignEntity:campaignList){
             List<AdgroupEntity> adgroupList = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where("cid").is(campaignEntity.getCampaignId()).and("aid").is(accountId)));
-            CampaignTreeVoEntity campaignTree = new CampaignTreeVoEntity();
+            CampaignTreeDTO campaignTree = new CampaignTreeDTO();
             campaignTree.setRootNode(campaignEntity);//设置根节点
             campaignTree.setChildNode(adgroupList);//设置子节点
             campaignTreeList.add(campaignTree);

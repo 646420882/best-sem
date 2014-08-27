@@ -1,6 +1,7 @@
 package com.perfect.app.controller;
 
 import com.perfect.dao.KeywordDAO;
+import com.perfect.dao.SystemUserDAO;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import javax.annotation.Resource;
 
 /**
  * Created by baizz on 2014-7-11.
@@ -77,5 +80,24 @@ public class KeywordControllerTest extends JUnitBaseController {
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
+    @Resource
+    SystemUserDAO systemUserDAO;
+/*    @Test
+    public void test() throws Exception {
+        AsynchronousReportDAO dao = new AsynchronousReportDAOImpl(systemUserDAO);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        String yesterday = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+
+        List<String> list = DateUtils.getPeriod(yesterday, yesterday);
+        for (String dateStr : list) {
+//            dao.getAccountReportData(dateStr);
+            dao.getCampaignReportData(dateStr);
+            dao.getAdgroupReportData(dateStr);
+            dao.getCreativeReportData(dateStr);
+            dao.getKeywordReportData(dateStr);
+            dao.getRegionReportData(dateStr);
+        }
+    }*/
 
 }

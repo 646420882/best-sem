@@ -1,7 +1,7 @@
 package com.perfect.app.assistantKeyword.controller;
 
 import com.google.gson.Gson;
-import com.perfect.entity.CampaignTreeVoEntity;
+import com.perfect.dto.CampaignTreeDTO;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.utils.web.WebContext;
@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -52,9 +51,8 @@ public class AssistantKeywordController {
      * @return
      */
     @RequestMapping(value = "assistantKeyword/deleteById" ,method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView deleteKeywordById(Long[] kwids){
-        assistantKeywordService.deleteByKwIds(Arrays.asList(kwids));
-        return new ModelAndView();
+    public void deleteKeywordById(Long[] kwids){
+        //assistantKeywordService.deleteByKwIds(Arrays.asList(kwids));
     }
 
 
@@ -102,7 +100,7 @@ public class AssistantKeywordController {
      */
     @RequestMapping(value = "assistantKeyword/campaignTree",method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView getCampaignTree(ModelMap modelMap){
-        List<CampaignTreeVoEntity> treeList = assistantKeywordService.getCampaignTree(currentAccountId);
+        List<CampaignTreeDTO> treeList = assistantKeywordService.getCampaignTree(currentAccountId);
 
         String  gson = new Gson().toJson(treeList);
         System.out.println(gson);
