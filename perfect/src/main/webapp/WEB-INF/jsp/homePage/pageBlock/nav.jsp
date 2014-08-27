@@ -67,7 +67,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#"><span class="list3"></span>
+                        <a href="/keyword_group"><span class="list3"></span>
 
                             <h3>智能结构</h3></a>
                     </li>

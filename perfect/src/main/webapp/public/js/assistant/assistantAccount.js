@@ -353,7 +353,6 @@ var campaignId;
 var adgroupId;
 
 $(function () {
-    alert("hahha");
     //获取账户树数据
     $.ajax({
         url: "/account/get_tree",

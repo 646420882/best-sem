@@ -6,16 +6,17 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
+import static com.perfect.mongodb.utils.EntityConstants.*;
 /**
  * Created by baizz on 2014-08-13.
  */
-@Document(collection = "account_report")
+@Document(collection = TBL_ACCOUNT_REPORT)
 public class AccountReportEntity {
 
     @Id
     private String id;
 
-    @Field(value = "acid")
+    @Field(value = ACCOUNT_ID)
     private Long accountId;
 
     @Field(value = "acna")

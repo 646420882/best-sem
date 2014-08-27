@@ -934,6 +934,7 @@
 </div>
 </div>
 </div>
+</div>
 
 <!---------下载账户----------->
 <div class="TB_overlayBG"></div>
@@ -948,34 +949,16 @@
             <li><input type="radio" name="no1">&nbsp; 从最新的推广计划列表中选择</li>
         </ul>
         <div class="zs_sets over">
-            <div class="zs_ses1">
+            <div id="allCampaign" class="zs_ses1" style="overflow: auto">
                 <ul>
-                    <li><input type="checkbox" checked="checked" name="zsets">北京婚博会</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
-                    <li><input type="checkbox" name="zsets">北京婚展</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
-                    <li><input type="checkbox" name="zsets">北京婚展</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
-                    <li><input type="checkbox" name="zsets">北京婚展</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
                 </ul>
             </div>
-            <div class="zs_ses1 hides">
+            <div id="existsCampaign" class="zs_ses1 hides" style="overflow: auto">
                 <ul>
-                    <li><input type="checkbox" checked="checked" name="zsets">北京婚博会</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
-                    <li><input type="checkbox" name="zsets">北京婚展</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
-                    <li><input type="checkbox" name="zsets">北京婚展</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
                 </ul>
             </div>
-            <div class="zs_ses1 hides">
+            <div id="newCampaign" class="zs_ses1 hides" style="overflow: auto">
                 <ul>
-                    <li><input type="checkbox" checked="checked" name="zsets">北京婚博会</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
-                    <li><input type="checkbox" name="zsets">北京婚展</li>
-                    <li class="current"><input type="checkbox" name="zsets">北京婚博会优化</li>
                 </ul>
             </div>
         </div>
@@ -983,7 +966,7 @@
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li class="current">确认</li>
+                <li id="downloadAccount" class="current">确认</li>
                 <li class="close">取消</li>
             </ul>
         </div>
@@ -1292,5 +1275,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantCampaign.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantAccount.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/adgroup.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
+
 </body>
 </html>
