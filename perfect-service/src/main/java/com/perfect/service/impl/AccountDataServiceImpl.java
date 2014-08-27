@@ -5,7 +5,10 @@ import com.perfect.autosdk.core.ResHeaderUtil;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.entity.*;
 import com.perfect.mongodb.base.BaseMongoTemplate;
+import com.perfect.mongodb.dao.impl.AdgroupDAOImpl;
 import com.perfect.mongodb.dao.impl.CampaignDAOImpl;
+import com.perfect.mongodb.dao.impl.CreativeDAOImpl;
+import com.perfect.mongodb.dao.impl.KeywordDAOImpl;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.BaiduApiService;
 import com.perfect.service.SystemUserService;
@@ -26,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.perfect.mongodb.utils.EntityConstants.*;
+
 /**
  * 获取账户完整数据的方法
  * 更新账户数据逻辑的方法
@@ -43,6 +47,15 @@ public class AccountDataServiceImpl implements AccountDataService {
 
     @Resource
     private CampaignDAOImpl campaignDAO;
+
+    @Resource
+    private AdgroupDAOImpl adgroupDAO;
+
+    @Resource
+    private KeywordDAOImpl keywordDAO;
+
+    @Resource
+    private CreativeDAOImpl creativeDAO;
 
     @Override
     public void initAccountData(String userName, long accountId) {
@@ -269,6 +282,23 @@ public class AccountDataServiceImpl implements AccountDataService {
         //转换成本地系统的实体
         List<CampaignEntity> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
 
+
+        List<Long> localAdgroupIds = new ArrayList<>();
+        for (Long id : camIds) {
+            localAdgroupIds.addAll(adgroupDAO.getAdgroupIdByCampaignId(id));
+        }
+
+        List<Long> localKeywordIds = new ArrayList<>();
+        for (Long id : localAdgroupIds) {
+            localKeywordIds.addAll(keywordDAO.getKeywordIdByAdgroupId(id));
+        }
+
+        List<Long> localCreativeIds = new ArrayList<>();
+        for (Long id : localAdgroupIds) {
+            localCreativeIds.addAll(creativeDAO.getCreativeIdByAdgroupId(id));
+        }
+
+
         // 查询推广单元
 //        List<Long> camIds = new ArrayList<>(campaignEntities.size());
 
@@ -311,8 +341,11 @@ public class AccountDataServiceImpl implements AccountDataService {
         }
 
         //clear data
-        clearCollectionData(mongoTemplate, accountId);
-        //update cakc data
+        clearCampaignData(mongoTemplate, accountId, camIds);
+        clearAdgroupData(mongoTemplate, accountId, localAdgroupIds);
+        clearKeywordData(mongoTemplate, accountId, localKeywordIds);
+        clearCreativeData(mongoTemplate, accountId, localCreativeIds);
+        //update data
         mongoTemplate.insertAll(campaignEntities);
 
         mongoTemplate.insertAll(adgroupEntities);
@@ -351,7 +384,6 @@ public class AccountDataServiceImpl implements AccountDataService {
             return Collections.EMPTY_LIST;
         }
 
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(userName);
         BaiduAccountInfoEntity baiduAccountInfoEntity = null;
         for (BaiduAccountInfoEntity entity : baiduAccountInfoEntityList) {
             if (Long.valueOf(accountId).compareTo(entity.getId()) == 0) {
@@ -398,19 +430,47 @@ public class AccountDataServiceImpl implements AccountDataService {
     // 清除账户数据
     private void clearCollectionData(MongoTemplate mongoTemplate, long accountId) {
         if (mongoTemplate.collectionExists(CampaignEntity.class)) {
-            mongoTemplate.remove(Query.query(Criteria.where("acid").is(accountId)), CampaignEntity.class);
+            mongoTemplate.remove(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), CampaignEntity.class);
         }
 
         if (mongoTemplate.collectionExists(AdgroupEntity.class)) {
-            mongoTemplate.remove(Query.query(Criteria.where("acid").is(accountId)), AdgroupEntity.class);
+            mongoTemplate.remove(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), AdgroupEntity.class);
         }
 
         if (mongoTemplate.collectionExists(KeywordEntity.class)) {
-            mongoTemplate.remove(Query.query(Criteria.where("acid").is(accountId)), KeywordEntity.class);
+            mongoTemplate.remove(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), KeywordEntity.class);
         }
 
         if (mongoTemplate.collectionExists(CreativeEntity.class)) {
-            mongoTemplate.remove(Query.query(Criteria.where("acid").is(accountId)), CreativeEntity.class);
+            mongoTemplate.remove(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), CreativeEntity.class);
+        }
+    }
+
+    private void clearCampaignData(MongoTemplate mongoTemplate, long accountId, List<Long> campaignIds) {
+        Query query = new Query(Criteria.where(ACCOUNT_ID).is(accountId).and(CAMPAIGN_ID).in(campaignIds));
+        if (mongoTemplate.collectionExists(CampaignEntity.class)) {
+            mongoTemplate.remove(query, TBL_CAMPAIGN);
+        }
+    }
+
+    private void clearAdgroupData(MongoTemplate mongoTemplate, long accountId, List<Long> adgroupIds) {
+        Query query = new Query(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).in(adgroupIds));
+        if (mongoTemplate.collectionExists(AdgroupEntity.class)) {
+            mongoTemplate.remove(query, TBL_ADGROUP);
+        }
+    }
+
+    private void clearKeywordData(MongoTemplate mongoTemplate, long accountId, List<Long> keywordIds) {
+        Query query = new Query(Criteria.where(ACCOUNT_ID).is(accountId).and(KEYWORD_ID).in(keywordIds));
+        if (mongoTemplate.collectionExists(KeywordEntity.class)) {
+            mongoTemplate.remove(query, TBL_KEYWORD);
+        }
+    }
+
+    private void clearCreativeData(MongoTemplate mongoTemplate, long accountId, List<Long> creativeIds) {
+        Query query = new Query(Criteria.where(ACCOUNT_ID).is(accountId).and(CREATIVE_ID).in(creativeIds));
+        if (mongoTemplate.collectionExists(CreativeEntity.class)) {
+            mongoTemplate.remove(query, TBL_CREATIVE);
         }
     }
 

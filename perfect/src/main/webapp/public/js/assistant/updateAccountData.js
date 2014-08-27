@@ -43,23 +43,35 @@ var loadNewCampaignData = function () {
 };
 
 var updateAllCampaign = function () {
-    ;
+    $.ajax({
+        url: '/account/updateAccountData',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            "campaignIds": null
+        },
+        success: function (data, textStatus, jqXHR) {
+            alert("**************");
+        }
+    });
 };
 
 var updateExistsCampaign = function () {
-    var campaignIds = [];
+    var campaignIds = "";
     $.each($("input[name='campaign_exists']:checked"), function (i, item) {
-        if(item.checked){
-            campaignIds.push(item.id);
+        if (item.checked) {
+            campaignIds += item.id + ",";
         }
     });
+
+    campaignIds = campaignIds.substring(0, campaignIds.length - 1);
 
     $.ajax({
         url: '/account/updateAccountData',
         type: 'POST',
         dataType: 'json',
         data: {
-            "campaignIds": JSON.stringify(campaignIds)
+            "campaignIds": campaignIds
         },
         success: function (data, textStatus, jqXHR) {
             alert("**************");
@@ -70,7 +82,7 @@ var updateExistsCampaign = function () {
 var updateNewCampaign = function () {
     var campaignIds = [];
     $.each($("input[name='campaign_new']:checked"), function (i, item) {
-        if(item.checked){
+        if (item.checked) {
             campaignIds.push(item.id);
         }
     });
@@ -100,31 +112,22 @@ $(function () {
         $.each($("input[name=no1]"), function (i, item) {
             if (item.checked) {
                 if (i == 0) {
-                    index  = i + 1;
+                    index = i;
                 } else if (i == 1) {
-                    index  = i + 1;
+                    index = i;
                 } else if (i == 2) {
-                    index  = i + 1;
+                    index = i;
                 }
             }
         });
     });
 
     $("#downloadAccount").livequery('click', function () {
-        if(index  = 1){}else if(index  = 2){
+        if (index = 0) {
+        } else if (index = 1) {
             updateExistsCampaign();
-        }else if(index  = 3){}
+        } else if (index = 2) {
+        }
     });
 
-    //update
-    /*$.ajax({
-     url: '/account/updateAccountData',
-     type: 'POST',
-     async: false,
-     dataType: 'json',
-     data: {},
-     success: function (data, textStatus, jqXHR) {
-     alert(data.status);
-     }
-     });*/
 });
