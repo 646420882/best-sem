@@ -24,14 +24,16 @@
                         </div>
                         <div class="user_text fl">
                             <p>上午，好！</p>
+
                             <h3>${currSystemUserName}</h3>
 
                         </div>
 
                     </div>
                     <div class="user_logo2">
-                        <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png">
-
+                        <form name="logout" method="POST" action="/logout">
+                            <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png" onclick="$('form[logout]').submit();"/>
+                        </form>
                     </div>
 
                 </div>
@@ -39,8 +41,8 @@
                 <div class="user_detali over">
                     <ul>
                         <li>推广额度：<b><a href="#">37287.13</a></b> 元</li>
-                        <li>余额预计可消费：18天 </li>
-                        <li>日预算：26000.00元 </li>
+                        <li>余额预计可消费：18天</li>
+                        <li>日预算：26000.00元</li>
                     </ul>
 
                 </div>
@@ -50,26 +52,36 @@
             <div class="nav_under over">
                 <ul>
                     <li class="current">
-                        <a href="/home" >
-                            <span class="list1"></span><h3>帐户全景</h3>
+                        <a href="/home">
+                            <span class="list1"></span>
+
+                            <h3>帐户全景</h3>
                         </a>
                     </li>
 
                     <li>
                         <a href="/assistant/index">
-                            <span class="list2"></span><h3>推广助手</h3>
+                            <span class="list2"></span>
+
+                            <h3>推广助手</h3>
                         </a>
                     </li>
                     <li>
-                        <a href="#"><span class="list3"></span><h3>智能结构</h3></a>
+                        <a href="#"><span class="list3"></span>
+
+                            <h3>智能结构</h3></a>
                     </li>
 
                     <li>
-                        <a href="/bidding/index"><span class="list4"></span><h3>智能竞价</h3></a>
+                        <a href="/bidding/index"><span class="list4"></span>
+
+                            <h3>智能竞价</h3></a>
                     </li>
 
                     <li>
-                        <a href="#"><span class="list5"></span> <h3>数据报告</h3></a>
+                        <a href="#"><span class="list5"></span>
+
+                            <h3>数据报告</h3></a>
                     </li>
 
                 </ul>
@@ -81,14 +93,14 @@
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">
-    $(function(){
+    $(function () {
         var navH = $(".on_title").offset().top;
-        $(window).scroll(function(){
+        $(window).scroll(function () {
             var scroH = $(this).scrollTop();
-            if(scroH>=navH){
-                $(".on_title").css({"position":"fixed","top":"77"});
-            }else{
-                $(".on_title").css({"position":"static","margin":"0 auto"});
+            if (scroH >= navH) {
+                $(".on_title").css({"position": "fixed", "top": "77"});
+            } else {
+                $(".on_title").css({"position": "static", "margin": "0 auto"});
             }
         });
         $('.nav_under ul li').click(function () {

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.perfect.mongodb.utils.FieldConstants.*;
+import static com.perfect.mongodb.utils.EntityConstants.*;
 /**
  * Created by john on 2014/8/15.
  */

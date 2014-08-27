@@ -25,8 +25,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.mongodb.utils.FieldConstants.ADGROUP_ID;
-import static com.perfect.mongodb.utils.FieldConstants.CAMPAIGN_ID;
+import static com.perfect.mongodb.utils.EntityConstants.ADGROUP_ID;
+import static com.perfect.mongodb.utils.EntityConstants.CAMPAIGN_ID;
 
 /**
  * Created by vbzer_000 on 2014-07-02.

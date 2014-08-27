@@ -6,19 +6,11 @@ import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.core.AppContext;
 import com.perfect.dao.CampaignDAO;
-import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.CampaignEntity;
-import com.perfect.entity.StructureReportEntity;
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.entity.*;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.mongodb.utils.DateUtils;
-import com.perfect.service.BaiduApiService;
-import com.perfect.service.BasisReportService;
-import com.perfect.service.BiddingRuleService;
-import com.perfect.service.SystemUserService;
+import com.perfect.service.*;
 import com.perfect.utils.JSONUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -51,11 +43,16 @@ public class BiddingController {
     private CampaignDAO campaignDAO;
 
     @Resource
+    private SysAdgroupService sysAdgroupService;
+
+    @Resource
+    private SysKeywordService sysKeywordService;
+
+    @Resource
     private BasisReportService basisReportService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public void save(HttpServletRequest request, @RequestBody BiddingRuleEntity entity) {
-//        AppContext.setUser(WebUtils.;
         biddingRuleService.createBiddingRule(entity);
     }
 
@@ -106,8 +103,8 @@ public class BiddingController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView home(HttpServletRequest request,
-                             @RequestParam(value = "cp", required = false) String cp,
-                             @RequestParam(value = "ag", required = false) String agid,
+                             @RequestParam(value = "cp", required = false) Long cp,
+                             @RequestParam(value = "ag", required = false) Long agid,
                              @RequestParam(value = "s", required = false, defaultValue = "0") int skip,
                              @RequestParam(value = "l", required = false, defaultValue = "20") int limit,
                              @RequestParam(value = "sort", required = false, defaultValue = "kw") String sort,
@@ -115,28 +112,28 @@ public class BiddingController {
 
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> q = new HashMap<>();
+        List<KeywordEntity> entities = null;
         if (cp != null) {
-            q.put("cid", cp);
+            List<AdgroupEntity> adgroupEntityList = sysAdgroupService.findIdByCampaignId(cp);
+
+            List<Long> ids = new ArrayList<>(adgroupEntityList.size());
+            for (AdgroupEntity adgroupEntity : adgroupEntityList) {
+                ids.add(adgroupEntity.getAdgroupId());
+            }
+            entities = sysKeywordService.findByAdgroupIds(ids);
+        } else if (agid != null) {
+            entities = sysKeywordService.findByAdgroupId(agid);
+        } else {
+            return new ModelAndView(jsonView);
         }
 
-        if (agid != null) {
-            q.put("agid", agid);
-        }
 
-        List<BiddingRuleEntity> entities = null;
-
-        entities = biddingRuleService.findRules(q, skip, limit, sort, (asc) ? Sort.Direction.ASC : Sort.Direction.DESC);
         List<Long> ids = new ArrayList<>();
 
         Map<Long, BiddingRuleDTO> biddingRuleDTOs = new HashMap<>();
 
-        for (BiddingRuleEntity entity : entities) {
+        for (KeywordEntity entity : entities) {
             ids.add(entity.getKeywordId());
-
-            BiddingRuleDTO dto = new BiddingRuleDTO();
-            BeanUtils.copyProperties(entity, dto);
-
-            biddingRuleDTOs.put(entity.getKeywordId(), dto);
         }
         String yesterday = DateUtils.getYesterdayStr();
 
@@ -155,7 +152,7 @@ public class BiddingController {
             dto.setImpression(entity.getPcImpression());
         }
 
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(biddingRuleDTOs);
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(entities);
         jsonView.setAttributesMap(attributes);
 
         // 获取报告信息

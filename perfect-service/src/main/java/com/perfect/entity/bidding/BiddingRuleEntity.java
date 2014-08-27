@@ -6,12 +6,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import static com.perfect.mongodb.utils.EntityConstants.TBL_BIDDINGRULE;
+
 /**
  * Created by yousheng on 2014/7/30.
  *
  * @author yousheng
  */
-@Document(collection = "bidrule")
+@Document(collection = TBL_BIDDINGRULE)
 public class BiddingRuleEntity extends AccountIdEntity {
 
     @Id

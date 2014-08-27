@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.mongodb.utils.FieldConstants.ACCOUNT_ID;
+import static com.perfect.mongodb.utils.EntityConstants.ACCOUNT_ID;
 
 /**
  * Created by john on 2014/8/19.
