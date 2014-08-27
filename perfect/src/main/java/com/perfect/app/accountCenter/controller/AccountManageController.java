@@ -2,17 +2,22 @@ package com.perfect.app.accountCenter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.perfect.app.web.WebUtils;
+import com.perfect.core.AppContext;
 import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.CampaignEntity;
+import com.perfect.service.AccountDataService;
 import com.perfect.service.AccountManageService;
+import com.perfect.utils.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,16 +31,18 @@ public class AccountManageController {
     @Resource
     private AccountManageService service;
 
+    @Resource
+    private AccountDataService accountDataService;
+
     /**
      * 获取账户树
      *
      * @return
      */
     @RequestMapping(value = "/get_tree", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getAccountTree(HttpServletRequest request) {
-
-        Long accountId = WebUtils.getAccountId(request);
-        String userName = WebUtils.getUserName(request);
+    public ModelAndView getAccountTree() {
+        Long accountId = AppContext.getAccountId();
+        String userName = AppContext.getUser();
 
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
         Map<String, Object> trees = service.getAccountTree(userName, accountId);
@@ -49,9 +56,9 @@ public class AccountManageController {
      * @return
      */
     @RequestMapping(value = "/getBaiduAccountInfoByUserId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getBaiduAccountInfoByUserId(HttpServletRequest request) {
+    public ModelAndView getBaiduAccountInfoByUserId() {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        Long userId = WebUtils.getAccountId(request);
+        Long userId = AppContext.getAccountId();
         Map<String, Object> result = service.getBaiduAccountInfoByUserId(userId);
         jsonView.setAttributesMap(result);
         return new ModelAndView(jsonView);
@@ -83,6 +90,35 @@ public class AccountManageController {
         ObjectNode json_string = new ObjectMapper().createObjectNode();
         json_string.put("status", true);
         return json_string.toString();
+    }
+
+    /**
+     * 下载更新当前百度账户下的所有数据
+     *
+     * @param campaignIds
+     * @return
+     */
+    @RequestMapping(value = "/updateAccountData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String updateAccountData(@RequestParam(value = "campaignIds") String[] campaignIds) {
+        //数据预处理
+        /*List<Long> camIds = new ArrayList<>(campaignIds.split(",").length);
+        for (String str : campaignIds.split(",")) {
+            camIds.add(Long.valueOf(str));
+        }*/
+
+        accountDataService.updateAccountData(AppContext.getUser(), AppContext.getAccountId(), null);
+        ObjectNode json_string = new ObjectMapper().createObjectNode();
+        json_string.put("status", true);
+        return json_string.toString();
+    }
+
+    @RequestMapping(value = "/getNewCampaign", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getNewCampaign() {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        List<CampaignEntity> list = accountDataService.getCampaign(AppContext.getUser(), AppContext.getAccountId());
+        Map<String, Object> values = JSONUtils.getJsonMapData(list);
+        jsonView.setAttributesMap(values);
+        return new ModelAndView(jsonView);
     }
 
     @RequestMapping(value = "/addBaiduAccount", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 /**
  * Created by baizz on 14-8-27.
  */
-public class InitAccount extends JUnitBaseController  {
+public class InitAccount extends JUnitBaseController {
 
     @Autowired
     private AccountDataService accountDataService;
@@ -18,7 +18,7 @@ public class InitAccount extends JUnitBaseController  {
     }
 
     @Test
-    public void init(){
-        accountDataService.initAccountData("shangpin", 2565730l);
+    public void init() {
+        accountDataService.initAccountData("perfect", 6243012l);
     }
 }
