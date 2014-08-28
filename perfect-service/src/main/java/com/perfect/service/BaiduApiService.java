@@ -101,6 +101,7 @@ public class BaiduApiService {
      * @param campaignIds
      * @return
      */
+    @SuppressWarnings("unchecked")
     public List<AdgroupType> getAllAdGroup(List<Long> campaignIds) {
         try {
             AdgroupService adgroupService = commonService.getService(AdgroupService.class);
@@ -160,7 +161,7 @@ public class BaiduApiService {
         return Collections.EMPTY_LIST;
     }
 
-
+    @SuppressWarnings("unchecked")
     public List<KeywordType> getAllKeyword(List<Long> adgroupIds) {
         try {
             if (log.isDebugEnabled()) {
@@ -168,32 +169,57 @@ public class BaiduApiService {
             }
             KeywordService keywordService = commonService.getService(KeywordService.class);
 
-            GetKeywordIdByAdgroupIdRequest kwIdRequest = new GetKeywordIdByAdgroupIdRequest();
-            kwIdRequest.setAdgroupIds(adgroupIds);
 
-            GetKeywordIdByAdgroupIdResponse response = keywordService.getKeywordIdByAdgroupId(kwIdRequest);
-            if (response == null) {
+            //分批请求
+            List<KeywordType> keywordTypeList = new ArrayList<>();
+            List<Long> subList = new ArrayList<>(3);
+            for (Long adgroupId : adgroupIds) {
+                if (subList.size() == 4) {
+
+                    GetKeywordIdByAdgroupIdRequest kwIdRequest = new GetKeywordIdByAdgroupIdRequest();
+                    kwIdRequest.setAdgroupIds(subList);
+                    GetKeywordIdByAdgroupIdResponse response = keywordService.getKeywordIdByAdgroupId(kwIdRequest);
+                    if (response == null) {
+                        Thread.sleep(5000);
+                        response = keywordService.getKeywordIdByAdgroupId(kwIdRequest);
+                        if (response == null) {
+                            subList.clear();
+                            continue;
+                        }
+                    }
+                    List<GroupKeywordId> groupKeywordIds = response.getGroupKeywordIds();
+                    List<Long> kwIds = new ArrayList<>(groupKeywordIds.size() << 1);
+
+                    for (GroupKeywordId gkId : groupKeywordIds) {
+                        kwIds.addAll(gkId.getKeywordIds());
+                    }
+
+                    GetKeywordByKeywordIdRequest getKeywordByKeywordIdRequest = new GetKeywordByKeywordIdRequest();
+                    getKeywordByKeywordIdRequest.setKeywordIds(kwIds);
+
+                    GetKeywordByKeywordIdResponse response1 = keywordService.getKeywordByKeywordId(getKeywordByKeywordIdRequest);
+                    if (response1 == null) {
+                        Thread.sleep(5000);
+                        response1 = keywordService.getKeywordByKeywordId(getKeywordByKeywordIdRequest);
+                        if (response1 == null) {
+                            subList.clear();
+                            continue;
+                        }
+                    }
+
+                    keywordTypeList.addAll(response1.getKeywordTypes());
+
+                    subList.clear();
+                    continue;
+                }
+                subList.add(adgroupId);
+            }
+
+            if (keywordTypeList.size() == 0) {
                 return Collections.EMPTY_LIST;
             }
-
-            List<GroupKeywordId> groupKeywordIds = response.getGroupKeywordIds();
-
-            List<Long> kwIds = new ArrayList<>(groupKeywordIds.size() << 1);
-
-            for (GroupKeywordId gkId : groupKeywordIds) {
-                kwIds.addAll(gkId.getKeywordIds());
-            }
-
-            GetKeywordByKeywordIdRequest getKeywordByKeywordIdRequest = new GetKeywordByKeywordIdRequest();
-
-            getKeywordByKeywordIdRequest.setKeywordIds(kwIds);
-
-            GetKeywordByKeywordIdResponse response1 = keywordService.getKeywordByKeywordId(getKeywordByKeywordIdRequest);
-            if (response1 == null) {
-                return Collections.EMPTY_LIST;
-            }
-            return response1.getKeywordTypes();
-        } catch (Exception e) {
+            return keywordTypeList;
+        } catch (final Exception e) {
             e.printStackTrace();
         }
         return Collections.EMPTY_LIST;
@@ -256,6 +282,7 @@ public class BaiduApiService {
         return creativeTypes;
     }
 
+    @SuppressWarnings("unchecked")
     public List<KeywordType> setKeywordPrice(List<KeywordType> list) {
         if (list == null || list.size() == 0) {
             return Collections.EMPTY_LIST;
@@ -277,7 +304,7 @@ public class BaiduApiService {
         return Collections.EMPTY_LIST;
     }
 
-
+    @SuppressWarnings("unchecked")
     public Map<String, Integer> checkKeywordRank(List<BiddingRuleEntity> keys, String host) {
         if (keys == null || keys.isEmpty()) {
             return Collections.EMPTY_MAP;
