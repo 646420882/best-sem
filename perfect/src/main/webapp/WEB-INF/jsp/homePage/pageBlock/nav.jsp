@@ -16,16 +16,20 @@
             <div class="nav_bg">
                 <img src="${pageContext.request.contextPath}/public/img/user_bg.png" width="100%" height="100%">
             </div>
-            <div class="user_mid over">
+            <div class="user_mid">
                 <div class="user_logo over">
-                    <div class="user_logo1">
+                    <div class="user_logo1 over">
                         <div class="user_img fl over">
                             <span> <img src="${pageContext.request.contextPath}/public/images/yixin_logo.png"></span>
                         </div>
                         <div class="user_text fl">
-                            <p>上午，好！</p>
+                            <p>上午，好！<span>${currSystemUserName}</span></p>
+                                <div class="user_select over">
+                                    <select style=" ">
+                                      <option>perfect</option>
+                                    </select>
+                                </div>
 
-                            <h3>${currSystemUserName}</h3>
 
                         </div>
 
@@ -40,9 +44,9 @@
 
                 <div class="user_detali over">
                     <ul>
-                        <li>推广额度：<b><a href="#">37287.13</a></b> 元</li>
-                        <li>余额预计可消费：18天</li>
-                        <li>日预算：26000.00元</li>
+                        <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<>
+                        <li>余额预计可消费：${remainderDays}天<>
+                        <li>日预算：${accountBudget}元<>
                     </ul>
 
                 </div>

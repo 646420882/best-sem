@@ -333,11 +333,12 @@
             </a>
         </li>
     </ul>
-    <div class="download over fr">
-        <a href="#">
-            下载全部
-        </a>
-    </div>
+
+</div>
+<div class="download over ">
+    <a href="#" class="fr">
+        下载全部
+    </a>
 </div>
 <div class="list2 wd">
 <table border="0" cellspacing="0" cellspacing="0">
