@@ -6,7 +6,6 @@ import com.perfect.schedule.core.IScheduleTaskDealSingle;
 import com.perfect.schedule.core.TaskItemDefine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.text.DateFormat;
@@ -20,7 +19,6 @@ import java.util.List;
  * Created by john on 2014/8/23.
  * 定时拉取数据任务
  */
-@Component("dataPullTask")
 public class DataPullTask implements IScheduleTaskDealSingle<String> {
 
     protected static transient Logger log = LoggerFactory.getLogger(DataPullTask.class);
