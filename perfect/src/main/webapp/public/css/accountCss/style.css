@@ -1238,14 +1238,13 @@ ul.ztree.zTreeDragUL {
     padding: 0 20px;
     margin-right: 15px;
     line-height: 24px;
-    border: 1px solid #bdc1c4;
-    background: url(/public/img/team03_bg.png) repeat;
+    background:#e4eafa;
     cursor: pointer;
     overflow: hidden;
 }
 .w_list03 ul li:hover {
     background: #ffbc04;
-    border: 1px solid #da9309;
+
 }
 .w_list03 ul .current {
     background: #ffbc04;
@@ -1353,7 +1352,7 @@ h2 .close{
 }
 .mainlist {
     padding: 20px;
-    background: #e4eafa;
+    background: #f8f8f8;
     border-bottom: 1px solid #cfcfcf;
     overflow: hidden;
 }
@@ -2026,5 +2025,78 @@ h2 .close{
 }
 .r_under_bottom  ul .last{
     border:none;
+
+}
+.riginality_editor1{
+    width:406px;
+    border-right:1px solid #eaeaea;
+
+}
+.riginality_editor2{
+    padding:20px;
+    width:442px;
+    background:#fff;
+}
+.riginality_editor1 dl{
+    margin:6px 0 ;
+}
+.riginality_editor1 input{
+    height:24px;
+    border:1px solid #cfcfcf;
+
+}
+.riginality_editor1 textarea{
+    width:300px;
+    border:1px solid #cfcfcf;
+    height:68px;
+}
+.riginality_editor1 span{
+    color:#9f9f9f;
+}
+.r_input{
+    width:300px;
+}
+.tuijian  h3{
+    font-weight: normal;
+}
+.tuijian span{
+    padding:0 5px;
+}
+.tuijian ul{
+    margin-top:20px;
+}
+.tuijian ul li{
+    display:block;
+    float:left;
+    width:25%;
+}
+.tuijian ul li span{
+    color:#fe3a06;
+}
+.tuijian_under{
+    margin-top:20px;
+}
+.tuijian_under ul li p{
+    line-height:24px;
+
+}
+.tuijian_under ul li{
+    overflow:hidden;
+
+}
+.tuijian_under ul li div{
+    padding:10px;
+    border:1px solid #dcdcdc;
+    overflow:hidden;
+}
+.tuijian_under span{
+    display:block;
+    margin-top:20px;
+}
+.tuijian_under .become2{
+    margin-top:0px;
+}
+.mainlist2 .main_bottom{
+    margin-left:60px;
 
 }
