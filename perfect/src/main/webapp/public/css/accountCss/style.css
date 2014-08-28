@@ -2100,3 +2100,20 @@ h2 .close{
     margin-left:60px;
 
 }
+.user_select select{
+    height:24px;
+    padding:0 10px;
+    line-height:24px;
+    border:1px solid #1d1c20;
+    background:#3c3944;
+    color:#f2ab00;
+    font-size:14px;
+    font-weight:bold;
+    margin-top:5px;
+
+
+}
+.user_select select option{
+    font-weight:bold;
+
+}
