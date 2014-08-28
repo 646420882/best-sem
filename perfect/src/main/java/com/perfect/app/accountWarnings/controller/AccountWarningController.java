@@ -79,7 +79,6 @@ public class AccountWarningController {
         warningRuleEntity.setMails(mails);
         warningRuleEntity.setTels(tels);
         warningRuleEntity.setStartTime(new Date());
-        warningRuleEntity.setDayCountDate(new Date());
 
         accountWarningDAO.save(warningRuleEntity);
 

@@ -2,8 +2,8 @@ package com.perfect.mongodb.dao.impl;
 
 import com.perfect.api.baidu.AccountRealTimeData;
 import com.perfect.autosdk.sms.v3.RealTimeResultType;
-import com.perfect.dao.GetRealTimeDataDAO;
-import com.perfect.entity.AccountRealTimeDataVOEntity;
+import com.perfect.dao.GetAccountReportDAO;
+import com.perfect.entity.AccountReportEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.utils.DBNameUtils;
 import org.springframework.data.domain.Sort;
@@ -18,17 +18,17 @@ import java.util.List;
 /**
  * Created by john on 2014/8/8.
  */
-@Component("getRealTimeDataDAO")
-public class GetRealTimeDataDAOImpl implements GetRealTimeDataDAO {
+@Component("getAccountReportDAO")
+public class GetAccountReportDAOImpl implements GetAccountReportDAO {
     /**
      * 得到本地的数据报告（数据来自本地）
      * @param startDate
      * @param endDate
      * @return
      */
-    public List<AccountRealTimeDataVOEntity> getLocalAccountRealData(String userName,Date startDate,Date endDate){
+    public List<AccountReportEntity> getLocalAccountRealData(String userName,Date startDate,Date endDate){
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(userName));
-        List<AccountRealTimeDataVOEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.ASC, "date")), AccountRealTimeDataVOEntity.class, "account_report");
+        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.ASC, "date")), AccountReportEntity.class, "account_report");
         return list;
     }
 

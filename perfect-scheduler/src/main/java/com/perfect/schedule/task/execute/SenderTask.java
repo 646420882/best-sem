@@ -2,29 +2,33 @@ package com.perfect.schedule.task.execute;
 
 import com.perfect.autosdk.sms.v3.RealTimeResultType;
 import com.perfect.dao.AccountWarningDAO;
-import com.perfect.dao.GetRealTimeDataDAO;
+import com.perfect.dao.GetAccountReportDAO;
 import com.perfect.entity.WarningRuleEntity;
 import com.perfect.schedule.core.IScheduleTaskDealSingle;
 import com.perfect.schedule.core.TaskItemDefine;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import javax.annotation.Resource;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
+/**??
  * Created by john on 2014/8/6.
+ * 每隔十分钟执行
  */
 public class SenderTask implements IScheduleTaskDealSingle<WarningRuleEntity> {
 
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
+    private Date date = new Date();
+
     @Resource
     private AccountWarningDAO accountWarningDAO;
     @Resource
-    private GetRealTimeDataDAO getRealTimeDataDAO;
+    private GetAccountReportDAO getAccountReportDAO;
 
     @Override
     public boolean execute(WarningRuleEntity task, String ownSign) throws Exception {
@@ -45,15 +49,21 @@ public class SenderTask implements IScheduleTaskDealSingle<WarningRuleEntity> {
 
     @Override
     public List<WarningRuleEntity> selectTasks(String taskParameter, String ownSign, int taskItemNum, List<TaskItemDefine> taskItemList, int eachFetchDataNum) throws Exception {
+        //若到了第二天，是否预警的状态重新初始化为未预警
+        Date dateSign = df.parse(df.format(date));
+        Date currentDate = df.parse(df.format(new Date()));
+        if(currentDate.getTime()>dateSign.getTime()){
+            Query query = new Query().addCriteria(Criteria.where("isEnable").is(1));
+            Update update = new Update();
+            update.set("isWarninged",0);
+            accountWarningDAO.updateMulti(query,update);
+        }
 
         List<WarningRuleEntity> executeList = new ArrayList<>();
-
         //得到已经启用并且当天没有预警过的
         List<WarningRuleEntity> warningRuleList = accountWarningDAO.find(new Query().addCriteria(Criteria.where("isEnable").is(1).and("isWarninged").is(0)), WarningRuleEntity.class);
-
         //得到当天的账户实时数据
-        List<RealTimeResultType> todayAccountRealDataList = getRealTimeDataDAO.getAccountRealTimeTypeByDate(df.format(new Date()), df.format(new Date()));
-        // List<RealTimeResultType> todayAccountRealDataList = getRealTimeDataDAO.getAccountRealTimeTypeByDate("2014-02-02", "2014-02-02");
+        List<RealTimeResultType> todayAccountRealDataList = getAccountReportDAO.getAccountRealTimeTypeByDate(df.format(new Date()), df.format(new Date()));
 
         for (WarningRuleEntity wre : warningRuleList) {
             //根据不同的比例和预算金额算出当天消费的金额

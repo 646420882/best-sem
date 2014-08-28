@@ -34,9 +34,6 @@ public class WarningRuleEntity extends AccountIdEntity{
     @Field("startTime")
     private Date startTime;//生效时间
 
-    @Field("dayCountDate")
-    private Date dayCountDate;//日统计时间
-
     @Field("isWarninged")
     private Integer isWarninged;//当天是否已经警告过（警告过为1，否则0）
 
@@ -44,7 +41,7 @@ public class WarningRuleEntity extends AccountIdEntity{
     private Integer isEnable;//是否启用
 
 
-    public WarningRuleEntity(String id, Integer budgetType, Double budget, Double warningPercent, String tels, String mails, Date startTime, Date dayCountDate, Integer isWarninged, Integer isEnable) {
+    public WarningRuleEntity(String id, Integer budgetType, Double budget, Double warningPercent, String tels, String mails, Date startTime, Integer isWarninged, Integer isEnable) {
         this.id = id;
         this.budgetType = budgetType;
         this.budget = budget;
@@ -52,7 +49,6 @@ public class WarningRuleEntity extends AccountIdEntity{
         this.tels = tels;
         this.mails = mails;
         this.startTime = startTime;
-        this.dayCountDate = dayCountDate;
         this.isWarninged = isWarninged;
         this.isEnable = isEnable;
     }
@@ -114,14 +110,6 @@ public class WarningRuleEntity extends AccountIdEntity{
 
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
-    }
-
-    public Date getDayCountDate() {
-        return dayCountDate;
-    }
-
-    public void setDayCountDate(Date dayCountDate) {
-        this.dayCountDate = dayCountDate;
     }
 
     public Integer getIsWarninged() {

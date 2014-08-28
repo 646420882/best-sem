@@ -88,6 +88,13 @@ public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleEnt
 
         }
 
+
+
+    @Override
+    public  void updateMulti(Query query,Update update){
+        getSysMongoTemplate().updateMulti(query,update,WarningRuleEntity.class,"sys_warning");
+    }
+
     @Override
     public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
         return null;

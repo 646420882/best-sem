@@ -1,15 +1,17 @@
 package com.perfect.schedule.task.execute;
 
 import com.perfect.dao.AccountWarningDAO;
-import com.perfect.dao.GetRealTimeDataDAO;
+import com.perfect.dao.GetAccountReportDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.dao.WarningInfoDAO;
-import com.perfect.entity.AccountRealTimeDataVOEntity;
+import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.SystemUserEntity;
 import com.perfect.entity.WarningInfoEntity;
 import com.perfect.entity.WarningRuleEntity;
 import com.perfect.schedule.core.IScheduleTaskDealSingle;
 import com.perfect.schedule.core.TaskItemDefine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -20,18 +22,19 @@ import java.util.*;
 
 /**
  * Created by john on 2014/8/8.
+ * 每天凌晨1点执行
  */
 public class CountYesterdayCostTask implements IScheduleTaskDealSingle<Map<String, Object>> {
-    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    DateFormat dayDF = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+    protected static transient Logger log = LoggerFactory.getLogger(IScheduleTaskDealSingle.class);
 
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     @Resource
     private SystemUserDAO systemUserDAO;
     @Resource
     private AccountWarningDAO accountWarningDAO;
     @Resource
-    private GetRealTimeDataDAO getRealTimeDataDAO;
+    private GetAccountReportDAO getAccountReportDAO;
     @Resource
     private WarningInfoDAO warningInfoDAO;
 
@@ -43,34 +46,29 @@ public class CountYesterdayCostTask implements IScheduleTaskDealSingle<Map<Strin
 
     @Override
     public List<Map<String, Object>> selectTasks(String taskParameter, String ownSign, int taskItemNum, List<TaskItemDefine> taskItemList, int eachFetchDataNum) throws Exception {
-        Date everyDayStart = df.parse(df.format(new Date()));
-        Date everyDayEnd = dayDF.parse(dayDF.format(new Date()));
 
         //得到所有已经启用的的预警
-        List<WarningRuleEntity> warningRuleList = accountWarningDAO.find(new Query().addCriteria(Criteria.where("isEnable").is(1).and("dayCountDate").not().gte(everyDayStart).lte(everyDayEnd)), WarningRuleEntity.class);
-        //得到所有用户
+        List<WarningRuleEntity> warningRuleList = accountWarningDAO.find(new Query().addCriteria(Criteria.where("isEnable").is(1)), WarningRuleEntity.class);
+        //得到所有系统用户
         Iterable<SystemUserEntity> systemUserEntityList = systemUserDAO.findAll();
 
         List<Map<String, Object>> warningInfoList = new ArrayList<>();
 
         for (SystemUserEntity sue : systemUserEntityList) {
-
             if (warningRuleList.size() == 0) {
                 break;
             }
-
             //昨天的日期
             Date yesterDay = new Date(df.parse(df.format(new Date())).getTime() - (1000 * 60 * 60 * 24));
             //得到昨天的账户数据
-            //List<AccountRealTimeDataVOEntity> accountYesTerdayDataList = getRealTimeDataDAO.getLocalAccountRealData(sue.getUserName(),df.parse("2014-02-02"), df.parse("2014-02-02"));
-            List<AccountRealTimeDataVOEntity> accountYesTerdayDataList = getRealTimeDataDAO.getLocalAccountRealData(sue.getUserName(), yesterDay, yesterDay);
+            List<AccountReportEntity> accountYesTerdayDataList = getAccountReportDAO.getLocalAccountRealData(sue.getUserName(), yesterDay, yesterDay);
 
             for (WarningRuleEntity wre : warningRuleList) {
-                for (AccountRealTimeDataVOEntity art : accountYesTerdayDataList) {
+                for (AccountReportEntity art : accountYesTerdayDataList) {
                     WarningInfoEntity warningInfo = new WarningInfoEntity();
                     if (wre.getAccountId() == art.getAccountId()) {
                         //算出日预算实现率
-                        double percent = art.getCost() / wre.getBudget() * 100;
+                        double percent = (art.getPcCost()+art.getMobileCost()) / wre.getBudget() * 100;
                         warningInfo.setAccountId(wre.getAccountId());
                         warningInfo.setPercent(percent);
                         warningInfo.setCreateTime(new Date());
@@ -93,17 +91,10 @@ public class CountYesterdayCostTask implements IScheduleTaskDealSingle<Map<Strin
                             warningInfo.setSuggest("建议此类及时调整预算，预算不足时需及时申请加款");
                             warningInfo.setWarningSign("black");
                         }
-
-
                         Map<String, Object> map = new HashMap<>();
                         map.put("userName", sue.getUserName());
                         map.put("value", warningInfo);
                         warningInfoList.add(map);
-
-                        //修改是否预警的状态和日统计时间
-                        wre.setIsWarninged(0);
-                        wre.setDayCountDate(new Date());
-                        accountWarningDAO.save(wre);
                         break;
                     }
                 }
