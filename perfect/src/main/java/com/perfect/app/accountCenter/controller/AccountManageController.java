@@ -99,19 +99,30 @@ public class AccountManageController {
      * @return
      */
     @RequestMapping(value = "/updateAccountData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String updateAccountData(@RequestParam(value = "campaignIds") String campaignIds) {
-        //数据预处理
-        List<Long> camIds = new ArrayList<>(campaignIds.split(",").length);
-        for (String str : campaignIds.split(",")) {
-            camIds.add(Long.valueOf(str));
+    public String updateAccountData(@RequestParam(value = "campaignIds", required = false) String campaignIds) {
+        if (campaignIds == null || "".equals(campaignIds)) {
+            //下载更新全部推广计划
+            accountDataService.updateAccountData(AppContext.getUser(), AppContext.getAccountId());
+        } else {
+            //数据预处理
+            List<Long> camIds = new ArrayList<>(campaignIds.split(",").length);
+            for (String str : campaignIds.split(",")) {
+                camIds.add(Long.valueOf(str));
+            }
+
+            accountDataService.updateAccountData(AppContext.getUser(), AppContext.getAccountId(), camIds);
         }
 
-        accountDataService.updateAccountData(AppContext.getUser(), AppContext.getAccountId(), camIds);
         ObjectNode json_string = new ObjectMapper().createObjectNode();
         json_string.put("status", true);
         return json_string.toString();
     }
 
+    /**
+     * 获取最新的推广计划
+     *
+     * @return
+     */
     @RequestMapping(value = "/getNewCampaign", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getNewCampaign() {
         AbstractView jsonView = new MappingJackson2JsonView();
@@ -121,6 +132,15 @@ public class AccountManageController {
         return new ModelAndView(jsonView);
     }
 
+    /**
+     * 添加百度
+     *
+     * @param name
+     * @param passwd
+     * @param token
+     * @param currSystemUserName
+     * @return
+     */
     @RequestMapping(value = "/addBaiduAccount", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView addBaiduAccount(@RequestParam(value = "baiduAccountName") String name,
                                         @RequestParam(value = "baiduAccountPasswd") String passwd,

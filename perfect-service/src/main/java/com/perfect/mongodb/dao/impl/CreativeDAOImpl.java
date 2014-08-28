@@ -1,5 +1,6 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.CreativeDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.CreativeEntity;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import static com.perfect.mongodb.utils.EntityConstants.ACCOUNT_ID;
 
 /**
  * Created by baizz on 2014-07-10.
@@ -80,7 +83,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
 
     public List<CreativeEntity> findAll() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        List<CreativeEntity> entityList = mongoTemplate.findAll(CreativeEntity.class, EntityConstants.TBL_CREATIVE);
+        List<CreativeEntity> entityList = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
         return entityList;
     }
 

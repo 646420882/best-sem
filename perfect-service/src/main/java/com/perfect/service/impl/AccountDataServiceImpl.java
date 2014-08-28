@@ -10,6 +10,7 @@ import com.perfect.service.AccountDataService;
 import com.perfect.service.BaiduApiService;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.BaiduServiceSupport;
+import com.perfect.utils.DBNameUtils;
 import com.perfect.utils.EntityConvertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -158,13 +159,15 @@ public class AccountDataServiceImpl implements AccountDataService {
         }
 
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(userName);
-//        clearCollectionData(mongoTemplate);
 
+        BaiduAccountInfoEntity _entity = null;
         for (BaiduAccountInfoEntity baiduAccountInfoEntity : baiduAccountInfoEntityList) {
 
             Long aid = baiduAccountInfoEntity.getId();
             if (aid != accountId)
                 continue;
+            _entity = baiduAccountInfoEntity;
+
             CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
             BaiduApiService apiService = new BaiduApiService(commonService);
 
@@ -185,14 +188,6 @@ public class AccountDataServiceImpl implements AccountDataService {
             }
 
             List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(camIds);
-
-
-//            List<AdgroupType> adgroupTypeList = new ArrayList<>(campaignAdgroupList.size() << 1);
-//
-//            for (CampaignAdgroup campaignAdgroup : campaignAdgroupList) {
-//                List<AdgroupType> adgroupTypes = campaignAdgroup.getAdgroupTypes();
-//                adgroupTypeList.addAll(adgroupTypes);
-//            }
 
             List<AdgroupEntity> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
 
@@ -222,17 +217,27 @@ public class AccountDataServiceImpl implements AccountDataService {
                 creativeEntity.setAccountId(aid);
                 creativeIds.add(creativeEntity.getCreativeId());
             }
-            // 开始保存数据
 
-            // 保存推广计划
-            mongoTemplate.findAllAndRemove(Query.query(Criteria.where(CAMPAIGN_ID).in(camIds)), CampaignEntity.class);
+            //clear data
+            clearCollectionData(mongoTemplate, accountId);
+
+            //update data
             mongoTemplate.insertAll(campaignEntities);
 
             mongoTemplate.insertAll(adgroupEntities);
             mongoTemplate.insertAll(keywordEntities);
             mongoTemplate.insertAll(creativeEntityList);
+
         }
-        systemUserService.save(systemUserEntity);
+
+        //update account data
+        MongoTemplate mongoTemplate1 = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+        Update update = new Update();
+        update.set("bdAccounts.$", _entity);
+        mongoTemplate1.updateFirst(
+                Query.query(
+                        Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
+                update, SystemUserEntity.class);
     }
 
     @Override
@@ -332,19 +337,13 @@ public class AccountDataServiceImpl implements AccountDataService {
         mongoTemplate.insertAll(creativeEntityList);
 
         //update account data
-        Update update1 = new Update();
-        update1.unset("bdAccounts.$");
-        mongoTemplate.updateFirst(
+        MongoTemplate mongoTemplate1 = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+        Update update = new Update();
+        update.set("bdAccounts.$", baiduAccountInfoEntity);
+        mongoTemplate1.updateFirst(
                 Query.query(
-                        Criteria.where("bdAccounts._id").is(baiduAccountInfoEntity.getId())),
-                update1, SystemUserEntity.class);
-        Update update2 = new Update();
-        update2.addToSet("bdAccounts", baiduAccountInfoEntity);
-        mongoTemplate.updateFirst(
-                Query.query(
-                        Criteria.where("userName").is(systemUserEntity.getUserName())),
-                update2, SystemUserEntity.class);
-
+                        Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
+                update, SystemUserEntity.class);
 
     }
 

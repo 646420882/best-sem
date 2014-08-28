@@ -10,6 +10,7 @@ import com.perfect.service.impl.HTMLAnalyseServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.*;
 
 /**
@@ -19,7 +20,7 @@ import java.util.*;
  */
 public class BaiduApiService {
 
-    private static Logger log = LoggerFactory.getLogger(BaiduApiService.class);
+    private static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final CommonService commonService;
 
 
@@ -169,18 +170,20 @@ public class BaiduApiService {
             }
             KeywordService keywordService = commonService.getService(KeywordService.class);
 
-
             //分批请求
             List<KeywordType> keywordTypeList = new ArrayList<>();
-            List<Long> subList = new ArrayList<>(3);
-            for (Long adgroupId : adgroupIds) {
-                if (subList.size() == 4) {
+            List<Long> subList = new ArrayList<>(4);
 
+            for (int i = 1; i <= adgroupIds.size(); i++) {
+                Long adgroupId = adgroupIds.get(i - 1);
+                subList.add(adgroupId);
+
+                if (i % 4 == 0) {
                     GetKeywordIdByAdgroupIdRequest kwIdRequest = new GetKeywordIdByAdgroupIdRequest();
                     kwIdRequest.setAdgroupIds(subList);
                     GetKeywordIdByAdgroupIdResponse response = keywordService.getKeywordIdByAdgroupId(kwIdRequest);
                     if (response == null) {
-                        Thread.sleep(5000);
+                        Thread.sleep(3000);
                         response = keywordService.getKeywordIdByAdgroupId(kwIdRequest);
                         if (response == null) {
                             subList.clear();
@@ -199,7 +202,7 @@ public class BaiduApiService {
 
                     GetKeywordByKeywordIdResponse response1 = keywordService.getKeywordByKeywordId(getKeywordByKeywordIdRequest);
                     if (response1 == null) {
-                        Thread.sleep(5000);
+                        Thread.sleep(3000);
                         response1 = keywordService.getKeywordByKeywordId(getKeywordByKeywordIdRequest);
                         if (response1 == null) {
                             subList.clear();
@@ -207,12 +210,62 @@ public class BaiduApiService {
                         }
                     }
 
+                    if (log.isDebugEnabled()) {
+                        log.debug("当前请求得到的关键词总数: " + response1.getKeywordTypes().size());
+                    }
+
                     keywordTypeList.addAll(response1.getKeywordTypes());
 
+                    if (log.isDebugEnabled()) {
+                        log.debug("已得到的关键词总数: " + keywordTypeList.size());
+                    }
+
                     subList.clear();
-                    continue;
                 }
-                subList.add(adgroupId);
+            }
+
+
+            if (!subList.isEmpty()) {
+                GetKeywordIdByAdgroupIdRequest kwIdRequest = new GetKeywordIdByAdgroupIdRequest();
+                kwIdRequest.setAdgroupIds(subList);
+                GetKeywordIdByAdgroupIdResponse response = keywordService.getKeywordIdByAdgroupId(kwIdRequest);
+                if (response == null) {
+                    Thread.sleep(3000);
+                    response = keywordService.getKeywordIdByAdgroupId(kwIdRequest);
+                    if (response == null) {
+                        subList.clear();
+                    }
+                }
+                List<GroupKeywordId> groupKeywordIds = response.getGroupKeywordIds();
+                List<Long> kwIds = new ArrayList<>(groupKeywordIds.size() << 1);
+
+                for (GroupKeywordId gkId : groupKeywordIds) {
+                    kwIds.addAll(gkId.getKeywordIds());
+                }
+
+                GetKeywordByKeywordIdRequest getKeywordByKeywordIdRequest = new GetKeywordByKeywordIdRequest();
+                getKeywordByKeywordIdRequest.setKeywordIds(kwIds);
+
+                GetKeywordByKeywordIdResponse response1 = keywordService.getKeywordByKeywordId(getKeywordByKeywordIdRequest);
+                if (response1 == null) {
+                    Thread.sleep(3000);
+                    response1 = keywordService.getKeywordByKeywordId(getKeywordByKeywordIdRequest);
+                    if (response1 == null) {
+                        subList.clear();
+                    }
+                }
+
+                if (log.isDebugEnabled()) {
+                    log.debug("当前请求得到的关键词总数: " + response1.getKeywordTypes().size());
+                }
+
+                keywordTypeList.addAll(response1.getKeywordTypes());
+
+                if (log.isDebugEnabled()) {
+                    log.debug("已得到的关键词总数: " + keywordTypeList.size());
+                }
+
+                subList.clear();
             }
 
             if (keywordTypeList.size() == 0) {
