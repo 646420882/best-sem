@@ -1,6 +1,7 @@
 package com.perfect.service.impl;
 
 import com.google.common.collect.Maps;
+import com.google.common.primitives.Bytes;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
@@ -33,6 +34,13 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
 
     @Resource
     private KeywordGroupDAOImpl keywordGroupDAO;
+
+    // CSV's default delimiter is ','
+    private static final String DEFAULT_DELIMITER = ",";
+    // Mark a new line
+    private static final String DEFAULT_END = "\r\n";
+
+    private static final byte commonCSVHead[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
 
     private String _krFileId;
 
@@ -151,13 +159,12 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
 
         List<LexiconEntity> list = keywordGroupDAO.find(params, -1, -1);
 
-        //CSV文件处理
-        byte[] bytes = ("行业" + "," + "计划" + "," + "单元" + "," + "关键词" + "\r\n").getBytes();
+        //CSV文件写入
         try {
-            os.write(bytes);
+            os.write(Bytes.concat(commonCSVHead, ("行业" + DEFAULT_DELIMITER + "计划" + DEFAULT_DELIMITER + "单元" + DEFAULT_DELIMITER + "关键词" + DEFAULT_END).getBytes("UTF-8")));
             for (LexiconEntity entity : list) {
-                bytes = (entity.getTrade() + "," + entity.getCategory() + "," + entity.getGroup() + "," + entity.getKeyword() + "\r\n").getBytes();
-                os.write(bytes);
+                String bytes = (entity.getTrade() + DEFAULT_DELIMITER + entity.getCategory() + DEFAULT_DELIMITER + entity.getGroup() + DEFAULT_DELIMITER + entity.getKeyword() + DEFAULT_END);
+                os.write(Bytes.concat(commonCSVHead, bytes.getBytes("UTF-8")));
             }
         } catch (IOException e) {
             e.printStackTrace();
