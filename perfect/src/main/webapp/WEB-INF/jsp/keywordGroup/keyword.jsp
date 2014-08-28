@@ -231,14 +231,14 @@
                             <div class="r_under_left fl">
                                 <div class="r_under_top over">
                                         <h3 class="fl">推荐创意</h3>
-                                        <a href="#" class="fr">新建创意</a>
+                                        <a href="#" class="fr" id="bulid">新建创意</a>
                                </div>
                                 <ul>
                                     <li>
                                         <div><img src="${pageContext.request.contextPath}/public/images/shuju.jpg"></div>
                                         <div>
                                             <span class="fr">
-                                                <a href="#">置顶 </a>|<a href="#">编辑</a> |<a href="#"> 删除</a>
+                                                <a href="#">置顶 </a>|<a href="#" class="showbox">编辑</a> |<a href="#"> 删除</a>
 
                                             </span>
                                         </div>
@@ -247,7 +247,7 @@
                                         <div><img src="${pageContext.request.contextPath}/public/images/shuju.jpg"></div>
                                         <div>
                                             <span class="fr">
-                                                <a href="#">置顶 </a>|<a href="#">编辑</a> |<a href="#"> 删除</a>
+                                                <a href="#">置顶 </a>|<a href="#" class="showbox">编辑</a> |<a href="#"> 删除</a>
 
                                             </span>
                                         </div>
@@ -256,7 +256,7 @@
                                         <div><img src="${pageContext.request.contextPath}/public/images/shuju.jpg"></div>
                                         <div>
                                             <span class="fr">
-                                                <a href="#">置顶 </a>|<a href="#">编辑</a> |<a href="#"> 删除</a>
+                                                <a href="#">置顶 </a>|<a href="#" class="showbox">编辑</a> |<a href="#"> 删除</a>
 
                                             </span>
                                         </div>
@@ -293,12 +293,188 @@
             <jsp:include page="../homePage/pageBlock/footer.jsp"/>
         </div>
     </div>
+<!------------编辑创意弹窗-------------->
+<div class="TB_overlayBG"></div>
+<div class="box" id="riginality_editor" style="display:none;">
+    <h2 id="riginality_editor1" >编辑创意<a href="#" class="close">关闭</a></h2>
+    <div class="mainlist2 over">
+            <div class="riginality_editor1 fl">
+                    <div class="mainlist">
+                        <ul>
+                            <li>
+                                <h3>标题：</h3>
+                                <dl><input type="text" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span></dl>
+                                <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
+                            </li>
+                            <li>
+                                <h3>描述1：</h3>
+                                <dl><textarea></textarea><span>27/50</span></dl>
+                                <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
+                            </li>
+                            <li>
+                                <h3>描述2：</h3>
+                                <dl><textarea></textarea><span>27/50</span></dl>
+                                <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
+                            </li>
+                            <li>
+                                <h3>访问URL：</h3>
+                                <dl><textarea></textarea><span>27/50</span></dl>
+                                <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
+                            </li>
+                            <li>
+                                <h3>显示URL：</h3>
+                                <dl><input type="text" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span></dl>
+                            </li>
+                        </ul>
+                    </div>
+
+                <div class="main_bottom">
+                    <div class="w_list03">
+                        <ul>
+                            <li class="current">保存</li>
+                            <li>保存并上传</li>
+                            <li class="close">取消</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        <div class="riginality_editor2 fl">
+            <div class="tuijian over">
+                <h3>推荐词根<span>|</span> 词頻占比</h3>
+                <ul>
+                    <li>搜索<span>8%</span></li>
+                    <li>营销<span>8%</span></li>
+                    <li>推广<span>8%</span></li>
+                    <li>baidu<span>8%</span></li>
+                    <li>sem<span>8%</span></li>
+                    <li>去看<span>8%</span></li>
+                    <li>优化<span>8%</span></li>
+                    <li>全国<span>8%</span></li>
+                    <li>百度<span>8%</span></li>
+                    <li>seo<span>8%</span></li>
+                </ul>
+            </div>
+            <div class="tuijian_under over">
+                <ul>
+                    <li>
+                        <p>左侧推广连接位预览：</p>
+                        <div>
+                            <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
+                        </div>
+
+                    </li>
+                    <li>
+                        <p>左侧推广连接位预览：</p>
+                        <div>
+                            <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
+                        </div>
+
+                    </li>
+                    <li>
+                        <p>右侧推广位预览：：</p>
+                        <div>
+                            <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
+                        </div>
+
+                    </li>
+                </ul>
+                <span><a class="become2 fl" href="javascript: findWordFromBaidu();" >评估匹配度</a><a class="question" href="#"></a></span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!------------新建创意-------------->
+<div class="TB_overlayBG"></div>
+<div class="box" id="new_riginality" style="display:none;">
+    <h2 id="new_riginality2">新建创意<a href="#" class="close">关闭</a></h2>
+
+    <div class="mainlist2 over">
+        <div class="riginality_editor1 fl">
+            <div class="mainlist">
+                <ul>
+                    <li>
+                        <h3>标题：</h3>
+                        <dl><input type="text" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span></dl>
+                        <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
+                    </li>
+                    <li>
+                        <h3>描述1：</h3>
+                        <dl><textarea></textarea><span>27/50</span></dl>
+                        <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
+                    </li>
+                    <li>
+                        <h3>描述2：</h3>
+                        <dl><textarea></textarea><span>27/50</span></dl>
+                        <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
+                    </li>
+                    <li>
+                        <h3>访问URL：</h3>
+                        <dl><textarea></textarea><span>27/50</span></dl>
+                        <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
+                    </li>
+                    <li>
+                        <h3>显示URL：</h3>
+                        <dl><input type="text" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span></dl>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="main_bottom">
+                <div class="w_list03">
+                    <ul>
+                        <li class="current">确认</li>
+                        <li class="close">取消</li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="riginality_editor2 fl">
+
+            <div class="tuijian_under over">
+                <ul>
+                    <li>
+                        <p>推广位预览：</p>
+                        <div>
+                            <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
+                        </div>
+
+                    </li>
+                    <li>
+                        <p>推广连接位预览：</p>
+                        <div>
+                            <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
+                        </div>
+
+                    </li>
+                    <li>
+                        <p>右侧推广位预览：：</p>
+                        <div>
+                            <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
+                        </div>
+
+                    </li>
+                </ul>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 <iframe id="downloadhelper_iframe" style="display: none">#document</iframe>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript">
 
 var type = 1;    //1, baidu; 2, perfect
@@ -314,8 +490,36 @@ var total = 0;
 var _trade;
 
 var _category;
+window.onload = function () {
+    rDrag.init(document.getElementById('riginality_editor1'));
+    rDrag.init(document.getElementById('new_riginality2'));
+};
 
 $(function () {
+    $(".showbox").click(function () {
+        $(".TB_overlayBG").css({
+            display: "block", height: $(document).height()
+        });
+        $("#riginality_editor").css({
+            left:($("body").width()-$("#riginality_editor").width())/2-20+"px",
+            top:($(window).height()-$("#riginality_editor").height())/2+($(window).scrollTop()-153)+"px",
+            display:"block"
+        });
+    });
+    $("#bulid").click(function () {
+        $(".TB_overlayBG").css({
+            display: "block", height: $(document).height()
+        });
+        $("#new_riginality").css({
+            left:($("body").width()-$("#new_riginality").width())/2-20+"px",
+            top:($(window).height()-$("#new_riginality").height())/2+($(window).scrollTop()-153)+"px",
+            display:"block"
+        });
+    });
+    $(".close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $(".box ").css("display", "none");
+    });
     var $tab_li = $('#tab_menu li');
     $('#tab_menu li').click(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
@@ -360,6 +564,7 @@ $(function () {
         var seedWords = $("#textarea1").val().trim().split("\n");
         $("#textarea1").parent().next().text("可输入词根" + (100 - seedWords.length) + "/100");
     });
+
 });
 
 
