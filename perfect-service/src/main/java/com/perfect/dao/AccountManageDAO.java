@@ -14,6 +14,8 @@ public interface AccountManageDAO<T> {
     /**
      * 获取账户树
      *
+     * @param userName
+     * @param accountId
      * @return
      */
     ArrayNode getAccountTree(String userName, Long accountId);
@@ -63,7 +65,7 @@ public interface AccountManageDAO<T> {
      *
      * @return
      */
-    Double getYesterdayCost();
+    Double getYesterdayCost(Long accountId);
 
     /**
      * 获取账户的消费升降情况

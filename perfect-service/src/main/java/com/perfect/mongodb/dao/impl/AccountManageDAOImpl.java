@@ -159,7 +159,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
     @Override
     public List<AccountReportEntity> getAccountReports(List<Date> dates) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        Long baiduAccountId = AppContext.get().getAccountId();
+        Long baiduAccountId = AppContext.getAccountId();
         List<AccountReportEntity> reportEntities = mongoTemplate.
                 find(Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and("date").in(dates)), AccountReportEntity.class);
         return reportEntities;
@@ -167,12 +167,19 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
 
     @Override
     @SuppressWarnings("unchecked")
-    public Double getYesterdayCost() {
+    public Double getYesterdayCost(Long accountId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        Long baiduAccountId = AppContext.get().getAccountId();
         Date date = DateUtils.getYesterday();
-        AccountReportEntity reportEntity = mongoTemplate.
-                findOne(Query.query(Criteria.where("date").is(date).and(ACCOUNT_ID).is(baiduAccountId)), AccountReportEntity.class);
+        Aggregation aggregation = newAggregation(
+                match(Criteria.where(ACCOUNT_ID).is(accountId).and("date").is(date)),
+                project("pccost")
+        );
+        AggregationResults<AccountReportEntity> results = mongoTemplate.aggregate(aggregation, TBL_ACCOUNT_REPORT, AccountReportEntity.class);
+        if (results == null) {
+            return 0d;
+        }
+        AccountReportEntity reportEntity = results.getUniqueMappedResult();
+//      AccountReportEntity reportEntity = mongoTemplate.findOne(Query.query(Criteria.where("date").is(date).and(ACCOUNT_ID).is(accountId)), AccountReportEntity.class);
         if (reportEntity != null)
             return reportEntity.getPcCost();
         else
@@ -182,7 +189,8 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
     @Override
     @SuppressWarnings("unchecked")
     public Double getCostRate() {
-        Double cost1 = getYesterdayCost();
+        Long accountId = AppContext.getAccountId();
+        Double cost1 = getYesterdayCost(accountId);
         Double cost2 = 0d;
         Double costRate;
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();

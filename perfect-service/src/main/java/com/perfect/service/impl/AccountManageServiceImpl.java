@@ -37,10 +37,16 @@ public class AccountManageServiceImpl implements AccountManageService {
         return trees;
     }
 
+    @Override
+    public Map<String, Object> getAllBaiduAccount(String currSystemUserName) {
+        List<BaiduAccountInfoEntity> list = accountManageDAO.getBaiduAccountItems(currSystemUserName);
+        return JSONUtils.getJsonMapData(list);
+    }
+
     public Map<String, Object> getBaiduAccountInfoByUserId(Long baiduUserId) {
         BaiduAccountInfoEntity entity = accountManageDAO.findByBaiduUserId(baiduUserId);
         Map<String, Object> results = JSONUtils.getJsonMapData(entity);
-        results.put("cost", accountManageDAO.getYesterdayCost());
+        results.put("cost", getYesterdayCost(baiduUserId));
         results.put("costRate", accountManageDAO.getCostRate());
         //从凤巢获取budgetOfflineTime
         try {
@@ -61,6 +67,10 @@ public class AccountManageServiceImpl implements AccountManageService {
         return results;
     }
 
+    public BaiduAccountInfoEntity getBaiduAccountInfoById(Long baiduUserId) {
+        return accountManageDAO.findByBaiduUserId(baiduUserId);
+    }
+
     public void updateBaiduAccount(BaiduAccountInfoEntity entity) {
         accountManageDAO.updateBaiduAccountInfo(entity);
     }
@@ -72,6 +82,10 @@ public class AccountManageServiceImpl implements AccountManageService {
         Map<String, Object> values = JSONUtils.getJsonMapData(list);
         values.put("dates", JSONUtils.getJsonObjectArray(DateUtils.getsLatestAnyDays("MM-dd", 7).get(DateUtils.KEY_STRING)));
         return values;
+    }
+
+    public Double getYesterdayCost(Long accountId) {
+        return accountManageDAO.getYesterdayCost(accountId);
     }
 
     protected JsonNode getJson(Object o) {
