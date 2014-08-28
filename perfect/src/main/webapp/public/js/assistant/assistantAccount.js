@@ -29,14 +29,14 @@ function filter(treeId, parentNode, childNodes) {
 function beforeClick(treeId, treeNode) {
     if (treeNode.level == 0) {
         //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
-        alert(treeNode.id + "," + treeNode.name);
+//        alert(treeNode.id + "," + treeNode.name);
         campaignId = treeNode.id + "," + "0";
         getCreativePlan(treeNode.id);
-        getAdgroupPlan(treeNode.id);
+        getAdgroupPlan(treeNode.id,treeNode.name);
         //事件处理
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元),则应该展示其下属的关键词数据
-        alert(treeNode.id + "," + treeNode.name);
+//        alert(treeNode.id + "," + treeNode.name);
         adgroupId = treeNode.id + "," + "1";
         getCreativeUnit({cid:treeNode.getParentNode().id,aid:treeNode.id});
         //事件处理

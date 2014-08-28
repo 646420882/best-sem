@@ -31,30 +31,60 @@ public class AssistantAdgroupController extends WebContextSupport {
     @Resource
     CampaignDAO campaignDAO;
 
+    /**
+     * 默认加载单元数据
+     * @param request
+     * @param response
+     * @param cid
+     * @return
+     */
     @RequestMapping(value = "/getAdgroupList")
     public ModelAndView getList(HttpServletRequest request, HttpServletResponse response,
                                 @RequestParam(value = "cid", required = false) String cid) {
         List<AdgroupEntity> list = new ArrayList<>();
-        if (cid!=""||!cid.equals("")) {
-            Map<String,Object> parms=new HashMap<>();
-            parms.put(EntityConstants.CAMPAIGN_ID,Long.parseLong(cid));
+        if (cid != "" || !cid.equals("")) {
+            Map<String, Object> parms = new HashMap<>();
+            parms.put(EntityConstants.CAMPAIGN_ID, Long.parseLong(cid));
             list = adgroupDAO.find(parms, 0, 15);
-        }else{
+        } else {
             list = adgroupDAO.find(null, 0, 15);
         }
-        if(list.size()>0){
-            for (AdgroupEntity a:list){
-                a.setCampaignName(campaignDAO.findOne(a.getCampaignId()).getCampaignName());
+        if (list.size() > 0) {
+            List<CampaignEntity> campaignEntity = (List<CampaignEntity>) campaignDAO.findAll();
+            for (int i = 0; i < campaignEntity.size(); i++) {
+                for (AdgroupEntity a : list) {
+                    if (a.getCampaignId().equals(campaignEntity.get(i).getCampaignId())) {
+                        a.setCampaignName(campaignEntity.get(i).getCampaignName());
+                    }
+                }
             }
         }
         writeJson(list, response);
         return null;
     }
 
+    /**
+     * 获取全部的计划供添加选择使用
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "/getPlans", method = RequestMethod.GET)
     public ModelAndView getPlans(HttpServletRequest request, HttpServletResponse response) {
         List<CampaignEntity> campaignEntities = (List<CampaignEntity>) campaignDAO.findAll();
         writeJson(campaignEntities, response);
+        return null;
+    }
+    @RequestMapping(value = "/adAdd",method = RequestMethod.POST)
+    public ModelAndView adAdd(HttpServletRequest request,HttpServletResponse response,
+                              @RequestParam(value = "oid",required = true)String agid,
+                              @RequestParam(value = "cid",required = true)String cid,
+                              @RequestParam(value = "name")String name,
+                              @RequestParam(value = "maxPrice")Double maxPrice,
+                              @RequestParam(value="nn")String[] nn,
+                              @RequestParam(value = "ne")String[] ne,
+                              @RequestParam(value = "pause")Boolean p,
+                              @RequestParam(value="status")Integer s){
         return null;
     }
 }

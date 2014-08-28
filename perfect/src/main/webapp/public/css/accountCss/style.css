@@ -1875,4 +1875,18 @@ h2 .close{
     padding-right:10px;
 }
 
+.sets  li{
+    display:block;
+    float:left;
+    width:48%;
+    margin-left:2%;
+    overflow:hidden;
+}
+.sets  li p{
+    line-height:24px;
+}
+.sets  li textarea{
+    width:95%;
+   border:1px solid #ccc;
 
+}
