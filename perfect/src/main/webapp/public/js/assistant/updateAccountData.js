@@ -47,11 +47,8 @@ var updateAllCampaign = function () {
         url: '/account/updateAccountData',
         type: 'POST',
         dataType: 'json',
-        data: {
-            "campaignIds": null
-        },
         success: function (data, textStatus, jqXHR) {
-            alert("**************");
+            alert("更新成功!");
         }
     });
 };
@@ -74,7 +71,7 @@ var updateExistsCampaign = function () {
             "campaignIds": campaignIds
         },
         success: function (data, textStatus, jqXHR) {
-            alert("**************");
+            alert("更新成功!");
         }
     });
 };
@@ -95,13 +92,12 @@ var updateNewCampaign = function () {
             "campaignIds": JSON.stringify(campaignIds)
         },
         success: function (data, textStatus, jqXHR) {
-            alert("**************");
+            alert("更新成功!");
         }
     });
 };
 
-var index = "";
-
+var index = 0;
 
 $(function () {
     loadExistsCampaign();
@@ -123,10 +119,12 @@ $(function () {
     });
 
     $("#downloadAccount").livequery('click', function () {
-        if (index = 0) {
-        } else if (index = 1) {
+        if (index == 0) {
+            updateAllCampaign();
+        } else if (index == 1) {
             updateExistsCampaign();
-        } else if (index = 2) {
+        } else if (index == 2) {
+            updateNewCampaign();
         }
     });
 

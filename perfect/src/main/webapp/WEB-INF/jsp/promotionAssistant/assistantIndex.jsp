@@ -157,11 +157,11 @@
                 </li>
                 <li>
                     <div class="t_list01 fl over">访问URL:</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(3,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 pcurl_1"><span class="pcurlSize_1">59/1024</span></div>
+                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(3,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 pcurl_1"><span class="pcurlSize_1">0/1024</span></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">移动访问URL：</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(4,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 mourl_1"><span class="mourlSize_1">59/1024</span></div>
+                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(4,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 mourl_1"><span class="mourlSize_1">0/1024</span></div>
                 </li>
             </ul>
         </div>
@@ -173,16 +173,15 @@
                 </li>
                 <li>
                     <div class="w_list01 fl over">匹配模式：</div>
-                    <div class="w_list02 fl over"><em class="matchModel_1">短语-核心包含</em></div>
+                    <div class="w_list02 fl over"><em class="matchModel_1"></em></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">状态：</div>
-                    <div class="w_list02 fl over"><b class="status_1">有效</b></div>
+                    <div class="w_list02 fl over"><b class="status_1"></b></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">启用/暂停：</div>
                     <div class="w_list02 fl over"><select class="pause_1" onchange="whenBlurEditKeyword(7,this.value)">
-                        <option>启用</option>
                     </select></div>
                 </li>
             </ul>
@@ -841,7 +840,7 @@
                 </li>
                 <li>
                     <div class="w_list01 fl over">移动出价比例：</div>
-                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditCampaign(3,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 priceRatio_5"><span>59/1024</span></div>
+                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditCampaign(3,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 priceRatio_5"><span>0/1024</span></div>
                 </li>
             </ul>
         </div>
@@ -857,29 +856,28 @@
                 </li>
                 <li>
                     <div class="w_list01 fl over">动态创意状态：</div>
-                    <div class="w_list02 fl over"><b class="isDynamicCreative_5">开启</b></div>
+                    <div class="w_list02 fl over"><b class="isDynamicCreative_5"></b></div>
                 </li>
             </ul>
             <ul class="z_bottom3 fl">
                 <li>
                     <div class="w_list01 fl over">否定关键词：</div>
-                    <div class="w_list02 fl over "><em class="negativeWords_5">未设置</em></div>
+                    <div class="w_list02 fl over "><em class="negativeWords_5"></em></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">IP排除：</div>
-                    <div class="w_list02 fl over"><em class="excluedIp_5">未设置</em></div>
+                    <div class="w_list02 fl over"><em class="excluedIp_5"></em></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">创意展现方式：</div>
                     <div class="w_list02 fl over"><select class="selectShowProb_5" onchange="whenBlurEditCampaign(10,this.value);">
-                        <option>优选</option>
                     </select></div>
                 </li>
             </ul>
             <ul class="z_bottom3 fl">
                 <li>
                     <div class="w_list01 fl over">状态：</div>
-                    <div class="w_list02 fl over"><b class="status_5">暂停推广</b></div>
+                    <div class="w_list02 fl over"><b class="status_5"></b></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">IP排除：</div>
@@ -888,7 +886,6 @@
                 <li>
                     <div class="w_list01 fl over">启用/暂停：</div>
                     <div class="w_list02 fl over"><select class="selectPause_5" onchange="whenBlurEditCampaign(11,this.value);">
-                        <option>启用</option>
                     </select></div>
                 </li>
             </ul>
@@ -1244,9 +1241,6 @@
     <div class="hours">
 
     </div>
-
-
-
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
@@ -1257,6 +1251,27 @@
     </div>
 </div>
 
+<%--推广计划设置推广地域窗口--%>
+<div class="TB_overlayBG"></div>
+<div class="box" style="display:none;" id="setSchedule">
+    <h2 id="setScheduleDiv">推广地域列表<a href="#" class="close">关闭</a></h2>
+    <div class="chooseTime">
+        <span>请选择时段</span>
+        <ul>
+            <li class="tfsjd"><span></span>&nbsp;&nbsp;&nbsp;投放时间段</li>
+            <li class="ztsjd"><span></span>&nbsp;&nbsp;&nbsp;暂停时间段</li>
+        </ul>
+    </div><br/>
+
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li class="current">确认</li>
+                <li class="close">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>

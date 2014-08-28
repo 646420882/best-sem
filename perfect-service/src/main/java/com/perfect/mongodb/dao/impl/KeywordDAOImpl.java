@@ -1,6 +1,7 @@
 package com.perfect.mongodb.dao.impl;
 
 import com.perfect.autosdk.sms.v3.KeywordInfo;
+import com.perfect.core.AppContext;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.DataAttributeInfoEntity;
@@ -117,7 +118,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     public List<KeywordEntity> findAll() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        List<KeywordEntity> keywordEntityList = mongoTemplate.findAll(KeywordEntity.class, TBL_KEYWORD);
+        List<KeywordEntity> keywordEntityList = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
         return keywordEntityList;
     }
 

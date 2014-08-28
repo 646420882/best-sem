@@ -29,7 +29,7 @@ public class TestConfig extends UnitilsJUnit4 {
     public void init() throws Exception {
         String taskDefItem = "0:{NAME=Jason},1:{NAME=Daisy}";
 //        BaseTaskConfig baseTaskConfig = new BaseTaskConfig("BaseTaskConfig","TEST","empty", CronExpression.CRON_EVERY_MINUTE,taskDefItem.split(","));
-        BaseTaskConfig baseTaskConfig = new BaseTaskConfig("BaseTaskConfig","test","dataPullTask","* * 0 * * ?",taskDefItem.split(","));
+        BaseTaskConfig baseTaskConfig = new BaseTaskConfig("BaseTaskConfig","test","dataPullTask","* * 1 * * ?",taskDefItem.split(","));
         baseTaskConfig.setScheduleManagerFactory(scheduleManagerFactory);
         baseTaskConfig.createTask();
     }

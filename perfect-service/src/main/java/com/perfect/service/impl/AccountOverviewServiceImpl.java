@@ -1,7 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.AccountAnalyzeDAO;
-import com.perfect.entity.AccountRealTimeDataVOEntity;
+import com.perfect.entity.AccountReportEntity;
 import com.perfect.service.AccountOverviewService;
 import org.springframework.stereotype.Service;
 
@@ -36,37 +36,20 @@ public class AccountOverviewServiceImpl implements AccountOverviewService{
         double costCount = 0.0;
         double conversionCount = 0.0;
 
-
          //开始获取数据汇总
-        /*List<AccountRealTimeDataVOEntity> list = null;
+        List<AccountReportEntity> list = null;
         try {
             list = accountAnalyzeDAO.performaneCurve(df.parse(startDate),df.parse(endDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        for (AccountRealTimeDataVOEntity ard : list) {
-               Integer impression = ard.getImpression();
-               Integer click = ard.getClick();
-               Double cost = ard.getCost();
-               Double conversion = ard.getConversion();
-
-               if (impression != null) {
-                   impressionCount += impression;
-               }
-
-               if (click != null) {
-                   clickCount += click;
-               }
-
-               if (cost != null) {
-                   costCount += cost;
-               }
-
-               if (conversion != null) {
-                   conversionCount += conversion;
-               }
-           }*/
+        for (AccountReportEntity are : list) {
+            impressionCount += are.getPcImpression() + are.getMobileImpression();
+            clickCount += are.getPcClick() + are.getMobileClick();
+            costCount += are.getPcCost() + are.getMobileCost();
+            conversionCount += are.getPcConversion() + are.getMobileConversion();
+        }
 
         //数字格式化
         DecimalFormat decimalFormat = new DecimalFormat("#,##,###");

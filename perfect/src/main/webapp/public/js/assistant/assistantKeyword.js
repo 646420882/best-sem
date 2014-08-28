@@ -202,6 +202,9 @@ function editKwdInfo(){
  * @param value
  */
 function whenBlurEditKeyword(num,value){
+    if($("#tbodyClick").find("tr").length==0){
+        return;
+    }
     switch (num){
         case 1:kwd_name = value;break;
         case 2:kwd_price = value;break;

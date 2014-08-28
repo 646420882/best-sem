@@ -5,30 +5,32 @@ import com.perfect.autosdk.core.ResHeaderUtil;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.entity.*;
 import com.perfect.mongodb.base.BaseMongoTemplate;
-import com.perfect.mongodb.dao.impl.AdgroupDAOImpl;
 import com.perfect.mongodb.dao.impl.CampaignDAOImpl;
-import com.perfect.mongodb.dao.impl.CreativeDAOImpl;
-import com.perfect.mongodb.dao.impl.KeywordDAOImpl;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.BaiduApiService;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.BaiduServiceSupport;
+import com.perfect.utils.DBNameUtils;
 import com.perfect.utils.EntityConvertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static com.perfect.mongodb.utils.EntityConstants.*;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * 获取账户完整数据的方法
@@ -37,25 +39,16 @@ import static com.perfect.mongodb.utils.EntityConstants.*;
  *
  * @author yousheng
  */
-@Component("accountDataService")
+@Service("accountDataService")
 public class AccountDataServiceImpl implements AccountDataService {
 
-    private static Logger logger = LoggerFactory.getLogger(AccountDataServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Resource
     private SystemUserService systemUserService;
 
     @Resource
     private CampaignDAOImpl campaignDAO;
-
-    @Resource
-    private AdgroupDAOImpl adgroupDAO;
-
-    @Resource
-    private KeywordDAOImpl keywordDAO;
-
-    @Resource
-    private CreativeDAOImpl creativeDAO;
 
     @Override
     public void initAccountData(String userName, long accountId) {
@@ -120,7 +113,7 @@ public class AccountDataServiceImpl implements AccountDataService {
                 adgroupEntity.setAccountId(aid);
                 ids.add(adgroupEntity.getAdgroupId());
             }
-//
+
             logger.info("查询账户推广关键词...");
             List<KeywordType> keywordTypes = apiService.getAllKeyword(ids);
             logger.info("查询结束: 关键词数=" + keywordTypes.size());
@@ -130,7 +123,6 @@ public class AccountDataServiceImpl implements AccountDataService {
             for (KeywordEntity keywordEntity : keywordEntities) {
                 keywordEntity.setAccountId(aid);
             }
-//
 
             logger.info("查询账户推广创意...");
             List<CreativeType> creativeTypes = apiService.getAllCreative(ids);
@@ -167,13 +159,15 @@ public class AccountDataServiceImpl implements AccountDataService {
         }
 
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(userName);
-//        clearCollectionData(mongoTemplate);
 
+        BaiduAccountInfoEntity _entity = null;
         for (BaiduAccountInfoEntity baiduAccountInfoEntity : baiduAccountInfoEntityList) {
 
             Long aid = baiduAccountInfoEntity.getId();
             if (aid != accountId)
                 continue;
+            _entity = baiduAccountInfoEntity;
+
             CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
             BaiduApiService apiService = new BaiduApiService(commonService);
 
@@ -194,14 +188,6 @@ public class AccountDataServiceImpl implements AccountDataService {
             }
 
             List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(camIds);
-
-
-//            List<AdgroupType> adgroupTypeList = new ArrayList<>(campaignAdgroupList.size() << 1);
-//
-//            for (CampaignAdgroup campaignAdgroup : campaignAdgroupList) {
-//                List<AdgroupType> adgroupTypes = campaignAdgroup.getAdgroupTypes();
-//                adgroupTypeList.addAll(adgroupTypes);
-//            }
 
             List<AdgroupEntity> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
 
@@ -231,17 +217,27 @@ public class AccountDataServiceImpl implements AccountDataService {
                 creativeEntity.setAccountId(aid);
                 creativeIds.add(creativeEntity.getCreativeId());
             }
-            // 开始保存数据
 
-            // 保存推广计划
-            mongoTemplate.findAllAndRemove(Query.query(Criteria.where(CAMPAIGN_ID).in(camIds)), CampaignEntity.class);
+            //clear data
+            clearCollectionData(mongoTemplate, accountId);
+
+            //update data
             mongoTemplate.insertAll(campaignEntities);
 
             mongoTemplate.insertAll(adgroupEntities);
             mongoTemplate.insertAll(keywordEntities);
             mongoTemplate.insertAll(creativeEntityList);
+
         }
-        systemUserService.save(systemUserEntity);
+
+        //update account data
+        MongoTemplate mongoTemplate1 = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+        Update update = new Update();
+        update.set("bdAccounts.$", _entity);
+        mongoTemplate1.updateFirst(
+                Query.query(
+                        Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
+                update, SystemUserEntity.class);
     }
 
     @Override
@@ -261,7 +257,7 @@ public class AccountDataServiceImpl implements AccountDataService {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(userName);
         BaiduAccountInfoEntity baiduAccountInfoEntity = null;
         for (BaiduAccountInfoEntity entity : baiduAccountInfoEntityList) {
-            if (Long.valueOf(accountId).compareTo(entity.getId()) == 0) {
+            if (accountId == entity.getId()) {
                 baiduAccountInfoEntity = entity;
                 break;
             }
@@ -272,7 +268,7 @@ public class AccountDataServiceImpl implements AccountDataService {
         CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
         BaiduApiService apiService = new BaiduApiService(commonService);
 
-        // 初始化账户数据
+        //获取账户总数据
         AccountInfoType accountInfoType = apiService.getAccountInfo();
         BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
 
@@ -283,24 +279,12 @@ public class AccountDataServiceImpl implements AccountDataService {
         List<CampaignEntity> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
 
 
-        List<Long> localAdgroupIds = new ArrayList<>();
-        for (Long id : camIds) {
-            localAdgroupIds.addAll(adgroupDAO.getAdgroupIdByCampaignId(id));
-        }
+        List<Long> localAdgroupIds = getLocalAdgroupIds(mongoTemplate, accountId, camIds);
 
-        List<Long> localKeywordIds = new ArrayList<>();
-        for (Long id : localAdgroupIds) {
-            localKeywordIds.addAll(keywordDAO.getKeywordIdByAdgroupId(id));
-        }
+        List<Long> localKeywordIds = getLocalKeywordIds(mongoTemplate, accountId, localAdgroupIds);
 
-        List<Long> localCreativeIds = new ArrayList<>();
-        for (Long id : localAdgroupIds) {
-            localCreativeIds.addAll(creativeDAO.getCreativeIdByAdgroupId(id));
-        }
+        List<Long> localCreativeIds = getLocalCreativeIds(mongoTemplate, accountId, localAdgroupIds);
 
-
-        // 查询推广单元
-//        List<Long> camIds = new ArrayList<>(campaignEntities.size());
 
         //凤巢返回回来的计划实体id
         List<Long> campaignIds = new ArrayList<>(campaignEntities.size());
@@ -314,7 +298,7 @@ public class AccountDataServiceImpl implements AccountDataService {
 
         List<AdgroupEntity> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
 
-        List<Long> adgroupdIds = new ArrayList<>();
+        List<Long> adgroupdIds = new ArrayList<>(adgroupEntities.size());
         for (AdgroupEntity adgroupEntity : adgroupEntities) {
             adgroupEntity.setAccountId(acid);
             adgroupdIds.add(adgroupEntity.getAdgroupId());
@@ -324,20 +308,20 @@ public class AccountDataServiceImpl implements AccountDataService {
 
         List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
 
-        List<Long> kwids = new ArrayList<>(keywordEntities.size());
+//        List<Long> kwids = new ArrayList<>(keywordEntities.size());
         for (KeywordEntity keywordEntity : keywordEntities) {
             keywordEntity.setAccountId(acid);
-            kwids.add(keywordEntity.getKeywordId());
+//            kwids.add(keywordEntity.getKeywordId());
         }
 
         List<CreativeType> creativeTypes = apiService.getAllCreative(adgroupdIds);
 
         List<CreativeEntity> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
 
-        List<Long> creativeIds = new ArrayList<>(creativeEntityList.size());
+//        List<Long> creativeIds = new ArrayList<>(creativeEntityList.size());
         for (CreativeEntity creativeEntity : creativeEntityList) {
             creativeEntity.setAccountId(acid);
-            creativeIds.add(creativeEntity.getCreativeId());
+//            creativeIds.add(creativeEntity.getCreativeId());
         }
 
         //clear data
@@ -353,19 +337,13 @@ public class AccountDataServiceImpl implements AccountDataService {
         mongoTemplate.insertAll(creativeEntityList);
 
         //update account data
-        Update update1 = new Update();
-        update1.unset("bdAccounts.$");
-        mongoTemplate.updateFirst(
+        MongoTemplate mongoTemplate1 = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+        Update update = new Update();
+        update.set("bdAccounts.$", baiduAccountInfoEntity);
+        mongoTemplate1.updateFirst(
                 Query.query(
-                        Criteria.where("bdAccounts._id").is(baiduAccountInfoEntity.getId())),
-                update1, SystemUserEntity.class);
-        Update update2 = new Update();
-        update2.addToSet("bdAccounts", baiduAccountInfoEntity);
-        mongoTemplate.updateFirst(
-                Query.query(
-                        Criteria.where("userName").is(systemUserEntity.getUserName())),
-                update2, SystemUserEntity.class);
-
+                        Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
+                update, SystemUserEntity.class);
 
     }
 
@@ -472,6 +450,45 @@ public class AccountDataServiceImpl implements AccountDataService {
         if (mongoTemplate.collectionExists(CreativeEntity.class)) {
             mongoTemplate.remove(query, TBL_CREATIVE);
         }
+    }
+
+    private List<Long> getLocalAdgroupIds(MongoTemplate mongoTemplate, Long accountId, List<Long> campaignIds) {
+        Aggregation aggregation = newAggregation(
+                match(Criteria.where(ACCOUNT_ID).is(accountId).and(CAMPAIGN_ID).in(campaignIds)),
+                project(ADGROUP_ID).andExclude("_id")
+        );
+        AggregationResults<AdgroupEntity> results = mongoTemplate.aggregate(aggregation, TBL_ADGROUP, AdgroupEntity.class);
+        List<Long> ids = new ArrayList<>();
+        for (AdgroupEntity entity : results) {
+            ids.add(entity.getAdgroupId());
+        }
+        return ids;
+    }
+
+    private List<Long> getLocalKeywordIds(MongoTemplate mongoTemplate, Long accountId, List<Long> adgroupIds) {
+        Aggregation aggregation = newAggregation(
+                match(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).in(adgroupIds)),
+                project(KEYWORD_ID).andExclude("_id")
+        );
+        AggregationResults<KeywordEntity> results = mongoTemplate.aggregate(aggregation, TBL_KEYWORD, KeywordEntity.class);
+        List<Long> ids = new ArrayList<>();
+        for (KeywordEntity entity : results) {
+            ids.add(entity.getKeywordId());
+        }
+        return ids;
+    }
+
+    private List<Long> getLocalCreativeIds(MongoTemplate mongoTemplate, Long accountId, List<Long> adgroupIds) {
+        Aggregation aggregation = newAggregation(
+                match(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).in(adgroupIds)),
+                project(CREATIVE_ID).andExclude("_id")
+        );
+        AggregationResults<CreativeEntity> results = mongoTemplate.aggregate(aggregation, TBL_CREATIVE, CreativeEntity.class);
+        List<Long> ids = new ArrayList<>();
+        for (CreativeEntity entity : results) {
+            ids.add(entity.getCreativeId());
+        }
+        return ids;
     }
 
 }

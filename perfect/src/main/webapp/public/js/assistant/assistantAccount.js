@@ -38,7 +38,7 @@ function beforeClick(treeId, treeNode) {
         //点击的是子节点(推广单元),则应该展示其下属的关键词数据
 //        alert(treeNode.id + "," + treeNode.name);
         adgroupId = treeNode.id + "," + "1";
-        getCreativeUnit({cid:treeNode.getParentNode().id,aid:treeNode.id});
+        getCreativeUnit({cid: treeNode.getParentNode().id, aid: treeNode.id});
         //事件处理
     }
 }
@@ -429,7 +429,7 @@ var loadAccountData = function () {
                 $("#balance").text("￥" + result.balance);
                 _budget = result.balance;
                 $("#accountBudget").text(result.budget);
-                if (result.excludeIp.length > 0) {
+                if (result.excludeIp != null && result.excludeIp.length > 0) {
                     var temp = result.excludeIp;
                     for (var i = 0, l = result.excludeIp.length; i < l; i++) {
                         var _val = $("#excludeIP_ta").val();

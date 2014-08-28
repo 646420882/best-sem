@@ -5,6 +5,7 @@ window.onload=function(){
     rDrag.init(document.getElementById('setFdKeywordDiv'));
     rDrag.init(document.getElementById('setExcludeIpDiv'));
     rDrag.init(document.getElementById('setExtensionDiv'));
+    rDrag.init(document.getElementById('setScheduleDiv'));
 }
 
 
@@ -181,6 +182,10 @@ function editCampaignInfo() {
  * @param value
  */
 function whenBlurEditCampaign(num,value){
+    if($("#tbodyClick5").find("tr").length==0){
+        return;
+    }
+
     switch (num){
         case 1:cp_campaignName = value;break;
         case 2:cp_budget = value;break;
@@ -324,6 +329,12 @@ $(".excludeIpOk").click(function () {
 
     var ipArray = ipList.split("\n");
     var errorIp = "";
+
+    if(ipArray.length>20){
+        alert("IP排除数量最大为20个");
+        return;
+    }
+
     for(var i = 0;i<ipArray.length;i++){
         if(validateIPFormat(ipArray[i])==false){
             errorIp = errorIp+"\n"+ipArray[i];
@@ -334,6 +345,7 @@ $(".excludeIpOk").click(function () {
         alert("IP地址格式输入不正确!"+errorIp);
         return;
     }
+
 
     $.ajax({
         url:"/assistantCampaign/edit",
@@ -356,37 +368,45 @@ $(".schedule_5").click(function(){
 });
 
 
+/**
+ * 推广时段时间选择效果
+ */
+$(".hours").delegate("li","click",function(){
+        if($(this).attr("class")=="changeGreen"){
+            $(this).removeClass("changeGreen");
+            $(this).addClass("changeGray");
+        }else{
+            $(this).removeClass("changeGray");
+            $(this).addClass("changeGreen");
+        }
+}
+);
 
-
-
-
-
-
-
-
-
+/**
+ * 生成选择推广时段的ui
+ */
 function createChooseTimeUI(){
     var weeks = new Array("星期一","星期二","星期三","星期四","星期五","星期六","星期日");
-    alert(weeks.length);
-    /*var html = "";
+    var html = "";
     for(var i = 0;i<weeks.length;i++){
-        for(var j = 0;i<=23;j++){
-            html = html+"<ul>"+"<div><input type='checkbox'/>"+weeks[i]+"</div>";
-            if(j+1%6==0){
-             html = html+"<li style='margin-left: 11px;'>"+j+"</li>";
+        html = html+"<ul>"+"<div><input type='checkbox'/>"+weeks[i]+"</div>";
+        for(var j = 0;j<=23;j++){
+            if(j%6==0){
+             html = html+"<li style='margin-left: 10px;' class='changeGreen'>"+j+"</li>";
             }else{
-              html = html+"<li>"+j+"</li>"
+              html = html+"<li class='changeGreen'>"+j+"</li>"
             }
         }
         html = html+"</ul><br/><br/>";
-    }*/
-//    $(".hours").html(html);
+    }
+   $(".hours").html(html);
 }
 
 
 
-
-
+$(".regionTarget_5").click(function () {
+    setDialogCss("setSchedule");
+});
 
 
 
@@ -397,7 +417,7 @@ function createChooseTimeUI(){
  * 验证输入的ip格式是否正确
  */
 function validateIPFormat(ipAddress) {
-    var regex = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(\*)$/;
+    var regex = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(\*))$/;
     return regex.test(ipAddress);
 }
 

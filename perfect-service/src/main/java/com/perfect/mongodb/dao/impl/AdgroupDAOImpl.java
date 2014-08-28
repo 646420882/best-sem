@@ -1,5 +1,6 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.*;
@@ -26,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static com.perfect.mongodb.utils.EntityConstants.ACCOUNT_ID;
 import static com.perfect.mongodb.utils.EntityConstants.ADGROUP_ID;
 import static com.perfect.mongodb.utils.EntityConstants.CAMPAIGN_ID;
 
@@ -87,7 +89,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
 
     public List<AdgroupEntity> findAll() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        List<AdgroupEntity> adgroupEntities = mongoTemplate.findAll(AdgroupEntity.class, EntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> adgroupEntities = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
         return adgroupEntities;
     }
 

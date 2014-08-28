@@ -1,5 +1,6 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.*;
@@ -57,7 +58,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
 
     public List<CampaignEntity> findAll() {
         MongoTemplate mongoTemplate = getMongoTemplate();
-        List<CampaignEntity> list = mongoTemplate.findAll(CampaignEntity.class);
+        List<CampaignEntity> list = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
         return list;
     }
 

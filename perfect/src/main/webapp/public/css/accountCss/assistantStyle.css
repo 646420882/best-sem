@@ -5,7 +5,7 @@
 }
 
 #setNegtiveWord .main_bottom{
-   float:left;
+    float:left;
 }
 
 
@@ -40,12 +40,19 @@
     float:right;
 }
 
+
+
+.changeGray{
+    background-color:gray;
+}
+.changeGreen{
+    background-color: #00D300;
+}
 .hours>ul li{
     float:left;
-    width:15px;
-    height:15px;
-    background-color: #00D300;
-    margin-left:2px;
+    width:17px;
+    height:17px;
+    margin-left:3px;
     cursor: pointer;
     text-align: center;
 }
@@ -72,3 +79,4 @@
 .chooseTime>ul li{
     margin-left: 20px;
 }
+

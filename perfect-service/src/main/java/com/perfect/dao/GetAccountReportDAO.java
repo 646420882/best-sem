@@ -1,7 +1,7 @@
 package com.perfect.dao;
 
 import com.perfect.autosdk.sms.v3.RealTimeResultType;
-import com.perfect.entity.AccountRealTimeDataVOEntity;
+import com.perfect.entity.AccountReportEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by john on 2014/8/8.
  */
-public interface GetRealTimeDataDAO {
+public interface GetAccountReportDAO {
 
     /**
      * 得到本地的数据报告（数据来自本地）
@@ -17,7 +17,7 @@ public interface GetRealTimeDataDAO {
      * @param endDate
      * @return
      */
-    List<AccountRealTimeDataVOEntity> getLocalAccountRealData(String userName,Date startDate,Date endDate);
+    List<AccountReportEntity> getLocalAccountRealData(String userName,Date startDate,Date endDate);
 
     /**
      * 在百度上实时获取数据报告(数据来自百度)
