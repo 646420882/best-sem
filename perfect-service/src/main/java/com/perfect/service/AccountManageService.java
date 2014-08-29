@@ -12,9 +12,18 @@ public interface AccountManageService {
     /**
      * 获取账户树
      *
+     * @param userName
+     * @param accountId
      * @return
      */
     Map<String, Object> getAccountTree(String userName, Long accountId);
+
+    /**
+     * 获取当前登录的系统用户下的所有百度账号
+     *
+     * @return
+     */
+    Map<String, Object> getAllBaiduAccount(String currSystemUserName);
 
     /**
      * 根据百度账户id获取其账户信息
@@ -23,6 +32,14 @@ public interface AccountManageService {
      * @return
      */
     Map<String, Object> getBaiduAccountInfoByUserId(Long baiduUserId);
+
+    /**
+     * 根据百度账户id获取其账户信息
+     *
+     * @param baiduUserId
+     * @return
+     */
+    BaiduAccountInfoEntity getBaiduAccountInfoById(Long baiduUserId);
 
     /**
      * 更新百度账户数据
@@ -38,4 +55,12 @@ public interface AccountManageService {
      * @return
      */
     Map<String, Object> getAccountReports(int number);
+
+    /**
+     * 获取账户昨日消费数据
+     *
+     * @param accountId
+     * @return
+     */
+    Double getYesterdayCost(Long accountId);
 }

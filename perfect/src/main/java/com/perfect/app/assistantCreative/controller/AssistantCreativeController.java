@@ -81,9 +81,28 @@ public class AssistantCreativeController extends WebContextSupport {
         writeJson(adgroupEntities,response);
     return null;
     }
+
+    /**
+     *  添加方法
+     * @param request
+     * @param response
+     * @param aid
+     * @param cacheCreativeId
+     * @param title
+     * @param de1
+     * @param de2
+     * @param pc
+     * @param pcs
+     * @param mib
+     * @param mibs
+     * @param bol
+     * @param s
+     * @param d
+     * @return
+     */
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public ModelAndView insertCreative(HttpServletRequest request,HttpServletResponse response,
-                                       @RequestParam(value = ACCOUNT_ID,required = true)String aid,
+                                       @RequestParam(value = "aid",required = true)String aid,
                                        @RequestParam(value = "cacheCativeId",required = true)Long cacheCreativeId,
                                        @RequestParam(value = "title",required = false)String title,
                                        @RequestParam(value="description1",required = false)String de1,
@@ -114,6 +133,13 @@ public class AssistantCreativeController extends WebContextSupport {
 
         return null;
     }
+
+    /**
+     * 删除方法 根据缓存的creativeId
+     * @param response
+     * @param oid 缓存的creativeId
+     * @return
+     */
     @RequestMapping(value = "/del")
     public ModelAndView del(HttpServletResponse response,@RequestParam(value = "oid",required = true)Long oid){
         try {
@@ -124,4 +150,29 @@ public class AssistantCreativeController extends WebContextSupport {
         }
         return null;
     }
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    public  ModelAndView update(HttpServletResponse response,HttpServletRequest request,
+                                @RequestParam(value = "oid",required = true)Long oid,
+                                @RequestParam(value = "title",required = false)String title,
+                                @RequestParam(value="description1",required = false)String de1,
+                                @RequestParam(value = "description2",required = false)String de2,
+                                @RequestParam(value = "pcDestinationUrl",required = false)String pc,
+                                @RequestParam(value = "pcDisplayUrl",required = false)String pcs,
+                                @RequestParam(value = "mobileDestinationUrl",required = false)String mib,
+                                @RequestParam(value = "mobileDisplayUrl",required = false)String mibs,
+                                @RequestParam(value = "pause")Boolean bol){
+        CreativeEntity creativeEntityFind=creativeDAO.findOne(oid);
+        creativeEntityFind.setTitle(title);
+        creativeEntityFind.setDescription1(de1);
+        creativeEntityFind.setDescription2(de2);
+        creativeEntityFind.setPcDestinationUrl(pc);
+        creativeEntityFind.setPcDisplayUrl(pcs);
+        creativeEntityFind.setMobileDestinationUrl(mib);
+        creativeEntityFind.setMobileDisplayUrl(mibs);
+        creativeEntityFind.setPause(bol);
+        creativeDAO.update(creativeEntityFind);
+        writeHtml(SUCCESS,response);
+        return  null;
+    }
 }
+

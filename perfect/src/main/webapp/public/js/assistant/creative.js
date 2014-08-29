@@ -91,16 +91,16 @@ function InitMenu() {
                         var i = $("#createTable tbody tr").size();
                         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                            "<td ondblclick='edit(this);'>&nbsp;<inpu type='hidden' value='"+data["cacheCativeId"]+"'/></td>" +
-                            "<td ondblclick='edit(this);'>" + until.substring(10, data["title"]) + "</td>" +
-                            " <td ondblclick='edit(this);'>" + until.substring(10, data["description1"]) + "</td>" +
-                            " <td ondblclick='edit(this);'>" + until.substring(10, data["description2"]) + "</td>" +
-                            " <td ondblclick='edit(this);'><a href='" + data["pcDestinationUrl"] + "' target='_blank'>" + until.substring(10, data["pcDestinationUrl"]) + "</a></td>" +
-                            " <td ondblclick='edit(this);'>" + until.substring(10, data["pcDisplayUrl"]) + "</td>" +
-                            " <td ondblclick='edit(this);'>" + until.substring(10, data["mobileDestinationUrl"]) + "</td>" +
-                            " <td ondblclick='edit(this);'>" + until.substring(10, data["mobileDisplayUrl"]) + "</td>" +
-                            " <td ondblclick='edit(this);'>" + p+ "</td>" +
-                            " <td ondblclick='edit(this);'>" + s + "</td>" +
+                            "<td>&nbsp;<span style='display: none;'>"+data["cacheCativeId"]+"</span></td>" +
+                            "<td >" + until.substring(10, data["title"]) + "</td>" +
+                            " <td >" + until.substring(10, data["description1"]) + "</td>" +
+                            " <td >" + until.substring(10, data["description2"]) + "</td>" +
+                            " <td ><a href='" + data["pcDestinationUrl"] + "' target='_blank'>" + until.substring(10, data["pcDestinationUrl"]) + "</a></td>" +
+                            " <td >" + until.substring(10, data["pcDisplayUrl"]) + "</td>" +
+                            " <td >" + until.substring(10, data["mobileDestinationUrl"]) + "</td>" +
+                            " <td >" + until.substring(10, data["mobileDisplayUrl"]) + "</td>" +
+                            " <td >" + p+ "</td>" +
+                            " <td >" + s + "</td>" +
                             "</tr>";
                         _createTable.append(_tbody);
                     }
@@ -124,16 +124,16 @@ function loadCreativeData(params) {
                 for (var i = 0; i < json.length; i++) {
                     _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                     var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                        "<td ondblclick='edit(this);'>&nbsp;<input type='hidden' value='"+json[i].creativeId+"'/></td>" +
-                        "<td ondblclick='edit(this);'>" + until.substring(10, json[i].title) + "</td>" +
-                        " <td ondblclick='edit(this);'>" + until.substring(10, json[i].description1) + "</td>" +
-                        " <td ondblclick='edit(this);'>" + until.substring(10, json[i].description2) + "</td>" +
-                        " <td ondblclick='edit(this);'><a href='" + json[i].pcDestinationUrl + "' target='_blank'>" + until.substring(10, json[i].pcDestinationUrl) + "</a></td>" +
-                        " <td ondblclick='edit(this);'>" + until.substring(10, json[i].pcDisplayUrl) + "</td>" +
-                        " <td ondblclick='edit(this);'>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
-                        " <td ondblclick='edit(this);'>" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
-                        " <td ondblclick='edit(this);'>" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
-                        " <td ondblclick='edit(this);'>" + until.getCreativeStatus(json[i].status) + "</td>" +
+                        "<td >&nbsp;<input type='hidden' value='"+json[i].creativeId+"'/></td>" +
+                        "<td >" + until.substring(10, json[i].title) + "</td>" +
+                        " <td >" + until.substring(10, json[i].description1) + "</td>" +
+                        " <td >" + until.substring(10, json[i].description2) + "</td>" +
+                        " <td ><a href='" + json[i].pcDestinationUrl + "' target='_blank'>" + until.substring(10, json[i].pcDestinationUrl) + "</a></td>" +
+                        " <td >" + until.substring(10, json[i].pcDisplayUrl) + "</td>" +
+                        " <td>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
+                        " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
+                        " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
+                        " <td >" + until.getCreativeStatus(json[i].status) + "</td>" +
                         "</tr>";
                     _createTable.append(_tbody);
                 }
@@ -252,7 +252,7 @@ function addCreative() {
         var _createTable = $("#createTable tbody");
         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-            "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden' name='cacheCativeId' value='"+getCreativeId()+"'/></td>" +
+            "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden' name='cacheCativeId' value='"+getRandomId()+"'/><input type='hidden' name='aid' value='"+getCreativeAId()+"'/></td>" +
             "<td><input name='title' onkeyup='onKey(this);' style='width:140px;' maxlength='50'></td>" +
             " <td><input name='description1' onkeyup='onKey(this);'  style='width:140px;'  maxlength='80'></td>" +
             " <td><input name='description2' onkeyup='onKey(this);'  style='width:140px;' maxlength='80'></td>" +
@@ -279,6 +279,9 @@ function addCreative() {
     }else{
         alert(sparams.cid+":"+sparams.aid);
     }
+}
+function getCreativeAId(){
+    return sparams.aid;
 }
 /**
  * 查询所有计划，生成select的Option对象
@@ -513,7 +516,7 @@ function loadTree(rs){
  * @param temp 选择的对象
  */
 function deleteByObjectId(temp){
-    var oid=$(temp).find("td:eq(0) input").val();
+    var oid=temp.find("td:eq(0) input").val()!=undefined?temp.find("td:eq(0) input").val():temp.find("td:eq(0) span").html();
     var con=confirm("是否删除该创意？");
     if(con){
         $.get("/assistantCreative/del",{oid:oid},function(rs){
@@ -539,7 +542,7 @@ function updateCreatvie(temp){
         display: "block"
     });
     var _tr=$(temp);
-    var creativeId=_tr.find("td:eq(0) input").val();
+    var creativeId=_tr.find("td:eq(0) input").val()!=undefined?_tr.find("td:eq(0) input").val():_tr.find("td:eq(0) span").html();
     var title=_tr.find("td:eq(1) a").attr("title")!=undefined?_tr.find("td:eq(1) a").attr("title"):_tr.find("td:eq(1) span").html();
     var description1=_tr.find("td:eq(2) a").attr("title")!=undefined?_tr.find("td:eq(2) a").attr("title"):_tr.find("td:eq(2) span").html();
     var description2=_tr.find("td:eq(3) a").attr("title")!=undefined?_tr.find("td:eq(3) a").attr("title"):_tr.find("td:eq(3) span").html();
@@ -547,8 +550,8 @@ function updateCreatvie(temp){
     var pcDisplayUrl=_tr.find("td:eq(5) a").attr("title")!=undefined?_tr.find("td:eq(5) a").attr("title"):_tr.find("td:eq(5) span").html();
     var mobileDestinationUrl=_tr.find("td:eq(6) a").attr("title")!=undefined?_tr.find("td:eq(6) a").attr("title"):_tr.find("td:eq(6) span").html();
     var mobileDisplayUrl=_tr.find("td:eq(7) a").attr("title")!=undefined?_tr.find("td:eq(7) a").attr("title"):_tr.find("td:eq(7) span").html();
-    var status=_tr.find("td:eq(8)").html();
-    var pause=_tr.find("td:eq(9)").html();
+    var status=_tr.find("td:eq(9)").html();
+    var pause=_tr.find("td:eq(8)").html();
     $("#cUpdateForm input[name='oid']").val(creativeId);
     $("#cUpdateForm input[name='title']").val(title);
     $("#cUpdateForm input[name='description1']").val(description1);
@@ -557,22 +560,24 @@ function updateCreatvie(temp){
     $("#cUpdateForm input[name='pcDisplayUrl']").val(pcDisplayUrl);
     $("#cUpdateForm input[name='mobileDestinationUrl']").val(mobileDestinationUrl);
     $("#cUpdateForm input[name='mobileDisplayUrl']").val(mobileDisplayUrl);
-    $("#cUpdateForm input[name='pause']").val(pause);
+    $("#sstatus").html(status);
      if(status=="启用"){
-         $("#cUpdateForm select[name='status']").get(0).selectedIndex=0;
+         $("#cUpdateForm select[name='pause']").get(0).selectedIndex=0;
      }else{
-         $("#cUpdateForm select[name='status']").get(0).selectedIndex=1;
+         $("#cUpdateForm select[name='pause']").get(0).selectedIndex=1;
      }
 }
 /**
  * 修改确认提交方法
  */
 function updateOk(){
-    $("#cUpdateForm").formSubmit("aaa",function(){
-
+    $("#cUpdateForm").formSubmit("/assistantCreative/update",function(rs){
+        if(rs=="1"){
+            alert("修改成功!");
+        }
     });
 }
-function getCreativeId(){
+function getRandomId(){
     return Math.floor(Math.random()*100000000)+1;
 }
 

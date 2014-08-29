@@ -697,7 +697,7 @@
     </ul>
     <span class="fr">1/10</span>
 </div>
-<div class="list4">
+<div class="list4" >
     <table border="0" cellspacing="0" width="100%" id="adGroupTable">
         <thead>
         <tr class="list02_top">
@@ -739,7 +739,7 @@
     </ul>
 </div>
 <div class="zhanghu_input"></div>
-<div class="zs_bottom over">
+<div class="zs_bottom over" id="aDiv">
     <div class="zs_bottom1 over fl ">
         <ul>
             <li>
@@ -752,7 +752,7 @@
             </li>
             <li>
                 <div class="t_list01 fl over">移动出价比例：</div>
-                <div class="t_list02 fl over"><input type="text" class="zs_input1"><span>59/1024</span></div>
+                <div class="t_list02 fl over"><input type="text" class="zs_input1"><span><span>0</span>/1024</span></div>
             </li>
         </ul>
     </div>
@@ -1189,8 +1189,8 @@
             <label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/>
             <label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></br>
             <label>移动显示URL:</label><input name="mobileDisplayUrl" maxlength="36"/>
-            <label>创意状态:</label><input name="pause"  readonly="readonly"/></br>
-            <label>是否启用:</label><select name="status"><option value="true">启用</option><option value="false">暂停</option></select>
+            <label>创意状态:</label><label id="sstatus">暂无</label></br>
+            <label>是否启用:</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select>
         </form>
     </div>
     <div class="main_bottom">

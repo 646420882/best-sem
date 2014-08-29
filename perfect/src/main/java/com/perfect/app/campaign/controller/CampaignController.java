@@ -49,6 +49,15 @@ public class CampaignController {
         return new ModelAndView(jsonView);
     }
 
+    @RequestMapping(value = "/getAllDownloadCampaign", method = RequestMethod.GET, produces = "application/json")
+    public ModelAndView getAllDownloadCampaign() {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Iterable<CampaignEntity> list = campaignDAO.findAllDownloadCampaign();
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
+        jsonView.setAttributesMap(attributes);
+        return new ModelAndView(jsonView);
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView add(@RequestBody List<CampaignEntity> list) {
         campaignDAO.insertAll(list);

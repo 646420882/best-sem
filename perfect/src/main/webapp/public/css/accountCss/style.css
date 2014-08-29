@@ -1978,6 +1978,20 @@ h2 .close{
 }
 .r_under_left ul li span {
     color:#7696d0;
+}
+.sets  li{
+     display:block;
+     float:left;
+     width:48%;
+     margin-left:2%;
+     overflow:hidden;
+ }
+.sets  li p{
+    line-height:24px;
+}
+.sets  li textarea{
+    width:95%;
+    border:1px solid #ccc;
 
 }
 .r_under_left ul .last{
@@ -2112,3 +2126,4 @@ h2 .close{
     font-weight:bold;
 
 }
+

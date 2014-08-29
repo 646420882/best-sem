@@ -16,7 +16,6 @@ $.fn.extend({
                 data[selects[i].name]=selects[i].value;
             }
         }
-        data["aid"]=sparams.aid;
         $.post(url,data,function(json){
             if(func)
                 func(json);
@@ -34,9 +33,11 @@ $.fn.extend({
         for(var i=0;i<selects.length;i++){
             data[selects[i].name]=selects[i].value;
         }
-        $.post(url,data,func);
-        if(func)
-            func();
+        $.post(url,data,function(json){
+            if(func)
+                func(json);
+        });
+
     }
 });
 var until = {
@@ -77,5 +78,11 @@ var until = {
                 return "新增";
                 break;
         }
+    },regDouble:function(ids){
+        $(ids).keyup(function(){
+            $(this).val($(this).val().replace(/[^0-9.]/g,''));
+        }).bind("paste",function(){  //CTR+V事件处理
+            $(this).val($(this).val().replace(/[^0-9.]/g,''));
+        }).css("ime-mode", "disabled"); //CSS设置输入法不可用
     }
 };

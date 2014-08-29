@@ -2,6 +2,7 @@ package com.perfect.app.accountCenter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.perfect.app.web.WebUtils;
 import com.perfect.core.AppContext;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.CampaignEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +53,20 @@ public class AccountManageController {
     }
 
     /**
+     * 获取当前登录的系统用户下的所有百度账号
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getAllBaiduAccount", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getAllBaiduAccount(HttpServletRequest request) {
+        String currSystemUserName = WebUtils.getUserName(request);
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> values = service.getAllBaiduAccount(currSystemUserName);
+        jsonView.setAttributesMap(values);
+        return new ModelAndView(jsonView);
+    }
+
+    /**
      * 根据百度账户id获取其账户信息
      *
      * @return
@@ -62,6 +78,20 @@ public class AccountManageController {
         Map<String, Object> result = service.getBaiduAccountInfoByUserId(userId);
         jsonView.setAttributesMap(result);
         return new ModelAndView(jsonView);
+    }
+
+    /**
+     * 百度账户切换
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/switchAccount", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView switchAccount(HttpServletRequest request) {
+        Long accountId = Long.valueOf(request.getParameter("accountId"));
+        WebUtils.setAccountId(request, accountId);
+        AppContext.setUser(WebUtils.getUserName(request), accountId);
+        return new ModelAndView();
     }
 
     /**
@@ -133,7 +163,7 @@ public class AccountManageController {
     }
 
     /**
-     * 添加百度
+     * 添加百度账户
      *
      * @param name
      * @param passwd
