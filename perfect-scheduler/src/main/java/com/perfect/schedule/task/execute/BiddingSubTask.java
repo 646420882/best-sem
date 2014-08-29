@@ -97,7 +97,7 @@ public class BiddingSubTask implements Runnable {
 
             String host = null;
 
-            if (strategyEntity.getType() == BiddingStrategyConstants.TYPE_PC.value()) {
+            if (strategyEntity.getDevice() == BiddingStrategyConstants.TYPE_PC.value()) {
                 try {
                     URL url = new URL(keywordEntity.getPcDestinationUrl());
                     host = url.getHost();
@@ -141,7 +141,7 @@ public class BiddingSubTask implements Runnable {
             } else {
                 // 出价策略
                 double currentPrice = ruleEntity.getCurrentPrice();
-                if (strategyEntity.getSpd() == BiddingStrategyConstants.SPD_FAST.value()) {
+                if (strategyEntity.getMode() == BiddingStrategyConstants.SPD_FAST.value()) {
                     currentPrice = currentPrice + FAST_PRICE;
                 } else {
                     currentPrice = currentPrice + ECON_PRICE;

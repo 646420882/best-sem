@@ -17,7 +17,7 @@ public interface BiddingRuleService {
 
     public void createBiddingRule(BiddingRuleEntity biddingRuleEntity);
 
-    public BiddingRuleEntity getBiddingRuleByKeywordId(String keywordId);
+    public BiddingRuleEntity getBiddingRuleByKeywordId(Long keywordId);
 
     void updateToNextTime(BiddingRuleEntity biddingRuleEntity, long time);
 
@@ -41,7 +41,11 @@ public interface BiddingRuleService {
 
     List<BiddingRuleEntity> findRules(List<Long> ids);
 
-    void remove(String id);
+    void remove(Long id);
 
     void removeByKeywordId(Long id);
+
+    void removeByKeywordIds(List<Long> id);
+
+    boolean exists(Long keywordId);
 }

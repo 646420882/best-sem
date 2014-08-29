@@ -48,7 +48,7 @@ public class BiddingTest extends UnitilsJUnit4 {
         StrategyEntity strategyEntity = new StrategyEntity();
         biddingRuleEntity.setStrategyEntity(strategyEntity);
         strategyEntity.setInterval(30);
-        strategyEntity.setSpd(BiddingStrategyConstants.SPD_FAST.value());
+        strategyEntity.setMode(BiddingStrategyConstants.SPD_FAST.value());
         strategyEntity.setMaxPrice(5);
         strategyEntity.setMinPrice(1);
 

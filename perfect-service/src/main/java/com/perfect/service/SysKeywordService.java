@@ -1,6 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.entity.KeywordEntity;
+import com.perfect.mongodb.utils.PaginationParam;
 
 import java.util.List;
 
@@ -9,8 +10,8 @@ import java.util.List;
  */
 public interface SysKeywordService {
 
-    public List<KeywordEntity> findByAdgroupId(Long adgroupId);
+    public List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param);
 
-    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds);
+    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param);
 
 }

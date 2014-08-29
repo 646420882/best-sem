@@ -372,7 +372,7 @@ public class BaiduApiService {
             GetPreviewRequest request = new GetPreviewRequest();
             request.setKeyWords(Arrays.asList(entity.getKeyword()));
             request.setRegion(entity.getStrategyEntity().getRegionTarget());
-            request.setDevice(entity.getStrategyEntity().getType());
+            request.setDevice(entity.getStrategyEntity().getDevice());
             request.setPage(0);
 
             List<HTMLAnalyseServiceImpl.PreviewData> previewDatas = rankService.getPageData(request);

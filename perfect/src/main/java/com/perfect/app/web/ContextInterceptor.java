@@ -52,28 +52,32 @@ public class ContextInterceptor implements HandlerInterceptor {
                 return false;
             }
 
+            WebUtils.setAccountList(request, entity.getBaiduAccountInfoEntities());
             if (entity.getBaiduAccountInfoEntities().size() == 1) {
-                BaiduAccountInfoEntity infoEntity = entity.getBaiduAccountInfoEntities().get(0);
-                WebUtils.setAccountId(request, infoEntity.getId());
-                AppContext.setUser(userName, infoEntity.getId());
-                return true;
-            }
-
-            for (BaiduAccountInfoEntity infoEntity : entity.getBaiduAccountInfoEntities()) {
-                if (infoEntity.isDfault()) {
+                if (entity.getBaiduAccountInfoEntities().size() == 1) {
+                    BaiduAccountInfoEntity infoEntity = entity.getBaiduAccountInfoEntities().get(0);
                     WebUtils.setAccountId(request, infoEntity.getId());
                     AppContext.setUser(userName, infoEntity.getId());
-                    break;
+                    return true;
+                }
+
+                for (BaiduAccountInfoEntity infoEntity : entity.getBaiduAccountInfoEntities()) {
+                    if (infoEntity.isDfault()) {
+                        WebUtils.setAccountId(request, infoEntity.getId());
+                        AppContext.setUser(userName, infoEntity.getId());
+                        break;
+                    }
                 }
             }
+
+
+            return true;
         }
-
-
-        return true;
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView
+            modelAndView) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return;
@@ -98,11 +102,12 @@ public class ContextInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception
+            ex) throws Exception {
 
     }
 
-    //获取账户余额和账户预算
+    //获取账户余额和账户预�
     private Double[] getBalanceAndBudget(Long accountId) {
         Double balance = accountManageService.getBaiduAccountInfoById(accountId).getBalance();
         Double yesterdayCost = accountManageService.getYesterdayCost(accountId);

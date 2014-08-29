@@ -3,6 +3,7 @@ package com.perfect.service.impl;
 
 import com.perfect.dao.KeywordDAO;
 import com.perfect.entity.KeywordEntity;
+import com.perfect.mongodb.utils.PaginationParam;
 import com.perfect.service.SysKeywordService;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +20,12 @@ public class SysKeywordServiceImpl implements SysKeywordService {
     KeywordDAO keywordDAO;
 
     @Override
-    public List<KeywordEntity> findByAdgroupId(Long adgroupId) {
-        return keywordDAO.findByAdgroupId(adgroupId);
+    public List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param) {
+        return keywordDAO.findByAdgroupId(adgroupId,param);
     }
 
     @Override
-    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds) {
-        return keywordDAO.findByAdgroupIds(adgroupIds);
+    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param) {
+        return keywordDAO.findByAdgroupIds(adgroupIds,param);
     }
 }

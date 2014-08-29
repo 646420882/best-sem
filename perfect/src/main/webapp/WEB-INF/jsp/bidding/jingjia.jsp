@@ -142,8 +142,8 @@
                             <span class="fr">当前显示数据日期：昨天</span>
                         </div>
                         <div class="list4">
-                            <table border="0" cellspacing="0" width="101%">
-                            <tbody>
+                            <table border="0" cellspacing="0" width="101%" id="table1">
+                            <thead>
                             <tr class="list02_top">
                                 <td>&nbsp;<input type="checkbox" id="checkAll"> 序号</td>
                                 <td>&nbsp;关键词</td>
@@ -157,201 +157,31 @@
                                 <td>&nbsp;状态</td>
                                 <td>&nbsp;竞价规则</td>
                             </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;81</td>
-                                <td>&nbsp;1380.69</td>
-                                <td>&nbsp;6.20%</td>
-                                <td>&nbsp;17</td>
-                                <td>&nbsp;九星词</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr class="list2_box2">
-                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;81</td>
-                                <td>&nbsp;1380.69</td>
-                                <td>&nbsp;6.20%</td>
-                                <td>&nbsp;17</td>
-                                <td>&nbsp;九星词</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr class="list2_box2">
-                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;81</td>
-                                <td>&nbsp;1380.69</td>
-                                <td>&nbsp;6.20%</td>
-                                <td>&nbsp;17</td>
-                                <td>&nbsp;九星词</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr class="list2_box2">
-                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;81</td>
-                                <td>&nbsp;1380.69</td>
-                                <td>&nbsp;6.20%</td>
-                                <td>&nbsp;17</td>
-                                <td>&nbsp;九星词</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr class="list2_box2">
-                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;81</td>
-                                <td>&nbsp;1380.69</td>
-                                <td>&nbsp;6.20%</td>
-                                <td>&nbsp;17</td>
-                                <td>&nbsp;九星词</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr class="list2_box2">
-                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;81</td>
-                                <td>&nbsp;1380.69</td>
-                                <td>&nbsp;6.20%</td>
-                                <td>&nbsp;17</td>
-                                <td>&nbsp;九星词</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr class="list2_box2">
-                                <td>&nbsp;<input type="checkbox" name="subbox"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr class="list2_box2">
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            </tbody>
+                            </thead>
+                                <tbody>
+                                </tbody>
                             </table>
+                            <script type="application/javascript">
 
+                                var rows = [];
+                                for(i = 0 ; i < 10; i++){
+                                    var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
+                                            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+                                    rows.push(row)
+                                }
+                                $("#table1 tbody").html(rows);
+                                $("#table1 tbody tr:odd").addClass("list2_box1"),
+                                $("#table1 tbody tr:even").addClass("list2_box2")
+                            </script>
+                        </div>
+                        <div>每页显示<select id="size">
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
                         </div>
                         <div class="page2">
-                            <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a
+                            <a href="#" class="nextpage1"><span></span></a><a class="curpage" href="#">1</a><a href="#">2</a><a href="#">3</a><a
                                 href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="nextpage2"><span></span></a><span
                                 style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
 
@@ -405,219 +235,40 @@
                     </div>
 
                     <div class="list4">
-                    <table border="0" cellspacing="0" width = "101%">
+                    <table id="table2" border="0" cellspacing="0" width = "101%">
+
+
+                    <thead>
+                    <tr class="list02_top">
+                        <td>&nbsp;<input type="checkbox" id="checkAll2"> </td>
+                        <td>&nbsp; 序号</td>
+                        <td>&nbsp;关键词</td>
+                        <td>&nbsp;消费</td>
+                        <td>&nbsp;当前排名</td>
+                        <td>&nbsp;展现量</td>
+                        <td>&nbsp;点击率</td>
+                        <td>&nbsp;出价</td>
+                        <td>&nbsp;质量度</td>
+                        <td>&nbsp;移动端质量度</td>
+                        <td>&nbsp;状态</td>
+                        <td>&nbsp;竞价规则</td>
+                    </tr>
+                    </thead>
                         <tbody>
-                            <tr class="list02_top">
-                                <td>&nbsp;<input type="checkbox" id="checkAll2"> </td>
-                                <td>&nbsp; 序号</td>
-                                <td>&nbsp;关键词</td>
-                                <td>&nbsp;消费</td>
-                                <td>&nbsp;当前排名</td>
-                                <td>&nbsp;展现量</td>
-                                <td>&nbsp;点击率</td>
-                                <td>&nbsp;出价</td>
-                                <td>&nbsp;质量度</td>
-                                <td>&nbsp;移动端质量度</td>
-                                <td>&nbsp;状态</td>
-                                <td>&nbsp;竞价规则</td>
-                            </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;81</td>
-                                <td>&nbsp;1380.69</td>
-                                <td>&nbsp;6.20%</td>
-                                <td>&nbsp;17</td>
-                                <td>&nbsp;九星词</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box2">
-                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;81</td>
-                                <td>&nbsp;1380.69</td>
-                                <td>&nbsp;6.20%</td>
-                                <td>&nbsp;17</td>
-                                <td>&nbsp;九星词</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box2">
-                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;81</td>
-                                <td>&nbsp;1380.69</td>
-                                <td>&nbsp;6.20%</td>
-                                <td>&nbsp;17</td>
-                                <td>&nbsp;九星词</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box2">
-                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;81</td>
-                                <td>&nbsp;1380.69</td>
-                                <td>&nbsp;6.20%</td>
-                                <td>&nbsp;17</td>
-                                <td>&nbsp;九星词</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box2">
-                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;81</td>
-                                <td>&nbsp;1380.69</td>
-                                <td>&nbsp;6.20%</td>
-                                <td>&nbsp;17</td>
-                                <td>&nbsp;九星词</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box2">
-                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;81</td>
-                                <td>&nbsp;1380.69</td>
-                                <td>&nbsp;6.20%</td>
-                                <td>&nbsp;17</td>
-                                <td>&nbsp;九星词</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box2">
-                                <td>&nbsp;<input type="checkbox" name="subbox2"></td>
-                                <td>&nbsp;贷款</td>
-                                <td>&nbsp;1307</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;1331</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box1">
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr class="list2_box2">
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
+
                         </tbody>
                     </table>
+                    <script type="application/javascript">
+                        var rows = [];
+                        for(i = 0 ; i < 10; i++){
+                            var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
+                                    "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+                            rows.push(row)
+                        }
+                        $("#table2 tbody").html(rows);
+                        $("#table2 tbody tr:odd").addClass("list2_box1"),
+                                $("#table2 tbody tr:even").addClass("list2_box2")
+                    </script>
                     </div>
                     <div class="page2">
                         <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#"  class="nextpage2"><span></span></a><span style="margin-right:10px;">跳转到 <input type= "text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
@@ -642,69 +293,72 @@
         <ul>
             <li>
                 <div>
-                    <form name="biddingfrm" action="/bidding/save">
+                    <form name="biddingfrm" action="">
                         时段竞价：
-                        <input type="radio" checked="checked" name="s" class="time_sl">&nbsp;单时段竞价 &nbsp;
-                        <input type="radio" name="m" class="time_sl1"> &nbsp;多时段竞价 &nbsp;
+                        <input type="radio" checked="checked" name="times" class="time_sl" value="1">&nbsp;单时段竞价 &nbsp;
+                        <input type="radio" name="times" class="time_sl1" value="2"> &nbsp;多时段竞价 &nbsp;
                     </form>
                 </div>
-                <div class="time_select "><select>
+                <div class="time_select">
+                <select id="start">
                     <option>0点</option>
-                </select>&nbsp;至&nbsp;<select>
+                </select>&nbsp;至&nbsp;
+                <select id="end">
                     <option>24点</option>
-                </select></div>
+                </select>
+
+                </div>
                 <div class="time_select01 hides">
                     <ul>
-                        <li><input type="text"><select>
+                        <li><input name="mtimes" type="checkbox" data-id="1"><select id="start1">
                             <option>0点</option>
-                        </select>&nbsp;至&nbsp;<select>
+                        </select>&nbsp;至&nbsp;<select id="end1">
                             <option>12点</option>
                         </select>&nbsp;上午
                         </li>
-                        <li><input type="checkbox"><select>
+                        <li><input name="mtimes" type="checkbox" data-id="2"><select id="start2">
                             <option>12点</option>
-                        </select>&nbsp;至&nbsp;<select>
+                        </select>&nbsp;至&nbsp;<select id="end2">
                             <option>14点</option>
-                        </select>&nbsp;上午
+                        </select>&nbsp;中午
                         </li>
-                        <li><input type="checkbox"><select>
+                        <li><input name="mtimes" type="checkbox" data-id="3"><select id="start3">
                             <option>14点</option>
-                        </select>&nbsp;至&nbsp;<select>
+                        </select>&nbsp;至&nbsp;<select id="end3">
                             <option>24点</option>
-                        </select>&nbsp;上午
+                        </select>&nbsp;下午
                         </li>
                     </ul>
 
                 </div>
             </li>
             <li>
-                <form>竞价模式：<input type="radio" checked="checked" name="jinji">&nbsp;经济 &nbsp;<input type="radio"
-                                                                                                    name="jinji"> &nbsp;快速
+                <form>竞价模式：<input type="radio" checked="checked" name="mode" value="1">&nbsp;经济 &nbsp;<input type="radio"
+                                                                                                    name="mode" value="2"> &nbsp;快速
                     &nbsp;</form>
             </li>
             <li>
                 <form>竞价规则：
-                    <select name="device">
-                    <option value="pc">计算机</option>
-                    <option value="mobile">移动端</option>
+                    <select id="device">
+                    <option value="1">计算机</option>
+                    <option value="2">移动端</option>
                     </select>
                 </form>
             </li>
             <li>
-                <ul id="pos">
+                <ul>
                     <li>
                          竞价位置：
-                        <select>
-                            <option class="right_define1" id="ck1">左侧：1位</option>
-                            <option class="right_define1" id="ck2">左侧：2-3位 </option>
-                            <option class="right_define1" id="ck3"> 左侧：2-3位 </option>
-                            <option class="right_define1"  id="ck4">右侧：1-3位</option>
-                            <option class="right_define">右侧自定义</option>
+                        <select id="pos">
+                            <option class="right_define1" value="1">左侧:1位</option>
+                            <option class="right_define1" value="2">左侧:2-3位 </option>
+                            <option class="right_define1" value="3">右侧:1-3位</option>
+                            <option class="right_define" value="4">右侧自定义</option>
                         </select>
                         <div class="right_stes over">
-                            <span class="right_sets1 hides over" >右侧：<input type="text" class="price2"> 位 </span>
-                            <span>最高出价（最低区间0.01）<input type="text" data-idx="price1" class="price2"></span>
-                            <span>最低出价（最低区间0.01）<input type="text" data-idx="price1" class="price2"></span>
+                            <span class="right_sets1 hides over" >右侧：<input name="rightpos" type="text" class="price2"> 位 </span>
+                            <span>最高出价（最低区间0.01）<input type="text" id="max" class="price2" value="0.01"></span>
+                            <span>最低出价（最低区间0.01）<input type="text" id="min" class="price2" value="0.01"></span>
                         </div>
                     </li>
                 </ul>
@@ -714,17 +368,18 @@
                 <span class="fl">当出价达不到排名时  </span>
 
                 <form class="fl" style=" margin-left:5px;">
-                    <input type="radio" name="best"> &nbsp;自动匹配最佳排名
-                    &nbsp;<input type="radio" name="restore"> &nbsp;恢复账户设置 &nbsp;
+                    <input name="failed" type="radio" checked value="1"> &nbsp;自动匹配最佳排名
+                    &nbsp;<input type="radio" name="failed" value="2"> &nbsp;恢复账户设置 &nbsp;
                 </form>
             </li>
             <li>
                 <p>自动竞价模式：</p>
                 <ul>
-                    <li><input type="radio" name="once" checked="checked"><span>单次竞价</span>
+                    <li><input type="radio" name="auto" checked="checked" value="1"><span>单次竞价</span>
                     </li>
 
-                    <li><input type="radio" name="notonce"><span>重复竞价速度 每隔 <select name="interval">
+                    <li><input type="radio" name="auto" value="2"><span>重复竞价速度 每隔
+                        <select id="interval">
                         <option value="20">20分钟</option>
                         <option value="30">半小时</option>
                         <option value="60">1小时</option>
@@ -747,8 +402,8 @@
         <div class="w_list03">
 
             <ul>
-                <li class="current">保存</li>
-                <li>保存并运行</li>
+                <li class="current" id="rulesave">保存</li>
+                <li id="rulesaverun">保存并运行</li>
                 <li class="close">取消</li>
 
             </ul>
@@ -904,24 +559,37 @@
         return childNodes;
     }
     function beforeClick(treeId, treeNode) {
+        var tbl = "table1";
+        if(treeId == 'zTree2'){
+            tbl = "table2";
+        }
+
         if (treeNode.level == 0) {
             //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
 
-            alert(treeNode.id + "," + treeNode.name);
+//            alert(treeNode.id + "," + treeNode.name);
             campaignId = treeNode.id + "," + "0";
             //事件处理
+            var curPage = $('.curpage').text();
+            var size = $("#size").find("option:selected").val();
+            var skip = (curPage -1) * size;
+
             $.ajax({
-                url: "/bidding/list?cp="+ treeNode.id,
+                url: "/bidding/list?cp="+ treeNode.id + "&s=" + skip + "&l=" +size,
                 type: "GET",
                 dataType : "json",
                 async: false,
                 success: function(datas){
-                    console.log(datas);
+                    if(datas.rows.length == 0){
+                        emptyTable(tbl);
+                    }else{
+                        fullItems(datas, tbl);
+                    }
                 }
             })
         } else if (treeNode.level == 1) {
             //点击的是子节点(推广单元),则应该展示其下属的关键词数据
-            alert(treeNode.id + "," + treeNode.name);
+//            alert(treeNode.id + "," + treeNode.name);
             adgroupId = treeNode.id + "," + "1";
             //事件处理
             $.ajax({
@@ -930,7 +598,11 @@
                 dataType : "json",
                 async: false,
                 success: function(datas){
-                    console.log(datas);
+                    if(datas.rows.length == 0){
+                        emptyTable(tbl);
+                    }else{
+                        fullItems(datas, tbl);
+                    }
                 }
             })
         }
@@ -969,10 +641,6 @@
 
     $(function () {
 
-//        $.ajax({
-//            url: "/account"
-//        })
-
 
         //获取账户树数据
         $.ajax({
@@ -1005,10 +673,42 @@
             ids.push($(this).val())
         })
 
-//        $.post({
-//            url: "/bidding/checkrank",
-//            data: { ids: ids.join(",")
-//        });
+    }
+
+    function emptyTable(name){
+        var rows = [];
+        for(i = 0 ; i < 10; i++){
+            var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
+                    "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+            rows.push(row)
+        }
+        $("#"+ name +" tbody").html(rows);
+        $("#"+ name +" tbody tr:odd").addClass("list2_box1"),
+                $("#" + name + " tbody tr:even").addClass("list2_box2")
+    }
+
+    function fullItems(datas, name){
+        var tbl = $('#' + name);
+        $('#' + name +' tbody tr').remove();
+        var newrows = [];
+        datas.rows.forEach(function(item){
+            var newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox2\" value='" + item.keywordId + "'></td>" +
+                    "<td>&nbsp;" + item.keyword + "</td>" +
+                    "<td>&nbsp;" + item.cost + "</td>" +
+                    "<td>&nbsp;" + item.currentRank + "</td>"+
+                    "<td>&nbsp;" + item.impression +"</td>" +
+                    "<td>&nbsp;" + item.ctr + "%</td>" +
+                    "<td>&nbsp;" + item.price + "</td>" +
+                    "<td>&nbsp;" + item.pcQuality + "</td>" +
+                    "<td>&nbsp;" + item.mQuality + "</td>" +
+                    "<td>&nbsp;" + item.biddingRule + "</td>" +
+                    "<td>&nbsp;</td><td>&nbsp;</td></tr>";
+            newrows.push(newrow);
+        });
+
+        $('#' + name + ' tbody').html(newrows);
+        $("#" + name + " tbody tr:odd").addClass("list2_box1"),
+                $("#" + name + " tbody tr:even").addClass("list2_box2")
     }
     //-->
 

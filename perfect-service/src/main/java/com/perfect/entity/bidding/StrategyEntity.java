@@ -18,7 +18,7 @@ public class StrategyEntity {
 
     //竞价规则 PC or 移动
     @Field("type")
-    private int type;
+    private int device;
 
     @Field("max")
     private double maxPrice;
@@ -26,8 +26,9 @@ public class StrategyEntity {
     @Field("min")
     private double minPrice;
 
-    @Field("spd")
-    private int spd;
+    // 竞价策略
+    @Field("m")
+    private int mode;
 
     // 1 = slow 60
     // 2 = medium 30
@@ -48,7 +49,7 @@ public class StrategyEntity {
     private int failedStrategy;
 
     @Field("t")
-    private List<Integer> time;
+    private int[] times;
 
     @Field("pos")
     private int position;
@@ -64,12 +65,12 @@ public class StrategyEntity {
         this.strategy = strategy;
     }
 
-    public int getType() {
-        return type;
+    public int getDevice() {
+        return device;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setDevice(int device) {
+        this.device = device;
     }
 
     public double getMaxPrice() {
@@ -88,12 +89,12 @@ public class StrategyEntity {
         this.minPrice = minPrice;
     }
 
-    public int getSpd() {
-        return spd;
+    public int getMode() {
+        return mode;
     }
 
-    public void setSpd(int spd) {
-        this.spd = spd;
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 
     public int getInterval() {
@@ -128,12 +129,12 @@ public class StrategyEntity {
         this.position = position;
     }
 
-    public List<Integer> getTime() {
-        return time;
+    public int[] getTimes() {
+        return times;
     }
 
-    public void setTime(List<Integer> time) {
-        this.time = time;
+    public void setTimes(int[] times) {
+        this.times = times;
     }
 
     public int getRegionTarget() {

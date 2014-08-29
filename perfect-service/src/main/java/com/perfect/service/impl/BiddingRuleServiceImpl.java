@@ -27,7 +27,7 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public BiddingRuleEntity getBiddingRuleByKeywordId(String keywordId) {
+    public BiddingRuleEntity getBiddingRuleByKeywordId(Long keywordId) {
         return biddingRuleDAO.getBiddingRuleByKeywordId(keywordId);
     }
 
@@ -93,13 +93,23 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public void remove(String id) {
+    public void remove(Long id) {
         biddingRuleDAO.delete(id);
     }
 
     @Override
     public void removeByKeywordId(Long id) {
         biddingRuleDAO.removeByKeywordId(id);
+    }
+
+    @Override
+    public void removeByKeywordIds(List<Long> ids) {
+        biddingRuleDAO.removeByKeywordIds(ids);
+    }
+
+    @Override
+    public boolean exists(Long keywordId) {
+        return biddingRuleDAO.existsByKeywordId(keywordId);
     }
 
 

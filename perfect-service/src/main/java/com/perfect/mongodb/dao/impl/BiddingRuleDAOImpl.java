@@ -17,14 +17,16 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.mongodb.utils.EntityConstants.*;
+import static com.perfect.mongodb.utils.EntityConstants.ACCOUNT_ID;
+import static com.perfect.mongodb.utils.EntityConstants.KEYWORD_ID;
+
 /**
  * Created by yousheng on 2014/8/1.
  *
  * @author yousheng
  */
 @Repository("biddingRuleDAO")
-public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntity, String> implements BiddingRuleDAO {
+public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntity, Long> implements BiddingRuleDAO {
 
     @Resource
     private SystemUserDAO systemUserDAO;
@@ -178,7 +180,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     }
 
     @Override
-    public BiddingRuleEntity getBiddingRuleByKeywordId(String keywordId) {
+    public BiddingRuleEntity getBiddingRuleByKeywordId(Long keywordId) {
         return findOne(keywordId);
     }
 
@@ -219,11 +221,21 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
 
     @Override
     public List<BiddingRuleEntity> find(List<Long> ids) {
-        return getMongoTemplate().find(Query.query(Criteria.where("kwid").in(ids)), BiddingRuleEntity.class);
+        return getMongoTemplate().find(Query.query(Criteria.where(KEYWORD_ID).in(ids)), BiddingRuleEntity.class);
     }
 
     @Override
     public void removeByKeywordId(Long id) {
-        getMongoTemplate().remove(Query.query(Criteria.where("kwid").is(id)), getEntityClass());
+        getMongoTemplate().remove(Query.query(Criteria.where(KEYWORD_ID).is(id)), getEntityClass());
+    }
+
+    @Override
+    public void removeByKeywordIds(List<Long> ids) {
+        getMongoTemplate().remove(Query.query(Criteria.where(KEYWORD_ID).in(ids)), getEntityClass());
+    }
+
+    @Override
+    public boolean existsByKeywordId(Long keywordId) {
+        return getMongoTemplate().exists(Query.query(Criteria.where(KEYWORD_ID).is(keywordId)),getEntityClass());
     }
 }

@@ -1,9 +1,11 @@
 package com.perfect.app.web;
 
 import com.perfect.core.AppContext;
+import com.perfect.entity.BaiduAccountInfoEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.List;
 
 /**
  * Created by vbzer_000 on 2014/8/27.
@@ -11,6 +13,7 @@ import java.security.Principal;
 public class WebUtils extends org.springframework.web.util.WebUtils {
 
     public static final String KEY_ACCOUNT = "_accountId";
+    public static final String KEY_ACCOUNTLIST = "_acclist";
 
 
     public static String getUserName(HttpServletRequest request) {
@@ -36,5 +39,19 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         Long accountId = getAccountId(request);
 
         AppContext.setUser(userName, accountId);
+    }
+
+    public static void setAccountList(HttpServletRequest request, List<BaiduAccountInfoEntity> baiduAccountInfoEntities) {
+        request.getSession().setAttribute(KEY_ACCOUNTLIST, baiduAccountInfoEntities);
+    }
+
+    public static List<BaiduAccountInfoEntity> getAccountList(HttpServletRequest request) {
+        Object list = request.getSession().getAttribute(KEY_ACCOUNTLIST);
+
+        if(list == null){
+            return null;
+        }else{
+            return (List<BaiduAccountInfoEntity>)list;
+        }
     }
 }
