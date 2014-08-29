@@ -1,3 +1,4 @@
+<%@ page import="com.perfect.app.web.WebUtils" %>
 <%--
   Created by IntelliJ IDEA.
   User: john
@@ -6,6 +7,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    Long accountId = 0l;
+    if (request != null) {
+        accountId = WebUtils.getAccountId(request);
+    }
+%>
 <div class="nav fl">
     <div class="nav_left over fl">
         <div class="nav_bg">
@@ -165,6 +172,70 @@
                 temp=(src.match(new RegExp("(?:\\?|&)"+key+"=(.*?)(?=&|$)"))||['',null])[1];
             }
           alert(temp)*/
+    });
+
+</script>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
+<script type="text/javascript">
+
+    var baiduAccountId = <%=accountId%>;
+
+    var selectedAccount = "";
+
+    var loadBaiduAccount = function () {
+        $.getJSON("/account/getAllBaiduAccount",
+                {},
+                function (data) {
+                    var options, results = data.rows;
+                    if (results != null && results.length > 0) {
+                        var _option = "";
+                        $.each(results, function (i, item) {
+                            if (baiduAccountId == item.id) {
+                                _option += "<option selected='selected' value=" + item.id + ">" + item.baiduUserName + "</option>";
+                            } else {
+                                _option += "<option value=" + item.id + ">" + item.baiduUserName + "</option>";
+                            }
+                        });
+                        $("#switchAccount").empty();
+                        $("#switchAccount").append(_option);
+                    }
+                });
+    };
+
+    $(function () {
+        var navH = $(".on_title").offset().top;
+        $(window).scroll(function () {
+            var scroH = $(this).scrollTop();
+            if (scroH >= navH) {
+                $(".on_title").css({"position": "fixed", "top": "77"});
+            } else {
+                $(".on_title").css({"position": "static", "margin": "0 auto"});
+            }
+        });
+
+        $('.nav_under ul li').click(function () {
+            $(this).addClass('current').siblings().removeClass('current');
+        });
+
+        loadBaiduAccount();
+
+        $("#switchAccount").change(function () {
+            var _accountId = $("#switchAccount option:selected").val();
+            $.ajax({
+                url: '/account/switchAccount',
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                data: {
+                    "accountId": _accountId
+                },
+                success: function (data, textStatus, jqXHR) {
+                }
+            });
+        });
+
     });
 
 </script>
