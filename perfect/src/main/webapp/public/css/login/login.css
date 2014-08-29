@@ -1,0 +1,184 @@
+.login {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.login_box {
+    position: fixed;
+    z-index: 2;
+    left: 34%;
+    top: 26%;
+}
+
+.login_box1, .login_box2 {
+    width: 472px;
+    height: 468px;
+    padding: 10px;
+    background: url(/public/img/login_box_bg.png) no-repeat;
+}
+
+.login_box2 {
+    background: url(/public/img/register.png) no-repeat;
+
+}
+
+.login_part1 {
+    padding: 0 80px;
+    height: 378px;
+}
+
+.login_logo {
+    text-align: center;
+    padding: 60px 0px;
+}
+
+.login_logo2 {
+    text-align: center;
+    padding: 30px 0px;
+}
+
+.login_click {
+    font-size: 14px;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.login_click a {
+    padding: 0 10px;
+    color: #143e9c;
+}
+
+.login_click a:hover {
+    background: #f18b20;
+    color: #fff;
+}
+
+.login_input ul li {
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.login_input ul li input {
+    display: block;
+    width: 96.8%;
+    padding: 10px 1%;
+    position: relative;
+    font-size: 14px;
+    color: #666666;
+    border: 1px solid #cccccc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.login_input ul li span {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    z-index: 3;
+}
+
+.login_input ul li a {
+    color: #143e9c;
+    cursor: pointer;
+}
+
+.login_input ul li a:hover {
+    background: #f18b20;
+    color: #fff;
+}
+
+.login_checkbox {
+    width: 135px;
+    height: 34px;
+    position: absolute;
+    top: 0px;
+    right: -135px;
+    line-height: 34px;
+    background: url(/public/img/bg.png) -10px -471px no-repeat;
+    color: #fff;
+    z-index: 4;
+}
+
+.login_checkbox b {
+    padding: 0 20px;
+}
+
+.login_part2 {
+    padding: 0px 60px;
+    height: 78px;
+    line-height: 78px;
+    font-size: 24px;
+    color: #796100;
+    text-align: center;
+}
+
+.login_part2 a {
+    display: block;
+    color: #796100;
+}
+
+.login_contact {
+    height: 41px;
+    line-height: 41px;
+    padding: 0 30px;
+    margin-top: 15px;
+    color: #a9a9a9;
+    font-size: 12px;
+    background: url(/public/img/login_under_bg.png) repeat-x;
+}
+
+.login_contact a {
+    color: #f18a1d;
+}
+
+/******注册********/
+
+.login_input2 ul li {
+    position: relative;
+    height: 34px;
+    margin-bottom: 10px;
+
+}
+
+.login_input2 ul li input {
+    display: block;
+    float: left;
+    width: 65%;
+    padding: 6px 1%;
+    margin-bottom: 5px;
+    position: relative;
+    font-size: 12px;
+    color: #d4d4d4;
+    border: 1px solid #cccccc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.login_input2 ul li span {
+    display: block;
+    float: left;
+    width: 30%;
+    padding: 6px 0;
+    margin-bottom: 5px;
+}
+
+.login_box2 .login_part2 a {
+    color: #055d9c;
+
+}
+
+.login_input2 ul li .proving {
+    width: 44%;
+    margin-right: 10px;
+
+}
+
+.login_input2 ul li b {
+    margin-top: 5px;
+
+}

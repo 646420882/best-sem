@@ -1,8 +1,6 @@
 package com.perfect.app.homePage.controller;
 
 import com.perfect.app.web.WebUtils;
-import com.perfect.core.AppContext;
-import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 import com.perfect.service.SystemUserService;
 import org.springframework.context.annotation.Scope;
@@ -22,21 +20,34 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @Scope("prototype")
 public class HomePageManageController {
+
+    private static final String usernameNotFound = "org.springframework.security.core.userdetails.UsernameNotFoundException";
+    private static final String badCredentials = "org.springframework.security.authentication.BadCredentialsException";
+
     @Resource
     private SystemUserService systemUserService;
 
     /**
-     * 登录页面
+     * 登陆页面
      *
-     * @param error
      * @param model
      * @return
      */
     @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) boolean error,
-                                     ModelMap model) {
+    public ModelAndView getLoginPage(HttpServletRequest request,
+                                     ModelMap model,
+                                     @RequestParam(value = "error", required = false) boolean error) {
+        Object _exception = request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
         if (error) {
-            model.put("error", "invalid userName or password!");
+            if (_exception != null) {
+                String exceptionName = _exception.toString();
+                exceptionName = exceptionName.substring(0, exceptionName.indexOf(":"));
+                if (badCredentials.equals(exceptionName)) {
+                    model.put("invalidPassword", "密码不对");
+                } else {
+                    model.put("invalidUserName", "用户名不对");
+                }
+            }
         } else {
             model.put("error", "");
         }

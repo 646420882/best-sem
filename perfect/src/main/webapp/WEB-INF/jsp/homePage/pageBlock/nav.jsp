@@ -159,6 +159,10 @@
                     "accountId": _accountId
                 },
                 success: function (data, textStatus, jqXHR) {
+                    if (data.status != null && data.status == true) {
+                        //location.replace(location.href);
+                        window.location.reload(true);
+                    }
                 }
             });
         });
