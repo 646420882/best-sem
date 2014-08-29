@@ -58,14 +58,13 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         ArrayNode arrayNode = mapper.createArrayNode();
         ObjectNode objectNode;
 
-        Long id = accountId;
         MongoTemplate mongoTemplate = BaseMongoTemplate.
                 getMongoTemplate(DBNameUtils.getUserDBName(userName, null));
 
         List<Long> campaignIds = new ArrayList<>();
         Aggregation aggregation1 = Aggregation.newAggregation(
                 project(ACCOUNT_ID, CAMPAIGN_ID, "name"),
-                match(Criteria.where(ACCOUNT_ID).is(id)),
+                match(Criteria.where(ACCOUNT_ID).is(accountId)),
                 group(CAMPAIGN_ID, "name"),
                 sort(Sort.Direction.ASC, CAMPAIGN_ID)
         );

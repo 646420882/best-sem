@@ -86,14 +86,33 @@ public class ContextInterceptor implements HandlerInterceptor {
 
             ModelMap modelMap = modelAndView.getModelMap();
             modelMap.put("currSystemUserName", WebUtils.getUserName(request));
-            if (datas[0] == 0 || datas[1] == 0) {
-                modelMap.put("remainderDays", 0);
-            } else {
-                String vStr = Double.valueOf(datas[0] / datas[1]).toString();
-                modelMap.put("remainderDays", vStr.substring(0, vStr.indexOf(".")));
+            if (datas[0] == null) {
+                if (datas[1] == null) {
+                    modelMap.put("accountBalance", 0);
+                    modelMap.put("accountBudget", 0);
+                    modelMap.put("remainderDays", 0);
+                } else {
+                    modelMap.put("accountBalance", 0);
+                    modelMap.put("accountBudget", datas[1]);
+                    modelMap.put("remainderDays", 0);
+                }
             }
-            modelMap.put("accountBalance", datas[0]);
-            modelMap.put("accountBudget", datas[1]);
+            if (datas[0] != null) {
+                if (datas[1] != null) {
+                    if (datas[0] == 0 || datas[1] == 0) {
+                        modelMap.put("remainderDays", 0);
+                    } else {
+                        String vStr = Double.valueOf(datas[0] / datas[1]).toString();
+                        modelMap.put("remainderDays", vStr.substring(0, vStr.indexOf(".")));
+                    }
+                    modelMap.put("accountBalance", datas[0]);
+                    modelMap.put("accountBudget", datas[1]);
+                } else {
+                    modelMap.put("accountBalance", datas[0]);
+                    modelMap.put("accountBudget", 0);
+                    modelMap.put("remainderDays", 0);
+                }
+            }
         }
     }
 

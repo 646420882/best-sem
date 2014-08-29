@@ -1,3 +1,4 @@
+<%@ page import="com.perfect.app.web.WebUtils" %>
 <%--
   Created by IntelliJ IDEA.
   User: john
@@ -6,6 +7,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    Long accountId = 0l;
+    if (request != null) {
+        accountId = WebUtils.getAccountId(request);
+    }
+%>
 <div class="nav fl">
     <div class="nav_left over fl">
         <div class="nav_bg">
@@ -100,6 +107,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript">
 
+    var baiduAccountId = <%=accountId%>;
+
     var selectedAccount = "";
 
     var loadBaiduAccount = function () {
@@ -110,7 +119,7 @@
                     if (results != null && results.length > 0) {
                         var _option = "";
                         $.each(results, function (i, item) {
-                            if (item.dfault == true) {
+                            if (baiduAccountId == item.id) {
                                 _option += "<option selected='selected' value=" + item.id + ">" + item.baiduUserName + "</option>";
                             } else {
                                 _option += "<option value=" + item.id + ">" + item.baiduUserName + "</option>";
@@ -140,9 +149,7 @@
         loadBaiduAccount();
 
         $("#switchAccount").change(function () {
-            alert("发生了变化!");
             var _accountId = $("#switchAccount option:selected").val();
-            alert("accountId:" + _accountId);
             $.ajax({
                 url: '/account/switchAccount',
                 type: 'POST',
@@ -152,7 +159,6 @@
                     "accountId": _accountId
                 },
                 success: function (data, textStatus, jqXHR) {
-                    alert("切换成功!");
                 }
             });
         });
