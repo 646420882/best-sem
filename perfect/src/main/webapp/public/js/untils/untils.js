@@ -1,40 +1,43 @@
 /**
  * Created by XiaoWei on 2014/8/21.
  */
+var subData = {}
 $.fn.extend({
-    submit:function(url,func){
-        var data={};
-        var inputs=$(this).parents("tr").find("input");
-        for(var i=0;i<inputs.size();i++){
-            if(inputs[i].name){
-                data[inputs[i].name]=inputs[i].value;
+    submit: function (url, func) {
+        var data = {};
+        var inputs = $(this).parents("tr").find("input");
+        for (var i = 0; i < inputs.size(); i++) {
+            if (inputs[i].name) {
+                data[inputs[i].name] = inputs[i].value;
+                subData[inputs[i].name] = inputs[i].value;
             }
         }
-        var selects=$(this).parents("tr").find("select");
-        for(var i=0;i<selects.size();i++){
-            if(selects[i].name){
-                data[selects[i].name]=selects[i].value;
+        var selects = $(this).parents("tr").find("select");
+        for (var i = 0; i < selects.size(); i++) {
+            if (selects[i].name) {
+                data[selects[i].name] = selects[i].value;
+                subData[selects[i].name] = selects[i].value;
             }
         }
-        $.post(url,data,function(json){
-            if(func)
+        $.post(url, data, function (json) {
+            if (func)
                 func(json);
         });
     },
-    formSubmit:function(url,func){
-        var inputs=$(this).find("input");
-        var data={};
-        for(var i=0;i<inputs.length;i++){
-            if(inputs[i].name){
-                data[inputs[i].name]=inputs[i].value;
+    formSubmit: function (url, func) {
+        var inputs = $(this).find("input");
+        var data = {};
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].name) {
+                data[inputs[i].name] = inputs[i].value;
             }
         }
-        var selects=$(this).find("select");
-        for(var i=0;i<selects.length;i++){
-            data[selects[i].name]=selects[i].value;
+        var selects = $(this).find("select");
+        for (var i = 0; i < selects.length; i++) {
+            data[selects[i].name] = selects[i].value;
         }
-        $.post(url,data,function(json){
-            if(func)
+        $.post(url, data, function (json) {
+            if (func)
                 func(json);
         });
 
@@ -46,26 +49,26 @@ var until = {
             if (str.length > count) {
                 return str.substring(0, count) + "<a href='javascript:;;' title='" + str + "'>...</a>";
             } else {
-                return "<span>"+str+"</span>";
+                return "<span>" + str + "</span>";
             }
-        }else{
+        } else {
             return "<span>空</span>";
         }
     },
-    convert:function(bol,format) {
-        return bol?format.split(":")[0]:format.split(":")[1];
+    convert: function (bol, format) {
+        return bol ? format.split(":")[0] : format.split(":")[1];
     },
-    getCreativeStatus:function(number){
-        switch (number){
+    getCreativeStatus: function (number) {
+        switch (number) {
             case 51:
                 return "有效";
                 break;
             case 52:
                 return "暂停推广";
-            break;
+                break;
             case 53:
                 return "不宜推广";
-            break;
+                break;
             case 54:
                 return "待激活";
                 break;
@@ -78,11 +81,26 @@ var until = {
                 return "新增";
                 break;
         }
-    },regDouble:function(ids){
-        $(ids).keyup(function(){
-            $(this).val($(this).val().replace(/[^0-9.]/g,''));
-        }).bind("paste",function(){  //CTR+V事件处理
-            $(this).val($(this).val().replace(/[^0-9.]/g,''));
+    }, getAdgroupStatus: function (number) {
+        switch (number) {
+            case 31:
+                return "有效";
+                break;
+            case 32:
+                return "暂停推广";
+                break;
+            case 33:
+                return "推广计划暂停推广";
+                break;
+            default :
+                return "本地新增";
+                break;
+        }
+    }, regDouble: function (ids) {
+        $(ids).keyup(function () {
+            $(this).val($(this).val().replace(/[^0-9.]/g, ''));
+        }).bind("paste", function () {  //CTR+V事件处理
+            $(this).val($(this).val().replace(/[^0-9.]/g, ''));
         }).css("ime-mode", "disabled"); //CSS设置输入法不可用
     }
 };

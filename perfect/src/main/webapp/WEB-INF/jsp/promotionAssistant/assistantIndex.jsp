@@ -752,7 +752,7 @@
             </li>
             <li>
                 <div class="t_list01 fl over">移动出价比例：</div>
-                <div class="t_list02 fl over"><input type="text" class="zs_input1"><span><span>0</span>/1024</span></div>
+                <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
             </li>
         </ul>
     </div>

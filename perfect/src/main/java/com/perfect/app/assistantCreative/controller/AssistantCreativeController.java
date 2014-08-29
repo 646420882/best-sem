@@ -147,6 +147,7 @@ public class AssistantCreativeController extends WebContextSupport {
             writeHtml(SUCCESS,response);
         }catch (Exception e){
             e.printStackTrace();
+            writeHtml(EXCEPTION,response);
         }
         return null;
     }

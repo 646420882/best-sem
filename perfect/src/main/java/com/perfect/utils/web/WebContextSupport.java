@@ -17,6 +17,7 @@ public class WebContextSupport implements WebContext {
     public static final String SUCCESS="1";
    public static final String FAIL="0";
     public static final String EXCEPTION="3";
+    public static final String NOLOGIN="4";
     @Override
     public void writeHtml(String html, HttpServletResponse response) {
         try {

@@ -144,24 +144,13 @@ function loadCreativeData(params) {
         }
     });
 }
-/**
- * 动态改变样式效果，如:选中
- * @param rs
- */
-function trStyle(rs) {
-    var _this = $(rs);
-    var _tr_size = _this.parents("table").find("tr").size();
-    for (var i = 0; i < _tr_size; i++) {
-        _this.parents("table").find("tr").attr("style", i % 2 == 0 ? "list2_box1" : "list2_box2");
-    }
-    _this.css("background", "#FCEFC5");
-}
+
 /**
  * 鼠标单击显示详细信息
  * @param obj
  */
 function on(obj) {
-    trStyle(obj);
+
     preview(obj);
     $("#sDiv input[type='text']").val("");
     var _this = $(obj);
@@ -561,7 +550,7 @@ function updateCreatvie(temp){
     $("#cUpdateForm input[name='mobileDestinationUrl']").val(mobileDestinationUrl);
     $("#cUpdateForm input[name='mobileDisplayUrl']").val(mobileDisplayUrl);
     $("#sstatus").html(status);
-     if(status=="启用"){
+     if(pause=="启用"){
          $("#cUpdateForm select[name='pause']").get(0).selectedIndex=0;
      }else{
          $("#cUpdateForm select[name='pause']").get(0).selectedIndex=1;
@@ -578,7 +567,7 @@ function updateOk(){
     });
 }
 function getRandomId(){
-    return Math.floor(Math.random()*100000000)+1;
+    return Math.floor(Math.random()*10000000000)+1;
 }
 
 
