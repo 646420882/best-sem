@@ -19,6 +19,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -91,7 +92,12 @@ public class AccountManageController {
         Long accountId = Long.valueOf(request.getParameter("accountId"));
         WebUtils.setAccountId(request, accountId);
         AppContext.setUser(WebUtils.getUserName(request), accountId);
-        return new ModelAndView();
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> result = new HashMap<String, Object>() {{
+            put("status", true);
+        }};
+        jsonView.setAttributesMap(result);
+        return new ModelAndView(jsonView);
     }
 
     /**
