@@ -17,28 +17,33 @@
                 <img src="${pageContext.request.contextPath}/public/img/user_bg.png" width="100%" height="100%">
             </div>
             <div class="user_mid">
-                <div class="user_logo over">
-                    <div class="user_logo1 over">
+                <div class="user_logo">
+                    <div class="user_logo1">
                         <div class="user_img fl over">
-                            <span> <img src="${pageContext.request.contextPath}/public/images/yixin_logo.png"></span>
+                                <span> <img src="${pageContext.request.contextPath}/public/images/yixin_logo.png"></span>
                         </div>
                         <div class="user_text fl">
                             <p>上午，好！<span>${currSystemUserName}</span></p>
-                                <div class="user_select over">
-                                    <select style=" ">
-                                      <option>perfect</option>
-                                    </select>
+                                <div class="user_select">
+                                    <div class="user_name">
+                                        <span >John Doe</span>
+                                    </div>
+                                    <div class="user_names over hides" id="sub" >
+                                        <ul >
+                                            <li>dsdsdsfdsdfdsdsdsfdsdf</li>
+                                            <li>ffddfgdgfdgdsdsdsfdsdf</li>
+                                        </ul>
+                                    </div>
                                 </div>
-
-
+                        </div>
+                        <div class="user_logo2 fr">
+                            <form name="logout" method="POST" action="/logout">
+                                <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png" onclick="$('form[logout]').submit();"/>
+                            </form>
                         </div>
 
                     </div>
-                    <div class="user_logo2">
-                        <form name="logout" method="POST" action="/logout">
-                            <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png" onclick="$('form[logout]').submit();"/>
-                        </form>
-                    </div>
+
 
                 </div>
 
@@ -61,6 +66,7 @@
 
                             <h3>帐户全景</h3>
                         </a>
+                        <span class='nav_input1'></span>
                     </li>
 
                     <li>
@@ -74,12 +80,14 @@
                         <a href="/keyword_group"><span class="list3"></span>
 
                             <h3>智能结构</h3></a>
+
                     </li>
 
                     <li>
                         <a href="/bidding/index"><span class="list4"></span>
 
                             <h3>智能竞价</h3></a>
+
                     </li>
 
                     <li>
@@ -93,6 +101,7 @@
         </div>
     </div>
     <div class="tips fl">
+        <span class="nav_input hides"></span>
     </div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
@@ -108,9 +117,54 @@
             }
         });
         $('.nav_under ul li').click(function () {
-            $(this).addClass('current').siblings().removeClass('current');
+            $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
+            if($(this).find(".nav_input1").length == 1){
+                return false;
+            }
+            $(this).addClass('current').append("<span class='nav_input1'></span>");
+        });
+        $(".tips").click(function () {
+            if ($(".nav_left").css("display") == "none") {//隐藏
+                $(".nav_left").slideDown(600);
+                $(".concent").css("width","85%");
+                $(".top").css("width","85%");
+                $(".nav_input").css("display", "none");
+            }
+            else {
+                $(".nav_left").hide();
+                $(".concent").css("width","99.5%");
+                $(".top").css("width","99.5%");
+                $(".nav_input").css("display", "block");
+            }
+        });
+        $(".nav_input1").click(function () {
+            if ($(".nav_left").css("display") == "none") {//隐藏
+                $(".nav_left").slideDown(600);
+                $(".concent").css("width","85%");
+                $(".top").css("width","85%");
+                $(".nav_input").css("display", "none");
+            }
+            else {
+                $(".nav_left").hide();
+                $(".concent").css("width","99.5%");
+                $(".top").css("width","99.5%");
+                $(".nav_input").css("display", "block");
+            }
+        });
+        $('.user_name').click(function () {
+            $(this).next('#sub').show();
+            $('#sub li').click(function () {
+                $('.user_name span').html($(this).text());
+                $('#sub').hide();
+            });
         });
 
+      /*      var temp="";
+            var src=document.scripts[document.scripts.length-1].src;
+            if(src&&src!=""){
+                temp=(src.match(new RegExp("(?:\\?|&)"+key+"=(.*?)(?=&|$)"))||['',null])[1];
+            }
+          alert(temp)*/
     });
 
 </script>
