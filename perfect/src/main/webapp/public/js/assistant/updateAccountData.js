@@ -1,6 +1,6 @@
 var loadExistsCampaign = function () {
     $.ajax({
-        url: '/campaign/getAllCampaign',
+        url: '/campaign/getAllDownloadCampaign',
         dataType: 'json',
         success: function (data, textStatus, jqXHR) {
             $("#existsCampaign ul").empty();

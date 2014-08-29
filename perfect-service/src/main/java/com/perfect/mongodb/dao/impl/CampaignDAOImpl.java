@@ -1,5 +1,6 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.google.common.collect.Lists;
 import com.perfect.core.AppContext;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.LogProcessingDAO;
@@ -10,6 +11,8 @@ import com.perfect.mongodb.utils.Pager;
 import com.perfect.utils.LogUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -26,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.perfect.mongodb.utils.EntityConstants.*;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by baizz on 2014-07-03.
@@ -81,6 +85,21 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
     public List<CampaignEntity> find(Query query) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         return mongoTemplate.find(query, CampaignEntity.class);
+    }
+
+    /**
+     * 得到所有已经和百度同步的推广计划
+     *
+     * @return
+     */
+    public List<CampaignEntity> findAllDownloadCampaign() {
+        MongoTemplate mongoTemplate = getMongoTemplate();
+        Aggregation aggregation = newAggregation(
+                project(ACCOUNT_ID, CAMPAIGN_ID, "name").andExclude("_id"),
+                match(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).ne(null))
+        );
+        AggregationResults<CampaignEntity> results = mongoTemplate.aggregate(aggregation, TBL_CAMPAIGN, getEntityClass());
+        return Lists.newArrayList(results.iterator());
     }
 
 
