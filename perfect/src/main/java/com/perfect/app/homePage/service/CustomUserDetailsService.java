@@ -31,6 +31,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserDetails user;
         SystemUserEntity systemUser = systemUserDAO.findByUserName(s);
+        if (systemUser == null) {
+            throw new UsernameNotFoundException("Username not found");
+        }
         userName = systemUser.getUserName();
         for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
             if (entity.isDfault()) {

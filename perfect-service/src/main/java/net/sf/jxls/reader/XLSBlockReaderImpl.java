@@ -186,9 +186,12 @@ public class XLSBlockReaderImpl extends BaseBlockReader implements XLSLoopBlockR
                 List<Object> objects = new ArrayList<>();
 
                 for (int i = start; i <= end; i++) {
-                    createNewCollectionItem(objects, beans);
-
                     Row row = sheet.getRow(i);
+                    if (row == null) {
+                        continue;
+                    }
+
+                    createNewCollectionItem(objects, beans);
                     BeanCellMapping mapping;
                     for (Object cellMapping : cellMappings) {
                         mapping = (BeanCellMapping) cellMapping;

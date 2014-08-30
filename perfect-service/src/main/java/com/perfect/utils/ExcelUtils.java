@@ -26,6 +26,13 @@ public class ExcelUtils<T> {
 
     protected Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+    /**
+     *
+     * @param srcFilePath
+     * @param templateFilePath
+     * @param _class
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public Map<String, List<T>> readExcel(String srcFilePath, String templateFilePath, Class<T> _class) {
         try {

@@ -44,7 +44,7 @@ public class HomePageManageController {
                 exceptionName = exceptionName.substring(0, exceptionName.indexOf(":"));
                 if (badCredentials.equals(exceptionName)) {
                     model.put("invalidPassword", "密码不对");
-                } else {
+                } else if (usernameNotFound.equals(exceptionName)) {
                     model.put("invalidUserName", "用户名不对");
                 }
             }
