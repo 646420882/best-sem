@@ -549,7 +549,7 @@ function updateCreatvie(temp){
     $("#cUpdateForm input[name='pcDisplayUrl']").val(pcDisplayUrl);
     $("#cUpdateForm input[name='mobileDestinationUrl']").val(mobileDestinationUrl);
     $("#cUpdateForm input[name='mobileDisplayUrl']").val(mobileDisplayUrl);
-    $("#sstatus").html(status);
+    $("#cuStatus").html(status);
      if(pause=="启用"){
          $("#cUpdateForm select[name='pause']").get(0).selectedIndex=0;
      }else{

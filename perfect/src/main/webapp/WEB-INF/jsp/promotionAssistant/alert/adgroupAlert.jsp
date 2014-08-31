@@ -66,15 +66,15 @@
             <label>推广单元状态：</label><label id="adStatus"></label></br>
             <label>是否启用：</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select>
             <label>出价</label><input name="maxPrice" onkeypress="until.regDouble(this)" maxlength="3"/>
-            <label>否定关键词：</label><label id="usp"></label><a href="javascript:void(0)" onclick="adgroupUpdateNokwdMath();">设定</a></br>
+            <label>否定关键词：</label><label id="usp"></label><label id="auSpan">未设定</label><a href="javascript:void(0)" onclick="adgroupUpdateNokwdMath();">设定</a></br>
             <label>移动出价比例：</label><input name="mib" onkeypress="until.regDouble(this)" maxlength="3"/></br>
-            <input name="negativeWords"/><input name="exactNegativeWords"/>
+            <input  name="negativeWords"/><input name="exactNegativeWords"/>
         </form>
     </div>
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li onclick="">确认</li>
+                <li onclick="adrgoupUpdateOk()">确认</li>
                 <li onclick="adgroupAddAlertClose()">取消</li>
             </ul>
         </div>
@@ -83,7 +83,7 @@
 
 <%--修改时弹出的否定关键处理框--%>
 <div class="box" style="display:none" id="apNoKwd">
-    <h2 id="apKwd">否定关键词设定<a href="#" class="close">关闭</a></h2>
+    <h2 id="apKwd">否定关键词设定<b class="fr" onclick="adgroupUpdateNokwdMathClose()">关闭</b></h2>
     <div class="mainlist">
         以下下设置仅对“广泛”，“短语”匹配的关键词生效。每行一词，没词20字以内，最多200项
         <ul style="list-style: circle; overflow:hidden;"  class="sets" >
@@ -105,8 +105,8 @@
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li onclick="adgroupNoKeywordOk()">确认</li>
-                <li onclick="adgroupAddAlertClose()">取消</li>
+                <li onclick="adgroupUpdateNokwdMathOk()">确认</li>
+                <li onclick="adgroupUpdateNokwdMathClose()">取消</li>
             </ul>
         </div>
     </div>

@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -133,7 +134,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
             Field[] fields = _class.getDeclaredFields();
             for (Field field : fields) {
                 String fieldName = field.getName();
-                if (EntityConstants.CREATIVE_ID.equals(fieldName))
+                if ("creativeId".equals(fieldName))
                     continue;
                 StringBuilder fieldGetterName = new StringBuilder("get");
                 fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
@@ -144,7 +145,6 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
                     Object before = method.invoke(findOne(id));
                     log = LogUtils.getLog(id, CreativeEntity.class,
                             new DataAttributeInfoEntity(field.getName(), before, after), null);
-                    break;
                 }
             }
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
