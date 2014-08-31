@@ -5,10 +5,12 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
+import static com.perfect.mongodb.utils.EntityConstants.TBL_LOG;
+
 /**
  * Created by baizz on 2014-07-02.
  */
-@Document(collection = "logs")
+@Document(collection = TBL_LOG)
 public class DataOperationLogEntity {
 
     private Long dataId;    //数据的ID
