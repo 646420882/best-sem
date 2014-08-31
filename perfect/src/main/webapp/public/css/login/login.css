@@ -31,7 +31,7 @@
 
 .login_logo {
     text-align: center;
-    padding: 60px 0px;
+    padding: 78px 0 30px 0px;
 }
 
 .login_logo2 {
@@ -180,5 +180,13 @@
 
 .login_input2 ul li b {
     margin-top: 5px;
+
+}
+.login_part2 input{
+    border:0px;
+   background:none;
+    color: #796100;
+    font-size:24px;
+    font-weight:bold;
 
 }
