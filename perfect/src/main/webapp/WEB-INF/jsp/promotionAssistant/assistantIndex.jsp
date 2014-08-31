@@ -277,26 +277,26 @@
                 <li>
                     <div class="t_list04 fl over">
                         <div class="t_list01 fl over">默认访问URL：</div>
-                        <div class="t_list02 fl over"><input type="text" class="zs_input3" id="sPc"/><span><span
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPc"/><span><span
                                 id="sPc_size">0</span>/1024</span>
                         </div>
                     </div>
                     <div class="t_list04 fr over">
                         <div class="t_list01 fl over">默认显示URL：</div>
-                        <div class="t_list02 fl over"><input type="text" class="zs_input3" id="sPcs"/><span><span
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPcs"/><span><span
                                 id="sPcs_size">49</span>/50</span></div>
                     </div>
                 </li>
                 <li>
                     <div class="t_list04 fl over">
                         <div class="t_list01 fl over">移动访问URL：</div>
-                        <div class="t_list02 fl over"><input type="text" class="zs_input3"
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3"
                                                              id="sMib"><span><span id="sMib_size">49</span>/1024</span>
                         </div>
                     </div>
                     <div class="t_list04 fr over">
                         <div class="t_list01 fl over">移动显示URL：</div>
-                        <div class="t_list02 fl over"><input type="text" class="zs_input3" id="sMibs"><span><span
+                        <div class="t_list05 fl over"> <input type="text" class="zs_input3" id="sMibs"><span><span
                                 id="sMibs_size">35</span>/36</span></div>
                     </div>
                 </li>
@@ -311,7 +311,7 @@
             <ul>
                 <li>
                     <div class="w_list01 fl over">状态：</div>
-                    <div class="w_list02 fl over"><b id="sStatus">有效</b></div>
+                    <div class="w_list02 fl over"> <b id="sStatus">有效</b></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">设备偏好：</div>
@@ -759,12 +759,12 @@
     <div class="zs_bottom2 over fr">
         <ul>
             <li>
-                <div class="t_list01 fl over">状态：</div>
-                <div class="t_list02 fl over"><b>有效</b></div>
+                <div class="w_list01 fl over">状态：</div>
+                <div class="w_list02 fl over"><b>有效</b></div>
             </li>
             <li>
-                <div class="t_list01 fl over">启用/暂停：</div>
-                <div class="t_list02 fl over"><select>
+                <div class="w_list01 fl over">启用/暂停：</div>
+                <div class="w_list02 fl over"><select>
                     <option>启用</option>
                 </select></div>
             </li>
