@@ -9,6 +9,7 @@ $(function () {
     rDrag.init(document.getElementById("aKwd"));
     rDrag.init(document.getElementById("adUp"));
     rDrag.init(document.getElementById("apKwd"));
+    rDrag.init(document.getElementById("apKwd"));
     initNoKwdKeyUp();
 });
 var atmp = null;
@@ -61,7 +62,7 @@ function initAMenu() {
                     if (rs == "1") {
                         var _span = $("#" + sp + "").html();
                         if (_span == null) {
-                            _span = "未设置";
+                            _span = "<span>未设置</span>";
                         }
                         _this.remove();
                         var i = $("#adGroupTable tbody tr").size();
@@ -73,7 +74,7 @@ function initAMenu() {
                             "<td>本地新增</td>" +
                             " <td>" + getAdgroupPauseByBoolean(subData["pause"]) + "</td>" +
                             "<td>" + parseFloat(subData["maxPrice"]).toFixed(2) + "</td>" +
-                            "<td>" + _span + "</td>" +
+                            "<td><span>" + _span + "</span><input type='hidden' value='"+subData["negativeWords"]+"'><input type='hidden' value='"+subData["exactNegativeWords"]+"'></td>" +
                             "<td>" + parseFloat(subData["mib"]).toFixed(2) + "</td>" +
                             "<td>" + plans.cn + "</td>" +
                             "</tr>";
@@ -105,6 +106,15 @@ function initNoKwdKeyUp() {
     $("#mKwd").keydown(function (e) {
         var arr = $(this).val().split("\n");
         $("#mKwd_size").html(arr.length);
+    });
+
+    $("#npKwd").keydown(function (e) {
+        var arr = $(this).val().split("\n");
+        $("#npKwd_size").html(arr.length);
+    });
+    $("#mpKwd").keydown(function (e) {
+        var arr = $(this).val().split("\n");
+        $("#mpKwd_size").html(arr.length);
     });
 }
 /**
@@ -148,9 +158,9 @@ function loadAdgroupData(plans) {
  */
 function getNoAdgroupLabel(exp1, exp2) {
     if (exp1.length > 0 && exp2.length > 0) {
-        return "" + exp1.length + ":" + exp2.length + "";
+        return "<span>" + exp1.length + ":" + exp2.length + "</span>";
     } else {
-        return "未设置";
+        return "<span>未设置</span>";
     }
 }
 /**
@@ -277,12 +287,14 @@ function adgroupUpdate() {
         var status=_tr.find("td:eq(2) input").val();
         var pause = _tr.find("td:eq(3)").html();
         var maxPrice = _tr.find("td:eq(4)").html();
+        var sp=_tr.find("td:eq(5) span").html();
         var nn =_tr.find("td:eq(5) input").val();
         var ne=_tr.find("td:eq(5) input:eq(1)").val();
         var mib = _tr.find("td:eq(6)").html();
         $("#adgroupUpdateForm input[name='oid']").val(oid);
         $("#adgroupUpdateForm input[name='adgroupName']").val(name);
         $("#adStatus").html(adgroupConvertStatus(parseInt(status)));
+        $("#auSpan").html(sp);
         if(pause=="启用"){
             $("#adgroupUpdateForm select[name='pause']").get(0).selectedIndex=0;
         }else{
@@ -369,7 +381,7 @@ function adgroupNokeyword(rs) {
  * 初始化否定关键词弹出框
  */
 function initNoKeyAlert() {
-    $("#" + sp + "sp").html("未设置");
+    $("#" + sp + "sp").html("<span>未设置</span>");
     $("#nKwd").val("");
     $("#mKwd").val("");
     var span_size = $("#aNoKwd span").length;
@@ -388,7 +400,7 @@ function adgroupNoKeywordOk() {
     $("#" + nn + "").val(arr.toString());
     $("#" + ne + "").val(arre.toString());
     if ($("#" + nn + "").val() == "" && $("#" + ne + "").val() == "") {
-        $("#" + sp + "").html("未设置");
+        $("#" + sp + "").html("<span>未设置</span>");
     } else {
         $("#" + sp + "").html(arr.length + ":" + arre.length);
     }
@@ -446,5 +458,55 @@ function adgroudAddAlertOk() {
     }
 }
 function adgroupUpdateNokwdMath(){
+    var _adAdd = $("#apNoKwd");
+    $(".TB_overlayBG").css({
+        display: "block", height: $(document).height()
+    });
+    _adAdd.css({
+        left: ($("body").width() - _adAdd.width()) / 2 - 20 + "px",
+        top: ($(window).height() - _adAdd.height()) / 2 + $(window).scrollTop() + "px",
+        display: "block"
+    });
+    var unn=$("#adgroupUpdateForm input[name='negativeWords']").val();
+    var une=$("#adgroupUpdateForm input[name='exactNegativeWords']").val();
+    if (unn.indexOf(",")>-1) {
+        var arr=unn.split(",");
+        $("#npKwd_size").html(arr.length);
+        var str = "";
+        for (var i = 0; i < arr.length; i++) {
+            str = str + arr[i] + "\n";
+        }
+        $("#npKwd").val(str);
+    }else{
+        $("#npKwd").val("");
+        $("#npKwd_size").html(0);
+    }
+    if (une.indexOf(",")>-1) {
+        var arrne=une.split(",");
+        $("#mpKwd_size").html(arrne.length);
+        var strne = "";
+        for (var i = 0; i < arrne.length; i++) {
+            strne = strne + arrne[i] + "\n";
+        }
+        $("#mpKwd").val(strne);
+    }else{
+        $("#mpKwd").val("");
+        $("#mpKwd_size").html(0);
+    }
+}
+function adgroupUpdateNokwdMathClose(){
+    $("#apNoKwd").css("display","none");
+}
+function adgroupUpdateNokwdMathOk(){
+    var arr = $("#npKwd").val().split("\n");
+    var arrne = $("#mpKwd").val().split("\n");
+    $("#auSpan").html(getNoAdgroupLabel(arr,arrne));
+    var unn=$("#adgroupUpdateForm input[name='negativeWords']").val(arr);
+    var une=$("#adgroupUpdateForm input[name='exactNegativeWords']").val(arrne);
+    adgroupUpdateNokwdMathClose();
+}
+function adrgoupUpdateOk(){
+    $("#adgroupUpdateForm").formSubmit("../assistantAdgroup/update",function(rs){
 
+    });
 }

@@ -172,7 +172,7 @@ public class AssistantCreativeController extends WebContextSupport {
         creativeEntityFind.setMobileDisplayUrl(mibs);
         creativeEntityFind.setPause(bol);
         creativeDAO.update(creativeEntityFind);
-        writeHtml(SUCCESS,response);
+        writeHtml(SUCCESS, response);
         return  null;
     }
 }

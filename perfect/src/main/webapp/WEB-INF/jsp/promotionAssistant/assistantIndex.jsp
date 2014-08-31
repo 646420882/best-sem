@@ -23,10 +23,10 @@
 </head>
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-
+<jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
 <div class="concent fr over">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
-<jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
+
 <div class="mid over">
 <div class="on_title over">
     <a href="#">
@@ -1189,7 +1189,7 @@
             <label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/>
             <label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></br>
             <label>移动显示URL:</label><input name="mobileDisplayUrl" maxlength="36"/>
-            <label>创意状态:</label><label id="sstatus">暂无</label></br>
+            <label>创意状态:</label><label id="cuStatus">暂无</label></br>
             <label>是否启用:</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select>
         </form>
     </div>

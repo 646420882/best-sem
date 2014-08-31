@@ -124,4 +124,23 @@ public class AssistantAdgroupController extends WebContextSupport {
 
         return null;
     }
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    public ModelAndView update( HttpServletResponse response,
+                                @RequestParam(value = "oid", required = true)Long agid,
+                                @RequestParam(value = "adgroupName") String name,
+                                @RequestParam(value = "maxPrice") Double maxPrice,
+                                @RequestParam(value = "negativeWords") List<String> nn,
+                                @RequestParam(value = "exactNegativeWords") List<String> ne,
+                                @RequestParam(value = "pause") Boolean p,
+                                @RequestParam(value = "mib") Double mib){
+        AdgroupEntity adgroupEntityFind=adgroupDAO.findOne(agid);
+        adgroupEntityFind.setAdgroupName(name);
+        adgroupEntityFind.setMaxPrice(maxPrice);
+        adgroupEntityFind.setMib(mib);
+        adgroupEntityFind.setNegativeWords(nn);
+        adgroupEntityFind.setExactNegativeWords(ne);
+        adgroupEntityFind.setMib(mib);
+        adgroupDAO.update(adgroupEntityFind);
+        return null;
+    }
 }
