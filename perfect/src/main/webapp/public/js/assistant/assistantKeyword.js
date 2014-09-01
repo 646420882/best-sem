@@ -128,7 +128,11 @@ getKwdList();
 function setKwdValue(obj,kwid){
     $("#hiddenkwid_1").val(kwid);
     $(".keyword_1").val($(obj).find("td:eq(0)").html());
+
+
     $(".price_1").val($(obj).find("td:eq(3)").html());
+
+
     if($(obj).find("td:eq(7) a").attr("href")!=undefined){
         $(".pcurl_1").val($(obj).find("td:eq(7) a").attr("href"));
         $(".pcurlSize_1").html($(obj).find("td:eq(7) a").attr("href").length+"/1024");
@@ -155,44 +159,19 @@ function setKwdValue(obj,kwid){
     }
 }
 
-var kwd_kwdid = null;
-var kwd_name = null;
-var kwd_price = null;
-var kwd_pcDestinationUrl = null;
-var kwd_mobileDestinationUrl = null;
-var kwd_matchType = null;
-var kwd_phraseType = null;
-var kwd_pause = null;
+
 
 /**
  * 编辑关键词信息
  * @param value
  */
-function editKwdInfo(){
-    kwd_kwdid = $("#hiddenkwid_1").val();
+function editKwdInfo(jsonData){
+    jsonData["kwid"] = $("#hiddenkwid_1").val();
     $.ajax({
         url:"/assistantKeyword/edit",
         type:"post",
-        data:{
-            "kwid":kwd_kwdid,
-            "name":kwd_name,
-            "price":kwd_price,
-            "pcDestinationUrl":kwd_pcDestinationUrl,
-            "mobileDestinationUrl":kwd_mobileDestinationUrl,
-            "matchType":kwd_matchType,
-            "phraseType":kwd_phraseType,
-            "pause":kwd_pause
-        }
+        data:jsonData
     });
-
-     kwd_kwdid = null;
-     kwd_name = null;
-     kwd_price = null;
-     kwd_pcDestinationUrl = null;
-     kwd_mobileDestinationUrl = null;
-     kwd_matchType = null;
-     kwd_phraseType = null;
-     kwd_pause = null;
 }
 
 
@@ -205,16 +184,16 @@ function whenBlurEditKeyword(num,value){
     if($("#tbodyClick").find("tr").length==0){
         return;
     }
+    var jsonData = {};
     switch (num){
-        case 1:kwd_name = value;break;
-        case 2:kwd_price = value;break;
-        case 3:kwd_pcDestinationUrl = value;break;
-        case 4:kwd_mobileDestinationUrl = value;break;
-        case 5:kwd_matchType = value;break;
-        case 6:kwd_phraseType = value;break;
-        case 7:kwd_pause = value;break;
+        case 2:jsonData["price"] = value;break;
+        case 3:jsonData["pcDestinationUrl"] = value;break;
+        case 4:jsonData["mobileDestinationUrl"] = value;break;
+        case 5:jsonData["matchType"] = value;break;
+        case 6:jsonData["phraseType"] = value;break;
+        case 7:jsonData["pause"] = value;break;
     }
-    editKwdInfo();
+    editKwdInfo(jsonData);
 }
 
 

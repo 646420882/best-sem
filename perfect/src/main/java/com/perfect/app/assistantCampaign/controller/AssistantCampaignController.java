@@ -1,5 +1,7 @@
 package com.perfect.app.assistantCampaign.controller;
 
+import com.perfect.autosdk.sms.v3.ScheduleType;
+import com.perfect.core.AppContext;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.utils.web.WebContext;
@@ -12,10 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.perfect.mongodb.utils.EntityConstants.*;
+import static com.perfect.mongodb.utils.EntityConstants.ACCOUNT_ID;
 /**
  * Created by john on 2014/8/15.
  */
@@ -24,7 +27,7 @@ import static com.perfect.mongodb.utils.EntityConstants.*;
 public class AssistantCampaignController {
 
     //当前的账户id test
-    Long currentAccountId = 6243012L;
+//    Long currentAccountId = 6243012L;
 
     @Resource
     private CampaignDAO campaignDAO;
@@ -39,7 +42,7 @@ public class AssistantCampaignController {
      */
     @RequestMapping(value = "assistantCampaign/list" ,method = {RequestMethod.GET,RequestMethod.POST})
     public void getAllCampaignList(HttpServletResponse response){
-        List<CampaignEntity> list = campaignDAO.find(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(currentAccountId)));
+        List<CampaignEntity> list = campaignDAO.find(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())));
         webContext.writeJson(list,response);
     }
 
@@ -62,7 +65,7 @@ public class AssistantCampaignController {
      */
     @RequestMapping(value = "assistantCampaign/delete",method = {RequestMethod.GET,RequestMethod.POST})
     public void deleteCampaignById(Long[] cid){
-//        campaignDAO.deleteByIds(Arrays.asList(cid));
+        campaignDAO.deleteByIds(Arrays.asList(cid));
     }
 
 
@@ -82,24 +85,38 @@ public class AssistantCampaignController {
      * @return
      */
     @RequestMapping(value = "assistantCampaign/edit",method = {RequestMethod.GET,RequestMethod.POST})
-    public void updateById(HttpServletResponse response,Long cid,String campaignName,Double budget,Double priceRatio,Integer[] regionTarget,Boolean isDynamicCreative,
-                                                       String negativeWords,String exactNegativeWords,String excludeIp,Integer showProb,Boolean pause
+    public void updateById(Long cid,String campaignName,Double budget,Double priceRatio,Integer[] regionTarget,Boolean isDynamicCreative,
+                                                       String negativeWords,String exactNegativeWords,String excludeIp,Integer showProb,Boolean pause,String schedule
                                                        ) {
         CampaignEntity campaignEntity = new CampaignEntity();
         campaignEntity.setCampaignId(cid);
-        campaignEntity.setCampaignName("".equals(campaignName)?null:campaignName);
+        campaignEntity.setCampaignName(campaignName);
         campaignEntity.setBudget(budget);
         campaignEntity.setPriceRatio(priceRatio);
-        campaignEntity.setRegionTarget(regionTarget==null||regionTarget.length==0?null:Arrays.asList(regionTarget));
+        campaignEntity.setRegionTarget(regionTarget == null ? null : "".equals(regionTarget) ? new ArrayList<Integer> (): Arrays.asList(regionTarget));
         campaignEntity.setIsDynamicCreative(isDynamicCreative);
-        campaignEntity.setNegativeWords(negativeWords==null||"".equals(negativeWords)?null:Arrays.asList(negativeWords.split("\n")));
-        campaignEntity.setExactNegativeWords(exactNegativeWords==null||"".equals(exactNegativeWords)?null:Arrays.asList(exactNegativeWords.split("\n")));
-        campaignEntity.setExcludeIp(excludeIp==null||"".equals(excludeIp)?null: Arrays.asList(excludeIp.split("\n")));
+        campaignEntity.setNegativeWords(negativeWords == null ? null : "".equals(negativeWords) ? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
+        campaignEntity.setExactNegativeWords(exactNegativeWords == null ? null : "".equals(exactNegativeWords) ? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));
+        campaignEntity.setExcludeIp(excludeIp==null?null:"".equals(excludeIp)?new ArrayList<String>(): Arrays.asList(excludeIp.split("\n")));
         campaignEntity.setShowProb(showProb);
         campaignEntity.setPause(pause);
 
+        List<ScheduleType> scheduleEntityList = null;
+        if(schedule!=null&&!"".equals(schedule)){
+            scheduleEntityList = new ArrayList<>();
+            String[] strSchedule = schedule.split(";");
+            for(String str : strSchedule){
+                String[] fieds = str.split("-");
+                ScheduleType scheduleType = new ScheduleType();
+                int i = 0;
+                scheduleType.setWeekDay(Long.parseLong(fieds[i++]));
+                scheduleType.setStartHour(Long.parseLong(fieds[i++]));
+                scheduleType.setEndHour(Long.parseLong(fieds[i++]));
+                scheduleEntityList.add(scheduleType);
+            }
+        }
+        campaignEntity.setSchedule(scheduleEntityList);
         campaignDAO.update(campaignEntity);
-        webContext.writeJson("success",response);
     }
 
 

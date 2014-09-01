@@ -149,7 +149,7 @@
             <ul>
                 <li>
                     <div class="t_list01 fl over">关键词名称：</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(1,this.value)" onkeydown="missBlur(event,this)" class="zs_input1 keyword_1"></div>
+                    <div class="t_list02 fl over"><input type="text" disabled="disabled"  class="zs_input1 keyword_1"></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">出价：</div>
@@ -1160,11 +1160,11 @@
 
         <div class="inputKwdDiv">
             <div><span>否定关键词</span><span>(0/200)</span></div>
-            <textarea id="ntwTextarea" rows="15" cols="30"></textarea>
+            <textarea id="ntwTextarea" rows="15" cols="45"></textarea>
         </div>
         <div class="inputKwdDiv">
             <div><span>精确否定关键词</span><span>(0/200)</span></div>
-            <textarea id = "entwTextarea" rows="15" cols="30"></textarea>
+            <textarea id = "entwTextarea" rows="15" cols="45"></textarea>
         </div>
     <div class="main_bottom">
         <div class="w_list03">
@@ -1244,7 +1244,7 @@
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li class="current">确认</li>
+                <li class="current scheduleOk">确认</li>
                 <li class="close">取消</li>
             </ul>
         </div>
@@ -1255,23 +1255,8 @@
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setSchedule">
     <h2 id="setScheduleDiv">推广地域列表<a href="#" class="close">关闭</a></h2>
-    <div class="chooseTime">
-        <span>请选择时段</span>
-        <ul>
-            <li class="tfsjd"><span></span>&nbsp;&nbsp;&nbsp;投放时间段</li>
-            <li class="ztsjd"><span></span>&nbsp;&nbsp;&nbsp;暂停时间段</li>
-        </ul>
-    </div><br/>
-
-    <div class="main_bottom">
-        <div class="w_list03">
-            <ul>
-                <li class="current">确认</li>
-                <li class="close">取消</li>
-            </ul>
-        </div>
-    </div>
 </div>
+<jsp:include page="../promotionAssistant/alert/setRegionTarget.jsp"/>
 
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>

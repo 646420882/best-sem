@@ -2,6 +2,7 @@
 #setNegtiveWord>span{
     float:left;
     margin:20px;
+    width:100%;
 }
 
 #setNegtiveWord .main_bottom{
@@ -10,7 +11,7 @@
 
 
 .inputKwdDiv{
-    width:250px;
+    width:380px;
 }
 #setNegtiveWord .inputKwdDiv{
     float:left;
@@ -18,7 +19,7 @@
 }
 
 #setNegtiveWord{
-    width: 550px;
+    width: 800px;
 }
 
 
@@ -29,6 +30,7 @@
 #setExcludeIp>span{
     margin:20px;
 }
+
 #setExtension .chooseTime{
     margin:20px;
 }
@@ -62,7 +64,7 @@
 }
 
 .hours{
-    margin-top: 12px;
+    margin: 12px;
 }
 .chooseTime>ul .ztsjd span{
     width:15px;
@@ -80,3 +82,20 @@
     margin-left: 20px;
 }
 
+
+/*设置推广地域的窗口css*/
+.chooseRegion_5 li{
+    display: inline;
+    margin-left: 7px;
+}
+
+.chooseRegion{
+    margin:15px;
+}
+
+.allRegion,.useAccountRe,.chooseRegion{
+    border: 1px solid red;
+    width: 550px;
+    height:300px;
+    display: none;
+}
