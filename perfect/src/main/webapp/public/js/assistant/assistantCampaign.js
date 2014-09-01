@@ -58,7 +58,7 @@ function campaignDataToHtml(obj,index){
     html = html+until.convert(obj.budget==null,"<td><不限定></td>:"+"<td>"+obj.budget+"</td>")
     html = html+until.convert(obj.showProb==1,"<td>优选</td>:"+"<td>轮显</td>")
     html = html+until.convert(obj.isDynamicCreative==true,"<td>开启</td>:"+"<td>关闭</td>");
-    html = html+until.convert(obj.schedule==null,"<td>全部</td>:"+"<td>已设置</td>");
+    html = html+until.convert(obj.schedule==""||obj.schedule==null,"<td>全部</td>:"+"<td>已设置</td>");
 
 
     //推广地域！！！！！！！！！！！！
@@ -67,7 +67,8 @@ function campaignDataToHtml(obj,index){
 
     var fd = obj.negativeWords.length;
     var jqfd = obj.exactNegativeWords.length;
-    html = html+until.convert(fd==0&&jqfd==0,"<td>未设置</td>:"+"<td>"+fd+":"+jqfd+"</td>");
+
+    html = html+until.convert(fd==0&&jqfd==0,"<td>未设置</td>:"+"<td>"+fd+";"+jqfd+"</td>");
 
     html = html+"<td>"+obj.excludeIp.length+"</td>";
 
@@ -126,54 +127,17 @@ function setCampaignValue(obj,campaignId){
 }
 
 
-var cp_campaignId = null;
-var cp_campaignName = null;
-var cp_budget = null;
-var cp_priceRatio = null;
-var cp_schedule = null;
-var cp_regionTarget = null;
-var cp_isDynamicCreative = null;
-var cp_negativeWords = null;
-var cp_exactNegativeWords = null;
-var cp_excludeIp = null;
-var cp_showProb = null;
-var cp_pause = null;
+
 /**
- * 编辑推广计划信息
+ *  发送编辑推广计划信息请求
  */
-function editCampaignInfo() {
-    cp_campaignId = $("#hiddenCampaignId").val();
+function editCampaignInfo(jsonData) {
+    jsonData["cid"] = $("#hiddenCampaignId").val();
     $.ajax({
         url:"/assistantCampaign/edit",
         type:"post",
-        data:{
-            "cid":cp_campaignId,
-            "campaignName":cp_campaignName,
-            "budget":cp_budget,
-            "priceRatio":cp_priceRatio,
-            "schedule":cp_schedule,
-            "regionTarget":cp_regionTarget,
-            "isDynamicCreative":cp_isDynamicCreative,
-            "negativeWords":cp_negativeWords,
-            "exactNegativeWords":cp_exactNegativeWords,
-            "excludeIp":cp_excludeIp,
-            "showProb":cp_showProb,
-            "pause":cp_pause
-        }
+        data:jsonData
     });
-
-     cp_campaignId = null;
-     cp_campaignName = null;
-     cp_budget = null;
-     cp_priceRatio = null;
-     cp_schedule = null;
-     cp_regionTarget = null;
-     cp_isDynamicCreative = null;
-     cp_negativeWords = null;
-     cp_exactNegativeWords = null;
-     cp_excludeIp = null;
-     cp_showProb = null;
-     cp_pause = null;
 }
 
 /**
@@ -186,20 +150,21 @@ function whenBlurEditCampaign(num,value){
         return;
     }
 
+    var jsonData = {};
     switch (num){
-        case 1:cp_campaignName = value;break;
-        case 2:cp_budget = value;break;
-        case 3:cp_priceRatio = value;break;
-        case 4:cp_schedule = value;break;
-        case 5:cp_regionTarget = value;break;
-        case 6:cp_isDynamicCreative = value;break;
-        case 7:cp_negativeWords = value;break;
-        case 8:cp_exactNegativeWords = value;break;
-        case 9:cp_excludeIp = value;break;
-        case 10:cp_showProb = value;break;
-        case 11:cp_pause = value;break;
+        case 1:jsonData["campaignName"] = value;break;
+        case 2:jsonData["budget"] = value;break;
+        case 3:jsonData["priceRatio"] = value;break;
+        case 4:jsonData["schedule"] = value;break;
+        case 5:jsonData["regionTarget"] = value;break;
+        case 6:jsonData["isDynamicCreative"] = value;break;
+        case 7:jsonData["negativeWords"] = value;break;
+        case 8:jsonData["exactNegativeWords"] = value;break;
+        case 9:jsonData["excludeIp"] = value;break;
+        case 10:jsonData["showProb"] = value;break;
+        case 11:jsonData["pause"] = value;break;
     }
-    editCampaignInfo();
+    editCampaignInfo(jsonData);
 }
 
 /**
@@ -235,25 +200,41 @@ function deleteCampaign(){
 
 
 /**
- * 否定关键词设置单击事件
+ * 否定关键词设置确定 单击事件
  */
 $(".ntwOk").click(function(){
     var cid = $("#hiddenCampaignId").val();
     var negativeWords =  $("#ntwTextarea").val();
     var exactNegativeWords =  $("#entwTextarea").val();
 
-    $.ajax({
-        url:"/assistantCampaign/edit",
-        type:"post",
-        data:{"cid":cid,"negativeWords":negativeWords,"exactNegativeWords":exactNegativeWords},
-        dataType:"json",
-        success:function(data){
-            $(".TB_overlayBG,#setNegtiveWord").hide(0);
-        }
-    });
-
+    if(validateKeyword(negativeWords)==false){
+        return;
+    }
+    if(validateKeyword(exactNegativeWords)==false){
+        return;
+    }
+    whenBlurEditCampaign(7,negativeWords);
+    whenBlurEditCampaign(8,exactNegativeWords);
+    $(".TB_overlayBG,#setNegtiveWord").hide(0);
 
 });
+
+/*验证输入的否定关键词合法性*/
+function validateKeyword(keywords){
+    var kwds = keywords.split("\n");
+    if(kwds.length>200){
+        alert("设置的否定关键词最大不能超过200个!");
+        return false;
+    }
+    for(var i = 0;i<kwds.length;i++){
+        var len =  kwds[i].replace(/[^\x00-\xff]/g, 'xx').length;
+        if(len>40){//否定关键词最大为40字节
+            alert("关键词字节数最大不能超过40个字节。\n"+kwds[i]);
+            return false;
+        }
+    }
+    return true;
+}
 
 
 
@@ -262,6 +243,8 @@ $(".ntwOk").click(function(){
     $(".negativeWords_5").click(function () {
         $("#ntwTextarea").val("");
         $("#entwTextarea").val("");
+
+
         var cid = $("#hiddenCampaignId").val();
         $.ajax({
             url:"/assistantCampaign/getObject",
@@ -271,25 +254,31 @@ $(".ntwOk").click(function(){
             success:function(data){
                 var negativeWords = data.negativeWords;
                 var exactNegativeWords = data.exactNegativeWords;
+                var ntwcontent = "";
+                var exntcontent = "";
 
                 for(var i = 0;i<negativeWords.length;i++){
                     if(i<negativeWords.length-1){
-                        $("#ntwTextarea").append(negativeWords[i]+"\r");
+                        ntwcontent = ntwcontent+negativeWords[i]+"\r";
                     }else{
-                        $("#ntwTextarea").append(negativeWords[i]);
+                        ntwcontent = ntwcontent+negativeWords[i];
                     }
                 }
                 for(var i = 0;i<exactNegativeWords.length;i++){
                     if(i<exactNegativeWords.length-1){
-                        $("#entwTextarea").append(exactNegativeWords[i]+"\r");
+                        exntcontent = exntcontent+exactNegativeWords[i]+"\r";
                     }else{
-                        $("#entwTextarea").append(exactNegativeWords[i]);
+                        exntcontent = exntcontent+exactNegativeWords[i];
                     }
                 }
+                $("#ntwTextarea").val(ntwcontent);
+                $("#entwTextarea").val(exntcontent);
             }
         });
+
         setDialogCss("setNegtiveWord");
     });
+
 
 
 //单击推广计划中的IP排除的事件
@@ -303,14 +292,16 @@ $(".excluedIp_5").click(function () {
         data:{"cid":cid},
         dataType:"json",
         success:function(data){
+            var content = "";
             var excludeIp = data.excludeIp;
             for(var i = 0;i<excludeIp.length;i++){
                 if(i<excludeIp.length-1){
-                    $("#IpListTextarea").append(excludeIp[i]+"\r");
+                    content = content+excludeIp[i]+"\r";
                 }else{
-                    $("#IpListTextarea").append(excludeIp[i]);
+                    content = content+excludeIp[i];
                 }
             }
+            $("#IpListTextarea").val(content);
         }
     });
 
@@ -345,19 +336,9 @@ $(".excludeIpOk").click(function () {
         alert("IP地址格式输入不正确!"+errorIp);
         return;
     }
-
-
-    $.ajax({
-        url:"/assistantCampaign/edit",
-        type:"post",
-        data:{"cid":cid,"excludeIp":ipList},
-        dataType:"json",
-        success:function(data){
-            $(".TB_overlayBG,#setExcludeIp").hide(0);
-        }
-    });
+    whenBlurEditCampaign(9,ipList);
+    $(".TB_overlayBG,#setExcludeIp").hide(0);
 });
-
 
 
 
@@ -367,6 +348,50 @@ $(".schedule_5").click(function(){
     setDialogCss("setExtension");
 });
 
+
+
+
+//单击设置推广时段窗口中确定按钮的事件
+$(".scheduleOk").click(function () {
+   //得到用户选择的时间段
+    var schecdules =  getInputScheduleData();
+    whenBlurEditCampaign(4,schecdules);
+    $(".TB_overlayBG,#setExtension").hide(0);
+});
+
+
+//得到用户选择的数据
+function getInputScheduleData() {
+    var stringSchedule = "";
+    $(".hours").find("input[type=checkbox]").each(function(){
+        var is = $(this)[0];
+        if(is.checked==false){
+           var ul = $(this).parentsUntil("ul").parent();
+           var lastHour=25;
+           var startHour;
+           var weekDay = $(this).attr("name");
+            ul.find(".changeGray").each(function (index) {
+                if(index==0){
+                    startHour = $(this).html();
+                }
+                if((parseInt($(this).html())-1)>lastHour){
+                    stringSchedule = stringSchedule+weekDay+"-";
+                    stringSchedule=stringSchedule+startHour+"-";
+                    stringSchedule=stringSchedule+(parseInt(lastHour)+1)+";";
+                    startHour = $(this).html();
+                }
+                lastHour = $(this).html();
+                if(ul.find(".changeGray").last().html()==$(this).html()){
+                    stringSchedule = stringSchedule+weekDay+"-";
+                    stringSchedule=stringSchedule+startHour+"-";
+                    stringSchedule=stringSchedule+(parseInt($(this).html())+1)+";";
+                }
+            });
+
+        }
+    });
+    return stringSchedule;
+}
 
 /**
  * 推广时段时间选择效果
@@ -379,34 +404,118 @@ $(".hours").delegate("li","click",function(){
             $(this).removeClass("changeGray");
             $(this).addClass("changeGreen");
         }
-}
-);
+
+        var ul = $(this).parent();
+        if(ul.find(".changeGray").length==0){
+            ul.find("input[type=checkbox]")[0].checked=true;
+        }else{
+            ul.find("input[type=checkbox]")[0].checked=false;
+        }
+
+});
+
+
+/**
+ * 设置推广时段的选择星期几的复选框事件
+ */
+$(".hours").delegate("input[type=checkbox]","click",function(){
+    var ul = $(this).parentsUntil("ul").parent();
+    if($(this)[0].checked==true){
+        ul.find("li[class=changeGray]").removeClass("changeGray");
+        ul.find("li[class='']").addClass("changeGreen");
+    }else{
+
+    }
+});
+
+
 
 /**
  * 生成选择推广时段的ui
  */
+
+//campaignObj
 function createChooseTimeUI(){
-    var weeks = new Array("星期一","星期二","星期三","星期四","星期五","星期六","星期日");
-    var html = "";
-    for(var i = 0;i<weeks.length;i++){
-        html = html+"<ul>"+"<div><input type='checkbox'/>"+weeks[i]+"</div>";
-        for(var j = 0;j<=23;j++){
-            if(j%6==0){
-             html = html+"<li style='margin-left: 10px;' class='changeGreen'>"+j+"</li>";
-            }else{
-              html = html+"<li class='changeGreen'>"+j+"</li>"
+    var cid = $("#hiddenCampaignId").val();
+    $.ajax({
+        url:"/assistantCampaign/getObject",
+        type:"post",
+        data:{"cid":cid},
+        dataType:"json",
+        success:function(data){
+            var weeks = new Array("星期一","星期二","星期三","星期四","星期五","星期六","星期日");
+            var html = "";
+            for(var i = 0;i<weeks.length;i++){
+                if(data.schedule==""){
+                    html = html+"<ul>"+"<div><input type='checkbox' checked='checked'' name='"+(i+1)+"'/>"+weeks[i]+"</div>";
+                }else{
+                    for(var s = 0;s<data.schedule.length;s++){
+                        if(data.schedule[s].weekDay==(i+1)){
+                            html = html+"<ul>"+"<div><input type='checkbox'  name='"+(i+1)+"'/>"+weeks[i]+"</div>";
+                            break;
+                        }
+                    }
+                    if(s>=data.schedule.length){
+                        html = html+"<ul>"+"<div><input type='checkbox' checked='checked'' name='"+(i+1)+"'/>"+weeks[i]+"</div>";
+                    }
+                }
+
+                var changeGrayArray = new Array();
+                for(var m = 0;m<data.schedule.length;m++){
+                    if(data.schedule[m].weekDay==(i+1)){
+                        for(var n = 0;n<24;n++){
+                            if(n>=data.schedule[m].startHour&&n<data.schedule[m].endHour){
+                                changeGrayArray.push(n);
+                            }
+                        }
+                    }
+                }
+
+                for(var j = 0;j<=23;j++){
+                    var className = "changeGreen";
+
+                    for(var a = 0;a<changeGrayArray.length;a++){
+                        if(changeGrayArray[a]==j){
+                            className = "changeGray";
+                            break;
+                        }
+                    }
+
+                    if(j%6==0){
+                        html = html+"<li style='margin-left: 10px;' class='"+className+"'>"+j+"</li>";
+                    }else{
+                        html = html+"<li class='"+className+"'>"+j+"</li>"
+                    }
+                }
+                html = html+"</ul><br/><br/>";
             }
+            $(".hours").html(html);
         }
-        html = html+"</ul><br/><br/>";
-    }
-   $(".hours").html(html);
+    });
 }
 
 
 
+
+
+
+
+
+/*显示设置推广地域窗口*/
 $(".regionTarget_5").click(function () {
     setDialogCss("setSchedule");
 });
+
+
+/**
+ * 得到用户选择的推广地域
+ */
+function getChooseRegionTarget() {
+
+}
+
+
+
 
 
 

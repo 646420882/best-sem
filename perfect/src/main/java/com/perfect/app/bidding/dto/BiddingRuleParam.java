@@ -10,7 +10,7 @@ public class BiddingRuleParam {
 
     private double min;
 
-    private int[] times;
+    private Integer[] times;
 
     private boolean run;
 
@@ -51,11 +51,11 @@ public class BiddingRuleParam {
         this.min = min;
     }
 
-    public int[] getTimes() {
+    public Integer[] getTimes() {
         return times;
     }
 
-    public void setTimes(int[] times) {
+    public void setTimes(Integer[] times) {
         this.times = times;
     }
 

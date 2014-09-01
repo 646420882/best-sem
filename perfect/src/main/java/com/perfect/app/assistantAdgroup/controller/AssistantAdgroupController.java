@@ -1,5 +1,6 @@
 package com.perfect.app.assistantAdgroup.controller;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.entity.AdgroupEntity;
@@ -33,6 +34,7 @@ public class AssistantAdgroupController extends WebContextSupport {
 
     /**
      * 默认加载单元数据
+     *
      * @param request
      * @param response
      * @param cid
@@ -65,6 +67,7 @@ public class AssistantAdgroupController extends WebContextSupport {
 
     /**
      * 获取全部的计划供添加选择使用
+     *
      * @param request
      * @param response
      * @return
@@ -75,16 +78,69 @@ public class AssistantAdgroupController extends WebContextSupport {
         writeJson(campaignEntities, response);
         return null;
     }
-    @RequestMapping(value = "/adAdd",method = RequestMethod.POST)
-    public ModelAndView adAdd(HttpServletRequest request,HttpServletResponse response,
-                              @RequestParam(value = "oid",required = true)String agid,
-                              @RequestParam(value = "cid",required = true)String cid,
-                              @RequestParam(value = "name")String name,
-                              @RequestParam(value = "maxPrice")Double maxPrice,
-                              @RequestParam(value="nn")String[] nn,
-                              @RequestParam(value = "ne")String[] ne,
-                              @RequestParam(value = "pause")Boolean p,
-                              @RequestParam(value="status")Integer s){
+
+    @RequestMapping(value = "/adAdd", method = RequestMethod.POST)
+    public ModelAndView adAdd(HttpServletRequest request, HttpServletResponse response,
+                              @RequestParam(value = "oid", required = true) String agid,
+                              @RequestParam(value = "cid", required = true) String cid,
+                              @RequestParam(value = "adgroupName") String name,
+                              @RequestParam(value = "maxPrice") Double maxPrice,
+                              @RequestParam(value = "negativeWords") List<String> nn,
+                              @RequestParam(value = "exactNegativeWords") List<String> ne,
+                              @RequestParam(value = "pause") Boolean p,
+                              @RequestParam(value = "status") Integer s,
+                              @RequestParam(value = "mib") Double mib) {
+        try {
+            AdgroupEntity adgroupEntity = new AdgroupEntity();
+            adgroupEntity.setAccountId(AppContext.getAccountId());
+            adgroupEntity.setAdgroupId(Long.parseLong(agid));
+            adgroupEntity.setCampaignId(Long.parseLong(cid));
+            adgroupEntity.setAdgroupName(name);
+            adgroupEntity.setMaxPrice(maxPrice);
+            adgroupEntity.setNegativeWords(nn);
+            adgroupEntity.setExactNegativeWords(ne);
+            adgroupEntity.setPause(p);
+            adgroupEntity.setStatus(s);
+            adgroupEntity.setMib(mib);
+            adgroupDAO.insert(adgroupEntity);
+            writeHtml(SUCCESS, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            writeHtml(EXCEPTION, response);
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/del")
+    public ModelAndView del(HttpServletRequest request, HttpServletResponse response,
+                            @RequestParam(value = "oid", required = true) Long oid) {
+        try {
+            adgroupDAO.delete(oid);
+            writeHtml(SUCCESS, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            writeHtml(EXCEPTION, response);
+        }
+
+        return null;
+    }
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    public ModelAndView update( HttpServletResponse response,
+                                @RequestParam(value = "oid", required = true)Long agid,
+                                @RequestParam(value = "adgroupName") String name,
+                                @RequestParam(value = "maxPrice") Double maxPrice,
+                                @RequestParam(value = "negativeWords") List<String> nn,
+                                @RequestParam(value = "exactNegativeWords") List<String> ne,
+                                @RequestParam(value = "pause") Boolean p,
+                                @RequestParam(value = "mib") Double mib){
+        AdgroupEntity adgroupEntityFind=adgroupDAO.findOne(agid);
+        adgroupEntityFind.setAdgroupName(name);
+        adgroupEntityFind.setMaxPrice(maxPrice);
+        adgroupEntityFind.setMib(mib);
+        adgroupEntityFind.setNegativeWords(nn);
+        adgroupEntityFind.setExactNegativeWords(ne);
+        adgroupEntityFind.setMib(mib);
+        adgroupDAO.update(adgroupEntityFind);
         return null;
     }
 }

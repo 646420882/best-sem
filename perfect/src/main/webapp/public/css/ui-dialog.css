@@ -97,6 +97,7 @@
     text-overflow: ellipsis;
     font-weight: bold;
     cursor: default;
+    cursor: move;
 }
 .ui-dialog-body {
     padding: 20px;

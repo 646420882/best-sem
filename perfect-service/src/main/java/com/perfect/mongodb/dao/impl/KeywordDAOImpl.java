@@ -102,8 +102,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
     @Override
-    public KeywordEntity findByName(String name) {
-        List<KeywordEntity> list = findByQuery(Query.query(Criteria.where("kw").is(name)));
+    public KeywordEntity findByName(String name, Long accountId) {
+        List<KeywordEntity> list = findByQuery(Query.query(Criteria.where("kw").is(name).and(ACCOUNT_ID).is(accountId)));
         if (list == null || list.isEmpty()) {
             return null;
         }

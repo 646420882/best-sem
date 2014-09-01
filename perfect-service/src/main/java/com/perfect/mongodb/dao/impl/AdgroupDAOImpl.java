@@ -170,7 +170,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
             Field[] fields = _class.getDeclaredFields();
             for (Field field : fields) {
                 String fieldName = field.getName();
-                if (ADGROUP_ID.equals(fieldName))
+                if ("adgroupId".equals(fieldName))
                     continue;
                 StringBuilder fieldGetterName = new StringBuilder("get");
                 fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
@@ -181,7 +181,6 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
                     Object before = method.invoke(findOne(id));
                     log = LogUtils.getLog(id, AdgroupEntity.class,
                             new DataAttributeInfoEntity(field.getName(), before, after), null);
-                    break;
                 }
             }
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {

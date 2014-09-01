@@ -6,7 +6,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import static com.perfect.mongodb.utils.EntityConstants.CAMPAIGN_ID;
 import static com.perfect.mongodb.utils.EntityConstants.KEYWORD_ID;
 import static com.perfect.mongodb.utils.EntityConstants.TBL_BIDDINGRULE;
 
@@ -33,17 +32,14 @@ public class BiddingRuleEntity extends AccountIdEntity {
     @Field("cp")
     private double currentPrice;
 
-    @Field("cpos")
-    private int currentPos;
-
-    @Field("next")
-    private long nextTime;
-
     @Field("priority")
     private int priority;
 
     @Field("ebl")
     private boolean enabled;
+
+    @Field("nxt")
+    private long next;
 
 
     public ObjectId getId() {
@@ -68,14 +64,6 @@ public class BiddingRuleEntity extends AccountIdEntity {
 
     public void setStrategyEntity(StrategyEntity strategyEntity) {
         this.strategyEntity = strategyEntity;
-    }
-
-    public long getNextTime() {
-        return nextTime;
-    }
-
-    public void setNextTime(long nextTime) {
-        this.nextTime = nextTime;
     }
 
     public int getPriority() {
@@ -110,12 +98,11 @@ public class BiddingRuleEntity extends AccountIdEntity {
         this.keyword = keyword;
     }
 
-    public int getCurrentPos() {
-        return currentPos;
+    public void setNext(long next) {
+        this.next = next;
     }
 
-    public void setCurrentPos(int currentPos) {
-        this.currentPos = currentPos;
+    public long getNext() {
+        return next;
     }
-
 }

@@ -8,10 +8,12 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 
+import static com.perfect.mongodb.utils.EntityConstants.SYS_KEYWORD;
+
 /**
  * Created by baizz on 2014-08-18.
  */
-@Document(collection = "sys_keyword")
+@Document(collection = SYS_KEYWORD)
 @CompoundIndexes({
         @CompoundIndex(name = "keyword_index", def = "{tr : 1, kw : 1}")
 })

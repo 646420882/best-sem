@@ -24,4 +24,7 @@ public class SendMailTest {
         sms.sendTextMail(mailInfo);//发送文体格式
         sms.sendHtmlMail(mailInfo);//发送html格式
     }
+
+
+
 }

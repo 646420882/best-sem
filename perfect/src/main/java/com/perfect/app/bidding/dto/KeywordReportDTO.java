@@ -7,29 +7,31 @@ import com.perfect.entity.KeywordEntity;
  */
 public class KeywordReportDTO extends KeywordEntity {
 
-    private Integer impression;     //PC展现次数
+    private Integer impression = 0;     //PC展现次数
 
-    private Integer click;      //PC点击次数
+    private Integer click = 0;      //PC点击次数
 
-    private Double ctr;     //PC点击次数/展现次数
+    private Double ctr = 0.0;     //PC点击次数/展现次数
 
-    private Double cost;        //PC消费
+    private Double cost = 0.0;        //PC消费
 
-    private Double cpc;     //PC平均点击价格=消费/点击次数
+    private Double cpc = 0.0;     //PC平均点击价格=消费/点击次数
 
-    private Double cpm;       //PC千次展现消费
+    private Double cpm = 0.0;       //PC千次展现消费
 
-    private Double conversion;
+    private Double conversion = 0.0;
 
-    private int currentRank;
+    private int currentRank = 0;
 
-    private int pcQuality;
+    private int pcQuality = 0;
 
-    private int mQuality;
+    private int mQuality = 0;
 
-    private int biddingStatus;
+    private int biddingStatus = 0;
 
-    private boolean rule;
+    private boolean rule = false;
+
+    private String ruleDesc;
 
     public Integer getImpression() {
         return impression;
@@ -125,5 +127,13 @@ public class KeywordReportDTO extends KeywordEntity {
 
     public void setmQuality(int mQuality) {
         this.mQuality = mQuality;
+    }
+
+    public String getRuleDesc() {
+        return ruleDesc;
+    }
+
+    public void setRuleDesc(String ruleDesc) {
+        this.ruleDesc = ruleDesc;
     }
 }

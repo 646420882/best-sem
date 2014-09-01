@@ -29,14 +29,17 @@ public class BasisReportServiceImpl implements BasisReportService {
 
 
     /**
-     * 获取单元报告
+     * 生成报告
      *
-     * @param terminal     推广设备 0、全部  1、PC端 2、移动端
-     * @param date         时间
-     * @param categoryTime 分类时间  0、默认 1、分日 2、分周 3、分月
+     * @param terminal         推广设备 0、全部  1、PC端 2、移动端
+     * @param date             时间
+     * @param categoryTime     分类时间  0、默认 1、分日 2、分周 3、分月
+     * @param reportType       报告类型
+     * @param limit 显示个数
+     * @param start 开始数
      * @return
      */
-    public Map<String, List<StructureReportEntity>> getReportDate(String[] date, int terminal, int categoryTime, int reportType, int reportPageNumber) {
+    public Map<String, List<StructureReportEntity>> getReportDate(String[] date, int terminal, int categoryTime, int reportType, int start, int limit,String sort) {
         List<StructureReportEntity> objectsList = new ArrayList<>();
 
         switch (categoryTime) {
@@ -59,42 +62,14 @@ public class BasisReportServiceImpl implements BasisReportService {
                 dateMap0.add(dateObject0);
                 //创建一个并行计算框架
                 ForkJoinPool joinPool = new ForkJoinPool();
+                Map<String, StructureReportEntity> map1 = null;
                 try {
                     //开始对数据处理
                     Future<Map<String, StructureReportEntity>> joinTask = joinPool.submit(new BasisReportDefaultUtil(objectsList, 0, objectsList.size(), reportType));
                     //得到处理结果
                     map = joinTask.get();
-                    DecimalFormat df = new DecimalFormat("#.00");
-                    //对相应的数据进行计算百分比
-                    for (Map.Entry<String, StructureReportEntity> voEntity : map.entrySet()) {
-                        if (voEntity.getValue().getMobileImpression() == null || voEntity.getValue().getMobileImpression() == 0) {
-                            voEntity.getValue().setMobileCtr(0.00);
-                        } else {
-                            BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getMobileClick().doubleValue() / voEntity.getValue().getMobileImpression().doubleValue())));
-                            BigDecimal big = new BigDecimal(100);
-                            double divide = ctrBig.multiply(big).doubleValue();
-                            voEntity.getValue().setMobileCtr(divide);
-                        }
-                        if (voEntity.getValue().getMobileClick() == null || voEntity.getValue().getMobileClick() == 0) {
-                            voEntity.getValue().setMobileCpc(0.00);
-                        } else {
-                            voEntity.getValue().setMobileCpc(Double.parseDouble(df.format(voEntity.getValue().getMobileCost() / voEntity.getValue().getMobileClick().doubleValue())));
-                        }
-
-                        if (voEntity.getValue().getPcImpression() == null || voEntity.getValue().getPcImpression() == 0) {
-                            voEntity.getValue().setPcCtr(0.00);
-                        } else {
-                            BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getPcClick().doubleValue() / voEntity.getValue().getPcImpression().doubleValue())));
-                            BigDecimal big = new BigDecimal(100);
-                            double divide = ctrBig.multiply(big).doubleValue();
-                            voEntity.getValue().setPcCtr(divide);
-                        }
-                        if (voEntity.getValue().getPcClick() == null || voEntity.getValue().getPcClick() == 0) {
-                            voEntity.getValue().setPcCpc(0.00);
-                        } else {
-                            voEntity.getValue().setPcCpc(Double.parseDouble(df.format(voEntity.getValue().getPcCost() / voEntity.getValue().getPcClick().doubleValue())));
-                        }
-                    }
+                    //计算百分比
+                    map1 = percentage(map);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -102,7 +77,8 @@ public class BasisReportServiceImpl implements BasisReportService {
                 }
                 //关闭并行计算框架
                 joinPool.shutdown();
-                List<StructureReportEntity> list = new ArrayList<>(map.values());
+                List<StructureReportEntity> list = new ArrayList<>(map1.values());
+
                 //选择全部内容
                 if (terminal == 0) {
                     //创建一个并行计算框架
@@ -119,11 +95,51 @@ public class BasisReportServiceImpl implements BasisReportService {
                     }
                     //关闭并行计算框架
                     joinPoolTow.shutdown();
-                    listMap.put(date[0] + " 至 " + date[date.length - 1], returnList);
+
+                    if(reportType == 4){
+                        //计算饼状图 展现数据
+                        List<StructureReportEntity> pieIpmr = getPieData(returnList,terminal,"impr","-1");
+                        //计算饼状图 点击数据
+                        List<StructureReportEntity> pieClick = getPieData(returnList,terminal,"click","-2");
+                        //计算饼状图 消费数据
+                        List<StructureReportEntity> pieCost = getPieData(returnList,terminal,"cost","-3");
+                        //计算饼状图 转化数据
+                        List<StructureReportEntity> pieConv = getPieData(returnList,terminal,"conv","-6");
+
+                        listMap.put("impr",pieIpmr);
+                        listMap.put("click",pieClick);
+                        listMap.put("cost",pieCost);
+                        listMap.put("conv",pieConv);
+                    }
+
+                    //显示数据排序
+                    List<StructureReportEntity> showData = dataSort(returnList,sort,terminal,start,limit);
+                    listMap.put(date[0] + " 至 " + date[date.length - 1], showData);
+                    List<StructureReportEntity> entityList1 = getCountStructure(listMap);
+                    listMap.put("countData", entityList1);
                     listMap.put("rows", dateMap0);
                     return listMap;
                 } else {
-                    listMap.put(date[0] + " 至 " + date[date.length - 1], list);
+                    if(reportType == 4){
+                        //计算饼状图 展现数据
+                        List<StructureReportEntity> pieIpmr = getPieData(list,terminal,"impr","-1");
+                        //计算饼状图 点击数据
+                        List<StructureReportEntity> pieClick = getPieData(list,terminal,"click","-2");
+                        //计算饼状图 消费数据
+                        List<StructureReportEntity> pieCost = getPieData(list,terminal,"cost","-3");
+                        //计算饼状图 转化数据
+                        List<StructureReportEntity> pieConv = getPieData(list,terminal,"conv","-6");
+
+                        listMap.put("impr",pieIpmr);
+                        listMap.put("click",pieClick);
+                        listMap.put("cost",pieCost);
+                        listMap.put("conv",pieConv);
+                    }
+                    //显示数据排序
+                    List<StructureReportEntity> showData = dataSort(list,sort,terminal,start,limit);
+                    listMap.put(date[0] + " 至 " + date[date.length - 1], showData);
+                    List<StructureReportEntity> entityList1 = getCountStructure(listMap);
+                    listMap.put("countData", entityList1);
                     listMap.put("rows", dateMap0);
                     return listMap;
                 }
@@ -144,45 +160,26 @@ public class BasisReportServiceImpl implements BasisReportService {
                     }
                 }
 
+                Map<String, List<StructureReportEntity>> mapDay1 = null;
                 if (terminal == 0) {
                     Map<String, List<StructureReportEntity>> listMap1 = terminalAll(mapDay);
+                    List<StructureReportEntity> entityList1 = getCountStructure(listMap1);
+                    listMap1.put("countData", entityList1);
                     listMap1.put("rows", dateMap);
                     return listMap1;
                 } else {
-                    DecimalFormat df = new DecimalFormat("#.00");
                     //对相应的数据进行计算百分比
-                    for (Map.Entry<String, List<StructureReportEntity>> voEntity : mapDay.entrySet()) {
-                        for (StructureReportEntity entity : voEntity.getValue()) {
-                            if (entity.getMobileImpression() == null || entity.getMobileImpression() == 0) {
-                                entity.setMobileCtr(0.00);
-                            } else {
-                                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(entity.getMobileClick().doubleValue() / entity.getMobileImpression().doubleValue())));
-                                BigDecimal big = new BigDecimal(100);
-                                double divide = ctrBig.multiply(big).doubleValue();
-                                entity.setMobileCtr(divide);
-                            }
-                            if (entity.getMobileClick() == null || entity.getMobileClick() == 0) {
-                                entity.setMobileCpc(0.00);
-                            } else {
-                                entity.setMobileCpc(Double.parseDouble(df.format(entity.getMobileCost() / entity.getMobileClick().doubleValue())));
-                            }
+                    mapDay1 = percentageList(mapDay);
 
-                            if (entity.getPcImpression() == null || entity.getPcImpression() == 0) {
-                                entity.setPcCtr(0.00);
-                            } else {
-                                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(entity.getPcClick().doubleValue() / entity.getPcImpression().doubleValue())));
-                                BigDecimal big = new BigDecimal(100);
-                                double divide = ctrBig.multiply(big).doubleValue();
-                                entity.setPcCtr(divide);
-                            }
-                            if (entity.getPcClick() == null || entity.getPcClick() == 0) {
-                                entity.setPcCpc(0.00);
-                            } else {
-                                entity.setPcCpc(Double.parseDouble(df.format(entity.getPcCost() / entity.getPcClick().doubleValue())));
-                            }
-                        }
-                    }
                 }
+                //显示数据排序
+                /*for (StructureReportEntity entity : mapDay1) {
+                    entity.setOrderBy(sort);
+                    entity.setTerminal(terminal);
+                }
+                Collections.sort(returnList);*/
+                List<StructureReportEntity> entityList1 = getCountStructure(mapDay1);
+                mapDay.put("countData", entityList1);
                 mapDay.put("rows", dateMap);
                 return mapDay;
             //分周生成报告
@@ -211,7 +208,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                                 strings[1] = date[i];
                             }
                         }
-                        stringListMap.put(strings[endNumber] + " 至 " + strings[i], objectsList);
+                        //显示数据排序
+                        List<StructureReportEntity> showData = dataSort(objectsList,sort,terminal,start,limit);
+                        stringListMap.put(strings[endNumber] + " 至 " + strings[i], showData);
                         dateObject2.setDate(strings[endNumber] + " 至 " + strings[i]);
                         dateMap2.add(dateObject2);
                         endNumber = i;
@@ -233,47 +232,23 @@ public class BasisReportServiceImpl implements BasisReportService {
                             e.printStackTrace();
                         }
 
-                        DecimalFormat df = new DecimalFormat("#.00");
                         //对相应的数据进行计算百分比
-                        for (Map.Entry<String, StructureReportEntity> voEntity : reportEntities.entrySet()) {
-                            if (voEntity.getValue().getMobileImpression() == null || voEntity.getValue().getMobileImpression() == 0) {
-                                voEntity.getValue().setMobileCtr(0.00);
-                            } else {
-                                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getMobileClick().doubleValue() / voEntity.getValue().getMobileImpression().doubleValue())));
-                                BigDecimal big = new BigDecimal(100);
-                                double divide = ctrBig.multiply(big).doubleValue();
-                                voEntity.getValue().setMobileCtr(divide);
-                            }
-                            if (voEntity.getValue().getMobileClick() == null || voEntity.getValue().getMobileClick() == 0) {
-                                voEntity.getValue().setMobileCpc(0.00);
-                            } else {
-                                voEntity.getValue().setMobileCpc(Double.parseDouble(df.format(voEntity.getValue().getMobileCost() / voEntity.getValue().getMobileClick().doubleValue())));
-                            }
+                        Map<String, StructureReportEntity> reportEntities1 = percentage(reportEntities);
 
-                            if (voEntity.getValue().getPcImpression() == null || voEntity.getValue().getPcImpression() == 0) {
-                                voEntity.getValue().setPcCtr(0.00);
-                            } else {
-                                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getPcClick().doubleValue() / voEntity.getValue().getPcImpression().doubleValue())));
-                                BigDecimal big = new BigDecimal(100);
-                                double divide = ctrBig.multiply(big).doubleValue();
-                                voEntity.getValue().setPcCtr(divide);
-                            }
-                            if (voEntity.getValue().getPcClick() == null || voEntity.getValue().getPcClick() == 0) {
-                                voEntity.getValue().setPcCpc(0.00);
-                            } else {
-                                voEntity.getValue().setPcCpc(Double.parseDouble(df.format(voEntity.getValue().getPcCost() / voEntity.getValue().getPcClick().doubleValue())));
-                            }
-                        }
                         //关闭并行计算框架
                         joinPoolTow.shutdown();
-                        List<StructureReportEntity> arrayList = new ArrayList<>(reportEntities.values());
+                        List<StructureReportEntity> arrayList = new ArrayList<>(reportEntities1.values());
                         endListMap.put(entry1.next().getKey(), arrayList);
                     }
                     if (terminal == 0) {
                         Map<String, List<StructureReportEntity>> listMap1 = terminalAll(endListMap);
+                        List<StructureReportEntity> entityList2 = getCountStructure(listMap1);
+                        listMap1.put("countData", entityList2);
                         listMap1.put("rows", dateMap2);
                         return listMap1;
                     }
+                    List<StructureReportEntity> entityList2 = getCountStructure(endListMap);
+                    endListMap.put("countData", entityList2);
                     endListMap.put("rows", dateMap2);
                     return endListMap;
                 } else {
@@ -300,46 +275,22 @@ public class BasisReportServiceImpl implements BasisReportService {
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
-                    DecimalFormat df = new DecimalFormat("#.00");
                     //对相应的数据进行计算百分比
-                    for (Map.Entry<String, StructureReportEntity> voEntity : reportEntities.entrySet()) {
-                        if (voEntity.getValue().getMobileImpression() == null || voEntity.getValue().getMobileImpression() == 0) {
-                            voEntity.getValue().setMobileCtr(0.00);
-                        } else {
-                            BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getMobileClick().doubleValue() / voEntity.getValue().getMobileImpression().doubleValue())));
-                            BigDecimal big = new BigDecimal(100);
-                            double divide = ctrBig.multiply(big).doubleValue();
-                            voEntity.getValue().setMobileCtr(divide);
-                        }
-                        if (voEntity.getValue().getMobileClick() == null || voEntity.getValue().getMobileClick() == 0) {
-                            voEntity.getValue().setMobileCpc(0.00);
-                        } else {
-                            voEntity.getValue().setMobileCpc(Double.parseDouble(df.format(voEntity.getValue().getMobileCost() / voEntity.getValue().getMobileClick().doubleValue())));
-                        }
+                    Map<String, StructureReportEntity> reportEntities1 = percentage(reportEntities);
 
-                        if (voEntity.getValue().getPcImpression() == null || voEntity.getValue().getPcImpression() == 0) {
-                            voEntity.getValue().setPcCtr(0.00);
-                        } else {
-                            BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getPcClick().doubleValue() / voEntity.getValue().getPcImpression().doubleValue())));
-                            BigDecimal big = new BigDecimal(100);
-                            double divide = ctrBig.multiply(big).doubleValue();
-                            voEntity.getValue().setPcCtr(divide);
-                        }
-                        if (voEntity.getValue().getPcClick() == null || voEntity.getValue().getPcClick() == 0) {
-                            voEntity.getValue().setPcCpc(0.00);
-                        } else {
-                            voEntity.getValue().setPcCpc(Double.parseDouble(df.format(voEntity.getValue().getPcCost() / voEntity.getValue().getPcClick().doubleValue())));
-                        }
-                    }
                     //关闭并行计算框架
                     joinPoolTow.shutdown();
-                    List<StructureReportEntity> entityList = new ArrayList<>(reportEntities.values());
+                    List<StructureReportEntity> entityList = new ArrayList<>(reportEntities1.values());
                     endListMap.put(date[0] + " 至 " + date[date.length - 1], entityList);
                     if (terminal == 0) {
                         Map<String, List<StructureReportEntity>> listMap1 = terminalAll(endListMap);
+                        List<StructureReportEntity> entityList2 = getCountStructure(endListMap);
+                        endListMap.put("countData", entityList2);
                         listMap1.put("rows", dateMap2else);
                         return listMap1;
                     }
+                    List<StructureReportEntity> entityList2 = getCountStructure(endListMap);
+                    endListMap.put("countData", entityList2);
                     endListMap.put("rows", dateMap2else);
                     return endListMap;
                 }
@@ -369,7 +320,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                                 strings[1] = date[i];
                             }
                         }
-                        stringListMap1.put(strings[endNumber] + " 至 " + strings[i], objectsList);
+                        //显示数据排序
+                        List<StructureReportEntity> showData = dataSort(objectsList,sort,terminal,start,limit);
+                        stringListMap1.put(strings[endNumber] + " 至 " + strings[i], showData);
                         dateObject3.setDate(strings[endNumber] + " 至 " + strings[i]);
                         dateMap3.add(dateObject3);
                         endNumber = i;
@@ -390,47 +343,23 @@ public class BasisReportServiceImpl implements BasisReportService {
                         } catch (ExecutionException e) {
                             e.printStackTrace();
                         }
-                        DecimalFormat df = new DecimalFormat("#.00");
                         //对相应的数据进行计算百分比
-                        for (Map.Entry<String, StructureReportEntity> voEntity : reportEntities1.entrySet()) {
-                            if (voEntity.getValue().getMobileImpression() == null || voEntity.getValue().getMobileImpression() == 0) {
-                                voEntity.getValue().setMobileCtr(0.00);
-                            } else {
-                                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getMobileClick().doubleValue() / voEntity.getValue().getMobileImpression().doubleValue())));
-                                BigDecimal big = new BigDecimal(100);
-                                double divide = ctrBig.multiply(big).doubleValue();
-                                voEntity.getValue().setMobileCtr(divide);
-                            }
-                            if (voEntity.getValue().getMobileClick() == null || voEntity.getValue().getMobileClick() == 0) {
-                                voEntity.getValue().setMobileCpc(0.00);
-                            } else {
-                                voEntity.getValue().setMobileCpc(Double.parseDouble(df.format(voEntity.getValue().getMobileCost() / voEntity.getValue().getMobileClick().doubleValue())));
-                            }
+                        Map<String, StructureReportEntity> reportEntities2 = percentage(reportEntities1);
 
-                            if (voEntity.getValue().getPcImpression() == null || voEntity.getValue().getPcImpression() == 0) {
-                                voEntity.getValue().setPcCtr(0.00);
-                            } else {
-                                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getPcClick().doubleValue() / voEntity.getValue().getPcImpression().doubleValue())));
-                                BigDecimal big = new BigDecimal(100);
-                                double divide = ctrBig.multiply(big).doubleValue();
-                                voEntity.getValue().setPcCtr(divide);
-                            }
-                            if (voEntity.getValue().getPcClick() == null || voEntity.getValue().getPcClick() == 0) {
-                                voEntity.getValue().setPcCpc(0.00);
-                            } else {
-                                voEntity.getValue().setPcCpc(Double.parseDouble(df.format(voEntity.getValue().getPcCost() / voEntity.getValue().getPcClick().doubleValue())));
-                            }
-                        }
                         //关闭并行计算框架
                         joinPoolTow.shutdown();
-                        List<StructureReportEntity> entityList = new ArrayList<>(reportEntities1.values());
+                        List<StructureReportEntity> entityList = new ArrayList<>(reportEntities2.values());
                         endListMap1.put(entry1.next().getKey(), entityList);
                     }
                     if (terminal == 0) {
                         Map<String, List<StructureReportEntity>> listMap1 = terminalAll(endListMap1);
+                        List<StructureReportEntity> entityList3 = getCountStructure(listMap1);
+                        listMap1.put("countData", entityList3);
                         listMap1.put("rows", dateMap3);
                         return listMap1;
                     }
+                    List<StructureReportEntity> entityList3 = getCountStructure(endListMap1);
+                    endListMap1.put("countData", entityList3);
                     endListMap1.put("rows", dateMap3);
                     return endListMap1;
                 } else {
@@ -459,44 +388,21 @@ public class BasisReportServiceImpl implements BasisReportService {
                     }
                     DecimalFormat df = new DecimalFormat("#.00");
                     //对相应的数据进行计算百分比
-                    for (Map.Entry<String, StructureReportEntity> voEntity : reportEntities1.entrySet()) {
-                        if (voEntity.getValue().getMobileImpression() == null || voEntity.getValue().getMobileImpression() == 0) {
-                            voEntity.getValue().setMobileCtr(0.00);
-                        } else {
-                            BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getMobileClick().doubleValue() / voEntity.getValue().getMobileImpression().doubleValue())));
-                            BigDecimal big = new BigDecimal(100);
-                            double divide = ctrBig.multiply(big).doubleValue();
-                            voEntity.getValue().setMobileCtr(divide);
-                        }
-                        if (voEntity.getValue().getMobileClick() == null || voEntity.getValue().getMobileClick() == 0) {
-                            voEntity.getValue().setMobileCpc(0.00);
-                        } else {
-                            voEntity.getValue().setMobileCpc(Double.parseDouble(df.format(voEntity.getValue().getMobileCost() / voEntity.getValue().getMobileClick().doubleValue())));
-                        }
+                    Map<String, StructureReportEntity> reportEntities2 = percentage(reportEntities1);
 
-                        if (voEntity.getValue().getPcImpression() == null || voEntity.getValue().getPcImpression() == 0) {
-                            voEntity.getValue().setPcCtr(0.00);
-                        } else {
-                            BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getPcClick().doubleValue() / voEntity.getValue().getPcImpression().doubleValue())));
-                            BigDecimal big = new BigDecimal(100);
-                            double divide = ctrBig.multiply(big).doubleValue();
-                            voEntity.getValue().setPcCtr(divide);
-                        }
-                        if (voEntity.getValue().getPcClick() == null || voEntity.getValue().getPcClick() == 0) {
-                            voEntity.getValue().setPcCpc(0.00);
-                        } else {
-                            voEntity.getValue().setPcCpc(Double.parseDouble(df.format(voEntity.getValue().getPcCost() / voEntity.getValue().getPcClick().doubleValue())));
-                        }
-                    }
                     //关闭并行计算框架
                     joinPoolTow.shutdown();
-                    List<StructureReportEntity> entityList = new ArrayList<>(reportEntities1.values());
+                    List<StructureReportEntity> entityList = new ArrayList<>(reportEntities2.values());
                     endListMap1.put(date[0] + " 至 " + date[date.length - 1], entityList);
                     if (terminal == 0) {
                         Map<String, List<StructureReportEntity>> listMap1 = terminalAll(endListMap1);
+                        List<StructureReportEntity> entityList3 = getCountStructure(listMap1);
+                        listMap1.put("countData", entityList3);
                         listMap1.put("rows", dateMap3else);
                         return listMap1;
                     }
+                    List<StructureReportEntity> entityList3 = getCountStructure(endListMap1);
+                    endListMap1.put("countData", entityList3);
                     endListMap1.put("rows", dateMap3else);
                     return endListMap1;
                 }
@@ -505,7 +411,7 @@ public class BasisReportServiceImpl implements BasisReportService {
     }
 
     @Override
-    public Map<String, List<AccountReportDTO>> getAccountAll(int Sorted, String fieldName) {
+    public Map<String, List<AccountReportDTO>> getAccountAll(int Sorted, String fieldName,int startJC,int limitJC) {
 
         List<AccountReportDTO> reportEntities = basisReportDAO.getAccountReport(Sorted, fieldName);
 
@@ -524,8 +430,14 @@ public class BasisReportServiceImpl implements BasisReportService {
         }
         //关闭并行计算框架
         joinPoolTow.shutdown();
-
-        map.put("rows", entities);
+        List<AccountReportDTO> finalList = new ArrayList<>();
+            for (int i = startJC; i < limitJC; i++) {
+                if(i < entities.size()){
+                    entities.get(i).setCount(entities.size());
+                    finalList.add(entities.get(i));
+                }
+            }
+        map.put("rows", finalList);
         return map;
     }
 
@@ -586,7 +498,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                     objectListDate2.add(dateFormat.format(dateTow[0]) + " 至 " + dateFormat.format(dateTow[1]));
                     retrunMap.put("date1", objectListDate2);
                 }
-                objectListDate1.add(dateFormat.format(dateOne[0])+" 至 "+dateFormat.format(dateOne[1]));
+                objectListDate1.add(dateFormat.format(dateOne[0]) + " 至 " + dateFormat.format(dateOne[1]));
                 retrunMap.put("rows", objectList);
                 retrunMap.put("date", objectListDate1);
 
@@ -608,7 +520,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 }
                 List<String> dateString = DateUtils.getPeriod(dateFormat.format(dateOne[0]), dateFormat.format(dateOne[1]));
                 String[] newDate = dateString.toArray(new String[dateString.size()]);
-                for (String s : newDate){
+                for (String s : newDate) {
                     objectListDateOne1.add(s);
                 }
 
@@ -623,7 +535,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                     }
                     List<String> dateString1 = DateUtils.getPeriod(dateFormat.format(dateTow[0]), dateFormat.format(dateTow[1]));
                     String[] newDate1 = dateString1.toArray(new String[dateString1.size()]);
-                    for (String s : newDate1){
+                    for (String s : newDate1) {
                         objectListDateTow1.add(s);
                     }
                 }
@@ -635,18 +547,25 @@ public class BasisReportServiceImpl implements BasisReportService {
                     //比较数据
                     if (compare == 1) {
                         Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(responseMapTow1);
-
-                        for(Object o :objectListDateTow1){
-                            for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMapDevicesTow.entrySet()){
-                                if(voEntity.getKey() != o){
-                                    responseMapDevicesTow.put(o.toString(),null);
-                                }
+                        for (Object o : objectListDateTow1) {
+                            if (responseMapDevicesTow.get(o) == null) {
+                                List<AccountReportDTO> accountReportDTOs = new ArrayList<>();
+                                AccountReportDTO accountReportDTO = new AccountReportDTO();
+                                accountReportDTOs.add(accountReportDTO);
+                                responseMapDevicesTow.put(o.toString(), accountReportDTOs);
                             }
                         }
                         objectList1.add(responseMapDevicesTow);
                         retrunMap1.put("date1", objectListDateTow1);
                     }
-
+                    for (Object o : objectListDateOne1) {
+                        if (responseMapDevicesOne.get(o) == null) {
+                            List<AccountReportDTO> accountReportDTOs = new ArrayList<>();
+                            AccountReportDTO accountReportDTO = new AccountReportDTO();
+                            accountReportDTOs.add(accountReportDTO);
+                            responseMapDevicesOne.put(o.toString(), accountReportDTOs);
+                        }
+                    }
                     retrunMap1.put("rows", objectList1);
                     retrunMap1.put("date", objectListDateOne1);
 
@@ -657,8 +576,24 @@ public class BasisReportServiceImpl implements BasisReportService {
                 List<Object> objectList1 = new ArrayList<>();
                 //比较数据
                 if (compare == 1) {
+                    for (Object o : objectListDateTow1) {
+                        if (responseMapTow1.get(o) == null) {
+                            List<AccountReportDTO> accountReportDTOs = new ArrayList<>();
+                            AccountReportDTO accountReportDTO = new AccountReportDTO();
+                            accountReportDTOs.add(accountReportDTO);
+                            responseMapTow1.put(o.toString(), accountReportDTOs);
+                        }
+                    }
                     objectList1.add(responseMapTow1);
                     retrunMap1.put("date1", objectListDateTow1);
+                }
+                for (Object o : objectListDateOne1) {
+                    if (responseMapOne1.get(o) == null) {
+                        List<AccountReportDTO> accountReportDTOs = new ArrayList<>();
+                        AccountReportDTO accountReportDTO = new AccountReportDTO();
+                        accountReportDTOs.add(accountReportDTO);
+                        responseMapOne1.put(o.toString(), accountReportDTOs);
+                    }
                 }
                 objectList1.add(responseMapOne1);
                 retrunMap1.put("rows", objectList1);
@@ -706,6 +641,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                         listDateOne.add(listOne2.get(s));
                         //比较数据
                         if (compare == 1) {
+                            if (endNumber >= objectListDateTow2.size() || s >= objectListDateTow2.size()) {
+                                continue;
+                            }
                             listDateTow.add(listTow2.get(s));
                         }
                     }
@@ -717,8 +655,8 @@ public class BasisReportServiceImpl implements BasisReportService {
 
                     //比较数据
                     if (compare == 1) {
-                        responseMapTow3 = getUserDataPro(listDateTow, listDateTow.get(0).getDate(), listDateTow.get(listDateOne.size() - 1).getDate());
-                        newDateTow = new Date[]{listDateTow.get(0).getDate(), listDateTow.get(listDateOne.size() - 1).getDate()};
+                        responseMapTow3 = getUserDataPro(listDateTow, listDateTow.get(0).getDate(), listDateTow.get(listDateTow.size() - 1).getDate());
+                        newDateTow = new Date[]{listDateTow.get(0).getDate(), listDateTow.get(listDateTow.size() - 1).getDate()};
                     }
                     if (devices == 0) {
                         Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne3);
@@ -1077,4 +1015,217 @@ public class BasisReportServiceImpl implements BasisReportService {
 
         return reportName;
     }
+
+    //对单个的数据进行计算百分比
+    private Map<String, StructureReportEntity> percentage(Map<String, StructureReportEntity> map) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        for (Map.Entry<String, StructureReportEntity> voEntity : map.entrySet()) {
+            if (voEntity.getValue().getMobileImpression() == null || voEntity.getValue().getMobileImpression() == 0) {
+                voEntity.getValue().setMobileCtr(0.00);
+            } else {
+                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getMobileClick().doubleValue() / voEntity.getValue().getMobileImpression().doubleValue())));
+                BigDecimal big = new BigDecimal(100);
+                double divide = ctrBig.multiply(big).doubleValue();
+                voEntity.getValue().setMobileCtr(divide);
+            }
+            if (voEntity.getValue().getMobileClick() == null || voEntity.getValue().getMobileClick() == 0) {
+                voEntity.getValue().setMobileCpc(0.00);
+            } else {
+                voEntity.getValue().setMobileCpc(Double.parseDouble(df.format(voEntity.getValue().getMobileCost() / voEntity.getValue().getMobileClick().doubleValue())));
+            }
+
+            if (voEntity.getValue().getPcImpression() == null || voEntity.getValue().getPcImpression() == 0) {
+                voEntity.getValue().setPcCtr(0.00);
+            } else {
+                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getPcClick().doubleValue() / voEntity.getValue().getPcImpression().doubleValue())));
+                BigDecimal big = new BigDecimal(100);
+                double divide = ctrBig.multiply(big).doubleValue();
+                voEntity.getValue().setPcCtr(divide);
+            }
+            if (voEntity.getValue().getPcClick() == null || voEntity.getValue().getPcClick() == 0) {
+                voEntity.getValue().setPcCpc(0.00);
+            } else {
+                voEntity.getValue().setPcCpc(Double.parseDouble(df.format(voEntity.getValue().getPcCost() / voEntity.getValue().getPcClick().doubleValue())));
+            }
+        }
+        return map;
+    }
+
+    //对一个集合中的数据进行计算百分比
+    private Map<String, List<StructureReportEntity>> percentageList(Map<String, List<StructureReportEntity>> mapDay) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        for (Map.Entry<String, List<StructureReportEntity>> voEntity : mapDay.entrySet()) {
+            for (StructureReportEntity entity : voEntity.getValue()) {
+                if (entity.getMobileImpression() == null || entity.getMobileImpression() == 0) {
+                    entity.setMobileCtr(0.00);
+                } else {
+                    BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(entity.getMobileClick().doubleValue() / entity.getMobileImpression().doubleValue())));
+                    BigDecimal big = new BigDecimal(100);
+                    double divide = ctrBig.multiply(big).doubleValue();
+                    entity.setMobileCtr(divide);
+                }
+                if (entity.getMobileClick() == null || entity.getMobileClick() == 0) {
+                    entity.setMobileCpc(0.00);
+                } else {
+                    entity.setMobileCpc(Double.parseDouble(df.format(entity.getMobileCost() / entity.getMobileClick().doubleValue())));
+                }
+
+                if (entity.getPcImpression() == null || entity.getPcImpression() == 0) {
+                    entity.setPcCtr(0.00);
+                } else {
+                    BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(entity.getPcClick().doubleValue() / entity.getPcImpression().doubleValue())));
+                    BigDecimal big = new BigDecimal(100);
+                    double divide = ctrBig.multiply(big).doubleValue();
+                    entity.setPcCtr(divide);
+                }
+                if (entity.getPcClick() == null || entity.getPcClick() == 0) {
+                    entity.setPcCpc(0.00);
+                } else {
+                    entity.setPcCpc(Double.parseDouble(df.format(entity.getPcCost() / entity.getPcClick().doubleValue())));
+                }
+            }
+        }
+        return mapDay;
+    }
+
+    //统计当前查出数据的总和（分标示）
+    private List<StructureReportEntity> getCountStructure(Map<String, List<StructureReportEntity>> dateMap) {
+        StructureReportEntity objEntity = new StructureReportEntity();
+        for (Map.Entry<String, List<StructureReportEntity>> voEntity : dateMap.entrySet()) {
+            for (StructureReportEntity entity : voEntity.getValue()) {
+                objEntity.setMobileImpression(((objEntity.getMobileImpression() == null) ? 0 : objEntity.getMobileImpression()) + ((entity.getMobileImpression() == null) ? 0 : entity.getMobileImpression()));
+                objEntity.setMobileClick(((objEntity.getMobileClick() == null) ? 0 : objEntity.getMobileClick()) + ((entity.getMobileClick() == null) ? 0 : entity.getMobileClick()));
+                objEntity.setMobileCost(((objEntity.getMobileCost() == null) ? 0 : objEntity.getMobileCost()) + ((entity.getMobileCost() == null) ? 0 : entity.getMobileCost()));
+                objEntity.setMobileConversion(((objEntity.getMobileConversion() == null) ? 0 : objEntity.getMobileCost()) + ((entity.getMobileConversion() == null) ? 0 : entity.getMobileConversion()));
+
+                objEntity.setPcImpression(((objEntity.getPcImpression() == null) ? 0 : objEntity.getPcImpression()) + ((entity.getPcImpression() == null) ? 0 : entity.getPcImpression()));
+                objEntity.setPcClick(((objEntity.getPcClick() == null) ? 0 : objEntity.getPcClick()) + ((entity.getPcClick() == null) ? 0 : entity.getPcClick()));
+                objEntity.setPcCost(((objEntity.getPcCost() == null) ? 0 : objEntity.getPcCost()) + ((entity.getPcCost() == null) ? 0 : entity.getPcCost()));
+                objEntity.setPcConversion(((objEntity.getPcConversion() == null) ? 0 : objEntity.getPcCost()) + ((entity.getPcConversion() == null) ? 0 : entity.getPcConversion()));
+            }
+        }
+        List<StructureReportEntity> entityList = new ArrayList<>();
+        entityList.add(objEntity);
+        return entityList;
+    }
+
+    //获取饼状图需要数据
+    private List<StructureReportEntity> getPieData(List<StructureReportEntity> returnList, int terminal, String sortField,String sort) {
+        for (StructureReportEntity entity : returnList) {
+            entity.setOrderBy(sort);
+            entity.setTerminal(terminal);
+        }
+        Collections.sort(returnList);
+        int i = 0;
+        List<StructureReportEntity> entityList = new ArrayList<>();
+        StructureReportEntity entity = new StructureReportEntity();
+        for (StructureReportEntity entityReport : returnList) {
+            StructureReportEntity entity1 = new StructureReportEntity();
+            if (i < 10) {
+                i++;
+                switch (sortField) {
+                    case "impr":
+                        //如果用户只查询手机
+                        if (terminal == 2) {
+                            entity1.setMobileImpression(entityReport.getMobileImpression());
+                            entity1.setRegionName(entityReport.getRegionName());
+                            entityList.add(entity1);
+                        } else {
+                            entity1.setPcImpression(entityReport.getPcImpression());
+                            entity1.setRegionName(entityReport.getRegionName());
+                            entityList.add(entity1);
+                        }
+                        break;
+                    case "click":
+                        if (terminal == 2) {
+                            entity1.setMobileClick(entityReport.getMobileClick());
+                            entity1.setRegionName(entityReport.getRegionName());
+                            entityList.add(entity1);
+                        } else {
+                            entity1.setPcClick(entityReport.getPcClick());
+                            entity1.setRegionName(entityReport.getRegionName());
+                            entityList.add(entity1);
+                        }
+                        break;
+                    case "cost":
+                        if (terminal == 2) {
+                            entity1.setMobileCost(entityReport.getMobileCost());
+                            entity1.setRegionName(entityReport.getRegionName());
+                            entityList.add(entity1);
+                        } else {
+                            entity1.setPcCost(entityReport.getPcCost());
+                            entity1.setRegionName(entityReport.getRegionName());
+                            entityList.add(entity1);
+                        }
+                        break;
+                    case "conv":
+                        if (terminal == 2) {
+                            entity1.setMobileConversion(entityReport.getMobileConversion());
+                            entity1.setRegionName(entityReport.getRegionName());
+                            entityList.add(entity1);
+                        } else {
+                            entity1.setPcConversion(entityReport.getPcConversion());
+                            entity1.setRegionName(entityReport.getRegionName());
+                            entityList.add(entity1);
+                        }
+                }
+            } else {
+                switch (sortField) {
+                    case "impr":
+                        //如果用户只查询手机
+                        if (terminal == 2) {
+                            entity.setMobileImpression(((entity.getMobileImpression() == null) ? 0 : entity.getMobileImpression()) + entityReport.getMobileImpression());
+                        } else {
+                            entity.setPcImpression(((entity.getPcImpression() == null) ? 0 : entity.getPcImpression()) + entityReport.getPcImpression());
+                        }
+                        break;
+                    case "click":
+                        if (terminal == 2) {
+                            entity.setMobileClick(((entity.getMobileClick() == null) ? 0 : entity.getMobileClick()) + entityReport.getMobileClick());
+                        } else {
+                            entity.setPcClick(((entity.getPcClick() == null) ? 0 : entity.getPcClick()) + entityReport.getPcClick());
+                        }
+                        break;
+                    case "cost":
+                        if (terminal == 2) {
+                            entity.setMobileCost(((entity.getMobileCost() == null) ? 0 : entity.getMobileCost()) + entityReport.getMobileCost());
+                        } else {
+                            entity.setPcCost(((entity.getPcCost() == null) ? 0 : entity.getPcCost()) + entityReport.getPcCost());
+                        }
+                        break;
+                    case "conv":
+                        if (terminal == 2) {
+                            entity.setMobileConversion(((entity.getMobileConversion() == null)?0:entity.getMobileConversion()) + entityReport.getMobileConversion());
+                        } else {
+                            entity.setPcConversion(((entity.getPcImpression()== null)?0:entity.getPcConversion()) + entityReport.getPcConversion());
+                        }
+                }
+            }
+        }
+        if (entity != null) {
+            entity.setRegionName("其他");
+            entityList.add(entity);
+        }
+        return entityList;
+    }
+    //数据排序
+    private List<StructureReportEntity> dataSort(List<StructureReportEntity> returnList,String sort,int terminal,int start,int limit){
+        for (StructureReportEntity entity : returnList) {
+            entity.setOrderBy(sort);
+            entity.setTerminal(terminal);
+        }
+        List<StructureReportEntity> finalList = new ArrayList<>();
+        if (returnList.size() > limit) {
+            for (int i = start; i < limit; i++) {
+                finalList.add(returnList.get(i));
+            }
+            Collections.sort(finalList);
+            return finalList;
+        } else {
+            Collections.sort(returnList);
+            return returnList;
+        }
+    }
+
+
 }

@@ -1,48 +1,66 @@
+<%@ page import="com.perfect.app.web.WebUtils" %>
 <%--
   Created by IntelliJ IDEA.
   User: john
-  Date: 2014/7/24
+  Date: 2014-7-25
   Time: 13:06
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    Long accountId = 0l;
+    if (request != null) {
+        accountId = WebUtils.getAccountId(request);
+    }
+%>
 <div class="nav fl">
     <div class="nav_left over fl">
         <div class="nav_bg">
             <img src="${pageContext.request.contextPath}/public/img/nav_bg.jpg" width="100%" height="100%">
-
         </div>
         <div class="user over">
             <div class="nav_bg">
                 <img src="${pageContext.request.contextPath}/public/img/user_bg.png" width="100%" height="100%">
             </div>
-            <div class="user_mid over">
-                <div class="user_logo over">
-                    <div class="user_logo1">
+            <div class="user_mid">
+                <div class="user_logo">
+                    <div class="user_logo1 over">
                         <div class="user_img fl over">
                             <span> <img src="${pageContext.request.contextPath}/public/images/yixin_logo.png"></span>
                         </div>
                         <div class="user_text fl">
-                            <h3>${currSystemUserName}</h3>
+                            <p>上午，好,<span>${currSystemUserName}</span></p>
 
+                            <div class="user_select over">
+                                <select id="switchAccount">
+                                </select>
+                            </div>
+
+
+                            <div class="user_select">
+                                <div class="user_name">
+                                    <span></span>
+                                </div>
+                                <div id="switchAccount" class="user_names over hides">
+                                    <ul id="switchAccount_ul">
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-
-                    </div>
-                    <div class="user_logo2">
-                        <form name="logout" method="POST" action="/logout">
+                        <div class="user_logo2 fr">
+                            <form name="logout" method="POST" action="/logout">
                             <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png" onclick="$('form[logout]').submit();"/>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-
                 </div>
 
                 <div class="user_detali over">
                     <ul>
-                        <li>推广额度：<b><a href="#">37287.13</a></b> 元</li>
-                        <li>余额预计可消费：18天</li>
-                        <li>日预算：26000.00元</li>
+                        <li>推广额度<b><a href="#">${accountBalance}</a></b></li>
+                        <li>余额预计可消费：${remainderDays}</li>
+                        <li>日预算：${accountBudget}</li>
                     </ul>
-
                 </div>
             </div>
         </div>
@@ -55,8 +73,8 @@
 
                             <h3>帐户全景</h3>
                         </a>
+                        <span class='nav_input1'></span>
                     </li>
-
                     <li>
                         <a href="/assistant/index">
                             <span class="list2"></span>
@@ -69,28 +87,52 @@
 
                             <h3>智能结构</h3></a>
                     </li>
-
                     <li>
                         <a href="/bidding/index"><span class="list4"></span>
 
                             <h3>智能竞价</h3></a>
                     </li>
-
                     <li>
                         <a href="#"><span class="list5"></span>
 
                             <h3>数据报告</h3></a>
                     </li>
-
                 </ul>
             </div>
         </div>
     </div>
     <div class="tips fl">
+        <span class="nav_input hides"></span>
     </div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript">
+
+    var baiduAccountId = <%=accountId%>;
+
+    var selectedAccount = "";
+
+    var loadBaiduAccount = function () {
+        $.getJSON("/account/getAllBaiduAccount",
+                {},
+                function (data) {
+                    var options, results = data.rows;
+                    if (results != null && results.length > 0) {
+                        var _option = "";
+                        $.each(results, function (i, item) {
+                            if (baiduAccountId == item.id) {
+                                _option += "<option selected='selected' value=" + item.id + ">" + item.baiduUserName + "</option>";
+                            } else {
+                                _option += "<option value=" + item.id + ">" + item.baiduUserName + "</option>";
+                            }
+                        });
+                        $("#switchAccount").empty();
+                        $("#switchAccount").append(_option);
+                    }
+                });
+    };
+
     $(function () {
         var navH = $(".on_title").offset().top;
         $(window).scroll(function () {
@@ -101,10 +143,66 @@
                 $(".on_title").css({"position": "static", "margin": "0 auto"});
             }
         });
+
         $('.nav_under ul li').click(function () {
-            $(this).addClass('current').siblings().removeClass('current');
+            $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
         });
 
-    });
+        loadBaiduAccount();
 
+        $("#switchAccount").change(function () {
+            var _accountId = $("#switchAccount option:selected").val();
+            $.ajax({
+                url: '/account/switchAccount',
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                data: {
+                    "accountId": _accountId
+                },
+                success: function (data, textStatus, jqXHR) {
+                }
+            });
+            }
+        });
+        $(".nav_input1").click(function () {
+            if ($(".nav_left").css("display") == "none") {//隐藏
+                $(".nav_left").slideDown(600);
+                $(".concent").css("width", "85%");
+                $(".top").css("width", "85%");
+                $(".nav_input").css("display", "none");
+            }
+            else {
+                $(".nav_left").hide();
+                $(".concent").css("width", "99.5%");
+                $(".top").css("width", "99.5%");
+                $(".nav_input").css("display", "block");
+            }
+        });
+        $('.user_name').click(function () {
+            $(this).next('#switchAccount').show();
+            $('#switchAccount li').click(function () {
+                $('.user_name span').html($(this).text());
+                var _accountId = $(this).val();
+                $('#switchAccount').hide();
+                $.ajax({
+                    url: '/account/switchAccount',
+                    type: 'POST',
+                    async: false,
+                    dataType: 'json',
+                    data: {
+                        "accountId": _accountId
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        if (data.status != null && data.status == true) {
+                            //location.replace(location.href);
+                            window.location.reload(true);
+                        }
+                    }
+                });
+            });
+        });
+
+        loadBaiduAccount();
+    });
 </script>

@@ -2,8 +2,6 @@ package com.perfect.entity.bidding;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.List;
-
 /**
  * Created by yousheng on 2014/8/14.
  *
@@ -41,7 +39,7 @@ public class StrategyEntity {
     // 3 = right 1-3
     // 4 = right + postion
     @Field("pstra")
-    private int positionStrategy;
+    private int expPosition;
 
     // 1 = keep current postion
     // 2 = rollback
@@ -49,13 +47,13 @@ public class StrategyEntity {
     private int failedStrategy;
 
     @Field("t")
-    private int[] times;
+    private Integer[] times;
 
     @Field("pos")
     private int position;
 
     @Field("rt")
-    private int regionTarget;
+    private Integer[] regionTarget;
 
     public int getStrategy() {
         return strategy;
@@ -105,12 +103,12 @@ public class StrategyEntity {
         this.interval = interval;
     }
 
-    public int getPositionStrategy() {
-        return positionStrategy;
+    public int getExpPosition() {
+        return expPosition;
     }
 
-    public void setPositionStrategy(int positionStrategy) {
-        this.positionStrategy = positionStrategy;
+    public void setExpPosition(int expPosition) {
+        this.expPosition = expPosition;
     }
 
     public int getFailedStrategy() {
@@ -129,19 +127,21 @@ public class StrategyEntity {
         this.position = position;
     }
 
-    public int[] getTimes() {
+    public Integer[] getTimes() {
         return times;
     }
 
-    public void setTimes(int[] times) {
+    public void setTimes(Integer[] times) {
         this.times = times;
     }
 
-    public int getRegionTarget() {
+    public Integer[] getRegionTarget() {
         return regionTarget;
     }
 
-    public void setRegionTarget(int regionTarget) {
+    public void setRegionTarget(Integer[] regionTarget) {
         this.regionTarget = regionTarget;
     }
+
+
 }

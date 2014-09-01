@@ -16,7 +16,7 @@ public class CreativeEntity extends AccountIdEntity {
     @Id
     private String id;
 
-    @Indexed(unique = true)
+    @Indexed(sparse = true)
     @Field(CREATIVE_ID)
     private Long creativeId;
 
@@ -25,6 +25,10 @@ public class CreativeEntity extends AccountIdEntity {
     //------------------------
     @Field(ADGROUP_ID)
     private Long adgroupId;
+
+    @Field("oagid")
+    private String adgroupObjId;
+
     @Field("t")
     private String title;
 
@@ -54,6 +58,14 @@ public class CreativeEntity extends AccountIdEntity {
 
     @Field("d")
     private Integer devicePreference;
+
+    public String getAdgroupObjId() {
+        return adgroupObjId;
+    }
+
+    public void setAdgroupObjId(String adgroupObjId) {
+        this.adgroupObjId = adgroupObjId;
+    }
 
     public boolean setCreativeId(Long aCreativeId) {
         boolean wasSet = false;

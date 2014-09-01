@@ -87,7 +87,6 @@ public class AssistantCreativeController extends WebContextSupport {
      * @param request
      * @param response
      * @param aid
-     * @param cacheCreativeId
      * @param title
      * @param de1
      * @param de2
@@ -103,7 +102,6 @@ public class AssistantCreativeController extends WebContextSupport {
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public ModelAndView insertCreative(HttpServletRequest request,HttpServletResponse response,
                                        @RequestParam(value = "aid",required = true)String aid,
-                                       @RequestParam(value = "cacheCativeId",required = true)Long cacheCreativeId,
                                        @RequestParam(value = "title",required = false)String title,
                                        @RequestParam(value="description1",required = false)String de1,
                                        @RequestParam(value = "description2",required = false)String de2,
@@ -117,7 +115,7 @@ public class AssistantCreativeController extends WebContextSupport {
         CreativeEntity creativeEntity=new CreativeEntity();
         creativeEntity.setAccountId(AppContext.getAccountId());
         creativeEntity.setTitle(title);
-        creativeEntity.setCreativeId(cacheCreativeId);
+        creativeEntity.setCreativeId(null);
         creativeEntity.setDescription1(de1);
         creativeEntity.setDescription2(de2);
         creativeEntity.setPcDestinationUrl(pc);
@@ -147,6 +145,7 @@ public class AssistantCreativeController extends WebContextSupport {
             writeHtml(SUCCESS,response);
         }catch (Exception e){
             e.printStackTrace();
+            writeHtml(EXCEPTION,response);
         }
         return null;
     }
@@ -171,7 +170,7 @@ public class AssistantCreativeController extends WebContextSupport {
         creativeEntityFind.setMobileDisplayUrl(mibs);
         creativeEntityFind.setPause(bol);
         creativeDAO.update(creativeEntityFind);
-        writeHtml(SUCCESS,response);
+        writeHtml(SUCCESS, response);
         return  null;
     }
 }

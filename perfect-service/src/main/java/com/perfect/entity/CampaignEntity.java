@@ -20,8 +20,8 @@ public class CampaignEntity extends AccountIdEntity {
 
     @Id
     private String id;
-    //CampaignType Attributes
-    @Indexed(unique = true)
+
+    @Indexed(sparse = true)
     @Field(CAMPAIGN_ID)
     private Long campaignId;
 

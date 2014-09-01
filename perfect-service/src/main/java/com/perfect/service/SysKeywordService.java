@@ -1,5 +1,6 @@
 package com.perfect.service;
 
+import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.mongodb.utils.PaginationParam;
 
@@ -14,4 +15,7 @@ public interface SysKeywordService {
 
     public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param);
 
+    KeywordEntity findById(Long kwid);
+
+    KeywordEntity findByName(String keyword, Long accountId);
 }

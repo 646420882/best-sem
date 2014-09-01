@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -161,10 +162,10 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
 
         //CSV文件写入
         try {
-            os.write(Bytes.concat(commonCSVHead, ("行业" + DEFAULT_DELIMITER + "计划" + DEFAULT_DELIMITER + "单元" + DEFAULT_DELIMITER + "关键词" + DEFAULT_END).getBytes("UTF-8")));
+            os.write(Bytes.concat(commonCSVHead, ("行业" + DEFAULT_DELIMITER + "计划" + DEFAULT_DELIMITER + "单元" + DEFAULT_DELIMITER + "关键词" + DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
             for (LexiconEntity entity : list) {
                 String bytes = (entity.getTrade() + DEFAULT_DELIMITER + entity.getCategory() + DEFAULT_DELIMITER + entity.getGroup() + DEFAULT_DELIMITER + entity.getKeyword() + DEFAULT_END);
-                os.write(Bytes.concat(commonCSVHead, bytes.getBytes("UTF-8")));
+                os.write(Bytes.concat(commonCSVHead, bytes.getBytes(StandardCharsets.UTF_8)));
             }
         } catch (IOException e) {
             e.printStackTrace();

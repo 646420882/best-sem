@@ -1,8 +1,10 @@
 package com.perfect.app.assistantKeyword.controller;
 
 import com.google.gson.Gson;
+import com.perfect.core.AppContext;
 import com.perfect.dto.CampaignTreeDTO;
 import com.perfect.entity.KeywordEntity;
+import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
@@ -28,7 +30,7 @@ public class AssistantKeywordController {
 
 
     //当前的账户id test
-    Long currentAccountId = 6243012L;
+//    Long currentAccountId = 6243012L;
 
 
     @Resource
@@ -44,7 +46,7 @@ public class AssistantKeywordController {
      */
     @RequestMapping(value = "assistantKeyword/list",method = {RequestMethod.GET,RequestMethod.POST})
     public void getAllKeywordList(HttpServletResponse response){
-        Iterable<KeywordEntity>  list = assistantKeywordService.getKeyWords(new Query().addCriteria(Criteria.where("acid").is(currentAccountId)).limit(20));
+        Iterable<KeywordEntity>  list = assistantKeywordService.getKeyWords(new Query().addCriteria(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId())).limit(20));
         webContext.writeJson(list,response);
     }
 
@@ -62,7 +64,6 @@ public class AssistantKeywordController {
     /**
      * 修改以下参数的信息
      * @param kwid
-     * @param name
      * @param price
      * @param pcDestinationUrl
      * @param mobileDestinationUrl
@@ -72,28 +73,16 @@ public class AssistantKeywordController {
      * @return
      */
     @RequestMapping(value = "assistantKeyword/edit",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView updateKeywordName(Long kwid,String name,Double price,String pcDestinationUrl,String mobileDestinationUrl,Integer matchType,Integer phraseType,Boolean pause){
+    public void updateKeywordName(Long kwid,Double price,String pcDestinationUrl,String mobileDestinationUrl,Integer matchType,Integer phraseType,Boolean pause){
         KeywordEntity keywordEntity = new KeywordEntity();
         keywordEntity.setKeywordId(kwid);
-        keywordEntity.setKeyword(name.equals("")?null:name);
         keywordEntity.setPrice(price);
-        keywordEntity.setPcDestinationUrl(pcDestinationUrl.equals("")?null:pcDestinationUrl);
-        keywordEntity.setMobileDestinationUrl(mobileDestinationUrl.equals("")?null:mobileDestinationUrl);
+        keywordEntity.setPcDestinationUrl(pcDestinationUrl);
+        keywordEntity.setMobileDestinationUrl(mobileDestinationUrl);
         keywordEntity.setMatchType(matchType);
         keywordEntity.setPhraseType(phraseType);
         keywordEntity.setPause(pause);
         assistantKeywordService.updateKeyword(keywordEntity);
-
-        return new ModelAndView();
-    }
-
-    /**
-     * 测试页面
-     * @return
-     */
-    @RequestMapping(value = "assistantKeyword/showTestPage",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView showTestPage(){
-        return new ModelAndView("promotionAssistant/test");
     }
 
 
@@ -103,7 +92,7 @@ public class AssistantKeywordController {
      */
     @RequestMapping(value = "assistantKeyword/campaignTree",method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView getCampaignTree(ModelMap modelMap){
-        List<CampaignTreeDTO> treeList = assistantKeywordService.getCampaignTree(currentAccountId);
+        List<CampaignTreeDTO> treeList = assistantKeywordService.getCampaignTree(AppContext.getAccountId());
 
         String  gson = new Gson().toJson(treeList);
         System.out.println(gson);
@@ -133,7 +122,7 @@ public class AssistantKeywordController {
      */
     @RequestMapping(value = "assistantKeyword/validateDeleteByInput",method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView validateDeleteByInput(String deleteInfos){
-        assistantKeywordService.validateDeleteByInput(currentAccountId, deleteInfos);
+        assistantKeywordService.validateDeleteByInput(AppContext.getAccountId(), deleteInfos);
         return new ModelAndView();
     }
 

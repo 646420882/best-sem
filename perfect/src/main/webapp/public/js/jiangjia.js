@@ -12,10 +12,13 @@ function initOptions(id, start, end) {
     var select = $('#' + id);
     select.empty();
     for (i = start; i <= end; i++) {
-        $("<option value=" + i + ">" + i + "点</option>").appendTo(select);
+        $("<option value='" + i + "'>" + i + "点</option>").appendTo(select);
     }
 }
 
+function emptydata() {
+
+}
 $(function () {
     //单一时段
     initOptions('start', 0, 23);
@@ -47,6 +50,8 @@ $(function () {
 
         if (items.length == 1) {
             filldata(items.val());
+        } else {
+            emptydata();
         }
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -193,6 +198,35 @@ $(function () {
         sendReq(true);
     })
 
+
+    $('#rankBtn').click(function () {
+        var items = checked("subbox2");
+
+        if (items.length == 0) {
+            alert("请选择至少一个关键词!");
+            return;
+        }
+        var ids = [];
+        items.each(function (i, item) {
+            ids.push(item.value);
+        })
+
+        $.ajax({
+            url: "/bidding/rank",
+            data: {'ids': ids.toString()},
+            type: "POST",
+            success: function (datas) {
+                datas.rows.each(function (item) {
+                    if (item.rank == -1) {
+                        $('#item.id').val("无当前排名");
+                    } else {
+                        $('#item.id').val(item.rank);
+                    }
+                });
+            }
+        })
+    });
+
 });
 
 function sendReq(run) {
@@ -209,9 +243,13 @@ function sendReq(run) {
 
     req.run = run;
     var ids = [];
-    checked('subbox2').each(function (i, item) {
-        ids.push(item.value);
-    });
+    if ($.kwid == undefined) {
+        checked('subbox2').each(function (i, item) {
+            ids.push(item.value);
+        });
+    } else {
+        ids.push($.kwid);
+    }
     req.ids = ids;
 
     var timeRange = checked('times').val();
@@ -235,17 +273,22 @@ function sendReq(run) {
             }
             times.push(start, end);
         });
-
+        if (times.length == 0) {
+            return false;
+        }
         req.times = times;
     }
 
-    //竞价模式
+//竞价模式
     req.mode = checked('mode').val();
 
-    // 竞价设备
+// 竞价设备
     req.device = seleValue('device');
 
-    //竞价位置
+    if (req.device == undefined) {
+        req.device = 10000;
+    }
+//竞价位置
     req.expPosition = seleValue('pos');
     if (req.expPosition == 4) {
         req.customPos = $('input[name=rightpos]').val();
@@ -257,8 +300,8 @@ function sendReq(run) {
 
     req.auto = checked('auto').val();
 
-    //竞价区域
-    req.target = 10000;
+//竞价区域
+    req.target = null;
 
     if (req.auto == 2) {
         req.interval = seleValue('interval');
@@ -286,18 +329,18 @@ function filldata(id) {
         success: function (datas) {
             datas.rows.each(function (item) {
                 var s = item.strategyEntity;
-                seleValue('device', s.device);
+                setSeleValue('device', s.device);
 
                 var mtimes = (s.times.length == 2) ? 1 : 2;
                 checkValue('times', mtimes);
 
-                if(mtimes == 1){
-                    seleValue('start', s.times[0]);
-                    seleValue('end', s.times[1]);
-                }else{
-                    for(i = 0; i < s.times.length; i+2){
+                if (mtimes == 1) {
+                    setSeleValue('start', s.times[0]);
+                    setSeleValue('end', s.times[1]);
+                } else {
+                    for (i = 0; i < s.times.length; i + 2) {
                         var start = s.times[i];
-                        if(start < 12){
+                        if (start < 12) {
                             checked()
                         }
                     }
@@ -332,7 +375,7 @@ function seleValue(id) {
     return $('#' + id + ' option:selected').val();
 }
 
-function seleValue(id, value) {
+function setSeleValue(id, value) {
     $('#' + id + ' option:selected').val(value);
 }
 

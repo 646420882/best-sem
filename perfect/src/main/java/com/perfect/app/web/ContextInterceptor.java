@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -52,32 +53,32 @@ public class ContextInterceptor implements HandlerInterceptor {
                 return false;
             }
 
-            WebUtils.setAccountList(request, entity.getBaiduAccountInfoEntities());
             if (entity.getBaiduAccountInfoEntities().size() == 1) {
-                if (entity.getBaiduAccountInfoEntities().size() == 1) {
-                    BaiduAccountInfoEntity infoEntity = entity.getBaiduAccountInfoEntities().get(0);
-                    WebUtils.setAccountId(request, infoEntity.getId());
-                    AppContext.setUser(userName, infoEntity.getId());
-                    return true;
-                }
-
-                for (BaiduAccountInfoEntity infoEntity : entity.getBaiduAccountInfoEntities()) {
-                    if (infoEntity.isDfault()) {
-                        WebUtils.setAccountId(request, infoEntity.getId());
-                        AppContext.setUser(userName, infoEntity.getId());
-                        break;
-                    }
-                }
+                BaiduAccountInfoEntity infoEntity = entity.getBaiduAccountInfoEntities().get(0);
+                WebUtils.setAccountId(request, infoEntity.getId());
+                AppContext.setUser(userName, infoEntity.getId());
+                return true;
             }
 
-
-            return true;
+            for (BaiduAccountInfoEntity infoEntity : entity.getBaiduAccountInfoEntities()) {
+                if (infoEntity.isDfault()) {
+                    WebUtils.setAccountId(request, infoEntity.getId());
+                    AppContext.setUser(userName, infoEntity.getId());
+                    break;
+                }
+            }
         }
+
+
+        return true;
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView
-            modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        if (modelAndView == null || (modelAndView.getView() != null && modelAndView.getView() instanceof MappingJackson2JsonView)) {
+            return;
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return;
@@ -90,25 +91,45 @@ public class ContextInterceptor implements HandlerInterceptor {
 
             ModelMap modelMap = modelAndView.getModelMap();
             modelMap.put("currSystemUserName", WebUtils.getUserName(request));
-            if (datas[0] == 0 || datas[1] == 0) {
-                modelMap.put("remainderDays", 0);
-            } else {
-                String vStr = Double.valueOf(datas[0] / datas[1]).toString();
-                modelMap.put("remainderDays", vStr.substring(0, vStr.indexOf(".")));
+
+            if (datas[0] == null) {
+                if (datas[1] == null) {
+                    modelMap.put("accountBalance", 0);
+                    modelMap.put("accountBudget", 0);
+                    modelMap.put("remainderDays", 0);
+                } else {
+                    modelMap.put("accountBalance", 0);
+                    modelMap.put("accountBudget", datas[1]);
+                    modelMap.put("remainderDays", 0);
+                }
             }
-            modelMap.put("accountBalance", datas[0]);
-            modelMap.put("accountBudget", datas[1]);
+            if (datas[0] != null) {
+                if (datas[1] != null) {
+                    if (datas[0] == 0 || datas[1] == 0) {
+                        modelMap.put("remainderDays", 0);
+                    } else {
+                        String vStr = Double.valueOf(datas[0] / datas[1]).toString();
+                        modelMap.put("remainderDays", vStr.substring(0, vStr.indexOf(".")));
+                    }
+                    modelMap.put("accountBalance", datas[0]);
+                    modelMap.put("accountBudget", datas[1]);
+                } else {
+                    modelMap.put("accountBalance", datas[0]);
+                    modelMap.put("accountBudget", 0);
+                    modelMap.put("remainderDays", 0);
+                }
+
+            }
         }
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception
-            ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 
     }
 
-    //获取账户余额和账户预�
-    private Double[] getBalanceAndBudget(Long accountId) {
+    //获取账户余额和账户余额
+   private Double[] getBalanceAndBudget(Long accountId) {
         Double balance = accountManageService.getBaiduAccountInfoById(accountId).getBalance();
         Double yesterdayCost = accountManageService.getYesterdayCost(accountId);
         return new Double[]{balance, yesterdayCost};

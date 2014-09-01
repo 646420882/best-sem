@@ -55,6 +55,17 @@ public class AdgroupEntity extends AccountIdEntity {
     @Field("o")
     private OptType opt;
 
+    @Field("m")
+    private Double mib;
+
+    public Double getMib() {
+        return mib;
+    }
+
+    public void setMib(Double mib) {
+        this.mib = mib;
+    }
+
     public String getCampaignName() {
         return campaignName;
     }

@@ -43,4 +43,21 @@ public class NumberUtils {
             return 0l;
         }
     }
+
+    public static Number getNumber(Number number) {
+        return (number == null) ? 0 : number;
+    }
+
+    public static Integer getInteger(Integer integer) {
+        return (Integer) getNumber(integer);
+    }
+
+    public static Double getDouble(Double num) {
+        return (Double) getNumber(num);
+    }
+
+    public static Long getLong(Long num) {
+        return (Long) getNumber(num);
+    }
+
 }

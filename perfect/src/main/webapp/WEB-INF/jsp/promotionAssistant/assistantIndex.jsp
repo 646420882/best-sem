@@ -16,17 +16,17 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/smartMenu.css">
 </head>
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-
+<jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
 <div class="concent fr over">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
-<jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
+
 <div class="mid over">
 <div class="on_title over">
     <a href="#">
@@ -87,7 +87,7 @@
 <div class="containers  over">
     <div class="zs_function over">
         <ul class="fl">
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a id="addKeyword" href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="javascript:deleteKwd()"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a>
             </li>
@@ -149,7 +149,7 @@
             <ul>
                 <li>
                     <div class="t_list01 fl over">关键词名称：</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(1,this.value)" onkeydown="missBlur(event,this)" class="zs_input1 keyword_1"></div>
+                    <div class="t_list02 fl over"><input type="text" disabled="disabled"  class="zs_input1 keyword_1"></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">出价：</div>
@@ -277,26 +277,26 @@
                 <li>
                     <div class="t_list04 fl over">
                         <div class="t_list01 fl over">默认访问URL：</div>
-                        <div class="t_list02 fl over"><input type="text" class="zs_input3" id="sPc"/><span><span
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPc"/><span><span
                                 id="sPc_size">0</span>/1024</span>
                         </div>
                     </div>
                     <div class="t_list04 fr over">
                         <div class="t_list01 fl over">默认显示URL：</div>
-                        <div class="t_list02 fl over"><input type="text" class="zs_input3" id="sPcs"/><span><span
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPcs"/><span><span
                                 id="sPcs_size">49</span>/50</span></div>
                     </div>
                 </li>
                 <li>
                     <div class="t_list04 fl over">
                         <div class="t_list01 fl over">移动访问URL：</div>
-                        <div class="t_list02 fl over"><input type="text" class="zs_input3"
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3"
                                                              id="sMib"><span><span id="sMib_size">49</span>/1024</span>
                         </div>
                     </div>
                     <div class="t_list04 fr over">
                         <div class="t_list01 fl over">移动显示URL：</div>
-                        <div class="t_list02 fl over"><input type="text" class="zs_input3" id="sMibs"><span><span
+                        <div class="t_list05 fl over"> <input type="text" class="zs_input3" id="sMibs"><span><span
                                 id="sMibs_size">35</span>/36</span></div>
                     </div>
                 </li>
@@ -311,7 +311,7 @@
             <ul>
                 <li>
                     <div class="w_list01 fl over">状态：</div>
-                    <div class="w_list02 fl over"><b id="sStatus">有效</b></div>
+                    <div class="w_list02 fl over"> <b id="sStatus">有效</b></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">设备偏好：</div>
@@ -752,19 +752,19 @@
             </li>
             <li>
                 <div class="t_list01 fl over">移动出价比例：</div>
-                <div class="t_list02 fl over"><input type="text" class="zs_input1"><span><span>0</span>/1024</span></div>
+                <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
             </li>
         </ul>
     </div>
     <div class="zs_bottom2 over fr">
         <ul>
             <li>
-                <div class="t_list01 fl over">状态：</div>
-                <div class="t_list02 fl over"><b>有效</b></div>
+                <div class="w_list01 fl over">状态：</div>
+                <div class="w_list02 fl over"><b>有效</b></div>
             </li>
             <li>
-                <div class="t_list01 fl over">启用/暂停：</div>
-                <div class="t_list02 fl over"><select>
+                <div class="w_list01 fl over">启用/暂停：</div>
+                <div class="w_list02 fl over"><select>
                     <option>启用</option>
                 </select></div>
             </li>
@@ -1160,11 +1160,11 @@
 
         <div class="inputKwdDiv">
             <div><span>否定关键词</span><span>(0/200)</span></div>
-            <textarea id="ntwTextarea" rows="15" cols="30"></textarea>
+            <textarea id="ntwTextarea" rows="15" cols="45"></textarea>
         </div>
         <div class="inputKwdDiv">
             <div><span>精确否定关键词</span><span>(0/200)</span></div>
-            <textarea id = "entwTextarea" rows="15" cols="30"></textarea>
+            <textarea id = "entwTextarea" rows="15" cols="45"></textarea>
         </div>
     <div class="main_bottom">
         <div class="w_list03">
@@ -1189,7 +1189,7 @@
             <label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/>
             <label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></br>
             <label>移动显示URL:</label><input name="mobileDisplayUrl" maxlength="36"/>
-            <label>创意状态:</label><label id="sstatus">暂无</label></br>
+            <label>创意状态:</label><label id="cuStatus">暂无</label></br>
             <label>是否启用:</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select>
         </form>
     </div>
@@ -1244,7 +1244,7 @@
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li class="current">确认</li>
+                <li class="current scheduleOk">确认</li>
                 <li class="close">取消</li>
             </ul>
         </div>
@@ -1255,29 +1255,16 @@
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setSchedule">
     <h2 id="setScheduleDiv">推广地域列表<a href="#" class="close">关闭</a></h2>
-    <div class="chooseTime">
-        <span>请选择时段</span>
-        <ul>
-            <li class="tfsjd"><span></span>&nbsp;&nbsp;&nbsp;投放时间段</li>
-            <li class="ztsjd"><span></span>&nbsp;&nbsp;&nbsp;暂停时间段</li>
-        </ul>
-    </div><br/>
-
-    <div class="main_bottom">
-        <div class="w_list03">
-            <ul>
-                <li class="current">确认</li>
-                <li class="close">取消</li>
-            </ul>
-        </div>
-    </div>
 </div>
+<jsp:include page="../promotionAssistant/alert/setRegionTarget.jsp"/>
 
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/jquery-smartMenu-min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog-plus.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/highcharts.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
@@ -1291,6 +1278,12 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantAccount.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/adgroup.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/addKeyword.js"></script>
+<script type="text/javascript">
+    $(function () {
+        window.dialog = dialog;
+    });
+</script>
 
 </body>
 </html>

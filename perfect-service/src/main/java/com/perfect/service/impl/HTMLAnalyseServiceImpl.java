@@ -3,11 +3,13 @@ package com.perfect.service.impl;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
-import com.perfect.autosdk.sms.v3.*;
+import com.perfect.autosdk.sms.v3.GetPreviewRequest;
+import com.perfect.autosdk.sms.v3.GetPreviewResponse;
+import com.perfect.autosdk.sms.v3.PreviewInfo;
+import com.perfect.autosdk.sms.v3.RankService;
 import com.perfect.dto.CreativeDTO;
 import com.perfect.service.HTMLAnalyseService;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,13 +26,13 @@ import java.util.zip.GZIPInputStream;
  */
 public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
 
-    private final ServiceFactory serviceFactory;
+    private final CommonService serviceFactory;
 
-    public HTMLAnalyseServiceImpl(ServiceFactory serviceFactory) {
+    private HTMLAnalyseServiceImpl(CommonService serviceFactory) {
         this.serviceFactory = serviceFactory;
     }
 
-    public static HTMLAnalyseService createService(ServiceFactory serviceFactory) {
+    public static HTMLAnalyseService createService(CommonService serviceFactory) {
         return new HTMLAnalyseServiceImpl(serviceFactory);
     }
 
@@ -49,8 +51,8 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
 
     //从模拟页面获取推广链接和关键词
     public List<PreviewData> getPageData(GetPreviewRequest getPreviewRequest) {
-        List<CreativeDTO> leftCreativeVOList = new ArrayList<>();
-        List<CreativeDTO> rightCreativeVOList = new ArrayList<>();
+        List<CreativeDTO> leftCreativeVOList = new LinkedList<>();
+        List<CreativeDTO> rightCreativeVOList = new LinkedList<>();
 
         Map<String, String> htmls = getHTML(getPreviewRequest, serviceFactory);
 
@@ -68,7 +70,8 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
             PreviewData previewData = new PreviewData();
 
             previewData.setKeyword(htmlEntry.getKey());
-
+            previewData.setRegion(getPreviewRequest.getRegion());
+            previewData.setDevice(getPreviewRequest.getDevice());
             previewData.setLeft(leftCreativeVOList);
             previewData.setRight(rightCreativeVOList);
             previewDatas.add(previewData);
@@ -113,385 +116,55 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
     }
 
     private void handleLeft(Document doc, final List<CreativeDTO> leftCreativeVOList) {
-        Elements div_left = null;
-        boolean _temp1 = (doc.getElementById("content_left") != null) && (doc.getElementById("content_left").children().size() > 0);
-
-        if (_temp1) {
-            div_left = doc.getElementById("content_left").children();
-        }
-
-
-        //过滤出左侧的推广信息
-        if (_temp1) {
-            for (int i = div_left.size() - 1; i >= 0; i--) {
-                if (div_left.get(i).hasAttr("id")) {
-                    div_left.remove(i);
-                }
-            }
-        }
+        LinkedList<CreativeDTO> creativeDTOList = new LinkedList<>();
 
         //获取左侧推广数据
-        if (_temp1 && div_left.size() > 0) {
-            if (div_left.select("table").size() > 0 && "推广链接".equals(div_left.select("table").first().select("a").first().text())) {
-                List<Element> elementList = new ArrayList<>();
-                for (Element _e : div_left) {
-                    if ("table".equals(_e.tagName())) {
-                        elementList.add(_e);
-                    }
+        if (doc.select("#content_left table").isEmpty()) {
+            //div
+            // ec_title
+            Elements elements = doc.select("#content_left > div");
+            for (Element element : elements) {
+                CreativeDTO creativeDTO = new CreativeDTO();
+                creativeDTO.setTitle(element.select(".ec_title").text());
+
+                creativeDTO.setTitle(element.select(".ec_title").text());
+                if (element.select(".ec_desc .EC_pap_big_desc").size() > 0) {
+                    creativeDTO.setDescription(element.select(".ec_desc .EC_pap_big_desc").text());
+                    creativeDTO.setUrl(element.select(".ec_desc .ec_meta .ec_url").text());
+                    creativeDTO.setTime(element.select(".ec_desc .ec_meta .ec_date").text());
+                } else {
+                    creativeDTO.setDescription(element.select(".ec_desc").text());
+                    creativeDTO.setUrl(element.select(".ec_meta .ec_url").text());
+                    creativeDTO.setTime(element.select(".ec_meta .ec_date").text());
                 }
-                div_left = new Elements(elementList.subList(0, elementList.size() / 2));
-                //table
-                CreativeDTO creativeVO = null;
+                creativeDTOList.addLast(creativeDTO);
 
-                for (Element e : div_left) {
-                    if (e.child(0).select("table").size() > 0) {//one of conditions -> 搜索"去哪儿旅游"
-                        creativeVO = new CreativeDTO();
-                        String _title = e.select("tr").get(1).child(0).text();
-                        String _description = e.child(0).select("table").select("td").get(1).child(0).child(0).text();
-                        String _url = e.child(0).select("table").select("td").get(1).child(0).children().last().child(0).text();
+            }
 
-                        Elements elements = e.child(0).select("table").select("td").get(1).child(0).children().get(2).select("a");
-                        List<SublinkInfo> list = new ArrayList<>(elements.size());
-                        for (Element e1 : elements) {
-                            if (StringUtils.isBlank(e1.text()))
-                                continue;
-                            SublinkInfo sublinkInfo = new SublinkInfo();
-                            sublinkInfo.setDescription(e1.text());
-                            sublinkInfo.setDestinationUrl(e1.attr("abs:href"));
-                            list.add(sublinkInfo);
-                        }
-
-                        creativeVO.setTitle(_title);
-                        creativeVO.setDescription(_description);
-                        creativeVO.setUrl(_url);
-                        creativeVO.setSublinkInfos(list);
-                        leftCreativeVOList.add(creativeVO);
-
-                        continue;
-                    }
-                    Element _e1 = e.select("tr").get(2).select("td").first();
-                    Element _e2 = e.select("tr").get(3).select("td").first();
-                    String _title = e.select("tr").get(1).select("td").first().select("a").first().text();
-                    String _url = e.select("tr").get(1).select("td").first().select("a").eq(1).text();
-                    String _description;
-
-                    if (_e1.select("a").size() == 1 && _e2.select("a").size() == 0) {
-                        //only description
-                        creativeVO = new CreativeDTO();
-                        _description = _e1.select("a").text();
-                        creativeVO.setTitle(_title);
-                        creativeVO.setDescription(_description);
-                        creativeVO.setUrl(_url);
-                        leftCreativeVOList.add(creativeVO);
-                    } else if (_e1.select("div").size() == 1) {
-                        //only sublink(ul-li)
-                        creativeVO = new CreativeDTO();
-
-                        //get sublink
-                        List<SublinkInfo> list = new ArrayList<>();
-                        for (Element e1 : _e1.select("div").first().select("ul").first().children()) {
-                            Elements _elements = e1.select("a");
-                            SublinkInfo sublinkInfo;
-                            for (Element e2 : _elements) {
-                                if (StringUtils.isBlank(e2.text()))
-                                    continue;
-                                sublinkInfo = new SublinkInfo();
-                                sublinkInfo.setDescription(e2.text());
-                                sublinkInfo.setDestinationUrl(e2.attr("abs:href"));
-                                list.add(sublinkInfo);
-                            }
-                        }
-                        creativeVO.setTitle(_title);
-                        creativeVO.setUrl(_url);
-                        creativeVO.setSublinkInfos(list);
-                        leftCreativeVOList.add(creativeVO);
-                    } else if (_e1.select("a").size() > 0 && _e2.select("a").size() == 0) {
-                        //only sublink(a)
-                        creativeVO = new CreativeDTO();
-
-                        //get sublink
-                        Elements _elements = _e1.select("a");
-                        List<SublinkInfo> list = new ArrayList<>(_elements.size());
-                        SublinkInfo sublinkInfo;
-                        for (Element e1 : _elements) {
-                            if (StringUtils.isBlank(e1.text()))
-                                continue;
-                            sublinkInfo = new SublinkInfo();
-                            sublinkInfo.setDescription(e1.text());
-                            sublinkInfo.setDestinationUrl(e1.attr("abs:href"));
-                            list.add(sublinkInfo);
-                        }
-
-                        creativeVO.setTitle(_title);
-                        creativeVO.setUrl(_url);
-                        creativeVO.setSublinkInfos(list);
-                        leftCreativeVOList.add(creativeVO);
-                    } else if (_e2.select("div").size() == 1) {
-                        //description & sublink(ul-li)
-                        creativeVO = new CreativeDTO();
-                        _description = _e1.select("a").text();
-
-                        //get sublink
-                        List<SublinkInfo> list = new ArrayList<>();
-                        for (Element e1 : _e2.select("div").first().select("ul").first().children()) {
-                            Elements _elements = e1.select("a");
-                            SublinkInfo sublinkInfo;
-                            for (Element e2 : _elements) {
-                                if (StringUtils.isBlank(e2.text()))
-                                    continue;
-                                sublinkInfo = new SublinkInfo();
-                                sublinkInfo.setDescription(e2.text());
-                                sublinkInfo.setDestinationUrl(e2.attr("abs:href"));
-                                list.add(sublinkInfo);
-                            }
-                        }
-                        creativeVO.setTitle(_title);
-                        creativeVO.setDescription(_description);
-                        creativeVO.setUrl(_url);
-                        creativeVO.setSublinkInfos(list);
-                        leftCreativeVOList.add(creativeVO);
-                    } else if (_e2.select("a").size() > 0) {
-                        //description & sublink(a)
-                        creativeVO = new CreativeDTO();
-                        _description = _e1.select("a").text();
-
-                        //get sublink
-                        Elements _elements = _e2.select("a");
-                        List<SublinkInfo> list = new ArrayList<>(_elements.size());
-                        SublinkInfo sublinkInfo;
-                        for (Element e1 : _elements) {
-                            if (StringUtils.isBlank(e1.text()))
-                                continue;
-                            sublinkInfo = new SublinkInfo();
-                            sublinkInfo.setDescription(e1.text());
-                            sublinkInfo.setDestinationUrl(e1.attr("abs:href"));
-                            list.add(sublinkInfo);
-                        }
-
-                        creativeVO.setTitle(_title);
-                        creativeVO.setDescription(_description);
-                        creativeVO.setUrl(_url);
-                        creativeVO.setSublinkInfos(list);
-                        leftCreativeVOList.add(creativeVO);
-                    }
+        } else {
+            Elements tables = doc.select("#content_left table");
+            for (Element table : tables) {
+                if (!table.className().startsWith(" ")) {
+                    continue;
                 }
-            } else {
-                //div
-                CreativeDTO creativeVO = null;
+                CreativeDTO creativeDTO = new CreativeDTO();
+                creativeDTO.setTitle(table.select(".EC_title").text());
 
-                for (Element e : div_left) {
-                    if (!e.tagName().equals("div")) {
-                        continue;
-                    }
-                    Elements elements_div = e.children();
-                    if (elements_div.size() == 2) {//one of conditions -> 搜索"上海婚博会"
-                        creativeVO = new CreativeDTO();
-                        String _title = elements_div.first().select("a").first().text();
-                        String _description = elements_div.get(1).select("tr").first()
-                                .select("td").get(1).children().get(0).children().get(0).text();
-                        String _url = elements_div.get(1).select("tr").first()
-                                .select("td").get(1).children().get(0).children().get(2).child(0).text();
+                Elements descs = table.select(".EC_body");
+                if (descs.isEmpty()) {
+                    creativeDTO.setDescription(table.select(".EC_pap_big_zpdes").text());
 
-                        if (elements_div.get(1).select("tr").first().select("td").get(1).child(0).child(1).select("a").size() > 0) {
-                            //sublink
-                            Elements _elements = elements_div.get(1).select("tr").first()
-                                    .select("td").get(1).child(0).child(1).select("a");
-                            List<SublinkInfo> list = new ArrayList<>(_elements.size());
-                            SublinkInfo sublinkInfo;
-                            for (Element e1 : _elements) {
-                                if (StringUtils.isBlank(e1.text()))
-                                    continue;
-                                sublinkInfo = new SublinkInfo();
-                                sublinkInfo.setDescription(e1.text());
-                                sublinkInfo.setDestinationUrl(e1.attr("abs:href"));
-                                list.add(sublinkInfo);
-                            }
-                            creativeVO.setSublinkInfos(list);
-                        }
-
-                        creativeVO.setTitle(_title);
-                        creativeVO.setDescription(_description);
-                        creativeVO.setUrl(_url);
-                        leftCreativeVOList.add(creativeVO);
-                        continue;
-                    }
-                    //only sublink(including a)
-                    Elements elements1 = elements_div.get(1).children();
-                    //only sublink(including ul-li)
-                    Elements _elements1 = elements_div.get(1).children();
-                    //description & sublink(including a)
-                    Elements _elements2 = elements_div.get(2).children();
-                    //description & sublink(including ul-li)
-                    Elements _elements3 = elements_div.get(2).children();
-
-                    //判断elements1的直接子元素是否全部为a
-                    boolean elements1AllIsA = true;
-                    for (Element _e : elements1) {
-                        if (!"a".equals(_e.tagName())) {
-                            elements1AllIsA = false;
-                            break;
-                        }
-                    }
-
-                    //判断_elements2的直接子元素是否全部为a
-                    boolean _elements2AllIsA = true;
-                    for (Element _e : _elements2) {
-                        if (!"a".equals(_e.tagName())) {
-                            _elements2AllIsA = false;
-                            break;
-                        }
-                    }
-
-                    String _title = elements_div.first().text();
-                    String _description;
-                    String _url;
-                    if (_elements1.select("div").size() == 0 && elements_div.size() == 3) {
-                        //only description
-                        creativeVO = new CreativeDTO();
-                        _description = elements_div.get(1).text();
-                        _url = elements_div.get(2).child(0).text();
-                        creativeVO.setTitle(_title);
-                        creativeVO.setDescription(_description);
-                        creativeVO.setUrl(_url);
-                        leftCreativeVOList.add(creativeVO);
-                    } else if (_elements1.size() == 1 && "div".equals(_elements1.get(0).tagName()) && elements_div.size() == 3 && _elements1.first().select("ul").size() == 1) {
-                        //only sublink(ul-li)
-                        creativeVO = new CreativeDTO();
-                        _url = elements_div.get(2).child(0).text();
-
-                        //get sublink
-                        List<SublinkInfo> list = new ArrayList<>();
-                        for (Element e1 : _elements1.first().select("ul").first().children()) {
-                            Elements _elements = e1.select("a");
-                            SublinkInfo sublinkInfo;
-                            for (Element e2 : _elements) {
-                                if (StringUtils.isBlank(e2.text()))
-                                    continue;
-                                sublinkInfo = new SublinkInfo();
-                                sublinkInfo.setDescription(e2.text());
-                                sublinkInfo.setDestinationUrl(e2.attr("abs:href"));
-                                list.add(sublinkInfo);
-                            }
-                        }
-
-                        creativeVO.setTitle(_title);
-                        creativeVO.setUrl(_url);
-                        creativeVO.setSublinkInfos(list);
-                        leftCreativeVOList.add(creativeVO);
-                    } else if (elements1AllIsA && elements_div.size() == 3) {
-                        //only sublink(a)
-                        creativeVO = new CreativeDTO();
-                        _url = elements_div.get(2).child(0).text();
-
-                        //get sublink
-                        List<SublinkInfo> list = new ArrayList<>(elements1.size());
-                        SublinkInfo sublinkInfo;
-                        for (Element e1 : elements1) {
-                            if (StringUtils.isBlank(e1.text()))
-                                continue;
-                            sublinkInfo = new SublinkInfo();
-                            sublinkInfo.setDescription(e1.text());
-                            sublinkInfo.setDestinationUrl(e1.attr("abs:href"));
-                            list.add(sublinkInfo);
-                        }
-
-                        creativeVO.setTitle(_title);
-                        creativeVO.setUrl(_url);
-                        creativeVO.setSublinkInfos(list);
-                        leftCreativeVOList.add(creativeVO);
-                    } else if (!elements1AllIsA && elements_div.size() == 3) {
-                        if (elements1.size() == 1 && "div".equals(elements1.first().tagName())) {
-                            if (elements1.first().select("div").size() > 0 && elements1.first().select("div").get(0).select("a").size() > 0) {
-                                /**
-                                 * elements_div.get(1)
-                                 *
-                                 * <div class="ec_desc ec_font_small">
-                                 *  <div class="EC_palist">
-                                 *      <div class="EC_pp_pal EC_pal3002 EC_PP" style="">
-                                 *          <a style="word-wrap:normal;width:25%;text-align:left; padding-right:1%" href="javascript:void(0)" target="_blank">韩国5日游</a>
-                                 *          <a style="word-wrap:normal;width:22%;text-align:left; padding-right:1%;text-decoration:none">让&quot;利&quot;到底</a>
-                                 *          <a style="word-wrap:normal;width:17%;text-align:left; padding-right:1%;text-decoration:none">2380元起</a>
-                                 *          <a style="word-wrap:normal;width:25%;text-align:left; padding-right:0%" href="javascript:void(0)" target="_blank">参考行程</a>
-                                 *      </div>
-                                 *  </div>
-                                 *</div>
-                                 */
-                                Elements elements_1 = elements1.first().select("a");
-                                creativeVO = new CreativeDTO();
-                                _url = elements_div.get(2).child(0).text();
-
-                                List<SublinkInfo> list = new ArrayList<>(elements_1.size());
-                                SublinkInfo sublinkInfo;
-                                for (Element e1 : elements_1) {
-                                    if (StringUtils.isBlank(e1.text()))
-                                        continue;
-
-                                    sublinkInfo = new SublinkInfo();
-                                    sublinkInfo.setDescription(e1.text());
-                                    sublinkInfo.setDestinationUrl(e1.attr("abs:href"));
-                                    list.add(sublinkInfo);
-                                }
-
-                                creativeVO.setTitle(_title);
-                                creativeVO.setUrl(_url);
-                                creativeVO.setSublinkInfos(list);
-                                leftCreativeVOList.add(creativeVO);
-                            }
-                        }
-                    } else if (_elements1.select("div").size() == 0 && elements_div.size() == 4 && _elements2AllIsA) {
-                        //description & sublink(a)
-                        creativeVO = new CreativeDTO();
-                        _description = elements_div.get(1).text();
-                        _url = elements_div.get(3).child(0).text();
-
-                        //get sublink
-                        List<SublinkInfo> list = new ArrayList<>(_elements2.size());
-                        SublinkInfo sublinkInfo;
-                        for (Element e1 : _elements2) {
-                            if (StringUtils.isBlank(e1.text()))
-                                continue;
-                            sublinkInfo = new SublinkInfo();
-                            sublinkInfo.setDescription(e1.text());
-                            sublinkInfo.setDestinationUrl(e1.attr("abs:href"));
-                            list.add(sublinkInfo);
-                        }
-
-                        creativeVO.setTitle(_title);
-                        creativeVO.setDescription(_description);
-                        creativeVO.setUrl(_url);
-                        creativeVO.setSublinkInfos(list);
-                        leftCreativeVOList.add(creativeVO);
-                    } else if (_elements1.select("div").size() == 0 && elements_div.size() == 4 && _elements3.size() == 1 && "div".equals(_elements3.get(0).tagName()) && _elements3.first().select("ul").size() == 1) {
-                        //description & sublink(ul-li)
-                        creativeVO = new CreativeDTO();
-                        _description = elements_div.get(1).text();
-                        _url = elements_div.get(3).child(0).text();
-
-                        //get sublink
-                        List<SublinkInfo> list = new ArrayList<>();
-                        for (Element e1 : _elements3.first().select("ul").first().children()) {
-                            Elements _elements = e1.select("a");
-                            SublinkInfo sublinkInfo;
-                            for (Element e2 : _elements) {
-                                if (StringUtils.isBlank(e2.text()))
-                                    continue;
-                                sublinkInfo = new SublinkInfo();
-                                sublinkInfo.setDescription(e2.text());
-                                sublinkInfo.setDestinationUrl(e2.attr("abs:href"));
-                                list.add(sublinkInfo);
-                            }
-                        }
-
-                        creativeVO.setTitle(_title);
-                        creativeVO.setDescription(_description);
-                        creativeVO.setUrl(_url);
-                        creativeVO.setSublinkInfos(list);
-                        leftCreativeVOList.add(creativeVO);
-                    }
+                    // 处理XJ
+//                    Elements xjs = table.select(".EC_pap_big_xj");
+                } else {
+                    creativeDTO.setDescription(descs.text());
                 }
+                creativeDTO.setUrl(table.select(".EC_url").text());
+
+                creativeDTOList.addLast(creativeDTO);
             }
         }
-
+        leftCreativeVOList.addAll(creativeDTOList);
     }
 
     private Map<String, String> getHTML(GetPreviewRequest getPreviewRequest, CommonService commonService) {
@@ -541,9 +214,12 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
 
         private String keyword;
 
+        private int region;
+
         private List<CreativeDTO> left;
 
         private List<CreativeDTO> right;
+        private Integer device;
 
         public List<CreativeDTO> getLeft() {
             return left;
@@ -568,6 +244,22 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
         public void setKeyword(String keyword) {
             this.keyword = keyword;
         }
+
+        public int getRegion() {
+            return region;
+        }
+
+        public void setRegion(int region) {
+            this.region = region;
+        }
+
+        public void setDevice(Integer device) {
+            this.device = device;
+        }
+
+        public Integer getDevice() {
+            return device;
+        }
     }
 
 
@@ -585,7 +277,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
             request.setRegion(28000);
 
 
-            request.setKeyWords(Arrays.asList(new String[]{"车展"}));
+            request.setKeyWords(Arrays.asList(new String[]{"去哪儿旅游"}));
 
             List<PreviewData> map = htmlService.getPageData(request);
 

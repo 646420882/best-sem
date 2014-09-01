@@ -42,7 +42,8 @@ public class ReaderBuilder {
         digester.addSetNext("*/mapping", "addMapping");
         digester.addObjectCreate("*/loop/loopbreakcondition", "net.sf.jxls.reader.SimpleSectionCheck");
         digester.addSetNext("*/loop/loopbreakcondition", "setLoopBreakCondition");
-        digester.addObjectCreate("*/loopbreakcondition/rowcheck", "net.sf.jxls.reader.OffsetRowCheckImpl");
+        digester.addObjectCreate("*/loopbreakcondition/rowcheck", "net.sf.jxls.reader.XLSOffsetRowCheckImpl");
+//        digester.addObjectCreate("*/loopbreakcondition/rowcheck", "net.sf.jxls.reader.OffsetRowCheckImpl");
         digester.addSetProperties("*/loopbreakcondition/rowcheck");
         digester.addSetNext("*/loopbreakcondition/rowcheck", "addRowCheck");
         digester.addObjectCreate("*/rowcheck/cellcheck", "net.sf.jxls.reader.OffsetCellCheckImpl");

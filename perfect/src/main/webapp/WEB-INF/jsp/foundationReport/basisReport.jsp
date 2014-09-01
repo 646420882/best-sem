@@ -11,11 +11,13 @@
     <meta charset="utf-8">
     <title></title>
 
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/jquery.cxcalendar.css">
 
     <style type="text/css">
         .tab_box {
@@ -29,13 +31,19 @@
         .list2 table tr td ul li {
             width: 11.5%;
         }
+        .page2 .ajc{
+             background: #ffb900;
+             border: 1px solid #fab30b;
+             color: #fff;
+         }
     </style>
 </head>
 <body>
-<jsp:include page="../homePage/pageBlock/head.jsp"/>
-<div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-<div class="mid over fr">
+
+<div class="concent fr over">
+<jsp:include page="../homePage/pageBlock/head.jsp"/>
+<div class="mid over ">
 <div class="on_title over">
     <a href="#">
         数据报告
@@ -151,6 +159,11 @@
 
                 </tbody>
             </table>
+            <br/>
+            <div class="page2 fl" id="pageJC">
+
+
+            </div>
         </div>
     </div>
     <div class="number_concent over">
@@ -166,8 +179,7 @@
 
                     比较范围<input type="text" id="bijiao" id="inputOne" class="time_input" disabled>
 
-                    <input name="reservation" type="image" id="inputTow" cname="dateClick" style="display:none"
-                           onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                    <input name="mydate" type="image" id="inputTow" cname="dateClick" style="display:none"
                            src="${pageContext.request.contextPath}/public/img/date.png"></li>
                 <li id="deviceUser">选择推广设备：
                     <a href="javascroit:" class="current" cname="0">全部</a><span>|</span>
@@ -205,32 +217,7 @@
                 </tr>
                 </thead>
                 <tbody id="userTbody">
-                <tr>
-                    <td>&nbsp;2014-01-30至2014-01-31</td>
-                    <td>&nbsp;<span>530</span><span class="green_arrow wd3"></span><span><b>60.18%</b></span></td>
-                    <td>&nbsp;<span>530</span><span class="green_arrow wd3"></span><span><b>60.18%</b></span></td>
-                    <td>&nbsp;<span>530</span><span class="green_arrow wd3"></span><span><b>60.18%</b></span></td>
-                    <td>&nbsp;0 &nbsp;&nbsp;&nbsp;<b>0.00%</b></td>
-                    <td>&nbsp;0 &nbsp;&nbsp;&nbsp;<b>0.00%</b></td>
-                    <td>&nbsp;0 &nbsp;&nbsp;&nbsp;<b>0.00%</b></td>
-                    <td>&nbsp;<span>530</span><span class="red_arrow wd3"></span><span><strong>60.18%</strong></span>
-                    </td>
-                    <td>&nbsp;<span>530</span><span class="green_arrow wd3"></span><span><b>60.18%</b></span></td>
-                </tr>
-                <tr>
-                    <td colspan="9">&nbsp;<img src="public/img/vs.png"></td>
-                </tr>
-                <tr>
-                    <td>&nbsp;2014-01-30至2014-01-31</td>
-                    <td>&nbsp;1331</td>
-                    <td>&nbsp;1331</td>
-                    <td>&nbsp;1331</td>
-                    <td>&nbsp;1331</td>
-                    <td>&nbsp;1331</td>
-                    <td>&nbsp;1331</td>
-                    <td>&nbsp;1331</td>
-                    <td>&nbsp;1331</td>
-                </tr>
+
                 </tbody>
             </table>
         </div>
@@ -244,14 +231,16 @@
             <ul>
                 <li>选择时间范围：
                     <input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31">
-                    <input type="image" src="public/img/date.png">
+                    <input name="reservation" type="image" cname="dateClick"
+                           onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                           src="${pageContext.request.contextPath}/public/img/date.png">
                 </li>
                 <li id="reportType">选择报告类型：
                     <a href="javascript:" class="current" cname="1">结构报告</a><span>|</span>
                     <a href="javascript:" cname="2">关键词报告</a><span>|</span>
                     <a href="javascript:" cname="3">创意报告</a><span>|</span>
-                    <a href="javascript:">附加创意报告</a><span>|</span>
-                    <a href="diyu.html" cname="4">分地域报告</a>
+                    <%--<a href="javascript:">附加创意报告</a><span>|</span>--%>
+                    <a href="javascript:" cname="4">分地域报告</a>
                 </li>
                 <li id="device">选择推广设备：
                     <a href="javascript:" class="current" cname="0">全部</a><span>|</span>
@@ -272,7 +261,7 @@
         <input type="hidden" id="dateLis" value="0">
     </div>
     <div class="contant over">
-        <div class="download over fr"><a href="#">下载全部</a></div>
+        <%--<div class="download over fr"><a href="#">下载全部</a></div>--%>
         <div class="list01_under3 over">
 
             <div class="list3 wd" style="overflow-x: auto; width: 100%;">
@@ -287,7 +276,11 @@
             </div>
             <div class="tubiao2 over">
                 <div id="containerLegend"></div>
-                <div id="container" style="width:100%;height:400px"></div>
+                <div id="container" style="width:100%;height:400px;display: none"></div>
+                <div id="imprDiv" style="width:100%;height:400px;display: none"></div>
+                <div id="clickDiv" style="width:100%;height:400px;display: none"></div>
+                <div id="costDiv" style="width:100%;height:400px;display: none"></div>
+                <div id="convDiv" style="width:100%;height:400px;display: none"></div>
             </div>
 
         </div>
@@ -299,7 +292,7 @@
 </div>
 </div>
 </body>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.cxcalendar.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
 <script type="text/javascript"
@@ -307,6 +300,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
+
 <script type="text/javascript">
     // 对Date的扩展，将 Date 转化为指定格式的String
     // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
@@ -360,7 +354,30 @@ var ts_cpc = 0;
 //转化
 var t_conversion = new Array();
 var ts_conversion = 0;
+//饼状图参数
+//展现
+var tsay_impr = new Array();
+var tsa_impr = 0;
 
+//点击
+var tsay_clicks = new Array();
+var tsa_clicks = 0;
+
+//消费
+var tsay_cost = new Array();
+var tsa_cost = 0;
+
+//转化
+var tsay_conversion = new Array();
+var tsa_conversion = 0;
+
+//点击率
+var tsay_ctr =new Array();
+var tsa_ctr =0;
+
+//平均价格
+var tsay_cpc =new Array();
+var tsa_cpc =0;
 
 var fieldName = 'date';
 
@@ -372,9 +389,19 @@ var daterangepicker_start_date = null;
 
 //日期控件-结束日期
 var daterangepicker_end_date = null;
+
+
+var start =0;
+var sorts="-1";
+var limit=10;
+
+//基础报告
+var startJC = 0;
+var limitJC = 10;
 $(document).ready(function () {
     //加载日历控件
     $("input[name=reservation]").daterangepicker();
+    $("#inputTow").cxCalendar();
     $("input[cname=dateClick]").click(function () {
         dateclicks = $(this)
     });
@@ -427,22 +454,22 @@ $(document).ready(function () {
                                     if (i % 2 == 0) {
                                         if (devicesUser == 2) {
                                             html_User = "<tr class='list2_box1'><td>" + item + "</td>"
-                                                    + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                    + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                                    + "<td>" + ((items.mobileImpression == null)?"-":items.mobileImpression) + "</td><td>" + ((items.mobileClick == null)?"-":items.mobileClick) + "</td><td>" + ((items.mobileCost == null)?"-":Math.round(items.mobileCost * 100) / 100) + "</td>"
+                                                    + "<td>" + ((items.mobileCtr == null)?"-":Math.round(items.mobileCtr)) + "%</td><td>" + ((items.mobileCpc == null)?"-":Math.round(items.mobileCpc * 100) / 100) + "</td><td>" + ((items.mobileConversion == null)?"-":items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
                                         } else {
                                             html_User = "<tr class='list2_box1'><td>" + item + "</td>"
-                                                    + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                    + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                                    + "<td>" + ((items.pcImpression == null)?"-":items.pcImpression) + "</td><td>" + ((items.pcClick == null)?"-":items.pcClick) + "</td><td>" + ((items.pcCost == null)?"-":Math.round(items.pcCost * 100) / 100) + "</td>"
+                                                    + "<td>" + ((items.pcCtr == null)?"-":Math.round(items.pcCtr)) + "%</td><td>" + ((items.pcCpc == null)?"-":Math.round(items.pcCpc * 100) / 100) + "</td><td>" + ((items.pcConversion == null)?"-":items.pcConversion) + "</td><td>-</td><td>-</td></tr>";
                                         }
                                     } else {
                                         if (devices == 2) {
                                             html_User = "<tr class='list2_box2'><td>" + item + "</td>"
-                                                    + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                    + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                                    + "<td>" + ((items.mobileImpression == null)?"-":items.mobileImpression) + "</td><td>" + ((items.mobileClick == null)?"-":items.mobileClick) + "</td><td>" + ((items.mobileCost == null)?"-":Math.round(items.mobileCost * 100) / 100) + "</td>"
+                                                    + "<td>" + ((items.mobileCtr == null)?"-":Math.round(items.mobileCtr)) + "%</td><td>" + ((items.mobileCpc == null)?"-":Math.round(items.mobileCpc * 100) / 100) + "</td><td>" + ((items.mobileConversion == null)?"-":items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
                                         } else {
-                                            html_User = "<tr class='list2_box2'><td>" + item + "</td>"
-                                                    + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                    + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            html_User = "<tr class='list2_box1'><td>" + item + "</td>"
+                                                    + "<td>" + ((items.pcImpression == null)?"-":items.pcImpression) + "</td><td>" + ((items.pcClick == null)?"-":items.pcClick) + "</td><td>" + ((items.pcCost == null)?"-":Math.round(items.pcCost * 100) / 100) + "</td>"
+                                                    + "<td>" + ((items.pcCtr == null)?"-":Math.round(items.pcCtr)) + "%</td><td>" + ((items.pcCpc == null)?"-":Math.round(items.pcCpc * 100) / 100) + "</td><td>" + ((items.pcConversion == null)?"-":items.pcConversion) + "</td><td>-</td><td>-</td></tr>";
                                         }
                                     }
                                     $("#userTbody").append(html_User);
@@ -461,14 +488,13 @@ $(document).ready(function () {
                             if (item1[item] != null) {
                                 $.each(item1[item], function (i, items) {
                                     if (item1[item] != null) {
-                                        alert(1);
                                         if (devicesUser == 2) {
-                                            impression.push(items.mobileImpression);
-                                            click.push(items.mobileClick);
-                                            cost.push(Math.round(items.mobileCost * 100) / 100);
-                                            ctr.push(Math.round(items.mobileCtr));
-                                            cpc.push(Math.round(items.mobileCpc * 100) / 100);
-                                            conversion.push(items.mobileConversion);
+                                            impression.push((items.mobileImpression == null)?"-":items.mobileImpression);
+                                            click.push((items.mobileClick == null)?"-":items.mobileClick);
+                                            cost.push((items.mobileCost == null)?"-":Math.round(items.mobileCost * 100) / 100);
+                                            ctr.push((items.mobileCtr == null)?"-":Math.round(items.mobileCtr * 100) / 100);
+                                            cpc.push((items.mobileCpc == null)?"-":Math.round(items.mobileCpc * 100) / 100);
+                                            conversion.push((items.mobileConversion == null)?"-":items.mobileConversion);
                                         } else {
                                             impression.push(items.pcImpression);
                                             click.push(items.pcClick);
@@ -489,19 +515,19 @@ $(document).ready(function () {
                                 $.each(item1[item], function (i, items) {
                                     if (item1[item] != null) {
                                         if (devicesUser == 2) {
-                                            impression1.push(items.mobileImpression);
-                                            click1.push(items.mobileClick);
-                                            cost1.push(Math.round(items.mobileCost * 100) / 100);
-                                            ctr1.push(Math.round(items.mobileCtr));
-                                            cpc1.push(Math.round(items.mobileCpc * 100) / 100);
-                                            conversion1.push(items.mobileConversion);
+                                            impression1.push((items.mobileImpression == null)?"-":items.mobileImpression);
+                                            click1.push((items.mobileClick == null)?"-":items.mobileClick);
+                                            cost1.push((items.mobileCost == null)?"-":Math.round(items.mobileCost * 100) / 100);
+                                            ctr1.push((items.mobileCtr == null)?"-":Math.round(items.mobileCtr * 100) / 100);
+                                            cpc1.push((items.mobileCpc == null)?"-":Math.round(items.mobileCpc * 100) / 100);
+                                            conversion1.push((items.mobileConversion == null)?"-":items.mobileConversion);
                                         } else {
-                                            impression1.push(items.pcImpression);
-                                            click1.push(items.pcClick);
-                                            cost1.push(Math.round(items.pcCost * 100) / 100);
-                                            ctr1.push(Math.round(items.pcCtr));
-                                            cpc1.push(Math.round(items.pcCpc * 100) / 100);
-                                            conversion1.push(items.pcConversion);
+                                            impression1.push((items.pcImpression == null)?"-":items.pcImpression);
+                                            click1.push((items.pcClick == null)?"-":items.pcClick);
+                                            cost1.push((items.pcCost == null)?"-":Math.round(items.pcCost * 100) / 100);
+                                            ctr1.push((items.pcCtr == null)?"-":Math.round(items.pcCtr * 100) / 100);
+                                            cpc1.push((items.pcCpc == null)?"-":Math.round(items.pcCpc * 100) / 100);
+                                            conversion1.push((items.pcConversion == null)?"-":items.pcConversion);
                                         }
                                     }
                                 });
@@ -509,24 +535,43 @@ $(document).ready(function () {
                         });
                     });
                     for (var i = 0; i < impression.length; i++) {
-                        //alert(impression.length);
                         var html_User1 = "";
                         var html_User2 = "";
                         if (i % 2 == 0) {
                             html_User1 = "<tr class='list2_box1'><td>" + dateEach[i] + "</td>"
-                                    + "<td>" + impression[i] + "</td><td>" + click[i] + "</td><td>" + cost[i] + "</td>"
-                                    + "<td>" + ctr[i] + "%</td><td>" + cpc[i] + "</td><td>" + conversion[i] + "</td><td>-</td><td>-</td></tr>"
-                                    + "<tr><td colspan='9'>&nbsp;<img src='public/img/vs.png'></td></tr>";
+                                    + "<td><span>" + impression[i] +"</span>"+(((impression[i]-impression1[i]) < 0)?"<span class='red_arrow wd3'></span>":"<span class='green_arrow wd3'></span>")
+                                    + "<span>"+((impression[i]-impression1[i] >= 0)?"<b>"+((isNaN(impression1[i]))?"-":Math.round(((impression[i]-impression1[i])/impression1[i])*100))+"%</b>":"<strong>"+((isNaN(impression1[i]))?"-":Math.round(((impression[i]-impression1[i])/impression1[i])*100))+"%</strong>")+"</span></td>"
+                                    + "<td><span>" + click[i] +"</span>"+(((click[i]-click1[i]) < 0)?"<span class='red_arrow wd3'></span>":"<span class='green_arrow wd3'></span>")
+                                    + "<span>"+((click[i]-click1[i] >= 0)?"<b>"+((isNaN(click1[i]))?"-":Math.round(((click[i]-click1[i])/click1[i])*100))+"%</b>":"<strong>"+((isNaN(click1[i]))?"-":Math.round(((click[i]-click1[i])/click1[i])*100))+"%</strong>")+"</span></td>"
+                                    + "<td><span>" + cost[i] +"</span>"+(((cost[i]-cost1[i]) < 0)?"<span class='red_arrow wd3'></span>":"<span class='green_arrow wd3'></span>")
+                                    + "<span>"+((cost[i]-cost1[i] >= 0)?"<b>"+((isNaN(cost1[i]))?"-":Math.round(((cost[i]-cost1[i])/cost1[i])*100))+"%</b>":"<strong>"+((isNaN(cost1[i]))?"-":Math.round(((cost[i]-cost1[i])/cost1[i])*100))+"%</strong>")+"</span></td>"
+                                    + "<td><span>" + ctr[i] +"%</span>"+((ctr[i]-ctr1[i] < 0)?"<span class='red_arrow wd3'></span>":"<span class='green_arrow wd3'></span>")
+                                    + "<span>"+(((ctr[i]-ctr1[i]) >= 0)?"<b>"+((isNaN(ctr1[i]))?"-":Math.round(((ctr[i]-ctr1[i])/ctr1[i])*100))+"%</b>":"<strong>"+((isNaN(ctr1[i]))?"-":Math.round(((ctr[i]-ctr1[i])/ctr1[i])*100))+"%</strong>")+"</span></td>"
+                                    + "<td><span>" + cpc[i] +"</span>"+((cpc[i]-cpc1[i] < 0)?"<span class='red_arrow wd3'></span>":"<span class='green_arrow wd3'></span>")
+                                    + "<span>"+(((cpc[i]-cpc1[i]) >= 0)?"<b>"+((isNaN(cpc1[i]))?"-":Math.round(((cpc[i]-cpc1[i])/cpc1[i])*100))+"%</b>":"<strong>"+((isNaN(cpc1[i]))?"-":Math.round(((cpc[i]-cpc1[i])/cpc1[i])*100))+"%</strong>")+"</span></td>"
+                                    + "<td><span>" + conversion[i] +"</span>"+((conversion[i]-conversion1[i] < 0)?"<span class='red_arrow wd3'></span>":"<span class='green_arrow wd3'></span>")
+                                    + "<span>"+(((conversion[i]-conversion1[i]) >= 0)?"<b>"+((isNaN(conversion1[i]))?"-":Math.round(((conversion[i]-conversion1[i])/conversion1[i])*100))+"</b>%":"<strong>"+((isNaN(conversion1[i]))?"-":Math.round(((conversion[i]-cpc1[i])/conversion1[i])*100))+"%</strong>")+"</span></td>"
+                                    + "</td><td>-</td><td>-</td></tr>";
 
                             html_User2 = "<tr class='list2_box1'><td>" + dateEach1[i] + "</td>"
                                     + "<td>" + impression1[i] + "</td><td>" + click1[i] + "</td><td>" + cost1[i] + "</td>"
                                     + "<td>" + ctr1[i] + "%</td><td>" + cpc1[i] + "</td><td>" + conversion1[i] + "</td><td>-</td><td>-</td></tr>"
                                     + "<tr><td colspan='9'>&nbsp;</td></tr>";
                         } else {
-                            html_User1 = "<tr class='list2_box2'><td>" + dateEach[i] + "</td>"
-                                    + "<td>" + impression[i] + "</td><td>" + click[i] + "</td><td>" + cost[i] + "</td>"
-                                    + "<td>" + ctr[i] + "%</td><td>" + cpc[i] + "</td><td>" + conversion[i] + "</td><td>-</td><td>-</td></tr>"
-                                    + "<tr><td colspan='9'>&nbsp;<img src='public/img/vs.png'></td></tr>";
+                            html_User1 = "<tr class='list2_box1'><td>" + dateEach[i] + "</td>"
+                                    + "<td><span>" + impression[i] +"</span>"+(((impression[i]-impression1[i]) < 0)?"<span class='red_arrow wd3'></span>":"<span class='green_arrow wd3'></span>")
+                                    + "<span>"+((impression[i]-impression1[i] >= 0)?"<b>"+((isNaN(impression1[i]))?"-":Math.round(((impression[i]-impression1[i])/impression1[i])*100))+"%</b>":"<strong>"+((isNaN(impression1[i]))?"-":Math.round(((impression[i]-impression1[i])/impression1[i])*100))+"%</strong>")+"</span></td>"
+                                    + "<td><span>" + click[i] +"</span>"+(((click[i]-click1[i]) < 0)?"<span class='red_arrow wd3'></span>":"<span class='green_arrow wd3'></span>")
+                                    + "<span>"+((click[i]-click1[i] >= 0)?"<b>"+((isNaN(click1[i]))?"-":Math.round(((click[i]-click1[i])/click1[i])*100))+"%</b>":"<strong>"+((isNaN(click1[i]))?"-":Math.round(((click[i]-click1[i])/click1[i])*100))+"%</strong>")+"</span></td>"
+                                    + "<td><span>" + cost[i] +"</span>"+(((cost[i]-cost1[i]) < 0)?"<span class='red_arrow wd3'></span>":"<span class='green_arrow wd3'></span>")
+                                    + "<span>"+((cost[i]-cost1[i] >= 0)?"<b>"+((isNaN(cost1[i]))?"-":Math.round(((cost[i]-cost1[i])/cost1[i])*100))+"%</b>":"<strong>"+((isNaN(cost1[i]))?"-":Math.round(((cost[i]-cost1[i])/cost1[i])*100))+"%</strong>")+"</span></td>"
+                                    + "<td><span>" + ctr[i] +"%</span>"+((ctr[i]-ctr1[i] < 0)?"<span class='red_arrow wd3'></span>":"<span class='green_arrow wd3'></span>")
+                                    + "<span>"+(((ctr[i]-ctr1[i]) >= 0)?"<b>"+((isNaN(ctr1[i]))?"-":Math.round(((ctr[i]-ctr1[i])/ctr1[i])*100))+"%</b>":"<strong>"+((isNaN(ctr1[i]))?"-":Math.round(((ctr[i]-ctr1[i])/ctr1[i])*100))+"%</strong>")+"</span></td>"
+                                    + "<td><span>" + cpc[i] +"</span>"+((cpc[i]-cpc1[i] < 0)?"<span class='red_arrow wd3'></span>":"<span class='green_arrow wd3'></span>")
+                                    + "<span>"+(((cpc[i]-cpc1[i]) >= 0)?"<b>"+((isNaN(cpc1[i]))?"-":Math.round(((cpc[i]-cpc1[i])/cpc1[i])*100))+"%</b>":"<strong>"+((isNaN(cpc1[i]))?"-":Math.round(((cpc[i]-cpc1[i])/cpc1[i])*100))+"%</strong>")+"</span></td>"
+                                    + "<td><span>" + conversion[i] +"</span>"+((conversion[i]-conversion1[i] < 0)?"<span class='red_arrow wd3'></span>":"<span class='green_arrow wd3'></span>")
+                                    + "<span>"+(((conversion[i]-conversion1[i]) >= 0)?"<b>"+((isNaN(conversion1[i]))?"-":Math.round(((conversion[i]-conversion1[i])/conversion1[i])*100))+"</b>%":"<strong>"+((isNaN(conversion1[i]))?"-":Math.round(((conversion[i]-cpc1[i])/conversion1[i])*100))+"%</strong>")+"</span></td>"
+                                    + "</td><td>-</td><td>-</td></tr>";
 
                             html_User2 = "<tr class='list2_box2'><td>" + dateEach1[i] + "</td>"
                                     + "<td>" + impression1[i] + "</td><td>" + click1[i] + "</td><td>" + cost1[i] + "</td>"
@@ -594,11 +639,18 @@ $(document).ready(function () {
     /**
      *生成报告按钮点击
      */
-    $("#shengc").click(function () {
+    $("#shengc").click(function(){
+        reportData();
+    });
+    var reportData = function () {
         $("#containerLegend").empty();
         $("#shujuthead").empty();
         $('#container').empty();
         $("#shuju").empty();
+        $("#imprDiv").empty();
+        $("#clickDiv").empty();
+        $("#costDiv").empty();
+        $("#convDiv").empty();
 
         $("#shuju").html("报告生成中，请稍后。。。。。");
         var reportTypes = $("#reportTypes").val();
@@ -609,11 +661,14 @@ $(document).ready(function () {
             type: "GET",
             dataType: "json",
             data: {
-                startDate: "2014-08-01",
-                endDate: "2014-08-03",
+                startDate: daterangepicker_start_date,
+                endDate: daterangepicker_end_date,
                 reportType: reportTypes,
                 devices: devices,
-                dateType: dateLis
+                dateType: dateLis,
+                start: start,
+                sort: sorts,
+                limit: limit
             },
             success: function (data) {
                 $("#shujuthead").empty();
@@ -686,13 +741,60 @@ $(document).ready(function () {
                             break;
                     }
                     $("#shujuthead").append(html_head);
+                    //饼状图计算
+                    var pie_impr = new Array();
+                    var pie_click = new Array();
+                    var pie_cost = new Array();
+                    var pie_conv = new Array();
+                    if(reportTypes == 4){
+                        if(dateLis == 0){
+                            $.each(data.countData, function (i, countdata){
+                                $.each(data.impr,function(i,impr){
+                                    if(devices == 2){
+                                        pie_impr.push([impr.regionName,Math.round((impr.mobileImpression/countdata.mobileImpression) * 10000)/100]);
+                                    }else{
+                                        pie_impr.push([impr.regionName,Math.round((impr.pcImpression/countdata.pcImpression) * 10000)/100]);
+                                    }
+                                }) ;
+                                $.each(data.click,function(i,impr){
+                                    if(devices == 2){
+                                        pie_click.push([impr.regionName,Math.round((impr.mobileClick/countdata.mobileClick) * 10000)/100]);
+                                    }else{
+                                        pie_click.push([impr.regionName,Math.round((impr.pcClick/countdata.pcClick) * 10000)/100]);
+                                    }
+                                });
+                                $.each(data.cost,function(i,impr){
+                                    if(devices == 2){
+                                        pie_cost.push([impr.regionName,Math.round((impr.mobileCost/countdata.mobileCost) * 10000)/100]);
+                                    }else{
+                                        pie_cost.push([impr.regionName,Math.round((impr.pcCost/countdata.pcCost) * 10000)/100]);
+                                    }
+                                });
+                                $.each(data.conv,function(i,impr){
+                                    if(devices == 2){
+                                        pie_conv.push([impr.regionName,Math.round((impr.mobileConversion/countdata.mobileConversion) * 10000)/100]);
+                                    }else{
+                                        pie_conv.push([impr.regionName,Math.round((impr.pcConversion/countdata.pcConversion) * 10000)/100]);
+                                    }
+                                });
+                            });
+                        }
+                        pieChart(pie_impr,"展现","#imprDiv");
+                        pieChart(pie_click,"点击","#clickDiv");
+                        pieChart(pie_cost,"消费","#costDiv");
+                        pieChart(pie_conv,"转化","#convDiv");
+                    }
                     $.each(data.rows, function (i, item) {
+                        if(data[item.date].length <= 0){
+                            $("#shuju").html("查无数据。。。。。");
+                            return;
+                        }
                         ts_impr = 0;
                         ts_clicks = 0;
                         ts_cost = 0;
                         ts_conversion = 0;
                         $.each(data[item.date], function (i, items) {
-                            if (i < 10) {
+                            if (i < 10000) {
                                 var html_Go = "";
                                 switch (reportTypes) {
                                     case "1":
@@ -779,27 +881,48 @@ $(document).ready(function () {
                                     case "4":
                                         if (i % 2 == 0) {
                                             if (devices == 2) {
-                                                html_Go = "<tr class='list2_box1'><td>" + item.date + "</td>"
-                                                        + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.regionName + "</td>"
-                                                        + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                        + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                                html_Go = "<tr class='list2_box1' cname='pieClick' region='"+items.regionName+"' impr='"+items.mobileImpression+"' clicks='"+items.mobileClick+"' cost='"+Math.round(items.mobileCost * 100) / 100+"' ctr='"+Math.round(items.mobileCtr)+"' cpc='"+Math.round(items.mobileCpc * 100) / 100+"' conv='"+items.mobileConversion+"'>"
+                                                        + "<td>" + item.date + "</td>"
+                                                        + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td>"
+                                                        + "<td>" + items.regionName + "</td>"
+                                                        + "<td>" + items.mobileImpression + "</td>"
+                                                        + "<td>" + items.mobileClick + "</td>"
+                                                        + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                                        + "<td>" + Math.round(items.mobileCtr) + "%</td>"
+                                                        + "<td>" + Math.round(items.mobileCpc * 100) / 100 + "</td>"
+                                                        + "<td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                             } else {
-                                                html_Go = "<tr class='list2_box1'><td>" + item.date + "</td>"
-                                                        + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.regionName + "</td>"
-                                                        + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                        + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                                html_Go = "<tr class='list2_box1' cname='pieClick' region='"+items.regionName+"' impr='"+items.pcImpression+"' clicks='"+items.pcClick+"' cost='"+Math.round(items.pcCost * 100) / 100+"' ctr='"+Math.round(items.pcCtr)+"' cpc='"+Math.round(items.pcCpc * 100) / 100+"' conv='"+items.pcConversion+"'><td>" + item.date + "</td>"
+                                                        + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td>"
+                                                        + "<td>" + items.regionName + "</td>"
+                                                        + "<td>" + items.pcImpression + "</td>"
+                                                        + "<td>" + items.pcClick + "</td>"
+                                                        + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                                        + "<td>" + Math.round(items.pcCtr) + "%</td>"
+                                                        + "<td>" + Math.round(items.pcCpc * 100) / 100 + "</td>"
+                                                        + "<td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                             }
                                         } else {
                                             if (devices == 2) {
-                                                html_Go = "<tr class='list2_box2'><td>" + item.date + "</td>"
-                                                        + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.regionName + "</td>"
-                                                        + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                        + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                                html_Go = "<tr class='list2_box2' cname='pieClick' region='"+items.regionName+"' impr='"+items.mobileImpression+"' clicks='"+items.mobileClick+"' cost='"+Math.round(items.mobileCost * 100) / 100+"' ctr='"+Math.round(items.mobileCtr)+"' cpc='"+Math.round(items.mobileCpc * 100) / 100+"' conv='"+items.mobileConversion+"'><td>" + item.date + "</td>"
+                                                        + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td>"
+                                                        + "<td>" + items.regionName + "</td>"
+                                                        + "<td>" + items.mobileImpression + "</td>"
+                                                        + "<td>" + items.mobileClick + "</td>"
+                                                        + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                                        + "<td>" + Math.round(items.mobileCtr) + "%</td>"
+                                                        + "<td>" + Math.round(items.mobileCpc * 100) / 100 + "</td>"
+                                                        + "<td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                             } else {
-                                                html_Go = "<tr class='list2_box2'><td>" + item.date + "</td>"
-                                                        + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.regionName + "</td>"
-                                                        + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                        + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                                html_Go = "<tr class='list2_box2' cname='pieClick' region='"+items.regionName+"' impr='"+items.pcImpression+"' clicks='"+items.pcClick+"' cost='"+Math.round(items.pcCost * 100) / 100+"' ctr='"+Math.round(items.pcCtr)+"' cpc='"+Math.round(items.pcCpc * 100) / 100+"' conv='"+items.pcConversion+"'><td>" + item.date + "</td>"
+                                                        + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td>"
+                                                        + "<td>" + items.regionName + "</td>"
+                                                        + "<td>" + items.pcImpression + "</td>"
+                                                        + "<td>" + items.pcClick + "</td>"
+                                                        + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                                        + "<td>" + Math.round(items.pcCtr) + "%</td>"
+                                                        + "<td>" + Math.round(items.pcCpc * 100) / 100 + "</td>"
+                                                        + "<td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                             }
                                         }
                                         break;
@@ -821,14 +944,14 @@ $(document).ready(function () {
                         });
                         if (dateLis != 0) {
                             $("#containerLegend").empty();
-                            /*初始化曲线图所用需求*/
-                            $("#containerLegend").html("<div class='tu_top over'><ul><li>展示曲线</li>"
-                                    + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
-                                    + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
-                                    + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
-                                    + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
-                                    + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
-                                    + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+                                /*初始化曲线图所用需求*/
+                                $("#containerLegend").html("<div class='tu_top over'><ul><li>展示曲线</li>"
+                                        + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
+                                        + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
+                                        + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
+                                        + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
+                                        + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
+                                        + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
 
                             //曲线图数据装载
                             t_date.push(item.date);
@@ -871,7 +994,7 @@ $(document).ready(function () {
                 }
             }
         });
-    });
+    }
 
     $("body").on("click", "input[name=check]", function () {
         var name = $(this).attr("cname");
@@ -1127,8 +1250,13 @@ $(document).ready(function () {
             $(this).attr("checked", false);
         }
     });
-
+    //曲线图
     var curve = function () {
+        $("#container").show();
+        $("#imprDiv").hide();
+        $("#clickDiv").hide();
+        $("#costDiv").hide();
+        $("#convDiv").hide();
         $('#container').highcharts({
             chart: {
                 zoomType: 'xy'
@@ -1185,7 +1313,66 @@ $(document).ready(function () {
             ]
         });
     }
-
+    //饼状图
+    var a=1;
+    var pieChart = function (showData,showName,showId) {
+        $(showId).show();
+        $("#container").hide()
+        if (a == 1) {
+        //使用饼状图进行颜色渐变
+        Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+            return {
+                radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+                stops: [
+                    [0, color],
+                    [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                ]
+            };
+        });
+        a++;
+    }
+        //加载开始
+        $(showId).highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                events: {
+                    load: function() {
+                        // set up the updating of the chart each second
+                        var series = this.series[0];
+                        setInterval(function() {
+                            series.setData(showData);
+                        }, 2000);
+                    }
+                }
+            },
+            title: {
+                text: showName+'占有百分比！'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: '占有率',
+                data: [
+                ]
+            }]
+        });
+    }
 });
 
 /**
@@ -1193,6 +1380,8 @@ $(document).ready(function () {
  * 账户基础报告
  *
  */
+var number=0;
+var jci=0;
 var accountBasisReport = function () {
     $.ajax({
         url: "/account/accountReport",
@@ -1200,12 +1389,15 @@ var accountBasisReport = function () {
         dataType: "json",
         data: {
             Sorted: sort,
-            fieldName: fieldName
+            fieldName: fieldName,
+            startJC:startJC,
+            limitJC:limitJC
         },
         success: function (data) {
             var basisHtml = "";
             $("#basisAccount").empty();
             $.each(data.rows, function (i, item) {
+                number = item.count;
                 var ctr = item.pcClick / item.pcImpression;
                 var cpc = item.pcCost / item.pcClick;
                 if (i % 2 == 0) {
@@ -1218,11 +1410,61 @@ var accountBasisReport = function () {
                             + "<td>&nbsp;-</td></tr>"
                 }
                 $("#basisAccount").append(basisHtml);
+
             });
+            if(jci < 1){
+            var countNumber = 0;
+            if(number % 10 == 0){
+                countNumber = number/10;
+            }else{
+                countNumber = (number/10);
+            }
+                var page_html = "<a href='javascript:' id='pageUp' class='nextpage1'><span></span></a>"
+                for(var i=0;i<countNumber;i++){
+                    if(i == 0){
+                        page_html=page_html+"<a href='javascript:' class='ajc' cname='nameJC' onclick='javascript:startJC = "+i+";limitJC = "+(i+10)+";accountBasisReport()'>"+(i+1)+"</a>";
+                    }else{
+                        page_html=page_html+"<a href='javascript:' cname='nameJC' onclick='javascript:startJC = "+(i*10+1)+";limitJC = "+(i*10+10)+";accountBasisReport()'>"+(i+1)+"</a>";
+                    }
+                }
+                    page_html=page_html+"<a href='javascript:' id='pageDown' class='nextpage2'><span></span></a>" +
+                    "<span style='margin-right:10px;'>跳转到 <input type='text' id='goID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='go'> GO</a>"
+                $("#pageJC").append(page_html);
+                jci++;
+            }
         }
     });
 }
+//基础报告分页手动跳转
+$("body").on("click","#go",function(){
+    startJC = ($('#goID').val()*10-10);
+    limitJC = startJC+10-1;
+    accountBasisReport();
+});
 
+//基础报告上一页
+$("body").on("click","#pageUp",function(){
+    if(startJC >=9){
+        if(startJC == 11){
+            startJC = 0;
+        }else{
+            startJC = startJC-10;
+        }
+        limitJC = limitJC-10;
+        accountBasisReport();
+    }
+});
+//基础报告下一页
+$("body").on("click","#pageDown",function(){
+    if(limitJC <number){
+        startJC = startJC+10;
+        limitJC = limitJC+10;
+        accountBasisReport();
+    }
+});
+$("body").on("click","a[cname=nameJC]",function(){
+    $(this).addClass('ajc').siblings().removeClass('ajc');
+});
 function TestBlack(TagName) {
     var obj = document.getElementById(TagName);
     if (obj.style.display == "") {

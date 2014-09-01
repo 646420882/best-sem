@@ -4,13 +4,12 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dto.CreativeDTO;
-import com.perfect.entity.bidding.BiddingRuleEntity;
-import com.perfect.entity.bidding.StrategyEntity;
+import com.perfect.entity.bidding.KeywordRankEntity;
 import com.perfect.service.impl.HTMLAnalyseServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-import java.lang.invoke.MethodHandles;
 import java.util.*;
 
 /**
@@ -18,11 +17,12 @@ import java.util.*;
  *
  * @author yousheng
  */
+@Component
 public class BaiduApiService {
 
-    private static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private final CommonService commonService;
+    private static Logger log = LoggerFactory.getLogger(BaiduApiService.class);
 
+    private final CommonService commonService;
 
     public BaiduApiService(CommonService commonService) {
         this.commonService = commonService;
@@ -357,46 +357,113 @@ public class BaiduApiService {
         return Collections.EMPTY_LIST;
     }
 
+    public KeywordType setKeywordPrice(KeywordType type) {
+        if (type == null) {
+            return null;
+        }
+        UpdateKeywordRequest request = new UpdateKeywordRequest();
+        request.setKeywordTypes(Arrays.asList(type));
+
+        try {
+            KeywordService keywordService = commonService.getService(KeywordService.class);
+            UpdateKeywordResponse response = keywordService.updateKeyword(request);
+            if (response == null) {
+                return null;
+            }
+            return response.getKeywordType(0);
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public List<HTMLAnalyseServiceImpl.PreviewData> getPreviewData(int region, List<String> keyList, HTMLAnalyseService rankService) {
+        GetPreviewRequest request = new GetPreviewRequest();
+        request.setKeyWords(keyList);
+        request.setRegion(region);
+        request.setDevice(0);
+        request.setPage(0);
+        List<HTMLAnalyseServiceImpl.PreviewData> previewDatas = rankService.getPageData(request);
+        return previewDatas;
+    }
+
+
     @SuppressWarnings("unchecked")
-    public Map<String, Integer> checkKeywordRank(List<BiddingRuleEntity> keys, String host) {
+    public Map<String, KeywordRankEntity> getKeywordRank(Map<String, List<Integer>> keys, String host) {
         if (keys == null || keys.isEmpty()) {
             return Collections.EMPTY_MAP;
         }
 
+        Map<Integer, List<String>> regionDataMap = new HashMap<>();
+
+        convertMap(keys, regionDataMap);
         HTMLAnalyseService rankService = HTMLAnalyseServiceImpl.createService((com.perfect.autosdk.core.ServiceFactory) commonService);
 
-        Map<String, Integer> resultMap = new HashMap<>();
+        List<HTMLAnalyseServiceImpl.PreviewData> resultDataList = new ArrayList<>();
+        for (Map.Entry<Integer, List<String>> entry : regionDataMap.entrySet()) {
+            Integer region = entry.getKey();
 
-        for (BiddingRuleEntity entity : keys) {
+            List<String> keyList = entry.getValue();
 
-            GetPreviewRequest request = new GetPreviewRequest();
-            request.setKeyWords(Arrays.asList(entity.getKeyword()));
-            request.setRegion(entity.getStrategyEntity().getRegionTarget());
-            request.setDevice(entity.getStrategyEntity().getDevice());
-            request.setPage(0);
+            if (keyList.size() <= 5) {
+                resultDataList.addAll(getPreviewData(region, keyList, rankService));
+            } else {
+                List<String> temp = new ArrayList<>();
+                for (String key : keyList) {
+                    temp.add(key);
 
-            List<HTMLAnalyseServiceImpl.PreviewData> previewDatas = rankService.getPageData(request);
+                    if (temp.size() == 5) {
+                        resultDataList.addAll(getPreviewData(region, temp, rankService));
+                        temp.clear();
+                    }
+                }
 
-            if (previewDatas != null) {
-                HTMLAnalyseServiceImpl.PreviewData previewData = previewDatas.get(0);
+                if (!temp.isEmpty()) {
+                    resultDataList.addAll(getPreviewData(region, temp, rankService));
+                }
+            }
+        }
+
+        Map<String, KeywordRankEntity> keywordRankEntityMap = new HashMap<>();
+
+        if (resultDataList != null && !resultDataList.isEmpty()) {
+            for (HTMLAnalyseServiceImpl.PreviewData previewData : resultDataList) {
                 if ((previewData.getLeft() == null || previewData.getLeft().isEmpty()) && (previewData.getRight() == null || previewData.getRight().isEmpty())) {
                     continue;
                 }
 
-                StrategyEntity strategyEntity = entity.getStrategyEntity();
+                String keyword = previewData.getKeyword();
+                int region = previewData.getRegion();
+                int device = previewData.getDevice();
 
-                int pos = strategyEntity.getPositionStrategy();
+                KeywordRankEntity entity = null;
+                if (keywordRankEntityMap.containsKey(keyword)) {
+                    entity = keywordRankEntityMap.get(keyword);
+                } else {
+                    entity = new KeywordRankEntity();
+                    entity.setName(keyword);
+                    entity.setTargetRank(new HashMap<Integer, Integer>());
+                    entity.setDevice(device);
+                    entity.setTime(System.currentTimeMillis());
+
+                    keywordRankEntityMap.put(keyword, entity);
+                }
+
+
                 int rank = 0;
+                boolean found = false;
                 for (CreativeDTO leftEntity : previewData.getLeft()) {
                     rank++;
                     String url = leftEntity.getUrl();
                     if (url.equals(host)) {
-                        resultMap.put(entity.getKeyword(), rank);
+                        entity.getTargetRank().put(region, rank);
+                        found = true;
                         break;
                     }
 
                 }
-                if (!resultMap.isEmpty()) {
+                if (found) {
                     continue;
                 }
                 rank = 0;
@@ -404,46 +471,35 @@ public class BaiduApiService {
                     rank--;
                     String url = rightEntity.getUrl();
                     if (url.equals(host)) {
-                        resultMap.put(entity.getKeyword(), rank);
+                        entity.getTargetRank().put(region, rank);
                         break;
                     }
                 }
-                if (!resultMap.containsKey(entity.getKeyword())) {
-                    resultMap.put(entity.getKeyword(), null);
-                }
             }
-
         }
 
-        return resultMap;
-    }
-//        int rt = entity.getStrategyEntity().getRegionTarget();
-//        if (getPreviewRequests.containsKey(rt)) {
-//            List<String> keywords = getPreviewRequests.get(rt);
-//            keywords.add(entity.getKeyword());
-//        } else {
-//            List<String> keywords = new ArrayList<>();
-//            keywords.add(entity.getKeyword());
-//
-//            getPreviewRequests.put(rt, keywords);
-//        }
 
-//        for (Map.Entry<Integer, List<String>> entry : getPreviewRequests.entrySet()) {
-//            Integer key = entry.getKey();
-//
-//            List<String> keywords = entry.getValue();
-//
-//            if(keywords.size() <= 5){
-//                GetPreviewRequest request = new GetPreviewRequest();
-//                request.setKeyWords(keywords);
-//                request.setRegion(key);
-//                request.
-//            }
-//
-//            do {
-//
-//                GetPreviewRequest getPreviewRequest = new GetPreviewRequest();
-//                getPreviewRequest.setKeyWords();
-//            } while (keywords.size() > 5);
-//        }
+        return keywordRankEntityMap;
+    }
+
+    private void convertMap(Map<String, List<Integer>> keys, Map<Integer, List<String>> regionDataMap) {
+        if (keys.isEmpty())
+            return;
+
+        for (Map.Entry<String, List<Integer>> entry : keys.entrySet()) {
+            List<Integer> regionList = entry.getValue();
+
+            String keyword = entry.getKey();
+
+            for (Integer integer : regionList) {
+                if (regionDataMap.containsKey(integer)) {
+                    regionDataMap.get(integer).add(keyword);
+                } else {
+                    List<String> keyList = new ArrayList<>();
+                    keyList.add(keyword);
+                    regionDataMap.put(integer, keyList);
+                }
+            }
+        }
+    }
 }

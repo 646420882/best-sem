@@ -39,7 +39,7 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
      */
     public void insertAndQuery(List<KeywordEntity> keywordEntity);
 
-    KeywordEntity findByName(String name);
+    KeywordEntity findByName(String name, Long accountId);
 
     void remove(Query query);
 

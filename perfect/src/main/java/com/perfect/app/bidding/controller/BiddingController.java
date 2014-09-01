@@ -6,14 +6,16 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.core.AppContext;
-import com.perfect.dao.CampaignDAO;
 import com.perfect.entity.*;
 import com.perfect.entity.bidding.BiddingRuleEntity;
+import com.perfect.entity.bidding.KeywordRankEntity;
 import com.perfect.entity.bidding.StrategyEntity;
 import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.mongodb.utils.PaginationParam;
 import com.perfect.service.*;
+import com.perfect.utils.BiddingRuleUtils;
 import com.perfect.utils.JSONUtils;
+import com.perfect.utils.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -48,7 +50,10 @@ public class BiddingController {
     private BiddingRuleService biddingRuleService;
 
     @Resource
-    private CampaignDAO campaignDAO;
+    private SysCampaignService sysCampaignService;
+
+    @Resource
+    private KeywordRankService keywordRankService;
 
     @Resource
     private SysAdgroupService sysAdgroupService;
@@ -61,13 +66,15 @@ public class BiddingController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public void save(@RequestBody BiddingRuleParam param) {
+    public ModelAndView save(@RequestBody BiddingRuleParam param) {
         if (log.isDebugEnabled()) {
             log.debug("保存竞价规则..");
         }
 
         List<BiddingRuleEntity> newRules = new ArrayList<>();
 
+//        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+//        int[] startEndTimes = getTimes(param.getTimes(), hour);
         for (Long id : param.getIds()) {
             BiddingRuleEntity biddingRuleEntity = new BiddingRuleEntity();
 
@@ -75,14 +82,23 @@ public class BiddingController {
             biddingRuleEntity.setKeywordId(id);
             biddingRuleEntity.setEnabled(param.isRun());
 
+
             StrategyEntity strategyEntity = new StrategyEntity();
             biddingRuleEntity.setStrategyEntity(strategyEntity);
 
+            Date date = null;
+            int interval = strategyEntity.getInterval();
+            if (interval >= 60) {
+                date = BiddingRuleUtils.getDateInvHour(param.getTimes(), interval);
+            } else {
+                date = BiddingRuleUtils.getDateInvMinute(param.getTimes(), interval);
+            }
+            biddingRuleEntity.setNext(date.getTime());
             //竞价时段
             strategyEntity.setTimes(param.getTimes());
 
             // 竞价排名位置
-            strategyEntity.setPositionStrategy(param.getExpPosition());
+            strategyEntity.setExpPosition(param.getExpPosition());
             strategyEntity.setPosition(param.getCustomPos());
 
             // 出价
@@ -96,7 +112,9 @@ public class BiddingController {
             strategyEntity.setMode(param.getMode());
 
             // 目标区域
-            strategyEntity.setRegionTarget(param.getTarget());
+            if (param.getTarget() != 0) {
+                strategyEntity.setRegionTarget(new Integer[]{param.getTarget()});
+            }
 
             // 失败策略
             strategyEntity.setFailedStrategy(param.getFailed());
@@ -109,8 +127,86 @@ public class BiddingController {
         for (BiddingRuleEntity entity : newRules) {
             biddingRuleService.createBiddingRule(entity);
         }
+
+        return new ModelAndView();
     }
 
+    private int[] getTimes(Integer[] times, Integer time) {
+
+        Arrays.sort(times);
+        LinkedList<Integer> timeList = new LinkedList<>();
+        for (Integer integer : times) {
+            timeList.addLast(integer);
+        }
+        int[] hourOfDays = new int[24];
+        boolean set = false;
+        int start = timeList.removeFirst();
+        int end = timeList.removeFirst();
+
+        for (int i = 0; i < hourOfDays.length; i++) {
+            if (i < start) {
+                continue;
+            } else if (end < i) {
+
+                if (timeList.isEmpty()) {
+                    break;
+                }
+
+                start = timeList.removeFirst();
+                end = timeList.removeFirst();
+                set = false;
+                if (start <= i && i <= end) {
+                    set = true;
+                }
+            } else {
+                set = true;
+            }
+            if (set) {
+                hourOfDays[i] = 1;
+            }
+        }
+
+//        System.out.println("hourOfDays = " + Arrays.toString(hourOfDays));
+
+
+        int starts = findStart(hourOfDays, time);
+//        System.out.println("start : " + starts);
+//        System.out.println("end : " + findEnd(hourOfDays, starts));
+        return new int[]{starts, findEnd(hourOfDays, starts)};
+    }
+
+
+    private static int findEnd(int[] hourOfDays, int time) {
+        int ret = findExp(hourOfDays, time, 0);
+        if (ret == 0 || ret == -1) {
+            return 23;
+        } else {
+            return ret - 1;
+        }
+    }
+
+    private static int findStart(int[] hourOfDays, int time) {
+        if (hourOfDays[time] == 1) {
+            return time;
+        } else {
+            return findExp(hourOfDays, time, 1);
+        }
+    }
+
+    private static int findExp(int[] hourOfDays, int time, int value) {
+        for (int i = time; i < hourOfDays.length; i++) {
+            if (hourOfDays[i] == value) {
+                return i;
+            }
+        }
+        //从0开始
+        for (int i = 0; i < hourOfDays.length; i++) {
+            if (hourOfDays[i] == value) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     @RequestMapping(value = "/keyword/{id}", method = RequestMethod.GET)
     public ModelAndView get(HttpServletRequest request, @PathVariable Long id) {
@@ -195,8 +291,12 @@ public class BiddingController {
             keywordReportDTOHashMap.put(entity.getKeywordId(), keywordReportDTO);
             resultList.add(keywordReportDTO);
             ids.add(entity.getKeywordId());
-//            boolean hasRule = biddingRuleService.exists(entity.getKeywordId());
-//            keywordReportDTO.setRule(true);
+
+            BiddingRuleEntity ruleEntity = biddingRuleService.findByKeywordId(entity.getKeywordId());
+            if (ruleEntity != null) {
+                keywordReportDTO.setRule(true);
+                keywordReportDTO.setRuleDesc(BiddingRuleUtils.getRule(ruleEntity));
+            }
         }
         String yesterday = DateUtils.getYesterdayStr();
 
@@ -206,13 +306,13 @@ public class BiddingController {
         for (StructureReportEntity entity : list) {
             long kwid = entity.getKeywordId();
             KeywordReportDTO dto = keywordReportDTOHashMap.get(kwid);
-            dto.setClick(entity.getPcClick());
-            dto.setConversion(entity.getPcConversion());
-            dto.setCost(entity.getPcCost());
-            dto.setCpc(entity.getPcCpc());
-            dto.setCpm(entity.getPcCpm());
-            dto.setCtr(entity.getPcCtr());
-            dto.setImpression(entity.getPcImpression());
+            dto.setClick(NumberUtils.getInteger(entity.getPcClick()));
+            dto.setConversion(NumberUtils.getDouble(entity.getPcConversion()));
+            dto.setCost(NumberUtils.getDouble(entity.getPcCost()));
+            dto.setCpc(NumberUtils.getDouble(entity.getPcCpc()));
+            dto.setCpm(NumberUtils.getDouble(entity.getPcCpm()));
+            dto.setCtr(NumberUtils.getDouble(entity.getPcCtr()));
+            dto.setImpression(NumberUtils.getInteger(entity.getPcImpression()));
         }
 
         Map<String, Object> attributes = JSONUtils.getJsonMapData(resultList);
@@ -225,35 +325,35 @@ public class BiddingController {
 
     @RequestMapping(value = "/rank", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView checkCurrentRank(HttpServletRequest request,
-                                         @RequestParam(value = "acid", required = true) Long accid,
-                                         @RequestParam(value = "ids", required = true) Long[] ids,
-                                         @RequestParam(value = "cid", required = true) Long cid
+                                         @RequestParam(value = "ids", required = true) Long[] ids
     ) {
 
         AbstractView jsonView = new MappingJackson2JsonView();
 
         List<Integer> result = Collections.EMPTY_LIST;
-        if (accid == null) {
+
+        if (ids == null || ids.length == 0) {
             return new ModelAndView(jsonView);
         }
 
-        CampaignEntity campaignEntity = campaignDAO.findOne(cid);
+        // 只允许指定一个推广地域,如果未指定则按照推广计划->推广账户
 
-        if (campaignEntity == null) {
-            return new ModelAndView(jsonView);
-        }
         String userName = AppContext.getUser();
 
+        Long accid = AppContext.getAccountId();
         SystemUserEntity systemUserEntity = systemUserService.getSystemUser(userName);
         if (systemUserEntity == null) {
             return new ModelAndView(jsonView);
         }
 
+        List<Integer> accountRegionList = new ArrayList<>();
         CommonService commonService = null;
         String host = null;
         for (BaiduAccountInfoEntity infoEntity : systemUserEntity.getBaiduAccountInfoEntities()) {
             if (infoEntity.getId().longValue() == accid) {
                 try {
+                    // 如果竞价规则和推广计划都未设置推广地域,则通过账户获取
+                    accountRegionList.addAll(infoEntity.getRegionTarget());
                     host = infoEntity.getRegDomain();
                     commonService = ServiceFactory.getInstance(infoEntity.getBaiduUserName(), infoEntity.getBaiduPassword(), infoEntity.getToken(), null);
                     break;
@@ -268,14 +368,62 @@ public class BiddingController {
             return new ModelAndView(jsonView);
         }
 
-        List<BiddingRuleEntity> list = biddingRuleService.findRules(Arrays.asList(ids));
+        Map<String, List<Integer>> searchMap = new HashMap<>();
+        Map<String, KeywordEntity> keywordEntityMap = new HashMap<>();
+
+        for (Long kwid : ids) {
+
+            KeywordEntity keywordEntity = sysKeywordService.findById(kwid);
+            keywordEntityMap.put(keywordEntity.getKeyword(), keywordEntity);
+
+            BiddingRuleEntity ruleEntity = biddingRuleService.findByKeywordId(kwid);
+
+            if (ruleEntity == null || ruleEntity.getStrategyEntity().getRegionTarget() == null) {
+                CampaignEntity campaignEntity = sysCampaignService.findByKeywordId(kwid);
+                List<Integer> targetList = campaignEntity.getRegionTarget();
+                // 设置计划区域或者账户区域
+                if (targetList != null && !targetList.isEmpty()) {
+                    searchMap.put(keywordEntity.getKeyword(), targetList);
+                } else {
+                    searchMap.put(keywordEntity.getKeyword(), accountRegionList);
+                }
+            } else {
+                searchMap.put(keywordEntity.getKeyword(), Arrays.asList(ruleEntity.getStrategyEntity().getRegionTarget()));
+            }
+
+        }
 
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
+        Map<String, KeywordRankEntity> rankMap = baiduApiService.getKeywordRank(searchMap, host);
 
-        Map<String, Integer> rankMap = baiduApiService.checkKeywordRank(list, host);
+        Long accountId = AppContext.getAccountId();
+
+        for (String key : rankMap.keySet()) {
+            KeywordEntity keywordEntity = keywordEntityMap.get(key);
+
+            KeywordRankEntity keywordRankEntity = rankMap.get(key);
+            keywordRankEntity.setAccountId(accountId);
+            keywordRankEntity.setKwid(keywordEntity.getKeywordId());
+
+        }
+        keywordRankService.updateRanks(rankMap.values());
 
         Map<String, Object> attributes = JSONUtils.getJsonMapData(rankMap);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
+
+    }
+
+    @RequestMapping(value = "/rank/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getRank(@PathVariable("id") Long id) {
+
+        AbstractView jsonView = new MappingJackson2JsonView();
+
+        KeywordRankEntity keywordRankEntity = keywordRankService.findRankByKeywordId(id);
+        Map<String, Object> mapObject = JSONUtils.getJsonMapData(keywordRankEntity);
+        jsonView.setAttributesMap(mapObject);
+
+        return new ModelAndView(jsonView);
+
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -122,7 +123,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
 //            }
 //
 //            MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(systemUserEntity.getUserName());
-//            mongoTemplate.updateFirst(Query.query(Criteria.where("_id").is(entity.getId())), Update.update("next", entity.getNextTime()), BiddingRuleEntity.class);
+//            mongoTemplate.updateFirst(Query.query(Criteria.where("_id").is(entity.getId())), Update.update("next", entity.getStart()), BiddingRuleEntity.class);
 //        }
 //    }
     private Update getUpdate(BiddingRuleEntity entity) {
@@ -140,8 +141,8 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
 //            update = update.addToSet("intval", entity.getInterval());
 //        }
 //
-//        if (entity.getPositionStrategy() > 0) {
-//            update = update.addToSet("pstra", entity.getPositionStrategy());
+//        if (entity.getExpPosition() > 0) {
+//            update = update.addToSet("pstra", entity.getExpPosition());
 //        }
 //
 //        if (entity.getMaxPrice() > 0) {
@@ -181,7 +182,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
 
     @Override
     public BiddingRuleEntity getBiddingRuleByKeywordId(Long keywordId) {
-        return findOne(keywordId);
+        return getMongoTemplate().findOne(Query.query(Criteria.where(KEYWORD_ID).is(keywordId)), getEntityClass());
     }
 
     @Override
@@ -201,10 +202,8 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     }
 
     @Override
-    public List<BiddingRuleEntity> getNextRunByGroupId(String userName, Long id) {
-
-        Long time = System.currentTimeMillis();
-        Query query = Query.query(Criteria.where("ebl").is(true).and("next").lte(time).and(ACCOUNT_ID).is(id));
+    public List<BiddingRuleEntity> getTaskByAccoundId(String userName, Long id, long time) {
+        Query query = Query.query(Criteria.where("ebl").is(true).and("nxt").lte(time).and(ACCOUNT_ID).is(id));
         return BaseMongoTemplate.getUserMongo(userName).find(query, getEntityClass());
     }
 
@@ -236,6 +235,10 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
 
     @Override
     public boolean existsByKeywordId(Long keywordId) {
-        return getMongoTemplate().exists(Query.query(Criteria.where(KEYWORD_ID).is(keywordId)),getEntityClass());
+        return getMongoTemplate().exists(Query.query(Criteria.where(KEYWORD_ID).is(keywordId)), getEntityClass());
+    }
+
+    @Override
+    public void updateRank(Collection<BiddingRuleEntity> values) {
     }
 }

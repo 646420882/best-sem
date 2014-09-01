@@ -8,9 +8,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import static com.perfect.mongodb.utils.EntityConstants.ADGROUP_ID;
-import static com.perfect.mongodb.utils.EntityConstants.KEYWORD_ID;
-import static com.perfect.mongodb.utils.EntityConstants.TBL_KEYWORD;
+import static com.perfect.mongodb.utils.EntityConstants.*;
 
 @Document(collection = TBL_KEYWORD)
 public class KeywordEntity extends AccountIdEntity {
@@ -22,16 +20,24 @@ public class KeywordEntity extends AccountIdEntity {
     private String id;
 
     //KeywordType Attributes
-    @Indexed(unique = true)
+    @Indexed(sparse = true)
     @Field(KEYWORD_ID)
     private Long keywordId;
+
     @Field(ADGROUP_ID)
     private Long adgroupId;
+
+    @Field("oagid")
+    private String adgroupObjId;
+
     @Field("name")
     private String keyword;
+
     private Double price;
+
     @Field("pc")
     private String pcDestinationUrl;
+
     @Field("mobile")
     private String mobileDestinationUrl;
 
@@ -50,6 +56,15 @@ public class KeywordEntity extends AccountIdEntity {
     //------------------------
     // INTERFACE
     //------------------------
+
+
+    public String getAdgroupObjId() {
+        return adgroupObjId;
+    }
+
+    public void setAdgroupObjId(String adgroupObjId) {
+        this.adgroupObjId = adgroupObjId;
+    }
 
     public boolean setKeywordId(Long aKeywordId) {
         boolean wasSet = false;

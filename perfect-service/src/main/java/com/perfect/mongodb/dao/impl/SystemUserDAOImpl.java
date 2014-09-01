@@ -65,7 +65,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, 
     @Override
     public SystemUserEntity findByUserName(String userName) {
         SystemUserEntity user = getSysMongoTemplate().
-                find(Query.query(Criteria.where("userName").is(userName)), SystemUserEntity.class, "sys_user").get(0);
+                findOne(Query.query(Criteria.where("userName").is(userName)), SystemUserEntity.class, "sys_user");
         return user;
     }
 

@@ -4,6 +4,7 @@ import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import org.springframework.data.domain.Sort;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, L
 
     public int startRule(List<String> id);
 
-    public List<BiddingRuleEntity> getNextRunByGroupId(String userName, Long id);
+    public List<BiddingRuleEntity> getTaskByAccoundId(String userName, Long id, long hour);
 
     void updateToNextRunTime(List<BiddingRuleEntity> tasks);
 
@@ -42,4 +43,7 @@ public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, L
     void removeByKeywordIds(List<Long> ids);
 
     boolean existsByKeywordId(Long keywordId);
+
+    @Deprecated
+    void updateRank(Collection<BiddingRuleEntity> values);
 }

@@ -21,11 +21,21 @@ public class SysKeywordServiceImpl implements SysKeywordService {
 
     @Override
     public List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param) {
-        return keywordDAO.findByAdgroupId(adgroupId,param);
+        return keywordDAO.findByAdgroupId(adgroupId, param);
     }
 
     @Override
     public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param) {
-        return keywordDAO.findByAdgroupIds(adgroupIds,param);
+        return keywordDAO.findByAdgroupIds(adgroupIds, param);
+    }
+
+    @Override
+    public KeywordEntity findById(Long kwid) {
+        return keywordDAO.findOne(kwid);
+    }
+
+    @Override
+    public KeywordEntity findByName(String keyword, Long accountId) {
+        return keywordDAO.findByName(keyword, accountId);
     }
 }

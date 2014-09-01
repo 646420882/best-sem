@@ -14,7 +14,7 @@
     <security:http pattern="/**/*.gif" security="none"/>
     <security:http pattern="/**/*.png" security="none"/>
     <security:http pattern="/**/*.swf" security="none"/>
-    <security:http pattern="/js/*.js" security="none"/>
+    <security:http pattern="/**/*.js" security="none"/>
     <security:http pattern="/login" security="none"/>
     <security:http pattern="/upload/uploadFile" security="none"/>
     <security:http pattern="/upload/upTotal" security="none"/>
@@ -27,13 +27,27 @@
     </security:http>
 
     <security:authentication-manager>
-        <security:authentication-provider user-service-ref="customUserDetailsService">
+        <security:authentication-provider ref="authenticationProvider"/>
+        <!--<security:authentication-provider user-service-ref="customUserDetailsService">
             <security:password-encoder hash="md5">
                 <security:salt-source user-property="username"/>
             </security:password-encoder>
-        </security:authentication-provider>
+        </security:authentication-provider>-->
     </security:authentication-manager>
 
+    <bean id="authenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="hideUserNotFoundExceptions" value="false"/>
+        <property name="userDetailsService" ref="customUserDetailsService"/>
+        <property name="passwordEncoder" ref="passwordEncode"/>
+        <property name="saltSource" ref="saltSource"/>
+    </bean>
+
     <bean id="customUserDetailsService" class="com.perfect.app.homePage.service.CustomUserDetailsService"/>
+
+    <bean id="passwordEncode" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
+
+    <bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+        <property name="userPropertyToUse" value="username"/>
+    </bean>
 
 </beans>
