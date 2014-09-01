@@ -133,7 +133,7 @@ function loadCreativeData(params) {
                         " <td>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
                         " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
                         " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
-                        " <td >" + until.getCreativeStatus(json[i].status) + "</td>" +
+                        " <td >" + until.getCreativeStatus(json[i].status) + "<input type='hidden' value='"+json[i].status+"'/></td>" +
                         "</tr>";
                     _createTable.append(_tbody);
                 }
@@ -250,8 +250,7 @@ function addCreative() {
             " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='1024'></td>" +
             " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='36'></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
-            " <td><select name='status'>" + getStatus();
-        +"</select></td>" +
+            " <td><span>本地新增</span><input type='hidden' value='-1' name='status'></td>" +
         "</tr>";
         _createTable.append(_tbody);
     } else if (sparams.cid != null && sparams.aid == null) {
@@ -539,7 +538,7 @@ function updateCreatvie(temp){
     var pcDisplayUrl=_tr.find("td:eq(5) a").attr("title")!=undefined?_tr.find("td:eq(5) a").attr("title"):_tr.find("td:eq(5) span").html();
     var mobileDestinationUrl=_tr.find("td:eq(6) a").attr("title")!=undefined?_tr.find("td:eq(6) a").attr("title"):_tr.find("td:eq(6) span").html();
     var mobileDisplayUrl=_tr.find("td:eq(7) a").attr("title")!=undefined?_tr.find("td:eq(7) a").attr("title"):_tr.find("td:eq(7) span").html();
-    var status=_tr.find("td:eq(9)").html();
+    var status=_tr.find("td:eq(9) input").val();
     var pause=_tr.find("td:eq(8)").html();
     $("#cUpdateForm input[name='oid']").val(creativeId);
     $("#cUpdateForm input[name='title']").val(title);
@@ -550,6 +549,7 @@ function updateCreatvie(temp){
     $("#cUpdateForm input[name='mobileDestinationUrl']").val(mobileDestinationUrl);
     $("#cUpdateForm input[name='mobileDisplayUrl']").val(mobileDisplayUrl);
     $("#cuStatus").html(status);
+    $("#cUpdateForm input[name='status']").val(status);
      if(pause=="启用"){
          $("#cUpdateForm select[name='pause']").get(0).selectedIndex=0;
      }else{
@@ -560,12 +560,38 @@ function updateCreatvie(temp){
  * 修改确认提交方法
  */
 function updateOk(){
+
+    var _this=$(tmp);
     $("#cUpdateForm").formSubmit("/assistantCreative/update",function(rs){
         if(rs=="1"){
-            alert("修改成功!");
+            _this.remove();
+            var p=formData["pause"]=="true"?"启用":"暂停";
+            var _createTable = $("#createTable tbody");
+            var i = $("#createTable tbody tr").size();
+            var _trClass = i % 2 == 0 ? "list2_box1 list2_box3" : "list2_box2 list2_box3";
+            var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
+                "<td>&nbsp;<span style='display: none;'>"+formData["oid"]+"</span></td>" +
+                "<td >" + until.substring(10, formData["title"]) + "</td>" +
+                " <td >" + until.substring(10, formData["description1"]) + "</td>" +
+                " <td >" + until.substring(10, formData["description2"]) + "</td>" +
+                " <td ><a href='" + formData["pcDestinationUrl"] + "' target='_blank'>" + until.substring(10, formData["pcDestinationUrl"]) + "</a></td>" +
+                " <td >" + until.substring(10, formData["pcDisplayUrl"]) + "</td>" +
+                " <td >" + until.substring(10, formData["mobileDestinationUrl"]) + "</td>" +
+                " <td >" + until.substring(10, formData["mobileDisplayUrl"]) + "</td>" +
+                " <td >" + p+ "</td>" +
+                " <td >" + until.getCreativeStatus(parseInt(formData["status"]))+ "</td>" +
+                "</tr>";
+            _createTable.append(_tbody);
+            alert("修改完成");
+            closeAlert();
+
         }
     });
 }
+/**
+ * 获取10为数字的随机数
+ * @returns {number}
+ */
 function getRandomId(){
     return Math.floor(Math.random()*10000000000)+1;
 }

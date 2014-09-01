@@ -760,12 +760,13 @@
         <ul>
             <li>
                 <div class="w_list01 fl over">状态：</div>
-                <div class="w_list02 fl over"><b>有效</b></div>
+                <div class="w_list02 fl over"><b id="apStatus">有效</b></div>
             </li>
             <li>
                 <div class="w_list01 fl over">启用/暂停：</div>
-                <div class="w_list02 fl over"><select>
-                    <option>启用</option>
+                <div class="w_list02 fl over"><select id="apPause" onchange="adgroupdSelectChange(this);">
+                    <option value="true">启用</option>
+                    <option value="false">暂停</option>
                 </select></div>
             </li>
         </ul>
@@ -1189,7 +1190,7 @@
             <label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/>
             <label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></br>
             <label>移动显示URL:</label><input name="mobileDisplayUrl" maxlength="36"/>
-            <label>创意状态:</label><label id="cuStatus">暂无</label></br>
+            <label>创意状态:</label><label id="cuStatus">暂无</label><input type="hidden" name="status"></br>
             <label>是否启用:</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select>
         </form>
     </div>
