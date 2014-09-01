@@ -2,6 +2,7 @@ package com.perfect.app.assistantCampaign.controller;
 
 import com.perfect.autosdk.sms.v3.ScheduleType;
 import com.perfect.core.AppContext;
+import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.utils.web.WebContext;
@@ -31,6 +32,9 @@ public class AssistantCampaignController {
 
     @Resource
     private CampaignDAO campaignDAO;
+
+    @Resource
+    private AdgroupDAO adgroupDAO;
 
     @Resource
     private WebContext webContext;
@@ -97,7 +101,7 @@ public class AssistantCampaignController {
         campaignEntity.setIsDynamicCreative(isDynamicCreative);
         campaignEntity.setNegativeWords(negativeWords == null ? null : "".equals(negativeWords) ? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
         campaignEntity.setExactNegativeWords(exactNegativeWords == null ? null : "".equals(exactNegativeWords) ? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));
-        campaignEntity.setExcludeIp(excludeIp==null?null:"".equals(excludeIp)?new ArrayList<String>(): Arrays.asList(excludeIp.split("\n")));
+        campaignEntity.setExcludeIp(excludeIp == null ? null : "".equals(excludeIp) ? new ArrayList<String>() : Arrays.asList(excludeIp.split("\n")));
         campaignEntity.setShowProb(showProb);
         campaignEntity.setPause(pause);
 
@@ -121,29 +125,52 @@ public class AssistantCampaignController {
 
 
     /**
-     * 添加一条推广计划(!!!)
+     * 添加一条推广计划
      * @return
      */
-  /*  @RequestMapping(value = "assistantCampaign/add")
-    public ModelAndView addCampaign( String campaignName,Double budget,Double priceRatio,Boolean pause, Integer showProb,*//*String[] schedule,*//*Integer[] regionTarget,
-                                     String[] negativeWords,String[] excludeIp,
-                                     String adgroupName,Double maxPrice,Boolean pause2
+    @RequestMapping(value = "assistantCampaign/add")
+    public void addCampaign( String campaignName,Double budget,Double priceRatio,Boolean pause, Integer showProb,String schedule,Integer[] regionTarget,
+                                     String negativeWords,String exactNegativeWords,String excludeIp,
+                                     String adgroupName,Double maxPrice,Boolean adgroupPause,Double adgroupPriceRatio
                                     ){
+
+        //推广计划
         CampaignEntity campaignEntity = new CampaignEntity();
         campaignEntity.setCampaignName(campaignName);
         campaignEntity.setBudget(budget);
         campaignEntity.setPriceRatio(priceRatio);
         campaignEntity.setPause(pause);
         campaignEntity.setShowProb(showProb);
-        campaignEntity.setRegionTarget(regionTarget==null?null: Arrays.asList(regionTarget));
-        campaignEntity.setNegativeWords(negativeWords==null?null:Arrays.asList(negativeWords));
-        campaignEntity.setExcludeIp(excludeIp==null?null:Arrays.asList(excludeIp));
+        List<ScheduleType> scheduleEntityList = null;
+        if(schedule!=null&&!"".equals(schedule)){
+            scheduleEntityList = new ArrayList<>();
+            String[] strSchedule = schedule.split(";");
+            for(String str : strSchedule){
+                String[] fieds = str.split("-");
+                ScheduleType scheduleType = new ScheduleType();
+                int i = 0;
+                scheduleType.setWeekDay(Long.parseLong(fieds[i++]));
+                scheduleType.setStartHour(Long.parseLong(fieds[i++]));
+                scheduleType.setEndHour(Long.parseLong(fieds[i++]));
+                scheduleEntityList.add(scheduleType);
+            }
+        }
+        campaignEntity.setSchedule(scheduleEntityList);
+        campaignEntity.setRegionTarget(regionTarget == null ? null : "".equals(regionTarget) ? new ArrayList<Integer>() : Arrays.asList(regionTarget));
+        campaignEntity.setNegativeWords(negativeWords == null ? null : "".equals(negativeWords) ? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
+        campaignEntity.setExactNegativeWords(exactNegativeWords == null ? null : "".equals(exactNegativeWords) ? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));
+        campaignEntity.setExcludeIp(excludeIp == null ? null : "".equals(excludeIp) ? new ArrayList<String>() : Arrays.asList(excludeIp.split("\n")));
 
+/*
+        //推广单元
         AdgroupEntity adgroupEntity = new AdgroupEntity();
         adgroupEntity.setAdgroupName(adgroupName);
         adgroupEntity.setMaxPrice(maxPrice);
-        adgroupEntity.setPause(pause2);
+        adgroupEntity.setPause(adgroupPause);
+        adgroupEntity.setPriceRatio(adgroupPriceRatio);*/
 
-        return new ModelAndView();
-    }*/
+        //开始添加
+//        campaignDAO.insert(campaignEntity);
+//        adgroupDAO.insert(adgroupEntity);
+    }
 }
