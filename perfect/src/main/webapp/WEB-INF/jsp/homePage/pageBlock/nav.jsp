@@ -49,7 +49,8 @@
                         </div>
                         <div class="user_logo2 fr">
                             <form name="logout" method="POST" action="/logout">
-                            <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png" onclick="$('form[logout]').submit();"/>
+                                <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png"
+                                       onclick="$('form[logout]').submit();"/>
                             </form>
                         </div>
                     </div>
@@ -163,46 +164,44 @@
                 success: function (data, textStatus, jqXHR) {
                 }
             });
-            }
-        });
-        $(".nav_input1").click(function () {
-            if ($(".nav_left").css("display") == "none") {//隐藏
-                $(".nav_left").slideDown(600);
-                $(".concent").css("width", "85%");
-                $(".top").css("width", "85%");
-                $(".nav_input").css("display", "none");
-            }
-            else {
-                $(".nav_left").hide();
-                $(".concent").css("width", "99.5%");
-                $(".top").css("width", "99.5%");
-                $(".nav_input").css("display", "block");
-            }
-        });
-        $('.user_name').click(function () {
-            $(this).next('#switchAccount').show();
-            $('#switchAccount li').click(function () {
-                $('.user_name span').html($(this).text());
-                var _accountId = $(this).val();
-                $('#switchAccount').hide();
-                $.ajax({
-                    url: '/account/switchAccount',
-                    type: 'POST',
-                    async: false,
-                    dataType: 'json',
-                    data: {
-                        "accountId": _accountId
-                    },
-                    success: function (data, textStatus, jqXHR) {
-                        if (data.status != null && data.status == true) {
-                            //location.replace(location.href);
-                            window.location.reload(true);
-                        }
+        })
+    });
+    $(".nav_input1").click(function () {
+        if ($(".nav_left").css("display") == "none") {//隐藏
+            $(".nav_left").slideDown(600);
+            $(".concent").css("width", "85%");
+            $(".top").css("width", "85%");
+            $(".nav_input").css("display", "none");
+        }
+        else {
+            $(".nav_left").hide();
+            $(".concent").css("width", "99.5%");
+            $(".top").css("width", "99.5%");
+            $(".nav_input").css("display", "block");
+        }
+    });
+    $('.user_name').click(function () {
+        $(this).next('#switchAccount').show();
+        $('#switchAccount li').click(function () {
+            $('.user_name span').html($(this).text());
+            var _accountId = $(this).val();
+            $('#switchAccount').hide();
+            $.ajax({
+                url: '/account/switchAccount',
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                data: {
+                    "accountId": _accountId
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (data.status != null && data.status == true) {
+                        //location.replace(location.href);
+                        window.location.reload(true);
                     }
-                });
+                }
             });
         });
-
-        loadBaiduAccount();
     });
+
 </script>
