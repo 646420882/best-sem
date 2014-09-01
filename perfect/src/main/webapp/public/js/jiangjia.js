@@ -7,7 +7,31 @@ window.onload = function () {
     rDrag.init(document.getElementById('box6'));
 };
 
-$(function(){
+function initOptions(id, start, end) {
+
+    var select = $('#' + id);
+    select.empty();
+    for (i = start; i <= end; i++) {
+        $("<option value='" + i + "'>" + i + "点</option>").appendTo(select);
+    }
+}
+
+function emptydata() {
+
+}
+$(function () {
+    //单一时段
+    initOptions('start', 0, 23);
+    initOptions('end', 1, 24);
+
+    //多时段
+    initOptions('start1', 0, 11);
+    initOptions('end1', 1, 12);
+    initOptions('start2', 12, 13);
+    initOptions('end2', 13, 14);
+    initOptions('start3', 14, 23);
+    initOptions('end3', 15, 24);
+
 //顶部菜单切换
 			var $tab_li = $('.tab_menu li');
 			$('.tab_menu li').click(function(){
@@ -16,20 +40,32 @@ $(function(){
 		    $('div.tab_box > div').eq(index).show().siblings().hide();
 		    });	
 //设置规则
-			$(".showbox").click(function(){
-				$(".TB_overlayBG").css({
-					display:"block",height:$(document).height()
-				});
-				$(".box").css({
-					left:($("body").width()-$(".box").width())/2-20+"px",
-					top:($(window).height()-$(".box").height())/2+$(window).scrollTop()+"px",
-					display:"block"
-				});
-			});
-			$(".close").click(function(){
-				$(".TB_overlayBG").css("display","none");
-				$(".box ").css("display","none");
-			});
+    $(".showbox").click(function () {
+        var items = checked("subbox2");
+
+        if (items.length == 0) {
+            alert("请选择至少一个关键词!");
+            return;
+        }
+
+        if (items.length == 1) {
+            filldata(items.val());
+        } else {
+            emptydata();
+        }
+        $(".TB_overlayBG").css({
+            display: "block", height: $(document).height()
+        });
+        $(".box").css({
+            left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
+            display: "block"
+        });
+    });
+    $(".close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $(".box ").css("display", "none");
+    });
 //修改出价
 $(".showbox2").click(function(){
 				$(".TB_overlayBG").css({
@@ -153,6 +189,205 @@ $(".showbox5").click(function(){
                             });
     });
 
+
+    $('#rulesave').click(function () {
+        sendReq(false);
+    })
+
+    $('#rulesaverun').click(function () {
+        sendReq(true);
+    })
+
+
+    $('#rankBtn').click(function () {
+        var items = checked("subbox2");
+
+        if (items.length == 0) {
+            alert("请选择至少一个关键词!");
+            return;
+        }
+        var ids = [];
+        items.each(function (i, item) {
+            ids.push(item.value);
+        })
+
+        $.ajax({
+            url: "/bidding/rank",
+            data: {'ids': ids.toString()},
+            type: "POST",
+            success: function (datas) {
+                datas.rows.each(function (item) {
+                    if (item.rank == -1) {
+                        $('#item.id').val("无当前排名");
+                    } else {
+                        $('#item.id').val(item.rank);
+                    }
+                });
+            }
+        })
+    });
+
 });
 
+function sendReq(run) {
+    var req = {};
+
+    // 最高最低出价
+    req.max = $('#max').val();
+    req.min = $('#min').val();
+
+    if (req.max < 0.01 || req.min < 0.01) {
+        alert('竞价格式错误!')
+        return;
+    }
+
+    req.run = run;
+    var ids = [];
+    if ($.kwid == undefined) {
+        checked('subbox2').each(function (i, item) {
+            ids.push(item.value);
+        });
+    } else {
+        ids.push($.kwid);
+    }
+    req.ids = ids;
+
+    var timeRange = checked('times').val();
+    req.timerange = timeRange;
+
+    if (timeRange == 1) {
+        var start = seleValue('start');
+        var end = seleValue('end');
+        if (!validate(start, end)) {
+            return;
+        }
+        req.times = [start, end];
+    } else if (timeRange == 2) {
+        var times = [];
+        checked('mtimes').each(function (i, item) {
+            var start = seleValue('start' + $(item).data('id'));
+            var end = seleValue('end' + $(item).data('id'));
+            if (!validate(start, end)) {
+                times = [];
+                return false;
+            }
+            times.push(start, end);
+        });
+        if (times.length == 0) {
+            return false;
+        }
+        req.times = times;
+    }
+
+//竞价模式
+    req.mode = checked('mode').val();
+
+// 竞价设备
+    req.device = seleValue('device');
+
+    if (req.device == undefined) {
+        req.device = 10000;
+    }
+//竞价位置
+    req.expPosition = seleValue('pos');
+    if (req.expPosition == 4) {
+        req.customPos = $('input[name=rightpos]').val();
+    } else {
+        req.customPos = -1;
+    }
+
+    req.failed = checked('failed').val();
+
+    req.auto = checked('auto').val();
+
+//竞价区域
+    req.target = null;
+
+    if (req.auto == 2) {
+        req.interval = seleValue('interval');
+    } else {
+        req.interval = -1;
+    }
+
+    $.ajax({
+        url: "/bidding/save",
+        data: JSON.stringify(req),
+        type: "POST",
+        contentType: "application/json",
+        success: function (data) {
+            alert('创建规则成功');
+            $('.close').click();
+            return;
+        }
+    })
+}
+
+function filldata(id) {
+    $.ajax({
+        url: "/bidding/keyword/" + id,
+        type: "GET",
+        success: function (datas) {
+            datas.rows.each(function (item) {
+                var s = item.strategyEntity;
+                setSeleValue('device', s.device);
+
+                var mtimes = (s.times.length == 2) ? 1 : 2;
+                checkValue('times', mtimes);
+
+                if (mtimes == 1) {
+                    setSeleValue('start', s.times[0]);
+                    setSeleValue('end', s.times[1]);
+                } else {
+                    for (i = 0; i < s.times.length; i + 2) {
+                        var start = s.times[i];
+                        if (start < 12) {
+                            checked()
+                        }
+                    }
+                }
+
+            });
+        }
+    })
+}
+
+function validate(start, end) {
+    if (start == end) {
+        alert('开始与结束时间不能相同!');
+        return false;
+    }
+    return true;
+}
+
+function validateDigi(value) {
+    if (value == '') {
+        return false;
+    }
+
+    if (value < 0.01) {
+        return false;
+    }
+
+    return true;
+}
+
+function seleValue(id) {
+    return $('#' + id + ' option:selected').val();
+}
+
+function setSeleValue(id, value) {
+    $('#' + id + ' option:selected').val(value);
+}
+
+function checkValue(name, value) {
+    $("input[name=" + name + "][value=" + value + "]").attr("checked", 'checked');
+    checked(name).click();
+}
+
+function setValue(id, value) {
+    $('#' + id).val(value);
+}
+function checked(name) {
+    return $('input[name=' + name + ']:checked');
+}
 

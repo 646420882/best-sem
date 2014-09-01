@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -74,6 +75,10 @@ public class ContextInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        if (modelAndView == null || (modelAndView.getView() != null && modelAndView.getView() instanceof MappingJackson2JsonView)) {
+            return;
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return;
@@ -86,6 +91,7 @@ public class ContextInterceptor implements HandlerInterceptor {
 
             ModelMap modelMap = modelAndView.getModelMap();
             modelMap.put("currSystemUserName", WebUtils.getUserName(request));
+
             if (datas[0] == null) {
                 if (datas[1] == null) {
                     modelMap.put("accountBalance", 0);
@@ -112,6 +118,7 @@ public class ContextInterceptor implements HandlerInterceptor {
                     modelMap.put("accountBudget", 0);
                     modelMap.put("remainderDays", 0);
                 }
+
             }
         }
     }
@@ -121,8 +128,8 @@ public class ContextInterceptor implements HandlerInterceptor {
 
     }
 
-    //获取账户余额和账户预算
-    private Double[] getBalanceAndBudget(Long accountId) {
+    //获取账户余额和账户余额
+   private Double[] getBalanceAndBudget(Long accountId) {
         Double balance = accountManageService.getBaiduAccountInfoById(accountId).getBalance();
         Double yesterdayCost = accountManageService.getYesterdayCost(accountId);
         return new Double[]{balance, yesterdayCost};

@@ -250,7 +250,8 @@ function addCreative() {
             " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='1024'></td>" +
             " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='36'></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
-            " <td><span>本地新增</span><input type='hidden' value='-1' name='status'></td>" +
+            " <td><select name='status'>" + getStatus();
+        +"</select></td>" +
         "</tr>";
         _createTable.append(_tbody);
     } else if (sparams.cid != null && sparams.aid == null) {

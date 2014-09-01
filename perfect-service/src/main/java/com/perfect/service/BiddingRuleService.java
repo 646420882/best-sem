@@ -1,10 +1,9 @@
 package com.perfect.service;
 
-import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.query.Query;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +16,9 @@ public interface BiddingRuleService {
 
     public void createBiddingRule(BiddingRuleEntity biddingRuleEntity);
 
-    public BiddingRuleEntity getBiddingRuleByKeywordId(String keywordId);
+    public BiddingRuleEntity findByKeywordId(Long keywordId);
 
-    void updateToNextTime(BiddingRuleEntity biddingRuleEntity, long time);
+    void updateToNextTime(BiddingRuleEntity biddingRuleEntity, int time);
 
     public void createRule(BiddingRuleEntity entity);
 
@@ -31,7 +30,7 @@ public interface BiddingRuleService {
 
     public List<BiddingRuleEntity> getReadyRule();
 
-    public List<BiddingRuleEntity> getTaskByAccountId(String userName, Long id);
+    public List<BiddingRuleEntity> getTaskByAccountId(String userName, Long id, long hour);
 
     void updateRule(List<BiddingRuleEntity> tasks);
 
@@ -41,7 +40,14 @@ public interface BiddingRuleService {
 
     List<BiddingRuleEntity> findRules(List<Long> ids);
 
-    void remove(String id);
+    void remove(Long id);
 
     void removeByKeywordId(Long id);
+
+    void removeByKeywordIds(List<Long> id);
+
+    boolean exists(Long keywordId);
+
+    @Deprecated
+    void updateRank(Collection<BiddingRuleEntity> values);
 }

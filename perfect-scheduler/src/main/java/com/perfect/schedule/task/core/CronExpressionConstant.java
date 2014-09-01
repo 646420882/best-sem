@@ -5,7 +5,7 @@ package com.perfect.schedule.task.core;
  *
  * @author yousheng
  */
-public class CronExpression {
+public class CronExpressionConstant {
     // every day fired once
     public static final String CRON_DAILY_START = "0 0 0 ? * *";
 

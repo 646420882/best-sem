@@ -3,6 +3,7 @@ package com.perfect.dao;
 import com.perfect.autosdk.sms.v3.KeywordInfo;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.mongodb.utils.PaginationParam;
 import org.springframework.data.mongodb.core.query.Query;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,13 +39,13 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
      */
     public void insertAndQuery(List<KeywordEntity> keywordEntity);
 
-    KeywordEntity findByName(String name);
+    KeywordEntity findByName(String name, Long accountId);
 
     void remove(Query query);
 
     List<KeywordEntity> findByQuery(Query query);
 
-    List<KeywordEntity> findByAdgroupId(Long adgroupId);
+    List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param);
 
-    List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds);
+    List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param);
 }

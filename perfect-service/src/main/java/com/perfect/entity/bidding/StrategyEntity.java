@@ -2,8 +2,6 @@ package com.perfect.entity.bidding;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.List;
-
 /**
  * Created by yousheng on 2014/8/14.
  *
@@ -18,7 +16,7 @@ public class StrategyEntity {
 
     //竞价规则 PC or 移动
     @Field("type")
-    private int type;
+    private int device;
 
     @Field("max")
     private double maxPrice;
@@ -26,8 +24,9 @@ public class StrategyEntity {
     @Field("min")
     private double minPrice;
 
-    @Field("spd")
-    private int spd;
+    // 竞价策略
+    @Field("m")
+    private int mode;
 
     // 1 = slow 60
     // 2 = medium 30
@@ -40,7 +39,7 @@ public class StrategyEntity {
     // 3 = right 1-3
     // 4 = right + postion
     @Field("pstra")
-    private int positionStrategy;
+    private int expPosition;
 
     // 1 = keep current postion
     // 2 = rollback
@@ -48,13 +47,13 @@ public class StrategyEntity {
     private int failedStrategy;
 
     @Field("t")
-    private List<Integer> time;
+    private Integer[] times;
 
     @Field("pos")
     private int position;
 
     @Field("rt")
-    private int regionTarget;
+    private Integer[] regionTarget;
 
     public int getStrategy() {
         return strategy;
@@ -64,12 +63,12 @@ public class StrategyEntity {
         this.strategy = strategy;
     }
 
-    public int getType() {
-        return type;
+    public int getDevice() {
+        return device;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setDevice(int device) {
+        this.device = device;
     }
 
     public double getMaxPrice() {
@@ -88,12 +87,12 @@ public class StrategyEntity {
         this.minPrice = minPrice;
     }
 
-    public int getSpd() {
-        return spd;
+    public int getMode() {
+        return mode;
     }
 
-    public void setSpd(int spd) {
-        this.spd = spd;
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 
     public int getInterval() {
@@ -104,12 +103,12 @@ public class StrategyEntity {
         this.interval = interval;
     }
 
-    public int getPositionStrategy() {
-        return positionStrategy;
+    public int getExpPosition() {
+        return expPosition;
     }
 
-    public void setPositionStrategy(int positionStrategy) {
-        this.positionStrategy = positionStrategy;
+    public void setExpPosition(int expPosition) {
+        this.expPosition = expPosition;
     }
 
     public int getFailedStrategy() {
@@ -128,19 +127,21 @@ public class StrategyEntity {
         this.position = position;
     }
 
-    public List<Integer> getTime() {
-        return time;
+    public Integer[] getTimes() {
+        return times;
     }
 
-    public void setTime(List<Integer> time) {
-        this.time = time;
+    public void setTimes(Integer[] times) {
+        this.times = times;
     }
 
-    public int getRegionTarget() {
+    public Integer[] getRegionTarget() {
         return regionTarget;
     }
 
-    public void setRegionTarget(int regionTarget) {
+    public void setRegionTarget(Integer[] regionTarget) {
         this.regionTarget = regionTarget;
     }
+
+
 }

@@ -24,12 +24,18 @@
             </div>
             <div class="user_mid">
                 <div class="user_logo">
-                    <div class="user_logo1">
+                    <div class="user_logo1 over">
                         <div class="user_img fl over">
                             <span> <img src="${pageContext.request.contextPath}/public/images/yixin_logo.png"></span>
                         </div>
                         <div class="user_text fl">
-                            <p>上午，好！<span>${currSystemUserName}</span></p>
+                            <p>上午，好,<span>${currSystemUserName}</span></p>
+
+                            <div class="user_select over">
+                                <select id="switchAccount">
+                                </select>
+                            </div>
+
 
                             <div class="user_select">
                                 <div class="user_name">
@@ -43,8 +49,7 @@
                         </div>
                         <div class="user_logo2 fr">
                             <form name="logout" method="POST" action="/logout">
-                                <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png"
-                                       onclick="$('form[logout]').submit();"/>
+                            <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png" onclick="$('form[logout]').submit();"/>
                             </form>
                         </div>
                     </div>
@@ -52,9 +57,9 @@
 
                 <div class="user_detali over">
                     <ul>
-                        <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<>
-                        <li>余额预计可消费：${remainderDays}天<>
-                        <li>日预算：${accountBudget}元<>
+                        <li>推广额度<b><a href="#">${accountBalance}</a></b></li>
+                        <li>余额预计可消费：${remainderDays}</li>
+                        <li>日预算：${accountBudget}</li>
                     </ul>
                 </div>
             </div>
@@ -106,22 +111,24 @@
 
     var baiduAccountId = <%=accountId%>;
 
+    var selectedAccount = "";
+
     var loadBaiduAccount = function () {
         $.getJSON("/account/getAllBaiduAccount",
                 {},
                 function (data) {
                     var options, results = data.rows;
                     if (results != null && results.length > 0) {
-                        var lis = "";
+                        var _option = "";
                         $.each(results, function (i, item) {
-                            var _item = item.baiduUserName.substring(6);
                             if (baiduAccountId == item.id) {
-                                $('.user_name span').html(_item);
+                                _option += "<option selected='selected' value=" + item.id + ">" + item.baiduUserName + "</option>";
+                            } else {
+                                _option += "<option value=" + item.id + ">" + item.baiduUserName + "</option>";
                             }
-                            lis += "<li value='" + item.id + "'>" + _item + "</li>";
                         });
-                        $("#switchAccount_ul").empty();
-                        $("#switchAccount_ul").append(lis);
+                        $("#switchAccount").empty();
+                        $("#switchAccount").append(_option);
                     }
                 });
     };
@@ -136,7 +143,9 @@
                 $(".on_title").css({"position": "static", "margin": "0 auto"});
             }
         });
+
         $('.nav_under ul li').click(function () {
+            $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
             $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
             if ($(this).find(".nav_input1").length == 1) {
                 return false;
@@ -196,5 +205,57 @@
         });
 
         loadBaiduAccount();
+
+        $("#switchAccount").change(function () {
+            var _accountId = $("#switchAccount option:selected").val();
+            $.ajax({
+                url: '/account/switchAccount',
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                data: {
+                    "accountId": _accountId
+                },
+                success: function (data, textStatus, jqXHR) {
+                }
+            });
+        });
+        $(".nav_input1").click(function () {
+            if ($(".nav_left").css("display") == "none") {//隐藏
+                $(".nav_left").slideDown(600);
+                $(".concent").css("width", "85%");
+                $(".top").css("width", "85%");
+                $(".nav_input").css("display", "none");
+            }
+            else {
+                $(".nav_left").hide();
+                $(".concent").css("width", "99.5%");
+                $(".top").css("width", "99.5%");
+                $(".nav_input").css("display", "block");
+            }
+        });
+        $('.user_name').click(function () {
+            $(this).next('#switchAccount').show();
+            $('#switchAccount li').click(function () {
+                $('.user_name span').html($(this).text());
+                var _accountId = $(this).val();
+                $('#switchAccount').hide();
+                $.ajax({
+                    url: '/account/switchAccount',
+                    type: 'POST',
+                    async: false,
+                    dataType: 'json',
+                    data: {
+                        "accountId": _accountId
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        if (data.status != null && data.status == true) {
+                            //location.replace(location.href);
+                            window.location.reload(true);
+                        }
+                    }
+                });
+            });
+        });
     });
 </script>

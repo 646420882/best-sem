@@ -1,0 +1,9 @@
+diff a/perfect/src/main/java/com/perfect/app/bidding/controller/BiddingController.java b/perfect/src/main/java/com/perfect/app/bidding/controller/BiddingController.java	(rejected hunks)
+@@ -6,7 +6,6 @@
+ import com.perfect.autosdk.exception.ApiException;
+ import com.perfect.core.AppContext;
+ import com.perfect.dao.CampaignDAO;
+-import com.perfect.entity.CampaignEntity;
+ import com.perfect.entity.*;
+ import com.perfect.entity.bidding.BiddingRuleEntity;
+ import com.perfect.mongodb.utils.DateUtils;

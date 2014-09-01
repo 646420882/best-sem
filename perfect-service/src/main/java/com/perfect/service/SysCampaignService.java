@@ -8,4 +8,6 @@ import com.perfect.entity.CampaignEntity;
 public interface SysCampaignService {
 
     public CampaignEntity findById(Long id);
+
+    CampaignEntity findByKeywordId(Long kwid);
 }

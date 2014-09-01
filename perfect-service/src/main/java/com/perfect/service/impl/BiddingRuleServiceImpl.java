@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -27,13 +28,12 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public BiddingRuleEntity getBiddingRuleByKeywordId(String keywordId) {
+    public BiddingRuleEntity findByKeywordId(Long keywordId) {
         return biddingRuleDAO.getBiddingRuleByKeywordId(keywordId);
     }
 
     @Override
-    public void updateToNextTime(BiddingRuleEntity biddingRuleEntity, long time) {
-        biddingRuleEntity.setNextTime(time);
+    public void updateToNextTime(BiddingRuleEntity biddingRuleEntity, int time) {
         biddingRuleDAO.save(biddingRuleEntity);
     }
 
@@ -63,8 +63,8 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public List<BiddingRuleEntity> getTaskByAccountId(String userName, Long id) {
-        return biddingRuleDAO.getNextRunByGroupId(userName, id);
+    public List<BiddingRuleEntity> getTaskByAccountId(String userName, Long id, long hour) {
+        return biddingRuleDAO.getTaskByAccoundId(userName, id, hour);
     }
 
     @Override
@@ -93,13 +93,28 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public void remove(String id) {
+    public void remove(Long id) {
         biddingRuleDAO.delete(id);
     }
 
     @Override
     public void removeByKeywordId(Long id) {
         biddingRuleDAO.removeByKeywordId(id);
+    }
+
+    @Override
+    public void removeByKeywordIds(List<Long> ids) {
+        biddingRuleDAO.removeByKeywordIds(ids);
+    }
+
+    @Override
+    public boolean exists(Long keywordId) {
+        return biddingRuleDAO.existsByKeywordId(keywordId);
+    }
+
+    @Override
+    public void updateRank(Collection<BiddingRuleEntity> values) {
+        biddingRuleDAO.updateRank(values);
     }
 
 

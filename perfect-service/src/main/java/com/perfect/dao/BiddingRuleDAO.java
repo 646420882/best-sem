@@ -4,6 +4,7 @@ import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import org.springframework.data.domain.Sort;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  *
  * @author yousheng
  */
-public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, String> {
+public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, Long> {
 
     public void createBidding(BiddingRuleEntity biddingRuleEntity);
 
@@ -21,7 +22,7 @@ public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, S
 
     public void updateBiddingRule(BiddingRuleEntity biddingRuleEntity);
 
-    public BiddingRuleEntity getBiddingRuleByKeywordId(String keywordId);
+    public BiddingRuleEntity getBiddingRuleByKeywordId(Long keywordId);
 
     public List<BiddingRuleEntity> getReadyRule();
 
@@ -29,7 +30,7 @@ public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, S
 
     public int startRule(List<String> id);
 
-    public List<BiddingRuleEntity> getNextRunByGroupId(String userName, Long id);
+    public List<BiddingRuleEntity> getTaskByAccoundId(String userName, Long id, long hour);
 
     void updateToNextRunTime(List<BiddingRuleEntity> tasks);
 
@@ -38,4 +39,11 @@ public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, S
     List<BiddingRuleEntity> find(List<Long> ids);
 
     void removeByKeywordId(Long id);
+
+    void removeByKeywordIds(List<Long> ids);
+
+    boolean existsByKeywordId(Long keywordId);
+
+    @Deprecated
+    void updateRank(Collection<BiddingRuleEntity> values);
 }

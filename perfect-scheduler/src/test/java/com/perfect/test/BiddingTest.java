@@ -1,13 +1,14 @@
 package com.perfect.test;
 
 import com.perfect.constants.BiddingStrategyConstants;
-import com.perfect.core.AppContext;
 import com.perfect.dao.BiddingRuleDAO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.entity.bidding.StrategyEntity;
 import com.perfect.schedule.task.execute.BiddingTask;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.unitils.UnitilsJUnit4;
+import org.unitils.spring.annotation.SpringApplicationContext;
+import org.unitils.spring.annotation.SpringBeanByName;
 
 import java.util.List;
 
@@ -16,14 +17,12 @@ import java.util.List;
  *
  * @author yousheng
  */
-public class BiddingTest extends UnitilsJUnit4 {
-
+public class BiddingTest  {
 
     public static void main(String[] args) {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("schedule.xml");
         BiddingTask biddingTask = (BiddingTask) applicationContext.getBean("biddingTask");
 
-//        createEntity(applicationContext);
         List<BiddingTask.TaskObject> list = null;
         try {
             list = biddingTask.selectTasks(null, null, 0, null, 0);
@@ -39,7 +38,7 @@ public class BiddingTest extends UnitilsJUnit4 {
 
         BiddingRuleEntity biddingRuleEntity = new BiddingRuleEntity();
         biddingRuleEntity.setAccountId(7001963);
-        biddingRuleEntity.setNextTime(1);
+//        biddingRuleEntity.setStart(1);
         biddingRuleEntity.setKeywordId(906068486l);
         biddingRuleEntity.setKeyword("深圳南山 买房");
         biddingRuleEntity.setEnabled(true);
@@ -48,11 +47,11 @@ public class BiddingTest extends UnitilsJUnit4 {
         StrategyEntity strategyEntity = new StrategyEntity();
         biddingRuleEntity.setStrategyEntity(strategyEntity);
         strategyEntity.setInterval(30);
-        strategyEntity.setSpd(BiddingStrategyConstants.SPD_FAST.value());
+        strategyEntity.setMode(BiddingStrategyConstants.SPD_FAST.value());
         strategyEntity.setMaxPrice(5);
         strategyEntity.setMinPrice(1);
 
-        strategyEntity.setPositionStrategy(BiddingStrategyConstants.POS_LEFT_1.value());
+        strategyEntity.setExpPosition(BiddingStrategyConstants.POS_LEFT_1.value());
 
         biddingRuleDAO.createBidding(biddingRuleEntity);
     }

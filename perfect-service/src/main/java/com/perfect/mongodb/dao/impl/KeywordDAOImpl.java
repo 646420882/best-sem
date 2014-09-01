@@ -10,6 +10,7 @@ import com.perfect.entity.KeywordEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.mongodb.utils.PaginationParam;
 import com.perfect.utils.LogUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -101,8 +102,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
     @Override
-    public KeywordEntity findByName(String name) {
-        List<KeywordEntity> list = findByQuery(Query.query(Criteria.where("kw").is(name)));
+    public KeywordEntity findByName(String name, Long accountId) {
+        List<KeywordEntity> list = findByQuery(Query.query(Criteria.where("kw").is(name).and(ACCOUNT_ID).is(accountId)));
         if (list == null || list.isEmpty()) {
             return null;
         }
@@ -145,13 +146,14 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
     @Override
-    public List<KeywordEntity> findByAdgroupId(Long adgroupId) {
-        return getMongoTemplate().find(Query.query(Criteria.where(ADGROUP_ID).is(adgroupId)), getEntityClass());
+    public List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param) {
+        return getMongoTemplate().find(param.withParam(Query.query(Criteria.where(ADGROUP_ID).is(adgroupId))), getEntityClass());
     }
 
     @Override
-    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds) {
-        return getMongoTemplate().find(Query.query(Criteria.where(ADGROUP_ID).in(adgroupIds)), getEntityClass());
+    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param) {
+        return getMongoTemplate().find(param.withParam(Query.query(Criteria.where(ADGROUP_ID).in(adgroupIds)))
+                , getEntityClass());
     }
 
     public void insert(KeywordEntity keywordEntity) {
