@@ -2237,3 +2237,30 @@ h2 .close{
     background:url(/public/img/bg.png) -10px -591px  no-repeat;
     color:#42484c;
 }
+/*************添加推广计划***************/
+.plan_box h3 span{
+    color:#a1a1a1;
+    font-weight:normal;
+    padding-left:10px;
+}
+.plan_box ul li{
+    margin-top:10px;
+    line-height:22px;
+}
+.planbox1{
+    width:110px;
+}
+.planbox1 span{
+    color:#fa041b;
+}
+.plan_input{
+    width:240px;
+    height:22px;
+    border:1px solid #CCC;
+    color:#a1a1a1;
+}
+.planbox2 select{
+    height:22px;
+    border:1px solid #CCC;
+    width:100px;
+}
