@@ -121,6 +121,7 @@
     color: #fff;
     background: url(/public/img/colock.png) 8px 4px no-repeat;
     text-decoration: none;
+    height: 25px;
 }
 .list01_top ul .current a:hover {
     text-decoration: none;
@@ -643,7 +644,6 @@
 .keyword_left {
     width: 30%;
     margin-bottom: 2%;
-    padding-bottom: 40px;
     background: #e4eafa;
     border: 1px solid #d2daef;
     -moz-box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.2);
@@ -686,9 +686,10 @@
     border-right: 1px solid #dadadd;
 }
 .keyworld_text2 {
-    width: 89.5%;
-    height: 456px;
+    height: 290px;
+    width: 100%;
     background: #fff;
+    overflow: auto;
 }
 .keyworld_text1 ul li {
     text-align: center;
@@ -724,7 +725,7 @@
     background: url(/public/img/team03_bg.png) repeat;
 }
 .k_l_under1 {
-    margin-bottom: 60px;
+    /*margin-bottom: 60px;*/
 }
 .k_l_under1 ul li select {
     height: 22px;
@@ -1381,7 +1382,7 @@ h2 .close{
 }
 .TB_overlayBG {
     background-color: #666;
-    position: absolute;
+    position:fixed;
     z-index: 999;
     left: 0;
     top: 0;
@@ -2263,4 +2264,77 @@ h2 .close{
     height:22px;
     border:1px solid #CCC;
     width:100px;
+}
+/******关键词工具弹窗*********/
+.assembly_top{
+    height:30px;
+    line-height:30px;
+}
+.assembly_top div{
+    padding:0 10px;
+
+
+}
+.assembly_top div span{
+    padding:0 10px;
+
+}
+.assembly_top div span a{
+    padding:0 8px;
+    color:#0300ac;
+
+}
+.assembly_under{
+    padding:0 2%;
+
+ }
+.assembly_right{
+    width:65%;
+    background:#fff;
+    padding:10px;
+}
+.assembly_checkbox{
+    height:30px;
+    line-height:30px;
+    border-bottom:1px solid #ccc;
+
+}
+.assembly_checkbox li{
+    display:block;
+    float:left;
+    padding:0 20px;
+    height:30px;
+    background:#fff;
+    color:#0064c9;
+    font-weight:bold;
+    cursor: pointer;
+
+
+}
+.assembly_checkbox .current{
+    border-top:1px solid #ccc;
+    border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+
+
+}
+.assembly_search{
+    margin:20px 0;
+    color:#000;
+    font-weight:bold;
+
+}
+.assembly_search input{
+    height:24px;
+    border:1px solid #ccc;
+    width:40%;
+}
+
+.assembly_top2 select{
+    height:24px;
+    border:1px solid #ccc;
+    width:40%;
+    margin:10px 0;
+
+
 }
