@@ -776,7 +776,7 @@
 <div class="containers  over hides">
     <div class="zs_function over">
         <ul class="fl">
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="#" id="addCampaign"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a>
             </li>
 
@@ -1257,6 +1257,9 @@
     <h2 id="setScheduleDiv">推广地域列表<a href="#" class="close">关闭</a></h2>
 </div>
 <jsp:include page="../promotionAssistant/alert/setRegionTarget.jsp"/>
+
+<%--添加推广计划弹出窗口--%>
+<jsp:include page="../promotionAssistant/alert/addCampaign.jsp"/>
 
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
