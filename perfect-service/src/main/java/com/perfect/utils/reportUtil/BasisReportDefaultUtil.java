@@ -35,8 +35,27 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
         Map<String , StructureReportEntity> map = new HashMap<>();
         if ((endNumber - begin) < threshold) {
             for (int i = begin; i < endNumber; i++) {
-                if (map.get(objectList.get(i).getAdgroupName()) != null) {
-                    String adgroupName = objectList.get(i).getAdgroupName();
+                boolean repotr = false;
+                String adgroupName = "";
+                switch (report){
+                    case 1:
+                        repotr = map.get(objectList.get(i).getAdgroupName()) != null;
+                        adgroupName = objectList.get(i).getAdgroupName();
+                        break;
+                    case 2:
+                        repotr = map.get(objectList.get(i).getKeywordName()) != null;
+                        adgroupName = objectList.get(i).getKeywordName();
+                        break;
+                    case 3:
+                        repotr = map.get(objectList.get(i).getCreativeId()) != null;
+                        adgroupName = objectList.get(i).getCreativeId().toString();
+                        break;
+                    case 4:
+                        repotr = map.get(objectList.get(i).getRegionId()) != null;
+                        adgroupName = objectList.get(i).getRegionId().toString();
+                        break;
+                }
+                if (repotr) {
                     StructureReportEntity voEntity = map.get(adgroupName);
                     voEntity.setMobileClick(((voEntity.getMobileClick()== null)? 0:voEntity.getMobileClick())  + ((map.get(adgroupName).getMobileClick() == null) ? 0 : map.get(adgroupName).getMobileClick()));
                     voEntity.setMobileConversion((voEntity.getMobileConversion()==null ? 0:voEntity.getMobileConversion()) + ((map.get(adgroupName).getMobileConversion() == null) ? 0 :map.get(adgroupName).getMobileClick()));
@@ -61,7 +80,7 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
                             map.put(objectList.get(i).getCreativeId().toString(), voEntity);
                             break;
                         case 4:
-                            map.put(objectList.get(i).getRegionName(), voEntity);
+                            map.put(objectList.get(i).getRegionId().toString(), voEntity);
                             break;
                     }
 
@@ -77,7 +96,7 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
                             map.put(objectList.get(i).getCreativeId().toString(), objectList.get(i));
                             break;
                         case 4:
-                            map.put(objectList.get(i).getRegionName(), objectList.get(i));
+                            map.put(objectList.get(i).getRegionId().toString(), objectList.get(i));
                             break;
                     }
                 }
@@ -126,7 +145,7 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
                         repotr = mapValue1.getCreativeId().equals (mapValue2.getCreativeId());
                         break;
                     case 4:
-                        repotr = mapValue1.getRegionName().equals(mapValue2.getRegionName());
+                        repotr = mapValue1.getRegionId().equals(mapValue2.getRegionId());
                         break;
                 }
                 if (repotr) {

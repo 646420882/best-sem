@@ -1256,8 +1256,8 @@
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setSchedule">
     <h2 id="setScheduleDiv">推广地域列表<a href="#" class="close">关闭</a></h2>
+    <jsp:include page="../promotionAssistant/alert/setRegionTarget.jsp"/>
 </div>
-<jsp:include page="../promotionAssistant/alert/setRegionTarget.jsp"/>
 
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>

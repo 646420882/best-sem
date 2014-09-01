@@ -41,20 +41,35 @@ public class BasisReportController {
      * @param response
      * @param startDate 开始时间
      * @param endDate 结束时间
-     * @param reportPageType 报告类型
-     * @param reportNumber 每页条数
+     * @param reportType 报告类型
+     * @param start 报告显示开始数
+     * @param sort 排序方式
+     * @param limit 每页条数
      */
     @RequestMapping(value = "/account/structureReport", method = RequestMethod.GET)
     public void getPerformance(HttpServletResponse response,
                                @RequestParam(value = "startDate", required = false) String startDate,
                                @RequestParam(value = "endDate", required = false) String endDate,
-                               @RequestParam(value = "reportType", required = false, defaultValue = "1") int reportPageType,
+                               @RequestParam(value = "reportType", required = false, defaultValue = "1") int reportType,
                                @RequestParam(value = "devices", required = false, defaultValue = "0") int devices,
                                @RequestParam(value = "dateType", required = false, defaultValue = "0") int dateType,
-                               @RequestParam(value = "reportNumber", required = false, defaultValue = "10") int reportNumber) {
+                               @RequestParam(value = "start", required = false, defaultValue = "0") int start,
+                               @RequestParam(value = "sort", required = false, defaultValue = "-1") String sort,
+                               @RequestParam(value = "reportNumber", required = false, defaultValue = "10") int limit) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        String yesterday = new SimpleDateFormat("yyyy-MM-dd ").format(cal.getTime());
+        if(startDate == null || startDate.equals("")){
+            startDate = yesterday;
+            endDate = yesterday;
+        }else if(endDate == null || endDate.equals("")){
+            endDate = yesterday;
+        }
         List<String> list = DateUtils.getPeriod(startDate, endDate);
         String[] newDate = list.toArray(new String[list.size()]);
-        Map<String, List<StructureReportEntity>> responseDate = basisReportService.getReportDate(newDate, devices, dateType, reportPageType,reportNumber);
+        Map<String, List<StructureReportEntity>> responseDate = basisReportService.getReportDate(newDate, devices, dateType, reportType,start,limit,sort);
+        StructureReportEntity objEntity = new StructureReportEntity();
+
         int totalRows =0;
         for(List<StructureReportEntity> entity : responseDate.values()){
             totalRows = totalRows + ((entity==null)?0:entity.size());
@@ -81,9 +96,11 @@ public class BasisReportController {
     @RequestMapping(value = "/account/accountReport", method = RequestMethod.GET)
     public void getAccountReport(HttpServletResponse response,
                                  @RequestParam(value = "Sorted", required = false,defaultValue = "0") int Sorted,
-                                 @RequestParam(value = "fieldName", required = false,defaultValue = "date") String fieldName){
+                                 @RequestParam(value = "fieldName", required = false,defaultValue = "date") String fieldName,
+                                 @RequestParam(value = "startJC", required = false,defaultValue = "0") int startJC,
+                                 @RequestParam(value = "limitJC", required = false,defaultValue = "10") int limitJC){
 
-        Map<String, List<AccountReportDTO>> returnAccount = basisReportService.getAccountAll(Sorted, fieldName);
+            Map<String, List<AccountReportDTO>> returnAccount = basisReportService.getAccountAll(Sorted, fieldName,startJC,limitJC);
 
         String data=new Gson().toJson(returnAccount);
 

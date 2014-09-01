@@ -41,13 +41,13 @@ public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureRepor
                         if(((objectList.get(i).getPcImpression() == null) ? 0 : objectList.get(i).getPcImpression()) == 0){
                             objectList.get(i).setPcCtr(0d);
                         }else{
-                            BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format((objectList.get(i).getPcClick() / objectList.get(i).getPcImpression()))));
+                            BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format((objectList.get(i).getPcClick().doubleValue() / objectList.get(i).getPcImpression().doubleValue()))));
                             BigDecimal big = new BigDecimal(100);
                             double divide = ctrBig.multiply(big).doubleValue();
                             objectList.get(i).setPcCtr(divide);
                         }
                     }else{
-                        double newNumber = Double.parseDouble(df.format((objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()))/(objectList.get(i).getMobileImpression() + ((objectList.get(i).getMobileImpression() == null) ? 0 : objectList.get(i).getMobileImpression()))));
+                        double newNumber = Double.parseDouble(df.format((objectList.get(i).getPcClick().doubleValue() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick().doubleValue()))/(objectList.get(i).getMobileImpression().doubleValue() + ((objectList.get(i).getMobileImpression() == null) ? 0 : objectList.get(i).getMobileImpression().doubleValue()))));
                         BigDecimal ctrBig = new BigDecimal(newNumber);
                         BigDecimal big = new BigDecimal(100);
                         double divide = ctrBig.multiply(big).doubleValue();

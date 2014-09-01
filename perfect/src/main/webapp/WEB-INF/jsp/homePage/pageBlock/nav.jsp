@@ -88,7 +88,7 @@
                             <h3>智能竞价</h3></a>
                     </li>
                     <li>
-                        <a href="#"><span class="list5"></span>
+                        <a href="/reportIndex"><span class="list5"></span>
 
                             <h3>数据报告</h3></a>
                     </li>
