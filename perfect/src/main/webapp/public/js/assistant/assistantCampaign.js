@@ -165,7 +165,9 @@ function whenBlurEditCampaign(num,value){
         case 11:jsonData["pause"] = value;break;
     }
     editCampaignInfo(jsonData);
+    getCampaignList();
 }
+
 
 /**
  * 删除推广计划
