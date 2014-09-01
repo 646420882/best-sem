@@ -12,13 +12,17 @@ import java.util.Map;
  */
 public interface BasisReportService {
     /**
-     * 获取单元报告
-     * @param terminal 推广设备 0、全部  1、PC端 2、移动端
-     * @param date 时间
-     * @param categoryTime 分类时间  0、默认 1、分日 2、分周 3、分月
+     * 获取报告
+     * @param devices         推广设备 0、全部  1、PC端 2、移动端
+     * @param date             时间
+     * @param dateType     分类时间  0、默认 1、分日 2、分周 3、分月
+     * @param reportType       报告类型
+     * @param limit 显示个数
+     * @param start 开始数
+     * @return
      * @return
      */
-    public Map<String,List<StructureReportEntity>> getReportDate(String[] date,int terminal,int categoryTime,int reportType,int reportNumber);
+    public Map<String,List<StructureReportEntity>> getReportDate(String[] date, int devices, int dateType, int reportType, int start, int limit,String sort);
 
     /**
      * 获取用户所有数据
@@ -26,7 +30,7 @@ public interface BasisReportService {
      * @param fieldName
      * @return
      */
-    public Map<String,List<AccountReportDTO>> getAccountAll(int Sorted,String fieldName);
+    public Map<String,List<AccountReportDTO>> getAccountAll(int Sorted,String fieldName,int startJC,int limitJC);
 
     /**
      *

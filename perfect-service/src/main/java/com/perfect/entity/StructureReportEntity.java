@@ -2,26 +2,26 @@ package com.perfect.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
-
+import static com.perfect.mongodb.utils.EntityConstants.*;
 /**
  * Created by SubDong on 2014/8/12.
  */
-public class StructureReportEntity {
+public class StructureReportEntity implements Comparable<StructureReportEntity>{
     @Id
     private String id;
 
     private String date; //时间
 
-    @Field(value = "agid")
+    @Field(value = ADGROUP_ID)
     private Long adgroupId;
 
-    @Field("kwid")
+    @Field(value = KEYWORD_ID)
     private Long keywordId;  //关键词ID
 
-    @Field(value = "crid")
+    @Field(value = CREATIVE_ID)
     private Long creativeId;    //创意ID
 
-    @Field(value = "rgid")
+    @Field(value = REGION_ID)
     private Long regionId; //地域ID
 
     @Field(value = "agna")
@@ -86,6 +86,26 @@ public class StructureReportEntity {
 
     @Field(value = "mcs")
     private Double mobileConversion;
+
+    private String orderBy;
+
+    private int terminal;
+
+    public int getTerminal() {
+        return terminal;
+    }
+
+    public void setTerminal(int terminal) {
+        this.terminal = terminal;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
 
     public String getId() {
         return id;
@@ -304,84 +324,6 @@ public class StructureReportEntity {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        StructureReportEntity entity = (StructureReportEntity) o;
-
-        if (adgroupId != null ? !adgroupId.equals(entity.adgroupId) : entity.adgroupId != null) return false;
-        if (adgroupName != null ? !adgroupName.equals(entity.adgroupName) : entity.adgroupName != null) return false;
-        if (campaignName != null ? !campaignName.equals(entity.campaignName) : entity.campaignName != null)
-            return false;
-        if (creativeId != null ? !creativeId.equals(entity.creativeId) : entity.creativeId != null) return false;
-        if (creativeTitle != null ? !creativeTitle.equals(entity.creativeTitle) : entity.creativeTitle != null)
-            return false;
-        if (date != null ? !date.equals(entity.date) : entity.date != null) return false;
-        if (description1 != null ? !description1.equals(entity.description1) : entity.description1 != null)
-            return false;
-        if (description2 != null ? !description2.equals(entity.description2) : entity.description2 != null)
-            return false;
-        if (id != null ? !id.equals(entity.id) : entity.id != null) return false;
-        if (keywordId != null ? !keywordId.equals(entity.keywordId) : entity.keywordId != null) return false;
-        if (keywordName != null ? !keywordName.equals(entity.keywordName) : entity.keywordName != null) return false;
-        if (mobileClick != null ? !mobileClick.equals(entity.mobileClick) : entity.mobileClick != null) return false;
-        if (mobileConversion != null ? !mobileConversion.equals(entity.mobileConversion) : entity.mobileConversion != null)
-            return false;
-        if (mobileCost != null ? !mobileCost.equals(entity.mobileCost) : entity.mobileCost != null) return false;
-        if (mobileCpc != null ? !mobileCpc.equals(entity.mobileCpc) : entity.mobileCpc != null) return false;
-        if (mobileCpm != null ? !mobileCpm.equals(entity.mobileCpm) : entity.mobileCpm != null) return false;
-        if (mobileCtr != null ? !mobileCtr.equals(entity.mobileCtr) : entity.mobileCtr != null) return false;
-        if (mobileImpression != null ? !mobileImpression.equals(entity.mobileImpression) : entity.mobileImpression != null)
-            return false;
-        if (pcClick != null ? !pcClick.equals(entity.pcClick) : entity.pcClick != null) return false;
-        if (pcConversion != null ? !pcConversion.equals(entity.pcConversion) : entity.pcConversion != null)
-            return false;
-        if (pcCost != null ? !pcCost.equals(entity.pcCost) : entity.pcCost != null) return false;
-        if (pcCpc != null ? !pcCpc.equals(entity.pcCpc) : entity.pcCpc != null) return false;
-        if (pcCpm != null ? !pcCpm.equals(entity.pcCpm) : entity.pcCpm != null) return false;
-        if (pcCtr != null ? !pcCtr.equals(entity.pcCtr) : entity.pcCtr != null) return false;
-        if (pcImpression != null ? !pcImpression.equals(entity.pcImpression) : entity.pcImpression != null)
-            return false;
-        if (regionId != null ? !regionId.equals(entity.regionId) : entity.regionId != null) return false;
-        if (regionName != null ? !regionName.equals(entity.regionName) : entity.regionName != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (date != null ? date.hashCode() : 0);
-        result = 31 * result + (adgroupId != null ? adgroupId.hashCode() : 0);
-        result = 31 * result + (adgroupName != null ? adgroupName.hashCode() : 0);
-        result = 31 * result + (campaignName != null ? campaignName.hashCode() : 0);
-        result = 31 * result + (keywordId != null ? keywordId.hashCode() : 0);
-        result = 31 * result + (keywordName != null ? keywordName.hashCode() : 0);
-        result = 31 * result + (creativeId != null ? creativeId.hashCode() : 0);
-        result = 31 * result + (creativeTitle != null ? creativeTitle.hashCode() : 0);
-        result = 31 * result + (description1 != null ? description1.hashCode() : 0);
-        result = 31 * result + (description2 != null ? description2.hashCode() : 0);
-        result = 31 * result + (regionId != null ? regionId.hashCode() : 0);
-        result = 31 * result + (regionName != null ? regionName.hashCode() : 0);
-        result = 31 * result + (pcImpression != null ? pcImpression.hashCode() : 0);
-        result = 31 * result + (pcClick != null ? pcClick.hashCode() : 0);
-        result = 31 * result + (pcCtr != null ? pcCtr.hashCode() : 0);
-        result = 31 * result + (pcCost != null ? pcCost.hashCode() : 0);
-        result = 31 * result + (pcCpc != null ? pcCpc.hashCode() : 0);
-        result = 31 * result + (pcCpm != null ? pcCpm.hashCode() : 0);
-        result = 31 * result + (pcConversion != null ? pcConversion.hashCode() : 0);
-        result = 31 * result + (mobileImpression != null ? mobileImpression.hashCode() : 0);
-        result = 31 * result + (mobileClick != null ? mobileClick.hashCode() : 0);
-        result = 31 * result + (mobileCtr != null ? mobileCtr.hashCode() : 0);
-        result = 31 * result + (mobileCost != null ? mobileCost.hashCode() : 0);
-        result = 31 * result + (mobileCpc != null ? mobileCpc.hashCode() : 0);
-        result = 31 * result + (mobileCpm != null ? mobileCpm.hashCode() : 0);
-        result = 31 * result + (mobileConversion != null ? mobileConversion.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "StructureReportEntity{" +
                 "id='" + id + '\'' +
@@ -412,5 +354,111 @@ public class StructureReportEntity {
                 ", mobileCpm=" + mobileCpm +
                 ", mobileConversion=" + mobileConversion +
                 '}';
+    }
+
+    @Override
+    public int compareTo(StructureReportEntity o) {
+        switch (o.getOrderBy()){
+            //展现排序
+            case "1":
+                if(o.getTerminal() == 2){
+                    return this.getMobileImpression().compareTo(o.getMobileImpression());
+                }else{
+                    return this.getPcImpression().compareTo(o.getPcImpression());
+                }
+                //点击排序
+            case "2":
+                if(o.getTerminal() == 2){
+                    return this.getMobileClick().compareTo(o.getMobileClick());
+                }else{
+                    return this.getPcClick().compareTo(o.getPcClick());
+                }
+
+            case "-2":
+                if(o.getTerminal() == 2){
+                    return o.getMobileClick().compareTo(this.getMobileClick());
+                }else{
+                    return o.getPcClick().compareTo(this.getPcClick());
+                }
+            //消费排序
+            case "3":
+                if(o.getTerminal() == 2){
+                    return this.getMobileCost().compareTo(o.getMobileCost());
+                }else{
+                    return this.getPcCost().compareTo(o.getPcCost());
+                }
+            case "-3":
+                if(o.getTerminal() == 2){
+                    return o.getMobileCost().compareTo(this.getMobileCost());
+                }else{
+                    return o.getPcCost().compareTo(this.getPcCost());
+                }
+            //平均点击价格排序
+            case "4":
+                if(o.getTerminal() == 2){
+                    return this.getMobileCpc().compareTo(o.getMobileCpc());
+                }else{
+                    return this.getPcCpc().compareTo(o.getPcCpc());
+                }
+            case "-4":
+                if(o.getTerminal() == 2){
+                    return o.getMobileCpc().compareTo(this.getMobileCpc());
+                }else{
+                    return o.getPcCpc().compareTo(this.getPcCpc());
+                }
+                //点击率排序
+            case "5":
+                if(o.getTerminal() == 2){
+                    return this.getMobileCtr().compareTo(o.getMobileCtr());
+                }else{
+                    return this.getPcCtr().compareTo(o.getPcCtr());
+                }
+            case "-5":
+                if(o.getTerminal() == 2){
+                    return o.getMobileCtr().compareTo(this.getMobileCtr());
+                }else{
+                    return o.getPcCtr().compareTo(this.getPcCtr());
+                }
+                //转化排序
+            case "6":
+                if(o.getTerminal() == 2){
+                    return this.getMobileConversion().compareTo(o.getMobileConversion());
+                }else{
+                    return this.getPcConversion().compareTo(o.getPcConversion());
+                }
+            case "-6":
+                if(o.getTerminal() == 2){
+                    return o.getMobileConversion().compareTo(this.getMobileConversion());
+                }else{
+                    return o.getPcConversion().compareTo(this.getPcConversion());
+                }
+                //单元排序
+            case "7":
+                    return this.getAdgroupId().compareTo(o.getAdgroupId());
+            case "-7":
+                    return o.getAdgroupId().compareTo(this.getAdgroupId());
+            //计划排序
+            case "8":
+                    return this.getCampaignName().compareTo(o.getCampaignName());
+            case "-8":
+                    return o.getCampaignName().compareTo(this.getCampaignName());
+            //关键字排序
+            case "9":
+                    return this.getKeywordName().compareTo(o.getKeywordName());
+            case "-9":
+                    return o.getKeywordName().compareTo(this.getKeywordName());
+            //地域排序
+            case "10":
+                return this.getRegionId().compareTo(o.getRegionId());
+            case "-10":
+                return o.getRegionId().compareTo(this.getRegionId());
+            default:
+                //默认展现排序
+                if(o.getTerminal() == 2){
+                    return o.getMobileImpression().compareTo(this.getMobileImpression());
+                }else{
+                    return o.getPcImpression().compareTo(this.getPcImpression());
+                }
+        }
     }
 }
