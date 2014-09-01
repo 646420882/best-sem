@@ -615,7 +615,7 @@
     padding: 0 2%;
     color: #454545;
     border: 1px solid #e4e4e4;
-    box-shadow:inherit;
+    box-shadow:none;
     background: #f8f8f8;
     background-image: -moz-linear-gradient(top, #fcfcfc, #f6f6f6);
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fcfcfc), color-stop(1, #f6f6f6));
@@ -892,7 +892,7 @@
     padding: 0 0 0 18px
 }
 .ztree li ul.line {
-    background: url(/public/img/line_conn.gif) 0 0 repeat-y;
+  /*  background: url(/public/img/line_conn.gif) 0 0 repeat-y;*/
 }
 .ztree li a {
     padding: 1px 3px 0 0;
@@ -1116,7 +1116,7 @@
 }
 .ztree li span.button.ico_loading {
     margin-right: 2px;
-    background: url(/public/img/loading.gif) no-repeat scroll 0 0 transparent;
+/*    background: url(/public/img/loading.gif) no-repeat scroll 0 0 transparent;*/
     vertical-align: top;
     *vertical-align:middle;
 }
@@ -1251,7 +1251,6 @@ ul.ztree.zTreeDragUL {
 }
 .w_list03 ul .current {
     background: #ffbc04;
-    border: 1px solid #da9309;
 }
 .w_list03 p {
     margin: 10px 0;
@@ -1342,7 +1341,7 @@ ul.ztree.zTreeDragUL {
     font-size: 14px;
     background-color: #282538;
     position: relative;
-    padding-left: 20px;
+    padding: 0 20px;
     line-height: 46px;
     color: #fff;
     cursor: Move;
@@ -2119,11 +2118,122 @@ h2 .close{
     font-size:14px;
     font-weight:bold;
     margin-top:5px;
-
-
 }
 .user_select select option{
     font-weight:bold;
 
 }
+/**********配置**************/
+.configure {
+    padding: 0 1%;
+}
+.configure_top {
+    line-height: 40px;
+    font-size: 14px;
+}
+.configure_top h3 {
+    color: #000;
+}
+.configure_top a {
+    color: #015fff;
+}
+.configure_under ,.configure_under2{
+    border-top: 5px solid #100325;
+}
+.configure_under2{	padding-top:14px;
+}
+.configure_under table {
+    border: none;
+}
+.configure_under table tr {
+    height: 36px;
+    line-height: 36px;
+    *line-height:24px;
+}
+.configure_under table tr td {
+    padding: 0px 12px;
+}
+.configure_under table thead {
+    background: #f8f8f8;
+}
+.configure_under table tr td {
+    border-bottom: 1px solid #e9e9e9;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+.configure_under table tr td span {
 
+    margin: 2px 5px 0 0;
+}
+.configure_under table tr td span  img{
+    width:16px;
+    height:16px;
+}
+.configure_under table tr td a {
+    color: #015fff;
+}
+.c_input {
+    height: 24px;
+    width: 234px;
+    padding: 0 5px;
+    margin-top: 10px;
+    border: 1px solid #cfcfcf;
+}
+.tri {
+    position: relative;
+    height: 46px;
+    padding-left: 23px;
+    margin-left: -23px;
+    background: url(/public/img/configure_right2.png) no-repeat left;
+}
+.con {
+    height: 46px;
+    line-height: 46px;
+    color: #262626;
+    font-weight:bold;
+    background: #e0e0e0;
+}
+.step {
+    width: 948px;
+    margin: 50px auto;
+    border: 1px solid #CCC;
+}
+.step_table {
+    width: 100%;
+}
+.step_table td {
+    cursor: pointer;
+}
+.step_table .current {
+    background: url(/public/img/configure_right.png) no-repeat
+}
+.step_table .current .con {
+    background: url(/public/img/configure_bg.jpg) repeat;
+    font-weight: bold;
+    color: #FFF;
+}
+.step_table .current .tri ,.step_table .clicked .tri  {
+    background: url(/public/img/configure_right1.png) no-repeat;
+    color: #FFF;
+}
+.step_table .clicked .con {
+    background: url(/public/img/configure_bg2.png) repeat;
+    color: #FFF;
+}
+.step_table td span{
+    display:block;
+    float:left;
+    width:31px;
+    height:31px;
+    line-height:31px;
+    margin:10px 10px 0 20px;
+    font-size:24px;
+    color:#fff;
+    text-align:center;
+    background:url(/public/img/bg.png) -50px -591px  no-repeat;
+}
+.step_table .current span ,.step_table .clicked span{
+    background:url(/public/img/bg.png) -10px -591px  no-repeat;
+    color:#42484c;
+}
