@@ -126,8 +126,8 @@ public class AssistantCreativeController extends WebContextSupport {
         creativeEntity.setStatus(s);
         creativeEntity.setDevicePreference(d);
         creativeEntity.setAdgroupId(Long.parseLong(aid));
-        creativeDAO.insert(creativeEntity);
-        writeHtml(SUCCESS, response);
+         creativeDAO.insertOutId(creativeEntity);
+
 
         return null;
     }

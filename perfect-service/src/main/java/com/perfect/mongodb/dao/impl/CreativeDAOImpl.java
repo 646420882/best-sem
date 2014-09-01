@@ -75,6 +75,15 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(objectId)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
     }
 
+    @Override
+    public String insertOutId(CreativeEntity creativeEntity) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.insert(creativeEntity,EntityConstants.TBL_CREATIVE);
+        DataOperationLogEntity logEntity = LogUtils.getLog(creativeEntity.getCreativeId(), CreativeEntity.class, null, creativeEntity);
+        logProcessingDAO.insert(logEntity);
+        return creativeEntity.getId();
+    }
+
     public CreativeEntity findOne(Long creativeId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         CreativeEntity entity = mongoTemplate.findOne(

@@ -21,7 +21,7 @@ public class AdgroupEntity extends AccountIdEntity {
     @Id
     private String id;
 
-    @Indexed(unique = true)
+    @Indexed(sparse = true)
     @Field(ADGROUP_ID)
     private Long adgroupId;
 
