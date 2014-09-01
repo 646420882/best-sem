@@ -31,6 +31,9 @@ public class AdgroupEntity extends AccountIdEntity {
     @Field(CAMPAIGN_ID)
     private Long campaignId;
 
+    @Field("ocid")
+    private String campaignObjId;
+
     @Field("name")
     private String adgroupName;
 
@@ -57,6 +60,14 @@ public class AdgroupEntity extends AccountIdEntity {
 
     @Field("m")
     private Double mib;
+
+    public String getCampaignObjId() {
+        return campaignObjId;
+    }
+
+    public void setCampaignObjId(String campaignObjId) {
+        this.campaignObjId = campaignObjId;
+    }
 
     public Double getMib() {
         return mib;

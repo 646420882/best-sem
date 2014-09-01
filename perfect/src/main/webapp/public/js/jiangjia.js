@@ -227,6 +227,44 @@ $(function () {
         })
     });
 
+
+    $('#rulesave').click(function () {
+        sendReq(false);
+    })
+
+    $('#rulesaverun').click(function () {
+        sendReq(true);
+    })
+
+
+    $('#rankBtn').click(function () {
+        var items = checked("subbox2");
+
+        if (items.length == 0) {
+            alert("请选择至少一个关键词!");
+            return;
+        }
+        var ids = [];
+        items.each(function (i, item) {
+            ids.push(item.value);
+        })
+
+        $.ajax({
+            url: "/bidding/rank",
+            data: {'ids': ids.toString()},
+            type: "POST",
+            success: function (datas) {
+                datas.rows.each(function (item) {
+                    if (item.rank == -1) {
+                        $('#item.id').val("无当前排名");
+                    } else {
+                        $('#item.id').val(item.rank);
+                    }
+                });
+            }
+        })
+    });
+
 });
 
 function sendReq(run) {
