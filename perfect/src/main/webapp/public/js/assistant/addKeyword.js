@@ -1,33 +1,22 @@
-var keywordDialog = dialog({title: "添加关键词",
-    width: 900,
-    height: 500,
-    padding: '5px',
-    url: '/keyword_group',
-    content: '<iframe src="http://www2.baidu.com" width="900px" height="500px" frameborder="0"></iframe>',
-    onshow: function () {
-        console.log('onshow');
-    },
-    oniframeload: function () {
-        console.log('oniframeload');
-    },
-    onclose: function () {
-//        if (this.returnValue) {
-//            $('#value').html(this.returnValue);
-//        }
-        console.log('onclose');
-        window.location.reload(true);
-    },
-    onremove: function () {
-        console.log('onremove');
-    }
-});
-
-window.console = window.console || {log: function () {
-}};
-
 $(function () {
     $("#addKeyword").livequery('click', function () {
-        keywordDialog.show();
+        top.dialog({title: "添加关键词",
+            padding: "5px",
+            //fixed: true,
+            //top: 'goldenRatio',
+            content: "<iframe src='/keyword_group' width='900' height='500' marginwidth='0' marginheight='0' frameborder='0'></iframe>",
+            oniframeload: function () {
+            },
+            onclose: function () {
+//              if (this.returnValue) {
+//                  $('#value').html(this.returnValue);
+//              }
+                window.location.reload(true);
+            },
+            onremove: function () {
+                console.log('onremove');
+            }
+        }).showModal();
         return false;
     });
 });
