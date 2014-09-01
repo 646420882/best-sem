@@ -11,9 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
-import static com.perfect.mongodb.utils.EntityConstants.ADGROUP_ID;
-import static com.perfect.mongodb.utils.EntityConstants.CAMPAIGN_ID;
-import static com.perfect.mongodb.utils.EntityConstants.TBL_ADGROUP;
+import static com.perfect.mongodb.utils.EntityConstants.*;
 
 @Document(collection = TBL_ADGROUP)
 public class AdgroupEntity extends AccountIdEntity {
@@ -21,7 +19,7 @@ public class AdgroupEntity extends AccountIdEntity {
     @Id
     private String id;
 
-    @Indexed(unique = true)
+    @Indexed(sparse = true)
     @Field(ADGROUP_ID)
     private Long adgroupId;
 
@@ -30,6 +28,9 @@ public class AdgroupEntity extends AccountIdEntity {
     //------------------------
     @Field(CAMPAIGN_ID)
     private Long campaignId;
+
+    @Field("ocid")
+    private String campaignObjId;
 
     @Field("name")
     private String adgroupName;
@@ -57,6 +58,14 @@ public class AdgroupEntity extends AccountIdEntity {
 
     @Field("m")
     private Double mib;
+
+    public String getCampaignObjId() {
+        return campaignObjId;
+    }
+
+    public void setCampaignObjId(String campaignObjId) {
+        this.campaignObjId = campaignObjId;
+    }
 
     public Double getMib() {
         return mib;
