@@ -27,7 +27,7 @@ public class KeywordEntity extends AccountIdEntity {
     @Field(ADGROUP_ID)
     private Long adgroupId;
 
-    @Field("oagid")
+    @Field(OBJ_ADGROUP_ID)
     private String adgroupObjId;
 
     @Field("name")

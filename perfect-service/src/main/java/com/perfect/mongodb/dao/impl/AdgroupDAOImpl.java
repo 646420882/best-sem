@@ -1,5 +1,6 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.mongodb.WriteResult;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.LogProcessingDAO;
@@ -148,6 +149,17 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
 
         return getMongoTemplate().find(query.addCriteria(Criteria.where(CAMPAIGN_ID).is(cid))
                 , AdgroupEntity.class);
+    }
+
+    @Override
+    public AdgroupEntity findByObjectId(String oid) {
+        return getMongoTemplate().findOne(Query.query(Criteria.where(SYSTEM_ID).is(oid)), getEntityClass());
+    }
+
+    @Override
+    public void updateCampaignIdByOid(String oid, Long campaignId) {
+        WriteResult wr = getMongoTemplate().updateMulti(Query.query(Criteria.where(OBJ_CAMPAIGN_ID).is(oid)),
+                Update.update(CAMPAIGN_ID, campaignId).set(OBJ_CAMPAIGN_ID, null), getEntityClass());
     }
 
     public void insert(AdgroupEntity adgroupEntity) {

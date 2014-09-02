@@ -22,4 +22,8 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
     List<AdgroupEntity> findByCampaignId(Long cid);
 
     List<AdgroupEntity> findIdByCampaignId(Long cid);
+
+    AdgroupEntity findByObjectId(String oid);
+
+    void updateCampaignIdByOid(String oid, Long campaignId);
 }

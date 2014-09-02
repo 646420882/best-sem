@@ -26,7 +26,8 @@ public class CreativeEntity extends AccountIdEntity {
     @Field(ADGROUP_ID)
     private Long adgroupId;
 
-    @Field(OADGROUP_ID)
+
+    @Field(OBJ_ADGROUP_ID)
     private String adgroupObjId;
 
     @Field("t")

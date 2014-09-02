@@ -156,6 +156,16 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
                 , getEntityClass());
     }
 
+    @Override
+    public KeywordEntity findByObjectId(String oid) {
+        return getMongoTemplate().findOne(Query.query(Criteria.where(SYSTEM_ID).is(oid)), getEntityClass());
+    }
+
+    @Override
+    public void updateAdgroupIdByOid(String id, Long adgroupId) {
+        getMongoTemplate().updateMulti(Query.query(Criteria.where(OBJ_ADGROUP_ID).is(id)), Update.update(ADGROUP_ID, adgroupId).set(OBJ_ADGROUP_ID, null), getEntityClass());
+    }
+
     public void insert(KeywordEntity keywordEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insert(keywordEntity, TBL_KEYWORD);

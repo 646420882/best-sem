@@ -93,7 +93,7 @@ public class AssistantCreativeController extends WebContextSupport {
     public ModelAndView getUnitsByPlanId(HttpServletResponse response, @RequestParam(value = "planId", required = true) String planId) {
         List<AdgroupEntity> adgroupEntities = new ArrayList<>();
         if (planId.length() > 12) {
-            adgroupEntities = adgroupDAO.findByQuery(new Query(Criteria.where(OBJECT_ID).is(planId)));
+            adgroupEntities = adgroupDAO.findByQuery(new Query(Criteria.where(OBJ_CAMPAIGN_ID).is(planId)));
         } else {
             adgroupEntities = adgroupDAO.findByQuery(new Query(Criteria.where(CAMPAIGN_ID).is(Long.parseLong(planId))));
         }

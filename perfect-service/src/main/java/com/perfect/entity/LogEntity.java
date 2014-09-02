@@ -1,22 +1,59 @@
 package com.perfect.entity;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-@Deprecated
+import static com.perfect.mongodb.utils.EntityConstants.BAIDU_ID;
+import static com.perfect.mongodb.utils.EntityConstants.OBJ_ID;
+
 @Document(collection = "logs")
-public class LogEntity {
+public class LogEntity extends AccountIdEntity {
 
+    @Id
     private String id;
 
-    private String accountId;
+    @Field(BAIDU_ID)
+    private Long bid;
 
-    private String op;
+    @Field(OBJ_ID)
+    private String oid;
 
-    private long datetime;
+    private String type;
 
-    private int status;
+    private int opt;
 
-    private Object param;
+    public Long getBid() {
+        return bid;
+    }
+
+    public void setBid(Long bid) {
+        this.bid = bid;
+    }
+
+    public String getOid() {
+        return oid;
+    }
+
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getOpt() {
+        return opt;
+    }
+
+    public void setOpt(int opt) {
+        this.opt = opt;
+    }
 
     public String getId() {
         return id;
@@ -24,37 +61,5 @@ public class LogEntity {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
-
-    public long getDatetime() {
-        return datetime;
-    }
-
-    public void setDatetime(long datetime) {
-        this.datetime = datetime;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public Object getParam() {
-        return param;
-    }
-
-    public void setParam(Object param) {
-        this.param = param;
     }
 }

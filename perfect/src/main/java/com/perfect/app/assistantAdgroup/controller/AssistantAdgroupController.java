@@ -47,7 +47,7 @@ public class AssistantAdgroupController extends WebContextSupport {
         if (cid.length() > 18) {
             if (cid != "" || !cid.equals("")) {
                 Map<String, Object> parms = new HashMap<>();
-                parms.put(EntityConstants.OBJECT_ID,cid);
+                parms.put(EntityConstants.OBJ_CAMPAIGN_ID,cid);
                 list = adgroupDAO.find(parms, 0, 15);
             } else {
                 list = adgroupDAO.find(null, 0, 15);
