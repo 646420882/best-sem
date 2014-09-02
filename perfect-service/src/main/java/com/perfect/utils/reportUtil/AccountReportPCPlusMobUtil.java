@@ -37,7 +37,7 @@ public class AccountReportPCPlusMobUtil extends RecursiveTask<List<AccountReport
                 for (int i = begin; i < endNumber; i++) {
                     objectList.get(i).setDateRep(dateFormat.format(objectList.get(i).getDate()));
                     objectList.get(i).setPcClick(objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()));
-                    objectList.get(i).setPcConversion(objectList.get(i).getPcConversion() + ((objectList.get(i).getMobileConversion() == null) ? 0 : objectList.get(i).getMobileClick()));
+                    objectList.get(i).setPcConversion(objectList.get(i).getPcConversion() + ((objectList.get(i).getMobileConversion() == null) ? 0 : objectList.get(i).getMobileConversion()));
                     objectList.get(i).setPcCost(objectList.get(i).getPcCost() + ((objectList.get(i).getMobileCost() == null) ? 0 : objectList.get(i).getMobileCost()));
                     //计算点击率
                     if(((objectList.get(i).getMobileImpression() == null) ? 0 : objectList.get(i).getMobileImpression()) == 0){

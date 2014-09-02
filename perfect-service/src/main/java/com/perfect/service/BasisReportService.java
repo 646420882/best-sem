@@ -45,7 +45,7 @@ public interface BasisReportService {
      * @param compare 是否需要数据比较 1、比较 0、不比较
      * @return
      */
-    public Map<String,List<Object>> getAccountDateVS(Date startDate, Date endDate,Date startDate1, Date endDate1,int dateType,int devices,int compare);
+    public Map<String,List<Object>> getAccountDateVS(Date startDate, Date endDate,Date startDate1, Date endDate1,int dateType,int devices,int compare,String sortVS,int startVS,int limitVS);
 
 
 /*******************************************AIP***************************************************/

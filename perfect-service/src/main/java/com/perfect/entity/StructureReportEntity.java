@@ -2,6 +2,9 @@ package com.perfect.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.Date;
+
 import static com.perfect.mongodb.utils.EntityConstants.*;
 /**
  * Created by SubDong on 2014/8/12.
@@ -86,6 +89,10 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
 
     @Field(value = "mcs")
     private Double mobileConversion;
+
+    private Date dateRep;
+
+    private int count;
 
     private String orderBy;
 
@@ -323,48 +330,40 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
         this.mobileConversion = mobileConversion;
     }
 
-    @Override
-    public String toString() {
-        return "StructureReportEntity{" +
-                "id='" + id + '\'' +
-                ", date='" + date + '\'' +
-                ", adgroupId=" + adgroupId +
-                ", adgroupName='" + adgroupName + '\'' +
-                ", campaignName='" + campaignName + '\'' +
-                ", keywordId=" + keywordId +
-                ", keywordName='" + keywordName + '\'' +
-                ", creativeId=" + creativeId +
-                ", creativeTitle='" + creativeTitle + '\'' +
-                ", description1='" + description1 + '\'' +
-                ", description2='" + description2 + '\'' +
-                ", regionId=" + regionId +
-                ", regionName='" + regionName + '\'' +
-                ", pcImpression=" + pcImpression +
-                ", pcClick=" + pcClick +
-                ", pcCtr=" + pcCtr +
-                ", pcCost=" + pcCost +
-                ", pcCpc=" + pcCpc +
-                ", pcCpm=" + pcCpm +
-                ", pcConversion=" + pcConversion +
-                ", mobileImpression=" + mobileImpression +
-                ", mobileClick=" + mobileClick +
-                ", mobileCtr=" + mobileCtr +
-                ", mobileCost=" + mobileCost +
-                ", mobileCpc=" + mobileCpc +
-                ", mobileCpm=" + mobileCpm +
-                ", mobileConversion=" + mobileConversion +
-                '}';
+    public Date getDateRep() {
+        return dateRep;
+    }
+
+    public void setDateRep(Date dateRep) {
+        this.dateRep = dateRep;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     @Override
     public int compareTo(StructureReportEntity o) {
         switch (o.getOrderBy()){
+            case "11":
+                return this.getDateRep().compareTo(o.getDateRep());
             //展现排序
             case "1":
                 if(o.getTerminal() == 2){
                     return this.getMobileImpression().compareTo(o.getMobileImpression());
                 }else{
                     return this.getPcImpression().compareTo(o.getPcImpression());
+                }
+            case "-1":
+                //默认展现排序
+                if(o.getTerminal() == 2){
+                    return o.getMobileImpression().compareTo(this.getMobileImpression());
+                }else{
+                    return o.getPcImpression().compareTo(this.getPcImpression());
                 }
                 //点击排序
             case "2":
@@ -452,13 +451,13 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
                 return this.getRegionId().compareTo(o.getRegionId());
             case "-10":
                 return o.getRegionId().compareTo(this.getRegionId());
+            //创意排序
+            case "12":
+                return this.getCreativeId().compareTo(o.getCreativeId());
+            case "-12":
+                return o.getCreativeId().compareTo(this.getCreativeId());
             default:
-                //默认展现排序
-                if(o.getTerminal() == 2){
-                    return o.getMobileImpression().compareTo(this.getMobileImpression());
-                }else{
-                    return o.getPcImpression().compareTo(this.getPcImpression());
-                }
+                return o.getDateRep().compareTo(this.getDateRep());
         }
     }
 }
