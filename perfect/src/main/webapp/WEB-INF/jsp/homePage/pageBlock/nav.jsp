@@ -29,7 +29,7 @@
                             <span> <img src="${pageContext.request.contextPath}/public/images/yixin_logo.png"></span>
                         </div>
                         <div class="user_text fl">
-                            <p>上午，好！<span>${currSystemUserName}</span></p>
+                            <p>上午，好！<span><a href="/configuration/">${currSystemUserName}</a></span></p>
 
                             <div class="user_select">
                                 <div class="user_name">
