@@ -100,9 +100,9 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         );
 
         Aggregation aggregation3 = Aggregation.newAggregation(
-                project(CAMPAIGN_ID, ADGROUP_ID, "name", "ocid"),
+                project(CAMPAIGN_ID, ADGROUP_ID, "name", "ocid", "_id"),
                 match(Criteria.where("ocid").in(campaignObjectIds)),
-                group(CAMPAIGN_ID, ADGROUP_ID, "name", "ocid"),
+                group(CAMPAIGN_ID, ADGROUP_ID, "name", "ocid", "_id"),
                 sort(Sort.Direction.ASC, ADGROUP_ID)
         );
 
@@ -118,7 +118,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         AggregationResults<AdgroupVO> results3 = mongoTemplate.aggregate(aggregation3, TBL_ADGROUP, AdgroupVO.class);
         for (AdgroupVO vo : Lists.newArrayList(results3.iterator())) {
             objectNode = mapper.createObjectNode();
-            objectNode.put("id", vo.getAdgroupId());
+            objectNode.put("id", vo.getId());
             objectNode.put("pId", vo.getCampaignObjId());
             objectNode.put("name", vo.getAdgroupName());
             arrayNode.add(objectNode);
@@ -316,6 +316,9 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
 
     class AdgroupVO {
 
+        @Id
+        private String id;
+
         @Field(ADGROUP_ID)
         private Long adgroupId;
 
@@ -327,6 +330,14 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
 
         @Field("ocid")
         private String campaignObjId;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public Long getAdgroupId() {
             return adgroupId;
@@ -359,5 +370,6 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         public void setCampaignObjId(String campaignObjId) {
             this.campaignObjId = campaignObjId;
         }
+
     }
 }
