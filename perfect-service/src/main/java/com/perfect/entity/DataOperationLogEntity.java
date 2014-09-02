@@ -5,18 +5,23 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
+import static com.perfect.mongodb.utils.EntityConstants.BAIDU_ID;
 import static com.perfect.mongodb.utils.EntityConstants.TBL_LOG;
 
 /**
  * Created by baizz on 2014-07-02.
  */
+@Deprecated
 @Document(collection = TBL_LOG)
-public class DataOperationLogEntity {
+public class DataOperationLogEntity extends AccountIdEntity {
 
+    @Field(BAIDU_ID)
     private Long dataId;    //数据的ID
 
+    @Field("type")
     private String type;    //数据类型: 计划、单元、关键词、创意
 
+    @Field("time")
     private Date time;      //日志写入时间
 
     @Field("attr")
@@ -25,6 +30,7 @@ public class DataOperationLogEntity {
     @Field("obj")
     private Object instance;      //用于新增(attr为null)---一个type实例
 
+    @Field("s")
     private Integer status;     //0:未操作, 1:操作失败(操作成功后会删除该条日志)
 
     @Field("msg")

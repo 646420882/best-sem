@@ -1,18 +1,20 @@
 package com.perfect.entity;
 
+import org.springframework.data.mongodb.core.mapping.Field;
+
 /**
  * Created by baizz on 2014-7-2.
  */
 public class DataAttributeInfoEntity {
 
+    @Field("name")
     private String name;
 
+    @Field("b")
     private Object before;
 
+    @Field("a")
     private Object after;
-
-    public DataAttributeInfoEntity() {
-    }
 
     public DataAttributeInfoEntity(String name, Object before, Object after) {
         this.name = name;

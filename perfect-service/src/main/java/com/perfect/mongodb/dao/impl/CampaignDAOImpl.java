@@ -102,6 +102,11 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
         return Lists.newArrayList(results.iterator());
     }
 
+    @Override
+    public CampaignEntity findByObjectId(String oid) {
+        return getMongoTemplate().findOne(Query.query(Criteria.where("_id").is(oid)), getEntityClass());
+    }
+
 
     public void insert(CampaignEntity campaignEntity) {
         MongoTemplate mongoTemplate = getMongoTemplate();
