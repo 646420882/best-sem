@@ -32,4 +32,7 @@ public interface SystemUserDAO extends MongoCrudRepository<SystemUserEntity, Str
 
     SystemUserEntity findByAid(long aid);
 
+    void insertAccountInfo(String user, BaiduAccountInfoEntity baiduAccountInfoEntity);
+
+    void removeAccountInfo(Long id);
 }

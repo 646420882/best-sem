@@ -1,10 +1,10 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.SystemUserDAO;
+import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 import com.perfect.service.SystemUserService;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
@@ -37,5 +37,16 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Override
     public void save(SystemUserEntity systemUserEntity) {
         systemUserDAO.save(systemUserEntity);
+    }
+
+    @Override
+    public boolean removeAccount(Long id) {
+        systemUserDAO.removeAccountInfo(id);
+        return false;
+    }
+
+    @Override
+    public void addAccount(String user, BaiduAccountInfoEntity baiduAccountInfoEntity) {
+        systemUserDAO.insertAccountInfo(user, baiduAccountInfoEntity);
     }
 }
