@@ -77,12 +77,30 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             entry.setValue(vo);
         }
 
-        list = new ArrayList<>(map.values());
+        List<Long> keywordIds = keywordQualityDAO.findYesterdayAllKeywordId();
+        List<Quality10Type> quality10Types = getKeyword10Quality(keywordIds);
 
-        //获取前N条数据
-        KeywordReportEntity[] topNData = topN.getTopN(list.toArray(new KeywordReportEntity[list.size()]), n, fieldName, sort);
-        Map<String, Object> values = JSONUtils.getJsonMapData(topNData);
-        return values;
+        Map<Integer, List<KeywordReportEntity>> tempMap = new HashMap<>();
+        for (int i = 0; i <= 10; i++) {
+            tempMap.put(i, new ArrayList<KeywordReportEntity>());
+        }
+
+        for (Quality10Type quality10Type : quality10Types) {
+            tempMap.get(quality10Type.getPcQuality()).add(map.get(quality10Type.getId().toString()));
+        }
+
+        Map<String, Object> results = new HashMap<>();
+
+        for (int i = 0; i <= 10; i++) {
+            List<KeywordReportEntity> tempList = tempMap.get(i);
+            if (!tempList.isEmpty()) {
+                KeywordReportEntity[] topNData = topN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), n, fieldName, sort);
+                results.put("quality" + i, JSONUtils.getJsonObject(topNData));
+            }
+
+        }
+
+        return results;
     }
 
     @Override
