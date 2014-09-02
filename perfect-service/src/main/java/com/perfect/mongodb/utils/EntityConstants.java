@@ -21,10 +21,12 @@ public class EntityConstants {
     // Fields
     public static final String ACCOUNT_ID = "acid";
     public static final String ADGROUP_ID = "agid";
+    public static final String OADGROUP_ID="oagid";
     public static final String KEYWORD_ID = "kwid";
     public static final String CREATIVE_ID = "crid";
     public static final String CAMPAIGN_ID = "cid";
     public static final String REGION_ID = "rgid";
+    public static final String OBJECT_ID="ocid";
 
 
 }

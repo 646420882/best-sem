@@ -122,9 +122,10 @@ function loadCreativeData(params) {
                 _createTable.empty();
                 var _trClass = "";
                 for (var i = 0; i < json.length; i++) {
+                    var _id=json[i].creativeId!=null?json[i].creativeId:json[i].id;
                     _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                     var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                        "<td >&nbsp;<input type='hidden' value='" + json[i].creativeId + "'/></td>" +
+                        "<td >&nbsp;<input type='hidden' value='" +_id + "'/></td>" +
                         "<td >" + until.substring(10, json[i].title) + "</td>" +
                         " <td >" + until.substring(10, json[i].description1) + "</td>" +
                         " <td >" + until.substring(10, json[i].description2) + "</td>" +
@@ -493,7 +494,13 @@ function loadUnit(rs) {
                 _sUnit.empty();
                 _sUnit.append(_def);
                 for (var i = 0; i < json.length; i++) {
-                    var str = "<option value='" + json[i].adgroupId + "'>" + json[i].adgroupName + "</option>";
+                    var _id=null;
+                    if(json[i].adgroupId!=null){
+                        _id=json[i].adgroupId;
+                    }else{
+                        _id=json[i].id;
+                    }
+                    var str = "<option value='" +_id+ "'>" + json[i].adgroupName + "</option>";
                     $("#sUnit").append(str);
                 }
             }

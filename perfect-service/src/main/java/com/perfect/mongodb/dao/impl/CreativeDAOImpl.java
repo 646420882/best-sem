@@ -66,13 +66,38 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
     }
 
     @Override
+    public List<CreativeEntity> getCreativeByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Query query = new Query();
+        Criteria criteria = Criteria.where(EntityConstants.OADGROUP_ID).is(adgroupId);
+        if (params != null && params.size() > 0) {
+            for (Map.Entry<String, Object> entry : params.entrySet())
+                criteria.and(entry.getKey()).is(entry.getValue());
+        }
+        query.addCriteria(criteria);
+        query.with(new PageRequest(skip, limit));
+        List<CreativeEntity> list = mongoTemplate.find(query, CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        return list;
+    }
+
+    @Override
     public List<CreativeEntity> getAllsByAdgroupIds(List<Long> l) {
         return BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(l)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
     }
 
     @Override
+    public List<CreativeEntity> getAllsByAdgroupIdsForString(List<String> l) {
+        return BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where(EntityConstants.OADGROUP_ID).in(l)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+    }
+
+    @Override
     public void deleteByCacheId(Long objectId) {
        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(objectId)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+    }
+
+    @Override
+    public void deleteByCacheId(String cacheCreativeId) {
+        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(getId()).is(cacheCreativeId)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
     }
 
     @Override

@@ -27,9 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.mongodb.utils.EntityConstants.ACCOUNT_ID;
-import static com.perfect.mongodb.utils.EntityConstants.ADGROUP_ID;
-import static com.perfect.mongodb.utils.EntityConstants.CAMPAIGN_ID;
+import static com.perfect.mongodb.utils.EntityConstants.*;
 
 /**
  * Created by vbzer_000 on 2014-07-02.
@@ -65,6 +63,19 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
             adgroupIds.add(type.getAdgroupId());
         return adgroupIds;
     }
+
+    @Override
+    public List<String> getAdgroupIdByCampaignId(String campaignId) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Query query = new BasicQuery("{}", "{_id : 1}");
+        query.addCriteria(Criteria.where(OBJECT_ID).is(campaignId));
+        List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class, EntityConstants.TBL_ADGROUP);
+        List<String> adgroupIds = new ArrayList<>(list.size());
+        for (AdgroupEntity type : list)
+            adgroupIds.add(type.getId());
+        return adgroupIds;
+    }
+
 
     public List<AdgroupEntity> getAdgroupByCampaignId(Long campaignId, Map<String, Object> params, int skip, int limit) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
@@ -105,7 +116,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
         if (params != null && params.size() > 0) {
-            Criteria criteria = Criteria.where(ADGROUP_ID).ne(null);
+            Criteria criteria =new Criteria();
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 criteria.and(entry.getKey()).is(entry.getValue());
             }

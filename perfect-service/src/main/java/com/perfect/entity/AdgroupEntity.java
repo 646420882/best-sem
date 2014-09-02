@@ -14,6 +14,7 @@ import java.util.List;
 import static com.perfect.mongodb.utils.EntityConstants.ADGROUP_ID;
 import static com.perfect.mongodb.utils.EntityConstants.CAMPAIGN_ID;
 import static com.perfect.mongodb.utils.EntityConstants.TBL_ADGROUP;
+import static com.perfect.mongodb.utils.EntityConstants.OBJECT_ID;
 
 @Document(collection = TBL_ADGROUP)
 public class AdgroupEntity extends AccountIdEntity {
@@ -31,7 +32,7 @@ public class AdgroupEntity extends AccountIdEntity {
     @Field(CAMPAIGN_ID)
     private Long campaignId;
 
-    @Field("ocid")
+    @Field(OBJECT_ID)
     private String campaignObjId;
 
     @Field("name")
