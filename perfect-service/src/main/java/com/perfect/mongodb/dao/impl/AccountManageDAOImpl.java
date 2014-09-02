@@ -20,6 +20,7 @@ import com.perfect.entity.SystemUserEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.utils.DBNameUtils;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -62,35 +63,63 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
                 getMongoTemplate(DBNameUtils.getUserDBName(userName, null));
 
         List<Long> campaignIds = new ArrayList<>();
+        List<String> campaignObjectIds = new ArrayList<>();
         Aggregation aggregation1 = Aggregation.newAggregation(
-                project(ACCOUNT_ID, CAMPAIGN_ID, "name"),
+                project(ACCOUNT_ID, CAMPAIGN_ID, "name", "_id"),
                 match(Criteria.where(ACCOUNT_ID).is(accountId)),
-                group(CAMPAIGN_ID, "name"),
+                group(CAMPAIGN_ID, "name", "_id"),
                 sort(Sort.Direction.ASC, CAMPAIGN_ID)
         );
         //推广计划树
         AggregationResults<CampaignVO> results1 = mongoTemplate.aggregate(aggregation1, TBL_CAMPAIGN, CampaignVO.class);
         for (CampaignVO vo : Lists.newArrayList(results1.iterator())) {
             objectNode = mapper.createObjectNode();
-            objectNode.put("id", vo.getCampaignId());
+
+            if (vo.getCampaignId() == null) {
+                objectNode.put("id", vo.getId());
+            } else {
+                objectNode.put("id", vo.getCampaignId());
+            }
+
             objectNode.put("pId", 0);
             objectNode.put("name", vo.getCampaignName());
             arrayNode.add(objectNode);
-            campaignIds.add(vo.getCampaignId());
+            if (vo.getCampaignId() == null) {
+                campaignObjectIds.add(vo.getId());
+            } else {
+                campaignIds.add(vo.getCampaignId());
+            }
         }
 
+        //推广单元树
         Aggregation aggregation2 = Aggregation.newAggregation(
-                project(CAMPAIGN_ID, ADGROUP_ID, "name"),
+                project(CAMPAIGN_ID, ADGROUP_ID, "name", "ocid"),
                 match(Criteria.where(CAMPAIGN_ID).in(campaignIds)),
-                group(CAMPAIGN_ID, ADGROUP_ID, "name"),
+                group(CAMPAIGN_ID, ADGROUP_ID, "name", "ocid"),
                 sort(Sort.Direction.ASC, ADGROUP_ID)
         );
-        //推广单元树
+
+        Aggregation aggregation3 = Aggregation.newAggregation(
+                project(CAMPAIGN_ID, ADGROUP_ID, "name", "ocid"),
+                match(Criteria.where("ocid").in(campaignObjectIds)),
+                group(CAMPAIGN_ID, ADGROUP_ID, "name", "ocid"),
+                sort(Sort.Direction.ASC, ADGROUP_ID)
+        );
+
         AggregationResults<AdgroupVO> results2 = mongoTemplate.aggregate(aggregation2, TBL_ADGROUP, AdgroupVO.class);
         for (AdgroupVO vo : Lists.newArrayList(results2.iterator())) {
             objectNode = mapper.createObjectNode();
             objectNode.put("id", vo.getAdgroupId());
             objectNode.put("pId", vo.getCampaignId());
+            objectNode.put("name", vo.getAdgroupName());
+            arrayNode.add(objectNode);
+        }
+
+        AggregationResults<AdgroupVO> results3 = mongoTemplate.aggregate(aggregation3, TBL_ADGROUP, AdgroupVO.class);
+        for (AdgroupVO vo : Lists.newArrayList(results3.iterator())) {
+            objectNode = mapper.createObjectNode();
+            objectNode.put("id", vo.getAdgroupId());
+            objectNode.put("pId", vo.getCampaignObjId());
             objectNode.put("name", vo.getAdgroupName());
             arrayNode.add(objectNode);
         }
@@ -178,7 +207,6 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
             return 0d;
         }
         AccountReportEntity reportEntity = results.getUniqueMappedResult();
-//      AccountReportEntity reportEntity = mongoTemplate.findOne(Query.query(Criteria.where("date").is(date).and(ACCOUNT_ID).is(accountId)), AccountReportEntity.class);
         if (reportEntity != null)
             return reportEntity.getPcCost();
         else
@@ -252,11 +280,22 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
 
     class CampaignVO {
 
+        @Id
+        private String id;
+
         @Field(CAMPAIGN_ID)
         private Long campaignId;
 
         @Field("name")
         private String campaignName;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public Long getCampaignId() {
             return campaignId;
@@ -273,13 +312,6 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         public void setCampaignName(String campaignName) {
             this.campaignName = campaignName;
         }
-
-        public String toString() {
-            return "CampaignVO{" +
-                    "campaignId=" + campaignId +
-                    ", campaignName='" + campaignName + '\'' +
-                    '}';
-        }
     }
 
     class AdgroupVO {
@@ -292,6 +324,9 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
 
         @Field(CAMPAIGN_ID)
         private Long campaignId;
+
+        @Field("ocid")
+        private String campaignObjId;
 
         public Long getAdgroupId() {
             return adgroupId;
@@ -317,12 +352,12 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
             this.campaignId = campaignId;
         }
 
-        public String toString() {
-            return "AdgroupVO{" +
-                    "adgroupId=" + adgroupId +
-                    ", adgroupName='" + adgroupName + '\'' +
-                    ", campaignId=" + campaignId +
-                    '}';
+        public String getCampaignObjId() {
+            return campaignObjId;
+        }
+
+        public void setCampaignObjId(String campaignObjId) {
+            this.campaignObjId = campaignObjId;
         }
     }
 }
