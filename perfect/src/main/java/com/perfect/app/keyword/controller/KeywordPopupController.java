@@ -18,4 +18,24 @@ public class KeywordPopupController {
     public ModelAndView getAddKeywordIframePage() {
         return new ModelAndView("popup/keyword/addKeyword");
     }
+
+    @RequestMapping(value = "/addplan", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getAddKeywordIframePage1() {
+        return new ModelAndView("popup/keyword/addplan");
+    }
+
+    /*@RequestMapping(value = "/toAddPage", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getAddKeywordIframePage2() {
+        return new ModelAndView("popup/keyword/addKeyword");
+    }
+
+    @RequestMapping(value = "/toAddPage", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getAddKeywordIframePage3() {
+        return new ModelAndView("popup/keyword/addKeyword");
+    }
+
+    @RequestMapping(value = "/toAddPage", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getAddKeywordIframePage4() {
+        return new ModelAndView("popup/keyword/addKeyword");*/
+
 }

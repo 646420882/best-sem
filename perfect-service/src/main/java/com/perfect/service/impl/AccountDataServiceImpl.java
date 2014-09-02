@@ -391,6 +391,10 @@ public class AccountDataServiceImpl implements AccountDataService {
         sumList.addAll(campaignEntities);
         for (int i = sumList.size() - 1; i >= 0; i--) {
             for (CampaignEntity entity : campaignEntityList) {
+                if (sumList.get(i).getCampaignId() == null || entity.getCampaignId() == null) {
+                    sumList.remove(i);
+                    continue;
+                }
                 if (sumList.get(i).getCampaignId().compareTo(entity.getCampaignId()) == 0) {
                     sumList.remove(i);
                     break;

@@ -777,7 +777,7 @@
     <div class="zs_function over">
         <ul class="fl">
             <li><a href="#" id="addCampaign"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a>
+            <li><a href="#" id="addplan"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a>
             </li>
 
             <li><a href="javascript:deleteCampaign();"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>

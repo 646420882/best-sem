@@ -22,6 +22,12 @@
         .zs_function{
             margin-top:10px;
         }
+        .keyworld_text2 {
+            height: 320px;}
+        .assembly_under{
+            height:440px
+
+         }
     </style>
 </head>
 <body>
@@ -29,7 +35,7 @@
     <div class="addplan_top over">
          <ul>
              <li class="current">1、推广业务描述</li>
-             <li>1、关键词筛选</li>
+             <li><span></span>1、关键词筛选</li>
          </ul>
     </div>
      <div class="plan_under">
@@ -49,11 +55,18 @@
                                  <p><select><option>10-50</option><option>10-50</option></select></p>
                              </li>
                          </ul>
-
                     </div>
-            </div>
+                    <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                        <div class="w_list03">
+                            <ul>
+                                <li class="current" id="downloadAccount">下一步</li>
+                                <li class="close">取消</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
          <div class="containers over hides">
-             <div class="assembly_under over">
+             <div class="assembly_under over" >
                  <div class="assembly_left">
                      <div class="keyword_left fl over">
                          <div class="k_l_top over">
@@ -70,8 +83,7 @@
                          <div class="k_l_under over">
                              <div class="k_l_under1 over">
                                  <ul>
-                                     <li><select class="team04 color"><option>请选择推广计划</option></select><select class="team04 color"><option>请选择推广单元</option></select></li>
-                                     <li><select class="team05 color"><option>保存</option></select></li>
+                                     <li><input class="zs_input3" placeholder="根据已添加关键词精准搜词"></input></li>
                                  </ul>
                              </div>
                          </div>
@@ -109,7 +121,7 @@
                                          </tr>
                                          </thead>
                                          <tbody>
-                                         <tr>
+                                         <tr class="list2_box2">
                                              <td>&nbsp;北京婚博会</td>
                                              <td>&nbsp;111</td>
                                              <td>&nbsp;1111</td>
@@ -126,8 +138,19 @@
                          </div>
                      </div>
 
+
                  </div>
 
+
+             </div>
+             <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                 <div class="w_list03">
+                     <ul>
+                         <li class="current" >上一步</li>
+                         <li>完成</li>
+                         <li class="close">取消</li>
+                     </ul>
+                 </div>
              </div>
 
          </div>
@@ -143,7 +166,7 @@
     $(function () {
         var $tab_li = $('.addplan_top ul li');
         $('.addplan_top ul li').click(function () {
-            $(this).addClass('current').siblings().removeClass('current');
+            $(this).addClass('current');
             var index = $tab_li.index(this);
             $('div.plan_under > div').eq(index).show().siblings().hide();
         });
