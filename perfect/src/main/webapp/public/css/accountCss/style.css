@@ -2345,25 +2345,41 @@ h2 .close{
 .addplan_top ul li{
     display:block;
     float:left;
-    height:26px;
-    line-height:26px;
+    height:36px;
+    line-height:36px;
     width:50%;
     text-align: center;
     background:#e0e0e0;
     font-size:16px;
 
 }
+.addplan_top ul li span{
+    display:block;
+    float:left;
+    width:20px;
+    margin-left:-4px;
+    height:36px;
+    background: url(/public/img/configure_right3.png) right no-repeat;
+}
 .addplan_top ul .current{
-    background:#272537 url(/public/img/configure_right2.png) right no-repeat;
+    background:#272537 ;
     color:#fff;
-
+}
+.plan_under2 ul{
+    padding:10px;
 
 }
 .plan_under2 ul li{
     padding:10px;
-    margin-bottom:20px;
+    margin:20px 0 30px 0;
     line-height:24px;
+    background:#fff;
+    border:1px solid #ccc;
+}
+.plan_under2 ul li:hover{
     background:#f1f1f1;
+
+
 }
 .plan_under2 ul li input,.plan_under2 ul li select{
     width:200px;
