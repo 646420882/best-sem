@@ -198,7 +198,7 @@ public class AccountManageController {
     @RequestMapping(value = "/sync/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView info() {
 
-        Map<String, Long> statics = logService.getStatiscs();
+        Map<String, Long> statics = logService.getStatiscs(AppContext.getUser(),AppContext.getAccountId());
         return new ModelAndView();
     }
 
