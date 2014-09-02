@@ -1,7 +1,6 @@
 package com.perfect.mongodb.base;
 
 import com.perfect.dao.MongoCrudRepository;
-import com.perfect.entity.bidding.BiddingRuleEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;

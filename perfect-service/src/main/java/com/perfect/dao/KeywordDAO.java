@@ -48,4 +48,8 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
     List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param);
 
     List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param);
+
+    KeywordEntity findByObjectId(String oid);
+
+    void updateAdgroupIdByOid(String id, Long adgroupId);
 }

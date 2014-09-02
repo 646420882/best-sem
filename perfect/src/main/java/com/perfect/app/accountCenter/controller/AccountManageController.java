@@ -8,6 +8,7 @@ import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.AccountManageService;
+import com.perfect.service.LogService;
 import com.perfect.utils.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -36,6 +37,9 @@ public class AccountManageController {
 
     @Resource
     private AccountDataService accountDataService;
+
+    @Resource
+    private LogService logService;
 
     /**
      * 获取账户树
@@ -188,6 +192,14 @@ public class AccountManageController {
     @RequestMapping(value = "/deleteBaiduAccount", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView deleteBaiduAccount(@RequestParam(value = "userId") Long userId) {
         return null;
+    }
+
+
+    @RequestMapping(value = "/sync/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView info() {
+
+        Map<String, Long> statics = logService.getStatiscs();
+        return new ModelAndView();
     }
 
 }
