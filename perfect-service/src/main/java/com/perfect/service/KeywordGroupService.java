@@ -64,4 +64,20 @@ public interface KeywordGroupService {
      * @return
      */
     Map<String, Object> findCategories(String trade);
+
+    /**
+     * save
+     *
+     * @param seedWordList
+     * @param krFileId
+     */
+    void saveKeywordFromBaidu(List<String> seedWordList, String krFileId, String newCampaignName);
+
+    /**
+     * save
+     *
+     * @param trade
+     * @param category
+     */
+    void saveKeywordFromPerfect(String trade, String category, String newCampaignName);
 }
