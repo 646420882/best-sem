@@ -74,7 +74,7 @@ function initAMenu() {
                             "<td>本地新增</td>" +
                             " <td>" + getAdgroupPauseByBoolean(subData["pause"]) + "</td>" +
                             "<td>" + parseFloat(subData["maxPrice"]).toFixed(2) + "</td>" +
-                            "<td><span>" + _span + "</span><input type='hidden' value='"+subData["negativeWords"]+"'><input type='hidden' value='"+subData["exactNegativeWords"]+"'></td>" +
+                            "<td><span>" + _span + "</span><input type='hidden' value='" + subData["negativeWords"] + "'><input type='hidden' value='" + subData["exactNegativeWords"] + "'></td>" +
                             "<td>" + parseFloat(subData["mib"]).toFixed(2) + "</td>" +
                             "<td>" + plans.cn + "</td>" +
                             "</tr>";
@@ -134,7 +134,7 @@ function loadAdgroupData(plans) {
                     var _tbody = "<tr class=" + _trClass + " onclick=aon(this)>" +
                         "<td >&nbsp;<input type='hidden' value='" + json[i].adgroupId + "'/></td>" +
                         "<td >" + json[i].adgroupName + "</td>" +
-                        "<td ><input type='hidden' value='"+json[i].status+"'/>" + until.getAdgroupStatus(json[i].status) + "</td>" +
+                        "<td ><input type='hidden' value='" + json[i].status + "'/>" + until.getAdgroupStatus(json[i].status) + "</td>" +
                         "<td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
                         "<td >" + parseFloat(json[i].maxPrice).toFixed(2) + "</td>" +
                         "<td ><input type='hidden' value='" + json[i].negativeWords + "'><input type='hidden' value='" + json[i].exactNegativeWords + "'>" + getNoAdgroupLabel(json[i].negativeWords, json[i].exactNegativeWords) + "</td>" +
@@ -177,13 +177,22 @@ function getMib(double) {
  */
 function aon(ts) {
     var _this = $(ts);
+    atmp = _this;
     var data = {};
     data[0] = _this.find("td:eq(1)").html();
     data[1] = _this.find("td:eq(4)").html();
     data[2] = _this.find("td:eq(6)").html();
+    var status = _this.find("td:eq(2)").html();
+    var pause = _this.find("td:eq(3)").html();
     $("#aDiv input").each(function (i, o) {
         $(o).val(data[i]);
     });
+    $("#apStatus").html(status);
+    if (pause == "启用") {
+        $("#apPause").get(0).selectedIndex = 0;
+    } else {
+        $("#apPause").get(0).selectedIndex = 1;
+    }
 }
 /**
  * 根据点击的树的计划获取单元
@@ -284,21 +293,21 @@ function adgroupUpdate() {
         $("#adgroupUpdateForm input").empty();
         var oid = _tr.find("td:eq(0) input").val();
         var name = _tr.find("td:eq(1)").html();
-        var status=_tr.find("td:eq(2) input").val();
+        var status = _tr.find("td:eq(2) input").val();
         var pause = _tr.find("td:eq(3)").html();
         var maxPrice = _tr.find("td:eq(4)").html();
-        var sp=_tr.find("td:eq(5) span").html();
-        var nn =_tr.find("td:eq(5) input").val();
-        var ne=_tr.find("td:eq(5) input:eq(1)").val();
+        var sp = _tr.find("td:eq(5) span").html();
+        var nn = _tr.find("td:eq(5) input").val();
+        var ne = _tr.find("td:eq(5) input:eq(1)").val();
         var mib = _tr.find("td:eq(6)").html();
         $("#adgroupUpdateForm input[name='oid']").val(oid);
         $("#adgroupUpdateForm input[name='adgroupName']").val(name);
         $("#adStatus").html(adgroupConvertStatus(parseInt(status)));
         $("#auSpan").html(sp);
-        if(pause=="启用"){
-            $("#adgroupUpdateForm select[name='pause']").get(0).selectedIndex=0;
-        }else{
-            $("#adgroupUpdateForm select[name='pause']").get(0).selectedIndex=1;
+        if (pause == "启用") {
+            $("#adgroupUpdateForm select[name='pause']").get(0).selectedIndex = 0;
+        } else {
+            $("#adgroupUpdateForm select[name='pause']").get(0).selectedIndex = 1;
         }
         $("#adgroupUpdateForm input[name='mib']").val(mib);
         $("#adgroupUpdateForm input[name='maxPrice']").val(maxPrice);
@@ -311,8 +320,8 @@ function adgroupUpdate() {
  * @param number status的数据值
  * @returns {string} 页面显示对应的字符串
  */
-function adgroupConvertStatus(number){
-    switch (number){
+function adgroupConvertStatus(number) {
+    switch (number) {
         case 31:
             return "有效";
             break;
@@ -457,7 +466,10 @@ function adgroudAddAlertOk() {
         addAdgroup();
     }
 }
-function adgroupUpdateNokwdMath(){
+/**
+ * 弹出框点击的设置否定关键词再弹出框
+ */
+function adgroupUpdateNokwdMath() {
     var _adAdd = $("#apNoKwd");
     $(".TB_overlayBG").css({
         display: "block", height: $(document).height()
@@ -467,46 +479,90 @@ function adgroupUpdateNokwdMath(){
         top: ($(window).height() - _adAdd.height()) / 2 + $(window).scrollTop() + "px",
         display: "block"
     });
-    var unn=$("#adgroupUpdateForm input[name='negativeWords']").val();
-    var une=$("#adgroupUpdateForm input[name='exactNegativeWords']").val();
-    if (unn.indexOf(",")>-1) {
-        var arr=unn.split(",");
+    var unn = $("#adgroupUpdateForm input[name='negativeWords']").val();
+    var une = $("#adgroupUpdateForm input[name='exactNegativeWords']").val();
+    if (unn.indexOf(",") > -1 || unn.length > 0) {
+        var arr = unn.split(",");
         $("#npKwd_size").html(arr.length);
         var str = "";
         for (var i = 0; i < arr.length; i++) {
             str = str + arr[i] + "\n";
         }
         $("#npKwd").val(str);
-    }else{
+    } else {
         $("#npKwd").val("");
         $("#npKwd_size").html(0);
     }
-    if (une.indexOf(",")>-1) {
-        var arrne=une.split(",");
+    if (une.indexOf(",") > -1 || une.length > 0) {
+        var arrne = une.split(",");
         $("#mpKwd_size").html(arrne.length);
         var strne = "";
         for (var i = 0; i < arrne.length; i++) {
             strne = strne + arrne[i] + "\n";
         }
         $("#mpKwd").val(strne);
-    }else{
+    } else {
         $("#mpKwd").val("");
         $("#mpKwd_size").html(0);
     }
 }
-function adgroupUpdateNokwdMathClose(){
-    $("#apNoKwd").css("display","none");
+/**
+ * 弹出框内再弹出框关闭方法
+ */
+function adgroupUpdateNokwdMathClose() {
+    $("#apNoKwd").css("display", "none");
 }
-function adgroupUpdateNokwdMathOk(){
+/**
+ * 再弹出框关输入否定关键词点击确定触发方法
+ */
+function adgroupUpdateNokwdMathOk() {
     var arr = $("#npKwd").val().split("\n");
     var arrne = $("#mpKwd").val().split("\n");
-    $("#auSpan").html(getNoAdgroupLabel(arr,arrne));
-    var unn=$("#adgroupUpdateForm input[name='negativeWords']").val(arr);
-    var une=$("#adgroupUpdateForm input[name='exactNegativeWords']").val(arrne);
+    $("#auSpan").html(getNoAdgroupLabel(arr, arrne));
+    var unn = $("#adgroupUpdateForm input[name='negativeWords']").val(arr);
+    var une = $("#adgroupUpdateForm input[name='exactNegativeWords']").val(arrne);
     adgroupUpdateNokwdMathClose();
 }
-function adrgoupUpdateOk(){
-    $("#adgroupUpdateForm").formSubmit("../assistantAdgroup/update",function(rs){
-
+/**
+ * 点击修改确定方法
+ */
+function adrgoupUpdateOk() {
+    var _this = $(atmp);
+    $("#adgroupUpdateForm").formSubmit("../assistantAdgroup/update", function (rs) {
+        if (rs == "1") {
+            adgroupAddAlertClose();
+            var _span = $("#auSpan").html();
+            _this.remove();
+            var i = $("#adGroupTable tbody tr").size();
+            var _createTable = $("#adGroupTable tbody");
+            var _trClass = i % 2 == 0 ? "list2_box1 list2_box3" : "list2_box2 list2_box3";
+            var _tbody = "<tr class=" + _trClass + " onclick='aon(this)'>" +
+                "<td>&nbsp;<input type='hidden'  name='oid' value='" + formData["oid"] + "'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/></td>" +
+                "<td>" + formData["adgroupName"] + "</td>" +
+                "<td>" + adgroupConvertStatus(formData["status"]) + "</td>" +
+                " <td>" + getAdgroupPauseByBoolean(formData["pause"]) + "</td>" +
+                "<td>" + parseFloat(formData["maxPrice"]).toFixed(2) + "</td>" +
+                "<td><span>" + _span + "</span><input type='hidden' value='" + formData["negativeWords"] + "'><input type='hidden' value='" + formData["exactNegativeWords"] + "'></td>" +
+                "<td>" + parseFloat(formData["mib"]).toFixed(2) + "</td>" +
+                "<td>" + plans.cn + "</td>" +
+                "</tr>";
+            _createTable.append(_tbody);
+            alert("修改完成");
+        }
+    });
+}
+function adgroupdSelectChange(rs) {
+    var _this = $(rs);
+    var _atmp = $(atmp);
+    var _oid = _atmp.find("td:eq(0) input").val();
+    var pause = _this.val();
+    var params = {
+        pause: pause,
+        oid: _oid
+    }
+    $.get("../assistantAdgroup/updateByChange", params, function (rs) {
+        if (rs == "1") {
+            _atmp.find("td:eq(3)").html(_this.find("option:selected").text());
+        }
     });
 }

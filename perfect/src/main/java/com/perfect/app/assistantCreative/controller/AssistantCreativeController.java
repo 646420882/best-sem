@@ -101,6 +101,7 @@ public class AssistantCreativeController extends WebContextSupport {
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public ModelAndView insertCreative(HttpServletRequest request,HttpServletResponse response,
+                                       @RequestParam(value = "cacheCativeId",required = true) Long creativeCacheId,
                                        @RequestParam(value = "aid",required = true)String aid,
                                        @RequestParam(value = "title",required = false)String title,
                                        @RequestParam(value="description1",required = false)String de1,
@@ -112,21 +113,28 @@ public class AssistantCreativeController extends WebContextSupport {
                                        @RequestParam(value = "pause")Boolean bol,
                                        @RequestParam(value = "status")Integer s,
                                        @RequestParam(value = "d",required = false,defaultValue = "0")Integer d){
-        CreativeEntity creativeEntity=new CreativeEntity();
-        creativeEntity.setAccountId(AppContext.getAccountId());
-        creativeEntity.setTitle(title);
-        creativeEntity.setCreativeId(null);
-        creativeEntity.setDescription1(de1);
-        creativeEntity.setDescription2(de2);
-        creativeEntity.setPcDestinationUrl(pc);
-        creativeEntity.setPcDisplayUrl(pcs);
-        creativeEntity.setMobileDestinationUrl(mib);
-        creativeEntity.setMobileDisplayUrl(mibs);
-        creativeEntity.setPause(bol);
-        creativeEntity.setStatus(s);
-        creativeEntity.setDevicePreference(d);
-        creativeEntity.setAdgroupId(Long.parseLong(aid));
-         creativeDAO.insertOutId(creativeEntity);
+        try{
+            CreativeEntity creativeEntity=new CreativeEntity();
+            creativeEntity.setAccountId(AppContext.getAccountId());
+            creativeEntity.setTitle(title);
+            creativeEntity.setCreativeId(creativeCacheId);
+            creativeEntity.setDescription1(de1);
+            creativeEntity.setDescription2(de2);
+            creativeEntity.setPcDestinationUrl(pc);
+            creativeEntity.setPcDisplayUrl(pcs);
+            creativeEntity.setMobileDestinationUrl(mib);
+            creativeEntity.setMobileDisplayUrl(mibs);
+            creativeEntity.setPause(bol);
+            creativeEntity.setStatus(s);
+            creativeEntity.setDevicePreference(d);
+            creativeEntity.setAdgroupId(Long.parseLong(aid));
+            creativeDAO.insertOutId(creativeEntity);
+            writeHtml(SUCCESS,response);
+        }catch (Exception e){
+            e.printStackTrace();
+            writeHtml(EXCEPTION,response);
+        }
+
 
 
         return null;

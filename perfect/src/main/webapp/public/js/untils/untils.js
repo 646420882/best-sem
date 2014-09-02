@@ -1,7 +1,8 @@
 /**
  * Created by XiaoWei on 2014/8/21.
  */
-var subData = {}
+var subData = {};
+var formData={};
 $.fn.extend({
     submit: function (url, func) {
         var data = {};
@@ -30,11 +31,13 @@ $.fn.extend({
         for (var i = 0; i < inputs.length; i++) {
             if (inputs[i].name) {
                 data[inputs[i].name] = inputs[i].value;
+                formData[inputs[i].name]=inputs[i].value;
             }
         }
         var selects = $(this).find("select");
         for (var i = 0; i < selects.length; i++) {
             data[selects[i].name] = selects[i].value;
+            formData[selects[i].name]=selects[i].value;
         }
         $.post(url, data, function (json) {
             if (func)
@@ -78,7 +81,7 @@ var until = {
             case 56:
                 return "部分无效";
             default :
-                return "新增";
+                return "本地新增";
                 break;
         }
     }, getAdgroupStatus: function (number) {

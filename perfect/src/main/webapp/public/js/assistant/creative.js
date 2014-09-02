@@ -31,7 +31,7 @@ var add = {
 }, update = {
     text: "修改创意",
     func: function () {
-       updateCreatvie(tmp);
+        updateCreatvie(tmp);
     }
 }
 /**
@@ -66,32 +66,32 @@ function InitMenu() {
     $("#createTable").on("mousedown", "tr", function () {
         $(this).smartMenu(menuData, menuExt);
     });
-    $("#createTable").on("keydown","input",function(event){
-        if(event.keyCode==13){
-            var con=confirm("你确定要添加么？");
-            if(con){
-                var _selects=$(this).parents("tr").find("select");
-                var _input=$(this).parents("tr").find("input");
-                var _tr=$(this).parents("tr");
-                $(this).submit("../assistantCreative/add",function(rs){
-                    if(rs=="1"){
+    $("#createTable").on("keydown", "input", function (event) {
+        if (event.keyCode == 13) {
+            var con = confirm("你确定要添加么？");
+            if (con) {
+                var _selects = $(this).parents("tr").find("select");
+                var _input = $(this).parents("tr").find("input");
+                var _tr = $(this).parents("tr");
+                $(this).submit("../assistantCreative/add", function (rs) {
+                    if (rs == "1") {
                         _tr.remove();
-                        var data={};
-                        for(var i=0;i<_input.size();i++){
-                            if(_input[i].name){
-                                data[_input[i].name]=_input[i].value;
+                        var data = {};
+                        for (var i = 0; i < _input.size(); i++) {
+                            if (_input[i].name) {
+                                data[_input[i].name] = _input[i].value;
                             }
                         }
-                        for(var i=0;i<_selects.length;i++){
-                            data[_selects[i].name]=_selects[i].value;
+                        for (var i = 0; i < _selects.length; i++) {
+                            data[_selects[i].name] = _selects[i].value;
                         }
-                        var p= data["pause"]=="true"?"启用":"暂停";
-                        var s=until.getCreativeStatus(parseInt(data["status"]));
+                        var p = data["pause"] == "true" ? "启用" : "暂停";
+                        var s = until.getCreativeStatus(parseInt(data["status"]));
                         var _createTable = $("#createTable tbody");
                         var i = $("#createTable tbody tr").size();
                         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                            "<td>&nbsp;<span style='display: none;'>"+data["cacheCativeId"]+"</span></td>" +
+                            "<td>&nbsp;<span style='display: none;'>" + data["cacheCativeId"] + "</span></td>" +
                             "<td >" + until.substring(10, data["title"]) + "</td>" +
                             " <td >" + until.substring(10, data["description1"]) + "</td>" +
                             " <td >" + until.substring(10, data["description2"]) + "</td>" +
@@ -99,7 +99,7 @@ function InitMenu() {
                             " <td >" + until.substring(10, data["pcDisplayUrl"]) + "</td>" +
                             " <td >" + until.substring(10, data["mobileDestinationUrl"]) + "</td>" +
                             " <td >" + until.substring(10, data["mobileDisplayUrl"]) + "</td>" +
-                            " <td >" + p+ "</td>" +
+                            " <td >" + p + "</td>" +
                             " <td >" + s + "</td>" +
                             "</tr>";
                         _createTable.append(_tbody);
@@ -124,7 +124,7 @@ function loadCreativeData(params) {
                 for (var i = 0; i < json.length; i++) {
                     _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                     var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                        "<td >&nbsp;<input type='hidden' value='"+json[i].creativeId+"'/></td>" +
+                        "<td >&nbsp;<input type='hidden' value='" + json[i].creativeId + "'/></td>" +
                         "<td >" + until.substring(10, json[i].title) + "</td>" +
                         " <td >" + until.substring(10, json[i].description1) + "</td>" +
                         " <td >" + until.substring(10, json[i].description2) + "</td>" +
@@ -133,7 +133,7 @@ function loadCreativeData(params) {
                         " <td>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
                         " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
                         " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
-                        " <td >" + until.getCreativeStatus(json[i].status) + "</td>" +
+                        " <td >" + until.getCreativeStatus(parseInt(json[i].status)) + "<input type='hidden' value='" + json[i].status + "'/></td>" +
                         "</tr>";
                     _createTable.append(_tbody);
                 }
@@ -154,36 +154,36 @@ function on(obj) {
     preview(obj);
     $("#sDiv input[type='text']").val("");
     var _this = $(obj);
-    var title = _this.find("td:eq(1) a").attr("title") != undefined ? _this.find("td:eq(1) a").attr("title"): _this.find("td:eq(1) input").val();
-    if(title==undefined){
-        title=_this.find("td:eq(1) span").html();
+    var title = _this.find("td:eq(1) a").attr("title") != undefined ? _this.find("td:eq(1) a").attr("title") : _this.find("td:eq(1) input").val();
+    if (title == undefined) {
+        title = _this.find("td:eq(1) span").html();
     }
     var de1 = _this.find("td:eq(2) a").attr("title") != undefined ? _this.find("td:eq(2) a").attr("title") : _this.find("td:eq(2) input").val();
-    if(de1==undefined){
-        de1=_this.find("td:eq(2) span").html();
+    if (de1 == undefined) {
+        de1 = _this.find("td:eq(2) span").html();
     }
     var de2 = _this.find("td:eq(3) a").attr("title") != undefined ? _this.find("td:eq(3) a").attr("title") : _this.find("td:eq(3) input").val();
-    if(de2==undefined){
-        de2=_this.find("td:eq(3) span").html();
+    if (de2 == undefined) {
+        de2 = _this.find("td:eq(3) span").html();
     }
     var pc = _this.find("td:eq(4) a").attr("href") != undefined ? _this.find("td:eq(4) a").attr("href") : _this.find("td:eq(4) input").val();
-    if(pc==undefined){
-        pc=_this.find("td:eq(4) span").html();
+    if (pc == undefined) {
+        pc = _this.find("td:eq(4) span").html();
     }
     var pcs = _this.find("td:eq(5) a").attr("title") != undefined ? _this.find("td:eq(5) a").attr("title") : _this.find("td:eq(5) input").val();
-    if(pcs==undefined){
-        pcs=_this.find("td:eq(5) span").html();
+    if (pcs == undefined) {
+        pcs = _this.find("td:eq(5) span").html();
     }
     var mib = _this.find("td:eq(6) span:eq(0)").text() != "" ? _this.find("td:eq(6) span:eq(0)").text() : _this.find("td:eq(6) input").val();
-    if(mib==undefined){
-        mib=_this.find("td:eq(6) a").attr("title");
+    if (mib == undefined) {
+        mib = _this.find("td:eq(6) a").attr("title");
     }
     var mibs = _this.find("td:eq(7) span:eq(0)").text() != "" ? _this.find("td:eq(7) span:eq(0)").text() : _this.find("td:eq(7) input").val();
-    if(mibs==undefined){
-        mibs=_this.find("td:eq(7) a").attr("title");
+    if (mibs == undefined) {
+        mibs = _this.find("td:eq(7) a").attr("title");
     }
-    var pause=_this.find("td:eq(8) select")==""?_this.find("td:eq(10)").find("select"):_this.find("td:eq(8)").html();
-    var status=_this.find("td:eq(9) select")==""?_this.find("td:eq(9)").find("select"):_this.find("td:eq(9)").html();
+    var pause = _this.find("td:eq(8) select") == "" ? _this.find("td:eq(10)").find("select") : _this.find("td:eq(8)").html();
+    var status = _this.find("td:eq(9) select") == "" ? _this.find("td:eq(9)").find("select") : _this.find("td:eq(9)").html();
 
     $("#sTitle").val(title).keyup(function (e) {
         $("#sTitle_size").text($("#sTitle").val().length);
@@ -241,7 +241,7 @@ function addCreative() {
         var _createTable = $("#createTable tbody");
         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-            "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden' name='cacheCativeId' value='"+getRandomId()+"'/><input type='hidden' name='aid' value='"+getCreativeAId()+"'/></td>" +
+            "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden' name='cacheCativeId' value='" + getRandomId() + "'/><input type='hidden' name='aid' value='" + getCreativeAId() + "'/></td>" +
             "<td><input name='title' onkeyup='onKey(this);' style='width:140px;' maxlength='50'></td>" +
             " <td><input name='description1' onkeyup='onKey(this);'  style='width:140px;'  maxlength='80'></td>" +
             " <td><input name='description2' onkeyup='onKey(this);'  style='width:140px;' maxlength='80'></td>" +
@@ -250,9 +250,8 @@ function addCreative() {
             " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='1024'></td>" +
             " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='36'></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
-            " <td><select name='status'>" + getStatus();
-        +"</select></td>" +
-        "</tr>";
+            " <td><span>本地新增</span><input type='hidden' value='-1' name='status'></td>" +
+            "</tr>";
         _createTable.append(_tbody);
     } else if (sparams.cid != null && sparams.aid == null) {
         jcBox.empty();
@@ -265,11 +264,11 @@ function addCreative() {
         jcBox.append("<li>推广计划<select id='sPlan' onchange='loadUnit(this.value)'><option value='-1'>请选择计划</option></select></li>");
         jcBox.append("<li>推广单元<select id='sUnit' onchange='loadTree(this.value)'><option value='-1'>请选择单元</option></select></li>");
         creativeAddBoxShow();
-    }else{
-        alert(sparams.cid+":"+sparams.aid);
+    } else {
+        alert(sparams.cid + ":" + sparams.aid);
     }
 }
-function getCreativeAId(){
+function getCreativeAId() {
     return sparams.aid;
 }
 /**
@@ -294,15 +293,30 @@ function creativeAddBoxShow() {
  *
  * @returns {string}动态获取创意添加选择状态
  */
-function getStatus() {
-    var op =
-        "<option value='51'>有效</option>" +
-        "<option value='52'>暂停推广</option>" +
-        "<option value='53'>不宜推广</option>" +
-        "<option value='54'>待激活</option>" +
-        "<option value='55'>待审核</option>" +
-        "<option value='56'>部分无效</option>";
-    return op;
+function getStatus(number) {
+    switch (number) {
+        case "51":
+            return "有效";
+            break;
+        case "52":
+            return "暂停推广";
+            break;
+        case "53":
+            return "不宜推广";
+            break;
+        case "54":
+            return "待激活";
+            break;
+        case "55":
+            return "审核中";
+            break;
+        case "56":
+            return "部分无效";
+            break;
+        case "-1":
+            return "本地新增";
+            break;
+    }
 }
 /**
  * 右键删除，点击删除
@@ -375,16 +389,16 @@ function preview(obj) {
     var previeBody = $("#sPreview");
     previeBody.empty();
     var title = _this.find("td:eq(1) a").attr("title") != undefined ? _this.find("td:eq(1) a").attr("title") : _this.find("td:eq(1) input").val();
-    if(title==undefined){
-        title=_this.find("td:eq(1)").html();
+    if (title == undefined) {
+        title = _this.find("td:eq(1)").html();
     }
     var de1 = _this.find("td:eq(2) a").attr("title") != undefined ? _this.find("td:eq(2) a").attr("title") : _this.find("td:eq(2) input").val();
-    if(de1==undefined){
-        de1=_this.find("td:eq(2)").html();
+    if (de1 == undefined) {
+        de1 = _this.find("td:eq(2)").html();
     }
     var de2 = _this.find("td:eq(3) a").attr("title") != undefined ? _this.find("td:eq(3) a").attr("title") : _this.find("td:eq(3) input").val();
-    if(de2==undefined){
-        de2=_this.find("td:eq(3)").html();
+    if (de2 == undefined) {
+        de2 = _this.find("td:eq(3)").html();
     }
     var pc = _this.find("td:eq(4) a").attr("href") != undefined ? _this.find("td:eq(4) a").attr("href") : _this.find("td:eq(4) input").val();
     var pcs = _this.find("td:eq(5) a").attr("title") != undefined ? _this.find("td:eq(5) a").attr("title") : _this.find("td:eq(5) input").val();
@@ -428,15 +442,15 @@ function getCreativeUnit(con) {
  * 选择推广计划和单元
  */
 function planUnit() {
-    var cid=$("#sPlan :selected").val()==undefined?sparams.cid:$("#sPlan :selected").val();
-    var aid=$("#sUnit :selected").val()==undefined?sparams.aid:$("#sUnit :selected").val();
-    if(cid=="-1"){
+    var cid = $("#sPlan :selected").val() == undefined ? sparams.cid : $("#sPlan :selected").val();
+    var aid = $("#sUnit :selected").val() == undefined ? sparams.aid : $("#sUnit :selected").val();
+    if (cid == "-1") {
         alert("请选择计划");
-    }else if(aid=="-1"){
+    } else if (aid == "-1") {
         alert("请选择单元");
-    }else{
-        sparams.cid=cid;
-        sparams.aid=aid;
+    } else {
+        sparams.cid = cid;
+        sparams.aid = aid;
         closeAlert();
         addCreative();
     }
@@ -470,8 +484,8 @@ function getPlans() {
  */
 function loadUnit(rs) {
     var planId = rs;
-    var _sUnit=$("#sUnit");
-    var _def="<option value='-1'>请选择单元</option>";
+    var _sUnit = $("#sUnit");
+    var _def = "<option value='-1'>请选择单元</option>";
     $.get("/assistantCreative/getUnitsByPlanId", {planId: planId}, function (rs) {
         if (rs != "[]") {
             var json = eval("(" + rs + ")");
@@ -493,23 +507,23 @@ function loadUnit(rs) {
  * 弹出框选择计划或者单元树对应加载
  * @param rs
  */
-function loadTree(rs){
-    if(rs!="-1"){
-        var cid=$("#sPlan :selected").val()==undefined?sparams.cid:$("#sPlan :selected").val();
-    sparams = {cid: cid, aid: rs};
-    loadCreativeData(sparams);
+function loadTree(rs) {
+    if (rs != "-1") {
+        var cid = $("#sPlan :selected").val() == undefined ? sparams.cid : $("#sPlan :selected").val();
+        sparams = {cid: cid, aid: rs};
+        loadCreativeData(sparams);
     }
 }
 /**
  * 根据mongoId 删除创意
  * @param temp 选择的对象
  */
-function deleteByObjectId(temp){
-    var oid=temp.find("td:eq(0) input").val()!=undefined?temp.find("td:eq(0) input").val():temp.find("td:eq(0) span").html();
-    var con=confirm("是否删除该创意？");
-    if(con){
-        $.get("/assistantCreative/del",{oid:oid},function(rs){
-            if(rs=="1"){
+function deleteByObjectId(temp) {
+    var oid = temp.find("td:eq(0) input").val() != undefined ? temp.find("td:eq(0) input").val() : temp.find("td:eq(0) span").html();
+    var con = confirm("是否删除该创意？");
+    if (con) {
+        $.get("/assistantCreative/del", {oid: oid}, function (rs) {
+            if (rs == "1") {
                 removeThe(temp);
             }
         });
@@ -519,28 +533,28 @@ function deleteByObjectId(temp){
  * 修改选中的创意
  * @param temp
  */
-function updateCreatvie(temp){
-    var _update=$("#jcUpdate");
+function updateCreatvie(temp) {
+    var _update = $("#jcUpdate");
     $(".TB_overlayBG").css({
         display: "block", height: $(document).height(),
-        opacity:0.2
+        opacity: 0.2
     });
     _update.css({
         left: ($("body").width() - _update.width()) / 2 - 20 + "px",
         top: ($(window).height() - _update.height()) / 2 + $(window).scrollTop() + "px",
         display: "block"
     });
-    var _tr=$(temp);
-    var creativeId=_tr.find("td:eq(0) input").val()!=undefined?_tr.find("td:eq(0) input").val():_tr.find("td:eq(0) span").html();
-    var title=_tr.find("td:eq(1) a").attr("title")!=undefined?_tr.find("td:eq(1) a").attr("title"):_tr.find("td:eq(1) span").html();
-    var description1=_tr.find("td:eq(2) a").attr("title")!=undefined?_tr.find("td:eq(2) a").attr("title"):_tr.find("td:eq(2) span").html();
-    var description2=_tr.find("td:eq(3) a").attr("title")!=undefined?_tr.find("td:eq(3) a").attr("title"):_tr.find("td:eq(3) span").html();
-    var pcDestinationUrl=_tr.find("td:eq(4) a").attr("href")!=undefined?_tr.find("td:eq(4) a").attr("href"):_tr.find("td:eq(4) span").html();
-    var pcDisplayUrl=_tr.find("td:eq(5) a").attr("title")!=undefined?_tr.find("td:eq(5) a").attr("title"):_tr.find("td:eq(5) span").html();
-    var mobileDestinationUrl=_tr.find("td:eq(6) a").attr("title")!=undefined?_tr.find("td:eq(6) a").attr("title"):_tr.find("td:eq(6) span").html();
-    var mobileDisplayUrl=_tr.find("td:eq(7) a").attr("title")!=undefined?_tr.find("td:eq(7) a").attr("title"):_tr.find("td:eq(7) span").html();
-    var status=_tr.find("td:eq(9)").html();
-    var pause=_tr.find("td:eq(8)").html();
+    var _tr = $(temp);
+    var creativeId = _tr.find("td:eq(0) input").val() != undefined ? _tr.find("td:eq(0) input").val() : _tr.find("td:eq(0) span").html();
+    var title = _tr.find("td:eq(1) a").attr("title") != undefined ? _tr.find("td:eq(1) a").attr("title") : _tr.find("td:eq(1) span").html();
+    var description1 = _tr.find("td:eq(2) a").attr("title") != undefined ? _tr.find("td:eq(2) a").attr("title") : _tr.find("td:eq(2) span").html();
+    var description2 = _tr.find("td:eq(3) a").attr("title") != undefined ? _tr.find("td:eq(3) a").attr("title") : _tr.find("td:eq(3) span").html();
+    var pcDestinationUrl = _tr.find("td:eq(4) a").attr("href") != undefined ? _tr.find("td:eq(4) a").attr("href") : _tr.find("td:eq(4) span").html();
+    var pcDisplayUrl = _tr.find("td:eq(5) a").attr("title") != undefined ? _tr.find("td:eq(5) a").attr("title") : _tr.find("td:eq(5) span").html();
+    var mobileDestinationUrl = _tr.find("td:eq(6) a").attr("title") != undefined ? _tr.find("td:eq(6) a").attr("title") : _tr.find("td:eq(6) span").html();
+    var mobileDisplayUrl = _tr.find("td:eq(7) a").attr("title") != undefined ? _tr.find("td:eq(7) a").attr("title") : _tr.find("td:eq(7) span").html();
+    var status = _tr.find("td:eq(9) input").val();
+    var pause = _tr.find("td:eq(8)").html();
     $("#cUpdateForm input[name='oid']").val(creativeId);
     $("#cUpdateForm input[name='title']").val(title);
     $("#cUpdateForm input[name='description1']").val(description1);
@@ -549,25 +563,52 @@ function updateCreatvie(temp){
     $("#cUpdateForm input[name='pcDisplayUrl']").val(pcDisplayUrl);
     $("#cUpdateForm input[name='mobileDestinationUrl']").val(mobileDestinationUrl);
     $("#cUpdateForm input[name='mobileDisplayUrl']").val(mobileDisplayUrl);
-    $("#cuStatus").html(status);
-     if(pause=="启用"){
-         $("#cUpdateForm select[name='pause']").get(0).selectedIndex=0;
-     }else{
-         $("#cUpdateForm select[name='pause']").get(0).selectedIndex=1;
-     }
+    $("#cuStatus").html(getStatus(status));
+    $("#cUpdateForm input[name='status']").val(status);
+    if (pause == "启用") {
+        $("#cUpdateForm select[name='pause']").get(0).selectedIndex = 0;
+    } else {
+        $("#cUpdateForm select[name='pause']").get(0).selectedIndex = 1;
+    }
 }
 /**
  * 修改确认提交方法
  */
-function updateOk(){
-    $("#cUpdateForm").formSubmit("/assistantCreative/update",function(rs){
-        if(rs=="1"){
-            alert("修改成功!");
+function updateOk() {
+
+    var _this = $(tmp);
+    $("#cUpdateForm").formSubmit("/assistantCreative/update", function (rs) {
+        if (rs == "1") {
+            _this.remove();
+            var p = formData["pause"] == "true" ? "启用" : "暂停";
+            var _createTable = $("#createTable tbody");
+            var i = $("#createTable tbody tr").size();
+            var _trClass = i % 2 == 0 ? "list2_box1 list2_box3" : "list2_box2 list2_box3";
+            var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
+                "<td>&nbsp;<span style='display: none;'>" + formData["oid"] + "</span></td>" +
+                "<td >" + until.substring(10, formData["title"]) + "</td>" +
+                " <td >" + until.substring(10, formData["description1"]) + "</td>" +
+                " <td >" + until.substring(10, formData["description2"]) + "</td>" +
+                " <td ><a href='" + formData["pcDestinationUrl"] + "' target='_blank'>" + until.substring(10, formData["pcDestinationUrl"]) + "</a></td>" +
+                " <td >" + until.substring(10, formData["pcDisplayUrl"]) + "</td>" +
+                " <td >" + until.substring(10, formData["mobileDestinationUrl"]) + "</td>" +
+                " <td >" + until.substring(10, formData["mobileDisplayUrl"]) + "</td>" +
+                " <td >" + p + "</td>" +
+                " <td >" + until.getCreativeStatus(parseInt(formData["status"])) + "</td>" +
+                "</tr>";
+            _createTable.append(_tbody);
+            alert("修改完成");
+            closeAlert();
+
         }
     });
 }
-function getRandomId(){
-    return Math.floor(Math.random()*10000000000)+1;
+/**
+ * 获取10为数字的随机数
+ * @returns {number}
+ */
+function getRandomId() {
+    return Math.floor(Math.random() * 10000000000) + 1;
 }
 
 

@@ -133,14 +133,34 @@ public class AssistantAdgroupController extends WebContextSupport {
                                 @RequestParam(value = "exactNegativeWords") List<String> ne,
                                 @RequestParam(value = "pause") Boolean p,
                                 @RequestParam(value = "mib") Double mib){
-        AdgroupEntity adgroupEntityFind=adgroupDAO.findOne(agid);
-        adgroupEntityFind.setAdgroupName(name);
-        adgroupEntityFind.setMaxPrice(maxPrice);
-        adgroupEntityFind.setMib(mib);
-        adgroupEntityFind.setNegativeWords(nn);
-        adgroupEntityFind.setExactNegativeWords(ne);
-        adgroupEntityFind.setMib(mib);
-        adgroupDAO.update(adgroupEntityFind);
+        try{
+            AdgroupEntity adgroupEntityFind=adgroupDAO.findOne(agid);
+            adgroupEntityFind.setAdgroupName(name);
+            adgroupEntityFind.setMaxPrice(maxPrice);
+            adgroupEntityFind.setMib(mib);
+            adgroupEntityFind.setNegativeWords(nn);
+            adgroupEntityFind.setExactNegativeWords(ne);
+            adgroupEntityFind.setMib(mib);
+            adgroupDAO.update(adgroupEntityFind);
+            writeHtml(SUCCESS,response);
+        }catch(Exception e){
+            e.printStackTrace();
+            writeHtml(EXCEPTION,response);
+        }
         return null;
     }
+    @RequestMapping(value = "/updateByChange",method = RequestMethod.GET)
+    public ModelAndView updateByChange(HttpServletResponse response,@RequestParam(value = "oid",required = true)Long oid,
+                                       @RequestParam(value = "pause",required = true)Boolean pause){
+        try{
+            AdgroupEntity adgroupEntity=adgroupDAO.findOne(oid);
+            adgroupEntity.setPause(pause);
+            adgroupDAO.update(adgroupEntity);
+            writeHtml(SUCCESS,response);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
