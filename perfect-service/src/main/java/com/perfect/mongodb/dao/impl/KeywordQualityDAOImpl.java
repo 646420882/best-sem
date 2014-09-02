@@ -4,20 +4,20 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.KeywordQualityDAO;
 import com.perfect.entity.KeywordReportEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
+import com.perfect.mongodb.utils.DateUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.Assert;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveTask;
+
+import static com.perfect.mongodb.utils.EntityConstants.KEYWORD_ID;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by baizz on 2014-07-24.
@@ -26,78 +26,117 @@ import java.util.concurrent.RecursiveTask;
 public class KeywordQualityDAOImpl implements KeywordQualityDAO {
 
     @Override
-    public List<KeywordReportEntity> find(String _startDate, String _endDate) {
-        Date startDate = new Date(), endDate = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    public List<KeywordReportEntity> findYesterdayKeywordReport() {
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        Date startDate = new Date(), endDate = new Date();
+//
+//        boolean isLoadYesterdayData = false;
+//        if (_startDate != null) {
+//            Assert.notNull(_endDate, "_endDate must not be null!");
+//        }
+//        if (_endDate != null) {
+//            Assert.notNull(_startDate, "_startDate must not be null!");
+//        }
+//        if (_startDate == null && _endDate == null) {
+//            isLoadYesterdayData = true;
+//            //昨天的时间
+//            Calendar cal = Calendar.getInstance();
+//            cal.set(Calendar.HOUR_OF_DAY, 0);
+//            cal.set(Calendar.MINUTE, 0);
+//            cal.set(Calendar.SECOND, 0);
+//            cal.set(Calendar.MILLISECOND, 0);
+//            cal.add(Calendar.DATE, -1);
+//            startDate = cal.getTime();
+//            endDate = cal.getTime();
+//        } else {
+//            try {
+//                startDate = sdf.parse(_startDate);
+//                endDate = sdf.parse(_endDate);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
-        boolean isLoadYesterdayData = false;
-        if (_startDate != null) {
-            Assert.notNull(_endDate, "_endDate must not be null!");
-        }
-        if (_endDate != null) {
-            Assert.notNull(_startDate, "_startDate must not be null!");
-        }
-        if (_startDate == null && _endDate == null) {
-            isLoadYesterdayData = true;
-            //昨天的时间
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            cal.set(Calendar.MILLISECOND, 0);
-            cal.add(Calendar.DATE, -1);
-            startDate = cal.getTime();
-            endDate = cal.getTime();
-        } else {
-            try {
-                startDate = sdf.parse(_startDate);
-                endDate = sdf.parse(_endDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+        String collectionName = DateUtils.getYesterdayStr() + "-keyword";
+//        List<String> names = new ArrayList<>();     //待查询的collectionName
 
-        List<KeywordReportEntity> list = new ArrayList<>();
-        List<String> names = new ArrayList<>();     //待查询的collectionName
+//        if (isLoadYesterdayData) {
+//            String name = _startDate + "-keyword";
+//            names.add(name);
+//        } else {
+//            if (_startDate.equals(_endDate)) {
+//                //查询的是某一天的数据
+//                String name = _startDate + "-keyword";
+//                names.add(name);
+//            } else {
+//                //查询的是某一个时间段的数据
+//                Calendar cal1 = Calendar.getInstance();
+//                cal1.setTime(startDate);
+//                while (cal1.getTime().getTime() <= endDate.getTime()) {
+//                    cal1.setTime(startDate);
+//                    names.add(sdf.format(cal1.getTime()) + "-keyword");
+//                    cal1.add(Calendar.DATE, 1);
+//                    startDate = cal1.getTime();
+//                }
+//
+//            }
+//
+//        }
 
-        if (isLoadYesterdayData) {
-            String name = _startDate + "-keyword";
-            names.add(name);
-        } else {
-            if (_startDate.equals(_endDate)) {
-                //查询的是某一天的数据
-                String name = _startDate + "-keyword";
-                names.add(name);
-            } else {
-                //查询的是某一个时间段的数据
-                Calendar cal1 = Calendar.getInstance();
-                cal1.setTime(startDate);
-                while (cal1.getTime().getTime() <= endDate.getTime()) {
-                    cal1.setTime(startDate);
-                    names.add(sdf.format(cal1.getTime()) + "-keyword");
-                    cal1.add(Calendar.DATE, 1);
-                    startDate = cal1.getTime();
-                }
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+        List<KeywordReportEntity> list = mongoTemplate.findAll(KeywordReportEntity.class, collectionName);
 
-            }
-
-        }
-
-        //查询
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        try {
-            String userName = AppContext.getUser();
-            QueryTask task = new QueryTask(userName,names, 0, names.size());
-            Future<List<KeywordReportEntity>> voResult = forkJoinPool.submit(task);
-            list = voResult.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        } finally {
-            forkJoinPool.shutdown();
-        }
+//        //查询
+//        ForkJoinPool forkJoinPool = new ForkJoinPool();
+//        try {
+//            String userName = AppContext.getUser();
+//            QueryTask task = new QueryTask(userName,names, 0, names.size());
+//            Future<List<KeywordReportEntity>> voResult = forkJoinPool.submit(task);
+//            list = voResult.get();
+//        } catch (InterruptedException | ExecutionException e) {
+//            e.printStackTrace();
+//        } finally {
+//            forkJoinPool.shutdown();
+//        }
         return list;
     }
 
+    @Override
+    public List<Long> findYesterdayAllKeywordId() {
+        String collectionName = DateUtils.getYesterdayStr() + "-keyword";
+
+//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_shangpin_report");
+
+        Aggregation aggregation = newAggregation(
+                project(KEYWORD_ID, "pccli").andExclude("_id"),
+                match(Criteria.where("pccli").ne(null))
+        );
+
+        AggregationResults<KeywordIdVO> results = mongoTemplate.aggregate(aggregation, collectionName, KeywordIdVO.class);
+        List<Long> keywordIdList = new ArrayList<>();
+        for (KeywordIdVO vo : results) {
+            keywordIdList.add(vo.getKeywordId());
+        }
+
+        return keywordIdList;
+    }
+
+    class KeywordIdVO {
+
+        @Field(KEYWORD_ID)
+        private Long keywordId;
+
+        public Long getKeywordId() {
+            return keywordId;
+        }
+
+        public void setKeywordId(Long keywordId) {
+            this.keywordId = keywordId;
+        }
+    }
+
+    @Deprecated
     class QueryTask extends RecursiveTask<List<KeywordReportEntity>> {
 
         private static final int threshold = 4;

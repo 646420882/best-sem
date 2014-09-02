@@ -1,5 +1,8 @@
 package com.perfect.service;
 
+import com.perfect.autosdk.sms.v3.Quality10Type;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -8,13 +11,16 @@ import java.util.Map;
 public interface KeywordQualityService {
 
     /**
-     *
-     * @param startDate
-     * @param endDate
      * @param fieldName
      * @param n
      * @param sort
      * @return
      */
-    Map<String, Object> find(String startDate, String endDate, String fieldName, int n, int sort);
+    Map<String, Object> find(String fieldName, int n, int sort);
+
+    /**
+     * @param keywordIds
+     * @return
+     */
+    List<Quality10Type> getKeyword10Quality(List<Long> keywordIds);
 }
