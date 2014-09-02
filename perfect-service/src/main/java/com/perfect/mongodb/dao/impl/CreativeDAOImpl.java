@@ -109,6 +109,14 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
     }
 
     @Override
+    public CreativeEntity findByObjId(String obj) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        CreativeEntity entity = mongoTemplate.findOne(
+                new Query(Criteria.where(getId()).is(obj)), CreativeEntity.class, EntityConstants.TBL_CREATIVE);
+        return entity;
+    }
+
+    @Override
     public void updateAdgroupIdByOid(String id, Long adgroupId) {
         getMongoTemplate().updateMulti(Query.query(Criteria.where(OBJ_ADGROUP_ID).is(id)), Update.update(ADGROUP_ID, adgroupId).set(OBJ_ADGROUP_ID, null), getEntityClass());
     }

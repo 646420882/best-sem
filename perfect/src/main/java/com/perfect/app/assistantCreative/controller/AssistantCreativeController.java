@@ -176,6 +176,7 @@ public class AssistantCreativeController extends WebContextSupport {
         try {
             if (oid.length() > 18) {
                 creativeDAO.deleteByCacheId(oid);
+                writeHtml(SUCCESS, response);
             } else {
                 creativeDAO.deleteByCacheId(Long.valueOf(oid));
                 writeHtml(SUCCESS, response);
@@ -189,7 +190,7 @@ public class AssistantCreativeController extends WebContextSupport {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(HttpServletResponse response, HttpServletRequest request,
-                               @RequestParam(value = "oid", required = true) Long oid,
+                               @RequestParam(value = "oid", required = true) String oid,
                                @RequestParam(value = "title", required = false) String title,
                                @RequestParam(value = "description1", required = false) String de1,
                                @RequestParam(value = "description2", required = false) String de2,
@@ -198,7 +199,13 @@ public class AssistantCreativeController extends WebContextSupport {
                                @RequestParam(value = "mobileDestinationUrl", required = false) String mib,
                                @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
                                @RequestParam(value = "pause") Boolean bol) {
-        CreativeEntity creativeEntityFind = creativeDAO.findOne(oid);
+        CreativeEntity creativeEntityFind =null;
+        if(oid.length()>18){
+            creativeEntityFind= creativeDAO.findByObjId(oid);
+        }else{
+            creativeEntityFind= creativeDAO.findOne(Long.valueOf(oid));
+        }
+
         creativeEntityFind.setTitle(title);
         creativeEntityFind.setDescription1(de1);
         creativeEntityFind.setDescription2(de2);
