@@ -1639,7 +1639,7 @@ h2 .close{
     width: 104px;
     height: 24px;
     margin-left: 10px;
-    line-height: 24px;
+    line-height: 22px;
     border: 1px solid #bdc1c4;
     background: url(/public/img/team03_bg.png) repeat;
 }
@@ -2388,7 +2388,84 @@ h2 .close{
     line-height:24px;
 
 }
-.plan_under2 ul li a{
-    padding:0 10px;
+.plan_under2 ul li a {
+    padding: 0 10px;
+}
 
+/******添加关键词*********/
+.newkeyword_mid{
+    padding:10px;
+}
+.newkeyeord_title ul{
+   margin:10px 0;
+}
+.newkeyeord_title ul li{
+    display:block;
+    float:left;
+    margin-right:20px;
+}
+.newkeyword_left{
+    width:30%;
+    padding:10px;
+    background:#fff;
+    border:1px solid #ccc;
+}
+.newkeyword_right{
+    width:60%;
+    line-height:24px;
+}
+.newkeyword_add{
+    display:block;
+    float:left;
+    width:9px;
+    height:9px;
+    background: url(/public/img/zTreeStandard.png) -78px -5px no-repeat;
+    margin:3px 10px 0 0;
+
+}
+.newkeyword_top2 ul li{
+    margin-bottom:5px;
+}
+.newkeyword_top2 ul li input{
+    margin-right:2px;
+}
+.newkeyword_top2 ul li ul{
+    margin-left:30px;
+
+}
+.newkeyword_right_mid{
+    borde:1px solid #ccc;
+
+}
+.newkeyword_right p{
+    border-bottom:1px dotted #ccc;
+}
+.newkeyword_right_mid p{
+    color:#666666;
+}
+.newkeyword_right_mid textarea{
+    margin-top:10px;
+    width:100%;
+    height:140px;
+overflow: auto;
+}
+.newkeyword_top3{
+    border-top:1px solid #ccc;
+    line-height:24px;
+
+}
+.newkeyword_top3 a{
+    padding-right:10px;
+
+}
+.newkeyword_top3 .current{
+    color:#959595;
+
+}
+.newkeyword_end2 p{
+    margin:10px 0;
+
+}
+.newkeyword_end1{
+    cursor: pointer;
 }

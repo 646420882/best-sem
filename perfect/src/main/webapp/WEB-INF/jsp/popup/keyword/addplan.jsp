@@ -83,7 +83,8 @@
                          <div class="k_l_under over">
                              <div class="k_l_under1 over">
                                  <ul>
-                                     <li><input class="zs_input3" placeholder="根据已添加关键词精准搜词"></input></li>
+                                     <li><input class="zs_input3" placeholder="根据已添加关键词精准搜词">
+                                     </li>
                                  </ul>
                              </div>
                          </div>
@@ -132,16 +133,11 @@
                                      </table>
                                  </div>
                                  <div class="zhanghu_input"></div>
-
                              </div>
-
                          </div>
                      </div>
 
-
                  </div>
-
-
              </div>
              <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
                  <div class="w_list03">
@@ -152,12 +148,8 @@
                      </ul>
                  </div>
              </div>
-
          </div>
-
      </div>
-
-
 
 </div>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>

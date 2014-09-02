@@ -24,6 +24,12 @@ public class KeywordPopupController {
         return new ModelAndView("popup/keyword/addplan");
     }
 
+    @RequestMapping(value = "/newkeyword", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView toNewKeywordIframePage
+            () {
+        return new ModelAndView("popup/keyword/newkeyword");
+    }
+
     /*@RequestMapping(value = "/toAddPage", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getAddKeywordIframePage2() {
         return new ModelAndView("popup/keyword/addKeyword");
