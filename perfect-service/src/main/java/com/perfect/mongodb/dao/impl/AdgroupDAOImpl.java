@@ -69,7 +69,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
     public List<String> getAdgroupIdByCampaignId(String campaignId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new BasicQuery("{}", "{_id : 1}");
-        query.addCriteria(Criteria.where(OBJECT_ID).is(campaignId));
+        query.addCriteria(Criteria.where(OBJ_CAMPAIGN_ID).is(campaignId));
         List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class, EntityConstants.TBL_ADGROUP);
         List<String> adgroupIds = new ArrayList<>(list.size());
         for (AdgroupEntity type : list)
