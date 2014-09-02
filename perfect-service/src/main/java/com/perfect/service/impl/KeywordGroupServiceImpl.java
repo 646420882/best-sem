@@ -196,6 +196,12 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
         CampaignEntity campaignEntity = new CampaignEntity();
         campaignEntity.setAccountId(accountId);
         campaignEntity.setCampaignName(newCampaignName);
+        campaignEntity.setNegativeWords(new ArrayList<String>());
+        campaignEntity.setExactNegativeWords(new ArrayList<String>());
+        campaignEntity.setPause(false);
+        campaignEntity.setShowProb(1);
+        campaignEntity.setDevice(0);
+        campaignEntity.setIsDynamicCreative(true);
         CampaignEntity campaign = (CampaignEntity) save(campaignEntity);
         String campaignObjectId = campaign.getId();
 
@@ -218,6 +224,11 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                 keywordEntity.setAccountId(accountId);
                 keywordEntity.setAdgroupObjId(_adgroup.getId());
                 keywordEntity.setKeyword(keyword);
+                keywordEntity.setPrice(1.0);
+                keywordEntity.setMatchType(1);
+                keywordEntity.setPause(false);
+                keywordEntity.setStatus(-1);
+                keywordEntity.setPhraseType(1);
 
                 save(keywordEntity);
             } else {
@@ -226,12 +237,23 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                 adgroupEntity.setAccountId(accountId);
                 adgroupEntity.setCampaignObjId(campaignObjectId);
                 adgroupEntity.setAdgroupName(adgroupName);
+                adgroupEntity.setMaxPrice(1.0);
+                adgroupEntity.setNegativeWords(new ArrayList<String>());
+                adgroupEntity.setExactNegativeWords(new ArrayList<String>());
+                adgroupEntity.setPause(false);
+                adgroupEntity.setStatus(-1);
+                adgroupEntity.setMib(0.0);
                 adgroupObjectId = ((AdgroupEntity) save(adgroupEntity)).getId();
 
                 KeywordEntity keywordEntity = new KeywordEntity();
                 keywordEntity.setAccountId(accountId);
                 keywordEntity.setAdgroupObjId(adgroupObjectId);
                 keywordEntity.setKeyword(keyword);
+                keywordEntity.setPrice(1.0);
+                keywordEntity.setMatchType(1);
+                keywordEntity.setPause(false);
+                keywordEntity.setStatus(-1);
+                keywordEntity.setPhraseType(1);
 
                 save(keywordEntity);
             }
@@ -250,6 +272,12 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
         CampaignEntity campaignEntity = new CampaignEntity();
         campaignEntity.setAccountId(accountId);
         campaignEntity.setCampaignName(newCampaignName);
+        campaignEntity.setNegativeWords(new ArrayList<String>());
+        campaignEntity.setExactNegativeWords(new ArrayList<String>());
+        campaignEntity.setPause(false);
+        campaignEntity.setShowProb(1);
+        campaignEntity.setDevice(0);
+        campaignEntity.setIsDynamicCreative(true);
         CampaignEntity campaign = (CampaignEntity) save(campaignEntity);
         String campaignObjectId = campaign.getId();
 
@@ -277,12 +305,23 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                 adgroup.setAccountId(accountId);
                 adgroup.setCampaignObjId(campaignObjectId);
                 adgroup.setAdgroupName(group);
+                adgroup.setMaxPrice(1.0);
+                adgroup.setNegativeWords(new ArrayList<String>());
+                adgroup.setExactNegativeWords(new ArrayList<String>());
+                adgroup.setPause(false);
+                adgroup.setStatus(-1);
+                adgroup.setMib(0.0);
                 adgroupObjectId = ((AdgroupEntity) save(adgroup)).getId();
 
                 KeywordEntity keyword = new KeywordEntity();
                 keyword.setAdgroupObjId(adgroupObjectId);
                 keyword.setKeyword(entity.getKeyword());
                 keyword.setAccountId(accountId);
+                keyword.setPrice(1.0);
+                keyword.setMatchType(1);
+                keyword.setPause(false);
+                keyword.setStatus(-1);
+                keyword.setPhraseType(1);
                 keywordEntities.add(keyword);
                 continue;
             }
@@ -291,6 +330,11 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                 keyword.setAdgroupObjId(adgroupObjectId);
                 keyword.setKeyword(entity.getKeyword());
                 keyword.setAccountId(accountId);
+                keyword.setPrice(1.0);
+                keyword.setMatchType(1);
+                keyword.setPause(false);
+                keyword.setStatus(-1);
+                keyword.setPhraseType(1);
                 keywordEntities.add(keyword);
             } else {
                 save(keywordEntities);
@@ -301,12 +345,23 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                 adgroup.setAccountId(accountId);
                 adgroup.setCampaignObjId(campaignObjectId);
                 adgroup.setAdgroupName(group);
+                adgroup.setMaxPrice(1.0);
+                adgroup.setNegativeWords(new ArrayList<String>());
+                adgroup.setExactNegativeWords(new ArrayList<String>());
+                adgroup.setPause(false);
+                adgroup.setStatus(-1);
+                adgroup.setMib(0.0);
                 adgroupObjectId = ((AdgroupEntity) save(adgroup)).getId();
 
                 KeywordEntity keyword = new KeywordEntity();
                 keyword.setAdgroupObjId(adgroupObjectId);
                 keyword.setKeyword(entity.getKeyword());
                 keyword.setAccountId(accountId);
+                keyword.setPrice(1.0);
+                keyword.setMatchType(1);
+                keyword.setPause(false);
+                keyword.setStatus(-1);
+                keyword.setPhraseType(1);
                 keywordEntities.add(keyword);
             }
         }
