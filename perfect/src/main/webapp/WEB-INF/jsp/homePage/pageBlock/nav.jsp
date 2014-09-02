@@ -172,27 +172,32 @@
             }
         });
         $('.user_name').click(function () {
-            $(this).next('#switchAccount').show();
-            $('#switchAccount li').click(function () {
-                $('.user_name span').html($(this).text());
-                var _accountId = $(this).val();
-                $('#switchAccount').hide();
-                $.ajax({
-                    url: '/account/switchAccount',
-                    type: 'POST',
-                    async: false,
-                    dataType: 'json',
-                    data: {
-                        "accountId": _accountId
-                    },
-                    success: function (data, textStatus, jqXHR) {
-                        if (data.status != null && data.status == true) {
-                            //location.replace(location.href);
-                            window.location.reload(true);
+            if ($("#switchAccount").css("display") == "none") {//隐藏
+                $(this).next('#switchAccount').show();
+                $('#switchAccount li').click(function () {
+                    $('.user_name span').html($(this).text());
+                    var _accountId = $(this).val();
+                    $('#switchAccount').hide();
+                    $.ajax({
+                        url: '/account/switchAccount',
+                        type: 'POST',
+                        async: false,
+                        dataType: 'json',
+                        data: {
+                            "accountId": _accountId
+                        },
+                        success: function (data, textStatus, jqXHR) {
+                            if (data.status != null && data.status == true) {
+                                //location.replace(location.href);
+                                window.location.reload(true);
+                            }
                         }
-                    }
-                })
-            });
+                    })
+                });
+            }
+            else {
+                $("#switchAccount").hide();
+            }
         });
     });
 
