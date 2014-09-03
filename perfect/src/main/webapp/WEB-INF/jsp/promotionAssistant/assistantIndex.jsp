@@ -1254,9 +1254,10 @@
 <%--推广计划设置推广地域窗口--%>
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setSchedule">
-    <h2 id="setScheduleDiv">推广地域列表<a href="#" class="close">关闭</a></h2>
+    <h2 id="setScheduleDiv">推广地域列表<a href="#" class="close">关闭</a></h2><a href="javascript:testBatchDel()">测试批量删除</a>
+    <a href="">测试批量添加更新</a>
+    <jsp:include page="../promotionAssistant/alert/setRegionTarget.jsp"/>
 </div>
-<jsp:include page="../promotionAssistant/alert/setRegionTarget.jsp"/>
 
 <%--添加推广计划弹出窗口--%>
 <jsp:include page="../promotionAssistant/alert/addCampaign.jsp"/>
