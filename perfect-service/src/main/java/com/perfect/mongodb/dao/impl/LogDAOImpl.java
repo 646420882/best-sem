@@ -51,11 +51,9 @@ public class LogDAOImpl extends AbstractUserBaseDAOImpl<LogEntity, String> imple
 
     @Override
     public void insertLog(String oid, String entity) {
-
         if (existsByOid(oid)) {
             return;
         }
-
         LogEntity logEntity = new LogEntity();
         logEntity.setOid(oid);
         logEntity.setType(entity.toLowerCase().replaceAll("entity", ""));
@@ -68,11 +66,8 @@ public class LogDAOImpl extends AbstractUserBaseDAOImpl<LogEntity, String> imple
         if (existsByBid(bid)) {
             LogEntity logEntity = getMongoTemplate().findOne(Query.query(Criteria.where(BAIDU_ID).is(bid)), getEntityClass());
 
-
             if (logEntity.getOpt() == LogStatusConstant.OPT_DELETE)
                 return;
-
-
         }
         LogEntity logEntity = new LogEntity();
         logEntity.setBid(bid);

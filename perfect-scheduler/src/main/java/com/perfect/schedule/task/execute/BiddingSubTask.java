@@ -20,8 +20,6 @@ import com.perfect.utils.BiddingRuleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -57,7 +55,10 @@ public class BiddingSubTask implements Runnable {
     private static final double FAST_PRICE = 0.5;
     private static final double ECON_PRICE = 0.01;
 
+    public static final int RETRY = 5;
+
     private final HTMLAnalyseService service;
+    private final String host;
     private String userName;
     private final BaiduApiService apiService;
     private BaiduAccountInfoEntity accountInfoEntity;
@@ -68,9 +69,10 @@ public class BiddingSubTask implements Runnable {
 
     private Logger logger = LoggerFactory.getLogger(BiddingSubTask.class);
 
-    public BiddingSubTask(String userName, BaiduApiService apiService, BiddingRuleService biddingRuleService, SysCampaignService sysCampaignService, HTMLAnalyseService htmlAnalyseService,
+    public BiddingSubTask(String userName, String host, BaiduApiService apiService, BiddingRuleService biddingRuleService, SysCampaignService sysCampaignService, HTMLAnalyseService htmlAnalyseService,
                           BaiduAccountInfoEntity accountInfoEntity, BiddingRuleEntity biddingRuleEntity, KeywordEntity keywordEntity) {
         this.userName = userName;
+        this.host = host;
         this.apiService = apiService;
         this.biddingRuleService = biddingRuleService;
         this.campaignService = sysCampaignService;
@@ -80,9 +82,9 @@ public class BiddingSubTask implements Runnable {
         this.keywordEntity = keywordEntity;
     }
 
-    public BiddingSubTask(String user, CommonService service, BiddingRuleService biddingRuleService, SysCampaignService sysCampaignService, BaiduAccountInfoEntity accountInfoEntity, BiddingRuleEntity biddingRuleEntity, KeywordEntity keywordEntity) {
+    public BiddingSubTask(String user, String host, CommonService service, BiddingRuleService biddingRuleService, SysCampaignService sysCampaignService, BaiduAccountInfoEntity accountInfoEntity, BiddingRuleEntity biddingRuleEntity, KeywordEntity keywordEntity) {
 
-        this(user, new BaiduApiService(service), biddingRuleService, sysCampaignService, HTMLAnalyseServiceImpl.createService(service), accountInfoEntity, biddingRuleEntity, keywordEntity);
+        this(user, host, new BaiduApiService(service), biddingRuleService, sysCampaignService, HTMLAnalyseServiceImpl.createService(service), accountInfoEntity, biddingRuleEntity, keywordEntity);
     }
 
     @Override
@@ -94,30 +96,30 @@ public class BiddingSubTask implements Runnable {
 
         StrategyEntity strategyEntity = biddingRuleEntity.getStrategyEntity();
 
-        String host = null;
-
-        if (strategyEntity.getDevice() == BiddingStrategyConstants.TYPE_PC.value()) {
-            try {
-                URL url = new URL(keywordEntity.getPcDestinationUrl());
-                host = url.getHost();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                URL url = new URL(keywordEntity.getMobileDestinationUrl());
-                host = url.getHost();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (host == null) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("未匹配正确的host地址! keywordId=" + keywordEntity.getKeywordId());
-            }
-            return;
-        }
+//        String host = null;
+//
+//        if (strategyEntity.getDevice() == BiddingStrategyConstants.TYPE_PC.value()) {
+//            try {
+//                URL url = new URL(keywordEntity.getPcDestinationUrl());
+//                host = url.getHost();
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            try {
+//                URL url = new URL(keywordEntity.getMobileDestinationUrl());
+//                host = url.getHost();
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        if (host == null) {
+//            if (logger.isDebugEnabled()) {
+//                logger.debug("未匹配正确的host地址! keywordId=" + keywordEntity.getKeywordId());
+//            }
+//            return;
+//        }
 
         Integer[] regionList = strategyEntity.getRegionTarget();
         if (regionList == null) {
@@ -139,13 +141,18 @@ public class BiddingSubTask implements Runnable {
             getPreviewRequest.setRegion(region);
             getPreviewRequest.setKeyWords(Arrays.asList(keywordEntity.getKeyword()));
 
+            int retry = RETRY;
             while (true) {
                 List<HTMLAnalyseServiceImpl.PreviewData> datas = service.getPageData(getPreviewRequest);
 
                 if (datas.isEmpty()) {
                     try {
                         Thread.sleep(1000);
-                        continue;
+                        if (retry-- == 0) {
+                            break;
+                        } else {
+                            continue;
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -243,7 +250,7 @@ public class BiddingSubTask implements Runnable {
 
                         try {
                             //竞价完成一个阶段
-                            Thread.sleep(5000);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

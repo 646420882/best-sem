@@ -11,8 +11,10 @@ import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.schedule.core.CronExpression;
 import com.perfect.schedule.core.IScheduleTaskDealMulti;
 import com.perfect.schedule.core.TaskItemDefine;
-import com.perfect.service.*;
-import com.perfect.service.impl.HTMLAnalyseServiceImpl;
+import com.perfect.service.BiddingRuleService;
+import com.perfect.service.SysCampaignService;
+import com.perfect.service.SysKeywordService;
+import com.perfect.service.SystemUserService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -56,25 +58,21 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
 
             List<BiddingRuleEntity> biddingRuleEntityList = task.getList();
 
-            BaiduApiService apiService = null;
 
             ServiceFactory service = ServiceFactory.getInstance(accountInfoEntity.getBaiduUserName(), accountInfoEntity.getBaiduPassword(), accountInfoEntity.getToken(), null);
-            apiService = new BaiduApiService(service);
-
-            HTMLAnalyseService htmlAnalyseService = HTMLAnalyseServiceImpl.createService(service);
 
             for (BiddingRuleEntity biddingRuleEntity : biddingRuleEntityList) {
 
                 KeywordEntity keywordEntity = sysKeywordService.findById(biddingRuleEntity.getKeywordId());
 
                 // 生成一个任务
-                BiddingSubTask biddingSubTask = new BiddingSubTask(task.getUserName(), service, biddingRuleService,
+                BiddingSubTask biddingSubTask = new BiddingSubTask(task.getUserName(), accountInfoEntity.getRegDomain(), service, biddingRuleService,
                         sysCampaignService, accountInfoEntity, biddingRuleEntity, keywordEntity);
                 executor.execute(biddingSubTask);
             }
 
         }
-        return false;
+        return true;
     }
 
     @Override
