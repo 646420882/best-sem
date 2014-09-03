@@ -2485,11 +2485,9 @@ overflow: auto;
 }
 .newkeyword_top3 .current{
     color:#959595;
-
 }
 .newkeyword_end2 p{
     margin:10px 0;
-
 }
 .newkeyword_end1{
     cursor: pointer;
@@ -2499,5 +2497,53 @@ overflow: auto;
     width:16px;
     height:16px;
     background: url(/public/img/pen.png) no-repeat;
+}
+/***********搜索词报告*********/
+.searchword_top{
+    height:70px;
+    background:#fafafa;
+    border: 1px solid #dadadd;
+}
+.searchword_top ul li{
+    display:block;
+    float:left;
+    height:40px;
+    padding:15px 20px;
+    line-height:24px;
+    border-right: 1px solid #dadadd;
+}
+
+.searchword_top ul li span{
+    display:block;
+}
+.searchword_top ul .current{
+    background:#f5b802;
+}
+.searchword_under1{
+    width:30%;
+}
+.searchword_under2{
+    width:65%;
+}
+.search_input {
+    padding:10px;
+    background:#fff;
+    border:1px solid #ccc;
+}
+.search_input{
+    margin: 0 0 10px 0;
+}
+.search_mid{
+    height:462px;
+    background:#fff;
+    border:1px solid #ccc;
+    line-height:24px;
+}
+.search_mid span{
+    line-height:30px;
+    font-size:16px;
+}
+.searchword_under{
+    margin:10px;
 
 }

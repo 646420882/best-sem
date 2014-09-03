@@ -105,7 +105,7 @@
             <li><a href="#"><span class="z_function_hover"><img
                     src="../public/img/zs_function9.png"></span><b>还原</b></a>
             </li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+            <li><a href="#" id="searchword"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
             <li><a href="#"><span class="z_function_hover"><img
                     src="../public/img/zs_function11.png"></span><b>激活</b></a>
             </li>

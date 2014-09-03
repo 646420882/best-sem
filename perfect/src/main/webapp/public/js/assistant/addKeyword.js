@@ -70,7 +70,7 @@ $(function () {
     $("#searchword").livequery('click', function () {
         top.dialog({title: "搜索词报告",
             padding: "5px",
-            content: "<iframe src='/searchword' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+            content: "<iframe src='/searchword' width='900' height='590' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
             oniframeload: function () {
             },
             onclose: function () {
