@@ -33,12 +33,8 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, 
         List<BaiduAccountInfoEntity> list1 = currSystemUserEntity.getBaiduAccountInfoEntities();
         if (list1 == null) {
             list1 = new ArrayList<>();
-            for (BaiduAccountInfoEntity entity : list)
-                list1.add(entity);
-        } else {
-            for (BaiduAccountInfoEntity entity : list)
-                list1.add(entity);
         }
+        list1.addAll(list);
         getMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName)), Update.update("baiduAccountInfos", list1), "SystemUser");
     }
 

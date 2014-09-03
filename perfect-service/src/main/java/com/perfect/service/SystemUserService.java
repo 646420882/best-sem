@@ -1,5 +1,6 @@
 package com.perfect.service;
 
+import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 
 import java.util.List;
@@ -18,4 +19,8 @@ public interface SystemUserService {
     Iterable<SystemUserEntity> getAllUser();
 
     public void save(SystemUserEntity systemUserEntity);
+
+    boolean removeAccount(Long id);
+
+    void addAccount(String user, BaiduAccountInfoEntity baiduAccountInfoEntity);
 }
