@@ -137,7 +137,7 @@ public class ExcelReadUtil {
         List<String> fileNames = new ArrayList<>();
         UploadHelper upload = new UploadHelper();
         for (int i = 0; i < fileName.length; i++) {
-            fileNames.add(upload.getTotalTempPath() + "\\" + fileName[i]);
+            fileNames.add(upload.getTotalTempPath() + File.separator + fileName[i]);
         }
         map.put(session, fileNames);
         return map;

@@ -16,8 +16,8 @@ public class UploadHelper {
     private static String default_tempPath;
     private static String total_tempPath;
     public UploadHelper() {
-        default_tempPath = System.getProperty("java.io.tmpdir") + "\\Perfect\\";
-        total_tempPath=default_tempPath+"\\Total\\";
+        default_tempPath = System.getProperty("java.io.tmpdir") +  File.separator +"Perfect"+ File.separator ;
+        total_tempPath=default_tempPath+ File.separator +"Total"+ File.separator ;
         existFileDirs(default_tempPath);
         existFileDirs(total_tempPath);
     }
@@ -40,7 +40,7 @@ public class UploadHelper {
     public boolean defaultUpload(byte[] bytes, String fileName) {
         try {
             File dirPath = new File(default_tempPath);
-            File uploadedFile = new File(default_tempPath + "\\" +fileName);
+            File uploadedFile = new File(default_tempPath +  File.separator +fileName);
             FileCopyUtils.copy(bytes, uploadedFile);
             return true;
         } catch (IOException e) {
@@ -58,7 +58,7 @@ public class UploadHelper {
     public boolean totalUpload(byte[] bytes,String fileName){
         try {
             File dirPath = new File(total_tempPath);
-            File uploadedFile = new File(total_tempPath + "\\" +fileName);
+            File uploadedFile = new File(total_tempPath +  File.separator  +fileName);
             FileCopyUtils.copy(bytes, uploadedFile);
             return true;
         } catch (IOException e) {

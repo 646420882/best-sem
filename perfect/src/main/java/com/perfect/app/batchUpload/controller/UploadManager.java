@@ -155,10 +155,10 @@ public class UploadManager extends WebContextSupport {
         String filePath =null;
         switch (outType){
             case DEFAULT:
-                filePath = uh.getDefaultTempPath() + "\\" + fileName;
+                filePath = uh.getDefaultTempPath() + File.separator  + fileName;
                 break;
             case TOTAL:
-                filePath = uh.getTotalTempPath() + "\\" + fileName;
+                filePath = uh.getTotalTempPath() +  File.separator  + fileName;
         }
         try {
             long fileLength = uh.getFileLength(filePath);
@@ -298,10 +298,10 @@ public class UploadManager extends WebContextSupport {
         String filePath =null;
         switch (outType){
             case DEFAULT:
-                filePath = up.getDefaultTempPath() + "\\" + fileName;
+                filePath = up.getDefaultTempPath() + File.separator + fileName;
                 break;
             case TOTAL:
-                filePath = up.getTotalTempPath() + "\\" + fileName;
+                filePath = up.getTotalTempPath() +  File.separator  + fileName;
                 break;
         }
         File file = new File(filePath);
