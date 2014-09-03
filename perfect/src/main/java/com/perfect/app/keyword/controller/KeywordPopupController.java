@@ -29,6 +29,12 @@ public class KeywordPopupController {
             () {
         return new ModelAndView("popup/keyword/newkeyword");
     }
+    @RequestMapping(value = "/deletekeyword", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView todeleteKeywordIframePage
+            () {
+        return new ModelAndView("popup/keyword/deletekeyword");
+    }
+
 
     /*@RequestMapping(value = "/toAddPage", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getAddKeywordIframePage2() {

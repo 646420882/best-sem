@@ -1259,11 +1259,12 @@ ul.ztree.zTreeDragUL {
 }
 .list4 {
     height:524px;
+    width:100%;
     overflow: auto;
 }
 .list4 table {
     border: 1px solid #eaf0f3;
-    width: 1130px;
+    width: 1200px;
     overflow: auto;
 }
 .list4 table thead {
@@ -1502,11 +1503,31 @@ h2 .close{
     background: url(/public/img/zs_function_bg.png) repeat-x;
     border-top: 1px solid #cfcfcf;
 }
+.zs_function ul{
+    height:34px;
+}
 .zs_function ul li {
     display: block;
     float: left;
     margin: 10px 15px 10px 0;
-    overflow: hidden;
+    height: 34px;
+    position:relative;
+    z-index:10;
+
+}
+.zs_function ul li ul{
+    position:absolute;
+    top:25px;
+   z-index:12;
+    background: url(/public/img/zs_function_bg.png) repeat-x;
+    padding: 0 12px;
+
+
+
+}
+.zs_function ul li ul li{
+    cursor: pointer;
+
 }
 @media screen and (max-width :1425px) {
     .zs_function ul li {

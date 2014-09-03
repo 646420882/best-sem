@@ -171,9 +171,13 @@
                 $(".nav_input").css("display", "block");
             }
         });
+        loadBaiduAccount();
         $('.user_name').click(function () {
             if ($("#switchAccount").css("display") == "none") {//隐藏
                 $(this).next('#switchAccount').show();
+                $("#switchAccount ").mouseleave(function () {
+                    $("#switchAccount").css("display", "none");
+                });
                 $('#switchAccount li').click(function () {
                     $('.user_name span').html($(this).text());
                     var _accountId = $(this).val();
