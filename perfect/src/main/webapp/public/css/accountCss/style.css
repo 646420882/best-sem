@@ -7,7 +7,6 @@
 .concent {
     position: relative;
     margin-top:77px;
-    *padding-top:77px;
     background:#fff;
     /*   background: url(/public/img/concent_bg.jpg) repeat;*/
     font-family: "微软雅黑";
@@ -316,7 +315,7 @@
     margin: 0px;
 }
 .list2 table tr td ul li ul {
-    width: 50%;
+    width: 100%;
 }
 .list2 table tr td ul li ul li {
     width: 14px;
@@ -2489,4 +2488,11 @@ overflow: auto;
 }
 .newkeyword_end1{
     cursor: pointer;
+}
+.pen{
+    display:block;
+    width:16px;
+    height:16px;
+    background: url(/public/img/pen.png) no-repeat;
+
 }

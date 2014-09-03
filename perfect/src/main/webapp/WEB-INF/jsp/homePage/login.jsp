@@ -64,8 +64,6 @@
 
 </div>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript">
     window.jQuery || document.write("<script src='${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js'>\x3C/script>");
 </script>

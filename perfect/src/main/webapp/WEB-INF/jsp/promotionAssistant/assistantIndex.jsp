@@ -1093,7 +1093,7 @@
         </div>
     </div>
 </div>
-!---------IP排除----------->
+<!---------IP排除----------->
 <div class="box6" style="display:none;width: 300px">
     <h2 id="box6">IP排除<a href="#" class="close">关闭</a></h2>
 
