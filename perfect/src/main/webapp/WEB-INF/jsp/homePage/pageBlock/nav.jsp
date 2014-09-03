@@ -146,29 +146,37 @@
         $(".tips").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").slideDown(600);
+                $(".tips").css("position", "relative");
                 $(".concent").css("width", "85%");
                 $(".top").css("width", "85%");
                 $(".nav_input").css("display", "none");
+                $(".nav").css("z-index", "200");
             }
             else {
                 $(".nav_left").hide();
+                $(".tips").css("position", "fixed");
                 $(".concent").css("width", "99.5%");
                 $(".top").css("width", "99.5%");
                 $(".nav_input").css("display", "block");
+                $(".nav").css("z-index", "111");
             }
         });
         $(".nav_input1").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").slideDown(600);
+                $(".tips").css("position", "relative");
                 $(".concent").css("width", "85%");
                 $(".top").css("width", "85%");
                 $(".nav_input").css("display", "none");
+                $(".nav").css("z-index", "200");
             }
             else {
                 $(".nav_left").hide();
+                $(".tips").css("position", "fixed");
                 $(".concent").css("width", "99.5%");
                 $(".top").css("width", "99.5%");
                 $(".nav_input").css("display", "block");
+                $(".nav").css("z-index", "111");
             }
         });
         loadBaiduAccount();
