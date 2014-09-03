@@ -11,5 +11,6 @@ public interface KeywordQualityDAO {
 
     List<KeywordReportEntity> findYesterdayKeywordReport();
 
+    @Deprecated
     List<Long> findYesterdayAllKeywordId();
 }

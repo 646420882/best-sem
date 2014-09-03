@@ -26,9 +26,10 @@ public class KeywordQualityController {
     @RequestMapping(value = "/keywordQuality/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView findKeywordQuality(@RequestParam(value = "fieldName", required = false, defaultValue = "impression") String fieldName,
                                            @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit,
+                                           @RequestParam(value = "skip", required = false, defaultValue = "0") Integer skip,
                                            @RequestParam(value = "sort", required = false, defaultValue = "-1") Integer sort) {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> values = keywordQualityService.find(fieldName, limit, sort);
+        Map<String, Object> values = keywordQualityService.find(fieldName, limit, skip, sort);
         jsonView.setAttributesMap(values);
         return new ModelAndView(jsonView);
     }

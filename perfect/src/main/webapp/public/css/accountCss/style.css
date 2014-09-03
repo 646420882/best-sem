@@ -316,7 +316,7 @@
     margin: 0px;
 }
 .list2 table tr td ul li ul {
-    width: 50%;
+    width: 100%;
 }
 .list2 table tr td ul li ul li {
     width: 14px;
@@ -325,7 +325,7 @@
 .list2_top2 {
     height: 30px;
 }
-.list2 table span, .list3 table span {
+.list2 table .list2_top span, .list3 table .list2_top span {
     display: block;
     float: left;
     *display:inline-block;

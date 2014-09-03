@@ -13,10 +13,11 @@ public interface KeywordQualityService {
     /**
      * @param fieldName
      * @param n
+     * @param skip
      * @param sort
      * @return
      */
-    Map<String, Object> find(String fieldName, int n, int sort);
+    Map<String, Object> find(String fieldName, int n, int skip, int sort);
 
     /**
      * @param keywordIds

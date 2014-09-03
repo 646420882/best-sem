@@ -102,11 +102,10 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
     }
 
     @Override
+    @Deprecated
     public List<Long> findYesterdayAllKeywordId() {
         String collectionName = DateUtils.getYesterdayStr() + "-keyword";
-
-//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("user_shangpin_report");
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
 
         Aggregation aggregation = newAggregation(
                 project(KEYWORD_ID, "pccli").andExclude("_id"),
@@ -122,6 +121,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
         return keywordIdList;
     }
 
+    @Deprecated
     class KeywordIdVO {
 
         @Field(KEYWORD_ID)

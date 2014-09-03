@@ -310,7 +310,7 @@
 <div class="list01_top over">
     <Span>质量度分析</Span>
     <a href="#" class="question"></a>
-    <ul id="keywordQualityClass">
+    <%--<ul id="keywordQualityClass">
         <li class="current">
             <a onclick="loadKeywordQualityData(this, 1);">
                 昨天
@@ -334,7 +334,7 @@
                        src="${pageContext.request.contextPath}/public/img/date.png">
             </a>
         </li>
-    </ul>
+    </ul>--%>
 
 </div>
 <div class="download over ">
@@ -344,205 +344,571 @@
 </div>
 <div class="list2 wd">
 <table border="0" cellspacing="0" cellspacing="0">
-    <tr class="list2_top">
+<tr class="list2_top">
 
-        <td>
-            <ul>
-                <li>
-                    &nbsp;<span>质量度</span><b>
-                    <p>
-                        <input class="one" type="button">
-                    </p>
+    <td>
+        <ul>
+            <li>
+                &nbsp;<span>质量度</span><b>
+                <p>
+                    <input class="one" type="button">
+                </p>
 
-                    <p>
-                        <input class="two" type="button">
-                    </p></b>
-                </li>
-                <li>
-                    &nbsp;<span>关键词</span><b>
-                    <p>
-                        <input class="one" type="button">
-                    </p>
+                <p>
+                    <input class="two" type="button">
+                </p></b>
+            </li>
+            <li>
+                &nbsp;<span>关键词</span><b>
+                <p>
+                    <input class="one" type="button">
+                </p>
 
-                    <p>
-                        <input class="two" type="button">
-                    </p></b>
-                </li>
-                <li>
-                    &nbsp;<span>展现</span><b>
-                    <p>
-                        <input class="one" type="button"
-                               onclick="javascript:category = 'impression';sort = -1;loadKeywordQualityData(null, statDate);"/>
-                    </p>
+                <p>
+                    <input class="two" type="button">
+                </p></b>
+            </li>
+            <li>
+                &nbsp;<span>展现</span><b>
+                <p>
+                    <input class="one" type="button"
+                           onclick="javascript:category = 'impression';sort = -1;loadKeywordQualityData();"/>
+                </p>
 
-                    <p>
-                        <input class="two" type="button"
-                               onclick="javascript:category = 'impression';sort = 1;loadKeywordQualityData(null, statDate);"/>
-                    </p></b>
-                </li>
-                <li>
-                    &nbsp;<span>点击</span><b>
-                    <p>
-                        <input class="one" type="button"
-                               onclick="javascript:category = 'click';sort = -1;loadKeywordQualityData(null, statDate);"/>
-                    </p>
+                <p>
+                    <input class="two" type="button"
+                           onclick="javascript:category = 'impression';sort = 1;loadKeywordQualityData();"/>
+                </p></b>
+            </li>
+            <li>
+                &nbsp;<span>点击</span><b>
+                <p>
+                    <input class="one" type="button"
+                           onclick="javascript:category = 'click';sort = -1;loadKeywordQualityData();"/>
+                </p>
 
-                    <p>
-                        <input class="two" type="button"
-                               onclick="javascript:category = 'click';sort = 1;loadKeywordQualityData(null, statDate);"/>
-                    </p></b>
-                </li>
-                <li>
-                    &nbsp;<span>点击率</span><b>
-                    <p>
-                        <input class="one" type="button"
-                               onclick="javascript:category = 'ctr';sort = -1;loadKeywordQualityData(null, statDate);"/>
-                    </p>
+                <p>
+                    <input class="two" type="button"
+                           onclick="javascript:category = 'click';sort = 1;loadKeywordQualityData();"/>
+                </p></b>
+            </li>
+            <li>
+                &nbsp;<span>点击率</span><b>
+                <p>
+                    <input class="one" type="button"
+                           onclick="javascript:category = 'ctr';sort = -1;loadKeywordQualityData();"/>
+                </p>
 
-                    <p>
-                        <input class="two" type="button"
-                               onclick="javascript:category = 'ctr';sort = 1;loadKeywordQualityData(null, statDate);"/>
-                    </p></b>
-                    <a href="#" class="question">
-                    </a>
-                </li>
-                <li>
-                    &nbsp;<span>消费</span><b>
-                    <p>
-                        <input class="one" type="button"
-                               onclick="javascript:category = 'cost';sort = -1;loadKeywordQualityData(null, statDate);"/>
-                    </p>
+                <p>
+                    <input class="two" type="button"
+                           onclick="javascript:category = 'ctr';sort = 1;loadKeywordQualityData();"/>
+                </p></b>
+                <a href="#" class="question">
+                </a>
+            </li>
+            <li>
+                &nbsp;<span>消费</span><b>
+                <p>
+                    <input class="one" type="button"
+                           onclick="javascript:category = 'cost';sort = -1;loadKeywordQualityData();"/>
+                </p>
 
-                    <p>
-                        <input class="two" type="button"
-                               onclick="javascript:category = 'cost';sort = 1;loadKeywordQualityData(null, statDate);"/>
-                    </p></b>
-                    <a href="#" class="question">
-                    </a>
-                </li>
-                <li>
-                    &nbsp;<span>平均点击价格</span><b>
-                    <p>
-                        <input class="one" type="button"
-                               onclick="javascript:category = 'cpc';sort = -1;loadKeywordQualityData(null, statDate);"/>
-                    </p>
+                <p>
+                    <input class="two" type="button"
+                           onclick="javascript:category = 'cost';sort = 1;loadKeywordQualityData();"/>
+                </p></b>
+                <a href="#" class="question">
+                </a>
+            </li>
+            <li>
+                &nbsp;<span>平均点击价格</span><b>
+                <p>
+                    <input class="one" type="button"
+                           onclick="javascript:category = 'cpc';sort = -1;loadKeywordQualityData();"/>
+                </p>
 
-                    <p>
-                        <input class="two" type="button"
-                               onclick="javascript:category = 'cpc';sort = 1;loadKeywordQualityData(null, statDate);"/>
-                    </p></b>
-                    <a href="#" class="question"></a>
-                </li>
-                <li>
-                    &nbsp;<span>转化</span><b>
-                    <p>
-                        <input class="one" type="button"
-                               onclick="javascript:category = 'conversion';sort = -1;loadKeywordQualityData(null, statDate);"/>
-                    </p>
+                <p>
+                    <input class="two" type="button"
+                           onclick="javascript:category = 'cpc';sort = 1;loadKeywordQualityData();"/>
+                </p></b>
+                <a href="#" class="question"></a>
+            </li>
+            <li>
+                &nbsp;<span>转化</span><b>
+                <p>
+                    <input class="one" type="button"
+                           onclick="javascript:category = 'conversion';sort = -1;loadKeywordQualityData();"/>
+                </p>
 
-                    <p>
-                        <input class="two" type="button"
-                               onclick="javascript:category = 'conversion';sort = 1;loadKeywordQualityData(null, statDate);"/>
-                    </p></b>
-                    <a href="#" class="question"></a>
-                </li>
-            </ul>
-        </td>
-    </tr>
-    <tr class="list2_box1" onclick="TestBlack('divo');">
-        <td>
-            <ul>
-                <li>
-                    <ul class="paihang">
-                        <li>
-                            <img src="${pageContext.request.contextPath}/public/img/star.png">
-                        </li>
-                        <li>
-                            <img src="${pageContext.request.contextPath}/public/img/star2.png">
-                        </li>
-                        <li>
-                            <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                        </li>
-                        <li>
-                            <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                        </li>
-                        <li>
-                            <img src="${pageContext.request.contextPath}/public/img/star3.png">
-                        </li>
-                    </ul>
-                    <span>0</span>
-                </li>
-                <li>
-                    &nbsp;17(0.11%)
-                </li>
-                <li>
-                    &nbsp;60(0.83%)
-                </li>
-                <li>
-                    &nbsp;1(4.76%)
-                </li>
-                <li>
-                    &nbsp;1.67%
-                </li>
-                <li>
-                    &nbsp;￥2.98(11.26%)
-                </li>
-                <li>
-                    &nbsp;￥2.98
-                </li>
-                <li>
-                    &nbsp;-
-                </li>
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td id="divo">
-            <div class="list2_top2">
-                <ul>
-                    <li></li>
-                    <li>
-                        <span>关键词</span>
-                        <a href="#" class="question">
-                        </a>
-                    </li>
-                    <li>
-                        <span>展现</span>
-                    </li>
-                    <li>
-                        <span>点击</span>
-                    </li>
-                    <li>
-                        <span>点击率</span>
-                    </li>
-                    <li>
-                        <span>消费</span>
-                    </li>
-                    <li>
-                        <span>平均点击价格</span>
-                    </li>
-                    <li>
-                        <span>转化</span>
-                    </li>
+                <p>
+                    <input class="two" type="button"
+                           onclick="javascript:category = 'conversion';sort = 1;loadKeywordQualityData();"/>
+                </p></b>
+                <a href="#" class="question"></a>
+            </li>
+        </ul>
+    </td>
+</tr>
+<tr class="list2_box1" onclick="TestBlack('divo');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
                 </ul>
-            </div>
-
-            <div id="keywordQuality1"></div>
-
-        </td>
-    </tr>
-
+                <span>0</span></li>
+            <ol id="quality0">
+                <li>&nbsp;17(0.11%)</li>
+                <li>&nbsp;60(0.83%)</li>
+                <li>&nbsp;1(4.76%)</li>
+                <li>&nbsp;1.67%</li>
+                <li>&nbsp;￥2.98(11.26%)</li>
+                <li>&nbsp;￥2.98</li>
+                <li>&nbsp;22222</li>
+            </ol>
+        </ul>
+    </td>
+</tr>
+<tr>
+    <td id="divo">
+        <div class="list2_top2">
+            <ul>
+                <li></li>
+                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>展现</span></li>
+                <li><span>点击</span></li>
+                <li><span>点击率</span></li>
+                <li><span>消费</span></li>
+                <li><span>平均点击价格</span></li>
+                <li><span>转化</span></li>
+            </ul>
+        </div>
+        <div id="keywordQuality0"></div>
+    </td>
+</tr>
+<tr class="list2_box2" onclick="TestBlack('divo1');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li><img src="${pageContext.request.contextPath}/public/img/star2.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                </ul>
+                <span>1</span></li>
+            <ol id="quality1">
+                <li>&nbsp;17(0.11%)</li>
+                <li>&nbsp;60(0.83%)</li>
+                <li>&nbsp;1(4.76%)</li>
+                <li>&nbsp;1.67%</li>
+                <li>&nbsp;￥2.98(11.26%)</li>
+                <li>&nbsp;￥2.98</li>
+                <li>&nbsp;22222</li>
+            </ol>
+        </ul>
+    </td>
+</tr>
+<tr>
+    <td id="divo1" style=" display:none;">
+        <div class="list2_top2">
+            <ul>
+                <li></li>
+                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>展现</span></li>
+                <li><span>点击</span></li>
+                <li><span>点击率</span></li>
+                <li><span>消费</span></li>
+                <li><span>平均点击价格</span></li>
+                <li><span>转化</span></li>
+            </ul>
+        </div>
+        <div id="keywordQuality1"></div>
+    </td>
+</tr>
+<tr class="list2_box1" onclick="TestBlack('divo2');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                </ul>
+                <span>2</span></li>
+            <ol id="quality2">
+                <li>&nbsp;17(0.11%)</li>
+                <li>&nbsp;60(0.83%)</li>
+                <li>&nbsp;1(4.76%)</li>
+                <li>&nbsp;1.67%</li>
+                <li>&nbsp;￥2.98(11.26%)</li>
+                <li>&nbsp;￥2.98</li>
+                <li>&nbsp;22222</li>
+            </ol>
+        </ul>
+    </td>
+</tr>
+<tr>
+    <td id="divo2" style=" display:none;">
+        <div class="list2_top2">
+            <ul>
+                <li></li>
+                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>展现</span></li>
+                <li><span>点击</span></li>
+                <li><span>点击率</span></li>
+                <li><span>消费</span></li>
+                <li><span>平均点击价格</span></li>
+                <li><span>转化</span></li>
+            </ul>
+        </div>
+        <div id="keywordQuality2"></div>
+    </td>
+</tr>
+<tr class="list2_box2" onclick="TestBlack('divo3');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star2.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                </ul>
+                <span>3</span></li>
+            <ol id="quality3">
+                <li>&nbsp;17(0.11%)</li>
+                <li>&nbsp;60(0.83%)</li>
+                <li>&nbsp;1(4.76%)</li>
+                <li>&nbsp;1.67%</li>
+                <li>&nbsp;￥2.98(11.26%)</li>
+                <li>&nbsp;￥2.98</li>
+                <li>&nbsp;22222</li>
+            </ol>
+        </ul>
+    </td>
+</tr>
+<tr>
+    <td id="divo3" style=" display:none;">
+        <div class="list2_top2">
+            <ul>
+                <li></li>
+                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>展现</span></li>
+                <li><span>点击</span></li>
+                <li><span>点击率</span></li>
+                <li><span>消费</span></li>
+                <li><span>平均点击价格</span></li>
+                <li><span>转化</span></li>
+            </ul>
+        </div>
+        <div id="keywordQuality3"></div>
+    </td>
+</tr>
+<tr class="list2_box1" onclick="TestBlack('divo4');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                </ul>
+                <span>4</span></li>
+            <ol id="quality4">
+                <li>&nbsp;17(0.11%)</li>
+                <li>&nbsp;60(0.83%)</li>
+                <li>&nbsp;1(4.76%)</li>
+                <li>&nbsp;1.67%</li>
+                <li>&nbsp;￥2.98(11.26%)</li>
+                <li>&nbsp;￥2.98</li>
+                <li>&nbsp;22222</li>
+            </ol>
+        </ul>
+    </td>
+</tr>
+<tr>
+    <td id="divo4" style=" display:none;">
+        <div class="list2_top2">
+            <ul>
+                <li></li>
+                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>展现</span></li>
+                <li><span>点击</span></li>
+                <li><span>点击率</span></li>
+                <li><span>消费</span></li>
+                <li><span>平均点击价格</span></li>
+                <li><span>转化</span></li>
+            </ul>
+        </div>
+        <div id="keywordQuality4"></div>
+    </td>
+</tr>
+<tr class="list2_box2" onclick="TestBlack('divo5');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star2.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                </ul>
+                <span>5</span></li>
+            <ol id="quality5">
+                <li>&nbsp;17(0.11%)</li>
+                <li>&nbsp;60(0.83%)</li>
+                <li>&nbsp;1(4.76%)</li>
+                <li>&nbsp;1.67%</li>
+                <li>&nbsp;￥2.98(11.26%)</li>
+                <li>&nbsp;￥2.98</li>
+                <li>&nbsp;22222</li>
+            </ol>
+        </ul>
+    </td>
+</tr>
+<tr>
+    <td id="divo5" style=" display:none;">
+        <div class="list2_top2">
+            <ul>
+                <li></li>
+                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>展现</span></li>
+                <li><span>点击</span></li>
+                <li><span>点击率</span></li>
+                <li><span>消费</span></li>
+                <li><span>平均点击价格</span></li>
+                <li><span>转化</span></li>
+            </ul>
+        </div>
+        <div id="keywordQuality5"></div>
+    </td>
+</tr>
+<tr class="list2_box1" onclick="TestBlack('divo6');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                </ul>
+                <span>6</span></li>
+            <ol id="quality6">
+                <li>&nbsp;17(0.11%)</li>
+                <li>&nbsp;60(0.83%)</li>
+                <li>&nbsp;1(4.76%)</li>
+                <li>&nbsp;1.67%</li>
+                <li>&nbsp;￥2.98(11.26%)</li>
+                <li>&nbsp;￥2.98</li>
+                <li>&nbsp;22222</li>
+            </ol>
+        </ul>
+    </td>
+</tr>
+<tr>
+    <td id="divo6" style=" display:none;">
+        <div class="list2_top2">
+            <ul>
+                <li></li>
+                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>展现</span></li>
+                <li><span>点击</span></li>
+                <li><span>点击率</span></li>
+                <li><span>消费</span></li>
+                <li><span>平均点击价格</span></li>
+                <li><span>转化</span></li>
+            </ul>
+        </div>
+        <div id="keywordQuality6"></div>
+    </td>
+</tr>
+<tr class="list2_box2" onclick="TestBlack('divo7');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star2.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                </ul>
+                <span>7</span></li>
+            <ol id="quality7">
+                <li>&nbsp;17(0.11%)</li>
+                <li>&nbsp;60(0.83%)</li>
+                <li>&nbsp;1(4.76%)</li>
+                <li>&nbsp;1.67%</li>
+                <li>&nbsp;￥2.98(11.26%)</li>
+                <li>&nbsp;￥2.98</li>
+                <li>&nbsp;22222</li>
+            </ol>
+        </ul>
+    </td>
+</tr>
+<tr>
+    <td id="divo7" style=" display:none;">
+        <div class="list2_top2">
+            <ul>
+                <li></li>
+                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>展现</span></li>
+                <li><span>点击</span></li>
+                <li><span>点击率</span></li>
+                <li><span>消费</span></li>
+                <li><span>平均点击价格</span></li>
+                <li><span>转化</span></li>
+            </ul>
+        </div>
+        <div id="keywordQuality7"></div>
+    </td>
+</tr>
+<tr class="list2_box1" onclick="TestBlack('divo8');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
+                </ul>
+                <span>8</span></li>
+            <ol id="quality8">
+                <li>&nbsp;17(0.11%)</li>
+                <li>&nbsp;60(0.83%)</li>
+                <li>&nbsp;1(4.76%)</li>
+                <li>&nbsp;1.67%</li>
+                <li>&nbsp;￥2.98(11.26%)</li>
+                <li>&nbsp;￥2.98</li>
+                <li>&nbsp;22222</li>
+            </ol>
+        </ul>
+    </td>
+</tr>
+<tr>
+    <td id="divo8" style=" display:none;">
+        <div class="list2_top2">
+            <ul>
+                <li></li>
+                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>展现</span></li>
+                <li><span>点击</span></li>
+                <li><span>点击率</span></li>
+                <li><span>消费</span></li>
+                <li><span>平均点击价格</span></li>
+                <li><span>转化</span></li>
+            </ul>
+        </div>
+        <div id="keywordQuality8"></div>
+    </td>
+</tr>
+<tr class="list2_box2" onclick="TestBlack('divo9');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star2.png"></li>
+                </ul>
+                <span>9</span></li>
+            <ol id="quality9">
+                <li>&nbsp;17(0.11%)</li>
+                <li>&nbsp;60(0.83%)</li>
+                <li>&nbsp;1(4.76%)</li>
+                <li>&nbsp;1.67%</li>
+                <li>&nbsp;￥2.98(11.26%)</li>
+                <li>&nbsp;￥2.98</li>
+                <li>&nbsp;22222</li>
+            </ol>
+        </ul>
+    </td>
+</tr>
+<tr>
+    <td id="divo9" style=" display:none;">
+        <div class="list2_top2">
+            <ul>
+                <li></li>
+                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>展现</span></li>
+                <li><span>点击</span></li>
+                <li><span>点击率</span></li>
+                <li><span>消费</span></li>
+                <li><span>平均点击价格</span></li>
+                <li><span>转化</span></li>
+            </ul>
+        </div>
+        <div id="keywordQuality9"></div>
+    </td>
+</tr>
+<tr class="list2_box2" onclick="TestBlack('divo10');">
+    <td>
+        <ul>
+            <li>
+                <ul class="paihang">
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                    <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
+                </ul>
+                <span>10</span></li>
+            <ol id="quality10">
+                <li>&nbsp;17(0.11%)</li>
+                <li>&nbsp;60(0.83%)</li>
+                <li>&nbsp;1(4.76%)</li>
+                <li>&nbsp;1.67%</li>
+                <li>&nbsp;￥2.98(11.26%)</li>
+                <li>&nbsp;￥2.98</li>
+                <li>&nbsp;22222</li>
+            </ol>
+        </ul>
+    </td>
+</tr>
+<tr>
+    <td id="divo10" style=" display:none;">
+        <div class="list2_top2">
+            <ul>
+                <li></li>
+                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>展现</span></li>
+                <li><span>点击</span></li>
+                <li><span>点击率</span></li>
+                <li><span>消费</span></li>
+                <li><span>平均点击价格</span></li>
+                <li><span>转化</span></li>
+            </ul>
+        </div>
+        <div id="keywordQuality10"></div>
+    </td>
+</tr>
 </table>
 <div class="download over">
-    <div class="page2 fl">
+    <%--<div class="page2 fl">
         <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a
             href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="nextpage2"><span></span></a><span
             style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
 
-    </div>
+    </div>--%>
             <span class="fr">每页显示
-                    class="fr">
-                每页显示
                 <select id="keywordQuality1Page"
                         onchange="javascript:limit = $('#keywordQuality1Page option:selected').val();loadKeywordQualityData(null, statDate);">
                     <option selected="selected" value="10">10个</option>
@@ -740,7 +1106,6 @@
 </div>
 </div>
 
-
 <jsp:include page="pageBlock/footer.jsp"/>
 </div>
 </div>
@@ -749,10 +1114,10 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
-<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/keyword/keywordQuality.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
 <script type="text/javascript">
     // 对Date的扩展，将 Date 转化为指定格式的String
@@ -897,39 +1262,6 @@
         }
     };
 
-    //关键词质量度数据加载
-    var loadKeywordQualityData = function (obj, param) {
-        if (obj != null) {
-            changedLiState(obj);
-        }
-        statDate = param;
-        getDateParam(param);
-        $.ajax({
-            url: "/keywordQuality/list",
-            type: "GET",
-            dataType: "json",
-            data: {
-                startDate: daterangepicker_start_date,
-                endDate: daterangepicker_end_date,
-                fieldName: category,
-                sort: sort,
-                limit: limit
-            },
-            success: function (data, textStatus, jqXHR) {
-                $("#keywordQuality1").empty();
-                var results = data.rows;
-                if (results != null && results.length > 0) {
-                    $.each(results, function (i, item) {
-                        var _div = "<div><ul><li></li><li><span>" + item.keywordName + "</span><span class='green_arrow wd3'></span></li>" +
-                                "<li>" + item.pcImpression + "</li><li>" + item.pcClick + "</li><li>" + item.pcCtr + "%</li><li>" + item.pcCost + "</li>" +
-                                "<li>" + item.pcCpc + "</li><li>" + item.pcConversion + "</li></ul></div>";
-                        $("#keywordQuality1").append(_div);
-                    })
-                }
-            }
-        });
-    };
-
     /**
      * 分日表现数据加载
      * */
@@ -959,7 +1291,7 @@
                         } else {
                             calssStr = "list2_box2";
                         }
-                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.date + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;" + Math.round(item.pcCost*100)/100 + "</li><li> &nbsp;" + item.pcCtr + "%</li>"
+                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.date + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;" + Math.round(item.pcCost * 100) / 100 + "</li><li> &nbsp;" + item.pcCtr + "%</li>"
                                 + "<li> &nbsp;" + item.pcCpc + "</li><li> &nbsp;" + item.pcConversion + "</li></ul></td></tr>";
                         $("#performance").append(_div);
                     })
@@ -976,7 +1308,7 @@ var goLi = 0;
 var dataOne = "";
 var dataTow = "";
 //日期
-var t_date = new Array();
+var t_date = [];
 var dateInterval = 0;
 var colorOne = "#4572A7";
 var colorTow = "#40BC2A";
@@ -1002,17 +1334,17 @@ var loadPerformanceCurve = function (obj, date) {
 
     getDateParam(date);
     //展现
-    var t_impr = new Array();
+    var t_impr = [];
     //点击数
-    var t_clicks = new Array();
+    var t_clicks = [];
     //消费
-    var t_cost = new Array();
+    var t_cost = [];
     //点击率
-    var t_ctr = new Array();
+    var t_ctr = [];
     //平均点击价格
-    var t_cpc = new Array();
+    var t_cpc = [];
     //转化
-    var t_conversion = new Array();
+    var t_conversion = [];
 
     $.ajax({
         url: "/account/getPerformanceCurve",
@@ -1050,7 +1382,7 @@ var loadPerformanceCurve = function (obj, date) {
         tooltip: {
             valueSuffix: ' 次'
         }
-    }
+    };
     dataTow = {
         name: '点击',
         color: '#40BC2A',
@@ -1059,7 +1391,7 @@ var loadPerformanceCurve = function (obj, date) {
         tooltip: {
             valueSuffix: '次'
         }
-    }
+    };
     $("input[cname=impr]").attr("xname", "dataOne");
     $("input[cname=clicks]").attr("xname", "dataTow");
 
@@ -1084,7 +1416,7 @@ var loadPerformanceCurve = function (obj, date) {
                         curve();
                     } else if (dataTow == "") {
                         $(this).attr("xname", "dataTow");
-                        colorTow = "#078CC7"
+                        colorTow = "#078CC7";
                         dataTow = {
                             name: '展现',
                             color: '#078CC7',
@@ -1317,8 +1649,8 @@ var loadPerformanceCurve = function (obj, date) {
             $(this).attr("checked", false);
         }
     });
-        curve();
-}
+    curve();
+};
 $("#liClick").click(function () {
     setTimeout("curve()", 200);
 });
@@ -1378,7 +1710,7 @@ var curve = function () {
             dataTow
         ]
     });
-}
+};
 
 var getImportKeywordDefault = function (obj, day) {
     if (obj != null) {
@@ -1416,7 +1748,7 @@ var getImportKeywordDefault = function (obj, day) {
                 })
             } else {
                 _tr.empty();
-                var _div = "<td colspan='9' style='color:royalblue;'></td>"
+                var _div = "<td colspan='9' style='color:royalblue;'></td>";
                 _tr.append(_div);
             }
         }
