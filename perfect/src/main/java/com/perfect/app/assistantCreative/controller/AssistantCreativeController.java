@@ -202,20 +202,31 @@ public class AssistantCreativeController extends WebContextSupport {
         CreativeEntity creativeEntityFind =null;
         if(oid.length()>18){
             creativeEntityFind= creativeDAO.findByObjId(oid);
+            creativeEntityFind.setTitle(title);
+            creativeEntityFind.setDescription1(de1);
+            creativeEntityFind.setDescription2(de2);
+            creativeEntityFind.setPcDestinationUrl(pc);
+            creativeEntityFind.setPcDisplayUrl(pcs);
+            creativeEntityFind.setMobileDestinationUrl(mib);
+            creativeEntityFind.setMobileDisplayUrl(mibs);
+            creativeEntityFind.setPause(bol);
+            creativeDAO.updateByObjId(creativeEntityFind);
+            writeHtml(SUCCESS, response);
         }else{
             creativeEntityFind= creativeDAO.findOne(Long.valueOf(oid));
+            creativeEntityFind.setTitle(title);
+            creativeEntityFind.setDescription1(de1);
+            creativeEntityFind.setDescription2(de2);
+            creativeEntityFind.setPcDestinationUrl(pc);
+            creativeEntityFind.setPcDisplayUrl(pcs);
+            creativeEntityFind.setMobileDestinationUrl(mib);
+            creativeEntityFind.setMobileDisplayUrl(mibs);
+            creativeEntityFind.setPause(bol);
+            creativeDAO.update(creativeEntityFind);
+            writeHtml(SUCCESS, response);
         }
 
-        creativeEntityFind.setTitle(title);
-        creativeEntityFind.setDescription1(de1);
-        creativeEntityFind.setDescription2(de2);
-        creativeEntityFind.setPcDestinationUrl(pc);
-        creativeEntityFind.setPcDisplayUrl(pcs);
-        creativeEntityFind.setMobileDestinationUrl(mib);
-        creativeEntityFind.setMobileDisplayUrl(mibs);
-        creativeEntityFind.setPause(bol);
-        creativeDAO.update(creativeEntityFind);
-        writeHtml(SUCCESS, response);
+
         return null;
     }
 }

@@ -240,7 +240,7 @@ public class LogServiceImpl implements LogService {
             for (LogEntity logEntity : logEntityList) {
                 if (logEntity.getOid() != null) {
 
-                    AdgroupEntity adgroupEntity = adgroupDAO.findByObjectId(logEntity.getOid());
+                    AdgroupEntity adgroupEntity = adgroupDAO.findByObjId(logEntity.getOid());
 
                     if (adgroupEntity == null) {
                         toberemoved.add(logEntity.getId());

@@ -223,9 +223,8 @@
                 <td>&nbsp;移动访问URL</td>
                 <td>&nbsp;移动显示URL</td>
                 <td>&nbsp;启用/暂停</td>
-                <td>&nbsp;创意状态
-                    <div class="set fr"></div>
-                </td>
+                <td>&nbsp;创意状态</td>
+                <td> <div class="set fr"></div></td>
             </tr>
             </thead>
             <tbody id="tbodyClick2">

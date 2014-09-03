@@ -124,6 +124,7 @@ function loadCreativeData(params) {
                 var _trClass = "";
                 for (var i = 0; i < json.length; i++) {
                     var _id=json[i].creativeId!=null?json[i].creativeId:json[i].id;
+                    var _edit=parseInt(json[i].status)!=-1?"":"span";
                     _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                     var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
                         "<td >&nbsp;<input type='hidden' value='" +_id + "'/></td>" +
@@ -136,6 +137,7 @@ function loadCreativeData(params) {
                         " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
                         " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
                         " <td >" + until.getCreativeStatus(parseInt(json[i].status)) + "<input type='hidden' value='" + json[i].status + "'/></td>" +
+                        " <td >"+_edit+"</td>" +
                         "</tr>";
                     _createTable.append(_tbody);
                 }
@@ -253,6 +255,7 @@ function addCreative() {
             " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='36'></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
             " <td><span>本地新增</span><input type='hidden' value='-1' name='status'></td>" +
+            " <td>span</td>" +
             "</tr>";
         _createTable.append(_tbody);
     } else if (sparams.cid != null && sparams.aid == null) {

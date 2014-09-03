@@ -1,8 +1,10 @@
 package com.perfect.mongodb.dao.impl;
 
 import com.mongodb.WriteResult;
+import com.perfect.constants.LogStatusConstant;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;
+import com.perfect.dao.LogDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.*;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
@@ -39,6 +41,9 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
     @Override
     public String getId() {
         return ADGROUP_ID;
+    }
+    public String get_id(){
+        return "_id";
     }
 
     @Resource
@@ -152,14 +157,54 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
     }
 
     @Override
-    public AdgroupEntity findByObjectId(String oid) {
+    public AdgroupEntity findByObjId(String oid) {
         return getMongoTemplate().findOne(Query.query(Criteria.where(SYSTEM_ID).is(oid)), getEntityClass());
+    }
+
+    @Override
+    public Object insertOutId(AdgroupEntity adgroupEntity) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.insert(adgroupEntity, EntityConstants.TBL_ADGROUP);
+        DataOperationLogEntity logEntity = LogUtils.getLog(adgroupEntity.getAdgroupId(), AdgroupEntity.class, null, adgroupEntity);
+        logProcessingDAO.insert(logEntity);
+        return adgroupEntity.getId();
+    }
+
+    @Override
+    public void deleteByObjId(final String oid) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.remove(Query.query(Criteria.where(get_id()).is(oid)), getEntityClass());
+        deleteSubOid(new ArrayList<String>(1){{
+            add(oid);
+        }});
+    }
+
+    @Override
+    public void deleteByObjId(Long adgroupId) {
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
+        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.ADGROUP_ID).is(adgroupId)),AdgroupEntity.class,EntityConstants.TBL_ADGROUP);
+        logDAO.insertLog(adgroupId,LogStatusConstant.ENTITY_ADGROUP,LogStatusConstant.OPT_DELETE);
     }
 
     @Override
     public void updateCampaignIdByOid(String oid, Long campaignId) {
         WriteResult wr = getMongoTemplate().updateMulti(Query.query(Criteria.where(OBJ_CAMPAIGN_ID).is(oid)),
                 Update.update(CAMPAIGN_ID, campaignId).set(OBJ_CAMPAIGN_ID, null), getEntityClass());
+    }
+
+    @Override
+    public void updateByObjId(AdgroupEntity adgroupEntity) {
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
+        Update up=new Update();
+        up.set("name",adgroupEntity.getAdgroupName());
+        up.set("max",adgroupEntity.getMaxPrice());
+        up.set("neg",adgroupEntity.getNegativeWords());
+        up.set("exneg",adgroupEntity.getExactNegativeWords());
+        up.set("p",adgroupEntity.getPause());
+        up.set("s",adgroupEntity.getStatus());
+        up.set("m",adgroupEntity.getMib());
+        mongoTemplate.updateFirst(new Query(Criteria.where(get_id()).is(adgroupEntity.getId())),up,AdgroupEntity.class,EntityConstants.TBL_ADGROUP);
+        logDAO.insertLog(adgroupEntity.getId(),LogStatusConstant.ENTITY_ADGROUP);
     }
 
     public void insert(AdgroupEntity adgroupEntity) {
@@ -297,4 +342,21 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
         }
         logProcessingDAO.insertAll(logEntities);
     }
+    private void deleteSubOid(List<String> oids){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.remove(new Query(Criteria.where(get_id()).in(oids)), KeywordEntity.class);
+        mongoTemplate.remove(new Query(Criteria.where(get_id()).in(oids)), CreativeEntity.class);
+       List<LogEntity> logEntities=new ArrayList<>();
+        for (String id : oids) {
+            LogEntity log =new LogEntity();
+            log.setAccountId(AppContext.getAccountId());
+            log.setOid(id);
+            log.setType(AdgroupEntity.class.getSimpleName());
+            logEntities.add(log);
+            logDAO.insertLog(id, LogStatusConstant.ENTITY_ADGROUP);
+        }
+
+    }
+    @Resource
+    LogDAO logDAO;
 }

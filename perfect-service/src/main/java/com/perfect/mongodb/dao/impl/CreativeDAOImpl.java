@@ -1,7 +1,9 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.perfect.constants.LogStatusConstant;
 import com.perfect.core.AppContext;
 import com.perfect.dao.CreativeDAO;
+import com.perfect.dao.LogDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.DataAttributeInfoEntity;
@@ -38,6 +40,8 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
 
     @Resource
     private LogProcessingDAO logProcessingDAO;
+    @Resource
+    private LogDAO logDAO;
 
     public List<Long> getCreativeIdByAdgroupId(Long adgroupId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
@@ -92,11 +96,13 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
     @Override
     public void deleteByCacheId(Long objectId) {
         BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(objectId)), CreativeEntity.class, EntityConstants.TBL_CREATIVE);
+        logDAO.insertLog(objectId,LogStatusConstant.ENTITY_CREATIVE,LogStatusConstant.OPT_DELETE);
     }
 
     @Override
     public void deleteByCacheId(String cacheCreativeId) {
         BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(getId()).is(cacheCreativeId)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        logDAO.insertLog(cacheCreativeId,LogStatusConstant.ENTITY_CREATIVE);
     }
 
     @Override
@@ -115,6 +121,25 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
                 new Query(Criteria.where(getId()).is(obj)), CreativeEntity.class, EntityConstants.TBL_CREATIVE);
         return entity;
     }
+
+    @Override
+    public void updateByObjId(CreativeEntity creativeEntity) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Update up=new Update();
+        up.set("t",creativeEntity.getTitle());
+        up.set("desc1",creativeEntity.getDescription1());
+        up.set("desc2",creativeEntity.getDescription2());
+        up.set("pc",creativeEntity.getPcDestinationUrl());
+        up.set("pcd",creativeEntity.getPcDisplayUrl());
+        up.set("p",creativeEntity.getPause());
+        up.set("s",creativeEntity.getStatus());
+        up.set("m",creativeEntity.getMobileDestinationUrl());
+        up.set("d",creativeEntity.getDevicePreference());
+        up.set("md",creativeEntity.getMobileDisplayUrl());
+        mongoTemplate.updateFirst(new Query(Criteria.where(getId()).is(creativeEntity.getId())),up,CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        logDAO.insertLog(creativeEntity.getId(), LogStatusConstant.ENTITY_CREATIVE);
+    }
+
 
     @Override
     public void updateAdgroupIdByOid(String id, Long adgroupId) {
