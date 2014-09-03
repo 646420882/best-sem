@@ -20,6 +20,6 @@ public interface CreativeDAO extends MongoCrudRepository<CreativeEntity, Long> {
     void deleteByCacheId(String cacheCreativeId);
     String insertOutId(CreativeEntity creativeEntity);
     CreativeEntity findByObjId(String obj);
-
+    void updateByObjId(CreativeEntity creativeEntity);
     void updateAdgroupIdByOid(String id, Long adgroupId);
 }

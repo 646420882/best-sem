@@ -29,7 +29,7 @@
                             <span> <img src="${pageContext.request.contextPath}/public/images/yixin_logo.png"></span>
                         </div>
                         <div class="user_text fl">
-                            <p>上午，好！<span>${currSystemUserName}</span></p>
+                            <p>上午，好！<a href="/configuration/"><span>${currSystemUserName}</span></a></p>
 
                             <div class="user_select">
                                 <div class="user_name">
@@ -146,29 +146,37 @@
         $(".tips").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").slideDown(600);
+                $(".tips").css("position", "relative");
                 $(".concent").css("width", "85%");
                 $(".top").css("width", "85%");
                 $(".nav_input").css("display", "none");
+                $(".nav").css("z-index", "200");
             }
             else {
                 $(".nav_left").hide();
+                $(".tips").css("position", "fixed");
                 $(".concent").css("width", "99.5%");
                 $(".top").css("width", "99.5%");
                 $(".nav_input").css("display", "block");
+                $(".nav").css("z-index", "111");
             }
         });
         $(".nav_input1").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").slideDown(600);
+                $(".tips").css("position", "relative");
                 $(".concent").css("width", "85%");
                 $(".top").css("width", "85%");
                 $(".nav_input").css("display", "none");
+                $(".nav").css("z-index", "200");
             }
             else {
                 $(".nav_left").hide();
+                $(".tips").css("position", "fixed");
                 $(".concent").css("width", "99.5%");
                 $(".top").css("width", "99.5%");
                 $(".nav_input").css("display", "block");
+                $(".nav").css("z-index", "111");
             }
         });
         loadBaiduAccount();

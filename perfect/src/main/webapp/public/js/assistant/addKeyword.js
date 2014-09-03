@@ -67,6 +67,23 @@ $(function () {
         }).showModal();
         return false;
     });
+    $("#searchword").livequery('click', function () {
+        top.dialog({title: "搜索词报告",
+            padding: "5px",
+            content: "<iframe src='/searchword' width='900' height='590' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+            oniframeload: function () {
+            },
+            onclose: function () {
+//              if (this.returnValue) {
+//                  $('#value').html(this.returnValue);
+//              }
+                window.location.reload(true);
+            },
+            onremove: function () {
+            }
+        }).showModal();
+        return false;
+    });
 
 
 

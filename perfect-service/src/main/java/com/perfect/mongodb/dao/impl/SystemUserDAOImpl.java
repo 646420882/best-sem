@@ -33,12 +33,8 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, 
         List<BaiduAccountInfoEntity> list1 = currSystemUserEntity.getBaiduAccountInfoEntities();
         if (list1 == null) {
             list1 = new ArrayList<>();
-            for (BaiduAccountInfoEntity entity : list)
-                list1.add(entity);
-        } else {
-            for (BaiduAccountInfoEntity entity : list)
-                list1.add(entity);
         }
+        list1.addAll(list);
         getMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName)), Update.update("baiduAccountInfos", list1), "SystemUser");
     }
 
@@ -60,6 +56,27 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, 
     public SystemUserEntity findByAid(long aid) {
         Query query = Query.query(Criteria.where("bdAccounts._id").is(aid));
         return getSysMongoTemplate().findOne(query, SystemUserEntity.class);
+    }
+
+    @Override
+    public void insertAccountInfo(String user, BaiduAccountInfoEntity baiduAccountInfoEntity) {
+
+        SystemUserEntity entity = findByUserName(user);
+        if (entity.getBaiduAccountInfoEntities().isEmpty()) {
+            baiduAccountInfoEntity.setDfault(true);
+        }
+        Update update = new Update();
+        update.addToSet("bdAccounts", baiduAccountInfoEntity);
+        getMongoTemplate().upsert(Query.query(Criteria.where("userName").is(user)), update, getEntityClass());
+    }
+
+    @Override
+    public void removeAccountInfo(Long id) {
+        Update update = new Update();
+
+        update.unset("bdAccounts");
+
+        getMongoTemplate().updateFirst(Query.query(Criteria.where("bdAccounts._id").is(id)), update, getEntityClass());
     }
 
     @Override

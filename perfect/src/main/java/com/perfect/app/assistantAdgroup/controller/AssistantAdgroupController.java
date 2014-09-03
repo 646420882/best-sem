@@ -31,6 +31,7 @@ public class AssistantAdgroupController extends WebContextSupport {
     AdgroupDAO adgroupDAO;
     @Resource
     CampaignDAO campaignDAO;
+    private static Integer OBJ_SIZE=18;
 
     /**
      * 默认加载单元数据
@@ -44,14 +45,15 @@ public class AssistantAdgroupController extends WebContextSupport {
     public ModelAndView getList(HttpServletRequest request, HttpServletResponse response,
                                 @RequestParam(value = "cid", required = false) String cid) {
         List<AdgroupEntity> list = new ArrayList<>();
-        if (cid.length() > 18) {
+        if (cid.length() >OBJ_SIZE) {
             if (cid != "" || !cid.equals("")) {
                 Map<String, Object> parms = new HashMap<>();
-                parms.put(EntityConstants.OBJ_CAMPAIGN_ID,cid);
+                parms.put(EntityConstants.OBJ_CAMPAIGN_ID, cid);
                 list = adgroupDAO.find(parms, 0, 15);
             } else {
                 list = adgroupDAO.find(null, 0, 15);
             }
+            setCampaignNameByStringObjId(list);
         } else {
             if (cid != "" || !cid.equals("")) {
                 Map<String, Object> parms = new HashMap<>();
@@ -60,21 +62,45 @@ public class AssistantAdgroupController extends WebContextSupport {
             } else {
                 list = adgroupDAO.find(null, 0, 15);
             }
-            if (list.size() > 0) {
-                List<CampaignEntity> campaignEntity = (List<CampaignEntity>) campaignDAO.findAll();
-                for (int i = 0; i < campaignEntity.size(); i++) {
-                    for (AdgroupEntity a : list) {
-                        if (a.getCampaignId().equals(campaignEntity.get(i).getCampaignId())) {
-                            a.setCampaignName(campaignEntity.get(i).getCampaignName());
-                        }
-                    }
-                }
-            }
+            setCampaignNameByLongId(list);
         }
         writeJson(list, response);
         return null;
     }
 
+    /**
+     * 根据单元获取它的计划名称
+     * @param list
+     */
+    private void setCampaignNameByLongId(List<AdgroupEntity> list){
+        if (list.size() > 0) {
+            List<CampaignEntity> campaignEntity = (List<CampaignEntity>) campaignDAO.findAll();
+            for (int i = 0; i < campaignEntity.size(); i++) {
+                for (AdgroupEntity a : list) {
+                    if (a.getCampaignId().equals(campaignEntity.get(i).getCampaignId())) {
+                        a.setCampaignName(campaignEntity.get(i).getCampaignName());
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 根据传入的String类型的Id获取单元的计划名
+     * @param list
+     */
+    private void setCampaignNameByStringObjId(List<AdgroupEntity> list){
+        if (list.size() > 0) {
+            List<CampaignEntity> campaignEntity = (List<CampaignEntity>) campaignDAO.findAll();
+            for (int i = 0; i < campaignEntity.size(); i++) {
+                for (AdgroupEntity a : list) {
+                    if (a.getCampaignObjId().equals(campaignEntity.get(i).getId())) {
+                        a.setCampaignName(campaignEntity.get(i).getCampaignName());
+                    }
+                }
+            }
+        }
+    }
     /**
      * 获取全部的计划供添加选择使用
      *
@@ -103,10 +129,9 @@ public class AssistantAdgroupController extends WebContextSupport {
         try {
             AdgroupEntity adgroupEntity = new AdgroupEntity();
             adgroupEntity.setAccountId(AppContext.getAccountId());
-            adgroupEntity.setAdgroupId(Long.parseLong(agid));
-            if(cid.length()>18){
+            if (cid.length() >OBJ_SIZE) {
                 adgroupEntity.setCampaignObjId(cid);
-            }else{
+            } else {
                 adgroupEntity.setCampaignId(Long.parseLong(cid));
             }
             adgroupEntity.setAdgroupName(name);
@@ -116,8 +141,8 @@ public class AssistantAdgroupController extends WebContextSupport {
             adgroupEntity.setPause(p);
             adgroupEntity.setStatus(s);
             adgroupEntity.setMib(mib);
-            adgroupDAO.insert(adgroupEntity);
-            writeHtml(SUCCESS, response);
+            Object oid = adgroupDAO.insertOutId(adgroupEntity);
+            writeData(SUCCESS, response, oid);
         } catch (Exception e) {
             e.printStackTrace();
             writeHtml(EXCEPTION, response);
@@ -127,9 +152,13 @@ public class AssistantAdgroupController extends WebContextSupport {
 
     @RequestMapping(value = "/del")
     public ModelAndView del(HttpServletRequest request, HttpServletResponse response,
-                            @RequestParam(value = "oid", required = true) Long oid) {
+                            @RequestParam(value = "oid", required = true) String oid) {
         try {
-            adgroupDAO.delete(oid);
+            if (oid.length() >OBJ_SIZE) {
+                adgroupDAO.deleteByObjId(oid);
+            } else {
+                adgroupDAO.deleteByObjId(Long.valueOf(oid));
+            }
             writeHtml(SUCCESS, response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,23 +170,38 @@ public class AssistantAdgroupController extends WebContextSupport {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(HttpServletResponse response,
-                               @RequestParam(value = "oid", required = true) Long agid,
+                               @RequestParam(value = "oid", required = true) String agid,
                                @RequestParam(value = "adgroupName") String name,
                                @RequestParam(value = "maxPrice") Double maxPrice,
                                @RequestParam(value = "negativeWords") List<String> nn,
                                @RequestParam(value = "exactNegativeWords") List<String> ne,
                                @RequestParam(value = "pause") Boolean p,
                                @RequestParam(value = "mib") Double mib) {
+        AdgroupEntity adgroupEntityFind=null;
         try {
-            AdgroupEntity adgroupEntityFind = adgroupDAO.findOne(agid);
-            adgroupEntityFind.setAdgroupName(name);
-            adgroupEntityFind.setMaxPrice(maxPrice);
-            adgroupEntityFind.setMib(mib);
-            adgroupEntityFind.setNegativeWords(nn);
-            adgroupEntityFind.setExactNegativeWords(ne);
-            adgroupEntityFind.setMib(mib);
-            adgroupDAO.update(adgroupEntityFind);
-            writeHtml(SUCCESS, response);
+            if(agid.length()>OBJ_SIZE){
+                adgroupEntityFind = adgroupDAO.findByObjId(agid);
+                adgroupEntityFind.setAdgroupName(name);
+                adgroupEntityFind.setMaxPrice(maxPrice);
+                adgroupEntityFind.setMib(mib);
+                adgroupEntityFind.setNegativeWords(nn);
+                adgroupEntityFind.setExactNegativeWords(ne);
+                adgroupEntityFind.setMib(mib);
+                adgroupDAO.updateByObjId(adgroupEntityFind);
+                writeHtml(SUCCESS, response);
+            }else {
+                adgroupEntityFind = adgroupDAO.findOne(Long.valueOf(agid));
+                adgroupEntityFind.setAdgroupName(name);
+                adgroupEntityFind.setMaxPrice(maxPrice);
+                adgroupEntityFind.setMib(mib);
+                adgroupEntityFind.setNegativeWords(nn);
+                adgroupEntityFind.setExactNegativeWords(ne);
+                adgroupEntityFind.setMib(mib);
+                adgroupDAO.update(adgroupEntityFind);
+                writeHtml(SUCCESS, response);
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
             writeHtml(EXCEPTION, response);
@@ -166,13 +210,21 @@ public class AssistantAdgroupController extends WebContextSupport {
     }
 
     @RequestMapping(value = "/updateByChange", method = RequestMethod.GET)
-    public ModelAndView updateByChange(HttpServletResponse response, @RequestParam(value = "oid", required = true) Long oid,
+    public ModelAndView updateByChange(HttpServletResponse response, @RequestParam(value = "oid", required = true) String oid,
                                        @RequestParam(value = "pause", required = true) Boolean pause) {
         try {
-            AdgroupEntity adgroupEntity = adgroupDAO.findOne(oid);
-            adgroupEntity.setPause(pause);
-            adgroupDAO.update(adgroupEntity);
-            writeHtml(SUCCESS, response);
+            AdgroupEntity adgroupEntity=null;
+            if (oid.length()>OBJ_SIZE){
+                adgroupEntity   = adgroupDAO.findByObjId(oid);
+                adgroupEntity.setPause(pause);
+                adgroupDAO.updateByObjId(adgroupEntity);
+                writeHtml(SUCCESS, response);
+            }else{
+                adgroupEntity   = adgroupDAO.findOne(Long.valueOf(oid));
+                adgroupEntity.setPause(pause);
+                adgroupDAO.update(adgroupEntity);
+                writeHtml(SUCCESS, response);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

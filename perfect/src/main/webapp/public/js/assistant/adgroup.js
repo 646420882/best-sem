@@ -59,7 +59,8 @@ function initAMenu() {
             if (con) {
                 var _this = $(this).parents("tr");
                 $(this).submit("../assistantAdgroup/adAdd", function (rs) {
-                    if (rs == "1") {
+                    var json=eval("("+rs+")");
+                    if (json.success == "1") {
                         var _span = $("#" + sp + "").html();
                         if (_span == null) {
                             _span = "<span>未设置</span>";
@@ -69,7 +70,7 @@ function initAMenu() {
                         var _createTable = $("#adGroupTable tbody");
                         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                         var _tbody = "<tr class=" + _trClass + " onclick='aon(this)'>" +
-                            "<td>&nbsp;<input type='hidden'  name='oid' value='" + subData["oid"] + "'/><input type='hidden' name='cid' value='" + subData["cid"] + "'/></td>" +
+                            "<td>&nbsp;<input type='hidden'  name='oid' value='" + json.data + "'/><input type='hidden' name='cid' value='" + subData["cid"] + "'/></td>" +
                             "<td>" + subData["adgroupName"] + "</td>" +
                             "<td>本地新增</td>" +
                             " <td>" + getAdgroupPauseByBoolean(subData["pause"]) + "</td>" +
@@ -131,8 +132,9 @@ function loadAdgroupData(plans) {
                 var _trClass = "";
                 for (var i = 0; i < json.length; i++) {
                     _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+                    var _id=json[i].adgroupId!=null?json[i].adgroupId:json[i].id;
                     var _tbody = "<tr class=" + _trClass + " onclick=aon(this)>" +
-                        "<td >&nbsp;<input type='hidden' value='" + json[i].adgroupId + "'/></td>" +
+                        "<td >&nbsp;<input type='hidden' value='" +_id+ "'/></td>" +
                         "<td >" + json[i].adgroupName + "</td>" +
                         "<td ><input type='hidden' value='" + json[i].status + "'/>" + until.getAdgroupStatus(json[i].status) + "</td>" +
                         "<td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
