@@ -53,10 +53,11 @@ public class AccountOverviewServiceImpl implements AccountOverviewService{
 
         //数字格式化
         DecimalFormat decimalFormat = new DecimalFormat("#,##,###");
+        DecimalFormat costFormat = new DecimalFormat("#,##,##0.00");
         Map<String,Object> map = new Hashtable<String,Object>();
         map.put("impression",decimalFormat.format(impressionCount));
         map.put("click",decimalFormat.format(clickCount));
-        map.put("cos",decimalFormat.format((long)costCount));
+        map.put("cos",costFormat.format(costCount));
         map.put("conversion",decimalFormat.format((long)conversionCount));
         return map;
     }
