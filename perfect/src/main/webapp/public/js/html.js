@@ -3,16 +3,30 @@ $(document).ready(function () {
     $(".nav_menu").click(function () {
         if ($(".nav_menu ul").css("display") == "none") {//隐藏
             $(".nav_menu ul").show();
-        }
-        else {
-            $(".nav_menu ul").hide();
             $(".nav_menu ").mouseleave(function () {
                 $(".nav_menu ul").css("display", "none");
             });
         }
+        else {
+            $(".nav_menu ul").hide();
+
+        }
         $('.nav_menu ul li').click(function () {
             $(this).addClass('current').siblings().removeClass('current');
         });
+    });
+    $("#deletekeywords").click(function () {
+        if ($("#deletekeywordes").css("display") == "none") {//隐藏
+            $("#deletekeywordes").show();
+            $("#deletekeywordes").mouseleave(function () {
+                $("#deletekeywordes").css("display", "none");
+            });
+        }
+        else {
+            $("#deletekeywordes").hide();
+
+        }
+
     });
 });
 

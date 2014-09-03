@@ -85,14 +85,19 @@
 <div class="zs_box over">
 <!--关键词-->
 <div class="containers  over">
-    <div class="zs_function over">
+    <div class="zs_function">
         <ul class="fl">
             <li><a id="addKeyword" href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="javascript:deleteKwd()"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-            <li><a id="newkeyword" href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a>
+            <li><a id="newkeyword" href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新&nbsp;</b></a><input type="image"  id="deletekeywords" src="../public/img/zs_input.png">
+                <ul id="deletekeywordes" class="hides">
+                    <li id="deletekeyword"><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b >批量删除</b></a></li>
+                </ul>
             </li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                    type="image" src="../public/img/zs_input.png"></b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;
+             <input type="image" src="../public/img/zs_input.png"></b></a>
+
+            </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
@@ -1087,7 +1092,7 @@
         </div>
     </div>
 </div>
-!---------IP排除----------->
+<!---------IP排除----------->
 <div class="box6" style="display:none;width: 300px">
     <h2 id="box6">IP排除<a href="#" class="close">关闭</a></h2>
 

@@ -121,7 +121,6 @@ table{
     max-height: 900px;
     *max-height:902px;
     position:fixed;
-    *padding-top:77px;
     min-height: 1140px;
     min-width:240px;
     z-index:110;
