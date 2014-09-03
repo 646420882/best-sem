@@ -29,8 +29,6 @@ public class EntityConstants {
     public static final String CAMPAIGN_ID = "cid";
     public static final String REGION_ID = "rgid";
     public static final String OBJ_CAMPAIGN_ID = "ocid";
-
-
     public static final String OBJ_ADGROUP_ID = "oagid";
     public static final String OBJ_ID = "oid";
     public static final String BAIDU_ID = "bid";

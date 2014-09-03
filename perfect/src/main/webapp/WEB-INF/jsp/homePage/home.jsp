@@ -959,7 +959,7 @@
                         } else {
                             calssStr = "list2_box2";
                         }
-                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.date + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;" + item.pcCost + "</li><li> &nbsp;" + item.pcCtr + "%</li>"
+                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.date + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;" + Math.round(item.pcCost*100)/100 + "</li><li> &nbsp;" + item.pcCtr + "%</li>"
                                 + "<li> &nbsp;" + item.pcCpc + "</li><li> &nbsp;" + item.pcConversion + "</li></ul></td></tr>";
                         $("#performance").append(_div);
                     })
@@ -1018,6 +1018,7 @@ var loadPerformanceCurve = function (obj, date) {
         url: "/account/getPerformanceCurve",
         type: "GET",
         dataType: "json",
+        async: false,
         data: {
             startDate: daterangepicker_start_date,
             endDate: daterangepicker_end_date
@@ -1316,13 +1317,10 @@ var loadPerformanceCurve = function (obj, date) {
             $(this).attr("checked", false);
         }
     });
-    if (goLi > 0) {
         curve();
-    }
 }
 $("#liClick").click(function () {
     setTimeout("curve()", 200);
-    goLi++;
 });
 var curve = function () {
     $('#container').highcharts({

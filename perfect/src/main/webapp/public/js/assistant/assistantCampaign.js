@@ -35,7 +35,6 @@ function getCampaignList(){
  */
 function campaignDataToHtml(obj,index){
     var html = "";
-
     if(index==0){
         html = html+"<tr class='list2_box3 firstCampaign' onclick='setCampaignValue(this,"+obj.campaignId+")'>";
     }else if(index%2!=0){
@@ -53,7 +52,9 @@ function campaignDataToHtml(obj,index){
         case 23: html = html+"<td>暂停推广</td>";break;
         case 24: html = html+"<td>推广计划预算不足</td>";break;
         case 25: html = html+"<td>账户预算不足</td>";break;
+        default :html = html +"<td>&nbsp;</td>";
     }
+
 
     html = html+until.convert(obj.pause==true,"<td>暂停</td>:"+"<td>启用</td>")
     html = html+until.convert(obj.budget==null,"<td><不限定></td>:"+"<td>"+obj.budget+"</td>")
@@ -65,15 +66,37 @@ function campaignDataToHtml(obj,index){
     //推广地域！！！！！！！！！！！！
     html = html+until.convert(obj.regionTarget==null,"<td>使用账户推广地域</td>:"+"<td>使用账户推广地域</td>");
 
+    var fd;
+    var jqfd;
+    if(obj.negativeWords!=null){
+        fd = obj.negativeWords.length;
+    }else{
+        fd = "0";
+    }
 
-    var fd = obj.negativeWords.length;
-    var jqfd = obj.exactNegativeWords.length;
-
+    if(obj.exactNegativeWords!=null){
+        jqfd = obj.exactNegativeWords.length;
+    }else{
+        jqfd = "0";
+    }
     html = html+until.convert(fd==0&&jqfd==0,"<td>未设置</td>:"+"<td>"+fd+";"+jqfd+"</td>");
 
-    html = html+"<td>"+obj.excludeIp.length+"</td>";
 
-    html = html+until.convert(obj.budgetOfflineTime==null,"<td>-</td>:"+"<td>"+obj.budgetOfflineTime.length+"</td>");
+    var ipCount;
+    if(obj.excludeIp!=null){
+        ipCount = obj.excludeIp.length;
+    }else{
+        ipCount = "0";
+    }
+    html = html+"<td>"+ipCount+"</td>";
+
+    var bot;
+    if(obj.budgetOfflineTime!=null){
+        bot = "<td>"+obj.budgetOfflineTime.length+"</td>";
+    }else{
+        bot = "<td>-</td>";
+    }
+    html = html+bot;
 
     html = html+"<input type='hidden' value="+obj.priceRatio+" class='hidden'/>";
     html = html+"</tr>";
@@ -134,6 +157,7 @@ function setCampaignValue(obj,campaignId){
  */
 function editCampaignInfo(jsonData) {
     jsonData["cid"] = $("#hiddenCampaignId").val();
+    alert(jsonData.cid);
     $.ajax({
         url:"/assistantCampaign/edit",
         type:"post",
@@ -615,12 +639,6 @@ function getChooseRegionTarget() {
 
 
 
-
-
-
-
-
-
 /**
  * 弹出添加推广计划的窗口
  */
@@ -648,11 +666,16 @@ $("#createCampaignOk").click(function(){
     var exactNegativeWords = exactNegativeWordsValue
     var excludeIp = excludeIpStr;
 
-    if(/^\d{5}+\.\d{2}$/.test(budget)){
+    if(campaignName == ""||campaignName=="<请输入推广计划名称>"){
+        alert("请输入推广计划名称");
+        return;
+    }
+
+    if(/^[0-9]+|[0-9]+\.[0-9]{2}$/.test(budget)==false){
         alert("每日预算只能是数值");
         return;
     }
-    if(/^\d{5}+\.\d{2}$/.test(priceRatio)){
+    if(/^[0-9]+|[0-9]+\.[0-9]{2}$/.test(priceRatio)==false){
         alert("移动出价比例只能是数值");
         return;
     }
@@ -680,17 +703,6 @@ $("#createCampaignOk").click(function(){
     excludeIpStr="";
     $(".TB_overlayBG,#plan").hide(0);
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 

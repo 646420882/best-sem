@@ -89,7 +89,7 @@
         <ul class="fl">
             <li><a id="addKeyword" href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="javascript:deleteKwd()"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a>
+            <li><a id="newkeyword" href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a>
             </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
                     type="image" src="../public/img/zs_input.png"></b></a></li>
@@ -1254,9 +1254,10 @@
 <%--推广计划设置推广地域窗口--%>
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setSchedule">
-    <h2 id="setScheduleDiv">推广地域列表<a href="#" class="close">关闭</a></h2>
+    <h2 id="setScheduleDiv">推广地域列表<a href="#" class="close">关闭</a></h2><a href="javascript:testBatchDel()">测试批量删除</a>
+    <a href="">测试批量添加更新</a>
+    <jsp:include page="../promotionAssistant/alert/setRegionTarget.jsp"/>
 </div>
-<jsp:include page="../promotionAssistant/alert/setRegionTarget.jsp"/>
 
 <%--添加推广计划弹出窗口--%>
 <jsp:include page="../promotionAssistant/alert/addCampaign.jsp"/>

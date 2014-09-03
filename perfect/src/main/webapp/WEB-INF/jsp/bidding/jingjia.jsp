@@ -512,6 +512,7 @@
                 <li><textarea class="zs_input5"></textarea></li>
                 <li>输入分组管理名：</li>
                 <li><input type="text" class="zs_input3"></li>
+                </ul>
         </div>
     </div>
     <div class="main_bottom">
@@ -545,6 +546,7 @@
             </li>
             <li><span class="define fl"><input type="checkbox"> 竞价规则</span><span class="define fl"><input
                     type="checkbox"> </span></li>
+            </ul>
 
     </div>
     <div class="main_bottom">

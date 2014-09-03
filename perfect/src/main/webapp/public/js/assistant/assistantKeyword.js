@@ -241,6 +241,27 @@ function missBlur(even,obj){
 
 
 
+function testBatchDel(){
+    var choose1 = "18961624,443591981-";
+    var info = "婚博会,精确";
+//    var name = "婚博会\n中国婚博会";
+   /* var input = "18961624,443591981,婚博会";*/
+    $.ajax({
+        url:"/assistantKeyword/addOrUpdateKeywordByChoose",
+        type:"post",
+        data:{"isReplace":true,"chooseInfos":choose1,"keywordInfos":info},
+        dataType:"json",
+        success:function(data){
+            alert(data.insertList.length+"=insert");
+            alert(data.updateList.length+"=update");
+            alert(data.igoneList.length+"igone");
+            alert(data.delList.length+"=del");
+        }
+    });
+
+}
+
+
 /**
  * 单击该单元格的时候
  */

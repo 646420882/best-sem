@@ -74,7 +74,8 @@ function InitMenu() {
                 var _input = $(this).parents("tr").find("input");
                 var _tr = $(this).parents("tr");
                 $(this).submit("../assistantCreative/add", function (rs) {
-                    if (rs == "1") {
+                    var json=eval("("+rs+")");
+                    if (json.success == "1") {
                         _tr.remove();
                         var data = {};
                         for (var i = 0; i < _input.size(); i++) {
@@ -91,7 +92,7 @@ function InitMenu() {
                         var i = $("#createTable tbody tr").size();
                         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                            "<td>&nbsp;<span style='display: none;'>" + data["cacheCativeId"] + "</span></td>" +
+                            "<td>&nbsp;<span style='display: none;'>" + json.data + "</span></td>" +
                             "<td >" + until.substring(10, data["title"]) + "</td>" +
                             " <td >" + until.substring(10, data["description1"]) + "</td>" +
                             " <td >" + until.substring(10, data["description2"]) + "</td>" +
@@ -122,9 +123,10 @@ function loadCreativeData(params) {
                 _createTable.empty();
                 var _trClass = "";
                 for (var i = 0; i < json.length; i++) {
+                    var _id=json[i].creativeId!=null?json[i].creativeId:json[i].id;
                     _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                     var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                        "<td >&nbsp;<input type='hidden' value='" + json[i].creativeId + "'/></td>" +
+                        "<td >&nbsp;<input type='hidden' value='" +_id + "'/></td>" +
                         "<td >" + until.substring(10, json[i].title) + "</td>" +
                         " <td >" + until.substring(10, json[i].description1) + "</td>" +
                         " <td >" + until.substring(10, json[i].description2) + "</td>" +
@@ -241,7 +243,7 @@ function addCreative() {
         var _createTable = $("#createTable tbody");
         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-            "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden' name='cacheCativeId' value='" + getRandomId() + "'/><input type='hidden' name='aid' value='" + getCreativeAId() + "'/></td>" +
+            "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden' name='cacheCativeId' value=''/><input type='hidden' name='aid' value='" + getCreativeAId() + "'/></td>" +
             "<td><input name='title' onkeyup='onKey(this);' style='width:140px;' maxlength='50'></td>" +
             " <td><input name='description1' onkeyup='onKey(this);'  style='width:140px;'  maxlength='80'></td>" +
             " <td><input name='description2' onkeyup='onKey(this);'  style='width:140px;' maxlength='80'></td>" +
@@ -493,7 +495,13 @@ function loadUnit(rs) {
                 _sUnit.empty();
                 _sUnit.append(_def);
                 for (var i = 0; i < json.length; i++) {
-                    var str = "<option value='" + json[i].adgroupId + "'>" + json[i].adgroupName + "</option>";
+                    var _id=null;
+                    if(json[i].adgroupId!=null){
+                        _id=json[i].adgroupId;
+                    }else{
+                        _id=json[i].id;
+                    }
+                    var str = "<option value='" +_id+ "'>" + json[i].adgroupName + "</option>";
                     $("#sUnit").append(str);
                 }
             }

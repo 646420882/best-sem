@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.perfect.mongodb.utils.EntityConstants.*;
+
 /**
  * Created by XiaoWei on 2014/8/21.
  */
@@ -30,7 +31,7 @@ import static com.perfect.mongodb.utils.EntityConstants.*;
 @RequestMapping(value = "/assistantCreative")
 public class AssistantCreativeController extends WebContextSupport {
 
-    private static long accountId=6243012L;
+    private static long accountId = 6243012L;
 
 
     @Resource
@@ -44,15 +45,26 @@ public class AssistantCreativeController extends WebContextSupport {
     public ModelAndView getCreativeList(HttpServletRequest request, HttpServletResponse response,
                                         @RequestParam(value = "cid", required = false) String cid,
                                         @RequestParam(value = "aid", required = false) String aid) {
-        List<CreativeEntity> creativeEntityList= new ArrayList<>();
-        if (aid != "" || !aid.equals("")) {
-            creativeEntityList= creativeDAO.getCreativeByAdgroupId(Long.parseLong(aid), null, 0, 10);
-        }else if(!cid.equals("")&&aid.equals("")){
-            List<Long> adgroupIds=adgroupDAO.getAdgroupIdByCampaignId(Long.parseLong(cid));
-            creativeEntityList= (List<CreativeEntity>) creativeDAO.getAllsByAdgroupIds(adgroupIds);
+        List<CreativeEntity> creativeEntityList = new ArrayList<>();
+        if (aid.length() > 18 || cid.length() > 18) {
+            if (aid != "" || !aid.equals("")) {
+                creativeEntityList = creativeDAO.getCreativeByAdgroupId(aid, null, 0, Integer.MAX_VALUE);
+            } else if (!cid.equals("") && aid.equals("")) {
+                List<String> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
+                creativeEntityList = (List<CreativeEntity>) creativeDAO.getAllsByAdgroupIdsForString(adgroupIds);
+            } else {
+                creativeEntityList = creativeDAO.find(null, 0, Integer.MAX_VALUE);
+            }
+        } else {
+            if (aid != "" || !aid.equals("")) {
+                creativeEntityList = creativeDAO.getCreativeByAdgroupId(Long.parseLong(aid), null, 0, Integer.MAX_VALUE);
+            } else if (!cid.equals("") && aid.equals("")) {
+                List<Long> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(Long.parseLong(cid));
+                creativeEntityList = (List<CreativeEntity>) creativeDAO.getAllsByAdgroupIds(adgroupIds);
 
-        }else{
-            creativeEntityList=creativeDAO.find(null,0,200);
+            } else {
+                creativeEntityList = creativeDAO.find(null, 0, Integer.MAX_VALUE);
+            }
         }
 
         writeJson(creativeEntityList, response);
@@ -60,30 +72,38 @@ public class AssistantCreativeController extends WebContextSupport {
     }
 
     /**
-     *  返回json数组关于全部计划的
+     * 返回json数组关于全部计划的
+     *
      * @return
      */
     @RequestMapping(value = "/getPlans")
-    public ModelAndView getPlans(HttpServletResponse response){
-        List<CampaignEntity> list= (List<CampaignEntity>) campaignDAO.findAll();
-        writeJson(list,response);
+    public ModelAndView getPlans(HttpServletResponse response) {
+        List<CampaignEntity> list = (List<CampaignEntity>) campaignDAO.findAll();
+        writeJson(list, response);
         return null;
     }
 
     /**
      * 根据计划id获取单元列表
+     *
      * @param response
      * @return
      */
     @RequestMapping(value = "/getUnitsByPlanId")
-    public ModelAndView getUnitsByPlanId(HttpServletResponse response,@RequestParam(value = "planId",required = true)String planId){
-        List<AdgroupEntity> adgroupEntities=adgroupDAO.findByQuery(new Query(Criteria.where(CAMPAIGN_ID).is(Long.parseLong(planId))));
-        writeJson(adgroupEntities,response);
-    return null;
+    public ModelAndView getUnitsByPlanId(HttpServletResponse response, @RequestParam(value = "planId", required = true) String planId) {
+        List<AdgroupEntity> adgroupEntities = new ArrayList<>();
+        if (planId.length() > 12) {
+            adgroupEntities = adgroupDAO.findByQuery(new Query(Criteria.where(OBJ_CAMPAIGN_ID).is(planId)));
+        } else {
+            adgroupEntities = adgroupDAO.findByQuery(new Query(Criteria.where(CAMPAIGN_ID).is(Long.parseLong(planId))));
+        }
+        writeJson(adgroupEntities, response);
+        return null;
     }
 
     /**
-     *  添加方法
+     * 添加方法
+     *
      * @param request
      * @param response
      * @param aid
@@ -99,25 +119,25 @@ public class AssistantCreativeController extends WebContextSupport {
      * @param d
      * @return
      */
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public ModelAndView insertCreative(HttpServletRequest request,HttpServletResponse response,
-                                       @RequestParam(value = "cacheCativeId",required = true) Long creativeCacheId,
-                                       @RequestParam(value = "aid",required = true)String aid,
-                                       @RequestParam(value = "title",required = false)String title,
-                                       @RequestParam(value="description1",required = false)String de1,
-                                       @RequestParam(value = "description2",required = false)String de2,
-                                       @RequestParam(value = "pcDestinationUrl",required = false)String pc,
-                                       @RequestParam(value = "pcDisplayUrl",required = false)String pcs,
-                                       @RequestParam(value = "mobileDestinationUrl",required = false)String mib,
-                                       @RequestParam(value = "mobileDisplayUrl",required = false)String mibs,
-                                       @RequestParam(value = "pause")Boolean bol,
-                                       @RequestParam(value = "status")Integer s,
-                                       @RequestParam(value = "d",required = false,defaultValue = "0")Integer d){
-        try{
-            CreativeEntity creativeEntity=new CreativeEntity();
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ModelAndView insertCreative(HttpServletRequest request, HttpServletResponse response,
+                                       @RequestParam(value = "cacheCativeId", required = true) Long creativeCacheId,
+                                       @RequestParam(value = "aid", required = true) String aid,
+                                       @RequestParam(value = "title", required = false) String title,
+                                       @RequestParam(value = "description1", required = false) String de1,
+                                       @RequestParam(value = "description2", required = false) String de2,
+                                       @RequestParam(value = "pcDestinationUrl", required = false) String pc,
+                                       @RequestParam(value = "pcDisplayUrl", required = false) String pcs,
+                                       @RequestParam(value = "mobileDestinationUrl", required = false) String mib,
+                                       @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
+                                       @RequestParam(value = "pause") Boolean bol,
+                                       @RequestParam(value = "status") Integer s,
+                                       @RequestParam(value = "d", required = false, defaultValue = "0") Integer d) {
+        try {
+            CreativeEntity creativeEntity = new CreativeEntity();
             creativeEntity.setAccountId(AppContext.getAccountId());
             creativeEntity.setTitle(title);
-            creativeEntity.setCreativeId(creativeCacheId);
+
             creativeEntity.setDescription1(de1);
             creativeEntity.setDescription2(de2);
             creativeEntity.setPcDestinationUrl(pc);
@@ -127,14 +147,18 @@ public class AssistantCreativeController extends WebContextSupport {
             creativeEntity.setPause(bol);
             creativeEntity.setStatus(s);
             creativeEntity.setDevicePreference(d);
-            creativeEntity.setAdgroupId(Long.parseLong(aid));
-            creativeDAO.insertOutId(creativeEntity);
-            writeHtml(SUCCESS,response);
-        }catch (Exception e){
+            if (aid.length() > 12) {
+                creativeEntity.setAdgroupObjId(aid);
+                creativeEntity.setCreativeId(null);
+            } else {
+                creativeEntity.setAdgroupId(Long.parseLong(aid));
+            }
+            String oid = creativeDAO.insertOutId(creativeEntity);
+            writeData(SUCCESS, response, oid);
+        } catch (Exception e) {
             e.printStackTrace();
-            writeHtml(EXCEPTION,response);
+            writeHtml(EXCEPTION, response);
         }
-
 
 
         return null;
@@ -142,33 +166,46 @@ public class AssistantCreativeController extends WebContextSupport {
 
     /**
      * 删除方法 根据缓存的creativeId
+     *
      * @param response
-     * @param oid 缓存的creativeId
+     * @param oid      缓存的creativeId
      * @return
      */
     @RequestMapping(value = "/del")
-    public ModelAndView del(HttpServletResponse response,@RequestParam(value = "oid",required = true)Long oid){
+    public ModelAndView del(HttpServletResponse response, @RequestParam(value = "oid", required = true) String oid) {
         try {
-            creativeDAO.deleteByCacheId(oid);
-            writeHtml(SUCCESS,response);
-        }catch (Exception e){
+            if (oid.length() > 18) {
+                creativeDAO.deleteByCacheId(oid);
+                writeHtml(SUCCESS, response);
+            } else {
+                creativeDAO.deleteByCacheId(Long.valueOf(oid));
+                writeHtml(SUCCESS, response);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-            writeHtml(EXCEPTION,response);
+            writeHtml(EXCEPTION, response);
         }
         return null;
     }
-    @RequestMapping(value = "/update",method = RequestMethod.POST)
-    public  ModelAndView update(HttpServletResponse response,HttpServletRequest request,
-                                @RequestParam(value = "oid",required = true)Long oid,
-                                @RequestParam(value = "title",required = false)String title,
-                                @RequestParam(value="description1",required = false)String de1,
-                                @RequestParam(value = "description2",required = false)String de2,
-                                @RequestParam(value = "pcDestinationUrl",required = false)String pc,
-                                @RequestParam(value = "pcDisplayUrl",required = false)String pcs,
-                                @RequestParam(value = "mobileDestinationUrl",required = false)String mib,
-                                @RequestParam(value = "mobileDisplayUrl",required = false)String mibs,
-                                @RequestParam(value = "pause")Boolean bol){
-        CreativeEntity creativeEntityFind=creativeDAO.findOne(oid);
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ModelAndView update(HttpServletResponse response, HttpServletRequest request,
+                               @RequestParam(value = "oid", required = true) String oid,
+                               @RequestParam(value = "title", required = false) String title,
+                               @RequestParam(value = "description1", required = false) String de1,
+                               @RequestParam(value = "description2", required = false) String de2,
+                               @RequestParam(value = "pcDestinationUrl", required = false) String pc,
+                               @RequestParam(value = "pcDisplayUrl", required = false) String pcs,
+                               @RequestParam(value = "mobileDestinationUrl", required = false) String mib,
+                               @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
+                               @RequestParam(value = "pause") Boolean bol) {
+        CreativeEntity creativeEntityFind =null;
+        if(oid.length()>18){
+            creativeEntityFind= creativeDAO.findByObjId(oid);
+        }else{
+            creativeEntityFind= creativeDAO.findOne(Long.valueOf(oid));
+        }
+
         creativeEntityFind.setTitle(title);
         creativeEntityFind.setDescription1(de1);
         creativeEntityFind.setDescription2(de2);
@@ -179,7 +216,7 @@ public class AssistantCreativeController extends WebContextSupport {
         creativeEntityFind.setPause(bol);
         creativeDAO.update(creativeEntityFind);
         writeHtml(SUCCESS, response);
-        return  null;
+        return null;
     }
 }
 

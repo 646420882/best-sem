@@ -11,7 +11,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
+
 import static com.perfect.mongodb.utils.EntityConstants.*;
+
 
 @Document(collection = TBL_ADGROUP)
 public class AdgroupEntity extends AccountIdEntity {
@@ -28,6 +30,7 @@ public class AdgroupEntity extends AccountIdEntity {
     //------------------------
     @Field(CAMPAIGN_ID)
     private Long campaignId;
+
 
     @Field(OBJ_CAMPAIGN_ID)
     private String campaignObjId;

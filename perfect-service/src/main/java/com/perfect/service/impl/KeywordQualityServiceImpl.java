@@ -1,8 +1,18 @@
 package com.perfect.service.impl;
 
+import com.perfect.autosdk.core.CommonService;
+import com.perfect.autosdk.exception.ApiException;
+import com.perfect.autosdk.sms.v3.GetKeyword10QualityRequest;
+import com.perfect.autosdk.sms.v3.GetKeyword10QualityResponse;
+import com.perfect.autosdk.sms.v3.KeywordService;
+import com.perfect.autosdk.sms.v3.Quality10Type;
+import com.perfect.core.AppContext;
+import com.perfect.dao.AccountManageDAO;
 import com.perfect.dao.KeywordQualityDAO;
+import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.KeywordReportEntity;
 import com.perfect.service.KeywordQualityService;
+import com.perfect.utils.BaiduServiceSupport;
 import com.perfect.utils.JSONUtils;
 import com.perfect.utils.TopN;
 import org.springframework.stereotype.Service;
@@ -22,15 +32,18 @@ import java.util.concurrent.RecursiveTask;
 public class KeywordQualityServiceImpl implements KeywordQualityService {
 
     @Resource
+    private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
+
+    @Resource
     private KeywordQualityDAO keywordQualityDAO;
 
     @Resource
     private TopN<KeywordReportEntity> topN;
 
     @Override
-    public Map<String, Object> find(String startDate, String endDate, String fieldName, int n, int sort) {
+    public Map<String, Object> find(String fieldName, int n, int sort) {
         fieldName = "pc" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-        List<KeywordReportEntity> list = keywordQualityDAO.find(startDate, endDate);
+        List<KeywordReportEntity> list = keywordQualityDAO.findYesterdayKeywordReport();
         if (list.size() == 0)
             return null;
 
@@ -64,34 +77,75 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             entry.setValue(vo);
         }
 
-        list = new ArrayList<>(map.values());
+        List<Long> keywordIds = keywordQualityDAO.findYesterdayAllKeywordId();
+        List<Quality10Type> quality10Types = getKeyword10Quality(keywordIds);
 
-        //获取前N条数据
-        KeywordReportEntity[] topNData = topN.getTopN(list.toArray(new KeywordReportEntity[list.size()]), n, fieldName, sort);
-        Map<String, Object> values = JSONUtils.getJsonMapData(topNData);
-        return values;
+        Map<Integer, List<KeywordReportEntity>> tempMap = new HashMap<>();
+        for (int i = 0; i <= 10; i++) {
+            tempMap.put(i, new ArrayList<KeywordReportEntity>());
+        }
+
+        for (Quality10Type quality10Type : quality10Types) {
+            tempMap.get(quality10Type.getPcQuality()).add(map.get(quality10Type.getId().toString()));
+        }
+
+        Map<String, Object> results = new HashMap<>();
+
+        for (int i = 0; i <= 10; i++) {
+            List<KeywordReportEntity> tempList = tempMap.get(i);
+            if (!tempList.isEmpty()) {
+                KeywordReportEntity[] topNData = topN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), n, fieldName, sort);
+                results.put("quality" + i, JSONUtils.getJsonObject(topNData));
+            }
+
+        }
+
+        return results;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Quality10Type> getKeyword10Quality(List<Long> keywordIds) {
+        CommonService commonService = BaiduServiceSupport.getCommonService(accountManageDAO.findByBaiduUserId(AppContext.getAccountId()));
+        try {
+            KeywordService keywordService = commonService.getService(KeywordService.class);
+            GetKeyword10QualityRequest request = new GetKeyword10QualityRequest();
+            request.setIds(keywordIds);
+            request.setDevice(0);
+            request.setType(11);
+            request.setHasScale(false);
+            GetKeyword10QualityResponse response = keywordService.getKeyword10Quality(request);
+
+            if (response == null) {
+                return Collections.EMPTY_LIST;
+            }
+
+            return response.getKeyword10Quality();
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     class CalculateTask extends RecursiveTask<Map<String, KeywordReportEntity>> {
 
         private static final int threshold = 1000;
 
-        private int first;
-        private int last;
+        private int start;
+        private int end;
         private List<KeywordReportEntity> list;
 
-        CalculateTask(List<KeywordReportEntity> list, int first, int last) {
-            this.first = first;
-            this.last = last;
+        CalculateTask(List<KeywordReportEntity> list, int start, int end) {
+            this.start = start;
+            this.end = end;
             this.list = list;
         }
 
         @Override
         protected Map<String, KeywordReportEntity> compute() {
             Map<String, KeywordReportEntity> map = new HashMap<>();
-            boolean stat = (last - first) < threshold;
-            if (stat) {
-                for (int i = first; i < last; i++) {
+            if (end - start < threshold) {
+                for (int i = start; i < end; i++) {
                     KeywordReportEntity vo = list.get(i);
                     String keywordId = vo.getKeywordId().toString();
                     KeywordReportEntity _vo = map.get(keywordId);
@@ -109,20 +163,20 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                     }
                 }
             } else {
-                int middle = (first + last) / 2;
-                CalculateTask task1 = new CalculateTask(list, first, middle);
-                CalculateTask task2 = new CalculateTask(list, middle, last);
+                int middle = (end - start) / 2;
+                CalculateTask task1 = new CalculateTask(list, start, start + middle);
+                CalculateTask task2 = new CalculateTask(list, start + middle, end);
 
                 invokeAll(task1, task2);
 
                 //map合并处理
                 map.clear();
-                map = mergeMap(task1.join(), task2.join());
+                map = merge(task1.join(), task2.join());
             }
             return map;
         }
 
-        private Map<String, KeywordReportEntity> mergeMap(Map<String, KeywordReportEntity> map1, Map<String, KeywordReportEntity> map2) {
+        private Map<String, KeywordReportEntity> merge(Map<String, KeywordReportEntity> map1, Map<String, KeywordReportEntity> map2) {
             Map<String, KeywordReportEntity> _map = new HashMap<>();
             for (Iterator<Map.Entry<String, KeywordReportEntity>> iterator1 = map1.entrySet().iterator(); iterator1.hasNext(); ) {
                 KeywordReportEntity vo = iterator1.next().getValue();

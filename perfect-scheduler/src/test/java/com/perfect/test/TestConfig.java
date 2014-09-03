@@ -1,7 +1,8 @@
 package com.perfect.test;
 
 import com.perfect.schedule.core.strategy.TBScheduleManagerFactory;
-import com.perfect.schedule.task.conf.impl.BaseTaskConfig;
+import com.perfect.schedule.task.conf.impl.CountYesterdayCostTaskConfig;
+import com.perfect.schedule.task.conf.impl.DataPullTaskConfig;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,25 @@ public class TestConfig extends UnitilsJUnit4 {
 
     @Test
     public void init() throws Exception {
-        String taskDefItem = "0:{NAME=Jason},1:{NAME=Daisy}";
-//        BaseTaskConfig baseTaskConfig = new BaseTaskConfig("BaseTaskConfig","TEST","empty", CronExpression.CRON_EVERY_MINUTE,taskDefItem.split(","));
-        BaseTaskConfig baseTaskConfig = new BaseTaskConfig("BaseTaskConfig","test","dataPullTask","* * 1 * * ?",taskDefItem.split(","));
+/*        String taskDefItem = "0:{NAME=Jason},1:{NAME=Daisy}";
+        BaseTaskConfig baseTaskConfig = new BaseTaskConfig("BaseTaskConfig","TEST","empty", CronExpression.CRON_EVERY_MINUTE,taskDefItem.split(","));
         baseTaskConfig.setScheduleManagerFactory(scheduleManagerFactory);
-        baseTaskConfig.createTask();
+        baseTaskConfig.createTask();*/
+    }
+
+
+    @Test
+    public void initPullDataConfig(){
+        DataPullTaskConfig dataPullTaskConfig = new DataPullTaskConfig("DataPullTaskConfig","dataPull","dataPullTask","* * 1 * * ?",new String[]{"A","B"});
+        dataPullTaskConfig.setScheduleManagerFactory(scheduleManagerFactory);
+        dataPullTaskConfig.createTask();
+    }
+
+
+    @Test
+    public void initCountYesterdayCostConfig(){
+        CountYesterdayCostTaskConfig countYesterdayCostTaskConfig = new CountYesterdayCostTaskConfig("CountYesterdayCostTaskConfig","accountWarningByEveryDay","countYesterdayCostTask","* 30 0 * * ?",new String[]{"A","B"});
+        countYesterdayCostTaskConfig.setScheduleManagerFactory(scheduleManagerFactory);
+        countYesterdayCostTaskConfig.createTask();
     }
 }

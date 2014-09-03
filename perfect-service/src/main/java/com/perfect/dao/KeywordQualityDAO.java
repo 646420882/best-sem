@@ -9,11 +9,7 @@ import java.util.List;
  */
 public interface KeywordQualityDAO {
 
-    /**
-     *
-     * @param _startDate
-     * @param _endDate
-     * @return
-     */
-    List<KeywordReportEntity> find(String _startDate, String _endDate);
+    List<KeywordReportEntity> findYesterdayKeywordReport();
+
+    List<Long> findYesterdayAllKeywordId();
 }

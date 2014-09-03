@@ -5,6 +5,7 @@ import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.dto.AssistantkwdIgnoreDeleDTO;
 import com.perfect.dto.CampaignTreeDTO;
+import com.perfect.dto.KeywordDTO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.KeywordEntity;
@@ -14,14 +15,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static com.perfect.mongodb.utils.EntityConstants.ACCOUNT_ID;
-import static com.perfect.mongodb.utils.EntityConstants.CAMPAIGN_ID;
-import static com.perfect.mongodb.utils.EntityConstants.ADGROUP_ID;
+import static com.perfect.mongodb.utils.EntityConstants.*;
 
 /**
  * Created by john on 2014/8/19.
@@ -111,17 +107,42 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * @param keywordNames
      */
     @Override
-    public void deleteKeywordByNamesChoose(Long accountId, String chooseInfos, String keywordNames) {
+    public Map<String,Object> validateDeleteKeywordByChoose(Long accountId, String chooseInfos, String keywordNames) {
         String[] everyChoose = chooseInfos.split("-");
-        String[] names = keywordNames.split("\r\n");
+        String[] names = keywordNames.split("\n");
+
+        Map<String, Object> map = new HashMap<>();
+        //被忽略删除的关键词
+        List<AssistantkwdIgnoreDeleDTO> ignoreList = new ArrayList<>();
+
+        //可删除的关键词集合
+        List<KeywordDTO>  deleteKwd = new ArrayList<>();
+
 
         for (String row : everyChoose) {
             String[] fileds = row.split(",");//fileds[0]推广计划id，fileds[1]推广单元id
             for (String name : names) {
-                keywordDAO.remove(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(fileds[1]).and("name").is(name)));
+                List<KeywordEntity>  list =  keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(fileds[1]).and("name").is(name)));
+                if(list.size()!=0){
+                    KeywordDTO keywordDTO = new KeywordDTO();
+                    keywordDTO.setCampaignName(fileds[0]);
+                    keywordDTO.setAdgroupName(fileds[1]);
+                    keywordDTO.setObject(list.get(0));
+                    deleteKwd.add(keywordDTO);
+                }else{
+                    AssistantkwdIgnoreDeleDTO assistantkwdIgnoreDeleDTO = new AssistantkwdIgnoreDeleDTO();
+                    assistantkwdIgnoreDeleDTO.setCampaignName(campaignDAO.findOne(Long.parseLong(fileds[0])).getCampaignName());
+                    assistantkwdIgnoreDeleDTO.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fileds[1])).getAdgroupName());
+                    assistantkwdIgnoreDeleDTO.setKeywordName(name);
+                    ignoreList.add(assistantkwdIgnoreDeleDTO);
+                }
             }
         }
 
+        map.put("ignoreList", ignoreList);
+        map.put("deleteKwd", deleteKwd);
+
+        return map;
     }
 
 
@@ -140,9 +161,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         List<AssistantkwdIgnoreDeleDTO> ignoreList = new ArrayList<>();
 
         //可删除的关键词集合
-        Map<String, Object> deleteKwd = new HashMap<>();
+        List<KeywordDTO>  deleteKwd = new ArrayList<>();
 
-        String[] everyDeleInfo = deleteInfos.split("\r\n");
+        String[] everyDeleInfo = deleteInfos.split("\n");
 
         for (String str : everyDeleInfo) {
             String[] fields = str.split(",|\t");
@@ -154,11 +175,13 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 AdgroupEntity adgroupEntity = adgroupList == null || adgroupList.size() == 0 ? null : adgroupList.get(0);
 
                 if (adgroupEntity != null) {
-                    List<KeywordEntity> keywordList = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(adgroupEntity.getAdgroupId())));
+                    List<KeywordEntity> keywordList = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(adgroupEntity.getAdgroupId()).and("name").is(fields[2])));
                     if (keywordList.size() != 0) {
-                        deleteKwd.put("campaign", fields[0]);
-                        deleteKwd.put("adgroup", fields[1]);
-                        deleteKwd.put("list", keywordList);
+                        KeywordDTO keywordDTO = new KeywordDTO();
+                        keywordDTO.setCampaignName(fields[0]);
+                        keywordDTO.setAdgroupName(fields[1]);
+                        keywordDTO.setObject(keywordList.get(0));
+                        deleteKwd.add(keywordDTO);
                     } else {
                         ignoreList.add(setFiledIgnore(fields));
                     }
@@ -197,32 +220,170 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * @param keywordInfos 用户输入的多个关键词信息
      * @return
      */
-    public void batchAddOrUpdateKeywordByChoose(Long accountId, Boolean isReplace, String chooseInfos, String keywordInfos) {
+    public Map<String,Object> batchAddOrUpdateKeywordByChoose(Long accountId, Boolean isReplace, String chooseInfos, String keywordInfos) {
+
+
+        //可被添加的关键词list
+        List<KeywordDTO>  insertList = new ArrayList<>();
+
+        //可被修改的关键词list
+        List<KeywordDTO>  updateList = new ArrayList<>();
+
+        //可被忽略的关键词list
+        List<AssistantkwdIgnoreDeleDTO>  igoneList = new ArrayList<>();
+
+        //可被删除的关键词list
+        List<KeywordDTO>  delList = new ArrayList<>();
+
+
         String[] everyRow = chooseInfos.split("-");
         String[] everyInfo = keywordInfos.split("\n");
+
+
 
         for (String row : everyRow) {
             //切割出推广计划和推广单元ID
             String[] fieds = row.split(",");
             for (String info : everyInfo) {
                 //若为true，将现在的关键词替换该单元下的所有相应内容,为false时，就将现在输入的关键词添加到数据库
+                String[] kwInfo = info.split(",|\t");
                 if (isReplace == true) {
-                    String[] kwInfo = info.split(",|\t");
-                    //删除该单元下的所有相应的关键词
-                    keywordDAO.remove(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(fieds[1])));
+                    KeywordEntity keywordEntity = validateKewword(kwInfo);
 
-                    //开始添加现在用户输入的关键词
-                    KeywordEntity keywordEntity = new KeywordEntity();
-                    keywordEntity.setAdgroupId(Long.parseLong(fieds[1]));
-                    keywordEntity.setKeyword(kwInfo[0]);
+                    if(keywordEntity.getMatchType()==null){
+                        AssistantkwdIgnoreDeleDTO dto = new AssistantkwdIgnoreDeleDTO();
+                        dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
+                        dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
+                        dto.setKeywordName(kwInfo[0]);
+                        igoneList.add(dto);
+                        continue;
+                    }
+
+                    List<KeywordEntity>  list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(fieds[1]).and("name").is(keywordEntity.getKeyword())));
+                    if(list.size()==0){
+                        insertList.add(setFieldToDTO(fieds,keywordEntity));
+                    }else{
+                        updateList.add(setFieldToDTO(fieds,keywordEntity));
+                    }
 
                 } else {
-                    //开始添加现在用户输入的关键词
-
+                    KeywordEntity keywordEntity = validateKewword(kwInfo);
+                    if(keywordEntity.getMatchType()==null){
+                        AssistantkwdIgnoreDeleDTO dto = new AssistantkwdIgnoreDeleDTO();
+                        dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
+                        dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
+                        dto.setKeywordName(kwInfo[0]);
+                        igoneList.add(dto);
+                        continue;
+                    }
+                    List<KeywordEntity>  list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(fieds[1]).and("name").is(keywordEntity.getKeyword())));
+                    //若查询没有数据就添加这条数据,若有就更新这条数据
+                    if(list==null||list.size()==0){
+                        insertList.add(setFieldToDTO(fieds,keywordEntity));
+                    }else{
+                        updateList.add(setFieldToDTO(fieds,keywordEntity));
+                    }
                 }
             }
         }
 
+
+
+        List<KeywordEntity> entities = new ArrayList<>();
+        if(isReplace==true){
+
+            for(String row:everyRow){
+                String[] fieds = row.split(",");
+                List<KeywordEntity>  list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ADGROUP_ID).is(fieds[1])));
+                Iterator ita = list.iterator();
+                while (ita.hasNext()){
+                    KeywordEntity keywordEntity = (KeywordEntity)ita.next();
+                    for(AssistantkwdIgnoreDeleDTO dto:igoneList){
+                        if(dto.getKeywordName().equals(keywordEntity.getKeyword())){
+                                ita.remove();
+                        }
+                    }
+
+                    for(KeywordDTO dto:updateList){
+                       if(((KeywordEntity)dto.getObject()).getKeyword().equals(keywordEntity.getKeyword())){
+                            ita.remove();
+                        }
+                    }
+                }
+
+                entities.addAll(list);
+                KeywordDTO keywordDTO = new KeywordDTO();
+                keywordDTO.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
+                keywordDTO.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
+                keywordDTO.setObject(entities);
+                delList.add(keywordDTO);
+            }
+        }
+
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("insertList",insertList);
+        map.put("updateList",updateList);
+        map.put("igoneList",igoneList);
+        map.put("delList",delList);
+
+        return map;
+    }
+
+    private KeywordDTO setFieldToDTO(String[] fieds,KeywordEntity keywordEntity){
+        KeywordDTO keywordDTO = new KeywordDTO();
+        keywordDTO.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
+        keywordDTO.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
+        keywordDTO.setObject(keywordEntity);
+        return keywordDTO;
+    }
+
+
+    /**
+     * 验证输入的关键词数据，若输入的不合法，就赋一个默认值
+     * @param kwInfo
+     * @return
+     */
+    private KeywordEntity validateKewword(String[] kwInfo){
+        KeywordEntity keywordEntity = new KeywordEntity();
+
+        keywordEntity.setKeyword(kwInfo[0]);
+        for(int i = 1;i<kwInfo.length;i++){
+            if(i==1){
+                if("精确".equals(kwInfo[i])){
+                    keywordEntity.setMatchType(1);
+                }else if("高级短语".equals(kwInfo[i])){
+                     keywordEntity.setMatchType(2);
+                }else if("广泛".equals(kwInfo[i])){
+                     keywordEntity.setMatchType(3);
+                }
+            }else if(i==2){
+                if(kwInfo[i].matches("^\\d+|\\.\\d+$")==true){
+                    keywordEntity.setPrice(Double.parseDouble(kwInfo[i]));
+                }else{
+                    keywordEntity.setPrice(0d);
+                }
+            }else if(i==3){
+                if(kwInfo[i].matches("^([h{1}|H{1}][t{1}|T{1}][t{1}|T{1}][p{1}|P{1}]\\://)?[w{1,3}|W{1,3}]{3}\\.\\w+(\\.[a-zA-Z]+)+$")==true){
+                    keywordEntity.setPcDestinationUrl(kwInfo[i]);
+                }else{
+                    keywordEntity.setPcDestinationUrl("");
+                }
+            }else if(i==4){
+                if(kwInfo[i].matches("^([h{1}|H{1}][t{1}|T{1}][t{1}|T{1}][p{1}|P{1}]\\://)?[w{1,3}|W{1,3}]{3}\\.\\w+(\\.[a-zA-Z]+)+$")==true){
+                    keywordEntity.setMobileDestinationUrl(kwInfo[i]);
+                }else{
+                    keywordEntity.setMobileDestinationUrl("");
+                }
+            }else if(i==5){
+                if("暂停".equals(kwInfo[i])){
+                    keywordEntity.setPause(true);
+                }else{
+                    keywordEntity.setPause(false);
+                }
+            }
+        }
+        return keywordEntity;
     }
 
 

@@ -54,9 +54,9 @@ public class BasisReportController {
                                @RequestParam(value = "devices", required = false, defaultValue = "0") int devices,
                                @RequestParam(value = "dateType", required = false, defaultValue = "0") int dateType,
                                @RequestParam(value = "start", required = false, defaultValue = "0") int start,
-                               @RequestParam(value = "sort", required = false, defaultValue = "-1") String sort,
-                               @RequestParam(value = "reportNumber", required = false, defaultValue = "10") int limit) {
-        Calendar cal = Calendar.getInstance();
+                               @RequestParam(value = "sort", required = false, defaultValue = "-11") String sort,
+                               @RequestParam(value = "limit", required = false, defaultValue = "30") int limit) {
+         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
         String yesterday = new SimpleDateFormat("yyyy-MM-dd ").format(cal.getTime());
         if(startDate == null || startDate.equals("")){
@@ -95,10 +95,10 @@ public class BasisReportController {
      */
     @RequestMapping(value = "/account/accountReport", method = RequestMethod.GET)
     public void getAccountReport(HttpServletResponse response,
-                                 @RequestParam(value = "Sorted", required = false,defaultValue = "0") int Sorted,
+                                 @RequestParam(value = "Sorted", required = false,defaultValue = "1") int Sorted,
                                  @RequestParam(value = "fieldName", required = false,defaultValue = "date") String fieldName,
                                  @RequestParam(value = "startJC", required = false,defaultValue = "0") int startJC,
-                                 @RequestParam(value = "limitJC", required = false,defaultValue = "10") int limitJC){
+                                 @RequestParam(value = "limitJC", required = false,defaultValue = "9") int limitJC){
 
             Map<String, List<AccountReportDTO>> returnAccount = basisReportService.getAccountAll(Sorted, fieldName,startJC,limitJC);
 
@@ -123,7 +123,10 @@ public class BasisReportController {
                                  @RequestParam(value = "date3", required = false) String date3,
                                  @RequestParam(value = "dateType", required = false) int dateType,
                                  @RequestParam(value = "devices", required = false) int devices,
-                                 @RequestParam(value = "compare", required = false) int compare){
+                                 @RequestParam(value = "compare", required = false) int compare,
+                                 @RequestParam(value = "sortVS", required = false,defaultValue = "-1") String sortVS,
+                                 @RequestParam(value = "startVS", required = false,defaultValue = "0") int startVS,
+                                 @RequestParam(value = "limitVS", required = false,defaultValue = "9") int limitVS){
 
         Map<String, List<Object>> returnAccount = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -142,7 +145,7 @@ public class BasisReportController {
                 endDate4 = cal.getTime();
             }
 
-            returnAccount = basisReportService.getAccountDateVS(endDate1,endDate2,endDate3,endDate4,dateType,devices,compare);
+            returnAccount = basisReportService.getAccountDateVS(endDate1,endDate2,endDate3,endDate4,dateType,devices,compare,sortVS,startVS,limitVS);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -160,45 +163,7 @@ public class BasisReportController {
             e.printStackTrace();
         }
     }
-/*=======
-    @RequestMapping(value = "/account/accountDateVs", method = RequestMethod.GET)
-    public void getAccountDateVs(HttpServletResponse response,
-                                 @RequestParam(value = "date1", required = false) String date1,
-                                 @RequestParam(value = "date2", required = false) String date2,
-                                 @RequestParam(value = "date3", required = false) String date3,
-                                 @RequestParam(value = "dateType", required = false) int dateType,
-                                 @RequestParam(value = "devices", required = false) int devices){
 
-        Map<String, List<Object>> returnAccount = null;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date endDate1 = dateFormat.parse(date1);
-            Date endDate2 = dateFormat.parse(date2);
-            Date endDate3 = dateFormat.parse(date3);
-
-            Calendar cal = Calendar.getInstance();
-            long kk = endDate3.getTime() + (endDate2.getTime()-endDate1.getTime());
-            cal.setTimeInMillis(kk);
-            Date endDate4 = cal.getTime();
-
-            returnAccount = basisReportService.getAccountDateVS(endDate1,endDate2,endDate3,endDate4,dateType,devices);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        String data=new Gson().toJson(returnAccount);
-
-        try {
-            response.setContentType("text/html;charset=UTF-8");
-            response.setHeader("Pragma", "No-cache");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setDateHeader("Expires", 0);
-            response.getWriter().write(data);
-            response.getWriter().flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
     @RequestMapping(value = "/account/test", method = RequestMethod.GET)
     public void test(HttpServletResponse response){
         Long[] id = {4377017918l, 8071527386l, 4377019004l};

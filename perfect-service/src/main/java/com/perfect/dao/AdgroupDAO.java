@@ -13,6 +13,7 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
     List<Long> getAllAdgroupId();
 
     List<Long> getAdgroupIdByCampaignId(Long campaignId);
+    List<String> getAdgroupIdByCampaignId(String campaignId);
 
     List<AdgroupEntity> getAdgroupByCampaignId(Long campaignId, Map<String, Object> params, int skip, int limit);
 

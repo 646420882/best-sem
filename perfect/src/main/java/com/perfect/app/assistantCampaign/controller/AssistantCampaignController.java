@@ -1,5 +1,6 @@
 package com.perfect.app.assistantCampaign.controller;
 
+import com.perfect.autosdk.sms.v3.OfflineTimeType;
 import com.perfect.autosdk.sms.v3.ScheduleType;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;
@@ -105,9 +106,8 @@ public class AssistantCampaignController {
         campaignEntity.setShowProb(showProb);
         campaignEntity.setPause(pause);
 
-        List<ScheduleType> scheduleEntityList = null;
+        List<ScheduleType> scheduleEntityList = new ArrayList<>();
         if(schedule!=null&&!"".equals(schedule)){
-            scheduleEntityList = new ArrayList<>();
             String[] strSchedule = schedule.split(";");
             for(String str : strSchedule){
                 String[] fieds = str.split("-");
@@ -156,10 +156,12 @@ public class AssistantCampaignController {
             }
         }
         campaignEntity.setSchedule(scheduleEntityList);
-        campaignEntity.setRegionTarget(regionTarget == null ? null : "".equals(regionTarget) ? new ArrayList<Integer>() : Arrays.asList(regionTarget));
-        campaignEntity.setNegativeWords(negativeWords == null ? null : "".equals(negativeWords) ? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
-        campaignEntity.setExactNegativeWords(exactNegativeWords == null ? null : "".equals(exactNegativeWords) ? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));
-        campaignEntity.setExcludeIp(excludeIp == null ? null : "".equals(excludeIp) ? new ArrayList<String>() : Arrays.asList(excludeIp.split("\n")));
+        campaignEntity.setRegionTarget(regionTarget == null ?new ArrayList<Integer>() : Arrays.asList(regionTarget));
+        campaignEntity.setNegativeWords(negativeWords == null ? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
+        campaignEntity.setExactNegativeWords(exactNegativeWords == null ? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));
+        campaignEntity.setExcludeIp(excludeIp == null ? new ArrayList<String>() : Arrays.asList(excludeIp.split("\n")));
+        campaignEntity.setBudgetOfflineTime(new ArrayList<OfflineTimeType>());
+        campaignEntity.setAccountId(AppContext.getAccountId());
 
 /*
         //推广单元
@@ -170,7 +172,7 @@ public class AssistantCampaignController {
         adgroupEntity.setPriceRatio(adgroupPriceRatio);*/
 
         //开始添加
-//        campaignDAO.insert(campaignEntity);
+        campaignDAO.insert(campaignEntity);
 //        adgroupDAO.insert(adgroupEntity);
     }
 }

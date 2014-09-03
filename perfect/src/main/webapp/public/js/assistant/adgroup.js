@@ -157,9 +157,13 @@ function loadAdgroupData(plans) {
  * @returns {string}
  */
 function getNoAdgroupLabel(exp1, exp2) {
-    if (exp1.length > 0 && exp2.length > 0) {
-        return "<span>" + exp1.length + ":" + exp2.length + "</span>";
-    } else {
+    if (exp1 != null && exp2 != null) {
+        if (exp1.length > 0 && exp2.length > 0) {
+            return "<span>" + exp1.length + ":" + exp2.length + "</span>";
+        } else {
+            return "<span>未设置</span>";
+        }
+    }else{
         return "<span>未设置</span>";
     }
 }
