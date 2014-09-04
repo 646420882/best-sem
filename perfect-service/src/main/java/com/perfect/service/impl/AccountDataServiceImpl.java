@@ -25,9 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.perfect.mongodb.utils.EntityConstants.*;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
@@ -379,33 +377,30 @@ public class AccountDataServiceImpl implements AccountDataService {
         List<CampaignEntity> campaignEntityList = campaignDAO.findAll();
 
         List<CampaignType> campaignTypes = apiService.getAllCampaign();
-
         List<CampaignEntity> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
-
         //凤巢中的推广单元
+        Map<Long, CampaignEntity> campaignEntityMap = new LinkedHashMap<>();
         for (CampaignEntity campaignEntity : campaignEntities) {
             campaignEntity.setAccountId(acid);
+            campaignEntityMap.put(campaignEntity.getCampaignId(), campaignEntity);
         }
 
         List<CampaignEntity> sumList = new ArrayList<>(campaignEntityList);
         sumList.addAll(campaignEntities);
-        for (int i = sumList.size() - 1; i >= 0; i--) {
-            for (CampaignEntity entity : campaignEntityList) {
-                if (sumList.get(i).getCampaignId() == null || entity.getCampaignId() == null) {
-                    sumList.remove(i);
-                    continue;
-                }
-                if (sumList.get(i).getCampaignId().compareTo(entity.getCampaignId()) == 0) {
-                    sumList.remove(i);
-                    break;
-                }
+        for (CampaignEntity entity : sumList) {
+            Long campaignId = entity.getCampaignId();
+            if (campaignId == null) {
+                continue;
+            }
+            if (campaignEntityMap.get(campaignId) != null) {
+                campaignEntityMap.remove(campaignId);
             }
         }
 
-        if (sumList.size() == 0) {
+        if (campaignEntityMap.size() == 0) {
             return Collections.EMPTY_LIST;
         } else {
-            return sumList;
+            return new ArrayList<>(campaignEntityMap.values());
         }
     }
 
