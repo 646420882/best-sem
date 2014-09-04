@@ -5,6 +5,7 @@ import com.perfect.app.bidding.dto.KeywordReportDTO;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
+import com.perfect.constants.KeywordStatusEnum;
 import com.perfect.core.AppContext;
 import com.perfect.entity.*;
 import com.perfect.entity.bidding.BiddingRuleEntity;
@@ -75,11 +76,24 @@ public class BiddingController {
 
 //        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 //        int[] startEndTimes = getTimes(param.getTimes(), hour);
-        for (Long id : param.getIds()) {
-            BiddingRuleEntity biddingRuleEntity = new BiddingRuleEntity();
+        List<BiddingRuleEntity> entities = biddingRuleService.findRules(Arrays.asList(param.getIds()));
 
-            biddingRuleEntity.setAccountId(AppContext.getAccountId());
-            biddingRuleEntity.setKeywordId(id);
+        Map<Long, BiddingRuleEntity> biddingRuleEntityMap = new HashMap<>();
+
+        if (!entities.isEmpty()) {
+            for (BiddingRuleEntity biddingRuleEntity : entities) {
+                biddingRuleEntityMap.put(biddingRuleEntity.getKeywordId(), biddingRuleEntity);
+            }
+        }
+        for (Long id : param.getIds()) {
+
+            BiddingRuleEntity biddingRuleEntity = biddingRuleEntityMap.get(id);
+
+            if (biddingRuleEntity == null) {
+                biddingRuleEntity = new BiddingRuleEntity();
+                biddingRuleEntity.setAccountId(AppContext.getAccountId());
+                biddingRuleEntity.setKeywordId(id);
+            }
             biddingRuleEntity.setEnabled(param.isRun());
 
 
@@ -121,8 +135,6 @@ public class BiddingController {
             strategyEntity.setInterval(param.getInterval());
             newRules.add(biddingRuleEntity);
         }
-
-        biddingRuleService.removeByKeywordIds(Arrays.asList(param.getIds()));
 
         for (BiddingRuleEntity entity : newRules) {
             biddingRuleService.createBiddingRule(entity);
@@ -288,6 +300,8 @@ public class BiddingController {
             KeywordReportDTO keywordReportDTO = new KeywordReportDTO();
             BeanUtils.copyProperties(entity, keywordReportDTO);
 
+            keywordReportDTO.setStatusStr(KeywordStatusEnum.getName(entity.getStatus()));
+
             keywordReportDTOHashMap.put(entity.getKeywordId(), keywordReportDTO);
             resultList.add(keywordReportDTO);
             ids.add(entity.getKeywordId());
@@ -400,10 +414,14 @@ public class BiddingController {
 
         for (String key : rankMap.keySet()) {
             KeywordEntity keywordEntity = keywordEntityMap.get(key);
+            KeywordRankEntity currentRank = keywordRankService.findRankByKeywordId(keywordEntity.getKeywordId());
 
-            KeywordRankEntity keywordRankEntity = rankMap.get(key);
-            keywordRankEntity.setAccountId(accountId);
-            keywordRankEntity.setKwid(keywordEntity.getKeywordId());
+            if (currentRank == null) {
+                KeywordRankEntity keywordRankEntity = rankMap.get(key);
+                keywordRankEntity.setAccountId(accountId);
+                keywordRankEntity.setKwid(keywordEntity.getKeywordId());
+            } else {
+            }
 
         }
         keywordRankService.updateRanks(rankMap.values());
@@ -426,4 +444,23 @@ public class BiddingController {
         return new ModelAndView(jsonView);
 
     }
+
+    @RequestMapping(value = "/enable", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView setEnable(@RequestParam Long[] ids, @RequestParam boolean ebl) {
+        boolean result = biddingRuleService.setEnable(ids, ebl);
+        AbstractView jsonView = new MappingJackson2JsonView();
+
+        Map<String, Object> map = new HashMap<>();
+
+        if (result) {
+            map.put("code", 0);
+        } else {
+            map.put("msg", "更新失败");
+        }
+        jsonView.setAttributesMap(map);
+
+        return new ModelAndView(jsonView);
+    }
+
+
 }

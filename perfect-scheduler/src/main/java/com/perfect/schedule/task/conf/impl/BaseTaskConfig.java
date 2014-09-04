@@ -7,7 +7,6 @@ import com.perfect.schedule.task.conf.StrategyConfig;
 import com.perfect.schedule.task.conf.TaskConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
@@ -66,15 +65,18 @@ public class BaseTaskConfig implements TaskConfig {
                 Thread.sleep(1000);
             }
             scheduleManagerFactory.stopServer(null);
-            Thread.sleep(1000);
+            Thread.sleep(20000);
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
 
         try {
             this.scheduleManagerFactory.getScheduleDataManager()
                     .deleteTaskType(baseTaskName);
         } catch (Exception e) {
+            e.printStackTrace();
+            return;
         }
 
         ScheduleTaskType baseTaskType = createTaskType();
@@ -84,6 +86,7 @@ public class BaseTaskConfig implements TaskConfig {
                     .createBaseTaskType(baseTaskType);
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
         log.info("创建调度任务成功:" + baseTaskType.toString());
 
@@ -96,6 +99,7 @@ public class BaseTaskConfig implements TaskConfig {
                     .deleteMachineStrategy(strategyName, true);
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
         ScheduleStrategy strategy = new ScheduleStrategy();
         strategy.setStrategyName(strategyName);
@@ -116,6 +120,7 @@ public class BaseTaskConfig implements TaskConfig {
                     .createScheduleStrategy(strategy);
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
         log.info("创建调度策略成功:" + strategy.toString());
     }

@@ -11,11 +11,12 @@
 		http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"
        default-lazy-init="true" default-autowire="byName">
 
-    <bean id="senderTask" class="com.perfect.schedule.task.execute.SenderTask"/>
-    <bean id="countYesterdayCostTask" class="com.perfect.schedule.task.execute.CountYesterdayCostTask"/>
-    <bean id="dataPullTask" class="com.perfect.schedule.task.execute.DataPullTask"/>
+    <!--<bean id="senderTask" class="com.perfect.schedule.task.execute.SenderTask"/>-->
+    <!--<bean id="countYesterdayCostTask" class="com.perfect.schedule.task.execute.CountYesterdayCostTask"/>-->
+    <!--<bean id="dataPullTask" class="com.perfect.schedule.task.execute.DataPullTask"/>-->
 
-    <bean id="demoTaskBean" class="com.taobao.pamirs.schedule.test.DemoTaskBean" />
+    <!--<bean id="demoTaskBean" class="com.taobao.pamirs.schedule.test.DemoTaskBean" />-->
+    <bean id="biddingTask" class="com.perfect.schedule.task.execute.BiddingTask"/>
 
     <bean id="scheduleManagerFactory" class="com.perfect.schedule.core.strategy.TBScheduleManagerFactory"
           init-method="init">
@@ -23,7 +24,7 @@
             <map>
                <!-- <entry key="zkConnectString" value="192.168.1.103:2181"/>-->
                 <entry key="zkConnectString" value="182.92.188.177:2181"/>
-                <entry key="rootPath" value="/perfect/test"/>
+                <entry key="rootPath" value="/perfect/bidding"/>
                 <entry key="zkSessionTimeout" value="60000"/>
                 <entry key="userName" value=""/>
                 <entry key="password" value=""/>

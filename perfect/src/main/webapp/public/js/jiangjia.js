@@ -96,16 +96,86 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box4 ").css("display", "none");
     });
-//修改访问网址
+//暂停竞价规则
     $(".showbox3").click(function () {
-        $(".TB_overlayBG").css({
-            display: "block", height: $(document).height()
+        var items = checked("subbox2");
+
+        if (items.length == 0) {
+            alert("请选择至少一个关键词!");
+            return;
+        }
+
+        var ids = [];
+        items.each(function (i, item) {
+            ids.push($(item).val());
         });
-        $(".box3").css({
-            left: ($("body").width() - $(".box3").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $(".box3").height()) / 2 + $(window).scrollTop() + "px",
-            display: "block"
+
+        $.ajax({
+            url: "/bidding/enable",
+            data: {'ids': ids.toString(),
+                    "ebl": false},
+            type: "POST",
+            success: function (datas) {
+                if (datas.code == 0) {
+                    alert("所选关键词竞价已暂停!");
+                    return true;
+                } else {
+                    alert("暂停失败! " + datas.msg);
+                    return false;
+                }
+            }
         });
+
+
+//        $(".TB_overlayBG").css({
+//            display: "block", height: $(document).height()
+//        });
+//        $(".box3").css({
+//            left: ($("body").width() - $(".box3").width()) / 2 - 20 + "px",
+//            top: ($(window).height() - $(".box3").height()) / 2 + $(window).scrollTop() + "px",
+//            display: "block"
+//        });
+    });
+
+
+    $(".showbox7").click(function () {
+        var items = checked("subbox2");
+
+        if (items.length == 0) {
+            alert("请选择至少一个关键词!");
+            return;
+        }
+
+        var ids = [];
+        items.each(function (i, item) {
+            ids.push($(item).val());
+        });
+
+        $.ajax({
+            url: "/bidding/enable",
+            data: {'ids': ids.toString(),
+                    "ebl":true},
+            type: "POST",
+            success: function (datas) {
+                if (datas.code == 0) {
+                    alert("所选关键词竞价已暂停!");
+                    return true;
+                } else {
+                    alert("暂停失败! " + datas.msg);
+                    return false;
+                }
+            }
+        });
+
+
+//        $(".TB_overlayBG").css({
+//            display: "block", height: $(document).height()
+//        });
+//        $(".box3").css({
+//            left: ($("body").width() - $(".box3").width()) / 2 - 20 + "px",
+//            top: ($(window).height() - $(".box3").height()) / 2 + $(window).scrollTop() + "px",
+//            display: "block"
+//        });
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
@@ -234,6 +304,7 @@ $(function () {
 
     $('#rulesaverun').click(function () {
         sendReq(true);
+        $(".close").click();
     })
 
 

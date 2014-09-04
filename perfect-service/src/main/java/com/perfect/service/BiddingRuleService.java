@@ -50,4 +50,6 @@ public interface BiddingRuleService {
 
     @Deprecated
     void updateRank(Collection<BiddingRuleEntity> values);
+
+    boolean setEnable(Long[] ids, boolean ebl);
 }

@@ -241,4 +241,10 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     @Override
     public void updateRank(Collection<BiddingRuleEntity> values) {
     }
+
+    @Override
+    public boolean setEnable(Long[] ids, boolean ebl) {
+        WriteResult writeResult = getMongoTemplate().updateMulti(Query.query(Criteria.where(KEYWORD_ID).in(ids)), Update.update("ebl", ebl), getEntityClass());
+        return writeResult.getN() == ids.length;
+    }
 }

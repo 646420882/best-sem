@@ -96,7 +96,7 @@ public class Main {
         long start = System.currentTimeMillis();
 
         try {
-            CronExpression cronExpression = new CronExpression("0 0/20 12-14/1 * * ?");
+            CronExpression cronExpression = new CronExpression("0 0 12-14 * * ?");
 
             Date date = Calendar.getInstance().getTime();
             for (int i = 0; i <= 20; i++) {
