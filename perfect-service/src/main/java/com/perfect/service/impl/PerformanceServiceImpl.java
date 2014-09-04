@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -86,10 +87,10 @@ public class PerformanceServiceImpl implements PerformanceService {
      * @return
      */
     @Override
-    public List<AccountReportEntity> performanceUser(Date startDate, Date endDate, String fieldName, int Sorted, int limit) {
+    public List<AccountReportEntity> performanceUser(Date startDate, Date endDate, String sorted, int limit,int startPer,List<String> date) {
 
-        List<AccountReportEntity> listUser = accountAnalyzeDAO.performaneUser(startDate, endDate, fieldName, Sorted, limit);
-        DecimalFormat df = new DecimalFormat("#.00");
+        List<AccountReportEntity> listUser = accountAnalyzeDAO.performaneUser(startDate, endDate);
+        DecimalFormat df = new DecimalFormat("#.0000");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (AccountReportEntity list : listUser) {
             list.setPcImpression(list.getPcImpression() + ((list.getMobileImpression() == null) ? 0 : list.getMobileImpression()));
@@ -119,7 +120,45 @@ public class PerformanceServiceImpl implements PerformanceService {
             list.setMobileCpm(null);
             list.setMobileCtr(null);
         }
-        return listUser;
+        int jueds = -1;
+        for(String s:date){
+            for(AccountReportEntity accountReportEntity :listUser){
+                String d = dateFormat.format(accountReportEntity.getDate());
+                if(s.equals(d)){
+                    jueds = 1;
+                    break;
+                }else{
+                    jueds = -1;
+                }
+            }
+            if(jueds == -1){
+                AccountReportEntity entity = new AccountReportEntity();
+                try {
+                    entity.setDate(dateFormat.parse(s));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                entity.setPcImpression(0);
+                entity.setPcClick(0);
+                entity.setPcConversion(0.00);
+                entity.setPcCpc(0.00);
+                entity.setPcCpm(0.00);
+                entity.setPcCost(0.00);
+                entity.setPcCtr(0.00);
+                listUser.add(entity);
+            }
+        }
+        for(AccountReportEntity accountReport :listUser){
+            accountReport.setOrderBy(sorted);
+            accountReport.setCount(date.size());
+        }
+        Collections.sort(listUser);
+        List<AccountReportEntity> entities = new ArrayList<>();
+        for (int i=startPer;i<limit;i++){
+            if(i>=listUser.size())break;
+            entities.add(listUser.get(i));
+        }
+        return entities;
     }
 
     /**

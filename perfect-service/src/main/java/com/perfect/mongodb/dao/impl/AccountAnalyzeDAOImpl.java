@@ -43,15 +43,10 @@ public class AccountAnalyzeDAOImpl extends AbstractUserBaseDAOImpl<KeywordRealTi
     }
 
     @Override
-    public List<AccountReportEntity> performaneUser(Date startDate, Date endDate, String fieldName, int Sorted, int limit) {
+    public List<AccountReportEntity> performaneUser(Date startDate, Date endDate) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        Sort sort = null;
-        if (Sorted == 0) {
-            sort = new Sort(Sort.Direction.ASC, fieldName);
-        } else {
-            sort = new Sort(Sort.Direction.DESC, fieldName);
-        }
-        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())).with(sort).skip(0).limit(limit), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
+
+        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
         return list;
     }
 

@@ -936,43 +936,96 @@ var reportData = function () {
                 var pie_click = new Array();
                 var pie_cost = new Array();
                 var pie_conv = new Array();
+                var pie_num1 = 0;
+                var pie_num2 = 0;
+                var pie_num3 = 0;
+                var pie_num4 = 0;
                 if (reportTypes == 4) {
                     if (dateLis == 0) {
                         $.each(data.countData, function (i, countdata) {
                             $.each(data.impr, function (i, impr) {
                                 if (devices == 2) {
-                                    pie_impr.push([impr.regionName, Math.round((impr.mobileImpression / countdata.mobileImpression) * 10000) / 100]);
+                                    if(isNaN(impr.mobileImpression / countdata.mobileImpression)){
+                                        pie_impr.push([impr.regionName, 0]);
+                                    }else {
+                                        pie_impr.push([impr.regionName, Math.round((impr.mobileImpression / countdata.mobileImpression) * 10000) / 100]);
+                                        pie_num1=1;
+                                    }
                                 } else {
-                                    pie_impr.push([impr.regionName, Math.round((impr.pcImpression / countdata.pcImpression) * 10000) / 100]);
+                                    if(isNaN(impr.pcImpression / countdata.pcImpression)){
+                                        pie_impr.push([impr.regionName, 0]);
+                                    }else{
+                                        pie_impr.push([impr.regionName, Math.round((impr.pcImpression / countdata.pcImpression) * 10000) / 100]);
+                                        pie_num1=1;
+                                    }
                                 }
                             });
                             $.each(data.click, function (i, impr) {
                                 if (devices == 2) {
-                                    pie_click.push([impr.regionName, Math.round((impr.mobileClick / countdata.mobileClick) * 10000) / 100]);
+                                    if(isNaN(impr.mobileClick / countdata.mobileClick)){
+                                        pie_click.push([impr.regionName, 0]);
+                                    }else {
+                                        pie_click.push([impr.regionName, Math.round((impr.mobileClick / countdata.mobileClick) * 10000) / 100]);
+                                        pie_num2=1;
+                                    }
                                 } else {
-                                    pie_click.push([impr.regionName, Math.round((impr.pcClick / countdata.pcClick) * 10000) / 100]);
+                                    if(isNaN(impr.pcClick / countdata.pcClick)){
+                                        pie_click.push([impr.regionName, 0]);
+                                    }else {
+                                        pie_click.push([impr.regionName, Math.round((impr.pcClick / countdata.pcClick) * 10000) / 100]);
+                                        pie_num2=1;
+                                    }
                                 }
                             });
                             $.each(data.cost, function (i, impr) {
                                 if (devices == 2) {
-                                    pie_cost.push([impr.regionName, Math.round((impr.mobileCost / countdata.mobileCost) * 10000) / 100]);
+                                    if(isNaN(impr.mobileCost / countdata.mobileCost)){
+                                        pie_cost.push([impr.regionName, 0]);
+                                    }else {
+                                        pie_cost.push([impr.regionName, Math.round((impr.mobileCost / countdata.mobileCost) * 10000) / 100]);
+                                        pie_num3=1;
+                                    }
                                 } else {
-                                    pie_cost.push([impr.regionName, Math.round((impr.pcCost / countdata.pcCost) * 10000) / 100]);
+                                    if(isNaN(impr.pcCost / countdata.pcCost)){
+                                        pie_cost.push([impr.regionName, 0]);
+                                    }else {
+                                        pie_cost.push([impr.regionName, Math.round((impr.pcCost / countdata.pcCost) * 10000) / 100]);
+                                        pie_num3=1;
+                                    }
                                 }
                             });
                             $.each(data.conv, function (i, impr) {
                                 if (devices == 2) {
-                                    pie_conv.push([impr.regionName, Math.round((impr.mobileConversion / countdata.mobileConversion) * 10000) / 100]);
+                                    if(isNaN(impr.mobileConversion / countdata.mobileConversion)){
+                                        pie_conv.push([impr.regionName, 0]);
+                                    }else {
+                                        pie_conv.push([impr.regionName, Math.round((impr.mobileConversion / countdata.mobileConversion) * 10000) / 100]);
+                                        pie_num4=1;
+                                    }
                                 } else {
-                                    pie_conv.push([impr.regionName, Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100]);
+                                        if(isNaN(impr.pcConversion / countdata.pcConversion)){
+                                            pie_conv.push([impr.regionName, 0]);
+                                        }else {
+                                            pie_conv.push([impr.regionName, Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100]);
+                                            pie_num4=1;
+                                        }
                                 }
                             });
+                            if(pie_num1 == 1){
+                                pieChart(pie_impr, "展现", "#imprDiv");
+                            }
+                            if(pie_num2 == 1){
+                                pieChart(pie_click, "点击", "#clickDiv");
+                            }
+                            if(pie_num3 == 1) {
+                                pieChart(pie_cost, "消费", "#costDiv");
+                            }
+                            if(pie_num2 == 1){
+                                pieChart(pie_conv, "转化", "#convDiv");
+                            }
                         });
                     }
-                    pieChart(pie_impr, "展现", "#imprDiv");
-                    pieChart(pie_click, "点击", "#clickDiv");
-                    pieChart(pie_cost, "消费", "#costDiv");
-                    pieChart(pie_conv, "转化", "#convDiv");
+
                 }
                 if (dateLis != 0) {
                     //曲线图数据装载

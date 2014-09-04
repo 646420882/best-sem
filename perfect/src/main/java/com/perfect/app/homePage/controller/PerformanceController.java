@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.perfect.app.web.WebUtils;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
+import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.service.PerformanceService;
 import com.perfect.utils.JSONUtils;
 import org.springframework.context.annotation.Scope;
@@ -72,19 +73,21 @@ public class PerformanceController {
                                            @RequestParam(value = "startDate", required = false) String startDate,
                                            @RequestParam(value = "endDate", required = false) String endDate,
                                            @RequestParam(value = "limit", required = false, defaultValue = "10") int limit,
-                                           @RequestParam(value = "sort", required = false, defaultValue = "0") int Sorted,
-                                           @RequestParam(value = "fieldName", required = false, defaultValue = "date") String fieldName) {
+                                           @RequestParam(value = "startPer", required = false, defaultValue = "0") int startPer,
+                                           @RequestParam(value = "sort", required = false, defaultValue = "0") String Sorted) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date startDates = null;
         Date endDates = null;
+        List<String> date = null;
         try {
             startDates = dateFormat.parse(startDate);
             endDates = dateFormat.parse(endDate);
+            date = DateUtils.getPeriod(startDate, endDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<AccountReportEntity> jsonMapList = performanceService.performanceUser(startDates, endDates, fieldName, Sorted, limit);
+        List<AccountReportEntity> jsonMapList = performanceService.performanceUser(startDates, endDates, Sorted, limit,startPer,date);
 
         Map<String, Object> attributes = null;
         if (jsonMapList != null)

@@ -125,7 +125,6 @@
                     }
                 });
     };
-
     $(function () {
         var navH = $(".on_title").offset().top;
         $(window).scroll(function () {
@@ -209,6 +208,12 @@
             }
             else {
                 $("#switchAccount").hide();
+            }
+        });
+        $(".nav_under>ul>li>a").each(function(){
+            if($($(this))[0].href==String(window.location)){
+                $(".nav_under>ul>li").removeClass("current")
+                $(this).parent().addClass('current');
             }
         });
     });

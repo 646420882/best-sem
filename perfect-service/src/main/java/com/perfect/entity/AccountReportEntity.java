@@ -11,7 +11,7 @@ import static com.perfect.mongodb.utils.EntityConstants.*;
  * Created by baizz on 2014-08-13.
  */
 @Document(collection = TBL_ACCOUNT_REPORT)
-public class AccountReportEntity {
+public class AccountReportEntity implements Comparable<AccountReportEntity>{
 
     @Id
     private String id;
@@ -66,6 +66,10 @@ public class AccountReportEntity {
 
     @Field(value = "mcs")
     private Double mobileConversion;
+
+    private String orderBy;
+
+    private int count;
 
     public String getId() {
         return id;
@@ -211,58 +215,20 @@ public class AccountReportEntity {
         this.mobileConversion = mobileConversion;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        AccountReportEntity that = (AccountReportEntity) o;
-
-        if (accountId != null ? !accountId.equals(that.accountId) : that.accountId != null) return false;
-        if (accountName != null ? !accountName.equals(that.accountName) : that.accountName != null) return false;
-        if (date != null ? !date.equals(that.date) : that.date != null) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (mobileClick != null ? !mobileClick.equals(that.mobileClick) : that.mobileClick != null) return false;
-        if (mobileConversion != null ? !mobileConversion.equals(that.mobileConversion) : that.mobileConversion != null)
-            return false;
-        if (mobileCost != null ? !mobileCost.equals(that.mobileCost) : that.mobileCost != null) return false;
-        if (mobileCpc != null ? !mobileCpc.equals(that.mobileCpc) : that.mobileCpc != null) return false;
-        if (mobileCpm != null ? !mobileCpm.equals(that.mobileCpm) : that.mobileCpm != null) return false;
-        if (mobileCtr != null ? !mobileCtr.equals(that.mobileCtr) : that.mobileCtr != null) return false;
-        if (mobileImpression != null ? !mobileImpression.equals(that.mobileImpression) : that.mobileImpression != null)
-            return false;
-        if (pcClick != null ? !pcClick.equals(that.pcClick) : that.pcClick != null) return false;
-        if (pcConversion != null ? !pcConversion.equals(that.pcConversion) : that.pcConversion != null) return false;
-        if (pcCost != null ? !pcCost.equals(that.pcCost) : that.pcCost != null) return false;
-        if (pcCpc != null ? !pcCpc.equals(that.pcCpc) : that.pcCpc != null) return false;
-        if (pcCpm != null ? !pcCpm.equals(that.pcCpm) : that.pcCpm != null) return false;
-        if (pcCtr != null ? !pcCtr.equals(that.pcCtr) : that.pcCtr != null) return false;
-        if (pcImpression != null ? !pcImpression.equals(that.pcImpression) : that.pcImpression != null) return false;
-
-        return true;
+    public String getOrderBy() {
+        return orderBy;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (accountId != null ? accountId.hashCode() : 0);
-        result = 31 * result + (accountName != null ? accountName.hashCode() : 0);
-        result = 31 * result + (date != null ? date.hashCode() : 0);
-        result = 31 * result + (pcImpression != null ? pcImpression.hashCode() : 0);
-        result = 31 * result + (pcClick != null ? pcClick.hashCode() : 0);
-        result = 31 * result + (pcCtr != null ? pcCtr.hashCode() : 0);
-        result = 31 * result + (pcCost != null ? pcCost.hashCode() : 0);
-        result = 31 * result + (pcCpc != null ? pcCpc.hashCode() : 0);
-        result = 31 * result + (pcCpm != null ? pcCpm.hashCode() : 0);
-        result = 31 * result + (pcConversion != null ? pcConversion.hashCode() : 0);
-        result = 31 * result + (mobileImpression != null ? mobileImpression.hashCode() : 0);
-        result = 31 * result + (mobileClick != null ? mobileClick.hashCode() : 0);
-        result = 31 * result + (mobileCtr != null ? mobileCtr.hashCode() : 0);
-        result = 31 * result + (mobileCost != null ? mobileCost.hashCode() : 0);
-        result = 31 * result + (mobileCpc != null ? mobileCpc.hashCode() : 0);
-        result = 31 * result + (mobileCpm != null ? mobileCpm.hashCode() : 0);
-        result = 31 * result + (mobileConversion != null ? mobileConversion.hashCode() : 0);
-        return result;
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     @Override
@@ -286,7 +252,43 @@ public class AccountReportEntity {
                 ", mobileCpc=" + mobileCpc +
                 ", mobileCpm=" + mobileCpm +
                 ", mobileConversion=" + mobileConversion +
+                ", orderBy='" + orderBy + '\'' +
+                ", count=" + count +
                 '}';
+    }
+
+    @Override
+    public int compareTo(AccountReportEntity o) {
+        switch (o.getOrderBy()){
+            case "1":
+                return this.getDate().compareTo(o.getDate());
+            case "2":
+                    return this.getPcImpression().compareTo(o.getPcImpression());
+            case "-2":
+                    return o.getPcImpression().compareTo(this.getPcImpression());
+            case "3":
+                    return this.getPcClick().compareTo(o.getPcClick());
+            case "-3":
+                    return o.getPcClick().compareTo(this.getPcClick());
+            case "4":
+                    return this.getPcCost().compareTo(o.getPcCost());
+            case "-4":
+                    return o.getPcCost().compareTo(this.getPcCost());
+            case "5":
+                    return this.getPcCpc().compareTo(o.getPcCpc());
+            case "-5":
+                    return o.getPcCpc().compareTo(this.getPcCpc());
+            case "6":
+                    return this.getPcCtr().compareTo(o.getPcCtr());
+            case "-6":
+                    return o.getPcCtr().compareTo(this.getPcCtr());
+            case "7":
+                    return this.getPcConversion().compareTo(o.getPcConversion());
+            case "-7":
+                    return o.getPcConversion().compareTo(this.getPcConversion());
+            default:
+                return o.getDate().compareTo(this.getDate());
+        }
     }
 
 
