@@ -5,6 +5,8 @@ package com.perfect.dto;
  */
 public class QualityDTO {
 
+    private Integer grade;
+
     private Integer keywordQty;
 
     private Double keywordQtyRate;
@@ -44,6 +46,14 @@ public class QualityDTO {
         this.cpc = cpc;
         this.conversion = conversion;
         this.conversionRate = conversionRate;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
     }
 
     public Integer getKeywordQty() {

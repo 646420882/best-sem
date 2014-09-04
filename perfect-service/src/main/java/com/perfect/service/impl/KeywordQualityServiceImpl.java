@@ -9,6 +9,7 @@ import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AccountManageDAO;
 import com.perfect.dao.KeywordQualityDAO;
+import com.perfect.dto.KeywordQualityReportDTO;
 import com.perfect.dto.QualityDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.KeywordReportEntity;
@@ -106,6 +107,8 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         }
 
         Map<String, Object> results = new HashMap<>();
+        List<QualityDTO> qualityList = new ArrayList<>();
+        List<KeywordQualityReportDTO> reportList = new ArrayList<>();
 
         for (int i = 0; i <= 10; i++) {
             List<KeywordReportEntity> tempList = tempMap.get(i);
@@ -146,27 +149,30 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                 Double conversionRate = (qualityDTO.getConversion() + .0) / allQualityData.getConversion();
                 conversionRate = new BigDecimal(conversionRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                 qualityDTO.setConversionRate(conversionRate);
-                results.put("qualityDTO" + i, JSONUtils.getJsonObject(qualityDTO));
 
+                qualityDTO.setGrade(i);
+                qualityList.add(qualityDTO);
 
                 //每个质量度下具体的关键词信息
-//                KeywordReportEntity topNData[] = topN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), n, fieldName, sort);
-                KeywordReportEntity topNData[] = topN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), tempList.size(), fieldName, sort);
+                KeywordReportEntity topNData[] = topN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), n, fieldName, sort);
 
                 if ((skip + 1) * n > topNData.length) {
                     List<KeywordReportEntity> data = new ArrayList<>();
                     for (int j = skip * n; j < topNData.length; j++) {
                         data.add(topNData[j]);
                     }
-                    results.put("quality" + i, JSONUtils.getJsonObject(data));
+                    reportList.add(new KeywordQualityReportDTO(i, data));
                 } else {
                     KeywordReportEntity arrData[] = new KeywordReportEntity[n];
                     System.arraycopy(topNData, skip * n, arrData, 0, n);
-                    results.put("quality" + i, JSONUtils.getJsonObject(arrData));
+                    reportList.add(new KeywordQualityReportDTO(i, Arrays.asList(arrData)));
                 }
             }
 
         }
+
+        results.put("qualityDTO", JSONUtils.getJsonObjectArray(qualityList));
+        results.put("report", JSONUtils.getJsonObjectArray(reportList));
 
         return results;
     }
