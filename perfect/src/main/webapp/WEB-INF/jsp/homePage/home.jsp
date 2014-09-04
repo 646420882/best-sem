@@ -128,12 +128,12 @@
             <Span>账户趋势图</Span>
             <a href="javascript:void(0)" class="question"></a>
             <ul id="clickqushi">
-                <li>
+                <li class="current">
                     <a onclick="loadPerformanceCurve(this,7)">
                         近7天
                     </a>
                 </li>
-                <li class="current">
+                <li>
                     <a onclick="loadPerformanceCurve(this,30)">
                         近30天
                     </a>
@@ -1362,8 +1362,8 @@ var loadPerformanceCurve = function (obj, date) {
                     t_impr.push(item.pcImpression);
                     t_clicks.push(item.pcClick);
                     t_cost.push(item.pcCost);
-                    t_ctr.push(item.pcCtr);
-                    t_cpc.push(item.pcCpc);
+                    t_ctr.push(Math.round(item.pcCtr*100)/100);
+                    t_cpc.push(Math.round(item.pcCpc*100)/100);
                     t_conversion.push(item.pcConversion);
                 })
             }

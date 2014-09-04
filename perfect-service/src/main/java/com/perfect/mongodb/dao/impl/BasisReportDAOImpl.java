@@ -1,5 +1,6 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.BasisReportDAO;
 import com.perfect.dto.AccountReportDTO;
 import com.perfect.entity.StructureReportEntity;
@@ -25,7 +26,7 @@ public class BasisReportDAOImpl extends AbstractUserBaseDAOImpl<StructureReportE
     @Override
     public List<StructureReportEntity> getUnitReportDate(String userTable) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        List<StructureReportEntity> objectList = mongoTemplate.findAll(StructureReportEntity.class, userTable);
+        List<StructureReportEntity> objectList = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())),StructureReportEntity.class, userTable);
         return objectList;
     }
 
@@ -38,28 +39,28 @@ public class BasisReportDAOImpl extends AbstractUserBaseDAOImpl<StructureReportE
         } else {
             sort = new Sort(Sort.Direction.DESC, fieldName);
         }
-        List<AccountReportDTO> reportEntities = mongoTemplate.find(new Query().with(sort), AccountReportDTO.class, TBL_ACCOUNT_REPORT);
+        List<AccountReportDTO> reportEntities = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())).with(sort), AccountReportDTO.class, TBL_ACCOUNT_REPORT);
         return reportEntities;
     }
 
     @Override
     public long getAccountCount() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        long account_report = mongoTemplate.count(new Query(), TBL_ACCOUNT_REPORT);
+        long account_report = mongoTemplate.count(Query.query(Criteria.where("acid").is(AppContext.getAccountId())), TBL_ACCOUNT_REPORT);
         return account_report;
     }
 
     @Override
     public List<AccountReportDTO> getAccountReport(Date startDate, Date endDate) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        List<AccountReportDTO> reportResponses = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)),AccountReportDTO.class, TBL_ACCOUNT_REPORT);
+        List<AccountReportDTO> reportResponses = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())),AccountReportDTO.class, TBL_ACCOUNT_REPORT);
         return reportResponses;
     }
 
     @Override
     public List<StructureReportEntity> getKeywordReport(Long[] id,String table) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        List<StructureReportEntity> entityList = mongoTemplate.find(new Query(Criteria.where(KEYWORD_ID).in(id)),StructureReportEntity.class,table);
+        List<StructureReportEntity> entityList = mongoTemplate.find(new Query(Criteria.where(KEYWORD_ID).in(id).and(ACCOUNT_ID).is(AppContext.getAccountId())),StructureReportEntity.class,table);
         return  entityList;
     }
 

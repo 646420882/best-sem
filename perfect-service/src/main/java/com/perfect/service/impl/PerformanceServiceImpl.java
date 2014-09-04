@@ -132,7 +132,7 @@ public class PerformanceServiceImpl implements PerformanceService {
 
         List<AccountReportEntity> listUser = accountAnalyzeDAO.performaneCurve(startDate, endDate);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        DecimalFormat df = new DecimalFormat("#.00");
+        DecimalFormat df = new DecimalFormat("#.0000");
         for (AccountReportEntity list : listUser) {
             list.setPcImpression(list.getPcImpression() + ((list.getMobileImpression() == null) ? 0 : list.getMobileImpression()));
             list.setPcConversion(list.getPcConversion() + ((list.getMobileConversion() == null) ? 0 : list.getMobileConversion()));
