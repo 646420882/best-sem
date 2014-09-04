@@ -356,9 +356,10 @@
         </div>
     </div>
 </div>
+
+</div>
+</div>
 <jsp:include page="../homePage/pageBlock/footer.jsp"/>
-</div>
-</div>
 </div>
 </div>
 </body>

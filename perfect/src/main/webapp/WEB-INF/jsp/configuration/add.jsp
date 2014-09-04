@@ -32,6 +32,7 @@
             }
         });
     </script>
+
 </head>
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
@@ -47,7 +48,7 @@
             <div class="configure over">
                 <div class="configure_top over">
                     <h3 class="fl">添加推广帐号</h3>
-                    <a href="../configuration/" class="fr"> → 返回管理</span></a>
+                    <a href="../configuration/"  class="fr"> → 返回管理</a>
                 </div>
                 <div class="configure_under2 over">
                     <table id="stepTable" class="step_table" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -80,18 +81,20 @@
 
                 <div id="step2">
                     <form name="frm" method="post" action="/configuration/save">
-                        百度用户名: <input type="text" name="username"><br>
-                        百度密码: <input type="password" name="password"><br>
-                        再次确认百度密码: <input type="password" name="password1"><br>
-
-                        百度API Token: <input type="text" name="token"><br>
-
-                        <input id="submit" type="submit"/>
+                       <ul>
+                           <li><div class="add_list01 fl">百度用户名: </div><input type="text" name="username"></li>
+                           <li><div class="add_list01 fl">百度密码: </div><input type="password" name="password"></li>
+                           <li><div class="add_list01 fl">再次确认百度密码:</div><input type="password" name="password1"></li>
+                           <li><div class="add_list01 fl">  百度API Token: </div><input type="text" name="token"></li>
+                       </ul>
+                        <input id="submit" class="add_submit" type="submit"/>
                     </form>
 
                 </div>
             </div>
+
         </div>
+        <jsp:include page="../homePage/pageBlock/footer.jsp"/>
     </div>
 </div>
 <script type="application/javascript">
