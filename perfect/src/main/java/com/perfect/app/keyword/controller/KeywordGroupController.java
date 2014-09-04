@@ -50,6 +50,19 @@ public class KeywordGroupController {
     }
 
     /**
+     * getKRbySeedWord
+     *
+     * @param seedWord
+     * @return
+     */
+    @RequestMapping(value = "/getKRbySeedWord", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getKRbySeedWord(@RequestParam(value = "seedWord") String seedWord) {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        jsonView.setAttributesMap(keywordGroupService.getKRbySeedWord(seedWord));
+        return new ModelAndView(jsonView);
+    }
+
+    /**
      * 从系统词库获取关键词
      *
      * @param trade

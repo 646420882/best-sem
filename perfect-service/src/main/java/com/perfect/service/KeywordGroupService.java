@@ -80,4 +80,10 @@ public interface KeywordGroupService {
      * @param category
      */
     void saveKeywordFromPerfect(String trade, String category, String newCampaignName);
+
+    /**
+     * @param seedWord
+     * @return
+     */
+    Map<String, Object> getKRbySeedWord(String seedWord);
 }

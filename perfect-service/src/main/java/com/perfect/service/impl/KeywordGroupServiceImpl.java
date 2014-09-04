@@ -7,6 +7,7 @@ import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AccountManageDAO;
+import com.perfect.dto.KRResultDTO;
 import com.perfect.entity.*;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
@@ -409,6 +410,27 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
 
     public Map<String, Object> findCategories(String trade) {
         return JSONUtils.getJsonMapData(keywordGroupDAO.findCategories(trade));
+    }
+
+    @Override
+    public Map<String, Object> getKRbySeedWord(String seedWord) {
+        KRService krService = getKRService();
+        GetKRbySeedWordRequest getKRbySeedWordRequest = new GetKRbySeedWordRequest();
+        getKRbySeedWordRequest.setSeedWord(seedWord);
+        getKRbySeedWordRequest.setDevice(1);
+        GetKRbySeedWordResponse getKRbySeedWordResponse = krService.getKRbySeedWord(getKRbySeedWordRequest);
+        List<KRResult> list = getKRbySeedWordResponse.getKrResult();
+        List<KRResultDTO> results = new ArrayList<>();
+        for (KRResult entity : list) {
+            KRResultDTO krResultDTO = new KRResultDTO();
+            krResultDTO.setWord(entity.getWord());
+            krResultDTO.setExactPV(entity.getExactPV());
+            krResultDTO.setCompetition(entity.getCompetition());
+            krResultDTO.setFlag1(entity.getFlag1());
+            results.add(krResultDTO);
+        }
+        Map<String, Object> map = JSONUtils.getJsonMapData(results);
+        return map;
     }
 
     public Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit) {
