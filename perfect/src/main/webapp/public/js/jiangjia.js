@@ -234,6 +234,7 @@ $(function () {
 
     $('#rulesaverun').click(function () {
         sendReq(true);
+        $(".close").click();
     })
 
 

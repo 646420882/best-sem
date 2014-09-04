@@ -33,6 +33,8 @@ public class KeywordReportDTO extends KeywordEntity {
 
     private String ruleDesc;
 
+    private String statusStr;
+
     public Integer getImpression() {
         return impression;
     }
@@ -135,5 +137,13 @@ public class KeywordReportDTO extends KeywordEntity {
 
     public void setRuleDesc(String ruleDesc) {
         this.ruleDesc = ruleDesc;
+    }
+
+    public String getStatusStr() {
+        return statusStr;
+    }
+
+    public void setStatusStr(String statusStr) {
+        this.statusStr = statusStr;
     }
 }

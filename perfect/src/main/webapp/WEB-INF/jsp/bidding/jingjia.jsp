@@ -736,9 +736,9 @@ function fullItems(datas, name) {
                 "<td>&nbsp;" + item.price + "</td>" +
                 "<td>&nbsp;" + item.pcQuality + "</td>" +
                 "<td>&nbsp;" + item.mQuality + "</td>" +
-                "<td>&nbsp;" + item.status + "</td>";
+                "<td>&nbsp;" + item.statusStr + "</td>";
         if (item.rule) {
-            newrow = newrow + "<td>&nbsp;" + item.ruleDesc + "</td></tr>";
+            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>" + item.ruleDesc + "</a></td></tr>";
         } else {
 
             newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>+添加规则</a></td></tr>";
@@ -771,6 +771,10 @@ function fullItems(datas, name) {
             type: "GET",
             success: function (datas) {
                 var data = datas.rows;
+                if(data == null){
+                    alert("暂无排名信息,请刷新排名!");
+                    return false;
+                }
                 var msg = "当前排名获取时间: " + data.time + "\n";
                 msg = msg + "关键词: " + data.name + "\n";
                 msg = msg + "地域\t排名\n";

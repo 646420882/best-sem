@@ -1,6 +1,7 @@
 package com.perfect.test;
 
 import com.perfect.schedule.core.strategy.TBScheduleManagerFactory;
+import com.perfect.schedule.task.conf.impl.BiddingTaskConfig;
 import com.perfect.schedule.task.conf.impl.CountYesterdayCostTaskConfig;
 import com.perfect.schedule.task.conf.impl.DataPullTaskConfig;
 import org.junit.Test;
@@ -13,7 +14,7 @@ import org.unitils.spring.annotation.SpringBeanByName;
 /**
  * Created by vbzer_000 on 2014/6/19.
  */
-@SpringApplicationContext({ "schedule.xml"})
+@SpringApplicationContext({"schedule.xml"})
 public class TestConfig extends UnitilsJUnit4 {
     protected static transient Logger log = LoggerFactory
             .getLogger(TestConfig.class);
@@ -36,17 +37,24 @@ public class TestConfig extends UnitilsJUnit4 {
 
 
     @Test
-    public void initPullDataConfig(){
-        DataPullTaskConfig dataPullTaskConfig = new DataPullTaskConfig("DataPullTaskConfig","dataPull","dataPullTask","* * 1 * * ?",new String[]{"A","B"});
+    public void initPullDataConfig() {
+        DataPullTaskConfig dataPullTaskConfig = new DataPullTaskConfig("DataPullTaskConfig", "dataPull", "dataPullTask", "* * 1 * * ?", new String[]{"A", "B"});
         dataPullTaskConfig.setScheduleManagerFactory(scheduleManagerFactory);
         dataPullTaskConfig.createTask();
     }
 
 
     @Test
-    public void initCountYesterdayCostConfig(){
-        CountYesterdayCostTaskConfig countYesterdayCostTaskConfig = new CountYesterdayCostTaskConfig("CountYesterdayCostTaskConfig","accountWarningByEveryDay","countYesterdayCostTask","* 30 0 * * ?",new String[]{"A","B"});
+    public void initCountYesterdayCostConfig() {
+        CountYesterdayCostTaskConfig countYesterdayCostTaskConfig = new CountYesterdayCostTaskConfig("CountYesterdayCostTaskConfig", "accountWarningByEveryDay", "countYesterdayCostTask", "* 30 0 * * ?", new String[]{"A", "B"});
         countYesterdayCostTaskConfig.setScheduleManagerFactory(scheduleManagerFactory);
         countYesterdayCostTaskConfig.createTask();
+    }
+
+    @Test
+    public void initAutoBiddingConfig() {
+        BiddingTaskConfig biddingTaskConfig = new BiddingTaskConfig("BiddingTaskConfig", "TEST", "biddingTask", "0 0/10 * * ?", new String[]{"A"});
+        biddingTaskConfig.setScheduleManagerFactory(scheduleManagerFactory);
+        biddingTaskConfig.createTask();
     }
 }

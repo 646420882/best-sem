@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -96,31 +97,6 @@ public class BiddingSubTask implements Runnable {
 
         StrategyEntity strategyEntity = biddingRuleEntity.getStrategyEntity();
 
-//        String host = null;
-//
-//        if (strategyEntity.getDevice() == BiddingStrategyConstants.TYPE_PC.value()) {
-//            try {
-//                URL url = new URL(keywordEntity.getPcDestinationUrl());
-//                host = url.getHost();
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            try {
-//                URL url = new URL(keywordEntity.getMobileDestinationUrl());
-//                host = url.getHost();
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        if (host == null) {
-//            if (logger.isDebugEnabled()) {
-//                logger.debug("未匹配正确的host地址! keywordId=" + keywordEntity.getKeywordId());
-//            }
-//            return;
-//        }
-
         Integer[] regionList = strategyEntity.getRegionTarget();
         if (regionList == null) {
             CampaignEntity campaignEntity = campaignService.findByKeywordId(keywordEntity.getKeywordId());
@@ -129,6 +105,13 @@ public class BiddingSubTask implements Runnable {
             } else {
                 regionList = accountInfoEntity.getRegionTarget().toArray(new Integer[]{});
             }
+        }
+
+        Date nextRun = BiddingRuleUtils.getDateInvMinute(strategyEntity.getTimes(), strategyEntity.getInterval());
+        if (nextRun.after(Calendar.getInstance().getTime())) {
+            biddingRuleEntity.setNext(nextRun.getTime());
+            biddingRuleService.updateRule(biddingRuleEntity);
+            return;
         }
 
         for (Integer region : regionList) {
@@ -195,10 +178,7 @@ public class BiddingSubTask implements Runnable {
                     break;
                 } else {
                     // 出价策略
-                    double currentPrice = biddingRuleEntity.getCurrentPrice();
-                    if (currentPrice < strategyEntity.getMinPrice()) {
-                        currentPrice = strategyEntity.getMinPrice();
-                    }
+                    double currentPrice = strategyEntity.getMinPrice();
                     if (strategyEntity.getMode() == BiddingStrategyConstants.SPD_FAST.value()) {
                         currentPrice = currentPrice + FAST_PRICE;
                     } else {
@@ -231,7 +211,7 @@ public class BiddingSubTask implements Runnable {
                             keywordType.setPrice(keywordEntity.getPrice());
 
                             biddingRuleEntity.setCurrentPrice(keywordEntity.getPrice());
-//                        apiService.setKeywordPrice(keywordType);
+                            apiService.setKeywordPrice(keywordType);
                             biddingRuleService.updateRule(biddingRuleEntity);
                         }
                         break;
@@ -241,7 +221,7 @@ public class BiddingSubTask implements Runnable {
                         keywordType.setKeywordId(keywordEntity.getKeywordId());
                         keywordType.setPrice(currentPrice);
                         biddingRuleEntity.setCurrentPrice(currentPrice);
-//                    apiService.setKeywordPrice(keywordType);
+                        apiService.setKeywordPrice(keywordType);
                         biddingRuleService.updateRule(biddingRuleEntity);
 
                         if (logger.isDebugEnabled()) {
@@ -250,7 +230,7 @@ public class BiddingSubTask implements Runnable {
 
                         try {
                             //竞价完成一个阶段
-                            Thread.sleep(1000);
+                            Thread.sleep(10000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

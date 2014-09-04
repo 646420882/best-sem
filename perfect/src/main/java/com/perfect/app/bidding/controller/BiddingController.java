@@ -5,6 +5,7 @@ import com.perfect.app.bidding.dto.KeywordReportDTO;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
+import com.perfect.constants.KeywordStatusEnum;
 import com.perfect.core.AppContext;
 import com.perfect.entity.*;
 import com.perfect.entity.bidding.BiddingRuleEntity;
@@ -288,6 +289,8 @@ public class BiddingController {
             KeywordReportDTO keywordReportDTO = new KeywordReportDTO();
             BeanUtils.copyProperties(entity, keywordReportDTO);
 
+            keywordReportDTO.setStatusStr(KeywordStatusEnum.getName(entity.getStatus()));
+
             keywordReportDTOHashMap.put(entity.getKeywordId(), keywordReportDTO);
             resultList.add(keywordReportDTO);
             ids.add(entity.getKeywordId());
@@ -400,10 +403,14 @@ public class BiddingController {
 
         for (String key : rankMap.keySet()) {
             KeywordEntity keywordEntity = keywordEntityMap.get(key);
+            KeywordRankEntity currentRank = keywordRankService.findRankByKeywordId(keywordEntity.getKeywordId());
 
-            KeywordRankEntity keywordRankEntity = rankMap.get(key);
-            keywordRankEntity.setAccountId(accountId);
-            keywordRankEntity.setKwid(keywordEntity.getKeywordId());
+            if (currentRank == null) {
+                KeywordRankEntity keywordRankEntity = rankMap.get(key);
+                keywordRankEntity.setAccountId(accountId);
+                keywordRankEntity.setKwid(keywordEntity.getKeywordId());
+            }else{
+            }
 
         }
         keywordRankService.updateRanks(rankMap.values());
