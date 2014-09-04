@@ -145,7 +145,6 @@ public class AccountDataServiceImpl implements AccountDataService {
     @Override
     public void updateAccountData(String userName, long accountId) {
         SystemUserEntity systemUserEntity = systemUserService.getSystemUser(userName);
-
         if (systemUserEntity == null) {
             return;
         }
@@ -157,6 +156,8 @@ public class AccountDataServiceImpl implements AccountDataService {
         }
 
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(userName);
+        //清除当前账户所有数据
+        clearCollectionData(mongoTemplate, accountId);
 
         BaiduAccountInfoEntity _entity = null;
         for (BaiduAccountInfoEntity baiduAccountInfoEntity : baiduAccountInfoEntityList) {
@@ -173,11 +174,22 @@ public class AccountDataServiceImpl implements AccountDataService {
             AccountInfoType accountInfoType = apiService.getAccountInfo();
             BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
 
+            //更新账户数据
+            MongoTemplate mongoTemplate1 = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+            Update update = new Update();
+            update.set("bdAccounts.$", _entity);
+            mongoTemplate1.updateFirst(
+                    Query.query(
+                            Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
+                    update, SystemUserEntity.class);
+
+
+            //更新推广计划数据
             List<CampaignType> campaignTypes = apiService.getAllCampaign();
-
             List<CampaignEntity> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
+            mongoTemplate.insertAll(campaignEntities);
 
-            // 查询推广单元
+            //查询推广单元
             List<Long> camIds = new ArrayList<>(campaignEntities.size());
 
             for (CampaignEntity campaignEntity : campaignEntities) {
@@ -185,28 +197,59 @@ public class AccountDataServiceImpl implements AccountDataService {
                 camIds.add(campaignEntity.getCampaignId());
             }
 
+            //更新推广单元数据
             List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(camIds);
-
             List<AdgroupEntity> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
+            mongoTemplate.insertAll(adgroupEntities);
 
-            List<Long> adgroupdIds = new ArrayList<>();
+            List<Long> adgroupIds = new ArrayList<>();
             for (AdgroupEntity adgroupEntity : adgroupEntities) {
                 adgroupEntity.setAccountId(aid);
-                adgroupdIds.add(adgroupEntity.getAdgroupId());
+                adgroupIds.add(adgroupEntity.getAdgroupId());
             }
 
-            List<KeywordType> keywordTypes = apiService.getAllKeyword(adgroupdIds);
+            //分批次请求关键词数据
+            List<Long> subList = new ArrayList<>(4);
+            for (int i = 1; i <= adgroupIds.size(); i++) {
+                Long adgroupId = adgroupIds.get(i - 1);
+                subList.add(adgroupId);
 
-            List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+                if (i % 4 == 0) {
+                    List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
+                    List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
 
-            List<Long> kwids = new ArrayList<>(keywordEntities.size());
-            for (KeywordEntity keywordEntity : keywordEntities) {
-                keywordEntity.setAccountId(aid);
-                kwids.add(keywordEntity.getKeywordId());
+                    for (KeywordEntity keywordEntity : keywordEntities) {
+                        keywordEntity.setAccountId(aid);
+                    }
+                    mongoTemplate.insert(keywordEntities, KeywordEntity.class);
+                    subList.clear();
+                }
             }
 
 
-            List<CreativeType> creativeTypes = apiService.getAllCreative(adgroupdIds);
+            if (!subList.isEmpty()) {
+                List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
+                List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+
+                for (KeywordEntity keywordEntity : keywordEntities) {
+                    keywordEntity.setAccountId(aid);
+                }
+                mongoTemplate.insert(keywordEntities, KeywordEntity.class);
+                subList.clear();
+            }
+
+//            List<KeywordType> keywordTypes = apiService.getAllKeyword(adgroupIds);
+//
+//            List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+//
+//            List<Long> kwids = new ArrayList<>(keywordEntities.size());
+//            for (KeywordEntity keywordEntity : keywordEntities) {
+//                keywordEntity.setAccountId(aid);
+//                kwids.add(keywordEntity.getKeywordId());
+//            }
+
+
+            List<CreativeType> creativeTypes = apiService.getAllCreative(adgroupIds);
 
             List<CreativeEntity> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
 
@@ -215,27 +258,9 @@ public class AccountDataServiceImpl implements AccountDataService {
                 creativeEntity.setAccountId(aid);
                 creativeIds.add(creativeEntity.getCreativeId());
             }
-
-            //clear data
-            clearCollectionData(mongoTemplate, accountId);
-
-            //update data
-            mongoTemplate.insertAll(campaignEntities);
-
-            mongoTemplate.insertAll(adgroupEntities);
-            mongoTemplate.insertAll(keywordEntities);
             mongoTemplate.insertAll(creativeEntityList);
-
         }
 
-        //update account data
-        MongoTemplate mongoTemplate1 = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
-        Update update = new Update();
-        update.set("bdAccounts.$", _entity);
-        mongoTemplate1.updateFirst(
-                Query.query(
-                        Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
-                update, SystemUserEntity.class);
     }
 
     @Override
