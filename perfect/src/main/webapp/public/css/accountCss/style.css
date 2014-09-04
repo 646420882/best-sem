@@ -1,18 +1,17 @@
 /***mid***/
-.concent{ width: 85%; min-width:1363px;}
 .mid {
 
     min-height: 901px;
 }
 .concent {
+    width: 85%; min-width:1363px;
     position: relative;
     margin-top:77px;
-    *padding-top:77px;
     background:#fff;
     /*   background: url(/public/img/concent_bg.jpg) repeat;*/
     font-family: "微软雅黑";
     font-size: 12px;
-    z-index:102;
+    z-index:110;
 }
 #tab {
     padding-bottom: 30px;
@@ -316,7 +315,7 @@
     margin: 0px;
 }
 .list2 table tr td ul li ul {
-    width: 50%;
+    width: 100%;
 }
 .list2 table tr td ul li ul li {
     width: 14px;
@@ -325,7 +324,7 @@
 .list2_top2 {
     height: 30px;
 }
-.list2 table span, .list3 table span {
+.list2 table .list2_top span, .list3 table .list2_top span {
     display: block;
     float: left;
     *display:inline-block;
@@ -417,9 +416,14 @@
 
 .tips {
     width: 3%;
+    max-width:8px;
     position:relative;
     background: url(/public/img/tips_bg_03.png) repeat;
-    min-height: 1140px;
+    height: 1140px;
+    z-index: 120;
+    left: 0px;
+    top: 0px;
+
 }
 .tips input {
     margin-top: 200px;
@@ -2481,12 +2485,65 @@ overflow: auto;
 }
 .newkeyword_top3 .current{
     color:#959595;
-
 }
 .newkeyword_end2 p{
     margin:10px 0;
-
 }
 .newkeyword_end1{
     cursor: pointer;
+}
+.pen{
+    display:block;
+    width:16px;
+    height:16px;
+    background: url(/public/img/pen.png) no-repeat;
+}
+/***********搜索词报告*********/
+.searchword_top{
+    height:70px;
+    background:#fafafa;
+    border: 1px solid #dadadd;
+}
+.searchword_top ul li{
+    display:block;
+    float:left;
+    height:40px;
+    padding:15px 20px;
+    line-height:24px;
+    border-right: 1px solid #dadadd;
+}
+
+.searchword_top ul li span{
+    display:block;
+}
+.searchword_top ul .current{
+    background:#f5b802;
+}
+.searchword_under1{
+    width:30%;
+}
+.searchword_under2{
+    width:65%;
+}
+.search_input {
+    padding:10px;
+    background:#fff;
+    border:1px solid #ccc;
+}
+.search_input{
+    margin: 0 0 10px 0;
+}
+.search_mid{
+    height:462px;
+    background:#fff;
+    border:1px solid #ccc;
+    line-height:24px;
+}
+.search_mid span{
+    line-height:30px;
+    font-size:16px;
+}
+.searchword_under{
+    margin:10px;
+
 }

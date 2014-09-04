@@ -18,8 +18,7 @@ public class ImportLexiconExcel {
     private static String trade;
 
     public static void main(String[] args) {
-        ExcelUtils<LexiconEntity> entityExcelUtils = new ExcelUtils<>();
-        Map<String, List<LexiconEntity>> map = entityExcelUtils
+        Map<String, List<LexiconEntity>> map = ExcelUtils
                 .readExcel("/home/baizz/文档/五大行业词包20140808/电商行业.xlsx", "/home/baizz/keyword.xml", LexiconEntity.class);
         List<LexiconEntity> list = new ArrayList<>();
         for (Map.Entry<String, List<LexiconEntity>> entry : map.entrySet()) {
@@ -61,7 +60,7 @@ public class ImportLexiconExcel {
                     entity.setTrade(trade);
                     list.add(entity);
                 }
-                MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate("sys");
+                MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
                 mongoTemplate.insertAll(list);
 //                System.out.println("=======================" + first);
             } else {

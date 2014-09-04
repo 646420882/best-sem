@@ -105,7 +105,7 @@
             <li><a href="#"><span class="z_function_hover"><img
                     src="../public/img/zs_function9.png"></span><b>还原</b></a>
             </li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+            <li><a href="#" id="searchword"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
             <li><a href="#"><span class="z_function_hover"><img
                     src="../public/img/zs_function11.png"></span><b>激活</b></a>
             </li>
@@ -228,9 +228,8 @@
                 <td>&nbsp;移动访问URL</td>
                 <td>&nbsp;移动显示URL</td>
                 <td>&nbsp;启用/暂停</td>
-                <td>&nbsp;创意状态
-                    <div class="set fr"></div>
-                </td>
+                <td>&nbsp;创意状态</td>
+                <td> <div class="set fr"></div></td>
             </tr>
             </thead>
             <tbody id="tbodyClick2">
@@ -1093,7 +1092,7 @@
         </div>
     </div>
 </div>
-!---------IP排除----------->
+<!---------IP排除----------->
 <div class="box6" style="display:none;width: 300px">
     <h2 id="box6">IP排除<a href="#" class="close">关闭</a></h2>
 
