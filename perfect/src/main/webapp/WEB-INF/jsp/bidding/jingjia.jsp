@@ -139,7 +139,8 @@
                         <li class="current showbox">设置规则</li>
                         <li id="rankBtn">检查当前排名</li>
                         <li class="showbox2">修改出价</li>
-                        <li class="showbox3">修改匹配模式</li>
+                        <li class="showbox7">启动竞价</li>
+                        <li class="showbox3">暂停竞价</li>
                         <li class="showbox4">修改访问网址</li>
                         <li class="showbox5">分组</li>
                         <li class="showbox6">自定义列</li>
@@ -225,8 +226,8 @@
                     <div class="w_list03">
                         <ul class="jiangjia_list">
                             <li class="current Screenings">筛选</li>
+                            <li class="showbox3">暂停竞价</li>
                             <li class="showbox2">修改出价</li>
-                            <li class="showbox3">修改匹配模式</li>
                             <li class="showbox4">修改访问网址</li>
                             <li class="showbox5">分组</li>
                             <li class="showbox6">自定义列</li>

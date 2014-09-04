@@ -2,6 +2,9 @@ package com.perfect.app.web;
 
 import com.perfect.core.AppContext;
 import com.perfect.entity.BaiduAccountInfoEntity;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.AbstractView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -53,5 +56,10 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         }else{
             return (List<BaiduAccountInfoEntity>)list;
         }
+    }
+
+
+    public static ModelAndView getJsonView(){
+        return new ModelAndView(new MappingJackson2JsonView());
     }
 }

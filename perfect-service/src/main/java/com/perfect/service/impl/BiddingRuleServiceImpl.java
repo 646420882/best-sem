@@ -117,6 +117,11 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
         biddingRuleDAO.updateRank(values);
     }
 
+    @Override
+    public boolean setEnable(Long[] ids, boolean ebl) {
+        return biddingRuleDAO.setEnable(ids,ebl);
+    }
+
 
     public long countRule(String userName) {
         return biddingRuleDAO.count();

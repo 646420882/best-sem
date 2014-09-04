@@ -9,6 +9,7 @@ import com.perfect.dto.CreativeDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.KeywordEntity;
+import com.perfect.entity.bidding.BiddingLogEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.entity.bidding.StrategyEntity;
 import com.perfect.service.BaiduApiService;
@@ -107,12 +108,23 @@ public class BiddingSubTask implements Runnable {
             }
         }
 
-        Date nextRun = BiddingRuleUtils.getDateInvMinute(strategyEntity.getTimes(), strategyEntity.getInterval());
-        if (nextRun.after(Calendar.getInstance().getTime())) {
-            biddingRuleEntity.setNext(nextRun.getTime());
-            biddingRuleService.updateRule(biddingRuleEntity);
-            return;
+        int interval = strategyEntity.getInterval();
+        Date nextRun = null;
+        if (interval >= 60) {
+            nextRun = BiddingRuleUtils.getDateInvHour(strategyEntity.getTimes(), interval);
+        } else if (interval > 0 && interval < 60) {
+            nextRun = BiddingRuleUtils.getDateInvMinute(strategyEntity.getTimes(), interval);
+        } else if (interval == -1) {
+            Integer[] times = BiddingRuleUtils.getNextRunRange(strategyEntity.getTimes());
+
         }
+        if (nextRun.after(Calendar.getInstance().getTime())) {
+            if (biddingRuleEntity.getNext() != nextRun.getTime())
+                biddingRuleEntity.setNext(nextRun.getTime());
+        } else {
+            biddingRuleEntity.setEnabled(false);
+        }
+        biddingRuleService.updateRule(biddingRuleEntity);
 
         for (Integer region : regionList) {
 
@@ -178,11 +190,26 @@ public class BiddingSubTask implements Runnable {
                     break;
                 } else {
                     // 出价策略
-                    double currentPrice = strategyEntity.getMinPrice();
-                    if (strategyEntity.getMode() == BiddingStrategyConstants.SPD_FAST.value()) {
-                        currentPrice = currentPrice + FAST_PRICE;
+                    double currentPrice = biddingRuleEntity.getCurrentPrice();
+
+                    // 竞价日志
+                    BiddingLogEntity biddingLogEntity = new BiddingLogEntity();
+                    biddingLogEntity.setKeywordId(keywordEntity.getKeywordId());
+                    biddingLogEntity.setDate(System.currentTimeMillis());
+
+                    if (currentPrice < strategyEntity.getMinPrice()) {
+                        currentPrice = strategyEntity.getMinPrice();
+                        biddingLogEntity.setBefore(keywordEntity.getPrice());
+                        biddingLogEntity.setAfter(currentPrice);
                     } else {
-                        currentPrice = currentPrice + ECON_PRICE;
+                        biddingLogEntity.setBefore(currentPrice);
+                        if (strategyEntity.getMode() == BiddingStrategyConstants.SPD_FAST.value()) {
+                            currentPrice = currentPrice + FAST_PRICE;
+                        } else {
+                            currentPrice = currentPrice + ECON_PRICE;
+                        }
+                        biddingLogEntity.setAfter(currentPrice);
+
                     }
 
                     if (logger.isDebugEnabled()) {
@@ -236,9 +263,146 @@ public class BiddingSubTask implements Runnable {
                         }
                     }
                 }
+
+
             }
 
+        }
+    }
 
+    public long computNext(StrategyEntity strategyEntity) {
+
+        return 0l;
+    }
+
+    private boolean innerBidding(BiddingRuleEntity biddingRuleEntity, GetPreviewRequest request) {
+        List<HTMLAnalyseServiceImpl.PreviewData> datas = service.getPageData(request);
+
+        if (datas.isEmpty()) {
+            return true;
+//            try {
+//                Thread.sleep(1000);
+//                if (retry-- == 0) {
+//                    break;
+//                } else {
+//                    continue;
+//                }
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+        }
+        HTMLAnalyseServiceImpl.PreviewData previewData = datas.get(0);
+        // 解析实况页面数据
+
+        if ((previewData.getLeft() == null || previewData.getLeft().isEmpty()) && (previewData.getRight() == null || previewData.getRight().isEmpty())) {
+            return true;
+        }
+
+
+        StrategyEntity strategyEntity = biddingRuleEntity.getStrategyEntity();
+        int pos = strategyEntity.getExpPosition();
+        List<CreativeDTO> leftList = previewData.getLeft();
+        List<CreativeDTO> rightList = previewData.getRight();
+        CreativeDTO creativeDTO = null;
+
+        if (pos == BiddingStrategyConstants.POS_LEFT_1.value() && leftList.size() > 0) {
+            creativeDTO = leftList.get(0);
+        } else if (pos == BiddingStrategyConstants.POS_LEFT_2_3.value() && leftList.size() > 1) {
+            creativeDTO = leftList.get(1);
+        } else if (pos == BiddingStrategyConstants.POS_RIGHT_1_3.value() && rightList.size() > 1) {
+            creativeDTO = rightList.get(0);
+        } else if (pos == BiddingStrategyConstants.POS_RIGHT_OTHERS.value() && rightList.size() > 3) {
+            creativeDTO = rightList.get(3);
+        }
+
+        String url = creativeDTO.getUrl();
+        // 已经达到排名
+        if (url.equals(host)) {
+
+            // 单次竞价或者重复竞价
+            Date time = BiddingRuleUtils.getDateInvMinute(strategyEntity.getTimes(), -1);
+            biddingRuleEntity.setNext(time.getTime());
+            biddingRuleService.updateRule(biddingRuleEntity);
+
+            if (logger.isDebugEnabled()) {
+                logger.debug("达到排名..." + host + "\n下次启动时间: " + time);
+            }
+            return false;
+        } else {
+            // 出价策略
+            double currentPrice = biddingRuleEntity.getCurrentPrice();
+
+            // 竞价日志
+            BiddingLogEntity biddingLogEntity = new BiddingLogEntity();
+            biddingLogEntity.setKeywordId(keywordEntity.getKeywordId());
+            biddingLogEntity.setDate(System.currentTimeMillis());
+
+            if (currentPrice < strategyEntity.getMinPrice()) {
+                currentPrice = strategyEntity.getMinPrice();
+                biddingLogEntity.setBefore(keywordEntity.getPrice());
+                biddingLogEntity.setAfter(currentPrice);
+            } else {
+                biddingLogEntity.setBefore(currentPrice);
+                if (strategyEntity.getMode() == BiddingStrategyConstants.SPD_FAST.value()) {
+                    currentPrice = currentPrice + FAST_PRICE;
+                } else {
+                    currentPrice = currentPrice + ECON_PRICE;
+                }
+                biddingLogEntity.setAfter(currentPrice);
+
+            }
+
+            if (logger.isDebugEnabled()) {
+                logger.debug("未达到排名..." + host + "\n最新出价: " + currentPrice);
+            }
+
+            if (currentPrice > strategyEntity.getMaxPrice()) {
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("未达到排名..." + host + "\n出价以超过最大价格!");
+                }
+                int failed = strategyEntity.getFailedStrategy();
+                if (failed == BiddingStrategyConstants.FAILED_KEEP.value()) {
+                    // 保持当前排名
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("未达到排名..." + host + "\n保持当前排名.");
+                    }
+                } else if (failed == BiddingStrategyConstants.FAILED_ROLLBACK.value()) {
+                    //竞价失败 恢复之前的原始竞价
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("未达到排名..." + host + "\n恢复原始竞价名.");
+                    }
+
+                    KeywordType keywordType = new KeywordType();
+                    keywordType.setKeywordId(keywordEntity.getKeywordId());
+                    keywordType.setPrice(keywordEntity.getPrice());
+
+                    biddingRuleEntity.setCurrentPrice(keywordEntity.getPrice());
+                    apiService.setKeywordPrice(keywordType);
+                    biddingRuleService.updateRule(biddingRuleEntity);
+                }
+                return false;
+            } else {
+                // 正常流程
+                KeywordType keywordType = new KeywordType();
+                keywordType.setKeywordId(keywordEntity.getKeywordId());
+                keywordType.setPrice(currentPrice);
+                biddingRuleEntity.setCurrentPrice(currentPrice);
+                apiService.setKeywordPrice(keywordType);
+                biddingRuleService.updateRule(biddingRuleEntity);
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("未达到排名..." + host + "\n出价完成,一秒后进行下一次出价.");
+                }
+
+                try {
+                    //竞价完成一个阶段
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }
         }
     }
 }

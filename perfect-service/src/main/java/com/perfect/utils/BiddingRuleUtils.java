@@ -40,11 +40,12 @@ public class BiddingRuleUtils {
     public static Date getDateInvMinute(Integer[] times, int interval) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("0 *");
-        if(interval > 0){
-            sb.append("/").append(interval).append(" ");
-        }else{
-            sb.append(" ");
+        sb.append("0 ");
+        if (interval > 0) {
+            sb.append("0/").append(interval).append(" ");
+        } else {
+            sb.append("0 ");
+            times = getNextRunRange(times);
         }
 
         for (int i = 0; i < times.length; i++) {
@@ -72,7 +73,7 @@ public class BiddingRuleUtils {
             sb.append(times[i]).append("-").append(times[++i] - 1).append(",");
         }
 
-        sb.deleteCharAt(sb.length() - 1).append("/").append(interval);
+        sb.deleteCharAt(sb.length() - 1).append("/").append(interval/60);
         sb.append(" * * ?");
 
         try {
@@ -83,5 +84,36 @@ public class BiddingRuleUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Integer[] getNextRunRange(Integer[] times) {
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        for (int i = 0; i < times.length; i++) {
+            int start = times[i];
+            int end = times[++i];
+
+            if (start <= hour && hour <= end) {
+                Integer[] newTime = null;
+                if (i == times.length - 1) {
+                    newTime = new Integer[]{times[0], times[1]};
+                } else {
+                    newTime = new Integer[]{times[i], times[++i]};
+                }
+                return newTime;
+            }
+        }
+        return null;
+    }
+
+
+    public static void main(String[] args) {
+        Date date = getDateInvMinute(new Integer[]{1, 4, 14, 18 }, -1);
+        System.out.println("date = " + date);
+
+        date = getDateInvMinute(new Integer[]{1, 4, 14, 16 }, 40);
+        System.out.println("date = " + date);
+
+        date = getDateInvHour(new Integer[]{1, 4, 14, 17 }, 60);
+        System.out.println("date = " + date);
     }
 }

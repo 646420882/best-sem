@@ -17,8 +17,8 @@ public class BiddingTaskConfig extends BaseTaskConfig {
     protected ScheduleTaskType createTaskType() {
         ScheduleTaskType scheduleTaskType = super.createTaskType();
 
-        scheduleTaskType.setSleepTimeInterval(10 * 60 * 1000);
-        scheduleTaskType.setPermitRunStartTime("startrun:");
+        scheduleTaskType.setSleepTimeInterval(10 * 1000);
+
         scheduleTaskType.setPermitRunEndTime(null);
 
         return scheduleTaskType;
