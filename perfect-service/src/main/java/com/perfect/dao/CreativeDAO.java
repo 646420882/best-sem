@@ -1,6 +1,7 @@
 package com.perfect.dao;
 
 import com.perfect.entity.CreativeEntity;
+import com.perfect.entity.backup.CreativeBackUpEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,11 @@ public interface CreativeDAO extends MongoCrudRepository<CreativeEntity, Long> {
     void deleteByCacheId(Long cacheCreativeId);
     void deleteByCacheId(String cacheCreativeId);
     String insertOutId(CreativeEntity creativeEntity);
+    void insertByReBack(CreativeEntity oldcreativeEntity);
     CreativeEntity findByObjId(String obj);
     void updateByObjId(CreativeEntity creativeEntity);
+    void update(CreativeEntity newCreativeEntity,CreativeEntity creativeBackUpEntity);
     void updateAdgroupIdByOid(String id, Long adgroupId);
+    void delBack(Long oid);
+
 }

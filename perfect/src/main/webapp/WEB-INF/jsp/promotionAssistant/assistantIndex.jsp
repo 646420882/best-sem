@@ -204,8 +204,8 @@
             </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
                     type="image" src="../public/img/zs_input.png"></b></a></li>
-            <li><a href="#"><span class="z_function_hover"><img
-                    src="../public/img/zs_function9.png"></span><b>还原</b></a>
+            <li><a href="#"><span class="z_function_hover" id="reBak"><img
+                    src="../public/img/zs_function9.png"></span><b onclick="reBakClick();">还原</b></a>
             </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
             <li><a href="#"><span class="z_function_hover"><img

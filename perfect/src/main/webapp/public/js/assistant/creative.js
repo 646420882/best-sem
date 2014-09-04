@@ -74,7 +74,7 @@ function InitMenu() {
                 var _input = $(this).parents("tr").find("input");
                 var _tr = $(this).parents("tr");
                 $(this).submit("../assistantCreative/add", function (rs) {
-                    var json=eval("("+rs+")");
+                    var json = eval("(" + rs + ")");
                     if (json.success == "1") {
                         _tr.remove();
                         var data = {};
@@ -102,6 +102,7 @@ function InitMenu() {
                             " <td >" + until.substring(10, data["mobileDisplayUrl"]) + "</td>" +
                             " <td >" + p + "</td>" +
                             " <td >" + s + "</td>" +
+                            " <td ><span class='pen'></span></td>" +
                             "</tr>";
                         _createTable.append(_tbody);
                     }
@@ -115,6 +116,7 @@ function InitMenu() {
  * @param params
  */
 function loadCreativeData(params) {
+    initRbackBtn();
     $.get("/assistantCreative/getList", params, function (result) {
         var _createTable = $("#createTable tbody");
         if (result != "[]") {
@@ -123,11 +125,12 @@ function loadCreativeData(params) {
                 _createTable.empty();
                 var _trClass = "";
                 for (var i = 0; i < json.length; i++) {
-                    var _id=json[i].creativeId!=null?json[i].creativeId:json[i].id;
-                    var _edit=parseInt(json[i].status)!=-1?"":"span";
+                    var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
+                    var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
+                    var ls = getLocalStatus(parseInt(_edit));
                     _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                     var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                        "<td >&nbsp;<input type='hidden' value='" +_id + "'/></td>" +
+                        "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                         "<td >" + until.substring(10, json[i].title) + "</td>" +
                         " <td >" + until.substring(10, json[i].description1) + "</td>" +
                         " <td >" + until.substring(10, json[i].description2) + "</td>" +
@@ -137,7 +140,7 @@ function loadCreativeData(params) {
                         " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
                         " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
                         " <td >" + until.getCreativeStatus(parseInt(json[i].status)) + "<input type='hidden' value='" + json[i].status + "'/></td>" +
-                        " <td >"+_edit+"</td>" +
+                        " <td >" + ls + "</td>" +
                         "</tr>";
                     _createTable.append(_tbody);
                 }
@@ -154,7 +157,14 @@ function loadCreativeData(params) {
  * @param obj
  */
 function on(obj) {
-
+    var _this = $(obj);
+    tmp = _this;
+    var _edit = _this.find("td:eq(10)").html()
+    if (_edit != "") {
+        onRbackBtn();
+    } else {
+        initRbackBtn();
+    }
     preview(obj);
     $("#sDiv input[type='text']").val("");
     var _this = $(obj);
@@ -255,7 +265,7 @@ function addCreative() {
             " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='36'></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
             " <td><span>本地新增</span><input type='hidden' value='-1' name='status'></td>" +
-            " <td>span</td>" +
+            " <td><span class='pen'></span></td>" +
             "</tr>";
         _createTable.append(_tbody);
     } else if (sparams.cid != null && sparams.aid == null) {
@@ -498,13 +508,13 @@ function loadUnit(rs) {
                 _sUnit.empty();
                 _sUnit.append(_def);
                 for (var i = 0; i < json.length; i++) {
-                    var _id=null;
-                    if(json[i].adgroupId!=null){
-                        _id=json[i].adgroupId;
-                    }else{
-                        _id=json[i].id;
+                    var _id = null;
+                    if (json[i].adgroupId != null) {
+                        _id = json[i].adgroupId;
+                    } else {
+                        _id = json[i].id;
                     }
-                    var str = "<option value='" +_id+ "'>" + json[i].adgroupName + "</option>";
+                    var str = "<option value='" + _id + "'>" + json[i].adgroupName + "</option>";
                     $("#sUnit").append(str);
                 }
             }
@@ -535,7 +545,7 @@ function deleteByObjectId(temp) {
     if (con) {
         $.get("/assistantCreative/del", {oid: oid}, function (rs) {
             if (rs == "1") {
-                removeThe(temp);
+               $(tmp).find("td:eq(10)").html("<span class='e' step='3'>被删除</span>");
             }
         });
     }
@@ -586,16 +596,20 @@ function updateCreatvie(temp) {
  * 修改确认提交方法
  */
 function updateOk() {
-
     var _this = $(tmp);
     $("#cUpdateForm").formSubmit("/assistantCreative/update", function (rs) {
         if (rs == "1") {
-            _this.remove();
             var p = formData["pause"] == "true" ? "启用" : "暂停";
             var _createTable = $("#createTable tbody");
             var i = $("#createTable tbody tr").size();
             var _trClass = i % 2 == 0 ? "list2_box1 list2_box3" : "list2_box2 list2_box3";
-            var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
+            var _edit = null;
+            if (formData["oid"].length > 18) {
+                _edit = "<span class='pen' step='1'>1</span>";
+            } else {
+                _edit = "<span class='pen' step='2'></span>";
+            }
+            var _tbody =
                 "<td>&nbsp;<span style='display: none;'>" + formData["oid"] + "</span></td>" +
                 "<td >" + until.substring(10, formData["title"]) + "</td>" +
                 " <td >" + until.substring(10, formData["description1"]) + "</td>" +
@@ -606,8 +620,8 @@ function updateOk() {
                 " <td >" + until.substring(10, formData["mobileDisplayUrl"]) + "</td>" +
                 " <td >" + p + "</td>" +
                 " <td >" + until.getCreativeStatus(parseInt(formData["status"])) + "</td>" +
-                "</tr>";
-            _createTable.append(_tbody);
+                " <td >" + _edit + "</td>";
+            $(tmp).html(_tbody);
             alert("修改完成");
             closeAlert();
 
@@ -620,6 +634,86 @@ function updateOk() {
  */
 function getRandomId() {
     return Math.floor(Math.random() * 10000000000) + 1;
+}
+function initRbackBtn() {
+    tmp = null;
+    $("#reBak").attr("class", "z_function_hover");
+}
+function onRbackBtn() {
+    $("#reBak").attr("class", "zs_top");
+}
+function reBakClick() {
+    var _this = $(tmp);
+    if (_this.html() != undefined) {
+        var _edit = _this.find("td:eq(10)").html();
+        if (_edit != "") {
+            var con = confirm("是否还原选中的数据？");
+            if (con) {
+                var _localStatus = parseInt(_this.find("td:eq(10) span").attr("step"));
+                var _oid = _this.find("td:eq(0) input").val() != undefined ? _this.find("td:eq(0) input").val() : _this.find("td:eq(0) span").html();
+                switch (_localStatus) {
+                    case 1:
+                        deleteByObjectId(tmp);
+                        break;
+                    case 2:
+
+                        reBack(_oid);
+                        break;
+                    case 3:
+                        delBack(_oid);
+                        break;
+                    default :
+                        break;
+                }
+            }
+        }
+    }
+}
+function reBack(oid) {
+        $.get("../assistantCreative/reBack", {oid: oid}, function (rs) {
+            var json = eval("(" + rs + ")");
+            if (json.success == "1") {
+                var crid = oid.length > 18 ? oid : json.data["creativeId"];
+                var p = json.data["pause"] == "true" ? "启用" : "暂停";
+                var s = until.getCreativeStatus(parseInt(json.data["status"]));
+                var _tbody =
+                    "<td>&nbsp;<input type='hidden' value='" + crid + "'/></td>" +
+                    "<td >" + until.substring(10, json.data["title"]) + "</td>" +
+                    " <td >" + until.substring(10, json.data["description1"]) + "</td>" +
+                    " <td >" + until.substring(10, json.data["description2"]) + "</td>" +
+                    " <td ><a href='" + json.data["pcDestinationUrl"] + "' target='_blank'>" + until.substring(10, json.data["pcDestinationUrl"]) + "</a></td>" +
+                    " <td >" + until.substring(10, json.data["pcDisplayUrl"]) + "</td>" +
+                    " <td >" + until.substring(10, json.data["mobileDestinationUrl"]) + "</td>" +
+                    " <td >" + until.substring(10, json.data["mobileDisplayUrl"]) + "</td>" +
+                    " <td >" + p + "</td>" +
+                    " <td >" + s + "</td>" +
+                    " <td ></td>";
+                $(tmp).html(_tbody);
+            }
+        });
+}
+function delBack(oid){
+    $.get("../assistantCreative/delBack", {oid: oid}, function (rs) {
+        if(rs=="1"){
+            $(tmp).find("td:eq(10)").html("");
+        }
+    });
+}
+function getLocalStatus(number) {
+    switch (number) {
+        case 1:
+            return "<span class='pen' step=" + number + "></span>";
+            break;
+        case 2:
+            return "<span class='pen' step=" + number + "></span>";
+            break;
+        case 3:
+            return "<span step=" + number + ">被删除</span>";
+            break;
+        default :
+            return "";
+            break;
+    }
 }
 
 

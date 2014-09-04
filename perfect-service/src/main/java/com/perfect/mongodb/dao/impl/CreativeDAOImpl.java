@@ -2,17 +2,20 @@ package com.perfect.mongodb.dao.impl;
 
 import com.perfect.constants.LogStatusConstant;
 import com.perfect.core.AppContext;
+import com.perfect.dao.CreativeBackUpDAO;
 import com.perfect.dao.CreativeDAO;
 import com.perfect.dao.LogDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
+import com.perfect.entity.backup.CreativeBackUpEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.Pager;
 import com.perfect.utils.LogUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -42,6 +45,8 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
     private LogProcessingDAO logProcessingDAO;
     @Resource
     private LogDAO logDAO;
+    @Resource
+    private CreativeBackUpDAO bakcUpDAO;
 
     public List<Long> getCreativeIdByAdgroupId(Long adgroupId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
@@ -79,7 +84,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
         }
         query.addCriteria(criteria);
         query.with(new PageRequest(skip, limit));
-        List<CreativeEntity> list = mongoTemplate.find(query, CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        List<CreativeEntity> list = mongoTemplate.find(query, CreativeEntity.class, EntityConstants.TBL_CREATIVE);
         return list;
     }
 
@@ -90,28 +95,42 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
 
     @Override
     public List<CreativeEntity> getAllsByAdgroupIdsForString(List<String> l) {
-        return BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).in(l)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        return BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).in(l)), CreativeEntity.class, EntityConstants.TBL_CREATIVE);
     }
 
     @Override
     public void deleteByCacheId(Long objectId) {
-        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(objectId)), CreativeEntity.class, EntityConstants.TBL_CREATIVE);
-        logDAO.insertLog(objectId,LogStatusConstant.ENTITY_CREATIVE,LogStatusConstant.OPT_DELETE);
+        Update update=new Update();
+        update.set("ls",3);
+        BaseMongoTemplate.getUserMongo().updateFirst(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(objectId)),update,CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        //以前是直接删除拉取到本地的数据，是硬删除，现在改为软删除，以便以后还原操作
+//        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(objectId)), CreativeEntity.class, EntityConstants.TBL_CREATIVE);
+        logDAO.insertLog(objectId, LogStatusConstant.ENTITY_CREATIVE, LogStatusConstant.OPT_DELETE);
     }
 
     @Override
     public void deleteByCacheId(String cacheCreativeId) {
-        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(getId()).is(cacheCreativeId)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
-        logDAO.insertLog(cacheCreativeId,LogStatusConstant.ENTITY_CREATIVE);
+        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(getId()).is(cacheCreativeId)), CreativeEntity.class, EntityConstants.TBL_CREATIVE);
+        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(getId()).is(cacheCreativeId)), CreativeBackUpEntity.class, EntityConstants.BAK_CREATIVE);
+        logDAO.insertLog(cacheCreativeId, LogStatusConstant.ENTITY_CREATIVE);
     }
 
     @Override
     public String insertOutId(CreativeEntity creativeEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insert(creativeEntity, EntityConstants.TBL_CREATIVE);
-        DataOperationLogEntity logEntity = LogUtils.getLog(creativeEntity.getCreativeId(), CreativeEntity.class, null, creativeEntity);
-        logProcessingDAO.insert(logEntity);
+        CreativeBackUpEntity backUpEntity = new CreativeBackUpEntity();
+        BeanUtils.copyProperties(creativeEntity, backUpEntity);
+        bakcUpDAO.insert(backUpEntity);
+        logDAO.insertLog(creativeEntity.getId(), LogStatusConstant.ENTITY_CREATIVE);
         return creativeEntity.getId();
+    }
+
+    @Override
+    public void insertByReBack(CreativeEntity creativeEntity) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.remove(new Query(Criteria.where(getId()).is(creativeEntity.getId())),CreativeEntity.class,TBL_CREATIVE);
+        mongoTemplate.insert(creativeEntity, EntityConstants.TBL_CREATIVE);
     }
 
     @Override
@@ -125,25 +144,67 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
     @Override
     public void updateByObjId(CreativeEntity creativeEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        Update up=new Update();
-        up.set("t",creativeEntity.getTitle());
-        up.set("desc1",creativeEntity.getDescription1());
-        up.set("desc2",creativeEntity.getDescription2());
-        up.set("pc",creativeEntity.getPcDestinationUrl());
-        up.set("pcd",creativeEntity.getPcDisplayUrl());
-        up.set("p",creativeEntity.getPause());
-        up.set("s",creativeEntity.getStatus());
-        up.set("m",creativeEntity.getMobileDestinationUrl());
-        up.set("d",creativeEntity.getDevicePreference());
-        up.set("md",creativeEntity.getMobileDisplayUrl());
-        mongoTemplate.updateFirst(new Query(Criteria.where(getId()).is(creativeEntity.getId())),up,CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        Update up = new Update();
+        up.set("t", creativeEntity.getTitle());
+        up.set("desc1", creativeEntity.getDescription1());
+        up.set("desc2", creativeEntity.getDescription2());
+        up.set("pc", creativeEntity.getPcDestinationUrl());
+        up.set("pcd", creativeEntity.getPcDisplayUrl());
+        up.set("p", creativeEntity.getPause());
+        up.set("s", creativeEntity.getStatus());
+        up.set("m", creativeEntity.getMobileDestinationUrl());
+        up.set("d", creativeEntity.getDevicePreference());
+        up.set("md", creativeEntity.getMobileDisplayUrl());
+        mongoTemplate.updateFirst(new Query(Criteria.where(getId()).is(creativeEntity.getId())), up, CreativeEntity.class, EntityConstants.TBL_CREATIVE);
         logDAO.insertLog(creativeEntity.getId(), LogStatusConstant.ENTITY_CREATIVE);
+    }
+
+    @Override
+    public void update(CreativeEntity newCreativeEntity, CreativeEntity creativeBackUpEntity) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Long id = newCreativeEntity.getCreativeId();
+        Query query = new Query();
+        query.addCriteria(Criteria.where(EntityConstants.CREATIVE_ID).is(id));
+        Update update = new Update();
+        try {
+            Class _class = newCreativeEntity.getClass();
+            Field[] fields = _class.getDeclaredFields();
+            for (Field field : fields) {
+                String fieldName = field.getName();
+                if ("creativeId".equals(fieldName))
+                    continue;
+                StringBuilder fieldGetterName = new StringBuilder("get");
+                fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
+                Method method = _class.getDeclaredMethod(fieldGetterName.toString());
+                Object after = method.invoke(newCreativeEntity);
+                if (after != null) {
+                    update.set(field.getName(), after);
+                }
+            }
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        mongoTemplate.updateFirst(query, update, CreativeEntity.class, EntityConstants.TBL_CREATIVE);
+        CreativeBackUpEntity creativeBackUpEntityFind = bakcUpDAO.findByStringId(newCreativeEntity.getId());
+        if (creativeBackUpEntityFind == null) {
+            CreativeBackUpEntity backUpEntity = new CreativeBackUpEntity();
+            BeanUtils.copyProperties(creativeBackUpEntity, backUpEntity);
+            bakcUpDAO.insert(backUpEntity);
+        }
+        logDAO.insertLog(id, LogStatusConstant.ENTITY_CREATIVE, LogStatusConstant.OPT_UPDATE);
     }
 
 
     @Override
     public void updateAdgroupIdByOid(String id, Long adgroupId) {
         getMongoTemplate().updateMulti(Query.query(Criteria.where(OBJ_ADGROUP_ID).is(id)), Update.update(ADGROUP_ID, adgroupId).set(OBJ_ADGROUP_ID, null), getEntityClass());
+    }
+
+    @Override
+    public void delBack(Long oid) {
+        Update update=new Update();
+        update.set("ls",null);
+        BaseMongoTemplate.getUserMongo().updateFirst(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(oid)),update,CreativeEntity.class,EntityConstants.TBL_CREATIVE);
     }
 
     public CreativeEntity findOne(Long creativeId) {

@@ -60,12 +60,23 @@ public class CreativeEntity extends AccountIdEntity {
     @Field("d")
     private Integer devicePreference;
 
+    @Field("ls")
+    private Integer localStatus;//本地状态1为新增,2为修改,3为删除
+
     public String getAdgroupObjId() {
         return adgroupObjId;
     }
 
     public void setAdgroupObjId(String adgroupObjId) {
         this.adgroupObjId = adgroupObjId;
+    }
+
+    public Integer getLocalStatus() {
+        return localStatus;
+    }
+
+    public void setLocalStatus(Integer localStatus) {
+        this.localStatus = localStatus;
     }
 
     public boolean setCreativeId(Long aCreativeId) {

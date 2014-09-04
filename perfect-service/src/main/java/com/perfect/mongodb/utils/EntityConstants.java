@@ -17,6 +17,10 @@ public class EntityConstants {
     public static final String TBL_LOG = "logs";
     public static final String TBL_ACCOUNT_REPORT = "account_report";
 
+    //backUp
+    public static final String BAK_CREATIVE="creative_bak";
+    public static final String BAK_ADGROUP="adgroup_bak";
+
 
     // Fields
 

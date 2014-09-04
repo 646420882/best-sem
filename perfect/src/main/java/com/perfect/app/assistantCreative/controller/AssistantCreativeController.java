@@ -7,7 +7,10 @@ import com.perfect.dao.CreativeDAO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.CreativeEntity;
+import com.perfect.entity.backup.CreativeBackUpEntity;
+import com.perfect.service.CreativeBackUpService;
 import com.perfect.utils.web.WebContextSupport;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
@@ -32,7 +35,7 @@ import static com.perfect.mongodb.utils.EntityConstants.*;
 public class AssistantCreativeController extends WebContextSupport {
 
     private static long accountId = 6243012L;
-
+    private static Integer OBJ_SIZE = 18;
 
     @Resource
     CreativeDAO creativeDAO;
@@ -40,13 +43,15 @@ public class AssistantCreativeController extends WebContextSupport {
     AdgroupDAO adgroupDAO;
     @Resource
     CampaignDAO campaignDAO;
+    @Resource
+    CreativeBackUpService creativeBackUpService;
 
     @RequestMapping(value = "/getList")
     public ModelAndView getCreativeList(HttpServletRequest request, HttpServletResponse response,
                                         @RequestParam(value = "cid", required = false) String cid,
                                         @RequestParam(value = "aid", required = false) String aid) {
         List<CreativeEntity> creativeEntityList = new ArrayList<>();
-        if (aid.length() > 18 || cid.length() > 18) {
+        if (aid.length() > OBJ_SIZE || cid.length() > OBJ_SIZE) {
             if (aid != "" || !aid.equals("")) {
                 creativeEntityList = creativeDAO.getCreativeByAdgroupId(aid, null, 0, Integer.MAX_VALUE);
             } else if (!cid.equals("") && aid.equals("")) {
@@ -92,7 +97,7 @@ public class AssistantCreativeController extends WebContextSupport {
     @RequestMapping(value = "/getUnitsByPlanId")
     public ModelAndView getUnitsByPlanId(HttpServletResponse response, @RequestParam(value = "planId", required = true) String planId) {
         List<AdgroupEntity> adgroupEntities = new ArrayList<>();
-        if (planId.length() > 12) {
+        if (planId.length() > OBJ_SIZE) {
             adgroupEntities = adgroupDAO.findByQuery(new Query(Criteria.where(OBJ_CAMPAIGN_ID).is(planId)));
         } else {
             adgroupEntities = adgroupDAO.findByQuery(new Query(Criteria.where(CAMPAIGN_ID).is(Long.parseLong(planId))));
@@ -147,7 +152,8 @@ public class AssistantCreativeController extends WebContextSupport {
             creativeEntity.setPause(bol);
             creativeEntity.setStatus(s);
             creativeEntity.setDevicePreference(d);
-            if (aid.length() > 12) {
+            creativeEntity.setLocalStatus(1);
+            if (aid.length() > OBJ_SIZE) {
                 creativeEntity.setAdgroupObjId(aid);
                 creativeEntity.setCreativeId(null);
             } else {
@@ -174,7 +180,7 @@ public class AssistantCreativeController extends WebContextSupport {
     @RequestMapping(value = "/del")
     public ModelAndView del(HttpServletResponse response, @RequestParam(value = "oid", required = true) String oid) {
         try {
-            if (oid.length() > 18) {
+            if (oid.length() > OBJ_SIZE) {
                 creativeDAO.deleteByCacheId(oid);
                 writeHtml(SUCCESS, response);
             } else {
@@ -199,9 +205,9 @@ public class AssistantCreativeController extends WebContextSupport {
                                @RequestParam(value = "mobileDestinationUrl", required = false) String mib,
                                @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
                                @RequestParam(value = "pause") Boolean bol) {
-        CreativeEntity creativeEntityFind =null;
-        if(oid.length()>18){
-            creativeEntityFind= creativeDAO.findByObjId(oid);
+        CreativeEntity creativeEntityFind = null;
+        if (oid.length() > OBJ_SIZE) {
+            creativeEntityFind = creativeDAO.findByObjId(oid);
             creativeEntityFind.setTitle(title);
             creativeEntityFind.setDescription1(de1);
             creativeEntityFind.setDescription2(de2);
@@ -210,10 +216,14 @@ public class AssistantCreativeController extends WebContextSupport {
             creativeEntityFind.setMobileDestinationUrl(mib);
             creativeEntityFind.setMobileDisplayUrl(mibs);
             creativeEntityFind.setPause(bol);
+            creativeEntityFind.setLocalStatus(1);
             creativeDAO.updateByObjId(creativeEntityFind);
             writeHtml(SUCCESS, response);
-        }else{
-            creativeEntityFind= creativeDAO.findOne(Long.valueOf(oid));
+        } else {
+            creativeEntityFind = creativeDAO.findOne(Long.valueOf(oid));
+            CreativeEntity creativeEntity = new CreativeEntity();
+            creativeEntityFind.setLocalStatus(2);
+            BeanUtils.copyProperties(creativeEntityFind, creativeEntity);
             creativeEntityFind.setTitle(title);
             creativeEntityFind.setDescription1(de1);
             creativeEntityFind.setDescription2(de2);
@@ -222,11 +232,48 @@ public class AssistantCreativeController extends WebContextSupport {
             creativeEntityFind.setMobileDestinationUrl(mib);
             creativeEntityFind.setMobileDisplayUrl(mibs);
             creativeEntityFind.setPause(bol);
-            creativeDAO.update(creativeEntityFind);
+
+            creativeDAO.update(creativeEntityFind, creativeEntity);
             writeHtml(SUCCESS, response);
         }
 
 
+        return null;
+    }
+
+    /**
+     * 普通修改还原方法，这里的oid必须是Long类型，如果不是Long类型的oid，在前端已经判定
+     * @param response
+     * @param oid
+     * @return
+     */
+    @RequestMapping(value = "/reBack", method = RequestMethod.GET)
+    public ModelAndView reBack(HttpServletResponse response, @RequestParam(value = "oid") Long oid) {
+        try {
+            CreativeBackUpEntity creativeBackUpEntity = creativeBackUpService.reBack(oid);
+            writeData(SUCCESS, response, creativeBackUpEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            writeHtml(EXCEPTION, response);
+        }
+        return null;
+    }
+
+    /**
+     * 软删除的还原方法。直接更改掉ls字段
+     * @param response
+     * @param oid
+     * @return
+     */
+    @RequestMapping(value = "/delBack", method = RequestMethod.GET)
+    public ModelAndView delBack(HttpServletResponse response, @RequestParam(value = "oid") Long oid) {
+        try {
+            creativeDAO.delBack(oid);
+            writeHtml(SUCCESS,response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            writeHtml(EXCEPTION,response);
+        }
         return null;
     }
 }
