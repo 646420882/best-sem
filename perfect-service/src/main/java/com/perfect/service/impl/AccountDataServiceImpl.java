@@ -187,26 +187,23 @@ public class AccountDataServiceImpl implements AccountDataService {
             //更新推广计划数据
             List<CampaignType> campaignTypes = apiService.getAllCampaign();
             List<CampaignEntity> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
-            mongoTemplate.insertAll(campaignEntities);
-
             //查询推广单元
             List<Long> camIds = new ArrayList<>(campaignEntities.size());
-
             for (CampaignEntity campaignEntity : campaignEntities) {
                 campaignEntity.setAccountId(aid);
                 camIds.add(campaignEntity.getCampaignId());
             }
+            mongoTemplate.insertAll(campaignEntities);
 
             //更新推广单元数据
             List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(camIds);
             List<AdgroupEntity> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
-            mongoTemplate.insertAll(adgroupEntities);
-
             List<Long> adgroupIds = new ArrayList<>();
             for (AdgroupEntity adgroupEntity : adgroupEntities) {
                 adgroupEntity.setAccountId(aid);
                 adgroupIds.add(adgroupEntity.getAdgroupId());
             }
+            mongoTemplate.insertAll(adgroupEntities);
 
             //分批次请求关键词数据
             List<Long> subList = new ArrayList<>(4);
