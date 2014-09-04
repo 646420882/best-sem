@@ -1,5 +1,6 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.AccountAnalyzeDAO;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.perfect.mongodb.utils.EntityConstants.ACCOUNT_ID;
 import static com.perfect.mongodb.utils.EntityConstants.TBL_ACCOUNT_REPORT;
 
 /**
@@ -49,14 +51,14 @@ public class AccountAnalyzeDAOImpl extends AbstractUserBaseDAOImpl<KeywordRealTi
         } else {
             sort = new Sort(Sort.Direction.DESC, fieldName);
         }
-        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(sort).skip(0).limit(limit), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
+        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())).with(sort).skip(0).limit(limit), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
         return list;
     }
 
     @Override
     public List<AccountReportEntity> performaneCurve(Date startDate, Date endDate) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.ASC, "date")), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
+        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())).with(new Sort(Sort.Direction.ASC, "date")), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
         return list;
     }
 }

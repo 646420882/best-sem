@@ -1356,12 +1356,19 @@ var loadPerformanceCurve = function (obj, date) {
             endDate: daterangepicker_end_date
         },
         success: function (data) {
+            t_date.length = 0;
+            t_impr.length = 0;
+            t_clicks.length = 0;
+            t_cost.length = 0;
+            t_ctr.length = 0;
+            t_cpc.length = 0;
+            t_conversion.length = 0;
             if (data.rows.length > 0) {
                 $.each(data.rows, function (i, item) {
                     t_date.push(item.date);
                     t_impr.push(item.pcImpression);
                     t_clicks.push(item.pcClick);
-                    t_cost.push(item.pcCost);
+                    t_cost.push(Math.round(item.pcCost * 100)/100);
                     t_ctr.push(Math.round(item.pcCtr*100)/100);
                     t_cpc.push(Math.round(item.pcCpc*100)/100);
                     t_conversion.push(item.pcConversion);
