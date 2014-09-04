@@ -1,5 +1,6 @@
 package com.perfect.app.keyword.controller;
 
+import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.service.KeywordQualityService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -11,6 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Map;
 
 /**
@@ -32,5 +36,28 @@ public class KeywordQualityController {
         Map<String, Object> values = keywordQualityService.find(fieldName, limit, skip, sort);
         jsonView.setAttributesMap(values);
         return new ModelAndView(jsonView);
+    }
+
+    @RequestMapping(value = "/keywordQuality/downloadCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ModelAndView downloadQualityReportCSV(HttpServletResponse response) {
+        String filename = DateUtils.getYesterdayStr() + "-quality.csv";
+        OutputStream os = null;
+        try {
+            response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
+            os = response.getOutputStream();
+            keywordQualityService.downloadQualityCSV(os);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (os != null) {
+                    os.flush();
+                    os.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

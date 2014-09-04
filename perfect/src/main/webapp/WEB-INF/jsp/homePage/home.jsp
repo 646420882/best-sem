@@ -338,7 +338,7 @@
 
 </div>
 <div class="download over ">
-    <a href="#" class="fr">
+    <a href="/keywordQuality/downloadCSV" class="fr">
         下载全部
     </a>
 </div>
