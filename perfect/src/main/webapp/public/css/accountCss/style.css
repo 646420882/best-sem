@@ -186,6 +186,7 @@
     width: 24%;
     height: 100px;
     margin-right: 1%;
+    margin-bottom:10px;
     white-space: nowrap;
     overflow: hidden
 }
@@ -388,7 +389,6 @@
 .paihang {
     display: block;
     float: left;
-    padding-left: 10px;
     overflow: hidden;
 }
 .paihang li {

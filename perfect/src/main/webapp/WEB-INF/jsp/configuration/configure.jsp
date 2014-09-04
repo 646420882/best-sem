@@ -37,7 +37,6 @@
 </head>
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-
 <div class="concent fr over">
     <jsp:include page="../homePage/pageBlock/head.jsp"/>
 
@@ -49,7 +48,7 @@
             <div class="configure over">
                 <div class="configure_top over">
                     <h3 class="fl">关联账户</h3>
-                    <a href="add" class="fr"> + 添加推广账户</span></a>
+                    <a href="add" class="fr"> + 添加推广账户</a>
                 </div>
                 <div class="configure_under over">
                     <table width="100%" cellspacing="0" border="1">

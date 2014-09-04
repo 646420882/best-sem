@@ -77,13 +77,9 @@
                 <li class="current"><a href="javascript:" onclick="lisClick(this,1)">昨天</a></li>
                 <li><a href="javascript:" onclick="lisClick(this,7)">近7天</a></li>
                 <li><a href="javascript:" onclick="lisClick(this,30)">近30天</a></li>
-                <li class="date">
-                    <a href="javascript:" onclick="lisClick(this,null);">
-                        自定义
-                        <input name="reservation" type="image"
-                               onclick="javascript:genre = 'accountOverview';changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                <li class="date"><a href="javascript:" onclick="lisClick(this,null);">自定义<input name="reservation" type="image"
+                                   onclick="javascript:genre = 'accountOverview';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                src="${pageContext.request.contextPath}/public/img/date.png">
-
                     </a>
                 </li>
             </ul>
