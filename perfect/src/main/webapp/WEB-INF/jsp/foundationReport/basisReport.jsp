@@ -10,8 +10,8 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
     <title></title>
-
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
@@ -19,6 +19,7 @@
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/jquery.cxcalendar.css">
+
 
     <style type="text/css">
         .tab_box {
@@ -37,6 +38,9 @@
             background: #ffb900;
             border: 1px solid #fab30b;
             color: #fff;
+        }
+        .list3{
+            min-height:200px;
         }
     </style>
 </head>
@@ -180,7 +184,7 @@
                        src="${pageContext.request.contextPath}/public/img/date.png">
                 <input type="checkbox" id="checkboxInput" style="margin:6px 3px 0px 5px; ">
                 比较范围
-                <input name="mydate" type="text" id="inputTow" cname="dateClick" readonly style=" display:none;  height:20px;width:150px;border:1px solid #dadada; padding:0 12px;background:#fff url('/public/img/date.png') 130px 0px no-repeat;">
+                <input name="mydate" type="text" id="inputTow" cname="dateClick" readonly style=" display:none;  height:20px;width:150px;border:1px solid #dadada; padding:0 12px;background:#fff url('/public/img/date.png') right 0px no-repeat;">
                    <label id="dataComputing"></label>
             </li>
             <li id="deviceUser">选择推广设备：
@@ -1360,17 +1364,17 @@ var reportDataVS = function () {
                     if (i % 2 == 0) {
                         html_User1 = "<tr class='list2_box1'><td>" + dateEach[i] + "</td>"
                                 + "<td><span>" + impression[i] + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? "<b>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + click[i] + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((click[i] - click1[i] >= 0) ? "<b>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + cost[i] + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? "<b>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + ctr[i] + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((ctr[i] - ctr1[i]) >= 0) ? "<b>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + (((ctr[i] - ctr1[i]) >= 0) ? ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + cpc[i] + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((cpc[i] - cpc1[i]) >= 0) ? "<b>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + (((cpc[i] - cpc1[i]) >= 0) ?((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + conversion[i] + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((conversion[i] - conversion1[i]) >= 0) ? "<b>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 100)) + "</b>%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - cpc1[i]) / conversion1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + (((conversion[i] - conversion1[i]) >= 0) ?  ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 100)) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - cpc1[i]) / conversion1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "</td><td>-</td><td>-</td></tr>";
 
                         html_User2 = "<tr class='list2_box1'><td>" + dateEach1[i] + "</td>"
@@ -1378,19 +1382,19 @@ var reportDataVS = function () {
                                 + "<td>" + ctr1[i] + "%</td><td>" + cpc1[i] + "</td><td>" + conversion1[i] + "</td><td>-</td><td>-</td></tr>"
                                 + "<tr><td colspan='9'>&nbsp;</td></tr>";
                     } else {
-                        html_User1 = "<tr class='list2_box1'><td>" + dateEach[i] + "</td>"
+                        html_User1 = "<tr class='list2_box2'><td>" + dateEach[i] + "</td>"
                                 + "<td><span>" + impression[i] + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? "<b>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + click[i] + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((click[i] - click1[i] >= 0) ? "<b>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + cost[i] + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? "<b>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + ctr[i] + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((ctr[i] - ctr1[i]) >= 0) ? "<b>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + (((ctr[i] - ctr1[i]) >= 0) ? ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + cpc[i] + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((cpc[i] - cpc1[i]) >= 0) ? "<b>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + (((cpc[i] - cpc1[i]) >= 0) ? ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + conversion[i] + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((conversion[i] - conversion1[i]) >= 0) ? "<b>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 100)) + "</b>%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - cpc1[i]) / conversion1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + (((conversion[i] - conversion1[i]) >= 0) ? ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 100)) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - cpc1[i]) / conversion1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "</td><td>-</td><td>-</td></tr>";
 
                         html_User2 = "<tr class='list2_box2'><td>" + dateEach1[i] + "</td>"

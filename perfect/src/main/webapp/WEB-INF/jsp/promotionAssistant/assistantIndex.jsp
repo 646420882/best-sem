@@ -215,7 +215,7 @@
         </ul>
         <span class="fr">1/10</span>
     </div>
-    <div class="list4">
+    <div class="list4" style="height:480px;">
         <table border="0" cellspacing="0" width="100%" id="createTable">
             <thead>
             <tr class="list02_top">
@@ -362,7 +362,7 @@
     </ul>
     <span class="fr">1/10</span>
 </div>
-<div class="list4">
+<div class="list4" style="height:368px;">
 <table border="0" cellspacing="0" width="100%">
 <thead>
 <tr class="list02_top">

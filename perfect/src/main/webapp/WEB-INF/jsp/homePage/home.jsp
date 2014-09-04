@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
+    <link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico" />
 </head>
 <body>
 <jsp:include page="pageBlock/nav.jsp"/>
@@ -334,6 +335,7 @@
 
 </div>
 <div class="download over ">
+    <span class="fl" style=" color:#000; font-weight:bold;">查看完整版数据请点击下载全部→</span>
     <a href="/keywordQuality/downloadCSV" class="fr">
         下载全部
     </a>

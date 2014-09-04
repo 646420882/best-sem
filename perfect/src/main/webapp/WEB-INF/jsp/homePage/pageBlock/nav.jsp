@@ -64,7 +64,7 @@
                 <ul>
                     <li class="current">
                         <a href="/home">
-                            <span class="list1"></span>
+                            <span class="list_1"></span>
 
                             <h3>帐户全景</h3>
                         </a>
@@ -72,23 +72,23 @@
                     </li>
                     <li>
                         <a href="/assistant/index">
-                            <span class="list2"></span>
+                            <span class="list_2"></span>
 
                             <h3>推广助手</h3>
                         </a>
                     </li>
                     <li>
-                        <a href="/keyword_group"><span class="list3"></span>
+                        <a href="/keyword_group"><span class="list_3"></span>
 
                             <h3>智能结构</h3></a>
                     </li>
                     <li>
-                        <a href="/bidding/index"><span class="list4"></span>
+                        <a href="/bidding/index"><span class="list_4"></span>
 
                             <h3>智能竞价</h3></a>
                     </li>
                     <li>
-                        <a href="/reportIndex"><span class="list5"></span>
+                        <a href="/reportIndex"><span class="list_5"></span>
 
                             <h3>数据报告</h3></a>
                     </li>

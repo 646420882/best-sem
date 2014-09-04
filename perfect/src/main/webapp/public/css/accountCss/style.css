@@ -78,7 +78,7 @@
     *float:none;
     width: 14px;
     height: 12px;
-    margin: 8px 0 0 5px;
+    margin: 8px 0 0 4px;
     background: url(/public/img/bg.png) -10px -10px no-repeat;
 }
 .list01_top ul {
@@ -263,6 +263,7 @@
     table-layout: auto;
     font-size: 12px;
 }
+
 .list2 table td, th, .list3 table td {
     line-height: 30px;
     *line-height: inherit;
@@ -274,6 +275,7 @@
 }
 .list3 table td {
     max-width: 120px;
+    padding-left:5px;
 }
 .list2 table tr td dl {
     margin-right: 10px;
@@ -335,7 +337,8 @@
     color: #fff;
 }
 .list3 table span {
-    padding-left: 4px;
+    display: block;
+    float:left;
 }
 .list2 table p, .list3 table p {
     margin: 0px;
@@ -343,7 +346,7 @@
 .list2 table b, .list3 table b {
     display: block;
     float: left;
-    margin-top: 8px;
+    margin-top:8px;
     *display:inline-block;
     *float:none;
     *margin-top:0px;
@@ -363,7 +366,8 @@
     height: 5px;
     border: 0px;
     margin-left: 4px;
-    margin-top: 2px;
+    margin-bottom: 2px;
+    *margin-top:1px;
     overflow: hidden;
 }
 .one {
@@ -465,6 +469,7 @@
     border: 1px solid #dadadd;
     width:200px;
     height: 24px;
+    line-height:22px;
     padding: 0 14px;
     color: #000000;
     margin: 0 5px;
@@ -896,7 +901,7 @@
     background: #fff;
     color: #333;
     overflow: auto;
-    height: 760px;
+    height: 884px;
 }
 .ztree li {
     padding: 0;
@@ -1274,7 +1279,7 @@ ul.ztree.zTreeDragUL {
     color: #454545;
 }
 .list4 {
-    height: 524px;
+    height: 700px;
     width: 100%;
     overflow: auto;
 }
@@ -1511,6 +1516,7 @@ h2 .close {
 .zs_box {
     border: 1px solid #dadadd;
     background: #fafafa;
+    height: 900px;
 }
 .zs_function {
     height: 34px;
@@ -2473,11 +2479,15 @@ h2 .close {
 .newkeyword_end1 {
     cursor: pointer;
 }
-.pen {
+.pen ,.error{
     display: block;
     width: 16px;
     height: 16px;
     background: url(/public/img/pen.png) no-repeat;
+}
+.error{
+    background: url(/public/img/error.png) no-repeat;
+
 }
 /***********搜索词报告*********/
 .searchword_top {
