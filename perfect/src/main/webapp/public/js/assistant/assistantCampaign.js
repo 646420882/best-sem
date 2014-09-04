@@ -7,18 +7,26 @@ window.onload=function(){
     rDrag.init(document.getElementById('setExtensionDiv'));
     rDrag.init(document.getElementById('setScheduleDiv'));
     rDrag.init(document.getElementById('plan2'));
+//    rDrag.init(document.getElementById('batchAddOrUpdateKeyword'));
 }
 
 /**
  * 得到所有推广计划
  */
-function getCampaignList(){
+function getCampaignList(param){
+    $("#tbodyClick5").empty();
+    $("#tbodyClick5").html("加载中...");
     $.ajax({
         url:"/assistantCampaign/list",
         type:"post",
+        data:param,
         dataType:"json",
         success:function(data){
-            $("#tbodyClick5").html("");
+            $("#tbodyClick5").empty();
+            if(data.length==0){
+                $("#tbodyClick5").html("暂无数据!");
+                return ;
+            }
             for(var i=0;i<data.length;i++){
                 campaignDataToHtml(data[i],i);
             }
@@ -34,6 +42,10 @@ function getCampaignList(){
  * @param index 传入对象的下标
  */
 function campaignDataToHtml(obj,index){
+
+    if(obj.campaignId==null){
+        obj.campaignId = obj.id;
+    }
     var html = "";
     if(index==0){
         html = html+"<tr class='list2_box3 firstCampaign' onclick='setCampaignValue(this,"+obj.campaignId+")'>";
@@ -107,9 +119,6 @@ function campaignDataToHtml(obj,index){
     }
 }
 
-//加载该页面就开始加载数据
-getCampaignList();
-
 
 /**
  *单击某一行的时候设置文本框值
@@ -157,7 +166,6 @@ function setCampaignValue(obj,campaignId){
  */
 function editCampaignInfo(jsonData) {
     jsonData["cid"] = $("#hiddenCampaignId").val();
-    alert(jsonData.cid);
     $.ajax({
         url:"/assistantCampaign/edit",
         type:"post",
@@ -179,7 +187,7 @@ function whenBlurEditCampaign(num,value){
     switch (num){
         case 1:jsonData["campaignName"] = value;break;
         case 2:jsonData["budget"] = value;break;
-        case 3:jsonData["priceRatio"] = value;break;
+        case 3:if(/^\d+$/.test(value)==false){ value = 1.0;}jsonData["priceRatio"] = value;break;
         case 4:jsonData["schedule"] = value;break;
         case 5:jsonData["regionTarget"] = value;break;
         case 6:jsonData["isDynamicCreative"] = value;break;

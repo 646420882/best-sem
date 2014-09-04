@@ -299,8 +299,8 @@
     </div>
 </div>
 </div>
-<jsp:include page="../homePage/pageBlock/footer.jsp"/>
 </div>
+<jsp:include page="../homePage/pageBlock/footer.jsp"/>
 </div>
 </div>
 <div class="TB_overlayBG"></div>

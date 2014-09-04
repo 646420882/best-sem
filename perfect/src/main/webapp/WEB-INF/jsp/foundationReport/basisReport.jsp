@@ -6,11 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
     <title></title>
-
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
@@ -18,6 +19,7 @@
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/jquery.cxcalendar.css">
+
 
     <style type="text/css">
         .tab_box {
@@ -36,6 +38,9 @@
             background: #ffb900;
             border: 1px solid #fab30b;
             color: #fff;
+        }
+        .list3{
+            min-height:200px;
         }
     </style>
 </head>
@@ -178,14 +183,12 @@
                        onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                        src="${pageContext.request.contextPath}/public/img/date.png">
                 <input type="checkbox" id="checkboxInput" style="margin:6px 3px 0px 5px; ">
-
-                比较范围<%--<input type="image" id="bijiao" id="inputOne" class="time_input" disabled>--%>
-
-                <input name="mydate" type="text" id="inputTow" cname="dateClick" readonly>
-                <input style="margin-left: -20px;margin-bottom: -2px" type="image"src="${pageContext.request.contextPath}/public/img/date.png"></li>
+                比较范围
+                <input name="mydate" type="text" id="inputTow" cname="dateClick" readonly style=" display:none;  height:20px;width:150px;border:1px solid #dadada; padding:0 12px;background:#fff url('/public/img/date.png') right 0px no-repeat;">
+                   <label id="dataComputing"></label>
             </li>
             <li id="deviceUser">选择推广设备：
-                <a href="javascroit:" class="current" cname="0">全部</a><span>|</span>
+                <a href="javascript:" class="current" cname="0">全部</a><span>|</span>
                 <a href="javascript:" cname="1">计算机</a><span>|</span>
                 <a href="javascript:" cname="2">移动设备</a>
             </li>
@@ -196,10 +199,9 @@
                 <a href="javascript:" cname="3">分月</a></li>
         </ul>
 
-        <input type="" id="devicesUser" value="0">
-        <input type="" id="dateLisUser" value="0">
-        <input type="" id="checkboxhidden" value="0">
-        <input type="" id="date3" value="">
+        <input type="hidden" id="devicesUser" value="0">
+        <input type="hidden" id="dateLisUser" value="0">
+        <input type="hidden" id="checkboxhidden" value="0">
         <a href="javascript:" id="userClick" class="become"> 生成报告</a>
     </div>
 </div>
@@ -346,7 +348,7 @@
             </div>
             <div class="page2 fl" id="pageDet">
 
-            </div>
+            </div><br/>
             <div class="tubiao2 over">
                 <div id="containerLegend"></div>
                 <div id="container" style="width:100%;height:400px;display: none"></div>
@@ -359,9 +361,10 @@
         </div>
     </div>
 </div>
+
+</div>
+</div>
 <jsp:include page="../homePage/pageBlock/footer.jsp"/>
-</div>
-</div>
 </div>
 </div>
 </body>
@@ -477,6 +480,7 @@ $(document).ready(function () {
     $("input[cname=dateClick]").click(function () {
         dateclicks = $(this)
     });
+    var distance = 0;
     $(".btnDone").on('click', function () {
         var _startDate = $('.range-start').datepicker('getDate');
         var _endDate = $('.range-end').datepicker('getDate');
@@ -487,11 +491,15 @@ $(document).ready(function () {
              $("#date3").val(daterangepicker_start_date);
              }
             dateclicks.prev().val(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
-
-            /*if (genre == "keywordQualityCustom") {
-             //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
-             loadKeywordQualityData(null, 0);
-             } */
+            //计算两个时间相隔天数
+            var sDate = new Date(daterangepicker_start_date);
+            var eDate = new Date(daterangepicker_end_date);
+            var fen      = ((eDate.getTime()-sDate.getTime())/1000)/60;
+            distance = parseInt(fen/(24*60))+1;   //相隔distance天
+            if($("#checkboxhidden").val() == 1){
+                $("#dataComputing").empty();
+                $("#dataComputing").append("起 "+distance+" 天");
+            }
         }
     });
 
@@ -505,21 +513,29 @@ $(document).ready(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
         var index = $tab_li.index(this);
         $('div.tab_box > div').eq(index).show().siblings().hide();
+        $("#pageDet").empty();
+        judgeDet = 0;
     });
     $("#reportType>a").click(function () {
         $("#reportType>a").removeClass("current");
         $(this).addClass("current");
         $("#reportTypes").val($(this).attr("cname"));
+        $("#pageDet").empty();
+        judgeDet = 0;
     });
     $("#device>a").click(function () {
         $("#device>a").removeClass("current");
         $(this).addClass("current");
         $("#devices").val($(this).attr("cname"));
+        $("#pageDet").empty();
+        judgeDet = 0;
     });
     $("#dateLi>a").click(function () {
         $("#dateLi>a").removeClass("current");
         $(this).addClass("current");
         $("#dateLis").val($(this).attr("cname"));
+        $("#pageDet").empty();
+        judgeDet = 0;
     })
     $("#deviceUser>a").click(function () {
         $("#deviceUser>a").removeClass("current");
@@ -537,15 +553,16 @@ $(document).ready(function () {
     });
     $("#checkboxInput").click(function () {
         if ($(this).is(":checked")) {
-            $("#inputTow").removeAttr("style", "display:");
+            $("#inputTow").attr("style", "height:20px;width:150px;border:1px solid #dadada; padding:0 12px;background:#fff url('/public/img/date.png ') 130px 0px no-repeat;");
             $("#inputOne").removeAttr("disabled");
             $("#checkboxhidden").val(1);
+            $("#dataComputing").append("起 "+distance+" 天");
         } else {
             $("#inputTow").attr("style", "display:none");
             $("#inputOne").attr("disabled", "disabled");
             $("#checkboxhidden").val(0);
-            $("#date3").val("");
-            $("#bijiao").val("");
+            $("#inputTow").val("");
+            $("#dataComputing").empty();
         }
     });
 
@@ -814,131 +831,6 @@ $(document).ready(function () {
             $(this).attr("checked", false);
         }
     });
-    //曲线图
-    var curve = function () {
-        $("#container").show();
-        $("#imprDiv").hide();
-        $("#clickDiv").hide();
-        $("#costDiv").hide();
-        $("#convDiv").hide();
-        $('#container').highcharts({
-            chart: {
-                zoomType: 'xy'
-            },
-            title: {
-                text: ''
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-                categories: t_date,
-                tickInterval: (dateInterval)// 每个间隔
-            },
-            yAxis: [
-                { // Primary yAxis
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: colorTow
-                        }
-                    }
-                },
-                { // Secondary yAxis
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: colorOne
-                        }
-                    },
-                    opposite: true
-                }
-            ],
-            credits: {
-                enabled: false
-            },
-            tooltip: {
-                shared: true
-            },
-            legend: {
-                align: 'left',
-                x: 10,
-                verticalAlign: 'top',
-                y: -10,
-                floating: true,
-                backgroundColor: '#FFFFFF',
-                itemDistance: 20,
-                borderRadius: 5,
-                enabled: false
-            },
-            series: [
-                dataOne,
-                dataTow
-            ]
-        });
-    }
-    //饼状图
-    var a = 1;
-    var pieChart = function (showData, showName, showId) {
-        $(showId).show();
-        $("#container").hide()
-        if (a == 1) {
-            //使用饼状图进行颜色渐变
-            Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
-                return {
-                    radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
-                    stops: [
-                        [0, color],
-                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
-                    ]
-                };
-            });
-            a++;
-        }
-        //加载开始
-        $(showId).highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                events: {
-                    load: function () {
-                        // set up the updating of the chart each second
-                        var series = this.series[0];
-                        setInterval(function () {
-                            series.setData(showData);
-                        }, 2000);
-                    }
-                }
-            },
-            title: {
-                text: showName + '占有百分比！'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        color: '#000000',
-                        connectorColor: '#000000',
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                    }
-                }
-            },
-            series: [
-                {
-                    type: 'pie',
-                    name: '占有率',
-                    data: [
-                    ]
-                }
-            ]
-        });
-    }
 });
 //明细报告
 var reportData = function () {
@@ -951,7 +843,7 @@ var reportData = function () {
     $("#costDiv").empty();
     $("#convDiv").empty();
 
-    $("#shuju").html("报告生成中，请稍后。。。。。");
+    $("#shuju").html("报告生成中，请稍后。。。。。（第一次生成报告时，需要时间较长，请耐心等待）");
     var reportTypes = $("#reportTypes").val();
     var devices = $("#devices").val();
     var dateLis = $("#dateLis").val();
@@ -1044,43 +936,96 @@ var reportData = function () {
                 var pie_click = new Array();
                 var pie_cost = new Array();
                 var pie_conv = new Array();
+                var pie_num1 = 0;
+                var pie_num2 = 0;
+                var pie_num3 = 0;
+                var pie_num4 = 0;
                 if (reportTypes == 4) {
                     if (dateLis == 0) {
                         $.each(data.countData, function (i, countdata) {
                             $.each(data.impr, function (i, impr) {
                                 if (devices == 2) {
-                                    pie_impr.push([impr.regionName, Math.round((impr.mobileImpression / countdata.mobileImpression) * 10000) / 100]);
+                                    if(isNaN(impr.mobileImpression / countdata.mobileImpression)){
+                                        pie_impr.push([impr.regionName, 0]);
+                                    }else {
+                                        pie_impr.push([impr.regionName, Math.round((impr.mobileImpression / countdata.mobileImpression) * 10000) / 100]);
+                                        pie_num1=1;
+                                    }
                                 } else {
-                                    pie_impr.push([impr.regionName, Math.round((impr.pcImpression / countdata.pcImpression) * 10000) / 100]);
+                                    if(isNaN(impr.pcImpression / countdata.pcImpression)){
+                                        pie_impr.push([impr.regionName, 0]);
+                                    }else{
+                                        pie_impr.push([impr.regionName, Math.round((impr.pcImpression / countdata.pcImpression) * 10000) / 100]);
+                                        pie_num1=1;
+                                    }
                                 }
                             });
                             $.each(data.click, function (i, impr) {
                                 if (devices == 2) {
-                                    pie_click.push([impr.regionName, Math.round((impr.mobileClick / countdata.mobileClick) * 10000) / 100]);
+                                    if(isNaN(impr.mobileClick / countdata.mobileClick)){
+                                        pie_click.push([impr.regionName, 0]);
+                                    }else {
+                                        pie_click.push([impr.regionName, Math.round((impr.mobileClick / countdata.mobileClick) * 10000) / 100]);
+                                        pie_num2=1;
+                                    }
                                 } else {
-                                    pie_click.push([impr.regionName, Math.round((impr.pcClick / countdata.pcClick) * 10000) / 100]);
+                                    if(isNaN(impr.pcClick / countdata.pcClick)){
+                                        pie_click.push([impr.regionName, 0]);
+                                    }else {
+                                        pie_click.push([impr.regionName, Math.round((impr.pcClick / countdata.pcClick) * 10000) / 100]);
+                                        pie_num2=1;
+                                    }
                                 }
                             });
                             $.each(data.cost, function (i, impr) {
                                 if (devices == 2) {
-                                    pie_cost.push([impr.regionName, Math.round((impr.mobileCost / countdata.mobileCost) * 10000) / 100]);
+                                    if(isNaN(impr.mobileCost / countdata.mobileCost)){
+                                        pie_cost.push([impr.regionName, 0]);
+                                    }else {
+                                        pie_cost.push([impr.regionName, Math.round((impr.mobileCost / countdata.mobileCost) * 10000) / 100]);
+                                        pie_num3=1;
+                                    }
                                 } else {
-                                    pie_cost.push([impr.regionName, Math.round((impr.pcCost / countdata.pcCost) * 10000) / 100]);
+                                    if(isNaN(impr.pcCost / countdata.pcCost)){
+                                        pie_cost.push([impr.regionName, 0]);
+                                    }else {
+                                        pie_cost.push([impr.regionName, Math.round((impr.pcCost / countdata.pcCost) * 10000) / 100]);
+                                        pie_num3=1;
+                                    }
                                 }
                             });
                             $.each(data.conv, function (i, impr) {
                                 if (devices == 2) {
-                                    pie_conv.push([impr.regionName, Math.round((impr.mobileConversion / countdata.mobileConversion) * 10000) / 100]);
+                                    if(isNaN(impr.mobileConversion / countdata.mobileConversion)){
+                                        pie_conv.push([impr.regionName, 0]);
+                                    }else {
+                                        pie_conv.push([impr.regionName, Math.round((impr.mobileConversion / countdata.mobileConversion) * 10000) / 100]);
+                                        pie_num4=1;
+                                    }
                                 } else {
-                                    pie_conv.push([impr.regionName, Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100]);
+                                        if(isNaN(impr.pcConversion / countdata.pcConversion)){
+                                            pie_conv.push([impr.regionName, 0]);
+                                        }else {
+                                            pie_conv.push([impr.regionName, Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100]);
+                                            pie_num4=1;
+                                        }
                                 }
                             });
+                            if(pie_num1 == 1){
+                                pieChart(pie_impr, "展现", "#imprDiv");
+                            }
+                            if(pie_num2 == 1){
+                                pieChart(pie_click, "点击", "#clickDiv");
+                            }
+                            if(pie_num3 == 1) {
+                                pieChart(pie_cost, "消费", "#costDiv");
+                            }
+                            if(pie_num2 == 1){
+                                pieChart(pie_conv, "转化", "#convDiv");
+                            }
                         });
                     }
-                    pieChart(pie_impr, "展现", "#imprDiv");
-                    pieChart(pie_click, "点击", "#clickDiv");
-                    pieChart(pie_cost, "消费", "#costDiv");
-                    pieChart(pie_conv, "转化", "#convDiv");
+
                 }
                 if (dateLis != 0) {
                     //曲线图数据装载
@@ -1358,21 +1303,21 @@ var reportDataVS = function () {
                                     if (devicesUser == 2) {
                                         html_User = "<tr class='list2_box1'><td>" + item + "</td>"
                                                 + "<td>" + ((items.mobileImpression == null) ? "-" : items.mobileImpression) + "</td><td>" + ((items.mobileClick == null) ? "-" : items.mobileClick) + "</td><td>" + ((items.mobileCost == null) ? "-" : Math.round(items.mobileCost * 100) / 100) + "</td>"
-                                                + "<td>" + ((items.mobileCtr == null) ? "-" : Math.round(items.mobileCtr)) + "%</td><td>" + ((items.mobileCpc == null) ? "-" : Math.round(items.mobileCpc * 100) / 100) + "</td><td>" + ((items.mobileConversion == null) ? "-" : items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
+                                                + "<td>" + ((items.mobileCtr == null) ? "-" : Math.round(items.mobileCtr*100)/100) + "%</td><td>" + ((items.mobileCpc == null) ? "-" : Math.round(items.mobileCpc * 100) / 100) + "</td><td>" + ((items.mobileConversion == null) ? "-" : items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
                                     } else {
                                         html_User = "<tr class='list2_box1'><td>" + item + "</td>"
                                                 + "<td>" + ((items.pcImpression == null) ? "-" : items.pcImpression) + "</td><td>" + ((items.pcClick == null) ? "-" : items.pcClick) + "</td><td>" + ((items.pcCost == null) ? "-" : Math.round(items.pcCost * 100) / 100) + "</td>"
-                                                + "<td>" + ((items.pcCtr == null) ? "-" : Math.round(items.pcCtr)) + "%</td><td>" + ((items.pcCpc == null) ? "-" : Math.round(items.pcCpc * 100) / 100) + "</td><td>" + ((items.pcConversion == null) ? "-" : items.pcConversion) + "</td><td>-</td><td>-</td></tr>";
+                                                + "<td>" + ((items.pcCtr == null) ? "-" : Math.round(items.pcCtr*100)/100) + "%</td><td>" + ((items.pcCpc == null) ? "-" : Math.round(items.pcCpc * 100) / 100) + "</td><td>" + ((items.pcConversion == null) ? "-" : items.pcConversion) + "</td><td>-</td><td>-</td></tr>";
                                     }
                                 } else {
                                     if (devicesUser == 2) {
                                         html_User = "<tr class='list2_box2'><td>" + item + "</td>"
                                                 + "<td>" + ((items.mobileImpression == null) ? "-" : items.mobileImpression) + "</td><td>" + ((items.mobileClick == null) ? "-" : items.mobileClick) + "</td><td>" + ((items.mobileCost == null) ? "-" : Math.round(items.mobileCost * 100) / 100) + "</td>"
-                                                + "<td>" + ((items.mobileCtr == null) ? "-" : Math.round(items.mobileCtr)) + "%</td><td>" + ((items.mobileCpc == null) ? "-" : Math.round(items.mobileCpc * 100) / 100) + "</td><td>" + ((items.mobileConversion == null) ? "-" : items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
+                                                + "<td>" + ((items.mobileCtr == null) ? "-" : Math.round(items.mobileCtr*100)/100) + "%</td><td>" + ((items.mobileCpc == null) ? "-" : Math.round(items.mobileCpc * 100) / 100) + "</td><td>" + ((items.mobileConversion == null) ? "-" : items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
                                     } else {
                                         html_User = "<tr class='list2_box1'><td>" + item + "</td>"
                                                 + "<td>" + ((items.pcImpression == null) ? "-" : items.pcImpression) + "</td><td>" + ((items.pcClick == null) ? "-" : items.pcClick) + "</td><td>" + ((items.pcCost == null) ? "-" : Math.round(items.pcCost * 100) / 100) + "</td>"
-                                                + "<td>" + ((items.pcCtr == null) ? "-" : Math.round(items.pcCtr)) + "%</td><td>" + ((items.pcCpc == null) ? "-" : Math.round(items.pcCpc * 100) / 100) + "</td><td>" + ((items.pcConversion == null) ? "-" : items.pcConversion) + "</td><td>-</td><td>-</td></tr>";
+                                                + "<td>" + ((items.pcCtr == null) ? "-" : Math.round(items.pcCtr*100)/100) + "%</td><td>" + ((items.pcCpc == null) ? "-" : Math.round(items.pcCpc * 100) / 100) + "</td><td>" + ((items.pcConversion == null) ? "-" : items.pcConversion) + "</td><td>-</td><td>-</td></tr>";
                                     }
                                 }
                                 $("#userTbody").append(html_User);
@@ -1389,11 +1334,20 @@ var reportDataVS = function () {
                     }
                     var page_html = "<a href='javascript:' id='pageUpVS' class='nextpage1'><span></span></a>"
                     for (var i = 0; i < countNumber; i++) {
-                        if (i == 0) {
-                            page_html = page_html + "<a href='javascript:' class='ajc' cname='nameVS' onclick='javascript:startVS = " + i + ";limitVS = " + (i + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
-                        } else {
-                            page_html = page_html + "<a href='javascript:' cname='nameVS' onclick='javascript:startVS = " + (i * 10) + ";limitVS = " + (i * 10 + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
+                        if(i<10){
+                            if (i == 0) {
+                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameVS' onclick='javascript:startVS = " + i + ";limitVS = " + (i + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
+                            } else {
+                                page_html = page_html + "<a href='javascript:' cname='nameVS' onclick='javascript:startVS = " + (i * 10) + ";limitVS = " + (i * 10 + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
+                            }
+                        }else{
+                            if (i == 0) {
+                                page_html = page_html + "<a href='javascript:' class='ajc' style='display:none' cname='nameVS' onclick='javascript:startVS = " + i + ";limitVS = " + (i + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
+                            } else {
+                                page_html = page_html + "<a href='javascript:'style='display:none' cname='nameVS' onclick='javascript:startVS = " + (i * 10) + ";limitVS = " + (i * 10 + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
+                            }
                         }
+
                     }
                     page_html = page_html + "<a href='javascript:' id='pageDownVS' class='nextpage2'><span></span></a>" +
                             "<span style='margin-right:10px;'>跳转到 <input type='text' id='goVSID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goVS'> GO</a>"
@@ -1463,17 +1417,17 @@ var reportDataVS = function () {
                     if (i % 2 == 0) {
                         html_User1 = "<tr class='list2_box1'><td>" + dateEach[i] + "</td>"
                                 + "<td><span>" + impression[i] + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? "<b>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + click[i] + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((click[i] - click1[i] >= 0) ? "<b>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + cost[i] + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? "<b>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + ctr[i] + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((ctr[i] - ctr1[i]) >= 0) ? "<b>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + (((ctr[i] - ctr1[i]) >= 0) ? ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + cpc[i] + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((cpc[i] - cpc1[i]) >= 0) ? "<b>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + (((cpc[i] - cpc1[i]) >= 0) ?((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + conversion[i] + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((conversion[i] - conversion1[i]) >= 0) ? "<b>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 100)) + "</b>%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - cpc1[i]) / conversion1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + (((conversion[i] - conversion1[i]) >= 0) ?  ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 100)) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - cpc1[i]) / conversion1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "</td><td>-</td><td>-</td></tr>";
 
                         html_User2 = "<tr class='list2_box1'><td>" + dateEach1[i] + "</td>"
@@ -1481,19 +1435,19 @@ var reportDataVS = function () {
                                 + "<td>" + ctr1[i] + "%</td><td>" + cpc1[i] + "</td><td>" + conversion1[i] + "</td><td>-</td><td>-</td></tr>"
                                 + "<tr><td colspan='9'>&nbsp;</td></tr>";
                     } else {
-                        html_User1 = "<tr class='list2_box1'><td>" + dateEach[i] + "</td>"
+                        html_User1 = "<tr class='list2_box2'><td>" + dateEach[i] + "</td>"
                                 + "<td><span>" + impression[i] + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? "<b>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + click[i] + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((click[i] - click1[i] >= 0) ? "<b>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + cost[i] + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? "<b>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + ctr[i] + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((ctr[i] - ctr1[i]) >= 0) ? "<b>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + (((ctr[i] - ctr1[i]) >= 0) ? ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + cpc[i] + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((cpc[i] - cpc1[i]) >= 0) ? "<b>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</b>" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + (((cpc[i] - cpc1[i]) >= 0) ? ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "<td><span>" + conversion[i] + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((conversion[i] - conversion1[i]) >= 0) ? "<b>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 100)) + "</b>%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - cpc1[i]) / conversion1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<span>" + (((conversion[i] - conversion1[i]) >= 0) ? ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 100)) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - cpc1[i]) / conversion1[i]) * 100)) + "%</strong>") + "</span></td>"
                                 + "</td><td>-</td><td>-</td></tr>";
 
                         html_User2 = "<tr class='list2_box2'><td>" + dateEach1[i] + "</td>"
@@ -1569,6 +1523,132 @@ var accountBasisReport = function () {
         }
     });
 }
+
+//曲线图
+var curve = function () {
+    $("#container").show();
+    $("#imprDiv").hide();
+    $("#clickDiv").hide();
+    $("#costDiv").hide();
+    $("#convDiv").hide();
+    $('#container').highcharts({
+        chart: {
+            zoomType: 'xy'
+        },
+        title: {
+            text: ''
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: t_date,
+            tickInterval: (dateInterval)// 每个间隔
+        },
+        yAxis: [
+            { // Primary yAxis
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: colorTow
+                    }
+                }
+            },
+            { // Secondary yAxis
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: colorOne
+                    }
+                },
+                opposite: true
+            }
+        ],
+        credits: {
+            enabled: false
+        },
+        tooltip: {
+            shared: true
+        },
+        legend: {
+            align: 'left',
+            x: 10,
+            verticalAlign: 'top',
+            y: -10,
+            floating: true,
+            backgroundColor: '#FFFFFF',
+            itemDistance: 20,
+            borderRadius: 5,
+            enabled: false
+        },
+        series: [
+            dataOne,
+            dataTow
+        ]
+    });
+}
+//饼状图
+var a = 1;
+var pieChart = function (showData, showName, showId) {
+    $(showId).show();
+    $("#container").hide()
+    if (a == 1) {
+        //使用饼状图进行颜色渐变
+        Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+            return {
+                radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+                stops: [
+                    [0, color],
+                    [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                ]
+            };
+        });
+        a++;
+    }
+    //加载开始
+    $(showId).highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            events: {
+                load: function () {
+                    // set up the updating of the chart each second
+                    var series = this.series[0];
+                    setInterval(function () {
+                        series.setData(showData);
+                    }, 2000);
+                }
+            }
+        },
+        title: {
+            text: showName + '占有百分比！'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    connectorColor: '#000000',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        series: [
+            {
+                type: 'pie',
+                name: '占有率',
+                data: [
+                ]
+            }
+        ]
+    });
+}
 //基础报告分页手动跳转
 $("body").on("click", "#go", function () {
     var juo = ($('#goID').val() * 10 - 1);
@@ -1579,24 +1659,28 @@ $("body").on("click", "#go", function () {
     }
 });
 
+var noneStart = 0;
+var noneEnd = 10;
 //基础报告上一页
 $("body").on("click", "#pageUp", function () {
-    if (startJC >= 9) {
-        if (startJC == 11) {
-            startJC = 0;
-        } else {
-            startJC = startJC - 10;
+    if(noneStart >=10){
+        $("a[cname=nameJC]").hide();
+        noneStart -= 10;
+        noneEnd -= 10;
+        for(var i = noneStart;i<=noneEnd;i++){
+            $("a[cname=nameJC]").eq(i).show();
         }
-        limitJC = limitJC - 10;
-        accountBasisReport();
     }
 });
 //基础报告下一页
 $("body").on("click", "#pageDown", function () {
-    if (limitJC < number) {
-        startJC = startJC + 10;
-        limitJC = limitJC + 10;
-        accountBasisReport();
+    if(noneEnd <number/10){
+        $("a[cname=nameJC]").hide();
+        noneStart += 10;
+        noneEnd += 10;
+        for(var i = noneStart;i<=noneEnd;i++){
+            $("a[cname=nameJC]").eq(i).show();
+        }
     }
 });
 $("body").on("click", "a[cname=nameJC]", function () {
@@ -1610,24 +1694,29 @@ $("body").on("click", "#goVS", function () {
         reportDataVS();
     }
 });
+
+var noneVsStart = 0;
+var noneVsEnd = 10;
 //账户统计上一页
 $("body").on("click", "#pageUpVS", function () {
-    if (startVS >= 9) {
-        if (startVS == 11) {
-            startVS = 0;
-        } else {
-            startVS = startVS - 10;
+    if(noneVsStart >=10){
+        $("a[cname=nameVS]").hide();
+        noneVsStart -= 10;
+        noneVsEnd -= 10;
+        for(var i = noneVsStart;i<=noneVsEnd;i++){
+            $("a[cname=nameVS]").eq(i).show();
         }
-        limitVS = limitVS - 10;
-        reportDataVS();
     }
 });
 //账户下一页
 $("body").on("click", "#pageDownVS", function () {
-    if (limitVS < pageNumberVS) {
-        startVS = startVS + 10;
-        limitVS = limitVS + 10;
-        reportDataVS();
+    if(noneVsEnd <pageNumberVS/10){
+        $("a[cname=nameVS]").hide();
+        noneVsStart += 10;
+        noneVsEnd += 10;
+        for(var i = noneVsStart;i<=noneVsEnd;i++){
+            $("a[cname=nameVS]").eq(i).show();
+        }
     }
 });
 $("body").on("click", "a[cname=nameVS]", function () {
@@ -1642,29 +1731,29 @@ $("body").on("click", "#goDet", function () {
         reportData();
     }
 });
-//明细报告上一页
-$("body").on("click", "#pageUpDet", function () {
-    if (startDet >= 29) {
-        if (startDet == 31) {
-            startDet = 0;
-        } else {
-            startDet = startDet - 30;
-        }
-        limitDet = limitDet - 30;
-        reportData();
-    }
-});
 var noneNumStart=0;
 var noneNumEnd=10;
+//明细报告上一页
+$("body").on("click", "#pageUpDet", function () {
+    if(noneNumStart >=10){
+        $("a[cname=nameDet]").hide();
+        noneNumStart -= 10;
+        noneNumEnd -= 10;
+        for(var i = noneNumStart;i<=noneNumEnd;i++){
+            $("a[cname=nameDet]").eq(i).show();
+        }
+    }
+});
 //明细报告下一页
 $("body").on("click", "#pageDownDet", function () {
-    $("a[cname=nameDet]").hide();
-    noneNumStart +=10;
-    noneNumEnd+=10;
-    for(var i = noneNumStart;i<=noneNumEnd;i++){
-        $("a[cname=nameDet]").get(i).show();
+    if(noneNumEnd < pageDetNumber/30){
+        $("a[cname=nameDet]").hide();
+        noneNumStart +=10;
+        noneNumEnd+=10;
+        for(var i = noneNumStart;i<=noneNumEnd;i++){
+            $("a[cname=nameDet]").eq(i).show();
+        }
     }
-
 });
 $("body").on("click", "a[cname=nameDet]", function () {
     $(this).addClass('ajc').siblings().removeClass('ajc');

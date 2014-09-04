@@ -1,12 +1,15 @@
 package com.perfect.mongodb.dao.impl;
 
 import com.google.common.collect.Lists;
+import com.perfect.constants.LogStatusConstant;
 import com.perfect.core.AppContext;
 import com.perfect.dao.CampaignDAO;
+import com.perfect.dao.LogDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.*;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
+import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.Pager;
 import com.perfect.utils.LogUtils;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +42,9 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
 
     @Resource
     private LogProcessingDAO logProcessingDAO;
+
+    @Resource
+    private LogDAO logDAO;
 
     public List<Long> getAllCampaignId() {
         MongoTemplate mongoTemplate = getMongoTemplate();
@@ -160,6 +166,41 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
         logProcessingDAO.insert(log);
     }
 
+
+    /**
+     * 根据mongoID修改计划
+     * @param campaignEntity
+     */
+    @Override
+    public void updateByMongoId(CampaignEntity campaignEntity) {
+        String id = campaignEntity.getId();
+        Query query = new Query();
+        query.addCriteria(Criteria.where(EntityConstants.SYSTEM_ID).is(id));
+        Update update = new Update();
+        try {
+            Class _class = campaignEntity.getClass();
+            Field[] fields = _class.getDeclaredFields();//get object's fields by reflect
+            for (Field field : fields) {
+                String fieldName = field.getName();
+                if ("id".equals(fieldName))
+                    continue;
+                StringBuilder fieldGetterName = new StringBuilder("get");
+                fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
+                Method method = _class.getDeclaredMethod(fieldGetterName.toString());
+                Object after = method.invoke(campaignEntity);
+                if (after != null) {
+                    update.set(field.getName(), after);
+                    logDAO.insertLog(id, LogStatusConstant.ENTITY_CAMPAIGN);
+                    break;
+                }
+            }
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        getMongoTemplate().updateFirst(query, update, CampaignEntity.class, TBL_CAMPAIGN);
+    }
+
+
     public void update(List<CampaignEntity> entities) {
         for (CampaignEntity entity : entities)
             update(entity);
@@ -172,6 +213,19 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
         deleteSub(new ArrayList<Long>(1) {{
             add(campaignId);
         }});
+    }
+
+    /**
+     * 根据mongoid删除计划
+     * @param campaignId
+     */
+    public void deleteByMongoId(final String campaignId) {
+        MongoTemplate mongoTemplate = getMongoTemplate();
+        mongoTemplate.remove(
+                new Query(Criteria.where(EntityConstants.SYSTEM_ID).is(campaignId)), CampaignEntity.class, TBL_CAMPAIGN);
+       /* deleteSub(new ArrayList<Long>(1) {{
+            add(campaignId);
+        }});*/
     }
 
     public void deleteByIds(List<Long> campaignIds) {

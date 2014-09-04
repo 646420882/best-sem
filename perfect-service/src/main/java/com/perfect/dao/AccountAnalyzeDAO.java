@@ -19,7 +19,7 @@ public interface AccountAnalyzeDAO extends MongoCrudRepository<KeywordRealTimeDa
      * 获取账户表现数据
      * @return
      */
-    List<AccountReportEntity> performaneUser(Date startDate, Date endDate,String fieldName,int Sorted,int limit);
+    List<AccountReportEntity> performaneUser(Date startDate, Date endDate);
 
     /**
      * 获取账户表现数据

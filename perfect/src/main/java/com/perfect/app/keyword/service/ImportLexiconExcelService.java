@@ -32,8 +32,7 @@ public class ImportLexiconExcelService {
             templatePath = templatePath.substring(1);
         }
 
-        ExcelUtils<LexiconEntity> entityExcelUtils = new ExcelUtils<>();
-        Map<String, List<LexiconEntity>> map = entityExcelUtils
+        Map<String, List<LexiconEntity>> map = ExcelUtils
                 .readExcel("xlsxPath", templatePath, LexiconEntity.class);
         List<LexiconEntity> list = new ArrayList<>();
 

@@ -5,7 +5,6 @@ import net.sf.jxls.reader.XLSReader;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
 import java.io.BufferedInputStream;
@@ -21,20 +20,18 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-08-18.
  */
-@Component("excelUtils")
-public class ExcelUtils<T> {
+public class ExcelUtils {
 
     protected Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     /**
-     *
      * @param srcFilePath
      * @param templateFilePath
      * @param _class
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Map<String, List<T>> readExcel(String srcFilePath, String templateFilePath, Class<T> _class) {
+    public static <T> Map<String, List<T>> readExcel(String srcFilePath, String templateFilePath, Class<T> _class) {
         try {
             Map<String, List<T>> map = new HashMap<>();
             //绑定XML文件

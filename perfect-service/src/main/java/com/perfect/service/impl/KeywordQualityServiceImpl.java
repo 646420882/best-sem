@@ -1,5 +1,6 @@
 package com.perfect.service.impl;
 
+import com.google.common.primitives.Bytes;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.GetKeyword10QualityRequest;
@@ -9,6 +10,7 @@ import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AccountManageDAO;
 import com.perfect.dao.KeywordQualityDAO;
+import com.perfect.dto.KeywordQualityReportDTO;
 import com.perfect.dto.QualityDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.KeywordReportEntity;
@@ -19,7 +21,10 @@ import com.perfect.utils.TopN;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
@@ -31,6 +36,10 @@ import java.util.concurrent.RecursiveTask;
  */
 @Service("keywordQualityService")
 public class KeywordQualityServiceImpl implements KeywordQualityService {
+
+    private static final String DEFAULT_DELIMITER = ",";
+    private static final String DEFAULT_END = "\r\n";
+    private static final byte commonCSVHead[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
 
     @Resource
     private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
@@ -106,6 +115,8 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         }
 
         Map<String, Object> results = new HashMap<>();
+        List<QualityDTO> qualityList = new ArrayList<>();
+        List<KeywordQualityReportDTO> reportList = new ArrayList<>();
 
         for (int i = 0; i <= 10; i++) {
             List<KeywordReportEntity> tempList = tempMap.get(i);
@@ -146,27 +157,30 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                 Double conversionRate = (qualityDTO.getConversion() + .0) / allQualityData.getConversion();
                 conversionRate = new BigDecimal(conversionRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                 qualityDTO.setConversionRate(conversionRate);
-                results.put("qualityDTO" + i, JSONUtils.getJsonObject(qualityDTO));
 
+                qualityDTO.setGrade(i);
+                qualityList.add(qualityDTO);
 
                 //每个质量度下具体的关键词信息
-//                KeywordReportEntity topNData[] = topN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), n, fieldName, sort);
-                KeywordReportEntity topNData[] = topN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), tempList.size(), fieldName, sort);
+                KeywordReportEntity topNData[] = topN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), n, fieldName, sort);
 
                 if ((skip + 1) * n > topNData.length) {
                     List<KeywordReportEntity> data = new ArrayList<>();
                     for (int j = skip * n; j < topNData.length; j++) {
                         data.add(topNData[j]);
                     }
-                    results.put("quality" + i, JSONUtils.getJsonObject(data));
+                    reportList.add(new KeywordQualityReportDTO(i, data));
                 } else {
                     KeywordReportEntity arrData[] = new KeywordReportEntity[n];
                     System.arraycopy(topNData, skip * n, arrData, 0, n);
-                    results.put("quality" + i, JSONUtils.getJsonObject(arrData));
+                    reportList.add(new KeywordQualityReportDTO(i, Arrays.asList(arrData)));
                 }
             }
 
         }
+
+        results.put("qualityDTO", JSONUtils.getJsonObjectArray(qualityList));
+        results.put("report", JSONUtils.getJsonObjectArray(reportList));
 
         return results;
     }
@@ -193,6 +207,147 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void downloadQualityCSV(OutputStream os) {
+        List<KeywordReportEntity> list = keywordQualityDAO.findYesterdayKeywordReport();
+        if (list.size() == 0)
+            return;
+
+        List<Long> keywordIds = new ArrayList<>();
+        ForkJoinPool forkJoinPool1 = new ForkJoinPool();
+        try {
+            KeywordIdTask task = new KeywordIdTask(list, 0, list.size());
+            Future<List<Long>> result = forkJoinPool1.submit(task);
+            keywordIds = result.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            forkJoinPool1.shutdown();
+        }
+
+        Map<String, KeywordReportEntity> map = new LinkedHashMap<>();
+        ForkJoinPool forkJoinPool2 = new ForkJoinPool();
+        try {
+            CalculateTask task = new CalculateTask(list, 0, list.size());
+            Future<Map<String, KeywordReportEntity>> result = forkJoinPool2.submit(task);
+            map = result.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            forkJoinPool2.shutdown();
+        }
+
+        list = new ArrayList<>(map.values());
+        QualityDTO allQualityData = getQualityData(list);
+
+        //获取关键词质量度
+        List<Quality10Type> quality10Types = getKeyword10Quality(keywordIds);
+
+        Map<Integer, List<KeywordReportEntity>> tempMap = new HashMap<>();
+        for (int i = 0; i <= 10; i++) {
+            tempMap.put(i, new ArrayList<KeywordReportEntity>());
+        }
+
+        for (Quality10Type quality10Type : quality10Types) {
+            tempMap.get(quality10Type.getPcQuality()).add(map.get(quality10Type.getId().toString()));
+        }
+
+        Map<Integer, QualityDTO> qualityDTOMap = new HashMap<>();
+        List<KeywordQualityReportDTO> reportList = new ArrayList<>();
+
+        for (int i = 0; i <= 10; i++) {
+            List<KeywordReportEntity> tempList = tempMap.get(i);
+            if (!tempList.isEmpty()) {
+
+                //质量度级别信息计算
+                QualityDTO qualityDTO = getQualityData(tempList);
+                if (qualityDTO.getCost() > 0) {
+                    Double cost = new BigDecimal(qualityDTO.getCost()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    qualityDTO.setCost(cost);
+                }
+                if (qualityDTO.getImpression() > 0) {
+                    Double ctr = (qualityDTO.getClick() + .0) / qualityDTO.getImpression();
+                    ctr = new BigDecimal(ctr * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    qualityDTO.setCtr(ctr);
+                }
+                if (qualityDTO.getClick() > 0) {
+                    Double cpc = qualityDTO.getCost() / qualityDTO.getClick();
+                    cpc = new BigDecimal(cpc * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    qualityDTO.setCpc(cpc);
+                }
+                Double keywordQtyRate = (tempList.size() + .0) / list.size();
+                keywordQtyRate = new BigDecimal(keywordQtyRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                qualityDTO.setKeywordQtyRate(keywordQtyRate);
+
+                Double impressionRate = (qualityDTO.getImpression() + .0) / allQualityData.getImpression();
+                impressionRate = new BigDecimal(impressionRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                qualityDTO.setImpressionRate(impressionRate);
+
+                Double clickRate = (qualityDTO.getClick() + .0) / allQualityData.getClick();
+                clickRate = new BigDecimal(clickRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                qualityDTO.setClickRate(clickRate);
+
+                Double costRate = (qualityDTO.getCost() + .0) / allQualityData.getCost();
+                costRate = new BigDecimal(costRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                qualityDTO.setCostRate(costRate);
+
+                Double conversionRate = (qualityDTO.getConversion() + .0) / allQualityData.getConversion();
+                conversionRate = new BigDecimal(conversionRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                qualityDTO.setConversionRate(conversionRate);
+
+                qualityDTO.setGrade(i);
+                qualityDTOMap.put(i, qualityDTO);
+
+                //每个质量度下具体的关键词信息
+                KeywordReportEntity topNData[] = topN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), tempList.size(), "pcImpression", -1);
+                reportList.add(new KeywordQualityReportDTO(i, Arrays.asList(topNData)));
+            }
+
+        }
+
+
+        //CSV file
+        try {
+            os.write(Bytes.concat(commonCSVHead, ("质量度" +
+                    DEFAULT_DELIMITER + "关键词" +
+                    DEFAULT_DELIMITER + "展现" +
+                    DEFAULT_DELIMITER + "点击" +
+                    DEFAULT_DELIMITER + "点击率" +
+                    DEFAULT_DELIMITER + "消费" +
+                    DEFAULT_DELIMITER + "平均点击价格" +
+                    DEFAULT_DELIMITER + "转化" +
+                    DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
+            for (KeywordQualityReportDTO reportDTO : reportList) {
+                Integer grade = reportDTO.getGrade();
+                QualityDTO qualityDTO = qualityDTOMap.get(grade);
+                String bytes = (grade + DEFAULT_DELIMITER +
+                        qualityDTO.getKeywordQty() + "(" + qualityDTO.getKeywordQtyRate() + "%)" + DEFAULT_DELIMITER +
+                        qualityDTO.getImpression() + "(" + qualityDTO.getImpressionRate() + "%)" + DEFAULT_DELIMITER +
+                        qualityDTO.getClick() + "(" + qualityDTO.getClickRate() + "%)" + DEFAULT_DELIMITER +
+                        qualityDTO.getCtr() + "%" + DEFAULT_DELIMITER +
+                        qualityDTO.getCost() + "(" + qualityDTO.getCostRate() + "%)" + DEFAULT_DELIMITER +
+                        qualityDTO.getCpc() + DEFAULT_DELIMITER +
+                        qualityDTO.getConversion() + "(" + qualityDTO.getConversionRate() + "%)" + DEFAULT_END);
+                os.write(Bytes.concat(commonCSVHead, bytes.getBytes(StandardCharsets.UTF_8)));
+
+                for (KeywordReportEntity entity : reportDTO.getReportList()) {
+                    bytes = (grade + DEFAULT_DELIMITER +
+                            entity.getKeywordName() + DEFAULT_DELIMITER +
+                            entity.getPcImpression() + DEFAULT_DELIMITER +
+                            entity.getPcClick() + DEFAULT_DELIMITER +
+                            qualityDTO.getCtr() + "%" + DEFAULT_DELIMITER +
+                            entity.getPcCost() + DEFAULT_DELIMITER +
+                            entity.getPcCpc() + DEFAULT_DELIMITER +
+                            entity.getPcConversion() + DEFAULT_END);
+                    os.write(Bytes.concat(commonCSVHead, bytes.getBytes(StandardCharsets.UTF_8)));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private QualityDTO getQualityData(List<KeywordReportEntity> list) {

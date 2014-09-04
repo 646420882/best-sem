@@ -1,5 +1,6 @@
 package com.perfect.service.impl;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.KeywordDAO;
@@ -9,6 +10,8 @@ import com.perfect.dto.KeywordDTO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.KeywordEntity;
+import com.perfect.mongodb.utils.EntityConstants;
+import com.perfect.mongodb.utils.PaginationParam;
 import com.perfect.service.AssistantKeywordService;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -40,8 +43,51 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      */
 
     @Override
-    public Iterable<KeywordEntity> getKeyWords(Query query) {
-        return keywordDAO.findByQuery(query);
+    public List<KeywordEntity> getKeyWords(String cid,String aid) {
+
+        String regex = "^\\d+$";
+
+        List<KeywordEntity> keywordEntityList = new ArrayList<>();
+        PaginationParam param = new PaginationParam();
+        param.setStart(0);
+        param.setLimit(Integer.MAX_VALUE);
+        param.setAsc(true);
+        param.setOrderBy("price");
+
+        //若cid和aid都不为空，就是查询某单元下的关键词,在aid为空的时候就查询该计划下的关键词
+        if(cid!=null && !"".equals(cid) && aid!=null && !"".equals(aid)){
+
+            if(aid.matches(regex)==true){
+                keywordEntityList.addAll( keywordDAO.getKeywordByAdgroupId(Long.parseLong(aid),null,0,Integer.MAX_VALUE));
+            }else{
+                keywordEntityList.addAll( keywordDAO.getKeywordByAdgroupId(aid,null,0,Integer.MAX_VALUE));
+            }
+            return keywordEntityList;
+        }else if(cid!=null && !"".equals(cid) && (aid==null||"".equals(aid))){
+            CampaignEntity campaignEntity;
+            if(cid.matches(regex)==true){
+                campaignEntity = campaignDAO.findOne(Long.parseLong(cid));
+            }else{
+                campaignEntity = campaignDAO.findByObjectId(cid);
+            }
+                List<AdgroupEntity> adgroupEntityList = new ArrayList<>();
+                if(campaignEntity.getCampaignId()==null){
+                   adgroupEntityList.addAll(adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(EntityConstants.OBJ_CAMPAIGN_ID).is(campaignEntity.getId())))) ;
+                }else{
+                    adgroupEntityList.addAll( adgroupDAO.findByCampaignId(campaignEntity.getCampaignId()));
+                }
+                for(AdgroupEntity ad :adgroupEntityList){
+                    if(ad.getAdgroupId()==null){
+                        keywordEntityList.addAll(keywordDAO.findByAdgroupId(ad.getId(),param));
+                    }else{
+                        keywordEntityList.addAll(keywordDAO.findByAdgroupId(ad.getAdgroupId(),param));
+                    }
+                }
+
+            return keywordEntityList;
+        }else{
+            return keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId())));
+        }
     }
 
 
@@ -51,8 +97,16 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * @param kwids
      */
     @Override
-    public void deleteByKwIds(List<Long> kwids) {
-        keywordDAO.deleteByIds(kwids);
+    public void deleteByKwIds(List<String> kwids) {
+        String regex = "^\\d+$";
+
+        for(String id:kwids){
+            if(id.matches(regex)==true){
+                keywordDAO.delete(Long.parseLong(id));
+            }else{
+                keywordDAO.deleteById(id);
+            }
+        }
     }
 
 
@@ -63,7 +117,12 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      */
     @Override
     public void updateKeyword(KeywordEntity keywordEntity) {
-        keywordDAO.update(keywordEntity);
+        if(keywordEntity.getKeywordId()==null){
+            keywordDAO.updateByMongoId(keywordEntity);
+        }else{
+            keywordDAO.update(keywordEntity);
+        }
+
     }
 
 

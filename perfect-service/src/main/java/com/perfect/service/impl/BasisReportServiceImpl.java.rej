@@ -1,0 +1,12 @@
+diff a/perfect-service/src/main/java/com/perfect/service/impl/BasisReportServiceImpl.java b/perfect-service/src/main/java/com/perfect/service/impl/BasisReportServiceImpl.java	(rejected hunks)
+@@ -208,7 +208,9 @@
+                                 strings[1] = date[i];
+                             }
+                         }
+-                        stringListMap.put(strings[endNumber] + " 至 " + strings[i], objectsList);
++                        //显示数据排序
++                        List<StructureReportEntity> showData = dataSort(objectsList,sort,terminal,start,limit);
++                        stringListMap.put(strings[endNumber] + " 至 " + strings[i], showData);
+                         dateObject2.setDate(strings[endNumber] + " 至 " + strings[i]);
+                         dateMap2.add(dateObject2);
+                         endNumber = i;

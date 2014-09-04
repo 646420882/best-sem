@@ -28,6 +28,8 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
     List<KeywordEntity> getKeywordByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
 
+    List<KeywordEntity> getKeywordByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
+
     Pager getKeywordByPager(HttpServletRequest request, Map<String, Object> params, int orderBy);
 
     List<KeywordInfo> getKeywordInfo();
@@ -47,9 +49,15 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
     List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param);
 
+    List<KeywordEntity> findByAdgroupId(String adgroupId, PaginationParam param);
+
     List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param);
 
     KeywordEntity findByObjectId(String oid);
 
     void updateAdgroupIdByOid(String id, Long adgroupId);
+
+    void deleteById(String id);
+
+    void updateByMongoId(KeywordEntity keywordEntity);
 }

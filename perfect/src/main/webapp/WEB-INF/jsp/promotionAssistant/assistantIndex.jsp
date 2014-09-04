@@ -72,7 +72,7 @@
 </div>
 <div class="zhushou_concent over">
 <div class="zs_concent_top over">
-    <ul class="zh_menu2 fl">
+    <ul class="zh_menu2 fl" id="tabMenu">
         <li class="current">关键词</li>
         <li>普通创意</li>
         <li>附加创意</li>
@@ -89,9 +89,9 @@
         <ul class="fl">
             <li><a id="addKeyword" href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="javascript:deleteKwd()"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-            <li><a id="newkeyword" href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新&nbsp;</b></a><input type="image"  id="deletekeywords" src="../public/img/zs_input.png">
+            <li><a id="addOrUpdateKwd" href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新&nbsp;</b></a><input type="image"  id="deletekeywords" src="../public/img/zs_input.png">
                 <ul id="deletekeywordes" class="hides">
-                    <li id="deletekeyword"><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b >批量删除</b></a></li>
+                    <li id="batchDelKwd"><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b >批量删除</b></a></li>
                 </ul>
             </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;
@@ -215,7 +215,7 @@
         </ul>
         <span class="fr">1/10</span>
     </div>
-    <div class="list4">
+    <div class="list4" style="height:480px;">
         <table border="0" cellspacing="0" width="100%" id="createTable">
             <thead>
             <tr class="list02_top">
@@ -362,7 +362,7 @@
     </ul>
     <span class="fr">1/10</span>
 </div>
-<div class="list4">
+<div class="list4" style="height:368px;">
 <table border="0" cellspacing="0" width="100%">
 <thead>
 <tr class="list02_top">
@@ -934,7 +934,9 @@
 </div>
 </div>
 </div>
+<jsp:include page="../homePage/pageBlock/footer.jsp"/>
 </div>
+
 </div>
 
 <!---------下载账户----------->

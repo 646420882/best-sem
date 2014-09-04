@@ -1,12 +1,23 @@
 /*加载列表数据start*/
+
+
+
+
 //得到当前账户的所有关键词
-function getKwdList() {
+function getKwdList(param) {
+    $("#tbodyClick").empty();
+    $("#tbodyClick").html("加载中...");
     $.ajax({
         url: "/assistantKeyword/list",
         type: "post",
+        data:param,
         dataType: "json",
         success: function (data) {
-
+            $("#tbodyClick").empty();
+            if(data.length==0){
+                $("#tbodyClick").html("暂无数据!");
+                return;
+            }
             for (var i = 0; i < data.length; i++) {
                 keywordDataToHtml(data[i], i);
             }
@@ -19,6 +30,11 @@ function getKwdList() {
  *将一条数据加到html中
  */
 function keywordDataToHtml(obj, index) {
+
+    if(obj.keywordId==null){
+        obj.keywordId = obj.id;
+    }
+
     var html = "";
     if (index == 0) {
         html = html + "<tr class='list2_box3 firstKeyword' onclick='setKwdValue(this,"+obj.keywordId+")'>";
@@ -118,10 +134,6 @@ function keywordDataToHtml(obj, index) {
     }
 }
 
-
-//进入这个页面就开始加载数据
-getKwdList();
-
 /*加载列表数据end*/
 
 
@@ -186,7 +198,7 @@ function whenBlurEditKeyword(num,value){
     }
     var jsonData = {};
     switch (num){
-        case 2:jsonData["price"] = value;break;
+        case 2: if(/^\d+$/.test(value)==false){value = 0;}jsonData["price"] = value;break;
         case 3:jsonData["pcDestinationUrl"] = value;break;
         case 4:jsonData["mobileDestinationUrl"] = value;break;
         case 5:jsonData["matchType"] = value;break;
@@ -201,12 +213,13 @@ function whenBlurEditKeyword(num,value){
  * 删除关键词
  */
 function deleteKwd(){
-    var ids = new Array();
+    var ids = "";
     $("#tbodyClick").find(".list2_box3").each(function(){
-        ids.push($(this).find("input[type=hidden]").val());
+        ids = ids+$(this).find("input[type=hidden]").val()+",";
     });
 
-    if(ids.length==0){
+
+    if(ids.split(",").length==0){
         alert("请选择行再操作!");
         return;
     }
@@ -215,6 +228,7 @@ function deleteKwd(){
     if(isDel==false){
         return;
     }
+
     $.ajax({
         url:"/assistantKeyword/deleteById",
         type:"post",
@@ -241,11 +255,11 @@ function missBlur(even,obj){
 
 
 
-function testBatchDel(){
+/*function testBatchDel(){
     var choose1 = "18961624,443591981-";
     var info = "婚博会,精确";
 //    var name = "婚博会\n中国婚博会";
-   /* var input = "18961624,443591981,婚博会";*/
+   *//* var input = "18961624,443591981,婚博会";*//*
     $.ajax({
         url:"/assistantKeyword/addOrUpdateKeywordByChoose",
         type:"post",
@@ -259,7 +273,44 @@ function testBatchDel(){
         }
     });
 
-}
+}*/
+
+
+$("#addOrUpdateKwd").livequery('click', function () {
+    top.dialog({title: "批量添加/更新",
+        padding: "5px",
+        content: "<iframe src='/assistantKeyword/showAddOrUpdateKeywordDialog' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        oniframeload: function () {
+        },
+        onclose: function () {
+//              if (this.returnValue) {
+//                  $('#value').html(this.returnValue);
+//              }
+            // window.location.reload(true);
+        },
+        onremove: function () {
+        }
+    }).showModal();
+    return false;
+});
+
+$("#batchDelKwd").livequery('click', function () {
+    top.dialog({title: "批量删除",
+        padding: "5px",
+        content: "<iframe src='/assistantKeyword/showBatchDelDialog' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        oniframeload: function () {
+        },
+        onclose: function () {
+//              if (this.returnValue) {
+//                  $('#value').html(this.returnValue);
+//              }
+            // window.location.reload(true);
+        },
+        onremove: function () {
+        }
+    }).showModal();
+    return false;
+});
 
 
 /**
@@ -282,6 +333,78 @@ $("#tbodyClick").delegate(".kwdEdit","click blur",function(event){
 
 
 
+
+
+
+
+
+
+
+
+/*=======================================公用函数=====================================*/
+/**
+ * 点击推广计划树的时候调用
+ * @param treeNode
+ * @returns {{cid: null, aid: null}}
+ */
+var nowChoose = null;
+function getNowChooseCampaignTreeData(treeNode) {
+    var jsonData = {"cid":null,"aid":null};
+    if (treeNode.level == 0) {
+        //点击的是父节点(推广计划)
+        jsonData["cid"] = treeNode.id;
+    } else if (treeNode.level == 1) {
+        //点击的是子节点(推广单元)
+        jsonData["cid"] = treeNode.getParentNode().id;
+        jsonData["aid"] = treeNode.id;
+    }
+    nowChoose = jsonData;
+    whenClickTreeLoadData(getCurrentTabName(),nowChoose);
+}
+
+/**
+ * 得到当前选择的推广计划id或者推广单元的id
+ */
+function getNowChooseCidAndAid() {
+    return nowChoose;
+}
+
+//刚进入该页面的时候加载的数据
+whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());
+
+
+function whenClickTreeLoadData(tabName,param) {
+    var tabName = $.trim(tabName);
+    if(tabName=="关键词"){
+        getKwdList(param);
+    }else if(tabName=="推广计划"){
+        getCampaignList();
+    }else if(tabName=="普通创意"){
+
+    }else if(tabName=="附加创意"){
+
+    }else if(tabName=="推广单元"){
+
+    }
+
+}
+
+/**
+ * 单击选项卡的事件
+ */
+$("#tabMenu li").click(function () {
+    var tabName = $(this).html();
+    var param = getNowChooseCidAndAid();
+    whenClickTreeLoadData(tabName,param);
+});
+
+/**
+ * 得到当前切换的选项名称
+ * @returns {*|jQuery}
+ */
+function getCurrentTabName(){
+    return $("#tabMenu .current").html();
+}
 
 
 
