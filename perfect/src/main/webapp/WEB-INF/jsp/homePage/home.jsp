@@ -1799,7 +1799,7 @@ function getData() {
 }
 
 //初始化账户概览页面数据
-lisClick($(".current").get(1), 1);//默认显示昨天的汇总数据
+lisClick($("#clickLis .current>a"), 1);//默认显示昨天的汇总数据
 
 </script>
 
