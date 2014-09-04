@@ -6,8 +6,7 @@ import com.perfect.entity.bidding.StrategyEntity;
 import org.quartz.CronExpression;
 
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by vbzer_000 on 2014/8/31.
@@ -40,12 +39,9 @@ public class BiddingRuleUtils {
     public static Date getDateInvMinute(Integer[] times, int interval) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("0 ");
+        sb.append("0 0");
         if (interval > 0) {
-            sb.append("0/").append(interval).append(" ");
-        } else {
-            sb.append("0 ");
-            times = getNextRunRange(times);
+            sb.append("/").append(interval).append(" ");
         }
 
         for (int i = 0; i < times.length; i++) {
@@ -73,7 +69,7 @@ public class BiddingRuleUtils {
             sb.append(times[i]).append("-").append(times[++i] - 1).append(",");
         }
 
-        sb.deleteCharAt(sb.length() - 1).append("/").append(interval/60);
+        sb.deleteCharAt(sb.length() - 1).append("/").append(interval / 60);
         sb.append(" * * ?");
 
         try {
@@ -86,34 +82,56 @@ public class BiddingRuleUtils {
         return null;
     }
 
-    public static Integer[] getNextRunRange(Integer[] times) {
+    public static boolean runNow(Integer[] times) {
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         for (int i = 0; i < times.length; i++) {
             int start = times[i];
             int end = times[++i];
 
             if (start <= hour && hour <= end) {
-                Integer[] newTime = null;
-                if (i == times.length - 1) {
-                    newTime = new Integer[]{times[0], times[1]};
-                } else {
-                    newTime = new Integer[]{times[i], times[++i]};
-                }
-                return newTime;
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
 
     public static void main(String[] args) {
-        Date date = getDateInvMinute(new Integer[]{1, 4, 14, 18 }, -1);
+        Date date = getDateInvMinute(new Integer[]{1, 4, 14, 18}, -1);
         System.out.println("date = " + date);
 
-        date = getDateInvMinute(new Integer[]{1, 4, 14, 16 }, 40);
+        date = getDateInvMinute(new Integer[]{1, 4, 14, 16}, 40);
         System.out.println("date = " + date);
 
-        date = getDateInvHour(new Integer[]{1, 4, 14, 17 }, 60);
+        date = getDateInvHour(new Integer[]{1, 4, 14, 17}, 60);
         System.out.println("date = " + date);
+    }
+
+    public static Integer[] clearEndTimes(Integer[] times) {
+        List<Integer> arrays = new ArrayList<>();
+        for (int i = 0; i < times.length; i++) {
+            arrays.add(times[i++]);
+        }
+
+        return arrays.toArray(new Integer[]{});
+    }
+
+    public static long getNextHourTime(Integer[] times) {
+        try {
+            List<Date> dates = new ArrayList<>();
+            Date now = Calendar.getInstance().getTime();
+            for (int i = 0 ; i <times.length ; i++) {
+                CronExpression expression = new CronExpression("0 0 " + times[i++] + " * * ?");
+                dates.add(expression.getNextValidTimeAfter(now));
+            }
+
+            Collections.sort(dates);
+
+            return dates.get(0).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
     }
 }

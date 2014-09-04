@@ -3,6 +3,7 @@ package com.perfect.entity.bidding;
 import com.perfect.entity.AccountIdEntity;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -17,9 +18,12 @@ import static com.perfect.mongodb.utils.EntityConstants.TBL_BIDDINGRULE;
 @Document(collection = TBL_BIDDINGRULE)
 public class BiddingRuleEntity extends AccountIdEntity {
 
+    // TODO create a price field to save the price when the rule is out of running status
+
     @Id
     private ObjectId id;
 
+    @Indexed(unique = true)
     @Field(KEYWORD_ID)
     private long keywordId;
 

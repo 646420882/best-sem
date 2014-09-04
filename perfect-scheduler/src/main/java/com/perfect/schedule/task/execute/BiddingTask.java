@@ -11,10 +11,9 @@ import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.schedule.core.CronExpression;
 import com.perfect.schedule.core.IScheduleTaskDealMulti;
 import com.perfect.schedule.core.TaskItemDefine;
-import com.perfect.service.BiddingRuleService;
-import com.perfect.service.SysCampaignService;
-import com.perfect.service.SysKeywordService;
-import com.perfect.service.SystemUserService;
+import com.perfect.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -23,6 +22,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
@@ -32,6 +32,8 @@ import java.util.concurrent.Executors;
  */
 @Component("biddingTask")
 public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObject> {
+
+    private Logger logger = LoggerFactory.getLogger(BiddingTask.class);
 
     @Resource
     private SystemUserService systemUserService;
@@ -45,10 +47,14 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
     @Resource
     private SysCampaignService sysCampaignService;
 
-    private Executor executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
+    @Resource
+    private BiddingLogService biddingLogService;
+
 
     @Override
     public boolean execute(TaskObject[] tasks, String ownSign) throws Exception {
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
+
         int num = 0;
         // 调度策略
         for (TaskObject task : tasks) {
@@ -68,10 +74,14 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
                 // 生成一个任务
                 BiddingSubTask biddingSubTask = new BiddingSubTask(task.getUserName(), accountInfoEntity.getRegDomain(), service, biddingRuleService,
                         sysCampaignService, accountInfoEntity, biddingRuleEntity, keywordEntity);
+
+                biddingSubTask.setBiddingLogService(biddingLogService);
                 executor.execute(biddingSubTask);
             }
 
         }
+        executor.shutdown();
+
         return true;
     }
 

@@ -12,10 +12,7 @@ import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.BiddingLogEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.entity.bidding.StrategyEntity;
-import com.perfect.service.BaiduApiService;
-import com.perfect.service.BiddingRuleService;
-import com.perfect.service.HTMLAnalyseService;
-import com.perfect.service.SysCampaignService;
+import com.perfect.service.*;
 import com.perfect.service.impl.HTMLAnalyseServiceImpl;
 import com.perfect.utils.BiddingRuleUtils;
 import org.slf4j.Logger;
@@ -69,6 +66,8 @@ public class BiddingSubTask implements Runnable {
     private BiddingRuleService biddingRuleService;
     private final SysCampaignService campaignService;
 
+    private BiddingLogService biddingLogService;
+
     private Logger logger = LoggerFactory.getLogger(BiddingSubTask.class);
 
     public BiddingSubTask(String userName, String host, BaiduApiService apiService, BiddingRuleService biddingRuleService, SysCampaignService sysCampaignService, HTMLAnalyseService htmlAnalyseService,
@@ -110,19 +109,28 @@ public class BiddingSubTask implements Runnable {
 
         int interval = strategyEntity.getInterval();
         Date nextRun = null;
+
+
         if (interval >= 60) {
             nextRun = BiddingRuleUtils.getDateInvHour(strategyEntity.getTimes(), interval);
         } else if (interval > 0 && interval < 60) {
             nextRun = BiddingRuleUtils.getDateInvMinute(strategyEntity.getTimes(), interval);
         } else if (interval == -1) {
-            Integer[] times = BiddingRuleUtils.getNextRunRange(strategyEntity.getTimes());
+            long next = biddingRuleEntity.getNext();
 
+            //第一次执行竞价策略
+            if (next == 1) {
+                long nextTime = BiddingRuleUtils.getNextHourTime(strategyEntity.getTimes());
+                biddingRuleEntity.setNext(nextTime);
+            }
         }
-        if (nextRun.after(Calendar.getInstance().getTime())) {
-            if (biddingRuleEntity.getNext() != nextRun.getTime())
-                biddingRuleEntity.setNext(nextRun.getTime());
-        } else {
-            biddingRuleEntity.setEnabled(false);
+        if (nextRun != null) {
+            if (nextRun.after(Calendar.getInstance().getTime())) {
+                if (biddingRuleEntity.getNext() != nextRun.getTime())
+                    biddingRuleEntity.setNext(nextRun.getTime());
+            } else {
+                biddingRuleEntity.setEnabled(false);
+            }
         }
         biddingRuleService.updateRule(biddingRuleEntity);
 
@@ -177,15 +185,18 @@ public class BiddingSubTask implements Runnable {
 
                 String url = creativeDTO.getUrl();
                 // 已经达到排名
-                if (url.equals(host)) {
+                if (url.contains(host)) {
 
                     // 单次竞价或者重复竞价
-                    Date time = BiddingRuleUtils.getDateInvMinute(strategyEntity.getTimes(), -1);
-                    biddingRuleEntity.setNext(time.getTime());
-                    biddingRuleService.updateRule(biddingRuleEntity);
+//                    if(strategyEntity.getInterval() == -1){
+//                        Date time = BiddingRuleUtils.getDateInvMinute(strategyEntity.getTimes(), -1);
+//
+//                    }
+//                    biddingRuleEntity.setNext(time.getTime());
+//                    biddingRuleService.updateRule(biddingRuleEntity);
 
                     if (logger.isDebugEnabled()) {
-                        logger.debug("达到排名..." + host + "\n下次启动时间: " + time);
+                        logger.debug("达到排名..." + host + "\n下次启动时间: " + new Date(biddingRuleEntity.getNext()));
                     }
                     break;
                 } else {
@@ -211,6 +222,7 @@ public class BiddingSubTask implements Runnable {
                         biddingLogEntity.setAfter(currentPrice);
 
                     }
+
 
                     if (logger.isDebugEnabled()) {
                         logger.debug("未达到排名..." + host + "\n最新出价: " + currentPrice);
@@ -239,6 +251,11 @@ public class BiddingSubTask implements Runnable {
 
                             biddingRuleEntity.setCurrentPrice(keywordEntity.getPrice());
                             apiService.setKeywordPrice(keywordType);
+
+                            biddingLogEntity.setAfter(keywordType.getPrice());
+
+                            biddingLogService.save(biddingLogEntity);
+
                             biddingRuleService.updateRule(biddingRuleEntity);
                         }
                         break;
@@ -249,6 +266,8 @@ public class BiddingSubTask implements Runnable {
                         keywordType.setPrice(currentPrice);
                         biddingRuleEntity.setCurrentPrice(currentPrice);
                         apiService.setKeywordPrice(keywordType);
+                        biddingLogService.save(biddingLogEntity);
+
                         biddingRuleService.updateRule(biddingRuleEntity);
 
                         if (logger.isDebugEnabled()) {
@@ -404,5 +423,13 @@ public class BiddingSubTask implements Runnable {
                 return true;
             }
         }
+    }
+
+    public BiddingLogService getBiddingLogService() {
+        return biddingLogService;
+    }
+
+    public void setBiddingLogService(BiddingLogService biddingLogService) {
+        this.biddingLogService = biddingLogService;
     }
 }

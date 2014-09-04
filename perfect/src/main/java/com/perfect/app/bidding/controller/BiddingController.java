@@ -101,16 +101,24 @@ public class BiddingController {
             biddingRuleEntity.setStrategyEntity(strategyEntity);
 
             Date date = null;
-            int interval = strategyEntity.getInterval();
-            if (interval >= 60) {
+            int interval = param.getInterval();
+            if (interval == -1) {
+                boolean runNow = BiddingRuleUtils.runNow(param.getTimes());
+                if (runNow) {
+                    biddingRuleEntity.setNext(1);
+                }
+            } else if (interval >= 60) {
                 date = BiddingRuleUtils.getDateInvHour(param.getTimes(), interval);
+                biddingRuleEntity.setNext(date.getTime());
+                //竞价时段
             } else {
                 date = BiddingRuleUtils.getDateInvMinute(param.getTimes(), interval);
+                biddingRuleEntity.setNext(date.getTime());
+                //竞价时段
             }
-            biddingRuleEntity.setNext(date.getTime());
+
             //竞价时段
             strategyEntity.setTimes(param.getTimes());
-
             // 竞价排名位置
             strategyEntity.setExpPosition(param.getExpPosition());
             strategyEntity.setPosition(param.getCustomPos());
