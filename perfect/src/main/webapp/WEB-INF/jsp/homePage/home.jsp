@@ -17,6 +17,14 @@
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
+    <link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico" />
+    <style>
+        .page2 .ajc {
+            background: #ffb900;
+            border: 1px solid #fab30b;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
 <jsp:include page="pageBlock/nav.jsp"/>
@@ -77,13 +85,9 @@
                 <li class="current"><a href="javascript:" onclick="lisClick(this,1)">昨天</a></li>
                 <li><a href="javascript:" onclick="lisClick(this,7)">近7天</a></li>
                 <li><a href="javascript:" onclick="lisClick(this,30)">近30天</a></li>
-                <li class="date">
-                    <a href="javascript:" onclick="lisClick(this,null);">
-                        自定义
-                        <input name="reservation" type="image"
-                               onclick="javascript:genre = 'accountOverview';changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                <li class="date"><a href="javascript:" onclick="lisClick(this,null);">自定义<input name="reservation" type="image"
+                                   onclick="javascript:genre = 'accountOverview';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                src="${pageContext.request.contextPath}/public/img/date.png">
-
                     </a>
                 </li>
             </ul>
@@ -128,12 +132,12 @@
             <Span>账户趋势图</Span>
             <a href="javascript:void(0)" class="question"></a>
             <ul id="clickqushi">
-                <li>
+                <li class="current">
                     <a onclick="loadPerformanceCurve(this,7)">
                         近7天
                     </a>
                 </li>
-                <li class="current">
+                <li>
                     <a onclick="loadPerformanceCurve(this,30)">
                         近30天
                     </a>
@@ -159,12 +163,12 @@
             <a href="javascript:void(0)" class="question"></a>
             <ul id="clickfenri">
                 <li class="current">
-                    <a onclick="loadPerformance(this,7)">
+                    <a onclick="$('#pageUser').empty();judgeDet = 0;loadPerformance(this,7);">
                         近7天
                     </a>
                 </li>
                 <li>
-                    <a onclick="loadPerformance(this,30)">
+                    <a onclick="$('#pageUser').empty();judgeDet = 0;loadPerformance(this,30)">
                         近30天
                     </a>
                 </li>
@@ -172,7 +176,7 @@
                     <a href="javascript:void(0)">
                         自定义
                         <input name="reservation" class=" fa fa-calendar " type="image"
-                               onclick="javascript:genre = 'importPerformanceDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                               onclick="javascript:$('#pageUser').empty();judgeDet = 0;genre = 'importPerformanceDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                src="${pageContext.request.contextPath}/public/img/date.png">
                     </a>
                 </li>
@@ -191,7 +195,7 @@
                                 &nbsp;<span>时间</span><b>
                                 <p>
                                     <input class="one" type="button"
-                                           onclick="javascript:category = 'date';sort = 0;loadPerformance(statDate)">
+                                           onclick="javascript:category = 'date';sort = -1;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
@@ -203,48 +207,48 @@
                                 &nbsp;<span>展现量</span><b>
                                 <p>
                                     <input class="one" type="button"
-                                           onclick="javascript:category = 'impression';sort = 0;loadPerformance(statDate)">
+                                           onclick="javascript:category = 'impression';sort = -2;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
                                     <input class="two" type="button"
-                                           onclick="javascript:category = 'impression';sort = 1;loadPerformance(statDate)">
+                                           onclick="javascript:category = 'impression';sort = 2;loadPerformance(statDate)">
                                 </p></b>
                             </li>
                             <li>
                                 &nbsp;<span>点击量</span><b>
                                 <p>
                                     <input class="one" type="button"
-                                           onclick="javascript:category = 'click';sort = 0;loadPerformance(statDate)">
+                                           onclick="javascript:category = 'click';sort = -3;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
                                     <input class="two" type="button"
-                                           onclick="javascript:category = 'click';sort = 1;loadPerformance(statDate)">
+                                           onclick="javascript:category = 'click';sort = 3;loadPerformance(statDate)">
                                 </p></b>
                             </li>
                             <li>
                                 &nbsp;<span>消费</span><b>
                                 <p>
                                     <input class="one" type="button"
-                                           onclick="javascript:category = 'cost';sort = 0;loadPerformance(statDate)">
+                                           onclick="javascript:category = 'cost';sort = -4;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
                                     <input class="two" type="button"
-                                           onclick="javascript:category = 'cost';sort = 1;loadPerformance(statDate)">
+                                           onclick="javascript:category = 'cost';sort = 4;loadPerformance(statDate)">
                                 </p></b>
                             </li>
                             <li>
                                 &nbsp;<span>点击率</span><b>
                                 <p>
                                     <input class="one" type="button"
-                                           onclick="javascript:category = 'ctr';sort = 0;loadPerformance(statDate)">
+                                           onclick="javascript:category = 'ctr';sort = -5;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
                                     <input class="two" type="button"
-                                           onclick="javascript:category = 'ctr';sort = 1;loadPerformance(statDate)">
+                                           onclick="javascript:category = 'ctr';sort = 5;loadPerformance(statDate)">
                                 </p></b>
                                 <a href="#" class="question">
                                 </a>
@@ -253,12 +257,12 @@
                                 &nbsp;<span>平均点击价格</span><b>
                                 <p>
                                     <input class="one" type="button"
-                                           onclick="javascript:category = 'cpc';sort = 0;loadPerformance(statDate)">
+                                           onclick="javascript:category = 'cpc';sort = -6;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
                                     <input class="two" type="button"
-                                           onclick="javascript:category = 'cpc';sort = 1;loadPerformance(statDate)">
+                                           onclick="javascript:category = 'cpc';sort = 6;loadPerformance(statDate)">
                                 </p></b>
                                 <a href="#" class="question">
                                 </a>
@@ -267,12 +271,12 @@
                                 &nbsp;<span>转化(页面)</span><b>
                                 <p>
                                     <input class="one" type="button"
-                                           onclick="javascript:category = 'conversion';sort = 0;loadPerformance(statDate)">
+                                           onclick="javascript:category = 'conversion';sort = -7;loadPerformance(statDate)">
                                 </p>
 
                                 <p>
                                     <input class="two" type="button"
-                                           onclick="javascript:category = 'conversion';sort = 1;loadPerformance(statDate)">
+                                           onclick="javascript:category = 'conversion';sort = 7;loadPerformance(statDate)">
                                 </p></b>
                                 <a href="#" class="question">
                                 </a>
@@ -286,22 +290,17 @@
                 </tbody>
             </table>
             <div class="download over">
-                <div class="page2 fl">
-                    <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a
-                        href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#"
-                                                                           class="nextpage2"><span></span></a><span
-                        style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#">
-                    GO</a>
+                <div class="page2 fl" id="pageUser">
 
                 </div>
-				<span class="fr">每页显示
+				<!--<span class="fr">每页显示
                             <select id="performanceLimit"
                                     onchange="javascript:limit = $('#performanceLimit option:selected').val();loadPerformance(statDate);">
                                 <option selected="selected" value="10">10个</option>
                                 <option value="20">20个</option>
                                 <option value="30">30个</option>
                             </select> </span>
-
+-->
             </div>
         </div>
     </div>
@@ -338,7 +337,8 @@
 
 </div>
 <div class="download over ">
-    <a href="#" class="fr">
+    <span class="fl" style=" color:#000; font-weight:bold;">查看完整版数据请点击下载全部→</span>
+    <a href="/keywordQuality/downloadCSV" class="fr">
         下载全部
     </a>
 </div>
@@ -1262,6 +1262,11 @@
         }
     };
 
+    var judgeDet = 0;
+    var perCount=0;
+    var startPer = 0;
+    var pageDetNumber = 0;
+    var endPer = 10;
     /**
      * 分日表现数据加载
      * */
@@ -1277,26 +1282,89 @@
             data: {
                 startDate: daterangepicker_start_date,
                 endDate: daterangepicker_end_date,
-                fieldName: category,
                 sort: sort,
-                limit: limit
+                limit: endPer,
+                startPer:startPer
             },
             success: function (data) {
                 var calssStr = "";
                 if (data.rows.length > 0) {
                     $("#performance").empty();
                     $.each(data.rows, function (i, item) {
+                        pageDetNumber= item.count;
                         if (i % 2 == 0) {
                             calssStr = "list2_box1";
                         } else {
                             calssStr = "list2_box2";
                         }
-                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.date + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;" + Math.round(item.pcCost * 100) / 100 + "</li><li> &nbsp;" + item.pcCtr + "%</li>"
-                                + "<li> &nbsp;" + item.pcCpc + "</li><li> &nbsp;" + item.pcConversion + "</li></ul></td></tr>";
+                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.date + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;" + Math.round(item.pcCost * 100) / 100 + "</li><li> &nbsp;" + Math.round(item.pcCtr * 100)/100 + "%</li>"
+                                + "<li> &nbsp;" + Math.round(item.pcCpc * 100)/100 + "</li><li> &nbsp;" + item.pcConversion + "</li></ul></td></tr>";
                         $("#performance").append(_div);
-                    })
+                    });
+                    if (judgeDet < 1) {
+                        var countNumber = 0;
+                        if (pageDetNumber % endPer == 0) {
+                            countNumber = pageDetNumber / endPer;
+                        } else {
+                            countNumber = (pageDetNumber / endPer);
+                        }
+                        var page_html = "<a href='javascript:' id='pageUpDet' class='nextpage1'><span></span></a>"
+                        for (var i = 0; i < countNumber; i++) {
+                            if(i<10){
+                                if (i == 0) {
+                                    page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startPer = " + i + ";endPer = " + (i + endPer) + ";loadPerformance()'>" + (i + 1) + "</a>";
+                                } else {
+                                    page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startPer = " + (i * endPer) + ";endPer = " + (i * endPer + endPer) + ";loadPerformance()'>" + (i + 1) + "</a>";
+                                }
+                            }else{
+                                if (i == 0) {
+                                    page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startPer = " + i + ";endPer = " + (i + endPer) + ";loadPerformance()' style='display:none'>" + (i + 1) + "</a>";
+                                } else {
+                                    page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startPer = " + (i * endPer) + ";endPer = " + (i * endPer + endPer) + ";loadPerformance()' style='display:none'>" + (i + 1) + "</a>";
+                                }
+                            }
+
+                        }
+                        page_html = page_html + "<a href='javascript:' id='pageDownDet' class='nextpage2'><span></span></a>" +
+                                "<span style='margin-right:10px;'>跳转到 <input type='text' id='goDetID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goDet'> GO</a>"
+                        $("#pageUser").append(page_html);
+                        judgeDet++;
+                    }
                 }
             }
+        });
+        var noneNumStart=0;
+        var noneNumEnd=endPer;
+        //明细报告分页手动跳转
+        $("body").on("click", "#goDet", function () {
+            if (($('#goDetID').val() * endPer - 1) <= (pageDetNumber + (endPer-1))) {
+                startPer = ($('#goDetID').val() * endPer - endPer);
+                endPer = startPer + endPer - 1;
+                loadPerformance();
+            }
+        });
+        $("body").on("click", "#pageUpDet", function () {
+            if(noneNumStart >=10){
+                $("a[cname=nameDet]").hide();
+                noneNumStart -= 10;
+                noneNumEnd -= 10;
+                for(var i = noneNumStart;i<=noneNumEnd;i++){
+                    $("a[cname=nameDet]").eq(i).show();
+                }
+            }
+        });
+        $("body").on("click", "#pageDownDet", function () {
+            if(noneNumEnd < pageDetNumber/endPer){
+                $("a[cname=nameDet]").hide();
+                noneNumStart +=10;
+                noneNumEnd+=10;
+                for(var i = noneNumStart;i<=noneNumEnd;i++){
+                    $("a[cname=nameDet]").eq(i).show();
+                }
+            }
+        });
+        $("body").on("click", "a[cname=nameDet]", function () {
+            $(this).addClass('ajc').siblings().removeClass('ajc');
         });
     };
 </script>
@@ -1356,14 +1424,21 @@ var loadPerformanceCurve = function (obj, date) {
             endDate: daterangepicker_end_date
         },
         success: function (data) {
+            t_date.length = 0;
+            t_impr.length = 0;
+            t_clicks.length = 0;
+            t_cost.length = 0;
+            t_ctr.length = 0;
+            t_cpc.length = 0;
+            t_conversion.length = 0;
             if (data.rows.length > 0) {
                 $.each(data.rows, function (i, item) {
                     t_date.push(item.date);
                     t_impr.push(item.pcImpression);
                     t_clicks.push(item.pcClick);
-                    t_cost.push(item.pcCost);
-                    t_ctr.push(item.pcCtr);
-                    t_cpc.push(item.pcCpc);
+                    t_cost.push(Math.round(item.pcCost * 100)/100);
+                    t_ctr.push(Math.round(item.pcCtr*100)/100);
+                    t_cpc.push(Math.round(item.pcCpc*100)/100);
                     t_conversion.push(item.pcConversion);
                 })
             }
@@ -1796,7 +1871,7 @@ function getData() {
 }
 
 //初始化账户概览页面数据
-lisClick($(".current").get(1), 1);//默认显示昨天的汇总数据
+lisClick($("#clickLis .current>a"), 1);//默认显示昨天的汇总数据
 
 </script>
 

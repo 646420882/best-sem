@@ -9,8 +9,13 @@ a {
 a:hover {
     text-decoration: none;
 }
-ul, li, h1, h2, h3, h4, h5, h6 {
+ul, li, h1, h2, h3, h4, h5, h6 ,p {
     list-style: none;
+}
+/** 清除内外边距 **/
+ p{
+    margin: 0;
+    padding: 0;
 }
 body {
     font-family: "微软雅黑";
@@ -305,7 +310,7 @@ table{
     top:30%;
     z-index:102;
 }
-.nav_under ul li .list1 {
+.nav_under ul li .list_1 {
     background: url(/public/img/bg.png) -10px -551px no-repeat;
 }
 .nav_under ul .current{
@@ -314,32 +319,32 @@ table{
 .nav_under ul .current a{
     color:#ffb500;
 }
-.nav_under ul .current .list1{
+.nav_under ul .current .list_1{
     background: url(/public/img/bg.png) -10px -515px no-repeat;
 }
-.nav_under ul .current .list2{
+.nav_under ul .current .list_2{
     background: url(/public/img/bg.png) -88px -515px no-repeat;
 }
-.nav_under ul .current .list3{
+.nav_under ul .current .list_3{
 
     background: url(/public/img/bg.png) -50px -515px no-repeat;
 }
-.nav_under ul .current .list4{
+.nav_under ul .current .list_4{
     background: url(/public/img/bg.png) -126px -515px no-repeat;
 }
-.nav_under ul .current .list5{
+.nav_under ul .current .list_5{
     background: url(/public/img/bg.png) -172px -515px no-repeat;
 }
-.nav_under ul li .list2 {
+.nav_under ul li .list_2 {
     background: url(/public/img/bg.png) -88px -551px no-repeat;
 }
-.nav_under ul li .list3 {
+.nav_under ul li .list_3 {
     background: url(/public/img/bg.png) -50px -551px no-repeat;
 }
-.nav_under ul li .list4 {
+.nav_under ul li .list_4 {
     background: url(/public/img/bg.png) -126px -551px no-repeat;
 }
-.nav_under ul li .list5 {
+.nav_under ul li .list_5 {
     background: url(/public/img/bg.png) -172px -551px no-repeat;
 }
 .nav_under ul li .list6 {
@@ -365,7 +370,7 @@ table{
 }
 /*底部*/
 .footer {
-    width: 85%;
+    width: 100%;
     height: 80px;
     padding-top: 20px;
     border-top: 1px solid #d1d1d1;

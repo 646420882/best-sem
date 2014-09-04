@@ -2,6 +2,7 @@ package com.perfect.service;
 
 import com.perfect.autosdk.sms.v3.Quality10Type;
 
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -24,4 +25,9 @@ public interface KeywordQualityService {
      * @return
      */
     List<Quality10Type> getKeyword10Quality(List<Long> keywordIds);
+
+    /**
+     * 下载关键词质量度报告
+     */
+    void downloadQualityCSV(OutputStream os);
 }

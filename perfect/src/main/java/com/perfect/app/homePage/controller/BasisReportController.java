@@ -116,6 +116,19 @@ public class BasisReportController {
         }
     }
 
+    /**
+     * 账户报告以及比较数据
+     * @param response
+     * @param date1
+     * @param date2
+     * @param date3
+     * @param dateType
+     * @param devices
+     * @param compare
+     * @param sortVS
+     * @param startVS
+     * @param limitVS
+     */
     @RequestMapping(value = "/account/accountDateVs", method = RequestMethod.GET)
     public void getAccountDateVs(HttpServletResponse response,
                                  @RequestParam(value = "date1", required = false) String date1,

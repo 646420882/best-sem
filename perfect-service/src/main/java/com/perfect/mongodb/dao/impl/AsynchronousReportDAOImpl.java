@@ -222,8 +222,6 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 if (pcFilePath == null || mobileFilePath == null) {
                     continue;
                 }
-                System.out.println("PC" + pcFilePath);
-                System.out.println("Mobile:" + mobileFilePath);
 
                 List<RegionReportEntity> pcList = httpFileHandler.getRegionReport(pcFilePath, 1);
                 rrmList = httpFileHandler.getRegionReport(mobileFilePath, 2);

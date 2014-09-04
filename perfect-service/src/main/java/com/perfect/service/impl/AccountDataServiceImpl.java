@@ -25,9 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.perfect.mongodb.utils.EntityConstants.*;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
@@ -147,7 +145,6 @@ public class AccountDataServiceImpl implements AccountDataService {
     @Override
     public void updateAccountData(String userName, long accountId) {
         SystemUserEntity systemUserEntity = systemUserService.getSystemUser(userName);
-
         if (systemUserEntity == null) {
             return;
         }
@@ -159,6 +156,8 @@ public class AccountDataServiceImpl implements AccountDataService {
         }
 
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(userName);
+        //清除当前账户所有数据
+        clearCollectionData(mongoTemplate, accountId);
 
         BaiduAccountInfoEntity _entity = null;
         for (BaiduAccountInfoEntity baiduAccountInfoEntity : baiduAccountInfoEntityList) {
@@ -175,40 +174,79 @@ public class AccountDataServiceImpl implements AccountDataService {
             AccountInfoType accountInfoType = apiService.getAccountInfo();
             BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
 
+            //更新账户数据
+            MongoTemplate mongoTemplate1 = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+            Update update = new Update();
+            update.set("bdAccounts.$", _entity);
+            mongoTemplate1.updateFirst(
+                    Query.query(
+                            Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
+                    update, SystemUserEntity.class);
+
+
+            //更新推广计划数据
             List<CampaignType> campaignTypes = apiService.getAllCampaign();
-
             List<CampaignEntity> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
-
-            // 查询推广单元
+            //查询推广单元
             List<Long> camIds = new ArrayList<>(campaignEntities.size());
-
             for (CampaignEntity campaignEntity : campaignEntities) {
                 campaignEntity.setAccountId(aid);
                 camIds.add(campaignEntity.getCampaignId());
             }
+            mongoTemplate.insertAll(campaignEntities);
 
+            //更新推广单元数据
             List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(camIds);
-
             List<AdgroupEntity> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
-
-            List<Long> adgroupdIds = new ArrayList<>();
+            List<Long> adgroupIds = new ArrayList<>();
             for (AdgroupEntity adgroupEntity : adgroupEntities) {
                 adgroupEntity.setAccountId(aid);
-                adgroupdIds.add(adgroupEntity.getAdgroupId());
+                adgroupIds.add(adgroupEntity.getAdgroupId());
+            }
+            mongoTemplate.insertAll(adgroupEntities);
+
+            //分批次请求关键词数据
+            List<Long> subList = new ArrayList<>(4);
+            for (int i = 1; i <= adgroupIds.size(); i++) {
+                Long adgroupId = adgroupIds.get(i - 1);
+                subList.add(adgroupId);
+
+                if (i % 4 == 0) {
+                    List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
+                    List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+
+                    for (KeywordEntity keywordEntity : keywordEntities) {
+                        keywordEntity.setAccountId(aid);
+                    }
+                    mongoTemplate.insert(keywordEntities, KeywordEntity.class);
+                    subList.clear();
+                }
             }
 
-            List<KeywordType> keywordTypes = apiService.getAllKeyword(adgroupdIds);
 
-            List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+            if (!subList.isEmpty()) {
+                List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
+                List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
 
-            List<Long> kwids = new ArrayList<>(keywordEntities.size());
-            for (KeywordEntity keywordEntity : keywordEntities) {
-                keywordEntity.setAccountId(aid);
-                kwids.add(keywordEntity.getKeywordId());
+                for (KeywordEntity keywordEntity : keywordEntities) {
+                    keywordEntity.setAccountId(aid);
+                }
+                mongoTemplate.insert(keywordEntities, KeywordEntity.class);
+                subList.clear();
             }
 
+//            List<KeywordType> keywordTypes = apiService.getAllKeyword(adgroupIds);
+//
+//            List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+//
+//            List<Long> kwids = new ArrayList<>(keywordEntities.size());
+//            for (KeywordEntity keywordEntity : keywordEntities) {
+//                keywordEntity.setAccountId(aid);
+//                kwids.add(keywordEntity.getKeywordId());
+//            }
 
-            List<CreativeType> creativeTypes = apiService.getAllCreative(adgroupdIds);
+
+            List<CreativeType> creativeTypes = apiService.getAllCreative(adgroupIds);
 
             List<CreativeEntity> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
 
@@ -217,27 +255,9 @@ public class AccountDataServiceImpl implements AccountDataService {
                 creativeEntity.setAccountId(aid);
                 creativeIds.add(creativeEntity.getCreativeId());
             }
-
-            //clear data
-            clearCollectionData(mongoTemplate, accountId);
-
-            //update data
-            mongoTemplate.insertAll(campaignEntities);
-
-            mongoTemplate.insertAll(adgroupEntities);
-            mongoTemplate.insertAll(keywordEntities);
             mongoTemplate.insertAll(creativeEntityList);
-
         }
 
-        //update account data
-        MongoTemplate mongoTemplate1 = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
-        Update update = new Update();
-        update.set("bdAccounts.$", _entity);
-        mongoTemplate1.updateFirst(
-                Query.query(
-                        Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
-                update, SystemUserEntity.class);
     }
 
     @Override
@@ -379,33 +399,30 @@ public class AccountDataServiceImpl implements AccountDataService {
         List<CampaignEntity> campaignEntityList = campaignDAO.findAll();
 
         List<CampaignType> campaignTypes = apiService.getAllCampaign();
-
         List<CampaignEntity> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
-
         //凤巢中的推广单元
+        Map<Long, CampaignEntity> campaignEntityMap = new LinkedHashMap<>();
         for (CampaignEntity campaignEntity : campaignEntities) {
             campaignEntity.setAccountId(acid);
+            campaignEntityMap.put(campaignEntity.getCampaignId(), campaignEntity);
         }
 
         List<CampaignEntity> sumList = new ArrayList<>(campaignEntityList);
         sumList.addAll(campaignEntities);
-        for (int i = sumList.size() - 1; i >= 0; i--) {
-            for (CampaignEntity entity : campaignEntityList) {
-                if (sumList.get(i).getCampaignId() == null || entity.getCampaignId() == null) {
-                    sumList.remove(i);
-                    continue;
-                }
-                if (sumList.get(i).getCampaignId().compareTo(entity.getCampaignId()) == 0) {
-                    sumList.remove(i);
-                    break;
-                }
+        for (CampaignEntity entity : sumList) {
+            Long campaignId = entity.getCampaignId();
+            if (campaignId == null) {
+                continue;
+            }
+            if (campaignEntityMap.get(campaignId) != null) {
+                campaignEntityMap.remove(campaignId);
             }
         }
 
-        if (sumList.size() == 0) {
+        if (campaignEntityMap.size() == 0) {
             return Collections.EMPTY_LIST;
         } else {
-            return sumList;
+            return new ArrayList<>(campaignEntityMap.values());
         }
     }
 

@@ -34,7 +34,14 @@ var loadKeywordQualityData = function () {
                 for (var i = 0; i <= 10; i++) {
                     var grade = reports[i]["grade"];
                     $.each(reports[i]["reportList"], function (j, item) {
-                        var _div = "<div><ul><li></li><li><span>" + item.keywordName + "</span><span class='green_arrow wd3'></span></li>" +
+                        var _class = "";
+                        if (j % 2 == 0) {
+                            _class = "list2_box1";
+                        } else {
+                            _class = "list2_box2";
+                        }
+
+                        var _div = "<div><ul class='" + _class + "'><li></li><li><span>" + item.keywordName + "</span></li>" +
                             "<li>" + item.pcImpression + "</li><li>" + item.pcClick + "</li><li>" + item.pcCtr + "%</li><li>" + item.pcCost + "</li>" +
                             "<li>" + item.pcCpc + "</li><li>" + item.pcConversion + "</li></ul></div>";
                         $("#keywordQuality" + grade).append(_div);

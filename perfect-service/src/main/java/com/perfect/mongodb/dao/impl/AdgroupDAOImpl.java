@@ -348,11 +348,6 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupEntity, Long>
         mongoTemplate.remove(new Query(Criteria.where(get_id()).in(oids)), CreativeEntity.class);
        List<LogEntity> logEntities=new ArrayList<>();
         for (String id : oids) {
-            LogEntity log =new LogEntity();
-            log.setAccountId(AppContext.getAccountId());
-            log.setOid(id);
-            log.setType(AdgroupEntity.class.getSimpleName());
-            logEntities.add(log);
             logDAO.insertLog(id, LogStatusConstant.ENTITY_ADGROUP);
         }
 

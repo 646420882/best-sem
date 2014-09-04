@@ -43,7 +43,7 @@ $(function () {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
-                window.location.reload(true);
+//                window.location.reload(true);
             },
             onremove: function () {
             }
@@ -60,7 +60,7 @@ $(function () {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
-                window.location.reload(true);
+               // window.location.reload(true);
             },
             onremove: function () {
             }

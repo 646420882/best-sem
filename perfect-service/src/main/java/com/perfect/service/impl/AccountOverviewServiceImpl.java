@@ -45,10 +45,34 @@ public class AccountOverviewServiceImpl implements AccountOverviewService{
         }
 
         for (AccountReportEntity are : list) {
-            impressionCount += are.getPcImpression() + are.getMobileImpression();
-            clickCount += are.getPcClick() + are.getMobileClick();
-            costCount += are.getPcCost() + are.getMobileCost();
-            conversionCount += are.getPcConversion() + are.getMobileConversion();
+            if(are.getPcImpression()!=null){
+                impressionCount += are.getPcImpression();
+            }
+            if(are.getMobileImpression()!=null){
+                impressionCount += are.getMobileImpression();
+            }
+
+            if(are.getPcClick()!=null){
+                clickCount += are.getPcClick();
+            }
+            if(are.getMobileClick()!=null){
+                clickCount += are.getMobileClick();
+            }
+
+            if(are.getPcCost()!=null){
+                costCount += are.getPcCost();
+            }
+            if(are.getMobileCost()!=null){
+                costCount += are.getMobileCost();
+            }
+
+            if(are.getPcConversion()!=null){
+                conversionCount += are.getPcConversion();
+            }
+            if(are.getMobileConversion()!=null){
+                conversionCount += are.getMobileConversion();
+            }
+
         }
 
         //数字格式化

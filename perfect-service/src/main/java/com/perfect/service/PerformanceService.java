@@ -12,7 +12,7 @@ import java.util.List;
 public interface PerformanceService {
     List<KeywordRealTimeDataVOEntity> performance(String userTable, String[] date);
 
-    List<AccountReportEntity> performanceUser(Date startDate, Date endDate,String fieldName,int Sorted,int limit);
+    List<AccountReportEntity> performanceUser(Date startDate, Date endDate,String sorted,int limit,int startPer, List<String> date);
 
     List<AccountReportEntity> performanceCurve(Date startDate,Date endDate);
 }

@@ -3,15 +3,13 @@ package com.perfect.app.assistantKeyword.controller;
 import com.perfect.core.AppContext;
 import com.perfect.dto.CampaignTreeDTO;
 import com.perfect.entity.KeywordEntity;
-import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -43,8 +41,8 @@ public class AssistantKeywordController {
      * @return
      */
     @RequestMapping(value = "assistantKeyword/list",method = {RequestMethod.GET,RequestMethod.POST})
-    public void getAllKeywordList(HttpServletResponse response){
-        Iterable<KeywordEntity>  list = assistantKeywordService.getKeyWords(new Query().addCriteria(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId())).limit(20));
+    public void getAllKeywordList(HttpServletResponse response,String cid,String aid){
+        List<KeywordEntity>  list = assistantKeywordService.getKeyWords(cid,aid);
         webContext.writeJson(list,response);
     }
 
@@ -54,8 +52,9 @@ public class AssistantKeywordController {
      * @return
      */
     @RequestMapping(value = "assistantKeyword/deleteById" ,method = {RequestMethod.GET,RequestMethod.POST})
-    public void deleteKeywordById(Long[] kwids){
-        assistantKeywordService.deleteByKwIds(Arrays.asList(kwids));
+    public void deleteKeywordById(String kwids){
+        String[] ids = kwids.split(",");
+        assistantKeywordService.deleteByKwIds(Arrays.asList(ids));
     }
 
 
@@ -71,9 +70,16 @@ public class AssistantKeywordController {
      * @return
      */
     @RequestMapping(value = "assistantKeyword/edit",method = {RequestMethod.GET,RequestMethod.POST})
-    public void updateKeywordName(Long kwid,Double price,String pcDestinationUrl,String mobileDestinationUrl,Integer matchType,Integer phraseType,Boolean pause){
+    public void updateKeywordName(String kwid,Double price,String pcDestinationUrl,String mobileDestinationUrl,Integer matchType,Integer phraseType,Boolean pause){
+        String regex = "^\\d+$";
+
         KeywordEntity keywordEntity = new KeywordEntity();
-        keywordEntity.setKeywordId(kwid);
+
+        if(kwid.matches(regex)==true){
+            keywordEntity.setKeywordId(Long.parseLong(kwid));
+        }else{
+            keywordEntity.setId(kwid);
+        }
         keywordEntity.setPrice(price);
         keywordEntity.setPcDestinationUrl(pcDestinationUrl);
         keywordEntity.setMobileDestinationUrl(mobileDestinationUrl);
@@ -149,5 +155,25 @@ public class AssistantKeywordController {
         assistantKeywordService.batchAddOrUpdateKeywordByInput(currentAccountId,isReplace,keywordInfos);
         return new ModelAndView();
     }*/
+
+
+    /**
+     * 显示批量删除弹出窗口
+     * @return
+     */
+    @RequestMapping(value = "assistantKeyword/showBatchDelDialog",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView showBatchDelDialog(){
+        return new ModelAndView("promotionAssistant/alert/batchDelKeyword");
+    }
+
+
+    /**
+     * 显示批量添加更新弹出窗口
+     * @return
+     */
+    @RequestMapping(value = "assistantKeyword/showAddOrUpdateKeywordDialog",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView showAddOrUpdateKeywordDialog(){
+        return new ModelAndView("promotionAssistant/alert/addOrUpdateKeyword");
+    }
 
 }

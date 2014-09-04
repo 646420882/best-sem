@@ -2,7 +2,6 @@ package com.perfect.service;
 
 import com.perfect.dto.CampaignTreeDTO;
 import com.perfect.entity.KeywordEntity;
-import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 import java.util.Map;
@@ -11,9 +10,9 @@ import java.util.Map;
  * Created by john on 2014/8/19.
  */
 public interface AssistantKeywordService {
-    Iterable<KeywordEntity> getKeyWords(Query query);
+    List<KeywordEntity>  getKeyWords(String cid,String aid);
 
-    void deleteByKwIds(List<Long> kwids);
+    void deleteByKwIds(List<String> kwids);
 
     void updateKeyword( KeywordEntity keywordEntity);
 
