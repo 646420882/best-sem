@@ -8,7 +8,6 @@
 
 var sparams = {aid: null, cid: null};
 $(function () {
-    loadCreativeData(sparams);
     InitMenu();
     rDrag.init(document.getElementById("dAdd"));
     rDrag.init(document.getElementById("dUpdate"));
@@ -117,8 +116,9 @@ function InitMenu() {
  */
 function loadCreativeData(params) {
     initRbackBtn();
+    var _createTable = $("#createTable tbody");
+    _createTable.empty().html("加载中...");
     $.get("/assistantCreative/getList", params, function (result) {
-        var _createTable = $("#createTable tbody");
         if (result != "[]") {
             var json = eval("(" + result + ")");
             if (json.length > 0) {
@@ -545,7 +545,7 @@ function deleteByObjectId(temp) {
     if (con) {
         $.get("/assistantCreative/del", {oid: oid}, function (rs) {
             if (rs == "1") {
-               $(tmp).find("td:eq(10)").html("<span class='e' step='3'>被删除</span>");
+               $(tmp).find("td:eq(10)").html("<span class='error' step='3'></span>");
             }
         });
     }
@@ -708,7 +708,7 @@ function getLocalStatus(number) {
             return "<span class='pen' step=" + number + "></span>";
             break;
         case 3:
-            return "<span step=" + number + ">被删除</span>";
+            return "<span class='error' step=" + number + "></span>";
             break;
         default :
             return "";

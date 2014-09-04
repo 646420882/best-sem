@@ -3,7 +3,7 @@
  */
 var plans = {cid: null, cn: null};
 $(function () {
-    loadAdgroupData(plans);
+
     initAMenu();
     rDrag.init(document.getElementById("bAdd"));
     rDrag.init(document.getElementById("aKwd"));
@@ -124,6 +124,7 @@ function initNoKwdKeyUp() {
  */
 function loadAdgroupData(plans) {
     var _adGroudTable = $("#adGroupTable tbody");
+    _adGroudTable.empty().html("加载中....");
     $.get("../assistantAdgroup/getAdgroupList", {cid: plans.cid}, function (rs) {
         if (rs != "[]") {
             var json = eval("(" + rs + ")");

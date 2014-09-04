@@ -380,11 +380,11 @@ function whenClickTreeLoadData(tabName,param) {
     }else if(tabName=="推广计划"){
         getCampaignList();
     }else if(tabName=="普通创意"){
-
+        loadCreativeData(sparams);
     }else if(tabName=="附加创意"){
 
     }else if(tabName=="推广单元"){
-
+        loadAdgroupData(plans);
     }
 
 }
