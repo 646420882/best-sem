@@ -16,4 +16,8 @@ public interface CampaignDAO extends MongoCrudRepository<CampaignEntity, Long> {
     List<CampaignEntity> findAllDownloadCampaign();
 
     CampaignEntity findByObjectId(String oid);
+
+    void deleteByMongoId(String id);
+
+    void updateByMongoId(CampaignEntity campaignEntity);
 }

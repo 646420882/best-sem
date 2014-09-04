@@ -57,9 +57,13 @@ public class AssistantCampaignController {
      * @param response
      */
     @RequestMapping(value = "assistantCampaign/getObject",method = {RequestMethod.GET,RequestMethod.POST})
-    public void getCampaignByCid(HttpServletResponse response,Long cid){
-        CampaignEntity  campaignEntity = campaignDAO.findOne(cid);
-        webContext.writeJson(campaignEntity,response);
+    public void getCampaignByCid(HttpServletResponse response,String cid){
+        String regex = "^\\d+$";
+        if(cid.matches(regex)==true){
+            webContext.writeJson(campaignDAO.findOne(Long.parseLong(cid)),response);
+        }else{
+            webContext.writeJson(campaignDAO.findByObjectId(cid),response);
+        }
     }
 
 
@@ -69,8 +73,17 @@ public class AssistantCampaignController {
      * @return
      */
     @RequestMapping(value = "assistantCampaign/delete",method = {RequestMethod.GET,RequestMethod.POST})
-    public void deleteCampaignById(Long[] cid){
-        campaignDAO.deleteByIds(Arrays.asList(cid));
+    public void deleteCampaignById(String cid){
+        String regex = "^\\d+$";
+        String[] cids = cid.split(",");
+        for(String id:cids){
+            if(id.matches(regex)==true){
+                campaignDAO.delete(Long.parseLong(id));
+            }else{
+                campaignDAO.deleteByMongoId(id);
+            }
+
+        }
     }
 
 
@@ -90,11 +103,18 @@ public class AssistantCampaignController {
      * @return
      */
     @RequestMapping(value = "assistantCampaign/edit",method = {RequestMethod.GET,RequestMethod.POST})
-    public void updateById(Long cid,String campaignName,Double budget,Double priceRatio,Integer[] regionTarget,Boolean isDynamicCreative,
+    public void updateById(String cid,String campaignName,Double budget,Double priceRatio,Integer[] regionTarget,Boolean isDynamicCreative,
                                                        String negativeWords,String exactNegativeWords,String excludeIp,Integer showProb,Boolean pause,String schedule
                                                        ) {
+        String regex = "^\\d+$";
         CampaignEntity campaignEntity = new CampaignEntity();
-        campaignEntity.setCampaignId(cid);
+
+        if(cid.matches(regex)==true){
+            campaignEntity.setCampaignId(Long.parseLong(cid));
+        }else{
+            campaignEntity.setId(cid);
+        }
+
         campaignEntity.setCampaignName(campaignName);
         campaignEntity.setBudget(budget);
         campaignEntity.setPriceRatio(priceRatio);
@@ -106,8 +126,9 @@ public class AssistantCampaignController {
         campaignEntity.setShowProb(showProb);
         campaignEntity.setPause(pause);
 
-        List<ScheduleType> scheduleEntityList = new ArrayList<>();
+        List<ScheduleType> scheduleEntityList = null;
         if(schedule!=null&&!"".equals(schedule)){
+            scheduleEntityList = new ArrayList<>();
             String[] strSchedule = schedule.split(";");
             for(String str : strSchedule){
                 String[] fieds = str.split("-");
@@ -120,7 +141,12 @@ public class AssistantCampaignController {
             }
         }
         campaignEntity.setSchedule(scheduleEntityList);
-        campaignDAO.update(campaignEntity);
+
+        if(campaignEntity.getCampaignId()==null){
+            campaignDAO.updateByMongoId(campaignEntity);
+        }else{
+            campaignDAO.update(campaignEntity);
+        }
     }
 
 

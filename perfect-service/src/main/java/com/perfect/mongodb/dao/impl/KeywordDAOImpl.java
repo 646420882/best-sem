@@ -1,14 +1,17 @@
 package com.perfect.mongodb.dao.impl;
 
 import com.perfect.autosdk.sms.v3.KeywordInfo;
+import com.perfect.constants.LogStatusConstant;
 import com.perfect.core.AppContext;
 import com.perfect.dao.KeywordDAO;
+import com.perfect.dao.LogDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
+import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.Pager;
 import com.perfect.mongodb.utils.PaginationParam;
 import com.perfect.utils.LogUtils;
@@ -43,6 +46,9 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     @Resource
     private LogProcessingDAO logProcessingDAO;
 
+    @Resource
+    private LogDAO logDao;
+
     @Override
     public String getId() {
         return KEYWORD_ID;
@@ -63,6 +69,22 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
         Criteria criteria = Criteria.where(ADGROUP_ID).is(adgroupId);
+        if (params != null && params.size() > 0) {
+            for (Map.Entry<String, Object> entry : params.entrySet())
+                criteria.and(entry.getKey()).is(entry.getValue());
+        }
+        query.addCriteria(criteria);
+        query.with(new PageRequest(skip, limit, new Sort(Sort.Direction.DESC, "price")));
+        List<KeywordEntity> _list = mongoTemplate.find(query, KeywordEntity.class, TBL_KEYWORD);
+        return _list;
+    }
+
+
+    //根据mongoID查询
+    public List<KeywordEntity> getKeywordByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Query query = new Query();
+        Criteria criteria = Criteria.where(EntityConstants.OBJ_ADGROUP_ID).is(adgroupId);
         if (params != null && params.size() > 0) {
             for (Map.Entry<String, Object> entry : params.entrySet())
                 criteria.and(entry.getKey()).is(entry.getValue());
@@ -150,6 +172,17 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         return getMongoTemplate().find(param.withParam(Query.query(Criteria.where(ADGROUP_ID).is(adgroupId))), getEntityClass());
     }
 
+    /**
+     * 根据mongoID查询
+     * @param adgroupId
+     * @param param
+     * @return
+     */
+    @Override
+    public List<KeywordEntity> findByAdgroupId(String adgroupId, PaginationParam param) {
+        return getMongoTemplate().find(param.withParam(Query.query(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).is(adgroupId))), getEntityClass());
+    }
+
     @Override
     public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param) {
         return getMongoTemplate().find(param.withParam(Query.query(Criteria.where(ADGROUP_ID).in(adgroupIds)))
@@ -220,6 +253,46 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         logProcessingDAO.insert(log);
     }
 
+
+    /**
+     * 根据mongodbID修改
+     * @param keywordEntity
+     */
+    public void updateByMongoId(KeywordEntity keywordEntity) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        String id = keywordEntity.getId();
+        Query query = new Query();
+        query.addCriteria(Criteria.where(EntityConstants.SYSTEM_ID).is(id));
+        Update update = new Update();
+
+        try {
+            Class _class = keywordEntity.getClass();
+            Field[] fields = _class.getDeclaredFields();//get object's fields by reflect
+            for (Field field : fields) {
+                String fieldName = field.getName();
+                if ("id".equals(fieldName))
+                    continue;
+                StringBuilder fieldGetterName = new StringBuilder("get");
+                fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
+                Method method = _class.getDeclaredMethod(fieldGetterName.toString());
+                if (method == null)
+                    continue;
+
+                Object after = method.invoke(keywordEntity);
+                if (after != null) {
+                    update.set(field.getName(), after);
+                    logDao.insertLog(id,LogStatusConstant.ENTITY_KEYWORD);
+                    break;
+                }
+            }
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        mongoTemplate.updateFirst(query, update, KeywordEntity.class, TBL_KEYWORD);
+    }
+
+
+
     public void update(List<KeywordEntity> entities) {
         for (KeywordEntity entity : entities)
             update(entity);
@@ -260,6 +333,16 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         mongoTemplate.remove(new Query(Criteria.where(KEYWORD_ID).is(id)), KeywordEntity.class, TBL_KEYWORD);
         DataOperationLogEntity log = LogUtils.getLog(id, KeywordEntity.class, null, null);
         logProcessingDAO.insert(log);
+    }
+
+    /**
+     * 根据mongoId删除
+     * @param id
+     */
+    public void deleteById(String id) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.SYSTEM_ID).is(id)), KeywordEntity.class, TBL_KEYWORD);
+        logDao.insertLog(id, LogStatusConstant.ENTITY_KEYWORD);
     }
 
     @Override
