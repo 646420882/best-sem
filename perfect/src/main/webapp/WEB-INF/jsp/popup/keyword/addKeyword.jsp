@@ -161,7 +161,7 @@ $(function () {
     $.getJSON("/campaign/getAllCampaign", null, function (data) {
         if (data.rows.length > 0) {
             var campaigns = "", datas = data.rows;
-            campaigns += "<option value='' selected='selected'>请选择推广单元</option>";
+            campaigns += "<option value='' selected='selected'>请选择推广计划</option>";
             for (var i = 0, l = datas.length; i < l; i++) {
                 var _campaignId = "";
                 if (datas[i].campaignId != null) {
