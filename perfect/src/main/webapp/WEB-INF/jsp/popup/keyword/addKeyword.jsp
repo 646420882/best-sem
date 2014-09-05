@@ -17,46 +17,55 @@
         .list4 table {
             border: 1px solid #eaf0f3;
             overflow: auto;
-            width: 100%;
+            min-width:562px;
         }
+        .keyworld_text2 ul li{
+            word-wrap: break-word;
+        }
+        .keyword_left ul li select{
+            margin:20px 2% 0 2%;
+            width:95%;
+            height:24px;
+            line-height:22px;
+            border:1px solid #ccc;
+
+        }
+        .keyword_left ul li a ,.assembly_search a{
+            display:block;
+            margin:10px 10px 0  0;
+            background:#ffbc04;
+            height:24px;
+            line-height:24px;
+            padding:0 15px;
+            color:#000;
+        }
+        .assembly_search a{
+            margin:0 0 0 10px;
+
+        }
+        .assembly_search input{
+            width:200px;
+        }
+
 
     </style>
 </head>
 <body>
 <div style="background-color: #f3f5fd; width: 900px; height: 700px">
-    <div class="assembly_top over">
-        <div class="fl"><h3>关键词拼装</h3></div>
-        <div class="fr">
-            <span class="fr">推广地域<a href="#">使用账户推广地域</a></span>
-            <span class="fr">高级设置<a href="#">未设置</a></span>
-        </div>
-    </div>
-    <div class="assembly_under over">
-        <div class="assembly_left">
-            <div class="keyword_left fl over">
-                <div class="k_l_top over">
-                    <span>已添加关键词（1/500）</span> <a class="question" href="#"></a>
-                </div>
-                <div class="keyworld_text over">
 
-                    <div class="keyworld_text2 fl">
-                        <ul>
-                            <li></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="k_l_under over">
-                    <div class="k_l_under1 over">
+    <div class="assembly_under over">
+
+            <div class="keyword_left fl over" style="height:460px;">
+
                         <ul>
                             <li><select id="campaign" class="team04">
                             </select><select id="adgroup" class="team04">
                             </select></li>
-                            <li><a href="javascript:saveKeyword();">保存</a></li>
+                            <li><a class="fr" href="javascript:saveKeyword();">保存</a></li>
                         </ul>
-                    </div>
+
                 </div>
-            </div>
-        </div>
+
         <div class="assembly_right fr  over">
             <div class="assembly_right_top over">
                 <ul class="assembly_checkbox">
@@ -66,15 +75,10 @@
                 <div class="assembly_right_under over">
                     <div class="containers over">
                         <div class="assembly_search over">
-                            搜索相关词 <input id="searchKeyword" type="text"/><a href="javascript: searchKeyword();">搜索</a>
+                            <span class="fl">搜索相关词 <input id="searchKeyword" type="text"/></span><a class="fl"  href="javascript: searchKeyword();">搜索</a>
                         </div>
                         <div class="list4" style="height: 336px">
-                            <%--<div class="zs_function over">
-                                <ul class="fl">
-                                    <li><a href="#" id="addKeyword1"><span class="zs_top"><img
-                                            src="../public/img/zs_function1.png"></span><b>添加全部</b></a></li>
-                                </ul>
-                            </div>--%>
+
                             <table style="width: 100%; overflow-y: auto" cellspacing="0" border="0">
                                 <thead>
                                 <tr class="list02_top">

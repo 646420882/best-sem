@@ -54,7 +54,7 @@
 </ul>
 <div class="tab_box">
 <div class="containers">
-    <div class="list01 over" style="border-top:1px solid #d5d5d8; padding-top:20px;">
+    <div class="list01 over" >
         <div class="list01_top over">
             <Span>近期概览</Span>
             <ul id="clickLis">

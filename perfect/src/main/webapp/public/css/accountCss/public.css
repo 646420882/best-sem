@@ -122,13 +122,13 @@ table{
 /*nav*/
 .nav {
     width:220px;
-    height: 1400px;
+    max-height: 960px;
     position:fixed;
     z-index:112;
     left:0px;
 }
 .nav_left {
-    height: 1400px;
+    min-height: 960px;
     position: relative;
     width: 97%;
     z-index:111;
