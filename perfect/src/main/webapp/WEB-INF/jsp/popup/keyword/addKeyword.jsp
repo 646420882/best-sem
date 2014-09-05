@@ -419,6 +419,11 @@ var saveKeyword = function () {
         }
     }
 
+    if(jsonArr.length == 0){
+        alert("您没有选择关键词!");
+        return;
+    }
+
     $.ajax({
         url: "/keyword/add",
         type: "POST",
