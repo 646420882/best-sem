@@ -76,7 +76,7 @@
                                         <li>· 普菲特智能词库</li>
                                     </ul>
                                 </div>
-                                <div class="k_top2_detali2 over">
+                                <%--<div class="k_top2_detali2 over">
 
                                     <div class="list01_top2 over">
                                         <span>智能过滤</span>
@@ -87,13 +87,13 @@
                                         <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
                                         </li>
                                     </ul>
-                                </div>
+                                </div>--%>
                             </div>
 
                         </div>
                         <div class="k_r_under over">
                             <div class="download over ">
-                                <a class="fr" href="javascript: save1Keyword();">保存</a>
+                                <%--<a class="fr" href="javascript: save1Keyword();">保存</a>--%>
                                 <a class="fr" href="javascript: downloadCSV();">下载全部</a>
                             </div>
                             <div class="list3 over">
@@ -153,7 +153,7 @@
                                         <li>· 普菲特智能词库</li>
                                     </ul>
                                 </div>
-                                <div class="k_top2_detali2 over">
+                                <%--<div class="k_top2_detali2 over">
                                     <div class="list01_top2 over">
                                         <span>智能过滤</span>
                                         <a href="#" class="question"></a>
@@ -163,12 +163,12 @@
                                         <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
                                         </li>
                                     </ul>
-                                </div>
+                                </div>--%>
                             </div>
                         </div>
                         <div class="k_r_under over">
                             <div class="download over ">
-                                <a class="fr" href="javascript: save2Keyword();">保存</a>
+                                <%--<a class="fr" href="javascript: save2Keyword();">保存</a>--%>
                                 <a class="fr" href="javascript: downloadCSV();">下载全部</a>
                             </div>
                             <div class="list3 over">
