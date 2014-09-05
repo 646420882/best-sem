@@ -30,4 +30,6 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
     void deleteByObjId(Long adgroupId);
     void updateCampaignIdByOid(String oid, Long campaignId);
     void updateByObjId(AdgroupEntity adgroupEntity);
+    void update(AdgroupEntity adgroupEntity,AdgroupEntity bakAdgroupEntity);
+    void insertReBack(AdgroupEntity adgroupEntity);
 }

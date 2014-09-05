@@ -5,8 +5,11 @@ import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
+import com.perfect.entity.backup.AdgroupBackUpEntity;
 import com.perfect.mongodb.utils.EntityConstants;
+import com.perfect.service.AdgroupBackUpService;
 import com.perfect.utils.web.WebContextSupport;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +34,8 @@ public class AssistantAdgroupController extends WebContextSupport {
     AdgroupDAO adgroupDAO;
     @Resource
     CampaignDAO campaignDAO;
+    @Resource
+    AdgroupBackUpService adgroupBackUpService;
     private static Integer OBJ_SIZE=18;
 
     /**
@@ -141,6 +146,7 @@ public class AssistantAdgroupController extends WebContextSupport {
             adgroupEntity.setPause(p);
             adgroupEntity.setStatus(s);
             adgroupEntity.setMib(mib);
+            adgroupEntity.setLocalStatus(1);
             Object oid = adgroupDAO.insertOutId(adgroupEntity);
             writeData(SUCCESS, response, oid);
         } catch (Exception e) {
@@ -191,13 +197,16 @@ public class AssistantAdgroupController extends WebContextSupport {
                 writeHtml(SUCCESS, response);
             }else {
                 adgroupEntityFind = adgroupDAO.findOne(Long.valueOf(agid));
+                AdgroupEntity adgroupEntity=new AdgroupEntity();
+                adgroupEntityFind.setLocalStatus(2);
+                BeanUtils.copyProperties(adgroupEntityFind,adgroupEntity);
                 adgroupEntityFind.setAdgroupName(name);
                 adgroupEntityFind.setMaxPrice(maxPrice);
                 adgroupEntityFind.setMib(mib);
                 adgroupEntityFind.setNegativeWords(nn);
                 adgroupEntityFind.setExactNegativeWords(ne);
                 adgroupEntityFind.setMib(mib);
-                adgroupDAO.update(adgroupEntityFind);
+                adgroupDAO.update(adgroupEntityFind,adgroupEntity);
                 writeHtml(SUCCESS, response);
             }
 
@@ -227,6 +236,18 @@ public class AssistantAdgroupController extends WebContextSupport {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/agReBack",method = RequestMethod.GET)
+    public ModelAndView agReBack(HttpServletResponse response,@RequestParam(value = "oid",required = true)Long oid){
+        try{
+           AdgroupBackUpEntity backUpEntity= adgroupBackUpService.agReBack(oid);
+            writeData(SUCCESS,response,backUpEntity);
+        }catch (Exception e){
+           e.printStackTrace();
+            writeData(EXCEPTION,response,null);
         }
         return null;
     }

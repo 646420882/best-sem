@@ -62,6 +62,9 @@ public class AdgroupEntity extends AccountIdEntity {
     @Field("m")
     private Double mib;
 
+    @Field("ls")
+    private Integer localStatus;
+
     public String getCampaignObjId() {
         return campaignObjId;
     }
@@ -87,6 +90,14 @@ public class AdgroupEntity extends AccountIdEntity {
     }
 
     private String campaignName;
+
+    public Integer getLocalStatus() {
+        return localStatus;
+    }
+
+    public void setLocalStatus(Integer localStatus) {
+        this.localStatus = localStatus;
+    }
 
     public boolean setAdgroupId(Long aAdgroupId) {
         boolean wasSet = false;

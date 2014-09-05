@@ -204,7 +204,7 @@
             </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
                     type="image" src="../public/img/zs_input.png"></b></a></li>
-            <li><a href="#"><span class="z_function_hover" id="reBak"><img
+            <li><a href="#"><span class="z_function_hover" id="reBak" onclick="reBakClick();"><img
                     src="../public/img/zs_function9.png"></span><b onclick="reBakClick();">还原</b></a>
             </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
@@ -696,7 +696,7 @@
         <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
                 type="image" src="../public/img/zs_input.png"></b></a></li>
 
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
+        <li><a href="#"><span class="z_function_hover" id="agReback" onclick="agreBakClick()"><img src="../public/img/zs_function9.png"></span><b onclick="agreBakClick()">还原</b></a></li>
         <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
     </ul>
     <span class="fr">1/10</span>
@@ -713,8 +713,8 @@
             <td>&nbsp;否定关键词</td>
             <td>&nbsp;移动出价比例</td>
             <td>&nbsp;推广计划名称
-                <div class="set fr"></div>
             </td>
+            <td><div class="set fr"></div></td>
         </tr>
         </thead>
         <tbody id="tbodyClick_campaign">
