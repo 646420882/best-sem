@@ -4,15 +4,16 @@
     min-height: 901px;
 }
 .concent {
-    width: 85%;
-    min-width: 1363px;
+    width: 90%;
     position: relative;
     margin-top: 77px;
+    margin-left:220px;
     background: #fff;
     /*   background: url(/public/img/concent_bg.jpg) repeat;*/
     font-family: "微软雅黑";
     font-size: 12px;
     z-index: 110;
+    min-width:700px;
 }
 #tab {
     padding-bottom: 80px;
@@ -176,9 +177,10 @@
     padding: 0 5%;
     height: 100px;
 }
+
 /********table***********/
 .list01_under2 ul {
-    width: 101%;
+    width: 100%;
 }
 .list01_under2 ul li {
     display: block;
@@ -346,7 +348,7 @@
 .list2 table b, .list3 table b {
     display: block;
     float: left;
-    margin-top:8px;
+    margin-top:9px;
     *display:inline-block;
     *float:none;
     *margin-top:0px;
@@ -879,12 +881,12 @@
     color: #9b9b9b;
 }
 .jingjia_left {
-    width: 22%;
+    width: 18%;
     padding: 12px 0.5%;
     background: #e4eafa;
 }
 .jingjia_right {
-    width: 75%;
+    width: 80%;
 }
 .j_list01 {
     width: 100%;
@@ -900,8 +902,8 @@
     border-top: 1px solid #e4eafa;
     background: #fff;
     color: #333;
+    height:530px;
     overflow: auto;
-    height: 884px;
 }
 .ztree li {
     padding: 0;
@@ -1279,13 +1281,13 @@ ul.ztree.zTreeDragUL {
     color: #454545;
 }
 .list4 {
-    height: 700px;
+    height: 500px;
     width: 100%;
     overflow: auto;
 }
 .list4 table {
     border: 1px solid #eaf0f3;
-    width: 1200px;
+    min-width: 1200px;
     overflow: auto;
 }
 .list4 table thead {
@@ -1516,7 +1518,6 @@ h2 .close {
 .zs_box {
     border: 1px solid #dadadd;
     background: #fafafa;
-    height: 900px;
 }
 .zs_function {
     height: 34px;
@@ -1621,7 +1622,6 @@ h2 .close {
     width: 87%;
     height: 22px;
     border: 1px solid #cfcfcf;
-    min-width: 410px;
 }
 .t_list03 .zs_input1 {
     width: 72%;

@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <!doctype html>
 <html>
 <head>
@@ -14,6 +13,7 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+<%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/zTreeStyle/Normalize.css">--%>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
@@ -28,7 +28,7 @@
 </head>
 <body>
 <jsp:include page="pageBlock/nav.jsp"/>
-<div class="concent fr over">
+<div class="concent fl ">
 <jsp:include page="pageBlock/head.jsp"/>
 <div class="mid over">
 <div class="on_title over">
@@ -86,9 +86,9 @@
                 <li><a href="javascript:" onclick="lisClick(this,7)">近7天</a></li>
                 <li><a href="javascript:" onclick="lisClick(this,30)">近30天</a></li>
                 <li class="date"><a href="javascript:" onclick="lisClick(this,null);">自定义<input name="reservation" type="image"
-                                   onclick="javascript:genre = 'accountOverview';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
-                               src="${pageContext.request.contextPath}/public/img/date.png">
-                    </a>
+                                                                                                onclick="javascript:genre = 'accountOverview';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                                                                                                src="${pageContext.request.contextPath}/public/img/date.png">
+                </a>
                 </li>
             </ul>
         </div>
@@ -293,7 +293,7 @@
                 <div class="page2 fl" id="pageUser">
 
                 </div>
-				<!--<span class="fr">每页显示
+                <!--<span class="fr">每页显示
                             <select id="performanceLimit"
                                     onchange="javascript:limit = $('#performanceLimit option:selected').val();loadPerformance(statDate);">
                                 <option selected="selected" value="10">10个</option>

@@ -37,7 +37,7 @@
 </head>
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-<div class="concent fr over">
+<div class="concent fl over">
     <jsp:include page="../homePage/pageBlock/head.jsp"/>
 
     <div class="mid over">

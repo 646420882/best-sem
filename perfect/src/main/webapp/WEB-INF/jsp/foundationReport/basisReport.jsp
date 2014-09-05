@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
     <title></title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
@@ -47,7 +47,7 @@
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 
-<div class="concent fr over">
+<div class="concent fl over">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="mid over ">
 <div class="on_title over">

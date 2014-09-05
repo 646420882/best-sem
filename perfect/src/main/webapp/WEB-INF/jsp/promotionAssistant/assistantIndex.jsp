@@ -24,7 +24,7 @@
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
-<div class="concent fr over">
+<div class="concent fl over">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 
 <div class="mid over">
@@ -255,7 +255,8 @@
             <ul>
                 <li>
                     <div class="t_list01 fl over">创意标题：</div>
-                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sTitle"><input type="button"
+                    <div class="t_list03 fl over">
+                        <input type="text" class="zs_input1" id="sTitle"><input type="button"
                                                                                                           value="{}插入通配符"
                                                                                                           onclick="addTb(this)"
                                                                                                           class="zs_input2"><span><span
