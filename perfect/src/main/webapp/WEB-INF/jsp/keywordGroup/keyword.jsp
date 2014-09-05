@@ -105,8 +105,8 @@
                                         <td><span>关键词</span></td>
                                         <td><span>日均搜索量</span></td>
                                         <td><span>竞争激烈程度</span></td>
-                                        <td><span>一级推荐理由</span></td>
-                                        <td><span>二级推荐理由</span></td>
+                                        <%--<td><span>一级推荐理由</span></td>--%>
+                                        <%--<td><span>二级推荐理由</span></td>--%>
                                     </tr>
                                     </thead>
                                     <tbody id="tbody1">
@@ -702,8 +702,8 @@ var findWordFromBaidu = function () {
                             "<td>" + item.keywordName + "</td>" +
                             "<td>" + item.dsQuantity + "</td>" +
                             "<td>" + item.competition + "</td>" +
-                            "<td>" + item.recommendReason1 + "</td>" +
-                            "<td>" + item.recommendReason2 + "</td>" +
+//                            "<td>" + item.recommendReason1 + "</td>" +
+//                            "<td>" + item.recommendReason2 + "</td>" +
                             "</tr>";
                     $("#tbody1").append(newTr);
                 });
@@ -787,8 +787,8 @@ var toPrevPage = function () {
                                 "<td>" + item.keywordName + "</td>" +
                                 "<td>" + item.dsQuantity + "</td>" +
                                 "<td>" + item.competition + "</td>" +
-                                "<td>" + item.recommendReason1 + "</td>" +
-                                "<td>" + item.recommendReason2 + "</td>" +
+//                                "<td>" + item.recommendReason1 + "</td>" +
+//                                "<td>" + item.recommendReason2 + "</td>" +
                                 "</tr>";
                         $("#tbody1").append(newTr);
                     });
@@ -867,8 +867,8 @@ var toNextPage = function () {
                                 "<td>" + item.keywordName + "</td>" +
                                 "<td>" + item.dsQuantity + "</td>" +
                                 "<td>" + item.competition + "</td>" +
-                                "<td>" + item.recommendReason1 + "</td>" +
-                                "<td>" + item.recommendReason2 + "</td>" +
+//                                "<td>" + item.recommendReason1 + "</td>" +
+//                                "<td>" + item.recommendReason2 + "</td>" +
                                 "</tr>";
                         $("#tbody1").append(newTr);
                     });
@@ -953,8 +953,8 @@ var toAnyPage = function () {
                                 "<td>" + item.keywordName + "</td>" +
                                 "<td>" + item.dsQuantity + "</td>" +
                                 "<td>" + item.competition + "</td>" +
-                                "<td>" + item.recommendReason1 + "</td>" +
-                                "<td>" + item.recommendReason2 + "</td>" +
+//                                "<td>" + item.recommendReason1 + "</td>" +
+//                                "<td>" + item.recommendReason2 + "</td>" +
                                 "</tr>";
                         $("#tbody1").append(newTr);
                     });
