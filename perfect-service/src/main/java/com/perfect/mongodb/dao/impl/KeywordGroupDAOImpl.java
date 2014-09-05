@@ -112,8 +112,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
 
         Aggregation aggregation = Aggregation.newAggregation(
                 match(criteria),
-                group("kw").count().as("count"),
-                sort(Sort.Direction.ASC, "cg")
+                group("kw")
         );
         AggregationResults<Object> results = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, Object.class);
         return results.getMappedResults().size();
