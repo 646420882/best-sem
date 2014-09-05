@@ -54,30 +54,6 @@
 </ul>
 <div class="tab_box">
 <div class="containers">
-    <div class="list01 over">
-        <div class="list01_top over">
-            <Span>账户诊断</Span>
-            <a href="#" class="question"></a>
-        </div>
-        <div class="list01_under over">
-            <ul>
-                <li class="week">
-                    上周账户共推广7天，账户各项主要指标有一定幅度波动，但“竞品词”单元波动最为明显
-                    <a href="#" target="_blank">
-                        详情…
-                    </a><span>更新时间：06-30 08:20</span>
-                    <input type="image" src="${pageContext.request.contextPath}/public/img/input1.png">
-                </li>
-                <li class="months">
-                    上周账户共推广7天，账户各项主要指标有一定幅度波动，但“竞品词”单元波动最为明显
-                    <a href="#" target="_blank">
-                        详情…
-                    </a><span>更新时间：06-30 08:20</span>
-                    <input type="image" src="${pageContext.request.contextPath}/public/img/input2.png">
-                </li>
-            </ul>
-        </div>
-    </div>
     <div class="list01 over" style="border-top:1px solid #d5d5d8; padding-top:20px;">
         <div class="list01_top over">
             <Span>近期概览</Span>
