@@ -118,7 +118,7 @@
                         <div class="page2">
                             <a href="javascript:toPrevPage();">上一页</a><a
                                 href="javascript:toNextPage();">下一页</a><span
-                                style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
+                                style="margin-right:10px;">跳转到 <input id="pageNumber1" type="text" class="price"></span>&nbsp;&nbsp;<a
                                 href="javascript:toAnyPage();"> GO</a>
                             <a href="#"><span>共计</span><span><b
                                     id="totalPage1"></b></span><span>页</span></a>
@@ -190,7 +190,7 @@
                         <div class="page2">
                             <a href="javascript:toPrevPage();">上一页</a><a
                                 href="javascript:toNextPage();">下一页</a><span
-                                style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
+                                style="margin-right:10px;">跳转到 <input id="pageNumber2" type="text" class="price"></span>&nbsp;&nbsp;<a
                                 href="javascript:toAnyPage();"> GO</a>
                             <a href="#"><span>共计</span><span><b
                                     id="totalPage2"></b></span><span>页</span></a>
@@ -912,7 +912,12 @@ var toNextPage = function () {
 };
 
 var toAnyPage = function () {
-    skip = $(".price").val();
+    if (type == 1) {
+        skip = $("#pageNumber1").val();
+    } else {
+        skip = $("#pageNumber2").val();
+    }
+
     if ((skip > (total / limit)) || skip <= 0) {
         return;
     }
