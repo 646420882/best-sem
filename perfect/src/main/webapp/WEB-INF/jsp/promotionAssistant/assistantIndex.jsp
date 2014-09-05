@@ -24,7 +24,7 @@
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
-<div class="concent fr over">
+<div class="concent fl over">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 
 <div class="mid over">
@@ -98,7 +98,7 @@
              <input type="image" src="../public/img/zs_input.png"></b></a>
 
             </li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
+            <li><a id="search_keyword" href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function8.png"></span><b>监控</b></a></li>
@@ -255,7 +255,8 @@
             <ul>
                 <li>
                     <div class="t_list01 fl over">创意标题：</div>
-                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sTitle"><input type="button"
+                    <div class="t_list03 fl over">
+                        <input type="text" class="zs_input1" id="sTitle"><input type="button"
                                                                                                           value="{}插入通配符"
                                                                                                           onclick="addTb(this)"
                                                                                                           class="zs_input2"><span><span

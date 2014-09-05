@@ -13,9 +13,12 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
     List<Long> getAllAdgroupId();
 
     List<Long> getAdgroupIdByCampaignId(Long campaignId);
+
     List<String> getAdgroupIdByCampaignId(String campaignId);
 
     List<AdgroupEntity> getAdgroupByCampaignId(Long campaignId, Map<String, Object> params, int skip, int limit);
+
+    List<AdgroupEntity> getAdgroupByCampaignObjId(String campaignObjId);
 
     List<AdgroupEntity> findByQuery(Query query);
 
@@ -26,9 +29,13 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
     AdgroupEntity findByObjId(String oid);
 
     Object insertOutId(AdgroupEntity adgroupEntity);
+
     void deleteByObjId(String oid);
+
     void deleteByObjId(Long adgroupId);
+
     void updateCampaignIdByOid(String oid, Long campaignId);
+
     void updateByObjId(AdgroupEntity adgroupEntity);
     void update(AdgroupEntity adgroupEntity,AdgroupEntity bakAdgroupEntity);
     void insertReBack(AdgroupEntity adgroupEntity);

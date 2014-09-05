@@ -30,7 +30,7 @@
 </head>
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-<div class="concent over fr">
+<div class="concent over fl">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="mid over">
 <div class="on_title over">
@@ -76,7 +76,7 @@
                                         <li>· 普菲特智能词库</li>
                                     </ul>
                                 </div>
-                                <div class="k_top2_detali2 over">
+                                <%--<div class="k_top2_detali2 over">
 
                                     <div class="list01_top2 over">
                                         <span>智能过滤</span>
@@ -87,13 +87,13 @@
                                         <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
                                         </li>
                                     </ul>
-                                </div>
+                                </div>--%>
                             </div>
 
                         </div>
                         <div class="k_r_under over">
                             <div class="download over ">
-                                <a class="fr" href="javascript: save1Keyword();">保存</a>
+                                <%--<a class="fr" href="javascript: save1Keyword();">保存</a>--%>
                                 <a class="fr" href="javascript: downloadCSV();">下载全部</a>
                             </div>
                             <div class="list3 over">
@@ -105,8 +105,8 @@
                                         <td><span>关键词</span></td>
                                         <td><span>日均搜索量</span></td>
                                         <td><span>竞争激烈程度</span></td>
-                                        <td><span>一级推荐理由</span></td>
-                                        <td><span>二级推荐理由</span></td>
+                                        <%--<td><span>一级推荐理由</span></td>--%>
+                                        <%--<td><span>二级推荐理由</span></td>--%>
                                     </tr>
                                     </thead>
                                     <tbody id="tbody1">
@@ -118,7 +118,7 @@
                         <div class="page2">
                             <a href="javascript:toPrevPage();">上一页</a><a
                                 href="javascript:toNextPage();">下一页</a><span
-                                style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
+                                style="margin-right:10px;">跳转到 <input id="pageNumber1" type="text" class="price"></span>&nbsp;&nbsp;<a
                                 href="javascript:toAnyPage();"> GO</a>
                             <a href="#"><span>共计</span><span><b
                                     id="totalPage1"></b></span><span>页</span></a>
@@ -153,7 +153,7 @@
                                         <li>· 普菲特智能词库</li>
                                     </ul>
                                 </div>
-                                <div class="k_top2_detali2 over">
+                                <%--<div class="k_top2_detali2 over">
                                     <div class="list01_top2 over">
                                         <span>智能过滤</span>
                                         <a href="#" class="question"></a>
@@ -163,12 +163,12 @@
                                         <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
                                         </li>
                                     </ul>
-                                </div>
+                                </div>--%>
                             </div>
                         </div>
                         <div class="k_r_under over">
                             <div class="download over ">
-                                <a class="fr" href="javascript: save2Keyword();">保存</a>
+                                <%--<a class="fr" href="javascript: save2Keyword();">保存</a>--%>
                                 <a class="fr" href="javascript: downloadCSV();">下载全部</a>
                             </div>
                             <div class="list3 over">
@@ -190,7 +190,7 @@
                         <div class="page2">
                             <a href="javascript:toPrevPage();">上一页</a><a
                                 href="javascript:toNextPage();">下一页</a><span
-                                style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
+                                style="margin-right:10px;">跳转到 <input id="pageNumber2" type="text" class="price"></span>&nbsp;&nbsp;<a
                                 href="javascript:toAnyPage();"> GO</a>
                             <a href="#"><span>共计</span><span><b
                                     id="totalPage2"></b></span><span>页</span></a>
@@ -561,7 +561,7 @@ $(function () {
                 {trade: trade},
                 function (data) {
                     var category = "", datas = data.rows;
-                    category += "<option value='' selected='selected'></option>";
+                    category += "<option value='' selected='selected'>请选择类别</option>";
                     for (var i = 0, l = datas.length; i < l; i++) {
                         if (i == 0) {
                             category += "<option value='" + datas[i].category + "' selected='selected'>" + datas[i].category + "</option>";
@@ -702,8 +702,8 @@ var findWordFromBaidu = function () {
                             "<td>" + item.keywordName + "</td>" +
                             "<td>" + item.dsQuantity + "</td>" +
                             "<td>" + item.competition + "</td>" +
-                            "<td>" + item.recommendReason1 + "</td>" +
-                            "<td>" + item.recommendReason2 + "</td>" +
+//                            "<td>" + item.recommendReason1 + "</td>" +
+//                            "<td>" + item.recommendReason2 + "</td>" +
                             "</tr>";
                     $("#tbody1").append(newTr);
                 });
@@ -787,8 +787,8 @@ var toPrevPage = function () {
                                 "<td>" + item.keywordName + "</td>" +
                                 "<td>" + item.dsQuantity + "</td>" +
                                 "<td>" + item.competition + "</td>" +
-                                "<td>" + item.recommendReason1 + "</td>" +
-                                "<td>" + item.recommendReason2 + "</td>" +
+//                                "<td>" + item.recommendReason1 + "</td>" +
+//                                "<td>" + item.recommendReason2 + "</td>" +
                                 "</tr>";
                         $("#tbody1").append(newTr);
                     });
@@ -867,8 +867,8 @@ var toNextPage = function () {
                                 "<td>" + item.keywordName + "</td>" +
                                 "<td>" + item.dsQuantity + "</td>" +
                                 "<td>" + item.competition + "</td>" +
-                                "<td>" + item.recommendReason1 + "</td>" +
-                                "<td>" + item.recommendReason2 + "</td>" +
+//                                "<td>" + item.recommendReason1 + "</td>" +
+//                                "<td>" + item.recommendReason2 + "</td>" +
                                 "</tr>";
                         $("#tbody1").append(newTr);
                     });
@@ -912,7 +912,12 @@ var toNextPage = function () {
 };
 
 var toAnyPage = function () {
-    skip = $(".price").val();
+    if (type == 1) {
+        skip = $("#pageNumber1").val();
+    } else {
+        skip = $("#pageNumber2").val();
+    }
+
     if ((skip > (total / limit)) || skip <= 0) {
         return;
     }
@@ -948,8 +953,8 @@ var toAnyPage = function () {
                                 "<td>" + item.keywordName + "</td>" +
                                 "<td>" + item.dsQuantity + "</td>" +
                                 "<td>" + item.competition + "</td>" +
-                                "<td>" + item.recommendReason1 + "</td>" +
-                                "<td>" + item.recommendReason2 + "</td>" +
+//                                "<td>" + item.recommendReason1 + "</td>" +
+//                                "<td>" + item.recommendReason2 + "</td>" +
                                 "</tr>";
                         $("#tbody1").append(newTr);
                     });

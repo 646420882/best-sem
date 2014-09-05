@@ -27,6 +27,17 @@ function getKwdList(param) {
 
 
 /**
+ * 单击某一行时将该行的值放入相应的文本框内
+ */
+$("#tbodyClick").delegate("tr","click", function () {
+    var obj = $(this);
+    var keywordId = $(this).find("input[type=hidden]").val();
+    setKwdValue(obj,keywordId);
+});
+
+
+
+/**
  *将一条数据加到html中
  */
 function keywordDataToHtml(obj, index) {
@@ -37,11 +48,12 @@ function keywordDataToHtml(obj, index) {
 
     var html = "";
     if (index == 0) {
-        html = html + "<tr class='list2_box3 firstKeyword' onclick='setKwdValue(this," + obj.keywordId + ")'>";
+
+        html = html + "<tr class='list2_box3 firstKeyword'>";
     } else if (index % 2 != 0) {
-        html = html + "<tr class='list2_box2' onclick='setKwdValue(this," + obj.keywordId + ")'>";
+        html = html + "<tr class='list2_box2'>";
     } else {
-        html = html + "<tr class='list2_box1' onclick='setKwdValue(this," + obj.keywordId + ")'>";
+        html = html + "<tr class='list2_box1'>";
     }
 
     //kwid
@@ -80,6 +92,7 @@ function keywordDataToHtml(obj, index) {
         case 50:
             html = html + "<td>移动搜索无效</td>";
             break;
+        default:html = html+"<td>&nbsp;</td>";
     }
 
     html = html + "<td>" + until.convert(obj.pause, "暂停:启用") + "</td>";
@@ -110,6 +123,7 @@ function keywordDataToHtml(obj, index) {
         case 3:
             matchType = "广泛";
             break;
+        default :matchType = "&nbsp;";
     }
     html = html + "<td>" + matchType + "</td>";
 
@@ -142,7 +156,11 @@ function setKwdValue(obj, kwid) {
     $(".keyword_1").val($(obj).find("td:eq(0)").html());
 
 
-    $(".price_1").val($(obj).find("td:eq(3)").html());
+    if(($(obj).find("td:eq(3)").html())=="&lt;0.10&gt;"){
+        $(".price_1").val("<0.10>");
+    }else{
+        $(".price_1").val($(obj).find("td:eq(3)").html());
+    }
 
 
     if ($(obj).find("td:eq(7) a").attr("href") != undefined) {

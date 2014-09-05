@@ -72,10 +72,8 @@
                                 <div class="newkeyword_right_mid">
                                     <p>格式：关键词名称（必填），匹配模式，出价（为0则使用推广单元出价），访问URL，移动访问URL，启用/暂停</p>
                                     <p>例如：鲜花，精确，1.0，www.baidu.com,www.baidu.com,启用</p>
-                                    <textarea>
-
-                                    </textarea>
-                                    <p><input type="checkbox">&nbsp;用这些关键词替换目标推广单元的所有对应内容</p>
+                                    <textarea id = "TextAreaChoose"></textarea>
+                                    <p><input type="checkbox" id = "isReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容</p>
                                     <p><input type="checkbox">&nbsp;用输入的关键词搜索更多相关关键词，把握题词质量</p>
 
                                 </div>
@@ -89,9 +87,7 @@
                                 <div class="newkeyword_right_mid">
                                     <p>格式：关键词名称（必填），匹配模式，出价（为0则使用推广单元出价），访问URL，移动访问URL，启用/暂停</p>
                                     <p>例如：鲜花，精确，1.0，www.baidu.com,www.baidu.com,启用</p>
-                                    <textarea>
-
-                                    </textarea>
+                                    <textarea></textarea>
                                     <p>或者从相同格式的csv文件输入：<input type="button" class="zs_input2" value="选择文件">&nbsp;(<20万行)</p>
                                     <p><input type="checkbox">&nbsp;用这些关键词替换目标推广单元的所有对应内容</p>
 
@@ -235,24 +231,35 @@
             success:function(data){
                 var array = new Array();
                 var json;
+                var camId;
                 for(var i = 0;i<data.length;i++){
                         json = {};
-                        json["id"] = (i+1);
+
+                        if(data[i].rootNode.campaignId==null){
+                            camId = data[i].rootNode.id;
+                        }else{
+                            camId = data[i].rootNode.campaignId;
+                        }
+                        json["id"] = camId;
                         json["pId"] = 0;
                         json["name"] = data[i].rootNode.campaignName;
                         json["titile"] = "";
                         json["open"] = false;
-                        json["tId"] = data.rootNode.id;
                         array.push(json);
                        for(var j = 0;j<data[i].childNode.length;j++){
                            json = {};
-                           json["id"] = (i+1)+""+(i+1);
-                           json["pId"] = (i+1);
+
+                           if(data[i].childNode[j].adgroupId==null){
+                               json["id"] =  data[i].childNode[j].id;
+                           }else{
+                               json["id"] =  data[i].childNode[j].adgroupId;
+                           }
+
+                           json["pId"] =  camId;
                            json["name"] = data[i].childNode[j].adgroupName;
                            json["titile"] = "";
                            json["checked"] = false;
                            json["isHidden"] = true;
-                           json["tId"] = data.childNode[j].id;
                            array.push(json);
                        }
                 }
@@ -283,7 +290,6 @@ getCampaiTreeData();
 
 
     function onCheck(e, treeId, treeNode) {
-        alert(JSON.stringify(treeNode));
         count();
     }
 
@@ -350,5 +356,53 @@ getCampaiTreeData();
     };
 
 </script>
+
+
+<script type="text/javascript">
+
+    //单击下一步按钮的事件
+    $("#downloadAccount").click(function () {
+        nextStepAjax();
+    });
+
+
+    /**
+      *得到被选中的推广计划和推广单元id
+     */
+    function getSelectedNodeToString() {
+        var treeObj=$.fn.zTree.getZTreeObj("treeDemo");
+        var selectNode = treeObj.getCheckedNodes(true);
+        var v="";
+        var parentNode = "";
+        for(var i=0;i<selectNode.length;i++){
+           if(selectNode[i].isParent==true){
+               parentNode = selectNode[i].id;
+           }else{
+               v = v+parentNode+","+selectNode[i].id+"-";
+           }
+        }
+        return v;
+    }
+
+
+
+    function nextStepAjax() {
+        var isReplace = $("#isReplace")[0].checked;
+        var selectNode = getSelectedNodeToString();
+        var keywordInfos = $("#TextAreaChoose").val();
+        $.ajax({
+            url:"/assistantKeyword/addOrUpdateKeywordByChoose",
+            type:"post",
+            data:{"isReplace":isReplace,"chooseInfos":selectNode,"keywordInfos":keywordInfos},
+            dataType:"json",
+            success:function(data){
+                alert(JSON.stringify(data));
+            }
+        });
+    }
+
+
+</script>
+
 </body>
 </html>

@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
     <title></title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
@@ -47,7 +47,7 @@
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 
-<div class="concent fr over">
+<div class="concent fl over">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="mid over ">
 <div class="on_title over">
@@ -185,7 +185,7 @@
                 <input type="checkbox" id="checkboxInput" style="margin:6px 3px 0px 5px; ">
                 比较范围
                 <input name="mydate" type="text" id="inputTow" cname="dateClick" readonly style=" display:none;  height:20px;width:150px;border:1px solid #dadada; padding:0 12px;background:#fff url('/public/img/date.png') right 0px no-repeat;">
-                   <label id="dataComputing"></label>
+                <label id="dataComputing"></label>
             </li>
             <li id="deviceUser">选择推广设备：
                 <a href="javascript:" class="current" cname="0">全部</a><span>|</span>
@@ -352,10 +352,10 @@
             <div class="tubiao2 over">
                 <div id="containerLegend"></div>
                 <div id="container" style="width:100%;height:400px;display: none"></div>
-                <div id="imprDiv" style="width:100%;height:400px;display: none"></div>
-                <div id="clickDiv" style="width:100%;height:400px;display: none"></div>
-                <div id="costDiv" style="width:100%;height:400px;display: none"></div>
-                <div id="convDiv" style="width:100%;height:400px;display: none"></div>
+                <div id="imprDiv" style="width:45%;height:400px;display: none;float: left"></div>
+                <div id="clickDiv" style="width:54%;height:400px;display: none;float: right"></div>
+                <div id="costDiv" style="width:45%;height:400px;display: none;float: left;margin-top: 40px;"></div>
+                <div id="convDiv" style="width:53%;height:400px;display: none;float: right;margin-top: 40px;"></div>
             </div>
 
         </div>
@@ -488,18 +488,27 @@ $(document).ready(function () {
             daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
             daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
             if($("#checkboxhidden").val() == 1){
-             $("#date3").val(daterangepicker_start_date);
-             }
-            dateclicks.prev().val(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
+                $("#date3").val(daterangepicker_start_date);
+            }
             //计算两个时间相隔天数
             var sDate = new Date(daterangepicker_start_date);
             var eDate = new Date(daterangepicker_end_date);
-            var fen      = ((eDate.getTime()-sDate.getTime())/1000)/60;
+            var a = new Date(daterangepicker_start_date.replace(/-/g,'/'));
+            var b = new Date(daterangepicker_end_date.replace(/-/g,'/'));
+            var fen  = ((b.getTime()-a.getTime())/1000)/60;
+            if(fen<0){
+                daterangepicker_start_date = null;
+                daterangepicker_end_date = null;
+                alert("请选择正确的时间范围");
+                dateclicks.prev().val();
+                return;
+            }
             distance = parseInt(fen/(24*60))+1;   //相隔distance天
             if($("#checkboxhidden").val() == 1){
                 $("#dataComputing").empty();
                 $("#dataComputing").append("起 "+distance+" 天");
             }
+            dateclicks.prev().val(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
         }
     });
 
@@ -1003,12 +1012,12 @@ var reportData = function () {
                                         pie_num4=1;
                                     }
                                 } else {
-                                        if(isNaN(impr.pcConversion / countdata.pcConversion)){
-                                            pie_conv.push([impr.regionName, 0]);
-                                        }else {
-                                            pie_conv.push([impr.regionName, Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100]);
-                                            pie_num4=1;
-                                        }
+                                    if(isNaN(impr.pcConversion / countdata.pcConversion)){
+                                        pie_conv.push([impr.regionName, 0]);
+                                    }else {
+                                        pie_conv.push([impr.regionName, Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100]);
+                                        pie_num4=1;
+                                    }
                                 }
                             });
                             if(pie_num1 == 1){
@@ -1622,7 +1631,8 @@ var pieChart = function (showData, showName, showId) {
             }
         },
         title: {
-            text: showName + '占有百分比！'
+            text: showName + '占有百分比',
+            style:{"font-weight":"bold","font-size":"18px","color":"#fab30b"}
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'

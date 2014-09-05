@@ -292,70 +292,6 @@ public class AccountDataServiceImpl implements AccountDataService {
         AccountInfoType accountInfoType = apiService.getAccountInfo();
         BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
 
-        //获取指定id的推广计划
-        List<CampaignType> campaignTypes = apiService.getCampaignById(camIds);
-
-        //转换成本地系统的实体
-        List<CampaignEntity> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
-
-
-        List<Long> localAdgroupIds = getLocalAdgroupIds(mongoTemplate, accountId, camIds);
-
-        List<Long> localKeywordIds = getLocalKeywordIds(mongoTemplate, accountId, localAdgroupIds);
-
-        List<Long> localCreativeIds = getLocalCreativeIds(mongoTemplate, accountId, localAdgroupIds);
-
-
-        //凤巢返回回来的计划实体id
-        List<Long> campaignIds = new ArrayList<>(campaignEntities.size());
-
-        for (CampaignEntity campaignEntity : campaignEntities) {
-            campaignEntity.setAccountId(acid);
-            campaignIds.add(campaignEntity.getCampaignId());
-        }
-
-        List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(campaignIds);
-
-        List<AdgroupEntity> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
-
-        List<Long> adgroupdIds = new ArrayList<>(adgroupEntities.size());
-        for (AdgroupEntity adgroupEntity : adgroupEntities) {
-            adgroupEntity.setAccountId(acid);
-            adgroupdIds.add(adgroupEntity.getAdgroupId());
-        }
-
-        List<KeywordType> keywordTypes = apiService.getAllKeyword(adgroupdIds);
-
-        List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
-
-//        List<Long> kwids = new ArrayList<>(keywordEntities.size());
-        for (KeywordEntity keywordEntity : keywordEntities) {
-            keywordEntity.setAccountId(acid);
-//            kwids.add(keywordEntity.getKeywordId());
-        }
-
-        List<CreativeType> creativeTypes = apiService.getAllCreative(adgroupdIds);
-
-        List<CreativeEntity> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
-
-//        List<Long> creativeIds = new ArrayList<>(creativeEntityList.size());
-        for (CreativeEntity creativeEntity : creativeEntityList) {
-            creativeEntity.setAccountId(acid);
-//            creativeIds.add(creativeEntity.getCreativeId());
-        }
-
-        //clear data
-        clearCampaignData(mongoTemplate, accountId, camIds);
-        clearAdgroupData(mongoTemplate, accountId, localAdgroupIds);
-        clearKeywordData(mongoTemplate, accountId, localKeywordIds);
-        clearCreativeData(mongoTemplate, accountId, localCreativeIds);
-        //update data
-        mongoTemplate.insertAll(campaignEntities);
-
-        mongoTemplate.insertAll(adgroupEntities);
-        mongoTemplate.insertAll(keywordEntities);
-        mongoTemplate.insertAll(creativeEntityList);
-
         //update account data
         MongoTemplate mongoTemplate1 = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
         Update update = new Update();
@@ -364,6 +300,94 @@ public class AccountDataServiceImpl implements AccountDataService {
                 Query.query(
                         Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
                 update, SystemUserEntity.class);
+
+        //获取指定id的推广计划
+        List<CampaignType> campaignTypes = apiService.getCampaignById(camIds);
+
+        //转换成本地系统的实体
+        List<CampaignEntity> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
+
+        List<Long> localAdgroupIds = getLocalAdgroupIds(mongoTemplate, accountId, camIds);
+        List<Long> localKeywordIds = getLocalKeywordIds(mongoTemplate, accountId, localAdgroupIds);
+        List<Long> localCreativeIds = getLocalCreativeIds(mongoTemplate, accountId, localAdgroupIds);
+
+        //clear data
+        clearCampaignData(mongoTemplate, accountId, camIds);
+        clearAdgroupData(mongoTemplate, accountId, localAdgroupIds);
+        clearKeywordData(mongoTemplate, accountId, localKeywordIds);
+        clearCreativeData(mongoTemplate, accountId, localCreativeIds);
+
+        //凤巢返回回来的计划实体id
+        List<Long> campaignIds = new ArrayList<>(campaignEntities.size());
+
+        for (CampaignEntity campaignEntity : campaignEntities) {
+            campaignEntity.setAccountId(acid);
+            campaignIds.add(campaignEntity.getCampaignId());
+        }
+        mongoTemplate.insertAll(campaignEntities);
+
+        List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(campaignIds);
+
+        List<AdgroupEntity> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
+
+        List<Long> adgroupIds = new ArrayList<>(adgroupEntities.size());
+        for (AdgroupEntity adgroupEntity : adgroupEntities) {
+            adgroupEntity.setAccountId(acid);
+            adgroupIds.add(adgroupEntity.getAdgroupId());
+        }
+        mongoTemplate.insertAll(adgroupEntities);
+
+
+        //分批次请求关键词数据
+        List<Long> subList = new ArrayList<>(4);
+        for (int i = 1; i <= adgroupIds.size(); i++) {
+            Long adgroupId = adgroupIds.get(i - 1);
+            subList.add(adgroupId);
+
+            if (i % 4 == 0) {
+                List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
+                List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+
+                for (KeywordEntity keywordEntity : keywordEntities) {
+                    keywordEntity.setAccountId(acid);
+                }
+                mongoTemplate.insert(keywordEntities, KeywordEntity.class);
+                subList.clear();
+            }
+        }
+
+        if (!subList.isEmpty()) {
+            List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
+            List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+
+            for (KeywordEntity keywordEntity : keywordEntities) {
+                keywordEntity.setAccountId(acid);
+            }
+            mongoTemplate.insert(keywordEntities, KeywordEntity.class);
+            subList.clear();
+        }
+
+
+        /*List<KeywordType> keywordTypes = apiService.getAllKeyword(adgroupIds);
+
+        List<KeywordEntity> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+
+//        List<Long> kwids = new ArrayList<>(keywordEntities.size());
+        for (KeywordEntity keywordEntity : keywordEntities) {
+            keywordEntity.setAccountId(acid);
+//            kwids.add(keywordEntity.getKeywordId());
+        }*/
+
+        List<CreativeType> creativeTypes = apiService.getAllCreative(adgroupIds);
+
+        List<CreativeEntity> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
+
+//        List<Long> creativeIds = new ArrayList<>(creativeEntityList.size());
+        for (CreativeEntity creativeEntity : creativeEntityList) {
+            creativeEntity.setAccountId(acid);
+//            creativeIds.add(creativeEntity.getCreativeId());
+        }
+        mongoTemplate.insertAll(creativeEntityList);
 
     }
 
