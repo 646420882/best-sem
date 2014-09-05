@@ -561,7 +561,7 @@ $(function () {
                 {trade: trade},
                 function (data) {
                     var category = "", datas = data.rows;
-                    category += "<option value='' selected='selected'></option>";
+                    category += "<option value='' selected='selected'>请选择类别</option>";
                     for (var i = 0, l = datas.length; i < l; i++) {
                         if (i == 0) {
                             category += "<option value='" + datas[i].category + "' selected='selected'>" + datas[i].category + "</option>";

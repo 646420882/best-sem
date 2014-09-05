@@ -43,6 +43,15 @@ public class AdgroupController {
         return new ModelAndView(jsonView);
     }
 
+    @RequestMapping(value = "/getAdgroupByCampaignObjId/{campaignObjId}", method = RequestMethod.GET, produces = "application/json")
+    public ModelAndView getAdgroupIdByCampaignObjId(@PathVariable String campaignObjId) {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        List<AdgroupEntity> list = adgroupDAO.getAdgroupByCampaignObjId(campaignObjId);
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
+        jsonView.setAttributesMap(attributes);
+        return new ModelAndView(jsonView);
+    }
+
     @RequestMapping(value = "/getAdgroupIdByCampaignId/{campaignId}", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView getAdgroupIdByCampaignId(@PathVariable Long campaignId) {
         AbstractView jsonView = new MappingJackson2JsonView();

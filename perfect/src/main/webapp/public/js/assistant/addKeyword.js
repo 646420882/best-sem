@@ -16,6 +16,23 @@ $(function () {
         }).showModal();
         return false;
     });
+    $("#search_keyword").livequery('click', function () {
+        top.dialog({title: "关键词工具",
+            padding: "5px",
+            content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+            oniframeload: function () {
+            },
+            onclose: function () {
+//              if (this.returnValue) {
+//                  $('#value').html(this.returnValue);
+//              }
+                window.location.reload(true);
+            },
+            onremove: function () {
+            }
+        }).showModal();
+        return false;
+    });
     $("#addplan").livequery('click', function () {
         top.dialog({title: "快速新建计划",
             padding: "5px",

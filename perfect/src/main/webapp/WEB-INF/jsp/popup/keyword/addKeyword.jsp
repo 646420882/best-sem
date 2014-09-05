@@ -20,9 +20,6 @@
             width: 100%;
         }
 
-        .zs_function {
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
@@ -54,39 +51,31 @@
                             <li><select id="campaign" class="team04">
                             </select><select id="adgroup" class="team04">
                             </select></li>
-                            <li><a href="#">保存</a></li>
+                            <li><a href="javascript:saveKeyword();">保存</a></li>
                         </ul>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
         <div class="assembly_right fr  over">
             <div class="assembly_right_top over">
                 <ul class="assembly_checkbox">
-                    <li class="current">可能适合你的词</li>
-                    <li>行业词</li>
-
+                    <li id="bWord" class="current">可能适合你的词</li>
+                    <li id="tradeWord">行业词</li>
                 </ul>
                 <div class="assembly_right_under over">
                     <div class="containers over">
-
                         <div class="assembly_search over">
                             搜索相关词 <input id="searchKeyword" type="text"/><a href="javascript: searchKeyword();">搜索</a>
-
                         </div>
-                        <div class="list4">
-                            <div class="zs_function over">
+                        <div class="list4" style="height: 336px">
+                            <%--<div class="zs_function over">
                                 <ul class="fl">
                                     <li><a href="#" id="addKeyword1"><span class="zs_top"><img
                                             src="../public/img/zs_function1.png"></span><b>添加全部</b></a></li>
-
                                 </ul>
-
-                            </div>
-                            <table width="100%" cellspacing="0" border="0" width="500px">
+                            </div>--%>
+                            <table style="width: 100%; overflow-y: auto" cellspacing="0" border="0">
                                 <thead>
                                 <tr class="list02_top">
                                     <td><input id="checkbox1" type="checkbox"/></td>
@@ -98,14 +87,10 @@
                                 </thead>
                                 <tbody id="tbody1">
                                 </tbody>
-
                             </table>
                         </div>
-                        <div class="zhanghu_input"></div>
-
                     </div>
                     <div class="containers over hides">
-
                         <div class="assembly_top2 over">
                             <select id="trade">
                                 <option value="" selected="selected">请选择行业</option>
@@ -118,19 +103,17 @@
                             <select id="category">
                             </select>
                         </div>
-                        <div class="zs_function over">
+                        <%--<div class="zs_function over">
                             <ul class="fl">
                                 <li><a href="#" id="addKeyword"><span class="zs_top"><img
                                         src="../public/img/zs_function1.png"></span><b>添加全部</b></a></li>
-
                             </ul>
-
-                        </div>
-                        <div class="list4">
-                            <table width="100%" cellspacing="0" border="0" width="500px">
+                        </div>--%>
+                        <div class="list4" style="height: 358px">
+                            <table style="width: 100%; overflow-y: auto" cellspacing="0" border="0">
                                 <thead>
                                 <tr class="list02_top">
-                                    <td><input type="checkbox"/></td>
+                                    <td><input id="checkbox2" type="checkbox"/></td>
                                     <td>&nbsp;行业</td>
                                     <td>&nbsp;计划</td>
                                     <td>&nbsp;单元</td>
@@ -139,10 +122,8 @@
                                 </thead>
                                 <tbody id="tbody2">
                                 </tbody>
-
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -157,34 +138,43 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript">
-    $(function () {
-        var $tab_li = $('.assembly_checkbox li');
-        $('.assembly_checkbox li').click(function () {
-            $(this).addClass('current').siblings().removeClass('current');
-            var index = $tab_li.index(this);
-            $('div.assembly_right_under > div').eq(index).show().siblings().hide();
-        });
+$(function () {
+    var $tab_li = $('.assembly_checkbox li');
+    $('.assembly_checkbox li').click(function () {
+        wordType = $(this).attr("id");
+        $(this).addClass('current').siblings().removeClass('current');
+        var index = $tab_li.index(this);
+        $('div.assembly_right_under > div').eq(index).show().siblings().hide();
+    });
 
-        //绑定键盘回车事件
-        $('#searchKeyword').bind('keypress', function (event) {
-            if (event.keyCode == "13") {
-                searchKeyword();
+    //绑定键盘回车事件
+    $('#searchKeyword').bind('keypress', function (event) {
+        if (event.keyCode == "13") {
+            searchKeyword();
+        }
+    });
+
+    $.getJSON("/campaign/getAllCampaign", null, function (data) {
+        if (data.rows.length > 0) {
+            var campaigns = "", datas = data.rows;
+            campaigns += "<option value='' selected='selected'>请选择推广单元</option>";
+            for (var i = 0, l = datas.length; i < l; i++) {
+                var _campaignId = "";
+                if (datas[i].campaignId != null) {
+                    _campaignId = datas[i].campaignId;
+                } else {
+                    _campaignId = datas[i].id;
+                }
+                campaigns += "<option value=" + _campaignId + ">" + datas[i].campaignName + "</option>";
             }
-        });
+            $("#campaign").empty();
+            $("#campaign").append(campaigns);
+        }
+    });
 
-        $.getJSON("/campaign/getAllCampaign", null, function (data) {
-            if (data.rows.length > 0) {
-                var campaigns = "", datas = data.rows;
-                campaigns += "<option value='' selected='selected'>请选择推广单元</option>";
-                for (var i = 0, l = datas.length; i < l; i++)
-                    campaigns += "<option value=" + datas[i].campaignId + ">" + datas[i].campaignName + "</option>";
-                $("#campaign").empty();
-                $("#campaign").append(campaigns);
-            }
-        });
-
-        $("#campaign").change(function () {
-            var campaignId = $("#campaign option:selected").val();
+    $("#campaign").change(function () {
+        var campaignId = $("#campaign option:selected").val();
+        if (campaignId.length < 24) {
             $.getJSON("/adgroup/getAdgroupByCampaignId/" + campaignId,
                     {
                         campaignId: campaignId,
@@ -194,132 +184,250 @@
                     function (data) {
                         var adgroups = "", datas = data.rows;
                         adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
-                        for (var i = 0, l = datas.length; i < l; i++)
-                            adgroups += "<option value=" + datas[i].adgroupId + ">" + datas[i].adgroupName + "</option>";
+                        for (var i = 0, l = datas.length; i < l; i++) {
+                            var _adgroupId = "";
+                            if (datas[i].adgroupId != null) {
+                                _adgroupId = datas[i].adgroupId;
+                            } else {
+                                _adgroupId = datas[i].id;
+                            }
+                            adgroups += "<option value=" + _adgroupId + ">" + datas[i].adgroupName + "</option>";
+                        }
                         $("#adgroup").empty();
                         $("#adgroup").append(adgroups);
                     });
-        });
-
-        $("#checkbox1").livequery('click', function () {
-            if($("#checkbox1").is(':checked')){
-                //全选
-            }else {
-                //全不选
-            }
-        });
-
-        $("#trade").change(function () {
-            var trade = $("#trade option:selected").val();
-            _trade = trade;
-            $.getJSON("/getKRWords/getCategories",
-                    {trade: trade},
+        } else {
+            $.getJSON("/adgroup/getAdgroupByCampaignObjId/" + campaignId,
+                    {
+                        campaignId: campaignId,
+                        skip: 0,
+                        limit: 100
+                    },
                     function (data) {
-                        var category = "", datas = data.rows;
-                        category += "<option value='' selected='selected'></option>";
+                        var adgroups = "", datas = data.rows;
+                        adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
                         for (var i = 0, l = datas.length; i < l; i++) {
-                            if (i == 0) {
-                                category += "<option value='" + datas[i].category + "' selected='selected'>" + datas[i].category + "</option>";
-                                _category = datas[i].category;
-                                continue;
-                            }
-                            category += "<option value='" + datas[i].category + "'>" + datas[i].category + "</option>";
+                            adgroups += "<option value=" + datas[i].id + ">" + datas[i].adgroupName + "</option>";
                         }
-
-                        $("#category").empty();
-                        $("#category").append(category);
+                        $("#adgroup").empty();
+                        $("#adgroup").append(adgroups);
                     });
-        });
-
-        $("#category").change(function () {
-            var category = $("#category option:selected").val();
-            loadKeywordFromPerfect();
-        });
+        }
 
     });
 
-    var searchKeyword = function () {
-        var seedWord = $("#searchKeyword").val();
-        if (seedWord == null || seedWord.trim().length == 0) {
-            return;
+    $("#checkbox1").livequery('click', function () {
+        var c1 = $("input[name=baiduKeyword]:checkbox");
+        var l = c1.length;
+        if ($("#checkbox1").is(':checked')) {
+            for (var i = 0; i < l; i++) {
+                c1[i].checked = true;
+            }
+        } else {
+            for (var j = 0; j < l; j++) {
+                c1[j].checked = false;
+            }
         }
-        $.ajax({
-            url: '/getKRWords/getKRbySeedWord',
-            async: false,
-            data: {
-                seedWord: seedWord
-            },
-            dataType: 'json',
-            success: function (data, textStatus, jqXHR) {
-                var results = data.rows;
-                if (results != null && results.length > 0) {
-                    var trs = "";
-                    var _class = "";
-                    $.each(results, function (i, item) {
-                        if (i % 2 == 0) {
-                            _class = "list2_box1";
-                        } else {
-                            _class = "list2_box2";
-                        }
-                        var _tr = "<tr class='" + _class + "'><td><input type='checkbox' name='baiduKeyword'/></td>" +
-                                "<td>" + item.word + "</td>" +
-                                "<td>" + item.exactPV + "</td>" +
-                                "<td>" + item.competition + "</td>" +
-                                "<td>" + item.flag1 + "</td></tr>";
-                        trs += _tr;
-                    });
-                    $("#tbody1").empty();
-                    $("#tbody1").append(trs);
-                }
+    });
+
+    $("#checkbox2").livequery('click', function () {
+        var c2 = $("input[name=perfectKeyword]:checkbox");
+        var l = c2.length;
+        if ($("#checkbox2").is(':checked')) {
+            for (var i = 0; i < l; i++) {
+                c2[i].checked = true;
             }
-        });
-    };
+        } else {
+            for (var j = 0; j < l; j++) {
+                c2[j].checked = false;
+            }
+        }
+    });
 
-    var _trade = "";
-
-    var _category = "";
-
-    var total = 0;  //当前从系统搜索的关键词总数
-
-    var loadKeywordFromPerfect = function () {
+    $("#trade").change(function () {
         var trade = $("#trade option:selected").val();
-        var category = $("#category option:selected").val();
-
         _trade = trade;
-        _category = category;
-        $.ajax({
-            url: "/getKRWords/p",
-            type: "GET",
-            data: {
-                "trade": trade,
-                "category": category,
-                "skip": 0,
-                "limit": 300
-            },
-            success: function (data, textStatus, jqXHR) {
-                $("#tbody2").empty();
-                if (data.rows.length > 0) {
-                    total = data.total;
-                    var _class = "";
-                    $.each(data.rows, function (i, item) {
-                        if (i % 2 == 0) {
-                            _class = "list2_box1";
-                        } else {
-                            _class = "list2_box2";
+        $.getJSON("/getKRWords/getCategories",
+                {trade: trade},
+                function (data) {
+                    var category = "", datas = data.rows;
+                    category += "<option value='' selected='selected'>请选择类别</option>";
+                    for (var i = 0, l = datas.length; i < l; i++) {
+                        if (i == 0) {
+                            category += "<option value='" + datas[i].category + "' selected='selected'>" + datas[i].category + "</option>";
+                            _category = datas[i].category;
+                            continue;
                         }
+                        category += "<option value='" + datas[i].category + "'>" + datas[i].category + "</option>";
+                    }
 
-                        var newTr = "<tr class='" + _class + "'><td><input type='checkbox' name='perfectKeyword'/></td>" +
-                                "<td>" + _trade + "</td>" +
-                                "<td>" + _category + "</td>" +
-                                "<td>" + item.group + "</td>" +
-                                "<td>" + (item.keyword == null ? "" : item.keyword) + "</td>" +
-                                "</tr>";
-                        $("#tbody2").append(newTr);
-                    });
-                }
+                    $("#category").empty();
+                    $("#category").append(category);
+                    loadKeywordFromPerfect();
+                });
+    });
+
+    $("#category").change(function () {
+        var category = $("#category option:selected").val();
+        loadKeywordFromPerfect();
+    });
+
+});
+
+var searchKeyword = function () {
+    var seedWord = $("#searchKeyword").val();
+    if (seedWord == null || seedWord.trim().length == 0) {
+        return;
+    }
+    $.ajax({
+        url: '/getKRWords/getKRbySeedWord',
+        async: false,
+        data: {
+            seedWord: seedWord
+        },
+        dataType: 'json',
+        success: function (data, textStatus, jqXHR) {
+            var results = data.rows;
+            if (results != null && results.length > 0) {
+                var trs = "";
+                var _class = "";
+                $.each(results, function (i, item) {
+                    if (i % 2 == 0) {
+                        _class = "list2_box1";
+                    } else {
+                        _class = "list2_box2";
+                    }
+                    var _tr = "<tr id='" + (wordType + i) + "' class='" + _class + "'><td><input type='checkbox' name='baiduKeyword'/></td>" +
+                            "<td>" + item.word + "</td>" +
+                            "<td>" + item.exactPV + "</td>" +
+                            "<td>" + item.competition + "</td>" +
+                            "<td>" + item.flag1 + "</td></tr>";
+                    trs += _tr;
+                });
+                $("#tbody1").empty();
+                $("#tbody1").append(trs);
             }
-        });
-    };
+        }
+    });
+};
+
+var wordType = "bWord";
+
+var _trade = "";
+
+var _category = "";
+
+var total = 0;  //当前从系统搜索的关键词总数
+
+var loadKeywordFromPerfect = function () {
+    var trade = $("#trade option:selected").val();
+    var category = $("#category option:selected").val();
+
+    _trade = trade;
+    _category = category;
+    $.ajax({
+        url: "/getKRWords/p",
+        type: "GET",
+        data: {
+            "trade": trade,
+            "category": category,
+            "skip": 0,
+            "limit": 300
+        },
+        success: function (data, textStatus, jqXHR) {
+            $("#tbody2").empty();
+            if (data.rows.length > 0) {
+                total = data.total;
+                var _class = "";
+                $.each(data.rows, function (i, item) {
+                    if (i % 2 == 0) {
+                        _class = "list2_box1";
+                    } else {
+                        _class = "list2_box2";
+                    }
+
+                    var newTr = "<tr id='" + (wordType + i) + "' class='" + _class + "'><td><input type='checkbox' name='perfectKeyword'/></td>" +
+                            "<td>" + _trade + "</td>" +
+                            "<td>" + _category + "</td>" +
+                            "<td>" + item.group + "</td>" +
+                            "<td>" + (item.keyword == null ? "" : item.keyword) + "</td>" +
+                            "</tr>";
+                    $("#tbody2").append(newTr);
+                });
+            }
+        }
+    });
+};
+
+var saveKeyword = function () {
+    var campaignId = $("#campaign option:selected").val();
+    if (campaignId == null || campaignId.length == 0) {
+        alert("请选择推广计划!");
+        return;
+    }
+    var adgroupId = $("#adgroup option:selected").val();
+    if (adgroupId == null || adgroupId.length == 0) {
+        alert("请选择推广单元!");
+        return;
+    }
+
+    //获取所有选中的关键词
+    var jsonArr = [];
+    if (wordType == "bWord") {
+        var checkedTds1 = $("input[name=baiduKeyword]:checkbox");
+        for (var i = 0, l = checkedTds1.length; i < l; i++) {
+            if (checkedTds1[i].checked) {
+                var entity1 = {};
+                entity1["accountId"] = "${sessionScope._accountId}";
+                if (adgroupId.length < 24) {
+                    entity1["adgroupId"] = adgroupId;
+                } else {
+                    entity1["adgroupObjId"] = adgroupId;
+                }
+                entity1["keyword"] = $("#" + wordType + i).find("td").eq(1).text();
+                entity1["price"] = 1.0;
+                entity1["matchType"] = 1;
+                entity1["pause"] = false;
+                entity1["status"] = -1;
+                entity1["phraseType"] = 1;
+                jsonArr.push(entity1);
+            }
+        }
+    } else {
+        var checkedTds2 = $("input[name=perfectKeyword]:checkbox");
+        for (var j = 0, m = checkedTds2.length; j < m; j++) {
+            if (checkedTds2[j].checked) {
+                var entity2 = {};
+                entity2["accountId"] = "${sessionScope._accountId}";
+                if (adgroupId.length < 24) {
+                    entity2["adgroupId"] = adgroupId;
+                } else {
+                    entity2["adgroupObjId"] = adgroupId;
+                }
+                entity2["keyword"] = $("#" + wordType + j).find("td").eq(4).text();
+                entity2["price"] = 1.0;
+                entity2["matchType"] = 1;
+                entity2["pause"] = false;
+                entity2["status"] = -1;
+                entity2["phraseType"] = 1;
+                jsonArr.push(entity2);
+            }
+        }
+    }
+
+    $.ajax({
+        url: "/keyword/add",
+        type: "POST",
+        dataType: "json",
+        data: JSON.stringify(jsonArr),
+        async: false,
+        contentType: "application/json; charset=UTF-8",
+        success: function (data, textStatus, jqXHR) {
+            alert("success!");
+        }
+    });
+
+};
 </script>
 </body>
 </html>
