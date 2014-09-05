@@ -280,7 +280,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * @return
      */
     public Map<String,Object> batchAddOrUpdateKeywordByChoose(Long accountId, Boolean isReplace, String chooseInfos, String keywordInfos) {
-
+        String regex = "^\\d+$";
 
         //可被添加的关键词list
         List<KeywordDTO>  insertList = new ArrayList<>();
@@ -299,7 +299,6 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         String[] everyInfo = keywordInfos.split("\n");
 
 
-
         for (String row : everyRow) {
             //切割出推广计划和推广单元ID
             String[] fieds = row.split(",");
@@ -311,14 +310,30 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
                     if(keywordEntity.getMatchType()==null){
                         AssistantkwdIgnoreDeleDTO dto = new AssistantkwdIgnoreDeleDTO();
-                        dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
-                        dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
+
+                        if(fieds[0].matches(regex)==true){
+                            dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
+                        }else{
+                            dto.setCampaignName(campaignDAO.findByObjectId(fieds[0]).getCampaignName());
+                        }
+
+                        if(fieds[1].matches(regex)==true){
+                            dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
+                        }else{
+                            dto.setAdgroupName(adgroupDAO.findByObjId(fieds[1]).getAdgroupName());
+                        }
                         dto.setKeywordName(kwInfo[0]);
                         igoneList.add(dto);
                         continue;
                     }
 
-                    List<KeywordEntity>  list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(fieds[1]).and("name").is(keywordEntity.getKeyword())));
+                    List<KeywordEntity> list = null;
+                    if(fieds[1].matches(regex)==true){
+                        list = keywordDAO.findByAdgroupId(Long.parseLong(fieds[1]),getBasePagintionParam());
+                    }else{
+                        list = keywordDAO.findByAdgroupId(fieds[1],getBasePagintionParam());
+                    }
+
                     if(list.size()==0){
                         insertList.add(setFieldToDTO(fieds,keywordEntity));
                     }else{
@@ -329,13 +344,29 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     KeywordEntity keywordEntity = validateKewword(kwInfo);
                     if(keywordEntity.getMatchType()==null){
                         AssistantkwdIgnoreDeleDTO dto = new AssistantkwdIgnoreDeleDTO();
-                        dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
-                        dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
+
+                        if(fieds[0].matches(regex)==true){
+                            dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
+                        }else{
+                            dto.setCampaignName(campaignDAO.findByObjectId(fieds[0]).getCampaignName());
+                        }
+
+                        if(fieds[1].matches(regex)==true){
+                            dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
+                        }else{
+                            dto.setAdgroupName(adgroupDAO.findByObjId(fieds[1]).getAdgroupName());
+                        }
                         dto.setKeywordName(kwInfo[0]);
                         igoneList.add(dto);
                         continue;
                     }
-                    List<KeywordEntity>  list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(fieds[1]).and("name").is(keywordEntity.getKeyword())));
+
+                    List<KeywordEntity>  list = null;
+                    if(fieds[1].matches(regex)==true){
+                        list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(EntityConstants.ADGROUP_ID).is(fieds[1]).and("name").is(keywordEntity.getKeyword())));
+                    }else{
+                        list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(EntityConstants.SYSTEM_ID).is(fieds[1]).and("name").is(keywordEntity.getKeyword())));
+                    }
                     //若查询没有数据就添加这条数据,若有就更新这条数据
                     if(list==null||list.size()==0){
                         insertList.add(setFieldToDTO(fieds,keywordEntity));
@@ -353,7 +384,14 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
             for(String row:everyRow){
                 String[] fieds = row.split(",");
-                List<KeywordEntity>  list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ADGROUP_ID).is(fieds[1])));
+
+                List<KeywordEntity>  list = null;
+                if(fieds[1].matches(regex)==true){
+                    list = keywordDAO.findByAdgroupId(Long.parseLong(fieds[1]),getBasePagintionParam());
+                }else{
+                    list = keywordDAO.findByAdgroupId(fieds[1],getBasePagintionParam());
+                }
+
                 Iterator ita = list.iterator();
                 while (ita.hasNext()){
                     KeywordEntity keywordEntity = (KeywordEntity)ita.next();
@@ -372,8 +410,18 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
                 entities.addAll(list);
                 KeywordDTO keywordDTO = new KeywordDTO();
-                keywordDTO.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
-                keywordDTO.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
+
+                if(fieds[0].matches(regex)==true){
+                    keywordDTO.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
+                }else{
+                    keywordDTO.setCampaignName(campaignDAO.findByObjectId(fieds[0]).getCampaignName());
+                }
+
+                if(fieds[1].matches(regex)==true){
+                    keywordDTO.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
+                }else{
+                    keywordDTO.setAdgroupName(adgroupDAO.findByObjId(fieds[1]).getAdgroupName());
+                }
                 keywordDTO.setObject(entities);
                 delList.add(keywordDTO);
             }
@@ -395,6 +443,15 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         keywordDTO.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
         keywordDTO.setObject(keywordEntity);
         return keywordDTO;
+    }
+
+    private PaginationParam getBasePagintionParam(){
+        PaginationParam p = new PaginationParam();
+        p.setAsc(true);
+        p.setLimit(Integer.MAX_VALUE);
+        p.setStart(0);
+        p.setOrderBy("name");
+        return p;
     }
 
 
