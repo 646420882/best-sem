@@ -41,6 +41,15 @@
             <url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>
         </repository>
 
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>http://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
     </repositories>
 
     <build>
