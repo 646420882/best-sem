@@ -61,15 +61,15 @@
     <h2 id="adUp">修改<a href="#" class="close">关闭</a></h2>
     <div class="mainlist">
         <form id="adgroupUpdateForm">
-            <input name="oid"/>
+            <input type="hidden" name="oid"/>
             <label>推广单元名称：</label><input name="adgroupName"/>
             <label>推广单元状态：</label><label id="adStatus"></label></br>
             <label>是否启用：</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select>
             <label>出价</label><input name="maxPrice" onkeypress="until.regDouble(this)" maxlength="3"/>
             <label>否定关键词：</label><label id="usp"></label><label id="auSpan">未设定</label><a href="javascript:void(0)" onclick="adgroupUpdateNokwdMath();">设定</a></br>
             <label>移动出价比例：</label><input name="mib" onkeypress="until.regDouble(this)" maxlength="3"/></br>
-            <input  name="negativeWords"/><input name="exactNegativeWords"/>
-            <input name="cn"/>
+            <input type="hidden"  name="negativeWords"/><input type="hidden" name="exactNegativeWords"/>
+            <input type="hidden" name="cn"/>
         </form>
     </div>
     <div class="main_bottom">
