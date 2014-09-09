@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.math.BigDecimal;
+
 import static com.perfect.mongodb.utils.EntityConstants.KEYWORD_ID;
 
 /**
@@ -18,10 +20,10 @@ public class BiddingLogEntity {
     private long keywordId;
 
     @Field("b")
-    private double before;
+    private BigDecimal before;
 
     @Field("a")
-    private double after;
+    private BigDecimal after;
 
     @Field("t")
     private long date;
@@ -42,19 +44,19 @@ public class BiddingLogEntity {
         this.date = date;
     }
 
-    public double getAfter() {
+    public BigDecimal getAfter() {
         return after;
     }
 
-    public void setAfter(double after) {
+    public void setAfter(BigDecimal after) {
         this.after = after;
     }
 
-    public double getBefore() {
+    public BigDecimal getBefore() {
         return before;
     }
 
-    public void setBefore(double before) {
+    public void setBefore(BigDecimal before) {
         this.before = before;
     }
 

@@ -19,7 +19,7 @@ public class KeywordRankEntity extends AccountIdEntity {
     private String id;
 
     @Field(KEYWORD_ID)
-    private Long kwid;
+    private String kwid;
 
     @Field("name")
     private String name;
@@ -65,11 +65,11 @@ public class KeywordRankEntity extends AccountIdEntity {
         this.id = id;
     }
 
-    public Long getKwid() {
+    public String getKwid() {
         return kwid;
     }
 
-    public void setKwid(Long kwid) {
+    public void setKwid(String kwid) {
         this.kwid = kwid;
     }
 

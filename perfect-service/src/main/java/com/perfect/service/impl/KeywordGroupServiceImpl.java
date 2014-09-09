@@ -38,6 +38,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -225,7 +226,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                 keywordEntity.setAccountId(accountId);
                 keywordEntity.setAdgroupObjId(_adgroup.getId());
                 keywordEntity.setKeyword(keyword);
-                keywordEntity.setPrice(1.0);
+                keywordEntity.setPrice(BigDecimal.ONE);
                 keywordEntity.setMatchType(1);
                 keywordEntity.setPause(false);
                 keywordEntity.setStatus(-1);
@@ -250,7 +251,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                 keywordEntity.setAccountId(accountId);
                 keywordEntity.setAdgroupObjId(adgroupObjectId);
                 keywordEntity.setKeyword(keyword);
-                keywordEntity.setPrice(1.0);
+                keywordEntity.setPrice(BigDecimal.ONE);
                 keywordEntity.setMatchType(1);
                 keywordEntity.setPause(false);
                 keywordEntity.setStatus(-1);
@@ -318,7 +319,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                 keyword.setAdgroupObjId(adgroupObjectId);
                 keyword.setKeyword(entity.getKeyword());
                 keyword.setAccountId(accountId);
-                keyword.setPrice(1.0);
+                keyword.setPrice(BigDecimal.ONE);
                 keyword.setMatchType(1);
                 keyword.setPause(false);
                 keyword.setStatus(-1);
@@ -331,7 +332,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                 keyword.setAdgroupObjId(adgroupObjectId);
                 keyword.setKeyword(entity.getKeyword());
                 keyword.setAccountId(accountId);
-                keyword.setPrice(1.0);
+                keyword.setPrice(BigDecimal.ONE);
                 keyword.setMatchType(1);
                 keyword.setPause(false);
                 keyword.setStatus(-1);
@@ -358,7 +359,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                 keyword.setAdgroupObjId(adgroupObjectId);
                 keyword.setKeyword(entity.getKeyword());
                 keyword.setAccountId(accountId);
-                keyword.setPrice(1.0);
+                keyword.setPrice(BigDecimal.ONE);
                 keyword.setMatchType(1);
                 keyword.setPause(false);
                 keyword.setStatus(-1);

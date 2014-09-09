@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +81,7 @@ public class AssistantKeywordController {
         }else{
             keywordEntity.setId(kwid);
         }
-        keywordEntity.setPrice(price);
+        keywordEntity.setPrice(BigDecimal.valueOf(price));
         keywordEntity.setPcDestinationUrl(pcDestinationUrl);
         keywordEntity.setMobileDestinationUrl(mobileDestinationUrl);
         keywordEntity.setMatchType(matchType);

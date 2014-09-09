@@ -4,6 +4,7 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dto.CreativeDTO;
+import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.KeywordRankEntity;
 import com.perfect.service.impl.HTMLAnalyseServiceImpl;
 import org.slf4j.Logger;
@@ -322,28 +323,34 @@ public class BaiduApiService {
 
 
     @SuppressWarnings("unchecked")
-    public Map<String, KeywordRankEntity> getKeywordRank(Map<String, List<Integer>> keys, String host) {
+    public Map<String, KeywordRankEntity> getKeywordRank(Map<KeywordEntity, List<Integer>> keys, String host) {
         if (keys == null || keys.isEmpty()) {
             return Collections.EMPTY_MAP;
         }
 
-        Map<Integer, List<String>> regionDataMap = new HashMap<>();
+        Map<Integer, List<KeywordEntity>> regionDataMap = new HashMap<>();
+        Map<String, KeywordEntity> keywordEntityMap = new HashMap<>();
 
+        initIdMap(keys.keySet(), keywordEntityMap);
         convertMap(keys, regionDataMap);
         HTMLAnalyseService rankService = HTMLAnalyseServiceImpl.createService((com.perfect.autosdk.core.ServiceFactory) commonService);
 
         List<HTMLAnalyseServiceImpl.PreviewData> resultDataList = new ArrayList<>();
-        for (Map.Entry<Integer, List<String>> entry : regionDataMap.entrySet()) {
+        for (Map.Entry<Integer, List<KeywordEntity>> entry : regionDataMap.entrySet()) {
             Integer region = entry.getKey();
 
-            List<String> keyList = entry.getValue();
+            List<KeywordEntity> keyEntityList = entry.getValue();
 
-            if (keyList.size() <= 5) {
+            if (keyEntityList.size() <= 5) {
+                List<String> keyList = new ArrayList<>();
+                for (KeywordEntity keywordEntity : keyEntityList) {
+                    keyList.add(keywordEntity.getKeyword());
+                }
                 resultDataList.addAll(getPreviewData(region, keyList, rankService));
             } else {
                 List<String> temp = new ArrayList<>();
-                for (String key : keyList) {
-                    temp.add(key);
+                for (KeywordEntity key : keyEntityList) {
+                    temp.add(key.getKeyword());
 
                     if (temp.size() == 5) {
                         resultDataList.addAll(getPreviewData(region, temp, rankService));
@@ -369,11 +376,18 @@ public class BaiduApiService {
                 int region = previewData.getRegion();
                 int device = previewData.getDevice();
 
+                KeywordEntity kwid = keywordEntityMap.get(keyword);
+
                 KeywordRankEntity entity = null;
                 if (keywordRankEntityMap.containsKey(keyword)) {
                     entity = keywordRankEntityMap.get(keyword);
                 } else {
                     entity = new KeywordRankEntity();
+                    if (kwid.getKeywordId() == null) {
+                        entity.setKwid(kwid.getId());
+                    } else {
+                        entity.setKwid(kwid.getKeywordId().toString());
+                    }
                     entity.setName(keyword);
                     entity.setTargetRank(new HashMap<Integer, Integer>());
                     entity.setDevice(device);
@@ -388,7 +402,7 @@ public class BaiduApiService {
                 for (CreativeDTO leftEntity : previewData.getLeft()) {
                     rank++;
                     String url = leftEntity.getUrl();
-                    if (url.equals(host)) {
+                    if (url.contains(host)) {
                         entity.getTargetRank().put(region, rank);
                         found = true;
                         break;
@@ -402,7 +416,7 @@ public class BaiduApiService {
                 for (CreativeDTO rightEntity : previewData.getRight()) {
                     rank--;
                     String url = rightEntity.getUrl();
-                    if (url.equals(host)) {
+                    if (url.contains(host)) {
                         entity.getTargetRank().put(region, rank);
                         break;
                     }
@@ -414,20 +428,26 @@ public class BaiduApiService {
         return keywordRankEntityMap;
     }
 
-    private void convertMap(Map<String, List<Integer>> keys, Map<Integer, List<String>> regionDataMap) {
+    private void initIdMap(Set<KeywordEntity> keywordEntities, Map<String, KeywordEntity> keywordIdMap) {
+        for (KeywordEntity keywordEntity : keywordEntities) {
+            keywordIdMap.put(keywordEntity.getKeyword(), keywordEntity);
+        }
+    }
+
+    private void convertMap(Map<KeywordEntity, List<Integer>> keys, Map<Integer, List<KeywordEntity>> regionDataMap) {
         if (keys.isEmpty())
             return;
 
-        for (Map.Entry<String, List<Integer>> entry : keys.entrySet()) {
+        for (Map.Entry<KeywordEntity, List<Integer>> entry : keys.entrySet()) {
             List<Integer> regionList = entry.getValue();
 
-            String keyword = entry.getKey();
+            KeywordEntity keyword = entry.getKey();
 
             for (Integer integer : regionList) {
                 if (regionDataMap.containsKey(integer)) {
                     regionDataMap.get(integer).add(keyword);
                 } else {
-                    List<String> keyList = new ArrayList<>();
+                    List<KeywordEntity> keyList = new ArrayList<>();
                     keyList.add(keyword);
                     regionDataMap.put(integer, keyList);
                 }

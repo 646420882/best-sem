@@ -5,6 +5,7 @@ window.onload = function () {
     rDrag.init(document.getElementById('box4'));
     rDrag.init(document.getElementById('box5'));
     rDrag.init(document.getElementById('box6'));
+    rDrag.init(document.getElementById('downloadBox'));
 };
 
 function initOptions(id, start, end) {
@@ -40,12 +41,12 @@ $(function () {
         $('div.tab_box > div').eq(index).show().siblings().hide();
     });
 //设置规则
-    $(".showbox").click(function () {
-        var items = checked("subbox2");
+    $("#showbox").click(function () {
+        var items = checked("subbox");
 
         if (items.length == 0) {
             alert("请选择至少一个关键词!");
-            return;
+            return false;
         }
 
         if (items.length == 1) {
@@ -67,7 +68,7 @@ $(function () {
         $(".box ").css("display", "none");
     });
 //修改出价
-    $(".showbox2").click(function () {
+    $("#showbox2").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
@@ -82,7 +83,7 @@ $(function () {
         $(".box2 ").css("display", "none");
     });
 //修改匹配模式
-    $(".showbox4").click(function () {
+    $("#showbox4").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
@@ -96,12 +97,28 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box4 ").css("display", "none");
     });
+//下载
+    $("#updateBtn").click(function () {
+        $(".TB_overlayBG").css({
+            display: "block", height: $(document).height()
+        });
+        $("#download").css({
+            left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+            display: "block"
+        });
+    });
+    $(".close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $(".box4 ").css("display", "none");
+    });
+
 //暂停竞价规则
-    $(".showbox3").click(function () {
-        var items = checked("subbox2");
+    $("#showbox3").click(function () {
+        var items = checked("subbox");
 
         if (items.length == 0) {
-            alert("请选择至少一个关键词!");
+            alert("请选择至少一个关键词3!");
             return;
         }
 
@@ -138,11 +155,11 @@ $(function () {
     });
 
 
-    $(".showbox7").click(function () {
-        var items = checked("subbox2");
+    $("#showbox7").click(function () {
+        var items = checked("subbox");
 
         if (items.length == 0) {
-            alert("请选择至少一个关键词!");
+            alert("请选择至少一个关键词7!");
             return;
         }
 
@@ -182,7 +199,7 @@ $(function () {
         $(".box3 ").css("display", "none");
     });
 //设置规则
-    $(".showbox5").click(function () {
+    $("#showbox5").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
@@ -197,7 +214,7 @@ $(function () {
         $(".box5").css("display", "none");
     });
 //自定义列
-    $(".showbox6").click(function () {
+    $("#showbox6").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
@@ -270,11 +287,11 @@ $(function () {
 
 
     $('#rankBtn').click(function () {
-        var items = checked("subbox2");
+        var items = checked("subbox");
 
         if (items.length == 0) {
-            alert("请选择至少一个关键词!");
-            return;
+            alert("请选择至少一个关键词r!");
+            return false;
         }
         var ids = [];
         items.each(function (i, item) {
@@ -286,55 +303,51 @@ $(function () {
             data: {'ids': ids.toString()},
             type: "POST",
             success: function (datas) {
-                datas.rows.each(function (item) {
-                    if (item.rank == -1) {
-                        $('#item.id').val("无当前排名");
-                    } else {
-                        $('#item.id').val(item.rank);
-                    }
+                datas.rows.forEach(function (i,item) {
                 });
+                alert("排名检查完毕,请点击查看当前排名.");
             }
         })
     });
 
 
-    $('#rulesave').click(function () {
-        sendReq(false);
-    })
-
-    $('#rulesaverun').click(function () {
-        sendReq(true);
-        $(".close").click();
-    })
-
-
-    $('#rankBtn').click(function () {
-        var items = checked("subbox2");
-
-        if (items.length == 0) {
-            alert("请选择至少一个关键词!");
-            return;
-        }
-        var ids = [];
-        items.each(function (i, item) {
-            ids.push(item.value);
-        })
-
-        $.ajax({
-            url: "/bidding/rank",
-            data: {'ids': ids.toString()},
-            type: "POST",
-            success: function (datas) {
-                datas.rows.each(function (item) {
-                    if (item.rank == -1) {
-                        $('#item.id').val("无当前排名");
-                    } else {
-                        $('#item.id').val(item.rank);
-                    }
-                });
-            }
-        })
-    });
+//    $('#rulesave').click(function () {
+//        sendReq(false);
+//    })
+//
+//    $('#rulesaverun').click(function () {
+//        sendReq(true);
+//        $(".close").click();
+//    })
+//
+//
+//    $('#rankBtn').click(function () {
+//        var items = checked("subbox2");
+//
+//        if (items.length == 0) {
+//            alert("请选择至少一个关键词!");
+//            return;
+//        }
+//        var ids = [];
+//        items.each(function (i, item) {
+//            ids.push(item.value);
+//        })
+//
+//        $.ajax({
+//            url: "/bidding/rank",
+//            data: {'ids': ids.toString()},
+//            type: "POST",
+//            success: function (datas) {
+//                datas.rows.each(function (item) {
+//                    if (item.rank == -1) {
+//                        $('#item.id').val("无当前排名");
+//                    } else {
+//                        $('#item.id').val(item.rank);
+//                    }
+//                });
+//            }
+//        })
+//    });
 
 });
 
@@ -353,7 +366,7 @@ function sendReq(run) {
     req.run = run;
     var ids = [];
     if ($.kwid == undefined) {
-        checked('subbox2').each(function (i, item) {
+        checked('subbox').each(function (i, item) {
             ids.push(item.value);
         });
     } else {
@@ -397,6 +410,7 @@ function sendReq(run) {
     if (req.device == undefined) {
         req.device = 10000;
     }
+
 //竞价位置
     req.expPosition = seleValue('pos');
     if (req.expPosition == 4) {
@@ -408,6 +422,14 @@ function sendReq(run) {
     req.failed = checked('failed').val();
 
     req.auto = checked('auto').val();
+    if(req.auto == 1){
+        var input = checked('sbid').val();
+        if(input == 'bytime'){
+            req.runByTimes = $('#bytimes').val();
+        }else{
+            req.runByTimes = -1;
+        }
+    }
 
 //竞价区域
     req.target = null;

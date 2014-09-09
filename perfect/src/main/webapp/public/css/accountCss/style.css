@@ -1239,7 +1239,7 @@ ul.ztree.zTreeDragUL {
     margin-left: 5px;
     border: 1px solid #dfdfdf;
 }
-.price2 {
+.price2, .times{
     width: 26px;
 }
 .w_list01 {

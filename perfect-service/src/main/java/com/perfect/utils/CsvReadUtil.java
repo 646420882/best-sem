@@ -9,6 +9,7 @@ import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -84,7 +85,7 @@ public class CsvReadUtil implements Iterator<List<String>> {
             keywordEntity.setKeywordId(Long.valueOf(next().get(12)));
             keywordEntity.setAdgroupId(Long.valueOf(next().get(11)));
             keywordEntity.setKeyword(next().get(4));
-            keywordEntity.setPrice(Double.valueOf(next().get(5)));
+            keywordEntity.setPrice(BigDecimal.valueOf(Double.valueOf(next().get(5))));
             keywordEntity.setPcDestinationUrl(null);
             keywordEntity.setMobileDestinationUrl(null);
             keywordEntity.setMatchType(getMatchType(next().get(6)));
@@ -124,7 +125,7 @@ public class CsvReadUtil implements Iterator<List<String>> {
             keywordEntity.setKeywordId(Long.valueOf(next().get(12)));
             keywordEntity.setAdgroupId(Long.valueOf(next().get(11)));
             keywordEntity.setKeyword(next().get(4));
-            keywordEntity.setPrice(Double.valueOf(next().get(5)));
+            keywordEntity.setPrice(BigDecimal.valueOf(Double.valueOf(next().get(5))));
             keywordEntity.setPcDestinationUrl(null);
             keywordEntity.setMobileDestinationUrl(null);
             keywordEntity.setMatchType(getMatchType(next().get(6)));

@@ -136,14 +136,15 @@
                 </div>
                 <div class="w_list03 ">
                     <ul class="jiangjia_list">
-                        <li class="current showbox">设置规则</li>
+                        <li class="current" id="showbox">设置规则</li>
+                        <li id="updateBtn">更新账户数据</li>
                         <li id="rankBtn">检查当前排名</li>
-                        <li class="showbox2">修改出价</li>
-                        <li class="showbox7">启动竞价</li>
-                        <li class="showbox3">暂停竞价</li>
-                        <li class="showbox4">修改访问网址</li>
-                        <li class="showbox5">分组</li>
-                        <li class="showbox6">自定义列</li>
+                        <li id="showbox2">修改出价</li>
+                        <li id="showbox7">启动竞价</li>
+                        <li id="showbox3">暂停竞价</li>
+                        <li id="showbox4">修改访问网址</li>
+                        <li id="showbox5">分组</li>
+                        <li id="showbox6">自定义列</li>
                     </ul>
                     <div class="over wd">
                         <span class="fl">当前显示数据日期：昨天</span>
@@ -305,6 +306,42 @@
 </div>
 </div>
 <div class="TB_overlayBG"></div>
+<div class="box" style="display:none" id="download">
+    <h2 id="downloadBox">账户下载<a href="#" class="close">关闭</a></h2>
+
+    <div class="mainlist">
+        您希望下载账户的哪个部分？
+        <ul class="zs_set">
+            <li><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</li>
+            <li><input type="radio" name="no1">&nbsp; 已下载的推广计划</li>
+            <li><input type="radio" name="no1">&nbsp; 从最新的推广计划列表中选择</li>
+        </ul>
+        <div class="zs_sets over">
+            <div id="allCampaign" class="zs_ses1" style="overflow: auto">
+                <ul>
+                </ul>
+            </div>
+            <div id="existsCampaign" class="zs_ses1 hides" style="overflow: auto">
+                <ul>
+                </ul>
+            </div>
+            <div id="newCampaign" class="zs_ses1 hides" style="overflow: auto">
+                <ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li id="downloadAccount" class="current">确认</li>
+                <li class="close">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
 <div class="box" style="display:none">
     <h2 id="box">设置规则<a href="#" class="close">关闭</a></h2>
 
@@ -397,6 +434,9 @@
                 <p>自动竞价模式：</p>
                 <ul>
                     <li><input type="radio" name="auto" checked="checked" value="1"><span>单次竞价</span>
+                        <br>
+                         &nbsp; <input type="radio" name="sbid" checked="checked" value="everyday"> 每天执行
+                        &nbsp;<input type="radio" name="sbid" value="bytime"> 竞价次数:<input class="times" type="text" name="bytimes">
                     </li>
 
                     <li><input type="radio" name="auto" value="2"><span>重复竞价速度 每隔
@@ -728,16 +768,31 @@ function fullItems(datas, name) {
     $('#' + name + ' tbody tr').remove();
     var newrows = [];
     datas.rows.forEach(function (item) {
-        var newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox2\" value='" + item.keywordId + "'></td>" +
-                "<td>&nbsp;" + item.keyword + "</td>" +
-                "<td>&nbsp;" + item.cost + "</td>" +
-                "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.keywordId + "'>查看最新排名</a></td>" +
-                "<td>&nbsp;" + item.impression + "</td>" +
-                "<td>&nbsp;" + item.ctr + "%</td>" +
-                "<td>&nbsp;" + item.price + "</td>" +
-                "<td>&nbsp;" + item.pcQuality + "</td>" +
-                "<td>&nbsp;" + item.mQuality + "</td>" +
-                "<td>&nbsp;" + item.statusStr + "</td>";
+        var newrow = "";
+        if(item.keywordId != null){
+            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.keywordId + "'></td>" +
+                    "<td>&nbsp;" + item.keyword + "</td>" +
+                    "<td>&nbsp;" + item.cost + "</td>" +
+                    "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.keywordId + "'>查看最新排名</a></td>" +
+                    "<td>&nbsp;" + item.impression + "</td>" +
+                    "<td>&nbsp;" + item.ctr + "%</td>" +
+                    "<td>&nbsp;" + item.price + "</td>" +
+                    "<td>&nbsp;" + item.pcQuality + "</td>" +
+                    "<td>&nbsp;" + item.mQuality + "</td>" +
+                    "<td>&nbsp;" + item.statusStr + "</td>";
+        }else{
+            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.id + "'></td>" +
+                    "<td>&nbsp;" + item.keyword + "</td>" +
+                    "<td>&nbsp;" + item.cost + "</td>" +
+                    "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.id + "'>查看最新排名</a></td>" +
+                    "<td>&nbsp;" + item.impression + "</td>" +
+                    "<td>&nbsp;" + item.ctr + "%</td>" +
+                    "<td>&nbsp;" + item.price + "</td>" +
+                    "<td>&nbsp;" + item.pcQuality + "</td>" +
+                    "<td>&nbsp;" + item.mQuality + "</td>" +
+                    "<td>&nbsp;" + item.statusStr + "</td>";
+        }
+
         if (item.rule) {
             newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>" + item.ruleDesc + "</a></td></tr>";
         } else {
@@ -779,10 +834,10 @@ function fullItems(datas, name) {
                 var msg = "当前排名获取时间: " + data.time + "\n";
                 msg = msg + "关键词: " + data.name + "\n";
                 msg = msg + "地域\t排名\n";
-                if (data.targetRank.length == undefined) {
+                if (data.length == 0) {
                     msg = msg + "暂无排名";
                 } else {
-                    data.targetRank.each(function (i, item) {
+                    data.forEach(function (i, item) {
                         msg = msg + item.region + "\t" + item.rank + "\n";
                     })
                 }
@@ -794,6 +849,11 @@ function fullItems(datas, name) {
 //-->
 
 </SCRIPT>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
+
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
 
 
 </body>

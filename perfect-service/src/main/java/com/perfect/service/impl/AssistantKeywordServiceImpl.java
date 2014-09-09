@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 import static com.perfect.mongodb.utils.EntityConstants.*;
@@ -418,9 +419,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 }
             }else if(i==2){
                 if(kwInfo[i].matches("^\\d+|\\.\\d+$")==true){
-                    keywordEntity.setPrice(Double.parseDouble(kwInfo[i]));
+                    keywordEntity.setPrice(BigDecimal.valueOf(Double.parseDouble(kwInfo[i])));
                 }else{
-                    keywordEntity.setPrice(0d);
+                    keywordEntity.setPrice(BigDecimal.ZERO);
                 }
             }else if(i==3){
                 if(kwInfo[i].matches("^([h{1}|H{1}][t{1}|T{1}][t{1}|T{1}][p{1}|P{1}]\\://)?[w{1,3}|W{1,3}]{3}\\.\\w+(\\.[a-zA-Z]+)+$")==true){

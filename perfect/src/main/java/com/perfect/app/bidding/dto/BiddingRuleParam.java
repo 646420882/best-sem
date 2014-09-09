@@ -27,6 +27,8 @@ public class BiddingRuleParam {
 
     private int auto;
 
+    private int runByTimes;
+
     public Long[] getIds() {
         return ids;
     }
@@ -137,5 +139,13 @@ public class BiddingRuleParam {
 
     public void setAuto(int auto) {
         this.auto = auto;
+    }
+
+    public int getRunByTimes() {
+        return runByTimes;
+    }
+
+    public void setRunByTimes(int runByTimes) {
+        this.runByTimes = runByTimes;
     }
 }

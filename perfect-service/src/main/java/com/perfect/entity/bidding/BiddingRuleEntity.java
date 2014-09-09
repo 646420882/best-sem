@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.math.BigDecimal;
+
 import static com.perfect.mongodb.utils.EntityConstants.KEYWORD_ID;
 import static com.perfect.mongodb.utils.EntityConstants.TBL_BIDDINGRULE;
 
@@ -34,7 +36,7 @@ public class BiddingRuleEntity extends AccountIdEntity {
     private StrategyEntity strategyEntity;
 
     @Field("cp")
-    private double currentPrice;
+    private BigDecimal currentPrice;
 
     @Field("priority")
     private int priority;
@@ -42,8 +44,14 @@ public class BiddingRuleEntity extends AccountIdEntity {
     @Field("ebl")
     private boolean enabled;
 
+    @Field("r")
+    private boolean running;
+
     @Field("nxt")
     private long next;
+
+    @Field("ct")
+    private int currentTimes = -1;
 
 
     public ObjectId getId() {
@@ -86,11 +94,11 @@ public class BiddingRuleEntity extends AccountIdEntity {
         this.enabled = enabled;
     }
 
-    public double getCurrentPrice() {
+    public BigDecimal getCurrentPrice() {
         return currentPrice;
     }
 
-    public void setCurrentPrice(double currentPrice) {
+    public void setCurrentPrice(BigDecimal currentPrice) {
         this.currentPrice = currentPrice;
     }
 
@@ -108,5 +116,21 @@ public class BiddingRuleEntity extends AccountIdEntity {
 
     public long getNext() {
         return next;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public void setCurrentTimes(int currentTimes) {
+        this.currentTimes = currentTimes;
+    }
+
+    public int getCurrentTimes() {
+        return currentTimes;
     }
 }

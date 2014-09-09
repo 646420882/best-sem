@@ -97,10 +97,13 @@ public class BiddingRuleUtils {
 
 
     public static void main(String[] args) {
-        Date date = getDateInvMinute(new Integer[]{1, 4, 14, 18}, -1);
-        System.out.println("date = " + date);
+        boolean now = runNow(new Integer[]{1, 4, 12, 16});
+        System.out.println("now = " + now);
 
-        date = getDateInvMinute(new Integer[]{1, 4, 14, 16}, 40);
+        Date longTime = new Date(getNextHourTime(new Integer[]{1, 4, 12, 16}));
+        System.out.println("longTime = " + longTime);
+
+        Date date = getDateInvMinute(new Integer[]{1, 4, 14, 16}, 40);
         System.out.println("date = " + date);
 
         date = getDateInvHour(new Integer[]{1, 4, 14, 17}, 60);

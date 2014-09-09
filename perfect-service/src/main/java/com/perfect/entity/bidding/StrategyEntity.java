@@ -2,6 +2,8 @@ package com.perfect.entity.bidding;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.math.BigDecimal;
+
 /**
  * Created by yousheng on 2014/8/14.
  *
@@ -19,10 +21,10 @@ public class StrategyEntity {
     private int device;
 
     @Field("max")
-    private double maxPrice;
+    private BigDecimal maxPrice;
 
     @Field("min")
-    private double minPrice;
+    private BigDecimal minPrice;
 
     // 竞价策略
     @Field("m")
@@ -55,6 +57,12 @@ public class StrategyEntity {
     @Field("rt")
     private Integer[] regionTarget;
 
+    @Field("op")
+    private BigDecimal outPrice;
+
+    @Field("bt")
+    private int runByTimes;
+
     public int getStrategy() {
         return strategy;
     }
@@ -71,19 +79,19 @@ public class StrategyEntity {
         this.device = device;
     }
 
-    public double getMaxPrice() {
+    public BigDecimal getMaxPrice() {
         return maxPrice;
     }
 
-    public void setMaxPrice(double maxPrice) {
+    public void setMaxPrice(BigDecimal maxPrice) {
         this.maxPrice = maxPrice;
     }
 
-    public double getMinPrice() {
+    public BigDecimal getMinPrice() {
         return minPrice;
     }
 
-    public void setMinPrice(double minPrice) {
+    public void setMinPrice(BigDecimal minPrice) {
         this.minPrice = minPrice;
     }
 
@@ -144,4 +152,19 @@ public class StrategyEntity {
     }
 
 
+    public BigDecimal getOutPrice() {
+        return outPrice;
+    }
+
+    public void setOutPrice(BigDecimal outPrice) {
+        this.outPrice = outPrice;
+    }
+
+    public int getRunByTimes() {
+        return runByTimes;
+    }
+
+    public void setRunByTimes(int runByTimes) {
+        this.runByTimes = runByTimes;
+    }
 }

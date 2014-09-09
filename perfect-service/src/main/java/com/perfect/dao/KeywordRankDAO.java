@@ -7,5 +7,5 @@ import com.perfect.entity.bidding.KeywordRankEntity;
  */
 public interface KeywordRankDAO extends MongoCrudRepository<KeywordRankEntity, String> {
 
-    KeywordRankEntity findByKeywordId(Long id);
+    KeywordRankEntity findByKeywordId(String id);
 }

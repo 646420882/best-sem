@@ -104,6 +104,12 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
             }
         }
 
+        if(objectList.isEmpty()){
+            if(logger.isDebugEnabled()){
+                logger.debug("当前暂无可执行的竞价规则!");
+            }
+            return Collections.EMPTY_LIST;
+        }
         return objectList;
     }
 

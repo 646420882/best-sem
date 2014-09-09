@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.math.BigDecimal;
+
 import static com.perfect.mongodb.utils.EntityConstants.*;
 
 @Document(collection = TBL_KEYWORD)
@@ -33,7 +35,7 @@ public class KeywordEntity extends AccountIdEntity {
     @Field("name")
     private String keyword;
 
-    private Double price;
+    private BigDecimal price;
 
     @Field("pc")
     private String pcDestinationUrl;
@@ -87,7 +89,7 @@ public class KeywordEntity extends AccountIdEntity {
         return wasSet;
     }
 
-    public boolean setPrice(Double aPrice) {
+    public boolean setPrice(BigDecimal aPrice) {
         boolean wasSet = false;
         price = aPrice;
         wasSet = true;
@@ -148,7 +150,7 @@ public class KeywordEntity extends AccountIdEntity {
         return keyword;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 

@@ -22,7 +22,7 @@ public class KeywordRankServiceImpl implements KeywordRankService {
     private KeywordRankDAO keywordRankDAO;
 
     @Override
-    public KeywordRankEntity findRankByKeywordId(Long id) {
+    public KeywordRankEntity findRankByKeywordId(String id) {
         return keywordRankDAO.findByKeywordId(id);
     }
 

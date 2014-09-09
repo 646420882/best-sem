@@ -10,6 +10,7 @@ import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;
 import org.unitils.spring.annotation.SpringBeanByName;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -42,14 +43,14 @@ public class BiddingTest  {
         biddingRuleEntity.setKeywordId(906068486l);
         biddingRuleEntity.setKeyword("深圳南山 买房");
         biddingRuleEntity.setEnabled(true);
-        biddingRuleEntity.setCurrentPrice(1);
+        biddingRuleEntity.setCurrentPrice(BigDecimal.ONE);
 
         StrategyEntity strategyEntity = new StrategyEntity();
         biddingRuleEntity.setStrategyEntity(strategyEntity);
         strategyEntity.setInterval(30);
         strategyEntity.setMode(BiddingStrategyConstants.SPD_FAST.value());
-        strategyEntity.setMaxPrice(5);
-        strategyEntity.setMinPrice(1);
+        strategyEntity.setMaxPrice(BigDecimal.valueOf(5l));
+        strategyEntity.setMinPrice(BigDecimal.ONE);
 
         strategyEntity.setExpPosition(BiddingStrategyConstants.POS_LEFT_1.value());
 

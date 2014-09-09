@@ -29,6 +29,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -93,9 +94,11 @@ public class BiddingController {
                 biddingRuleEntity = new BiddingRuleEntity();
                 biddingRuleEntity.setAccountId(AppContext.getAccountId());
                 biddingRuleEntity.setKeywordId(id);
+                biddingRuleEntity.setCurrentPrice(BigDecimal.ZERO);
             }
             biddingRuleEntity.setEnabled(param.isRun());
 
+            biddingRuleEntity.setCurrentPrice(BigDecimal.ZERO);
 
             StrategyEntity strategyEntity = new StrategyEntity();
             biddingRuleEntity.setStrategyEntity(strategyEntity);
@@ -124,8 +127,9 @@ public class BiddingController {
             strategyEntity.setPosition(param.getCustomPos());
 
             // 出价
-            strategyEntity.setMaxPrice(param.getMax());
-            strategyEntity.setMinPrice(param.getMin());
+            strategyEntity.setMaxPrice(BigDecimal.valueOf(param.getMax()));
+            strategyEntity.setMinPrice(BigDecimal.valueOf(param.getMin()));
+
 
             // 竞价设备
             strategyEntity.setDevice(param.getDevice());
@@ -133,6 +137,8 @@ public class BiddingController {
             // 竞价模式
             strategyEntity.setMode(param.getMode());
 
+            strategyEntity.setRunByTimes(param.getRunByTimes());
+            biddingRuleEntity.setCurrentTimes(param.getRunByTimes());
             // 目标区域
             if (param.getTarget() != 0) {
                 strategyEntity.setRegionTarget(new Integer[]{param.getTarget()});
@@ -390,7 +396,7 @@ public class BiddingController {
             return new ModelAndView(jsonView);
         }
 
-        Map<String, List<Integer>> searchMap = new HashMap<>();
+        Map<KeywordEntity, List<Integer>> searchMap = new HashMap<>();
         Map<String, KeywordEntity> keywordEntityMap = new HashMap<>();
 
         for (Long kwid : ids) {
@@ -405,12 +411,12 @@ public class BiddingController {
                 List<Integer> targetList = campaignEntity.getRegionTarget();
                 // 设置计划区域或者账户区域
                 if (targetList != null && !targetList.isEmpty()) {
-                    searchMap.put(keywordEntity.getKeyword(), targetList);
+                    searchMap.put(keywordEntity, targetList);
                 } else {
-                    searchMap.put(keywordEntity.getKeyword(), accountRegionList);
+                    searchMap.put(keywordEntity, accountRegionList);
                 }
             } else {
-                searchMap.put(keywordEntity.getKeyword(), Arrays.asList(ruleEntity.getStrategyEntity().getRegionTarget()));
+                searchMap.put(keywordEntity, Arrays.asList(ruleEntity.getStrategyEntity().getRegionTarget()));
             }
 
         }
@@ -421,13 +427,20 @@ public class BiddingController {
         Long accountId = AppContext.getAccountId();
 
         for (String key : rankMap.keySet()) {
+            String id = null;
             KeywordEntity keywordEntity = keywordEntityMap.get(key);
-            KeywordRankEntity currentRank = keywordRankService.findRankByKeywordId(keywordEntity.getKeywordId());
+            if (keywordEntity.getKeywordId() == null) {
+                id = keywordEntity.getId();
+            } else {
+                id = keywordEntity.getKeywordId().toString();
+            }
+
+            KeywordRankEntity currentRank = keywordRankService.findRankByKeywordId(id);
 
             if (currentRank == null) {
                 KeywordRankEntity keywordRankEntity = rankMap.get(key);
                 keywordRankEntity.setAccountId(accountId);
-                keywordRankEntity.setKwid(keywordEntity.getKeywordId());
+                keywordRankEntity.setKwid(id);
             } else {
             }
 
@@ -441,7 +454,7 @@ public class BiddingController {
     }
 
     @RequestMapping(value = "/rank/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getRank(@PathVariable("id") Long id) {
+    public ModelAndView getRank(@PathVariable("id") String id) {
 
         AbstractView jsonView = new MappingJackson2JsonView();
 
@@ -450,7 +463,6 @@ public class BiddingController {
         jsonView.setAttributesMap(mapObject);
 
         return new ModelAndView(jsonView);
-
     }
 
     @RequestMapping(value = "/enable", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

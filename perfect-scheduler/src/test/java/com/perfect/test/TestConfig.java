@@ -52,7 +52,7 @@ public class TestConfig {
 
     @Test
     public void initAutoBiddingConfig() {
-        BiddingTaskConfig biddingTaskConfig = new BiddingTaskConfig("BiddingTaskConfig", "TEST", "biddingTask", "startrun:0 * * * * ?", new String[]{"A,B"});
+        BiddingTaskConfig biddingTaskConfig = new BiddingTaskConfig("BiddingTaskConfig", "TEST", "biddingTask", null, new String[]{"A"});
         biddingTaskConfig.setScheduleManagerFactory(scheduleManagerFactory);
         biddingTaskConfig.createTask();
     }
@@ -62,7 +62,7 @@ public class TestConfig {
 
         TBScheduleManagerFactory tbScheduleManagerFactory = (TBScheduleManagerFactory) applicationContext.getBean("scheduleManagerFactory");
 
-        BiddingTaskConfig biddingTaskConfig = new BiddingTaskConfig("BiddingTaskConfig", "TEST", "biddingTask", null, new String[]{"A,B"});
+        BiddingTaskConfig biddingTaskConfig = new BiddingTaskConfig("BiddingTaskConfig", "TEST", "biddingTask", null, new String[]{"A"});
         biddingTaskConfig.setScheduleManagerFactory(tbScheduleManagerFactory);
 
         try {

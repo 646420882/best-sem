@@ -28,7 +28,7 @@ public class KeywordRankDAOImpl extends AbstractUserBaseDAOImpl<KeywordRankEntit
     }
 
     @Override
-    public KeywordRankEntity findByKeywordId(Long id) {
+    public KeywordRankEntity findByKeywordId(String id) {
         return getMongoTemplate().findOne(Query.query(Criteria.where(KEYWORD_ID).is(id)), getEntityClass());
     }
 }
