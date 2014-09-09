@@ -13,11 +13,10 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
-<%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/zTreeStyle/Normalize.css">--%>
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+    <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/zTreeStyle/Normalize.css">--%>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
-    <link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico" />
+    <link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico"/>
     <style>
         .page2 .ajc {
             background: #ffb900;
@@ -54,14 +53,15 @@
 </ul>
 <div class="tab_box">
 <div class="containers">
-    <div class="list01 over" >
+    <div class="list01 over">
         <div class="list01_top over">
             <Span>近期概览</Span>
             <ul id="clickLis">
                 <li class="current"><a href="javascript:" onclick="lisClick(this,1)">昨天</a></li>
                 <li><a href="javascript:" onclick="lisClick(this,7)">近7天</a></li>
                 <li><a href="javascript:" onclick="lisClick(this,30)">近30天</a></li>
-                <li class="date"><a href="javascript:" onclick="lisClick(this,null);">自定义<input name="reservation" type="image"
+                <li class="date"><a href="javascript:" onclick="lisClick(this,null);">自定义<input name="reservation"
+                                                                                                type="image"
                                                                                                 onclick="javascript:genre = 'accountOverview';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                                                                                 src="${pageContext.request.contextPath}/public/img/date.png">
                 </a>
@@ -1122,227 +1122,227 @@
 </script>
 <script type="text/javascript">
 
-    //默认按照展现进行排名
-    var category = "impression";
+//默认按照展现进行排名
+var category = "impression";
 
-    //默认降序排列
-    var sort = -1;
+//默认降序排列
+var sort = -1;
 
-    //默认加载前10条数据
-    var limit = 10;
+//默认加载前10条数据
+var limit = 10;
 
-    //日期控件-开始日期
-    var daterangepicker_start_date = null;
+//日期控件-开始日期
+var daterangepicker_start_date = null;
 
-    //日期控件-结束日期
-    var daterangepicker_end_date = null;
+//日期控件-结束日期
+var daterangepicker_end_date = null;
 
-    //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
-    var statDate = 1;
+//区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
+var statDate = 1;
 
-    //查询类别区分
-    var genre = "";
+//查询类别区分
+var genre = "";
 
-    //日期控件坐标定位
-    var _posX = 0, _posY = 0;
+//日期控件坐标定位
+var _posX = 0, _posY = 0;
 
-    $(function () {
-        var $tab_li = $('.tab_menu li');
-        $('.tab_menu li').click(function () {
-            $(this).addClass('selected').siblings().removeClass('selected');
-            var index = $tab_li.index(this);
-            $('div.tab_box > div').eq(index).show().siblings().hide();
-        });
-        var navH = $(".on_title").offset().top;
-        $(window).scroll(function () {
-            var scroH = $(this).scrollTop();
-            if (scroH >= navH) {
-                $(".on_title").css({"position": "fixed", "top": "77"});
-            } else {
-                $(".on_title").css({"position": "static", "margin": "0 auto"});
+$(function () {
+    var $tab_li = $('.tab_menu li');
+    $('.tab_menu li').click(function () {
+        $(this).addClass('selected').siblings().removeClass('selected');
+        var index = $tab_li.index(this);
+        $('div.tab_box > div').eq(index).show().siblings().hide();
+    });
+    var navH = $(".on_title").offset().top;
+    $(window).scroll(function () {
+        var scroH = $(this).scrollTop();
+        if (scroH >= navH) {
+            $(".on_title").css({"position": "fixed", "top": "77"});
+        } else {
+            $(".on_title").css({"position": "static", "margin": "0 auto"});
+        }
+    });
+    //加载日历控件
+    $("input[name=reservation]").daterangepicker();
+    $(".btnDone").on('click', function () {
+        var _startDate = $('.range-start').datepicker('getDate');
+        var _endDate = $('.range-end').datepicker('getDate');
+        if (_startDate != null && _endDate != null) {
+            daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
+            daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
+            if (genre == "keywordQualityCustom") {
+                //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
+                loadKeywordQualityData();
+            } else if (genre == "importKeywordDefault") {
+                getImportKeywordDefault(null, 0);
+            } else if (genre == "accountOverview") {
+                lisClick();
+            } else if (genre == "importPerformanceDefault") {
+                category = "data";
+                loadPerformance(0);
+            } else if (genre == "importPerformanceCurveDefault") {
+                category = "data";
+                loadPerformanceCurve(0);
             }
-        });
-        //加载日历控件
-        $("input[name=reservation]").daterangepicker();
-        $(".btnDone").on('click', function () {
-            var _startDate = $('.range-start').datepicker('getDate');
-            var _endDate = $('.range-end').datepicker('getDate');
-            if (_startDate != null && _endDate != null) {
-                daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
-                daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
-                if (genre == "keywordQualityCustom") {
-                    //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
-                    loadKeywordQualityData(null, 0);
-                } else if (genre == "importKeywordDefault") {
-                    getImportKeywordDefault(null, 0);
-                } else if (genre == "accountOverview") {
-                    lisClick();
-                } else if (genre == "importPerformanceDefault") {
-                    category = "data";
-                    loadPerformance(0);
-                } else if (genre == "importPerformanceCurveDefault") {
-                    category = "data";
-                    loadPerformanceCurve(0);
-                }
-            }
-        });
-
-        //默认加载昨天的数据
-        loadKeywordQualityData(null, 1);
-        getImportKeywordDefault(1);
-        //账户表现-----默认加载7天数据
-        loadPerformance(null, 7);
-        //曲线图表现-----默认加载7天数据
-        loadPerformanceCurve(null, 7);
-
+        }
     });
 
-    function TestBlack(TagName) {
-        var obj = document.getElementById(TagName);
-        if (obj.style.display == "") {
-            obj.style.display = "none";
-        } else {
-            obj.style.display = "";
-        }
+    //默认加载昨天的数据
+    loadKeywordQualityData(null, 1);
+    getImportKeywordDefault(1);
+    //账户表现-----默认加载7天数据
+    loadPerformance(null, 7);
+    //曲线图表现-----默认加载7天数据
+    loadPerformanceCurve(null, 7);
+
+});
+
+function TestBlack(TagName) {
+    var obj = document.getElementById(TagName);
+    if (obj.style.display == "") {
+        obj.style.display = "none";
+    } else {
+        obj.style.display = "";
     }
-    function selectChange() {
-        limit = $("#importKeywordSel :selected").val();
-        getImportKeywordDefault(null, statDate);
+}
+function selectChange() {
+    limit = $("#importKeywordSel :selected").val();
+    getImportKeywordDefault(null, statDate);
+}
+
+/**
+ * 获取昨天, 近七天, 近30天日期
+ * 参数为1, 昨天
+ * 参数为7, 7天
+ * 参数为30, 近30天
+ * @param day
+ */
+var getDateParam = function (day) {
+    var currDate = new Date();
+    if (day == 1) {
+        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
+        daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
+        daterangepicker_end_date = daterangepicker_start_date;
+    } else if (day == 7) {
+        currDate = new Date();
+        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
+        daterangepicker_end_date = currDate.Format("yyyy-MM-dd");
+        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24 * 6);
+        daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
+    } else if (day == 30) {
+        currDate = new Date();
+        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
+        daterangepicker_end_date = currDate.Format("yyyy-MM-dd");
+        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24 * 29);
+        daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
     }
+};
 
-    /**
-     * 获取昨天, 近七天, 近30天日期
-     * 参数为1, 昨天
-     * 参数为7, 7天
-     * 参数为30, 近30天
-     * @param day
-     */
-    var getDateParam = function (day) {
-        var currDate = new Date();
-        if (day == 1) {
-            currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
-            daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
-            daterangepicker_end_date = daterangepicker_start_date;
-        } else if (day == 7) {
-            currDate = new Date();
-            currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
-            daterangepicker_end_date = currDate.Format("yyyy-MM-dd");
-            currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24 * 6);
-            daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
-        } else if (day == 30) {
-            currDate = new Date();
-            currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
-            daterangepicker_end_date = currDate.Format("yyyy-MM-dd");
-            currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24 * 29);
-            daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
-        }
-    };
-
-    var judgeDet = 0;
-    var perCount=0;
-    var startPer = 0;
-    var pageDetNumber = 0;
-    var endPer = 10;
-    /**
-     * 分日表现数据加载
-     * */
-    var loadPerformance = function (obj, date) {
-        if (obj != null) {
-            changedLiState(obj);
-        }
-        getDateParam(date);
-        $.ajax({
-            url: "/account/getPerformanceUser",
-            type: "GET",
-            dataType: "json",
-            data: {
-                startDate: daterangepicker_start_date,
-                endDate: daterangepicker_end_date,
-                sort: sort,
-                limit: endPer,
-                startPer:startPer
-            },
-            success: function (data) {
-                var calssStr = "";
-                if (data.rows.length > 0) {
-                    $("#performance").empty();
-                    $.each(data.rows, function (i, item) {
-                        pageDetNumber= item.count;
-                        if (i % 2 == 0) {
-                            calssStr = "list2_box1";
-                        } else {
-                            calssStr = "list2_box2";
-                        }
-                        var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.date + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;" + Math.round(item.pcCost * 100) / 100 + "</li><li> &nbsp;" + Math.round(item.pcCtr * 100)/100 + "%</li>"
-                                + "<li> &nbsp;" + Math.round(item.pcCpc * 100)/100 + "</li><li> &nbsp;" + item.pcConversion + "</li></ul></td></tr>";
-                        $("#performance").append(_div);
-                    });
-                    if (judgeDet < 1) {
-                        var countNumber = 0;
-                        if (pageDetNumber % endPer == 0) {
-                            countNumber = pageDetNumber / endPer;
-                        } else {
-                            countNumber = (pageDetNumber / endPer);
-                        }
-                        var page_html = "<a href='javascript:' id='pageUpDet' class='nextpage1'><span></span></a>"
-                        for (var i = 0; i < countNumber; i++) {
-                            if(i<10){
-                                if (i == 0) {
-                                    page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startPer = " + i + ";endPer = " + (i + endPer) + ";loadPerformance()'>" + (i + 1) + "</a>";
-                                } else {
-                                    page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startPer = " + (i * endPer) + ";endPer = " + (i * endPer + endPer) + ";loadPerformance()'>" + (i + 1) + "</a>";
-                                }
-                            }else{
-                                if (i == 0) {
-                                    page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startPer = " + i + ";endPer = " + (i + endPer) + ";loadPerformance()' style='display:none'>" + (i + 1) + "</a>";
-                                } else {
-                                    page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startPer = " + (i * endPer) + ";endPer = " + (i * endPer + endPer) + ";loadPerformance()' style='display:none'>" + (i + 1) + "</a>";
-                                }
-                            }
-
-                        }
-                        page_html = page_html + "<a href='javascript:' id='pageDownDet' class='nextpage2'><span></span></a>" +
-                                "<span style='margin-right:10px;'>跳转到 <input type='text' id='goDetID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goDet'> GO</a>"
-                        $("#pageUser").append(page_html);
-                        judgeDet++;
+var judgeDet = 0;
+var perCount = 0;
+var startPer = 0;
+var pageDetNumber = 0;
+var endPer = 10;
+/**
+ * 分日表现数据加载
+ * */
+var loadPerformance = function (obj, date) {
+    if (obj != null) {
+        changedLiState(obj);
+    }
+    getDateParam(date);
+    $.ajax({
+        url: "/account/getPerformanceUser",
+        type: "GET",
+        dataType: "json",
+        data: {
+            startDate: daterangepicker_start_date,
+            endDate: daterangepicker_end_date,
+            sort: sort,
+            limit: endPer,
+            startPer: startPer
+        },
+        success: function (data) {
+            var calssStr = "";
+            if (data.rows.length > 0) {
+                $("#performance").empty();
+                $.each(data.rows, function (i, item) {
+                    pageDetNumber = item.count;
+                    if (i % 2 == 0) {
+                        calssStr = "list2_box1";
+                    } else {
+                        calssStr = "list2_box2";
                     }
+                    var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.date + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;" + Math.round(item.pcCost * 100) / 100 + "</li><li> &nbsp;" + Math.round(item.pcCtr * 100) / 100 + "%</li>"
+                            + "<li> &nbsp;" + Math.round(item.pcCpc * 100) / 100 + "</li><li> &nbsp;" + item.pcConversion + "</li></ul></td></tr>";
+                    $("#performance").append(_div);
+                });
+                if (judgeDet < 1) {
+                    var countNumber = 0;
+                    if (pageDetNumber % endPer == 0) {
+                        countNumber = pageDetNumber / endPer;
+                    } else {
+                        countNumber = (pageDetNumber / endPer);
+                    }
+                    var page_html = "<a href='javascript:' id='pageUpDet' class='nextpage1'><span></span></a>"
+                    for (var i = 0; i < countNumber; i++) {
+                        if (i < 10) {
+                            if (i == 0) {
+                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startPer = " + i + ";endPer = " + (i + endPer) + ";loadPerformance()'>" + (i + 1) + "</a>";
+                            } else {
+                                page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startPer = " + (i * endPer) + ";endPer = " + (i * endPer + endPer) + ";loadPerformance()'>" + (i + 1) + "</a>";
+                            }
+                        } else {
+                            if (i == 0) {
+                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startPer = " + i + ";endPer = " + (i + endPer) + ";loadPerformance()' style='display:none'>" + (i + 1) + "</a>";
+                            } else {
+                                page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startPer = " + (i * endPer) + ";endPer = " + (i * endPer + endPer) + ";loadPerformance()' style='display:none'>" + (i + 1) + "</a>";
+                            }
+                        }
+
+                    }
+                    page_html = page_html + "<a href='javascript:' id='pageDownDet' class='nextpage2'><span></span></a>" +
+                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goDetID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goDet'> GO</a>"
+                    $("#pageUser").append(page_html);
+                    judgeDet++;
                 }
             }
-        });
-        var noneNumStart=0;
-        var noneNumEnd=endPer;
-        //明细报告分页手动跳转
-        $("body").on("click", "#goDet", function () {
-            if (($('#goDetID').val() * endPer - 1) <= (pageDetNumber + (endPer-1))) {
-                startPer = ($('#goDetID').val() * endPer - endPer);
-                endPer = startPer + endPer - 1;
-                loadPerformance();
+        }
+    });
+    var noneNumStart = 0;
+    var noneNumEnd = endPer;
+    //明细报告分页手动跳转
+    $("body").on("click", "#goDet", function () {
+        if (($('#goDetID').val() * endPer - 1) <= (pageDetNumber + (endPer - 1))) {
+            startPer = ($('#goDetID').val() * endPer - endPer);
+            endPer = startPer + endPer - 1;
+            loadPerformance();
+        }
+    });
+    $("body").on("click", "#pageUpDet", function () {
+        if (noneNumStart >= 10) {
+            $("a[cname=nameDet]").hide();
+            noneNumStart -= 10;
+            noneNumEnd -= 10;
+            for (var i = noneNumStart; i <= noneNumEnd; i++) {
+                $("a[cname=nameDet]").eq(i).show();
             }
-        });
-        $("body").on("click", "#pageUpDet", function () {
-            if(noneNumStart >=10){
-                $("a[cname=nameDet]").hide();
-                noneNumStart -= 10;
-                noneNumEnd -= 10;
-                for(var i = noneNumStart;i<=noneNumEnd;i++){
-                    $("a[cname=nameDet]").eq(i).show();
-                }
+        }
+    });
+    $("body").on("click", "#pageDownDet", function () {
+        if (noneNumEnd < pageDetNumber / endPer) {
+            $("a[cname=nameDet]").hide();
+            noneNumStart += 10;
+            noneNumEnd += 10;
+            for (var i = noneNumStart; i <= noneNumEnd; i++) {
+                $("a[cname=nameDet]").eq(i).show();
             }
-        });
-        $("body").on("click", "#pageDownDet", function () {
-            if(noneNumEnd < pageDetNumber/endPer){
-                $("a[cname=nameDet]").hide();
-                noneNumStart +=10;
-                noneNumEnd+=10;
-                for(var i = noneNumStart;i<=noneNumEnd;i++){
-                    $("a[cname=nameDet]").eq(i).show();
-                }
-            }
-        });
-        $("body").on("click", "a[cname=nameDet]", function () {
-            $(this).addClass('ajc').siblings().removeClass('ajc');
-        });
-    };
+        }
+    });
+    $("body").on("click", "a[cname=nameDet]", function () {
+        $(this).addClass('ajc').siblings().removeClass('ajc');
+    });
+};
 </script>
 <script>
 
@@ -1412,9 +1412,9 @@ var loadPerformanceCurve = function (obj, date) {
                     t_date.push(item.date);
                     t_impr.push(item.pcImpression);
                     t_clicks.push(item.pcClick);
-                    t_cost.push(Math.round(item.pcCost * 100)/100);
-                    t_ctr.push(Math.round(item.pcCtr*100)/100);
-                    t_cpc.push(Math.round(item.pcCpc*100)/100);
+                    t_cost.push(Math.round(item.pcCost * 100) / 100);
+                    t_ctr.push(Math.round(item.pcCtr * 100) / 100);
+                    t_cpc.push(Math.round(item.pcCpc * 100) / 100);
                     t_conversion.push(item.pcConversion);
                 })
             }
