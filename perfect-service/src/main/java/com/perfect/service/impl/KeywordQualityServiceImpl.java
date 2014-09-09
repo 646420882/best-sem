@@ -14,11 +14,15 @@ import com.perfect.dto.KeywordQualityReportDTO;
 import com.perfect.dto.QualityDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.KeywordReportEntity;
+import com.perfect.redis.JRedisUtils;
 import com.perfect.service.KeywordQualityService;
 import com.perfect.utils.BaiduServiceSupport;
 import com.perfect.utils.JSONUtils;
+import com.perfect.utils.SerializeUtils;
 import com.perfect.utils.TopN;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -41,6 +45,8 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
     private static final String DEFAULT_END = "\r\n";
     private static final byte commonCSVHead[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
 
+    private static String key = "";
+
     @Resource
     private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
 
@@ -51,7 +57,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
     private TopN<KeywordReportEntity> topN;
 
     @Override
-    public Map<String, Object> find(String fieldName, int n, int skip, int sort) {
+    public Map<String, Object> find(String redisKey, String fieldName, int n, int skip, int sort) {
         fieldName = "pc" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
         List<KeywordReportEntity> list = keywordQualityDAO.findYesterdayKeywordReport();
         if (list.size() == 0)
@@ -103,7 +109,8 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         QualityDTO allQualityData = getQualityData(list);
 
         //获取关键词质量度
-        List<Quality10Type> quality10Types = getKeyword10Quality(keywordIds);
+//        List<Quality10Type> quality10Types = getKeyword10Quality(keywordIds);
+        List<Quality10Type> quality10Types = getQuality10Type(redisKey, keywordIds);
 
         Map<Integer, List<KeywordReportEntity>> tempMap = new HashMap<>();
         for (int i = 0; i <= 10; i++) {
@@ -179,6 +186,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
 
         }
 
+        results.put("redisKey", key);
         results.put("qualityDTO", JSONUtils.getJsonObjectArray(qualityList));
         results.put("report", JSONUtils.getJsonObjectArray(reportList));
 
@@ -210,7 +218,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
     }
 
     @Override
-    public void downloadQualityCSV(OutputStream os) {
+    public void downloadQualityCSV(String redisKey, OutputStream os) {
         List<KeywordReportEntity> list = keywordQualityDAO.findYesterdayKeywordReport();
         if (list.size() == 0)
             return;
@@ -243,7 +251,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         QualityDTO allQualityData = getQualityData(list);
 
         //获取关键词质量度
-        List<Quality10Type> quality10Types = getKeyword10Quality(keywordIds);
+        List<Quality10Type> quality10Types = getQuality10Type(redisKey, keywordIds);
 
         Map<Integer, List<KeywordReportEntity>> tempMap = new HashMap<>();
         for (int i = 0; i <= 10; i++) {
@@ -350,6 +358,38 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
 
     }
 
+    private List<Quality10Type> getQuality10Type(String redisKey, List<Long> keywordIds) {
+        List<Quality10Type> quality10Types = new ArrayList<>();
+        if (redisKey != null && redisKey.length() > 0) {
+            Jedis jedis = null;
+            try {
+                jedis = JRedisUtils.get();
+                if (jedis.ttl(redisKey) == -1) {
+                    quality10Types = getKeyword10Quality(keywordIds);
+                    redisKey = new ObjectId().toString();
+                    saveToRedis(redisKey, quality10Types);
+                } else {
+                    byte[] bytes = jedis.get(redisKey.getBytes(StandardCharsets.UTF_8));
+                    quality10Types = SerializeUtils.deSerializeList(bytes, Quality10Type.class);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (jedis != null) {
+                    JRedisUtils.returnJedis(jedis);
+                }
+            }
+        } else {
+            quality10Types = getKeyword10Quality(keywordIds);
+            redisKey = new ObjectId().toString();
+            saveToRedis(redisKey, quality10Types);
+        }
+
+        key = redisKey;
+
+        return quality10Types;
+    }
+
     private QualityDTO getQualityData(List<KeywordReportEntity> list) {
         QualityDTO qualityDTO = new QualityDTO(list.size(), .0, 0, .0, 0, .0, .0, .0, .0, .0, .0, .0);
         for (KeywordReportEntity entity : list) {
@@ -359,6 +399,23 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             qualityDTO.setConversion(qualityDTO.getConversion() + entity.getPcConversion());
         }
         return qualityDTO;
+    }
+
+    private void saveToRedis(String id, List<Quality10Type> list) {
+        byte key[] = id.getBytes(StandardCharsets.UTF_8);
+        byte value[] = SerializeUtils.serialize(list);
+        Jedis jedis = null;
+        try {
+            jedis = JRedisUtils.get();
+            jedis.set(key, value);
+            jedis.expire(id, 600);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (jedis != null) {
+                JRedisUtils.returnJedis(jedis);
+            }
+        }
     }
 
     class KeywordIdTask extends RecursiveTask<List<Long>> {

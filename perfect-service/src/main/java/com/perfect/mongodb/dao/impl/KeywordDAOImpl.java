@@ -96,6 +96,13 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
     @Override
+    public List<KeywordEntity> findByAgroupId(Long oid) {
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
+        List<KeywordEntity> keywordEntityList=mongoTemplate.find(new Query(Criteria.where(EntityConstants.KEYWORD_ID)),KeywordEntity.class,EntityConstants.TBL_KEYWORD);
+        return keywordEntityList;
+    }
+
+    @Override
     public Pager getKeywordByPager(HttpServletRequest request, Map<String, Object> params, int orderBy) {
         int start = Integer.parseInt(request.getParameter(START));
         int pageSize = Integer.parseInt(request.getParameter(PAGESIZE));

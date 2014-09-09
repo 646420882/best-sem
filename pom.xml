@@ -17,7 +17,7 @@
         <module>perfect</module>
     </modules>
     <properties>
-        <springframework-version>4.0.5.RELEASE</springframework-version>
+        <springframework-version>4.0.7.RELEASE</springframework-version>
     </properties>
 
     <repositories>

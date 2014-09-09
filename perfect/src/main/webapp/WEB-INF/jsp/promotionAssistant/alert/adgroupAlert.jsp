@@ -69,6 +69,7 @@
             <label>否定关键词：</label><label id="usp"></label><label id="auSpan">未设定</label><a href="javascript:void(0)" onclick="adgroupUpdateNokwdMath();">设定</a></br>
             <label>移动出价比例：</label><input name="mib" onkeypress="until.regDouble(this)" maxlength="3"/></br>
             <input  name="negativeWords"/><input name="exactNegativeWords"/>
+            <input name="cn"/>
         </form>
     </div>
     <div class="main_bottom">

@@ -55,6 +55,9 @@ public class KeywordEntity extends AccountIdEntity {
     @Field("pt")
     private Integer phraseType;
 
+    @Field("ls")
+    private Integer localStatus;//关键词本地状态，1为新增，2为修改，3为删除（软删除），4为级联删除标识
+
     //------------------------
     // INTERFACE
     //------------------------
@@ -66,6 +69,14 @@ public class KeywordEntity extends AccountIdEntity {
 
     public void setAdgroupObjId(String adgroupObjId) {
         this.adgroupObjId = adgroupObjId;
+    }
+
+    public Integer getLocalStatus() {
+        return localStatus;
+    }
+
+    public void setLocalStatus(Integer localStatus) {
+        this.localStatus = localStatus;
     }
 
     public boolean setKeywordId(Long aKeywordId) {

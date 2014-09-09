@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOptions;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -85,16 +86,15 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
                 match(Criteria.where("tr").is(trade)),
                 sort(Sort.Direction.ASC, "cg"),
                 group("cg").count().as("count")
-        );
-        AggregationResults<CategoryVO> aggregationResults = mongoTemplate.aggregate(aggregation, "sys_keyword", CategoryVO.class);
+        ).withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
+        AggregationResults<CategoryVO> aggregationResults = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, CategoryVO.class);
 
-        /*
-        GroupByResults<CategoryVO> results = mongoTemplate
-                .group(Criteria.where("tr").is(trade), "sys_keyword",
-                        GroupBy.key("cg").initialDocument("{count : 1}")
-                                .reduceFunction("function(key, values) {values.count += 1;}"),
-                        CategoryVO.class);
-        */
+//        GroupByResults<CategoryVO> results = mongoTemplate
+//                .group(Criteria.where("tr").is(trade), "sys_keyword",
+//                        GroupBy.key("cg").initialDocument("{count : 1}")
+//                                .reduceFunction("function(key, values) {values.count += 1;}"),
+//                        CategoryVO.class);
+
         List<CategoryVO> list = Lists.newArrayList(aggregationResults.iterator());
         return list;
     }
@@ -112,8 +112,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
 
         Aggregation aggregation = Aggregation.newAggregation(
                 match(criteria),
-                group("kw").count().as("count"),
-                sort(Sort.Direction.ASC, "cg")
+                group("kw")
         );
         AggregationResults<Object> results = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, Object.class);
         return results.getMappedResults().size();

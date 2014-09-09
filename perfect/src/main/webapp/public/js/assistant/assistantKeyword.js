@@ -10,11 +10,11 @@ function getKwdList(param) {
     $.ajax({
         url: "/assistantKeyword/list",
         type: "post",
-        data:param,
+        data: param,
         dataType: "json",
         success: function (data) {
             $("#tbodyClick").empty();
-            if(data.length==0){
+            if (data.length == 0) {
                 $("#tbodyClick").html("暂无数据!");
                 return;
             }
@@ -27,25 +27,37 @@ function getKwdList(param) {
 
 
 /**
+ * 单击某一行时将该行的值放入相应的文本框内
+ */
+$("#tbodyClick").delegate("tr","click", function () {
+    var obj = $(this);
+    var keywordId = $(this).find("input[type=hidden]").val();
+    setKwdValue(obj,keywordId);
+});
+
+
+
+/**
  *将一条数据加到html中
  */
 function keywordDataToHtml(obj, index) {
 
-    if(obj.keywordId==null){
+    if (obj.keywordId == null) {
         obj.keywordId = obj.id;
     }
 
     var html = "";
     if (index == 0) {
-        html = html + "<tr class='list2_box3 firstKeyword' onclick='setKwdValue(this,"+obj.keywordId+")'>";
+
+        html = html + "<tr class='list2_box3 firstKeyword'>";
     } else if (index % 2 != 0) {
-        html = html + "<tr class='list2_box2' onclick='setKwdValue(this,"+obj.keywordId+")'>";
+        html = html + "<tr class='list2_box2'>";
     } else {
-        html = html + "<tr class='list2_box1' onclick='setKwdValue(this,"+obj.keywordId+")'>";
+        html = html + "<tr class='list2_box1'>";
     }
 
     //kwid
-    html = html + "<input type='hidden' value = "+obj.keywordId+" />";
+    html = html + "<input type='hidden' value = " + obj.keywordId + " />";
 
     html = html + "<td>" + obj.keyword + "</td>";
 
@@ -80,11 +92,12 @@ function keywordDataToHtml(obj, index) {
         case 50:
             html = html + "<td>移动搜索无效</td>";
             break;
+        default:html = html+"<td>&nbsp;</td>";
     }
 
-    html = html + "<td>"+until.convert(obj.pause,"暂停:启用")+"</td>";
+    html = html + "<td>" + until.convert(obj.pause, "暂停:启用") + "</td>";
 
-    html = html + until.convert(obj.price==null,"<td><0.10></td>:<td>"+obj.price + "</td>");
+    html = html + until.convert(obj.price == null, "<td><0.10></td>:<td>" + obj.price + "</td>");
 
     //质量度
     html = html + "<td>一星</td>";
@@ -99,17 +112,18 @@ function keywordDataToHtml(obj, index) {
         case 2:
             matchType = "短语";
             if (obj.phraseType == 1) {
-                matchType = matchType+"-同义包含";
+                matchType = matchType + "-同义包含";
             } else if (obj.phraseType == 2) {
-                matchType = matchType+"-精确包含";
-            } else if(obj.phraseType == 3){
-                matchType = matchType+"-核心包含";
+                matchType = matchType + "-精确包含";
+            } else if (obj.phraseType == 3) {
+                matchType = matchType + "-核心包含";
             }
             ;
             break;
         case 3:
             matchType = "广泛";
             break;
+        default :matchType = "&nbsp;";
     }
     html = html + "<td>" + matchType + "</td>";
 
@@ -118,10 +132,10 @@ function keywordDataToHtml(obj, index) {
     var pcUrl = "";
     var mobUrl = "";
     if (obj.pcDestinationUrl != null) {
-        pcUrl = "<a href='"+obj.pcDestinationUrl+"'>"+obj.pcDestinationUrl.substr(0, 20)+"</a>";
+        pcUrl = "<a href='" + obj.pcDestinationUrl + "'>" + obj.pcDestinationUrl.substr(0, 20) + "</a>";
     }
     if (obj.mobileDestinationUrl != null) {
-        mobUrl = "<a href='"+obj.mobileDestinationUrl+"'>"+obj.mobileDestinationUrl.substr(0, 20)+"</a>";
+        mobUrl = "<a href='" + obj.mobileDestinationUrl + "'>" + obj.mobileDestinationUrl.substr(0, 20) + "</a>";
     }
     html = html + "<td>" + pcUrl + "</td>";
     html = html + "<td>" + mobUrl + "</td>";
@@ -129,34 +143,38 @@ function keywordDataToHtml(obj, index) {
     html = html + "</tr>";
     $("#tbodyClick").append(html);
 
-    if(index==0){
-        setKwdValue($(".firstKeyword"),obj.keywordId);
+    if (index == 0) {
+        setKwdValue($(".firstKeyword"), obj.keywordId);
     }
 }
 
 /*加载列表数据end*/
 
 
-function setKwdValue(obj,kwid){
+function setKwdValue(obj, kwid) {
     $("#hiddenkwid_1").val(kwid);
     $(".keyword_1").val($(obj).find("td:eq(0)").html());
 
 
-    $(".price_1").val($(obj).find("td:eq(3)").html());
-
-
-    if($(obj).find("td:eq(7) a").attr("href")!=undefined){
-        $(".pcurl_1").val($(obj).find("td:eq(7) a").attr("href"));
-        $(".pcurlSize_1").html($(obj).find("td:eq(7) a").attr("href").length+"/1024");
+    if(($(obj).find("td:eq(3)").html())=="&lt;0.10&gt;"){
+        $(".price_1").val("<0.10>");
     }else{
+        $(".price_1").val($(obj).find("td:eq(3)").html());
+    }
+
+
+    if ($(obj).find("td:eq(7) a").attr("href") != undefined) {
+        $(".pcurl_1").val($(obj).find("td:eq(7) a").attr("href"));
+        $(".pcurlSize_1").html($(obj).find("td:eq(7) a").attr("href").length + "/1024");
+    } else {
         $(".pcurl_1").val("");
         $(".pcurlSize_1").html("0/1024");
     }
 
-    if($(obj).find("td:eq(8) a").attr("href")!=undefined){
+    if ($(obj).find("td:eq(8) a").attr("href") != undefined) {
         $(".mourl_1").val($(obj).find("td:eq(8) a").attr("href"));
-        $(".mourlSize_1").html($(obj).find("td:eq(8) a").attr("href").length+"/1017");
-    }else{
+        $(".mourlSize_1").html($(obj).find("td:eq(8) a").attr("href").length + "/1017");
+    } else {
         $(".mourl_1").val("");
         $(".mourlSize_1").html("0/1017");
     }
@@ -164,25 +182,24 @@ function setKwdValue(obj,kwid){
     $(".matchModel_1").html($(obj).find("td:eq(6)").html());
     $(".status_1").html($(obj).find("td:eq(1)").html());
 
-    if($(obj).find("td:eq(2)").html()=="启用"){
+    if ($(obj).find("td:eq(2)").html() == "启用") {
         $(".pause_1").html("<option value='true'>暂停</option><option value='false' selected='selected'>启用</option>");
-    }else{
+    } else {
         $(".pause_1").html("<option value='true' selected='selected'>暂停</option><option value='false' >启用</option>");
     }
 }
-
 
 
 /**
  * 编辑关键词信息
  * @param value
  */
-function editKwdInfo(jsonData){
+function editKwdInfo(jsonData) {
     jsonData["kwid"] = $("#hiddenkwid_1").val();
     $.ajax({
-        url:"/assistantKeyword/edit",
-        type:"post",
-        data:jsonData
+        url: "/assistantKeyword/edit",
+        type: "post",
+        data: jsonData
     });
 }
 
@@ -192,18 +209,33 @@ function editKwdInfo(jsonData){
  * @param num
  * @param value
  */
-function whenBlurEditKeyword(num,value){
-    if($("#tbodyClick").find("tr").length==0){
+function whenBlurEditKeyword(num, value) {
+    if ($("#tbodyClick").find("tr").length == 0) {
         return;
     }
     var jsonData = {};
-    switch (num){
-        case 2: if(/^\d+$/.test(value)==false){value = 0;}jsonData["price"] = value;break;
-        case 3:jsonData["pcDestinationUrl"] = value;break;
-        case 4:jsonData["mobileDestinationUrl"] = value;break;
-        case 5:jsonData["matchType"] = value;break;
-        case 6:jsonData["phraseType"] = value;break;
-        case 7:jsonData["pause"] = value;break;
+    switch (num) {
+        case 2:
+            if (/^\d+$/.test(value) == false) {
+                value = 0;
+            }
+            jsonData["price"] = value;
+            break;
+        case 3:
+            jsonData["pcDestinationUrl"] = value;
+            break;
+        case 4:
+            jsonData["mobileDestinationUrl"] = value;
+            break;
+        case 5:
+            jsonData["matchType"] = value;
+            break;
+        case 6:
+            jsonData["phraseType"] = value;
+            break;
+        case 7:
+            jsonData["pause"] = value;
+            break;
     }
     editKwdInfo(jsonData);
 }
@@ -212,68 +244,64 @@ function whenBlurEditKeyword(num,value){
 /**
  * 删除关键词
  */
-function deleteKwd(){
+function deleteKwd() {
     var ids = "";
-    $("#tbodyClick").find(".list2_box3").each(function(){
-        ids = ids+$(this).find("input[type=hidden]").val()+",";
+    $("#tbodyClick").find(".list2_box3").each(function () {
+        ids = ids + $(this).find("input[type=hidden]").val() + ",";
     });
 
 
-    if(ids.split(",").length==0){
+    if (ids.split(",").length == 0) {
         alert("请选择行再操作!");
         return;
     }
 
     var isDel = window.confirm("您确定要删除关键词吗?");
-    if(isDel==false){
+    if (isDel == false) {
         return;
     }
 
     $.ajax({
-        url:"/assistantKeyword/deleteById",
-        type:"post",
-        data:{"kwids":ids}
+        url: "/assistantKeyword/deleteById",
+        type: "post",
+        data: {"kwids": ids}
     });
 
     $("#tbodyClick").find(".list2_box3").remove();
 
-    setKwdValue($("#tbodyClick tr:eq(0)"),$("#tbodyClick tr:eq(0)").find("input[type=hidden]").val());
+    setKwdValue($("#tbodyClick tr:eq(0)"), $("#tbodyClick tr:eq(0)").find("input[type=hidden]").val());
 }
-
-
-
 
 
 /**
  * 失去焦点
  */
-function missBlur(even,obj){
-    if(even.keyCode==13){
+function missBlur(even, obj) {
+    if (even.keyCode == 13) {
         obj.blur();
     }
 }
 
 
-
 /*function testBatchDel(){
-    var choose1 = "18961624,443591981-";
-    var info = "婚博会,精确";
-//    var name = "婚博会\n中国婚博会";
-   *//* var input = "18961624,443591981,婚博会";*//*
-    $.ajax({
-        url:"/assistantKeyword/addOrUpdateKeywordByChoose",
-        type:"post",
-        data:{"isReplace":true,"chooseInfos":choose1,"keywordInfos":info},
-        dataType:"json",
-        success:function(data){
-            alert(data.insertList.length+"=insert");
-            alert(data.updateList.length+"=update");
-            alert(data.igoneList.length+"igone");
-            alert(data.delList.length+"=del");
-        }
-    });
+ var choose1 = "18961624,443591981-";
+ var info = "婚博会,精确";
+ //    var name = "婚博会\n中国婚博会";
+ *//* var input = "18961624,443591981,婚博会";*//*
+ $.ajax({
+ url:"/assistantKeyword/addOrUpdateKeywordByChoose",
+ type:"post",
+ data:{"isReplace":true,"chooseInfos":choose1,"keywordInfos":info},
+ dataType:"json",
+ success:function(data){
+ alert(data.insertList.length+"=insert");
+ alert(data.updateList.length+"=update");
+ alert(data.igoneList.length+"igone");
+ alert(data.delList.length+"=del");
+ }
+ });
 
-}*/
+ }*/
 
 
 $("#addOrUpdateKwd").livequery('click', function () {
@@ -317,16 +345,16 @@ $("#batchDelKwd").livequery('click', function () {
  * 单击该单元格的时候
  */
 /*
-$("#tbodyClick").delegate(".kwdEdit","click blur",function(event){
-    if(event.type=="click"){
-        var tdValue = $(this).html();
-        $(this).html("<input type='text' value="+tdValue+" />");
-    }else{
-        var text = $(this).find("input").val();
+ $("#tbodyClick").delegate(".kwdEdit","click blur",function(event){
+ if(event.type=="click"){
+ var tdValue = $(this).html();
+ $(this).html("<input type='text' value="+tdValue+" />");
+ }else{
+ var text = $(this).find("input").val();
 
-    }
-});
-*/
+ }
+ });
+ */
 
 
 
@@ -349,17 +377,22 @@ $("#tbodyClick").delegate(".kwdEdit","click blur",function(event){
  */
 var nowChoose = null;
 function getNowChooseCampaignTreeData(treeNode) {
-    var jsonData = {"cid":null,"aid":null};
+    var jsonData = {cid: null, aid: null, cn: null};
     if (treeNode.level == 0) {
         //点击的是父节点(推广计划)
-        jsonData["cid"] = treeNode.id;
+        jsonData.cid = treeNode.id;
+        jsonData.cn = treeNode.name;
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元)
-        jsonData["cid"] = treeNode.getParentNode().id;
-        jsonData["aid"] = treeNode.id;
+        jsonData.cid = treeNode.getParentNode().id;
+        jsonData.aid = treeNode.id;
+    } else {
+        jsonData.cid = null;
+        jsonData.aid = null;
+        jsonData.cn = null;
     }
     nowChoose = jsonData;
-    whenClickTreeLoadData(getCurrentTabName(),nowChoose);
+    whenClickTreeLoadData(getCurrentTabName(), nowChoose);
 }
 
 /**
@@ -370,21 +403,25 @@ function getNowChooseCidAndAid() {
 }
 
 //刚进入该页面的时候加载的数据
-whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());
+whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
 
 
-function whenClickTreeLoadData(tabName,param) {
+function whenClickTreeLoadData(tabName, param) {
+    param = param != null ? param : {aid: null, cid: null};
     var tabName = $.trim(tabName);
-    if(tabName=="关键词"){
+    if (tabName == "关键词") {
         getKwdList(param);
-    }else if(tabName=="推广计划"){
+    } else if (tabName == "推广计划") {
         getCampaignList();
-    }else if(tabName=="普通创意"){
-        loadCreativeData(sparams);
-    }else if(tabName=="附加创意"){
-
-    }else if(tabName=="推广单元"){
-        loadAdgroupData(plans);
+    } else if (tabName == "普通创意") {
+        if (param.cid != null && param.aid != null) {
+            getCreativeUnit(param);
+        } else {
+            getCreativePlan(param.cid);
+        }
+    } else if (tabName == "附加创意") {
+    } else if (tabName == "推广单元") {
+        getAdgroupPlan(param.cid, param.cn);
     }
 
 }
@@ -395,14 +432,14 @@ function whenClickTreeLoadData(tabName,param) {
 $("#tabMenu li").click(function () {
     var tabName = $(this).html();
     var param = getNowChooseCidAndAid();
-    whenClickTreeLoadData(tabName,param);
+    whenClickTreeLoadData(tabName, param);
 });
 
 /**
  * 得到当前切换的选项名称
  * @returns {*|jQuery}
  */
-function getCurrentTabName(){
+function getCurrentTabName() {
     return $("#tabMenu .current").html();
 }
 

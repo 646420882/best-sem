@@ -24,7 +24,7 @@
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
-<div class="concent fr over">
+<div class="concent fl over">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 
 <div class="mid over">
@@ -98,7 +98,7 @@
              <input type="image" src="../public/img/zs_input.png"></b></a>
 
             </li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
+            <li><a id="search_keyword" href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function8.png"></span><b>监控</b></a></li>
@@ -204,7 +204,7 @@
             </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
                     type="image" src="../public/img/zs_input.png"></b></a></li>
-            <li><a href="#"><span class="z_function_hover" id="reBak"><img
+            <li><a href="#"><span class="z_function_hover" id="reBak" onclick="reBakClick();"><img
                     src="../public/img/zs_function9.png"></span><b onclick="reBakClick();">还原</b></a>
             </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
@@ -219,17 +219,17 @@
         <table border="0" cellspacing="0" width="100%" id="createTable">
             <thead>
             <tr class="list02_top">
-                <td>&nbsp;操作</td>
-                <td>&nbsp;创意标题</td>
-                <td>&nbsp;创意描述1</td>
-                <td>&nbsp;创意描述2</td>
-                <td>&nbsp;默认访问URL</td>
-                <td>&nbsp;默认显示URL</td>
-                <td>&nbsp;移动访问URL</td>
-                <td>&nbsp;移动显示URL</td>
-                <td>&nbsp;启用/暂停</td>
-                <td>&nbsp;创意状态</td>
-                <td> <div class="set fr"></div></td>
+                <th>&nbsp;操作</th>
+                <th>&nbsp;创意标题</th>
+                <th>&nbsp;创意描述1</th>
+                <th>&nbsp;创意描述2</th>
+                <th>&nbsp;默认访问URL</th>
+                <th>&nbsp;默认显示URL</th>
+                <th>&nbsp;移动访问URL</th>
+                <th>&nbsp;移动显示URL</th>
+                <th>&nbsp;启用/暂停</th>
+                <th>&nbsp;创意状态</td>
+                <th> <div class="set fr"></div></th>
             </tr>
             </thead>
             <tbody id="tbodyClick2">
@@ -255,7 +255,8 @@
             <ul>
                 <li>
                     <div class="t_list01 fl over">创意标题：</div>
-                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sTitle"><input type="button"
+                    <div class="t_list03 fl over">
+                        <input type="text" class="zs_input1" id="sTitle"><input type="button"
                                                                                                           value="{}插入通配符"
                                                                                                           onclick="addTb(this)"
                                                                                                           class="zs_input2"><span><span
@@ -696,7 +697,7 @@
         <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
                 type="image" src="../public/img/zs_input.png"></b></a></li>
 
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
+        <li><a href="#"><span class="z_function_hover" id="agReback" onclick="agreBakClick()"><img src="../public/img/zs_function9.png"></span><b onclick="agreBakClick()">还原</b></a></li>
         <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
     </ul>
     <span class="fr">1/10</span>
@@ -713,8 +714,8 @@
             <td>&nbsp;否定关键词</td>
             <td>&nbsp;移动出价比例</td>
             <td>&nbsp;推广计划名称
-                <div class="set fr"></div>
             </td>
+            <td><div class="set fr"></div></td>
         </tr>
         </thead>
         <tbody id="tbodyClick_campaign">

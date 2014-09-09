@@ -12,13 +12,14 @@ import java.util.Map;
 public interface KeywordQualityService {
 
     /**
+     * @param redisKey
      * @param fieldName
      * @param n
      * @param skip
      * @param sort
      * @return
      */
-    Map<String, Object> find(String fieldName, int n, int skip, int sort);
+    Map<String, Object> find(String redisKey, String fieldName, int n, int skip, int sort);
 
     /**
      * @param keywordIds
@@ -28,6 +29,9 @@ public interface KeywordQualityService {
 
     /**
      * 下载关键词质量度报告
+     *
+     * @param redisKey
+     * @param os
      */
-    void downloadQualityCSV(OutputStream os);
+    void downloadQualityCSV(String redisKey, OutputStream os);
 }

@@ -18,7 +18,7 @@
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 
-<div class="concent over fr">
+<div class="concent over fl">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 
 <div class="mid over">

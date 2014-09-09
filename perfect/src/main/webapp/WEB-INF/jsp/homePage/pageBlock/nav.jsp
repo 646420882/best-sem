@@ -14,7 +14,7 @@
     }
 %>
 <div class="nav fl">
-    <div class="nav_left over fl">
+    <div class="nav_left fl over ">
         <div class="nav_bg">
             <img src="${pageContext.request.contextPath}/public/img/nav_bg.jpg" width="100%" height="100%">
         </div>
@@ -68,7 +68,6 @@
 
                             <h3>帐户全景</h3>
                         </a>
-                        <span class='nav_input1'></span>
                     </li>
                     <li>
                         <a href="/assistant/index">
@@ -135,47 +134,55 @@
                 $(".on_title").css({"position": "static", "margin": "0 auto"});
             }
         });
-        $('.nav_under ul li').click(function () {
-            $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
-            if ($(this).find(".nav_input1").length == 1) {
-                return false;
-            }
-            $(this).addClass('current').append("<span class='nav_input1'></span>");
-        });
         $(".tips").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").slideDown(600);
                 $(".tips").css("position", "relative");
-                $(".concent").css("width", "85%");
-                $(".top").css("width", "85%");
-                $(".nav_input").css("display", "none");
                 $(".nav").css("z-index", "200");
+                $(".concent").css("width", "87.5%");
+                $(".top").css("width", "87.5%");
+                $(".top").css("margin-left", "220px");
+                $(".top").css("left", "0px");
+                $(".concent").css("margin-left", "220px");
+                $(".nav_input").css("display", "none");
             }
             else {
                 $(".nav_left").hide();
                 $(".tips").css("position", "fixed");
-                $(".concent").css("width", "99.5%");
-                $(".top").css("width", "99.5%");
-                $(".nav_input").css("display", "block");
                 $(".nav").css("z-index", "111");
+                $(".concent").css("width", "100%");
+                $(".concent").css("margin-left", "0px");
+                $(".top").css("margin-left", "0px");
+                $(".top").css("left", "8px");
+                $(".top").css("width", "100%");
+                $(".nav_input").css("display", "block");
+
             }
         });
         $(".nav_input1").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").slideDown(600);
                 $(".tips").css("position", "relative");
-                $(".concent").css("width", "85%");
-                $(".top").css("width", "85%");
-                $(".nav_input").css("display", "none");
                 $(".nav").css("z-index", "200");
+                $(".concent").css("width", "87.5%");
+                $(".top").css("width", "87.5%");
+                $(".top").css("margin-left", "220px");
+                $(".top").css("left", "0px");
+                $(".concent").css("margin-left", "220px");
+                $(".nav_input").css("display", "none");
             }
             else {
                 $(".nav_left").hide();
+                $(".nav_left").hide();
                 $(".tips").css("position", "fixed");
-                $(".concent").css("width", "99.5%");
-                $(".top").css("width", "99.5%");
-                $(".nav_input").css("display", "block");
                 $(".nav").css("z-index", "111");
+                $(".concent").css("width", "100%");
+                $(".concent").css("margin-left", "0px");
+                $(".top").css("margin-left", "0px");
+                $(".top").css("left", "8px");
+                $(".top").css("width", "100%");
+                $(".nav_input").css("display", "block");
+
             }
         });
         loadBaiduAccount();
@@ -214,8 +221,11 @@
             if($($(this))[0].href==String(window.location)){
                 $(".nav_under>ul>li").removeClass("current")
                 $(this).parent().addClass('current');
+                $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
+                $(this).addClass('current').append("<span class='nav_input1'></span>");
             }
         });
+
     });
 
 </script>

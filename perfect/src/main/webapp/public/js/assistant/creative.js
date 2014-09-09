@@ -605,7 +605,7 @@ function updateOk() {
             var _trClass = i % 2 == 0 ? "list2_box1 list2_box3" : "list2_box2 list2_box3";
             var _edit = null;
             if (formData["oid"].length > 18) {
-                _edit = "<span class='pen' step='1'>1</span>";
+                _edit = "<span class='pen' step='1'></span>";
             } else {
                 _edit = "<span class='pen' step='2'></span>";
             }
@@ -656,11 +656,13 @@ function reBakClick() {
                         deleteByObjectId(tmp);
                         break;
                     case 2:
-
                         reBack(_oid);
                         break;
                     case 3:
                         delBack(_oid);
+                        break;
+                    case 4:
+                        alert("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");
                         break;
                     default :
                         break;
@@ -708,6 +710,9 @@ function getLocalStatus(number) {
             return "<span class='pen' step=" + number + "></span>";
             break;
         case 3:
+            return "<span class='error' step=" + number + "></span>";
+            break;
+        case 4:
             return "<span class='error' step=" + number + "></span>";
             break;
         default :

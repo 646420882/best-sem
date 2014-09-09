@@ -12,7 +12,7 @@ import java.util.Map;
 public interface CreativeDAO extends MongoCrudRepository<CreativeEntity, Long> {
 
     List<Long> getCreativeIdByAdgroupId(Long adgroupId);
-
+    List<CreativeEntity> findByAgroupId(Long adgroupId);
     List<CreativeEntity> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
     List<CreativeEntity> getCreativeByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
     List<CreativeEntity> getAllsByAdgroupIds(List<Long> l);

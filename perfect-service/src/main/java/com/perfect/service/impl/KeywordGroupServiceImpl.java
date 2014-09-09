@@ -116,44 +116,46 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
 
         List<LexiconEntity> list = keywordGroupDAO.find(params, skip, limit);
         Map<String, Object> values = Maps.newHashMap(JSONUtils.getJsonMapData(list));
+        Integer total = keywordGroupDAO.getCurrentRowsSize(params);
+        values.put("total", total);
 
-        //获取记录总数
-        if (status == 1) {//在进行分页操作
-            Jedis jedis = null;
-            try {
-                jedis = JRedisUtils.get();
-                if (jedis.ttl("keyword_total") == -1) {
-                    Integer total = keywordGroupDAO.getCurrentRowsSize(params);
-                    Map<String, String> tempMap = new HashMap<>();
-                    tempMap.put("total", total.toString());
-                    saveToRedis("keyword_total", tempMap);
-                    values.put("total", total);
-                }
-                values.put("total", jedis.hgetAll("keyword_total").get("total"));
-            } catch (final Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (jedis != null) {
-                    JRedisUtils.returnJedis(jedis);
-                }
-            }
-        } else {//在进行查询操作
-            Jedis jedis = null;
-            try {
-                jedis = JRedisUtils.get();
-                Integer total = keywordGroupDAO.getCurrentRowsSize(params);
-                Map<String, String> tempMap = new HashMap<>();
-                tempMap.put("total", total.toString());
-                saveToRedis("keyword_total", tempMap);
-                values.put("total", total);
-            } catch (final Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (jedis != null) {
-                    JRedisUtils.returnJedis(jedis);
-                }
-            }
-        }
+//        //获取记录总数
+//        if (status == 1) {//在进行分页操作
+//            Jedis jedis = null;
+//            try {
+//                jedis = JRedisUtils.get();
+//                if (jedis.ttl("keyword_total") == -1) {
+//                    Integer total = keywordGroupDAO.getCurrentRowsSize(params);
+//                    Map<String, String> tempMap = new HashMap<>();
+//                    tempMap.put("total", total.toString());
+//                    saveToRedis("keyword_total", tempMap);
+//                    values.put("total", total);
+//                }
+//                values.put("total", jedis.hgetAll("keyword_total").get("total"));
+//            } catch (final Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (jedis != null) {
+//                    JRedisUtils.returnJedis(jedis);
+//                }
+//            }
+//        } else {//在进行查询操作
+//            Jedis jedis = null;
+//            try {
+//                jedis = JRedisUtils.get();
+//                Integer total = keywordGroupDAO.getCurrentRowsSize(params);
+//                Map<String, String> tempMap = new HashMap<>();
+//                tempMap.put("total", total.toString());
+//                saveToRedis("keyword_total", tempMap);
+//                values.put("total", total);
+//            } catch (final Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (jedis != null) {
+//                    JRedisUtils.returnJedis(jedis);
+//                }
+//            }
+//        }
 
         return values;
     }

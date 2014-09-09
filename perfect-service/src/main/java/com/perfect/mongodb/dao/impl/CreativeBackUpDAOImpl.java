@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by XiaoWei on 2014/9/4.
  */
 @Component
-public class CreativeBackUpDAOImpl extends AbstractUserBaseDAOImpl<CreativeBackUpEntity,Long> implements CreativeBackUpDAO {
+public class CreativeBackUpDAOImpl extends AbstractUserBaseDAOImpl<CreativeBackUpEntity, Long> implements CreativeBackUpDAO {
     @Override
     public Class<CreativeBackUpEntity> getEntityClass() {
         return null;
@@ -31,19 +31,19 @@ public class CreativeBackUpDAOImpl extends AbstractUserBaseDAOImpl<CreativeBackU
 
     @Override
     public CreativeBackUpEntity findByStringId(String id) {
-        MongoTemplate mongoTemplate= BaseMongoTemplate.getUserMongo();
-       return  mongoTemplate.findOne((new Query(Criteria.where(getId()).is(id))),CreativeBackUpEntity.class, EntityConstants.BAK_CREATIVE);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return mongoTemplate.findOne((new Query(Criteria.where(getId()).is(id))), CreativeBackUpEntity.class, EntityConstants.BAK_CREATIVE);
     }
 
     @Override
     public CreativeBackUpEntity findByLongId(Long crid) {
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
-        return mongoTemplate.findOne((new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(crid))),CreativeBackUpEntity.class, EntityConstants.BAK_CREATIVE);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return mongoTemplate.findOne((new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(crid))), CreativeBackUpEntity.class, EntityConstants.BAK_CREATIVE);
     }
 
     @Override
     public void deleteByLongId(Long crid) {
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(crid)),CreativeBackUpEntity.class,EntityConstants.BAK_CREATIVE);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(crid)), CreativeBackUpEntity.class, EntityConstants.BAK_CREATIVE);
     }
 }

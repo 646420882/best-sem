@@ -1,3 +1,6 @@
+
+var redisKey = "";
+
 //关键词质量度数据加载
 var loadKeywordQualityData = function () {
 
@@ -5,6 +8,7 @@ var loadKeywordQualityData = function () {
         url: "/keywordQuality/list",
         dataType: "json",
         data: {
+            redisKey: redisKey,
             fieldName: category,
             sort: sort,
             limit: limit
@@ -15,6 +19,7 @@ var loadKeywordQualityData = function () {
                 $("#quality" + k).empty();
             }
 
+            redisKey = data.redisKey;
             var qualityDTO = data.qualityDTO;
             if (qualityDTO != null && qualityDTO.length > 0) {
                 $.each(qualityDTO, function (i, item) {

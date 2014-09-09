@@ -20,6 +20,7 @@ public class EntityConstants {
     //backUp
     public static final String BAK_CREATIVE="creative_bak";
     public static final String BAK_ADGROUP="adgroup_bak";
+    public static final String BAK_KEYWORD="keyword_bak";
 
 
     // Fields
