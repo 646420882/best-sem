@@ -250,10 +250,10 @@ public class AccountDataServiceImpl implements AccountDataService {
 
             List<CreativeEntity> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
 
-            List<Long> creativeIds = new ArrayList<>(creativeEntityList.size());
+//            List<Long> creativeIds = new ArrayList<>(creativeEntityList.size());
             for (CreativeEntity creativeEntity : creativeEntityList) {
                 creativeEntity.setAccountId(aid);
-                creativeIds.add(creativeEntity.getCreativeId());
+//                creativeIds.add(creativeEntity.getCreativeId());
             }
             mongoTemplate.insertAll(creativeEntityList);
         }
