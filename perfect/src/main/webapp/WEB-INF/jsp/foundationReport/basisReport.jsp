@@ -1495,8 +1495,14 @@ var accountBasisReport = function () {
             $("#basisAccount").empty();
             $.each(data.rows, function (i, item) {
                 number = item.count;
-                var ctr = item.pcClick / item.pcImpression;
-                var cpc = item.pcCost / item.pcClick;
+                var ctr = 0;
+                if(item.pcImpression != 0){
+                    ctr = item.pcClick / item.pcImpression;
+                }
+                var cpc = 0;
+                if(item.pcClick !=0){
+                    cpc = item.pcCost / item.pcClick;
+                }
                 if (i % 2 == 0) {
                     basisHtml = "<tr class='list2_box1'><td>&nbsp;" + item.dateRep + "</td><td>&nbsp;" + item.pcImpression + "</td><td>&nbsp;" + item.pcClick + "</td>"
                             + "<td>&nbsp;" + Math.round(item.pcCost * 100) / 100 + "</td><td>&nbsp;" + Math.round(ctr * 10000) / 100 + "%</td><td>&nbsp;" + Math.round(cpc * 100) / 100 + "</td><td>&nbsp;" + item.pcConversion + "</td>"

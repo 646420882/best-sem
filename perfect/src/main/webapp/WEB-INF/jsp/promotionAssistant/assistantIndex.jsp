@@ -20,6 +20,10 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/smartMenu.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/jquery.resizableColumns.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/demo.css">
 </head>
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
@@ -73,11 +77,11 @@
 <div class="zhushou_concent over">
 <div class="zs_concent_top over">
     <ul class="zh_menu2 fl" id="tabMenu">
-        <li class="current">关键词</li>
-        <li>普通创意</li>
-        <li>附加创意</li>
-        <li>推广单元</li>
-        <li>推广计划</li>
+        <li class="current" cname="table1">关键词</li>
+        <li cname="table2">普通创意</li>
+        <li cname="table3">附加创意</li>
+        <li cname="table4">推广单元</li>
+        <li cname="table5">推广计划</li>
         <li>账户</li>
     </ul>
 </div>
@@ -95,7 +99,7 @@
                 </ul>
             </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;
-             <input type="image" src="../public/img/zs_input.png"></b></a>
+                <input type="image" src="../public/img/zs_input.png"></b></a>
 
             </li>
             <li><a id="search_keyword" href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
@@ -113,27 +117,30 @@
         <span class="fr">1/10</span>
     </div>
     <div class="list4">
-        <table border="0" cellspacing="0" width="100%">
-            <thead>
-            <tr class="list02_top">
-                <td>&nbsp;关键词名称</td>
-                <td>&nbsp;关键词状态</td>
-                <td>&nbsp;启动/暂停</td>
-                <td>&nbsp;出价</td>
-                <td>&nbsp;计算机质量度</td>
-                <td>&nbsp;移动质量度</td>
-                <td>&nbsp;匹配模式</td>
-                <td>&nbsp;访问URL</td>
-                <td>&nbsp;移动访问URL</td>
-                <td>&nbsp;推广计划名称
-                    <div class="set fr"></div>
-                </td>
-            </tr>
-            </thead>
-            <tbody id="tbodyClick">
+        <div class="container">
+            <table border="0" cellspacing="0" width="100%" class="table1 table-bordered"  data-resizable-columns-id="demo-table" >
+                <thead>
+                <tr class="list02_top">
+                    <th>&nbsp;关键词名称</th>
+                    <th>&nbsp;关键词状态</th>
+                    <th>&nbsp;启动/暂停</th>
+                    <th>&nbsp;出价</th>
+                    <th>&nbsp;计算机质量度</th>
+                    <th>&nbsp;移动质量度</th>
+                    <th>&nbsp;匹配模式</th>
+                    <th>&nbsp;访问URL</th>
+                    <th>&nbsp;移动访问URL</th>
+                    <th class="username-column" data-noresize>&nbsp;推广计划名称
+                        <div class="set fr"></div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="tbodyClick">
+                </tbody>
+            </table>
 
-            </tbody>
-        </table>
+        </div>
+
     </div>
     <div class="more_list over" style="display:none;">
         <ul>
@@ -216,25 +223,29 @@
         <span class="fr">1/10</span>
     </div>
     <div class="list4" style="height:480px;">
-        <table border="0" cellspacing="0" width="100%" id="createTable">
-            <thead>
-            <tr class="list02_top">
-                <th>&nbsp;操作</th>
-                <th>&nbsp;创意标题</th>
-                <th>&nbsp;创意描述1</th>
-                <th>&nbsp;创意描述2</th>
-                <th>&nbsp;默认访问URL</th>
-                <th>&nbsp;默认显示URL</th>
-                <th>&nbsp;移动访问URL</th>
-                <th>&nbsp;移动显示URL</th>
-                <th>&nbsp;启用/暂停</th>
-                <th>&nbsp;创意状态</td>
-                <th> <div class="set fr"></div></th>
-            </tr>
-            </thead>
-            <tbody id="tbodyClick2">
-            </tbody>
-        </table>
+        <div  class="container">
+            <table border="0" cellspacing="0" width="100%" id="createTable" class="table2 table-bordered" data-resizable-columns-id="demo-table">
+                <thead>
+                <tr class="list02_top">
+                    <th>&nbsp;操作</th>
+                    <th>&nbsp;创意标题</th>
+                    <th>&nbsp;创意描述1</th>
+                    <th>&nbsp;创意描述2</th>
+                    <th>&nbsp;默认访问URL</th>
+                    <th>&nbsp;默认显示URL</th>
+                    <th>&nbsp;移动访问URL</th>
+                    <th>&nbsp;移动显示URL</th>
+                    <th >&nbsp;启用/暂停</th>
+                    <th>&nbsp;创意状态</th>
+                    <th class="username-column" data-noresize> <div class="set fr"></div></th>
+                </tr>
+                </thead>
+                <tbody id="tbodyClick2">
+                </tbody>
+            </table>
+
+        </div>
+
         <div class="more_list over" style="display:none;">
             <ul>
                 <li class="current" onclick="alert(123);"><span class="zs_top"><img
@@ -257,9 +268,9 @@
                     <div class="t_list01 fl over">创意标题：</div>
                     <div class="t_list03 fl over">
                         <input type="text" class="zs_input1" id="sTitle"><input type="button"
-                                                                                                          value="{}插入通配符"
-                                                                                                          onclick="addTb(this)"
-                                                                                                          class="zs_input2"><span><span
+                                                                                value="{}插入通配符"
+                                                                                onclick="addTb(this)"
+                                                                                class="zs_input2"><span><span
                             id="sTitle_size">49</span>/50</span>
                     </div>
                 </li>
@@ -322,16 +333,16 @@
                     <div class="w_list01 fl over">设备偏好：</div>
                     <div class="w_list02 fl over">
                         <select>
-                        <option>全部</option>
-                    </select></div>
+                            <option>全部</option>
+                        </select></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">启用/暂停：</div>
                     <div class="w_list02 fl over" id="sPause">
                         <select >
-                        <option value="true">启用</option>
-                        <option value="false">暂停</option>
-                    </select></div>
+                            <option value="true">启用</option>
+                            <option value="false">暂停</option>
+                        </select></div>
                 </li>
             </ul>
         </div>
@@ -364,21 +375,22 @@
     <span class="fr">1/10</span>
 </div>
 <div class="list4" style="height:368px;">
-<table border="0" cellspacing="0" width="100%">
+<div class="container">
+<table border="0" cellspacing="0" width="100%" class="table3 table-bordered"  data-resizable-columns-id="demo-table">
 <thead>
 <tr class="list02_top">
-    <td>&nbsp;子链一名称</td>
-    <td>&nbsp;子链一URL</td>
-    <td>&nbsp;子链二名称</td>
-    <td>&nbsp;子链二URL</td>
-    <td>&nbsp;子链三名称</td>
-    <td>&nbsp;子链三URL</td>
-    <td>&nbsp;子链四名称</td>
-    <td>&nbsp;子链四URL</td>
-    <td>&nbsp;子链五名称</td>
-    <td>&nbsp;子链五URL
+    <th>&nbsp;子链一名称</th>
+    <th>&nbsp;子链一URL</th>
+    <th>&nbsp;子链二名称</th>
+    <th>&nbsp;子链二URL</th>
+    <th>&nbsp;子链三名称</th>
+    <th>&nbsp;子链三URL</th>
+    <th>&nbsp;子链四名称</th>
+    <th>&nbsp;子链四URL</th>
+    <th>&nbsp;子链五名称</th>
+    <th class="username-column" data-noresize>&nbsp;子链五URL
         <div class="set fr"></div>
-    </td>
+    </th>
 </tr>
 </thead>
 <tbody id="tbodyClick4">
@@ -576,6 +588,9 @@
 </tbody>
 </table>
 </div>
+
+
+</div>
 <div class="more_list over" style="display:none;">
     <ul>
         <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加推广计划</b></li>
@@ -593,21 +608,11 @@
         <ul>
             <li>
                 <div class="cy_bottom1 fl over">
-                   <span>子链一 名称</span>
-                   <input type="text" class="zs_input3">&nbsp;<span>0/16</span>
+                    <span>子链一 名称</span>
+                    <input type="text" class="zs_input3">&nbsp;<span>0/16</span>
                 </div>
                 <div class="cy_bottom1 fl over">
                     <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
-
-                </div>
-            </li>
-            <li>
-                <div class="cy_bottom1 fl over">
-                   <span>子链一 名称</span>
-                   <input type="text" class="zs_input3">&nbsp;<span>0/16</span>
-                </div>
-                <div class="cy_bottom1 fl over">
-                   <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
 
                 </div>
             </li>
@@ -624,10 +629,10 @@
             <li>
                 <div class="cy_bottom1 fl over">
                     <span>子链一 名称</span>
-                   <input type="text" class="zs_input3">&nbsp;<span>0/16</span>
+                    <input type="text" class="zs_input3">&nbsp;<span>0/16</span>
                 </div>
                 <div class="cy_bottom1 fl over">
-                   <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
+                    <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
 
                 </div>
             </li>
@@ -637,7 +642,17 @@
                     <input type="text" class="zs_input3">&nbsp;<span>0/16</span>
                 </div>
                 <div class="cy_bottom1 fl over">
-                   <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
+                    <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
+
+                </div>
+            </li>
+            <li>
+                <div class="cy_bottom1 fl over">
+                    <span>子链一 名称</span>
+                    <input type="text" class="zs_input3">&nbsp;<span>0/16</span>
+                </div>
+                <div class="cy_bottom1 fl over">
+                    <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
 
                 </div>
             </li>
@@ -689,93 +704,95 @@
 </div>
 <!--推广单元-->
 <div class="containers  over hides">
-<div class="zs_function over">
-    <ul class="fl">
-        <li><a href="javascript:void(0)" onclick="addAdgroup()"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                type="image" src="../public/img/zs_input.png"></b></a></li>
+    <div class="zs_function over">
+        <ul class="fl">
+            <li><a href="javascript:void(0)" onclick="addAdgroup()"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
+                    type="image" src="../public/img/zs_input.png"></b></a></li>
 
-        <li><a href="#"><span class="z_function_hover" id="agReback" onclick="agreBakClick()"><img src="../public/img/zs_function9.png"></span><b onclick="agreBakClick()">还原</b></a></li>
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
-    </ul>
-    <span class="fr">1/10</span>
-</div>
-<div class="list4" >
-    <table border="0" cellspacing="0" width="100%" id="adGroupTable">
-        <thead>
-        <tr class="list02_top">
-            <td>&nbsp;操作</td>
-            <td>&nbsp;推广单元名称</td>
-            <td>&nbsp;推广单元状态</td>
-            <td>&nbsp;启动/暂停</td>
-            <td>&nbsp;出价</td>
-            <td>&nbsp;否定关键词</td>
-            <td>&nbsp;移动出价比例</td>
-            <td>&nbsp;推广计划名称
-            </td>
-            <td><div class="set fr"></div></td>
-        </tr>
-        </thead>
-        <tbody id="tbodyClick_campaign">
-        <%--<tr class="list2_box3">--%>
-            <%--<td>&nbsp;北京{婚博会}<span class="editor"></span></td>--%>
-            <%--<td>&nbsp;有效<span class="editor"></span></td>--%>
-            <%--<td>&nbsp;启用<span class="editor"></span></td>--%>
-            <%--<td>&nbsp;一星<span class="editor"></span></td>--%>
-            <%--<td>&nbsp;一星<span class="editor"></span></td>--%>
-            <%--<td>&nbsp;短语-核心包含<span class="editor"></span></td>--%>
-            <%--<td>&nbsp;<a href="#">http://tthunbohui.com </a><span class="editor"></span></td>--%>
-        <%--</tr>--%>
-        </tbody>
-    </table>
-</div>
-<div class="more_list over" style="display:none;">
-    <ul>
-        <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加推广单元</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除推广单元</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证推广单元</b></li>
-        <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原推广单元</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function14.png"></span><b>剪贴</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
-    </ul>
-</div>
-<div class="zhanghu_input"></div>
-<div class="zs_bottom over" id="aDiv">
-    <div class="zs_bottom1 over fl ">
+            <li><a href="#"><span class="z_function_hover" id="agReback" onclick="agreBakClick()"><img src="../public/img/zs_function9.png"></span><b onclick="agreBakClick()">还原</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+        </ul>
+        <span class="fr">1/10</span>
+    </div>
+    <div class="list4" >
+        <div class="container">
+            <table border="0" cellspacing="0" width="100%" id="adGroupTable"  class="table4 table-bordered"  data-resizable-columns-id="demo-table">
+                <thead>
+                <tr class="list02_top">
+                    <th>&nbsp;操作</th>
+                    <th>&nbsp;推广单元名称</th>
+                    <th>&nbsp;推广单元状态</th>
+                    <th>&nbsp;启动/暂停</th>
+                    <th>&nbsp;出价</th>
+                    <th>&nbsp;否定关键词</th>
+                    <th>&nbsp;移动出价比例</th>
+                    <th >&nbsp;推广计划名称 </th>
+                    <th class="username-column" data-noresize><div class="set fr"></div></th>
+                </tr>
+                </thead>
+                <tbody id="tbodyClick_campaign">
+                <%--<tr class="list2_box3">--%>
+                <%--<td>&nbsp;北京{婚博会}<span class="editor"></span></td>--%>
+                <%--<td>&nbsp;有效<span class="editor"></span></td>--%>
+                <%--<td>&nbsp;启用<span class="editor"></span></td>--%>
+                <%--<td>&nbsp;一星<span class="editor"></span></td>--%>
+                <%--<td>&nbsp;一星<span class="editor"></span></td>--%>
+                <%--<td>&nbsp;短语-核心包含<span class="editor"></span></td>--%>
+                <%--<td>&nbsp;<a href="#">http://tthunbohui.com </a><span class="editor"></span></td>--%>
+                <%--</tr>--%>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="more_list over" style="display:none;">
         <ul>
-            <li>
-                <div class="t_list01 fl over">名称：</div>
-                <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
-            </li>
-            <li>
-                <div class="t_list01 fl over">出价：</div>
-                <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
-            </li>
-            <li>
-                <div class="t_list01 fl over">移动出价比例：</div>
-                <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
-            </li>
+            <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加推广单元</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除推广单元</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证推广单元</b></li>
+            <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原推广单元</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function14.png"></span><b>剪贴</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
         </ul>
     </div>
-    <div class="zs_bottom2 over fr">
-        <ul>
-            <li>
-                <div class="w_list01 fl over">状态：</div>
-                <div class="w_list02 fl over"><b id="apStatus">有效</b></div>
-            </li>
-            <li>
-                <div class="w_list01 fl over">启用/暂停：</div>
-                <div class="w_list02 fl over"><select id="apPause" onchange="adgroupdSelectChange(this);">
-                <option value="true">启用</option><option value="false">暂停</option>
-                </select></div>
-            </li>
-        </ul>
+    <div class="zhanghu_input"></div>
+    <div class="zs_bottom over" id="aDiv">
+        <div class="zs_bottom1 over fl ">
+            <ul>
+                <li>
+                    <div class="t_list01 fl over">名称：</div>
+                    <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
+                </li>
+                <li>
+                    <div class="t_list01 fl over">出价：</div>
+                    <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
+                </li>
+                <li>
+                    <div class="t_list01 fl over">移动出价比例：</div>
+                    <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
+                </li>
+            </ul>
+        </div>
+        <div class="zs_bottom2 over fr">
+            <ul>
+                <li>
+                    <div class="w_list01 fl over">状态：</div>
+                    <div class="w_list02 fl over"><b id="apStatus">有效</b></div>
+                </li>
+                <li>
+                    <div class="w_list01 fl over">启用/暂停：</div>
+                    <div class="w_list02 fl over"><select id="apPause" onchange="adgroupdSelectChange(this);">
+                        <option value="true">启用</option><option value="false">暂停</option>
+                    </select></div>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
 </div>
 <!--推广计划-->
 <div class="containers  over hides">
@@ -796,28 +813,31 @@
         <span class="fr">1/10</span>
     </div>
     <div class="list4">
-        <table border="0" cellspacing="0" width="100%">
-            <thead>
-            <tr class="list02_top">
-                <td>&nbsp;推广计划名称</td>
-                <td>&nbsp;推广计划状态</td>
-                <td>&nbsp;启用/暂停</td>
-                <td>&nbsp;每日预算</td>
-                <td>&nbsp;创意展现方式</td>
-                <td>&nbsp;动态创意状态</td>
-                <td>&nbsp;推广时段</td>
-                <td>&nbsp;推广地域</td>
-                <td>&nbsp;否定关键词</td>
-                <td>&nbsp;IP排除</td>
-                <td>&nbsp;到达预算下线时间
-                    <div class="set fr"></div>
-                </td>
-            </tr>
-            </thead>
-            <tbody id="tbodyClick5">
+        <div class="container">
+            <table border="0" cellspacing="0" width="100%" class="table5 table-bordered"  data-resizable-columns-id="demo-table">
+                <thead>
+                <tr class="list02_top">
+                    <th>&nbsp;推广计划名称</th>
+                    <th>&nbsp;推广计划状态</th>
+                    <th>&nbsp;启用/暂停</th>
+                    <th>&nbsp;每日预算</th>
+                    <th>&nbsp;创意展现方式</th>
+                    <th>&nbsp;动态创意状态</th>
+                    <th>&nbsp;推广时段</th>
+                    <th>&nbsp;推广地域</th>
+                    <th>&nbsp;否定关键词</th>
+                    <th>&nbsp;IP排除</th>
+                    <th class="username-column" data-noresize style="text-align:left; width:150px;"><span class="fl">到预算下线时间 </span><div class="set fr"></div>
 
-            </tbody>
-        </table>
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="tbodyClick5">
+
+                </tbody>
+            </table>
+        </div>
+
     </div>
     <div class="more_list over" style="display:none;">
         <ul>
@@ -1163,16 +1183,16 @@
 <div class="box" style="display:none;" id="setNegtiveWord">
     <h2 id="setFdKeywordDiv">否定关键词设置<a href="#" class="close">关闭</a></h2>
 
-   <span>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，没词20汉字以内，最多200项。</span>
+    <span>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，没词20汉字以内，最多200项。</span>
 
-        <div class="inputKwdDiv">
-            <div><span>否定关键词</span><span>(0/200)</span></div>
-            <textarea id="ntwTextarea" rows="15" cols="45"></textarea>
-        </div>
-        <div class="inputKwdDiv">
-            <div><span>精确否定关键词</span><span>(0/200)</span></div>
-            <textarea id = "entwTextarea" rows="15" cols="45"></textarea>
-        </div>
+    <div class="inputKwdDiv">
+        <div><span>否定关键词</span><span>(0/200)</span></div>
+        <textarea id="ntwTextarea" rows="15" cols="45"></textarea>
+    </div>
+    <div class="inputKwdDiv">
+        <div><span>精确否定关键词</span><span>(0/200)</span></div>
+        <textarea id = "entwTextarea" rows="15" cols="45"></textarea>
+    </div>
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
@@ -1271,6 +1291,9 @@
 
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/jquery.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/store.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/jquery.resizableColumns.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/jquery-smartMenu-min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
@@ -1281,7 +1304,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
-
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/creative.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/global.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantKeyword.js"></script>
@@ -1294,7 +1316,14 @@
     $(function () {
         window.dialog = dialog;
     });
+    $(function () {
+        setTimeout("resizable('table1')", 300);
+    });
+    var resizable = function (cla) {
+        $("."+cla).resizableColumns({
+            store: store
+        });
+    };
 </script>
-
 </body>
 </html>

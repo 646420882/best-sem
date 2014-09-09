@@ -173,8 +173,13 @@ $(document).ready(function () {
         $(this).addClass('current').siblings().removeClass('current');
         var index = $tab_li.index(this);
         $('div.zs_box > div').eq(index).show().siblings().hide();
+        var xx = $(this).attr("cname");
+        setTimeout(function(){
+            resizable(xx)
+        }, 400);
     });
 });
+
 /*******表格****/
 $(function () {
     var items = $(".list4 table tbody tr ");

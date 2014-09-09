@@ -1302,8 +1302,9 @@ ul.ztree.zTreeDragUL {
     border-right: 1px solid #ffffff;
     border-bottom: 1px solid #ffffff;
     cursor: Default;
-    /*	white-space: nowrap;*/
-    overflow: hidden;
+    verflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .list02_top {
     background: #272537;
@@ -2536,5 +2537,13 @@ h2 .close {
 }
 .searchword_under {
     margin: 10px;
+}
+.list02_top th{
+    height:30px;
+    border-right:1px solid #fff;
+    min-width:110px;
+    verflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 /* CSS Document */
