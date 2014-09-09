@@ -30,6 +30,8 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
     List<KeywordEntity> getKeywordByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
 
+    List<KeywordEntity> findByAgroupId(Long oid);
+
     Pager getKeywordByPager(HttpServletRequest request, Map<String, Object> params, int orderBy);
 
     List<KeywordInfo> getKeywordInfo();

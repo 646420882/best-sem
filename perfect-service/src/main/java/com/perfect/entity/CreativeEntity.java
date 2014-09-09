@@ -61,7 +61,7 @@ public class CreativeEntity extends AccountIdEntity {
     private Integer devicePreference;
 
     @Field("ls")
-    private Integer localStatus;//本地状态1为新增,2为修改,3为删除
+    private Integer localStatus;//本地状态1为新增,2为修改,3为删除,4为级联删除标识
 
     public String getAdgroupObjId() {
         return adgroupObjId;

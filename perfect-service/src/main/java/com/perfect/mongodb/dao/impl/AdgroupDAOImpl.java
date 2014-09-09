@@ -3,16 +3,16 @@ package com.perfect.mongodb.dao.impl;
 import com.mongodb.WriteResult;
 import com.perfect.constants.LogStatusConstant;
 import com.perfect.core.AppContext;
-import com.perfect.dao.AdgroupBackUpDAO;
-import com.perfect.dao.AdgroupDAO;
-import com.perfect.dao.LogDAO;
-import com.perfect.dao.LogProcessingDAO;
+import com.perfect.dao.*;
 import com.perfect.entity.*;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
+import com.perfect.entity.backup.CreativeBackUpEntity;
+import com.perfect.entity.backup.KeyWordBackUpEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.service.KeyWordBackUpService;
 import com.perfect.utils.LogUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
@@ -54,6 +54,12 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
     private LogProcessingDAO logProcessingDAO;
     @Resource
     private AdgroupBackUpDAO adgroupBackUpDAO;
+    @Resource
+    private KeywordDAO keywordDAO;
+    @Resource
+    private CreativeDAO creativeDAO;
+    @Resource
+    private KeyWordBackUpService keyWordBackUpService;
 
     public List<Long> getAllAdgroupId() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
@@ -177,10 +183,15 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
     public Object insertOutId(com.perfect.entity.AdgroupEntity adgroupEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insert(adgroupEntity, EntityConstants.TBL_ADGROUP);
-       logDAO.insertLog(adgroupEntity.getId(),LogStatusConstant.ENTITY_ADGROUP);
+        logDAO.insertLog(adgroupEntity.getId(), LogStatusConstant.ENTITY_ADGROUP);
         return adgroupEntity.getId();
     }
 
+    /**
+     * 连到单元下的关键字和创意一起删了
+     *
+     * @param oid
+     */
     @Override
     public void deleteByObjId(final String oid) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
@@ -192,13 +203,14 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
 
     @Override
     public void deleteByObjId(Long adgroupId) {
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
-        Update update=new Update();
-        update.set("ls",3);
-        mongoTemplate.updateFirst(new Query(Criteria.where(EntityConstants.ADGROUP_ID).is(adgroupId)),update, com.perfect.entity.AdgroupEntity.class,EntityConstants.TBL_ADGROUP);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Update update = new Update();
+        update.set("ls", "");
+        mongoTemplate.updateFirst(new Query(Criteria.where(EntityConstants.ADGROUP_ID).is(adgroupId)), update, com.perfect.entity.AdgroupEntity.class, EntityConstants.TBL_ADGROUP);
+        deleteLinked(adgroupId);
         //以前是直接删除拉取到本地的数据，是硬删除，现在改为软删除，以便以后还原操作
 //        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.ADGROUP_ID).is(adgroupId)),AdgroupEntity.class,EntityConstants.TBL_ADGROUP);
-        logDAO.insertLog(adgroupId,LogStatusConstant.ENTITY_ADGROUP,LogStatusConstant.OPT_DELETE);
+        logDAO.insertLog(adgroupId, LogStatusConstant.ENTITY_ADGROUP, LogStatusConstant.OPT_DELETE);
     }
 
     @Override
@@ -249,20 +261,28 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
             e.printStackTrace();
         }
         mongoTemplate.updateFirst(query, update, com.perfect.entity.AdgroupEntity.class, EntityConstants.TBL_ADGROUP);
-        AdgroupBackUpEntity adgroupBakcUpEntityFind=adgroupBackUpDAO.findOne(adgroupEntity.getId());
-        if(adgroupBakcUpEntityFind==null){
-            AdgroupBackUpEntity adgroupBakcUpEntity=new AdgroupBackUpEntity();
-            BeanUtils.copyProperties(bakAdgroupEntity,adgroupBakcUpEntity);
+        AdgroupBackUpEntity adgroupBakcUpEntityFind = adgroupBackUpDAO.findOne(adgroupEntity.getId());
+        if (adgroupBakcUpEntityFind == null) {
+            AdgroupBackUpEntity adgroupBakcUpEntity = new AdgroupBackUpEntity();
+            BeanUtils.copyProperties(bakAdgroupEntity, adgroupBakcUpEntity);
             adgroupBackUpDAO.insert(adgroupBakcUpEntity);
         }
-        logDAO.insertLog(id,LogStatusConstant.ENTITY_ADGROUP,LogStatusConstant.OPT_UPDATE);
+        logDAO.insertLog(id, LogStatusConstant.ENTITY_ADGROUP, LogStatusConstant.OPT_UPDATE);
     }
 
     @Override
     public void insertReBack(AdgroupEntity adgroupEntity) {
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(get_id()).is(adgroupEntity.getId())),AdgroupEntity.class,EntityConstants.TBL_ADGROUP);
-        mongoTemplate.insert(adgroupEntity,EntityConstants.TBL_ADGROUP);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.remove(new Query(Criteria.where(get_id()).is(adgroupEntity.getId())), AdgroupEntity.class, EntityConstants.TBL_ADGROUP);
+        mongoTemplate.insert(adgroupEntity, EntityConstants.TBL_ADGROUP);
+    }
+
+    @Override
+    public void delBack(Long oid) {
+        Update up = new Update();
+        up.set("ls", "");
+        BaseMongoTemplate.getUserMongo().updateFirst(new Query(Criteria.where(EntityConstants.ADGROUP_ID).is(oid)), up, AdgroupEntity.class, EntityConstants.TBL_ADGROUP);
+        SubdelBack(oid);
     }
 
     public void insert(com.perfect.entity.AdgroupEntity adgroupEntity) {
@@ -401,6 +421,11 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
         logProcessingDAO.insertAll(logEntities);
     }
 
+    /**
+     * 级联删除，删除单元下的创意和关键字
+     *
+     * @param oids
+     */
     private void deleteSubOid(List<String> oids) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.remove(new Query(Criteria.where(get_id()).in(oids)), KeywordEntity.class);
@@ -410,6 +435,26 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
             logDAO.insertLog(id, LogStatusConstant.ENTITY_ADGROUP);
         }
 
+    }
+
+    /**
+     * 根据删除的单元删除其下的关键词和创意，该删除可以拥有还原功能，实际上是将创意和关键字放入备份数据库中，如果还原创单元，则级联的
+     *
+     * @param agid
+     */
+    private void deleteLinked(Long agid) {
+        Update up = new Update();
+        up.set("ls", 4);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.updateMulti(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(agid)), up, KeywordEntity.class, EntityConstants.TBL_KEYWORD);
+        mongoTemplate.updateMulti(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(agid)), up, CreativeEntity.class, EntityConstants.TBL_CREATIVE);
+    }
+    private void SubdelBack(Long oid){
+        Update up = new Update();
+        up.set("ls", "");
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.updateMulti(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(oid)), up, KeywordEntity.class, EntityConstants.TBL_KEYWORD);
+        mongoTemplate.updateMulti(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(oid)), up, CreativeEntity.class, EntityConstants.TBL_CREATIVE);
     }
 
     @Resource

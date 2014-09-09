@@ -59,7 +59,7 @@ function initAMenu() {
             if (con) {
                 var _this = $(this).parents("tr");
                 $(this).submit("../assistantAdgroup/adAdd", function (rs) {
-                    var json=eval("("+rs+")");
+                    var json = eval("(" + rs + ")");
                     if (json.success == "1") {
                         var _span = $("#" + sp + "").html();
                         if (_span == null) {
@@ -136,19 +136,19 @@ function loadAdgroupData(plans) {
 
                 for (var i = 0; i < json.length; i++) {
                     _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-                    var _id=json[i].adgroupId!=null?json[i].adgroupId:json[i].id;
-                    var _maxPrice=json[i].maxPrice!=null?json[i].maxPrice:0.0;
-                    var nn=json[i].negativeWords!=null?json[i].negativeWords:"";
-                    var ne=json[i].exactNegativeWords!=null?json[i].exactNegativeWords:"";
+                    var _id = json[i].adgroupId != null ? json[i].adgroupId : json[i].id;
+                    var _maxPrice = json[i].maxPrice != null ? json[i].maxPrice : 0.0;
+                    var nn = json[i].negativeWords != null ? json[i].negativeWords : "";
+                    var ne = json[i].exactNegativeWords != null ? json[i].exactNegativeWords : "";
                     var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
                     var _ls = getLocalStatus(parseInt(_edit));
                     var _tbody = "<tr class=" + _trClass + " onclick=aon(this)>" +
-                        "<td >&nbsp;<input type='hidden' value='" +_id+ "'/></td>" +
+                        "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                         "<td >" + json[i].adgroupName + "</td>" +
                         "<td ><input type='hidden' value='" + json[i].status + "'/>" + until.getAdgroupStatus(json[i].status) + "</td>" +
                         "<td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
                         "<td >" + parseFloat(_maxPrice).toFixed(2) + "</td>" +
-                        "<td ><input type='hidden' value='" + nn+ "'><input type='hidden' value='" +ne+ "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
+                        "<td ><input type='hidden' value='" + nn + "'><input type='hidden' value='" + ne + "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
                         "<td >" + parseFloat(getMib(json[i].mib)).toFixed(2) + "</td>" +
                         "<td >" + json[i].campaignName + "</td>" +
                         "<td >" + _ls + "</td>" +
@@ -175,7 +175,7 @@ function getNoAdgroupLabel(exp1, exp2) {
         } else {
             return "<span>未设置</span>";
         }
-    }else{
+    } else {
         return "<span>未设置</span>";
     }
 }
@@ -288,7 +288,7 @@ function adgroupDel() {
         if (con) {
             $.get("../assistantAdgroup/del", {oid: oid}, function (rs) {
                 if (rs == "1") {
-                    $(atmp).find("td:eq(7)").html("<span class='error' step='3'></span>");
+                    $(atmp).find("td:eq(8)").html("<span class='error' step='3'></span>");
                 }
             });
         }
@@ -322,7 +322,7 @@ function adgroupUpdate() {
         var nn = _tr.find("td:eq(5) input").val();
         var ne = _tr.find("td:eq(5) input:eq(1)").val();
         var mib = _tr.find("td:eq(6)").html();
-        var cn=_tr.find("td:eq(7)").html();
+        var cn = _tr.find("td:eq(7)").html();
         $("#adgroupUpdateForm input[name='oid']").val(oid);
         $("#adgroupUpdateForm input[name='adgroupName']").val(name);
         $("#adStatus").html(adgroupConvertStatus(parseInt(status)));
@@ -556,7 +556,7 @@ function adrgoupUpdateOk() {
         if (rs == "1") {
             adgroupAddAlertClose();
             var _span = $("#auSpan").html();
-            var _edit=formData["oid"].length>18?"<span class='pen' step='1'></span>":"<span class='pen' step='2'></span>";
+            var _edit = formData["oid"].length > 18 ? "<span class='pen' step='1'></span>" : "<span class='pen' step='2'></span>";
             var _tbody =
                 "<td>&nbsp;<input type='hidden'  name='oid' value='" + formData["oid"] + "'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/></td>" +
                 "<td>" + formData["adgroupName"] + "</td>" +
@@ -565,8 +565,8 @@ function adrgoupUpdateOk() {
                 "<td>" + parseFloat(formData["maxPrice"]).toFixed(2) + "</td>" +
                 "<td><span>" + _span + "</span><input type='hidden' value='" + formData["negativeWords"] + "'><input type='hidden' value='" + formData["exactNegativeWords"] + "'></td>" +
                 "<td>" + parseFloat(formData["mib"]).toFixed(2) + "</td>" +
-                "<td>" + formData["cn"] + "</td>"+
-                "<td>" + _edit + "</td>" ;
+                "<td>" + formData["cn"] + "</td>" +
+                "<td>" + _edit + "</td>";
             $(atmp).html(_tbody);
             alert("修改完成");
         }
@@ -594,7 +594,7 @@ function initAgReback() {
 function onAgReback() {
     $("#agReback").attr("class", "zs_top");
 }
-function agreBakClick(){
+function agreBakClick() {
     var _this = $(atmp);
     if (_this.html() != undefined) {
         var _edit = _this.find("td:eq(8)").html();
@@ -611,6 +611,7 @@ function agreBakClick(){
                         agReBack(_oid);
                         break;
                     case 3:
+                        agDelReBack(_oid);
                         break;
                     default :
                         break;
@@ -619,28 +620,39 @@ function agreBakClick(){
         }
     }
 }
-function agReBack(oid){
-    $.get("../assistantAdgroup/agReBack",{oid:oid},function(rs){
+function agReBack(oid) {
+    $.get("../assistantAdgroup/agReBack", {oid: oid}, function (rs) {
         var json = eval("(" + rs + ")");
         if (json.success == "1") {
-            var _id=json.data.adgroupId!=null?json.data.adgroupId:json.data.id;
-            var _maxPrice=json.data.maxPrice!=null?json.data.maxPrice:0.0;
-            var nn=json.data.negativeWords!=null?json.data.negativeWords:"";
-            var ne=json.data.exactNegativeWords!=null?json.data.exactNegativeWords:"";
-            var _edit = json.data.localStatus != null ? json.data.localStatus : -1;
-            var _ls = getLocalStatus(parseInt(_edit));
-            var _tbody =
-                "<td >&nbsp;<input type='hidden' value='" +_id+ "'/></td>" +
-                "<td >" + json.data.adgroupName + "</td>" +
-                "<td ><input type='hidden' value='" + json.data.status + "'/>" + until.getAdgroupStatus(json.data.status) + "</td>" +
-                "<td >" + until.convert(json.data.pause, "启用:暂停") + "</td>" +
-                "<td >" + parseFloat(_maxPrice).toFixed(2) + "</td>" +
-                "<td ><input type='hidden' value='" + nn+ "'><input type='hidden' value='" +ne+ "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
-                "<td >" + parseFloat(getMib(json.data.mib)).toFixed(2) + "</td>" +
-                "<td >" + formData["cn"] + "</td>" +
-                "<td >" + _ls + "</td>" +
-                "</tr>";
-            $(atmp).html(_tbody);
+            if (json.data != null) {
+                var _id = json.data.adgroupId != null ? json.data.adgroupId : json.data.id;
+                var _maxPrice = json.data.maxPrice != null ? json.data.maxPrice : 0.0;
+                var nn = json.data.negativeWords != null ? json.data.negativeWords : "";
+                var ne = json.data.exactNegativeWords != null ? json.data.exactNegativeWords : "";
+                var _edit = json.data.localStatus != null ? json.data.localStatus : -1;
+                var _ls = getLocalStatus(parseInt(_edit));
+                var _tbody =
+                    "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
+                    "<td >" + json.data.adgroupName + "</td>" +
+                    "<td ><input type='hidden' value='" + json.data.status + "'/>" + until.getAdgroupStatus(json.data.status) + "</td>" +
+                    "<td >" + until.convert(json.data.pause, "启用:暂停") + "</td>" +
+                    "<td >" + parseFloat(_maxPrice).toFixed(2) + "</td>" +
+                    "<td ><input type='hidden' value='" + nn + "'><input type='hidden' value='" + ne + "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
+                    "<td >" + parseFloat(getMib(json.data.mib)).toFixed(2) + "</td>" +
+                    "<td >" + plans.cn + "</td>" +
+                    "<td >" + _ls + "</td>" +
+                    "</tr>";
+                $(atmp).html(_tbody);
+            } else {
+                $(atmp).find("td:eq(8)").html(" ");
+            }
+        }
+    });
+}
+function agDelReBack(oid){
+    $.get("../assistantAdgroup/agDelBack",{oid:oid},function(rs){
+        if(rs=="1"){
+            $(atmp).find("td:eq(8)").html(" ");
         }
     });
 }

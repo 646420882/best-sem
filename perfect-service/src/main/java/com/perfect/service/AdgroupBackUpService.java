@@ -9,4 +9,5 @@ import com.perfect.entity.backup.AdgroupBackUpEntity;
  */
 public interface AdgroupBackUpService extends MongoCrudRepository<AdgroupBackUpEntity,Long> {
     AdgroupBackUpEntity agReBack(Long id);
+
 }

@@ -219,17 +219,17 @@
         <table border="0" cellspacing="0" width="100%" id="createTable">
             <thead>
             <tr class="list02_top">
-                <td>&nbsp;操作</td>
-                <td>&nbsp;创意标题</td>
-                <td>&nbsp;创意描述1</td>
-                <td>&nbsp;创意描述2</td>
-                <td>&nbsp;默认访问URL</td>
-                <td>&nbsp;默认显示URL</td>
-                <td>&nbsp;移动访问URL</td>
-                <td>&nbsp;移动显示URL</td>
-                <td>&nbsp;启用/暂停</td>
-                <td>&nbsp;创意状态</td>
-                <td> <div class="set fr"></div></td>
+                <th>&nbsp;操作</th>
+                <th>&nbsp;创意标题</th>
+                <th>&nbsp;创意描述1</th>
+                <th>&nbsp;创意描述2</th>
+                <th>&nbsp;默认访问URL</th>
+                <th>&nbsp;默认显示URL</th>
+                <th>&nbsp;移动访问URL</th>
+                <th>&nbsp;移动显示URL</th>
+                <th>&nbsp;启用/暂停</th>
+                <th>&nbsp;创意状态</td>
+                <th> <div class="set fr"></div></th>
             </tr>
             </thead>
             <tbody id="tbodyClick2">

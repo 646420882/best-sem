@@ -59,6 +59,13 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
         return creativeIds;
     }
 
+    @Override
+    public List<CreativeEntity> findByAgroupId(Long adgroupId) {
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
+        List<CreativeEntity> creativeEntityList=mongoTemplate.find(new Query(Criteria.where(EntityConstants.ADGROUP_ID).is(adgroupId)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        return creativeEntityList;
+    }
+
     public List<CreativeEntity> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
@@ -203,7 +210,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
     @Override
     public void delBack(Long oid) {
         Update update=new Update();
-        update.set("ls",null);
+        update.set("ls","");
         BaseMongoTemplate.getUserMongo().updateFirst(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(oid)),update,CreativeEntity.class,EntityConstants.TBL_CREATIVE);
     }
 

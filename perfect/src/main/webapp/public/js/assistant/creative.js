@@ -661,6 +661,9 @@ function reBakClick() {
                     case 3:
                         delBack(_oid);
                         break;
+                    case 4:
+                        alert("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");
+                        break;
                     default :
                         break;
                 }
@@ -707,6 +710,9 @@ function getLocalStatus(number) {
             return "<span class='pen' step=" + number + "></span>";
             break;
         case 3:
+            return "<span class='error' step=" + number + "></span>";
+            break;
+        case 4:
             return "<span class='error' step=" + number + "></span>";
             break;
         default :
