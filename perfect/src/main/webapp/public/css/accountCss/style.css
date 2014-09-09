@@ -2543,7 +2543,6 @@ h2 .close {
     border-right:1px solid #fff;
     min-width:110px;
     verflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
 }
 /* CSS Document */
