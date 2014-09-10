@@ -10,9 +10,16 @@
     <files>
         <file>
             <source>src/main/resources/schedule.xml</source>
-            <outputDirectory>/lib</outputDirectory>
+            <outputDirectory>/conf</outputDirectory>
             <filtered>true</filtered>
         </file>
+
+        <file>
+            <source>src/main/resources/log4j.properties</source>
+            <outputDirectory>/conf</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+
         <file>
             <source>src/main/resources/run.sh</source>
             <outputDirectory>/</outputDirectory>
