@@ -268,7 +268,6 @@
 
 .list2 table td, th, .list3 table td {
     line-height: 30px;
-    *line-height: inherit;
 }
 .list2 table td, .list3table td {
     line-height: 30px;
@@ -1302,7 +1301,7 @@ ul.ztree.zTreeDragUL {
     border-right: 1px solid #ffffff;
     border-bottom: 1px solid #ffffff;
     cursor: Default;
-    verflow: hidden;
+    overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
@@ -1626,7 +1625,7 @@ h2 .close {
     border: 1px solid #cfcfcf;
 }
 .t_list03 .zs_input1 {
-    width: 72%;
+    width: 78%;
 }
 .w_list04 {
     width: 100%;
@@ -1636,10 +1635,10 @@ h2 .close {
     text-align: right;
 }
 .t_list02, .t_list03 {
-    width: 86%;
+    width: 89%;
 }
 .t_list04 {
-    width: 50%;
+    width: 49.5%;
     margin-bottom: 10px;
 }
 .w_list02 {
@@ -2542,7 +2541,9 @@ h2 .close {
     height:30px;
     border-right:1px solid #fff;
     min-width:110px;
-    verflow: hidden;
-    text-overflow: ellipsis;
+    font-weight:normal;
+    *width:200px;
+    overflow: hidden;
+
 }
 /* CSS Document */
