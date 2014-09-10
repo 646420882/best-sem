@@ -117,14 +117,12 @@ public class BiddingSubTask implements Runnable {
         } else if (interval > 0 && interval < 60) {
             nextRun = BiddingRuleUtils.getDateInvMinute(strategyEntity.getTimes(), interval);
         } else if (interval == -1) {
-            long next = biddingRuleEntity.getNext();
 
             //第一次执行竞价策略
-            if (next == 1) {
-                long nextTime = BiddingRuleUtils.getNextHourTime(strategyEntity.getTimes());
-                biddingRuleEntity.setNext(nextTime);
-            }
+            long nextTime = BiddingRuleUtils.getNextHourTime(strategyEntity.getTimes());
+            biddingRuleEntity.setNext(nextTime);
         }
+
         if (nextRun != null) {
             if (nextRun.after(Calendar.getInstance().getTime())) {
                 if (biddingRuleEntity.getNext() != nextRun.getTime())
