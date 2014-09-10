@@ -11,7 +11,7 @@ public class AssistantkwdIgnoreDeleDTO {
 
     private String keywordName;
 
-    private String matchModel;
+    private String matchModel = "精确";
 
     public AssistantkwdIgnoreDeleDTO(String campaignName, String adgroupName, String keywordName, String matchModel) {
         this.campaignName = campaignName;

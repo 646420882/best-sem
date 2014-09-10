@@ -39,13 +39,13 @@
 <body>
 <div style="background-color: #f3f5fd; width: 900px; height: 700px">
     <div class="addplan_top over">
-        <ul>
+        <ul id = "tabUl">
             <li class="current">1、输入内容</li>
             <li><span></span>1、验证数据</li>
         </ul>
     </div>
     <div class="plan_under">
-        <div class="containers newkeyword_mid">
+        <div class="containers newkeyword_mid" id = "inputDwdInfo">
             <div class="newkeyeord_top over">
                     <h3>关键词目标</h3>
                 <div class="newkeyeord_title over">
@@ -74,7 +74,7 @@
                                     <p>例如：鲜花，精确，1.0，www.baidu.com,www.baidu.com,启用</p>
                                     <textarea id = "TextAreaChoose"></textarea>
                                     <p><input type="checkbox" id = "isReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容</p>
-                                    <p><input type="checkbox">&nbsp;用输入的关键词搜索更多相关关键词，把握题词质量</p>
+                                   <%-- <p><input type="checkbox">&nbsp;用输入的关键词搜索更多相关关键词，把握题词质量</p>--%>
 
                                 </div>
                             </div>
@@ -104,18 +104,17 @@
                 <div class="w_list03">
                     <ul>
                         <li class="current" id="downloadAccount">下一步</li>
-                        <li>完成</li>
                         <li class="close">取消</li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="containers over hides">
+        <div class="containers over hides" id ="validateDiv">
             <div class="assembly_under over" >
                 <div class="assembly_right3 over">
                     <div class="newkeword_end">
-                        <ul>
-                            <li>
+                        <ul id = "valideKwd">
+                           <%-- <li>
                                 <div class="newkeyword_end1"> <span>[+]</span>新增的关键词一个</div>
                                 <div class="newkeyword_end2 ">
                                     <p><input type="radio" checked="checkde" name="addnew">添加已选择的关键词</p>
@@ -143,15 +142,16 @@
                                         </table>
                                     </div>
                                 </div>
-                            </li>
+                            </li>--%>
+
                         </ul>
                     </div>
               <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
                 <div class="w_list03">
                     <ul>
-                        <li class="current" >上一步</li>
+                        <li class="current lastStep" >上一步</li>
                         <li>完成</li>
-                        <li class="close">取消</li>
+                        <li class="close ui-dialog-close">取消</li>
                     </ul>
                 </div>
             </div>
@@ -165,6 +165,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript">
     $(function () {
         var $tab_li = $('.addplan_top ul li');
@@ -224,11 +225,16 @@
 
     //得到树形列表数据
     function getCampaiTreeData(){
+        $("#treeDemo").html("正在加载数据...");
         $.ajax({
             url:"/assistantKeyword/campaignTree",
             type:"post",
             dataType:"json",
             success:function(data){
+                if(data.length==0){
+                    $("#treeDemo").html("暂无数据!");
+                    return ;
+                }
                 var array = new Array();
                 var json;
                 var camId;
@@ -386,7 +392,20 @@ getCampaiTreeData();
 
 
 
+    //下一步按钮的单击事件
     function nextStepAjax() {
+
+        if(getSelectedNodeToString()==""){
+            alert("请先选择推广计划和推广单元!");
+            return;
+        }
+
+        if($(".TextAreaChoose").val()==""){
+            alert("请输入要添加或者更新的数据");
+            $(".TextAreaChoose").val("");
+            return ;
+        }
+
         var isReplace = $("#isReplace")[0].checked;
         var selectNode = getSelectedNodeToString();
         var keywordInfos = $("#TextAreaChoose").val();
@@ -397,10 +416,144 @@ getCampaiTreeData();
             dataType:"json",
             success:function(data){
                 alert(JSON.stringify(data));
+                $("#valideKwd").html("");
+               if(data.insertList.length>0){
+                   toHtml("insert",data.insertList);
+               }
+               if(data.updateList.length>0){
+                   toHtml("update",data.insertList);
+                }
+                if(data.delList.length>0){
+                    toHtml("delete",data.delList);
+                }
+                if(data.igoneList.length>0){
+                    toHtml("igone",data.igoneList);
+                }
             }
         });
     }
 
+
+    //将请求返回的数据加载到页面
+    function toHtml(listType,list) {
+        var igoneField = new Array("推广计划名称","推广单元名称","关键词名称","匹配模式");
+        var otherField = new Array("推广计划名称","推广单元名称","关键词名称","匹配模式","出价","访问url","移动访问url","启用/暂停");
+        var html = "";
+
+        if(listType=="insert"||listType=="update"||listType=="delete"){
+            html = createHtml(otherField,list,listType);
+        }else if(listType=="igone"){
+            html = createIgoneHtml(igoneField,list);
+        }
+        $("#valideKwd").append(html);
+        $("#inputDwdInfo").hide();
+        $("#validateDiv").show();
+        $("#tabUl li:eq(0)").removeClass("current");
+        $("#tabUl li:eq(1)").addClass("current");
+    }
+
+
+    //创建新增，更新，删除,html代码
+    function createHtml(fieldsArray,list,listType) {
+        var stringName = "";
+
+        switch (listType){
+            case "insert":stringName = "新增的关键词"+list.length+"个";break;
+            case "update":stringName = "更新的关键词"+list.length+"个";break;
+            case "delete":stringName = "删除的关键词"+list.length+"个";break;
+        }
+
+
+        var html = "<li>";
+        html+= " <div class='newkeyword_end1'> <span>[+]</span>"+stringName+"</div>";
+        html+="<div class='newkeyword_end2 '>";
+
+        html+=" <p><input type='radio' checked='checkde' name='addnew'>添加已选择的关键词</p>";
+        html+=" <p><input type='radio'  name='addnew'>不添加</p>";
+        html+=" <div class='list4' style='height:300px;'>";
+        html+="  <table width='100%' cellspacing='0' border='0' width='500px'>";
+        html+=" <thead>";
+        html+="<tr class='list02_top'>";
+        var i=0;
+        html+="<td>"+fieldsArray[i++]+"</td>";
+        html+="<td>"+fieldsArray[i++]+"</td>";
+        html+="<td>"+fieldsArray[i++]+"</td>";
+        html+="<td>"+fieldsArray[i++]+"</td>";
+        html+="<td>"+fieldsArray[i++]+"</td>";
+        html+="<td>"+fieldsArray[i++]+"</td>";
+        html+="<td>"+fieldsArray[i++]+"</td>";
+        html+="<td>"+fieldsArray[i++]+"</td>";
+        html+="</tr></thead>";
+        html+="<tbody>"
+
+        for(var i=0;i<list.length;i++){
+            html+="  <tr class='list2_box2'>";
+            html+="<td>"+list[i].campaignName+"</td>";
+            html+="<td>"+list[i].adgroupName+"</td>";
+            html+="<td>"+list[i].object.keyword+"</td>";
+            html+="<td>"+list[i].object.matchType+"</td>";
+            html+="<td>"+until.convert(list[i].object.price==null,"<0.10>:"+list[i].object.price)+"</td>";
+            html+="<td>"+until.convert(list[i].object.pcDestinationUrl==null,"&nbsp;:"+list[i].object.pcDestinationUrl)+"</td>";
+            html+="<td>"+until.convert(list[i].object.mobileDestinationUrl==null,"&nbsp;:"+list[i].object.mobileDestinationUrl)+"</td>";
+            html+="<td>"+until.convert(list[i].object.pause==true,"暂停:启用")+"</td>";
+            html+="  </tr>";
+        }
+
+        html+="  </tbody>";
+        html+=" </table>";
+        html+=" </div></div> </li>";
+
+        return html;
+
+    }
+
+    //创建忽略关键词的html
+    function createIgoneHtml(fieldsArray,list){
+        var html = "<li>";
+        html+= " <div class='newkeyword_end1'> <span>[+]</span>忽略的关键词"+list.length+"个</div>";
+        html+="<div class='newkeyword_end2 '>";
+
+        html+=" <div class='list4' style='height:300px;'>";
+        html+="  <table width='100%' cellspacing='0' border='0' width='500px'>";
+        html+=" <thead>";
+        html+="<tr class='list02_top'>";
+        var i=0;
+        html+="<td>"+fieldsArray[i++]+"</td>";
+        html+="<td>"+fieldsArray[i++]+"</td>";
+        html+="<td>"+fieldsArray[i++]+"</td>";
+        html+="<td>"+fieldsArray[i++]+"</td>";
+        html+="</tr></thead>";
+        html+="<tbody>"
+
+        for(var i=0;i<list.length;i++){
+            html+="  <tr class='list2_box2'>";
+            html+="<td>"+list[i].campaignName+"</td>";
+            html+="<td>"+list[i].adgroupName+"</td>";
+            html+="<td>"+list[i].keywordName+"</td>";
+            html+="<td>"+list[i].matchModel+"</td>";
+            html+="  </tr>";
+        }
+
+        html+="  </tbody>";
+        html+=" </table>";
+        html+=" </div></div> </li>";
+
+        return html;
+
+    }
+
+
+
+
+    /**
+    *单击上一步的事件
+     */
+    $(".lastStep").click(function(){
+        $("#inputDwdInfo").show();
+        $("#validateDiv").hide();
+        $("#tabUl li:eq(1)").removeClass("current");
+        $("#tabUl li:eq(0)").addClass("current");
+    });
 
 </script>
 

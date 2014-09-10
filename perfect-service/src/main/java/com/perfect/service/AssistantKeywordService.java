@@ -2,6 +2,7 @@ package com.perfect.service;
 
 import com.perfect.dto.CampaignTreeDTO;
 import com.perfect.entity.KeywordEntity;
+import com.perfect.mongodb.utils.PagerInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Map;
  * Created by john on 2014/8/19.
  */
 public interface AssistantKeywordService {
-    List<KeywordEntity>  getKeyWords(String cid,String aid);
+    PagerInfo getKeyWords(String cid,String aid,Integer nowPage);
 
     void deleteByKwIds(List<String> kwids);
 
