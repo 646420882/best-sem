@@ -13,6 +13,7 @@ import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.mongodb.utils.PaginationParam;
 import com.perfect.utils.LogUtils;
 import org.springframework.data.domain.PageRequest;
@@ -407,6 +408,32 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
         return p;
     }
+
+
+    //xj
+    @Override
+    public PagerInfo findByPageInfo(Query q,int pageSize, int pageNo) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        int totalCount=getListTotalCount(q);
+
+        PagerInfo p=new PagerInfo(pageNo, pageSize,totalCount);
+        q.skip(p.getFirstStation());
+        q.limit(p.getPageSize());
+        if (totalCount<1) {
+            p.setList(new ArrayList());
+            return p;
+        }
+        List list= mongoTemplate.find(q, getEntityClass());
+        p.setList(list);
+        return p;
+    }
+    //xj
+    public int getListTotalCount(Query q){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return (int) mongoTemplate.count(q,EntityConstants.TBL_KEYWORD);
+    }
+
+
 
     private int getCount(Map<String, Object> params, String collections, String nell) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();

@@ -99,3 +99,38 @@
     height:300px;
     display: none;
 }
+
+
+
+
+/*推广助手分页css*/
+.page{
+    margin:20px 0;
+}
+
+.page ul li{
+    margin-left: 5px;
+    display: inline;
+}
+
+.page ul li .inputNo{
+    width:40px;
+}
+
+
+.page ul li a{
+    margin-left: 5px;
+    float:left;
+    width:50px;
+    background-color: lightgray;
+    text-align: center;
+    line-height: 25px;
+}
+.page ul li a:hover{
+    background-color: dodgerblue;
+}
+
+.page ul{
+    float:left;
+    margin-left: 30%;
+}

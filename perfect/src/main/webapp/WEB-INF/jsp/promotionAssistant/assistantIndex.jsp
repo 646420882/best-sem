@@ -142,6 +142,7 @@
         </div>
 
     </div>
+
     <div class="more_list over" style="display:none;">
         <ul>
             <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加关键词</b></li>
@@ -155,6 +156,19 @@
         </ul>
     </div>
     <div class="zhanghu_input"></div>
+
+    <div class="page kwdPage over">
+        <ul>
+            <li><a href="#">首页</a></li>
+            <li><a href="#">上一页</a></li>
+            <li><a href="#">下一页</a></li>
+            <li><a href="#">尾页</a></li>
+            <li>当前页:1/0</li>
+            <li>共0条</li>
+            <li><input type="text" maxlength="10" class="inputNo kwdPageNo"/>&nbsp;<input type="button" value="GO" id="kwdGo"/></li>
+        </ul>
+    </div>
+
     <div class="zs_bottom over">
         <input type = "hidden" id="hiddenkwid_1" />
         <div class="zs_bottom1 over fl ">
@@ -839,6 +853,7 @@
         </div>
 
     </div>
+
     <div class="more_list over" style="display:none;">
         <ul>
             <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加推广计划</b></li>
@@ -851,6 +866,19 @@
         </ul>
     </div>
     <div class="zhanghu_input"></div>
+
+    <div class="page campaignPage over">
+        <ul>
+            <li><a href="#">首页</a></li>
+            <li><a href="#">上一页</a></li>
+            <li><a href="#">下一页</a></li>
+            <li><a href="#">尾页</a></li>
+            <li>当前页:1/0</li>
+            <li>共0条</li>
+            <li><input type="text" maxlength="10" class="inputNo campaignPageNo"/>&nbsp;<input type="button" value="GO" id="campaignGo"/></li>
+        </ul>
+    </div>
+
     <div class="zs_bottom over">
         <input type = "hidden" id="hiddenCampaignId" />
         <div class="zs_bottom2 over fl " style="border-right: 1px solid #e7e7e7;">

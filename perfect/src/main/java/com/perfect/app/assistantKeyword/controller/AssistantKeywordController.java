@@ -3,6 +3,7 @@ package com.perfect.app.assistantKeyword.controller;
 import com.perfect.core.AppContext;
 import com.perfect.dto.CampaignTreeDTO;
 import com.perfect.entity.KeywordEntity;
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
@@ -42,9 +43,9 @@ public class AssistantKeywordController {
      * @return
      */
     @RequestMapping(value = "assistantKeyword/list",method = {RequestMethod.GET,RequestMethod.POST})
-    public void getAllKeywordList(HttpServletResponse response,String cid,String aid){
-        List<KeywordEntity>  list = assistantKeywordService.getKeyWords(cid,aid);
-        webContext.writeJson(list,response);
+    public void getAllKeywordList(HttpServletResponse response,String cid,String aid,Integer nowPage){
+        PagerInfo page = assistantKeywordService.getKeyWords(cid,aid,nowPage);
+        webContext.writeJson(page,response);
     }
 
     /**

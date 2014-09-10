@@ -3,6 +3,7 @@
 package com.perfect.dao;
 
 import com.perfect.entity.CampaignEntity;
+import com.perfect.mongodb.utils.PagerInfo;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface CampaignDAO extends MongoCrudRepository<CampaignEntity, Long> {
     void deleteByMongoId(String id);
 
     void updateByMongoId(CampaignEntity campaignEntity);
+
+    PagerInfo findByPageInfo(Query q,int pageSize, int pageNo);
 }

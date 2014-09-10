@@ -3,9 +3,9 @@ package com.perfect.app.assistantCampaign.controller;
 import com.perfect.autosdk.sms.v3.OfflineTimeType;
 import com.perfect.autosdk.sms.v3.ScheduleType;
 import com.perfect.core.AppContext;
-import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.entity.CampaignEntity;
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -28,17 +28,13 @@ import static com.perfect.mongodb.utils.EntityConstants.ACCOUNT_ID;
 @Scope("prototype")
 public class AssistantCampaignController {
 
-    //当前的账户id test
-//    Long currentAccountId = 6243012L;
-
+    private static final int PAGE_SIZE = 20;
     @Resource
     private CampaignDAO campaignDAO;
 
     @Resource
-    private AdgroupDAO adgroupDAO;
-
-    @Resource
     private WebContext webContext;
+
 
 
     /**
@@ -46,9 +42,13 @@ public class AssistantCampaignController {
      * @param response
      */
     @RequestMapping(value = "assistantCampaign/list" ,method = {RequestMethod.GET,RequestMethod.POST})
-    public void getAllCampaignList(HttpServletResponse response){
-        List<CampaignEntity> list = campaignDAO.find(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())));
-        webContext.writeJson(list,response);
+    public void getAllCampaignList(HttpServletResponse response,Integer nowPage){
+        if(nowPage==null){
+            nowPage = 1;
+        }
+        Query query = new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()));
+        PagerInfo page = campaignDAO.findByPageInfo(query,PAGE_SIZE,nowPage);
+        webContext.writeJson(page,response);
     }
 
 
