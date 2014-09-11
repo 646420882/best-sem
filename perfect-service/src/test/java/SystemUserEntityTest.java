@@ -8,23 +8,28 @@ import org.unitils.spring.annotation.SpringApplicationContext;
 import org.unitils.spring.annotation.SpringBeanByName;
 
 /**
- * Created by vbzer_000 on 2014-6-19.
+ * Created by baizz on 2014-6-19.
  */
 
 @SpringApplicationContext({"spring.xml"})
 public class SystemUserEntityTest extends UnitilsJUnit4 {
 
+    private static final String userName = "perfect";
+
+    private static final String passwd = "123";
+
     @SpringBeanByName
     private SystemUserDAO systemUserDAO;
 
     @Test
-    public void init() {
+    public void addSysUser() {
 
 //        systemUserDAO.deleteAll();
 
         SystemUserEntity systemUserEntity = new SystemUserEntity();
-        systemUserEntity.setUserName("perfect");
-        MD5 md5 = new MD5("123", "perfect");
+        systemUserEntity.setUserName(userName);
+        MD5.Builder md5Builder = new MD5.Builder();
+        MD5 md5 = md5Builder.password(passwd).salt(userName).build();
         systemUserEntity.setPassword(md5.getMD5());
 
         BaiduAccountInfoEntity baiduAccountInfoEntity = new BaiduAccountInfoEntity();
