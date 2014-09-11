@@ -438,6 +438,9 @@
     display: block;
     float: right;
 }
+.page_go{
+    *margin-top:-20px;
+}
 /*数据分析*/
 .number_concent {
     background: #f7f9fb;
@@ -553,6 +556,7 @@
 .tu_top ul li span {
     width: 13px;
     height: 13px;
+    *margin-top: 3px;
 }
 .tu_top ul li .blue {
     background: #078cc7;

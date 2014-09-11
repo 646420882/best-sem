@@ -1263,7 +1263,7 @@ var reportData = function () {
 
                     }
                     page_html = page_html + "<a href='javascript:' id='pageDownDet' class='nextpage2'><span></span></a>" +
-                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goDetID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goDet'> GO</a>"
+                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goDetID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goDet' class='page_go'> GO</a>"
                     $("#pageDet").append(page_html);
                     judgeDet++;
                 }
@@ -1361,7 +1361,7 @@ var reportDataVS = function () {
 
                     }
                     page_html = page_html + "<a href='javascript:' id='pageDownVS' class='nextpage2'><span></span></a>" +
-                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goVSID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goVS'> GO</a>"
+                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goVSID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goVS' class='page_go'> GO</a>"
                     $("#pageVS").append(page_html);
                     judgeVS++;
                 }
@@ -1533,7 +1533,7 @@ var accountBasisReport = function () {
                     }
                 }
                 page_html = page_html + "<a href='javascript:' id='pageDown' class='nextpage2'><span></span></a>" +
-                        "<span style='margin-right:10px;'>跳转到 <input type='text' id='goID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='go'> GO</a>"
+                        "<span style='margin-right:10px;'>跳转到 <input type='text' id='goID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='go' class='page_go'> GO</a>"
                 $("#pageJC").append(page_html);
                 jci++;
             }
