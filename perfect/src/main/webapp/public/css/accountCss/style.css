@@ -4,10 +4,10 @@
     min-height: 900px;
 }
 .concent {
-    width: 90%;
+    width: 91%;
     position: relative;
-    margin-top: 77px;
-    margin-left:220px;
+    margin-top: 94px;
+    margin-left:180px;
     background: #fff;
     /*   background: url(/public/img/concent_bg.jpg) repeat;*/
     font-family: "微软雅黑";
@@ -421,7 +421,7 @@
     margin: 10px 0 0 8px;
 }
 .tips {
-    width: 3%;
+    width: 8px;
     max-width: 8px;
     position: relative;
     background: url(/public/img/tips_bg_03.png) repeat;
@@ -1320,6 +1320,7 @@ ul.ztree.zTreeDragUL {
 }
 .page2 {
     margin: 10px 0 0 30%;
+    overflow:hidden;
 }
 .page2 a {
     display: block;
@@ -1354,6 +1355,7 @@ ul.ztree.zTreeDragUL {
 /* 弹出层 */
 .box, .box2, .box3, .box4, .box5, .box6, .box7, .box8, .box9, .box10 {
     min-width: 400px;
+    max-width:800px;
     position: absolute;
     border-radius: 5px;
     left: 50%;
@@ -1363,18 +1365,19 @@ ul.ztree.zTreeDragUL {
     overflow: hidden;
 }
 .box h2, .box2 h2, .box3 h2, .box4 h2, .box5 h2, .box6 h2, .box7 h2, .box8 h2, .box9 h2, .box10 h2 {
+    display:block;
+    width:90%;
     height: 46px;
     font-size: 14px;
     background-color: #282538;
     position: relative;
-    padding: 0 20px;
+    padding: 0 5%;
     line-height: 46px;
     color: #fff;
     cursor: Move;
 }
 h2 .close {
-    position: absolute;
-    right: 15px;
+    float:right;
     font-size: 12px;
     color: #fff;
 }

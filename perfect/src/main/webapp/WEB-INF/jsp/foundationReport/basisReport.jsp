@@ -48,10 +48,9 @@
     </style>
 </head>
 <body>
-<jsp:include page="../homePage/pageBlock/nav.jsp"/>
-
-<div class="concent fl over">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
+<div class="concent fl over">
+<jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over ">
 <div class="on_title over">
     <a href="#">

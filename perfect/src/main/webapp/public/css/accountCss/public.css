@@ -51,29 +51,35 @@ table{
 }
 /*top*/
 .top {
-    width:90%;
-    height: 77px;
+    width:100%;
+    height:94px;
     position:fixed;
     top:0px;
-    left: 220px;
-    line-height: 77px;
+    left:0px;
     background: url(/public/img/top_bg.jpg) center repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     vertical-align: middle;
-    z-index:98;
+    z-index:120;
     min-width:700px;
 }
+.top_middle{
+    width:100%;
+    height:94px;
+    position: relative;
+    
+}
 .top_mid{
-    margin-right:13%;
+    line-height: 94px;
+    margin-right: 3%;
 }
 .logo {
     height: 53px;
-    margin-top: 10px;
+    margin-top: 22px;
     padding-left: 2%;
-    line-height: 77px;
+
     padding-left: 20px;
     border-left: 1px dotted #646464;
 }
@@ -121,7 +127,7 @@ table{
 }
 /*nav*/
 .nav {
-    width:220px;
+    width:180px;
     max-height: 960px;
     position:fixed;
     z-index:112;
@@ -130,7 +136,7 @@ table{
 .nav_left {
     min-height: 1000px;
     position: relative;
-    width: 97%;
+    width: 172px;
     z-index:111;
 }
 .nav_bg{
@@ -156,6 +162,7 @@ table{
     background: url(/public/img/bg.png) -74px -10px no-repeat;
 }
 .user_mid {
+    width:40%;
     padding-top:20px;
 }
 .user_img{
@@ -178,20 +185,22 @@ table{
     height:100%;
 }
 .user_logo{
-    width:96%;
     height:55px;
     padding:0 2%;
+    *width:220px;
     position:relative;
 }
 .user_logo1{
     position:relative;
 }
 .user_logo2{
-    margin:10px 0 0 0 ;
+
 
 }
 .user_text p{
     font-size:12px;
+    margin-bottom:10px;
+    line-height: 22px;
     color:#959cad;
 }
 .user_text p span{
@@ -210,8 +219,8 @@ table{
 }
 .user_name{
     color: #f2ab00;
-    line-height:28px;
-    height:28px;
+    height: 18px;
+    line-height: 18px;
     font-weight:bold;
     background:url(/public/img/user_select.png)  no-repeat;
     cursor: pointer;
@@ -219,33 +228,42 @@ table{
     overflow:hidden;
 }
 .user_text{
-    width:120px;
+    width:122px;
 }
 .user_name span{
     display:block;
-    width:68px;
+    width:88px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
 .user_names{
     position:absolute;
-    top:34px;
-    background:#312d37;
+    top:18px;
+    background:#2a2d35;
     color:#f2ab00;
     font-weight:bold;
     padding:10px;
     border-radius: 10px;
+    -moz-box-shadow: 3px 3px 4px #000;
+    -webkit-box-shadow: 3px 3px 4px #000;
+    box-shadow: 3px 3px 4px #000;
+    /* For IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+    /* For IE 5.5 - 7 */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
     z-index:120;
 }
 .user_names ul li{
     cursor: pointer;
+    margin-bottom:10px;
 }
 .user_text h3{
     color:#f2ab00;
     font-size:1.5em;
 }
 .nav_under ul li {
+    height:61px;
     position:relative;
     overflow:hidden;
 }
@@ -272,24 +290,21 @@ table{
     margin: 0 10% 0 0px;
 }
 .user_detali{
-    margin-top:15px;
 }
 .user_detali ul li{
-    height:36px;
-    line-height:36px;
     padding:0 15px;
-
-    color:#959cad;
-    background:url(/public/img/user_detali_bg.jpg) top repeat-x;
+    margin-bottom:15px;
+    color:#ffffff;
     overflow:hidden;
+}
+.user_detali ul li span{
+    padding-right:30px;
 }
 .user_detali ul li b a{
     font-size:1.3em;
     color:#f2ab00;
 }
 .nav_under{
-    padding-top:6px;
-    background: url(/public/img/boder_top_img.jpg) top repeat-x;
 }
 .nav_under ul li .nav_input1{
     width:8px;
@@ -314,7 +329,7 @@ table{
     background: url(/public/img/bg.png) -10px -551px no-repeat;
 }
 .nav_under ul .current{
-    background:#1f1c24;
+    background: url(/public/img/nav_bg2.png)  no-repeat;
 }
 .nav_under ul .current a{
     color:#ffb500;

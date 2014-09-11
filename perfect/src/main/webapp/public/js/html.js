@@ -252,4 +252,13 @@ $(function () {
         var index = $tab_li.index(this);
         $('div.zs_sets > div').eq(index).show().siblings().hide();
     });
+    /*******监控文件夹****/
+    $(".jiangkong").click(function () {
+        if ($(".j_list02").css("display") == "none") {//隐藏
+            $(".j_list02").show();
+        }
+        else {
+            $(".j_list02").hide();
+        }
+    });
 });

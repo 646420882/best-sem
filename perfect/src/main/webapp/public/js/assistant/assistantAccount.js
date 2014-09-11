@@ -365,6 +365,7 @@ $(function () {
     });
     //加载账户树
     $.fn.zTree.init($("#zTree"), setting, zNodes);
+    $.fn.zTree.init($("#zTree2"), setting, zNodes);
 
     loadAccountData();
 

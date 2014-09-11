@@ -2,11 +2,11 @@
 /******1920************/
 @media screen and (min-width: 1800px) and (max-width: 1920px) {
     .concent {
-        width: 88.4%;
+        width: 91%;
     }
 
 }
-@media screen and (max-width: 1818px) {
+@media screen and (min-width: 1682px) and (max-width: 1818px) {
     .t_list02, .t_list03 {
         width: 88%;
     }
@@ -21,7 +21,7 @@
 /******1680************/
 @media screen and (min-width: 1601px) and (max-width: 1681px) {
     .concent {
-        width: 86.8%;
+        width: 89.2%;
     }
 
     .zs_bottom1 ul li .zs_input1 {
@@ -75,7 +75,7 @@
 /******1500************/
 @media screen and (min-width: 1580px) and (max-width: 1600px) {
     .concent {
-        width: 86%;
+        width: 88.6%;
     }
     .zs_bottom1 ul li .zs_input1 {
         width: 82%;
@@ -98,7 +98,7 @@
 }
 @media screen and (min-width: 1442px) and (max-width: 1579px) {
     .concent {
-        width: 85%;
+        width: 88.4%;
     }
     .zs_bottom1 ul li .zs_input1 {
         width: 80%;
@@ -125,7 +125,7 @@
 /******1440************/
  @media screen and (min-width: 1371px) and (max-width: 1441px) {
         .concent {
-            width: 84.5%;
+            width: 87.2%;
         }
         .zs_top, {
             margin-right:0px;
@@ -159,9 +159,10 @@
     }
 
 /******1368************/
-@media screen and (min-width: 1291px)and (max-width: 1370px) {
+
+@media screen and (min-width: 1350px)and (max-width: 1368px) {
         .concent {
-            width: 83.5%;
+            width: 86.6%;
         }
         .zs_top, {
             margin-right:0px;
@@ -193,10 +194,11 @@
         }
 
     }
+
 /******1280************/
 @media screen and (min-width: 1031px) and (max-width: 1290px) {
   .concent {
-      width: 82.5%;
+      width: 85.6%;
   }
   .zs_top, {
       margin-right:0px;
@@ -226,22 +228,28 @@
     .t_list05 {
         width: 60%;
     }
+    .user_mid {
+        width: 50%;
+    }
 
 }
 
 /******1152************/
 @media screen and (min-width: 1031px) and (max-width: 1153px) {
     .concent {
-        width: 80%;
+        width: 84%;
     }
     .t_list05 {
         width: 100%;
+    }
+    .user_mid {
+        width: 60%;
     }
 }
 /******1024************/
 @media screen and (max-width: 1030px) {
         .concent{
-            width:78.2%;
+            width:81.5%;
         }
         .zs_top, {
             margin-right:0px;
@@ -276,6 +284,9 @@
         .t_list02, .t_list03 {
             width: 100%;
         }
+    .user_mid {
+        width: 60%;
+    }
     }
 
     @media \0screen {

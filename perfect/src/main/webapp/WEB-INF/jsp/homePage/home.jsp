@@ -29,9 +29,9 @@
     </style>
 </head>
 <body>
-<jsp:include page="pageBlock/nav.jsp"/>
-<div class="concent fl ">
 <jsp:include page="pageBlock/head.jsp"/>
+<div class="concent fl ">
+<jsp:include page="pageBlock/nav.jsp"/>
 <div class="mid over">
 <div class="on_title over">
     <a href="#">
