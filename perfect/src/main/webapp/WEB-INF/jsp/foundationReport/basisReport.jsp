@@ -21,6 +21,7 @@
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/jquery.cxcalendar.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
 
 
     <style type="text/css">

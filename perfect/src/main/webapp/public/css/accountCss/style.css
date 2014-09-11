@@ -425,7 +425,7 @@
     max-width: 8px;
     position: relative;
     background: url(/public/img/tips_bg_03.png) repeat;
-    min-height: 960px;
+    min-height: 1000px;
     z-index: 120;
     left: 0px;
     top: 0px;
@@ -1611,7 +1611,7 @@ h2 .close {
     color: #b4b4b4;
 }
 .zs_bottom2 {
-    width: 28%;
+    width: 30%;
     padding-left: 2%;
 }
 .zs_bottom1 ul li, .zs_bottom2 ul li {
@@ -1640,6 +1640,10 @@ h2 .close {
 .t_list04 {
     width: 49.5%;
     margin-bottom: 10px;
+}
+.t_list05{
+    width: 78%;
+
 }
 .w_list02 {
     margin-left: 10px;
@@ -1687,6 +1691,7 @@ h2 .close {
     width: 25px;
     height: 28px;
     background: url(/public/img/bg.png) -10px -440px no-repeat;
+    *margin-top:-30px;
 }
 .more_list {
     position: absolute;

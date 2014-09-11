@@ -25,6 +25,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/jquery.resizableColumns.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/demo.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
 </head>
 <body>
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>

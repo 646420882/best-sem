@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
     <link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style>
         .page2 .ajc {
             background: #ffb900;
