@@ -227,6 +227,9 @@ public class BiddingSubTask implements Runnable {
                     // 出价策略
                     BigDecimal currentPrice = biddingRuleEntity.getCurrentPrice();
 
+                    if(currentPrice == null){
+                        currentPrice = BigDecimal.ZERO;
+                    }
                     // 竞价日志
                     BiddingLogEntity biddingLogEntity = new BiddingLogEntity();
                     biddingLogEntity.setKeywordId(keywordEntity.getKeywordId());
