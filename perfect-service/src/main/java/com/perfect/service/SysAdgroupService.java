@@ -12,4 +12,6 @@ public interface SysAdgroupService {
     public List<AdgroupEntity> findByCampaignId(Long cid);
 
     public List<AdgroupEntity> findIdByCampaignId(Long cid);
+
+    public AdgroupEntity findByAdgroupId(Long agid);
 }
