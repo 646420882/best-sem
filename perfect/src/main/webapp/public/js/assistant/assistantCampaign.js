@@ -25,6 +25,7 @@ function getCampaignList(nowPage){
         param = {};
     }
     param["nowPage"] = nowPage;
+    param["pageSize"] = $("#camp_PageSize").val();
 
     $.ajax({
         url:"/assistantCampaign/list",
@@ -73,6 +74,10 @@ $(".campaignPage ul li>a").click(function(){
  */
 $("#campaignGo").click(function(){
     var nowPage = $(".campaignPageNo").val();
+    var totalPage =  $(".campaignPage").find("li>a:eq(3)").attr("name");
+    if(nowPage>parseInt(totalPage)){
+        nowPage = parseInt(totalPage);
+    }
     getCampaignList(nowPage);
     $(".campaignPageNo").val("");
 });

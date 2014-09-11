@@ -110,7 +110,11 @@
 
 .page ul li{
     margin-left: 5px;
-    display: inline;
+   float:left;
+}
+
+.page ul>div{
+    float:left;
 }
 
 .page ul li .inputNo{

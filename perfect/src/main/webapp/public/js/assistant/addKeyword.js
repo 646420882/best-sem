@@ -1,3 +1,20 @@
+var d =  dialog({title: "批量添加/更新",
+    padding: "5px",
+    content: "<iframe src='/newkeyword' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+    oniframeload: function () {
+    },
+    onclose: function () {
+//              if (this.returnValue) {
+//                  $('#value').html(this.returnValue);
+//              }
+//                window.location.reload(true);
+    },
+    onremove: function () {
+    }
+});
+
+
+
 $(function () {
     $("#addKeyword").livequery('click', function () {
         top.dialog({title: "关键词工具",
@@ -51,20 +68,7 @@ $(function () {
         return false;
     });
     $("#newkeyword").livequery('click', function () {
-        top.dialog({title: "批量添加/更新",
-            padding: "5px",
-            content: "<iframe src='/newkeyword' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
-            oniframeload: function () {
-            },
-            onclose: function () {
-//              if (this.returnValue) {
-//                  $('#value').html(this.returnValue);
-//              }
-//                window.location.reload(true);
-            },
-            onremove: function () {
-            }
-        }).showModal();
+        d.showModal();
         return false;
     });
     $("#deletekeyword").livequery('click', function () {

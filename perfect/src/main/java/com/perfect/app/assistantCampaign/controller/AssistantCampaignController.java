@@ -42,12 +42,12 @@ public class AssistantCampaignController {
      * @param response
      */
     @RequestMapping(value = "assistantCampaign/list" ,method = {RequestMethod.GET,RequestMethod.POST})
-    public void getAllCampaignList(HttpServletResponse response,Integer nowPage){
+    public void getAllCampaignList(HttpServletResponse response,Integer nowPage,Integer pageSize){
         if(nowPage==null){
             nowPage = 1;
         }
         Query query = new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()));
-        PagerInfo page = campaignDAO.findByPageInfo(query,PAGE_SIZE,nowPage);
+        PagerInfo page = campaignDAO.findByPageInfo(query,pageSize,nowPage);
         webContext.writeJson(page,response);
     }
 
