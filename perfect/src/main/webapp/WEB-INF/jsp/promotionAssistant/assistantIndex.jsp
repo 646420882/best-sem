@@ -63,7 +63,7 @@
 <div class="zhushou over wd ">
 <div class="zhushou_menu wd">
     <ul class="zs_nav">
-        <li class="showbox"><a><span><img src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
+        <li class="showbox"><a id="downloadAccountData"><span><img src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
         <li><a><span><img src="../public/img/update.png"></span><span>上传更新</span></a></li>
         <li class="current"><a><span><img src="../public/img/Advanced_search.png"></span><span>高级搜索</span></a></li>
         <li class="nav_menu"><a><span><img src="../public/img/Repeat_keyword.png"></span><span>重复关键词</span></a>

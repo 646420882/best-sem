@@ -57,7 +57,7 @@ $(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
-        $(".box").css({
+        $("#seetingRules").css({
             left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
             top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
             display: "block"
@@ -65,7 +65,7 @@ $(function () {
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box ").css("display", "none");
+        $("#seetingRules").css("display", "none");
     });
 //修改出价
     $("#showbox2").click(function () {
@@ -102,15 +102,15 @@ $(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
-        $("#download").css({
-            left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+        $("#downloadData").css({
+            left: ($("body").width() - $("#downloadData").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#downloadData").height()) / 2 + $(window).scrollTop() + "px",
             display: "block"
         });
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box4 ").css("display", "none");
+        $("#downloadData").css("display", "none");
     });
 
 //暂停竞价规则
@@ -130,7 +130,7 @@ $(function () {
         $.ajax({
             url: "/bidding/enable",
             data: {'ids': ids.toString(),
-                    "ebl": false},
+                "ebl": false},
             type: "POST",
             success: function (datas) {
                 if (datas.code == 0) {
@@ -171,7 +171,7 @@ $(function () {
         $.ajax({
             url: "/bidding/enable",
             data: {'ids': ids.toString(),
-                    "ebl":true},
+                "ebl": true},
             type: "POST",
             success: function (datas) {
                 if (datas.code == 0) {
@@ -303,7 +303,7 @@ $(function () {
             data: {'ids': ids.toString()},
             type: "POST",
             success: function (datas) {
-                datas.rows.forEach(function (i,item) {
+                datas.rows.forEach(function (i, item) {
                 });
                 alert("排名检查完毕,请点击查看当前排名.");
             }
@@ -422,11 +422,11 @@ function sendReq(run) {
     req.failed = checked('failed').val();
 
     req.auto = checked('auto').val();
-    if(req.auto == 1){
+    if (req.auto == 1) {
         var input = checked('sbid').val();
-        if(input == 'bytime'){
-            req.runByTimes = $('#bytimes').val();
-        }else{
+        if (input == 'bytime') {
+            req.runByTimes = $('input[name=bytimes]').val();
+        } else {
             req.runByTimes = -1;
         }
     }
@@ -444,7 +444,7 @@ function sendReq(run) {
         url: "/bidding/save",
         data: JSON.stringify(req),
         type: "POST",
-        contentType: "application/json",
+        contentType: "application/json; charset=utf-8",
         success: function (data) {
             alert('创建规则成功');
             $('.close').click();
