@@ -180,7 +180,7 @@
     </div>
     <div class="shuju_detali over">
         <ul>
-            <li class="date">选择时间范围：<input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31">
+            <li class="date">选择时间范围：<input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31" readonly>
                 <input name="reservation" type="image" cname="dateClick"
                        onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                        src="${pageContext.request.contextPath}/public/img/date.png">
@@ -307,7 +307,7 @@
                     <input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31">
                     <input name="reservation" type="image" cname="dateClick"
                            onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
-                           src="${pageContext.request.contextPath}/public/img/date.png">
+                           src="${pageContext.request.contextPath}/public/img/date.png" readonly>
                 </li>
                 <li id="reportType">选择报告类型：
                     <a href="javascript:" class="current" cname="1">结构报告</a><span>|</span>

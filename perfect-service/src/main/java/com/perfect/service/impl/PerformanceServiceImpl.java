@@ -167,7 +167,7 @@ public class PerformanceServiceImpl implements PerformanceService {
      * @return
      */
     @Override
-    public List<AccountReportEntity> performanceCurve(Date startDate, Date endDate) {
+    public List<AccountReportEntity> performanceCurve(Date startDate, Date endDate,List<String> date) {
 
         List<AccountReportEntity> listUser = accountAnalyzeDAO.performaneCurve(startDate, endDate);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -202,6 +202,39 @@ public class PerformanceServiceImpl implements PerformanceService {
             list.setMobileCpm(null);
             list.setMobileCtr(null);
         }
+        int jueds = -1;
+        for(String s:date){
+            for(AccountReportEntity accountReportEntity :listUser){
+                String d = dateFormat.format(accountReportEntity.getDate());
+                if(s.equals(d)){
+                    jueds = 1;
+                    break;
+                }else{
+                    jueds = -1;
+                }
+            }
+            if(jueds == -1){
+                AccountReportEntity entity = new AccountReportEntity();
+                try {
+                    entity.setDate(dateFormat.parse(s));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                entity.setPcImpression(0);
+                entity.setPcClick(0);
+                entity.setPcConversion(0.00);
+                entity.setPcCpc(0.00);
+                entity.setPcCpm(0.00);
+                entity.setPcCost(0.00);
+                entity.setPcCtr(0.00);
+                listUser.add(entity);
+            }
+        }
+        for(AccountReportEntity accountReport :listUser){
+            accountReport.setOrderBy("1");
+            accountReport.setCount(date.size());
+        }
+        Collections.sort(listUser);
         return listUser;
     }
 }
