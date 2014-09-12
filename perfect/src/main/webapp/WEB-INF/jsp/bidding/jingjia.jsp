@@ -17,11 +17,10 @@
     .tab_box {
         padding: 10px 0 0 2px;
     }
-
 </style>
 <body>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
-<div class="concent over fl">
+<div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
 <div class="on_title over">
