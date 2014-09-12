@@ -771,6 +771,11 @@ function fullItems(datas, name) {
     var newrows = [];
     datas.rows.forEach(function (item) {
         var newrow = "";
+        var _price = 0;
+        if (item.price != null) {
+            _price = item.price;
+        }
+
         if (item.keywordId != null) {
             newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.keywordId + "'></td>" +
                     "<td>&nbsp;" + item.keyword + "</td>" +
@@ -778,7 +783,7 @@ function fullItems(datas, name) {
                     "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.keywordId + "'>查看最新排名</a></td>" +
                     "<td>&nbsp;" + item.impression + "</td>" +
                     "<td>&nbsp;" + item.ctr + "%</td>" +
-                    "<td>&nbsp;" + item.price + "</td>" +
+                    "<td>&nbsp;" + _price + "</td>" +
                     "<td>&nbsp;" + item.pcQuality + "</td>" +
                     "<td>&nbsp;" + item.mQuality + "</td>" +
                     "<td>&nbsp;" + item.statusStr + "</td>";
@@ -789,7 +794,7 @@ function fullItems(datas, name) {
                     "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.id + "'>查看最新排名</a></td>" +
                     "<td>&nbsp;" + item.impression + "</td>" +
                     "<td>&nbsp;" + item.ctr + "%</td>" +
-                    "<td>&nbsp;" + item.price + "</td>" +
+                    "<td>&nbsp;" + _price + "</td>" +
                     "<td>&nbsp;" + item.pcQuality + "</td>" +
                     "<td>&nbsp;" + item.mQuality + "</td>" +
                     "<td>&nbsp;" + item.statusStr + "</td>";
