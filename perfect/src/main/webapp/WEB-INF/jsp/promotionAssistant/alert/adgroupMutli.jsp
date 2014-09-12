@@ -47,7 +47,7 @@
 
                 <div class="newkeyeord_title over">
                     <ul class="over">
-                        <li><input type="radio" checked="checked" name="Target" onclick="stepOne();">选择推广计划、推广单元</li>
+                        <li><input type="radio" checked="checked" name="Target" onclick="stepOne();">选择推广计划</li>
                         <%--<li><input type="radio" name="Target" onclick="stepTwo();">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>--%>
                     </ul>
                     <div class="newkeyword_content over">
@@ -61,15 +61,15 @@
                             </div>
 
                             <div class="newkeyword_right fr over">
-                                <h3> 请输入普通创意 </h3>
+                                <h3> 请输入推广单元 </h3>
 
-                                <p>请输入普通创意信息（每行一个），并使用Tab键或逗号(英文)分隔各字段，也可以直接从Excel复制并粘贴，输入-，则将对应信息恢复为默认</p>
+                                <p>请输入推广单元信息（每行一个），并使用Tab键或逗号(英文)分隔各字段，也可以直接从Excel复制并粘贴，输入-，则将对应信息恢复为默认</p>
 
                                 <div class="newkeyword_right_mid">
-                                    <p>格式：创意标题(必填)，创意描述1，创意描述2，默认访问URL，默认显示URL，移动访问URL，移动显示URL，启用/暂停，设备偏好</p>
+                                    <p>格式：推广单元名称(必填),启用/暂停,出价</p>
 
                                     <p>
-                                        例如：标题,描述1,描述2,http://baidu.com,www.baidu.com,http://m.baidu.com,m.baidu.com,启用,全部设备</p>
+                                        例如：单元,启用,1.0</p>
                                     <textarea onkeyup="getColumn(this)" id="creativeMultiTxt"></textarea>
 
                                     <p id="pError"><span><span id="checkedNodes">0</span>x<span
@@ -141,15 +141,8 @@
                                 <tr class="list02_top">
                                     <th>&nbsp;推广计划</th>
                                     <th>&nbsp;推广单元</th>
-                                    <th>&nbsp;创意标题</th>
-                                    <th>&nbsp;创意描述1</th>
-                                    <th>&nbsp;创意描述2</th>
-                                    <th>&nbsp;默认访问URL</th>
-                                    <th>&nbsp;默认显示URL</th>
-                                    <th>&nbsp;移动访问URL</th>
-                                    <th>&nbsp;移动显示URL</th>
-                                    <th>&nbsp;启用/暂停</th>
-                                    <th>&nbsp;设备偏好</th>
+                                    <th>&nbsp;启用</th>
+                                    <th>&nbsp;出价</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tbodyClick2">
@@ -226,22 +219,22 @@ function initMutliTree() {
                 json["titile"] = "";
                 json["open"] = false;
                 array.push(json);
-                for (var j = 0; j < data[i].childNode.length; j++) {
-                    json = {};
-
-                    if (data[i].childNode[j].adgroupId == null) {
-                        json["id"] = data[i].childNode[j].id;
-                    } else {
-                        json["id"] = data[i].childNode[j].adgroupId;
-                    }
-
-                    json["pId"] = camId;
-                    json["name"] = data[i].childNode[j].adgroupName;
-                    json["titile"] = "";
-                    json["checked"] = false;
-                    json["isHidden"] = true;
-                    array.push(json);
-                }
+//                for (var j = 0; j < data[i].childNode.length; j++) {
+//                    json = {};
+//
+//                    if (data[i].childNode[j].adgroupId == null) {
+//                        json["id"] = data[i].childNode[j].id;
+//                    } else {
+//                        json["id"] = data[i].childNode[j].adgroupId;
+//                    }
+//
+//                    json["pId"] = camId;
+//                    json["name"] = data[i].childNode[j].adgroupName;
+//                    json["titile"] = "";
+//                    json["checked"] = false;
+//                    json["isHidden"] = true;
+//                    array.push(json);
+//                }
             }
             $.fn.zTree.init($("#creativeMultiTree"), settingCreativeMutli, array);
         }
@@ -250,7 +243,9 @@ function initMutliTree() {
 function onCheck(e, treeId, treeNode) {
     count();
     var v = getSelectedNodeToString();
+    console.log(v);
     var vs = getSelectedNodeNameToString();
+    console.log(vs);
     if (v != "") {
         var campaign = v.split("-");
         $("#column").html(campaign.length);
@@ -299,7 +294,7 @@ function getSelectedNodeToString() {
         if (selectNode[i].isParent == true) {
             parentNode = selectNode[i].id;
         } else {
-            v = v + parentNode + "," + selectNode[i].id + "-";
+            v = v + selectNode[i].id + ",";
         }
     }
     v = v.substr(0, v.length - 1);
@@ -317,7 +312,7 @@ function getSelectedNodeNameToString() {
         if (selectNode[i].isParent == true) {
             parentNode = selectNode[i].name;
         } else {
-            v = v + parentNode + "," + selectNode[i].name + "-";
+            v = v  + selectNode[i].name + ",";
         }
     }
     v = v.substr(0, v.length - 1);
@@ -347,43 +342,30 @@ function nextStep() {
         initNextStep();
         var vs = getSelectedNodeNameToString();
         var v = getSelectedNodeToString();
-        var ids = v.split("-");
-        var names = vs.split("-");
+        var ids = v.split(",");
+        var names = vs.split(",");
         var _createTable = $("#createTable tbody");
         var txtSize = txt.split("\n");
         _createTable.empty();
         $("#criSize").html(ids.length);
-        for (var i = 0; i < names.length; i++) {
+        for(var i=0;i<names.length;i++){
             for (var j = 0; j < txtSize.length; j++) {
                 var c0 = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";
                 var c1 = txtSize[j].split(",")[1] != undefined ? txtSize[j].split(",")[1] : "";
-                var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "";
-                var c3 = txtSize[j].split(",")[3] != undefined ? txtSize[j].split(",")[3] : "";
-                var c4 = txtSize[j].split(",")[4] != undefined ? txtSize[j].split(",")[4] : "";
-                var c5 = txtSize[j].split(",")[5] != undefined ? txtSize[j].split(",")[5] : "";
-                var c6 = txtSize[j].split(",")[6] != undefined ? txtSize[j].split(",")[6] : "";
-                var c7 = txtSize[j].split(",")[7] != undefined ? txtSize[j].split(",")[7] : "";
-                var c7_pause = c7 == "停用" ? "停用" : "启用";
-                var c8 = txtSize[j].split(",")[8] != undefined ? txtSize[j].split(",")[8] : "";
+                var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "0.0";
+                var c4_pause = "停用";
+                if(c1!=""){
+                    c4_pause=c1 == "停用" ? "停用" : "启用";
+                }
                 var _tbody = "<tr>" +
-                        "<td>" + names[i].split(",")[0] + "<input type='hidden' value=" + ids[i].split(",")[0] + "></td>" +
-                        "<td>" + names[i].split(",")[1] + "<input type='hidden' value=" + ids[i].split(",")[1] + "></td>" +
+                        "<td>" + names[i]+ "<input type='hidden' value=" + ids[i] + "></td>" +
                         "<td>" + c0 + "</td>" +
-                        "<td>" + c1 + "</td>" +
+                        "<td>" + c4_pause + "</td>" +
                         "<td>" + c2 + "</td>" +
-                        "<td>" + c3 + "</td>" +
-                        "<td>" + c4 + "</td>" +
-                        "<td>" + c5 + "</td>" +
-                        "<td>" + c6 + "</td>" +
-                        "<td>" + c7_pause + "</td>" +
-                        "<td>" + c8 + "</td>" +
                         "</tr>";
                 _createTable.append(_tbody);
-
             }
-
         }
-
     }
 }
 /**
@@ -451,17 +433,11 @@ function overStep() {
         $(trs).each(function (i, o) {
             var _tr = $(o);
             var cid = _tr.find("td:eq(0) input").val();
-            var aid = _tr.find("td:eq(1) input").val();
-            var title = _tr.find("td:eq(2)").html();
-            var desc1 = _tr.find("td:eq(3)").html();
-            var desc2 = _tr.find("td:eq(4)").html();
-            var pc = _tr.find("td:eq(5)").html();
-            var pcs = _tr.find("td:eq(6)").html();
-            var mib = _tr.find("td:eq(7)").html();
-            var mibs = _tr.find("td:eq(8)").html();
-            var pause = _tr.find("td:eq(9)").html();
+            var name=_tr.find("td:eq(1)").html();
+            var pause = _tr.find("td:eq(2)").html();
+            var maxPrice=_tr.find("td:eq(3)").html();
             var pause_ToF = pause != "启用" ? false : true;
-            $.post("../assistantCreative/insertOrUpdate", {aid: aid, title: title, description1: desc1, description2: desc2, pcDestinationUrl: pc, pcDisplayUrl: pcs, mobileDestinationUrl: mib, mobileDisplayUrl: mibs, pause: pause_ToF, status: -1}, function (rs) {
+            $.post("../assistantAdgroup/insertOrUpdate", {cid: cid, name:name,pause:pause_ToF,maxPrice:maxPrice,status:-1}, function (rs) {
             });
         });
         alert("操作成功!");

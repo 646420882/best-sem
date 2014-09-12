@@ -128,7 +128,6 @@ public class AssistantAdgroupController extends WebContextSupport {
      *
      * @param request
      * @param response
-     * @param agid
      * @param cid
      * @param name
      * @param maxPrice
@@ -141,7 +140,6 @@ public class AssistantAdgroupController extends WebContextSupport {
      */
     @RequestMapping(value = "/adAdd", method = RequestMethod.POST)
     public ModelAndView adAdd(HttpServletRequest request, HttpServletResponse response,
-                              @RequestParam(value = "oid", required = true) String agid,
                               @RequestParam(value = "cid", required = true) String cid,
                               @RequestParam(value = "adgroupName") String name,
                               @RequestParam(value = "maxPrice") Double maxPrice,
@@ -307,14 +305,101 @@ public class AssistantAdgroupController extends WebContextSupport {
         return null;
     }
 
+    /**
+     * 删除的数据还原，这里特指同步过后的数据
+     *
+     * @param response
+     * @param oid
+     * @return
+     */
     @RequestMapping(value = "/agDelBack", method = RequestMethod.GET)
     public ModelAndView agDelBack(HttpServletResponse response, @RequestParam(value = "oid", required = true) Long oid) {
         try {
             adgroupDAO.delBack(oid);
-            writeHtml(SUCCESS,response);
+            writeHtml(SUCCESS, response);
         } catch (Exception e) {
             e.printStackTrace();
-            writeHtml(EXCEPTION,response);
+            writeHtml(EXCEPTION, response);
+        }
+        return null;
+    }
+
+    /**
+     * 弹出批量添加/修改页面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/adgroupMutli")
+    public ModelAndView converAdgroupMutli() {
+        return new ModelAndView("promotionAssistant/alert/adgroupMutli");
+    }
+
+    /**
+     * 单元批量修改方法，如果
+     *
+     * @param response
+     * @param cid
+     * @param name
+     * @param maxPrice
+     * @param p
+     * @param s
+     * @return
+     */
+    @RequestMapping(value = "/insertOrUpdate", method = RequestMethod.POST)
+    public ModelAndView insertOrUpdate(HttpServletResponse response, @RequestParam(value = "cid", required = true) String cid,
+                                       @RequestParam(value = "name") String name,
+                                       @RequestParam(value = "maxPrice") Double maxPrice,
+                                       @RequestParam(value = "pause") Boolean p,
+                                       @RequestParam(value = "status") Integer s) {
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("name", name);
+            if (cid.length() > OBJ_SIZE) {
+                params.put(EntityConstants.CAMPAIGN_ID, cid);
+            } else {
+                params.put(EntityConstants.CAMPAIGN_ID, Long.valueOf(cid));
+            }
+            AdgroupEntity adgroupEntity = adgroupDAO.fndEntity(params);
+            if (adgroupEntity != null) {
+                AdgroupEntity adgroupEntityFind = null;
+                if (adgroupEntity.getAdgroupId() != null) {
+                    adgroupEntityFind = adgroupDAO.findByObjId(adgroupEntity.getId());
+                    adgroupEntityFind.setAdgroupName(name);
+                    adgroupEntityFind.setMaxPrice(maxPrice);
+                    adgroupDAO.updateByObjId(adgroupEntityFind);
+                    writeHtml(SUCCESS, response);
+                } else {
+                    adgroupEntityFind = adgroupDAO.findOne(adgroupEntity.getAdgroupId());
+                    AdgroupEntity adgroupEntityBackUp = new AdgroupEntity();
+                    adgroupEntityFind.setLocalStatus(2);
+                    BeanUtils.copyProperties(adgroupEntityFind, adgroupEntityBackUp);
+                    adgroupEntityFind.setAdgroupName(name);
+                    adgroupEntityFind.setMaxPrice(maxPrice);
+                    adgroupDAO.update(adgroupEntityFind, adgroupEntityBackUp);
+                    writeHtml(SUCCESS, response);
+                }
+            } else {
+                AdgroupEntity adgroupEntityInsert = new AdgroupEntity();
+                adgroupEntityInsert.setAccountId(AppContext.getAccountId());
+                if (cid.length() > OBJ_SIZE) {
+                    adgroupEntityInsert.setCampaignObjId(cid);
+                } else {
+                    adgroupEntityInsert.setCampaignId(Long.parseLong(cid));
+                }
+                adgroupEntityInsert.setAdgroupName(name);
+                adgroupEntityInsert.setMaxPrice(maxPrice);
+                adgroupEntityInsert.setNegativeWords(new ArrayList<String>(0));
+                adgroupEntityInsert.setExactNegativeWords(new ArrayList<String>(0));
+                adgroupEntityInsert.setPause(p);
+                adgroupEntityInsert.setStatus(s);
+                adgroupEntityInsert.setMib(0.0);
+                adgroupEntityInsert.setLocalStatus(1);
+                adgroupDAO.insertOutId(adgroupEntityInsert);
+            }
+            writeHtml(SUCCESS, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            writeHtml(EXCEPTION, response);
         }
         return null;
     }

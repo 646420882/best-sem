@@ -677,3 +677,17 @@ function agDelReBack(oid) {
         }
     });
 }
+function adgroupMutli(){
+    top.dialog({title: "添加/更新多个单元",
+        padding: "5px",
+        content: "<iframe src='/assistantAdgroup/adgroupMutli' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        oniframeload: function () {
+
+        },
+        onclose: function () {
+//            loadCreativeData({cid:null,aid:null});
+        },
+        onremove: function () {
+        }
+    }).showModal();
+}
