@@ -37,16 +37,23 @@ public class TopN<T> {
         }
 
         //TopN数组
-        T topNData[] = Arrays.copyOf(ts, n);
+        T topNData[];
+        int l = ts.length;
+        if (l >= n) {
+            topNData = Arrays.copyOf(ts, n);
+        } else {
+            topNData = ts;
+        }
 
         //采用快速排序
         quickSort(topNData, 0, topNData.length - 1);
 
         //遍历剩余部分
         try {
-            for (int i = n, l = ts.length; i < l; i++) {
-                if (((Comparable) getMethod.invoke(ts[i])).compareTo(getMethod.invoke(topNData[n - 1])) == 1) {
-                    topNData[n - 1] = ts[i];
+            for (int i = n; i < l; i++) {
+                int index = (l >= n) ? (n - 1) : (l - 1);
+                if (((Comparable) getMethod.invoke(ts[i])).compareTo(getMethod.invoke(topNData[index])) == 1) {
+                    topNData[index] = ts[i];
                     quickSort(topNData, 0, topNData.length - 1);
                 }
             }

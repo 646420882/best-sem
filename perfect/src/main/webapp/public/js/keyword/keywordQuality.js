@@ -1,4 +1,3 @@
-
 var redisKey = "";
 
 //关键词质量度数据加载
@@ -37,6 +36,9 @@ var loadKeywordQualityData = function () {
             var reports = data.report;
             if (reports != null && reports.length > 0) {
                 for (var i = 0; i <= 10; i++) {
+                    if (reports[i] == undefined) {
+                        continue;
+                    }
                     var grade = reports[i]["grade"];
                     $.each(reports[i]["reportList"], function (j, item) {
                         var _class = "";
