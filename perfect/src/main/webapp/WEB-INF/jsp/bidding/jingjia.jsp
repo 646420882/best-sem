@@ -308,7 +308,7 @@
 </div>
 </div>
 <div class="TB_overlayBG"></div>
-<div class="box" style="display:none" id="downloadData">
+<div class="box10" style="display:none" id="downloadData">
     <h2 id="downloadBox">账户下载<a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
@@ -815,9 +815,9 @@ function fullItems(datas, name) {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
-        $(".box").css({
-            left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
+        $("#seetingRules").css({
+            left: ($("body").width() - $("#seetingRules").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#seetingRules").height()) / 2 + $(window).scrollTop() + "px",
             display: "block"
         });
     });

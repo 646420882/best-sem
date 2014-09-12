@@ -1,13 +1,3 @@
-window.onload = function () {
-    rDrag.init(document.getElementById('box'));
-    rDrag.init(document.getElementById('box2'));
-    rDrag.init(document.getElementById('box3'));
-    rDrag.init(document.getElementById('box4'));
-    rDrag.init(document.getElementById('box5'));
-    rDrag.init(document.getElementById('box6'));
-    rDrag.init(document.getElementById('downloadBox'));
-};
-
 function initOptions(id, start, end) {
 
     var select = $('#' + id);
@@ -95,7 +85,7 @@ $(function () {
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box4 ").css("display", "none");
+        $(".box4").css("display", "none");
     });
 //下载
     $("#updateBtn").click(function () {
@@ -142,18 +132,7 @@ $(function () {
                 }
             }
         });
-
-
-//        $(".TB_overlayBG").css({
-//            display: "block", height: $(document).height()
-//        });
-//        $(".box3").css({
-//            left: ($("body").width() - $(".box3").width()) / 2 - 20 + "px",
-//            top: ($(window).height() - $(".box3").height()) / 2 + $(window).scrollTop() + "px",
-//            display: "block"
-//        });
     });
-
 
     $("#showbox7").click(function () {
         var items = checked("subbox");
@@ -183,16 +162,6 @@ $(function () {
                 }
             }
         });
-
-
-//        $(".TB_overlayBG").css({
-//            display: "block", height: $(document).height()
-//        });
-//        $(".box3").css({
-//            left: ($("body").width() - $(".box3").width()) / 2 - 20 + "px",
-//            top: ($(window).height() - $(".box3").height()) / 2 + $(window).scrollTop() + "px",
-//            display: "block"
-//        });
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
@@ -279,11 +248,11 @@ $(function () {
 
     $('#rulesave').click(function () {
         sendReq(false);
-    })
+    });
 
     $('#rulesaverun').click(function () {
         sendReq(true);
-    })
+    });
 
 
     $('#rankBtn').click(function () {
@@ -296,7 +265,7 @@ $(function () {
         var ids = [];
         items.each(function (i, item) {
             ids.push(item.value);
-        })
+        });
 
         $.ajax({
             url: "/bidding/rank",
@@ -359,7 +328,7 @@ function sendReq(run) {
     req.min = $('#min').val();
 
     if (req.max < 0.01 || req.min < 0.01) {
-        alert('竞价格式错误!')
+        alert('竞价格式错误!');
         return;
     }
 

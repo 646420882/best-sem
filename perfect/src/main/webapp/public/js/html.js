@@ -43,24 +43,6 @@ window.onload = function () {
 };
 
 $(function () {
-    $("#updateBtn").click(function () {
-        $(".TB_overlayBG").css({
-            display: "block", height: $(document).height()
-        });
-        $("#downloadData").css({
-            left: ($("body").width() - $("#downloadData").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $("#downloadData").height()) / 2 + $(window).scrollTop() + "px",
-            display: "block"
-        });
-    });
-    $(".close").click(function () {
-        $(".TB_overlayBG").css("display", "none");
-        $("#downloadData").css("display", "none");
-    });
-});
-
-
-$(function () {
     $("#downloadAccountData").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -99,7 +81,7 @@ $(function () {
     $(".time_sl").click(function () {
         $(".time_select").show();
     });
-})
+});
 /*******估算工具**************/
 $(function () {
     $(".showbox4").click(function () {
@@ -180,7 +162,7 @@ $(document).ready(function () {
 
     });
 
-})
+});
 /*******顶部菜单****/
 $(document).ready(function () {
     $('.zhushou_menu ul li').click(function () {
