@@ -10,13 +10,16 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/zTreeStyle/Normalize.css">--%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
     <link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style>
         .page2 .ajc {
             background: #ffb900;
@@ -26,9 +29,9 @@
     </style>
 </head>
 <body>
-<jsp:include page="pageBlock/nav.jsp"/>
-<div class="concent fl ">
 <jsp:include page="pageBlock/head.jsp"/>
+<div class="concent fl ">
+<jsp:include page="pageBlock/nav.jsp"/>
 <div class="mid over">
 <div class="on_title over">
     <a href="#">
@@ -881,7 +884,7 @@
     <%--<div class="page2 fl">
         <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a
             href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="nextpage2"><span></span></a><span
-            style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#"> GO</a>
+            style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#" class='page_go'> GO</a>
 
     </div>--%>
             <span class="fr">每页显示
@@ -1066,7 +1069,7 @@
             <div class="page2 fl">
                 <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a
                     href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="nextpage2"><span></span></a><span
-                    style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#">
+                    style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#" class='page_go'>
                 GO</a>
 
             </div>
@@ -1302,7 +1305,7 @@ var loadPerformance = function (obj, date) {
 
                     }
                     page_html = page_html + "<a href='javascript:' id='pageDownDet' class='nextpage2'><span></span></a>" +
-                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goDetID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goDet'> GO</a>"
+                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goDetID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goDet' class='page_go'> GO</a>"
                     $("#pageUser").append(page_html);
                     judgeDet++;
                 }

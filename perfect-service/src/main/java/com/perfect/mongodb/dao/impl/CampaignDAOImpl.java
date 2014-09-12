@@ -11,6 +11,7 @@ import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.utils.LogUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -259,6 +260,32 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
     public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
         return null;
     }
+
+
+    //xj
+    @Override
+    public PagerInfo findByPageInfo(Query q,int pageSize, int pageNo) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        int totalCount=getListTotalCount(q);
+
+        PagerInfo p=new PagerInfo(pageNo, pageSize,totalCount);
+        q.skip(p.getFirstStation());
+        q.limit(p.getPageSize());
+        if (totalCount<1) {
+            p.setList(new ArrayList());
+            return p;
+        }
+        List list= mongoTemplate.find(q, getEntityClass());
+        p.setList(list);
+        return p;
+    }
+
+    //xj
+    public int getListTotalCount(Query q){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return (int) mongoTemplate.count(q,EntityConstants.TBL_CAMPAIGN);
+    }
+
 
     private List<Long> getAdgroupIdByCampaignId(List<Long> campaignIds) {
         MongoTemplate mongoTemplate = getMongoTemplate();

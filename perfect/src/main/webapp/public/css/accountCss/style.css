@@ -4,10 +4,10 @@
     min-height: 900px;
 }
 .concent {
-    width: 90%;
+    width: 91%;
     position: relative;
-    margin-top: 77px;
-    margin-left:220px;
+    margin-top: 94px;
+    margin-left:180px;
     background: #fff;
     /*   background: url(/public/img/concent_bg.jpg) repeat;*/
     font-family: "微软雅黑";
@@ -268,7 +268,6 @@
 
 .list2 table td, th, .list3 table td {
     line-height: 30px;
-    *line-height: inherit;
 }
 .list2 table td, .list3table td {
     line-height: 30px;
@@ -422,11 +421,11 @@
     margin: 10px 0 0 8px;
 }
 .tips {
-    width: 3%;
+    width: 8px;
     max-width: 8px;
     position: relative;
     background: url(/public/img/tips_bg_03.png) repeat;
-    min-height: 960px;
+    min-height: 1000px;
     z-index: 120;
     left: 0px;
     top: 0px;
@@ -438,6 +437,9 @@
 .page span {
     display: block;
     float: right;
+}
+.page_go{
+    *margin-top:-20px;
 }
 /*数据分析*/
 .number_concent {
@@ -554,6 +556,7 @@
 .tu_top ul li span {
     width: 13px;
     height: 13px;
+    *margin-top: 3px;
 }
 .tu_top ul li .blue {
     background: #078cc7;
@@ -1302,7 +1305,7 @@ ul.ztree.zTreeDragUL {
     border-right: 1px solid #ffffff;
     border-bottom: 1px solid #ffffff;
     cursor: Default;
-    verflow: hidden;
+    overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
@@ -1321,6 +1324,7 @@ ul.ztree.zTreeDragUL {
 }
 .page2 {
     margin: 10px 0 0 30%;
+    overflow:hidden;
 }
 .page2 a {
     display: block;
@@ -1355,6 +1359,7 @@ ul.ztree.zTreeDragUL {
 /* 弹出层 */
 .box, .box2, .box3, .box4, .box5, .box6, .box7, .box8, .box9, .box10 {
     min-width: 400px;
+    max-width:800px;
     position: absolute;
     border-radius: 5px;
     left: 50%;
@@ -1364,18 +1369,19 @@ ul.ztree.zTreeDragUL {
     overflow: hidden;
 }
 .box h2, .box2 h2, .box3 h2, .box4 h2, .box5 h2, .box6 h2, .box7 h2, .box8 h2, .box9 h2, .box10 h2 {
+    display:block;
+    width:90%;
     height: 46px;
     font-size: 14px;
     background-color: #282538;
     position: relative;
-    padding: 0 20px;
+    padding: 0 5%;
     line-height: 46px;
     color: #fff;
     cursor: Move;
 }
 h2 .close {
-    position: absolute;
-    right: 15px;
+    float:right;
     font-size: 12px;
     color: #fff;
 }
@@ -1612,7 +1618,7 @@ h2 .close {
     color: #b4b4b4;
 }
 .zs_bottom2 {
-    width: 28%;
+    width: 30%;
     padding-left: 2%;
 }
 .zs_bottom1 ul li, .zs_bottom2 ul li {
@@ -1626,7 +1632,7 @@ h2 .close {
     border: 1px solid #cfcfcf;
 }
 .t_list03 .zs_input1 {
-    width: 72%;
+    width: 78%;
 }
 .w_list04 {
     width: 100%;
@@ -1636,11 +1642,15 @@ h2 .close {
     text-align: right;
 }
 .t_list02, .t_list03 {
-    width: 86%;
+    width: 89%;
 }
 .t_list04 {
-    width: 50%;
+    width: 49.5%;
     margin-bottom: 10px;
+}
+.t_list05{
+    width: 78%;
+
 }
 .w_list02 {
     margin-left: 10px;
@@ -1688,6 +1698,7 @@ h2 .close {
     width: 25px;
     height: 28px;
     background: url(/public/img/bg.png) -10px -440px no-repeat;
+    *margin-top:-30px;
 }
 .more_list {
     position: absolute;
@@ -2542,7 +2553,9 @@ h2 .close {
     height:30px;
     border-right:1px solid #fff;
     min-width:110px;
-    verflow: hidden;
-    text-overflow: ellipsis;
+    font-weight:normal;
+    *width:200px;
+    overflow: hidden;
+
 }
 /* CSS Document */

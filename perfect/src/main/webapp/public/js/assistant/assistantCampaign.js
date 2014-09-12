@@ -7,15 +7,26 @@ window.onload=function(){
     rDrag.init(document.getElementById('setExtensionDiv'));
     rDrag.init(document.getElementById('setScheduleDiv'));
     rDrag.init(document.getElementById('plan2'));
-//    rDrag.init(document.getElementById('batchAddOrUpdateKeyword'));
 }
 
 /**
  * 得到所有推广计划
  */
-function getCampaignList(param){
+function getCampaignList(nowPage){
     $("#tbodyClick5").empty();
     $("#tbodyClick5").html("加载中...");
+
+    if(/^\d+$/.test(nowPage) == false){
+        nowPage = 0;
+    }
+
+    var param = getNowChooseCidAndAid();
+    if(param==null){
+        param = {};
+    }
+    param["nowPage"] = nowPage;
+    param["pageSize"] = $("#camp_PageSize").val();
+
     $.ajax({
         url:"/assistantCampaign/list",
         type:"post",
@@ -23,18 +34,66 @@ function getCampaignList(param){
         dataType:"json",
         success:function(data){
             $("#tbodyClick5").empty();
-            if(data.length==0){
+            setRedirectPageInfo_campaign(data);
+            if(data.list.length==0){
                 $("#tbodyClick5").html("暂无数据!");
                 return ;
             }
-            for(var i=0;i<data.length;i++){
-                campaignDataToHtml(data[i],i);
+            for(var i=0;i<data.list.length;i++){
+                campaignDataToHtml(data.list[i],i);
             }
         }
     });
 
 }
 
+
+
+/**
+ * 设置首页，上下页，尾页跳转信息
+ * @param data
+ */
+function setRedirectPageInfo_campaign(data) {
+    $(".campaignPage").find("li>a:eq(0)").attr("name",0);
+    $(".campaignPage").find("li>a:eq(1)").attr("name",data.prePage);
+    $(".campaignPage").find("li>a:eq(2)").attr("name",data.nextPage);
+    $(".campaignPage").find("li>a:eq(3)").attr("name",data.totalPage);
+    $(".campaignPage").find("li:eq(4)").html("当前页:"+data.pageNo+"/"+data.totalPage);
+    $(".campaignPage").find("li:eq(5)").html("共"+data.totalCount+"条");
+}
+
+/**
+ * 首页，上下页，尾页单击事件
+ */
+$(".campaignPage ul li>a").click(function(){
+    var nowPage = $(this).attr("name");
+    getCampaignList(nowPage);
+});
+/**
+ * 关键词Go按钮的单击事件
+ */
+$("#campaignGo").click(function(){
+    var nowPage = $(".campaignPageNo").val();
+    var totalPage =  $(".campaignPage").find("li>a:eq(3)").attr("name");
+    if(nowPage>parseInt(totalPage)){
+        nowPage = parseInt(totalPage);
+    }
+    getCampaignList(nowPage);
+    $(".campaignPageNo").val("");
+});
+
+
+
+
+
+/**
+ * 单击某一行时将改行的数据放入文本框内
+ */
+$("#tbodyClick5").delegate("tr","click",function(){
+    var obj = $(this);
+    var campaignId = $(this).find("input[type=hidden]").val();
+    setCampaignValue(this,campaignId);
+});
 
 /**
  * 将一条推广计划数据添加到html
@@ -48,11 +107,11 @@ function campaignDataToHtml(obj,index){
     }
     var html = "";
     if(index==0){
-        html = html+"<tr class='list2_box3 firstCampaign' onclick='setCampaignValue(this,"+obj.campaignId+")'>";
+        html = html+"<tr class='list2_box3 firstCampaign'>";
     }else if(index%2!=0){
-        html = html+"<tr class='list2_box2' onclick='setCampaignValue(this,"+obj.campaignId+")'>";
+        html = html+"<tr class='list2_box2'>";
     }else{
-        html = html+"<tr class='list2_box1' onclick='setCampaignValue(this,"+obj.campaignId+")'>";
+        html = html+"<tr class='list2_box1'>";
     }
 
     html = html + "<input type='hidden' value = "+obj.campaignId+" />";
@@ -112,6 +171,8 @@ function campaignDataToHtml(obj,index){
 
     html = html+"<input type='hidden' value="+obj.priceRatio+" class='hidden'/>";
     html = html+"</tr>";
+
+
     $("#tbodyClick5").append(html);
 
     if(index==0){

@@ -80,8 +80,16 @@ public class PerformanceController {
         Date endDates = null;
         List<String> date = null;
         try {
-            startDates = dateFormat.parse(startDate);
-            endDates = dateFormat.parse(endDate);
+            if(startDate == null || "".equals(startDate)){
+                startDates = dateFormat.parse(dateFormat.format(new Date()));
+            }else{
+                startDates = dateFormat.parse(startDate);
+            }
+            if(endDate == null || "".equals(endDate)){
+                endDates = dateFormat.parse(dateFormat.format(new Date()));
+            }else{
+                endDates = dateFormat.parse(endDate);
+            }
             date = DateUtils.getPeriod(startDate, endDate);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -104,18 +112,28 @@ public class PerformanceController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date startDates = null;
         Date endDates = null;
+        List<String> date = null;
         try {
-            startDates = dateFormat.parse(startDate);
-            endDates = dateFormat.parse(endDate);
+            if(startDate == null || "".equals(startDate)){
+                startDates = dateFormat.parse(dateFormat.format(new Date()));
+            }else{
+                startDates = dateFormat.parse(startDate);
+            }
+            if(endDate == null || "".equals(endDate)){
+                endDates = dateFormat.parse(dateFormat.format(new Date()));
+            }else{
+                endDates = dateFormat.parse(endDate);
+            }
+            date = DateUtils.getPeriod(startDate, endDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<AccountReportEntity> jsonMapList = performanceService.performanceCurve(startDates, endDates);
+        List<AccountReportEntity> jsonMapList = performanceService.performanceCurve(startDates, endDates,date);
 
         Map<String, Object> attributes = null;
         if (jsonMapList != null)
-            attributes = JSONUtils.getJsonMapData(jsonMapList.toArray()/*, "MM-dd"*/);
+            attributes = JSONUtils.getJsonMapData(jsonMapList.toArray());
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }

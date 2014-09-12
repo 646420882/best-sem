@@ -4,9 +4,21 @@
 
 
 //得到当前账户的所有关键词
-function getKwdList(param) {
+function getKwdList(nowPage) {
     $("#tbodyClick").empty();
     $("#tbodyClick").html("加载中...");
+
+    if(/^\d+$/.test(nowPage) == false){
+        nowPage = 1;
+    }
+
+    var param = getNowChooseCidAndAid();
+    if(param==null){
+        param = {};
+    }
+    param["nowPage"] = nowPage;
+    param["pageSize"] = $("#kwd_PageSize").val();
+
     $.ajax({
         url: "/assistantKeyword/list",
         type: "post",
@@ -14,16 +26,52 @@ function getKwdList(param) {
         dataType: "json",
         success: function (data) {
             $("#tbodyClick").empty();
-            if (data.length == 0) {
+            setRedirectPageInfo_keyword(data);
+            if(data.list.length==0){
                 $("#tbodyClick").html("暂无数据!");
                 return;
             }
-            for (var i = 0; i < data.length; i++) {
-                keywordDataToHtml(data[i], i);
+            for (var i = 0; i < data.list.length; i++) {
+                keywordDataToHtml(data.list[i], i);
             }
         }
     });
 }
+
+
+/**
+ * 设置首页，上下页，尾页跳转信息
+ * @param data
+ */
+function setRedirectPageInfo_keyword(data) {
+    $(".kwdPage").find("li>a:eq(0)").attr("name",0);
+    $(".kwdPage").find("li>a:eq(1)").attr("name",data.prePage);
+    $(".kwdPage").find("li>a:eq(2)").attr("name",data.nextPage);
+    $(".kwdPage").find("li>a:eq(3)").attr("name",data.totalPage);
+    $(".kwdPage").find("li:eq(4)").html("当前页:"+data.pageNo+"/"+data.totalPage);
+    $(".kwdPage").find("li:eq(5)").html("共"+data.totalCount+"条");
+}
+
+/**
+ * 首页，上下页，尾页单击事件
+ */
+$(".kwdPage ul li>a").click(function(){
+    var nowPage = $(this).attr("name");
+    getKwdList(nowPage);
+});
+/**
+ * 关键词Go按钮的单击事件
+ */
+$("#kwdGo").click(function(){
+    var nowPage = $(".kwdPageNo").val();
+    var totalPage = $(".kwdPage").find("li>a:eq(3)").attr("name");
+    if(nowPage>parseInt(totalPage)){
+        nowPage = parseInt(totalPage);
+    }
+    getKwdList(nowPage);
+    $(".kwdPageNo").val("");
+});
+
 
 
 /**
@@ -341,25 +389,6 @@ $("#batchDelKwd").livequery('click', function () {
 });
 
 
-/**
- * 单击该单元格的时候
- */
-/*
- $("#tbodyClick").delegate(".kwdEdit","click blur",function(event){
- if(event.type=="click"){
- var tdValue = $(this).html();
- $(this).html("<input type='text' value="+tdValue+" />");
- }else{
- var text = $(this).find("input").val();
-
- }
- });
- */
-
-
-
-
-
 
 
 
@@ -392,7 +421,7 @@ function getNowChooseCampaignTreeData(treeNode) {
         jsonData.cn = null;
     }
     nowChoose = jsonData;
-    whenClickTreeLoadData(getCurrentTabName(), nowChoose);
+    whenClickTreeLoadData(getCurrentTabName(),jsonData);
 }
 
 /**
@@ -410,17 +439,18 @@ function whenClickTreeLoadData(tabName, param) {
     param = param != null ? param : {aid: null, cid: null};
     var tabName = $.trim(tabName);
     if (tabName == "关键词") {
-        getKwdList(param);
+        getKwdList(1);
     } else if (tabName == "推广计划") {
-        getCampaignList();
+        getCampaignList(1);
     } else if (tabName == "普通创意") {
         if (param.cid != null && param.aid != null) {
             getCreativeUnit(param);
         } else {
             getCreativePlan(param.cid);
         }
-    } else if (tabName == "附加创意") {
-    } else if (tabName == "推广单元") {
+    } else if (tabName == "附加创意"){
+
+    }else if (tabName == "推广单元"){
         getAdgroupPlan(param.cid, param.cn);
     }
 

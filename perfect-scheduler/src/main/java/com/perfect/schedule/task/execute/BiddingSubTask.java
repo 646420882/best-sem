@@ -19,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -66,13 +68,14 @@ public class BiddingSubTask implements Runnable {
     private final KeywordEntity keywordEntity;
     private BiddingRuleService biddingRuleService;
     private final SysCampaignService campaignService;
+    private final SysAdgroupService adgroupService;
 
     private BiddingLogService biddingLogService;
 
     private Logger logger = LoggerFactory.getLogger(BiddingSubTask.class);
 
     public BiddingSubTask(String userName, String host, BaiduApiService apiService, BiddingRuleService biddingRuleService, SysCampaignService sysCampaignService, HTMLAnalyseService htmlAnalyseService,
-                          BaiduAccountInfoEntity accountInfoEntity, BiddingRuleEntity biddingRuleEntity, KeywordEntity keywordEntity) {
+                          BaiduAccountInfoEntity accountInfoEntity, BiddingRuleEntity biddingRuleEntity, KeywordEntity keywordEntity, SysAdgroupService sysAdgroupService) {
         this.userName = userName;
         this.host = host;
         this.apiService = apiService;
@@ -82,11 +85,12 @@ public class BiddingSubTask implements Runnable {
         this.biddingRuleEntity = biddingRuleEntity;
         this.service = htmlAnalyseService;
         this.keywordEntity = keywordEntity;
+        this.adgroupService = sysAdgroupService;
     }
 
-    public BiddingSubTask(String user, String host, CommonService service, BiddingRuleService biddingRuleService, SysCampaignService sysCampaignService, BaiduAccountInfoEntity accountInfoEntity, BiddingRuleEntity biddingRuleEntity, KeywordEntity keywordEntity) {
+    public BiddingSubTask(String user, String host, CommonService service, BiddingRuleService biddingRuleService, SysCampaignService sysCampaignService, BaiduAccountInfoEntity accountInfoEntity, BiddingRuleEntity biddingRuleEntity, KeywordEntity keywordEntity, SysAdgroupService sysAdgroupService) {
 
-        this(user, host, new BaiduApiService(service), biddingRuleService, sysCampaignService, HTMLAnalyseServiceImpl.createService(service), accountInfoEntity, biddingRuleEntity, keywordEntity);
+        this(user, host, new BaiduApiService(service), biddingRuleService, sysCampaignService, HTMLAnalyseServiceImpl.createService(service), accountInfoEntity, biddingRuleEntity, keywordEntity, sysAdgroupService);
     }
 
     @Override
@@ -137,6 +141,20 @@ public class BiddingSubTask implements Runnable {
 
         biddingRuleService.updateRule(biddingRuleEntity);
 
+        //判断该关键词所在的单元或是计划是否处于暂停状态
+        boolean isPause = keywordEntity.getPause();
+
+        if (!isPause) {
+            isPause = adgroupService.findByAdgroupId(keywordEntity.getAdgroupId()).getPause();
+            if (!isPause) {
+                isPause = campaignService.findByKeywordId(keywordEntity.getKeywordId()).getPause();
+            }
+        }
+
+        if (isPause) {
+            return;
+        }
+
         for (Integer region : regionList) {
 
             if (logger.isInfoEnabled()) {
@@ -170,27 +188,30 @@ public class BiddingSubTask implements Runnable {
                     continue;
                 }
 
-
                 int pos = strategyEntity.getExpPosition();
                 List<CreativeDTO> leftList = previewData.getLeft();
                 List<CreativeDTO> rightList = previewData.getRight();
-                CreativeDTO creativeDTO = null;
 
                 int rank = 0;
-                for (CreativeDTO leftDTO : leftList) {
-                    if (leftDTO.getUrl().contains(host)) {
-                        rank = leftList.indexOf(leftDTO) + 1;
-                        break;
-                    }
-                }
-
-                if (rank == 0) {
-                    for (CreativeDTO rightDTO : rightList) {
-                        if (rightDTO.getUrl().contains(host)) {
-                            rank = -1 * rightList.indexOf(rightDTO) - 1;
+                try {
+                    URL url = new URL("http", host, "");
+                    for (CreativeDTO leftDTO : leftList) {
+                        if (url.sameFile(new URL("http", leftDTO.getUrl(), ""))) {
+                            rank = leftList.indexOf(leftDTO) + 1;
                             break;
                         }
                     }
+
+                    if (rank == 0) {
+                        for (CreativeDTO rightDTO : rightList) {
+                            if (url.sameFile(new URL("http", rightDTO.getUrl(), ""))) {
+                                rank = -1 * rightList.indexOf(rightDTO) - 1;
+                                break;
+                            }
+                        }
+                    }
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
                 }
 
                 boolean match = false;
@@ -198,7 +219,6 @@ public class BiddingSubTask implements Runnable {
                     match = (rank == 1);
                 } else if (pos == BiddingStrategyConstants.POS_LEFT_2_3.value()) {
                     match = (rank == 2);
-
                 } else if (pos == BiddingStrategyConstants.POS_RIGHT_1_3.value()) {
                     match = (rank == -1);
                 } else if (pos == BiddingStrategyConstants.POS_RIGHT_OTHERS.value()) {
@@ -258,7 +278,7 @@ public class BiddingSubTask implements Runnable {
                     if (currentPrice.compareTo(strategyEntity.getMaxPrice()) == 1) {
 
                         if (logger.isInfoEnabled()) {
-                            logger.info("未达到排名..." + host + "\n出价以超过最大价格!");
+                            logger.info("未达到排名..." + host + "\n出价已超过最大价格!");
                         }
                         int failed = strategyEntity.getFailedStrategy();
                         if (failed == BiddingStrategyConstants.FAILED_KEEP.value()) {
@@ -298,7 +318,7 @@ public class BiddingSubTask implements Runnable {
                         biddingRuleService.updateRule(biddingRuleEntity);
 
                         if (logger.isInfoEnabled()) {
-                            logger.info("未达到排名..." + host + "\n出价完成,一秒后进行下一次出价.");
+                            logger.info("未达到排名..." + host + "\n出价完成,十秒后进行下一次出价.");
                         }
 
                         try {
@@ -438,7 +458,7 @@ public class BiddingSubTask implements Runnable {
                 biddingRuleService.updateRule(biddingRuleEntity);
 
                 if (logger.isDebugEnabled()) {
-                    logger.debug("未达到排名..." + host + "\n出价完成,一秒后进行下一次出价.");
+                    logger.debug("未达到排名..." + host + "\n出价完成,十秒后进行下一次出价.");
                 }
 
                 try {

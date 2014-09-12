@@ -11,14 +11,17 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=7" />
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title></title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/jquery.cxcalendar.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
 
 
     <style type="text/css">
@@ -45,10 +48,9 @@
     </style>
 </head>
 <body>
-<jsp:include page="../homePage/pageBlock/nav.jsp"/>
-
-<div class="concent fl over">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
+<div class="concent fl over">
+<jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over ">
 <div class="on_title over">
     <a href="#">
@@ -178,7 +180,7 @@
     </div>
     <div class="shuju_detali over">
         <ul>
-            <li class="date">选择时间范围：<input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31">
+            <li class="date">选择时间范围：<input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31" readonly>
                 <input name="reservation" type="image" cname="dateClick"
                        onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                        src="${pageContext.request.contextPath}/public/img/date.png">
@@ -305,7 +307,7 @@
                     <input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31">
                     <input name="reservation" type="image" cname="dateClick"
                            onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
-                           src="${pageContext.request.contextPath}/public/img/date.png">
+                           src="${pageContext.request.contextPath}/public/img/date.png" readonly>
                 </li>
                 <li id="reportType">选择报告类型：
                     <a href="javascript:" class="current" cname="1">结构报告</a><span>|</span>
@@ -1261,7 +1263,7 @@ var reportData = function () {
 
                     }
                     page_html = page_html + "<a href='javascript:' id='pageDownDet' class='nextpage2'><span></span></a>" +
-                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goDetID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goDet'> GO</a>"
+                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goDetID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goDet' class='page_go'> GO</a>"
                     $("#pageDet").append(page_html);
                     judgeDet++;
                 }
@@ -1359,7 +1361,7 @@ var reportDataVS = function () {
 
                     }
                     page_html = page_html + "<a href='javascript:' id='pageDownVS' class='nextpage2'><span></span></a>" +
-                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goVSID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goVS'> GO</a>"
+                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goVSID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goVS' class='page_go'> GO</a>"
                     $("#pageVS").append(page_html);
                     judgeVS++;
                 }
@@ -1531,7 +1533,7 @@ var accountBasisReport = function () {
                     }
                 }
                 page_html = page_html + "<a href='javascript:' id='pageDown' class='nextpage2'><span></span></a>" +
-                        "<span style='margin-right:10px;'>跳转到 <input type='text' id='goID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='go'> GO</a>"
+                        "<span style='margin-right:10px;'>跳转到 <input type='text' id='goID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='go' class='page_go'> GO</a>"
                 $("#pageJC").append(page_html);
                 jci++;
             }

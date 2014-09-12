@@ -18,47 +18,6 @@
         <div class="nav_bg">
             <img src="${pageContext.request.contextPath}/public/img/nav_bg.jpg" width="100%" height="100%">
         </div>
-        <div class="user over">
-            <div class="nav_bg">
-                <img src="${pageContext.request.contextPath}/public/img/user_bg.png" width="100%" height="100%">
-            </div>
-            <div class="user_mid">
-                <div class="user_logo">
-                    <div class="user_logo1">
-                        <div class="user_img fl over">
-                            <span> <img src="${pageContext.request.contextPath}/public/images/yixin_logo.png"></span>
-                        </div>
-                        <div class="user_text fl">
-                            <p>上午，好！<a href="/configuration/"><span>${currSystemUserName}</span></a></p>
-
-                            <div class="user_select">
-                                <div class="user_name">
-                                    <span></span>
-                                </div>
-                                <div id="switchAccount" class="user_names over hides">
-                                    <ul id="switchAccount_ul">
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="user_logo2 fr">
-                            <form name="logout" method="POST" action="/logout">
-                                <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png"
-                                       onclick="$('form[logout]').submit();"/>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="user_detali over">
-                    <ul>
-                        <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<>
-                        <li>余额预计可消费：${remainderDays}天<>
-                        <li>日预算：${accountBudget}元<>
-                    </ul>
-                </div>
-            </div>
-        </div>
         <div class="nav_mid">
             <div class="nav_under over">
                 <ul>
@@ -129,7 +88,7 @@
         $(window).scroll(function () {
             var scroH = $(this).scrollTop();
             if (scroH >= navH) {
-                $(".on_title").css({"position": "fixed", "top": "77"});
+                $(".on_title").css({"position": "fixed", "top": "94"});
             } else {
                 $(".on_title").css({"position": "static", "margin": "0 auto"});
             }
@@ -139,22 +98,16 @@
                 $(".nav_left").slideDown(600);
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
-                $(".concent").css("width", "87.5%");
-                $(".top").css("width", "87.5%");
-                $(".top").css("margin-left", "220px");
-                $(".top").css("left", "0px");
-                $(".concent").css("margin-left", "220px");
+                $(".concent").css("width", "90.5%");
+                $(".concent").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
             }
             else {
                 $(".nav_left").hide();
                 $(".tips").css("position", "fixed");
                 $(".nav").css("z-index", "111");
-                $(".concent").css("width", "100%");
-                $(".concent").css("margin-left", "0px");
-                $(".top").css("margin-left", "0px");
-                $(".top").css("left", "8px");
-                $(".top").css("width", "100%");
+                $(".concent").css("width", " 99.6%");
+                $(".concent").css("margin-left", "8px");
                 $(".nav_input").css("display", "block");
 
             }
@@ -164,23 +117,16 @@
                 $(".nav_left").slideDown(600);
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
-                $(".concent").css("width", "87.5%");
-                $(".top").css("width", "87.5%");
-                $(".top").css("margin-left", "220px");
-                $(".top").css("left", "0px");
-                $(".concent").css("margin-left", "220px");
+                $(".concent").css("width", "90.5%");
+                $(".concent").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
             }
             else {
                 $(".nav_left").hide();
-                $(".nav_left").hide();
                 $(".tips").css("position", "fixed");
                 $(".nav").css("z-index", "111");
-                $(".concent").css("width", "100%");
-                $(".concent").css("margin-left", "0px");
-                $(".top").css("margin-left", "0px");
-                $(".top").css("left", "8px");
-                $(".top").css("width", "100%");
+                $(".concent").css("width", "99.6%");
+                $(".concent").css("margin-left", "8px");
                 $(".nav_input").css("display", "block");
 
             }

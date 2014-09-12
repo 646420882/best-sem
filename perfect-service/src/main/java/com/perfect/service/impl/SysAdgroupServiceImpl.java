@@ -26,4 +26,9 @@ public class SysAdgroupServiceImpl implements SysAdgroupService {
     public List<AdgroupEntity> findIdByCampaignId(Long cid) {
         return adgroupDAO.findIdByCampaignId(cid);
     }
+
+    @Override
+    public AdgroupEntity findByAdgroupId(Long agid) {
+        return adgroupDAO.findOne(agid);
+    }
 }

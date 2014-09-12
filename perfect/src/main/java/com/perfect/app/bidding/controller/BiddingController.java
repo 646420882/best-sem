@@ -39,7 +39,6 @@ import java.util.*;
  */
 
 @RestController
-@Controller
 @RequestMapping("/bidding")
 public class BiddingController {
 

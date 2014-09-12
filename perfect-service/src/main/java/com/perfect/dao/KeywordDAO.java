@@ -3,6 +3,7 @@ package com.perfect.dao;
 import com.perfect.autosdk.sms.v3.KeywordInfo;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.mongodb.utils.PaginationParam;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -57,9 +58,13 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
     KeywordEntity findByObjectId(String oid);
 
+    PagerInfo findByPageInfo(Query q,int pageSize, int pageNo);
+
     void updateAdgroupIdByOid(String id, Long adgroupId);
 
     void deleteById(String id);
 
     void updateByMongoId(KeywordEntity keywordEntity);
+
+    List<KeywordEntity> getKeywordByIds(List<Long> ids);
 }
