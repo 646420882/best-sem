@@ -72,6 +72,9 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
             for (BiddingRuleEntity biddingRuleEntity : biddingRuleEntityList) {
 
                 KeywordEntity keywordEntity = sysKeywordService.findById(biddingRuleEntity.getKeywordId());
+                if (keywordEntity == null) {
+                    continue;
+                }
 
                 // 生成一个任务
                 BiddingSubTask biddingSubTask = new BiddingSubTask(task.getUserName(), accountInfoEntity.getRegDomain(), service, biddingRuleService,

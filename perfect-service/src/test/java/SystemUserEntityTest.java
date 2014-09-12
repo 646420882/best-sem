@@ -31,6 +31,7 @@ public class SystemUserEntityTest extends UnitilsJUnit4 {
         MD5.Builder md5Builder = new MD5.Builder();
         MD5 md5 = md5Builder.password(passwd).salt(userName).build();
         systemUserEntity.setPassword(md5.getMD5());
+        systemUserEntity.setAccess(2);
 
         BaiduAccountInfoEntity baiduAccountInfoEntity = new BaiduAccountInfoEntity();
         baiduAccountInfoEntity.setBaiduUserName("baidu-bjtthunbohui2134115");

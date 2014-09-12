@@ -24,6 +24,8 @@ public class SystemUserEntity implements Serializable {
 
     private String password;
 
+    private Integer access;     //1.admin; 2.user
+
     @Field(value = "bdAccounts")
     private List<BaiduAccountInfoEntity> baiduAccountInfoEntities;
 
@@ -62,6 +64,14 @@ public class SystemUserEntity implements Serializable {
         this.password = password;
     }
 
+    public Integer getAccess() {
+        return access;
+    }
+
+    public void setAccess(Integer access) {
+        this.access = access;
+    }
+
     public List<BaiduAccountInfoEntity> getBaiduAccountInfoEntities() {
         return baiduAccountInfoEntities;
     }
@@ -78,35 +88,13 @@ public class SystemUserEntity implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SystemUserEntity that = (SystemUserEntity) o;
-
-        if (baiduAccountInfoEntities != null ? !baiduAccountInfoEntities.equals(that.baiduAccountInfoEntities) : that.baiduAccountInfoEntities != null)
-            return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = userName != null ? userName.hashCode() : 0;
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (baiduAccountInfoEntities != null ? baiduAccountInfoEntities.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "SystemUserEntity{" +
-                "userName='" + userName + '\'' +
+                "id='" + id + '\'' +
+                ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
+                ", access=" + access +
                 ", baiduAccountInfoEntities=" + baiduAccountInfoEntities +
                 '}';
     }
-
 }
