@@ -262,6 +262,21 @@ $(function () {
         }
         else {
             $(".j_list02").hide();
+            $("#jiangkong_box3").hide();
+            $("#jiangkong_box2").show();
+
         }
     });
+    $("#jiangkong_box").click(function () {
+        if ($("#jiangkong_box3").css("display") == "none") {//隐藏
+            $("#jiangkong_box2").hide();
+            $("#jiangkong_box3").show();
+        }
+        else {
+            $("#jiangkong_box3").hide();
+            $("#jiangkong_box2").show();
+        }
+    });
+
+
 });

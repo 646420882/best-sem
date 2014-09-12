@@ -2567,4 +2567,10 @@ h2 .close {
 .page ul {
     *margin-top:20px;
 }
+#jiangkong_box{
+    width:90%;
+    cursor: pointer;
+    font-size:14px;
+    padding-left:10%;
+ }
 /* CSS Document */
