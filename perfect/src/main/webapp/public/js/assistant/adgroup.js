@@ -102,20 +102,20 @@ function getAdgroupPauseByBoolean(bol) {
  */
 function initNoKwdKeyUp() {
     $("#nKwd").keydown(function (e) {
-        var arr = $(this).val().split("\n");
+        var arr = $(this).val().trim() .split("\n");
         $("#nKwd_size").html(arr.length);
     });
     $("#mKwd").keydown(function (e) {
-        var arr = $(this).val().split("\n");
+        var arr = $(this).val().trim() .split("\n");
         $("#mKwd_size").html(arr.length);
     });
 
     $("#npKwd").keydown(function (e) {
-        var arr = $(this).val().split("\n");
+        var arr = $(this).val().trim() .split("\n");
         $("#npKwd_size").html(arr.length);
     });
     $("#mpKwd").keydown(function (e) {
-        var arr = $(this).val().split("\n");
+        var arr = $(this).val().trim() .split("\n");
         $("#mpKwd_size").html(arr.length);
     });
 }
@@ -378,22 +378,20 @@ function adgroupNokeyword(rs) {
     nn = _this.attr("id");
     ne = _thisne.attr("id");
     sp = _sp.attr("id");
-    var arr = _this.val().split(",");
-    var arrne = _thisne.val().split(",");
+    var arr = _this.val().trim() .split(",");
+    var arrne = _thisne.val().trim() .split(",");
     if (_this.val() != "") {
         var str = "";
         for (var i = 0; i < arr.length; i++) {
             str = str + arr[i] + "\n";
-            str.substring(0, str.length - 2);
         }
-        $("#nKwd").val(str);
+        $("#nKwd").val(str.trim() );
     } else if (_thisne.val() != "") {
         var strne = "";
         for (var i = 0; i < arrne.length; i++) {
             strne = strne + arrne[i] + "\n";
-            strne.substring(0, strne.length - 2);
         }
-        $("#mKwd").val(strne);
+        $("#mKwd").val(strne.trim() );
     } else {
         initNoKeyAlert();
     }
@@ -503,14 +501,14 @@ function adgroupUpdateNokwdMath() {
         top: ($(window).height() - _adAdd.height()) / 2 + $(window).scrollTop() + "px",
         display: "block"
     });
-    var unn = $("#adgroupUpdateForm input[name='negativeWords']").val();
-    var une = $("#adgroupUpdateForm input[name='exactNegativeWords']").val();
+    var unn = $("#adgroupUpdateForm input[name='negativeWords']").val().trim() ;
+    var une = $("#adgroupUpdateForm input[name='exactNegativeWords']").val().trim() ;
     if (unn.indexOf(",") > -1 || unn.length > 0) {
         var arr = unn.split(",");
         $("#npKwd_size").html(arr.length);
         var str = "";
         for (var i = 0; i < arr.length; i++) {
-            str = str + arr[i] + "\n";
+            str = str + arr[i].trim()  + "\n";
         }
         $("#npKwd").val(str);
     } else {
@@ -522,7 +520,7 @@ function adgroupUpdateNokwdMath() {
         $("#mpKwd_size").html(arrne.length);
         var strne = "";
         for (var i = 0; i < arrne.length; i++) {
-            strne = strne + arrne[i] + "\n";
+            strne = strne + arrne[i].trim()  + "\n";
         }
         $("#mpKwd").val(strne);
     } else {
@@ -540,8 +538,8 @@ function adgroupUpdateNokwdMathClose() {
  * 再弹出框关输入否定关键词点击确定触发方法
  */
 function adgroupUpdateNokwdMathOk() {
-    var arr = $("#npKwd").val().split("\n");
-    var arrne = $("#mpKwd").val().split("\n");
+    var arr = $("#npKwd").val().trim().split("\n");
+    var arrne = $("#mpKwd").val().trim().split("\n");
     $("#auSpan").html(getNoAdgroupLabel(arr, arrne));
     var unn = $("#adgroupUpdateForm input[name='negativeWords']").val(arr);
     var une = $("#adgroupUpdateForm input[name='exactNegativeWords']").val(arrne);
@@ -572,28 +570,43 @@ function adrgoupUpdateOk() {
         }
     });
 }
+/**
+ * 选择某条数据进行启用和不启用时触发方法
+ * @param rs
+ */
 function adgroupdSelectChange(rs) {
     var _this = $(rs);
-    var _atmp = $(atmp);
-    var _oid = _atmp.find("td:eq(0) input").val();
-    var pause = _this.val();
-    var params = {
-        pause: pause,
-        oid: _oid
-    }
-    $.get("../assistantAdgroup/updateByChange", params, function (rs) {
-        if (rs == "1") {
-            _atmp.find("td:eq(3)").html(_this.find("option:selected").text());
+    var _atmp=$(atmp);
+    var _oid =_atmp.find("td:eq(0) input").val();
+    if (_oid != null) {
+        var pause = _this.val();
+        var params = {
+            pause: pause,
+            oid: _oid
         }
-    });
+        $.get("../assistantAdgroup/updateByChange", params, function (rs) {
+            if (rs == "1") {
+                _atmp.find("td:eq(3)").html(_this.find("option:selected").text());
+            }
+        });
+    }
 }
+/**
+ * 初始化还原按钮
+ */
 function initAgReback() {
     atmp = null;
     $("#agReback").attr("class", "z_function_hover");
 }
+/**
+ * 选中数据渲染可还原按钮样式
+ */
 function onAgReback() {
     $("#agReback").attr("class", "zs_top");
 }
+/**
+ * 数据选中后进行还原操作方法
+ */
 function agreBakClick() {
     var _this = $(atmp);
     if (_this.html() != undefined) {
@@ -620,6 +633,10 @@ function agreBakClick() {
         }
     }
 }
+/**
+ * 修改还原
+ * @param oid
+ */
 function agReBack(oid) {
     $.get("../assistantAdgroup/agReBack", {oid: oid}, function (rs) {
         var json = eval("(" + rs + ")");
@@ -649,9 +666,13 @@ function agReBack(oid) {
         }
     });
 }
-function agDelReBack(oid){
-    $.get("../assistantAdgroup/agDelBack",{oid:oid},function(rs){
-        if(rs=="1"){
+/**
+ * 删除还原
+ * @param oid
+ */
+function agDelReBack(oid) {
+    $.get("../assistantAdgroup/agDelBack", {oid: oid}, function (rs) {
+        if (rs == "1") {
             $(atmp).find("td:eq(8)").html(" ");
         }
     });

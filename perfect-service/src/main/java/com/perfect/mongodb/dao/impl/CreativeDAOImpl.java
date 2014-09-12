@@ -106,6 +106,21 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
     }
 
     @Override
+    public CreativeEntity getAllsBySomeParams(Map<String, Object> params) {
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
+        Query q=new Query();
+        Criteria c=new Criteria();
+        if(params!=null&&params.size()>0){
+            for (Map.Entry<String,Object> entry:params.entrySet()){
+                c.and(entry.getKey()).is(entry.getValue());
+            }
+        }
+        q.addCriteria(c);
+        CreativeEntity creativeEntity=mongoTemplate.findOne(q,CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        return creativeEntity;
+    }
+
+    @Override
     public void deleteByCacheId(Long objectId) {
         Update update=new Update();
         update.set("ls",3);

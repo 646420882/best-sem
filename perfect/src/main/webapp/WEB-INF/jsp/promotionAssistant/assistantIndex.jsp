@@ -221,7 +221,7 @@
             <li><a href="javascript:void(0)" onclick="addCreative();"><span class="zs_top"><img
                     src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-            <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a>
+            <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b onclick="creativeMulti();">批量添加/更新</b></a>
             </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
                     type="image" src="../public/img/zs_input.png"></b></a></li>

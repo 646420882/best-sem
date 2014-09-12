@@ -8,6 +8,7 @@ import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.backup.CreativeBackUpEntity;
+import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.service.CreativeBackUpService;
 import com.perfect.utils.web.WebContextSupport;
 import org.springframework.beans.BeanUtils;
@@ -23,7 +24,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.perfect.mongodb.utils.EntityConstants.*;
 
@@ -126,7 +129,6 @@ public class AssistantCreativeController extends WebContextSupport {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ModelAndView insertCreative(HttpServletRequest request, HttpServletResponse response,
-                                       @RequestParam(value = "cacheCativeId", required = true) Long creativeCacheId,
                                        @RequestParam(value = "aid", required = true) String aid,
                                        @RequestParam(value = "title", required = false) String title,
                                        @RequestParam(value = "description1", required = false) String de1,
@@ -243,6 +245,7 @@ public class AssistantCreativeController extends WebContextSupport {
 
     /**
      * 普通修改还原方法，这里的oid必须是Long类型，如果不是Long类型的oid，在前端已经判定
+     *
      * @param response
      * @param oid
      * @return
@@ -261,6 +264,7 @@ public class AssistantCreativeController extends WebContextSupport {
 
     /**
      * 软删除的还原方法。直接更改掉ls字段
+     *
      * @param response
      * @param oid
      * @return
@@ -269,8 +273,122 @@ public class AssistantCreativeController extends WebContextSupport {
     public ModelAndView delBack(HttpServletResponse response, @RequestParam(value = "oid") Long oid) {
         try {
             creativeDAO.delBack(oid);
-            writeHtml(SUCCESS,response);
+            writeHtml(SUCCESS, response);
         } catch (Exception e) {
+            e.printStackTrace();
+            writeHtml(EXCEPTION, response);
+        }
+        return null;
+    }
+
+    /**
+     * 跳转批量添加页面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/updateMulti")
+    public ModelAndView convertMulti() {
+        return new ModelAndView("promotionAssistant/alert/publicUpdateMulti");
+    }
+
+    /**
+     * 执行批量添加/修改方法所执行的方法，如果标题和创意能匹配到数据，则执行添加操作
+     * @param response
+     * @param aid
+     * @param title
+     * @param de1
+     * @param de2
+     * @param pc
+     * @param pcs
+     * @param mib
+     * @param mibs
+     * @param bol
+     * @param s
+     * @param d
+     * @return
+     */
+    @RequestMapping(value = "insertOrUpdate", method = RequestMethod.POST)
+    public ModelAndView insertOrUpdate(HttpServletResponse response,
+                                       @RequestParam(value = "aid", required = true) String aid,
+                                       @RequestParam(value = "title", required = false) String title,
+                                       @RequestParam(value = "description1", required = false) String de1,
+                                       @RequestParam(value = "description2", required = false) String de2,
+                                       @RequestParam(value = "pcDestinationUrl", required = false) String pc,
+                                       @RequestParam(value = "pcDisplayUrl", required = false) String pcs,
+                                       @RequestParam(value = "mobileDestinationUrl", required = false) String mib,
+                                       @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
+                                       @RequestParam(value = "pause") Boolean bol,
+                                       @RequestParam(value = "status") Integer s,
+                                       @RequestParam(value = "d", required = false, defaultValue = "0") Integer d) {
+        try{
+            //将获取到的标题和创意1在本地数据库中查询
+            Map<String,Object> params=new HashMap<>();
+            params.put("t",title);
+            params.put("desc1",de1);
+            if(aid.length()>OBJ_SIZE){
+                params.put(EntityConstants.SYSTEM_ID,aid);
+            }else{
+                params.put(EntityConstants.ADGROUP_ID,Long.valueOf(aid));
+            }
+            //如果查询到结果
+            CreativeEntity creativeEntity = creativeDAO.getAllsBySomeParams(params);
+            //如果能查到匹配的数据，则执行修改操作
+            if(creativeEntity!=null){
+                CreativeEntity creativeEntityFind = null;
+                //判断如果该条数据不为已经同步的数据，则视为本地数据，本地数据库数据修改则不需要备份操作
+                if (creativeEntity.getCreativeId()==null) {
+                    creativeEntityFind = creativeDAO.findByObjId(creativeEntity.getId());
+                    creativeEntityFind.setTitle(title);
+                    creativeEntityFind.setDescription1(de1);
+                    creativeEntityFind.setDescription2(de2);
+                    creativeEntityFind.setPcDestinationUrl(pc);
+                    creativeEntityFind.setPcDisplayUrl(pcs);
+                    creativeEntityFind.setMobileDestinationUrl(mib);
+                    creativeEntityFind.setMobileDisplayUrl(mibs);
+                    creativeEntityFind.setPause(bol);
+                    creativeEntityFind.setLocalStatus(1);
+                    creativeDAO.updateByObjId(creativeEntityFind);
+                //如果已经是同步到本地的数据，则要执行备份操作，将这条数据备份到备份数据库中
+                } else {
+                    creativeEntityFind = creativeDAO.findOne(creativeEntity.getCreativeId());
+                    CreativeEntity creativeEntityBackUp = new CreativeEntity();
+                    creativeEntityFind.setLocalStatus(2);
+                    BeanUtils.copyProperties(creativeEntityFind, creativeEntity);
+                    creativeEntityFind.setTitle(title);
+                    creativeEntityFind.setDescription1(de1);
+                    creativeEntityFind.setDescription2(de2);
+                    creativeEntityFind.setPcDestinationUrl(pc);
+                    creativeEntityFind.setPcDisplayUrl(pcs);
+                    creativeEntityFind.setMobileDestinationUrl(mib);
+                    creativeEntityFind.setMobileDisplayUrl(mibs);
+                    creativeEntityFind.setPause(bol);
+                    creativeDAO.update(creativeEntityFind, creativeEntityBackUp);
+                }
+            //如果没有查到匹配的数据，则执行添加操作
+            }else{
+                CreativeEntity creativeEntityInsert = new CreativeEntity();
+                creativeEntityInsert.setAccountId(AppContext.getAccountId());
+                creativeEntityInsert.setTitle(title);
+                creativeEntityInsert.setDescription1(de1);
+                creativeEntityInsert.setDescription2(de2);
+                creativeEntityInsert.setPcDestinationUrl(pc);
+                creativeEntityInsert.setPcDisplayUrl(pcs);
+                creativeEntityInsert.setMobileDestinationUrl(mib);
+                creativeEntityInsert.setMobileDisplayUrl(mibs);
+                creativeEntityInsert.setPause(bol);
+                creativeEntityInsert.setStatus(s);
+                creativeEntityInsert.setDevicePreference(d);
+                creativeEntityInsert.setLocalStatus(1);
+                if (aid.length() > OBJ_SIZE) {
+                    creativeEntityInsert.setAdgroupObjId(aid);
+                    creativeEntityInsert.setCreativeId(null);
+                } else {
+                    creativeEntityInsert.setAdgroupId(Long.parseLong(aid));
+                }
+                String oid = creativeDAO.insertOutId(creativeEntityInsert);
+            }
+            writeHtml(SUCCESS,response);
+        }catch (Exception e){
             e.printStackTrace();
             writeHtml(EXCEPTION,response);
         }
