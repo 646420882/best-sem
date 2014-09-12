@@ -3,6 +3,7 @@ package com.perfect.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import static com.perfect.mongodb.utils.EntityConstants.*;
@@ -58,13 +59,13 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
     private Double pcCtr;     //PC点击率=点击次数/展现次数
 
     @Field(value = "pccost")
-    private Double pcCost;        //PC消费
+    private BigDecimal pcCost;        //PC消费
 
     @Field(value = "pccpc")
-    private Double pcCpc;     //PC平均点击价格=消费/点击次数
+    private BigDecimal pcCpc;     //PC平均点击价格=消费/点击次数
 
     @Field(value = "pccpm")
-    private Double pcCpm;       //PC千次展现消费
+    private BigDecimal pcCpm;       //PC千次展现消费
 
     @Field(value = "pccs")
     private Double pcConversion;      //PC转化
@@ -79,13 +80,13 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
     private Double mobileCtr;
 
     @Field(value = "mcost")
-    private Double mobileCost;
+    private BigDecimal mobileCost;
 
     @Field(value = "mcpc")
-    private Double mobileCpc;
+    private BigDecimal mobileCpc;
 
     @Field(value = "mcpm")
-    private Double mobileCpm;
+    private BigDecimal mobileCpm;
 
     @Field(value = "mcs")
     private Double mobileConversion;
@@ -97,22 +98,6 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
     private String orderBy;
 
     private int terminal;
-
-    public int getTerminal() {
-        return terminal;
-    }
-
-    public void setTerminal(int terminal) {
-        this.terminal = terminal;
-    }
-
-    public String getOrderBy() {
-        return orderBy;
-    }
-
-    public void setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
-    }
 
     public String getId() {
         return id;
@@ -138,6 +123,30 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
         this.adgroupId = adgroupId;
     }
 
+    public Long getKeywordId() {
+        return keywordId;
+    }
+
+    public void setKeywordId(Long keywordId) {
+        this.keywordId = keywordId;
+    }
+
+    public Long getCreativeId() {
+        return creativeId;
+    }
+
+    public void setCreativeId(Long creativeId) {
+        this.creativeId = creativeId;
+    }
+
+    public Long getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Long regionId) {
+        this.regionId = regionId;
+    }
+
     public String getAdgroupName() {
         return adgroupName;
     }
@@ -154,28 +163,12 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
         this.campaignName = campaignName;
     }
 
-    public Long getKeywordId() {
-        return keywordId;
-    }
-
-    public void setKeywordId(Long keywordId) {
-        this.keywordId = keywordId;
-    }
-
     public String getKeywordName() {
         return keywordName;
     }
 
     public void setKeywordName(String keywordName) {
         this.keywordName = keywordName;
-    }
-
-    public Long getCreativeId() {
-        return creativeId;
-    }
-
-    public void setCreativeId(Long creativeId) {
-        this.creativeId = creativeId;
     }
 
     public String getCreativeTitle() {
@@ -200,14 +193,6 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
 
     public void setDescription2(String description2) {
         this.description2 = description2;
-    }
-
-    public Long getRegionId() {
-        return regionId;
-    }
-
-    public void setRegionId(Long regionId) {
-        this.regionId = regionId;
     }
 
     public String getRegionName() {
@@ -242,27 +227,27 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
         this.pcCtr = pcCtr;
     }
 
-    public Double getPcCost() {
+    public BigDecimal getPcCost() {
         return pcCost;
     }
 
-    public void setPcCost(Double pcCost) {
+    public void setPcCost(BigDecimal pcCost) {
         this.pcCost = pcCost;
     }
 
-    public Double getPcCpc() {
+    public BigDecimal getPcCpc() {
         return pcCpc;
     }
 
-    public void setPcCpc(Double pcCpc) {
+    public void setPcCpc(BigDecimal pcCpc) {
         this.pcCpc = pcCpc;
     }
 
-    public Double getPcCpm() {
+    public BigDecimal getPcCpm() {
         return pcCpm;
     }
 
-    public void setPcCpm(Double pcCpm) {
+    public void setPcCpm(BigDecimal pcCpm) {
         this.pcCpm = pcCpm;
     }
 
@@ -298,27 +283,27 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
         this.mobileCtr = mobileCtr;
     }
 
-    public Double getMobileCost() {
+    public BigDecimal getMobileCost() {
         return mobileCost;
     }
 
-    public void setMobileCost(Double mobileCost) {
+    public void setMobileCost(BigDecimal mobileCost) {
         this.mobileCost = mobileCost;
     }
 
-    public Double getMobileCpc() {
+    public BigDecimal getMobileCpc() {
         return mobileCpc;
     }
 
-    public void setMobileCpc(Double mobileCpc) {
+    public void setMobileCpc(BigDecimal mobileCpc) {
         this.mobileCpc = mobileCpc;
     }
 
-    public Double getMobileCpm() {
+    public BigDecimal getMobileCpm() {
         return mobileCpm;
     }
 
-    public void setMobileCpm(Double mobileCpm) {
+    public void setMobileCpm(BigDecimal mobileCpm) {
         this.mobileCpm = mobileCpm;
     }
 
@@ -344,6 +329,22 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public int getTerminal() {
+        return terminal;
+    }
+
+    public void setTerminal(int terminal) {
+        this.terminal = terminal;
     }
 
     @Override

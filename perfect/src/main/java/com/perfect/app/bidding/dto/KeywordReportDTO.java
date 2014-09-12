@@ -2,6 +2,8 @@ package com.perfect.app.bidding.dto;
 
 import com.perfect.entity.KeywordEntity;
 
+import java.math.BigDecimal;
+
 /**
  * Created by vbzer_000 on 2014/8/25.
  */
@@ -13,11 +15,11 @@ public class KeywordReportDTO extends KeywordEntity {
 
     private Double ctr = 0.0;     //PC点击次数/展现次数
 
-    private Double cost = 0.0;        //PC消费
+    private BigDecimal cost = BigDecimal.valueOf(0.0);        //PC消费
 
-    private Double cpc = 0.0;     //PC平均点击价格=消费/点击次数
+    private BigDecimal cpc = BigDecimal.valueOf(0.0);     //PC平均点击价格=消费/点击次数
 
-    private Double cpm = 0.0;       //PC千次展现消费
+    private BigDecimal cpm = BigDecimal.valueOf(0.0);       //PC千次展现消费
 
     private Double conversion = 0.0;
 
@@ -59,27 +61,27 @@ public class KeywordReportDTO extends KeywordEntity {
         this.ctr = ctr;
     }
 
-    public Double getCost() {
+    public BigDecimal getCost() {
         return cost;
     }
 
-    public void setCost(Double cost) {
+    public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
 
-    public Double getCpc() {
+    public BigDecimal getCpc() {
         return cpc;
     }
 
-    public void setCpc(Double cpc) {
+    public void setCpc(BigDecimal cpc) {
         this.cpc = cpc;
     }
 
-    public Double getCpm() {
+    public BigDecimal getCpm() {
         return cpm;
     }
 
-    public void setCpm(Double cpm) {
+    public void setCpm(BigDecimal cpm) {
         this.cpm = cpm;
     }
 

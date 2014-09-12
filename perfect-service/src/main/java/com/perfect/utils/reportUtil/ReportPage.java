@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.perfect.dto.AccountReportDTO;
 import com.perfect.entity.StructureReportEntity;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -29,15 +30,15 @@ public class ReportPage {
                 }
                 if(entity.getPcImpression() == null){entity.setPcImpression(0);}
                 if(entity.getPcClick() == null){entity.setPcClick(0);}
-                if(entity.getPcCost() == null){entity.setPcCost(0.00);}
-                if(entity.getPcCpc() == null){entity.setPcCpc(0.00);}
+                if(entity.getPcCost() == null){entity.setPcCost(BigDecimal.valueOf(0.00));}
+                if(entity.getPcCpc() == null){entity.setPcCpc(BigDecimal.valueOf(0.00));}
                 if(entity.getPcCtr() == null){entity.setPcCtr(0.00);}
                 if(entity.getPcConversion() == null){entity.setPcConversion(0.00);}
 
                 if(entity.getMobileImpression() == null){entity.setMobileImpression(0);}
                 if(entity.getMobileClick() == null){entity.setMobileClick(0);}
-                if(entity.getMobileCost() == null){entity.setMobileCost(0.00);}
-                if(entity.getMobileCpc() == null){entity.setMobileCpc(0.00);}
+                if(entity.getMobileCost() == null){entity.setMobileCost(BigDecimal.valueOf(0.00));}
+                if(entity.getMobileCpc() == null){entity.setMobileCpc(BigDecimal.valueOf(0.00));}
                 if(entity.getMobileCtr() == null){entity.setMobileCtr(0.00);}
                 if(entity.getMobileConversion() == null){entity.setMobileConversion(0.00);}
                 entity.setDateRep(voEntity.getKey());
@@ -76,15 +77,15 @@ public class ReportPage {
                     }
                     if(entity.getPcImpression() == null){entity.setPcImpression(0);}
                     if(entity.getPcClick() == null){entity.setPcClick(0);}
-                    if(entity.getPcCost() == null){entity.setPcCost(0.00);}
-                    if(entity.getPcCpc() == null){entity.setPcCpc(0.00);}
+                    if(entity.getPcCost() == null){entity.setPcCost(BigDecimal.valueOf(0.00));}
+                    if(entity.getPcCpc() == null){entity.setPcCpc(BigDecimal.valueOf(0.00));}
                     if(entity.getPcCtr() == null){entity.setPcCtr(0.00);}
                     if(entity.getPcConversion() == null){entity.setPcConversion(0.00);}
 
                     if(entity.getMobileImpression() == null){entity.setMobileImpression(0);}
                     if(entity.getMobileClick() == null){entity.setMobileClick(0);}
-                    if(entity.getMobileCost() == null){entity.setMobileCost(0.00);}
-                    if(entity.getMobileCpc() == null){entity.setMobileCpc(0.00);}
+                    if(entity.getMobileCost() == null){entity.setMobileCost(BigDecimal.valueOf(0.00));}
+                    if(entity.getMobileCpc() == null){entity.setMobileCpc(BigDecimal.valueOf(0.00));}
                     if(entity.getMobileCtr() == null){entity.setMobileCtr(0.00);}
                     if(entity.getMobileConversion() == null){entity.setMobileConversion(0.00);}
                     entity.setDateRep(voEntity.getKey());
