@@ -20,7 +20,6 @@ ul, li, h1, h2, h3, h4, h5, h6 ,p {
 body {
     font-family: "微软雅黑";
     font-size: 12px;
-    /*min-width:1603px;*/
 }
 img {
     border: none;
@@ -48,6 +47,9 @@ textarea{
 }
 table{
     overflow:auto;
+}
+table tr ,table tr td{
+    font-size:12px;
 }
 /*top*/
 .top {
@@ -85,8 +87,8 @@ table{
 }
 .logo img {
     width: 151px;
-    hright: 53px;
-    *margin-top:-10px;
+    height: 53px;
+    *margin-top: -40px;
 }
 .logo_text {
     color: #fff;
@@ -132,11 +134,12 @@ table{
     position:fixed;
     z-index:112;
     left:0px;
+    top:94px;
 }
 .nav_left {
     min-height: 1000px;
     position: relative;
-    width: 172px;
+    width:172px;
     z-index:111;
 }
 .nav_bg{
