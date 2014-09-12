@@ -54,7 +54,7 @@ public class BasisReportController {
                                @RequestParam(value = "devices", required = false, defaultValue = "0") int devices,
                                @RequestParam(value = "dateType", required = false, defaultValue = "0") int dateType,
                                @RequestParam(value = "start", required = false, defaultValue = "0") int start,
-                               @RequestParam(value = "sort", required = false, defaultValue = "-11") String sort,
+                               @RequestParam(value = "sort", required = false, defaultValue = "-1") String sort,
                                @RequestParam(value = "limit", required = false, defaultValue = "30") int limit) {
          Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
@@ -171,7 +171,6 @@ public class BasisReportController {
                 cal.setTimeInMillis(kk);
                 endDate4 = cal.getTime();
             }
-
             returnAccount = basisReportService.getAccountDateVS(endDate1,endDate2,endDate3,endDate4,dateType,devices,compare,sortVS,startVS,limitVS);
         } catch (Exception e) {
             e.printStackTrace();

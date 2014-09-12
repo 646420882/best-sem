@@ -120,6 +120,22 @@ public class ContextInterceptor implements HandlerInterceptor {
                 }
 
             }
+
+
+            /*BaiduAccountInfoEntity baiduAccountInfoEntity = null;
+            CommonService commonService = BaiduServiceSupport.getCommonService(accountManageService.getBaiduAccountInfoById(accountId));
+            BaiduApiService apiService = new BaiduApiService(commonService);
+            //获取账户信息
+            AccountInfoType accountInfoType = apiService.getAccountInfo();
+            BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
+
+            MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+            Update update = new Update();
+            update.set("bdAccounts.$", baiduAccountInfoEntity);
+            mongoTemplate.updateFirst(
+                    Query.query(
+                            Criteria.where("userName").is(WebUtils.getUserName(request)).and("bdAccounts._id").is(accountId)),
+                    update, SystemUserEntity.class);*/
         }
     }
 
@@ -129,9 +145,9 @@ public class ContextInterceptor implements HandlerInterceptor {
     }
 
     //获取账户余额和账户余额
-   private Double[] getBalanceAndBudget(Long accountId) {
+    private Double[] getBalanceAndBudget(Long accountId) {
         Double balance = accountManageService.getBaiduAccountInfoById(accountId).getBalance();
-        Double yesterdayCost = accountManageService.getYesterdayCost(accountId);
+        Double yesterdayCost = accountManageService.getBaiduAccountInfoById(accountId).getBudget();
         return new Double[]{balance, yesterdayCost};
     }
 }

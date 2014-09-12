@@ -34,7 +34,7 @@ public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureRepor
                 for (int i = begin; i < endNumber; i++) {
                     objectList.get(i).setPcClick(objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()));
                     objectList.get(i).setPcConversion(objectList.get(i).getPcConversion() + ((objectList.get(i).getMobileConversion() == null) ? 0 : objectList.get(i).getMobileClick()));
-                    objectList.get(i).setPcCost(objectList.get(i).getPcCost() + ((objectList.get(i).getMobileCost() == null) ? 0 : objectList.get(i).getMobileCost()));
+                    objectList.get(i).setPcCost(objectList.get(i).getPcCost().add((objectList.get(i).getMobileCost() == null) ? BigDecimal.valueOf(0) : objectList.get(i).getMobileCost()));
                     //计算点击率
                     if(((objectList.get(i).getMobileImpression() == null) ? 0 : objectList.get(i).getMobileImpression()) == 0){
                         objectList.get(i).setPcCtr(0.00);
@@ -56,12 +56,12 @@ public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureRepor
                     //计算平均点击价格
                     if(((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()) == 0){
                         if(((objectList.get(i).getPcClick() == null) ? 0 : objectList.get(i).getPcClick()) == 0){
-                            objectList.get(i).setPcCpc(0d);
+                            objectList.get(i).setPcCpc(BigDecimal.valueOf(0));
                         }else{
-                            objectList.get(i).setPcCpc(Double.parseDouble(df.format((objectList.get(i).getPcCost()/objectList.get(i).getPcClick()))));
+                            objectList.get(i).setPcCpc((objectList.get(i).getPcCost().divide(BigDecimal.valueOf(objectList.get(i).getPcClick()), 2, BigDecimal.ROUND_UP)));
                         }
                     }else{
-                        double newNumber =  Double.parseDouble(df.format((objectList.get(i).getPcCost() + ((objectList.get(i).getMobileCost() == null) ? 0 : objectList.get(i).getMobileCost()))/(objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()))));
+                        BigDecimal newNumber =  (objectList.get(i).getPcCost().add((objectList.get(i).getMobileCost() == null) ? BigDecimal.valueOf(0) : objectList.get(i).getMobileCost())).divide(BigDecimal.valueOf(objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick())),2,BigDecimal.ROUND_UP);
                         objectList.get(i).setPcCpc(newNumber);
                     }
                     objectList.get(i).setPcImpression(objectList.get(i).getPcImpression() + ((objectList.get(i).getMobileImpression() == null) ? 0 : objectList.get(i).getMobileImpression()));

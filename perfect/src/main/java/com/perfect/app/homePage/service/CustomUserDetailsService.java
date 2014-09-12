@@ -46,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 systemUser.getUserName(),
                 systemUser.getPassword().toLowerCase(),
                 true, true, true, true,
-                getAuthorities(2));
+                getAuthorities(systemUser.getAccess()));
         return user;
     }
 

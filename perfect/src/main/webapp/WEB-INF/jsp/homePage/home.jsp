@@ -338,7 +338,7 @@
                 </p></b>
             </li>
             <li>
-                &nbsp;<span>关键词</span><b>
+                &nbsp;<span>关键词数</span><b>
                 <p>
                     <input class="one" type="button">
                 </p>
@@ -457,7 +457,7 @@
         <div class="list2_top2">
             <ul>
                 <li></li>
-                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
                 <li><span>点击率</span></li>
@@ -498,7 +498,7 @@
         <div class="list2_top2">
             <ul>
                 <li></li>
-                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
                 <li><span>点击率</span></li>
@@ -539,7 +539,7 @@
         <div class="list2_top2">
             <ul>
                 <li></li>
-                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
                 <li><span>点击率</span></li>
@@ -580,7 +580,7 @@
         <div class="list2_top2">
             <ul>
                 <li></li>
-                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
                 <li><span>点击率</span></li>
@@ -621,7 +621,7 @@
         <div class="list2_top2">
             <ul>
                 <li></li>
-                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
                 <li><span>点击率</span></li>
@@ -662,7 +662,7 @@
         <div class="list2_top2">
             <ul>
                 <li></li>
-                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
                 <li><span>点击率</span></li>
@@ -703,7 +703,7 @@
         <div class="list2_top2">
             <ul>
                 <li></li>
-                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
                 <li><span>点击率</span></li>
@@ -744,7 +744,7 @@
         <div class="list2_top2">
             <ul>
                 <li></li>
-                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
                 <li><span>点击率</span></li>
@@ -785,7 +785,7 @@
         <div class="list2_top2">
             <ul>
                 <li></li>
-                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
                 <li><span>点击率</span></li>
@@ -826,7 +826,7 @@
         <div class="list2_top2">
             <ul>
                 <li></li>
-                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
                 <li><span>点击率</span></li>
@@ -867,7 +867,7 @@
         <div class="list2_top2">
             <ul>
                 <li></li>
-                <li><span>关键词数</span><a href="#" class="question"></a></li>
+                <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
                 <li><span>点击率</span></li>
