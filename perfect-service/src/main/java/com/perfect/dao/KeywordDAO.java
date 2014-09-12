@@ -65,4 +65,6 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
     void deleteById(String id);
 
     void updateByMongoId(KeywordEntity keywordEntity);
+
+    List<KeywordEntity> getKeywordByIds(List<Long> ids);
 }

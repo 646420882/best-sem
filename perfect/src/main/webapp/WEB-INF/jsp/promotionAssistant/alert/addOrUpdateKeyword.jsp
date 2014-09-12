@@ -51,7 +51,7 @@
                 <div class="newkeyeord_title over">
                     <ul class="over" >
                         <li><input type="radio" checked="checked" name="Target" class="current">选择推广计划、推广单元</li>
-                        <li><input type="radio"  name="Target" class="current">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>
+                       <%-- <li><input type="radio"  name="Target" class="current">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>--%>
                     </ul>
                     <div class="newkeyword_content over">
                         <div class="containers2 over">
@@ -114,35 +114,6 @@
                 <div class="assembly_right3 over">
                     <div class="newkeword_end">
                         <ul id = "valideKwd">
-                           <%-- <li>
-                                <div class="newkeyword_end1"> <span>[+]</span>新增的关键词一个</div>
-                                <div class="newkeyword_end2 ">
-                                    <p><input type="radio" checked="checkde" name="addnew">添加已选择的关键词</p>
-                                    <p><input type="radio"  name="addnew">不添加</p>
-                                    <div class="list4" style="height:300px;">
-                                        <table width="100%" cellspacing="0" border="0" width="500px">
-                                            <thead>
-                                            <tr class="list02_top">
-                                                <td>&nbsp; <input type="checkbox" id="checkAll2" checked="checkde" >关键词</td>
-                                                <td>&nbsp;展现理由</td>
-                                                <td>&nbsp;日均搜索量</td>
-                                                <td>&nbsp;竞争激烈程度
-                                                    <div class="set fr"></div>
-                                                </td>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr class="list2_box2">
-                                                <td> &nbsp;<input type="checkbox" checked="checked" name="subbox2">北京婚博会</td>
-                                                <td>&nbsp;111</td>
-                                                <td>&nbsp;1111</td>
-                                                <td>&nbsp;1111 </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </li>--%>
 
                         </ul>
                     </div>
@@ -151,7 +122,7 @@
                     <ul>
                         <li class="current lastStep" >上一步</li>
                         <li>完成</li>
-                        <li class="close ui-dialog-close">取消</li>
+                        <li class="close">取消</li>
                     </ul>
                 </div>
             </div>
@@ -188,16 +159,20 @@
                 $(".newkeyword_list").hide();
             }
         });
-        $(".newkeyword_end1").click(function(){
-            if ($(".newkeyword_end2").css("display") == "none"){
-                $(".newkeyword_end2").show();
-                $(".newkeyword_end1").find(" span").text("[-]");
-            }
-            else {
-                $(".newkeyword_end2").hide();
-                $(".newkeyword_end1").find("span").text("[+]");
+
+
+
+        $("body").delegate(".newkeyword_end1","click",function(){
+            var next = $(this).next();
+            if (next.css("display") == "none"){
+                next.show();
+                $(this).find(" span").text("[-]");
+            }else {
+                next.hide();
+                $(this).find("span").text("[+]");
             }
         });
+
 
         $("#checkAll2").click(function () {
             $('input[name="subbox2"]').prop("checked", this.checked);
@@ -415,7 +390,7 @@ getCampaiTreeData();
             data:{"isReplace":isReplace,"chooseInfos":selectNode,"keywordInfos":keywordInfos},
             dataType:"json",
             success:function(data){
-                alert(JSON.stringify(data));
+//                alert(JSON.stringify(data));
                 $("#valideKwd").html("");
                if(data.insertList.length>0){
                    toHtml("insert",data.insertList);
@@ -466,7 +441,7 @@ getCampaiTreeData();
 
         var html = "<li>";
         html+= " <div class='newkeyword_end1'> <span>[+]</span>"+stringName+"</div>";
-        html+="<div class='newkeyword_end2 '>";
+        html+="<div class='newkeyword_end2 ' style='display:none;'>";
 
         html+=" <p><input type='radio' checked='checkde' name='addnew'>添加已选择的关键词</p>";
         html+=" <p><input type='radio'  name='addnew'>不添加</p>";
@@ -491,7 +466,31 @@ getCampaiTreeData();
             html+="<td>"+list[i].campaignName+"</td>";
             html+="<td>"+list[i].adgroupName+"</td>";
             html+="<td>"+list[i].object.keyword+"</td>";
-            html+="<td>"+list[i].object.matchType+"</td>";
+
+            //匹配模式
+            var matchType;
+            switch (list[i].object.matchType) {
+                case 1:
+                    matchType = "精确";
+                    break;
+                case 2:
+                    matchType = "短语";
+                    if (obj.phraseType == 1) {
+                        matchType = matchType + "-同义包含";
+                    } else if (obj.phraseType == 2) {
+                        matchType = matchType + "-精确包含";
+                    } else if (obj.phraseType == 3) {
+                        matchType = matchType + "-核心包含";
+                    }
+                    ;
+                    break;
+                case 3:
+                    matchType = "广泛";
+                    break;
+                default :matchType = "&nbsp;";
+            }
+
+            html+="<td>"+matchType+"</td>";
             html+="<td>"+until.convert(list[i].object.price==null,"<0.10>:"+list[i].object.price)+"</td>";
             html+="<td>"+until.convert(list[i].object.pcDestinationUrl==null,"&nbsp;:"+list[i].object.pcDestinationUrl)+"</td>";
             html+="<td>"+until.convert(list[i].object.mobileDestinationUrl==null,"&nbsp;:"+list[i].object.mobileDestinationUrl)+"</td>";
@@ -511,7 +510,7 @@ getCampaiTreeData();
     function createIgoneHtml(fieldsArray,list){
         var html = "<li>";
         html+= " <div class='newkeyword_end1'> <span>[+]</span>忽略的关键词"+list.length+"个</div>";
-        html+="<div class='newkeyword_end2 '>";
+        html+="<div class='newkeyword_end2 ' style='display:none;'>";
 
         html+=" <div class='list4' style='height:300px;'>";
         html+="  <table width='100%' cellspacing='0' border='0' width='500px'>";

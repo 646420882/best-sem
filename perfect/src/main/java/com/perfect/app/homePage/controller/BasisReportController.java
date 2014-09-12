@@ -58,7 +58,7 @@ public class BasisReportController {
                                @RequestParam(value = "limit", required = false, defaultValue = "30") int limit) {
          Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
-        String yesterday = new SimpleDateFormat("yyyy-MM-dd ").format(cal.getTime());
+        String yesterday = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
         if(startDate == null || startDate.equals("")){
             startDate = yesterday;
             endDate = yesterday;
@@ -131,8 +131,8 @@ public class BasisReportController {
      */
     @RequestMapping(value = "/account/accountDateVs", method = RequestMethod.GET)
     public void getAccountDateVs(HttpServletResponse response,
-                                 @RequestParam(value = "date1", required = false) String date1,
-                                 @RequestParam(value = "date2", required = false) String date2,
+                                 @RequestParam(value = "date1", required = true) String date1,
+                                 @RequestParam(value = "date2", required = true) String date2,
                                  @RequestParam(value = "date3", required = false) String date3,
                                  @RequestParam(value = "dateType", required = false) int dateType,
                                  @RequestParam(value = "devices", required = false) int devices,
@@ -143,11 +143,25 @@ public class BasisReportController {
 
         Map<String, List<Object>> returnAccount = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar YesterdayCal = Calendar.getInstance();
+        YesterdayCal.add(Calendar.DATE,   -1);
+        String Yesterday = dateFormat.format(YesterdayCal.getTime());
+        Date endDate1;
+        Date endDate2;
+        Date endDate3;
+        Date endDate4 = null;
         try {
-            Date endDate1 = dateFormat.parse(date1);
-            Date endDate2 = dateFormat.parse(date2);
-            Date endDate3;
-            Date endDate4 = null;
+            if(date1 == null || date1.equals("")){
+                endDate1 = dateFormat.parse(Yesterday);
+            }else{
+                endDate1 = dateFormat.parse(date1);
+            }
+            if(date2 == null || date2.equals("")){
+                endDate2 = dateFormat.parse(Yesterday);
+            }else{
+                endDate2 = dateFormat.parse(date2);
+            }
+
             if(date3 == null || date3.equals("")){
                 endDate3 = null;
             }else{
@@ -177,9 +191,4 @@ public class BasisReportController {
         }
     }
 
-    @RequestMapping(value = "/account/test", method = RequestMethod.GET)
-    public void test(HttpServletResponse response){
-        Long[] id = {4377017918l, 8071527386l, 4377019004l};
-        Map<String, List<StructureReportEntity>> entityList = basisReportService.getKeywordReport(id, "2014-08-01", "2014-08-01", 1);
-    }
 }

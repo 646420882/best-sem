@@ -9,7 +9,7 @@ function getKwdList(nowPage) {
     $("#tbodyClick").html("加载中...");
 
     if(/^\d+$/.test(nowPage) == false){
-        nowPage = 0;
+        nowPage = 1;
     }
 
     var param = getNowChooseCidAndAid();
@@ -17,6 +17,7 @@ function getKwdList(nowPage) {
         param = {};
     }
     param["nowPage"] = nowPage;
+    param["pageSize"] = $("#kwd_PageSize").val();
 
     $.ajax({
         url: "/assistantKeyword/list",
@@ -63,6 +64,10 @@ $(".kwdPage ul li>a").click(function(){
  */
 $("#kwdGo").click(function(){
     var nowPage = $(".kwdPageNo").val();
+    var totalPage = $(".kwdPage").find("li>a:eq(3)").attr("name");
+    if(nowPage>parseInt(totalPage)){
+        nowPage = parseInt(totalPage);
+    }
     getKwdList(nowPage);
     $(".kwdPageNo").val("");
 });
@@ -384,20 +389,6 @@ $("#batchDelKwd").livequery('click', function () {
 });
 
 
-/**
- *关键词分页时间
- */
-/*
- $("#tbodyClick").delegate(".kwdEdit","click blur",function(event){
- if(event.type=="click"){
- var tdValue = $(this).html();
- $(this).html("<input type='text' value="+tdValue+" />");
- }else{
- var text = $(this).find("input").val();
-
- }
- });
- */
 
 
 

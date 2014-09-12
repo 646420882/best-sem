@@ -14,5 +14,5 @@ public interface PerformanceService {
 
     List<AccountReportEntity> performanceUser(Date startDate, Date endDate,String sorted,int limit,int startPer, List<String> date);
 
-    List<AccountReportEntity> performanceCurve(Date startDate,Date endDate);
+    List<AccountReportEntity> performanceCurve(Date startDate,Date endDate,List<String> date);
 }

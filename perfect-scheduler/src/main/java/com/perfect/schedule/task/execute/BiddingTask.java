@@ -21,7 +21,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.*;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -46,6 +45,9 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
 
     @Resource
     private SysCampaignService sysCampaignService;
+
+    @Resource
+    private SysAdgroupService sysAdgroupService;
 
     @Resource
     private BiddingLogService biddingLogService;
@@ -73,7 +75,7 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
 
                 // 生成一个任务
                 BiddingSubTask biddingSubTask = new BiddingSubTask(task.getUserName(), accountInfoEntity.getRegDomain(), service, biddingRuleService,
-                        sysCampaignService, accountInfoEntity, biddingRuleEntity, keywordEntity);
+                        sysCampaignService, accountInfoEntity, biddingRuleEntity, keywordEntity, sysAdgroupService);
 
                 biddingSubTask.setBiddingLogService(biddingLogService);
                 executor.execute(biddingSubTask);
@@ -104,8 +106,8 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
             }
         }
 
-        if(objectList.isEmpty()){
-            if(logger.isDebugEnabled()){
+        if (objectList.isEmpty()) {
+            if (logger.isDebugEnabled()) {
                 logger.debug("当前暂无可执行的竞价规则!");
             }
             return Collections.EMPTY_LIST;

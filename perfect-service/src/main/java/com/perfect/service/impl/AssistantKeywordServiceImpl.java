@@ -30,7 +30,6 @@ import static com.perfect.mongodb.utils.EntityConstants.*;
 @Repository("assistantKeywordService")
 public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
-    private static final int PAGE_SIZE = 20;
     @Resource
     private CampaignDAO campaignDAO;
 
@@ -40,13 +39,25 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     @Resource
     private KeywordDAO keywordDAO;
 
+
+    /**
+     * 根据多个关键词id查询关键词
+     * @param ids
+     * @return
+     */
+    public List<KeywordEntity> getKeywordByIds(List<Long> ids){
+        return keywordDAO.getKeywordByIds(ids);
+    }
+
+
+
     /**
      * 根据账户id得到关键词
      * @return
      */
 
     @Override
-    public PagerInfo getKeyWords(String cid,String aid,Integer nowPage) {
+    public PagerInfo getKeyWords(String cid,String aid,Integer nowPage,Integer pageSize) {
         String regex = "^\\d+$";
         if(nowPage==null){
             nowPage = 0;
@@ -61,10 +72,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         if(cid!=null && !"".equals(cid) && aid!=null && !"".equals(aid)){
             if(aid.matches(regex)==true){
                 query.addCriteria(Criteria.where(EntityConstants.ADGROUP_ID).is(Long.parseLong(aid)));
-                page = keywordDAO.findByPageInfo(query,PAGE_SIZE,nowPage);
+                page = keywordDAO.findByPageInfo(query, pageSize,nowPage);
             }else{
                 query.addCriteria(Criteria.where(EntityConstants.SYSTEM_ID).is(aid));
-                page = keywordDAO.findByPageInfo(query,PAGE_SIZE,nowPage);
+                page = keywordDAO.findByPageInfo(query, pageSize,nowPage);
             }
             return page;
         }else if(cid!=null && !"".equals(cid) && (aid==null||"".equals(aid))){
@@ -81,34 +92,25 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     adgroupEntityList.addAll( adgroupDAO.findByCampaignId(campaignEntity.getCampaignId()));
                 }
 
-                List<KeywordEntity> keywordList = new ArrayList<>();
-                PaginationParam pageParam = new PaginationParam();
-                pageParam.setOrderBy("price");
-                pageParam.setStart(0);
-                pageParam.setLimit(Integer.MAX_VALUE);
-                pageParam.setAsc(true);
-                for(AdgroupEntity ad :adgroupEntityList){
-                    if(ad.getAdgroupId()==null){
-                        keywordList.addAll(keywordDAO.findByAdgroupId(ad.getId(),pageParam));
-                    }else{
-                        keywordList.addAll(keywordDAO.findByAdgroupId(ad.getAdgroupId(),pageParam));
-                    }
+
+            //待？？？？？
+            Query adQuery = new Query();
+            List<Long> longIds = new ArrayList<>();
+            List<String> objIds = new ArrayList<>();
+            for(int i = 0;i<adgroupEntityList.size();i++){
+                AdgroupEntity ad = adgroupEntityList.get(i);
+                if(ad.getAdgroupId()==null){
+                    objIds.add(ad.getId());
+                }else{
+                    longIds.add(ad.getAdgroupId());
                 }
-
-            int toIndex = nowPage*PAGE_SIZE + PAGE_SIZE;
-            if(toIndex>keywordList.size()){
-                toIndex = keywordList.size();
             }
-            if(nowPage*PAGE_SIZE>toIndex){
-                nowPage = 0;
-            }
+            adQuery.addCriteria(Criteria.where(EntityConstants.ADGROUP_ID).in(longIds));
+            page = keywordDAO.findByPageInfo(adQuery, pageSize, nowPage);
 
-            List<KeywordEntity> pageList = keywordList.subList(nowPage*PAGE_SIZE,toIndex );
-            PagerInfo p=new PagerInfo(nowPage, PAGE_SIZE,keywordList.size());
-            p.setList(pageList);
-            return p;
+            return page;
         }else{
-            page = keywordDAO.findByPageInfo(query,PAGE_SIZE,nowPage);
+            page = keywordDAO.findByPageInfo(query, pageSize,nowPage);
             return page;
         }
     }
@@ -189,7 +191,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * @param keywordNames
      */
     @Override
-    public Map<String,Object> validateDeleteKeywordByChoose(Long accountId, String chooseInfos, String keywordNames) {
+    public Map<String,Object> validateDeleteKeywordByChoose(Long accountId, String chooseInfos, String keywordNames,Integer nowPage,Integer pageSize) {
         String regex = "^\\d+$";
         String[] everyChoose = chooseInfos.split("-");
         String[] names = keywordNames.split("\n");
@@ -214,7 +216,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 if(list.size()!=0){
                     KeywordDTO keywordDTO = new KeywordDTO();
                     keywordDTO.setCampaignName(fileds[0].matches(regex)==true?campaignDAO.findOne(Long.parseLong(fileds[0])).getCampaignName():campaignDAO.findByObjectId(fileds[0]).getCampaignName());
-                    keywordDTO.setAdgroupName(fileds[1].matches(regex)==true?adgroupDAO.findOne(Long.parseLong(fileds[1])).getAdgroupName():adgroupDAO.findByObjId(fileds[0]).getAdgroupName());
+                    keywordDTO.setAdgroupName(fileds[1].matches(regex) == true ? adgroupDAO.findOne(Long.parseLong(fileds[1])).getAdgroupName() : adgroupDAO.findByObjId(fileds[0]).getAdgroupName());
                     keywordDTO.setObject(list.get(0));
                     deleteKwd.add(keywordDTO);
                 }else{
@@ -368,10 +370,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                         list = keywordDAO.findByAdgroupId(fieds[1],getBasePagintionParam());
                     }
 
-                    if(list.size()==0){
-                        insertList.add(setFieldToDTO(fieds,keywordEntity));
+                    if(list==null||list.size()==0){
+                        insertList.add(setFieldToDTO(fieds,keywordEntity,null));
                     }else{
-                        updateList.add(setFieldToDTO(fieds,keywordEntity));
+                        updateList.add(setFieldToDTO(fieds,keywordEntity,list.get(0)));
                     }
 
                 } else {
@@ -403,9 +405,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     }
                     //若查询没有数据就添加这条数据,若有就更新这条数据
                     if(list==null||list.size()==0){
-                        insertList.add(setFieldToDTO(fieds,keywordEntity));
+                        insertList.add(setFieldToDTO(fieds,keywordEntity,null));
                     }else{
-                        updateList.add(setFieldToDTO(fieds,keywordEntity));
+                        updateList.add(setFieldToDTO(fieds,keywordEntity,list.get(0)));
                     }
                 }
             }
@@ -414,7 +416,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
 
         List<KeywordEntity> entities = new ArrayList<>();
-        if(isReplace==true){
+       /* if(isReplace==true){
 
             for(String row:everyRow){
                 String[] fieds = row.split(",");
@@ -460,7 +462,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 delList.add(keywordDTO);
             }
         }
-
+*/
 
         Map<String,Object> map = new HashMap<>();
         map.put("insertList",insertList);
@@ -471,11 +473,23 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         return map;
     }
 
-    private KeywordDTO setFieldToDTO(String[] fieds,KeywordEntity keywordEntity){
+    private KeywordDTO setFieldToDTO(String[] fieds,KeywordEntity updateKeywordEntity,KeywordEntity beforeKeywordEntity){
         KeywordDTO keywordDTO = new KeywordDTO();
         keywordDTO.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
         keywordDTO.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
-        keywordDTO.setObject(keywordEntity);
+
+        if(beforeKeywordEntity==null){
+            keywordDTO.setObject(beforeKeywordEntity);
+        }else{
+            beforeKeywordEntity.setPause(updateKeywordEntity.getPause());
+
+           /* if(beforeKeywordEntity){
+
+            }*/
+
+            keywordDTO.setObject(beforeKeywordEntity);
+        }
+
         return keywordDTO;
     }
 
@@ -502,6 +516,15 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             if(i==1){
                 if("广泛".equals(kwInfo[i])){
                     keywordEntity.setMatchType(3);
+                }else if("短语-同义包含".equals(kwInfo[i])){
+                    keywordEntity.setMatchType(2);
+                    keywordEntity.setPhraseType(1);
+                }else if("短语-精确包含".equals(kwInfo[i])){
+                    keywordEntity.setMatchType(2);
+                    keywordEntity.setPhraseType(2);
+                }else if("短语-核心包含".equals(kwInfo[i])){
+                    keywordEntity.setMatchType(2);
+                    keywordEntity.setPhraseType(3);
                 }else{
                     keywordEntity.setMatchType(1);
                 }
@@ -532,7 +555,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     }
 
 
-    /**
+    /**未完
      * （输入的方式）
      * 将用户输入的关键词信息添加或更新到数据库
      *

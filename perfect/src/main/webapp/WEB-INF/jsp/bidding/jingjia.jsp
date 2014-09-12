@@ -5,22 +5,23 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta id="viewport" name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
 </head>
 <style type="text/css">
     .tab_box {
         padding: 10px 0 0 2px;
     }
-
 </style>
 <body>
-<jsp:include page="../homePage/pageBlock/nav.jsp"/>
-
-<div class="concent over fl">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
-
+<div class="concent over">
+<jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
 <div class="on_title over">
     <a href="#">
@@ -193,7 +194,7 @@
                             href="#">2</a><a href="#">3</a><a
                             href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="nextpage2"><span></span></a><span
                             style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
-                            href="#"> GO</a>
+                            href="#" class='page_go'> GO</a>
 
                     </div>
                 </div>
@@ -291,7 +292,7 @@
                                 href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#"
                                                                                                     class="nextpage2"><span></span></a><span
                                 style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
-                                href="#"> GO</a>
+                                href="#" class='page_go'> GO</a>
 
                         </div>
                     </div>
@@ -306,7 +307,7 @@
 </div>
 </div>
 <div class="TB_overlayBG"></div>
-<div class="box" style="display:none" id="download">
+<div class="box10" style="display:none" id="downloadData">
     <h2 id="downloadBox">账户下载<a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
@@ -342,8 +343,8 @@
 </div>
 
 
-<div class="box" style="display:none">
-    <h2 id="box">设置规则<a href="#" class="close">关闭</a></h2>
+<div class="box" id="seetingRules" style="display:none">
+    <h2 id="box1">设置规则<a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
         <ul>
@@ -396,11 +397,11 @@
                     &nbsp;</form>
             </li>
             <%--<li>--%>
-                <%--<form>竞价规则：--%>
-                    <%--<select id="device">--%>
-                        <%--<option value="1">计算机</option>--%>
-                    <%--</select>--%>
-                <%--</form>--%>
+            <%--<form>竞价规则：--%>
+            <%--<select id="device">--%>
+            <%--<option value="1">计算机</option>--%>
+            <%--</select>--%>
+            <%--</form>--%>
             <%--</li>--%>
             <li>
                 <ul>
@@ -435,8 +436,9 @@
                 <ul>
                     <li><input type="radio" name="auto" checked="checked" value="1"><span>单次竞价</span>
                         <br>
-                         &nbsp; <input type="radio" name="sbid" checked="checked" value="everyday"> 每天执行
-                        &nbsp;<input type="radio" name="sbid" value="bytime"> 竞价次数:<input class="times" type="text" name="bytimes">
+                        &nbsp; <input type="radio" name="sbid" checked="checked" value="everyday"> 每天执行
+                        &nbsp;<input type="radio" name="sbid" value="bytime"> 竞价次数:<input class="times" type="text"
+                                                                                          name="bytimes">
                     </li>
 
                     <li><input type="radio" name="auto" value="2"><span>重复竞价速度 每隔
@@ -553,7 +555,7 @@
                 <li><textarea class="zs_input5"></textarea></li>
                 <li>输入分组管理名：</li>
                 <li><input type="text" class="zs_input3"></li>
-                </ul>
+            </ul>
         </div>
     </div>
     <div class="main_bottom">
@@ -587,7 +589,7 @@
             </li>
             <li><span class="define fl"><input type="checkbox"> 竞价规则</span><span class="define fl"><input
                     type="checkbox"> </span></li>
-            </ul>
+        </ul>
 
     </div>
     <div class="main_bottom">
@@ -769,25 +771,30 @@ function fullItems(datas, name) {
     var newrows = [];
     datas.rows.forEach(function (item) {
         var newrow = "";
-        if(item.keywordId != null){
+        var _price = 0;
+        if (item.price != null) {
+            _price = item.price;
+        }
+
+        if (item.keywordId != null) {
             newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.keywordId + "'></td>" +
                     "<td>&nbsp;" + item.keyword + "</td>" +
                     "<td>&nbsp;" + item.cost + "</td>" +
                     "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.keywordId + "'>查看最新排名</a></td>" +
                     "<td>&nbsp;" + item.impression + "</td>" +
                     "<td>&nbsp;" + item.ctr + "%</td>" +
-                    "<td>&nbsp;" + item.price + "</td>" +
+                    "<td>&nbsp;" + _price + "</td>" +
                     "<td>&nbsp;" + item.pcQuality + "</td>" +
                     "<td>&nbsp;" + item.mQuality + "</td>" +
                     "<td>&nbsp;" + item.statusStr + "</td>";
-        }else{
+        } else {
             newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.id + "'></td>" +
                     "<td>&nbsp;" + item.keyword + "</td>" +
                     "<td>&nbsp;" + item.cost + "</td>" +
                     "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.id + "'>查看最新排名</a></td>" +
                     "<td>&nbsp;" + item.impression + "</td>" +
                     "<td>&nbsp;" + item.ctr + "%</td>" +
-                    "<td>&nbsp;" + item.price + "</td>" +
+                    "<td>&nbsp;" + _price + "</td>" +
                     "<td>&nbsp;" + item.pcQuality + "</td>" +
                     "<td>&nbsp;" + item.mQuality + "</td>" +
                     "<td>&nbsp;" + item.statusStr + "</td>";
@@ -812,9 +819,9 @@ function fullItems(datas, name) {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
-        $(".box").css({
-            left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
+        $("#seetingRules").css({
+            left: ($("body").width() - $("#seetingRules").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#seetingRules").height()) / 2 + $(window).scrollTop() + "px",
             display: "block"
         });
     });
@@ -827,7 +834,7 @@ function fullItems(datas, name) {
             type: "GET",
             success: function (datas) {
                 var data = datas.rows;
-                if(data == null){
+                if (data == null) {
                     alert("暂无排名信息,请刷新排名!");
                     return false;
                 }
@@ -853,7 +860,8 @@ function fullItems(datas, name) {
 
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
 
 
 </body>

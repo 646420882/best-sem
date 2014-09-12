@@ -43,8 +43,8 @@ public class AssistantKeywordController {
      * @return
      */
     @RequestMapping(value = "assistantKeyword/list",method = {RequestMethod.GET,RequestMethod.POST})
-    public void getAllKeywordList(HttpServletResponse response,String cid,String aid,Integer nowPage){
-        PagerInfo page = assistantKeywordService.getKeyWords(cid,aid,nowPage);
+    public void getAllKeywordList(HttpServletResponse response,String cid,String aid,Integer nowPage,Integer pageSize){
+        PagerInfo page = assistantKeywordService.getKeyWords(cid,aid,nowPage,pageSize);
         webContext.writeJson(page,response);
     }
 
@@ -110,8 +110,8 @@ public class AssistantKeywordController {
      * @return
      */
     @RequestMapping(value = "assistantKeyword/deleteByNameChoose",method = {RequestMethod.GET,RequestMethod.POST})
-    public void deleteKeywordByNamesChoose(HttpServletResponse response,String chooseInfos,String keywordNames){
-        Map<String,Object> map =  assistantKeywordService.validateDeleteKeywordByChoose(AppContext.getAccountId(), chooseInfos, keywordNames);
+    public void deleteKeywordByNamesChoose(HttpServletResponse response,String chooseInfos,String keywordNames,Integer nowPage,Integer pageSize){
+        Map<String,Object> map =  assistantKeywordService.validateDeleteKeywordByChoose(AppContext.getAccountId(), chooseInfos, keywordNames,nowPage,pageSize);
         webContext.writeJson(map,response);
     }
 

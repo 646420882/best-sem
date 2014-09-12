@@ -12,10 +12,11 @@
 <head>
     <meta charset="utf-8">
     <title>大数据智能营销</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
@@ -24,13 +25,13 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/jquery.resizableColumns.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/demo.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
 </head>
 <body>
-<jsp:include page="../homePage/pageBlock/nav.jsp"/>
-<jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
-<div class="concent fl over">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
-
+<jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
+<div class="concent over">
+<jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
 <div class="on_title over">
     <a href="#">
@@ -62,7 +63,7 @@
 <div class="zhushou over wd ">
 <div class="zhushou_menu wd">
     <ul class="zs_nav">
-        <li class="showbox"><a><span><img src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
+        <li class="showbox"><a id="downloadAccountData"><span><img src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
         <li><a><span><img src="../public/img/update.png"></span><span>上传更新</span></a></li>
         <li class="current"><a><span><img src="../public/img/Advanced_search.png"></span><span>高级搜索</span></a></li>
         <li class="nav_menu"><a><span><img src="../public/img/Repeat_keyword.png"></span><span>重复关键词</span></a>
@@ -159,6 +160,7 @@
 
     <div class="page kwdPage over">
         <ul>
+            <div>每页显示条数<select style="width:60px;" id = "kwd_PageSize" onchange="getKwdList(1)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></div>
             <li><a href="#">首页</a></li>
             <li><a href="#">上一页</a></li>
             <li><a href="#">下一页</a></li>
@@ -869,6 +871,7 @@
 
     <div class="page campaignPage over">
         <ul>
+            <div>每页显示条数<select style="width:60px;" id = "camp_PageSize" onchange="getCampaignList(1)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></div>
             <li><a href="#">首页</a></li>
             <li><a href="#">上一页</a></li>
             <li><a href="#">下一页</a></li>
@@ -991,7 +994,7 @@
 <!---------下载账户----------->
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none" id="download">
-    <h2 id="box2">账户下载<a href="#" class="close">关闭</a></h2>
+    <h2 id="box2"><span class="fl">账户下载</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
         您希望下载账户的哪个部分？
@@ -1026,7 +1029,8 @@
 </div>
 <!---------查找重复关键词----------->
 <div class="box3" style="display:none">
-    <h2 id="box3">查找重复关键词<a href="#" class="close">关闭</a></h2>
+    <h2 id="box3">
+        <span class="fl">查找重复关键词</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
         <span>请指定重复关键词的标准，已删除的关键词不会被当作重复关键词。</span>
@@ -1064,7 +1068,8 @@
 </div>
 <!---------估算工具----------->
 <div class="box4" style="display:none">
-    <h2 id="box4">估算工具<a href="#" class="close">关闭</a></h2>
+    <h2 id="box4">
+        <span class="fl">估算工具</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
         <span>关键词：<em>（每行一个，最多100个）</em></span>
@@ -1127,7 +1132,9 @@
 </div>
 <!---------修改账户预算----------->
 <div class="box5" style="display:none; width: 230px">
-    <h2 id="box5">修改账户预算<a href="#" class="close">关闭</a></h2>
+    <h2 id="box5">
+        <span class="fl">修改账户预算</span>
+        <a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
         <ul class="zs_set">
@@ -1145,7 +1152,9 @@
 </div>
 <!---------IP排除----------->
 <div class="box6" style="display:none;width: 300px">
-    <h2 id="box6">IP排除<a href="#" class="close">关闭</a></h2>
+    <h2 id="box6">
+        <span class="fl">IP排除</span>
+        <a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
         <ul class="zs_set">
@@ -1176,7 +1185,9 @@
 </div>
 
 <div id="reachBudget1" class="box" style="display:none; width: 600px">
-    <h2 id="reachBudget_head">账户预算<a href="#" class="close">关闭</a></h2>
+    <h2 id="reachBudget_head">
+        <span class="fl">账户预算</span>
+        <a href="#" class="close">关闭</a></h2>
     <div class="mainlist">
         <div class="tu_top over">
             <ul id="budgetList" class="zs_set">
@@ -1188,7 +1199,9 @@
 </div>
 <%--创意添加选择计划，单元弹出窗口--%>
 <div  class="box" style="display:none" id="jcAdd">
-    <h2 id="dAdd">添加创意<a href="#" class="close">关闭</a></h2>
+    <h2 id="dAdd">
+        <span class="fl">添加创意</span>
+        <a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
         选择要添加到的计划或者单元!
@@ -1209,7 +1222,9 @@
 <%--推广计划设置否定关键词窗口--%>
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setNegtiveWord">
-    <h2 id="setFdKeywordDiv">否定关键词设置<a href="#" class="close">关闭</a></h2>
+    <h2 id="setFdKeywordDiv">
+        <span class="fl">否定关键词设置</span>
+        <a href="#" class="close">关闭</a></h2>
 
     <span>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，没词20汉字以内，最多200项。</span>
 
@@ -1232,7 +1247,9 @@
 </div>
 <%--创意修改弹出窗口--%>
 <div  class="box" style="display:none" id="jcUpdate">
-    <h2 id="dUpdate">修改创意<a href="#" class="close">关闭</a></h2>
+    <h2 id="dUpdate">
+        <span class="fl">修改创意</span>
+        <a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
         <form id="cUpdateForm">
@@ -1262,7 +1279,9 @@
 <%--推广计划设置IP排除窗口--%>
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setExcludeIp">
-    <h2 id="setExcludeIpDiv">IP排除列表<a href="#" class="close">关闭</a></h2>
+    <h2 id="setExcludeIpDiv">
+        <span class="fl">IP排除列表</span>
+        <a href="#" class="close">关闭</a></h2>
 
     <span>你可将IP最后一段设为*，以屏蔽一段地址内的创意展现。</span><br>
     <span>每个IP地址占一行。IP排除的数量不能超过20</span>
@@ -1285,7 +1304,9 @@
 <%--推广计划设置推广时段窗口--%>
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setExtension">
-    <h2 id="setExtensionDiv">推广时段管理<a href="#" class="close">关闭</a></h2>
+    <h2 id="setExtensionDiv">
+        <span class="fl">推广时段管理</span>
+        <a href="#" class="close">关闭</a></h2>
     <div class="chooseTime">
         <span>请选择时段</span>
         <ul>
@@ -1309,7 +1330,9 @@
 <%--推广计划设置推广地域窗口--%>
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setSchedule">
-    <h2 id="setScheduleDiv">推广地域列表<a href="#" class="close">关闭</a></h2><a href="javascript:testBatchDel()">测试批量删除</a>
+    <h2 id="setScheduleDiv">
+        <span class="fl">推广地域列表</span>
+        <a href="#" class="close">关闭</a></h2><a href="javascript:testBatchDel()">测试批量删除</a>
     <a href="">测试批量添加更新</a>
     <jsp:include page="../promotionAssistant/alert/setRegionTarget.jsp"/>
 </div>

@@ -9,9 +9,14 @@
 <!doctype html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title></title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
+
     <style type="text/css">
         .list2 table tr td ul li {
             width: 12%;
@@ -29,9 +34,9 @@
 
 </head>
 <body>
-<jsp:include page="../homePage/pageBlock/nav.jsp"/>
-<div class="concent over fl">
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
+<div class="concent over">
+<jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
 <div class="on_title over">
     <a href="#">
@@ -119,8 +124,8 @@
                             <a href="javascript:toPrevPage();">上一页</a><a
                                 href="javascript:toNextPage();">下一页</a><span
                                 style="margin-right:10px;">跳转到 <input id="pageNumber1" type="text" class="price"></span>&nbsp;&nbsp;<a
-                                href="javascript:toAnyPage();"> GO</a>
-                            <a href="#"><span>共计</span><span><b
+                                href="javascript:toAnyPage();" class='page_go'> GO</a>
+                            <a href="#" class='page_go'><span>共计</span><span><b
                                     id="totalPage1"></b></span><span>页</span></a>
                         </div>
                     </div>
@@ -191,8 +196,8 @@
                             <a href="javascript:toPrevPage();">上一页</a><a
                                 href="javascript:toNextPage();">下一页</a><span
                                 style="margin-right:10px;">跳转到 <input id="pageNumber2" type="text" class="price"></span>&nbsp;&nbsp;<a
-                                href="javascript:toAnyPage();"> GO</a>
-                            <a href="#"><span>共计</span><span><b
+                                href="javascript:toAnyPage();" class='page_go'> GO</a>
+                            <a href="#" class='page_go'><span>共计</span><span><b
                                     id="totalPage2"></b></span><span>页</span></a>
                         </div>
 

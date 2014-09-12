@@ -32,29 +32,32 @@ $(document).ready(function () {
 
 /*******下载账户**************/
 window.onload = function () {
+    rDrag.init(document.getElementById('box1'));
     rDrag.init(document.getElementById('box2'));
     rDrag.init(document.getElementById('box3'));
     rDrag.init(document.getElementById('box4'));
     rDrag.init(document.getElementById('box5'));
     rDrag.init(document.getElementById('box6'));
     rDrag.init(document.getElementById('reachBudget_head'));
+    rDrag.init(document.getElementById('downloadBox'));
 };
+
 $(function () {
-    $(".showbox").click(function () {
+    $("#downloadAccountData").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
         $("#download").css({
-            left:($("body").width()-$("#download").width())/2-20+"px",
-            top:($(window).height()-$("#download").height())/2+$(window).scrollTop()+"px",
-            display:"block"
+            left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+            display: "block"
         });
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box ").css("display", "none");
+        $("#download").css("display", "none");
     });
-})
+});
 
 /*******查找重复关键词**************/
 
@@ -71,14 +74,14 @@ $(function () {
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box3 ").css("display", "none");
+        $(".box3").css("display", "none");
     });
     $(".time_sl").click(function () {
     });
     $(".time_sl").click(function () {
         $(".time_select").show();
     });
-})
+});
 /*******估算工具**************/
 $(function () {
     $(".showbox4").click(function () {
@@ -93,7 +96,7 @@ $(function () {
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box4 ").css("display", "none");
+        $(".box4").css("display", "none");
     });
     $(".time_sl").click(function () {
     });
@@ -115,7 +118,7 @@ $(function () {
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box5 ").css("display", "none");
+        $(".box5").css("display", "none");
     });
 });
 /*******IP排除**************/
@@ -132,7 +135,7 @@ $(function () {
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box6 ").css("display", "none");
+        $(".box6").css("display", "none");
     });
 });
 /*******动态创意状态修改**************/
@@ -159,7 +162,7 @@ $(document).ready(function () {
 
     });
 
-})
+});
 /*******顶部菜单****/
 $(document).ready(function () {
     $('.zhushou_menu ul li').click(function () {
@@ -174,7 +177,7 @@ $(document).ready(function () {
         var index = $tab_li.index(this);
         $('div.zs_box > div').eq(index).show().siblings().hide();
         var xx = $(this).attr("cname");
-        setTimeout(function(){
+        setTimeout(function () {
             resizable(xx)
         }, 400);
     });
@@ -251,5 +254,14 @@ $(function () {
         $(this).addClass('current').siblings().removeClass('current');
         var index = $tab_li.index(this);
         $('div.zs_sets > div').eq(index).show().siblings().hide();
+    });
+    /*******监控文件夹****/
+    $(".jiangkong").click(function () {
+        if ($(".j_list02").css("display") == "none") {//隐藏
+            $(".j_list02").show();
+        }
+        else {
+            $(".j_list02").hide();
+        }
     });
 });

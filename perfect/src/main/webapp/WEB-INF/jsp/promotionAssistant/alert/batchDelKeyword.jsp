@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/zTreeStyle/zTreeStyle.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
     <style type="text/css">
 
         .list4 table {
@@ -28,13 +29,12 @@
         .newkeyword_right_mid textarea{
             height:200px;
         }
-
     </style>
 </head>
 <body>
 <div style="background-color: #f3f5fd; width: 900px; height: 700px">
     <div class="addplan_top over">
-        <ul>
+        <ul id = "tabUl">
             <li class="current">1、输入内容</li>
             <li><span></span>1、验证数据</li>
         </ul>
@@ -51,10 +51,11 @@
                     <div class="newkeyword_content over">
                         <div class="containers2 over chooseKwdInfoDiv">
                             <div class="newkeyword_left fl  over" >
+                                <div class="newkeyword_top1">
+                                    <input type="text" placeholder="请输入关键词" class="zs_input3">
+                                </div>
                                 <div class="newkeyword_top2">
-                                    <ul id="treeDemo" class="ztree">
-
-                                    </ul>
+                                    <ul id="treeDemo" class="ztree" style="height: 330px;"></ul>
                                 </div>
                             </div>
 
@@ -79,7 +80,7 @@
                         </div>
 
 
-                        <div class="containers2 over inputKwdInfoDiv">
+                        <div class="containers2 over inputKwdInfoDiv hides">
                             <div class="newkeyword_right fr over" style = "width: 100%;">
                                 <h3> 删除关键词 </h3>
                                 <p>请输入关键词信息（每行一个），并用Tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>
@@ -87,7 +88,7 @@
                                     <p>格式：推广计划名称（必填），推广单元名称（必填），关键词名称（必填）</p>
                                     <p>例如：北京推广，礼品，鲜花</p>
                                     <textarea id = "deleteKwdText2"></textarea>
-                                    <p>或者从相同格式的csv文件输入：<input type="button" class="zs_input2" value="选择文件">&nbsp;(<20万行)</p>
+                                  <%--  <p>或者从相同格式的csv文件输入：<input type="button" class="zs_input2" value="选择文件">&nbsp;(<20万行)</p>--%>
 
                                 </div>
 
@@ -117,7 +118,7 @@
                         <div class="w_list03">
                             <ul>
                                 <li class="current delKwdLastStep" >上一步</li>
-                                <li>完成</li>
+                                <li class="delkwdFinish">完成</li>
                                 <li class="close">取消</li>
                             </ul>
                         </div>
@@ -132,6 +133,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript">
     $(function () {
         var $tab_li = $('.addplan_top ul li');
@@ -154,14 +156,14 @@
                 $(".newkeyword_list").hide();
             }
         });
-        $(".newkeyword_end1").click(function(){
-            if ($(".newkeyword_end2").css("display") == "none"){
-                $(".newkeyword_end2").show();
-                $(".newkeyword_end1").find(" span").text("[-]");
-            }
-            else {
-                $(".newkeyword_end2").hide();
-                $(".newkeyword_end1").find("span").text("[+]");
+        $("body").delegate(".newkeyword_end1","click",function(){
+            var next = $(this).next();
+            if (next.css("display") == "none"){
+                next.show();
+                $(this).find(" span").text("[-]");
+            }else {
+                next.hide();
+               $(this).find("span").text("[+]");
             }
         });
 
@@ -335,11 +337,13 @@
 <script type="text/javascript">
     //单击下一步按钮的事件
     $("#kwdNextStep").click(function () {
-        nextStepAjax();
+        nextStepAjax(1,20);
     });
 
     //上一步按钮的事件
     $(".delKwdLastStep").click(function(){
+        $("#tabUl li:eq(1)").removeClass("current");
+        $("#tabUl li:eq(0)").addClass("current");
         $("#showValidateDiv").addClass("hides");
         $("#delKwdByChoose").removeClass("hides");
     });
@@ -360,13 +364,14 @@
                 v = v+parentNode+","+selectNode[i].id+"-";
             }
         }
+
         return v;
     }
 
 
 
     //下一步按钮的单击事件的ajax请求
-    function nextStepAjax() {
+    function nextStepAjax(nowPage,pageSize) {
 
         var selectNote = getSelectedNodeToString();
         var inputKwdInfo = $("#deleteKwdTextChoose").val();
@@ -383,36 +388,40 @@
         $.ajax({
             url:"/assistantKeyword/deleteByNameChoose",
             type:"post",
-            data:{"chooseInfos":selectNote,"keywordNames":inputKwdInfo},
+            data:{"chooseInfos":selectNote,"keywordNames":inputKwdInfo,"nowPage":nowPage,"pageSize":pageSize},
             dataType:"json",
             success:function(data){
+                $("#validateDelKwdUl").empty();
                  var html = "";
-                if(data.ignoreList.length>0){
-                    html = createDeleteKwdHtml("igone",data.ignoreList);
-                }
                 if(data.deleteKwd.length>0){
                     html = createDeleteKwdHtml("del",data.deleteKwd);
+                    $("#validateDelKwdUl").append(html);
                 }
-                $("#validateDelKwdUl").html(html);
+                if(data.ignoreList.length>0){
+                    html = createDeleteKwdHtml("igone",data.ignoreList);
+                    $("#validateDelKwdUl").append(html);
+                }
+
+                $("#tabUl li:eq(0)").removeClass("current");
+                $("#tabUl li:eq(1)").addClass("current");
+                $("#delKwdByChoose").addClass("hides");
+                $("#showValidateDiv").removeClass("hides");
             }
         });
-        $("#delKwdByChoose").addClass("hides");
-        $("#showValidateDiv").removeClass("hides");
-
     }
 
-
     //创建验证关键词的htmnl
+    var ids = "";
     function createDeleteKwdHtml(listType,list){
         var html = "";
         html+="<li>";
 
         if(listType=="del"){
             html+="<div class='newkeyword_end1'> <span>[-]</span>删除的关键词:"+list.length+"个</div>";
-            html+="<div class='newkeyword_end2 '>";
-            html+="<p><input type='radio' checked='checked' name='addnew'>删除这些关键词</p>";
+            html+="<div class='newkeyword_end2 ' style = 'display:none;'>";
+            html+="<p><input type='radio' class='delkwdRadio' checked='checked' name='addnew'>删除这些关键词</p>";
             html+="<p><input type='radio'  name='addnew'>不删除这些关键词</p>";
-            html+="<div class='list4' style='height:100px;'>";
+            html+="<div class='list4' style='height:300px;'>";
             html+="<table width='100%' cellspacing='0' border='0' width='500px'>";
             html+="<thead>";
             html+=" <tr class='list02_top'><td>&nbsp;推广计划名称</td><td>&nbsp;推广单元名称</td> <td>&nbsp;关键词名称</td><td>&nbsp;匹配模式 </td><td>&nbsp;出价</td><td>&nbsp;访问URL</td>" +
@@ -421,22 +430,37 @@
             html+=" <tbody>";
 
             for(var i = 0;i<list.length;i++){
+                ids+=list[i].object.id+",";
                 html+="<tr class='list2_box2'>"+
                         "<td> &nbsp;"+list[i].campaignName+"</td>"+
                         "<td>&nbsp;"+list[i].adgroupName+"</td>"+
                         "<td>&nbsp;"+list[i].object.keyword+"</td>"+
-                        "<td>&nbsp;"+list[i].object.matchType+"</td>"+
-                        "<td>&nbsp;"+list[i].object.price+"</td>"+
-                        "<td>&nbsp;"+list[i].object.pcDestinationUrl+"</td>"+
-                        "<td>&nbsp;"+list[i].object.mobileDestinationUrl+"</td>"+
-                        "<td>&nbsp;"+list[i].object.pause+"</td>"+
+                        "<td>&nbsp;"+until.convert(list[i].object.matchType==1,"精确:广泛")+"</td>"+
+                        "<td>&nbsp;"+until.convert(list[i].object.price==null,"<0.10>:"+list[i].object.price)+"</td>"+
+                        "<td>&nbsp;"+until.convert(list[i].object.pcDestinationUrl==null,"&nbsp;:"+list[i].object.pcDestinationUrl)+"</td>"+
+                        "<td>&nbsp;"+until.convert(list[i].object.mobileDestinationUrl==null,"&nbsp;:"+list[i].object.mobileDestinationUrl)+"</td>"+
+                        "<td>&nbsp;"+until.convert(list[i].object.pause==true,"暂停:启用")+"</td>"+
                         "</tr>";
             }
-            html+=" </tbody></table> </div></div>";
+            html+=" </tbody></table> </div>";
+           /* html+=" <div class='page delkwdPage over'>"+
+                    "<ul>"+
+                    "<div>每页显示条数<select style='width:60px;' id = 'camp_PageSize' onchange='nextStepAjax(1,this.value)'><option value = '20'>20</option><option value = '40'>40</option><option value = '60'>60</option></select></div>"+
+                    "<li><a href='#' name='1'>首页</a></li>"+
+                    "<li><a href='#' name="+pager.prePage+">上一页</a></li>"+
+                    "<li><a href='#' name="+pager.nextPage+">下一页</a></li>"+
+                    "<li><a href='#' name="+pager.totalPage+">尾页</a></li>"+
+                    "<li>当前页:"+pager.pageNo+"/"+pager.totalPage+"</li>"+
+                    "<li>共"+pager.totalCount+"条</li>"+
+                    "<li><input type='text' maxlength='10' class='inputNo delkwdPageNo'/>&nbsp;<input type='button' value='GO' id='delkwdGo'/></li>"+
+                    "</ul>"+
+                    "</div>";*/
+
+            html+="</div>"
         }else if(listType=="igone"){
             html+="<div class='newkeyword_end1'> <span>[-]</span>忽略的关键词:"+list.length+"个,所选的范围不包含关键词</div>";
-            html+="<div class='newkeyword_end2 '>";
-            html+="<div class='list4' style='height:100px;'>";
+            html+="<div class='newkeyword_end2 ' style = 'display:none;'>";
+            html+="<div class='list4' style='height:300px;'>";
             html+="<table width='100%' cellspacing='0' border='0' width='500px'>";
             html+="<thead>";
             html+="<tr class='list02_top'><td>&nbsp;推广计划名称</td><td>&nbsp;推广单元名称</td> <td>&nbsp;关键词名称</td><td>&nbsp;匹配模式 </td></tr>";
@@ -451,7 +475,22 @@
                         "<td>&nbsp;"+list[i].matchModel+"</td>"+
                         "</tr>";
             }
-            html+=" </tbody></table> </div></div>";
+            html+=" </tbody></table> </div>";
+
+           /* html+=" <div class='page campaignPage over'>"+
+                        "<ul>"+
+                        "<div>每页显示条数<select style='width:60px;' id = 'camp_PageSize' onchange='s'><option value = '20'>20</option><option value = '40'>40</option><option value = '60'>60</option></select></div>"+
+                        "<li><a href='#'>首页</a></li>"+
+                        "<li><a href='#'>上一页</a></li>"+
+                        "<li><a href='#'>下一页</a></li>"+
+                        "<li><a href='#'>尾页</a></li>"+
+                        "<li>当前页:1/0</li>"+
+                        "<li>共0条</li>"+
+                        "<li><input type='text' maxlength='10' class='inputNo campaignPageNo'/>&nbsp;<input type='button' value='GO' id='campaignGo'/></li>"+
+                        "</ul>"+
+                    "</div>";
+*/
+            html+="</div>"
         }
         html+="</li>";
 
@@ -470,13 +509,19 @@
             return;
         }
 
+        if((deleteInfos.split(",").length)!=3){
+            if((deleteInfos.split("\t").length)!=3){
+
+            }
+            alert("输入格式不正确");
+            return;
+        }
         $.ajax({
             url:"/assistantKeyword/validateDeleteByInput",
             type:"post",
             data:{"deleteInfos":deleteInfos},
             dataType:"json",
             success:function(data){
-                alert(JSON.stringify(data));
                 var html = "";
                 if(data.ignoreList.length>0){
                     html = createDeleteKwdHtml("igone",data.ignoreList);
@@ -492,6 +537,56 @@
         $("#showValidateDiv").removeClass("hides");
     });
 
+
+    //完成按钮的事件
+    $(".delkwdFinish").click(function(){
+        var isDel = $(".delkwdRadio")[0].checked;
+        if(isDel==true){
+            $.ajax({
+                url:"/assistantKeyword/deleteById",
+                type:"post",
+                data:{"kwids":ids},
+                success:function(data){
+                    window.location.reload(true);
+                }
+            });
+        }else{
+            window.location.reload(true);
+        }
+
+    });
+
+
+
+    //取消按钮的事件
+    $(".close").click(function () {
+
+    });
+
+
+
+
+
+    //可删除关键列表分页
+    /**
+     * 首页，上下页，尾页单击事件
+     */
+    $(".delkwdPage ul li>a").click(function(){
+        var nowPage = $(this).attr("name");
+        getKwdList(nowPage);
+    });
+    /**
+     * 关键词Go按钮的单击事件
+     */
+    $("#delkwdGo").click(function(){
+        var nowPage = $(".delkwdPageNo").val();
+        var totalPage = $(".delkwdPage").find("li>a:eq(3)").attr("name");
+        if(nowPage>parseInt(totalPage)){
+            nowPage = parseInt(totalPage);
+        }
+        getKwdList(nowPage);
+        $(".delkwdPageNo").val("");
+    });
 
 </script>
 </body>
