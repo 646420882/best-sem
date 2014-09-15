@@ -10,7 +10,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta id="viewport" name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title></title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
@@ -112,19 +113,27 @@
                                         <td><span>关键词</span></td>
                                         <td><span>日均搜索量</span><b>
                                             <p>
-                                                <input type="button" onclick="javascript:category = 'impression';sort = -1;loadKeywordQualityData();" class="one">
+                                                <input type="button"
+                                                       onclick="javascript:fieldName = 'dsQuantity';sort = 1;loadKeywordQualityData();"
+                                                       class="one">
                                             </p>
 
                                             <p>
-                                                <input type="button" onclick="javascript:category = 'impression';sort = 1;loadKeywordQualityData();" class="two">
+                                                <input type="button"
+                                                       onclick="javascript:fieldName = 'dsQuantity';sort = -1;loadKeywordQualityData();"
+                                                       class="two">
                                             </p></b></td>
                                         <td><span>竞争激烈程度</span><b>
                                             <p>
-                                                <input type="button" onclick="javascript:category = 'impression';sort = -1;loadKeywordQualityData();" class="one">
+                                                <input type="button"
+                                                       onclick="javascript:fieldName = 'competition';sort = 1;loadKeywordQualityData();"
+                                                       class="one">
                                             </p>
 
                                             <p>
-                                                <input type="button" onclick="javascript:category = 'impression';sort = 1;loadKeywordQualityData();" class="two">
+                                                <input type="button"
+                                                       onclick="javascript:fieldName = 'competition';sort = -1;loadKeywordQualityData();"
+                                                       class="two">
                                             </p></b></td>
                                         <%--<td><span>一级推荐理由</span></td>--%>
                                         <%--<td><span>二级推荐理由</span></td>--%>
@@ -157,10 +166,10 @@
                                         <option value="金融">金融</option>
                                         <option value="旅游">旅游</option>
                                     </select>
-                                    <select id="category" >
+                                    <select id="category">
                                     </select>
                                 </div>
-                                <a href="javascript:findWordFromPerfect();" class="become2">开始拓词</a>
+                                <a href="javascript:findWordFromSystem();" class="become2">开始拓词</a>
                             </div>
                             <div class="K_top2_detali fr over">
                                 <div class="k_top2_detali2 over">
@@ -523,6 +532,10 @@ var type = 1;    //1, baidu; 2, perfect
 
 var krFileId;
 
+var fieldName = "dsQuantity";
+
+var sort = -1;
+
 var skip = 0;
 
 var limit = 10;
@@ -701,7 +714,9 @@ var findWordFromBaidu = function () {
             "seedWords": seedWords,
             "skip": skip,
             "limit": limit,
-            "krFileId": krFileId
+            "krFileId": krFileId,
+            "fieldName": fieldName,
+            "sort": sort
         },
         success: function (data, textStatus, jqXHR) {
             $("#tbody1").empty();
@@ -722,7 +737,7 @@ var findWordFromBaidu = function () {
                             "<td>" + item.seedWord + "</td>" +
                             "<td>" + item.keywordName + "</td>" +
                             "<td>" + item.dsQuantity + "</td>" +
-                            "<td>" + item.competition + "</td>" +
+                            "<td>" + item.competition + "%</td>" +
 //                            "<td>" + item.recommendReason1 + "</td>" +
 //                            "<td>" + item.recommendReason2 + "</td>" +
                             "</tr>";
@@ -733,7 +748,7 @@ var findWordFromBaidu = function () {
     });
 };
 
-var findWordFromPerfect = function () {
+var findWordFromSystem = function () {
     type = 2;
     var trade = $("#trade option:selected").val();
     var category = $("#category option:selected").val();
@@ -788,7 +803,9 @@ var toPrevPage = function () {
                 "seedWords": getSeedWords,
                 "skip": skip,
                 "limit": limit,
-                "krFileId": krFileId
+                "krFileId": krFileId,
+                "fieldName": fieldName,
+                "sort": sort
             },
             success: function (data, textStatus, jqXHR) {
                 $("#tbody1").empty();
@@ -807,7 +824,7 @@ var toPrevPage = function () {
                                 "<td>" + item.seedWord + "</td>" +
                                 "<td>" + item.keywordName + "</td>" +
                                 "<td>" + item.dsQuantity + "</td>" +
-                                "<td>" + item.competition + "</td>" +
+                                "<td>" + item.competition + "%</td>" +
 //                                "<td>" + item.recommendReason1 + "</td>" +
 //                                "<td>" + item.recommendReason2 + "</td>" +
                                 "</tr>";
@@ -868,7 +885,9 @@ var toNextPage = function () {
                 "seedWords": getSeedWords,
                 "skip": skip,
                 "limit": limit,
-                "krFileId": krFileId
+                "krFileId": krFileId,
+                "fieldName": fieldName,
+                "sort": sort
             },
             success: function (data, textStatus, jqXHR) {
                 $("#tbody1").empty();
@@ -887,7 +906,7 @@ var toNextPage = function () {
                                 "<td>" + item.seedWord + "</td>" +
                                 "<td>" + item.keywordName + "</td>" +
                                 "<td>" + item.dsQuantity + "</td>" +
-                                "<td>" + item.competition + "</td>" +
+                                "<td>" + item.competition + "%</td>" +
 //                                "<td>" + item.recommendReason1 + "</td>" +
 //                                "<td>" + item.recommendReason2 + "</td>" +
                                 "</tr>";
@@ -954,7 +973,9 @@ var toAnyPage = function () {
                 "seedWords": getSeedWords,
                 "skip": skip,
                 "limit": limit,
-                "krFileId": krFileId
+                "krFileId": krFileId,
+                "fieldName": fieldName,
+                "sort": sort
             },
             success: function (data, textStatus, jqXHR) {
                 $("#tbody1").empty();
@@ -973,7 +994,7 @@ var toAnyPage = function () {
                                 "<td>" + item.seedWord + "</td>" +
                                 "<td>" + item.keywordName + "</td>" +
                                 "<td>" + item.dsQuantity + "</td>" +
-                                "<td>" + item.competition + "</td>" +
+                                "<td>" + item.competition + "%</td>" +
 //                                "<td>" + item.recommendReason1 + "</td>" +
 //                                "<td>" + item.recommendReason2 + "</td>" +
                                 "</tr>";
@@ -1018,14 +1039,14 @@ var toAnyPage = function () {
     }
 };
 //loading
-    var ajaxbg = $("#background,#progressBar");
-    ajaxbg.hide;
-    $(document).ajaxStart(function () {
-        ajaxbg.show();
-    })
+var ajaxbg = $("#background,#progressBar");
+ajaxbg.hide;
+$(document).ajaxStart(function () {
+    ajaxbg.show();
+});
 $(document).ajaxStop(function () {
-        ajaxbg.fadeOut("slow");
-    });
+    ajaxbg.fadeOut("slow");
+});
 
 </script>
 </body>

@@ -83,18 +83,12 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
     public List<CategoryVO> findCategories(String trade) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
         Aggregation aggregation = Aggregation.newAggregation(
-                project("tr", "cg"),
                 match(Criteria.where("tr").is(trade)),
-                sort(Sort.Direction.ASC, "cg"),
-                group("cg").count().as("count")
+                project("cg"),
+                group("cg").count().as("count"),
+                sort(Sort.Direction.ASC, "cg")
         ).withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
         AggregationResults<CategoryVO> aggregationResults = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, CategoryVO.class);
-
-//        GroupByResults<CategoryVO> results = mongoTemplate
-//                .group(Criteria.where("tr").is(trade), "sys_keyword",
-//                        GroupBy.key("cg").initialDocument("{count : 1}")
-//                                .reduceFunction("function(key, values) {values.count += 1;}"),
-//                        CategoryVO.class);
 
         List<CategoryVO> list = Lists.newArrayList(aggregationResults.iterator());
         return list;
@@ -107,9 +101,6 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             criteria.and(entry.getKey()).is(entry.getValue());
         }
-
-//        Query query = new Query(criteria);
-//        List<LexiconEntity> list = mongoTemplate.find(query, getEntityClass());
 
         Aggregation aggregation = Aggregation.newAggregation(
                 match(criteria),
