@@ -174,10 +174,10 @@ public class KeywordGroupController {
      * @return
      */
     @RequestMapping(value = "/save2", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView saveKeywordFromPerfect(@RequestParam(value = "trade", required = false) final String trade,
-                                               @RequestParam(value = "category", required = false) String category,
-                                               @RequestParam(value = "newCampaignName", required = false) String newCampaignName) {
-        keywordGroupService.saveKeywordFromPerfect(trade, category, newCampaignName);
+    public ModelAndView saveKeywordFromSystem(@RequestParam(value = "trade", required = false) final String trade,
+                                              @RequestParam(value = "category", required = false) String category,
+                                              @RequestParam(value = "newCampaignName", required = false) String newCampaignName) {
+        keywordGroupService.saveKeywordFromSystem(trade, category, newCampaignName);
         AbstractView jsonView = new MappingJackson2JsonView();
         jsonView.setAttributesMap(new HashMap<String, Object>() {{
             put("status", true);

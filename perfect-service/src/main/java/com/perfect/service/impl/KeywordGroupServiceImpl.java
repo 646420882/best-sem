@@ -265,7 +265,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
 
     }
 
-    public void saveKeywordFromPerfect(String trade, String category, String newCampaignName) {
+    public void saveKeywordFromSystem(String trade, String category, String newCampaignName) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Long accountId = AppContext.getAccountId();
 

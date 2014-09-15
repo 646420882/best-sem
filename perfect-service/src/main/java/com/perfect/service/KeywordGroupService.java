@@ -79,7 +79,7 @@ public interface KeywordGroupService {
      * @param trade
      * @param category
      */
-    void saveKeywordFromPerfect(String trade, String category, String newCampaignName);
+    void saveKeywordFromSystem(String trade, String category, String newCampaignName);
 
     /**
      * @param seedWord
