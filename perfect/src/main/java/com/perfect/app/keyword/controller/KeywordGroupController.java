@@ -72,13 +72,13 @@ public class KeywordGroupController {
      * @return
      */
     @RequestMapping(value = "/p", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getKeywordFromPerfect(@RequestParam(value = "trade", required = false) String trade,
-                                              @RequestParam(value = "category", required = false) String category,
-                                              @RequestParam(value = "skip", required = false, defaultValue = "0") Integer skip,
-                                              @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit,
-                                              @RequestParam(value = "status", required = false, defaultValue = "0") Integer status) {
+    public ModelAndView getKeywordFromSystem(@RequestParam(value = "trade", required = false) String trade,
+                                             @RequestParam(value = "category", required = false) String category,
+                                             @RequestParam(value = "skip", required = false, defaultValue = "0") Integer skip,
+                                             @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit,
+                                             @RequestParam(value = "status", required = false, defaultValue = "0") Integer status) {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> values = keywordGroupService.getKeywordFromPerfect(trade, category, skip, limit, status);
+        Map<String, Object> values = keywordGroupService.getKeywordFromSystem(trade, category, skip, limit, status);
         jsonView.setAttributesMap(values);
         return new ModelAndView(jsonView);
     }
@@ -166,7 +166,7 @@ public class KeywordGroupController {
     }
 
     /**
-     * 保存来自Perfect的关键词
+     * 保存来自System的关键词
      *
      * @param trade
      * @param category

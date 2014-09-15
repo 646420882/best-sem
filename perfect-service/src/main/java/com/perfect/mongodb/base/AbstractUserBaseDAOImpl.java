@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import static com.perfect.mongodb.utils.EntityConstants.SYSTEM_ID;
+
 /**
  * Created by vbzer_000 on 2014/6/18.
  */
@@ -20,7 +22,7 @@ public abstract class AbstractUserBaseDAOImpl<T, ID extends Serializable> implem
     public abstract Class<T> getEntityClass();
 
     public String getId() {
-        return "_id";
+        return SYSTEM_ID;
     }
 
     @Resource

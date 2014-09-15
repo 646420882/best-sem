@@ -38,7 +38,7 @@ public interface KeywordGroupService {
      * @param status
      * @return
      */
-    Map<String, Object> getKeywordFromPerfect(String trade, String category, int skip, int limit, int status);
+    Map<String, Object> getKeywordFromSystem(String trade, String category, int skip, int limit, int status);
 
     /**
      * 获取百度词库CSV文件下载路径

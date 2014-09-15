@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
 import static com.perfect.mongodb.utils.EntityConstants.KEYWORD_ID;
+import static com.perfect.mongodb.utils.EntityConstants.SYSTEM_ID;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
@@ -108,7 +109,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
 
         Aggregation aggregation = newAggregation(
-                project(KEYWORD_ID, "pccli").andExclude("_id"),
+                project(KEYWORD_ID, "pccli").andExclude(SYSTEM_ID),
                 match(Criteria.where("pccli").ne(null))
         );
 

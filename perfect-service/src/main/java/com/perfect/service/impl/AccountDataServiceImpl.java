@@ -500,7 +500,7 @@ public class AccountDataServiceImpl implements AccountDataService {
     private List<Long> getLocalAdgroupIds(MongoTemplate mongoTemplate, Long accountId, List<Long> campaignIds) {
         Aggregation aggregation = newAggregation(
                 match(Criteria.where(ACCOUNT_ID).is(accountId).and(CAMPAIGN_ID).in(campaignIds)),
-                project(ADGROUP_ID).andExclude("_id")
+                project(ADGROUP_ID).andExclude(SYSTEM_ID)
         );
         AggregationResults<AdgroupEntity> results = mongoTemplate.aggregate(aggregation, TBL_ADGROUP, AdgroupEntity.class);
         List<Long> ids = new ArrayList<>();
@@ -513,7 +513,7 @@ public class AccountDataServiceImpl implements AccountDataService {
     private List<Long> getLocalKeywordIds(MongoTemplate mongoTemplate, Long accountId, List<Long> adgroupIds) {
         Aggregation aggregation = newAggregation(
                 match(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).in(adgroupIds)),
-                project(KEYWORD_ID).andExclude("_id")
+                project(KEYWORD_ID).andExclude(SYSTEM_ID)
         );
         AggregationResults<KeywordEntity> results = mongoTemplate.aggregate(aggregation, TBL_KEYWORD, KeywordEntity.class);
         List<Long> ids = new ArrayList<>();
@@ -526,7 +526,7 @@ public class AccountDataServiceImpl implements AccountDataService {
     private List<Long> getLocalCreativeIds(MongoTemplate mongoTemplate, Long accountId, List<Long> adgroupIds) {
         Aggregation aggregation = newAggregation(
                 match(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).in(adgroupIds)),
-                project(CREATIVE_ID).andExclude("_id")
+                project(CREATIVE_ID).andExclude(SYSTEM_ID)
         );
         AggregationResults<CreativeEntity> results = mongoTemplate.aggregate(aggregation, TBL_CREATIVE, CreativeEntity.class);
         List<Long> ids = new ArrayList<>();

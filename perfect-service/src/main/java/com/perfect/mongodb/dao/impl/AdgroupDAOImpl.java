@@ -6,8 +6,6 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.*;
 import com.perfect.entity.*;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
-import com.perfect.entity.backup.CreativeBackUpEntity;
-import com.perfect.entity.backup.KeyWordBackUpEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.EntityConstants;
@@ -47,7 +45,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
     }
 
     public String get_id() {
-        return "_id";
+        return SYSTEM_ID;
     }
 
     @Resource
@@ -190,7 +188,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
             }
         }
         q.addCriteria(c);
-        AdgroupEntity adgroupEntity=mongoTemplate.findOne(q,AdgroupEntity.class,EntityConstants.TBL_ADGROUP);
+        AdgroupEntity adgroupEntity = mongoTemplate.findOne(q, AdgroupEntity.class, EntityConstants.TBL_ADGROUP);
         return adgroupEntity;
     }
 

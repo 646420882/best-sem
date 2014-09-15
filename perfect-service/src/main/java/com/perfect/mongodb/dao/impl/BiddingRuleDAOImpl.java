@@ -18,8 +18,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.mongodb.utils.EntityConstants.ACCOUNT_ID;
-import static com.perfect.mongodb.utils.EntityConstants.KEYWORD_ID;
+import static com.perfect.mongodb.utils.EntityConstants.*;
 
 /**
  * Created by yousheng on 2014/8/1.
@@ -197,7 +196,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
 
     @Override
     public int startRule(List<String> id) {
-        WriteResult wr = getMongoTemplate().updateMulti(Query.query(Criteria.where("_id").in(id)), Update.update("ebl", true), BiddingRuleEntity.class);
+        WriteResult wr = getMongoTemplate().updateMulti(Query.query(Criteria.where(SYSTEM_ID).in(id)), Update.update("ebl", true), BiddingRuleEntity.class);
         return wr.getN();
     }
 

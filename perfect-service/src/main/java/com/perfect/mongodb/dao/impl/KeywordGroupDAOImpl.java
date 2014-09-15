@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 
+import static com.perfect.mongodb.utils.EntityConstants.SYSTEM_ID;
 import static com.perfect.mongodb.utils.EntityConstants.SYS_KEYWORD;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
@@ -62,7 +63,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
             }
         }
 
-        Criteria criteria = Criteria.where("_id").ne(null);
+        Criteria criteria = Criteria.where(SYSTEM_ID).ne(null);
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             criteria.and(entry.getKey()).is(entry.getValue());
         }
@@ -102,7 +103,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
     public int getCurrentRowsSize(Map<String, Object> params) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
 
-        Criteria criteria = Criteria.where("_id").ne(null);
+        Criteria criteria = Criteria.where(SYSTEM_ID).ne(null);
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             criteria.and(entry.getKey()).is(entry.getValue());
         }
@@ -112,7 +113,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
 
         Aggregation aggregation = Aggregation.newAggregation(
                 match(criteria),
-                group("kw")
+                project("kw")
         );
         AggregationResults<Object> results = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, Object.class);
         return results.getMappedResults().size();

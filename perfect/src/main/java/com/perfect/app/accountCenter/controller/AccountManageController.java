@@ -33,7 +33,7 @@ import java.util.Map;
 public class AccountManageController {
 
     @Resource
-    private AccountManageService service;
+    private AccountManageService accountManageService;
 
     @Resource
     private AccountDataService accountDataService;
@@ -47,9 +47,9 @@ public class AccountManageController {
      * @return
      */
     @RequestMapping(value = "/get_tree", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getAccountTree() {
+    public ModelAndView getAccountTree(HttpServletRequest request) {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> trees = service.getAccountTree();
+        Map<String, Object> trees = accountManageService.getAccountTree();
         jsonView.setAttributesMap(trees);
         return new ModelAndView(jsonView);
     }
@@ -63,7 +63,7 @@ public class AccountManageController {
     public ModelAndView getAllBaiduAccount(HttpServletRequest request) {
         String currSystemUserName = WebUtils.getUserName(request);
         AbstractView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> values = service.getAllBaiduAccount(currSystemUserName);
+        Map<String, Object> values = accountManageService.getAllBaiduAccount(currSystemUserName);
         jsonView.setAttributesMap(values);
         return new ModelAndView(jsonView);
     }
@@ -77,7 +77,7 @@ public class AccountManageController {
     public ModelAndView getBaiduAccountInfoByUserId() {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
         Long userId = AppContext.getAccountId();
-        Map<String, Object> result = service.getBaiduAccountInfoByUserId(userId);
+        Map<String, Object> result = accountManageService.getBaiduAccountInfoByUserId(userId);
         jsonView.setAttributesMap(result);
         return new ModelAndView(jsonView);
     }
@@ -110,7 +110,7 @@ public class AccountManageController {
     @RequestMapping(value = "/get_reports", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getBaiduAccountReports(@RequestParam(value = "number", required = false) Integer number) {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> results = service.getAccountReports(number);
+        Map<String, Object> results = accountManageService.getAccountReports(number);
         jsonView.setAttributesMap(results);
         return new ModelAndView(jsonView);
     }
@@ -123,7 +123,7 @@ public class AccountManageController {
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String updateBaiduAccount(@RequestBody BaiduAccountInfoEntity entity) {
-        service.updateBaiduAccount(entity);
+        accountManageService.updateBaiduAccount(entity);
         ObjectNode json_string = new ObjectMapper().createObjectNode();
         json_string.put("status", true);
         return json_string.toString();

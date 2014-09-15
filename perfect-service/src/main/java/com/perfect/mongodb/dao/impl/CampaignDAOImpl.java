@@ -102,8 +102,8 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
     public List<CampaignEntity> findAllDownloadCampaign() {
         MongoTemplate mongoTemplate = getMongoTemplate();
         Aggregation aggregation = newAggregation(
-                project(ACCOUNT_ID, CAMPAIGN_ID, "name").andExclude("_id"),
-                match(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).ne(null))
+                match(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).ne(null)),
+                project(ACCOUNT_ID, CAMPAIGN_ID, NAME).andExclude(SYSTEM_ID)
         );
         AggregationResults<CampaignEntity> results = mongoTemplate.aggregate(aggregation, TBL_CAMPAIGN, getEntityClass());
         return Lists.newArrayList(results.iterator());
@@ -111,7 +111,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
 
     @Override
     public CampaignEntity findByObjectId(String oid) {
-        return getMongoTemplate().findOne(Query.query(Criteria.where("_id").is(oid)), getEntityClass());
+        return getMongoTemplate().findOne(Query.query(Criteria.where(SYSTEM_ID).is(oid)), getEntityClass());
     }
 
 
@@ -170,6 +170,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
 
     /**
      * 根据mongoID修改计划
+     *
      * @param campaignEntity
      */
     @Override
@@ -218,6 +219,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
 
     /**
      * 根据mongoid删除计划
+     *
      * @param campaignId
      */
     public void deleteByMongoId(final String campaignId) {
@@ -264,26 +266,26 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
 
     //xj
     @Override
-    public PagerInfo findByPageInfo(Query q,int pageSize, int pageNo) {
+    public PagerInfo findByPageInfo(Query q, int pageSize, int pageNo) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        int totalCount=getListTotalCount(q);
+        int totalCount = getListTotalCount(q);
 
-        PagerInfo p=new PagerInfo(pageNo, pageSize,totalCount);
+        PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
         q.skip(p.getFirstStation());
         q.limit(p.getPageSize());
-        if (totalCount<1) {
+        if (totalCount < 1) {
             p.setList(new ArrayList());
             return p;
         }
-        List list= mongoTemplate.find(q, getEntityClass());
+        List list = mongoTemplate.find(q, getEntityClass());
         p.setList(list);
         return p;
     }
 
     //xj
-    public int getListTotalCount(Query q){
+    public int getListTotalCount(Query q) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        return (int) mongoTemplate.count(q,EntityConstants.TBL_CAMPAIGN);
+        return (int) mongoTemplate.count(q, EntityConstants.TBL_CAMPAIGN);
     }
 
 

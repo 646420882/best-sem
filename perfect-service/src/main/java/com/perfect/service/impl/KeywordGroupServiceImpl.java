@@ -104,7 +104,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
         }
     }
 
-    public Map<String, Object> getKeywordFromPerfect(String trade, String category, int skip, int limit, int status) {
+    public Map<String, Object> getKeywordFromSystem(String trade, String category, int skip, int limit, int status) {
         //查询参数
         Map<String, Object> params = new HashMap<>();
         if (trade != null) {
@@ -216,8 +216,8 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
             String adgroupObjectId;
 
             Aggregation aggregation = newAggregation(
-                    project(ACCOUNT_ID, "ocid", "name"),
-                    match(Criteria.where(ACCOUNT_ID).is(accountId).and("ocid").is(campaignObjectId).and("name").is(adgroupName))
+                    match(Criteria.where(ACCOUNT_ID).is(accountId).and("ocid").is(campaignObjectId).and("name").is(adgroupName)),
+                    project(ACCOUNT_ID, "ocid", "name")
             );
 
 //            AdgroupEntity _adgroup = mongoTemplate.findOne(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and("ocid").is(campaignObjectId).and("name").is(adgroupName)), AdgroupEntity.class);
@@ -286,9 +286,10 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
         String campaignObjectId = campaign.getId();
 
         Aggregation aggregation = newAggregation(
-                project("tr", "cg", "gr", "kw").andExclude("_id"),
                 match(Criteria.where("tr").is(trade).and("cg").is(category)),
-                group("gr", "kw"),
+                project("gr", "kw").andExclude(SYSTEM_ID),
+//                project("tr", "cg", "gr", "kw").andExclude(SYSTEM_ID),
+//                group("gr", "kw"),
                 sort(Sort.Direction.ASC, "gr")
         );
 

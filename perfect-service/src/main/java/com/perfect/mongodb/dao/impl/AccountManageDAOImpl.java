@@ -62,7 +62,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Aggregation aggregation1 = Aggregation.newAggregation(
                 match(Criteria.where(ACCOUNT_ID).is(accountId)),
-                project(CAMPAIGN_ID, "name", "_id"),
+                project(CAMPAIGN_ID, NAME, SYSTEM_ID),
                 sort(Sort.Direction.ASC, CAMPAIGN_ID)
         );
         //推广计划树
@@ -83,7 +83,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
 
         Aggregation aggregation2 = Aggregation.newAggregation(
                 match(Criteria.where(ACCOUNT_ID).is(accountId)),
-                project(CAMPAIGN_ID, OBJ_CAMPAIGN_ID, ADGROUP_ID, "_id", "name"),
+                project(CAMPAIGN_ID, OBJ_CAMPAIGN_ID, ADGROUP_ID, SYSTEM_ID, NAME),
                 sort(Sort.Direction.ASC, ADGROUP_ID)
         );
         AggregationResults<AdgroupVO> results2 = mongoTemplate.aggregate(aggregation2, TBL_ADGROUP, AdgroupVO.class);
