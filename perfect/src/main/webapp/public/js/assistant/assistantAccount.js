@@ -358,14 +358,12 @@ $(function () {
         url: "/account/get_tree",
         type: "GET",
         dataType: "json",
-        async: false,
         success: function (data, textStatus, jqXHR) {
             zNodes = data.trees;
+            $.fn.zTree.init($("#zTree"), setting, zNodes);
+            $.fn.zTree.init($("#zTree2"), setting, zNodes);
         }
     });
-    //加载账户树
-    $.fn.zTree.init($("#zTree"), setting, zNodes);
-    $.fn.zTree.init($("#zTree2"), setting, zNodes);
 
     loadAccountData();
 
@@ -373,7 +371,7 @@ $(function () {
 
     $("#box7").text(loadDynamicCreativeStatus());
 
-    $("#dynamicCreative").livequery('click', function () {
+    $("#dynamicCreative").on('click', function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box7").css("display", "none");
         dynamicCreativeStatus = (dynamicCreativeStatus == 0 ? 1 : 0);
@@ -382,19 +380,19 @@ $(function () {
         changeDynamicCreativeStatus();
     });
 
-    $("#modifyAccountBudget_ok").livequery('click', function () {
+    $("#modifyAccountBudget_ok").on('click', function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box5").css("display", "none");
         modifyAccountBudget();
     });
 
-    $("#excludeIP_ok").livequery('click', function () {
+    $("#excludeIP_ok").on('click', function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box6").css("display", "none");
         excludeIP();
     });
 
-    $("input[name=chartcheckbox]:checkbox").livequery('click', function () {
+    $("input[name=chartcheckbox]:checkbox").on('click', function () {
         var arr_checkbox = $("input[name=chartcheckbox]:checked");
         if (arr_checkbox.length > 2) {
             return false;
@@ -402,7 +400,7 @@ $(function () {
         reloadhighcharts(arr_checkbox);
     });
 
-    $("#reachBudget").livequery('click', function () {
+    $("#reachBudget").on('click', function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });

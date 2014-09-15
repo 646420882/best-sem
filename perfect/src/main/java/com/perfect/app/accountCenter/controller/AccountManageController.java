@@ -48,11 +48,8 @@ public class AccountManageController {
      */
     @RequestMapping(value = "/get_tree", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getAccountTree() {
-        Long accountId = AppContext.getAccountId();
-        String userName = AppContext.getUser();
-
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> trees = service.getAccountTree(userName, accountId);
+        Map<String, Object> trees = service.getAccountTree();
         jsonView.setAttributesMap(trees);
         return new ModelAndView(jsonView);
     }
@@ -198,7 +195,7 @@ public class AccountManageController {
     @RequestMapping(value = "/sync/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView info() {
 
-        Map<String, Long> statics = logService.getStatiscs(AppContext.getUser(),AppContext.getAccountId());
+        Map<String, Long> statics = logService.getStatiscs(AppContext.getUser(), AppContext.getAccountId());
         return new ModelAndView();
     }
 

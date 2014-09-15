@@ -12,11 +12,9 @@ public interface AccountManageService {
     /**
      * 获取账户树
      *
-     * @param userName
-     * @param accountId
      * @return
      */
-    Map<String, Object> getAccountTree(String userName, Long accountId);
+    Map<String, Object> getAccountTree();
 
     /**
      * 获取当前登录的系统用户下的所有百度账号

@@ -3,7 +3,6 @@ package com.perfect.mongodb.dao.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.collect.Lists;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
@@ -54,25 +53,21 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
      * @return
      */
     @Override
-    public ArrayNode getAccountTree(String userName, Long accountId) {
+    public ArrayNode getAccountTree() {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
         ObjectNode objectNode;
 
-        MongoTemplate mongoTemplate = BaseMongoTemplate.
-                getMongoTemplate(DBNameUtils.getUserDBName(userName, null));
-
-        List<Long> campaignIds = new ArrayList<>();
-        List<String> campaignObjectIds = new ArrayList<>();
+        Long accountId = AppContext.getAccountId();
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Aggregation aggregation1 = Aggregation.newAggregation(
-                project(ACCOUNT_ID, CAMPAIGN_ID, "name", "_id"),
                 match(Criteria.where(ACCOUNT_ID).is(accountId)),
-                group(CAMPAIGN_ID, "name", "_id"),
+                project(CAMPAIGN_ID, "name", "_id"),
                 sort(Sort.Direction.ASC, CAMPAIGN_ID)
         );
         //推广计划树
         AggregationResults<CampaignVO> results1 = mongoTemplate.aggregate(aggregation1, TBL_CAMPAIGN, CampaignVO.class);
-        for (CampaignVO vo : Lists.newArrayList(results1.iterator())) {
+        for (CampaignVO vo : results1) {
             objectNode = mapper.createObjectNode();
 
             if (vo.getCampaignId() == null) {
@@ -84,43 +79,33 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
             objectNode.put("pId", 0);
             objectNode.put("name", vo.getCampaignName());
             arrayNode.add(objectNode);
-            if (vo.getCampaignId() == null) {
-                campaignObjectIds.add(vo.getId());
-            } else {
-                campaignIds.add(vo.getCampaignId());
-            }
         }
 
-        //推广单元树
         Aggregation aggregation2 = Aggregation.newAggregation(
-                project(CAMPAIGN_ID, ADGROUP_ID, "name", "ocid"),
-                match(Criteria.where(CAMPAIGN_ID).in(campaignIds)),
-                group(CAMPAIGN_ID, ADGROUP_ID, "name", "ocid"),
+                match(Criteria.where(ACCOUNT_ID).is(accountId)),
+                project(CAMPAIGN_ID, OBJ_CAMPAIGN_ID, ADGROUP_ID, "_id", "name"),
                 sort(Sort.Direction.ASC, ADGROUP_ID)
         );
-
-        Aggregation aggregation3 = Aggregation.newAggregation(
-                project(CAMPAIGN_ID, ADGROUP_ID, "name", "ocid", "_id"),
-                match(Criteria.where("ocid").in(campaignObjectIds)),
-                group(CAMPAIGN_ID, ADGROUP_ID, "name", "ocid", "_id"),
-                sort(Sort.Direction.ASC, ADGROUP_ID)
-        );
-
         AggregationResults<AdgroupVO> results2 = mongoTemplate.aggregate(aggregation2, TBL_ADGROUP, AdgroupVO.class);
-        for (AdgroupVO vo : Lists.newArrayList(results2.iterator())) {
+        for (AdgroupVO vo : results2) {
             objectNode = mapper.createObjectNode();
+            objectNode.put("name", vo.getAdgroupName());
+            if (vo.getCampaignId() == null) {
+                objectNode.put("id", vo.getId());
+                objectNode.put("pId", vo.getCampaignObjId());
+                arrayNode.add(objectNode);
+                continue;
+            }
+
+            if (vo.getAdgroupId() == null) {
+                objectNode.put("id", vo.getId());
+                objectNode.put("pId", vo.getCampaignId());
+                arrayNode.add(objectNode);
+                continue;
+            }
+
             objectNode.put("id", vo.getAdgroupId());
             objectNode.put("pId", vo.getCampaignId());
-            objectNode.put("name", vo.getAdgroupName());
-            arrayNode.add(objectNode);
-        }
-
-        AggregationResults<AdgroupVO> results3 = mongoTemplate.aggregate(aggregation3, TBL_ADGROUP, AdgroupVO.class);
-        for (AdgroupVO vo : Lists.newArrayList(results3.iterator())) {
-            objectNode = mapper.createObjectNode();
-            objectNode.put("id", vo.getId());
-            objectNode.put("pId", vo.getCampaignObjId());
-            objectNode.put("name", vo.getAdgroupName());
             arrayNode.add(objectNode);
         }
 
@@ -328,7 +313,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         @Field(CAMPAIGN_ID)
         private Long campaignId;
 
-        @Field("ocid")
+        @Field(OBJ_CAMPAIGN_ID)
         private String campaignObjId;
 
         public String getId() {

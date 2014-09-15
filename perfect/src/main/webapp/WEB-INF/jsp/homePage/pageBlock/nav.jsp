@@ -98,16 +98,16 @@
                 $(".nav_left").slideDown(600);
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
-                $(".concent").css("width", "90.5%");
-                $(".concent").css("margin-left", "180px");
+                $(".mid").css("width", "90.5%");
+                $(".mid").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
             }
             else {
                 $(".nav_left").hide();
                 $(".tips").css("position", "fixed");
                 $(".nav").css("z-index", "111");
-                $(".concent").css("width", " 99.6%");
-                $(".concent").css("margin-left", "8px");
+                $(".mid").css("width", " 99.6%");
+                $(".mid").css("margin-left", "8px");
                 $(".nav_input").css("display", "block");
 
             }
@@ -117,16 +117,16 @@
                 $(".nav_left").slideDown(600);
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
-                $(".concent").css("width", "90.5%");
-                $(".concent").css("margin-left", "180px");
+                $(".mid").css("width", "90.5%");
+                $(".mid").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
             }
             else {
                 $(".nav_left").hide();
                 $(".tips").css("position", "fixed");
                 $(".nav").css("z-index", "111");
-                $(".concent").css("width", "99.6%");
-                $(".concent").css("margin-left", "8px");
+                $(".mid").css("width", "99.6%");
+                $(".mid").css("margin-left", "8px");
                 $(".nav_input").css("display", "block");
 
             }

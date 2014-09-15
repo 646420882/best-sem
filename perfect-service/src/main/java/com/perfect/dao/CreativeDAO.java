@@ -22,6 +22,7 @@ public interface CreativeDAO extends MongoCrudRepository<CreativeEntity, Long> {
     String insertOutId(CreativeEntity creativeEntity);
     void insertByReBack(CreativeEntity oldcreativeEntity);
     CreativeEntity findByObjId(String obj);
+    CreativeEntity getAllsBySomeParams(Map<String,Object> params);
     void updateByObjId(CreativeEntity creativeEntity);
     void update(CreativeEntity newCreativeEntity,CreativeEntity creativeBackUpEntity);
     void updateAdgroupIdByOid(String id, Long adgroupId);

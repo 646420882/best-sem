@@ -720,6 +720,21 @@ function getLocalStatus(number) {
             break;
     }
 }
+function creativeMulti(){
+        top.dialog({title: "批量添加创意",
+            padding: "5px",
+            content: "<iframe src='/assistantCreative/updateMulti' width='900' height='650' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+            oniframeload: function () {
+
+            },
+            onclose: function () {
+                loadCreativeData({cid:null,aid:null});
+            },
+            onremove: function () {
+            }
+        }).showModal();
+
+}
 
 
 

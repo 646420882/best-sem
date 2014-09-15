@@ -344,9 +344,9 @@ public class BiddingController {
             KeywordReportDTO dto = keywordReportDTOHashMap.get(kwid);
             dto.setClick(NumberUtils.getInteger(entity.getPcClick()));
             dto.setConversion(NumberUtils.getDouble(entity.getPcConversion()));
-            dto.setCost(NumberUtils.getDouble(entity.getPcCost()));
-            dto.setCpc(NumberUtils.getDouble(entity.getPcCpc()));
-            dto.setCpm(NumberUtils.getDouble(entity.getPcCpm()));
+            dto.setCost(entity.getPcCost());
+            dto.setCpc(entity.getPcCpc());
+            dto.setCpm(entity.getPcCpm());
             dto.setCtr(NumberUtils.getDouble(entity.getPcCtr()));
             dto.setImpression(NumberUtils.getInteger(entity.getPcImpression()));
         }

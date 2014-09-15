@@ -17,11 +17,10 @@
     .tab_box {
         padding: 10px 0 0 2px;
     }
-
 </style>
 <body>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
-<div class="concent over fl">
+<div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
 <div class="on_title over">
@@ -76,11 +75,10 @@
                                                </dl>
                                                <dl><input type="checkbox" style=" margin-top:5px;"></dl>
                                                 <dl>
-                                                    <input type="text" class="w_text"
-                                                           name="qtext" value="关键词精准查询，多个关键词用半角逗号隔开"
+                                                    <input type="text" class="w_text" value="关键词精准查询，多个关键词用半角逗号隔开"
                                                            onfocus="if(value=='关键词精准查询，多个关键词用半角逗号隔开') {value=''}"
                                                            onblur="if (value=='') {value='关键词精准查询，多个关键词用半角逗号隔开'}">
-                                                    <input type="image" name="search"
+                                                    <input type="image"
                                                            src="${pageContext.request.contextPath}/public/img/search3.png">
                                                 </dl>
                                           </span>
@@ -309,7 +307,7 @@
 </div>
 </div>
 <div class="TB_overlayBG"></div>
-<div class="box" style="display:none" id="downloadData">
+<div class="box10" style="display:none" id="downloadData">
     <h2 id="downloadBox">账户下载<a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">

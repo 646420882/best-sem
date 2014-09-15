@@ -180,6 +180,21 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
     }
 
     @Override
+    public AdgroupEntity fndEntity(Map<String, Object> params) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Query q = new Query();
+        Criteria c = new Criteria();
+        if (params != null && params.size() > 0) {
+            for (Map.Entry<String, Object> par : params.entrySet()) {
+                c.and(par.getKey()).is(par.getValue());
+            }
+        }
+        q.addCriteria(c);
+        AdgroupEntity adgroupEntity=mongoTemplate.findOne(q,AdgroupEntity.class,EntityConstants.TBL_ADGROUP);
+        return adgroupEntity;
+    }
+
+    @Override
     public Object insertOutId(com.perfect.entity.AdgroupEntity adgroupEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insert(adgroupEntity, EntityConstants.TBL_ADGROUP);
@@ -449,7 +464,8 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
         mongoTemplate.updateMulti(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(agid)), up, KeywordEntity.class, EntityConstants.TBL_KEYWORD);
         mongoTemplate.updateMulti(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(agid)), up, CreativeEntity.class, EntityConstants.TBL_CREATIVE);
     }
-    private void SubdelBack(Long oid){
+
+    private void SubdelBack(Long oid) {
         Update up = new Update();
         up.set("ls", "");
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
