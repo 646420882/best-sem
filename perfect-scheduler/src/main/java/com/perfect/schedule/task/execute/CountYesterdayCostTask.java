@@ -8,6 +8,7 @@ import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.SystemUserEntity;
 import com.perfect.entity.WarningInfoEntity;
 import com.perfect.entity.WarningRuleEntity;
+import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.schedule.core.IScheduleTaskDealSingle;
 import com.perfect.schedule.core.TaskItemDefine;
 import org.slf4j.Logger;
@@ -59,7 +60,7 @@ public class CountYesterdayCostTask implements IScheduleTaskDealSingle<Map<Strin
                 break;
             }
             //昨天的日期
-            Date yesterDay = new Date(df.parse(df.format(new Date())).getTime() - (1000 * 60 * 60 * 24));
+            Date yesterDay = DateUtils.getYesterday();
             //得到昨天的账户数据
             List<AccountReportEntity> accountYesTerdayDataList = getAccountReportDAO.getLocalAccountRealData(sue.getUserName(), yesterDay, yesterDay);
 
@@ -68,7 +69,7 @@ public class CountYesterdayCostTask implements IScheduleTaskDealSingle<Map<Strin
                     WarningInfoEntity warningInfo = new WarningInfoEntity();
                     if (wre.getAccountId() == art.getAccountId()) {
                         //算出日预算实现率
-                        double percent = (art.getPcCost()+art.getMobileCost()) / wre.getBudget() * 100;
+                        double percent = (art.getPcCost().doubleValue() + art.getMobileCost().doubleValue()) / wre.getBudget() * 100;
                         warningInfo.setAccountId(wre.getAccountId());
                         warningInfo.setPercent(percent);
                         warningInfo.setCreateTime(new Date());

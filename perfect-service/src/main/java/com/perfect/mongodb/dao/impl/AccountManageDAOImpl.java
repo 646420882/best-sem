@@ -193,7 +193,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         }
         AccountReportEntity reportEntity = results.getUniqueMappedResult();
         if (reportEntity != null)
-            return reportEntity.getPcCost();
+            return reportEntity.getPcCost().doubleValue();
         else
             return 0d;
     }
@@ -211,7 +211,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         AccountReportEntity reportEntity = mongoTemplate.
                 findOne(Query.query(Criteria.where("date").is(date).and(ACCOUNT_ID).is(baiduAccountId)), AccountReportEntity.class);
         if (reportEntity != null)
-            cost2 = reportEntity.getPcCost();
+            cost2 = reportEntity.getPcCost().doubleValue();
         if (cost2 == 0d)
             return 0d;
         costRate = (cost1 - cost2) / cost2;
