@@ -7,6 +7,7 @@ import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AccountManageDAO;
+import com.perfect.dto.BaiduKeywordDTO;
 import com.perfect.dto.KRResultDTO;
 import com.perfect.entity.*;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
@@ -15,9 +16,7 @@ import com.perfect.mongodb.dao.impl.KeywordGroupDAOImpl;
 import com.perfect.mongodb.utils.Pager;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.KeywordGroupService;
-import com.perfect.utils.BaiduServiceSupport;
-import com.perfect.utils.DBNameUtils;
-import com.perfect.utils.JSONUtils;
+import com.perfect.utils.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -60,7 +59,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
 
     private String _krFileId;
 
-    private int redisMapSize;
+    private int resultSize;
 
     @Resource
     private KeywordGroupDAOImpl keywordGroupDAO;
@@ -68,26 +67,28 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
     @Resource
     private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
 
+    @Resource
+    private TopN<BaiduKeywordDTO> topN;
 
-    public Map<String, Object> getKeywordFromBaidu(List<String> seedWordList, int skip, int limit, String krFileId) {
+
+    public Map<String, Object> getKeywordFromBaidu(List<String> seedWordList, int skip, int limit, String krFileId, int sort, String fieldName) {
         if (krFileId == null) {
-            Map<String, Object> map = getKRResult(seedWordList, skip, limit);
+            Map<String, Object> map = getKRResult(seedWordList, skip, limit, sort, fieldName);
             map.put("krFileId", _krFileId);
-            map.put("total", redisMapSize);
+            map.put("total", resultSize);
             return map;
         } else {
-            Map<String, String> redisMap = new LinkedHashMap<>();
+            List<BaiduKeywordDTO> list = new ArrayList<>();
             Jedis jedis = null;
             try {
                 jedis = JRedisUtils.get();
-                if (jedis.ttl(krFileId) == -1) {
-                    Map<String, Object> map = getKRResult(seedWordList, skip, limit);
+                if (jedis.ttl(SerializeUtils.serialize(krFileId)) == -1) {
+                    Map<String, Object> map = getKRResult(seedWordList, skip, limit, sort, fieldName);
                     map.put("krFileId", _krFileId);
-                    map.put("total", redisMapSize);
+                    map.put("total", resultSize);
                     return map;
                 }
-                //sort
-                redisMap = sortMapByKey(jedis.hgetAll(krFileId));
+                list = SerializeUtils.deSerializeList(jedis.get(SerializeUtils.serialize(krFileId)), BaiduKeywordDTO.class);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -95,11 +96,13 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                     JRedisUtils.returnJedis(jedis);
                 }
             }
-            List<String> list = new ArrayList<>(redisMap.values());
-            List<KeywordVO> voList = paging(list, skip, limit);
+            //sort
+            int s = list.size();
+            BaiduKeywordDTO[] keywordVOs = topN.getTopN(list.toArray(new BaiduKeywordDTO[s]), s, fieldName, sort);
+            List<BaiduKeywordDTO> voList = paging(keywordVOs, skip, limit);
             Map<String, Object> map = JSONUtils.getJsonMapData(voList);
             map.put("krFileId", krFileId);
-            map.put("total", redisMapSize);
+            map.put("total", resultSize);
             return map;
         }
     }
@@ -162,37 +165,35 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
 
     public void saveKeywordFromBaidu(List<String> seedWordList, String krFileId, String newCampaignName) {
         if (krFileId == null) {
-            List<String> list = getKRResult(seedWordList);
+            List<BaiduKeywordDTO> list = getKRResult(seedWordList);
             genericSave(list, newCampaignName);
         } else {
-            Map<String, String> redisMap = new LinkedHashMap<>();
+            List<BaiduKeywordDTO> list1 = new ArrayList<>();
             Jedis jedis = null;
             try {
                 jedis = JRedisUtils.get();
-                if (jedis.ttl(krFileId) == -1) {
-                    List<String> list = getKRResult(seedWordList);
+                if (jedis.ttl(SerializeUtils.serialize(krFileId)) == -1) {
+                    List<BaiduKeywordDTO> list = getKRResult(seedWordList);
                     genericSave(list, newCampaignName);
                     return;
                 }
-                //sort
-                redisMap = sortMapByKey(jedis.hgetAll(krFileId));
-            } catch (Exception e) {
+                list1 = SerializeUtils.deSerializeList(jedis.get(SerializeUtils.serialize(krFileId)), BaiduKeywordDTO.class);
+            } catch (final Exception e) {
                 e.printStackTrace();
             } finally {
                 if (jedis != null) {
                     JRedisUtils.returnJedis(jedis);
                 }
             }
-            List<String> list = new ArrayList<>(redisMap.values());
-            genericSave(list, newCampaignName);
+            genericSave(list1, newCampaignName);
         }
     }
 
-    private void genericSave(List<String> list, String newCampaignName) {
+    private void genericSave(List<BaiduKeywordDTO> list, String newCampaignName) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Long accountId = AppContext.getAccountId();
 
-        if (mongoTemplate.findOne(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and("name").is(newCampaignName)), CampaignEntity.class) != null) {
+        if (mongoTemplate.findOne(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and(NAME).is(newCampaignName)), CampaignEntity.class) != null) {
             throw new DuplicateKeyException("\"" + newCampaignName + "\"" + " already exists");
         }
 
@@ -209,18 +210,16 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
         CampaignEntity campaign = (CampaignEntity) save(campaignEntity);
         String campaignObjectId = campaign.getId();
 
-        for (String str : list) {
-            String[] arr = str.split(",");
-            String adgroupName = arr[0];
-            String keyword = arr[2];
+        for (BaiduKeywordDTO dto : list) {
+            String adgroupName = dto.getGroupName();
+            String keyword = dto.getKeywordName();
             String adgroupObjectId;
 
             Aggregation aggregation = newAggregation(
-                    match(Criteria.where(ACCOUNT_ID).is(accountId).and("ocid").is(campaignObjectId).and("name").is(adgroupName)),
-                    project(ACCOUNT_ID, "ocid", "name")
+                    match(Criteria.where(ACCOUNT_ID).is(accountId).and(OBJ_CAMPAIGN_ID).is(campaignObjectId).and(NAME).is(adgroupName)),
+                    project(ACCOUNT_ID, OBJ_CAMPAIGN_ID, NAME)
             );
 
-//            AdgroupEntity _adgroup = mongoTemplate.findOne(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and("ocid").is(campaignObjectId).and("name").is(adgroupName)), AdgroupEntity.class);
             AdgroupEntity _adgroup = mongoTemplate.aggregate(aggregation, TBL_ADGROUP, AdgroupEntity.class).getUniqueMappedResult();
             if (_adgroup != null) {
                 //当前分组在数据库中已经存在, 直接新增关键词即可
@@ -269,7 +268,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Long accountId = AppContext.getAccountId();
 
-        if (mongoTemplate.findOne(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and("name").is(newCampaignName)), CampaignEntity.class) != null) {
+        if (mongoTemplate.findOne(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and(NAME).is(newCampaignName)), CampaignEntity.class) != null) {
             throw new DuplicateKeyException("\"" + newCampaignName + "\"" + " already exists");
         }
 
@@ -437,7 +436,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
         return map;
     }
 
-    public Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit) {
+    public Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit, int sort, String fieldName) {
         KRService krService = getKRService();
         GetKRFileIdbySeedWordRequest getKRFileIdbySeedWordRequest = new GetKRFileIdbySeedWordRequest();
         getKRFileIdbySeedWordRequest.setSeedWords(seedWordList);
@@ -458,11 +457,11 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                 GetKRFilePathResponse getKRFilePathResponse = krService.getKRFilePath(getKRFilePathRequest);
                 krFilePath = getKRFilePathResponse.getFilePath();
                 //拓展词文件解析
-                Map<String, String> redisMap = httpFileHandler(krFilePath);
-                this.redisMapSize = redisMap.size();
-                List<String> list = new ArrayList<>(redisMap.values());
-                List<KeywordVO> voList = paging(list, skip, limit);
-                attributes = JSONUtils.getJsonMapData(voList);
+                List<BaiduKeywordDTO> keywordList = httpFileHandler(krFilePath);
+                int s = keywordList.size();
+                BaiduKeywordDTO[] sortedKeywords = topN.getTopN(keywordList.toArray(new BaiduKeywordDTO[s]), s, fieldName, sort);
+                List<BaiduKeywordDTO> list = paging(sortedKeywords, skip, limit);
+                attributes = JSONUtils.getJsonMapData(list);
                 break;
             }
             try {
@@ -494,8 +493,8 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
      * @param url
      * @return
      */
-    private Map<String, String> httpFileHandler(String url) {
-        Map<String, String> redisMap = new LinkedHashMap<>();
+    private List<BaiduKeywordDTO> httpFileHandler(String url) {
+        List<BaiduKeywordDTO> keywordList = new ArrayList<>();
         //create HttpClient
         CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
         //create HTTP GET request
@@ -509,17 +508,19 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
             BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent(), "GBK"));
             String str;
             long index = 2_147_483_647;
+
             while ((str = br.readLine()) != null) {
                 if (index == 2_147_483_647) {
                     index++;
                     continue;
                 }
                 String[] arr = str.split("\\t");
-                redisMap.put(index + "", arr[8] + "," + arr[0] + "," + arr[1] + "," +
-                        arr[4] + "," + arr[5] + "," + arr[9] + "," + arr[10]);
+                String competitionStr = arr[5].substring(0, arr[5].indexOf("%"));
+                keywordList.add(new BaiduKeywordDTO(arr[8], arr[0], arr[1], Integer.valueOf(arr[4]), Double.valueOf(competitionStr), arr[9], arr[10]));
                 index++;
             }
-            saveToRedis(_krFileId, redisMap);
+            this.resultSize = keywordList.size();
+            saveToRedis(SerializeUtils.serialize(_krFileId), SerializeUtils.serialize(keywordList));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -530,16 +531,16 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
             }
         }
 
-        return redisMap;
+        return keywordList;
     }
 
-    private void saveToRedis(String id, Map<String, String> redisMap) {
+    private void saveToRedis(byte[] key, byte[] value) {
         Jedis jedis = null;
         try {
             jedis = JRedisUtils.get();
-            jedis.hmset(id, redisMap);
-            jedis.expire(id, 600);
-        } catch (Exception e) {
+            jedis.set(key, value);
+            jedis.expire(key, 600);
+        } catch (final Exception e) {
             e.printStackTrace();
         } finally {
             if (jedis != null) {
@@ -582,23 +583,26 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
     }
 
     //分页
-    private List<KeywordVO> paging(List<String> list, int skip, int limit) {
-        List<KeywordVO> voList = new ArrayList<>(limit);
-        for (int i = skip * limit; i < (skip + 1) * limit; i++) {
-            String[] arr = list.get(i).split(",");
-            voList.add(new KeywordVO(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]));
+    private List<BaiduKeywordDTO> paging(BaiduKeywordDTO[] list, int skip, int limit) {
+        List<BaiduKeywordDTO> voList = new ArrayList<>(limit);
+        int size = list.length, start = skip * limit, end = (skip + 1) * limit;
+        for (int i = start; i < end; i++) {
+            if (i == size)
+                break;
+
+            voList.add(list[i]);
         }
 
         return voList;
     }
 
-    private List<String> getKRResult(List<String> seedWordList) {
+    private List<BaiduKeywordDTO> getKRResult(List<String> seedWordList) {
         KRService krService = getKRService();
         GetKRFileIdbySeedWordRequest getKRFileIdbySeedWordRequest = new GetKRFileIdbySeedWordRequest();
         getKRFileIdbySeedWordRequest.setSeedWords(seedWordList);
         GetKRFileIdbySeedWordResponse getKRFileIdbySeedWordResponse = krService.getKRFileIdbySeedWord(getKRFileIdbySeedWordRequest);
         String krFileId = getKRFileIdbySeedWordResponse.getKrFileId();
-        List<String> results = null;
+        List<BaiduKeywordDTO> results = null;
         String krFilePath;
 
         //检查关键词推荐结果文件是否生成
@@ -613,9 +617,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                 GetKRFilePathResponse getKRFilePathResponse = krService.getKRFilePath(getKRFilePathRequest);
                 krFilePath = getKRFilePathResponse.getFilePath();
                 //拓展词文件解析
-                Map<String, String> redisMap = httpFileHandler(krFilePath);
-                this.redisMapSize = redisMap.size();
-                results = new ArrayList<>(redisMap.values());
+                results = httpFileHandler(krFilePath);
                 break;
             }
             try {
@@ -628,87 +630,4 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
         return results;
     }
 
-    class KeywordVO {
-
-        private String groupName;
-
-        private String seedWord;
-
-        private String keywordName;
-
-        private String dsQuantity;      //日均展现量(精确)
-
-        private String competition;     //竞争激烈程度
-
-        private String recommendReason1;    //一级推荐理由
-
-        private String recommendReason2;    //二级推荐理由
-
-        KeywordVO(String groupName, String seedWord, String keywordName, String dsQuantity,
-                  String competition, String recommendReason1, String recommendReason2) {
-            this.groupName = groupName;
-            this.seedWord = seedWord;
-            this.keywordName = keywordName;
-            this.dsQuantity = dsQuantity;
-            this.competition = competition;
-            this.recommendReason1 = recommendReason1;
-            this.recommendReason2 = recommendReason2;
-        }
-
-        public String getGroupName() {
-            return groupName;
-        }
-
-        public void setGroupName(String groupName) {
-            this.groupName = groupName;
-        }
-
-        public String getSeedWord() {
-            return seedWord;
-        }
-
-        public void setSeedWord(String seedWord) {
-            this.seedWord = seedWord;
-        }
-
-        public String getKeywordName() {
-            return keywordName;
-        }
-
-        public void setKeywordName(String keywordName) {
-            this.keywordName = keywordName;
-        }
-
-        public String getDsQuantity() {
-            return dsQuantity;
-        }
-
-        public void setDsQuantity(String dsQuantity) {
-            this.dsQuantity = dsQuantity;
-        }
-
-        public String getCompetition() {
-            return competition;
-        }
-
-        public void setCompetition(String competition) {
-            this.competition = competition;
-        }
-
-        public String getRecommendReason1() {
-            return recommendReason1;
-        }
-
-        public void setRecommendReason1(String recommendReason1) {
-            this.recommendReason1 = recommendReason1;
-        }
-
-        public String getRecommendReason2() {
-            return recommendReason2;
-        }
-
-        public void setRecommendReason2(String recommendReason2) {
-            this.recommendReason2 = recommendReason2;
-        }
-    }
 }

@@ -154,10 +154,10 @@ $(function () {
             type: "POST",
             success: function (datas) {
                 if (datas.code == 0) {
-                    alert("所选关键词竞价已暂停!");
+                    alert("所选关键词竞价已启动!");
                     return true;
                 } else {
-                    alert("暂停失败! " + datas.msg);
+                    alert("启动失败! " + datas.msg);
                     return false;
                 }
             }

@@ -14,13 +14,13 @@ import com.perfect.dto.KeywordQualityReportDTO;
 import com.perfect.dto.QualityDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.KeywordReportEntity;
+import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.KeywordQualityService;
 import com.perfect.utils.BaiduServiceSupport;
 import com.perfect.utils.JSONUtils;
 import com.perfect.utils.SerializeUtils;
 import com.perfect.utils.TopN;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
@@ -378,7 +378,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                 jedis = JRedisUtils.get();
                 if (jedis.ttl(redisKey) == -1) {
                     quality10Types = getKeyword10Quality(keywordIds);
-                    redisKey = new ObjectId().toString();
+                    redisKey = AppContext.getUser() + AppContext.getAccountId() + DateUtils.getYesterday().getTime();
                     saveToRedis(redisKey, quality10Types);
                 } else {
                     byte[] bytes = jedis.get(redisKey.getBytes(StandardCharsets.UTF_8));
@@ -393,7 +393,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             }
         } else {
             quality10Types = getKeyword10Quality(keywordIds);
-            redisKey = new ObjectId().toString();
+            redisKey = AppContext.getUser() + AppContext.getAccountId() + DateUtils.getYesterday().getTime();
             saveToRedis(redisKey, quality10Types);
         }
 

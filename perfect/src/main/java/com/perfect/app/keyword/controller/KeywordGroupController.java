@@ -41,10 +41,12 @@ public class KeywordGroupController {
     public ModelAndView getKeywordFromBaidu(@RequestParam(value = "seedWords", required = false) String seedWords,
                                             @RequestParam(value = "skip", required = false, defaultValue = "0") int skip,
                                             @RequestParam(value = "limit", required = false, defaultValue = "10") int limit,
-                                            @RequestParam(value = "krFileId", required = false) String krFileId) {
+                                            @RequestParam(value = "krFileId", required = false) String krFileId,
+                                            @RequestParam(value = "sort", required = false, defaultValue = "-1") Integer sort,
+                                            @RequestParam(value = "fieldName", required = false, defaultValue = "dsQuantity") String fieldName) {
         List<String> seedWordList = new ArrayList<>(Arrays.asList(seedWords.split(",")));
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> attributes = keywordGroupService.getKeywordFromBaidu(seedWordList, skip, limit, krFileId);
+        Map<String, Object> attributes = keywordGroupService.getKeywordFromBaidu(seedWordList, skip, limit, krFileId, sort, fieldName);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
     }

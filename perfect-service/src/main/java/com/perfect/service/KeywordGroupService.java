@@ -13,20 +13,26 @@ public interface KeywordGroupService {
      * <br>-----------------------</br>
      *
      * @param seedWordList
+     * @param skip
+     * @param limit
+     * @param sort
+     * @param fieldName
      * @return
      */
-    Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit);
+    Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit, int sort, String fieldName);
 
     /**
-     * 从百度词库获取关键词
+     * 从凤巢获取关键词
      *
      * @param seedWordList
      * @param skip
      * @param limit
      * @param reportId
+     * @param sort
+     * @param fieldName
      * @return
      */
-    Map<String, Object> getKeywordFromBaidu(List<String> seedWordList, int skip, int limit, String reportId);
+    Map<String, Object> getKeywordFromBaidu(List<String> seedWordList, int skip, int limit, String reportId, int sort, String fieldName);
 
     /**
      * 从系统词库获取关键词
