@@ -19,6 +19,8 @@
     }
 </style>
 <body>
+<div id="background" class="background"></div>
+<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
@@ -793,6 +795,16 @@ $('.getRankBtn').click(function () {
     })
 });
 //-->
+//loading
+$(function() {
+    var ajaxbg = $("#background,#progressBar");
+    ajaxbg.hide();
+    $(document).ajaxStart(function () {
+        ajaxbg.fadeIn("slow");
+    }).ajaxStop(function () {
+        ajaxbg.fadeOut("slow");
+    });
+});
 
 </SCRIPT>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>

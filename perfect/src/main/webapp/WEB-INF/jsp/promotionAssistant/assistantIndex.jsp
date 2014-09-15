@@ -25,6 +25,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
 </head>
 <body>
+<div id="background" class="background"></div>
+<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
 <div class="concent over">
@@ -46,7 +48,10 @@
         <span class="fl">查找计划单元</span>
         <input class="fr" type="image" src="../public/img/search.png">
     </div>
-    <div class="j_list01 over">
+    <div class="j_list01 over" >
+        <div id="loading">
+
+        </div>
         <ul id="zTree" class="ztree over">
         </ul>
     </div>
@@ -1549,6 +1554,16 @@
             store: store
         });
     };
+    //loading
+    $(function() {
+        var ajaxbg = $("#background,#progressBar");
+        ajaxbg.hide();
+        $(document).ajaxStart(function () {
+            ajaxbg.fadeIn("slow");
+        }).ajaxStop(function () {
+            ajaxbg.fadeOut("slow");
+        });
+    });
 </script>
 </body>
 </html>
