@@ -15,12 +15,12 @@ import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.mongodb.utils.PaginationParam;
 import com.perfect.service.*;
 import com.perfect.utils.BiddingRuleUtils;
-import com.perfect.utils.CharsetUtils;
 import com.perfect.utils.JSONUtils;
 import com.perfect.utils.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -74,9 +74,10 @@ public class BiddingController {
 
         List<BiddingRuleEntity> newRules = new ArrayList<>();
 
-//        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+
+        //        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 //        int[] startEndTimes = getTimes(param.getTimes(), hour);
-        List<BiddingRuleEntity> entities = biddingRuleService.findRules(Arrays.asList(param.getIds()));
+        List<BiddingRuleEntity> entities = biddingRuleService.findByKeywordIds(Arrays.asList(param.getIds()));
 
         Map<Long, BiddingRuleEntity> biddingRuleEntityMap = new HashMap<>();
 
@@ -86,6 +87,7 @@ public class BiddingController {
             }
         }
         for (Long id : param.getIds()) {
+            KeywordEntity keywordEntity = sysKeywordService.findById(id);
 
             BiddingRuleEntity biddingRuleEntity = biddingRuleEntityMap.get(id);
 
@@ -95,6 +97,8 @@ public class BiddingController {
                 biddingRuleEntity.setKeywordId(id);
                 biddingRuleEntity.setCurrentPrice(BigDecimal.ZERO);
             }
+
+            biddingRuleEntity.setKeyword(keywordEntity.getKeyword());
             biddingRuleEntity.setEnabled(param.isRun());
 
             biddingRuleEntity.setCurrentPrice(BigDecimal.ZERO);
@@ -153,7 +157,9 @@ public class BiddingController {
             biddingRuleService.createBiddingRule(entity);
         }
 
-        return new ModelAndView();
+        AbstractView view = new MappingJackson2JsonView();
+        view.addStaticAttribute("code", HttpStatus.OK);
+        return new ModelAndView(view);
     }
 
     private int[] getTimes(Integer[] times, Integer time) {
@@ -237,7 +243,7 @@ public class BiddingController {
     public ModelAndView get(HttpServletRequest request, @PathVariable Long id) {
         AbstractView jsonView = new MappingJackson2JsonView();
 
-        List<BiddingRuleEntity> rules = biddingRuleService.findRules(Arrays.asList(id));
+        List<BiddingRuleEntity> rules = biddingRuleService.findByKeywordIds(Arrays.asList(id));
         if (!rules.isEmpty()) {
             BiddingRuleEntity entity = rules.get(0);
             jsonView.setAttributesMap(JSONUtils.getJsonMapData(entity));
@@ -271,7 +277,7 @@ public class BiddingController {
     }
 
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json")
-    public ModelAndView home(HttpServletRequest request,
+    public ModelAndView list(HttpServletRequest request,
                              @RequestParam(value = "cp", required = false) Long cp,
                              @RequestParam(value = "ag", required = false) Long agid,
                              @RequestParam(value = "s", required = false, defaultValue = "0") int skip,
@@ -279,7 +285,8 @@ public class BiddingController {
                              @RequestParam(value = "sort", required = false, defaultValue = "name") String sort,
                              @RequestParam(value = "o", required = false, defaultValue = "true") boolean asc,
                              @RequestParam(value = "q", required = false) String query,
-                             @RequestParam(value = "f",required = false,defaultValue = "false") boolean fullMatch) {
+                             @RequestParam(value = "f", required = false, defaultValue = "false") boolean fullMatch,
+                             @RequestParam(value = "filter", required = true, defaultValue = "0") int filter) {
 
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> q = new HashMap<>();
@@ -292,25 +299,63 @@ public class BiddingController {
         param.setAsc(asc);
 
 
+        Map<Long, BiddingRuleEntity> keywordIdRuleMap = new HashMap<>();
+        List<Long> ids = new ArrayList<>();
+
+        boolean ruleReady = false;
         if (cp != null) {
             List<AdgroupEntity> adgroupEntityList = sysAdgroupService.findIdByCampaignId(cp);
 
-            List<Long> ids = new ArrayList<>(adgroupEntityList.size());
+            List<Long> adGroupIds = new ArrayList<>(adgroupEntityList.size());
             for (AdgroupEntity adgroupEntity : adgroupEntityList) {
-                ids.add(adgroupEntity.getAdgroupId());
+                adGroupIds.add(adgroupEntity.getAdgroupId());
             }
-            entities = sysKeywordService.findByAdgroupIds(ids, param);
+            entities = sysKeywordService.findByAdgroupIds(adGroupIds, param);
         } else if (agid != null) {
             entities = sysKeywordService.findByAdgroupId(agid, param);
         } else if (query != null) {
-            query = CharsetUtils.decode(query);
-            entities = sysKeywordService.findByNames(query.split(","),fullMatch, param);
+            if (filter == 0) {
+                entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param);
+            } else if (filter == -1) {
+                entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param);
+
+                Map<Long, KeywordEntity> tmpMap = new HashMap<>();
+                for (KeywordEntity tmpEntity : entities) {
+                    ids.add(tmpEntity.getKeywordId());
+                    tmpMap.put(tmpEntity.getKeywordId(), tmpEntity);
+                }
+
+                if (ids.isEmpty()) {
+                    jsonView.setAttributesMap(new HashMap<String, Object>());
+                    return new ModelAndView(jsonView);
+                }
+                List<BiddingRuleEntity> byKeywordIds = biddingRuleService.findByKeywordIds(ids);
+
+                for (BiddingRuleEntity ruleEntity : byKeywordIds) {
+                    ids.remove(ruleEntity.getKeywordId());
+                    KeywordEntity keywordEntity = tmpMap.remove(ruleEntity.getKeywordId());
+                    entities.remove(keywordEntity);
+
+                }
+
+            } else if (filter == 1) {
+                List<BiddingRuleEntity> ruleEntities = biddingRuleService.findByNames(query.split(" "), fullMatch,
+                        param);
+                for (BiddingRuleEntity tmpEntity : ruleEntities) {
+                    keywordIdRuleMap.put(tmpEntity.getKeywordId(), tmpEntity);
+                    ids.add(tmpEntity.getKeywordId());
+                }
+                if (ids.isEmpty()) {
+                    jsonView.setAttributesMap(new HashMap<String, Object>());
+                    return new ModelAndView(jsonView);
+                }
+                entities = sysKeywordService.findByIds(ids);
+                ruleReady = !ruleEntities.isEmpty();
+            }
         } else {
             return new ModelAndView(jsonView);
         }
 
-
-        List<Long> ids = new ArrayList<>();
 
         Map<Long, KeywordReportDTO> keywordReportDTOHashMap = new HashMap<>();
         List<KeywordReportDTO> resultList = new ArrayList<>();
@@ -326,9 +371,18 @@ public class BiddingController {
 
             keywordReportDTOHashMap.put(entity.getKeywordId(), keywordReportDTO);
             resultList.add(keywordReportDTO);
-            ids.add(entity.getKeywordId());
+            if (ruleReady)
+                ids.add(entity.getKeywordId());
 
-            BiddingRuleEntity ruleEntity = biddingRuleService.findByKeywordId(entity.getKeywordId());
+            BiddingRuleEntity ruleEntity = null;
+            if (filter != -1) {
+                if (ruleReady) {
+                    ruleEntity = keywordIdRuleMap.get(entity.getKeywordId());
+                } else {
+                    ruleEntity = biddingRuleService.findByKeywordId(entity.getKeywordId());
+                }
+            }
+
             if (ruleEntity != null) {
                 keywordReportDTO.setRule(true);
                 keywordReportDTO.setRuleDesc(BiddingRuleUtils.getRule(ruleEntity));

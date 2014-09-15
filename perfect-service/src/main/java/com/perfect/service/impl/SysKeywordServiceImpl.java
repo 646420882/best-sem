@@ -44,4 +44,9 @@ public class SysKeywordServiceImpl implements SysKeywordService {
 
         return keywordDAO.findByNames(query,fullMatch,param);
     }
+
+    @Override
+    public List<KeywordEntity> findByIds(List<Long> ids) {
+        return keywordDAO.findByIds(ids);
+    }
 }

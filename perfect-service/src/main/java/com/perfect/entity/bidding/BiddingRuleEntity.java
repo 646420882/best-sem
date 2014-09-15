@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.math.BigDecimal;
 
 import static com.perfect.mongodb.utils.EntityConstants.KEYWORD_ID;
+import static com.perfect.mongodb.utils.EntityConstants.NAME;
 import static com.perfect.mongodb.utils.EntityConstants.TBL_BIDDINGRULE;
 
 /**
@@ -29,7 +30,7 @@ public class BiddingRuleEntity extends AccountIdEntity {
     @Field(KEYWORD_ID)
     private long keywordId;
 
-    @Field("kw")
+    @Field(NAME)
     private String keyword;
 
     @Field("stgy")

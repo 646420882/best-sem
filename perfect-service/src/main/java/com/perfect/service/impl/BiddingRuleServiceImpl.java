@@ -2,6 +2,7 @@ package com.perfect.service.impl;
 
 import com.perfect.dao.BiddingRuleDAO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
+import com.perfect.mongodb.utils.PaginationParam;
 import com.perfect.service.BiddingRuleService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
@@ -88,8 +89,8 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public List<BiddingRuleEntity> findRules(List<Long> ids) {
-        return biddingRuleDAO.find(ids);
+    public List<BiddingRuleEntity> findByKeywordIds(List<Long> ids) {
+        return biddingRuleDAO.findByKeywordIds(ids);
     }
 
     @Override
@@ -120,6 +121,11 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     @Override
     public boolean setEnable(Long[] ids, boolean ebl) {
         return biddingRuleDAO.setEnable(ids,ebl);
+    }
+
+    @Override
+    public List<BiddingRuleEntity> findByNames(String[] split, boolean fullMatch, PaginationParam param) {
+        return biddingRuleDAO.findByNames(split,fullMatch,param);
     }
 
 

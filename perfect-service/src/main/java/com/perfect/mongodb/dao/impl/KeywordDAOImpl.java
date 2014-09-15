@@ -130,6 +130,11 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
     @Override
+    public List<KeywordEntity> findByIds(List<Long> ids) {
+        return getMongoTemplate().find(Query.query(Criteria.where(KEYWORD_ID).in(ids)),getEntityClass());
+    }
+
+    @Override
     public Pager getKeywordByPager(HttpServletRequest request, Map<String, Object> params, int orderBy) {
         int start = Integer.parseInt(request.getParameter(START));
         int pageSize = Integer.parseInt(request.getParameter(PAGESIZE));

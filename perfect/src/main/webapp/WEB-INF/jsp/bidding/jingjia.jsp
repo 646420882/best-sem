@@ -65,22 +65,24 @@
                             <div class="w_list01 fl over">是否参与竞价：</div>
                             <div class="w_list02 fl over">
                                         <span>
-                                            <form><input type="radio" checked="checked" name="no">&nbsp;未参与 &nbsp;<input
-                                                    type="radio"
-                                                    name="no"> &nbsp;已参加
-                                                &nbsp;<input type="radio" name="no">&nbsp;全部
+                                            <form>
+                                                <input type="radio" name="in" checked="checked" value="0">&nbsp;全部 &nbsp;
+                                                <input type="radio" name="in" value="-1">&nbsp;未参与 &nbsp;
+                                                <input type="radio" name="in" value="1"> &nbsp;已参加
                                             </form>
                                         </span>
                                         <span>
                                                <dl><input type="image"
                                                           src="${pageContext.request.contextPath}/public/img/search2.png">
                                                </dl>
-                                               <dl><input type="checkbox" style=" margin-top:5px;"></dl>
+                                               <dl><input type="checkbox" style=" margin-top:5px;" name="fullmatch"></dl>
                                                 <dl>
-                                                    <input type="text" class="w_text" value="关键词精准查询，多个关键词用半角逗号隔开"
+                                                    <input type="text" class="w_text"
+                                                           name="qtext"
+                                                           value="关键词精准查询，多个关键词用半角逗号隔开"
                                                            onfocus="if(value=='关键词精准查询，多个关键词用半角逗号隔开') {value=''}"
                                                            onblur="if (value=='') {value='关键词精准查询，多个关键词用半角逗号隔开'}">
-                                                    <input type="image"
+                                                    <input type="image" name="search"
                                                            src="${pageContext.request.contextPath}/public/img/search3.png">
                                                 </dl>
                                           </span>
@@ -800,7 +802,7 @@ $(function() {
     var ajaxbg = $("#background,#progressBar");
     ajaxbg.hide();
     $(document).ajaxStart(function () {
-        ajaxbg.fadeIn("slow");
+        ajaxbg.show();
     }).ajaxStop(function () {
         ajaxbg.fadeOut("slow");
     });

@@ -7,6 +7,7 @@ import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.mongodb.utils.PaginationParam;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -218,7 +219,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     }
 
     @Override
-    public List<BiddingRuleEntity> find(List<Long> ids) {
+    public List<BiddingRuleEntity> findByKeywordIds(List<Long> ids) {
         return getMongoTemplate().find(Query.query(Criteria.where(KEYWORD_ID).in(ids)), BiddingRuleEntity.class);
     }
 
@@ -245,5 +246,27 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     public boolean setEnable(Long[] ids, boolean ebl) {
         WriteResult writeResult = getMongoTemplate().updateMulti(Query.query(Criteria.where(KEYWORD_ID).in(ids)), Update.update("ebl", ebl), getEntityClass());
         return writeResult.getN() == ids.length;
+    }
+
+    @Override
+    public List<BiddingRuleEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param) {
+        Query mongoQuery = new Query();
+        String prefix = "(";
+        String suffix = ")";
+        if (!fullMatch) {
+            prefix = ".*(";
+            suffix = ").*";
+        }
+        String reg = "";
+        for (String name : query) {
+            reg = reg + name + "|";
+        }
+        reg = reg.substring(0, reg.length() - 1);
+
+        Criteria criteria = Criteria.where(NAME).regex(prefix + reg + suffix);
+
+        mongoQuery.addCriteria(criteria);
+
+        return getMongoTemplate().find(param.withParam(mongoQuery), getEntityClass());
     }
 }

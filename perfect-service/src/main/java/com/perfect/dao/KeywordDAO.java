@@ -69,4 +69,6 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
     List<KeywordEntity> getKeywordByIds(List<Long> ids);
 
     List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param);
+
+    List<KeywordEntity> findByIds(List<Long> ids);
 }

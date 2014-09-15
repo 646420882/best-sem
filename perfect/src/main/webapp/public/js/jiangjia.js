@@ -40,7 +40,7 @@ $(function () {
         }
 
         if (items.length == 1) {
-            filldata(items.val());
+//            filldata(items.val());
         } else {
             emptydata();
         }
@@ -281,24 +281,27 @@ $(function () {
 
     var txt = '关键词精准查询，多个关键词用半角逗号隔开';
 
-    $('input[name=search]').click(function(){
+    // 搜索框
+    $('input[name=search]').click(function () {
         var text = $('input[name=qtext]').val();
-        if(text == txt ){
+        if (text == txt) {
             return false;
         }
 
+        var f = input('fullmatch').prop("checked");
+        var filter = checkedValue('in');
         var tbl = "table1";
         var curPage = $('.curpage').text();
         var size = $("#size").find("option:selected").val();
         var skip = (curPage - 1) * size;
 
         $.ajax({
-            url: "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text,
+            url: "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter,
             type: "POST",
             dataType: "json",
             async: false,
             success: function (datas) {
-                if (datas.rows.length == 0) {
+                if (datas.rows == undefined) {
                     emptyTable(tbl);
                 } else {
                     fullItems(datas, tbl);
@@ -556,6 +559,10 @@ function validateDigi(value) {
     return true;
 }
 
+function input(name) {
+    return $("input[name=" + name + "]");
+}
+
 function seleValue(id) {
     return $('#' + id + ' option:selected').val();
 }
@@ -575,4 +582,6 @@ function setValue(id, value) {
 function checked(name) {
     return $('input[name=' + name + ']:checked');
 }
-
+function checkedValue(name) {
+    return $('input[name=' + name + ']:checked').val();
+}
