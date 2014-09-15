@@ -799,7 +799,7 @@ $('.getRankBtn').click(function () {
 var ajaxbg = $("#background,#progressBar");
     ajaxbg.hide;
 $(document).ajaxStart(function () {
-    ajaxbg.show();
+    ajaxbg.show;
 })
 $(document).ajaxStop(function () {
     ajaxbg.fadeOut(1500);
