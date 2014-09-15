@@ -155,6 +155,12 @@ public class BiddingSubTask implements Runnable {
             return;
         }
 
+        //关键词状态为42 45 46时, 不进行竞价
+        Integer keywordStatus = keywordEntity.getStatus();  //KeywordStatusEnum
+        if (keywordStatus == 42 || keywordStatus == 45 || keywordStatus == 46) {
+            return;
+        }
+
         for (Integer region : regionList) {
 
             if (logger.isInfoEnabled()) {
