@@ -1560,7 +1560,7 @@
     };
     //loading
     var ajaxbg = $("#background,#progressBar");
-    ajaxbg.hide;
+    ajaxbg.hide();
     $(document).ajaxStart(function () {
         ajaxbg.show();
     })
