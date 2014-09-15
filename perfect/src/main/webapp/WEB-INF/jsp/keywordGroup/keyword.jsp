@@ -34,6 +34,8 @@
 
 </head>
 <body>
+<div id="background" class="background"></div>
+<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
@@ -155,7 +157,6 @@
                                         <option value="金融">金融</option>
                                         <option value="旅游">旅游</option>
                                     </select>
-                                    <div class="loading" id="tuoci"></div>
                                     <select id="category" >
                                     </select>
                                 </div>
@@ -1018,8 +1019,8 @@ var toAnyPage = function () {
 };
 //loading
 $(function() {
-    var ajaxbg = $("#tuoci");
-    ajaxbg.hide();
+    var ajaxbg = $("#background,#progressBar");
+    ajaxbg.fadeOut("slow");
     $(document).ajaxStart(function () {
         ajaxbg.fadeIn("slow");
     }).ajaxStop(function () {
@@ -1027,6 +1028,7 @@ $(function() {
     });
 
 });
+
 </script>
 </body>
 </html>

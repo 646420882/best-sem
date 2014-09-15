@@ -1006,6 +1006,8 @@
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function8.png"></span><b>监控</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
         </ul>
         <span class="fr">1/10</span>
     </div>
@@ -1114,6 +1116,8 @@
                     src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
         </ul>
         <span class="fr">1/10</span>
     </div>
@@ -1557,7 +1561,7 @@
     //loading
     $(function() {
         var ajaxbg = $("#background,#progressBar");
-        ajaxbg.hide();
+        ajaxbg.fadeOut("slow");
         $(document).ajaxStart(function () {
             ajaxbg.fadeIn("slow");
         }).ajaxStop(function () {

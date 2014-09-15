@@ -48,6 +48,8 @@
     </style>
 </head>
 <body>
+<div id="background" class="background"></div>
+<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
@@ -1784,7 +1786,16 @@ function TestBlack(TagName) {
         obj.style.display = "";
     }
 }
+$(function() {
+    var ajaxbg = $("#background,#progressBar");
+    ajaxbg.fadeOut("slow");
+    $(document).ajaxStart(function () {
+        ajaxbg.fadeIn("slow");
+    }).ajaxStop(function () {
+        ajaxbg.fadeOut("slow");
+    });
 
+});
 
 </script>
 </html>
