@@ -8,6 +8,7 @@ import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.service.PerformanceService;
 import com.perfect.utils.JSONUtils;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -80,14 +82,14 @@ public class PerformanceController {
         Date endDates = null;
         List<String> date = null;
         try {
-            if(startDate == null || "".equals(startDate)){
+            if (startDate == null || "".equals(startDate)) {
                 startDates = dateFormat.parse(dateFormat.format(new Date()));
-            }else{
+            } else {
                 startDates = dateFormat.parse(startDate);
             }
-            if(endDate == null || "".equals(endDate)){
+            if (endDate == null || "".equals(endDate)) {
                 endDates = dateFormat.parse(dateFormat.format(new Date()));
-            }else{
+            } else {
                 endDates = dateFormat.parse(endDate);
             }
             date = DateUtils.getPeriod(startDate, endDate);
@@ -95,7 +97,7 @@ public class PerformanceController {
             e.printStackTrace();
         }
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<AccountReportEntity> jsonMapList = performanceService.performanceUser(startDates, endDates, Sorted, limit,startPer,date);
+        List<AccountReportEntity> jsonMapList = performanceService.performanceUser(startDates, endDates, Sorted, limit, startPer, date);
 
         Map<String, Object> attributes = null;
         if (jsonMapList != null)
@@ -114,14 +116,14 @@ public class PerformanceController {
         Date endDates = null;
         List<String> date = null;
         try {
-            if(startDate == null || "".equals(startDate)){
+            if (startDate == null || "".equals(startDate)) {
                 startDates = dateFormat.parse(dateFormat.format(new Date()));
-            }else{
+            } else {
                 startDates = dateFormat.parse(startDate);
             }
-            if(endDate == null || "".equals(endDate)){
+            if (endDate == null || "".equals(endDate)) {
                 endDates = dateFormat.parse(dateFormat.format(new Date()));
-            }else{
+            } else {
                 endDates = dateFormat.parse(endDate);
             }
             date = DateUtils.getPeriod(startDate, endDate);
@@ -129,12 +131,35 @@ public class PerformanceController {
             e.printStackTrace();
         }
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<AccountReportEntity> jsonMapList = performanceService.performanceCurve(startDates, endDates,date);
+        List<AccountReportEntity> jsonMapList = performanceService.performanceCurve(startDates, endDates, date);
 
         Map<String, Object> attributes = null;
         if (jsonMapList != null)
             attributes = JSONUtils.getJsonMapData(jsonMapList.toArray());
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
+    }
+
+    @RequestMapping(value = "/account/downAccountCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ModelAndView downAccountCSV(HttpServletResponse response) {
+        String filename = DateUtils.getYesterdayStr() + "-Performance.csv";
+        OutputStream os = null;
+        try {
+            response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
+            os = response.getOutputStream();
+            performanceService.downAccountCSV(os);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (os != null) {
+                    os.flush();
+                    os.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

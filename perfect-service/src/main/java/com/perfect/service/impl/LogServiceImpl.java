@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -135,6 +136,8 @@ public class LogServiceImpl implements LogService {
 
                     KeywordType keywordType = new KeywordType();
                     BeanUtils.copyProperties(keywordEntity, keywordType);
+                    keywordType.setPrice(keywordEntity.getPrice().doubleValue());
+
                     addKeywordRequest.addKeywordType(keywordType);
                     oidList.add(keywordEntity);
 
@@ -149,6 +152,8 @@ public class LogServiceImpl implements LogService {
                     }
                     KeywordType keywordType = new KeywordType();
                     BeanUtils.copyProperties(keywordEntity, keywordType);
+                    keywordType.setPrice(keywordEntity.getPrice().doubleValue());
+
                     updateKeywordRequest.addKeywordType(keywordType);
 
                 }

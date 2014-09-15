@@ -162,7 +162,7 @@
             </ul>
         </div>
         <div class="download over">
-            <a href="#" class="fr">下载全部 </a>
+            <a href="/account/downAccountCSV" class="fr">下载全部 </a>
         </div>
         <div class="list2 wd">
             <table border="0" cellspacing="0" cellspacing="0">

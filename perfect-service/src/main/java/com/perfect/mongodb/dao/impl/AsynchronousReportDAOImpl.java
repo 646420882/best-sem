@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -269,18 +270,18 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[3]));
                         entity1.setPcClick(Integer.valueOf(arr[4]));
-                        entity1.setPcCost(Double.valueOf(arr[5]));
+                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[5])));
                         entity1.setPcCtr(Double.valueOf(arr[6].substring(0, arr[6].length() - 1)));
-                        entity1.setPcCpc(Double.valueOf(arr[7]));
-                        entity1.setPcCpm(Double.valueOf(arr[8]));
+                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[7])));
+                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[8])));
                         entity1.setPcConversion(Double.valueOf(arr[9]));
                     } else if (type == 2) {
                         entity1.setMobileImpression(Integer.valueOf(arr[3]));
                         entity1.setMobileClick(Integer.valueOf(arr[4]));
-                        entity1.setMobileCost(Double.valueOf(arr[5]));
+                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[5])));
                         entity1.setMobileCtr(Double.valueOf(arr[6].substring(0, arr[6].length() - 1)));
-                        entity1.setMobileCpc(Double.valueOf(arr[7]));
-                        entity1.setMobileCpm(Double.valueOf(arr[8]));
+                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[7])));
+                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[8])));
                         entity1.setMobileConversion(Double.valueOf(arr[9]));
                     }
                     list.add(entity1);
