@@ -114,25 +114,25 @@
                                         <td><span>日均搜索量</span><b>
                                             <p>
                                                 <input type="button"
-                                                       onclick="javascript:fieldName = 'dsQuantity';sort = 1;loadKeywordQualityData();"
+                                                       onclick="javascript:fieldName = 'dsQuantity';sort = 1;findWordFromBaidu();"
                                                        class="one">
                                             </p>
 
                                             <p>
                                                 <input type="button"
-                                                       onclick="javascript:fieldName = 'dsQuantity';sort = -1;loadKeywordQualityData();"
+                                                       onclick="javascript:fieldName = 'dsQuantity';sort = -1;findWordFromBaidu();"
                                                        class="two">
                                             </p></b></td>
                                         <td><span>竞争激烈程度</span><b>
                                             <p>
                                                 <input type="button"
-                                                       onclick="javascript:fieldName = 'competition';sort = 1;loadKeywordQualityData();"
+                                                       onclick="javascript:fieldName = 'competition';sort = 1;findWordFromBaidu();"
                                                        class="one">
                                             </p>
 
                                             <p>
                                                 <input type="button"
-                                                       onclick="javascript:fieldName = 'competition';sort = -1;loadKeywordQualityData();"
+                                                       onclick="javascript:fieldName = 'competition';sort = -1;findWordFromBaidu();"
                                                        class="two">
                                             </p></b></td>
                                         <%--<td><span>一级推荐理由</span></td>--%>
