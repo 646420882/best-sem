@@ -18,4 +18,6 @@ public interface SysKeywordService {
     KeywordEntity findById(Long kwid);
 
     KeywordEntity findByName(String keyword, Long accountId);
+
+    List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param);
 }

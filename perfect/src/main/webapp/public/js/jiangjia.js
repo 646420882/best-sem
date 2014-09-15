@@ -118,7 +118,7 @@ $(function () {
         var items = checked("subbox");
 
         if (items.length == 0) {
-            alert("请选择至少一个关键词3!");
+            alert("请选择至少一个关键词!");
             return;
         }
 
@@ -159,7 +159,7 @@ $(function () {
         var items = checked("subbox");
 
         if (items.length == 0) {
-            alert("请选择至少一个关键词7!");
+            alert("请选择至少一个关键词!");
             return;
         }
 
@@ -290,7 +290,7 @@ $(function () {
         var items = checked("subbox");
 
         if (items.length == 0) {
-            alert("请选择至少一个关键词r!");
+            alert("请选择至少一个关键词!");
             return false;
         }
         var ids = [];
@@ -310,6 +310,34 @@ $(function () {
         })
     });
 
+    var txt = '关键词精准查询，多个关键词用半角逗号隔开';
+
+    $('input[name=search]').click(function(){
+        var text = $('input[name=qtext]').val();
+        if(text == txt ){
+            return false;
+        }
+
+        var tbl = "table1";
+        var curPage = $('.curpage').text();
+        var size = $("#size").find("option:selected").val();
+        var skip = (curPage - 1) * size;
+
+        $.ajax({
+            url: "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text,
+            type: "POST",
+            dataType: "json",
+            async: false,
+            success: function (datas) {
+                if (datas.rows.length == 0) {
+                    emptyTable(tbl);
+                } else {
+                    fullItems(datas, tbl);
+                }
+            }
+        })
+
+    })
 
 //    $('#rulesave').click(function () {
 //        sendReq(false);
@@ -350,6 +378,63 @@ $(function () {
 //    });
 
 });
+
+function emptyTable(name) {
+    var rows = [];
+    for (i = 0; i < 10; i++) {
+        var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
+            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+        rows.push(row)
+    }
+    $("#" + name + " tbody").html(rows);
+    $("#" + name + " tbody tr:odd").addClass("list2_box1"),
+        $("#" + name + " tbody tr:even").addClass("list2_box2")
+}
+
+function fullItems(datas, name) {
+    var tbl = $('#' + name);
+    $('#' + name + ' tbody tr').remove();
+    var newrows = [];
+    datas.rows.forEach(function (item) {
+        var newrow = "";
+        if (item.keywordId != null) {
+            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.keywordId + "'></td>" +
+                "<td>&nbsp;" + item.keyword + "</td>" +
+                "<td>&nbsp;" + item.cost + "</td>" +
+                "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.keywordId + "'>查看最新排名</a></td>" +
+                "<td>&nbsp;" + item.impression + "</td>" +
+                "<td>&nbsp;" + item.ctr + "%</td>" +
+                "<td>&nbsp;" + item.price + "</td>" +
+                "<td>&nbsp;" + item.pcQuality + "</td>" +
+                "<td>&nbsp;" + item.mQuality + "</td>" +
+                "<td>&nbsp;" + item.statusStr + "</td>";
+        } else {
+            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.id + "'></td>" +
+                "<td>&nbsp;" + item.keyword + "</td>" +
+                "<td>&nbsp;" + item.cost + "</td>" +
+                "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.id + "'>查看最新排名</a></td>" +
+                "<td>&nbsp;" + item.impression + "</td>" +
+                "<td>&nbsp;" + item.ctr + "%</td>" +
+                "<td>&nbsp;" + item.price + "</td>" +
+                "<td>&nbsp;" + item.pcQuality + "</td>" +
+                "<td>&nbsp;" + item.mQuality + "</td>" +
+                "<td>&nbsp;" + item.statusStr + "</td>";
+        }
+
+        if (item.rule) {
+            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>" + item.ruleDesc + "</a></td></tr>";
+        } else {
+
+            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>+添加规则</a></td></tr>";
+        }
+        newrows.push(newrow);
+    });
+
+    $('#' + name + ' tbody').html(newrows);
+    $("#" + name + " tbody tr:odd").addClass("list2_box1");
+    $("#" + name + " tbody tr:even").addClass("list2_box2");
+
+}
 
 function sendReq(run) {
     var req = {};

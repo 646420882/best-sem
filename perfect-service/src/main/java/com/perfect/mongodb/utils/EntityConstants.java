@@ -37,4 +37,6 @@ public class EntityConstants {
     public static final String OBJ_ADGROUP_ID = "oagid";
     public static final String OBJ_ID = "oid";
     public static final String BAIDU_ID = "bid";
+
+    public static final String NAME = "name";
 }

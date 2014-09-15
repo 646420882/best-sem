@@ -38,4 +38,10 @@ public class SysKeywordServiceImpl implements SysKeywordService {
     public KeywordEntity findByName(String keyword, Long accountId) {
         return keywordDAO.findByName(keyword, accountId);
     }
+
+    @Override
+    public List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param) {
+
+        return keywordDAO.findByNames(query,fullMatch,param);
+    }
 }

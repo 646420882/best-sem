@@ -10,6 +10,7 @@ import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.KeywordEntity;
 import org.springframework.beans.BeanUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,11 +91,16 @@ public class EntityConvertUtils {
 
 
     public static KeywordEntity convertToEntity(KeywordType type) {
-        KeywordEntity adgroupEntity = new KeywordEntity();
+        KeywordEntity keywordEntity = new KeywordEntity();
 
-        BeanUtils.copyProperties(type, adgroupEntity);
+        BeanUtils.copyProperties(type, keywordEntity);
 
-        return adgroupEntity;
+        if (type.getPrice() == null) {
+            keywordEntity.setPrice(BigDecimal.ZERO);
+        } else {
+            keywordEntity.setPrice(BigDecimal.valueOf(type.getPrice()));
+        }
+        return keywordEntity;
     }
 
     public static void main(String args[]) {

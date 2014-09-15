@@ -58,7 +58,7 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
     KeywordEntity findByObjectId(String oid);
 
-    PagerInfo findByPageInfo(Query q,int pageSize, int pageNo);
+    PagerInfo findByPageInfo(Query q, int pageSize, int pageNo);
 
     void updateAdgroupIdByOid(String id, Long adgroupId);
 
@@ -67,4 +67,6 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
     void updateByMongoId(KeywordEntity keywordEntity);
 
     List<KeywordEntity> getKeywordByIds(List<Long> ids);
+
+    List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param);
 }

@@ -15,13 +15,13 @@ import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.mongodb.utils.PaginationParam;
 import com.perfect.service.*;
 import com.perfect.utils.BiddingRuleUtils;
+import com.perfect.utils.CharsetUtils;
 import com.perfect.utils.JSONUtils;
 import com.perfect.utils.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.AbstractView;
@@ -270,14 +270,16 @@ public class BiddingController {
         return new ModelAndView("bidding/jingjia");
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json")
     public ModelAndView home(HttpServletRequest request,
                              @RequestParam(value = "cp", required = false) Long cp,
                              @RequestParam(value = "ag", required = false) Long agid,
                              @RequestParam(value = "s", required = false, defaultValue = "0") int skip,
                              @RequestParam(value = "l", required = false, defaultValue = "20") int limit,
                              @RequestParam(value = "sort", required = false, defaultValue = "name") String sort,
-                             @RequestParam(value = "o", required = false, defaultValue = "true") boolean asc) {
+                             @RequestParam(value = "o", required = false, defaultValue = "true") boolean asc,
+                             @RequestParam(value = "q", required = false) String query,
+                             @RequestParam(value = "f",required = false,defaultValue = "false") boolean fullMatch) {
 
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> q = new HashMap<>();
@@ -300,6 +302,9 @@ public class BiddingController {
             entities = sysKeywordService.findByAdgroupIds(ids, param);
         } else if (agid != null) {
             entities = sysKeywordService.findByAdgroupId(agid, param);
+        } else if (query != null) {
+            query = CharsetUtils.decode(query);
+            entities = sysKeywordService.findByNames(query.split(","),fullMatch, param);
         } else {
             return new ModelAndView(jsonView);
         }
@@ -313,7 +318,11 @@ public class BiddingController {
             KeywordReportDTO keywordReportDTO = new KeywordReportDTO();
             BeanUtils.copyProperties(entity, keywordReportDTO);
 
-            keywordReportDTO.setStatusStr(KeywordStatusEnum.getName(entity.getStatus()));
+            if (entity.getStatus() != null) {
+                keywordReportDTO.setStatusStr(KeywordStatusEnum.getName(entity.getStatus()));
+            } else {
+                keywordReportDTO.setStatusStr(KeywordStatusEnum.STATUS_UNKNOWN.name());
+            }
 
             keywordReportDTOHashMap.put(entity.getKeywordId(), keywordReportDTO);
             resultList.add(keywordReportDTO);

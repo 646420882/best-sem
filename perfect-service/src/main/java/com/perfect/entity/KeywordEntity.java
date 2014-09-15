@@ -35,6 +35,7 @@ public class KeywordEntity extends AccountIdEntity {
     @Field("name")
     private String keyword;
 
+    @Field("pr")
     private BigDecimal price;
 
     @Field("pc")

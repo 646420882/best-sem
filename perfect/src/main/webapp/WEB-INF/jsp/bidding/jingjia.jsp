@@ -76,10 +76,11 @@
                                                </dl>
                                                <dl><input type="checkbox" style=" margin-top:5px;"></dl>
                                                 <dl>
-                                                    <input type="text" class="w_text" value="关键词精准查询，多个关键词用半角逗号隔开"
+                                                    <input type="text" class="w_text"
+                                                           name="qtext" value="关键词精准查询，多个关键词用半角逗号隔开"
                                                            onfocus="if(value=='关键词精准查询，多个关键词用半角逗号隔开') {value=''}"
                                                            onblur="if (value=='') {value='关键词精准查询，多个关键词用半角逗号隔开'}">
-                                                    <input type="image"
+                                                    <input type="image" name="search"
                                                            src="${pageContext.request.contextPath}/public/img/search3.png">
                                                 </dl>
                                           </span>
@@ -754,101 +755,45 @@ function checkrank() {
 
 }
 
-function emptyTable(name) {
-    var rows = [];
-    for (i = 0; i < 10; i++) {
-        var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
-                "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
-        rows.push(row)
-    }
-    $("#" + name + " tbody").html(rows);
-    $("#" + name + " tbody tr:odd").addClass("list2_box1"),
-            $("#" + name + " tbody tr:even").addClass("list2_box2")
-}
+$('.addRuleBtn').click(function () {
+    $.kwid = $(this).data('id');
 
-function fullItems(datas, name) {
-    var tbl = $('#' + name);
-    $('#' + name + ' tbody tr').remove();
-    var newrows = [];
-    datas.rows.forEach(function (item) {
-        var newrow = "";
-        if (item.keywordId != null) {
-            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.keywordId + "'></td>" +
-                    "<td>&nbsp;" + item.keyword + "</td>" +
-                    "<td>&nbsp;" + item.cost + "</td>" +
-                    "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.keywordId + "'>查看最新排名</a></td>" +
-                    "<td>&nbsp;" + item.impression + "</td>" +
-                    "<td>&nbsp;" + item.ctr + "%</td>" +
-                    "<td>&nbsp;" + item.price + "</td>" +
-                    "<td>&nbsp;" + item.pcQuality + "</td>" +
-                    "<td>&nbsp;" + item.mQuality + "</td>" +
-                    "<td>&nbsp;" + item.statusStr + "</td>";
-        } else {
-            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.id + "'></td>" +
-                    "<td>&nbsp;" + item.keyword + "</td>" +
-                    "<td>&nbsp;" + item.cost + "</td>" +
-                    "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.id + "'>查看最新排名</a></td>" +
-                    "<td>&nbsp;" + item.impression + "</td>" +
-                    "<td>&nbsp;" + item.ctr + "%</td>" +
-                    "<td>&nbsp;" + item.price + "</td>" +
-                    "<td>&nbsp;" + item.pcQuality + "</td>" +
-                    "<td>&nbsp;" + item.mQuality + "</td>" +
-                    "<td>&nbsp;" + item.statusStr + "</td>";
-        }
-
-        if (item.rule) {
-            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>" + item.ruleDesc + "</a></td></tr>";
-        } else {
-
-            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>+添加规则</a></td></tr>";
-        }
-        newrows.push(newrow);
+    $(".TB_overlayBG").css({
+        display: "block", height: $(document).height()
     });
-
-    $('#' + name + ' tbody').html(newrows);
-    $("#" + name + " tbody tr:odd").addClass("list2_box1");
-    $("#" + name + " tbody tr:even").addClass("list2_box2");
-
-    $('.addRuleBtn').click(function () {
-        $.kwid = $(this).data('id');
-
-        $(".TB_overlayBG").css({
-            display: "block", height: $(document).height()
-        });
-        $(".box").css({
-            left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
-            display: "block"
-        });
+    $(".box").css({
+        left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
+        top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
+        display: "block"
     });
+});
 
 
-    $('.getRankBtn').click(function () {
-        var id = $(this).data('id');
-        $.ajax({
-            url: "/bidding/rank/" + id,
-            type: "GET",
-            success: function (datas) {
-                var data = datas.rows;
-                if (data == null) {
-                    alert("暂无排名信息,请刷新排名!");
-                    return false;
-                }
-                var msg = "当前排名获取时间: " + data.time + "\n";
-                msg = msg + "关键词: " + data.name + "\n";
-                msg = msg + "地域\t排名\n";
-                if (data.length == 0) {
-                    msg = msg + "暂无排名";
-                } else {
-                    data.forEach(function (i, item) {
-                        msg = msg + item.region + "\t" + item.rank + "\n";
-                    })
-                }
-                alert(msg);
+$('.getRankBtn').click(function () {
+    var id = $(this).data('id');
+    $.ajax({
+        url: "/bidding/rank/" + id,
+        type: "GET",
+        success: function (datas) {
+            var data = datas.rows;
+            if (data == null) {
+                alert("暂无排名信息,请刷新排名!");
+                return false;
             }
-        })
-    });
-}
+            var msg = "当前排名获取时间: " + data.time + "\n";
+            msg = msg + "关键词: " + data.name + "\n";
+            msg = msg + "地域\t排名\n";
+            if (data.length == 0) {
+                msg = msg + "暂无排名";
+            } else {
+                data.forEach(function (i, item) {
+                    msg = msg + item.region + "\t" + item.rank + "\n";
+                })
+            }
+            alert(msg);
+        }
+    })
+});
 //-->
 
 </SCRIPT>

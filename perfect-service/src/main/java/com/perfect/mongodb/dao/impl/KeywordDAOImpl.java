@@ -98,15 +98,35 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     @Override
     public List<KeywordEntity> findByAgroupId(Long oid) {
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
-        List<KeywordEntity> keywordEntityList=mongoTemplate.find(new Query(Criteria.where(EntityConstants.KEYWORD_ID)),KeywordEntity.class,EntityConstants.TBL_KEYWORD);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        List<KeywordEntity> keywordEntityList = mongoTemplate.find(new Query(Criteria.where(EntityConstants.KEYWORD_ID)), KeywordEntity.class, EntityConstants.TBL_KEYWORD);
         return keywordEntityList;
     }
 
     @Override
-    public List<KeywordEntity> getKeywordByIds(List<Long> ids){
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
-        return mongoTemplate.find(new Query(Criteria.where(EntityConstants.KEYWORD_ID).in(ids)),getEntityClass(),EntityConstants.TBL_KEYWORD);
+    public List<KeywordEntity> getKeywordByIds(List<Long> ids) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return mongoTemplate.find(new Query(Criteria.where(EntityConstants.KEYWORD_ID).in(ids)), getEntityClass(), EntityConstants.TBL_KEYWORD);
+    }
+
+    @Override
+    public List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param) {
+
+        Query mongoQuery = new Query();
+        String prefix = "(";
+        String suffix = ")";
+        if (!fullMatch) {
+            prefix = ".*(";
+            suffix = ").*";
+        }
+        String reg = "";
+        for (String name : query) {
+            reg = reg + name + "|";
+        }
+        reg = reg.substring(0, reg.length() - 1);
+
+        mongoQuery.addCriteria(Criteria.where(NAME).regex(prefix + reg + suffix));
+        return getMongoTemplate().find(param.withParam(mongoQuery), getEntityClass());
     }
 
     @Override
@@ -188,6 +208,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     /**
      * 根据mongoID查询
+     *
      * @param adgroupId
      * @param param
      * @return
@@ -270,6 +291,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     /**
      * 根据mongodbID修改
+     *
      * @param keywordEntity
      */
     public void updateByMongoId(KeywordEntity keywordEntity) {
@@ -295,7 +317,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
                 Object after = method.invoke(keywordEntity);
                 if (after != null) {
                     update.set(field.getName(), after);
-                    logDao.insertLog(id,LogStatusConstant.ENTITY_KEYWORD);
+                    logDao.insertLog(id, LogStatusConstant.ENTITY_KEYWORD);
                     break;
                 }
             }
@@ -304,7 +326,6 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         }
         mongoTemplate.updateFirst(query, update, KeywordEntity.class, TBL_KEYWORD);
     }
-
 
 
     public void update(List<KeywordEntity> entities) {
@@ -351,6 +372,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     /**
      * 根据mongoId删除
+     *
      * @param id
      */
     public void deleteById(String id) {
@@ -418,27 +440,27 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     //xj
     @Override
-    public PagerInfo findByPageInfo(Query q,int pageSize, int pageNo) {
+    public PagerInfo findByPageInfo(Query q, int pageSize, int pageNo) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        int totalCount=getListTotalCount(q);
+        int totalCount = getListTotalCount(q);
 
-        PagerInfo p=new PagerInfo(pageNo, pageSize,totalCount);
+        PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
         q.skip(p.getFirstStation());
         q.limit(p.getPageSize());
-        if (totalCount<1) {
+        if (totalCount < 1) {
             p.setList(new ArrayList());
             return p;
         }
-        List list= mongoTemplate.find(q, getEntityClass());
+        List list = mongoTemplate.find(q, getEntityClass());
         p.setList(list);
         return p;
     }
-    //xj
-    public int getListTotalCount(Query q){
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        return (int) mongoTemplate.count(q,EntityConstants.TBL_KEYWORD);
-    }
 
+    //xj
+    public int getListTotalCount(Query q) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return (int) mongoTemplate.count(q, EntityConstants.TBL_KEYWORD);
+    }
 
 
     private int getCount(Map<String, Object> params, String collections, String nell) {
