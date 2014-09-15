@@ -19,6 +19,10 @@ public enum KeywordStatusEnum {
         this.name = name;
     }
 
+    public int getVal() {
+        return val;
+    }
+
     public static String getName(int val) {
         for (KeywordStatusEnum statusEnum : KeywordStatusEnum.values()) {
             if (statusEnum.val == val) {

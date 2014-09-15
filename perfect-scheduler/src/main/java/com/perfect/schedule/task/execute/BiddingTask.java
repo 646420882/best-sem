@@ -99,6 +99,9 @@ public class BiddingTask implements IScheduleTaskDealMulti<BiddingTask.TaskObjec
 
         long timeInMillis = Calendar.getInstance().getTimeInMillis();
         for (SystemUserEntity userEntity : userEntityList) {
+            if (userEntity.getAccess().compareTo(1) == 0) {
+                continue;
+            }
             List<BaiduAccountInfoEntity> accountInfoEntityList = userEntity.getBaiduAccountInfoEntities();
             for (BaiduAccountInfoEntity baiduAccountInfoEntity : accountInfoEntityList) {
                 List<BiddingRuleEntity> biddingRuleEntityList = biddingRuleService.getTaskByAccountId(userEntity.getUserName(), baiduAccountInfoEntity.getId(), timeInMillis);

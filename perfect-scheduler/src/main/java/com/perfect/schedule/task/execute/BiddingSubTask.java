@@ -4,6 +4,7 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.GetPreviewRequest;
 import com.perfect.autosdk.sms.v3.KeywordType;
 import com.perfect.constants.BiddingStrategyConstants;
+import com.perfect.constants.KeywordStatusEnum;
 import com.perfect.core.AppContext;
 import com.perfect.dto.CreativeDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
@@ -157,7 +158,9 @@ public class BiddingSubTask implements Runnable {
 
         //关键词状态为42 45 46时, 不进行竞价
         Integer keywordStatus = keywordEntity.getStatus();  //KeywordStatusEnum
-        if (keywordStatus == 42 || keywordStatus == 45 || keywordStatus == 46) {
+        if (keywordStatus == KeywordStatusEnum.STATUS_PAUSE.getVal()
+                || keywordStatus == KeywordStatusEnum.STATUS_WAIT.getVal()
+                || keywordStatus == KeywordStatusEnum.STATUS_AUDITING.getVal()) {
             return;
         }
 
@@ -253,7 +256,7 @@ public class BiddingSubTask implements Runnable {
                     // 出价策略
                     BigDecimal currentPrice = biddingRuleEntity.getCurrentPrice();
 
-                    if(currentPrice == null){
+                    if (currentPrice == null) {
                         currentPrice = BigDecimal.ZERO;
                     }
                     // 竞价日志
