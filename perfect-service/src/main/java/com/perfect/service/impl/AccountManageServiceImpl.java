@@ -30,8 +30,8 @@ public class AccountManageServiceImpl implements AccountManageService {
     @Resource
     private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
 
-    public Map<String, Object> getAccountTree(String userName, Long accountId) {
-        ArrayNode treeNodes = accountManageDAO.getAccountTree(userName, accountId);
+    public Map<String, Object> getAccountTree() {
+        ArrayNode treeNodes = accountManageDAO.getAccountTree();
         Map<String, Object> trees = new HashMap<>();
         trees.put("trees", treeNodes);
         return trees;
