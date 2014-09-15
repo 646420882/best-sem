@@ -1792,7 +1792,7 @@ $(document).ajaxStart(function () {
     ajaxbg.show();
 })
 $(document).ajaxStop(function () {
-            ajaxbg.fadeOut("slow");
+    ajaxbg.fadeOut(1500);
         });
 
 </script>

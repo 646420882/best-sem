@@ -1565,7 +1565,7 @@
         ajaxbg.show();
     })
     $(document).ajaxStop(function () {
-                ajaxbg.hide(3000);
+        ajaxbg.fadeOut(1500);
             });
 </script>
 </body>
