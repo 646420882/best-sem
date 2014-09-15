@@ -1018,16 +1018,14 @@ var toAnyPage = function () {
     }
 };
 //loading
-$(function() {
     var ajaxbg = $("#background,#progressBar");
-    ajaxbg.fadeOut("slow");
+    ajaxbg.hide;
     $(document).ajaxStart(function () {
-        ajaxbg.fadeIn("slow");
-    }).ajaxStop(function () {
+        ajaxbg.show();
+    })
+$(document).ajaxStop(function () {
         ajaxbg.fadeOut("slow");
     });
-
-});
 
 </script>
 </body>

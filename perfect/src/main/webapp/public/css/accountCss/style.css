@@ -2576,14 +2576,13 @@ h2 .close {
  }
 
 .background {
-    display: block;
     width: 100%;
-    height: 140%;
+    height: 100%;
     opacity: 0.4;
     filter: alpha(opacity=40);
     background:#000;
-    position: absolute;
-    top: -94px;
+    position: fixed;
+    top: 0px;
     left: 0;
     z-index: 2000;
 }
@@ -2599,7 +2598,6 @@ h2 .close {
 
 }
 .progressBar {
-    display: block;
     width: 148px;
     height: 28px;
     position: fixed;
@@ -2611,7 +2609,6 @@ h2 .close {
     text-align: left;
     line-height: 27px;
     font-weight: bold;
-    position: absolute;
     z-index: 2001;
 }
 #tuoci{

@@ -19,8 +19,8 @@
     }
 </style>
 <body>
-<div id="background" class="background"></div>
-<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
+<div id="background" class="background hides"></div>
+<div id="progressBar" class="progressBar hides">数据加载中，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
@@ -660,7 +660,7 @@ function beforeClick(treeId, treeNode) {
             url: "/bidding/list?cp=" + treeNode.id + "&s=" + skip + "&l=" + size,
             type: "GET",
             dataType: "json",
-            async: false,
+//            async: false,
             success: function (datas) {
                 if (datas.rows.length == 0) {
                     emptyTable(tbl);
@@ -678,7 +678,7 @@ function beforeClick(treeId, treeNode) {
             url: "/bidding/list?ag=" + treeNode.id,
             type: "GET",
             dataType: "json",
-            async: false,
+//            async: false,
             success: function (datas) {
                 if (datas.rows.length == 0) {
                     emptyTable(tbl);
@@ -796,15 +796,14 @@ $('.getRankBtn').click(function () {
 });
 //-->
 //loading
-$(function() {
-    var ajaxbg = $("#background,#progressBar");
-    ajaxbg.hide();
-    $(document).ajaxStart(function () {
-        ajaxbg.fadeIn("slow");
-    }).ajaxStop(function () {
-        ajaxbg.fadeOut("slow");
-    });
-});
+var ajaxbg = $("#background,#progressBar");
+    ajaxbg.hide;
+$(document).ajaxStart(function () {
+    ajaxbg.show();
+})
+$(document).ajaxStop(function () {
+     ajaxbg.fadeOut("slow");
+        });
 
 </SCRIPT>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>

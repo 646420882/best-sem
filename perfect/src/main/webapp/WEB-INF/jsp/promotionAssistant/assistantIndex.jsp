@@ -1559,15 +1559,14 @@
         });
     };
     //loading
-    $(function() {
-        var ajaxbg = $("#background,#progressBar");
-        ajaxbg.fadeOut("slow");
-        $(document).ajaxStart(function () {
-            ajaxbg.fadeIn("slow");
-        }).ajaxStop(function () {
-            ajaxbg.fadeOut("slow");
-        });
-    });
+    var ajaxbg = $("#background,#progressBar");
+    ajaxbg.hide;
+    $(document).ajaxStart(function () {
+        ajaxbg.show();
+    })
+    $(document).ajaxStop(function () {
+                ajaxbg.hide(3000);
+            });
 </script>
 </body>
 </html>
