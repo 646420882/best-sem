@@ -802,9 +802,8 @@ $(document).ajaxStart(function () {
     ajaxbg.show();
 })
 $(document).ajaxStop(function () {
-     ajaxbg.fadeOut("slow");
+    ajaxbg.fadeOut(1500);
         });
-
 </SCRIPT>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 
