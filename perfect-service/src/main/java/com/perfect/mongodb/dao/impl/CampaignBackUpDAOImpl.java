@@ -26,7 +26,7 @@ public class CampaignBackUpDAOImpl extends AbstractUserBaseDAOImpl<CampaignBackU
     @Override
     public CampaignBackUpEntity findByObjectId(String id) {
         MongoTemplate mongoTemplate = getMongoTemplate();
-        return mongoTemplate.findOne(new Query(),getEntityClass(), EntityConstants.BAK_CAMPAIGN);
+        return mongoTemplate.findOne(new Query(Criteria.where(EntityConstants.SYSTEM_ID).is(id)),getEntityClass(), EntityConstants.BAK_CAMPAIGN);
     }
 
     @Override
