@@ -114,9 +114,10 @@
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function8.png"></span><b>监控</b></a></li>
-            <li><a href="#"><span class="z_function_hover"><img
-                    src="../public/img/zs_function9.png"></span><b>还原</b></a>
+            <li><a href="#" id = "reduction"><span class="z_function_hover"><img
+                    src="../public/img/zs_function9.png"></span><b>还原</b></a><%--z_function_hover--%>
             </li>
+
             <li><a href="#" id="searchword"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
             <li><a href="#"><span class="z_function_hover"><img
                     src="../public/img/zs_function11.png"></span><b>激活</b></a>
@@ -138,7 +139,8 @@
                     <th>&nbsp;匹配模式</th>
                     <th>&nbsp;访问URL</th>
                     <th>&nbsp;移动访问URL</th>
-                    <th class="username-column" data-noresize>&nbsp;推广计划名称
+                    <th class="username-column" data-noresize>&nbsp;推广计划名称</th>
+                    <th class="username-column" data-noresize>&nbsp;
                         <div class="set fr"></div>
                     </th>
                 </tr>
@@ -846,7 +848,7 @@
     <div class="zs_function over">
         <ul class="fl">
             <li><a href="#" id="addCampaign"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-            <li><a href="#" id="addplan"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a>
+            <li><a href="#" id="quickAddplan"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a>
             </li>
 
             <li><a href="javascript:deleteCampaign();"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
@@ -854,7 +856,7 @@
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
                     type="image" src="../public/img/zs_input.png"></b></a></li>
 
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
+            <li><a href="#" id = "reduction_caipamgin"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
         </ul>
         <span class="fr">1/10</span>
@@ -874,7 +876,8 @@
                     <th>&nbsp;推广地域</th>
                     <th>&nbsp;否定关键词</th>
                     <th>&nbsp;IP排除</th>
-                    <th class="username-column" data-noresize style="text-align:left; width:150px;"><span class="fl">到预算下线时间 </span><div class="set fr"></div>
+                    <th>&nbsp;到预算下线时间 </th>
+                    <th class="username-column" data-noresize style="text-align:left; width:150px;"><span class="fl"> </span><div class="set fr"></div>
                     </th>
                 </tr>
                 </thead>
@@ -1563,8 +1566,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/creative.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/global.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantKeyword.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/global.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantCampaign.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantAccount.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/adgroup.js"></script>
