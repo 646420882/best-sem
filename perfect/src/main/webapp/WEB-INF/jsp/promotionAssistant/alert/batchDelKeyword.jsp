@@ -540,7 +540,10 @@
 
     //完成按钮的事件
     $(".delkwdFinish").click(function(){
-        var isDel = $(".delkwdRadio")[0].checked;
+        var isDel;
+        if($(".delkwdRadio")[0]!=undefined){
+            isDel = $(".delkwdRadio")[0].checked;
+        }
         if(isDel==true){
             $.ajax({
                 url:"/assistantKeyword/deleteById",

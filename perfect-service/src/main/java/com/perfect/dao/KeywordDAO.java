@@ -2,6 +2,7 @@ package com.perfect.dao;
 
 import com.perfect.autosdk.sms.v3.KeywordInfo;
 import com.perfect.entity.KeywordEntity;
+import com.perfect.entity.backup.KeyWordBackUpEntity;
 import com.perfect.mongodb.utils.Pager;
 import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.mongodb.utils.PaginationParam;
@@ -71,4 +72,10 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
     List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param);
 
     List<KeywordEntity> findByIds(List<Long> ids);
+
+    void update(KeywordEntity keywordEntity, KeyWordBackUpEntity keyWordBackUpEntity);
+
+    void softDelete(Long id);
+
+    void updateLocalstatu(long cid);
 }

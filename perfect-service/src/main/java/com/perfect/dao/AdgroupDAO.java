@@ -28,7 +28,8 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
     List<AdgroupEntity> findIdByCampaignId(Long cid);
 
     AdgroupEntity findByObjId(String oid);
-    AdgroupEntity fndEntity(Map<String,Object> params);
+
+    AdgroupEntity fndEntity(Map<String, Object> params);
 
     Object insertOutId(AdgroupEntity adgroupEntity);
 
@@ -39,9 +40,16 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
     void updateCampaignIdByOid(String oid, Long campaignId);
 
     void updateByObjId(AdgroupEntity adgroupEntity);
-    void update(AdgroupEntity adgroupEntity,AdgroupEntity bakAdgroupEntity);
-    void insertReBack(AdgroupEntity adgroupEntity);
-    void delBack(Long oid);
-   PagerInfo findByPagerInfo(Map<String,Object> params,Integer nowPage,Integer pageSize);
 
+    void update(AdgroupEntity adgroupEntity, AdgroupEntity bakAdgroupEntity);
+
+    void insertReBack(AdgroupEntity adgroupEntity);
+
+    void delBack(Long oid);
+
+    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize);
+
+    AdgroupEntity getByCampaignIdAndName(Long campaignId, String name);
+
+    List<AdgroupEntity> findByCampaignOId(String id);
 }

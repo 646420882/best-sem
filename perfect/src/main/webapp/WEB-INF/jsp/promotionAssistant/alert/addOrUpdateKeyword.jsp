@@ -121,7 +121,7 @@
                 <div class="w_list03">
                     <ul>
                         <li class="current lastStep" >上一步</li>
-                        <li>完成</li>
+                        <li id = "finish">完成</li>
                         <li class="close">取消</li>
                     </ul>
                 </div>
@@ -186,16 +186,6 @@
     });
 </script>
 <script type="text/javascript">
-
-//    var zNodes;
-    /* =[
-        { id:1, pId:0, name:"父节点1", title:"", open:false},
-        { id:11, pId:1, name:"父节点11", title:"", checked:false,isHidden:true},
-
-        { id:2, pId:0, name:"父节点2", title:""},
-        { id:21, pId:2, name:"父节点21", title:"", isHidden:true}
-    ];*/
-
 
 
     //得到树形列表数据
@@ -368,6 +358,7 @@ getCampaiTreeData();
 
 
     //下一步按钮的单击事件
+    var pdata = null;
     function nextStepAjax() {
 
         if(getSelectedNodeToString()==""){
@@ -391,12 +382,13 @@ getCampaiTreeData();
             dataType:"json",
             success:function(data){
 //                alert(JSON.stringify(data));
+                pdata = data;
                 $("#valideKwd").html("");
                if(data.insertList.length>0){
                    toHtml("insert",data.insertList);
                }
                if(data.updateList.length>0){
-                   toHtml("update",data.insertList);
+                   toHtml("update",data.updateList);
                 }
                 if(data.delList.length>0){
                     toHtml("delete",data.delList);
@@ -443,8 +435,15 @@ getCampaiTreeData();
         html+= " <div class='newkeyword_end1'> <span>[+]</span>"+stringName+"</div>";
         html+="<div class='newkeyword_end2 ' style='display:none;'>";
 
-        html+=" <p><input type='radio' checked='checkde' name='addnew'>添加已选择的关键词</p>";
-        html+=" <p><input type='radio'  name='addnew'>不添加</p>";
+        switch (listType){
+            case "insert":html+=" <p><input type='radio' id='addRadio' checked='checkde' name='addnew'>添加已选择的关键词</p>";
+                          html+=" <p><input type='radio' name='addnew'>不添加</p>";break;
+            case "update":html+=" <p><input type='radio' id='updateRadio' checked='checkde' name='updatenew'>更新已选择的关键词</p>";
+                          html+=" <p><input type='radio'  name='updatenew'>不更新</p>";break;
+            case "delete":html+=" <p><input type='radio' id='delRadio' checked='checkde' name='delnew'>删除已选择的关键词</p>";
+                          html+=" <p><input type='radio'  name='delnew'>不删除</p>";break;
+        }
+
         html+=" <div class='list4' style='height:300px;'>";
         html+="  <table width='100%' cellspacing='0' border='0' width='500px'>";
         html+=" <thead>";
@@ -553,6 +552,87 @@ getCampaiTreeData();
         $("#tabUl li:eq(1)").removeClass("current");
         $("#tabUl li:eq(0)").addClass("current");
     });
+
+
+/**
+ *完成按钮的事件
+*/
+$("#finish").click(function () {
+
+    if( $("#addRadio")[0]!=undefined){
+        var isAdd = $("#addRadio")[0].checked;
+        if(isAdd==true){
+            var keywords = pdata.insertList;
+            var str = "";
+            for(var i = 0;i<keywords.length;i++){
+                str+=keywords[i].campaignName+",";
+                str+=keywords[i].adgroupName+",";
+                str+=keywords[i].object.keyword+",";
+                str+=keywords[i].object.price+",";
+                str+=keywords[i].object.pcDestinationUrl+",";
+                str+=keywords[i].object.mobileDestinationUrl+",";
+                str+=keywords[i].object.matchType+",";
+                str+=keywords[i].object.pause+",";
+                str+=keywords[i].object.phraseType+",;";
+            }
+
+            $.ajax({
+                url:"/assistantKeyword/batchAdd",
+                type:"post",
+                data:{"keywords":str}
+            });
+        }
+    }
+
+    if($("#updateRadio")[0]!=undefined){
+        var isUpdate = $("#updateRadio")[0].checked;
+        if(isUpdate==true){
+            var str = "";
+            var keywords = pdata.updateList;
+            for(var i=0;i<keywords.length;i++){
+               str+=keywords[i].object.id+",";
+               str+=keywords[i].object.keywordId+",";
+               str+=keywords[i].object.adgroupId+",";
+               str+=keywords[i].object.adgroupObjId+",";
+               str+=keywords[i].object.keyword+",";
+               str+=keywords[i].object.price+",";
+               str+=keywords[i].object.pcDestinationUrl+",";
+               str+=keywords[i].object.mobileDestinationUrl+",";
+               str+=keywords[i].object.matchType+",";
+               str+=keywords[i].object.pause+",";
+               str+=keywords[i].object.status+",";
+               str+=keywords[i].object.phraseType+",";
+                str+=keywords[i].object.localStatus+"\t";
+            }
+
+            $.ajax({
+                url:"/assistantKeyword/batchUpdate",
+                type:"post",
+                data:{"keywords":str}
+            });
+        }
+
+    }
+
+    if( $("#delRadio")[0]!=undefined){
+        var isDel = $("#delRadio")[0].checked;
+        if(isDel==true){
+            var ids = "";
+            for(var i=0;i<pdata.delList.length;i++){
+                ids+=pdata.delList[i].object.id+",";
+
+                $.ajax({
+                    url:"/assistantKeyword/deleteById",
+                    type:"post",
+                    data:{"kwids":ids}
+                });
+            }
+        }
+    }
+
+
+//    window.location.reload(true);
+});
 
 </script>
 
