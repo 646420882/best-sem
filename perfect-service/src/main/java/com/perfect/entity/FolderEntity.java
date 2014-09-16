@@ -1,0 +1,50 @@
+package com.perfect.entity;
+
+import org.springframework.data.mongodb.core.mapping.Field;
+
+/**
+ * Created by SubDong on 2014/9/12.
+ */
+public class FolderEntity {
+    //监控文件夹ID
+    @Field("fdId")
+    private Long folderId;
+    //监控文件夹名称
+    @Field("fdna")
+    private String folderName;
+
+    private int countNumber;
+
+    public Long getFolderId() {
+        return folderId;
+    }
+
+    public void setFolderId(Long folderId) {
+        this.folderId = folderId;
+    }
+
+    public String getFolderName() {
+        return folderName;
+    }
+
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
+    }
+
+    public int getCountNumber() {
+        return countNumber;
+    }
+
+    public void setCountNumber(int countNumber) {
+        this.countNumber = countNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "ForlderEntity{" +
+                "folderId=" + folderId +
+                ", folderName='" + folderName + '\'' +
+                ", countNumber=" + countNumber +
+                '}';
+    }
+}
