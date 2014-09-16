@@ -25,15 +25,11 @@
         <security:form-login login-page="/login" authentication-failure-url="/login?error=true"
                              default-target-url="/home" always-use-default-target="true"/>
         <security:logout invalidate-session="true" logout-url="/logout" logout-success-url="/login"/>
+        <security:session-management invalid-session-url="/login"/>
     </security:http>
 
     <security:authentication-manager>
         <security:authentication-provider ref="authenticationProvider"/>
-        <!--<security:authentication-provider user-service-ref="customUserDetailsService">
-            <security:password-encoder hash="md5">
-                <security:salt-source user-property="username"/>
-            </security:password-encoder>
-        </security:authentication-provider>-->
     </security:authentication-manager>
 
     <bean id="authenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
