@@ -175,6 +175,9 @@
 
 
         </div>
+        <div id="pageNumberJcSelect">
+            <span class='fr'>每页显示<select id='importKeywordSel' onchange='selectChange()'><option value='20'>20个</option><option value='50'>50个</option><option value='100'>100个</option></select> </span>
+        </div>
     </div>
 </div>
 <div class="number_concent over">
@@ -297,6 +300,9 @@
     <div class="page2 fl" id="pageVS">
 
     </div>
+    <div id="pageNumberVSSelect">
+        <span class='fr'>每页显示<select id='importKeywordSelVS' onchange='selectChangeVs()'><option value='20'>20个</option><option value='50'>50个</option><option value='100'>100个</option></select> </span>
+    </div>
 </div>
 </div>
 <div class="containers hides over">
@@ -352,7 +358,11 @@
             </div>
             <div class="page2 fl" id="pageDet">
 
-            </div><br/>
+            </div>
+            <div id="pageNumberDetSelect">
+                <span class='fr'>每页显示<select id='importKeywordSelDet' onchange='selectChangeDet()'><option value='20'>20个</option><option value='50'>50个</option><option value='100'>100个</option></select> </span>
+            </div>
+            <br/>
             <div class="tubiao2 over">
                 <div id="containerLegend"></div>
                 <div id="container" style="width:100%;height:400px;display: none"></div>
@@ -467,16 +477,16 @@ var daterangepicker_end_date = null;
 
 var startDet = 0;
 var sorts = "-11";
-var limitDet = 30;
+var limitDet = 20;
 var sortVS = "-1";
 var pageDetNumber =0;
 var judgeDet = 0;
 //基础报告
 var startJC = 0;
-var limitJC = 10;
+var limitJC = 20;
 //账户报告
 var startVS = 0;
-var limitVS = 10;
+var limitVS = 20;
 $(document).ready(function () {
     //加载日历控件
     $("input[name=reservation]").daterangepicker();
@@ -517,6 +527,8 @@ $(document).ready(function () {
     });
 
     $("#userClick").click(function () {
+        judgeVS = 0;
+        $("#pageVS").empty();
         reportDataVS();
     });
 
@@ -1242,24 +1254,24 @@ var reportData = function () {
                 });
                 if (judgeDet < 1) {
                     var countNumber = 0;
-                    if (pageDetNumber % 30 == 0) {
-                        countNumber = pageDetNumber / 30;
+                    if (pageDetNumber % limitDet == 0) {
+                        countNumber = pageDetNumber / limitDet;
                     } else {
-                        countNumber = (pageDetNumber / 30);
+                        countNumber = (pageDetNumber / limitDet);
                     }
                     var page_html = "<a href='javascript:' id='pageUpDet' class='nextpage1'><span></span></a>"
                     for (var i = 0; i < countNumber; i++) {
                         if(i<10){
                             if (i == 0) {
-                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startDet = " + i + ";limitDet = " + (i + 30) + ";reportData()'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startDet = " + i + ";limitDet = " + (i + limitDet) + ";reportData()'>" + (i + 1) + "</a>";
                             } else {
-                                page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startDet = " + (i * 30) + ";limitDet = " + (i * 30 + 30) + ";reportData()'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startDet = " + (i * limitDet) + ";limitDet = " + (i * limitDet + limitDet) + ";reportData()'>" + (i + 1) + "</a>";
                             }
                         }else{
                             if (i == 0) {
-                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startDet = " + i + ";limitDet = " + (i + 30) + ";reportData()' style='display:none'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startDet = " + i + ";limitDet = " + (i + limitDet) + ";reportData()' style='display:none'>" + (i + 1) + "</a>";
                             } else {
-                                page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startDet = " + (i * 30) + ";limitDet = " + (i * 30 + 30) + ";reportData()' style='display:none'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startDet = " + (i * limitDet) + ";limitDet = " + (i * limitDet + limitDet) + ";reportData()' style='display:none'>" + (i + 1) + "</a>";
                             }
                         }
 
@@ -1271,7 +1283,7 @@ var reportData = function () {
                 }
             }
             if (data.rows.length > 10) {
-                dateInterval = 5;
+                dateInterval = Math.round(data.rows.length/10);
             }
         }
     });
@@ -1340,24 +1352,24 @@ var reportDataVS = function () {
                 });
                 if (judgeVS < 1) {
                     var countNumber = 0;
-                    if (pageNumberVS % 10 == 0) {
-                        countNumber = pageNumberVS / 10;
+                    if (pageNumberVS % limitVS == 0) {
+                        countNumber = pageNumberVS / limitVS;
                     } else {
-                        countNumber = (pageNumberVS / 10);
+                        countNumber = (pageNumberVS / limitVS);
                     }
                     var page_html = "<a href='javascript:' id='pageUpVS' class='nextpage1'><span></span></a>"
                     for (var i = 0; i < countNumber; i++) {
                         if(i<10){
                             if (i == 0) {
-                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameVS' onclick='javascript:startVS = " + i + ";limitVS = " + (i + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameVS' onclick='javascript:startVS = " + i + ";limitVS = " + (i + limitVS) + ";reportDataVS()'>" + (i + 1) + "</a>";
                             } else {
-                                page_html = page_html + "<a href='javascript:' cname='nameVS' onclick='javascript:startVS = " + (i * 10) + ";limitVS = " + (i * 10 + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' cname='nameVS' onclick='javascript:startVS = " + (i * limitVS) + ";limitVS = " + (i * limitVS + limitVS) + ";reportDataVS()'>" + (i + 1) + "</a>";
                             }
                         }else{
                             if (i == 0) {
-                                page_html = page_html + "<a href='javascript:' class='ajc' style='display:none' cname='nameVS' onclick='javascript:startVS = " + i + ";limitVS = " + (i + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' class='ajc' style='display:none' cname='nameVS' onclick='javascript:startVS = " + i + ";limitVS = " + (i + limitVS) + ";reportDataVS()'>" + (i + 1) + "</a>";
                             } else {
-                                page_html = page_html + "<a href='javascript:'style='display:none' cname='nameVS' onclick='javascript:startVS = " + (i * 10) + ";limitVS = " + (i * 10 + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:'style='display:none' cname='nameVS' onclick='javascript:startVS = " + (i * limitVS) + ";limitVS = " + (i * limitVS + limitVS) + ";reportDataVS()'>" + (i + 1) + "</a>";
                             }
                         }
 
@@ -1521,21 +1533,22 @@ var accountBasisReport = function () {
             });
             if (jci < 1) {
                 var countNumber = 0;
-                if (number % 10 == 0) {
-                    countNumber = number / 10;
+                if (number % limitJC == 0) {
+                    countNumber = number / limitJC;
                 } else {
-                    countNumber = (number / 10);
+                    countNumber = (number / limitJC);
                 }
                 var page_html = "<a href='javascript:' id='pageUp' class='nextpage1'><span></span></a>"
                 for (var i = 0; i < countNumber; i++) {
                     if (i == 0) {
-                        page_html = page_html + "<a href='javascript:' class='ajc' cname='nameJC' onclick='javascript:startJC = " + i + ";limitJC = " + (i + 10) + ";accountBasisReport()'>" + (i + 1) + "</a>";
+                        page_html = page_html + "<a href='javascript:' class='ajc' cname='nameJC' onclick='javascript:startJC = " + i + ";limitJC = " + (i + limitJC) + ";accountBasisReport()'>" + (i + 1) + "</a>";
                     } else {
-                        page_html = page_html + "<a href='javascript:' cname='nameJC' onclick='javascript:startJC = " + (i * 10) + ";limitJC = " + (i * 10 + 10) + ";accountBasisReport()'>" + (i + 1) + "</a>";
+                        page_html = page_html + "<a href='javascript:' cname='nameJC' onclick='javascript:startJC = " + (i * limitJC) + ";limitJC = " + (i * limitJC + limitJC) + ";accountBasisReport()'>" + (i + 1) + "</a>";
                     }
                 }
                 page_html = page_html + "<a href='javascript:' id='pageDown' class='nextpage2'><span></span></a>" +
                         "<span style='margin-right:10px;'>跳转到 <input type='text' id='goID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='go' class='page_go'> GO</a>"
+
                 $("#pageJC").append(page_html);
                 jci++;
             }
@@ -1672,7 +1685,7 @@ var pieChart = function (showData, showName, showId) {
 //基础报告分页手动跳转
 $("body").on("click", "#go", function () {
     var juo = ($('#goID').val() * 10 - 1);
-    if (juo <= (number + 9)) {
+    if (juo != null && juo != "" && juo >= 0 && juo <= (number + 9)) {
         startJC = ($('#goID').val() * 10 - 10);
         limitJC = startJC + 10 - 1;
         accountBasisReport();
@@ -1708,7 +1721,7 @@ $("body").on("click", "a[cname=nameJC]", function () {
 });
 //账户统计分页手动跳转
 $("body").on("click", "#goVS", function () {
-    if (($('#goVSID').val() * 10 - 1) <= (pageNumberVS + 9)) {
+    if ($('#goVSID').val() != null && $('#goVSID').val() != "" && $('#goVSID').val() >= 0 && ($('#goVSID').val() * 10 - 1) <= (pageNumberVS + 9)) {
         startVS = ($('#goVSID').val() * 10 - 10);
         limitVS = startVS + 10 - 1;
         reportDataVS();
@@ -1745,7 +1758,7 @@ $("body").on("click", "a[cname=nameVS]", function () {
 
 //明细报告分页手动跳转
 $("body").on("click", "#goDet", function () {
-    if (($('#goDetID').val() * 30 - 1) <= (pageDetNumber + 29)) {
+    if ($('#goDet').val() != null && $('#goDet').val() != "" && $('#goDet').val() >= 0 &&  ($('#goDetID').val() * 30 - 1) <= (pageDetNumber + 29)) {
         startDet = ($('#goDetID').val() * 30 - 30);
         limitDet = startDet + 30 - 1;
         reportData();
@@ -1795,5 +1808,31 @@ $(document).ajaxStop(function () {
     ajaxbg.fadeOut(1500);
         });
 
+
+
+function selectChange() {
+    noneStart = 0;
+    noneEnd = 10;
+    limitJC = parseInt($("#importKeywordSel :selected").val());
+    $("#pageJC").empty();
+    jci=0;
+    accountBasisReport();
+}
+function selectChangeVs() {
+    noneVsStart = 0;
+    noneVsEnd = 10;
+    limitVS = parseInt($("#importKeywordSelVS :selected").val());
+    $("#pageVS").empty();
+    judgeVS=0;
+    reportDataVS();
+}
+function selectChangeDet() {
+    noneNumStart=0;
+    noneNumEnd=10;
+    limitDet = parseInt($("#importKeywordSelDet :selected").val());
+    $("#pageDet").empty();
+    judgeDet=0;
+    reportData();
+}
 </script>
 </html>

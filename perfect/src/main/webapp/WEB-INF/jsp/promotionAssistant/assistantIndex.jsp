@@ -25,8 +25,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
 </head>
 <body>
-<div id="background" class="background"></div>
-<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
+<%--<div id="background" class="background"></div>
+<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>--%>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
 <div class="concent over">
@@ -56,7 +56,7 @@
         </ul>
     </div>
     <div class="j_l_under over">
-        <a href="#" class="jiangkong">监控文件夹</a>
+            <a href="javascript:void(0)" class="jiangkong">监控文件夹</a>
         <div class="j_list02 over hides" style="height:100px; background:#fff;">
              <div id="jiangkong_box">监控文件夹</div>
             <ul id="zTree2" class="ztree over">
@@ -1140,7 +1140,7 @@
                     src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
+            <li id="downSync"><a href="javascript:void(0)"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
         </ul>
         <span class="fr">1/10</span>
@@ -1156,7 +1156,7 @@
                     <th class="username-column" data-noresize> <div class="set fr"></div></th>
                 </tr>
                 </thead>
-                <tbody >
+                <tbody id="MonitorTbody">
                 </tbody>
             </table>
 
@@ -1570,6 +1570,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/adgroup.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/addKeyword.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/Monitoring.js"></script>
 <script type="text/javascript">
     $(function () {
         window.dialog = dialog;

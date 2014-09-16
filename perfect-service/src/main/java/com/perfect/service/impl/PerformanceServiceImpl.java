@@ -262,9 +262,9 @@ public class PerformanceServiceImpl implements PerformanceService {
             if (((list.getPcImpression() == null) ? 0 : list.getPcImpression()) == 0) {
                 list.setPcCtr(0.00);
             } else {
-                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format((list.getPcClick().doubleValue() / list.getPcImpression().doubleValue()))));
-                BigDecimal big = new BigDecimal(100);
-                double divide = ctrBig.multiply(big).doubleValue();
+                double ctrBig = Double.parseDouble(df.format((list.getPcClick().doubleValue() / list.getPcImpression().doubleValue())));
+
+                double divide = ctrBig * 100;
                 list.setPcCtr(divide);
             }
 
@@ -291,8 +291,9 @@ public class PerformanceServiceImpl implements PerformanceService {
                 cal1.setTime(date.get(i));
                 cal2.setTime(date.get(i - 1));
                 long e = (cal1.getTimeInMillis() - cal2.getTimeInMillis()) / (1000 * 60 * 60 * 24);
+                long dataMis =  cal2.getTimeInMillis();
                 for (int s = 0; s < e; s++) {
-                    long dataMis = cal2.getTimeInMillis() + (1000 * 60 * 60 * 24);
+                    dataMis =  dataMis + (1000 * 60 * 60 * 24);
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis(dataMis);
                     date.add(calendar.getTime());
@@ -349,7 +350,7 @@ public class PerformanceServiceImpl implements PerformanceService {
                         DEFAULT_DELIMITER + entity.getPcImpression() +
                         DEFAULT_DELIMITER + entity.getPcClick() +
                         DEFAULT_DELIMITER + entity.getPcCost() +
-                        DEFAULT_DELIMITER + Math.round(entity.getPcCtr() *100)/100 + "%" +
+                        DEFAULT_DELIMITER + entity.getPcCtr() * 100 / 100 + "%" +
                         DEFAULT_DELIMITER + entity.getPcCpc() +
                         DEFAULT_DELIMITER + entity.getPcConversion() +
                         DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
