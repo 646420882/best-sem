@@ -100,17 +100,17 @@
     display: none;
 }
 
-
-
-
 /*推广助手分页css*/
 .page{
     margin:20px 0;
+    *margin-left:25%;
 }
 
 .page ul li{
     margin-left: 5px;
-   float:left;
+    display:inline-block;
+    line-height: 25px;
+    *float:left;
 }
 
 .page ul>div{
@@ -124,7 +124,7 @@
 
 .page ul li a{
     margin-left: 5px;
-    float:left;
+    display:inline-block;
     width:50px;
     background-color: lightgray;
     text-align: center;
@@ -135,6 +135,5 @@
 }
 
 .page ul{
-    float:left;
-    margin-left: 30%;
+   text-align: center;
 }

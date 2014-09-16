@@ -169,7 +169,7 @@
 
     <div class="page kwdPage over">
         <ul>
-            <div>每页显示条数<select style="width:60px;" id = "kwd_PageSize" onchange="getKwdList(1)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></div>
+            <li>每页显示条数 <select style="width:60px;" id = "kwd_PageSize" onchange="getKwdList(1)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></li>
             <li><a href="#">首页</a></li>
             <li><a href="#">上一页</a></li>
             <li><a href="#">下一页</a></li>
@@ -288,7 +288,7 @@
     <div class="zhanghu_input"></div>
     <div class="page criPage over">
         <ul>
-            <div>每页显示条数<select style="width:60px;" id = "cri_PageSize" onchange="pagerSelectClick(this)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></div>
+            <li>每页显示条数 <select style="width:60px;" id = "cri_PageSize" onchange="pagerSelectClick(this)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></li>
             <li><a href="javascript:void(0)">首页</a></li>
             <li><a href="javascript:void(0)">上一页</a></li>
             <li><a href="javascript:void(0)">下一页</a></li>
@@ -800,7 +800,7 @@
     <div class="zhanghu_input"></div>
     <div class="page adgPage over">
         <ul>
-            <div>每页显示条数<select style="width:60px;" id = "adg_PageSize" onchange="adgpagerSelectClick(this)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></div>
+            <li>每页显示条数 <select style="width:60px;" id = "adg_PageSize" onchange="adgpagerSelectClick(this)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></li>
             <li><a href="javascript:void(0)">首页</a></li>
             <li><a href="javascript:void(0)">上一页</a></li>
             <li><a href="javascript:void(0)">下一页</a></li>
@@ -903,7 +903,7 @@
 
     <div class="page campaignPage over">
         <ul>
-            <div>每页显示条数<select style="width:60px;" id = "camp_PageSize" onchange="getCampaignList(1)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></div>
+            <li> 每页显示条数 <select style="width:60px;" id = "camp_PageSize" onchange="getCampaignList(1)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></li>
             <li><a href="#">首页</a></li>
             <li><a href="#">上一页</a></li>
             <li><a href="#">下一页</a></li>

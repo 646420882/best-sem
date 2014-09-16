@@ -71,7 +71,7 @@
 
 
             </div>
-            <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+            <div class="main_bottom" style="background:none;">
                 <div class="w_list03">
                     <ul>
                         <li class="current" id="downloadAccount">下一步</li>
@@ -116,7 +116,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                    <div class="main_bottom" style="background:none;">
                         <div class="w_list03">
                             <ul>
                                 <li class="current" >上一步</li>
