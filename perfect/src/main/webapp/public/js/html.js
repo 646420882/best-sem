@@ -216,7 +216,7 @@ $(function () {
     });
 
     //小功能窗口
-    $('.editor').livequery("click", function (e) {
+    $('.editor').on("click", function (e) {
         if ($(".more_list").css("display") == "none") {
             $(".more_list").css({ top: e.pageY + -70 + "px", left: e.pageX });
             $(".more_list").show();

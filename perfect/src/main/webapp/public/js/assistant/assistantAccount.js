@@ -357,6 +357,7 @@ $(function () {
     $.ajax({
         url: "/account/get_tree",
         type: "GET",
+        async: false,
         dataType: "json",
         success: function (data, textStatus, jqXHR) {
             zNodes = data.trees;
