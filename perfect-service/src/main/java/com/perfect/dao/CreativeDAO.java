@@ -2,6 +2,7 @@ package com.perfect.dao;
 
 import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.backup.CreativeBackUpEntity;
+import com.perfect.mongodb.utils.PagerInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -27,5 +28,9 @@ public interface CreativeDAO extends MongoCrudRepository<CreativeEntity, Long> {
     void update(CreativeEntity newCreativeEntity,CreativeEntity creativeBackUpEntity);
     void updateAdgroupIdByOid(String id, Long adgroupId);
     void delBack(Long oid);
+    PagerInfo findByPagerInfo(Map<String,Object> params,Integer nowPage,Integer pageSize);
+    PagerInfo findByPagerInfoForString(List<String> l, Integer nowPage, Integer pageSize);
+    PagerInfo findByPagerInfoForLong(List<Long> l,Integer nowPage,Integer pageSize);
+    PagerInfo findByPagerInfo(Long l,Integer nowPage,Integer pageSize);
 
 }

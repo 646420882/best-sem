@@ -14,6 +14,7 @@ import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.utils.LogUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
@@ -61,8 +62,8 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
 
     @Override
     public List<CreativeEntity> findByAgroupId(Long adgroupId) {
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
-        List<CreativeEntity> creativeEntityList=mongoTemplate.find(new Query(Criteria.where(EntityConstants.ADGROUP_ID).is(adgroupId)),CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        List<CreativeEntity> creativeEntityList = mongoTemplate.find(new Query(Criteria.where(EntityConstants.ADGROUP_ID).is(adgroupId)), CreativeEntity.class, EntityConstants.TBL_CREATIVE);
         return creativeEntityList;
     }
 
@@ -107,24 +108,24 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
 
     @Override
     public CreativeEntity getAllsBySomeParams(Map<String, Object> params) {
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
-        Query q=new Query();
-        Criteria c=new Criteria();
-        if(params!=null&&params.size()>0){
-            for (Map.Entry<String,Object> entry:params.entrySet()){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Query q = new Query();
+        Criteria c = new Criteria();
+        if (params != null && params.size() > 0) {
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
                 c.and(entry.getKey()).is(entry.getValue());
             }
         }
         q.addCriteria(c);
-        CreativeEntity creativeEntity=mongoTemplate.findOne(q,CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        CreativeEntity creativeEntity = mongoTemplate.findOne(q, CreativeEntity.class, EntityConstants.TBL_CREATIVE);
         return creativeEntity;
     }
 
     @Override
     public void deleteByCacheId(Long objectId) {
-        Update update=new Update();
-        update.set("ls",3);
-        BaseMongoTemplate.getUserMongo().updateFirst(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(objectId)),update,CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        Update update = new Update();
+        update.set("ls", 3);
+        BaseMongoTemplate.getUserMongo().updateFirst(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(objectId)), update, CreativeEntity.class, EntityConstants.TBL_CREATIVE);
         //以前是直接删除拉取到本地的数据，是硬删除，现在改为软删除，以便以后还原操作
 //        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(objectId)), CreativeEntity.class, EntityConstants.TBL_CREATIVE);
         logDAO.insertLog(objectId, LogStatusConstant.ENTITY_CREATIVE, LogStatusConstant.OPT_DELETE);
@@ -151,7 +152,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
     @Override
     public void insertByReBack(CreativeEntity creativeEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(getId()).is(creativeEntity.getId())),CreativeEntity.class,TBL_CREATIVE);
+        mongoTemplate.remove(new Query(Criteria.where(getId()).is(creativeEntity.getId())), CreativeEntity.class, TBL_CREATIVE);
         mongoTemplate.insert(creativeEntity, EntityConstants.TBL_CREATIVE);
     }
 
@@ -224,9 +225,84 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
 
     @Override
     public void delBack(Long oid) {
-        Update update=new Update();
-        update.set("ls","");
-        BaseMongoTemplate.getUserMongo().updateFirst(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(oid)),update,CreativeEntity.class,EntityConstants.TBL_CREATIVE);
+        Update update = new Update();
+        update.set("ls", "");
+        BaseMongoTemplate.getUserMongo().updateFirst(new Query(Criteria.where(EntityConstants.CREATIVE_ID).is(oid)), update, CreativeEntity.class, EntityConstants.TBL_CREATIVE);
+    }
+
+    @Override
+    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize) {
+        Query q=new Query();
+        Criteria c=new Criteria();
+        if(params.size()>0||params!=null){
+            for (Map.Entry<String,Object> cri:params.entrySet()){
+                c.and(cri.getKey()).is(cri.getValue());
+            }
+        }
+        Integer totalCount=getTotalCount(q,CreativeEntity.class);
+        PagerInfo p = new PagerInfo(nowPage,pageSize,totalCount);
+        q.skip(p.getFirstStation());
+        q.limit(p.getPageSize());
+        if (totalCount<1){
+            p.setList(new ArrayList());
+            return p;
+        }
+        List<CreativeEntity> creativeEntityList=getMongoTemplate().find(q,CreativeEntity.class);
+        p.setList(creativeEntityList);
+        return p;
+    }
+
+    @Override
+    public PagerInfo findByPagerInfoForString(List<String> l, Integer nowPage, Integer pageSize) {
+        Query q=new Query(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).in(l));
+        Integer totalCount=getTotalCount(q,CreativeEntity.class);
+        PagerInfo p = new PagerInfo(nowPage,pageSize,totalCount);
+        q.skip(p.getFirstStation());
+        q.limit(p.getPageSize());
+        if (totalCount<1){
+            p.setList(new ArrayList());
+            return p;
+        }
+        List<CreativeEntity> creativeEntityList=getMongoTemplate().find(q,CreativeEntity.class);
+        p.setList(creativeEntityList);
+        return p;
+    }
+
+    @Override
+    public PagerInfo findByPagerInfoForLong(List<Long> l, Integer nowPage, Integer pageSize) {
+        Query q=new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(l));
+        Integer totalCount=getTotalCount(q,CreativeEntity.class);
+        PagerInfo p = new PagerInfo(nowPage,pageSize,totalCount);
+        q.skip(p.getFirstStation());
+        q.limit(p.getPageSize());
+        if (totalCount<1){
+            p.setList(new ArrayList());
+            return p;
+        }
+        List<CreativeEntity> creativeEntityList=getMongoTemplate().find(q,CreativeEntity.class);
+        p.setList(creativeEntityList);
+        return p;
+    }
+
+    @Override
+    public PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize) {
+        Query q=new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(l));
+        Integer totalCount=getTotalCount(q,CreativeEntity.class);
+        PagerInfo p = new PagerInfo(nowPage,pageSize,totalCount);
+        q.skip(p.getFirstStation());
+        q.limit(p.getPageSize());
+        if (totalCount<1){
+            p.setList(new ArrayList());
+            return p;
+        }
+        List<CreativeEntity> creativeEntityList=getMongoTemplate().find(q,CreativeEntity.class);
+        p.setList(creativeEntityList);
+        return p;
+    }
+
+    private Integer getTotalCount(Query q,Class<?> cls){
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
+        return (int)mongoTemplate.count(q,cls);
     }
 
     public CreativeEntity findOne(Long creativeId) {

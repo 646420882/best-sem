@@ -6,11 +6,31 @@
  * @type {{aid: null, cid: null}}
  */
 
-var sparams = {aid: null, cid: null};
+var sparams = {aid: null, cid: null,nowPage:1,pageSize:20};
 $(function () {
     InitMenu();
     rDrag.init(document.getElementById("dAdd"));
     rDrag.init(document.getElementById("dUpdate"));
+    $(".criPage ul li>a").click(function(){
+        var nowPage = $(this).attr("name");
+        sparams.nowPage=nowPage;
+        if (sparams.cid != null && sparams.aid != null) {
+            loadCreativeData(sparams);
+        } else {
+            loadCreativeData(sparams);
+        }
+    });
+
+    $("#criGo").click(function(){
+        var nowPage = $(".criPageNo").val();
+        var totalPage = $(".criPage").find("li>a:eq(3)").attr("name");
+        if(nowPage>parseInt(totalPage)){
+            nowPage = parseInt(totalPage);
+        }
+        sparams.nowPage=nowPage;
+        loadCreativeData(sparams);
+        $(".criPageNo").val("");
+    });
 });
 
 /**
@@ -118,13 +138,19 @@ function loadCreativeData(params) {
     initRbackBtn();
     var _createTable = $("#createTable tbody");
     _createTable.empty().html("加载中...");
-    $.get("/assistantCreative/getList", params, function (result) {
-        if (result != "[]") {
-            var json = eval("(" + result + ")");
-            if (json.length > 0) {
+    if(/^\d+$/.test(params.nowPage) == false){
+        params.nowPage = 1;
+    }
+
+    $.post("/assistantCreative/getList", params, function (result) {
+        var gson= $.parseJSON(result);
+        if (gson != "[]") {
+            if (gson.list.length > 0) {
+                pagerInit(gson);
                 _createTable.empty();
                 var _trClass = "";
-                for (var i = 0; i < json.length; i++) {
+                for (var i = 0; i < gson.list.length; i++) {
+                    var json=gson.list;
                     var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
                     var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
                     var ls = getLocalStatus(parseInt(_edit));
@@ -151,6 +177,19 @@ function loadCreativeData(params) {
         }
     });
 }
+/**
+ * 初始化分页控件
+ */
+function pagerInit(data){
+    $(".criPage").find("li>a:eq(0)").attr("name",0);
+    $(".criPage").find("li>a:eq(1)").attr("name",data.prePage);
+    $(".criPage").find("li>a:eq(2)").attr("name",data.nextPage);
+    $(".criPage").find("li>a:eq(3)").attr("name",data.totalPage);
+    $(".criPage").find("li:eq(4)").html("当前页:"+data.pageNo+"/"+data.totalPage);
+    $(".criPage").find("li:eq(5)").html("共"+data.totalCount+"条");
+
+}
+
 
 /**
  * 鼠标单击显示详细信息
@@ -442,7 +481,8 @@ function edit(rs) {
  * @param cid
  */
 function getCreativePlan(cid) {
-    sparams = {cid: cid, aid: null};
+    sparams.cid=cid;
+    sparams.aid=null;
     loadCreativeData(sparams);
 }
 /**
@@ -450,7 +490,8 @@ function getCreativePlan(cid) {
  * @param con
  */
 function getCreativeUnit(con) {
-    sparams = {cid: con.cid, aid: con.aid}
+    sparams.cid=con.cid;
+    sparams.aid=con.aid;
     loadCreativeData(sparams);
 }
 /**

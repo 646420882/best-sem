@@ -443,11 +443,6 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.remove(new Query(Criteria.where(get_id()).in(oids)), KeywordEntity.class);
         mongoTemplate.remove(new Query(Criteria.where(get_id()).in(oids)), CreativeEntity.class);
-        List<LogEntity> logEntities = new ArrayList<>();
-        for (String id : oids) {
-            logDAO.insertLog(id, LogStatusConstant.ENTITY_ADGROUP);
-        }
-
     }
 
     /**

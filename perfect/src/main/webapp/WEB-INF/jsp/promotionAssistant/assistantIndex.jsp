@@ -284,6 +284,18 @@
         </div>
     </div>
     <div class="zhanghu_input"></div>
+    <div class="page criPage over">
+        <ul>
+            <div>每页显示条数<select style="width:60px;" id = "cri_PageSize" onchange=""><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></div>
+            <li><a href="javascript:void(0)">首页</a></li>
+            <li><a href="javascript:void(0)">上一页</a></li>
+            <li><a href="javascript:void(0)">下一页</a></li>
+            <li><a href="javascript:void(0)">尾页</a></li>
+            <li>当前页:1/0</li>
+            <li>共0条</li>
+            <li><input type="text" maxlength="10" class="inputNo criPageNo"/>&nbsp;<input type="button" value="GO" id="criGo"/></li>
+        </ul>
+    </div>
     <div class="zs_bottom over">
         <div class="zs_bottom1 over fl " id="sDiv">
             <ul>
@@ -784,6 +796,18 @@
         </ul>
     </div>
     <div class="zhanghu_input"></div>
+    <div class="page adgPage over">
+        <ul>
+            <div>每页显示条数<select style="width:60px;" id = "adg_PageSize" onchange=""><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></div>
+            <li><a href="javascript:void(0)">首页</a></li>
+            <li><a href="javascript:void(0)">上一页</a></li>
+            <li><a href="javascript:void(0)">下一页</a></li>
+            <li><a href="javascript:void(0)">尾页</a></li>
+            <li>当前页:1/0</li>
+            <li>共0条</li>
+            <li><input type="text" maxlength="10" class="inputNo adgPageNo"/>&nbsp;<input type="button" value="GO" id="adgGo"/></li>
+        </ul>
+    </div>
     <div class="zs_bottom over" id="aDiv">
         <div class="zs_bottom1 over fl ">
             <ul>

@@ -355,17 +355,18 @@ public class AssistantAdgroupController extends WebContextSupport {
             Map<String, Object> params = new HashMap<>();
             params.put("name", name);
             if (cid.length() > OBJ_SIZE) {
-                params.put(EntityConstants.CAMPAIGN_ID, cid);
+                params.put(EntityConstants.SYSTEM_ID, cid);
             } else {
                 params.put(EntityConstants.CAMPAIGN_ID, Long.valueOf(cid));
             }
             AdgroupEntity adgroupEntity = adgroupDAO.fndEntity(params);
             if (adgroupEntity != null) {
                 AdgroupEntity adgroupEntityFind = null;
-                if (adgroupEntity.getAdgroupId() != null) {
+                if (adgroupEntity.getAdgroupId() == null) {
                     adgroupEntityFind = adgroupDAO.findByObjId(adgroupEntity.getId());
                     adgroupEntityFind.setAdgroupName(name);
                     adgroupEntityFind.setMaxPrice(maxPrice);
+                    adgroupEntityFind.setPause(p);
                     adgroupDAO.updateByObjId(adgroupEntityFind);
                     writeHtml(SUCCESS, response);
                 } else {
@@ -375,6 +376,7 @@ public class AssistantAdgroupController extends WebContextSupport {
                     BeanUtils.copyProperties(adgroupEntityFind, adgroupEntityBackUp);
                     adgroupEntityFind.setAdgroupName(name);
                     adgroupEntityFind.setMaxPrice(maxPrice);
+                    adgroupEntityFind.setPause(p);
                     adgroupDAO.update(adgroupEntityFind, adgroupEntityBackUp);
                     writeHtml(SUCCESS, response);
                 }

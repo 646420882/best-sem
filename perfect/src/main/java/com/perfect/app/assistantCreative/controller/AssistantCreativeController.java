@@ -9,6 +9,7 @@ import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.backup.CreativeBackUpEntity;
 import com.perfect.mongodb.utils.EntityConstants;
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.CreativeBackUpService;
 import com.perfect.utils.web.WebContextSupport;
 import org.springframework.beans.BeanUtils;
@@ -49,33 +50,37 @@ public class AssistantCreativeController extends WebContextSupport {
     @Resource
     CreativeBackUpService creativeBackUpService;
 
-    @RequestMapping(value = "/getList")
+    @RequestMapping(value = "/getList",method = RequestMethod.POST)
     public ModelAndView getCreativeList(HttpServletRequest request, HttpServletResponse response,
                                         @RequestParam(value = "cid", required = false) String cid,
-                                        @RequestParam(value = "aid", required = false) String aid) {
-        List<CreativeEntity> creativeEntityList = new ArrayList<>();
+                                        @RequestParam(value = "aid", required = false) String aid,
+                                        @RequestParam(value = "nowPage",required = true)Integer nowPage,
+                                        @RequestParam(value = "pageSize",required = true)Integer pageSize){
+        PagerInfo pagerInfo=null;
+        Map<String,Object> map=new HashMap<>();
         if (aid.length() > OBJ_SIZE || cid.length() > OBJ_SIZE) {
             if (aid != "" || !aid.equals("")) {
-                creativeEntityList = creativeDAO.getCreativeByAdgroupId(aid, null, 0, Integer.MAX_VALUE);
+                map.put(EntityConstants.ADGROUP_ID,aid);
+                pagerInfo = creativeDAO.findByPagerInfo(map,nowPage,pageSize);
             } else if (!cid.equals("") && aid.equals("")) {
                 List<String> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
-                creativeEntityList = (List<CreativeEntity>) creativeDAO.getAllsByAdgroupIdsForString(adgroupIds);
+                pagerInfo = creativeDAO.findByPagerInfoForString(adgroupIds, nowPage, pageSize);
             } else {
-                creativeEntityList = creativeDAO.find(null, 0, Integer.MAX_VALUE);
+                pagerInfo = creativeDAO.findByPagerInfo(map, nowPage, pageSize);
             }
         } else {
             if (aid != "" || !aid.equals("")) {
-                creativeEntityList = creativeDAO.getCreativeByAdgroupId(Long.parseLong(aid), null, 0, Integer.MAX_VALUE);
+                pagerInfo = creativeDAO.findByPagerInfo(Long.parseLong(aid), nowPage, pageSize);
             } else if (!cid.equals("") && aid.equals("")) {
                 List<Long> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(Long.parseLong(cid));
-                creativeEntityList = (List<CreativeEntity>) creativeDAO.getAllsByAdgroupIds(adgroupIds);
+                pagerInfo=creativeDAO.findByPagerInfoForLong(adgroupIds,nowPage,pageSize);
 
             } else {
-                creativeEntityList = creativeDAO.find(null, 0, Integer.MAX_VALUE);
+                pagerInfo = creativeDAO.findByPagerInfo(map, nowPage, pageSize);
             }
         }
 
-        writeJson(creativeEntityList, response);
+        writeJson(pagerInfo, response);
         return null;
     }
 
