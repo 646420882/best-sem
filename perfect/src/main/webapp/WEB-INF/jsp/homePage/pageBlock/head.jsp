@@ -19,7 +19,7 @@
                         <span> <img src="${pageContext.request.contextPath}/public/images/yixin_logo.png"></span>
                     </div>
                     <div class="user_text fl">
-                        <p>上午，好！<a href="/configuration/"><span>${currSystemUserName}</span></a></p>
+                        <p><b id="time"></b><a href="/configuration/"><span>${currSystemUserName}</span></a></p>
 
                         <div class="user_select">
                             <div class="user_name">
@@ -60,3 +60,13 @@
     </div>
 
 </div>
+<script type="text/javascript">
+    now = new Date(),hour = now.getHours()
+    var time= document.getElementById('time');
+    if( 0<hour && hour <6){time.innerHTML="凌晨,好！"}
+    else if (hour < 9){time.innerHTML="早上,好！"}
+    else if (hour < 12){time.innerHTML="上午,好！"}
+    else if (hour < 14){time.innerHTML="中午,好！"}
+    else if (hour < 17){time.innerHTML="下午,好！"}
+    else if (hour < 23){time.innerHTML="晚上,好！"}
+</script>

@@ -211,6 +211,11 @@ table tr ,table tr td{
     font-weight:bold;
     color:#f2ab00;
 }
+.user_text b{
+    font-weight:normal;
+    color:#fff;
+    margin-right:2px;
+}
 .user_select{
     width:100%;
     position:relative;
@@ -317,7 +322,7 @@ table tr ,table tr td{
     margin:0px;
     position:absolute;
     right:0px;
-    top:30%;
+    top:35%;
     z-index:102;
 }
 .nav_input{
