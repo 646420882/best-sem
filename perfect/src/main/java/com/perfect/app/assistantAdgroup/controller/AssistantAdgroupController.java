@@ -85,9 +85,16 @@ public class AssistantAdgroupController extends WebContextSupport {
             List<CampaignEntity> campaignEntity = (List<CampaignEntity>) campaignDAO.findAll();
             for (int i = 0; i < campaignEntity.size(); i++) {
                 for (AdgroupEntity a : list) {
-                    if (a.getCampaignId().equals(campaignEntity.get(i).getCampaignId())) {
-                        a.setCampaignName(campaignEntity.get(i).getCampaignName());
+                    if (a.getCampaignId() != null) {
+                        if (a.getCampaignId().equals(campaignEntity.get(i).getCampaignId())) {
+                            a.setCampaignName(campaignEntity.get(i).getCampaignName());
+                        }
+                    } else {
+                        if (a.getCampaignObjId().equals(campaignEntity.get(i).getId())) {
+                            a.setCampaignName(campaignEntity.get(i).getCampaignName());
+                        }
                     }
+
                 }
             }
         }

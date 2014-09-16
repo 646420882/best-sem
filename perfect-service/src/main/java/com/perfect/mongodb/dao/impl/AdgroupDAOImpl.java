@@ -81,6 +81,14 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
         return adgroupIds;
     }
 
+
+    //xj根据单元
+    public  AdgroupEntity getByCampaignIdAndName(Long campaignId,String name){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        List<AdgroupEntity> adgroupEntityList = mongoTemplate.find(new Query(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(EntityConstants.CAMPAIGN_ID).is(campaignId).and("name").is(name)),getEntityClass(),EntityConstants.TBL_ADGROUP);
+        return adgroupEntityList.size()==0?null:adgroupEntityList.get(0);
+    }
+
     @Override
     public List<String> getAdgroupIdByCampaignId(String campaignId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
@@ -91,6 +99,12 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
         for (com.perfect.entity.AdgroupEntity type : list)
             adgroupIds.add(type.getId());
         return adgroupIds;
+    }
+
+    @Override
+    public List<AdgroupEntity> findByCampaignOId(String id){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return mongoTemplate.find(new Query(Criteria.where(EntityConstants.OBJ_CAMPAIGN_ID).is(id)),getEntityClass(),EntityConstants.TBL_ADGROUP);
     }
 
 
