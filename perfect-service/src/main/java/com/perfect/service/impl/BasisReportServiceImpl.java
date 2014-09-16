@@ -850,6 +850,45 @@ public class BasisReportServiceImpl implements BasisReportService {
 
                 List<AccountReportDTO> listOne2 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
 
+                SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
+                List<String> dateListString = DateUtils.getPeriod(dateFormat.format(dateOne[0]), dateFormat.format(dateOne[1]));
+                boolean judgei = true;
+                for(String s :dateListString){
+                    Date judgeDate = null;
+                    try {
+                        judgeDate  = sim.parse(s);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    for (AccountReportDTO dto : listOne2){
+                        if(judgeDate.getTime() == dto.getDate().getTime()){
+                            dto.setOrderBy("1");
+                            judgei =false;
+                            break;
+                        }else{
+                            judgei =true;
+                        }
+                    }
+                    if(judgei){
+                        AccountReportDTO reportDTO= new AccountReportDTO();
+                        reportDTO.setMobileClick(0);
+                        reportDTO.setMobileConversion(0d);
+                        reportDTO.setMobileCost(BigDecimal.ZERO);
+                        reportDTO.setMobileCpc(BigDecimal.ZERO);
+                        reportDTO.setMobileCpm(BigDecimal.ZERO);
+                        reportDTO.setMobileImpression(0);
+                        reportDTO.setPcClick(0);
+                        reportDTO.setPcConversion(0d);
+                        reportDTO.setPcCost(BigDecimal.ZERO);
+                        reportDTO.setPcCpc(BigDecimal.ZERO);
+                        reportDTO.setPcCpm(BigDecimal.ZERO);
+                        reportDTO.setPcImpression(0);
+                        reportDTO.setDate(judgeDate);
+                        reportDTO.setOrderBy("1");
+                        listOne2.add(reportDTO);
+                    }
+                }
+                Collections.sort(listOne2);
 
                 for (AccountReportDTO responseZou : listOne2) {
                     objectListDateOne2.add(responseZou.getDate());
@@ -874,7 +913,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                     List<AccountReportDTO> listDateTow = new ArrayList<>();
                     Date[] newDateOne = null;
                     Date[] newDateTow = null;
-                    for (s = endNumber; s < endNumber + ((i == 0) ? 6 : 7); s++) {
+                    for (s = endNumber; s < endNumber + 7; s++) {
                         if (endNumber >= objectListDateOne2.size() || s >= objectListDateOne2.size()) {
                             continue;
                         }
@@ -944,6 +983,45 @@ public class BasisReportServiceImpl implements BasisReportService {
                 List<Object> objectListDateTow31 = new ArrayList<>();
                 List<AccountReportDTO> listOne3 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
 
+                SimpleDateFormat simt = new SimpleDateFormat("yyyy-MM-dd");
+                List<String> dateListStringt = DateUtils.getPeriod(dateFormat.format(dateOne[0]), dateFormat.format(dateOne[1]));
+                boolean judgeit = true;
+                for(String st :dateListStringt){
+                    Date judgeDate = null;
+                    try {
+                        judgeDate  = simt.parse(st);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    for (AccountReportDTO dto : listOne3){
+                        if(judgeDate.getTime() == dto.getDate().getTime()){
+                            dto.setOrderBy("1");
+                            judgeit =false;
+                            break;
+                        }else{
+                            judgeit =true;
+                        }
+                    }
+                    if(judgeit){
+                        AccountReportDTO reportDTO= new AccountReportDTO();
+                        reportDTO.setMobileClick(0);
+                        reportDTO.setMobileConversion(0d);
+                        reportDTO.setMobileCost(BigDecimal.ZERO);
+                        reportDTO.setMobileCpc(BigDecimal.ZERO);
+                        reportDTO.setMobileCpm(BigDecimal.ZERO);
+                        reportDTO.setMobileImpression(0);
+                        reportDTO.setPcClick(0);
+                        reportDTO.setPcConversion(0d);
+                        reportDTO.setPcCost(BigDecimal.ZERO);
+                        reportDTO.setPcCpc(BigDecimal.ZERO);
+                        reportDTO.setPcCpm(BigDecimal.ZERO);
+                        reportDTO.setPcImpression(0);
+                        reportDTO.setDate(judgeDate);
+                        reportDTO.setOrderBy("1");
+                        listOne3.add(reportDTO);
+                    }
+                }
+                Collections.sort(listOne3);
 
                 for (AccountReportDTO responseYue : listOne3) {
                     objectListDateOne3.add(responseYue.getDate());

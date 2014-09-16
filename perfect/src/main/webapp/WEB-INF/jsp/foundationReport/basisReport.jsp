@@ -1436,7 +1436,7 @@ var reportDataVS = function () {
                         }
                     });
                 });
-                for (var i = 0; i < impression.length; i++) {
+                for (var i = 0; i < data.date1.length; i++) {
                     var html_User1 = "";
                     var html_User2 = "";
                     if (i % 2 == 0) {
