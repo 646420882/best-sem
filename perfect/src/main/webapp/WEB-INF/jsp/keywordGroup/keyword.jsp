@@ -139,7 +139,8 @@ To change this template use File | Settings | File Templates.
                         </div>
                         <div class="page2">
                             <a href="javascript:toPrevPage();">上一页</a>
-                            <a onclick="javascript:startPer = 0;endPer = 10;loadPerformance()" cname="nameDet" class="ajc" href="javascript:">1</a>
+                            <a onclick="javascript:startPer = 0;endPer = 10;loadPerformance()" cname="nameDet"
+                               class="ajc" href="javascript:">1</a>
                             <a href="javascript:toNextPage();">下一页</a><span
                                 style="margin-right:10px;">跳转到 <input id="pageNumber1" type="text" class="price"></span>&nbsp;&nbsp;<a
                                 href="javascript:toAnyPage();" class='page_go'> GO</a>
@@ -211,7 +212,8 @@ To change this template use File | Settings | File Templates.
                         </div>
                         <div class="page2">
                             <a href="javascript:toPrevPage();">上一页</a>
-                            <a onclick="javascript:startPer = 0;endPer = 10;loadPerformance()" cname="nameDet" class="ajc" href="javascript:">1</a>
+                            <a onclick="javascript:startPer = 0;endPer = 10;loadPerformance()" cname="nameDet"
+                               class="ajc" href="javascript:">1</a>
                             <a href="javascript:toNextPage();">下一页</a><span
                                 style="margin-right:10px;">跳转到 <input id="pageNumber2" type="text" class="price"></span>&nbsp;&nbsp;<a
                                 href="javascript:toAnyPage();" class='page_go'> GO</a>
@@ -583,12 +585,30 @@ $(function () {
 var downloadCSV = function () {
     var _url;
     if (type == 1) {
-        $.getJSON("/getKRWords/getBaiduCSVFilePath",
-                {krFileId: krFileId},
-                function (data) {
-                    _url = data.path;
-                    document.getElementById("downloadhelper_iframe").src = _url;
-                });
+        document.getElementById("background").style.display = "block";
+        document.getElementById("progressBar1").style.display = "block";
+        _url = "/getKRWords/downloadBaiduCSV?seedWords=" + getSeedWords() + "&krFileId=" + krFileId;
+
+        if (window.attachEvent) {
+            ie_iframe = document.createElement("iframe");
+            ie_iframe.id = "downloadhelper_iframe";
+            ie_iframe.width = 0;
+            ie_iframe.height = 0;
+            ie_iframe.src = _url;
+            ie_iframe.onload = ie_iframe.onreadystatechange = iframeLoad;
+            document.body.appendChild(ie_iframe);
+        } else {
+            var iframe1 = document.createElement("iframe");
+            iframe1.id = "downloadhelper_iframe";
+            iframe1.width = 0;
+            iframe1.height = 0;
+            iframe1.src = _url;
+            document.body.appendChild(iframe1);
+            iframe1.onload = function () {
+                document.getElementById("background").style.display = "none";
+                document.getElementById("progressBar1").style.display = "none";
+            };
+        }
     } else if (type == 2) {
         document.getElementById("background").style.display = "block";
         document.getElementById("progressBar1").style.display = "block";
@@ -604,13 +624,13 @@ var downloadCSV = function () {
             ie_iframe.onload = ie_iframe.onreadystatechange = iframeLoad;
             document.body.appendChild(ie_iframe);
         } else {
-            var iframe = document.createElement("iframe");
-            iframe.id = "downloadhelper_iframe";
-            iframe.width = 0;
-            iframe.height = 0;
-            iframe.src = _url;
-            document.body.appendChild(iframe);
-            iframe.onload = function () {
+            var iframe2 = document.createElement("iframe");
+            iframe2.id = "downloadhelper_iframe";
+            iframe2.width = 0;
+            iframe2.height = 0;
+            iframe2.src = _url;
+            document.body.appendChild(iframe2);
+            iframe2.onload = function () {
                 document.getElementById("background").style.display = "none";
                 document.getElementById("progressBar1").style.display = "none";
             };
@@ -668,6 +688,7 @@ var save2Keyword = function () {
     });
 };
 var findWordFromBaidu = function () {
+    krFileId = null;
     var iframe = document.getElementById("downloadhelper_iframe");
     if (iframe != null) {
         document.body.removeChild(iframe);

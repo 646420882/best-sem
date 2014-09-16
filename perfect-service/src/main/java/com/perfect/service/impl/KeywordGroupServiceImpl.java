@@ -376,24 +376,13 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
         }
     }
 
-    public Map<String, Object> getBaiduCSVFilePath(String krFileId) {
-        KRService krService = getKRService();
-        Map<String, Object> values = new HashMap<>();
-        GetKRFilePathRequest getKRFilePathRequest = new GetKRFilePathRequest();
-        getKRFilePathRequest.setKrFileId(krFileId);
-        GetKRFilePathResponse getKRFilePathResponse = krService.getKRFilePath(getKRFilePathRequest);
-        String krFilePath = getKRFilePathResponse.getFilePath();
-        values.put("path", krFilePath);
-        return values;
-    }
-
     public void downloadCSV(String trade, String category, OutputStream os) {
         //查询参数
         Map<String, Object> params = new HashMap<>();
         if (trade != null) {
             params.put("tr", trade);
         }
-        if (category != null) {
+        if (category != null && category.trim().length() > 0) {
             params.put("cg", category);
         }
 
@@ -404,6 +393,39 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
             os.write(Bytes.concat(commonCSVHead, ("行业" + DEFAULT_DELIMITER + "计划" + DEFAULT_DELIMITER + "单元" + DEFAULT_DELIMITER + "关键词" + DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
             for (LexiconEntity entity : list) {
                 String bytes = (entity.getTrade() + DEFAULT_DELIMITER + entity.getCategory() + DEFAULT_DELIMITER + entity.getGroup() + DEFAULT_DELIMITER + entity.getKeyword() + DEFAULT_END);
+                os.write(Bytes.concat(commonCSVHead, bytes.getBytes(StandardCharsets.UTF_8)));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void downloadBaiduCSV(List<String> seedWordList, String krFileId, OutputStream os) {
+        List<BaiduKeywordDTO> dtoList = new ArrayList<>();
+        if (krFileId == null) {
+            dtoList = getKRResult(seedWordList);
+        } else {
+            Jedis jedis = null;
+            try {
+                jedis = JRedisUtils.get();
+                if (jedis.ttl(SerializeUtils.serialize(krFileId)) == -1) {
+                    dtoList = getKRResult(seedWordList);
+                }
+                dtoList = SerializeUtils.deSerializeList(jedis.get(SerializeUtils.serialize(krFileId)), BaiduKeywordDTO.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (jedis != null) {
+                    JRedisUtils.returnJedis(jedis);
+                }
+            }
+        }
+
+        //CSV文件写入
+        try {
+            os.write(Bytes.concat(commonCSVHead, ("分组" + DEFAULT_DELIMITER + "种子词" + DEFAULT_DELIMITER + "关键词" + DEFAULT_DELIMITER + "日均搜索量" + DEFAULT_DELIMITER + "竞争激烈程度" + DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
+            for (BaiduKeywordDTO entity : dtoList) {
+                String bytes = (entity.getGroupName() + DEFAULT_DELIMITER + entity.getSeedWord() + DEFAULT_DELIMITER + entity.getKeywordName() + DEFAULT_DELIMITER + entity.getDsQuantity() + DEFAULT_DELIMITER + entity.getCompetition() + "%" + DEFAULT_END);
                 os.write(Bytes.concat(commonCSVHead, bytes.getBytes(StandardCharsets.UTF_8)));
             }
         } catch (IOException e) {

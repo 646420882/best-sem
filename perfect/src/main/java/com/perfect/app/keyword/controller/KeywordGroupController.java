@@ -101,21 +101,39 @@ public class KeywordGroupController {
     }
 
     /**
-     * 获取百度CSV文件下载路径
+     * 下载凤巢词库CSV文件
      *
      * @param krFileId
      * @return
      */
-    @RequestMapping(value = "/getBaiduCSVFilePath", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getBaiduCSVFilePath(@RequestParam(value = "krFileId") String krFileId) {
-        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> values = keywordGroupService.getBaiduCSVFilePath(krFileId);
-        jsonView.setAttributesMap(values);
-        return new ModelAndView(jsonView);
+    @RequestMapping(value = "/downloadBaiduCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ModelAndView downloadBaiduCSV(HttpServletResponse response,
+                                         @RequestParam(value = "seedWords", required = false) String seedWords,
+                                         @RequestParam(value = "krFileId") String krFileId) {
+        List<String> seedWordList = new ArrayList<>(Arrays.asList(seedWords.split(",")));
+        String filename = new ObjectId().toString() + ".csv";
+        OutputStream os = null;
+        try {
+            response.addHeader("Content-Disposition", "attachment;filename=" + filename);
+            os = response.getOutputStream();
+            keywordGroupService.downloadBaiduCSV(seedWordList, krFileId, os);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (os != null) {
+                    os.flush();
+                    os.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     /**
-     * 下载CSV词库文件
+     * 下载系统CSV词库文件
      *
      * @param response
      * @param trade
