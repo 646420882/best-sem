@@ -60,7 +60,7 @@ public class ReportPageDetails {
         Collections.sort(accountReports);
         List<StructureReportEntity> finalList = new ArrayList<>();
 
-            for (int i = startVS; i <= limitVS; i++) {
+            for (int i = startVS; i < limitVS; i++) {
                 if(i<accountReports.size()){
                     accountReports.get(i).setCount(count);
                     finalList.add(accountReports.get(i));

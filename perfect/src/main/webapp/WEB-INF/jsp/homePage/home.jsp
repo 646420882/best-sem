@@ -1418,7 +1418,7 @@ var loadPerformanceCurve = function (obj, date) {
                 })
             }
             if (data.rows.length > 10) {
-                dateInterval = 5;
+                dateInterval = Math.round(data.rows.length/10);
             }
         }
     });
