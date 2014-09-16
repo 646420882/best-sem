@@ -238,6 +238,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeEntity, Lon
             for (Map.Entry<String,Object> cri:params.entrySet()){
                 c.and(cri.getKey()).is(cri.getValue());
             }
+            q.addCriteria(c);
         }
         Integer totalCount=getTotalCount(q,CreativeEntity.class);
         PagerInfo p = new PagerInfo(nowPage,pageSize,totalCount);

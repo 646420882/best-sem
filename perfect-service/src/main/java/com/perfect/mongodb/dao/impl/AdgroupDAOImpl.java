@@ -10,6 +10,7 @@ import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.KeyWordBackUpService;
 import com.perfect.utils.LogUtils;
 import org.springframework.beans.BeanUtils;
@@ -296,6 +297,30 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
         up.set("ls", "");
         BaseMongoTemplate.getUserMongo().updateFirst(new Query(Criteria.where(EntityConstants.ADGROUP_ID).is(oid)), up, AdgroupEntity.class, EntityConstants.TBL_ADGROUP);
         SubdelBack(oid);
+    }
+
+    @Override
+    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize) {
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
+        Query q=new Query();
+        Criteria c=new Criteria();
+        if(params.size()>0||params!=null){
+            for (Map.Entry<String,Object> adg:params.entrySet()){
+                c.and(adg.getKey()).is(adg.getValue());
+            }
+        }
+        q.addCriteria(c);
+        Integer totalCount=getTotalCount(q,AdgroupEntity.class);
+        PagerInfo p=new PagerInfo(nowPage,pageSize,totalCount);
+        q.skip(p.getFirstStation());
+        q.limit(p.getPageSize());
+        List<AdgroupEntity> adgroupEntityList=mongoTemplate.find(q,AdgroupEntity.class);
+        p.setList(adgroupEntityList);
+        return p;
+    }
+    private int getTotalCount(Query q,Class<?> cls){
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
+        return (int)mongoTemplate.count(q,cls);
     }
 
     public void insert(com.perfect.entity.AdgroupEntity adgroupEntity) {

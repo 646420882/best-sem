@@ -6,31 +6,12 @@
  * @type {{aid: null, cid: null}}
  */
 
-var sparams = {aid: null, cid: null,nowPage:1,pageSize:20};
+var sparams = {aid: null, cid: null, nowPage: 1, pageSize: 20};
 $(function () {
     InitMenu();
     rDrag.init(document.getElementById("dAdd"));
     rDrag.init(document.getElementById("dUpdate"));
-    $(".criPage ul li>a").click(function(){
-        var nowPage = $(this).attr("name");
-        sparams.nowPage=nowPage;
-        if (sparams.cid != null && sparams.aid != null) {
-            loadCreativeData(sparams);
-        } else {
-            loadCreativeData(sparams);
-        }
-    });
-
-    $("#criGo").click(function(){
-        var nowPage = $(".criPageNo").val();
-        var totalPage = $(".criPage").find("li>a:eq(3)").attr("name");
-        if(nowPage>parseInt(totalPage)){
-            nowPage = parseInt(totalPage);
-        }
-        sparams.nowPage=nowPage;
-        loadCreativeData(sparams);
-        $(".criPageNo").val("");
-    });
+    pagerClickInit();
 });
 
 /**
@@ -138,19 +119,19 @@ function loadCreativeData(params) {
     initRbackBtn();
     var _createTable = $("#createTable tbody");
     _createTable.empty().html("加载中...");
-    if(/^\d+$/.test(params.nowPage) == false){
+    if (/^\d+$/.test(params.nowPage) == false) {
         params.nowPage = 1;
     }
 
     $.post("/assistantCreative/getList", params, function (result) {
-        var gson= $.parseJSON(result);
+        var gson = $.parseJSON(result);
         if (gson != "[]") {
             if (gson.list.length > 0) {
+                var json = gson.list;
                 pagerInit(gson);
                 _createTable.empty();
                 var _trClass = "";
-                for (var i = 0; i < gson.list.length; i++) {
-                    var json=gson.list;
+                for (var i = 0; i < json.length; i++) {
                     var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
                     var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
                     var ls = getLocalStatus(parseInt(_edit));
@@ -180,13 +161,46 @@ function loadCreativeData(params) {
 /**
  * 初始化分页控件
  */
-function pagerInit(data){
-    $(".criPage").find("li>a:eq(0)").attr("name",0);
-    $(".criPage").find("li>a:eq(1)").attr("name",data.prePage);
-    $(".criPage").find("li>a:eq(2)").attr("name",data.nextPage);
-    $(".criPage").find("li>a:eq(3)").attr("name",data.totalPage);
-    $(".criPage").find("li:eq(4)").html("当前页:"+data.pageNo+"/"+data.totalPage);
-    $(".criPage").find("li:eq(5)").html("共"+data.totalCount+"条");
+function pagerInit(data) {
+    $(".criPage").find("li>a:eq(0)").attr("name", 0);
+    $(".criPage").find("li>a:eq(1)").attr("name", data.prePage);
+    $(".criPage").find("li>a:eq(2)").attr("name", data.nextPage);
+    $(".criPage").find("li>a:eq(3)").attr("name", data.totalPage);
+    $(".criPage").find("li:eq(4)").html("当前页:" + data.pageNo + "/" + data.totalPage);
+    $(".criPage").find("li:eq(5)").html("共" + data.totalCount + "条");
+
+}
+/**
+ * 分页控件点击事件初始化
+ */
+function pagerClickInit(){
+    $(".criPage ul li>a").click(function () {
+        var nowPage = $(this).attr("name");
+        sparams.nowPage = nowPage;
+        if (sparams.cid != null && sparams.aid != null) {
+            loadCreativeData(sparams);
+        } else {
+            loadCreativeData(sparams);
+        }
+    });
+
+    $("#criGo").click(function () {
+        var nowPage = $(".criPageNo").val();
+        var totalPage = $(".criPage").find("li>a:eq(3)").attr("name");
+        if (nowPage > parseInt(totalPage)) {
+            nowPage = parseInt(totalPage);
+        }
+        sparams.nowPage = nowPage;
+        loadCreativeData(sparams);
+        $(".criPageNo").val("");
+    });
+}
+/**
+ * 分页控件输入页数跳转
+ */
+function pagerSelectClick(rs){
+    sparams.pageSize=$(rs).val();
+    loadCreativeData(sparams);
 
 }
 
@@ -481,8 +495,8 @@ function edit(rs) {
  * @param cid
  */
 function getCreativePlan(cid) {
-    sparams.cid=cid;
-    sparams.aid=null;
+    sparams.cid = cid;
+    sparams.aid = null;
     loadCreativeData(sparams);
 }
 /**
@@ -490,8 +504,8 @@ function getCreativePlan(cid) {
  * @param con
  */
 function getCreativeUnit(con) {
-    sparams.cid=con.cid;
-    sparams.aid=con.aid;
+    sparams.cid = con.cid;
+    sparams.aid = con.aid;
     loadCreativeData(sparams);
 }
 /**
@@ -586,7 +600,7 @@ function deleteByObjectId(temp) {
     if (con) {
         $.get("/assistantCreative/del", {oid: oid}, function (rs) {
             if (rs == "1") {
-               $(tmp).find("td:eq(10)").html("<span class='error' step='3'></span>");
+                $(tmp).find("td:eq(10)").html("<span class='error' step='3'></span>");
             }
         });
     }
@@ -713,31 +727,31 @@ function reBakClick() {
     }
 }
 function reBack(oid) {
-        $.get("../assistantCreative/reBack", {oid: oid}, function (rs) {
-            var json = eval("(" + rs + ")");
-            if (json.success == "1") {
-                var crid = oid.length > 18 ? oid : json.data["creativeId"];
-                var p = json.data["pause"] == "true" ? "启用" : "暂停";
-                var s = until.getCreativeStatus(parseInt(json.data["status"]));
-                var _tbody =
-                    "<td>&nbsp;<input type='hidden' value='" + crid + "'/></td>" +
-                    "<td >" + until.substring(10, json.data["title"]) + "</td>" +
-                    " <td >" + until.substring(10, json.data["description1"]) + "</td>" +
-                    " <td >" + until.substring(10, json.data["description2"]) + "</td>" +
-                    " <td ><a href='" + json.data["pcDestinationUrl"] + "' target='_blank'>" + until.substring(10, json.data["pcDestinationUrl"]) + "</a></td>" +
-                    " <td >" + until.substring(10, json.data["pcDisplayUrl"]) + "</td>" +
-                    " <td >" + until.substring(10, json.data["mobileDestinationUrl"]) + "</td>" +
-                    " <td >" + until.substring(10, json.data["mobileDisplayUrl"]) + "</td>" +
-                    " <td >" + p + "</td>" +
-                    " <td >" + s + "</td>" +
-                    " <td ></td>";
-                $(tmp).html(_tbody);
-            }
-        });
+    $.get("../assistantCreative/reBack", {oid: oid}, function (rs) {
+        var json = eval("(" + rs + ")");
+        if (json.success == "1") {
+            var crid = oid.length > 18 ? oid : json.data["creativeId"];
+            var p = json.data["pause"] == "true" ? "启用" : "暂停";
+            var s = until.getCreativeStatus(parseInt(json.data["status"]));
+            var _tbody =
+                "<td>&nbsp;<input type='hidden' value='" + crid + "'/></td>" +
+                "<td >" + until.substring(10, json.data["title"]) + "</td>" +
+                " <td >" + until.substring(10, json.data["description1"]) + "</td>" +
+                " <td >" + until.substring(10, json.data["description2"]) + "</td>" +
+                " <td ><a href='" + json.data["pcDestinationUrl"] + "' target='_blank'>" + until.substring(10, json.data["pcDestinationUrl"]) + "</a></td>" +
+                " <td >" + until.substring(10, json.data["pcDisplayUrl"]) + "</td>" +
+                " <td >" + until.substring(10, json.data["mobileDestinationUrl"]) + "</td>" +
+                " <td >" + until.substring(10, json.data["mobileDisplayUrl"]) + "</td>" +
+                " <td >" + p + "</td>" +
+                " <td >" + s + "</td>" +
+                " <td ></td>";
+            $(tmp).html(_tbody);
+        }
+    });
 }
-function delBack(oid){
+function delBack(oid) {
     $.get("../assistantCreative/delBack", {oid: oid}, function (rs) {
-        if(rs=="1"){
+        if (rs == "1") {
             $(tmp).find("td:eq(10)").html("");
         }
     });
@@ -761,19 +775,19 @@ function getLocalStatus(number) {
             break;
     }
 }
-function creativeMulti(){
-        top.dialog({title: "批量添加创意",
-            padding: "5px",
-            content: "<iframe src='/assistantCreative/updateMulti' width='900' height='650' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
-            oniframeload: function () {
+function creativeMulti() {
+    top.dialog({title: "批量添加创意",
+        padding: "5px",
+        content: "<iframe src='/assistantCreative/updateMulti' width='900' height='650' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        oniframeload: function () {
 
-            },
-            onclose: function () {
-                loadCreativeData({cid:null,aid:null});
-            },
-            onremove: function () {
-            }
-        }).showModal();
+        },
+        onclose: function () {
+            loadCreativeData({cid: null, aid: null});
+        },
+        onremove: function () {
+        }
+    }).showModal();
 
 }
 

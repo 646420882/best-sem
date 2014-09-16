@@ -7,6 +7,7 @@ import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
 import com.perfect.mongodb.utils.EntityConstants;
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.AdgroupBackUpService;
 import com.perfect.utils.web.WebContextSupport;
 import org.springframework.beans.BeanUtils;
@@ -48,28 +49,29 @@ public class AssistantAdgroupController extends WebContextSupport {
      */
     @RequestMapping(value = "/getAdgroupList")
     public ModelAndView getList(HttpServletRequest request, HttpServletResponse response,
-                                @RequestParam(value = "cid", required = false) String cid) {
-        List<AdgroupEntity> list = new ArrayList<>();
+                                @RequestParam(value = "cid", required = false)String cid,
+                                @RequestParam(value = "nowPage",required = true)Integer nowPage,
+                                @RequestParam(value = "pageSize",required = true)Integer pageSize) {
+        PagerInfo pagerInfo=null;
+        Map<String, Object> parms = new HashMap<>();
         if (cid.length() > OBJ_SIZE) {
             if (cid != "" || !cid.equals("")) {
-                Map<String, Object> parms = new HashMap<>();
                 parms.put(EntityConstants.OBJ_CAMPAIGN_ID, cid);
-                list = adgroupDAO.find(parms, 0, 15);
+                pagerInfo = adgroupDAO.findByPagerInfo(parms, nowPage, pageSize);
             } else {
-                list = adgroupDAO.find(null, 0, 15);
+                pagerInfo = adgroupDAO.findByPagerInfo(parms, nowPage, pageSize);
             }
-            setCampaignNameByStringObjId(list);
+            setCampaignNameByStringObjId((List<AdgroupEntity>) pagerInfo.getList());
         } else {
             if (cid != "" || !cid.equals("")) {
-                Map<String, Object> parms = new HashMap<>();
                 parms.put(EntityConstants.CAMPAIGN_ID, Long.parseLong(cid));
-                list = adgroupDAO.find(parms, 0, 15);
+                pagerInfo = adgroupDAO.findByPagerInfo(parms, nowPage, pageSize);
             } else {
-                list = adgroupDAO.find(null, 0, 15);
+                pagerInfo = adgroupDAO.findByPagerInfo(parms, nowPage, pageSize);
             }
-            setCampaignNameByLongId(list);
+            setCampaignNameByLongId((List<AdgroupEntity>) pagerInfo.getList());
         }
-        writeJson(list, response);
+        writeJson(pagerInfo, response);
         return null;
     }
 

@@ -3,6 +3,7 @@
 package com.perfect.dao;
 
 import com.perfect.entity.AdgroupEntity;
+import com.perfect.mongodb.utils.PagerInfo;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
@@ -41,4 +42,6 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
     void update(AdgroupEntity adgroupEntity,AdgroupEntity bakAdgroupEntity);
     void insertReBack(AdgroupEntity adgroupEntity);
     void delBack(Long oid);
+   PagerInfo findByPagerInfo(Map<String,Object> params,Integer nowPage,Integer pageSize);
+
 }
