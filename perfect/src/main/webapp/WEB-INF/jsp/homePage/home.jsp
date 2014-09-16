@@ -63,14 +63,15 @@
                 <li class="current"><a href="javascript:" onclick="lisClick(this,1)">昨天</a></li>
                 <li><a href="javascript:" onclick="lisClick(this,7)">近7天</a></li>
                 <li><a href="javascript:" onclick="lisClick(this,30)">近30天</a></li>
-                <li class="date"><a href="javascript:" onclick="lisClick(this,null);">自定义<input name="reservation"
+                <li class="date" id="date"><a href="javascript:" onclick="lisClick(this,null);">自定义<input name="reservation"
                                                                                                 type="image"
                                                                                                 onclick="javascript:genre = 'accountOverview';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
-                                                                                                src="${pageContext.request.contextPath}/public/img/date.png">
+                                                                                                src="${pageContext.request.contextPath}/public/img/date.png" id="test">
                 </a>
                 </li>
             </ul>
         </div>
+        <div class="datebox hides" ></div>
         <div class="list01_under2 over">
             <ul>
                 <li>
@@ -131,6 +132,7 @@
                 </li>
             </ul>
         </div>
+        <div class="datebox hides" ></div>
         <div class="shuju">
             <div id="containerLegend"></div>
             <div id="container" style="width:100%;height:400px"></div>
@@ -161,6 +163,7 @@
                 </li>
             </ul>
         </div>
+        <div class="datebox hides" ></div>
         <div class="download over">
             <a href="/account/downAccountCSV" class="fr">下载全部 </a>
         </div>
@@ -928,6 +931,7 @@
             </li>
         </ul>
     </div>
+    <div class="datebox hides" ></div>
     <div class="download over">
         <a href="#" class="fr">下载全部 </a>
     </div>
@@ -1144,6 +1148,7 @@ var genre = "";
 
 //日期控件坐标定位
 var _posX = 0, _posY = 0;
+var clickdddd =null;
 
 $(function () {
     var $tab_li = $('.tab_menu li');
@@ -1161,12 +1166,16 @@ $(function () {
             $(".on_title").css({"position": "static", "margin": "0 auto"});
         }
     });
+    $("input[name=reservation]").click(function(){
+        clickdddd = $(this);
+    });
     //加载日历控件
     $("input[name=reservation]").daterangepicker();
     $(".btnDone").on('click', function () {
         var _startDate = $('.range-start').datepicker('getDate');
         var _endDate = $('.range-end').datepicker('getDate');
         if (_startDate != null && _endDate != null) {
+            statDate = 0;
             daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
             daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
             if (genre == "keywordQualityCustom") {
@@ -1183,6 +1192,8 @@ $(function () {
                 category = "data";
                 loadPerformanceCurve(0);
             }
+
+            showDate();
         }
     });
 
@@ -1842,11 +1853,21 @@ function getData() {
             $(".cos").html(data.cos);
             $(".conversion").html(data.conversion);
         }
+
     });
 }
 
 //初始化账户概览页面数据
 lisClick($("#clickLis .current>a"), 1);//默认显示昨天的汇总数据
+
+
+var showDate = function () {
+        $(".datebox").show();
+        clickdddd.parent().parent().parent().parent().next().text("当前时间范围："+daterangepicker_start_date +" 至 "+daterangepicker_end_date);
+        $(".list01_top ul li").click(function () {
+            $(".datebox").hide();
+        });
+};
 
 </script>
 </body>
