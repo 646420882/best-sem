@@ -74,11 +74,8 @@
                             <div class="K_top2_detali fr over">
                                 <div class="k_top2_detali2 over">
                                     <div class="list01_top2 over">
-                                        <span>重点关键词监控</span>
-                                        <a href="#" class="question"></a>
                                     </div>
                                     <ul>
-                                        <li>· 搜索引擎（baidu，google）APP</li>
                                         <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
                                         <li>· 普菲特智能词库</li>
                                     </ul>
@@ -137,8 +134,9 @@
                             </div>
                         </div>
                         <div class="page2">
-                            <a href="javascript:toPrevPage();">上一页</a><a
-                                href="javascript:toNextPage();">下一页</a><span
+                            <a href="javascript:toPrevPage();">上一页</a>
+                            <a onclick="javascript:startPer = 0;endPer = 10;loadPerformance()" cname="nameDet" class="ajc" href="javascript:">1</a>
+                            <a href="javascript:toNextPage();">下一页</a><span
                                 style="margin-right:10px;">跳转到 <input id="pageNumber1" type="text" class="price"></span>&nbsp;&nbsp;<a
                                 href="javascript:toAnyPage();" class='page_go'> GO</a>
                             <a href="#" class='page_go'><span>共计</span><span><b
@@ -169,7 +167,6 @@
                                         <a href="#" class="question"></a>
                                     </div>
                                     <ul>
-                                        <li>· 搜索引擎（baidu，google）APP</li>
                                         <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
                                         <li>· 普菲特智能词库</li>
                                     </ul>
@@ -202,28 +199,26 @@
                                         <td><span>关键词</span></td>
                                     </tr>
                                     </thead>
+                                    </thead>
                                     <tbody id="tbody2">
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                         <div class="page2">
-                            <a href="javascript:toPrevPage();">上一页</a><a
-                                href="javascript:toNextPage();">下一页</a><span
+                            <a href="javascript:toPrevPage();">上一页</a>
+                            <a onclick="javascript:startPer = 0;endPer = 10;loadPerformance()" cname="nameDet" class="ajc" href="javascript:">1</a>
+                            <a href="javascript:toNextPage();">下一页</a><span
                                 style="margin-right:10px;">跳转到 <input id="pageNumber2" type="text" class="price"></span>&nbsp;&nbsp;<a
                                 href="javascript:toAnyPage();" class='page_go'> GO</a>
                             <a href="#" class='page_go'><span>共计</span><span><b
                                     id="totalPage2"></b></span><span>页</span></a>
                         </div>
-
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
 </div>
 <div class="containers over hides">
     <div class="list01_top over"><span>创意推荐</span> <a class="question" href="#"></a><b>输入关键词，系统为您推荐有限创意和优秀词根；关键词之间的相关性会影响推荐创意的质量。</b><a

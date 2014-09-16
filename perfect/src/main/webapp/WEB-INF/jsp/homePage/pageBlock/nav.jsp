@@ -54,14 +54,13 @@
             </div>
         </div>
     </div>
-    <div class="tips fl">
+    <div class="tips fl" title="点击隐藏导航">
         <span class="nav_input hides"></span>
     </div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript">
-
     var baiduAccountId = <%=accountId%>;
 
     var loadBaiduAccount = function () {
@@ -101,6 +100,7 @@
                 $(".mid").css("width", "90.5%");
                 $(".mid").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
+                $(".tips").attr('title',"点击隐藏导航");
             }
             else {
                 $(".nav_left").hide();
@@ -109,6 +109,7 @@
                 $(".mid").css("width", " 99.6%");
                 $(".mid").css("margin-left", "8px");
                 $(".nav_input").css("display", "block");
+                $(".tips").attr("title","点击显示导航");
 
             }
         });
@@ -120,6 +121,7 @@
                 $(".mid").css("width", "90.5%");
                 $(".mid").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
+                $(".tips").attr('title',"点击隐藏导航");
             }
             else {
                 $(".nav_left").hide();
@@ -128,6 +130,7 @@
                 $(".mid").css("width", "99.6%");
                 $(".mid").css("margin-left", "8px");
                 $(".nav_input").css("display", "block");
+                $(".tips").attr("title","点击显示导航");
 
             }
         });

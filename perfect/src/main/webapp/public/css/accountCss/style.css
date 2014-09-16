@@ -441,9 +441,6 @@
     display: block;
     float: right;
 }
-.page_go{
-    *margin-top:-20px;
-}
 /*数据分析*/
 .number_concent {
     background: #f7f9fb;
@@ -1330,12 +1327,13 @@ ul.ztree.zTreeDragUL {
     background: #ecf3f9;
 }
 .page2 {
-    margin: 10px 0 0 30%;
+    width:100%;
+    text-align: center;
+    margin-top: 10px;
     overflow:hidden;
 }
 .page2 a {
-    display: block;
-    float: left;
+    display:inline-block;
     height: 24px;
     margin-right: 8px;
     line-height: 24px;
@@ -1344,10 +1342,11 @@ ul.ztree.zTreeDragUL {
     color: #000;
     border: 1px solid #f3f5fd;
     border-radius: 2px;
+    vertical-align:middle;
+
 }
 .page2 span {
-    display: block;
-    float: left;
+    display:inline-block;
 }
 .page2 a:hover {
     background: #ffb900;

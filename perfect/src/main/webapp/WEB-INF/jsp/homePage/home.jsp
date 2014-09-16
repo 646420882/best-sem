@@ -887,14 +887,14 @@
             style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#" class='page_go'> GO</a>
 
     </div>--%>
-            <span class="fr">每页显示
+ <%--           <span class="fr">每页显示
                 <select id="keywordQuality1Page"
                         onchange="javascript:limit = $('#keywordQuality1Page option:selected').val();loadKeywordQualityData(null, statDate);">
                     <option selected="selected" value="10">10个</option>
                     <option value="15">15个</option>
                     <option value="20">20个</option>
                 </select>
-                </span>
+                </span>--%>
 </div>
 </div>
 </div>
@@ -1058,13 +1058,9 @@
             </tr>
             <tr class="list2_box1" id="importTr">
             </tr>
-
-
         </table>
         <div class="over">
-
         </div>
-
         <div class="download over">
             <div class="page2 fl">
                 <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a
@@ -1853,6 +1849,5 @@ function getData() {
 lisClick($("#clickLis .current>a"), 1);//默认显示昨天的汇总数据
 
 </script>
-
 </body>
 </html>
