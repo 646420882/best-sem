@@ -309,7 +309,7 @@ $(function () {
             }
         })
 
-    })
+    });
 
 //    $('#rulesave').click(function () {
 //        sendReq(false);
@@ -359,8 +359,8 @@ function emptyTable(name) {
         rows.push(row)
     }
     $("#" + name + " tbody").html(rows);
-    $("#" + name + " tbody tr:odd").addClass("list2_box1"),
-        $("#" + name + " tbody tr:even").addClass("list2_box2")
+    $("#" + name + " tbody tr:odd").addClass("list2_box1");
+    $("#" + name + " tbody tr:even").addClass("list2_box2");
 }
 
 function fullItems(datas, name) {
@@ -397,7 +397,7 @@ function fullItems(datas, name) {
             newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>" + item.ruleDesc + "</a></td></tr>";
         } else {
 
-            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>+添加规则</a></td></tr>";
+            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "' onclick='addRule(this)'>" + "+添加规则</a></td></tr>";
         }
         newrows.push(newrow);
     });
@@ -408,6 +408,7 @@ function fullItems(datas, name) {
 
 }
 
+//保存当前关键词竞价规则
 function sendReq(run) {
     var req = {};
 
@@ -505,7 +506,6 @@ function sendReq(run) {
         success: function (data) {
             alert('创建规则成功');
             $('.close').click();
-            return;
         }
     })
 }

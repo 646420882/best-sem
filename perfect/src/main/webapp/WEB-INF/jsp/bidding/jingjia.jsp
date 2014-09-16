@@ -66,7 +66,8 @@
                             <div class="w_list02 fl over">
                                         <span>
                                             <form>
-                                                <input type="radio" name="in" checked="checked" value="0">&nbsp;全部 &nbsp;
+                                                <input type="radio" name="in" checked="checked" value="0">&nbsp;全部
+                                                &nbsp;
                                                 <input type="radio" name="in" value="-1">&nbsp;未参与 &nbsp;
                                                 <input type="radio" name="in" value="1"> &nbsp;已参加
                                             </form>
@@ -75,7 +76,8 @@
                                                <dl><input type="image"
                                                           src="${pageContext.request.contextPath}/public/img/search2.png">
                                                </dl>
-                                               <dl><input type="checkbox" style=" margin-top:5px;" name="fullmatch"></dl>
+                                               <dl><input type="checkbox" style=" margin-top:5px;" name="fullmatch">
+                                               </dl>
                                                 <dl>
                                                     <input type="text" class="w_text"
                                                            name="qtext"
@@ -608,9 +610,11 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jiangjia.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
 
-<SCRIPT type="text/javascript">
+<script type="text/javascript">
 
 <!--
 
@@ -728,15 +732,14 @@ $(function () {
     $.ajax({
         url: "/account/get_tree",
         type: "GET",
-        dataType: "json",
         async: false,
+        dataType: "json",
         success: function (data, textStatus, jqXHR) {
             zNodes = data.trees;
+            $.fn.zTree.init($("#zTree"), setting, zNodes);
+            $.fn.zTree.init($("#zTree2"), setting, zNodes);
         }
     });
-    //加载账户树
-    $.fn.zTree.init($("#zTree"), setting, zNodes);
-    $.fn.zTree.init($("#zTree2"), setting, zNodes);
 });
 
 function loadReady() {
@@ -749,7 +752,7 @@ function loadReady() {
 }
 
 function checkrank() {
-    var boxes = $("input[name='subbox'][checked]")
+    var boxes = $("input[name='subbox'][checked]");
     var ids = [];
     $(boxes).each(function () {
         ids.push($(this).val())
@@ -757,8 +760,8 @@ function checkrank() {
 
 }
 
-$('.addRuleBtn').click(function () {
-    $.kwid = $(this).data('id');
+function addRule(obj) {
+    $.kwid = $(obj).data('id');
 
     $(".TB_overlayBG").css({
         display: "block", height: $(document).height()
@@ -768,7 +771,20 @@ $('.addRuleBtn').click(function () {
         top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
         display: "block"
     });
-});
+}
+
+//    $('.addRuleBtn').click(function () {
+//        $.kwid = $(this).data('id');
+//
+//        $(".TB_overlayBG").css({
+//            display: "block", height: $(document).height()
+//        });
+//        $(".box").css({
+//            left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
+//            top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
+//            display: "block"
+//        });
+//    });
 
 
 $('.getRankBtn').click(function () {
@@ -799,21 +815,13 @@ $('.getRankBtn').click(function () {
 //-->
 //loading
 var ajaxbg = $("#background,#progressBar");
-    ajaxbg.hide();
+ajaxbg.hide();
 $(document).ajaxStart(function () {
     ajaxbg.show();
-})
+});
 $(document).ajaxStop(function () {
     ajaxbg.fadeOut(1500);
-        });
-</SCRIPT>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
-
-
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
-
-
+});
+</script>
 </body>
 </html>

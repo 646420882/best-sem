@@ -1,6 +1,7 @@
 package com.perfect.app.keyword.controller;
 
 import com.perfect.service.KeywordGroupService;
+import org.bson.types.ObjectId;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -125,10 +126,10 @@ public class KeywordGroupController {
     public ModelAndView downloadCSV(HttpServletResponse response,
                                     @RequestParam(value = "trade", required = false) String trade,
                                     @RequestParam(value = "category", required = false) String category) {
-        String filename = trade + ".csv";
+        String filename = new ObjectId().toString() + ".csv";
         OutputStream os = null;
         try {
-            response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
+            response.addHeader("Content-Disposition", "attachment;filename=" + filename);
             os = response.getOutputStream();
             keywordGroupService.downloadCSV(trade, category, os);
         } catch (IOException e) {

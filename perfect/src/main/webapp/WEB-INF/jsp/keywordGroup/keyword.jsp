@@ -1,22 +1,22 @@
 <%--
-  Created by IntelliJ IDEA.
-  User: baizz
-  Date: 2014-08-07
-  Time: 上午11:28
-  To change this template use File | Settings | File Templates.
+Created by IntelliJ IDEA.
+User: baizz
+Date: 2014-08-07
+Time: 上午11:28
+To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title></title>
+    <meta charset="utf-8">
+    <meta id="viewport" name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
-
     <style type="text/css">
         .list2 table tr td ul li {
             width: 12%;
@@ -29,13 +29,12 @@
         .download a {
             margin-right: 20px;
         }
-
     </style>
-
 </head>
 <body>
 <div id="background" class="background"></div>
 <div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
+<div id="progressBar1" class="progressBar">正在生成数据，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
@@ -84,19 +83,17 @@
                                     </ul>
                                 </div>
                                 <%--<div class="k_top2_detali2 over">
-
-                                    <div class="list01_top2 over">
-                                        <span>智能过滤</span>
-                                        <a href="#" class="question"></a>
-                                    </div>
-                                    <ul>
-                                        <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
-                                        <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
-                                        </li>
-                                    </ul>
+                                <div class="list01_top2 over">
+                                <span>智能过滤</span>
+                                <a href="#" class="question"></a>
+                                </div>
+                                <ul>
+                                <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
+                                <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
+                                </li>
+                                </ul>
                                 </div>--%>
                             </div>
-
                         </div>
                         <div class="k_r_under over">
                             <div class="download over ">
@@ -112,19 +109,27 @@
                                         <td><span>关键词</span></td>
                                         <td><span>日均搜索量</span><b>
                                             <p>
-                                                <input type="button" onclick="javascript:category = 'impression';sort = -1;loadKeywordQualityData();" class="one">
+                                                <input type="button"
+                                                       onclick="javascript:fieldName = 'dsQuantity';sort = 1;findWordFromBaidu();"
+                                                       class="one">
                                             </p>
 
                                             <p>
-                                                <input type="button" onclick="javascript:category = 'impression';sort = 1;loadKeywordQualityData();" class="two">
+                                                <input type="button"
+                                                       onclick="javascript:fieldName = 'dsQuantity';sort = -1;findWordFromBaidu();"
+                                                       class="two">
                                             </p></b></td>
                                         <td><span>竞争激烈程度</span><b>
                                             <p>
-                                                <input type="button" onclick="javascript:category = 'impression';sort = -1;loadKeywordQualityData();" class="one">
+                                                <input type="button"
+                                                       onclick="javascript:fieldName = 'competition';sort = 1;findWordFromBaidu();"
+                                                       class="one">
                                             </p>
 
                                             <p>
-                                                <input type="button" onclick="javascript:category = 'impression';sort = 1;loadKeywordQualityData();" class="two">
+                                                <input type="button"
+                                                       onclick="javascript:fieldName = 'competition';sort = -1;findWordFromBaidu();"
+                                                       class="two">
                                             </p></b></td>
                                         <%--<td><span>一级推荐理由</span></td>--%>
                                         <%--<td><span>二级推荐理由</span></td>--%>
@@ -133,7 +138,6 @@
                                     <tbody id="tbody1">
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                         <div class="page2">
@@ -145,7 +149,7 @@
                                     id="totalPage1"></b></span><span>页</span></a>
                         </div>
                     </div>
-                    <div class="k_r_top2  hides over">
+                    <div class="k_r_top2 hides over">
                         <div class="k_r_middle over">
                             <div class="k_top2_text fl">
                                 <div class="k_top2_text1">
@@ -157,10 +161,10 @@
                                         <option value="金融">金融</option>
                                         <option value="旅游">旅游</option>
                                     </select>
-                                    <select id="category" >
+                                    <select id="category">
                                     </select>
                                 </div>
-                                <a href="javascript:findWordFromPerfect();" class="become2">开始拓词</a>
+                                <a href="javascript:findWordFromSystem();" class="become2">开始拓词</a>
                             </div>
                             <div class="K_top2_detali fr over">
                                 <div class="k_top2_detali2 over">
@@ -175,15 +179,15 @@
                                     </ul>
                                 </div>
                                 <%--<div class="k_top2_detali2 over">
-                                    <div class="list01_top2 over">
-                                        <span>智能过滤</span>
-                                        <a href="#" class="question"></a>
-                                    </div>
-                                    <ul>
-                                        <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
-                                        <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
-                                        </li>
-                                    </ul>
+                                <div class="list01_top2 over">
+                                <span>智能过滤</span>
+                                <a href="#" class="question"></a>
+                                </div>
+                                <ul>
+                                <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
+                                <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
+                                </li>
+                                </ul>
                                 </div>--%>
                             </div>
                         </div>
@@ -205,7 +209,6 @@
                                     <tbody id="tbody2">
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                         <div class="page2">
@@ -216,14 +219,11 @@
                             <a href="#" class='page_go'><span>共计</span><span><b
                                     id="totalPage2"></b></span><span>页</span></a>
                         </div>
-
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
 </div>
 <div class="containers over hides">
     <div class="list01_top over"><span>创意推荐</span> <a class="question" href="#"></a><b>输入关键词，系统为您推荐有限创意和优秀词根；关键词之间的相关性会影响推荐创意的质量。</b><a
@@ -240,7 +240,6 @@
                 </select></li>
                 <li><textarea></textarea></li>
             </ul>
-
         </div>
         <div class="originality_right fl">
             <ul>
@@ -248,14 +247,12 @@
                 <li><textarea></textarea></li>
                 <li><span class="fr">1/20行</span></li>
             </ul>
-
         </div>
     </div>
-
     <div class="riginality_middle over">
-        <span>选择创意来源：<select>
-            <option>河北</option>
-        </select></span>
+<span>选择创意来源：<select>
+    <option>河北</option>
+</select></span>
         <span><a class="become2" href="javascript: findWordFromBaidu();">智能推荐</a></span>
     </div>
     <div class="riginality_under over">
@@ -268,31 +265,28 @@
                 <li>
                     <div><img src="${pageContext.request.contextPath}/public/images/shuju.jpg"></div>
                     <div>
-                                            <span class="fr">
-                                                <a href="#">置顶 </a>|<a href="#" class="showbox">编辑</a> |<a href="#">
-                                                删除</a>
-
-                                            </span>
+<span class="fr">
+<a href="#">置顶 </a>|<a href="#" class="showbox">编辑</a> |<a href="#">
+    删除</a>
+</span>
                     </div>
                 </li>
                 <li>
                     <div><img src="${pageContext.request.contextPath}/public/images/shuju.jpg"></div>
                     <div>
-                                            <span class="fr">
-                                                <a href="#">置顶 </a>|<a href="#" class="showbox">编辑</a> |<a href="#">
-                                                删除</a>
-
-                                            </span>
+<span class="fr">
+<a href="#">置顶 </a>|<a href="#" class="showbox">编辑</a> |<a href="#">
+    删除</a>
+</span>
                     </div>
                 </li>
                 <li class="last">
                     <div><img src="${pageContext.request.contextPath}/public/images/shuju.jpg"></div>
                     <div>
-                                            <span class="fr">
-                                                <a href="#">置顶 </a>|<a href="#" class="showbox">编辑</a> |<a href="#">
-                                                删除</a>
-
-                                            </span>
+<span class="fr">
+<a href="#">置顶 </a>|<a href="#" class="showbox">编辑</a> |<a href="#">
+    删除</a>
+</span>
                     </div>
                 </li>
             </ul>
@@ -318,7 +312,6 @@
                     <li class="last"><span>搜索</span><b>8%</b></li>
                 </ul>
             </div>
-
         </div>
     </div>
 </div>
@@ -362,14 +355,12 @@
                     </li>
                 </ul>
             </div>
-
             <div class="main_bottom">
                 <div class="w_list03">
                     <ul>
                         <li class="current">保存</li>
                         <li>保存并上传</li>
                         <li class="close">取消</li>
-
                     </ul>
                 </div>
             </div>
@@ -398,7 +389,6 @@
                         <div>
                             <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
                         </div>
-
                     </li>
                     <li>
                         <p>左侧推广连接位预览：</p>
@@ -406,7 +396,6 @@
                         <div>
                             <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
                         </div>
-
                     </li>
                     <li>
                         <p>右侧推广位预览：：</p>
@@ -414,18 +403,13 @@
                         <div>
                             <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
                         </div>
-
                     </li>
                 </ul>
-                <span><a class="become2 fl" href="javascript: findWordFromBaidu();">评估匹配度</a><a class="question"
-                                                                                                href="#"></a></span>
-
+<span><a class="become2 fl" href="javascript: findWordFromBaidu();">评估匹配度</a><a class="question"
+                                                                                href="#"></a></span>
             </div>
-
         </div>
-
     </div>
-
 </div>
 <!------------新建创意-------------->
 <div class="TB_overlayBG"></div>
@@ -462,19 +446,16 @@
                     </li>
                 </ul>
             </div>
-
             <div class="main_bottom">
                 <div class="w_list03">
                     <ul>
                         <li class="current">确认</li>
                         <li class="close">取消</li>
-
                     </ul>
                 </div>
             </div>
         </div>
         <div class="riginality_editor2 fl">
-
             <div class="tuijian_under over">
                 <ul>
                     <li>
@@ -483,7 +464,6 @@
                         <div>
                             <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
                         </div>
-
                     </li>
                     <li>
                         <p>推广连接位预览：</p>
@@ -491,7 +471,6 @@
                         <div>
                             <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
                         </div>
-
                     </li>
                     <li>
                         <p>右侧推广位预览：：</p>
@@ -499,43 +478,42 @@
                         <div>
                             <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
                         </div>
-
                     </li>
                 </ul>
-
-
             </div>
-
         </div>
-
     </div>
-
 </div>
-<iframe id="downloadhelper_iframe" style="display: none">#document</iframe>
-<script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript">
-
-var type = 1;    //1, baidu; 2, perfect
-
+var type = 1; //1, baidu; 2, perfect
 var krFileId;
-
+var fieldName = "dsQuantity";
+var sort = -1;
 var skip = 0;
-
 var limit = 10;
-
 var total = 0;
-
 var _trade;
-
 var _category;
+
 window.onload = function () {
     rDrag.init(document.getElementById('riginality_editor1'));
     rDrag.init(document.getElementById('new_riginality2'));
 };
+
+//loading
+var ajaxbg = $("#background,#progressBar");
+$("#progressBar1").hide();
+ajaxbg.hide();
+$(document).ajaxStart(function () {
+    ajaxbg.show();
+});
+$(document).ajaxStop(function () {
+    ajaxbg.fadeOut(1500);
+});
 
 $(function () {
     $(".showbox").click(function () {
@@ -572,9 +550,8 @@ $(function () {
     $('.tab_menu2 li').click(function () {
         $(this).addClass('current').siblings().removeClass('current');
         var index = $tab_li2.index(this);
-        $('div.table_concent2  > div').eq(index).show().siblings().hide();
+        $('div.table_concent2 > div').eq(index).show().siblings().hide();
     });
-
     $("#trade").change(function () {
         var trade = $("#trade option:selected").val();
         _trade = trade;
@@ -591,25 +568,19 @@ $(function () {
                         }
                         category += "<option value='" + datas[i].category + "'>" + datas[i].category + "</option>";
                     }
-
                     $("#category").empty();
                     $("#category").append(category);
                 });
     });
-
     $("#category").change(function () {
         var category = $("#category option:selected").val();
         _category = category;
     });
-
-    $("#textarea1").livequery('keyup', function () {
+    $("#textarea1").on('keyup', function () {
         var seedWords = $("#textarea1").val().trim().split("\n");
         $("#textarea1").parent().next().text("可输入词根" + (100 - seedWords.length) + "/100");
     });
-
 });
-
-
 var downloadCSV = function () {
     var _url;
     if (type == 1) {
@@ -620,17 +591,45 @@ var downloadCSV = function () {
                     document.getElementById("downloadhelper_iframe").src = _url;
                 });
     } else if (type == 2) {
+        document.getElementById("background").style.display = "block";
+        document.getElementById("progressBar1").style.display = "block";
         _url = "/getKRWords/downloadCSV?trade=" + _trade + "&category=" + _category;
-        document.getElementById("downloadhelper_iframe").src = _url;
+
+        if (window.attachEvent) {
+            ie_iframe = document.createElement("iframe");
+            ie_iframe.id = "downloadhelper_iframe";
+            ie_iframe.width = 0;
+            ie_iframe.height = 0;
+            ie_iframe.src = _url;
+//            ie_iframe.attachEvent("onload", iframeLoad);
+            ie_iframe.onload = ie_iframe.onreadystatechange = iframeLoad;
+            document.body.appendChild(ie_iframe);
+        } else {
+            var iframe = document.createElement("iframe");
+            iframe.id = "downloadhelper_iframe";
+            iframe.width = 0;
+            iframe.height = 0;
+            iframe.src = _url;
+            document.body.appendChild(iframe);
+            iframe.onload = function () {
+                document.getElementById("background").style.display = "none";
+                document.getElementById("progressBar1").style.display = "none";
+            };
+        }
+    }
+};
+var ie_iframe;
+var iframeLoad = function () {
+    if (ie_iframe.readyState == "interactive") {
+        document.getElementById('background').style.display = 'none';
+        document.getElementById('progressBar1').style.display = 'none';
     }
 };
 
 var save1Keyword = function () {
-
     if (krFileId == null || krFileId == "") {
         return;
     }
-
     $.ajax({
         url: '/getKRWords/save1',
         type: 'POST',
@@ -646,17 +645,14 @@ var save1Keyword = function () {
         }
     });
 };
-
 var save2Keyword = function () {
     var value1 = $("#category option:selected").val();
     if (value1 == null || value1.trim().length == 0) {
         alert("请选择一个类别!");
         return;
     }
-
     var trade = $("#trade option:selected").val();
     var category = $("#category option:selected").val();
-
     $.ajax({
         url: '/getKRWords/save2',
         type: 'POST',
@@ -672,8 +668,12 @@ var save2Keyword = function () {
         }
     });
 };
-
 var findWordFromBaidu = function () {
+    var iframe = document.getElementById("downloadhelper_iframe");
+    if (iframe != null) {
+        document.body.removeChild(iframe);
+    }
+
     type = 1;
     var seedWords = "";
     var words = $("#textarea1").val().split("\n");//种子词数组
@@ -685,13 +685,10 @@ var findWordFromBaidu = function () {
             seedWords += words[i];
         else
             seedWords += "," + words[i];
-
     }
-
     getSeedWords = function () {
         return seedWords;
     };
-
     skip = 0;
     total = 0;
     $.ajax({
@@ -701,7 +698,9 @@ var findWordFromBaidu = function () {
             "seedWords": seedWords,
             "skip": skip,
             "limit": limit,
-            "krFileId": krFileId
+            "krFileId": krFileId,
+            "fieldName": fieldName,
+            "sort": sort
         },
         success: function (data, textStatus, jqXHR) {
             $("#tbody1").empty();
@@ -716,15 +715,14 @@ var findWordFromBaidu = function () {
                     } else {
                         _class = "list2_box2";
                     }
-
                     var newTr = "<tr class='" + _class + "'>" +
                             "<td>" + item.groupName + "</td>" +
                             "<td>" + item.seedWord + "</td>" +
                             "<td>" + item.keywordName + "</td>" +
                             "<td>" + item.dsQuantity + "</td>" +
-                            "<td>" + item.competition + "</td>" +
-//                            "<td>" + item.recommendReason1 + "</td>" +
-//                            "<td>" + item.recommendReason2 + "</td>" +
+                            "<td>" + item.competition + "%</td>" +
+// "<td>" + item.recommendReason1 + "</td>" +
+// "<td>" + item.recommendReason2 + "</td>" +
                             "</tr>";
                     $("#tbody1").append(newTr);
                 });
@@ -732,8 +730,12 @@ var findWordFromBaidu = function () {
         }
     });
 };
+var findWordFromSystem = function () {
+    var iframe = document.getElementById("downloadhelper_iframe");
+    if (iframe != null) {
+        document.body.removeChild(iframe);
+    }
 
-var findWordFromPerfect = function () {
     type = 2;
     var trade = $("#trade option:selected").val();
     var category = $("#category option:selected").val();
@@ -758,7 +760,6 @@ var findWordFromPerfect = function () {
                     } else {
                         _class = "list2_box2";
                     }
-
                     var newTr = "<tr class='" + _class + "'>" +
                             "<td>" + _trade + "</td>" +
                             "<td>" + _category + "</td>" +
@@ -771,14 +772,11 @@ var findWordFromPerfect = function () {
         }
     });
 };
-
 var toPrevPage = function () {
     if (skip == 0) {
         return;
     }
-
     skip--;
-
     if (type == 1) {
         $.ajax({
             url: "/getKRWords/bd",
@@ -788,7 +786,9 @@ var toPrevPage = function () {
                 "seedWords": getSeedWords,
                 "skip": skip,
                 "limit": limit,
-                "krFileId": krFileId
+                "krFileId": krFileId,
+                "fieldName": fieldName,
+                "sort": sort
             },
             success: function (data, textStatus, jqXHR) {
                 $("#tbody1").empty();
@@ -801,15 +801,14 @@ var toPrevPage = function () {
                         } else {
                             _class = "list2_box2";
                         }
-
                         var newTr = "<tr class='" + _class + "'>" +
                                 "<td>" + item.groupName + "</td>" +
                                 "<td>" + item.seedWord + "</td>" +
                                 "<td>" + item.keywordName + "</td>" +
                                 "<td>" + item.dsQuantity + "</td>" +
-                                "<td>" + item.competition + "</td>" +
-//                                "<td>" + item.recommendReason1 + "</td>" +
-//                                "<td>" + item.recommendReason2 + "</td>" +
+                                "<td>" + item.competition + "%</td>" +
+// "<td>" + item.recommendReason1 + "</td>" +
+// "<td>" + item.recommendReason2 + "</td>" +
                                 "</tr>";
                         $("#tbody1").append(newTr);
                     });
@@ -837,7 +836,6 @@ var toPrevPage = function () {
                         } else {
                             _class = "list2_box2";
                         }
-
                         var newTr = "<tr class='" + _class + "'>" +
                                 "<td>" + _trade + "</td>" +
                                 "<td>" + _category + "</td>" +
@@ -851,14 +849,11 @@ var toPrevPage = function () {
         });
     }
 };
-
 var toNextPage = function () {
     if (skip + 2 > total / limit) {
         return;
     }
-
     skip++;
-
     if (type == 1) {
         $.ajax({
             url: "/getKRWords/bd",
@@ -868,7 +863,9 @@ var toNextPage = function () {
                 "seedWords": getSeedWords,
                 "skip": skip,
                 "limit": limit,
-                "krFileId": krFileId
+                "krFileId": krFileId,
+                "fieldName": fieldName,
+                "sort": sort
             },
             success: function (data, textStatus, jqXHR) {
                 $("#tbody1").empty();
@@ -881,15 +878,14 @@ var toNextPage = function () {
                         } else {
                             _class = "list2_box2";
                         }
-
                         var newTr = "<tr class='" + _class + "'>" +
                                 "<td>" + item.groupName + "</td>" +
                                 "<td>" + item.seedWord + "</td>" +
                                 "<td>" + item.keywordName + "</td>" +
                                 "<td>" + item.dsQuantity + "</td>" +
-                                "<td>" + item.competition + "</td>" +
-//                                "<td>" + item.recommendReason1 + "</td>" +
-//                                "<td>" + item.recommendReason2 + "</td>" +
+                                "<td>" + item.competition + "%</td>" +
+// "<td>" + item.recommendReason1 + "</td>" +
+// "<td>" + item.recommendReason2 + "</td>" +
                                 "</tr>";
                         $("#tbody1").append(newTr);
                     });
@@ -917,7 +913,6 @@ var toNextPage = function () {
                         } else {
                             _class = "list2_box2";
                         }
-
                         var newTr = "<tr class='" + _class + "'>" +
                                 "<td>" + _trade + "</td>" +
                                 "<td>" + _category + "</td>" +
@@ -931,20 +926,16 @@ var toNextPage = function () {
         });
     }
 };
-
 var toAnyPage = function () {
     if (type == 1) {
         skip = $("#pageNumber1").val();
     } else {
         skip = $("#pageNumber2").val();
     }
-
     if ((skip > (total / limit)) || skip <= 0) {
         return;
     }
-
     skip--;
-
     if (type == 1) {
         $.ajax({
             url: "/getKRWords/bd",
@@ -954,7 +945,9 @@ var toAnyPage = function () {
                 "seedWords": getSeedWords,
                 "skip": skip,
                 "limit": limit,
-                "krFileId": krFileId
+                "krFileId": krFileId,
+                "fieldName": fieldName,
+                "sort": sort
             },
             success: function (data, textStatus, jqXHR) {
                 $("#tbody1").empty();
@@ -967,15 +960,14 @@ var toAnyPage = function () {
                         } else {
                             _class = "list2_box2";
                         }
-
                         var newTr = "<tr class='" + _class + "'>" +
                                 "<td>" + item.groupName + "</td>" +
                                 "<td>" + item.seedWord + "</td>" +
                                 "<td>" + item.keywordName + "</td>" +
                                 "<td>" + item.dsQuantity + "</td>" +
-                                "<td>" + item.competition + "</td>" +
-//                                "<td>" + item.recommendReason1 + "</td>" +
-//                                "<td>" + item.recommendReason2 + "</td>" +
+                                "<td>" + item.competition + "%</td>" +
+// "<td>" + item.recommendReason1 + "</td>" +
+// "<td>" + item.recommendReason2 + "</td>" +
                                 "</tr>";
                         $("#tbody1").append(newTr);
                     });
@@ -1003,7 +995,6 @@ var toAnyPage = function () {
                         } else {
                             _class = "list2_box2";
                         }
-
                         var newTr = "<tr class='" + _class + "'>" +
                                 "<td>" + _trade + "</td>" +
                                 "<td>" + _category + "</td>" +
@@ -1017,16 +1008,6 @@ var toAnyPage = function () {
         });
     }
 };
-//loading
-    var ajaxbg = $("#background,#progressBar");
-    ajaxbg.hide();
-    $(document).ajaxStart(function () {
-        ajaxbg.show();
-    })
-$(document).ajaxStop(function () {
-    ajaxbg.fadeOut(1500);
-    });
-
 </script>
 </body>
 </html>
