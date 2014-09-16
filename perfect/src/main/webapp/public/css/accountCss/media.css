@@ -30,8 +30,7 @@
 @media screen and (min-width: 1601px) and (max-width: 1681px) {
 
     .mid {
-        width: 90%;
-        *width:89.5%;
+       width:89.1%;
     }
 
     .zs_bottom1 ul li .zs_input1 {

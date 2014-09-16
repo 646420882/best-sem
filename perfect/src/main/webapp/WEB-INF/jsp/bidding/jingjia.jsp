@@ -58,7 +58,7 @@
             </div>
         </div>
         <div class="jingjia_right fr over">
-            <div class="content_wraps over">
+            <div class="zhushou_concent over">
                 <div class="wrap_list01 over wd ">
                     <ul>
                         <li>
@@ -181,7 +181,7 @@
                             var rows = [];
                             for (i = 0; i < 10; i++) {
                                 var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
-                                        "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+                                        "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
                                 rows.push(row)
                             }
                             $("#table1 tbody").html(rows);
