@@ -98,6 +98,7 @@
     font-weight: bold;
     cursor: default;
     cursor: move;
+    font-size:16px;
 }
 .ui-dialog-body {
     padding: 20px;

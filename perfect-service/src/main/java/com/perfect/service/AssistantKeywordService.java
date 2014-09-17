@@ -15,7 +15,7 @@ public interface AssistantKeywordService {
 
     void deleteByKwIds(List<String> kwids);
 
-    void updateKeyword( KeywordEntity keywordEntity);
+    KeywordEntity updateKeyword( KeywordEntity keywordEntity);
 
     Map<String,Object> validateDeleteByInput(Long accountId,String deleteInfos);
 
@@ -28,4 +28,9 @@ public interface AssistantKeywordService {
     Map<String,Object> batchAddOrUpdateKeywordByChoose(Long accountId, Boolean isReplace, String chooseInfos, String keywordInfos);
 
     List<KeywordEntity> getKeywordByIds(List<Long> ids);
+
+    void batchAddkeyword(String keywords);
+
+    void batchUpdateKeyword(String keywords);
+
 }

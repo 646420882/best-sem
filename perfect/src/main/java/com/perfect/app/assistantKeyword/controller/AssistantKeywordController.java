@@ -5,6 +5,7 @@ import com.perfect.dto.CampaignTreeDTO;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
+import com.perfect.service.KeyWordBackUpService;
 import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ import java.util.Map;
 @RestController
 @Scope("prototype")
 public class AssistantKeywordController {
+    private static final String RES_SUCCESS = "success";
 
 
     //当前的账户id test
@@ -35,7 +37,31 @@ public class AssistantKeywordController {
     private AssistantKeywordService assistantKeywordService;
 
     @Resource
+    KeyWordBackUpService keyWordBackUpService;
+
+    @Resource
     private WebContext webContext;
+
+
+    /**
+     * 批量添加关键词
+     */
+    @RequestMapping(value = "assistantKeyword/batchAdd",method = {RequestMethod.GET,RequestMethod.POST})
+    public void batchAddkeyword(HttpServletResponse response,String keywords){
+        assistantKeywordService.batchAddkeyword(keywords);
+    }
+
+
+    /**
+     * 批量修改关键词
+     * @param response
+     * @param keywords
+     */
+    @RequestMapping(value = "assistantKeyword/batchUpdate",method = {RequestMethod.GET,RequestMethod.POST})
+    public  void batchUpdateKeyword(HttpServletResponse response,String keywords){
+        assistantKeywordService.batchUpdateKeyword(keywords);
+    }
+
 
 
     /**
@@ -54,9 +80,10 @@ public class AssistantKeywordController {
      * @return
      */
     @RequestMapping(value = "assistantKeyword/deleteById" ,method = {RequestMethod.GET,RequestMethod.POST})
-    public void deleteKeywordById(String kwids){
+    public void deleteKeywordById(HttpServletResponse response,String kwids){
         String[] ids = kwids.split(",");
         assistantKeywordService.deleteByKwIds(Arrays.asList(ids));
+        webContext.writeJson(RES_SUCCESS,response);
     }
 
 
@@ -72,7 +99,7 @@ public class AssistantKeywordController {
      * @return
      */
     @RequestMapping(value = "assistantKeyword/edit",method = {RequestMethod.GET,RequestMethod.POST})
-    public void updateKeywordName(String kwid,Double price,String pcDestinationUrl,String mobileDestinationUrl,Integer matchType,Integer phraseType,Boolean pause){
+    public void updateKeywordName(HttpServletResponse response,String kwid,Double price,String pcDestinationUrl,String mobileDestinationUrl,Integer matchType,Integer phraseType,Boolean pause){
         String regex = "^\\d+$";
 
         KeywordEntity keywordEntity = new KeywordEntity();
@@ -82,13 +109,14 @@ public class AssistantKeywordController {
         }else{
             keywordEntity.setId(kwid);
         }
-        keywordEntity.setPrice(BigDecimal.valueOf(price));
+        keywordEntity.setPrice(price!=null?BigDecimal.valueOf(price):null);
         keywordEntity.setPcDestinationUrl(pcDestinationUrl);
         keywordEntity.setMobileDestinationUrl(mobileDestinationUrl);
         keywordEntity.setMatchType(matchType);
         keywordEntity.setPhraseType(phraseType);
         keywordEntity.setPause(pause);
-        assistantKeywordService.updateKeyword(keywordEntity);
+        KeywordEntity keywordEntityRs = assistantKeywordService.updateKeyword(keywordEntity);
+        webContext.writeJson(keywordEntityRs,response);
     }
 
 
@@ -178,4 +206,38 @@ public class AssistantKeywordController {
         return new ModelAndView("promotionAssistant/alert/addOrUpdateKeyword");
     }
 
+
+    /**
+     * 还原新增的关键词
+     * @param response
+     * @param id
+     */
+    @RequestMapping(value = "assistantKeyword/reducAdd",method = {RequestMethod.GET,RequestMethod.POST})
+    public void reducAdd(HttpServletResponse response,String id){
+        assistantKeywordService.deleteByKwIds(Arrays.asList(new String[]{id}));
+        webContext.writeJson(RES_SUCCESS,response);
+    }
+
+
+    /**
+     * 还原修改的关键词
+     * @param response
+     * @param id
+     */
+    @RequestMapping(value = "assistantKeyword/reducUpdate",method = {RequestMethod.GET,RequestMethod.POST})
+    public void reducUpdate(HttpServletResponse response,String id){
+        KeywordEntity keywordEntity = keyWordBackUpService.reducUpdate(id);
+        webContext.writeJson(keywordEntity,response);
+    }
+
+    /**
+     * 还原功能软删除
+     * @param response
+     * @param id
+     */
+    @RequestMapping(value = "assistantKeyword/reducDel",method = {RequestMethod.GET,RequestMethod.POST})
+    public void reducDel(HttpServletResponse response,String id){
+        keyWordBackUpService.reducDel(id);
+        webContext.writeJson(RES_SUCCESS,response);
+    }
 }

@@ -47,14 +47,6 @@ public interface KeywordGroupService {
     Map<String, Object> getKeywordFromSystem(String trade, String category, int skip, int limit, int status);
 
     /**
-     * 获取百度词库CSV文件下载路径
-     *
-     * @param krFileId
-     * @return
-     */
-    Map<String, Object> getBaiduCSVFilePath(String krFileId);
-
-    /**
      * CSV文件下载
      *
      * @param trade
@@ -62,6 +54,15 @@ public interface KeywordGroupService {
      * @param os
      */
     void downloadCSV(String trade, String category, OutputStream os);
+
+    /**
+     * 凤巢CSV文件下载
+     *
+     * @param seedWordList
+     * @param krFileId
+     * @param os
+     */
+    void downloadBaiduCSV(List<String> seedWordList, String krFileId, OutputStream os);
 
     /**
      * 查询行业词库下的类别

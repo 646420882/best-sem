@@ -32,7 +32,18 @@ function getKwdList(nowPage) {
                 return;
             }
             for (var i = 0; i < data.list.length; i++) {
-                keywordDataToHtml(data.list[i], i);
+                var html = keywordDataToHtml(data.list[i], i);
+                $("#tbodyClick").append(html);
+                if (i == 0) {
+                    setKwdValue($(".firstKeyword"), data.list[i].keywordId);
+                    if(data.list[i].localStatus!=null){
+                        $("#reduction").find("span").removeClass("z_function_hover");
+                        $("#reduction").find("span").addClass("zs_top");
+                    }else{
+                        $("#reduction").find("span").removeClass("zs_top");
+                        $("#reduction").find("span").addClass("z_function_hover");
+                    }
+                }
             }
         }
     });
@@ -78,6 +89,14 @@ $("#kwdGo").click(function(){
  * 单击某一行时将该行的值放入相应的文本框内
  */
 $("#tbodyClick").delegate("tr","click", function () {
+    var span = $(this).find("td:last");
+    if(span.html()!="&nbsp;"){
+        $("#reduction").find("span").removeClass("z_function_hover");
+        $("#reduction").find("span").addClass("zs_top");
+    }else{
+        $("#reduction").find("span").removeClass("zs_top");
+        $("#reduction").find("span").addClass("z_function_hover");
+    }
     var obj = $(this);
     var keywordId = $(this).find("input[type=hidden]").val();
     setKwdValue(obj,keywordId);
@@ -90,7 +109,7 @@ $("#tbodyClick").delegate("tr","click", function () {
  */
 function keywordDataToHtml(obj, index) {
 
-    if (obj.keywordId == null) {
+    if(obj.keywordId==null){
         obj.keywordId = obj.id;
     }
 
@@ -106,7 +125,6 @@ function keywordDataToHtml(obj, index) {
 
     //kwid
     html = html + "<input type='hidden' value = " + obj.keywordId + " />";
-
     html = html + "<td>" + obj.keyword + "</td>";
 
     switch (obj.status) {
@@ -140,7 +158,7 @@ function keywordDataToHtml(obj, index) {
         case 50:
             html = html + "<td>移动搜索无效</td>";
             break;
-        default:html = html+"<td>&nbsp;</td>";
+        default:html = html+"<td>本地新增</td>";
     }
 
     html = html + "<td>" + until.convert(obj.pause, "暂停:启用") + "</td>";
@@ -188,12 +206,20 @@ function keywordDataToHtml(obj, index) {
     html = html + "<td>" + pcUrl + "</td>";
     html = html + "<td>" + mobUrl + "</td>";
     html = html + "<td>推广单元名称</td>";
-    html = html + "</tr>";
-    $("#tbodyClick").append(html);
 
-    if (index == 0) {
-        setKwdValue($(".firstKeyword"), obj.keywordId);
+    if(obj.localStatus!=null){
+        if(obj.localStatus==3){
+            html = html + "<td><span class='error' step='3'></span></td>";
+        }else{
+            html = html + "<td><span class='pen' step='"+obj.localStatus+"'></span></td>";
+        }
+    }else{
+        html = html + "<td>&nbsp;</td>";
     }
+
+    html = html + "</tr>";
+
+    return html;
 }
 
 /*加载列表数据end*/
@@ -247,7 +273,13 @@ function editKwdInfo(jsonData) {
     $.ajax({
         url: "/assistantKeyword/edit",
         type: "post",
-        data: jsonData
+        data: jsonData,
+        dataType:"json",
+        success:function(data){
+            var html = keywordDataToHtml(data,0);
+            var tr = $("#tbodyClick").find(".list2_box3");
+            tr.replaceWith(html);
+        }
     });
 }
 
@@ -312,10 +344,12 @@ function deleteKwd() {
     $.ajax({
         url: "/assistantKeyword/deleteById",
         type: "post",
-        data: {"kwids": ids}
+        data: {"kwids": ids},
+        dataType:"json",
+        success: function (data) {
+            $("#tbodyClick").find(".list2_box3 td:last").html("<span class='error' step='3'></span>");
+        }
     });
-
-    $("#tbodyClick").find(".list2_box3").remove();
 
     setKwdValue($("#tbodyClick tr:eq(0)"), $("#tbodyClick tr:eq(0)").find("input[type=hidden]").val());
 }
@@ -330,26 +364,6 @@ function missBlur(even, obj) {
     }
 }
 
-
-/*function testBatchDel(){
- var choose1 = "18961624,443591981-";
- var info = "婚博会,精确";
- //    var name = "婚博会\n中国婚博会";
- *//* var input = "18961624,443591981,婚博会";*//*
- $.ajax({
- url:"/assistantKeyword/addOrUpdateKeywordByChoose",
- type:"post",
- data:{"isReplace":true,"chooseInfos":choose1,"keywordInfos":info},
- dataType:"json",
- success:function(data){
- alert(data.insertList.length+"=insert");
- alert(data.updateList.length+"=update");
- alert(data.igoneList.length+"igone");
- alert(data.delList.length+"=del");
- }
- });
-
- }*/
 
 
 $("#addOrUpdateKwd").livequery('click', function () {
@@ -389,89 +403,75 @@ $("#batchDelKwd").livequery('click', function () {
 });
 
 
-
-
-
-
-
-
-
-
-
-/*=======================================公用函数=====================================*/
 /**
- * 点击推广计划树的时候调用
- * @param treeNode
- * @returns {{cid: null, aid: null}}
+ * 还原按钮的事件
  */
-var nowChoose = null;
-function getNowChooseCampaignTreeData(treeNode) {
-    var jsonData = {cid: null, aid: null, cn: null};
-    if (treeNode.level == 0) {
-        //点击的是父节点(推广计划)
-        jsonData.cid = treeNode.id;
-        jsonData.cn = treeNode.name;
-    } else if (treeNode.level == 1) {
-        //点击的是子节点(推广单元)
-        jsonData.cid = treeNode.getParentNode().id;
-        jsonData.aid = treeNode.id;
-    } else {
-        jsonData.cid = null;
-        jsonData.aid = null;
-        jsonData.cn = null;
-    }
-    nowChoose = jsonData;
-    whenClickTreeLoadData(getCurrentTabName(),jsonData);
-}
-
-/**
- * 得到当前选择的推广计划id或者推广单元的id
- */
-function getNowChooseCidAndAid() {
-    return nowChoose;
-}
-
-//刚进入该页面的时候加载的数据
-whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
-
-
-function whenClickTreeLoadData(tabName, param) {
-    param = param != null ? param : {aid: null, cid: null};
-    var tabName = $.trim(tabName);
-    if (tabName == "关键词") {
-        getKwdList(1);
-    } else if (tabName == "推广计划") {
-        getCampaignList(1);
-    } else if (tabName == "普通创意") {
-        if (param.cid != null && param.aid != null) {
-            getCreativeUnit(param);
-        } else {
-            getCreativePlan(param.cid);
+$("#reduction").click(function () {
+    var choose = $("#tbodyClick").find(".list2_box3");
+    if(choose!=undefined&&choose.find("td:last").html()!="&nbsp;"){
+        if(confirm("是否还原选择的数据?")==false){
+            return;
         }
-    } else if (tabName == "附加创意"){
+        var step = choose.find("td:last span").attr("step");
+        var id = $("#tbodyClick").find(".list2_box3").find("input[type=hidden]").val();
+        switch (parseInt(step)){
+            case 1:reducKwd_Add(id);break;
+            case 2:reducKwd_update(id);break;
+            case 3:reducKwd_del(id);break;
+            case 4:alert("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");break;
+        }
 
-    }else if (tabName == "推广单元"){
-        getAdgroupPlan(param.cid, param.cn);
     }
-
-}
-
-/**
- * 单击选项卡的事件
- */
-$("#tabMenu li").click(function () {
-    var tabName = $(this).html();
-    var param = getNowChooseCidAndAid();
-    whenClickTreeLoadData(tabName, param);
 });
 
+
 /**
- * 得到当前切换的选项名称
- * @returns {*|jQuery}
+ * 还原新增的关键词(localStatus为1的)
+ * @param id
  */
-function getCurrentTabName() {
-    return $("#tabMenu .current").html();
+function reducKwd_Add(id) {
+    $.ajax({
+        url:"/assistantKeyword/reducAdd",
+        type:"post",
+        data:{"id":id},
+        dataType:"json",
+        success: function (data) {
+            $("#tbodyClick").find(".list2_box3").remove();
+        }
+    });
+}
+
+/**
+ * 还原修改的关键词(localStatus为2的)
+ * @param id
+ */
+function reducKwd_update(id) {
+    $.ajax({
+        url:"/assistantKeyword/reducUpdate",
+        type:"post",
+        data:{"id":id},
+        dataType:"json",
+        success: function (data) {
+            var html = keywordDataToHtml(data,0);
+            var tr = $("#tbodyClick").find(".list2_box3");
+            tr.replaceWith(html);
+        }
+    });
 }
 
 
-
+/**
+ * 还原软删除
+ * @param id
+ */
+function reducKwd_del(id) {
+    $.ajax({
+        url:"/assistantKeyword/reducDel",
+        type:"post",
+        data:{"id":id},
+        dataType:"json",
+        success: function (data) {
+           $("#tbodyClick").find(".list2_box3 td:last").html("&nbsp;");
+        }
+    });
+}

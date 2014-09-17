@@ -1,7 +1,10 @@
 package com.perfect.app.controller;
 
+import com.perfect.dao.AsynchronousReportDAO;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.dao.SystemUserDAO;
+import com.perfect.mongodb.dao.impl.AsynchronousReportDAOImpl;
+import com.perfect.mongodb.utils.DateUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,6 +14,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by baizz on 2014-7-11.
@@ -80,18 +86,18 @@ public class KeywordControllerTest extends JUnitBaseController {
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
-    @Resource
+    /*@Resource
     SystemUserDAO systemUserDAO;
-/*    @Test
+    @Test
     public void test() throws Exception {
         AsynchronousReportDAO dao = new AsynchronousReportDAOImpl(systemUserDAO);
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
         String yesterday = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 
-        List<String> list = DateUtils.getPeriod(yesterday, yesterday);
+        List<String> list = DateUtils.getPeriod("2014-08-30", "2014-08-30");
         for (String dateStr : list) {
-//            dao.getAccountReportData(dateStr);
+            dao.getAccountReportData(dateStr);
             dao.getCampaignReportData(dateStr);
             dao.getAdgroupReportData(dateStr);
             dao.getCreativeReportData(dateStr);

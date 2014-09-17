@@ -79,7 +79,8 @@
 
                                     <p>
                                         <%--<span><input type="checkbox"/>用这些普通创意替换目标推广单元的所有相应内容<br/></span>--%>
-                                        <span><input type="checkbox" checked="checked"/>创意标题和描述相同时，更新该创意的url等其他设设置</span>
+                                        <span><input type="checkbox"
+                                                     checked="checked"/>创意标题和描述相同时，更新该创意的url等其他设设置</span>
                                     </p>
                                 </div>
 
@@ -134,7 +135,7 @@
                         <ul id="creativeMultivalidateDelKwdUl">
                         </ul>
                         <div style="width:99%;height: 300px; border: 1px solid red; overflow: auto; font-size:12px;">
-                            <p><span style="font-weight: bold;">新增的创意：<span id="criSize">0</span></span></p>
+                            <p><span style="font-weight: bold;">新增的单元：<span id="criSize">0</span></span></p>
                             <table border="0" cellspacing="0" width="100%" id="createTable"
                                    class="table2 table-bordered" data-resizable-columns-id="demo-table">
                                 <thead>
@@ -219,22 +220,6 @@ function initMutliTree() {
                 json["titile"] = "";
                 json["open"] = false;
                 array.push(json);
-//                for (var j = 0; j < data[i].childNode.length; j++) {
-//                    json = {};
-//
-//                    if (data[i].childNode[j].adgroupId == null) {
-//                        json["id"] = data[i].childNode[j].id;
-//                    } else {
-//                        json["id"] = data[i].childNode[j].adgroupId;
-//                    }
-//
-//                    json["pId"] = camId;
-//                    json["name"] = data[i].childNode[j].adgroupName;
-//                    json["titile"] = "";
-//                    json["checked"] = false;
-//                    json["isHidden"] = true;
-//                    array.push(json);
-//                }
             }
             $.fn.zTree.init($("#creativeMultiTree"), settingCreativeMutli, array);
         }
@@ -243,9 +228,7 @@ function initMutliTree() {
 function onCheck(e, treeId, treeNode) {
     count();
     var v = getSelectedNodeToString();
-    console.log(v);
     var vs = getSelectedNodeNameToString();
-    console.log(vs);
     if (v != "") {
         var campaign = v.split("-");
         $("#column").html(campaign.length);
@@ -312,7 +295,7 @@ function getSelectedNodeNameToString() {
         if (selectNode[i].isParent == true) {
             parentNode = selectNode[i].name;
         } else {
-            v = v  + selectNode[i].name + ",";
+            v = v + selectNode[i].name + ",";
         }
     }
     v = v.substr(0, v.length - 1);
@@ -347,18 +330,18 @@ function nextStep() {
         var _createTable = $("#createTable tbody");
         var txtSize = txt.split("\n");
         _createTable.empty();
-        $("#criSize").html(ids.length);
-        for(var i=0;i<names.length;i++){
+        $("#criSize").html(txtSize.length);
+        for (var i = 0; i < names.length; i++) {
             for (var j = 0; j < txtSize.length; j++) {
                 var c0 = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";
                 var c1 = txtSize[j].split(",")[1] != undefined ? txtSize[j].split(",")[1] : "";
                 var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "0.0";
                 var c4_pause = "停用";
-                if(c1!=""){
-                    c4_pause=c1 == "停用" ? "停用" : "启用";
+                if (c1 != "") {
+                    c4_pause = c1 == "停用" ? "停用" : "启用";
                 }
                 var _tbody = "<tr>" +
-                        "<td>" + names[i]+ "<input type='hidden' value=" + ids[i] + "></td>" +
+                        "<td>" + names[i] + "<input type='hidden' value=" + ids[i] + "></td>" +
                         "<td>" + c0 + "</td>" +
                         "<td>" + c4_pause + "</td>" +
                         "<td>" + c2 + "</td>" +
@@ -425,7 +408,7 @@ function initPreStep() {
  完成方法,循环添加批量的数据*
  */
 function overStep() {
-    var con = confirm("你确定要添加或者替换这些创意吗？");
+    var con = confirm("你确定要添加或者替换这些单元吗？");
     if (con) {
         var _table = $("#createTable tbody");
         var trs = _table.find("tr");
@@ -433,11 +416,11 @@ function overStep() {
         $(trs).each(function (i, o) {
             var _tr = $(o);
             var cid = _tr.find("td:eq(0) input").val();
-            var name=_tr.find("td:eq(1)").html();
+            var name = _tr.find("td:eq(1)").html();
             var pause = _tr.find("td:eq(2)").html();
-            var maxPrice=_tr.find("td:eq(3)").html();
+            var maxPrice = _tr.find("td:eq(3)").html();
             var pause_ToF = pause != "启用" ? false : true;
-            $.post("../assistantAdgroup/insertOrUpdate", {cid: cid, name:name,pause:pause_ToF,maxPrice:maxPrice,status:-1}, function (rs) {
+            $.post("../assistantAdgroup/insertOrUpdate", {cid: cid, name: name, pause: pause_ToF, maxPrice: maxPrice, status: -1}, function (rs) {
             });
         });
         alert("操作成功!");

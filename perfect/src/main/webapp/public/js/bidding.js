@@ -309,7 +309,7 @@ $(function () {
             }
         })
 
-    })
+    });
 
 //    $('#rulesave').click(function () {
 //        sendReq(false);
@@ -354,13 +354,13 @@ $(function () {
 function emptyTable(name) {
     var rows = [];
     for (i = 0; i < 10; i++) {
-        var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
-            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+        var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
+            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
         rows.push(row)
     }
     $("#" + name + " tbody").html(rows);
-    $("#" + name + " tbody tr:odd").addClass("list2_box1"),
-        $("#" + name + " tbody tr:even").addClass("list2_box2")
+    $("#" + name + " tbody tr:odd").addClass("list2_box1");
+    $("#" + name + " tbody tr:even").addClass("list2_box2");
 }
 
 function fullItems(datas, name) {
@@ -369,6 +369,10 @@ function fullItems(datas, name) {
     var newrows = [];
     datas.rows.forEach(function (item) {
         var newrow = "";
+        var pcUrl = item.pcDestinationUrl;
+        if (pcUrl == null) {
+            pcUrl = "";
+        }
         if (item.keywordId != null) {
             newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.keywordId + "'></td>" +
                 "<td>&nbsp;" + item.keyword + "</td>" +
@@ -394,10 +398,16 @@ function fullItems(datas, name) {
         }
 
         if (item.rule) {
-            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>" + item.ruleDesc + "</a></td></tr>";
+            var biddingStatus = "";
+            if (item.biddingStatus == 0) {
+                biddingStatus = "已暂停";
+            } else if (item.biddingStatus == 1) {
+                biddingStatus = "已启动";
+            }
+            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>" + item.ruleDesc + "</a></td><td>" + pcUrl + "</td><td>" + biddingStatus + "</td></tr>";
         } else {
 
-            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>+添加规则</a></td></tr>";
+            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "' onclick='addRule(this)'>" + "+添加规则</a></td><td>" + pcUrl + "</td><td>无</td></tr>";
         }
         newrows.push(newrow);
     });
@@ -408,6 +418,7 @@ function fullItems(datas, name) {
 
 }
 
+//保存当前关键词竞价规则
 function sendReq(run) {
     var req = {};
 
@@ -505,7 +516,6 @@ function sendReq(run) {
         success: function (data) {
             alert('创建规则成功');
             $('.close').click();
-            return;
         }
     })
 }

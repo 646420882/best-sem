@@ -25,8 +25,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
 </head>
 <body>
-<div id="background" class="background"></div>
-<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
+<%--<div id="background" class="background"></div>
+<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>--%>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
 <div class="concent over">
@@ -56,7 +56,7 @@
         </ul>
     </div>
     <div class="j_l_under over">
-        <a href="#" class="jiangkong">监控文件夹</a>
+            <a href="javascript:void(0)" class="jiangkong">监控文件夹</a>
         <div class="j_list02 over hides" style="height:100px; background:#fff;">
              <div id="jiangkong_box">监控文件夹</div>
             <ul id="zTree2" class="ztree over">
@@ -114,9 +114,10 @@
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function8.png"></span><b>监控</b></a></li>
-            <li><a href="#"><span class="z_function_hover"><img
-                    src="../public/img/zs_function9.png"></span><b>还原</b></a>
+            <li><a href="#" id = "reduction"><span class="z_function_hover"><img
+                    src="../public/img/zs_function9.png"></span><b>还原</b></a><%--z_function_hover--%>
             </li>
+
             <li><a href="#" id="searchword"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
             <li><a href="#"><span class="z_function_hover"><img
                     src="../public/img/zs_function11.png"></span><b>激活</b></a>
@@ -138,7 +139,8 @@
                     <th>&nbsp;匹配模式</th>
                     <th>&nbsp;访问URL</th>
                     <th>&nbsp;移动访问URL</th>
-                    <th class="username-column" data-noresize>&nbsp;推广计划名称
+                    <th class="username-column" data-noresize>&nbsp;推广计划名称</th>
+                    <th class="username-column" data-noresize>&nbsp;
                         <div class="set fr"></div>
                     </th>
                 </tr>
@@ -167,7 +169,7 @@
 
     <div class="page kwdPage over">
         <ul>
-            <div>每页显示条数<select style="width:60px;" id = "kwd_PageSize" onchange="getKwdList(1)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></div>
+            <li>每页显示条数 <select style="width:60px;" id = "kwd_PageSize" onchange="getKwdList(1)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></li>
             <li><a href="#">首页</a></li>
             <li><a href="#">上一页</a></li>
             <li><a href="#">下一页</a></li>
@@ -284,6 +286,18 @@
         </div>
     </div>
     <div class="zhanghu_input"></div>
+    <div class="page criPage over">
+        <ul>
+            <li>每页显示条数 <select style="width:60px;" id = "cri_PageSize" onchange="pagerSelectClick(this)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></li>
+            <li><a href="javascript:void(0)">首页</a></li>
+            <li><a href="javascript:void(0)">上一页</a></li>
+            <li><a href="javascript:void(0)">下一页</a></li>
+            <li><a href="javascript:void(0)">尾页</a></li>
+            <li>当前页:1/0</li>
+            <li>共0条</li>
+            <li><input type="text" maxlength="10" class="inputNo criPageNo"/>&nbsp;<input type="button" value="GO" id="criGo"/></li>
+        </ul>
+    </div>
     <div class="zs_bottom over">
         <div class="zs_bottom1 over fl " id="sDiv">
             <ul>
@@ -340,7 +354,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">创意预览：</div>
+                    <div class="t_list01 fl over">创意预览：</div>
                     <div class="w_list01 fl over" id="sPreview"
                          style="width:557px;height: 98px;border:1px solid #CCC;"></div>
                 </li>
@@ -784,6 +798,18 @@
         </ul>
     </div>
     <div class="zhanghu_input"></div>
+    <div class="page adgPage over">
+        <ul>
+            <li>每页显示条数 <select style="width:60px;" id = "adg_PageSize" onchange="adgpagerSelectClick(this)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></li>
+            <li><a href="javascript:void(0)">首页</a></li>
+            <li><a href="javascript:void(0)">上一页</a></li>
+            <li><a href="javascript:void(0)">下一页</a></li>
+            <li><a href="javascript:void(0)">尾页</a></li>
+            <li>当前页:1/0</li>
+            <li>共0条</li>
+            <li><input type="text" maxlength="10" class="inputNo adgPageNo"/>&nbsp;<input type="button" value="GO" id="adgGo"/></li>
+        </ul>
+    </div>
     <div class="zs_bottom over" id="aDiv">
         <div class="zs_bottom1 over fl ">
             <ul>
@@ -822,7 +848,7 @@
     <div class="zs_function over">
         <ul class="fl">
             <li><a href="#" id="addCampaign"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-            <li><a href="#" id="addplan"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a>
+            <li><a href="#" id="quickAddplan"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a>
             </li>
 
             <li><a href="javascript:deleteCampaign();"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
@@ -830,7 +856,7 @@
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
                     type="image" src="../public/img/zs_input.png"></b></a></li>
 
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
+            <li><a href="#" id = "reduction_caipamgin"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
         </ul>
         <span class="fr">1/10</span>
@@ -850,7 +876,8 @@
                     <th>&nbsp;推广地域</th>
                     <th>&nbsp;否定关键词</th>
                     <th>&nbsp;IP排除</th>
-                    <th class="username-column" data-noresize style="text-align:left; width:150px;"><span class="fl">到预算下线时间 </span><div class="set fr"></div>
+                    <th>&nbsp;到预算下线时间 </th>
+                    <th class="username-column" data-noresize style="text-align:left; width:150px;"><span class="fl"> </span><div class="set fr"></div>
                     </th>
                 </tr>
                 </thead>
@@ -876,7 +903,7 @@
 
     <div class="page campaignPage over">
         <ul>
-            <div>每页显示条数<select style="width:60px;" id = "camp_PageSize" onchange="getCampaignList(1)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></div>
+            <li> 每页显示条数 <select style="width:60px;" id = "camp_PageSize" onchange="getCampaignList(1)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></li>
             <li><a href="#">首页</a></li>
             <li><a href="#">上一页</a></li>
             <li><a href="#">下一页</a></li>
@@ -1116,7 +1143,7 @@
                     src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
+            <li id="downSync"><a href="javascript:void(0)"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
         </ul>
         <span class="fr">1/10</span>
@@ -1132,7 +1159,7 @@
                     <th class="username-column" data-noresize> <div class="set fr"></div></th>
                 </tr>
                 </thead>
-                <tbody >
+                <tbody id="MonitorTbody">
                 </tbody>
             </table>
 
@@ -1539,13 +1566,15 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/creative.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/global.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantKeyword.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/global.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantCampaign.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantAccount.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/adgroup.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/addKeyword.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/Monitoring.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">
     $(function () {
         window.dialog = dialog;

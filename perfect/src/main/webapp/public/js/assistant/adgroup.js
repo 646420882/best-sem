@@ -1,7 +1,7 @@
 /**
  * Created by XiaoWei on 2014/8/21.
  */
-var plans = {cid: null, cn: null};
+var plans = {cid: null, cn: null,nowPage:1,pageSize:20};
 $(function () {
 
     initAMenu();
@@ -11,6 +11,7 @@ $(function () {
     rDrag.init(document.getElementById("apKwd"));
     rDrag.init(document.getElementById("apKwd"));
     initNoKwdKeyUp();
+    adgPagerClickInit();
 });
 var atmp = null;
 var sp = null;
@@ -127,13 +128,14 @@ function loadAdgroupData(plans) {
     initAgReback();
     var _adGroudTable = $("#adGroupTable tbody");
     _adGroudTable.empty().html("加载中....");
-    $.get("../assistantAdgroup/getAdgroupList", {cid: plans.cid}, function (rs) {
-        if (rs != "[]") {
-            var json = eval("(" + rs + ")");
-            if (json.length > 0) {
+    $.post("../assistantAdgroup/getAdgroupList", plans, function (rs) {
+        var gson= $.parseJSON(rs);
+        if (gson!= "[]") {
+            if (gson.list.length > 0) {
+                adgPagerInit(gson);
                 _adGroudTable.empty();
                 var _trClass = "";
-
+                var json=gson.list;
                 for (var i = 0; i < json.length; i++) {
                     _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                     var _id = json[i].adgroupId != null ? json[i].adgroupId : json[i].id;
@@ -161,6 +163,47 @@ function loadAdgroupData(plans) {
             _adGroudTable.append("<tr><td>暂无数据</td></tr>");
         }
     });
+}
+/**
+ * 初始化分页控件
+ * @param data
+ */
+function adgPagerInit(data){
+    $(".adgPage").find("li>a:eq(0)").attr("name", 0);
+    $(".adgPage").find("li>a:eq(1)").attr("name", data.prePage);
+    $(".adgPage").find("li>a:eq(2)").attr("name", data.nextPage);
+    $(".adgPage").find("li>a:eq(3)").attr("name", data.totalPage);
+    $(".adgPage").find("li:eq(4)").html("当前页:" + data.pageNo + "/" + data.totalPage);
+    $(".adgPage").find("li:eq(5)").html("共" + data.totalCount + "条");
+}
+/**
+ * 推广单元分页控件点击事件初始化
+ */
+function adgPagerClickInit(){
+    $(".adgPage ul li>a").click(function () {
+        var nowPage = $(this).attr("name");
+        plans.nowPage = nowPage;
+        loadAdgroupData(plans);
+    });
+
+    $("#adgGo").click(function () {
+        var nowPage = $(".adgPageNo").val();
+        var totalPage = $(".adgPage").find("li>a:eq(3)").attr("name");
+        if (nowPage > parseInt(totalPage)) {
+            nowPage = parseInt(totalPage);
+        }
+        plans.nowPage = nowPage;
+        loadAdgroupData(plans);
+        $(".adgPageNo").val("");
+    });
+}
+/**
+ * 显示分页条目select下拉事件
+ * @param rs
+ */
+function adgpagerSelectClick(rs){
+    plans.pageSize=$(rs).val();
+    loadAdgroupData(plans);
 }
 /**
  * 添加成功后显示否定词比例

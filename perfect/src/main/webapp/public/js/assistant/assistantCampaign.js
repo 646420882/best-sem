@@ -26,7 +26,6 @@ function getCampaignList(nowPage){
     }
     param["nowPage"] = nowPage;
     param["pageSize"] = $("#camp_PageSize").val();
-
     $.ajax({
         url:"/assistantCampaign/list",
         type:"post",
@@ -40,7 +39,18 @@ function getCampaignList(nowPage){
                 return ;
             }
             for(var i=0;i<data.list.length;i++){
-                campaignDataToHtml(data.list[i],i);
+                var html = campaignDataToHtml(data.list[i],i);
+                $("#tbodyClick5").append(html);
+                if(i==0){
+                    setCampaignValue(".firstCampaign",data.list[i].campaignId);
+                    if(data.list[i].localStatus!=null){
+                        $("#reduction_caipamgin").find("span").removeClass("z_function_hover");
+                        $("#reduction_caipamgin").find("span").addClass("zs_top");
+                    }else{
+                        $("#reduction_caipamgin").find("span").removeClass("zs_top");
+                        $("#reduction_caipamgin").find("span").addClass("z_function_hover");
+                    }
+                }
             }
         }
     });
@@ -90,6 +100,15 @@ $("#campaignGo").click(function(){
  * 单击某一行时将改行的数据放入文本框内
  */
 $("#tbodyClick5").delegate("tr","click",function(){
+    var span = $(this).find("td:last");
+    if(span.html()!="&nbsp;"){
+        $("#reduction_caipamgin").find("span").removeClass("z_function_hover");
+        $("#reduction_caipamgin").find("span").addClass("zs_top");
+    }else{
+        $("#reduction_caipamgin").find("span").removeClass("zs_top");
+        $("#reduction_caipamgin").find("span").addClass("z_function_hover");
+    }
+
     var obj = $(this);
     var campaignId = $(this).find("input[type=hidden]").val();
     setCampaignValue(this,campaignId);
@@ -101,11 +120,12 @@ $("#tbodyClick5").delegate("tr","click",function(){
  * @param index 传入对象的下标
  */
 function campaignDataToHtml(obj,index){
+    var html = "";
 
     if(obj.campaignId==null){
         obj.campaignId = obj.id;
     }
-    var html = "";
+
     if(index==0){
         html = html+"<tr class='list2_box3 firstCampaign'>";
     }else if(index%2!=0){
@@ -123,7 +143,7 @@ function campaignDataToHtml(obj,index){
         case 23: html = html+"<td>暂停推广</td>";break;
         case 24: html = html+"<td>推广计划预算不足</td>";break;
         case 25: html = html+"<td>账户预算不足</td>";break;
-        default :html = html +"<td>&nbsp;</td>";
+        default :html = html +"<td>本地新增</td>";
     }
 
 
@@ -168,16 +188,19 @@ function campaignDataToHtml(obj,index){
         bot = "<td>-</td>";
     }
     html = html+bot;
-
     html = html+"<input type='hidden' value="+obj.priceRatio+" class='hidden'/>";
+    if(obj.localStatus!=null){
+        if(obj.localStatus==3){
+            html = html + "<td><span class='error' step='3'></span></td>";
+        }else{
+            html = html + "<td><span class='pen' step='"+obj.localStatus+"'></span></td>";
+        }
+    }else{
+        html = html + "<td>&nbsp;</td>";
+    }
     html = html+"</tr>";
 
-
-    $("#tbodyClick5").append(html);
-
-    if(index==0){
-        setCampaignValue(".firstCampaign",obj.campaignId);
-    }
+   return html;
 }
 
 
@@ -230,7 +253,14 @@ function editCampaignInfo(jsonData) {
     $.ajax({
         url:"/assistantCampaign/edit",
         type:"post",
-        data:jsonData
+        data:jsonData,
+        dataType:"json",
+        success:function(data){
+            var html = campaignDataToHtml(data,0);
+            var tr = $("#tbodyClick5").find(".list2_box3");
+            tr.replaceWith(html);
+            setCampaignValue(html,data.campaignId);
+        }
     });
 }
 
@@ -265,12 +295,12 @@ function whenBlurEditCampaign(num,value){
  * 删除推广计划
  */
 function deleteCampaign(){
-    var cids = new Array();
+    var cids = "";
 
     $("#tbodyClick5").find(".list2_box3").each(function(){
-        cids.push($(this).find("input[type=hidden]").val());
+        cids+=$(this).find("input[type=hidden]").val()+",";
     });
-    if(cids.length==0){
+    if(cids==""){
         alert("请选择行再操作!");
         return;
     }
@@ -279,14 +309,16 @@ function deleteCampaign(){
     if(isDel==false){
         return;
     }
-
     $.ajax({
         url:"/assistantCampaign/delete",
         type:"post",
-        data:{"cid":cids}
+        data:{"cid":cids},
+        success:function(data){
+            $("#tbodyClick5").find(".list2_box3 td:last").html("<span class='error' step='3'></span>");
+        }
     });
-    $("#tbodyClick5").find(".list2_box3").remove();
-    setCampaignValue($("#tbodyClick5 tr:eq(0)"),$("#tbodyClick5 tr:eq(0)").find("input[type=hidden]").val());
+   /* $("#tbodyClick5").find(".list2_box3").remove();
+    setCampaignValue($("#tbodyClick5 tr:eq(0)"),$("#tbodyClick5 tr:eq(0)").find("input[type=hidden]").val());*/
 }
 
 
@@ -811,4 +843,99 @@ $(".closeAddCampaign").click(function(){
     excludeIpStr="";
 });
 
+
+/**
+ * 还原按钮的单击事件
+ */
+$("#reduction_caipamgin").click(function () {
+    var choose = $("#tbodyClick5").find(".list2_box3");
+    if(choose!=undefined&&choose.find("td:last").html()!="&nbsp;"){
+        if(confirm("是否还原选择的数据?")==false){
+            return;
+        }
+        var step = choose.find("td:last span").attr("step");
+        var id = $("#tbodyClick5").find(".list2_box3").find("input[type=hidden]").val();
+        switch (parseInt(step)){
+            case 1:reducCpg_Add(id);break;
+            case 2:reducCpg_update(id);break;
+            case 3:reducCpg_del(id);break;
+            case 4:alert("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");break;
+        }
+
+    }
+});
+
+
+/**
+ * 还原新增的推广计划(localStatus为1的)
+ * @param id
+ */
+function reducCpg_Add(id) {
+    $.ajax({
+        url:"/assistantCampaign/delete",
+        type:"post",
+        data:{"id":id},
+        dataType:"json",
+        success: function (data) {
+            $("#tbodyClick5").find(".list2_box3").remove();
+        }
+    });
+}
+
+/**
+ * 还原修改的推广计划(localStatus为2的)
+ * @param id
+ */
+function reducCpg_update(id) {
+    $.ajax({
+        url:"/assistantCampaign/reducUpdate",
+        type:"post",
+        data:{"id":id},
+        dataType:"json",
+        success: function (data) {
+            var html = campaignDataToHtml(data,0);
+            var tr = $("#tbodyClick5").find(".list2_box3");
+            tr.replaceWith(html);
+            setCampaignValue(html,data.campaignId);
+        }
+    });
+}
+
+
+/**
+ * 还原软删除
+ * @param id
+ */
+function reducCpg_del(id) {
+    $.ajax({
+        url:"/assistantCampaign/reducDel",
+        type:"post",
+        data:{"id":id},
+        dataType:"json",
+        success: function (data) {
+            $("#tbodyClick5").find(".list2_box3 td:last").html("&nbsp;");
+        }
+    });
+}
+
+
+/**
+ * 弹出快速创建计划窗口
+ */
+$("#quickAddplan").click(function () {
+        top.dialog({title: "快速新建计划",
+            padding: "5px",
+            content: "<iframe src='/assistantCampaign/showCreatePlanWindow' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+            oniframeload: function () {
+            },
+            onclose: function () {
+//              if (this.returnValue) {
+//                  $('#value').html(this.returnValue);
+//              }
+//                window.location.reload(true);
+            },
+            onremove: function () {
+            }
+        }).showModal();
+});
 

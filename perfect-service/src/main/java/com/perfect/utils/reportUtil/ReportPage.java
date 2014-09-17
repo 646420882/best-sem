@@ -50,7 +50,7 @@ public class ReportPage {
         Collections.sort(accountReports);
         List<Object> finalList = new ArrayList<>();
 
-            for (int i = startVS; i <= limitVS; i++) {
+            for (int i = startVS; i < limitVS; i++) {
                 if(i<accountReports.size()){
                 finalList.add(accountReports.get(i).getDateRep());
                 }
@@ -97,7 +97,7 @@ public class ReportPage {
 
         Collections.sort(accountReports);
         List<Object> finalList = new ArrayList<>();
-            for (int i = startVS; i <= limitVS; i++) {
+            for (int i = startVS; i < limitVS; i++) {
                 if(i<accountReports.size()){
                 finalList.add(accountReports.get(i).getDateRep());
                 }

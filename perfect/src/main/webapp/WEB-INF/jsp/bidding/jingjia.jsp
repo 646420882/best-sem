@@ -25,7 +25,7 @@
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
-<div class="on_title over">
+<div class="pinned on_title over">
     <a href="#">
         推广助手
     </a>
@@ -58,7 +58,7 @@
             </div>
         </div>
         <div class="jingjia_right fr over">
-            <div class="content_wraps over">
+            <div class="zhushou_concent over">
                 <div class="wrap_list01 over wd ">
                     <ul>
                         <li>
@@ -66,7 +66,8 @@
                             <div class="w_list02 fl over">
                                         <span>
                                             <form>
-                                                <input type="radio" name="in" checked="checked" value="0">&nbsp;全部 &nbsp;
+                                                <input type="radio" name="in" checked="checked" value="0">&nbsp;全部
+                                                &nbsp;
                                                 <input type="radio" name="in" value="-1">&nbsp;未参与 &nbsp;
                                                 <input type="radio" name="in" value="1"> &nbsp;已参加
                                             </form>
@@ -75,7 +76,8 @@
                                                <dl><input type="image"
                                                           src="${pageContext.request.contextPath}/public/img/search2.png">
                                                </dl>
-                                               <dl><input type="checkbox" style=" margin-top:5px;" name="fullmatch"></dl>
+                                               <dl><input type="checkbox" style=" margin-top:5px;" name="fullmatch">
+                                               </dl>
                                                 <dl>
                                                     <input type="text" class="w_text"
                                                            name="qtext"
@@ -158,7 +160,7 @@
                         <table border="0" cellspacing="0" width="101%" id="table1">
                             <thead>
                             <tr class="list02_top">
-                                <td>&nbsp;<input type="checkbox" id="checkAll"> 序号</td>
+                                <td>&nbsp;<input type="checkbox" id="checkAll"></td>
                                 <td>&nbsp;关键词</td>
                                 <td>&nbsp;消费</td>
                                 <td>&nbsp;当前排名</td>
@@ -169,22 +171,23 @@
                                 <td>&nbsp;移动端质量度</td>
                                 <td>&nbsp;状态</td>
                                 <td>&nbsp;竞价规则</td>
+                                <td>&nbsp;URL</td>
+                                <td>&nbsp;竞价状态</td>
                             </tr>
                             </thead>
                             <tbody>
                             </tbody>
                         </table>
                         <script type="application/javascript">
-
                             var rows = [];
                             for (i = 0; i < 10; i++) {
-                                var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
+                                var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
                                         "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
                                 rows.push(row)
                             }
                             $("#table1 tbody").html(rows);
-                            $("#table1 tbody tr:odd").addClass("list2_box1"),
-                                    $("#table1 tbody tr:even").addClass("list2_box2")
+                            $("#table1 tbody tr:odd").addClass("list2_box1");
+                            $("#table1 tbody tr:even").addClass("list2_boxNa2");
                         </script>
                     </div>
                     <div>每页显示<select id="size">
@@ -228,7 +231,7 @@
         </div>
         <div class="jingjia_right fr over">
             <div>
-                <div class="content_wraps over">
+                <div class="zhushou_concent over">
                     <div class="w_list03">
                         <ul class="jiangjia_list">
                             <li class="current Screenings">筛选</li>
@@ -262,7 +265,7 @@
                                 <thead>
                                 <tr class="list02_top">
                                     <td>&nbsp;<input type="checkbox" id="checkAll2"></td>
-                                    <td>&nbsp; 序号</td>
+                                    <%--  <td>&nbsp; 序号</td>--%>
                                     <td>&nbsp;关键词</td>
                                     <td>&nbsp;消费</td>
                                     <td>&nbsp;当前排名</td>
@@ -273,6 +276,8 @@
                                     <td>&nbsp;移动端质量度</td>
                                     <td>&nbsp;状态</td>
                                     <td>&nbsp;竞价规则</td>
+                                    <td>&nbsp;URL</td>
+                                    <td>&nbsp;竞价状态</td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -282,8 +287,8 @@
                             <script type="application/javascript">
                                 var rows = [];
                                 for (i = 0; i < 10; i++) {
-                                    var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
-                                            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+                                    var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
+                                            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
                                     rows.push(row)
                                 }
                                 $("#table2 tbody").html(rows);
@@ -438,11 +443,10 @@
             <li>
                 <p>自动竞价模式：</p>
                 <ul>
-                    <li><input type="radio" name="auto" checked="checked" value="1"><span>单次竞价</span>
-                        <br>
-                        &nbsp; <input type="radio" name="sbid" checked="checked" value="everyday"> 每天执行
-                        &nbsp;<input type="radio" name="sbid" value="bytime"> 竞价次数:<input class="times" type="text"
-                                                                                          name="bytimes">
+                    <li>
+                        <p><input type="radio" name="auto" checked="checked" value="1"><span>单次竞价</span></p>
+                        <input type="radio" name="sbid" checked="checked" value="everyday"> 每天执行
+                        <input type="radio" name="sbid" value="bytime"> 竞价次数:<input class="times" type="text" name="bytimes">
                     </li>
 
                     <li><input type="radio" name="auto" value="2"><span>重复竞价速度 每隔
@@ -483,8 +487,8 @@
 
     <div class="mainlist">
         <ul>
-            <li><input type="radio" name="price1" checked="checked"><span
-                    class="mainlist_left"> 输入新问价 </span><span><input class="zs_input3" type="text"></span></li>
+            <li>
+                <input type="radio" name="price1" checked="checked"> 输入新问价: <input class="zs_input3" type="text"></li>
             <li><input type="radio" name="price1" checked="checked"><span class="mainlist_left"> 使用单元出价 </span></li>
         </ul>
     </div>
@@ -608,9 +612,12 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jiangjia.js"></script>
-
-<SCRIPT type="text/javascript">
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
+<script type="text/javascript">
 
 <!--
 
@@ -728,15 +735,14 @@ $(function () {
     $.ajax({
         url: "/account/get_tree",
         type: "GET",
-        dataType: "json",
         async: false,
+        dataType: "json",
         success: function (data, textStatus, jqXHR) {
             zNodes = data.trees;
+            $.fn.zTree.init($("#zTree"), setting, zNodes);
+            $.fn.zTree.init($("#zTree2"), setting, zNodes);
         }
     });
-    //加载账户树
-    $.fn.zTree.init($("#zTree"), setting, zNodes);
-    $.fn.zTree.init($("#zTree2"), setting, zNodes);
 });
 
 function loadReady() {
@@ -749,7 +755,7 @@ function loadReady() {
 }
 
 function checkrank() {
-    var boxes = $("input[name='subbox'][checked]")
+    var boxes = $("input[name='subbox'][checked]");
     var ids = [];
     $(boxes).each(function () {
         ids.push($(this).val())
@@ -757,8 +763,8 @@ function checkrank() {
 
 }
 
-$('.addRuleBtn').click(function () {
-    $.kwid = $(this).data('id');
+function addRule(obj) {
+    $.kwid = $(obj).data('id');
 
     $(".TB_overlayBG").css({
         display: "block", height: $(document).height()
@@ -768,7 +774,20 @@ $('.addRuleBtn').click(function () {
         top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
         display: "block"
     });
-});
+}
+
+//    $('.addRuleBtn').click(function () {
+//        $.kwid = $(this).data('id');
+//
+//        $(".TB_overlayBG").css({
+//            display: "block", height: $(document).height()
+//        });
+//        $(".box").css({
+//            left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
+//            top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
+//            display: "block"
+//        });
+//    });
 
 
 $('.getRankBtn').click(function () {
@@ -799,21 +818,15 @@ $('.getRankBtn').click(function () {
 //-->
 //loading
 var ajaxbg = $("#background,#progressBar");
-    ajaxbg.hide();
+ajaxbg.hide();
 $(document).ajaxStart(function () {
     ajaxbg.show();
-})
+});
 $(document).ajaxStop(function () {
     ajaxbg.fadeOut(1500);
-        });
-</SCRIPT>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
+});
 
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
-
-
+</script>
 </body>
 </html>

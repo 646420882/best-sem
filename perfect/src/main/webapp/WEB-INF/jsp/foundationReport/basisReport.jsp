@@ -175,6 +175,9 @@
 
 
         </div>
+        <div id="pageNumberJcSelect">
+            <span class='fr'>每页显示<select id='importKeywordSel' onchange='selectChange()'><option value='20'>20个</option><option value='50'>50个</option><option value='100'>100个</option></select> </span>
+        </div>
     </div>
 </div>
 <div class="number_concent over">
@@ -297,6 +300,9 @@
     <div class="page2 fl" id="pageVS">
 
     </div>
+    <div id="pageNumberVSSelect">
+        <span class='fr'>每页显示<select id='importKeywordSelVS' onchange='selectChangeVs()'><option value='20'>20个</option><option value='50'>50个</option><option value='100'>100个</option></select> </span>
+    </div>
 </div>
 </div>
 <div class="containers hides over">
@@ -352,7 +358,11 @@
             </div>
             <div class="page2 fl" id="pageDet">
 
-            </div><br/>
+            </div>
+            <div id="pageNumberDetSelect">
+                <span class='fr'>每页显示<select id='importKeywordSelDet' onchange='selectChangeDet()'><option value='20'>20个</option><option value='50'>50个</option><option value='100'>100个</option></select> </span>
+            </div>
+            <br/>
             <div class="tubiao2 over">
                 <div id="containerLegend"></div>
                 <div id="container" style="width:100%;height:400px;display: none"></div>
@@ -380,6 +390,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 
 <script type="text/javascript">
     // 对Date的扩展，将 Date 转化为指定格式的String
@@ -467,16 +478,16 @@ var daterangepicker_end_date = null;
 
 var startDet = 0;
 var sorts = "-11";
-var limitDet = 30;
+var limitDet = 20;
 var sortVS = "-1";
 var pageDetNumber =0;
 var judgeDet = 0;
 //基础报告
 var startJC = 0;
-var limitJC = 10;
+var limitJC = 20;
 //账户报告
 var startVS = 0;
-var limitVS = 10;
+var limitVS = 20;
 $(document).ready(function () {
     //加载日历控件
     $("input[name=reservation]").daterangepicker();
@@ -517,6 +528,8 @@ $(document).ready(function () {
     });
 
     $("#userClick").click(function () {
+        judgeVS = 0;
+        $("#pageVS").empty();
         reportDataVS();
     });
 
@@ -889,7 +902,7 @@ var reportData = function () {
                 t_conversion.length = 0;
                 switch (reportTypes) {
                     case "1":
-                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = -11;reportData()'></p></b></td>" +
+                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
@@ -902,7 +915,7 @@ var reportData = function () {
                                 "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
                         break;
                     case "2":
-                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = -11;reportData()'></p></b></td>" +
+                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>关键字</span><b><p><input class='one' type='button' onclick='javascript:sorts = -9;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 9;reportData()'></p></b></td>" +
@@ -916,7 +929,7 @@ var reportData = function () {
                                 "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
                         break;
                     case "3":
-                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = -11;reportData()'></p></b></td>" +
+                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>创意</span><b><p><input class='one' type='button' onclick='javascript:sorts = -12;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 12;reportData()'></p></b></td>" +
@@ -929,7 +942,7 @@ var reportData = function () {
                                 "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
                                 "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
                     case "4":
-                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = -11;reportData()'></p></b></td>" +
+                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>地域</span><b><p><input class='one' type='button' onclick='javascript:sorts = -10;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 10;reportData()'></p></b></td>" +
@@ -1242,24 +1255,24 @@ var reportData = function () {
                 });
                 if (judgeDet < 1) {
                     var countNumber = 0;
-                    if (pageDetNumber % 30 == 0) {
-                        countNumber = pageDetNumber / 30;
+                    if (pageDetNumber % limitDet == 0) {
+                        countNumber = pageDetNumber / limitDet;
                     } else {
-                        countNumber = (pageDetNumber / 30);
+                        countNumber = (pageDetNumber / limitDet);
                     }
                     var page_html = "<a href='javascript:' id='pageUpDet' class='nextpage1'><span></span></a>"
                     for (var i = 0; i < countNumber; i++) {
                         if(i<10){
                             if (i == 0) {
-                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startDet = " + i + ";limitDet = " + (i + 30) + ";reportData()'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startDet = " + i + ";limitDet = " + (i + limitDet) + ";reportData()'>" + (i + 1) + "</a>";
                             } else {
-                                page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startDet = " + (i * 30) + ";limitDet = " + (i * 30 + 30) + ";reportData()'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startDet = " + (i * limitDet) + ";limitDet = " + (i * limitDet + limitDet) + ";reportData()'>" + (i + 1) + "</a>";
                             }
                         }else{
                             if (i == 0) {
-                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startDet = " + i + ";limitDet = " + (i + 30) + ";reportData()' style='display:none'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startDet = " + i + ";limitDet = " + (i + limitDet) + ";reportData()' style='display:none'>" + (i + 1) + "</a>";
                             } else {
-                                page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startDet = " + (i * 30) + ";limitDet = " + (i * 30 + 30) + ";reportData()' style='display:none'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startDet = " + (i * limitDet) + ";limitDet = " + (i * limitDet + limitDet) + ";reportData()' style='display:none'>" + (i + 1) + "</a>";
                             }
                         }
 
@@ -1271,7 +1284,7 @@ var reportData = function () {
                 }
             }
             if (data.rows.length > 10) {
-                dateInterval = 5;
+                dateInterval = Math.round(data.rows.length/10);
             }
         }
     });
@@ -1340,24 +1353,24 @@ var reportDataVS = function () {
                 });
                 if (judgeVS < 1) {
                     var countNumber = 0;
-                    if (pageNumberVS % 10 == 0) {
-                        countNumber = pageNumberVS / 10;
+                    if (pageNumberVS % limitVS == 0) {
+                        countNumber = pageNumberVS / limitVS;
                     } else {
-                        countNumber = (pageNumberVS / 10);
+                        countNumber = (pageNumberVS / limitVS);
                     }
                     var page_html = "<a href='javascript:' id='pageUpVS' class='nextpage1'><span></span></a>"
                     for (var i = 0; i < countNumber; i++) {
                         if(i<10){
                             if (i == 0) {
-                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameVS' onclick='javascript:startVS = " + i + ";limitVS = " + (i + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameVS' onclick='javascript:startVS = " + i + ";limitVS = " + (i + limitVS) + ";reportDataVS()'>" + (i + 1) + "</a>";
                             } else {
-                                page_html = page_html + "<a href='javascript:' cname='nameVS' onclick='javascript:startVS = " + (i * 10) + ";limitVS = " + (i * 10 + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' cname='nameVS' onclick='javascript:startVS = " + (i * limitVS) + ";limitVS = " + (i * limitVS + limitVS) + ";reportDataVS()'>" + (i + 1) + "</a>";
                             }
                         }else{
                             if (i == 0) {
-                                page_html = page_html + "<a href='javascript:' class='ajc' style='display:none' cname='nameVS' onclick='javascript:startVS = " + i + ";limitVS = " + (i + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:' class='ajc' style='display:none' cname='nameVS' onclick='javascript:startVS = " + i + ";limitVS = " + (i + limitVS) + ";reportDataVS()'>" + (i + 1) + "</a>";
                             } else {
-                                page_html = page_html + "<a href='javascript:'style='display:none' cname='nameVS' onclick='javascript:startVS = " + (i * 10) + ";limitVS = " + (i * 10 + 10) + ";reportDataVS()'>" + (i + 1) + "</a>";
+                                page_html = page_html + "<a href='javascript:'style='display:none' cname='nameVS' onclick='javascript:startVS = " + (i * limitVS) + ";limitVS = " + (i * limitVS + limitVS) + ";reportDataVS()'>" + (i + 1) + "</a>";
                             }
                         }
 
@@ -1389,7 +1402,7 @@ var reportDataVS = function () {
                                         impression.push(items.pcImpression);
                                         click.push(items.pcClick);
                                         cost.push(Math.round(items.pcCost * 100) / 100);
-                                        ctr.push(Math.round(items.pcCtr));
+                                        ctr.push(Math.round(items.pcCtr *100)/100);
                                         cpc.push(Math.round(items.pcCpc * 100) / 100);
                                         conversion.push(items.pcConversion);
                                     }
@@ -1424,23 +1437,23 @@ var reportDataVS = function () {
                         }
                     });
                 });
-                for (var i = 0; i < impression.length; i++) {
+                for (var i = 0; i < data.date1.length; i++) {
                     var html_User1 = "";
                     var html_User2 = "";
                     if (i % 2 == 0) {
                         html_User1 = "<tr class='list2_box1'><td>" + dateEach[i] + "</td>"
-                                + "<td><span>" + impression[i] + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + click[i] + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + cost[i] + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + ctr[i] + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((ctr[i] - ctr1[i]) >= 0) ? ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + cpc[i] + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((cpc[i] - cpc1[i]) >= 0) ?((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + conversion[i] + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((conversion[i] - conversion1[i]) >= 0) ?  ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 100)) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - cpc1[i]) / conversion1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((impression[i] == undefined)?'-':(isNaN(impression1[i]))?'-':impression[i]) + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000)/100))?'-':Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((click[i] == undefined)?'-':(isNaN(click[i]))?'-':click[i]) + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000)/100))?'-':Math.round(((click[i] - click1[i]) / click1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((cost[i] == undefined)?'-':(isNaN(cost[i]))?'-':cost[i]) + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : (isNaN(Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000)/100))?'-':Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((ctr[i] == undefined)?'-':(isNaN(ctr[i]))?'-':ctr[i]) + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((ctr[i] - ctr1[i] >= 0) ? ((isNaN(ctr1[i])) ? "-" : (isNaN(Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000)/100))?'-':Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((cpc[i] == undefined)?'-':(isNaN(cpc[i]))?'-':cpc[i]) + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((cpc[i] - cpc1[i] >= 0) ? ((isNaN(cpc1[i])) ? "-" : (isNaN(Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000)/100))?'-':Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((conversion[i] == undefined)?'-':(isNaN(conversion[i]))?'-':conversion[i]) + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((conversion[i] - conversion1[i] >= 0) ? ((isNaN(conversion1[i])) ? "-" : (isNaN(Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000)/100))?'-':Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
                                 + "</td><td>-</td><td>-</td></tr>";
 
                         html_User2 = "<tr class='list2_box1'><td>" + dateEach1[i] + "</td>"
@@ -1449,30 +1462,30 @@ var reportDataVS = function () {
                                 + "<tr><td colspan='9'>&nbsp;</td></tr>";
                     } else {
                         html_User1 = "<tr class='list2_box2'><td>" + dateEach[i] + "</td>"
-                                + "<td><span>" + impression[i] + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + click[i] + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + cost[i] + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + ctr[i] + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((ctr[i] - ctr1[i]) >= 0) ? ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + cpc[i] + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((cpc[i] - cpc1[i]) >= 0) ? ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + conversion[i] + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((conversion[i] - conversion1[i]) >= 0) ? ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 100)) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - cpc1[i]) / conversion1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((impression[i] == undefined)?'-':(isNaN(impression1[i]))?'-':impression[i]) + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000)/100))?'-':Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((click[i] == undefined)?'-':(isNaN(click[i]))?'-':click[i]) + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000)/100))?'-':Math.round(((click[i] - click1[i]) / click1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((cost[i] == undefined)?'-':(isNaN(cost[i]))?'-':cost[i]) + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : (isNaN(Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000)/100))?'-':Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((ctr[i] == undefined)?'-':(isNaN(ctr[i]))?'-':ctr[i]) + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((ctr[i] - ctr1[i] >= 0) ? ((isNaN(ctr1[i])) ? "-" : (isNaN(Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000)/100))?'-':Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((cpc[i] == undefined)?'-':(isNaN(cpc[i]))?'-':cpc[i]) + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((cpc[i] - cpc1[i] >= 0) ? ((isNaN(cpc1[i])) ? "-" : (isNaN(Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000)/100))?'-':Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((conversion[i] == undefined)?'-':(isNaN(conversion[i]))?'-':conversion[i]) + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((conversion[i] - conversion1[i] >= 0) ? ((isNaN(conversion1[i])) ? "-" : (isNaN(Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000)/100))?'-':Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
                                 + "</td><td>-</td><td>-</td></tr>";
 
                         html_User2 = "<tr class='list2_box2'><td>" + dateEach1[i] + "</td>"
-                                + "<td>" + impression1[i] + "</td><td>" + click1[i] + "</td><td>" + cost1[i] + "</td>"
+                                + "<td>" + ((impression1[i]==undefined)?'-':impression1[i]) + "</td><td>" + click1[i] + "</td><td>" + cost1[i] + "</td>"
                                 + "<td>" + ctr1[i] + "%</td><td>" + cpc1[i] + "</td><td>" + conversion1[i] + "</td><td>-</td><td>-</td></tr>"
                                 + "<tr><td colspan='9'>&nbsp;</td></tr>";
                     }
 
-                    $("#userTbody").append(html_User1);
-                    $("#userTbody").append(html_User2);
-                }
-            }
+            $("#userTbody").append(html_User1);
+            $("#userTbody").append(html_User2);
+        }
+    }
         }
     });
 }
@@ -1521,21 +1534,22 @@ var accountBasisReport = function () {
             });
             if (jci < 1) {
                 var countNumber = 0;
-                if (number % 10 == 0) {
-                    countNumber = number / 10;
+                if (number % limitJC == 0) {
+                    countNumber = number / limitJC;
                 } else {
-                    countNumber = (number / 10);
+                    countNumber = (number / limitJC);
                 }
                 var page_html = "<a href='javascript:' id='pageUp' class='nextpage1'><span></span></a>"
                 for (var i = 0; i < countNumber; i++) {
                     if (i == 0) {
-                        page_html = page_html + "<a href='javascript:' class='ajc' cname='nameJC' onclick='javascript:startJC = " + i + ";limitJC = " + (i + 10) + ";accountBasisReport()'>" + (i + 1) + "</a>";
+                        page_html = page_html + "<a href='javascript:' class='ajc' cname='nameJC' onclick='javascript:startJC = " + i + ";limitJC = " + (i + limitJC) + ";accountBasisReport()'>" + (i + 1) + "</a>";
                     } else {
-                        page_html = page_html + "<a href='javascript:' cname='nameJC' onclick='javascript:startJC = " + (i * 10) + ";limitJC = " + (i * 10 + 10) + ";accountBasisReport()'>" + (i + 1) + "</a>";
+                        page_html = page_html + "<a href='javascript:' cname='nameJC' onclick='javascript:startJC = " + (i * limitJC) + ";limitJC = " + (i * limitJC + limitJC) + ";accountBasisReport()'>" + (i + 1) + "</a>";
                     }
                 }
                 page_html = page_html + "<a href='javascript:' id='pageDown' class='nextpage2'><span></span></a>" +
                         "<span style='margin-right:10px;'>跳转到 <input type='text' id='goID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='go' class='page_go'> GO</a>"
+
                 $("#pageJC").append(page_html);
                 jci++;
             }
@@ -1672,7 +1686,7 @@ var pieChart = function (showData, showName, showId) {
 //基础报告分页手动跳转
 $("body").on("click", "#go", function () {
     var juo = ($('#goID').val() * 10 - 1);
-    if (juo <= (number + 9)) {
+    if (juo != null && juo != "" && juo >= 0 && juo <= (number + 9)) {
         startJC = ($('#goID').val() * 10 - 10);
         limitJC = startJC + 10 - 1;
         accountBasisReport();
@@ -1708,7 +1722,7 @@ $("body").on("click", "a[cname=nameJC]", function () {
 });
 //账户统计分页手动跳转
 $("body").on("click", "#goVS", function () {
-    if (($('#goVSID').val() * 10 - 1) <= (pageNumberVS + 9)) {
+    if ($('#goVSID').val() != null && $('#goVSID').val() != "" && $('#goVSID').val() >= 0 && ($('#goVSID').val() * 10 - 1) <= (pageNumberVS + 9)) {
         startVS = ($('#goVSID').val() * 10 - 10);
         limitVS = startVS + 10 - 1;
         reportDataVS();
@@ -1745,7 +1759,7 @@ $("body").on("click", "a[cname=nameVS]", function () {
 
 //明细报告分页手动跳转
 $("body").on("click", "#goDet", function () {
-    if (($('#goDetID').val() * 30 - 1) <= (pageDetNumber + 29)) {
+    if ($('#goDet').val() != null && $('#goDet').val() != "" && $('#goDet').val() >= 0 &&  ($('#goDetID').val() * 30 - 1) <= (pageDetNumber + 29)) {
         startDet = ($('#goDetID').val() * 30 - 30);
         limitDet = startDet + 30 - 1;
         reportData();
@@ -1795,5 +1809,31 @@ $(document).ajaxStop(function () {
     ajaxbg.fadeOut(1500);
         });
 
+
+
+function selectChange() {
+    noneStart = 0;
+    noneEnd = 10;
+    limitJC = parseInt($("#importKeywordSel :selected").val());
+    $("#pageJC").empty();
+    jci=0;
+    accountBasisReport();
+}
+function selectChangeVs() {
+    noneVsStart = 0;
+    noneVsEnd = 10;
+    limitVS = parseInt($("#importKeywordSelVS :selected").val());
+    $("#pageVS").empty();
+    judgeVS=0;
+    reportDataVS();
+}
+function selectChangeDet() {
+    noneNumStart=0;
+    noneNumEnd=10;
+    limitDet = parseInt($("#importKeywordSelDet :selected").val());
+    $("#pageDet").empty();
+    judgeDet=0;
+    reportData();
+}
 </script>
 </html>

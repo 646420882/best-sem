@@ -55,7 +55,7 @@
                     </ul>
                     <div class="newkeyword_content over">
                         <div class="containers2 over">
-                           <div class="newkeyword_left fl  over" >
+                           <div class="newkeyword_left fl  over"  >
                                 <div class="newkeyword_top1">
                                     <input type="text" placeholder="请输入关键词" class="zs_input3">
                                 </div>
@@ -104,7 +104,7 @@
 
 
             </div>
-            <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+            <div class="main_bottom" style=" background:none;">
                 <div class="w_list03">
                     <ul>
                         <li class="current" id="downloadAccount">下一步</li>

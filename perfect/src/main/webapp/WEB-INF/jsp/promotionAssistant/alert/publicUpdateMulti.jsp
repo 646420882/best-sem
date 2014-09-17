@@ -352,7 +352,7 @@ function nextStep() {
         var _createTable = $("#createTable tbody");
         var txtSize = txt.split("\n");
         _createTable.empty();
-        $("#criSize").html(ids.length);
+        $("#criSize").html(txtSize.length);
         for (var i = 0; i < names.length; i++) {
             for (var j = 0; j < txtSize.length; j++) {
                 var c0 = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";

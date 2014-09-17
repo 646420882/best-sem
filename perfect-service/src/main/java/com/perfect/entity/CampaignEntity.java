@@ -71,6 +71,17 @@ public class CampaignEntity extends AccountIdEntity {
     @Field("idc")
     private Boolean isDynamicCreative;
 
+    @Field("ls")
+    private Integer localStatus;
+
+    public Integer getLocalStatus() {
+        return localStatus;
+    }
+
+    public void setLocalStatus(Integer localStatus) {
+        this.localStatus = localStatus;
+    }
+
     public boolean setCampaignId(Long aCampaignId) {
         boolean wasSet = false;
         campaignId = aCampaignId;

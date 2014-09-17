@@ -16,11 +16,14 @@ public class EntityConstants {
     public static final String TBL_BIDDINGRULE = "bidrule";
     public static final String TBL_LOG = "logs";
     public static final String TBL_ACCOUNT_REPORT = "account_report";
+    public static final String TBL_MONITORING_FOLDERS = "monitoring_folders";
+    public static final String TBL_MONITORING_TARGETS = "monitoring_Targets";
 
     //backUp
     public static final String BAK_CREATIVE="creative_bak";
     public static final String BAK_ADGROUP="adgroup_bak";
     public static final String BAK_KEYWORD="keyword_bak";
+    public static final String BAK_CAMPAIGN="campaign_bak";
 
 
     // Fields
@@ -37,6 +40,7 @@ public class EntityConstants {
     public static final String OBJ_ADGROUP_ID = "oagid";
     public static final String OBJ_ID = "oid";
     public static final String BAIDU_ID = "bid";
+    public static final String FOLDER_ID = "fdid";
 
     public static final String NAME = "name";
 }

@@ -104,7 +104,7 @@ $(function () {
 
     loadNewCampaignData();
 
-    $("input[name=no1]").livequery('click', function () {
+    $("input[name=no1]").on('click', function () {
         $.each($("input[name=no1]"), function (i, item) {
             if (item.checked) {
                 if (i == 0) {
@@ -118,7 +118,7 @@ $(function () {
         });
     });
 
-    $("#downloadAccount").livequery('click', function () {
+    $("#downloadAccount").on('click', function () {
         if (index == 0) {
             updateAllCampaign();
         } else if (index == 1) {

@@ -10,6 +10,7 @@ import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.KeyWordBackUpService;
 import com.perfect.utils.LogUtils;
 import org.springframework.beans.BeanUtils;
@@ -80,6 +81,14 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
         return adgroupIds;
     }
 
+
+    //xj根据单元
+    public  AdgroupEntity getByCampaignIdAndName(Long campaignId,String name){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        List<AdgroupEntity> adgroupEntityList = mongoTemplate.find(new Query(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(EntityConstants.CAMPAIGN_ID).is(campaignId).and("name").is(name)),getEntityClass(),EntityConstants.TBL_ADGROUP);
+        return adgroupEntityList.size()==0?null:adgroupEntityList.get(0);
+    }
+
     @Override
     public List<String> getAdgroupIdByCampaignId(String campaignId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
@@ -90,6 +99,12 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
         for (com.perfect.entity.AdgroupEntity type : list)
             adgroupIds.add(type.getId());
         return adgroupIds;
+    }
+
+    @Override
+    public List<AdgroupEntity> findByCampaignOId(String id){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return mongoTemplate.find(new Query(Criteria.where(EntityConstants.OBJ_CAMPAIGN_ID).is(id)),getEntityClass(),EntityConstants.TBL_ADGROUP);
     }
 
 
@@ -298,6 +313,30 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
         SubdelBack(oid);
     }
 
+    @Override
+    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize) {
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
+        Query q=new Query();
+        Criteria c=new Criteria();
+        if(params.size()>0||params!=null){
+            for (Map.Entry<String,Object> adg:params.entrySet()){
+                c.and(adg.getKey()).is(adg.getValue());
+            }
+        }
+        q.addCriteria(c);
+        Integer totalCount=getTotalCount(q,AdgroupEntity.class);
+        PagerInfo p=new PagerInfo(nowPage,pageSize,totalCount);
+        q.skip(p.getFirstStation());
+        q.limit(p.getPageSize());
+        List<AdgroupEntity> adgroupEntityList=mongoTemplate.find(q,AdgroupEntity.class);
+        p.setList(adgroupEntityList);
+        return p;
+    }
+    private int getTotalCount(Query q,Class<?> cls){
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
+        return (int)mongoTemplate.count(q,cls);
+    }
+
     public void insert(com.perfect.entity.AdgroupEntity adgroupEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insert(adgroupEntity, EntityConstants.TBL_ADGROUP);
@@ -443,11 +482,6 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.remove(new Query(Criteria.where(get_id()).in(oids)), KeywordEntity.class);
         mongoTemplate.remove(new Query(Criteria.where(get_id()).in(oids)), CreativeEntity.class);
-        List<LogEntity> logEntities = new ArrayList<>();
-        for (String id : oids) {
-            logDAO.insertLog(id, LogStatusConstant.ENTITY_ADGROUP);
-        }
-
     }
 
     /**

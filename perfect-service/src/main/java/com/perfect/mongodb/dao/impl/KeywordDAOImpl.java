@@ -3,12 +3,14 @@ package com.perfect.mongodb.dao.impl;
 import com.perfect.autosdk.sms.v3.KeywordInfo;
 import com.perfect.constants.LogStatusConstant;
 import com.perfect.core.AppContext;
+import com.perfect.dao.KeyWordBackUpDAO;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.dao.LogDAO;
 import com.perfect.dao.LogProcessingDAO;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
 import com.perfect.entity.KeywordEntity;
+import com.perfect.entity.backup.KeyWordBackUpEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.EntityConstants;
@@ -16,6 +18,7 @@ import com.perfect.mongodb.utils.Pager;
 import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.mongodb.utils.PaginationParam;
 import com.perfect.utils.LogUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -49,6 +52,9 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     @Resource
     private LogDAO logDao;
+
+    @Resource
+    private KeyWordBackUpDAO keyWordBackUpDAO;
 
     @Override
     public String getId() {
@@ -294,6 +300,56 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
 
+    //xj
+    public void update(KeywordEntity keywordEntity,KeyWordBackUpEntity keyWordBackUpEntity) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Long id = keywordEntity.getKeywordId();
+        Query query = new Query();
+        query.addCriteria(Criteria.where(EntityConstants.SYSTEM_ID).is(keywordEntity.getId()));
+        Update update = new Update();
+        try {
+            Class _class = keywordEntity.getClass();
+            Field[] fields = _class.getDeclaredFields();//get object's fields by reflect
+            for (Field field : fields) {
+                String fieldName = field.getName();
+                if (EntityConstants.SYSTEM_ID.equals(fieldName))
+                    continue;
+                StringBuilder fieldGetterName = new StringBuilder("get");
+                fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
+                Method method = _class.getDeclaredMethod(fieldGetterName.toString());
+                if (method == null)
+                    continue;
+
+                Object after = method.invoke(keywordEntity);
+                if (after != null) {
+                    update.set(field.getName(), after);
+                }
+            }
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        mongoTemplate.updateFirst(query, update, KeywordEntity.class, TBL_KEYWORD);
+        KeyWordBackUpEntity keyWordBackUpEntityFind = keyWordBackUpDAO.findByObjectId(keywordEntity.getId());
+        if (keyWordBackUpEntityFind == null&&keywordEntity.getLocalStatus()==2) {
+            KeyWordBackUpEntity backUpEntity = new KeyWordBackUpEntity();
+            BeanUtils.copyProperties(keyWordBackUpEntity, backUpEntity);
+            keyWordBackUpDAO.insert(backUpEntity);
+        }
+        logDao.insertLog(id, LogStatusConstant.ENTITY_KEYWORD, LogStatusConstant.OPT_UPDATE);
+    }
+
+    /**
+     * 还原功能的软删除
+     * @param id
+     */
+    public void updateLocalstatu(long id){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Update update = new Update();
+        update.set("ls","");
+        mongoTemplate.updateFirst(new Query(Criteria.where(EntityConstants.KEYWORD_ID).is(id)),update,EntityConstants.TBL_KEYWORD);
+    }
+
+
     /**
      * 根据mongodbID修改
      *
@@ -376,7 +432,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
     /**
-     * 根据mongoId删除
+     * 根据mongoId硬删除
      *
      * @param id
      */
@@ -385,6 +441,18 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         mongoTemplate.remove(new Query(Criteria.where(EntityConstants.SYSTEM_ID).is(id)), KeywordEntity.class, TBL_KEYWORD);
         logDao.insertLog(id, LogStatusConstant.ENTITY_KEYWORD);
     }
+
+    /**
+     * 根据Long类型id软删除
+     * @param id
+     */
+    public void softDelete(Long id) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Update update = new Update();
+        update.set("ls",3);
+        mongoTemplate.updateFirst(new Query(Criteria.where(EntityConstants.KEYWORD_ID).is(id)),update,EntityConstants.TBL_KEYWORD);
+    }
+
 
     @Override
     public void deleteByIds(List<Long> ids) {
@@ -452,7 +520,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
         q.skip(p.getFirstStation());
         q.limit(p.getPageSize());
-        if (totalCount < 1) {
+        q.with(new Sort(Sort.Direction.DESC, "name"));
+        if (totalCount<1) {
             p.setList(new ArrayList());
             return p;
         }
