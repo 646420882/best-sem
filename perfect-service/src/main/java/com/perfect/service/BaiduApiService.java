@@ -291,24 +291,11 @@ public class BaiduApiService {
     }
 
     public KeywordType setKeywordPrice(KeywordType type) {
-        if (type == null) {
+        List<KeywordType> keywordTypes = setKeywordPrice(Arrays.asList(type));
+        if(keywordTypes == null || keywordTypes.isEmpty()){
             return null;
         }
-        UpdateKeywordRequest request = new UpdateKeywordRequest();
-        request.setKeywordTypes(Arrays.asList(type));
-
-        try {
-            KeywordService keywordService = commonService.getService(KeywordService.class);
-            UpdateKeywordResponse response = keywordService.updateKeyword(request);
-            if (response == null) {
-                return null;
-            }
-            return response.getKeywordType(0);
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        return keywordTypes.get(0);
     }
 
     public List<HTMLAnalyseServiceImpl.PreviewData> getPreviewData(int region, List<String> keyList, HTMLAnalyseService rankService) {
@@ -317,7 +304,8 @@ public class BaiduApiService {
         request.setRegion(region);
         request.setDevice(0);
         request.setPage(0);
-        List<HTMLAnalyseServiceImpl.PreviewData> previewDatas = rankService.getPageData(request);
+        List<HTMLAnalyseServiceImpl.PreviewData> previewDatas = rankService.getPageData(keyList.toArray(new
+                String[]{}), region);
         return previewDatas;
     }
 

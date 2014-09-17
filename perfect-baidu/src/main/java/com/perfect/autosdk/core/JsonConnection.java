@@ -68,35 +68,27 @@ public class JsonConnection {
     protected OutputStream sendRequest() throws ApiException {
         OutputStream out = null;
         int retryTime = retry;
-        while (true) {
-            try {
-                connection.setConnectTimeout(connectTimeout);
-                connection.setReadTimeout(readTimeout);
-                connection.setRequestMethod("POST");
-                connection.setUseCaches(false);
-                connection.setDoInput(true);
-                connection.setDoOutput(true);
-                connection.setRequestProperty("Content-Type", "text/json; charset=utf-8");
+        try {
+            connection.setConnectTimeout(connectTimeout);
+            connection.setReadTimeout(readTimeout);
+            connection.setRequestMethod("POST");
+            connection.setUseCaches(false);
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "text/json; charset=utf-8");
 
-                connection.connect();
-                out = connection.getOutputStream();
-                return out;
-            } catch (IOException e) {
-                if (retryTime-- > 0) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                    continue;
-                } else {
-                    throw new ApiException(e);
-                }
-            } catch (Exception e) {
-                throw new ApiException(e);
-            }
+            connection.connect();
+            out = connection.getOutputStream();
+            return out;
+        } catch (IOException e) {
+            connection.disconnect();
+            throw new ApiException(e);
+        } catch (Exception e) {
+            connection.disconnect();
+            throw new ApiException(e);
         }
     }
+
 
     /**
      * 向服务器发送信息

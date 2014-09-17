@@ -70,15 +70,16 @@ public class JsonProxy<I> implements InvocationHandler {
         String addr = service.serverUrl + AddressUtil.getJsonAddr(interfaces) + '/' + method.getName();
         if (log.isDebugEnabled())
             log.debug("Current Calling URL: " + addr);
-        JsonConnection conn = new GZIPJsonConnection(addr);
-        conn.setConnectTimeout(service.connectTimeoutMills);
-        conn.setReadTimeout(service.readTimeoutMills);
-        JsonEnvelop request = makeRequest(args[0]);
+
         int retry = 5;
         while (true) {
             if (retry == 0) {
                 return null;
             }
+            JsonConnection conn = new GZIPJsonConnection(addr);
+            conn.setConnectTimeout(service.connectTimeoutMills);
+            conn.setReadTimeout(service.readTimeoutMills);
+            JsonEnvelop request = makeRequest(args[0]);
             conn.sendRequest(request);
             JsonEnvelop<ResHeader, ?> response = conn.readResponse(ResHeader.class, method.getReturnType());
             ResHeader resHeader = response.getHeader();
@@ -91,8 +92,8 @@ public class JsonProxy<I> implements InvocationHandler {
                     );
                 }
 
-                if (resHeader.failures.get(0).getCode() == 8094) {
-                    Thread.sleep(10000);
+                if (resHeader.failures.get(0).getCode() == 8904) {
+                    Thread.sleep(60000);
                     retry--;
                     continue;
                 }

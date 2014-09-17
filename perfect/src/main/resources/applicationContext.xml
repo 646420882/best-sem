@@ -3,12 +3,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xmlns:elasticsearch="http://www.springframework.org/schema/data/elasticsearch"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/data/mongo
-		http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"
+		http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
+		http://www.springframework.org/schema/data/elasticsearch
+		http://www.springframework.org/schema/data/elasticsearch/spring-elasticsearch.xsd"
        default-lazy-init="true">
 
     <description>Spring public settings</description>
@@ -122,6 +125,32 @@
             </map>
         </property>
     </bean>
+
+    <!-- elasticsearch -->
+    <elasticsearch:repositories base-package="com.perfect.elasticsearch"/>
+
+    <elasticsearch:transport-client id="client" cluster-nodes="182.92.188.177:19300" cluster-name="es-cluster"/>
+
+    <bean name="elasticsearchTemplate" class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
+        <constructor-arg name="client" ref="client"/>
+    </bean>
+
+    <bean name="esFactory"
+          class="org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactory">
+        <constructor-arg name="elasticsearchOperations" ref="elasticsearchTemplate"/>
+    </bean>
+
+    <bean id="executors" class="com.perfect.elasticsearch.threads.EsThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="10"/>
+        <property name="maxPoolSize" value="20"/>
+        <property name="keepAliveSeconds" value="60"/>
+        <property name="threadNamePrefix" value="es"/>
+        <property name="rejectedExecutionHandler">
+            <bean name="rejectedHandler" class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
+        </property>
+    </bean>
+
+    <!-- ============================================= -->
 
     <import resource="applicationContext-security.xml"/>
 

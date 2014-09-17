@@ -4,11 +4,12 @@ import com.perfect.constants.BiddingStrategyConstants;
 import com.perfect.dao.BiddingRuleDAO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.entity.bidding.StrategyEntity;
-import com.perfect.schedule.task.execute.BiddingTask;
+import com.perfect.schedule.task.execute.BiddingJob;
+import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;
-import org.unitils.spring.annotation.SpringBeanByName;
+import org.unitils.spring.annotation.SpringBeanByType;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,21 +19,39 @@ import java.util.List;
  *
  * @author yousheng
  */
-public class BiddingTest  {
+@SpringApplicationContext({"schedule.xml"})
+public class BiddingTest extends UnitilsJUnit4 {
 
     public static void main(String[] args) {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("schedule.xml");
-        BiddingTask biddingTask = (BiddingTask) applicationContext.getBean("biddingTask");
+        BiddingJob biddingJob = (BiddingJob) applicationContext.getBean("biddingTask");
 
-        List<BiddingTask.TaskObject> list = null;
+        List<BiddingJob.TaskObject> list = null;
         try {
-            list = biddingTask.selectTasks(null, null, 0, null, 0);
-            biddingTask.execute(list.toArray(new BiddingTask.TaskObject[]{}), null);
+            list = biddingJob.selectTasks();
+            biddingJob.execute(list.toArray(new BiddingJob.TaskObject[]{}));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
+    @SpringBeanByType
+    private BiddingJob biddingJob;
+
+    @Test
+    public void test1() {
+
+        List<BiddingJob.TaskObject> list = null;
+        try {
+            list = biddingJob.selectTasks();
+            biddingJob.execute(list.toArray(new BiddingJob.TaskObject[]{}));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     private static void createEntity(ClassPathXmlApplicationContext applicationContext) {
         BiddingRuleDAO biddingRuleDAO = (BiddingRuleDAO) applicationContext.getBean("biddingRuleDAO");
@@ -60,10 +79,10 @@ public class BiddingTest  {
     public void test() {
 
         try {
-            BiddingTask biddingTask = new BiddingTask();
-            List<BiddingTask.TaskObject> list = biddingTask.selectTasks(null, null, 0, null, 0);
+            BiddingJob biddingJob = new BiddingJob();
+            List<BiddingJob.TaskObject> list = biddingJob.selectTasks();
 
-            biddingTask.execute(list.toArray(new BiddingTask.TaskObject[]{}), null);
+            biddingJob.execute(list.toArray(new BiddingJob.TaskObject[]{}));
         } catch (Exception e) {
             e.printStackTrace();
         }

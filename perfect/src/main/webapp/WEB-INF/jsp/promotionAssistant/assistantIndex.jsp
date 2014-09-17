@@ -354,7 +354,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">创意预览：</div>
+                    <div class="t_list01 fl over">创意预览：</div>
                     <div class="w_list01 fl over" id="sPreview"
                          style="width:557px;height: 98px;border:1px solid #CCC;"></div>
                 </li>
@@ -1574,6 +1574,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/addKeyword.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/Monitoring.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">
     $(function () {
         window.dialog = dialog;

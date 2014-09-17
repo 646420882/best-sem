@@ -1,12 +1,13 @@
 package com.perfect.service.impl;
 
+import com.perfect.api.baidu.RequestHelper;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.GetPreviewRequest;
 import com.perfect.autosdk.sms.v3.GetPreviewResponse;
 import com.perfect.autosdk.sms.v3.PreviewInfo;
-import com.perfect.autosdk.sms.v3.RankService;
+import com.perfect.autosdk.sms.v3.SublinkInfo;
 import com.perfect.dto.CreativeDTO;
 import com.perfect.service.HTMLAnalyseService;
 import org.apache.commons.codec.binary.Base64;
@@ -47,10 +48,16 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
         matchWord = String.valueOf(chars2);
         return keyword.equals(matchWord);
     }
-
-
     //从模拟页面获取推广链接和关键词
-    public List<PreviewData> getPageData(GetPreviewRequest getPreviewRequest) {
+
+    @Override
+    public List<PreviewData> getPageData(String[] keyword, Integer region) {
+        GetPreviewRequest getPreviewRequest = new GetPreviewRequest();
+
+        getPreviewRequest.setRegion(region);
+        getPreviewRequest.setKeyWords(Arrays.asList(keyword));
+        getPreviewRequest.setDevice(0);
+
         List<CreativeDTO> leftCreativeVOList = new LinkedList<>();
         List<CreativeDTO> rightCreativeVOList = new LinkedList<>();
 
@@ -119,7 +126,7 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
         LinkedList<CreativeDTO> creativeDTOList = new LinkedList<>();
 
         //获取左侧推广数据
-        if (doc.select("#content_left table").isEmpty()) {
+        if (doc.select("#content_left > table").isEmpty()) {
             //div
             // ec_title
             Elements elements = doc.select("#content_left > div");
@@ -132,8 +139,20 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                     creativeDTO.setDescription(element.select(".ec_desc .EC_pap_big_desc").text());
                     creativeDTO.setUrl(element.select(".ec_desc .ec_meta .ec_url").text());
                     creativeDTO.setTime(element.select(".ec_desc .ec_meta .ec_date").text());
+                    Elements children = element.select(".ec_desc .EC_pap_big_paxj a");
+                    if (children != null) {
+                        List<SublinkInfo> sublinkInfos = new ArrayList<>();
+                        ListIterator<Element> iterator = children.listIterator();
+                        while (iterator.hasNext()) {
+                            SublinkInfo sublinkInfo = new SublinkInfo();
+                            sublinkInfo.setDescription(iterator.next().text());
+                            sublinkInfos.add(sublinkInfo);
+                        }
+                        creativeDTO.setSublinkInfos(sublinkInfos);
+                    }
                 } else {
                     creativeDTO.setDescription(element.select(".ec_desc").text());
+                    creativeDTO.setDescSource(element.select(".ec_desc").html());
                     creativeDTO.setUrl(element.select(".ec_meta .ec_url").text());
                     creativeDTO.setTime(element.select(".ec_meta .ec_date").text());
                 }
@@ -159,6 +178,19 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
                 } else {
                     creativeDTO.setDescription(descs.text());
                 }
+
+                Elements sublinks = table.select(".EC_xj_underline a");
+                if (!sublinks.isEmpty()) {
+                    ListIterator<Element> children = sublinks.listIterator();
+                    List<SublinkInfo> sublinkInfos = new ArrayList<>();
+                    while (children.hasNext()) {
+                        SublinkInfo sublinkInfo = new SublinkInfo();
+                        sublinkInfo.setDescription(children.next().text());
+                        sublinkInfos.add(sublinkInfo);
+                    }
+                    creativeDTO.setSublinkInfos(sublinkInfos);
+                }
+
                 creativeDTO.setUrl(table.select(".EC_url").text());
 
                 creativeDTOList.addLast(creativeDTO);
@@ -168,14 +200,9 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
     }
 
     private Map<String, String> getHTML(GetPreviewRequest getPreviewRequest, CommonService commonService) {
-        RankService rankService = null;
-        try {
-            rankService = commonService.getService(RankService.class);
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-
-        GetPreviewResponse response = rankService.getPreview(getPreviewRequest);
+        GetPreviewResponse response = RequestHelper.addRequest(commonService, getPreviewRequest);
+        if (response == null)
+            return null;
         List<PreviewInfo> list1 = response.getPreviewInfos();
         if (list1 == null || list1.isEmpty()) {
             return null;
@@ -271,20 +298,18 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
             ServiceFactory service = ServiceFactory.getInstance("baidu-上品折扣2103914", "SHANGpin8952", "f35d9f818141591cc4fd43ac8e8056b8", null);
             HTMLAnalyseService htmlService = HTMLAnalyseServiceImpl.createService(service);
 
-            GetPreviewRequest request = new GetPreviewRequest();
-
-            request.setDevice(0);
-            request.setRegion(28000);
-
-
-            request.setKeyWords(Arrays.asList(new String[]{"去哪儿旅游"}));
-
-            List<PreviewData> map = htmlService.getPageData(request);
+            List<PreviewData> map = htmlService.getPageData(new String[]{"车贷", "婚纱照", "手机", "机票", "二手房"}, 28000);
 
             for (PreviewData data : map) {
-                System.out.println("data.getLeft() = " + data.getLeft());
-            }
 
+                for (CreativeDTO dto : data.getLeft()) {
+                    System.out.println(dto);
+                }
+
+                for (CreativeDTO dto : data.getRight()) {
+                    System.out.println(dto);
+                }
+            }
         } catch (ApiException e) {
             e.printStackTrace();
         }

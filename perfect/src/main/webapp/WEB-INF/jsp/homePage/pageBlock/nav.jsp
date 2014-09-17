@@ -60,6 +60,7 @@
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">
     var baiduAccountId = <%=accountId%>;
 
@@ -83,21 +84,26 @@
                 });
     };
     $(function () {
-        var navH = $(".on_title").offset().top;
-        $(window).scroll(function () {
-            var scroH = $(this).scrollTop();
-            if (scroH >= navH) {
-                $(".on_title").css({"position": "fixed", "top": "94"});
-            } else {
-                $(".on_title").css({"position": "static", "margin": "0 auto"});
-            }
+        //取屏幕宽度
+        var mid_width = $(document.body).width() - 180;
+        $(".mid").css("width",mid_width);
+        $(window).resize(function() {
+            mid_width = $(document.body).width() - 180;
+            $(".mid").css("width",mid_width);
         });
+        var top_width = $(document.body).width();
+        $(".top").css("width",top_width);
+        $(window).resize(function() {
+            top_width = $(document.body).width();
+            $(".top").css("width",top_width);
+        });
+
         $(".tips").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").slideDown(600);
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
-                $(".mid").css("width", "90.5%");
+                $(".mid").css("width", mid_width);
                 $(".mid").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
                 $(".tips").attr('title',"点击隐藏导航");
@@ -118,7 +124,7 @@
                 $(".nav_left").slideDown(600);
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
-                $(".mid").css("width", "90.5%");
+                $(".mid").css("width", mid_width);
                 $(".mid").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
                 $(".tips").attr('title',"点击隐藏导航");
@@ -174,6 +180,10 @@
                 $(this).addClass('current').append("<span class='nav_input1'></span>");
             }
         });
+    });
+    $(document).ready(function () {
+        $(".on_title").pin();
+        $(".top").pin();
 
     });
 

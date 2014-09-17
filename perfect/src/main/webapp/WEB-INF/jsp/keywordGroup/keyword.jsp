@@ -11,11 +11,11 @@ To change this template use File | Settings | File Templates.
 <head>
     <title></title>
     <meta charset="utf-8">
-    <meta id="viewport" name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style type="text/css">
         .list2 table tr td ul li {
@@ -137,7 +137,8 @@ To change this template use File | Settings | File Templates.
                                 </table>
                             </div>
                         </div>
-                        <div class="page2">
+                        <div id="pagination1" class="pagination"></div>
+                        <%--<div class="page2">
                             <a href="javascript:toPrevPage();">上一页</a>
                             <a onclick="javascript:startPer = 0;endPer = 10;loadPerformance()" cname="nameDet"
                                class="ajc" href="javascript:">1</a>
@@ -146,7 +147,7 @@ To change this template use File | Settings | File Templates.
                                 href="javascript:toAnyPage();" class='page_go'> GO</a>
                             <a href="#" class='page_go'><span>共计</span><span><b
                                     id="totalPage1"></b></span><span>页</span></a>
-                        </div>
+                        </div>--%>
                     </div>
                     <div class="k_r_top2 hides over">
                         <div class="k_r_middle over">
@@ -210,16 +211,17 @@ To change this template use File | Settings | File Templates.
                                 </table>
                             </div>
                         </div>
-                        <div class="page2">
+                        <div id="pagination2" class="pagination"></div>
+                        <%--<div class="page2">
                             <a href="javascript:toPrevPage();">上一页</a>
-                            <a onclick="javascript:startPer = 0;endPer = 10;loadPerformance()" cname="nameDet"
+                            <a onclick="javascript:void(0);" cname="nameDet"
                                class="ajc" href="javascript:">1</a>
                             <a href="javascript:toNextPage();">下一页</a><span
                                 style="margin-right:10px;">跳转到 <input id="pageNumber2" type="text" class="price"></span>&nbsp;&nbsp;<a
                                 href="javascript:toAnyPage();" class='page_go'> GO</a>
                             <a href="#" class='page_go'><span>共计</span><span><b
                                     id="totalPage2"></b></span><span>页</span></a>
-                        </div>
+                        </div>--%>
                     </div>
                 </div>
             </div>
@@ -484,11 +486,24 @@ To change this template use File | Settings | File Templates.
             </div>
         </div>
     </div>
+    <form name="paginationoptions" style="display: none">
+        <p><input type="text" value="5" name="items_per_page" id="items_per_page" class="numeric"/></p>
+
+        <p><input type="text" value="10" name="num_display_entries" id="num_display_entries" class="numeric"/></p>
+
+        <p><input type="text" value="2" name="num_edge_entries" id="num_edge_entries" class="numeric"/></p>
+
+        <p><input type="text" value="Prev" name="prev_text" id="prev_text"/></p>
+
+        <p><input type="text" value="Next" name="next_text" id="next_text"/></p>
+    </form>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">
 var type = 1; //1, baidu; 2, perfect
 var krFileId;
@@ -516,6 +531,37 @@ $(document).ajaxStop(function () {
     ajaxbg.fadeOut(1500);
 });
 
+/******************pagination*******************/
+var items_per_page = 10;    //默认每页显示10条数据
+var pageIndex = 0;
+var baiduWordPage = -1;
+var systemWordPage = -1;
+
+var pageSelectCallback = function (page_index, jq) {
+    pageIndex = page_index;
+    toAnyPage(page_index);
+    return false;
+};
+
+var getOptionsFromForm = function () {
+    var opt = {callback: pageSelectCallback};
+
+    opt["items_per_page"] = items_per_page;
+//    opt["num_display_entries"] = 10;
+//    opt["num_edge_entries"] = 2;
+    opt["prev_text"] = "上一页";
+    opt["next_text"] = "下一页";
+
+    //avoid html injections
+    var htmlspecialchars = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"};
+    $.each(htmlspecialchars, function (k, v) {
+        opt.prev_text = opt.prev_text.replace(k, v);
+        opt.next_text = opt.next_text.replace(k, v);
+    });
+    return opt;
+};
+/***********************************************/
+var optInit = getOptionsFromForm();
 $(function () {
     $(".showbox").click(function () {
         $(".TB_overlayBG").css({
@@ -688,6 +734,7 @@ var save2Keyword = function () {
     });
 };
 var findWordFromBaidu = function () {
+    baiduWordPage = -1;
     krFileId = null;
     var iframe = document.getElementById("downloadhelper_iframe");
     if (iframe != null) {
@@ -724,10 +771,18 @@ var findWordFromBaidu = function () {
         },
         success: function (data, textStatus, jqXHR) {
             $("#tbody1").empty();
+//            if ($("#anyPageNumber1").attr("class")) {
+//                document.getElementById("baiduKeywordDiv").style.display = "none";
+//                $("#anyPageNumber1").removeClass("price");
+//            }
             if (data.rows.length > 0) {
+//                document.getElementById("baiduKeywordDiv").style.display = "block";
+//                $("#anyPageNumber1").addClass("price");
                 krFileId = data.krFileId;
                 total = data.total;
-                $("#totalPage1").text(Math.ceil(total / limit));
+                $("#pagination1").pagination(total, optInit);
+                $("#pagination1").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber1' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:toAnyPage();' class='page_go'> GO</a>");
+//                $("#totalPage1").text(Math.ceil(total / limit));
                 var _class = "";
                 $.each(data.rows, function (i, item) {
                     if (i % 2 == 0) {
@@ -751,6 +806,7 @@ var findWordFromBaidu = function () {
     });
 };
 var findWordFromSystem = function () {
+    systemWordPage = -1;
     var iframe = document.getElementById("downloadhelper_iframe");
     if (iframe != null) {
         document.body.removeChild(iframe);
@@ -770,9 +826,17 @@ var findWordFromSystem = function () {
         },
         success: function (data, textStatus, jqXHR) {
             $("#tbody2").empty();
+//            if ($("#anyPageNumber2").attr("class")) {
+//                document.getElementById("systemKeywordDiv").style.display = "none";
+//                $("#anyPageNumber2").removeClass("price");
+//            }
             if (data.rows.length > 0) {
+//                document.getElementById("systemKeywordDiv").style.display = "block";
+//                $("#anyPageNumber2").addClass("price");
                 total = data.total;
-                $("#totalPage2").text(Math.ceil(total / limit));
+                $("#pagination2").pagination(total, optInit);
+                $("#pagination2").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber2' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:toAnyPage();' class='page_go'> GO</a>");
+//                $("#totalPage2").text(Math.ceil(total / limit));
                 var _class = "";
                 $.each(data.rows, function (i, item) {
                     if (i % 2 == 0) {
@@ -792,11 +856,29 @@ var findWordFromSystem = function () {
         }
     });
 };
-var toPrevPage = function () {
-    if (skip == 0) {
-        return;
+
+var toAnyPage = function (page_index) {
+    if (baiduWordPage == -1 && page_index == 0) {
+        document.getElementById("background").style.display = "none";
+        document.getElementById("progressBar").style.display = "none";
+        return false;
     }
-    skip--;
+    if (systemWordPage == -1 && page_index == 0) {
+        document.getElementById("background").style.display = "none";
+        document.getElementById("progressBar").style.display = "none";
+        return false;
+    }
+    baiduWordPage = 0;
+    systemWordPage = 0;
+    if (page_index == null) {
+        skip = $("#anyPageNumber2").val() - 1;
+        if (skip <= -1 || skip == pageIndex) {
+            return;
+        }
+    } else {
+        skip = page_index;
+    }
+
     if (type == 1) {
         $.ajax({
             url: "/getKRWords/bd",
@@ -827,167 +909,6 @@ var toPrevPage = function () {
                                 "<td>" + item.keywordName + "</td>" +
                                 "<td>" + item.dsQuantity + "</td>" +
                                 "<td>" + item.competition + "%</td>" +
-// "<td>" + item.recommendReason1 + "</td>" +
-// "<td>" + item.recommendReason2 + "</td>" +
-                                "</tr>";
-                        $("#tbody1").append(newTr);
-                    });
-                }
-            }
-        });
-    } else {
-        $.ajax({
-            url: "/getKRWords/p",
-            type: "GET",
-            data: {
-                "trade": _trade,
-                "category": _category,
-                "skip": skip,
-                "limit": limit,
-                "status": 1
-            },
-            success: function (data, textStatus, jqXHR) {
-                $("#tbody2").empty();
-                if (data.rows.length > 0) {
-                    var _class = "";
-                    $.each(data.rows, function (i, item) {
-                        if (i % 2 == 0) {
-                            _class = "list2_box1";
-                        } else {
-                            _class = "list2_box2";
-                        }
-                        var newTr = "<tr class='" + _class + "'>" +
-                                "<td>" + _trade + "</td>" +
-                                "<td>" + _category + "</td>" +
-                                "<td>" + item.group + "</td>" +
-                                "<td>" + (item.keyword == null ? "" : item.keyword) + "</td>" +
-                                "</tr>";
-                        $("#tbody2").append(newTr);
-                    });
-                }
-            }
-        });
-    }
-};
-var toNextPage = function () {
-    if (skip + 2 > total / limit) {
-        return;
-    }
-    skip++;
-    if (type == 1) {
-        $.ajax({
-            url: "/getKRWords/bd",
-            type: "GET",
-            async: false,
-            data: {
-                "seedWords": getSeedWords,
-                "skip": skip,
-                "limit": limit,
-                "krFileId": krFileId,
-                "fieldName": fieldName,
-                "sort": sort
-            },
-            success: function (data, textStatus, jqXHR) {
-                $("#tbody1").empty();
-                if (data.rows.length > 0) {
-                    krFileId = data.krFileId;
-                    var _class = "";
-                    $.each(data.rows, function (i, item) {
-                        if (i % 2 == 0) {
-                            _class = "list2_box1";
-                        } else {
-                            _class = "list2_box2";
-                        }
-                        var newTr = "<tr class='" + _class + "'>" +
-                                "<td>" + item.groupName + "</td>" +
-                                "<td>" + item.seedWord + "</td>" +
-                                "<td>" + item.keywordName + "</td>" +
-                                "<td>" + item.dsQuantity + "</td>" +
-                                "<td>" + item.competition + "%</td>" +
-// "<td>" + item.recommendReason1 + "</td>" +
-// "<td>" + item.recommendReason2 + "</td>" +
-                                "</tr>";
-                        $("#tbody1").append(newTr);
-                    });
-                }
-            }
-        });
-    } else {
-        $.ajax({
-            url: "/getKRWords/p",
-            type: "GET",
-            data: {
-                "trade": _trade,
-                "category": _category,
-                "skip": skip,
-                "limit": limit,
-                "status": 1
-            },
-            success: function (data, textStatus, jqXHR) {
-                $("#tbody2").empty();
-                if (data.rows.length > 0) {
-                    var _class = "";
-                    $.each(data.rows, function (i, item) {
-                        if (i % 2 == 0) {
-                            _class = "list2_box1";
-                        } else {
-                            _class = "list2_box2";
-                        }
-                        var newTr = "<tr class='" + _class + "'>" +
-                                "<td>" + _trade + "</td>" +
-                                "<td>" + _category + "</td>" +
-                                "<td>" + item.group + "</td>" +
-                                "<td>" + (item.keyword == null ? "" : item.keyword) + "</td>" +
-                                "</tr>";
-                        $("#tbody2").append(newTr);
-                    });
-                }
-            }
-        });
-    }
-};
-var toAnyPage = function () {
-    if (type == 1) {
-        skip = $("#pageNumber1").val();
-    } else {
-        skip = $("#pageNumber2").val();
-    }
-    if ((skip > (total / limit)) || skip <= 0) {
-        return;
-    }
-    skip--;
-    if (type == 1) {
-        $.ajax({
-            url: "/getKRWords/bd",
-            type: "GET",
-            async: false,
-            data: {
-                "seedWords": getSeedWords,
-                "skip": skip,
-                "limit": limit,
-                "krFileId": krFileId,
-                "fieldName": fieldName,
-                "sort": sort
-            },
-            success: function (data, textStatus, jqXHR) {
-                $("#tbody1").empty();
-                if (data.rows.length > 0) {
-                    krFileId = data.krFileId;
-                    var _class = "";
-                    $.each(data.rows, function (i, item) {
-                        if (i % 2 == 0) {
-                            _class = "list2_box1";
-                        } else {
-                            _class = "list2_box2";
-                        }
-                        var newTr = "<tr class='" + _class + "'>" +
-                                "<td>" + item.groupName + "</td>" +
-                                "<td>" + item.seedWord + "</td>" +
-                                "<td>" + item.keywordName + "</td>" +
-                                "<td>" + item.dsQuantity + "</td>" +
-                                "<td>" + item.competition + "%</td>" +
-// "<td>" + item.recommendReason1 + "</td>" +
-// "<td>" + item.recommendReason2 + "</td>" +
                                 "</tr>";
                         $("#tbody1").append(newTr);
                     });

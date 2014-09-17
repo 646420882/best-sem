@@ -24,5 +24,5 @@ public interface HTMLAnalyseService {
      * @param getPreviewRequest
      * @return
      */
-    List<HTMLAnalyseServiceImpl.PreviewData> getPageData(GetPreviewRequest getPreviewRequest);
+    List<HTMLAnalyseServiceImpl.PreviewData> getPageData(String[] keyword, Integer region);
 }

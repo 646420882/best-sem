@@ -25,7 +25,7 @@
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
-<div class="on_title over">
+<div class="pinned on_title over">
     <a href="#">
         推广助手
     </a>
@@ -89,7 +89,7 @@
                                                 </dl>
                                           </span>
                                           <span>
-                                              <input type="button" value="高级搜索" class="advanced_search">
+                                              <input type="button" value="高级搜索∨" class="advanced_search">
                                         </span>
                             </div>
                         </li>
@@ -133,8 +133,7 @@
                                 <div class="w_list01 fl over">出价：</div>
                                 <div class="w_list02 fl over">
                                                <span>
-                                                   <input type="text" class="price"> - 　
-                                                   <input type="text" class="price">
+                                                   <input type="text" class="price"> - <input type="text" class="price">
                                                </span></div>
                             </li>
                         </ul>
@@ -616,7 +615,7 @@
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">
 
 <!--
@@ -825,6 +824,8 @@ $(document).ajaxStart(function () {
 $(document).ajaxStop(function () {
     ajaxbg.fadeOut(1500);
 });
+
+
 </script>
 </body>
 </html>

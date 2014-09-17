@@ -176,7 +176,7 @@
                     <td>
                         <ul>
                             <li>
-                                &nbsp;<span>时间</span><b>
+                               <span>时间</span><b>
                                 <p>
                                     <input class="one" type="button"
                                            onclick="javascript:category = 'date';sort = -1;loadPerformance(statDate)">
@@ -188,7 +188,7 @@
                                 </p></b>
                             </li>
                             <li>
-                                &nbsp;<span>展现量</span><b>
+                                <span>展现量</span><b>
                                 <p>
                                     <input class="one" type="button"
                                            onclick="javascript:category = 'impression';sort = -2;loadPerformance(statDate)">
@@ -200,7 +200,7 @@
                                 </p></b>
                             </li>
                             <li>
-                                &nbsp;<span>点击量</span><b>
+                                <span>点击量</span><b>
                                 <p>
                                     <input class="one" type="button"
                                            onclick="javascript:category = 'click';sort = -3;loadPerformance(statDate)">
@@ -212,7 +212,7 @@
                                 </p></b>
                             </li>
                             <li>
-                                &nbsp;<span>消费</span><b>
+                               <span>消费</span><b>
                                 <p>
                                     <input class="one" type="button"
                                            onclick="javascript:category = 'cost';sort = -4;loadPerformance(statDate)">
@@ -224,7 +224,7 @@
                                 </p></b>
                             </li>
                             <li>
-                                &nbsp;<span>点击率</span><b>
+                                <span>点击率</span><b>
                                 <p>
                                     <input class="one" type="button"
                                            onclick="javascript:category = 'ctr';sort = -5;loadPerformance(statDate)">
@@ -238,7 +238,7 @@
                                 </a>
                             </li>
                             <li>
-                                &nbsp;<span>平均点击价格</span><b>
+                                <span>平均点击价格</span><b>
                                 <p>
                                     <input class="one" type="button"
                                            onclick="javascript:category = 'cpc';sort = -6;loadPerformance(statDate)">
@@ -252,7 +252,7 @@
                                 </a>
                             </li>
                             <li>
-                                &nbsp;<span>转化(页面)</span><b>
+                                <span>转化(页面)</span><b>
                                 <p>
                                     <input class="one" type="button"
                                            onclick="javascript:category = 'conversion';sort = -7;loadPerformance(statDate)">
@@ -332,8 +332,8 @@
 
     <td>
         <ul>
-            <li>
-                &nbsp;<span>质量度</span><b>
+            <li class="home_quality">
+               <span>质量度</span><b>
                 <p>
                     <input class="one" type="button">
                 </p>
@@ -343,7 +343,7 @@
                 </p></b>
             </li>
             <li>
-                &nbsp;<span>关键词数</span><b>
+                <span>关键词数</span><b>
                 <p>
                     <input class="one" type="button">
                 </p>
@@ -353,7 +353,7 @@
                 </p></b>
             </li>
             <li>
-                &nbsp;<span>展现</span><b>
+               <span>展现</span><b>
                 <p>
                     <input class="one" type="button"
                            onclick="javascript:category = 'impression';sort = -1;loadKeywordQualityData();"/>
@@ -365,7 +365,7 @@
                 </p></b>
             </li>
             <li>
-                &nbsp;<span>点击</span><b>
+               <span>点击</span><b>
                 <p>
                     <input class="one" type="button"
                            onclick="javascript:category = 'click';sort = -1;loadKeywordQualityData();"/>
@@ -377,7 +377,7 @@
                 </p></b>
             </li>
             <li>
-                &nbsp;<span>点击率</span><b>
+                <span>点击率</span><b>
                 <p>
                     <input class="one" type="button"
                            onclick="javascript:category = 'ctr';sort = -1;loadKeywordQualityData();"/>
@@ -391,7 +391,7 @@
                 </a>
             </li>
             <li>
-                &nbsp;<span>消费</span><b>
+                <span>消费</span><b>
                 <p>
                     <input class="one" type="button"
                            onclick="javascript:category = 'cost';sort = -1;loadKeywordQualityData();"/>
@@ -405,7 +405,7 @@
                 </a>
             </li>
             <li>
-                &nbsp;<span>平均点击价格</span><b>
+                <span>平均点击价格</span><b>
                 <p>
                     <input class="one" type="button"
                            onclick="javascript:category = 'cpc';sort = -1;loadKeywordQualityData();"/>
@@ -418,7 +418,7 @@
                 <a href="#" class="question"></a>
             </li>
             <li>
-                &nbsp;<span>转化</span><b>
+                <span>转化</span><b>
                 <p>
                     <input class="one" type="button"
                            onclick="javascript:category = 'conversion';sort = -1;loadKeywordQualityData();"/>
@@ -436,7 +436,7 @@
 <tr class="list2_box1" onclick="TestBlack('divo');">
     <td>
         <ul>
-            <li>
+            <li class="home_quality">
                 <ul class="paihang">
                     <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
                     <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
@@ -461,7 +461,7 @@
     <td id="divo">
         <div class="list2_top2">
             <ul>
-                <li></li>
+                <li class="home_quality"></li>
                 <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
@@ -477,7 +477,7 @@
 <tr class="list2_box2" onclick="TestBlack('divo1');">
     <td>
         <ul>
-            <li>
+            <li class="home_quality">
                 <ul class="paihang">
                     <li><img src="${pageContext.request.contextPath}/public/img/star2.png"></li>
                     <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
@@ -502,7 +502,7 @@
     <td id="divo1" style=" display:none;">
         <div class="list2_top2">
             <ul>
-                <li></li>
+                <li class="home_quality"></li>
                 <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
@@ -518,7 +518,7 @@
 <tr class="list2_box1" onclick="TestBlack('divo2');">
     <td>
         <ul>
-            <li>
+            <li class="home_quality">
                 <ul class="paihang">
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
                     <li><img src="${pageContext.request.contextPath}/public/img/star3.png"></li>
@@ -543,7 +543,7 @@
     <td id="divo2" style=" display:none;">
         <div class="list2_top2">
             <ul>
-                <li></li>
+                <li class="home_quality"></li>
                 <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
@@ -559,7 +559,7 @@
 <tr class="list2_box2" onclick="TestBlack('divo3');">
     <td>
         <ul>
-            <li>
+            <li class="home_quality">
                 <ul class="paihang">
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
                     <li><img src="${pageContext.request.contextPath}/public/img/star2.png"></li>
@@ -584,7 +584,7 @@
     <td id="divo3" style=" display:none;">
         <div class="list2_top2">
             <ul>
-                <li></li>
+                <li class="home_quality"></li>
                 <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
@@ -600,7 +600,7 @@
 <tr class="list2_box1" onclick="TestBlack('divo4');">
     <td>
         <ul>
-            <li>
+            <li class="home_quality">
                 <ul class="paihang">
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
@@ -625,7 +625,7 @@
     <td id="divo4" style=" display:none;">
         <div class="list2_top2">
             <ul>
-                <li></li>
+                <li class="home_quality"></li>
                 <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
@@ -641,7 +641,7 @@
 <tr class="list2_box2" onclick="TestBlack('divo5');">
     <td>
         <ul>
-            <li>
+            <li class="home_quality">
                 <ul class="paihang">
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
@@ -666,7 +666,7 @@
     <td id="divo5" style=" display:none;">
         <div class="list2_top2">
             <ul>
-                <li></li>
+                <li class="home_quality"></li>
                 <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
@@ -682,7 +682,7 @@
 <tr class="list2_box1" onclick="TestBlack('divo6');">
     <td>
         <ul>
-            <li>
+            <li class="home_quality">
                 <ul class="paihang">
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
@@ -707,7 +707,7 @@
     <td id="divo6" style=" display:none;">
         <div class="list2_top2">
             <ul>
-                <li></li>
+                <li class="home_quality"></li>
                 <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
@@ -723,7 +723,7 @@
 <tr class="list2_box2" onclick="TestBlack('divo7');">
     <td>
         <ul>
-            <li>
+            <li class="home_quality">
                 <ul class="paihang">
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
@@ -748,7 +748,7 @@
     <td id="divo7" style=" display:none;">
         <div class="list2_top2">
             <ul>
-                <li></li>
+                <li class="home_quality"></li>
                 <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
@@ -764,7 +764,7 @@
 <tr class="list2_box1" onclick="TestBlack('divo8');">
     <td>
         <ul>
-            <li>
+            <li class="home_quality">
                 <ul class="paihang">
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
@@ -789,7 +789,7 @@
     <td id="divo8" style=" display:none;">
         <div class="list2_top2">
             <ul>
-                <li></li>
+                <li class="home_quality"></li>
                 <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
@@ -805,7 +805,7 @@
 <tr class="list2_box2" onclick="TestBlack('divo9');">
     <td>
         <ul>
-            <li>
+            <li class="home_quality">
                 <ul class="paihang">
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
@@ -830,7 +830,7 @@
     <td id="divo9" style=" display:none;">
         <div class="list2_top2">
             <ul>
-                <li></li>
+                <li class="home_quality"></li>
                 <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
@@ -846,7 +846,7 @@
 <tr class="list2_box2" onclick="TestBlack('divo10');">
     <td>
         <ul>
-            <li>
+            <li class="home_quality">
                 <ul class="paihang">
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
                     <li><img src="${pageContext.request.contextPath}/public/img/star.png"></li>
@@ -871,7 +871,7 @@
     <td id="divo10" style=" display:none;">
         <div class="list2_top2">
             <ul>
-                <li></li>
+                <li class="home_quality"></li>
                 <li><span>关键词</span><a href="#" class="question"></a></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
@@ -943,7 +943,7 @@
                 <td>
                     <ul>
                         <li>
-                            &nbsp;<span>关键词</span><b>
+                            <span>关键词</span><b>
                             <p>
                                 <input class="one" type="button">
                             </p>
@@ -955,7 +955,7 @@
                             </a>
                         </li>
                         <li>
-                            &nbsp;<span>展现</span><b>
+                           <span>展现</span><b>
                             <p>
                                 <input class="one" type="button"
                                        onclick="javascript:sort = -1;getImportKeywordDefault(null, statDate);">
@@ -967,7 +967,7 @@
                             </p></b>
                         </li>
                         <li>
-                            &nbsp;<span>点击</span><b>
+                            <span>点击</span><b>
                             <p>
                                 <input class="one" type="button"
                                        onclick="javascript:sort = -2;getImportKeywordDefault(null, statDate);">
@@ -979,7 +979,7 @@
                             </p></b>
                         </li>
                         <li>
-                            &nbsp;<span>消费</span><b>
+                           <span>消费</span><b>
                             <p>
                                 <input class="one" type="button"
                                        onclick="javascript:sort = -3;getImportKeywordDefault(null, statDate);">
@@ -991,7 +991,7 @@
                             </p></b>
                         </li>
                         <li>
-                            &nbsp;<span>平均点击价格</span><b>
+                            <span>平均点击价格</span><b>
                             <p>
                                 <input class="one" type="button"
                                        onclick="javascript:sort = -4;getImportKeywordDefault(null, statDate);">
@@ -1003,7 +1003,7 @@
                             </p></b>
                         </li>
                         <li>
-                            &nbsp;<span>点击率</span><b>
+                           <span>点击率</span><b>
                             <p>
                                 <input class="one" type="button"
                                        onclick="javascript:sort = -5;getImportKeywordDefault(null, statDate);">
@@ -1015,7 +1015,7 @@
                             </p></b>
                         </li>
                         <li>
-                            &nbsp;<span>转化</span><b>
+                           <span>转化</span><b>
                             <p>
                                 <input class="one" type="button"
                                        onclick="javascript:sort = -6;getImportKeywordDefault(null, statDate);">
@@ -1027,7 +1027,7 @@
                             </p></b>
                         </li>
                         <li>
-                            &nbsp;<span>平均排名</span><b>
+                            <span>平均排名</span><b>
                             <p>
                                 <input class="one" type="button"
                                        onclick="javascript:sort = -7;getImportKeywordDefault(null, statDate);">
@@ -1039,7 +1039,7 @@
                             </p></b>
                         </li>
                         <li>
-                            &nbsp;<span>质量度</span><b>
+                            <span>质量度</span><b>
                             <p>
                                 <input class="one" type="button">
                             </p>
@@ -1049,7 +1049,7 @@
                             </p></b>
                         </li>
                         <li>
-                            &nbsp;<span>匹配</span><b>
+                            <span>匹配</span><b>
                             <p>
                                 <input class="one" type="button">
                             </p>
@@ -1100,6 +1100,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/keyword/keywordQuality.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">
     // 对Date的扩展，将 Date 转化为指定格式的String
     // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
@@ -1158,15 +1159,6 @@ $(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
         var index = $tab_li.index(this);
         $('div.tab_box > div').eq(index).show().siblings().hide();
-    });
-    var navH = $(".on_title").offset().top;
-    $(window).scroll(function () {
-        var scroH = $(this).scrollTop();
-        if (scroH >= navH) {
-            $(".on_title").css({"position": "fixed", "top": "77"});
-        } else {
-            $(".on_title").css({"position": "static", "margin": "0 auto"});
-        }
     });
     $("input[name=reservation]").click(function(){
         clickdddd = $(this);

@@ -2,34 +2,50 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xmlns:elasticsearch="http://www.springframework.org/schema/data/elasticsearch"
+
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/data/mongo
-		http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"
+
+
+		http://www.springframework.org/schema/data/elasticsearch
+		http://www.springframework.org/schema/data/elasticsearch/spring-elasticsearch.xsd"
        default-lazy-init="true" default-autowire="byName">
 
     <context:annotation-config/>
     <context:component-scan base-package="com.perfect"/>
 
     <!-- MongoDBÅäÖÃ -->
-    <mongo:mongo id="mongo" replica-set="182.92.188.177:23135">
-        <mongo:options connections-per-host="20"
-                       threads-allowed-to-block-for-connection-multiplier="5"
-                       auto-connect-retry="true"/>
-    </mongo:mongo>
-    <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"/>
-    <mongo:mapping-converter id="mongoConverter"/>
+    <!--<mongo:mongo id="mongo" replica-set="182.92.188.177:23135">-->
+    <!--<mongo:options connections-per-host="20"-->
+    <!--threads-allowed-to-block-for-connection-multiplier="5"-->
+    <!--auto-connect-retry="true"/>-->
+    <!--</mongo:mongo>-->
+    <!--<mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"/>-->
+    <!--<mongo:mapping-converter id="mongoConverter"/>-->
 
-    <bean id="noClassMongoConverter" class="com.perfect.mongodb.base.MongoConverterEnhanceFactoryBean">
-        <property name="mongoConverter" ref="mongoConverter"/>
+    <!--<bean id="noClassMongoConverter" class="com.perfect.mongodb.base.MongoConverterEnhanceFactoryBean">-->
+    <!--<property name="mongoConverter" ref="mongoConverter"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="mongoSysTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">-->
+    <!--<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>-->
+    <!--<constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>-->
+    <!--</bean>-->
+
+
+    <elasticsearch:repositories base-package="com.perfect.elasticsearch.repo"/>
+
+    <elasticsearch:transport-client id="client" cluster-nodes="182.92.188.177:19300" cluster-name="es-cluster"/>
+
+    <bean name="elasticsearchTemplate" class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
+        <constructor-arg name="client" ref="client"/>
     </bean>
 
-    <bean id="mongoSysTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-        <constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>
+    <bean name="esFactory"
+          class="org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactory">
+        <constructor-arg name="elasticsearchOperations" ref="elasticsearchTemplate"/>
     </bean>
-
 </beans>
