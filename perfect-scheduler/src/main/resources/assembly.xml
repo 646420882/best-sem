@@ -8,11 +8,11 @@
 
     <includeBaseDirectory>false</includeBaseDirectory>
     <files>
-        <file>
-            <source>src/main/resources/schedule.xml</source>
-            <outputDirectory>/conf</outputDirectory>
-            <filtered>true</filtered>
-        </file>
+        <!--<file>-->
+            <!--<source>src/main/resources/*.xml</source>-->
+            <!--<outputDirectory>/conf</outputDirectory>-->
+            <!--<filtered>true</filtered>-->
+        <!--</file>-->
 
         <file>
             <source>src/main/resources/log4j.properties</source>

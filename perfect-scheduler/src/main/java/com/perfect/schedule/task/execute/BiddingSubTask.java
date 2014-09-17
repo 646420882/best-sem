@@ -96,12 +96,17 @@ public class BiddingSubTask implements Runnable {
         Map<String, KeywordEntity> nameMap = new HashMap<>();
         Map<String, BiddingRuleEntity> ruleMap = new HashMap<>();
 
-
-        for (KeywordEntity keywordEntity : keywordEntityList) {
+        Iterator<KeywordEntity> iterator = keywordEntityList.iterator();
+        while (iterator.hasNext()) {
+            KeywordEntity keywordEntity = iterator.next();
             kwName.add(keywordEntity.getKeyword());
             nameMap.put(keywordEntity.getKeyword(), keywordEntity);
 
             BiddingRuleEntity biddingRuleEntity = biddingRuleService.findByKeywordId(keywordEntity.getKeywordId());
+            if (biddingRuleEntity == null) {
+                iterator.remove();
+                continue;
+            }
             ruleMap.put(keywordEntity.getKeyword(), biddingRuleEntity);
 
             StrategyEntity strategyEntity = biddingRuleEntity.getStrategyEntity();
@@ -229,8 +234,8 @@ public class BiddingSubTask implements Runnable {
                         }
                     }
                 } catch (MalformedURLException e) {
-                    if(logger.isErrorEnabled()){
-                        logger.error("MalformedURLException",e);
+                    if (logger.isErrorEnabled()) {
+                        logger.error("MalformedURLException", e);
                     }
                 }
 
@@ -253,6 +258,7 @@ public class BiddingSubTask implements Runnable {
                 if (match) {
 
                     keywordEntityList.remove(keywordEntity);
+                    kwName.remove(keywordEntity.getKeyword());
                     nameMap.remove(keywordEntity.getKeyword());
                     ruleMap.remove(keywordEntity.getKeyword());
                     // 重复竞价 TODO
@@ -303,6 +309,7 @@ public class BiddingSubTask implements Runnable {
                     if (currentPrice.compareTo(strategyEntity.getMaxPrice()) == 1) {
 
                         keywordEntityList.remove(keywordEntity);
+                        kwName.remove(keywordEntity.getKeyword());
                         nameMap.remove(keywordEntity.getKeyword());
                         ruleMap.remove(keywordEntity.getKeyword());
 
