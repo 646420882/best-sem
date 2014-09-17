@@ -297,24 +297,36 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                     cpc = new BigDecimal(cpc * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     qualityDTO.setCpc(cpc);
                 }
-                Double keywordQtyRate = (tempList.size() + .0) / list.size();
+                Double keywordQtyRate = (tempList.size() + 0.0) / list.size();
                 keywordQtyRate = new BigDecimal(keywordQtyRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                 qualityDTO.setKeywordQtyRate(keywordQtyRate);
 
-                Double impressionRate = (qualityDTO.getImpression() + .0) / allQualityData.getImpression();
-                impressionRate = new BigDecimal(impressionRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                Double impressionRate = 0.0;
+                if (allQualityData.getImpression() > 0) {
+                    impressionRate = (qualityDTO.getImpression() + 0.0) / allQualityData.getImpression();
+                    impressionRate = new BigDecimal(impressionRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                }
                 qualityDTO.setImpressionRate(impressionRate);
 
-                Double clickRate = (qualityDTO.getClick() + .0) / allQualityData.getClick();
-                clickRate = new BigDecimal(clickRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                Double clickRate = 0.0;
+                if (allQualityData.getClick() > 0) {
+                    clickRate = (qualityDTO.getClick() + 0.0) / allQualityData.getClick();
+                    clickRate = new BigDecimal(clickRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                }
                 qualityDTO.setClickRate(clickRate);
 
-                Double costRate = (qualityDTO.getCost() + .0) / allQualityData.getCost();
-                costRate = new BigDecimal(costRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                Double costRate = 0.0;
+                if (allQualityData.getCost() > 0) {
+                    costRate = (qualityDTO.getCost() + 0.0) / allQualityData.getCost();
+                    costRate = new BigDecimal(costRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                }
                 qualityDTO.setCostRate(costRate);
 
-                Double conversionRate = (qualityDTO.getConversion() + .0) / allQualityData.getConversion();
-                conversionRate = new BigDecimal(conversionRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                Double conversionRate = 0.0;
+                if (allQualityData.getConversion() > 0) {
+                    conversionRate = (qualityDTO.getConversion() + 0.0) / allQualityData.getConversion();
+                    conversionRate = new BigDecimal(conversionRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                }
                 qualityDTO.setConversionRate(conversionRate);
 
                 qualityDTO.setGrade(i);
