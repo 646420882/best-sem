@@ -589,7 +589,7 @@ var downloadCSV = function () {
         document.getElementById("progressBar1").style.display = "block";
         _url = "/getKRWords/downloadBaiduCSV?seedWords=" + getSeedWords() + "&krFileId=" + krFileId;
 
-        if (window.attachEvent) {
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
             ie_iframe = document.createElement("iframe");
             ie_iframe.id = "downloadhelper_iframe";
             ie_iframe.width = 0;
@@ -614,7 +614,7 @@ var downloadCSV = function () {
         document.getElementById("progressBar1").style.display = "block";
         _url = "/getKRWords/downloadCSV?trade=" + _trade + "&category=" + _category;
 
-        if (window.attachEvent) {
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
             ie_iframe = document.createElement("iframe");
             ie_iframe.id = "downloadhelper_iframe";
             ie_iframe.width = 0;

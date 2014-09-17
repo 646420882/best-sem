@@ -29,6 +29,8 @@
     </style>
 </head>
 <body>
+<div id="background" class="background"></div>
+<div id="progressBar1" class="progressBar">正在生成报告，请稍等...</div>
 <jsp:include page="pageBlock/head.jsp"/>
 <div class="concent over">
 <jsp:include page="pageBlock/nav.jsp"/>
@@ -320,7 +322,7 @@
 </div>
 <div class="download over ">
     <span class="fl" style=" color:#000; font-weight:bold;">查看完整版数据请点击下载全部→</span>
-    <a href="/keywordQuality/downloadCSV" class="fr">
+    <a href="javascript:downloadKeywordQualityCSV();" class="fr">
         下载全部
     </a>
 </div>
@@ -1196,6 +1198,9 @@ $(function () {
             showDate();
         }
     });
+
+    document.getElementById("background").style.display = "none";
+    document.getElementById("progressBar1").style.display = "none";
 
     //默认加载昨天的数据
     loadKeywordQualityData(null, 1);
