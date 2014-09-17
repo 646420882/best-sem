@@ -25,11 +25,20 @@ public class ReportPageDetails {
                 entity.setTerminal(devices);
                 if(entity.getDate() == null){
                     try {
-                        entity.setDateRep(dateFormat.parse(voEntity.getKey()));
+                        entity.setDateRep(dateFormat.parse(voEntity.getKey().substring(0,10)));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
+                if(entity.getAdgroupId() == null){entity.setAdgroupId(0l);}
+                if(entity.getCreativeId() == null){entity.setCreativeId(0l);}
+                if(entity.getKeywordId() == null){entity.setKeywordId(0l);}
+                if(entity.getRegionId() == null){entity.setRegionId(0l);}
+                if(entity.getAdgroupName() == null){entity.setAdgroupName("-");}
+                if(entity.getCampaignName() == null){entity.setCampaignName("-");}
+                if(entity.getKeywordName() == null){entity.setKeywordName("-");}
+                if(entity.getRegionName() == null){entity.setRegionName("-");}
+
                 if(entity.getPcImpression() == null){entity.setPcImpression(0);}
                 if(entity.getPcClick() == null){entity.setPcClick(0);}
                 if(entity.getPcCost() == null){entity.setPcCost(BigDecimal.valueOf(0.00));}

@@ -13,6 +13,10 @@ public class FolderEntity {
     @Field("fdna")
     private String folderName;
 
+    //用户ID
+    @Field("acid")
+    private Long accountId;
+
     private int countNumber;
 
     public Long getFolderId() {
@@ -39,11 +43,20 @@ public class FolderEntity {
         this.countNumber = countNumber;
     }
 
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
+
     @Override
     public String toString() {
-        return "ForlderEntity{" +
+        return "FolderEntity{" +
                 "folderId=" + folderId +
                 ", folderName='" + folderName + '\'' +
+                ", accountId=" + accountId +
                 ", countNumber=" + countNumber +
                 '}';
     }
