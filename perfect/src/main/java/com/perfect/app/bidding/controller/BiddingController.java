@@ -140,6 +140,7 @@ public class BiddingController {
             // 竞价模式
             strategyEntity.setMode(param.getMode());
 
+            //竞价次数
             strategyEntity.setRunByTimes(param.getRunByTimes());
             biddingRuleEntity.setCurrentTimes(param.getRunByTimes());
             // 目标区域
@@ -386,6 +387,9 @@ public class BiddingController {
             if (ruleEntity != null) {
                 keywordReportDTO.setRule(true);
                 keywordReportDTO.setRuleDesc(BiddingRuleUtils.getRule(ruleEntity));
+                if (ruleEntity.isEnabled()) {
+                    keywordReportDTO.setBiddingStatus(1);
+                }
             }
         }
         String yesterday = DateUtils.getYesterdayStr();
