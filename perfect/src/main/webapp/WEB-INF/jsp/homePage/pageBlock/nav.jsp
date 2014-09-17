@@ -84,12 +84,26 @@
                 });
     };
     $(function () {
+        //取屏幕宽度
+        var mid_width = $(document.body).width() - 180;
+        $(".mid").css("width",mid_width);
+        $(window).resize(function() {
+            mid_width = $(document.body).width() - 180;
+            $(".mid").css("width",mid_width);
+        });
+        var top_width = $(document.body).width();
+        $(".top").css("width",top_width);
+        $(window).resize(function() {
+            top_width = $(document.body).width();
+            $(".top").css("width",top_width);
+        });
+
         $(".tips").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").slideDown(600);
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
-                $(".mid").css("width", "90.5%");
+                $(".mid").css("width", mid_width);
                 $(".mid").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
                 $(".tips").attr('title',"点击隐藏导航");
@@ -110,7 +124,7 @@
                 $(".nav_left").slideDown(600);
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
-                $(".mid").css("width", "90.5%");
+                $(".mid").css("width", mid_width);
                 $(".mid").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
                 $(".tips").attr('title',"点击隐藏导航");
@@ -169,6 +183,8 @@
     });
     $(document).ready(function () {
         $(".on_title").pin();
+        $(".top").pin();
+
     });
 
 </script>

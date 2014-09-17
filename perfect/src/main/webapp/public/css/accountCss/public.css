@@ -132,14 +132,14 @@ table tr ,table tr td{
 /*nav*/
 .nav {
     width:180px;
-    max-height: 960px;
-    position:fixed;
+    height:100%;
+    position:absolute;
     z-index:112;
     left:0px;
-    top:94px;
+    top:0px;
 }
 .nav_left {
-    min-height: 1000px;
+    height:100%;
     position: relative;
     width:172px;
     z-index:111;
@@ -315,6 +315,8 @@ table tr ,table tr td{
     color:#f2ab00;
 }
 .nav_under{
+    width:180px;
+    position:fixed;
 }
 .nav_under ul li .nav_input1{
     width:8px;
@@ -322,7 +324,7 @@ table tr ,table tr td{
     background:url(/public/img/jiantou.png) right  no-repeat;
     margin:0px;
     position:absolute;
-    right:0px;
+    right:8px;
     top:35%;
     z-index:102;
 }

@@ -139,7 +139,7 @@
 
                  </div>
              </div>
-             <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+             <div class="main_bottom" style="margin:0px;  background:none;">
                  <div class="w_list03">
                      <ul>
                          <li class="current" >上一步</li>
