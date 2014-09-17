@@ -15,6 +15,8 @@ public class CreativeDTO implements Serializable {
 
     private String description;
 
+    private String descSource;
+
     private String url;
 
     private List<SublinkInfo> sublinkInfos;
@@ -83,6 +85,7 @@ public class CreativeDTO implements Serializable {
                 ", description='" + description + '\'' +
                 ", url='" + url + '\'' +
                 ", sublinkInfos=" + sublinkInfos +
+                ", html =" + descSource +
                 '}';
     }
 
@@ -92,5 +95,13 @@ public class CreativeDTO implements Serializable {
 
     public String getTime() {
         return time;
+    }
+
+    public String getDescSource() {
+        return descSource;
+    }
+
+    public void setDescSource(String descSource) {
+        this.descSource = descSource;
     }
 }

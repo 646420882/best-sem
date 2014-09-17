@@ -1,6 +1,5 @@
 package com.perfect;
 
-import com.perfect.schedule.core.strategy.TBScheduleManagerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -19,15 +18,7 @@ public class Main {
             return;
         }
 
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("schedule.xml");
-
-        TBScheduleManagerFactory factory = (TBScheduleManagerFactory) applicationContext.getBean("scheduleManagerFactory");
-
-        Thread.sleep(60 * 1000);
-        if (factory == null || !factory.isZookeeperInitialSucess()) {
-            System.out.println("Zookeeper initial failed!...exit");
-            return;
-        }
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(xmlFile);
 
         while (true) {
             Thread.sleep(Long.MAX_VALUE);

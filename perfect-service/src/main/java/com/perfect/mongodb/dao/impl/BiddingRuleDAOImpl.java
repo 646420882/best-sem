@@ -203,7 +203,10 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
 
     @Override
     public List<BiddingRuleEntity> getTaskByAccoundId(String userName, Long id, long time) {
-        Query query = Query.query(Criteria.where("ebl").is(true).and("nxt").lte(time).not().and("ct").ne(0).and(ACCOUNT_ID).is(id));
+        Query query = Query.query(Criteria.where("ebl").is(true).and("r").is(false).and("nxt").lte(time).not().and("ct")
+                .ne(0)
+                .and
+                        (ACCOUNT_ID).is(id));
         return BaseMongoTemplate.getUserMongo(userName).find(query, getEntityClass());
     }
 

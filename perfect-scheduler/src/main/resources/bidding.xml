@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean name="biddingThreadTaskExecutors" class="com.perfect.commons.BiddingThreadTaskExecutors">
+        <property name="threadNamePrefix" value="bidding-thread-"/>
+        <property name="corePoolSize" value="8"/>
+    </bean>
+
+
+    <bean id="biddingJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <bean class="com.perfect.schedule.task.execute.BiddingJob"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>work</value>
+        </property>
+    </bean>
+
+
+    <!--<bean name="biddingJobBean" class="org.springframework.scheduling.quartz.JobDetailBean">-->
+        <!--<property name="name" value="biddingJob"/>-->
+        <!--<property name="jobClass" value="com.perfect.schedule.task.execute.BiddingJob"/>-->
+    <!--</bean>-->
+
+    <bean id="biddingTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="biddingJobBean"/>
+        <property name="cronExpression" value="0 0/5 * * * ? "/>
+    </bean>
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="autoStartup" value="true"/>
+        <property name="triggers">
+            <list>
+                <ref bean="biddingTrigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>

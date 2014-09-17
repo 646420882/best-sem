@@ -1469,6 +1469,7 @@ public class BasisReportServiceImpl implements BasisReportService {
             entity.setTerminal(terminal);
         }
         List<StructureReportEntity> finalList = new ArrayList<>();
+
         if (returnList.size() > limit) {
             for (int i = start; i < limit; i++) {
                 finalList.add(returnList.get(i));
