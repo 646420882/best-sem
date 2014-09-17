@@ -902,7 +902,7 @@ var reportData = function () {
                 t_conversion.length = 0;
                 switch (reportTypes) {
                     case "1":
-                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = -11;reportData()'></p></b></td>" +
+                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
@@ -915,7 +915,7 @@ var reportData = function () {
                                 "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
                         break;
                     case "2":
-                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = -11;reportData()'></p></b></td>" +
+                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>关键字</span><b><p><input class='one' type='button' onclick='javascript:sorts = -9;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 9;reportData()'></p></b></td>" +
@@ -929,7 +929,7 @@ var reportData = function () {
                                 "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
                         break;
                     case "3":
-                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = -11;reportData()'></p></b></td>" +
+                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>创意</span><b><p><input class='one' type='button' onclick='javascript:sorts = -12;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 12;reportData()'></p></b></td>" +
@@ -942,7 +942,7 @@ var reportData = function () {
                                 "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
                                 "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
                     case "4":
-                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = -11;reportData()'></p></b></td>" +
+                        html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>地域</span><b><p><input class='one' type='button' onclick='javascript:sorts = -10;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 10;reportData()'></p></b></td>" +
@@ -1402,7 +1402,7 @@ var reportDataVS = function () {
                                         impression.push(items.pcImpression);
                                         click.push(items.pcClick);
                                         cost.push(Math.round(items.pcCost * 100) / 100);
-                                        ctr.push(Math.round(items.pcCtr));
+                                        ctr.push(Math.round(items.pcCtr *100)/100);
                                         cpc.push(Math.round(items.pcCpc * 100) / 100);
                                         conversion.push(items.pcConversion);
                                     }
@@ -1442,18 +1442,18 @@ var reportDataVS = function () {
                     var html_User2 = "";
                     if (i % 2 == 0) {
                         html_User1 = "<tr class='list2_box1'><td>" + dateEach[i] + "</td>"
-                                + "<td><span>" + impression[i] + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + click[i] + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + cost[i] + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + ctr[i] + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((ctr[i] - ctr1[i]) >= 0) ? ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + cpc[i] + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((cpc[i] - cpc1[i]) >= 0) ?((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + conversion[i] + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((conversion[i] - conversion1[i]) >= 0) ?  ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 100)) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - cpc1[i]) / conversion1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((impression[i] == undefined)?'-':(isNaN(impression1[i]))?'-':impression[i]) + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000)/100))?'-':Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((click[i] == undefined)?'-':(isNaN(click[i]))?'-':click[i]) + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000)/100))?'-':Math.round(((click[i] - click1[i]) / click1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((cost[i] == undefined)?'-':(isNaN(cost[i]))?'-':cost[i]) + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : (isNaN(Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000)/100))?'-':Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((ctr[i] == undefined)?'-':(isNaN(ctr[i]))?'-':ctr[i]) + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((ctr[i] - ctr1[i] >= 0) ? ((isNaN(ctr1[i])) ? "-" : (isNaN(Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000)/100))?'-':Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((cpc[i] == undefined)?'-':(isNaN(cpc[i]))?'-':cpc[i]) + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((cpc[i] - cpc1[i] >= 0) ? ((isNaN(cpc1[i])) ? "-" : (isNaN(Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000)/100))?'-':Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((conversion[i] == undefined)?'-':(isNaN(conversion[i]))?'-':conversion[i]) + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((conversion[i] - conversion1[i] >= 0) ? ((isNaN(conversion1[i])) ? "-" : (isNaN(Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000)/100))?'-':Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
                                 + "</td><td>-</td><td>-</td></tr>";
 
                         html_User2 = "<tr class='list2_box1'><td>" + dateEach1[i] + "</td>"
@@ -1462,30 +1462,30 @@ var reportDataVS = function () {
                                 + "<tr><td colspan='9'>&nbsp;</td></tr>";
                     } else {
                         html_User1 = "<tr class='list2_box2'><td>" + dateEach[i] + "</td>"
-                                + "<td><span>" + impression[i] + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + click[i] + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + cost[i] + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + ctr[i] + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((ctr[i] - ctr1[i]) >= 0) ? ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + cpc[i] + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((cpc[i] - cpc1[i]) >= 0) ? ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 100)) + "%</strong>") + "</span></td>"
-                                + "<td><span>" + conversion[i] + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + (((conversion[i] - conversion1[i]) >= 0) ? ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 100)) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - cpc1[i]) / conversion1[i]) * 100)) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((impression[i] == undefined)?'-':(isNaN(impression1[i]))?'-':impression[i]) + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000)/100))?'-':Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((click[i] == undefined)?'-':(isNaN(click[i]))?'-':click[i]) + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000)/100))?'-':Math.round(((click[i] - click1[i]) / click1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : Math.round(((click[i] - click1[i]) / click1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((cost[i] == undefined)?'-':(isNaN(cost[i]))?'-':cost[i]) + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : (isNaN(Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000)/100))?'-':Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((ctr[i] == undefined)?'-':(isNaN(ctr[i]))?'-':ctr[i]) + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((ctr[i] - ctr1[i] >= 0) ? ((isNaN(ctr1[i])) ? "-" : (isNaN(Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000)/100))?'-':Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((cpc[i] == undefined)?'-':(isNaN(cpc[i]))?'-':cpc[i]) + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((cpc[i] - cpc1[i] >= 0) ? ((isNaN(cpc1[i])) ? "-" : (isNaN(Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000)/100))?'-':Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
+                                + "<td><span>" + ((conversion[i] == undefined)?'-':(isNaN(conversion[i]))?'-':conversion[i]) + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<span>" + ((conversion[i] - conversion1[i] >= 0) ? ((isNaN(conversion1[i])) ? "-" : (isNaN(Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000)/100))?'-':Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000)/100) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000)/100) + "%</strong>") + "</span></td>"
                                 + "</td><td>-</td><td>-</td></tr>";
 
                         html_User2 = "<tr class='list2_box2'><td>" + dateEach1[i] + "</td>"
-                                + "<td>" + impression1[i] + "</td><td>" + click1[i] + "</td><td>" + cost1[i] + "</td>"
+                                + "<td>" + ((impression1[i]==undefined)?'-':impression1[i]) + "</td><td>" + click1[i] + "</td><td>" + cost1[i] + "</td>"
                                 + "<td>" + ctr1[i] + "%</td><td>" + cpc1[i] + "</td><td>" + conversion1[i] + "</td><td>-</td><td>-</td></tr>"
                                 + "<tr><td colspan='9'>&nbsp;</td></tr>";
                     }
 
-                    $("#userTbody").append(html_User1);
-                    $("#userTbody").append(html_User2);
-                }
-            }
+            $("#userTbody").append(html_User1);
+            $("#userTbody").append(html_User2);
+        }
+    }
         }
     });
 }

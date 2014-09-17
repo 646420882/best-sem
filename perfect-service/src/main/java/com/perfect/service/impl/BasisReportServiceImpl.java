@@ -165,7 +165,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         return listMap;
                     }
                 } else {
-                    String data = jc.get((date[0] + date[date.length - 1] + terminal + categoryTime + reportType + AppContext.getAccountId()));
+                     String data = jc.get((date[0] + date[date.length - 1] + terminal + categoryTime + reportType + AppContext.getAccountId()));
                     Gson gson = new Gson();
                     List<StructureReportEntity> list = gson.fromJson(data, new TypeToken<List<StructureReportEntity>>() {
                     }.getType());
@@ -211,11 +211,28 @@ public class BasisReportServiceImpl implements BasisReportService {
                     for (int i = 0; i < date.length; i++) {
                         StructureReportEntity dateObject = new StructureReportEntity();
                         List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType));
-                        if (object.size() != 0) {
+                        if(object.size() == 0){
+                            StructureReportEntity entity = new StructureReportEntity();
+                            entity.setMobileClick(0);
+                            entity.setMobileConversion(0d);
+                            entity.setMobileCost(BigDecimal.ZERO);
+                            entity.setMobileCpc(BigDecimal.ZERO);
+                            entity.setMobileCpm(BigDecimal.ZERO);
+                            entity.setMobileImpression(0);
+                            entity.setPcClick(0);
+                            entity.setPcConversion(0d);
+                            entity.setPcCost(BigDecimal.ZERO);
+                            entity.setPcCpc(BigDecimal.ZERO);
+                            entity.setPcCpm(BigDecimal.ZERO);
+                            entity.setPcImpression(0);
+                            object.add(entity);
                             mapDay.put(date[i], object);
-                            dateObject.setDate(date[i]);
-                            dateMap.add(dateObject);
+                        }else {
+                            mapDay.put(date[i], object);
                         }
+
+                        dateObject.setDate(date[i]);
+                        dateMap.add(dateObject);
                     }
 
                     Map<String, List<StructureReportEntity>> mapDay1 = null;
@@ -309,6 +326,22 @@ public class BasisReportServiceImpl implements BasisReportService {
                                 } else {
                                     strings[1] = date[i];
                                 }
+                            }
+                            if(objectsList1.size() == 0){
+                                StructureReportEntity entity = new StructureReportEntity();
+                                entity.setMobileClick(0);
+                                entity.setMobileConversion(0d);
+                                entity.setMobileCost(BigDecimal.ZERO);
+                                entity.setMobileCpc(BigDecimal.ZERO);
+                                entity.setMobileCpm(BigDecimal.ZERO);
+                                entity.setMobileImpression(0);
+                                entity.setPcClick(0);
+                                entity.setPcConversion(0d);
+                                entity.setPcCost(BigDecimal.ZERO);
+                                entity.setPcCpc(BigDecimal.ZERO);
+                                entity.setPcCpm(BigDecimal.ZERO);
+                                entity.setPcImpression(0);
+                                objectsList1.add(entity);
                             }
                             stringListMap.put(strings[0] + " 至 " + strings[1], objectsList1);
                             dateObject2.setDate(strings[0] + " 至 " + strings[1]);
@@ -491,6 +524,22 @@ public class BasisReportServiceImpl implements BasisReportService {
                                 } else {
                                     strings[1] = date[i];
                                 }
+                            }
+                            if(objectsList.size() == 0){
+                                StructureReportEntity entity = new StructureReportEntity();
+                                entity.setMobileClick(0);
+                                entity.setMobileConversion(0d);
+                                entity.setMobileCost(BigDecimal.ZERO);
+                                entity.setMobileCpc(BigDecimal.ZERO);
+                                entity.setMobileCpm(BigDecimal.ZERO);
+                                entity.setMobileImpression(0);
+                                entity.setPcClick(0);
+                                entity.setPcConversion(0d);
+                                entity.setPcCost(BigDecimal.ZERO);
+                                entity.setPcCpc(BigDecimal.ZERO);
+                                entity.setPcCpm(BigDecimal.ZERO);
+                                entity.setPcImpression(0);
+                                objectsList.add(entity);
                             }
                             stringListMap1.put(strings[0] + " 至 " + strings[1], objectsList);
                             dateObject3.setDate(strings[0] + " 至 " + strings[1]);
@@ -899,6 +948,43 @@ public class BasisReportServiceImpl implements BasisReportService {
                 //比较数据
                 if (compare == 1) {
                     listTow2 = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
+                    List<String> dateListStrings = DateUtils.getPeriod(dateFormat.format(dateTow[0]), dateFormat.format(dateTow[1]));
+                    boolean judgeis = true;
+                    for(String s :dateListStrings){
+                        Date judgeDate = null;
+                        try {
+                            judgeDate  = sim.parse(s);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        for (AccountReportDTO dto : listTow2){
+                            if(judgeDate.getTime() == dto.getDate().getTime()){
+                                dto.setOrderBy("1");
+                                judgeis =false;
+                                break;
+                            }else{
+                                judgeis =true;
+                            }
+                        }
+                        if(judgeis || listTow2.size() == 0){
+                            AccountReportDTO reportDTO= new AccountReportDTO();
+                            reportDTO.setMobileClick(0);
+                            reportDTO.setMobileConversion(0d);
+                            reportDTO.setMobileCost(BigDecimal.ZERO);
+                            reportDTO.setMobileCpc(BigDecimal.ZERO);
+                            reportDTO.setMobileCpm(BigDecimal.ZERO);
+                            reportDTO.setMobileImpression(0);
+                            reportDTO.setPcClick(0);
+                            reportDTO.setPcConversion(0d);
+                            reportDTO.setPcCost(BigDecimal.ZERO);
+                            reportDTO.setPcCpc(BigDecimal.ZERO);
+                            reportDTO.setPcCpm(BigDecimal.ZERO);
+                            reportDTO.setPcImpression(0);
+                            reportDTO.setDate(judgeDate);
+                            reportDTO.setOrderBy("1");
+                            listTow2.add(reportDTO);
+                        }
+                    }
 
                     for (AccountReportDTO responseTowZou : listTow2) {
                         objectListDateTow2.add(responseTowZou.getDate());
@@ -1030,6 +1116,46 @@ public class BasisReportServiceImpl implements BasisReportService {
                 //比较数据
                 if (compare == 1) {
                     listTow3 = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
+
+                    List<String> dateListStringst = DateUtils.getPeriod(dateFormat.format(dateTow[0]), dateFormat.format(dateTow[1]));
+                    boolean judgeist = true;
+                    for(String st :dateListStringst){
+                        Date judgeDate = null;
+                        try {
+                            judgeDate  = simt.parse(st);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        for (AccountReportDTO dto : listTow3){
+                            if(judgeDate.getTime() == dto.getDate().getTime()){
+                                dto.setOrderBy("1");
+                                judgeist =false;
+                                break;
+                            }else{
+                                judgeist =true;
+                            }
+                        }
+                        if(judgeist || listTow3.size() == 0){
+                            AccountReportDTO reportDTO= new AccountReportDTO();
+                            reportDTO.setMobileClick(0);
+                            reportDTO.setMobileConversion(0d);
+                            reportDTO.setMobileCost(BigDecimal.ZERO);
+                            reportDTO.setMobileCpc(BigDecimal.ZERO);
+                            reportDTO.setMobileCpm(BigDecimal.ZERO);
+                            reportDTO.setMobileImpression(0);
+                            reportDTO.setPcClick(0);
+                            reportDTO.setPcConversion(0d);
+                            reportDTO.setPcCost(BigDecimal.ZERO);
+                            reportDTO.setPcCpc(BigDecimal.ZERO);
+                            reportDTO.setPcCpm(BigDecimal.ZERO);
+                            reportDTO.setPcImpression(0);
+                            reportDTO.setDate(judgeDate);
+                            reportDTO.setOrderBy("1");
+                            listTow3.add(reportDTO);
+                        }
+                    }
+                    Collections.sort(listTow3);
+
                     for (AccountReportDTO responseTowYue : listTow3) {
                         objectListDateTow3.add(responseTowYue.getDate());
                     }
@@ -1051,7 +1177,10 @@ public class BasisReportServiceImpl implements BasisReportService {
                         listDateOne1.add(listOne3.get(y));
                         //比较数据
                         if (compare == 1) {
-                            listDateTow1.add(listTow3.get(i));
+                            if (endNumber1 >= objectListDateTow3.size() || y >= objectListDateTow3.size()) {
+                                continue;
+                            }
+                            listDateTow1.add(listTow3.get(y));
                         }
                     }
                     endNumber1 = y;

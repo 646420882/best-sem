@@ -15,7 +15,7 @@ public class FolderMonitorEntity {
     private Long folderId;
     //监控对象的实际id
     @Field("aclid")
-    private Long id;
+    private Long aclid;
     //监控对象本身所属单元id （暂为  无效属性）
     @Field("adid")
     private Long adgroupId;
@@ -25,6 +25,9 @@ public class FolderMonitorEntity {
     //监控对象的类型 (目前仅可监控关键词，所以该字段仅提供默认值11 3-计划； 5-单元； 7-创意； 11-关键词)
     @Field("type")
     private Integer type;
+
+    @Field("acId")
+    private Long accountId;
 
     public Long getMonitorId() {
         return monitorId;
@@ -42,12 +45,12 @@ public class FolderMonitorEntity {
         this.folderId = folderId;
     }
 
-    public Long getId() {
-        return id;
+    public Long getAclid() {
+        return aclid;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAclid(Long aclid) {
+        this.aclid = aclid;
     }
 
     public Long getAdgroupId() {
@@ -74,15 +77,24 @@ public class FolderMonitorEntity {
         this.type = type;
     }
 
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
+
     @Override
     public String toString() {
         return "FolderMonitorEntity{" +
                 "monitorId=" + monitorId +
                 ", folderId=" + folderId +
-                ", id=" + id +
+                ", aclid=" + aclid +
                 ", adgroupId=" + adgroupId +
                 ", campaignId=" + campaignId +
                 ", type=" + type +
+                ", accountId=" + accountId +
                 '}';
     }
 }

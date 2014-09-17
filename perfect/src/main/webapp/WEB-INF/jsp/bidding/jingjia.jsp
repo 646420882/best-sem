@@ -160,7 +160,7 @@
                         <table border="0" cellspacing="0" width="101%" id="table1">
                             <thead>
                             <tr class="list02_top">
-                                <td>&nbsp;<input type="checkbox" id="checkAll"> </td>
+                                <td>&nbsp;<input type="checkbox" id="checkAll"></td>
                                 <td>&nbsp;关键词</td>
                                 <td>&nbsp;消费</td>
                                 <td>&nbsp;当前排名</td>
@@ -265,7 +265,7 @@
                                 <thead>
                                 <tr class="list02_top">
                                     <td>&nbsp;<input type="checkbox" id="checkAll2"></td>
-                                  <%--  <td>&nbsp; 序号</td>--%>
+                                    <%--  <td>&nbsp; 序号</td>--%>
                                     <td>&nbsp;关键词</td>
                                     <td>&nbsp;消费</td>
                                     <td>&nbsp;当前排名</td>
@@ -444,11 +444,9 @@
                 <p>自动竞价模式：</p>
                 <ul>
                     <li>
-                        <p></p>
-                        <br>
-                        &nbsp;<input type="radio" name="sbid" checked="checked" value="everyday"> 每天执行
-                        &nbsp;<input type="radio" name="sbid" value="bytime"> 竞价次数:<input class="times" type="text"
-                                                                                          name="bytimes">
+                        <p><input type="radio" name="auto" checked="checked" value="1"><span>单次竞价</span></p>
+                        <input type="radio" name="sbid" checked="checked" value="everyday"> 每天执行
+                        <input type="radio" name="sbid" value="bytime"> 竞价次数:<input class="times" type="text" name="bytimes">
                     </li>
 
                     <li><input type="radio" name="auto" value="2"><span>重复竞价速度 每隔
@@ -490,7 +488,7 @@
     <div class="mainlist">
         <ul>
             <li>
-               <input type="radio" name="price1" checked="checked"> 输入新问价: <input class="zs_input3" type="text"></li>
+                <input type="radio" name="price1" checked="checked"> 输入新问价: <input class="zs_input3" type="text"></li>
             <li><input type="radio" name="price1" checked="checked"><span class="mainlist_left"> 使用单元出价 </span></li>
         </ul>
     </div>
@@ -615,7 +613,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">

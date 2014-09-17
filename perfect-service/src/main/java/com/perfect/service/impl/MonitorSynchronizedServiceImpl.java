@@ -45,6 +45,7 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
             FolderEntity forlderEntity = new FolderEntity();
             forlderEntity.setFolderId(folder.getFolderId());
             forlderEntity.setFolderName(folder.getFolderName());
+            forlderEntity.setAccountId(AppContext.getAccountId());
             forlderEntities.add(forlderEntity);
         }
         //监控对象数据
@@ -55,8 +56,9 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
                 folderMonitorEntity.setAdgroupId(monitor.getAdgroupId());
                 folderMonitorEntity.setCampaignId(monitor.getCampaignId());
                 folderMonitorEntity.setMonitorId(monitor.getMonitorId());
-                folderMonitorEntity.setId(monitor.getId());
+                folderMonitorEntity.setAclid(monitor.getId());
                 folderMonitorEntity.setType(monitor.getType());
+                folderMonitorEntity.setAccountId(AppContext.getAccountId());
                 monitorEntities.add(folderMonitorEntity);
             }
         }
