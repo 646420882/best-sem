@@ -15,6 +15,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
     <script type="text/javascript">
         window.onload = function () {
             rDrag.init(document.getElementById('new_riginality2'));

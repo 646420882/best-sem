@@ -111,6 +111,7 @@ table tr ,table tr td{
     line-height: 32px;
     background: url(/public/img/title_bg.jpg) repeat-x;
     border-bottom: 1px solid #abafbc;
+    position:fixed;
     z-index:98;
 }
 .on_title a {

@@ -1100,6 +1100,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/keyword/keywordQuality.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">
     // 对Date的扩展，将 Date 转化为指定格式的String
     // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
@@ -1158,15 +1159,6 @@ $(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
         var index = $tab_li.index(this);
         $('div.tab_box > div').eq(index).show().siblings().hide();
-    });
-    var navH = $(".on_title").offset().top;
-    $(window).scroll(function () {
-        var scroH = $(this).scrollTop();
-        if (scroH >= navH) {
-            $(".on_title").css({"position": "fixed", "top": "77"});
-        } else {
-            $(".on_title").css({"position": "static", "margin": "0 auto"});
-        }
     });
     $("input[name=reservation]").click(function(){
         clickdddd = $(this);

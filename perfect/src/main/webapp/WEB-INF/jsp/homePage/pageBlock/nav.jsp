@@ -60,6 +60,7 @@
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">
     var baiduAccountId = <%=accountId%>;
 
@@ -83,15 +84,6 @@
                 });
     };
     $(function () {
-        var navH = $(".on_title").offset().top;
-        $(window).scroll(function () {
-            var scroH = $(this).scrollTop();
-            if (scroH >= navH) {
-                $(".on_title").css({"position": "fixed", "top": "94"});
-            } else {
-                $(".on_title").css({"position": "static", "margin": "0 auto"});
-            }
-        });
         $(".tips").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").slideDown(600);
@@ -174,7 +166,9 @@
                 $(this).addClass('current').append("<span class='nav_input1'></span>");
             }
         });
-
+    });
+    $(document).ready(function () {
+        $(".on_title").pin();
     });
 
 </script>

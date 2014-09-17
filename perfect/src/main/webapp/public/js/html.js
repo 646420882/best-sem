@@ -277,6 +277,6 @@ $(function () {
             $("#jiangkong_box2").show();
         }
     });
-
+    $(".pinned").pin()
 
 });
