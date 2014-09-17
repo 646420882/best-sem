@@ -40,42 +40,42 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
                 String adgroupName = "";
                 switch (report) {
                     case 1:
-                        repotr = map.get(objectList.get(i).getAdgroupName()) != null;
-                        adgroupName = objectList.get(i).getAdgroupName();
+                        repotr = map.get(objectList.get(i).getAdgroupId().toString()) != null;
+                        adgroupName = objectList.get(i).getAdgroupId().toString();
                         break;
                     case 2:
-                        repotr = map.get(objectList.get(i).getKeywordName()) != null;
-                        adgroupName = objectList.get(i).getKeywordName();
+                        repotr = map.get(objectList.get(i).getKeywordId().toString()) != null;
+                        adgroupName = objectList.get(i).getKeywordId().toString();
                         break;
                     case 3:
-                        repotr = map.get(objectList.get(i).getCreativeId()) != null;
+                        repotr = map.get(objectList.get(i).getCreativeId().toString()) != null;
                         adgroupName = objectList.get(i).getCreativeId().toString();
                         break;
                     case 4:
-                        repotr = map.get(objectList.get(i).getRegionId()) != null;
+                        repotr = map.get(objectList.get(i).getRegionId().toString()) != null;
                         adgroupName = objectList.get(i).getRegionId().toString();
                         break;
                 }
                 if (repotr) {
                     StructureReportEntity voEntity = map.get(adgroupName);
-                    voEntity.setMobileClick(((voEntity.getMobileClick() == null) ? 0 : voEntity.getMobileClick()) + ((map.get(adgroupName).getMobileClick() == null) ? 0 : map.get(adgroupName).getMobileClick()));
-                    voEntity.setMobileConversion((voEntity.getMobileConversion() == null ? 0 : voEntity.getMobileConversion()) + ((map.get(adgroupName).getMobileConversion() == null) ? 0 : map.get(adgroupName).getMobileClick()));
-                    voEntity.setMobileCost((voEntity.getMobileCost() == null ? BigDecimal.valueOf(0) : voEntity.getMobileCost()).add((map.get(adgroupName).getMobileCost() == null) ? BigDecimal.valueOf(0) : map.get(adgroupName).getMobileCost()));
+                    voEntity.setMobileClick(((voEntity.getMobileClick() == null) ? 0 : voEntity.getMobileClick()) + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()));
+                    voEntity.setMobileConversion((voEntity.getMobileConversion() == null ? 0 : voEntity.getMobileConversion()) + ((objectList.get(i).getMobileConversion() == null) ? 0 : objectList.get(i).getMobileClick()));
+                    voEntity.setMobileCost((voEntity.getMobileCost() == null ? BigDecimal.ZERO : voEntity.getMobileCost()).add((objectList.get(i).getMobileCost() == null) ? BigDecimal.ZERO : objectList.get(i).getMobileCost()));
                     voEntity.setMobileCtr(0d);
                     voEntity.setMobileCpc(BigDecimal.valueOf(0));
-                    voEntity.setMobileImpression((voEntity.getMobileImpression() == null ? 0 : voEntity.getMobileImpression()) + ((map.get(adgroupName).getMobileImpression() == null) ? 0 : map.get(adgroupName).getMobileImpression()));
-                    voEntity.setPcClick((voEntity.getPcClick() == null ? 0 : voEntity.getPcClick()) + ((map.get(adgroupName).getPcClick() == null) ? 0 : map.get(adgroupName).getPcClick()));
-                    voEntity.setPcConversion((voEntity.getPcConversion() == null ? 0 : voEntity.getPcConversion()) + ((map.get(adgroupName).getPcConversion() == null) ? 0 : map.get(adgroupName).getPcConversion()));
-                    voEntity.setPcCost((voEntity.getPcCost() == null ? BigDecimal.valueOf(0) : voEntity.getPcCost()).add((map.get(adgroupName).getPcCost() == null) ? BigDecimal.valueOf(0) : map.get(adgroupName).getPcCost()));
+                    voEntity.setMobileImpression((voEntity.getMobileImpression() == null ? 0 : voEntity.getMobileImpression()) + ((objectList.get(i).getMobileImpression() == null) ? 0 : objectList.get(i).getMobileImpression()));
+                    voEntity.setPcClick((voEntity.getPcClick() == null ? 0 : voEntity.getPcClick()) + ((objectList.get(i).getPcClick() == null) ? 0 : objectList.get(i).getPcClick()));
+                    voEntity.setPcConversion((voEntity.getPcConversion() == null ? 0 : voEntity.getPcConversion()) + ((objectList.get(i).getPcConversion() == null) ? 0 : objectList.get(i).getPcConversion()));
+                    voEntity.setPcCost((voEntity.getPcCost() == null ? BigDecimal.valueOf(0) : voEntity.getPcCost()).add((objectList.get(i).getPcCost() == null) ? BigDecimal.ZERO : objectList.get(i).getPcCost()));
                     voEntity.setPcCtr(0d);
                     voEntity.setPcCpc(BigDecimal.valueOf(0));
-                    voEntity.setPcImpression((voEntity.getPcImpression() == null ? 0 : voEntity.getPcImpression()) + ((map.get(adgroupName).getPcImpression() == null) ? 0 : map.get(adgroupName).getPcImpression()));
+                    voEntity.setPcImpression((voEntity.getPcImpression() == null ? 0 : voEntity.getPcImpression()) + ((objectList.get(i).getPcImpression() == null) ? 0 : objectList.get(i).getPcImpression()));
                     switch (report) {
                         case 1:
-                            map.put(objectList.get(i).getAdgroupName(), voEntity);
+                            map.put(objectList.get(i).getAdgroupId().toString(), voEntity);
                             break;
                         case 2:
-                            map.put(objectList.get(i).getKeywordName(), voEntity);
+                            map.put(objectList.get(i).getKeywordId().toString(), voEntity);
                             break;
                         case 3:
                             map.put(objectList.get(i).getCreativeId().toString(), voEntity);
@@ -88,10 +88,10 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
                 } else {
                     switch (report) {
                         case 1:
-                            map.put(objectList.get(i).getAdgroupName(), objectList.get(i));
+                            map.put(objectList.get(i).getAdgroupId().toString(), objectList.get(i));
                             break;
                         case 2:
-                            map.put(objectList.get(i).getKeywordName(), objectList.get(i));
+                            map.put(objectList.get(i).getKeywordId().toString(), objectList.get(i));
                             break;
                         case 3:
                             map.put(objectList.get(i).getCreativeId().toString(), objectList.get(i));

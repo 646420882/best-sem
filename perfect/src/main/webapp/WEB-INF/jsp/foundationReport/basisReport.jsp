@@ -1654,9 +1654,12 @@ var pieChart = function (showData, showName, showId) {
                 }
             }
         },
+        credits: {
+            enabled: false
+        },
         title: {
             text: showName + '占有百分比',
-            style:{"font-weight":"bold","font-size":"18px","color":"#fab30b"}
+            style:{"font-weight":"bold","font-size":"18px","color":"#fab30b","font-family":"微软雅黑"}
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
