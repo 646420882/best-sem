@@ -1593,6 +1593,11 @@ h2 .close {
     display: block;
     float: left;
     margin-right: 5px;
+    margin-top:-4px;
+}
+#deletekeywords{
+    margin-top:-8px;
+
 }
 .zs_top, .z_function_hover {
     display: block;
@@ -1961,6 +1966,7 @@ h2 .close {
 .originality_left, .originality_right {
     width: 45.8%;
     padding: 20px 2%;
+    height: 366px;
 }
 .originality_left {
     border-right: 1px solid #cdd6ed;

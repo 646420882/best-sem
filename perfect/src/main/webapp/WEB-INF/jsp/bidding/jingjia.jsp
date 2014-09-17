@@ -160,7 +160,7 @@
                         <table border="0" cellspacing="0" width="101%" id="table1">
                             <thead>
                             <tr class="list02_top">
-                                <td>&nbsp;<input type="checkbox" id="checkAll"> 序号</td>
+                                <td>&nbsp;<input type="checkbox" id="checkAll"> </td>
                                 <td>&nbsp;关键词</td>
                                 <td>&nbsp;消费</td>
                                 <td>&nbsp;当前排名</td>
@@ -171,22 +171,23 @@
                                 <td>&nbsp;移动端质量度</td>
                                 <td>&nbsp;状态</td>
                                 <td>&nbsp;竞价规则</td>
+                                <td>&nbsp;URL</td>
+                                <td>&nbsp;竞价状态</td>
                             </tr>
                             </thead>
                             <tbody>
                             </tbody>
                         </table>
                         <script type="application/javascript">
-
                             var rows = [];
                             for (i = 0; i < 10; i++) {
-                                var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
-                                        "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+                                var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
+                                        "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
                                 rows.push(row)
                             }
                             $("#table1 tbody").html(rows);
-                            $("#table1 tbody tr:odd").addClass("list2_box1"),
-                                    $("#table1 tbody tr:even").addClass("list2_box2")
+                            $("#table1 tbody tr:odd").addClass("list2_box1");
+                            $("#table1 tbody tr:even").addClass("list2_boxNa2");
                         </script>
                     </div>
                     <div>每页显示<select id="size">
@@ -230,7 +231,7 @@
         </div>
         <div class="jingjia_right fr over">
             <div>
-                <div class="content_wraps over">
+                <div class="zhushou_concent over">
                     <div class="w_list03">
                         <ul class="jiangjia_list">
                             <li class="current Screenings">筛选</li>
@@ -264,7 +265,7 @@
                                 <thead>
                                 <tr class="list02_top">
                                     <td>&nbsp;<input type="checkbox" id="checkAll2"></td>
-                                    <td>&nbsp; 序号</td>
+                                  <%--  <td>&nbsp; 序号</td>--%>
                                     <td>&nbsp;关键词</td>
                                     <td>&nbsp;消费</td>
                                     <td>&nbsp;当前排名</td>
@@ -275,6 +276,8 @@
                                     <td>&nbsp;移动端质量度</td>
                                     <td>&nbsp;状态</td>
                                     <td>&nbsp;竞价规则</td>
+                                    <td>&nbsp;URL</td>
+                                    <td>&nbsp;竞价状态</td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -284,8 +287,8 @@
                             <script type="application/javascript">
                                 var rows = [];
                                 for (i = 0; i < 10; i++) {
-                                    var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
-                                            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+                                    var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
+                                            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
                                     rows.push(row)
                                 }
                                 $("#table2 tbody").html(rows);
@@ -440,9 +443,10 @@
             <li>
                 <p>自动竞价模式：</p>
                 <ul>
-                    <li><input type="radio" name="auto" checked="checked" value="1"><span>单次竞价</span>
+                    <li>
+                        <p></p>
                         <br>
-                        &nbsp; <input type="radio" name="sbid" checked="checked" value="everyday"> 每天执行
+                        &nbsp;<input type="radio" name="sbid" checked="checked" value="everyday"> 每天执行
                         &nbsp;<input type="radio" name="sbid" value="bytime"> 竞价次数:<input class="times" type="text"
                                                                                           name="bytimes">
                     </li>
@@ -485,8 +489,8 @@
 
     <div class="mainlist">
         <ul>
-            <li><input type="radio" name="price1" checked="checked"><span
-                    class="mainlist_left"> 输入新问价 </span><span><input class="zs_input3" type="text"></span></li>
+            <li>
+               <input type="radio" name="price1" checked="checked"> 输入新问价: <input class="zs_input3" type="text"></li>
             <li><input type="radio" name="price1" checked="checked"><span class="mainlist_left"> 使用单元出价 </span></li>
         </ul>
     </div>
