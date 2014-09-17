@@ -225,7 +225,14 @@ $(function () {
     });
     //高级搜索
     $(".advanced_search").click(function () {
-        $(".Senior").slideToggle();
+        if($(".Senior").css("display") == "none"){
+            $(".Senior").show();
+            $(".advanced_search").attr('value',"高级搜索∧");
+        }
+        else{
+            $(".Senior").hide();
+            $(".advanced_search").attr('value',"高级搜索∨");
+        }
     });
     $(".Screenings").click(function () {
         $(".Screening_concent ").slideToggle();

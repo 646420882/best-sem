@@ -1296,7 +1296,8 @@ ul.ztree.zTreeDragUL {
 }
 .list4 table {
     border: 1px solid #eaf0f3;
-    min-width: 1200px;
+    width: 101%;
+    min-width: 900px;
     *width:1200px;
     overflow: auto;
 }
@@ -1333,6 +1334,12 @@ ul.ztree.zTreeDragUL {
     text-align: center;
     margin-top: 10px;
     overflow:hidden;
+}
+.page2 .current{
+    background: #ffb900;
+    border: 1px solid #fab30b;
+    color: #fff;
+
 }
 .page2 a {
     display:inline-block;
@@ -1690,7 +1697,7 @@ h2 .close {
 
 }
 .w_list02 {
-    margin-left: 10px;
+  /*  margin-left: 10px;*/
 }
 .zs_input3 {
     width: 70%;

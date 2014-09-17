@@ -137,12 +137,7 @@ To change this template use File | Settings | File Templates.
                                 </table>
                             </div>
                         </div>
-                        <div id="pagination1" class="pagination"
-                             style="width: 800px; height: 50px; font-size: 15px"></div>
-                        <div id="baiduKeywordDiv" style="display: none">
-                            <span style="margin-right:10px;">跳转到 <input id="anyPageNumber1" type="text"/></span>&nbsp;&nbsp;
-                            <a href="javascript:toAnyPage();" class='page_go'> GO</a>
-                        </div>
+                        <div id="pagination1" class="pagination"></div>
                         <%--<div class="page2">
                             <a href="javascript:toPrevPage();">上一页</a>
                             <a onclick="javascript:startPer = 0;endPer = 10;loadPerformance()" cname="nameDet"
@@ -216,12 +211,7 @@ To change this template use File | Settings | File Templates.
                                 </table>
                             </div>
                         </div>
-                        <div id="pagination2" class="pagination"
-                             style="width: 800px; height: 50px; font-size: 15px"></div>
-                        <div id="systemKeywordDiv" style="display: none"><span style="margin-right:10px;">跳转到 <input
-                                id="anyPageNumber2" type="text"/></span>&nbsp;&nbsp;
-                            <a href="javascript:toAnyPage();" class='page_go'> GO</a>
-                        </div>
+                        <div id="pagination2" class="pagination"></div>
                         <%--<div class="page2">
                             <a href="javascript:toPrevPage();">上一页</a>
                             <a onclick="javascript:void(0);" cname="nameDet"
@@ -781,16 +771,17 @@ var findWordFromBaidu = function () {
         },
         success: function (data, textStatus, jqXHR) {
             $("#tbody1").empty();
-            if ($("#anyPageNumber1").attr("class")) {
-                document.getElementById("baiduKeywordDiv").style.display = "none";
-                $("#anyPageNumber1").removeClass("price");
-            }
+//            if ($("#anyPageNumber1").attr("class")) {
+//                document.getElementById("baiduKeywordDiv").style.display = "none";
+//                $("#anyPageNumber1").removeClass("price");
+//            }
             if (data.rows.length > 0) {
-                document.getElementById("baiduKeywordDiv").style.display = "block";
-                $("#anyPageNumber1").addClass("price");
+//                document.getElementById("baiduKeywordDiv").style.display = "block";
+//                $("#anyPageNumber1").addClass("price");
                 krFileId = data.krFileId;
                 total = data.total;
                 $("#pagination1").pagination(total, optInit);
+                $("#pagination1").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber1' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:toAnyPage();' class='page_go'> GO</a>");
 //                $("#totalPage1").text(Math.ceil(total / limit));
                 var _class = "";
                 $.each(data.rows, function (i, item) {
@@ -835,15 +826,16 @@ var findWordFromSystem = function () {
         },
         success: function (data, textStatus, jqXHR) {
             $("#tbody2").empty();
-            if ($("#anyPageNumber2").attr("class")) {
-                document.getElementById("systemKeywordDiv").style.display = "none";
-                $("#anyPageNumber2").removeClass("price");
-            }
+//            if ($("#anyPageNumber2").attr("class")) {
+//                document.getElementById("systemKeywordDiv").style.display = "none";
+//                $("#anyPageNumber2").removeClass("price");
+//            }
             if (data.rows.length > 0) {
-                document.getElementById("systemKeywordDiv").style.display = "block";
-                $("#anyPageNumber2").addClass("price");
+//                document.getElementById("systemKeywordDiv").style.display = "block";
+//                $("#anyPageNumber2").addClass("price");
                 total = data.total;
                 $("#pagination2").pagination(total, optInit);
+                $("#pagination2").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber2' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:toAnyPage();' class='page_go'> GO</a>");
 //                $("#totalPage2").text(Math.ceil(total / limit));
                 var _class = "";
                 $.each(data.rows, function (i, item) {
