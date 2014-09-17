@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import static com.perfect.mongodb.utils.EntityConstants.*;
 
 @Document(collection = TBL_KEYWORD)
-public class KeywordEntity extends AccountIdEntity {
+public class KeywordEntity extends AccountIdEntity implements Comparable<KeywordEntity> {
     //------------------------
     // MEMBER VARIABLES
     //------------------------
@@ -59,7 +59,16 @@ public class KeywordEntity extends AccountIdEntity {
     @Field("ls")
     private Integer localStatus;//关键词本地状态，1为新增，2为修改，3为删除（软删除），4为级联删除标识
 
-    //------------------------
+    private Integer orderBy;//排序而已
+
+    public Integer getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(Integer orderBy) {
+        this.orderBy = orderBy;
+    }
+//------------------------
     // INTERFACE
     //------------------------
 
@@ -217,5 +226,10 @@ public class KeywordEntity extends AccountIdEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public int compareTo(KeywordEntity intoKwd) {
+        return 0;
     }
 }

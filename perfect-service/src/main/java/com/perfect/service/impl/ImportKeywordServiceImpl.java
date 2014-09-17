@@ -4,9 +4,12 @@ import com.perfect.autosdk.sms.v3.KeywordInfo;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AccountAnalyzeDAO;
 import com.perfect.dao.KeywordDAO;
+import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
+import com.perfect.entity.KeywordReportEntity;
 import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.mongodb.utils.ImportKeywordFork;
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.ImportKeywordService;
 import org.springframework.stereotype.Repository;
 
@@ -38,9 +41,10 @@ public class ImportKeywordServiceImpl implements ImportKeywordService {
      *
      * @return
      */
-    @Override
+
+//    @Override
     public List<KeywordRealTimeDataVOEntity> getMap(HttpServletRequest request) {
-        List<Long> keywords = getImportKeywordArray();
+        List<Long> keywords = null;
         List<KeywordRealTimeDataVOEntity> entities = new ArrayList<>();
         Map<Long, KeywordRealTimeDataVOEntity> map = new HashMap<>();
         List<KeywordRealTimeDataVOEntity> importKeywordList = new ArrayList<>();
@@ -136,13 +140,4 @@ public class ImportKeywordServiceImpl implements ImportKeywordService {
         return dates;
     }
 
-    private List<Long> getImportKeywordArray() {
-        List<Long> keywords = new ArrayList<>();
-        List<KeywordInfo> list = keywordDAO.getKeywordInfo();
-        if (list.size() > 0) {
-            for (KeywordInfo key : list)
-                keywords.add(key.getKeywordId());
-        }
-        return keywords;
-    }
 }

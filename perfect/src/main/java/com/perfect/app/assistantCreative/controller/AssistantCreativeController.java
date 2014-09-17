@@ -201,6 +201,10 @@ public class AssistantCreativeController extends WebContextSupport {
         return null;
     }
 
+    /**
+     * 修改方法，如果是本地数据，则不进行备份处理，否则进行备份处理
+     * @return
+     */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(HttpServletResponse response, HttpServletRequest request,
                                @RequestParam(value = "oid", required = true) String oid,

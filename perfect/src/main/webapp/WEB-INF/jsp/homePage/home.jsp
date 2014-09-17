@@ -1786,39 +1786,64 @@ var getImportKeywordDefault = function (obj, day) {
     $("#importTr").append("<td style='color:red;'>加载中....</td>");
     statDate = day;
     getDateParam(day);
-    $.ajax({
-        url: "/import/getImportKeywordList",
-        type: "GET",
-        dataType: "json",
-        data: {
-            startDate: daterangepicker_start_date,
-            endDate: daterangepicker_end_date,
-            limit: limit,
-            sort: sort
-        },
-        success: function (data, textStatus, jqXHR) {
-            var calssStr = "";
-            var _tr = $("#importTr");
-            if (data.length > 0) {
-                _tr.empty();
-                $.each(data, function (i, item) {
-                    if (i % 2 == 0) {
-                        calssStr = "list2_box1";
-                    } else {
-                        calssStr = "list2_box2";
-                    }
-                    var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.impression + "</li><li> &nbsp;" + item.click + "</li><li> &nbsp;￥" + item.cost + "</li><li> &nbsp;￥" + item.cpc + "</li>"
-                            + "<li> &nbsp;" + item.ctr * 100 + "%</li><li> &nbsp;" + item.conversion + "</li><li> &nbsp;" + item.position + "</li></ul></td></tr>";
-                    $("#importTr").append(_div);
-
-                })
-            } else {
-                _tr.empty();
-                var _div = "<td colspan='9' style='color:royalblue;'></td>";
-                _tr.append(_div);
+    var _tr = $("#importTr");
+    $.post("/import/getImportKeywordList",{
+        startDate: daterangepicker_start_date,
+        endDate: daterangepicker_end_date,
+        pageSize: limit,
+        sort: sort,
+        nowPage:1
+    },function(result){
+        var gson= $.parseJSON(result);
+        if(gson.list.length>0){
+            _tr.empty();
+            for(var i=0;i<gson.list.length;i++){
+                var calssStr=i%2!=0?"list2_box2":"list2_box1";
+                var item=gson.list[i];
+                var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;￥" + item.pcCost + "</li><li> &nbsp;￥" + item.pcCpc + "</li>"
+                        + "<li> &nbsp;" + item.pcCtr * 100 + "%</li><li> &nbsp;" + item.pcConversion + "</li><li> &nbsp;" + item.pcPosition + "</li></ul></td></tr>";
+                $("#importTr").append(_div);
             }
+        }else{
+            _tr.empty();
+            var _div = "<td colspan='9' style='color:royalblue;'></td>";
+            _tr.append(_div);
         }
     });
+//    $.ajax({
+//        url: "/import/getImportKeywordList",
+//        type: "POST",
+//        dataType: "json",
+//        data: {
+//            startDate: daterangepicker_start_date,
+//            endDate: daterangepicker_end_date,
+//            pageSize: limit,
+//            sort: sort,
+//            nowPage:1
+//        },
+//        success: function (data, textStatus, jqXHR) {
+//            var calssStr = "";
+//            var _tr = $("#importTr");
+//            if (data.length > 0) {
+//                _tr.empty();
+//                $.each(data, function (i, item) {
+//                    if (i % 2 == 0) {
+//                        calssStr = "list2_box1";
+//                    } else {
+//                        calssStr = "list2_box2";
+//                    }
+//                    var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.impression + "</li><li> &nbsp;" + item.click + "</li><li> &nbsp;￥" + item.cost + "</li><li> &nbsp;￥" + item.cpc + "</li>"
+//                            + "<li> &nbsp;" + item.ctr * 100 + "%</li><li> &nbsp;" + item.conversion + "</li><li> &nbsp;" + item.position + "</li></ul></td></tr>";
+//                    $("#importTr").append(_div);
+//
+//                })
+//            } else {
+//                _tr.empty();
+//                var _div = "<td colspan='9' style='color:royalblue;'></td>";
+//                _tr.append(_div);
+//            }
+//        }
+//    });
 };
 
 
