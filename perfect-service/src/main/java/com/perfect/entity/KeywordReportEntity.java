@@ -3,6 +3,8 @@ package com.perfect.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.math.BigDecimal;
+
 import static com.perfect.mongodb.utils.EntityConstants.*;
 
 /**
@@ -41,13 +43,13 @@ public class KeywordReportEntity extends AccountIdEntity {
     private Double pcCtr;     //PC点击率=点击次数/展现次数
 
     @Field(value = "pccost")
-    private Double pcCost;        //PC消费
+    private BigDecimal pcCost;        //PC消费
 
     @Field(value = "pccpc")
-    private Double pcCpc;     //PC平均点击价格=消费/点击次数
+    private BigDecimal pcCpc;     //PC平均点击价格=消费/点击次数
 
     @Field(value = "pccpm")
-    private Double pcCpm;       //PC千次展现消费
+    private BigDecimal pcCpm;       //PC千次展现消费
 
     @Field(value = "pccs")
     private Double pcConversion;      //PC转化
@@ -65,13 +67,13 @@ public class KeywordReportEntity extends AccountIdEntity {
     private Double mobileCtr;
 
     @Field(value = "mcost")
-    private Double mobileCost;
+    private BigDecimal mobileCost;
 
     @Field(value = "mcpc")
-    private Double mobileCpc;
+    private BigDecimal mobileCpc;
 
     @Field(value = "mcpm")
-    private Double mobileCpm;
+    private BigDecimal mobileCpm;
 
     @Field(value = "mcs")
     private Double mobileConversion;
@@ -159,27 +161,27 @@ public class KeywordReportEntity extends AccountIdEntity {
         this.pcCtr = pcCtr;
     }
 
-    public Double getPcCost() {
+    public BigDecimal getPcCost() {
         return pcCost;
     }
 
-    public void setPcCost(Double pcCost) {
+    public void setPcCost(BigDecimal pcCost) {
         this.pcCost = pcCost;
     }
 
-    public Double getPcCpc() {
+    public BigDecimal getPcCpc() {
         return pcCpc;
     }
 
-    public void setPcCpc(Double pcCpc) {
+    public void setPcCpc(BigDecimal pcCpc) {
         this.pcCpc = pcCpc;
     }
 
-    public Double getPcCpm() {
+    public BigDecimal getPcCpm() {
         return pcCpm;
     }
 
-    public void setPcCpm(Double pcCpm) {
+    public void setPcCpm(BigDecimal pcCpm) {
         this.pcCpm = pcCpm;
     }
 
@@ -223,27 +225,27 @@ public class KeywordReportEntity extends AccountIdEntity {
         this.mobileCtr = mobileCtr;
     }
 
-    public Double getMobileCost() {
+    public BigDecimal getMobileCost() {
         return mobileCost;
     }
 
-    public void setMobileCost(Double mobileCost) {
+    public void setMobileCost(BigDecimal mobileCost) {
         this.mobileCost = mobileCost;
     }
 
-    public Double getMobileCpc() {
+    public BigDecimal getMobileCpc() {
         return mobileCpc;
     }
 
-    public void setMobileCpc(Double mobileCpc) {
+    public void setMobileCpc(BigDecimal mobileCpc) {
         this.mobileCpc = mobileCpc;
     }
 
-    public Double getMobileCpm() {
+    public BigDecimal getMobileCpm() {
         return mobileCpm;
     }
 
-    public void setMobileCpm(Double mobileCpm) {
+    public void setMobileCpm(BigDecimal mobileCpm) {
         this.mobileCpm = mobileCpm;
     }
 
@@ -261,71 +263,6 @@ public class KeywordReportEntity extends AccountIdEntity {
 
     public void setMobilePosition(Double mobilePosition) {
         this.mobilePosition = mobilePosition;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        KeywordReportEntity that = (KeywordReportEntity) o;
-
-        if (adgroupId != null ? !adgroupId.equals(that.adgroupId) : that.adgroupId != null) return false;
-        if (adgroupName != null ? !adgroupName.equals(that.adgroupName) : that.adgroupName != null) return false;
-        if (campaignId != null ? !campaignId.equals(that.campaignId) : that.campaignId != null) return false;
-        if (campaignName != null ? !campaignName.equals(that.campaignName) : that.campaignName != null) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (keywordId != null ? !keywordId.equals(that.keywordId) : that.keywordId != null) return false;
-        if (keywordName != null ? !keywordName.equals(that.keywordName) : that.keywordName != null) return false;
-        if (mobileClick != null ? !mobileClick.equals(that.mobileClick) : that.mobileClick != null) return false;
-        if (mobileConversion != null ? !mobileConversion.equals(that.mobileConversion) : that.mobileConversion != null)
-            return false;
-        if (mobileCost != null ? !mobileCost.equals(that.mobileCost) : that.mobileCost != null) return false;
-        if (mobileCpc != null ? !mobileCpc.equals(that.mobileCpc) : that.mobileCpc != null) return false;
-        if (mobileCpm != null ? !mobileCpm.equals(that.mobileCpm) : that.mobileCpm != null) return false;
-        if (mobileCtr != null ? !mobileCtr.equals(that.mobileCtr) : that.mobileCtr != null) return false;
-        if (mobileImpression != null ? !mobileImpression.equals(that.mobileImpression) : that.mobileImpression != null)
-            return false;
-        if (mobilePosition != null ? !mobilePosition.equals(that.mobilePosition) : that.mobilePosition != null)
-            return false;
-        if (pcClick != null ? !pcClick.equals(that.pcClick) : that.pcClick != null) return false;
-        if (pcConversion != null ? !pcConversion.equals(that.pcConversion) : that.pcConversion != null) return false;
-        if (pcCost != null ? !pcCost.equals(that.pcCost) : that.pcCost != null) return false;
-        if (pcCpc != null ? !pcCpc.equals(that.pcCpc) : that.pcCpc != null) return false;
-        if (pcCpm != null ? !pcCpm.equals(that.pcCpm) : that.pcCpm != null) return false;
-        if (pcCtr != null ? !pcCtr.equals(that.pcCtr) : that.pcCtr != null) return false;
-        if (pcImpression != null ? !pcImpression.equals(that.pcImpression) : that.pcImpression != null) return false;
-        if (pcPosition != null ? !pcPosition.equals(that.pcPosition) : that.pcPosition != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (keywordId != null ? keywordId.hashCode() : 0);
-        result = 31 * result + (keywordName != null ? keywordName.hashCode() : 0);
-        result = 31 * result + (adgroupId != null ? adgroupId.hashCode() : 0);
-        result = 31 * result + (adgroupName != null ? adgroupName.hashCode() : 0);
-        result = 31 * result + (campaignId != null ? campaignId.hashCode() : 0);
-        result = 31 * result + (campaignName != null ? campaignName.hashCode() : 0);
-        result = 31 * result + (pcImpression != null ? pcImpression.hashCode() : 0);
-        result = 31 * result + (pcClick != null ? pcClick.hashCode() : 0);
-        result = 31 * result + (pcCtr != null ? pcCtr.hashCode() : 0);
-        result = 31 * result + (pcCost != null ? pcCost.hashCode() : 0);
-        result = 31 * result + (pcCpc != null ? pcCpc.hashCode() : 0);
-        result = 31 * result + (pcCpm != null ? pcCpm.hashCode() : 0);
-        result = 31 * result + (pcConversion != null ? pcConversion.hashCode() : 0);
-        result = 31 * result + (pcPosition != null ? pcPosition.hashCode() : 0);
-        result = 31 * result + (mobileImpression != null ? mobileImpression.hashCode() : 0);
-        result = 31 * result + (mobileClick != null ? mobileClick.hashCode() : 0);
-        result = 31 * result + (mobileCtr != null ? mobileCtr.hashCode() : 0);
-        result = 31 * result + (mobileCost != null ? mobileCost.hashCode() : 0);
-        result = 31 * result + (mobileCpc != null ? mobileCpc.hashCode() : 0);
-        result = 31 * result + (mobileCpm != null ? mobileCpm.hashCode() : 0);
-        result = 31 * result + (mobileConversion != null ? mobileConversion.hashCode() : 0);
-        result = 31 * result + (mobilePosition != null ? mobilePosition.hashCode() : 0);
-        return result;
     }
 
     @Override

@@ -28,7 +28,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveTask;
-import static com.perfect.mongodb.utils.EntityConstants.*;
+
+import static com.perfect.mongodb.utils.EntityConstants.TBL_ACCOUNT_REPORT;
+
 /**
  * Created by baizz on 2014-08-07.
  */
@@ -53,7 +55,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     private List<RegionReportEntity> rrmList;
 
     public void getAccountReportData(String dateStr) {
-        MongoTemplate mongoTemplate = null;
+        MongoTemplate mongoTemplate;
         Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
         for (SystemUserEntity systemUser : entities) {
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
@@ -84,7 +86,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     }
 
     public void getCampaignReportData(String dateStr) {
-        MongoTemplate mongoTemplate = null;
+        MongoTemplate mongoTemplate;
         Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
         for (SystemUserEntity systemUser : entities) {
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
@@ -115,7 +117,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     }
 
     public void getAdgroupReportData(String dateStr) {
-        MongoTemplate mongoTemplate = null;
+        MongoTemplate mongoTemplate;
         Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
         for (SystemUserEntity systemUser : entities) {
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
@@ -147,7 +149,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     }
 
     public void getCreativeReportData(String dateStr) {
-        MongoTemplate mongoTemplate = null;
+        MongoTemplate mongoTemplate;
         Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
         for (SystemUserEntity systemUser : entities) {
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
@@ -179,7 +181,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     }
 
     public void getKeywordReportData(String dateStr) {
-        MongoTemplate mongoTemplate = null;
+        MongoTemplate mongoTemplate;
         Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
         for (SystemUserEntity systemUser : entities) {
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
@@ -211,7 +213,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     }
 
     public void getRegionReportData(String dateStr) {
-        MongoTemplate mongoTemplate = null;
+        MongoTemplate mongoTemplate;
         Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
         for (SystemUserEntity systemUser : entities) {
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
@@ -287,9 +289,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     list.add(entity1);
                     index++;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
+            } catch (IOException | ParseException e) {
                 e.printStackTrace();
             } finally {
                 try {
@@ -325,18 +325,18 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[5]));
                         entity1.setPcClick(Integer.valueOf(arr[6]));
-                        entity1.setPcCost(Double.valueOf(arr[7]));
+                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[7])));
                         entity1.setPcCtr(Double.valueOf(arr[8].substring(0, arr[8].length() - 1)));
-                        entity1.setPcCpc(Double.valueOf(arr[9]));
-                        entity1.setPcCpm(Double.valueOf(arr[10]));
+                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[9])));
+                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[10])));
                         entity1.setPcConversion(Double.valueOf(arr[11]));
                     } else if (type == 2) {
                         entity1.setMobileImpression(Integer.valueOf(arr[5]));
                         entity1.setMobileClick(Integer.valueOf(arr[6]));
-                        entity1.setMobileCost(Double.valueOf(arr[7]));
+                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[7])));
                         entity1.setMobileCtr(Double.valueOf(arr[8].substring(0, arr[8].length() - 1)));
-                        entity1.setMobileCpc(Double.valueOf(arr[9]));
-                        entity1.setMobileCpm(Double.valueOf(arr[10]));
+                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[9])));
+                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[10])));
                         entity1.setMobileConversion(Double.valueOf(arr[11]));
                     }
                     list.add(entity1);
@@ -379,18 +379,18 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[7]));
                         entity1.setPcClick(Integer.valueOf(arr[8]));
-                        entity1.setPcCost(Double.valueOf(arr[9]));
+                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[9])));
                         entity1.setPcCtr(Double.valueOf(arr[10].substring(0, arr[10].length() - 1)));
-                        entity1.setPcCpc(Double.valueOf(arr[11]));
-                        entity1.setPcCpm(Double.valueOf(arr[12]));
+                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[11])));
+                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[12])));
                         entity1.setPcConversion(Double.valueOf(arr[13]));
                     } else if (type == 2) {
                         entity1.setMobileImpression(Integer.valueOf(arr[7]));
                         entity1.setMobileClick(Integer.valueOf(arr[8]));
-                        entity1.setMobileCost(Double.valueOf(arr[9]));
+                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[9])));
                         entity1.setMobileCtr(Double.valueOf(arr[10].substring(0, arr[10].length() - 1)));
-                        entity1.setMobileCpc(Double.valueOf(arr[11]));
-                        entity1.setMobileCpm(Double.valueOf(arr[12]));
+                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[11])));
+                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[12])));
                         entity1.setMobileConversion(Double.valueOf(arr[13]));
                     }
                     list.add(entity1);
@@ -438,18 +438,18 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[12]));
                         entity1.setPcClick(Integer.valueOf(arr[13]));
-                        entity1.setPcCost(Double.valueOf(arr[14]));
+                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[14])));
                         entity1.setPcCtr(Double.valueOf(arr[15].substring(0, arr[15].length() - 1)));
-                        entity1.setPcCpc(Double.valueOf(arr[16]));
-                        entity1.setPcCpm(Double.valueOf(arr[17]));
+                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[16])));
+                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[17])));
                         entity1.setPcConversion(Double.valueOf(arr[18]));
                     } else if (type == 2) {
                         entity1.setMobileImpression(Integer.valueOf(arr[12]));
                         entity1.setMobileClick(Integer.valueOf(arr[13]));
-                        entity1.setMobileCost(Double.valueOf(arr[14]));
+                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[14])));
                         entity1.setMobileCtr(Double.valueOf(arr[15].substring(0, arr[15].length() - 1)));
-                        entity1.setMobileCpc(Double.valueOf(arr[16]));
-                        entity1.setMobileCpm(Double.valueOf(arr[17]));
+                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[16])));
+                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[17])));
                         entity1.setMobileConversion(Double.valueOf(arr[18]));
                     }
                     list.add(entity1);
@@ -495,19 +495,19 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[10]));
                         entity1.setPcClick(Integer.valueOf(arr[11]));
-                        entity1.setPcCost(Double.valueOf(arr[12]));
+                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[12])));
                         entity1.setPcCtr(Double.valueOf(arr[13].substring(0, arr[13].length() - 1)));
-                        entity1.setPcCpc(Double.valueOf(arr[14]));
-                        entity1.setPcCpm(Double.valueOf(arr[15]));
+                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[14])));
+                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[15])));
                         entity1.setPcConversion(Double.valueOf(arr[16]));
                         entity1.setPcPosition(Double.valueOf(arr[17]));
                     } else if (type == 2) {
                         entity1.setMobileImpression(Integer.valueOf(arr[10]));
                         entity1.setMobileClick(Integer.valueOf(arr[11]));
-                        entity1.setMobileCost(Double.valueOf(arr[12]));
+                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[12])));
                         entity1.setMobileCtr(Double.valueOf(arr[13].substring(0, arr[13].length() - 1)));
-                        entity1.setMobileCpc(Double.valueOf(arr[14]));
-                        entity1.setMobileCpm(Double.valueOf(arr[15]));
+                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[14])));
+                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[15])));
                         entity1.setMobileConversion(Double.valueOf(arr[16]));
                         entity1.setMobilePosition(Double.valueOf(arr[17]));
                     }
@@ -553,10 +553,10 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         entity1.setRegionName(arr[8]);
                         entity1.setPcImpression(Integer.valueOf(arr[9]));
                         entity1.setPcClick(Integer.valueOf(arr[10]));
-                        entity1.setPcCost(Double.valueOf(arr[11]));
+                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[11])));
                         entity1.setPcCtr(Double.valueOf(arr[12].substring(0, arr[12].length() - 1)));
-                        entity1.setPcCpc(Double.valueOf(arr[13]));
-                        entity1.setPcCpm(Double.valueOf(arr[14]));
+                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[13])));
+                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[14])));
                         entity1.setPcConversion(Double.valueOf(arr[15]));
                         entity1.setPcPosition(Double.valueOf(arr[16]));
                     } else if (type == 2) {
@@ -568,10 +568,10 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         entity1.setRegionName(arr[6]);
                         entity1.setMobileImpression(Integer.valueOf(arr[7]));
                         entity1.setMobileClick(Integer.valueOf(arr[8]));
-                        entity1.setMobileCost(Double.valueOf(arr[9]));
+                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[9])));
                         entity1.setMobileCtr(Double.valueOf(arr[10].substring(0, arr[10].length() - 1)));
-                        entity1.setMobileCpc(Double.valueOf(arr[11]));
-                        entity1.setMobileCpm(Double.valueOf(arr[12]));
+                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[11])));
+                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[12])));
                         entity1.setMobileConversion(Double.valueOf(arr[13]));
                     }
                     list.add(entity1);

@@ -419,7 +419,8 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         for (KeywordReportEntity entity : list) {
             qualityDTO.setImpression(qualityDTO.getImpression() + entity.getPcImpression());
             qualityDTO.setClick(qualityDTO.getClick() + entity.getPcClick());
-            qualityDTO.setCost(qualityDTO.getCost() + entity.getPcCost());
+            BigDecimal bigDecimal = new BigDecimal(qualityDTO.getCost());
+            qualityDTO.setCost(bigDecimal.add(entity.getPcCost()).doubleValue());
             qualityDTO.setConversion(qualityDTO.getConversion() + entity.getPcConversion());
         }
         return qualityDTO;
@@ -539,8 +540,9 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                         _vo.setPcImpression(_vo.getPcImpression() + vo.getPcImpression());
                         _vo.setPcClick(_vo.getPcClick() + vo.getPcClick());
                         _vo.setPcCtr(0.);
-                        _vo.setPcCost(_vo.getPcCost() + vo.getPcCost());
-                        _vo.setPcCpc(0.);
+                        BigDecimal bigDecimal = new BigDecimal(0.);
+                        _vo.setPcCost(bigDecimal.add(_vo.getPcCost()).add(vo.getPcCost()));
+                        _vo.setPcCpc(new BigDecimal(0.));
                         _vo.setPcPosition(_vo.getPcPosition() + vo.getPcPosition());
                         _vo.setPcConversion(_vo.getPcConversion() + vo.getPcConversion());
                         _map.put(_vo.getKeywordId().toString(), _vo);
