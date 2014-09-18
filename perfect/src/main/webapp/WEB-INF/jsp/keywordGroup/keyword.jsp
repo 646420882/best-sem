@@ -11,6 +11,7 @@ To change this template use File | Settings | File Templates.
 <head>
     <title></title>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
     <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
@@ -79,17 +80,6 @@ To change this template use File | Settings | File Templates.
                                         <li>· 普菲特智能词库</li>
                                     </ul>
                                 </div>
-                                <%--<div class="k_top2_detali2 over">
-                                <div class="list01_top2 over">
-                                <span>智能过滤</span>
-                                <a href="#" class="question"></a>
-                                </div>
-                                <ul>
-                                <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
-                                <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
-                                </li>
-                                </ul>
-                                </div>--%>
                             </div>
                         </div>
                         <div class="k_r_under over">
@@ -128,8 +118,6 @@ To change this template use File | Settings | File Templates.
                                                        onclick="javascript:fieldName = 'competition';sort = -1;findWordFromBaidu();"
                                                        class="two">
                                             </p></b></td>
-                                        <%--<td><span>一级推荐理由</span></td>--%>
-                                        <%--<td><span>二级推荐理由</span></td>--%>
                                     </tr>
                                     </thead>
                                     <tbody id="tbody1">
@@ -138,16 +126,6 @@ To change this template use File | Settings | File Templates.
                             </div>
                         </div>
                         <div id="pagination1" class="pagination"></div>
-                        <%--<div class="page2">
-                            <a href="javascript:toPrevPage();">上一页</a>
-                            <a onclick="javascript:startPer = 0;endPer = 10;loadPerformance()" cname="nameDet"
-                               class="ajc" href="javascript:">1</a>
-                            <a href="javascript:toNextPage();">下一页</a><span
-                                style="margin-right:10px;">跳转到 <input id="pageNumber1" type="text" class="price"></span>&nbsp;&nbsp;<a
-                                href="javascript:toAnyPage();" class='page_go'> GO</a>
-                            <a href="#" class='page_go'><span>共计</span><span><b
-                                    id="totalPage1"></b></span><span>页</span></a>
-                        </div>--%>
                     </div>
                     <div class="k_r_top2 hides over">
                         <div class="k_r_middle over">
@@ -177,17 +155,6 @@ To change this template use File | Settings | File Templates.
                                         <li>· 普菲特智能词库</li>
                                     </ul>
                                 </div>
-                                <%--<div class="k_top2_detali2 over">
-                                <div class="list01_top2 over">
-                                <span>智能过滤</span>
-                                <a href="#" class="question"></a>
-                                </div>
-                                <ul>
-                                <li><input type="checkbox">&nbsp;&nbsp;搜索引擎（baidu，google）APP</li>
-                                <li><input type="checkbox">&nbsp;&nbsp;抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing
-                                </li>
-                                </ul>
-                                </div>--%>
                             </div>
                         </div>
                         <div class="k_r_under over">
@@ -212,16 +179,6 @@ To change this template use File | Settings | File Templates.
                             </div>
                         </div>
                         <div id="pagination2" class="pagination"></div>
-                        <%--<div class="page2">
-                            <a href="javascript:toPrevPage();">上一页</a>
-                            <a onclick="javascript:void(0);" cname="nameDet"
-                               class="ajc" href="javascript:">1</a>
-                            <a href="javascript:toNextPage();">下一页</a><span
-                                style="margin-right:10px;">跳转到 <input id="pageNumber2" type="text" class="price"></span>&nbsp;&nbsp;<a
-                                href="javascript:toAnyPage();" class='page_go'> GO</a>
-                            <a href="#" class='page_go'><span>共计</span><span><b
-                                    id="totalPage2"></b></span><span>页</span></a>
-                        </div>--%>
                     </div>
                 </div>
             </div>
@@ -486,17 +443,6 @@ To change this template use File | Settings | File Templates.
             </div>
         </div>
     </div>
-    <form name="paginationoptions" style="display: none">
-        <p><input type="text" value="5" name="items_per_page" id="items_per_page" class="numeric"/></p>
-
-        <p><input type="text" value="10" name="num_display_entries" id="num_display_entries" class="numeric"/></p>
-
-        <p><input type="text" value="2" name="num_edge_entries" id="num_edge_entries" class="numeric"/></p>
-
-        <p><input type="text" value="Prev" name="prev_text" id="prev_text"/></p>
-
-        <p><input type="text" value="Next" name="next_text" id="next_text"/></p>
-    </form>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
@@ -539,6 +485,11 @@ var systemWordPage = -1;
 
 var pageSelectCallback = function (page_index, jq) {
     pageIndex = page_index;
+    if (type == 1) {
+        $("#pagination1").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber1' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:toAnyPage();' class='page_go'> GO</a>");
+    } else {
+        $("#pagination2").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber2' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:toAnyPage();' class='page_go'> GO</a>");
+    }
     toAnyPage(page_index);
     return false;
 };
@@ -641,6 +592,7 @@ var downloadCSV = function () {
             ie_iframe.width = 0;
             ie_iframe.height = 0;
             ie_iframe.src = _url;
+//            ie_iframe.attachEvent("onload", iframeLoad);
             ie_iframe.onload = ie_iframe.onreadystatechange = iframeLoad;
             document.body.appendChild(ie_iframe);
         } else {
@@ -666,7 +618,6 @@ var downloadCSV = function () {
             ie_iframe.width = 0;
             ie_iframe.height = 0;
             ie_iframe.src = _url;
-//            ie_iframe.attachEvent("onload", iframeLoad);
             ie_iframe.onload = ie_iframe.onreadystatechange = iframeLoad;
             document.body.appendChild(ie_iframe);
         } else {
@@ -771,18 +722,10 @@ var findWordFromBaidu = function () {
         },
         success: function (data, textStatus, jqXHR) {
             $("#tbody1").empty();
-//            if ($("#anyPageNumber1").attr("class")) {
-//                document.getElementById("baiduKeywordDiv").style.display = "none";
-//                $("#anyPageNumber1").removeClass("price");
-//            }
             if (data.rows.length > 0) {
-//                document.getElementById("baiduKeywordDiv").style.display = "block";
-//                $("#anyPageNumber1").addClass("price");
                 krFileId = data.krFileId;
                 total = data.total;
                 $("#pagination1").pagination(total, optInit);
-                $("#pagination1").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber1' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:toAnyPage();' class='page_go'> GO</a>");
-//                $("#totalPage1").text(Math.ceil(total / limit));
                 var _class = "";
                 $.each(data.rows, function (i, item) {
                     if (i % 2 == 0) {
@@ -796,8 +739,6 @@ var findWordFromBaidu = function () {
                             "<td>" + item.keywordName + "</td>" +
                             "<td>" + item.dsQuantity + "</td>" +
                             "<td>" + item.competition + "%</td>" +
-// "<td>" + item.recommendReason1 + "</td>" +
-// "<td>" + item.recommendReason2 + "</td>" +
                             "</tr>";
                     $("#tbody1").append(newTr);
                 });
@@ -826,17 +767,9 @@ var findWordFromSystem = function () {
         },
         success: function (data, textStatus, jqXHR) {
             $("#tbody2").empty();
-//            if ($("#anyPageNumber2").attr("class")) {
-//                document.getElementById("systemKeywordDiv").style.display = "none";
-//                $("#anyPageNumber2").removeClass("price");
-//            }
             if (data.rows.length > 0) {
-//                document.getElementById("systemKeywordDiv").style.display = "block";
-//                $("#anyPageNumber2").addClass("price");
                 total = data.total;
                 $("#pagination2").pagination(total, optInit);
-                $("#pagination2").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber2' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:toAnyPage();' class='page_go'> GO</a>");
-//                $("#totalPage2").text(Math.ceil(total / limit));
                 var _class = "";
                 $.each(data.rows, function (i, item) {
                     if (i % 2 == 0) {
