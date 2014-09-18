@@ -1,8 +1,8 @@
 package com.perfect.utils;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 /**
  * Created by baizz on 2014-08-16.
@@ -10,7 +10,7 @@ import java.util.Arrays;
 @SuppressWarnings("unchecked")
 public class TopN {
 
-    private static Method getMethod;  //the field's declared method
+    private static Method method;  //the field's declared method
 
     private static int sort = -1;  //default DESC, get topN data
 
@@ -30,11 +30,14 @@ public class TopN {
         if (ts == null || ts.length == 0)
             return null;
 
+        if (sort * sort != 1)
+            return null;
+
         Class _class = ts[0].getClass();
         TopN.sort = sort;
         try {
             String fieldGetterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-            TopN.getMethod = _class.getDeclaredMethod(fieldGetterName);
+            TopN.method = _class.getDeclaredMethod(fieldGetterName);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -43,7 +46,8 @@ public class TopN {
         T topNData[];
         int l = ts.length;
         if (l >= n) {
-            topNData = Arrays.copyOf(ts, n);
+            topNData = (T[]) Array.newInstance(_class.getComponentType(), n);
+            System.arraycopy(ts, 0, topNData, 0, n);
         } else {
             topNData = ts;
         }
@@ -55,7 +59,7 @@ public class TopN {
         try {
             for (int i = n; i < l; i++) {
                 int index = (l >= n) ? (n - 1) : (l - 1);
-                if (((Comparable) TopN.getMethod.invoke(ts[i])).compareTo(TopN.getMethod.invoke(topNData[index])) == 1) {
+                if (((Comparable) TopN.method.invoke(ts[i])).compareTo(TopN.method.invoke(topNData[index])) == 1) {
                     topNData[index] = ts[i];
                     quickSort(topNData, 0, topNData.length - 1);
                 }
@@ -87,7 +91,7 @@ public class TopN {
 
         try {
             while (l != h) {
-                if (((Comparable) TopN.getMethod.invoke(arr[l])).compareTo(TopN.getMethod.invoke(arr[h])) == TopN.sort) {
+                if (((Comparable) TopN.method.invoke(arr[l])).compareTo(TopN.method.invoke(arr[h])) == TopN.sort) {
                     //交换数据
                     T tempObj = arr[l];
                     arr[l] = arr[h];

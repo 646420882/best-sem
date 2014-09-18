@@ -1,8 +1,6 @@
 package com.perfect.utils.web;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.perfect.utils.JSONUtils;
 import com.perfect.utils.web.dto.MessageResult;
 import org.springframework.stereotype.Repository;
@@ -15,10 +13,11 @@ import java.io.IOException;
  */
 @Repository(value = "webContext")
 public class WebContextSupport implements WebContext {
-    public static final String SUCCESS="1";
-   public static final String FAIL="0";
-    public static final String EXCEPTION="3";
-    public static final String NOLOGIN="4";
+    public static final String SUCCESS = "1";
+    public static final String FAIL = "0";
+    public static final String EXCEPTION = "3";
+    public static final String NOLOGIN = "4";
+
     @Override
     public void writeHtml(String html, HttpServletResponse response) {
         try {
@@ -41,12 +40,12 @@ public class WebContextSupport implements WebContext {
 
     @Override
     public void writeJson(Object obj, HttpServletResponse res) {
-            writeHtml(JSONUtils.getJsonObject(obj).toString(), res);
+        writeHtml(JSONUtils.getJsonObject(obj).toString(), res);
     }
 
 
     @Override
-    public void writeData(Object message,HttpServletResponse response, Object data) {
-        writeJson(new MessageResult(message,data),response);
+    public void writeData(Object message, HttpServletResponse response, Object data) {
+        writeJson(new MessageResult(message, data), response);
     }
 }
