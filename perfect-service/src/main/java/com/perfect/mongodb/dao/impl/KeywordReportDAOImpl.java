@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-
+import com.perfect.entity.KeywordEntity;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -35,6 +35,7 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
     @Override
     public PagerInfo findByPagerInfo(Map<String, Object> params) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+        MongoTemplate mongoTemplateNormal=BaseMongoTemplate.getUserMongo();
         List<KeywordReportEntity> findlList = new ArrayList<>();
         Map<Long, KeywordReportEntity> imptMap = new HashMap<>();
         List<String> dateList = getCurrDate(params);
@@ -45,7 +46,9 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
                 for (Long l : kwdIds) {
                     KeywordReportEntity list = mongoTemplate.findOne(new Query(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(EntityConstants.KEYWORD_ID).is(l)), KeywordReportEntity.class, str + "-" + EntityConstants.TBL_KEYWORD);
                     if (list != null) {
+                        KeywordEntity matchType=mongoTemplateNormal.findOne(new Query(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(EntityConstants.KEYWORD_ID).is(l)),KeywordEntity.class);
                         list.setOrderBy(orderBy);
+                        list.setMatchType(matchType.getMatchType());
                         findlList.add(list);
                     }
                 }
@@ -120,7 +123,14 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
             }
         }
         List<KeywordReportEntity> importList=new ArrayList<>(imptMap.values());
-
+        for (KeywordReportEntity kwd:importList){
+            Double d=Double.parseDouble(kwd.getPcCost()+"");
+            if(d==0.0){
+                kwd.setQuality(0);
+            }else{
+                kwd.setQuality((int) (kwd.getPcPosition()/d));
+            }
+        }
         Integer nowPage = Integer.parseInt(params.get("nowPage").toString());
         Integer pageSize = Integer.parseInt(params.get("pageSize").toString());
         Integer totalCount = imptMap.size();
@@ -143,6 +153,7 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
     @Override
     public List<KeywordReportEntity> getAll(Map<String, Object> params) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+        MongoTemplate mongoTemplateNormal=BaseMongoTemplate.getUserMongo();
         List<KeywordReportEntity> findlList = new ArrayList<>();
         Map<Long, KeywordReportEntity> imptMap = new HashMap<>();
         List<String> dateList = getCurrDate(params);
@@ -152,6 +163,8 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
                 for (Long l : kwdIds) {
                     KeywordReportEntity list = mongoTemplate.findOne(new Query(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(EntityConstants.KEYWORD_ID).is(l)), KeywordReportEntity.class, str + "-" + EntityConstants.TBL_KEYWORD);
                     if (list != null) {
+                        KeywordEntity matchType=mongoTemplateNormal.findOne(new Query(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(EntityConstants.KEYWORD_ID).is(l)),KeywordEntity.class);
+                        list.setMatchType(matchType.getMatchType());
                         findlList.add(list);
                     }
                 }
@@ -207,12 +220,14 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
                     }
                     tmp.setPcImpression(tmp.getPcImpression() + findlList.get(i).getPcImpression() + mibPcImpression);
                     tmp.setPcClick(tmp.getPcClick() + findlList.get(i).getPcClick() + mibClick);
-                    tmp.setPcCtr((tmp.getPcClick() / tmp.getPcImpression() + findlList.get(i).getPcClick() / findlList.get(i).getPcImpression()) +needMibCtr);
+                    tmp.setPcCtr((tmp.getPcClick() / tmp.getPcImpression() + findlList.get(i).getPcClick() / findlList.get(i).getPcImpression()) + needMibCtr);
                     tmp.setPcCost(tmp.getPcCost().add(findlList.get(i).getPcCost()).add(mibCost));
                     tmp.setPcCpc((tmpPcpc.add(fmpPcpc)).add(needMibCpc));
                     tmp.setPcCpm(tmp.getPcCpm().add(findlList.get(i).getPcCpm()).add(mibCpm));
                     tmp.setPcConversion(tmp.getPcConversion() + findlList.get(i).getPcConversion() + mibConversion);
                     tmp.setPcPosition(tmp.getPcPosition() + findlList.get(i).getPcPosition() + mibPosition);
+
+
 
                     tmp.setMobileImpression(mibPcImpression);
                     tmp.setMobileClick(mibClick);
@@ -226,6 +241,14 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
             }
         }
         List<KeywordReportEntity> importList=new ArrayList<>(imptMap.values());
+        for (KeywordReportEntity kwd:importList){
+            Double d=Double.parseDouble(kwd.getPcCost()+"");
+            if(d==0.0){
+                kwd.setQuality(0);
+            }else{
+                kwd.setQuality((int) (kwd.getPcPosition()/d));
+            }
+        }
         return importList;
     }
 

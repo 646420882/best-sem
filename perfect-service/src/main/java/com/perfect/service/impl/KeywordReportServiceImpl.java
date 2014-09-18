@@ -55,7 +55,10 @@ public class KeywordReportServiceImpl extends AbstractUserBaseDAOImpl<KeywordRep
                     DEFAULT_DELIMITER + "消费" +
                     DEFAULT_DELIMITER + "点击率" +
                     DEFAULT_DELIMITER + "平均点击价格" +
+                    DEFAULT_DELIMITER + "平均排名" +
+                    DEFAULT_DELIMITER + "质量度" +
                     DEFAULT_DELIMITER + "转化(页面)" +
+                    DEFAULT_DELIMITER + "匹配" +
                     DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
             for (KeywordReportEntity entity : list) {
                 os.write(Bytes.concat(commonCSVHead, (entity.getKeywordName() +
@@ -64,14 +67,28 @@ public class KeywordReportServiceImpl extends AbstractUserBaseDAOImpl<KeywordRep
                                 DEFAULT_DELIMITER + entity.getPcCost() +
                                 DEFAULT_DELIMITER + entity.getPcCtr() + "%" +
                                 DEFAULT_DELIMITER + entity.getPcCpc() +
+                                DEFAULT_DELIMITER + entity.getPcPosition()+
+                                DEFAULT_DELIMITER + entity.getQuality()+
                                 DEFAULT_DELIMITER + entity.getPcConversion() +
+                                DEFAULT_DELIMITER + getMatchTypeName(entity.getMatchType()) +
                                 DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
+    private String getMatchTypeName(Integer num){
+        switch (num){
+            case 1:
+                return "精确匹配";
+            case 2:
+                return "短语匹配";
+            case 3:
+                return "广泛匹配";
+            default:
+                return "精确匹配";
+        }
+    }
     @Override
     public List<KeywordReportEntity> getAll(Map<String,Object> params) {
         return keywordReportDAO.getAll(params);

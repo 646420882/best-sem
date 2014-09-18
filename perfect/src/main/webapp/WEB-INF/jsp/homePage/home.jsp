@@ -1071,24 +1071,27 @@
         <div class="over">
         </div>
         <div class="download over">
-            <div class="page2 fl" id="importPager">
+                <div class="page2 fl" id="importPager">
                    <span class="fr">每页显示
                     <select id="importKeywordSel" onchange="selectChange()">
                         <option value="20">20个</option>
                         <option value="50">50个</option>
                         <option value="100">100个</option>
                     </select> </span>
-                <a href="javascript:void(0)">首页</a>
-                <a href="javascript:void(0)" class="nextpage1"><span></span></a>
-                <a href="javascript:void(0)" class="nextpage2"><span></span></a>
-                <a href="javascript:void(0)">尾页</a>
-                <span style="margin-right:10px;">当前页:0/0 </span>
-                <span style="margin-right:10px;">共0条</span>
-                <span style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
-                    href="javascript:void(0)" class='page_go'>
-                GO</a>
+                    <a href="javascript:void(0)">首页</a>
+                    <a href="javascript:void(0)" class="nextpage1"><span></span></a>
+                    <a href="javascript:void(0)" class="nextpage2"><span></span></a>
+                    <a href="javascript:void(0)">尾页</a>
+                    <span style="margin-right:10px;">当前页:0/0 </span>
+                    <span style="margin-right:10px;">共0条</span>
+                    <span style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
+                        href="javascript:void(0)" class='page_go'>
+                    GO</a>
 
-            </div>
+                </div>
+
+
+
 
         </div>
 
@@ -1112,6 +1115,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript">
     // 对Date的扩展，将 Date 转化为指定格式的String
     // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
@@ -1814,7 +1818,7 @@ var getImportKeywordDefault = function (obj, day) {
                 var calssStr = i % 2 != 0 ? "list2_box2" : "list2_box1";
                 var item = gson.list[i];
                 var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;￥" + item.pcCost + "</li><li> &nbsp;￥" + item.pcCpc + "</li>"
-                        + "<li> &nbsp;" + item.pcCtr * 100 + "%</li><li class='home_quality'> &nbsp;" + item.pcConversion + "</li><li> &nbsp;" + item.pcPosition + "</li></ul></td></tr>";
+                        + "<li> &nbsp;" + item.pcCtr * 100 + "%</li><li class='home_quality'> &nbsp;" + item.pcConversion + "</li><li> &nbsp;" + item.pcPosition + "</li><li> &nbsp;"+item.quality+"</li><li>&nbsp;"+until.getMatchTypeName(item.matchType)+"</li></ul></td></tr>";
                 $("#importTr").append(_div);
             }
         } else {
@@ -1831,10 +1835,11 @@ function initImportPagerClickEvent() {
         getImportKeywordDefault(null, statDate);
     });
 }
+//初始化加载下载功能
 function importDownload(rs) {
     window.open("/import/getCSV?startDate="+daterangepicker_start_date+"&&endDate="+daterangepicker_end_date);
-
 }
+
 
 //根据最近几天获取数据
 function lisClick(obj, days) {

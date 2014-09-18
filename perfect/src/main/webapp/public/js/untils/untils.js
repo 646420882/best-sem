@@ -105,5 +105,20 @@ var until = {
         }).bind("paste",function(){  //CTR+V事件处理
             $(this).val($(this).val().replace(/[^0-9.]/g,''));
         }).css("ime-mode", "disabled"); //CSS设置输入法不可用
+    },getMatchTypeName:function(num){
+        switch(num){
+            case "1":
+                return "精确匹配";
+                break;
+            case "2":
+                return "短语匹配";
+                break;
+            case "3":
+                return "广泛匹配";
+                break;
+            default:
+                return "精确匹配"
+                break;
+        }
     }
 };

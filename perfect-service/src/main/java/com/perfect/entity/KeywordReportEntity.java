@@ -80,8 +80,26 @@ public class KeywordReportEntity extends AccountIdEntity implements Comparable<K
 
     @Field(value = "mpt")
     private Double mobilePosition;
+    private Integer quality=0;
+    private Integer matchType;
 
     private String orderBy;//排序而已
+
+    public Integer getMatchType() {
+        return matchType;
+    }
+
+    public void setMatchType(Integer matchType) {
+        this.matchType = matchType;
+    }
+
+    public Integer getQuality() {
+        return quality;
+    }
+
+    public void setQuality(Integer quality) {
+        this.quality = quality;
+    }
 
     public String getOrderBy() {
         return orderBy;
