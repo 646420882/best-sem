@@ -14,11 +14,13 @@ import com.perfect.redis.JRedisUtils;
 import com.perfect.service.BasisReportService;
 import com.perfect.utils.JSONUtils;
 import com.perfect.utils.reportUtil.*;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
 
 import javax.annotation.Resource;
+import java.io.Console;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -51,9 +53,6 @@ public class BasisReportServiceImpl implements BasisReportService {
      * @return
      */
     public Map<String, List<StructureReportEntity>> getReportDate(String[] date, int terminal, int categoryTime, int reportType, int start, int limit, String sort) {
-        List<StructureReportEntity> objectsList = new ArrayList<>();
-
-
         switch (categoryTime) {
             //默认时间生成报告
             case 0:
@@ -67,6 +66,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                     Map<String, StructureReportEntity> map = new HashMap<>();
                     List<StructureReportEntity> returnList = new ArrayList<>();
                     Map<String, List<StructureReportEntity>> listMap = new HashMap<>();
+                    List<StructureReportEntity> objectsList = new ArrayList<>();
                     //获取需要的数据
                     for (int i = 0; i < date.length; i++) {
                         List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType));
@@ -213,6 +213,15 @@ public class BasisReportServiceImpl implements BasisReportService {
                         List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType));
                         if(object.size() == 0){
                             StructureReportEntity entity = new StructureReportEntity();
+                            entity.setKeywordId(0l);
+                            entity.setKeywordName("-");
+                            entity.setRegionId(0l);
+                            entity.setRegionName("-");
+                            entity.setAdgroupId(0l);
+                            entity.setAdgroupName("-");
+                            entity.setCampaignId(0l);
+                            entity.setCampaignName("-");
+
                             entity.setMobileClick(0);
                             entity.setMobileConversion(0d);
                             entity.setMobileCost(BigDecimal.ZERO);
@@ -329,6 +338,15 @@ public class BasisReportServiceImpl implements BasisReportService {
                             }
                             if(objectsList1.size() == 0){
                                 StructureReportEntity entity = new StructureReportEntity();
+                                entity.setKeywordId(0l);
+                                entity.setKeywordName("-");
+                                entity.setRegionId(0l);
+                                entity.setRegionName("-");
+                                entity.setAdgroupId(0l);
+                                entity.setAdgroupName("-");
+                                entity.setCampaignId(0l);
+                                entity.setCampaignName("-");
+
                                 entity.setMobileClick(0);
                                 entity.setMobileConversion(0d);
                                 entity.setMobileCost(BigDecimal.ZERO);
@@ -409,6 +427,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                     } else {
                         List<StructureReportEntity> dateMap2else = new ArrayList<>();
                         StructureReportEntity dateObject2else = new StructureReportEntity();
+                        List<StructureReportEntity> objectsList = new ArrayList<>();
                         //如果用户选择的时间范围小于或者等于7天
                         for (int i = 0; i < date.length; i++) {
                             List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType));
@@ -500,51 +519,94 @@ public class BasisReportServiceImpl implements BasisReportService {
                     Map<String, StructureReportEntity> reportEntities1 = new HashMap<>();
                     Map<String, List<StructureReportEntity>> stringListMap1 = new HashMap<>();
                     Map<String, List<StructureReportEntity>> endListMap1 = new HashMap<>();
+                    List<StructureReportEntity> objectsList = new ArrayList<>();
                     //如果用户选择的时间范围大于30天
                     if (date.length > 30) {
-                        int i = 0;
-                        int endNumber = 0;
-                        int endStep = date.length < 30 ? 1 : date.length % 30 == 0 ? date.length : (date.length / 30) + 1;
-                        for (int x = 0; x < endStep; x++) {
-                            StructureReportEntity dateObject3 = new StructureReportEntity();
-                            String[] strings = new String[2];
-                            for (i = endNumber; i < endNumber + ((i == 0) ? endNumber + 29 : endNumber + 30); i++) {
-                                if (i >= date.length) {
-                                    continue;
-                                }
-                                List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType));
-                                if (object.size() != 0) {
-                                    objectsList.addAll(object);
-                                }
-                                if (i == endNumber) {
-                                    strings[0] = date[i];
-                                    if(i == date.length-1){
-                                        strings[1] = date[i];
+                        Calendar calendar = Calendar.getInstance();
+
+                        try {
+                            calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(date[0]));
+
+                            int index = 0;
+                            int numbert=0;
+                            for (int j = 0; j < date.length; j++) {
+                                index++;
+                                if(index == calendar.getActualMaximum(Calendar.DAY_OF_MONTH)){
+                                    StructureReportEntity dateObject3 = new StructureReportEntity();
+                                    if(objectsList.size() == 0){
+                                        StructureReportEntity entity = new StructureReportEntity();
+                                        entity.setKeywordId(0l);
+                                        entity.setKeywordName("-");
+                                        entity.setRegionId(0l);
+                                        entity.setRegionName("-");
+                                        entity.setAdgroupId(0l);
+                                        entity.setAdgroupName("-");
+                                        entity.setCampaignId(0l);
+                                        entity.setCampaignName("-");
+
+                                        entity.setMobileClick(0);
+                                        entity.setMobileConversion(0d);
+                                        entity.setMobileCost(BigDecimal.ZERO);
+                                        entity.setMobileCpc(BigDecimal.ZERO);
+                                        entity.setMobileCpm(BigDecimal.ZERO);
+                                        entity.setMobileImpression(0);
+                                        entity.setPcClick(0);
+                                        entity.setPcConversion(0d);
+                                        entity.setPcCost(BigDecimal.ZERO);
+                                        entity.setPcCpc(BigDecimal.ZERO);
+                                        entity.setPcCpm(BigDecimal.ZERO);
+                                        entity.setPcImpression(0);
+                                        objectsList.add(entity);
                                     }
-                                } else {
-                                    strings[1] = date[i];
+                                    stringListMap1.put(date[numbert] + " 至 " + date[numbert+index-1], objectsList);
+                                    dateObject3.setDate(date[numbert] + " 至 " + date[numbert + index - 1]);
+                                    dateMap3.add(dateObject3);
+                                    objectsList = new ArrayList<>();
+
+                                    numbert = numbert+index;
+                                    index = 0;
                                 }
+
+                                    List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[j] + getTableType(reportType));
+                                    if (object.size() != 0) {
+                                        objectsList.addAll(object);
+                                    }
+                                    calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(date[j]));
+
                             }
-                            if(objectsList.size() == 0){
-                                StructureReportEntity entity = new StructureReportEntity();
-                                entity.setMobileClick(0);
-                                entity.setMobileConversion(0d);
-                                entity.setMobileCost(BigDecimal.ZERO);
-                                entity.setMobileCpc(BigDecimal.ZERO);
-                                entity.setMobileCpm(BigDecimal.ZERO);
-                                entity.setMobileImpression(0);
-                                entity.setPcClick(0);
-                                entity.setPcConversion(0d);
-                                entity.setPcCost(BigDecimal.ZERO);
-                                entity.setPcCpc(BigDecimal.ZERO);
-                                entity.setPcCpm(BigDecimal.ZERO);
-                                entity.setPcImpression(0);
-                                objectsList.add(entity);
+                            if(index > 0){
+                                StructureReportEntity dateObject3 = new StructureReportEntity();
+                                if(objectsList.size() == 0){
+                                    StructureReportEntity entity = new StructureReportEntity();
+                                    entity.setKeywordId(0l);
+                                    entity.setKeywordName("-");
+                                    entity.setRegionId(0l);
+                                    entity.setRegionName("-");
+                                    entity.setAdgroupId(0l);
+                                    entity.setAdgroupName("-");
+                                    entity.setCampaignId(0l);
+                                    entity.setCampaignName("-");
+
+                                    entity.setMobileClick(0);
+                                    entity.setMobileConversion(0d);
+                                    entity.setMobileCost(BigDecimal.ZERO);
+                                    entity.setMobileCpc(BigDecimal.ZERO);
+                                    entity.setMobileCpm(BigDecimal.ZERO);
+                                    entity.setMobileImpression(0);
+                                    entity.setPcClick(0);
+                                    entity.setPcConversion(0d);
+                                    entity.setPcCost(BigDecimal.ZERO);
+                                    entity.setPcCpc(BigDecimal.ZERO);
+                                    entity.setPcCpm(BigDecimal.ZERO);
+                                    entity.setPcImpression(0);
+                                    objectsList.add(entity);
+                                }
+                                stringListMap1.put(date[numbert] + " 至 " + date[index-1], objectsList);
+                                dateObject3.setDate(date[numbert] + " 至 " + date[index-1]);
+                                dateMap3.add(dateObject3);
                             }
-                            stringListMap1.put(strings[0] + " 至 " + strings[1], objectsList);
-                            dateObject3.setDate(strings[0] + " 至 " + strings[1]);
-                            dateMap3.add(dateObject3);
-                            endNumber = i;
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
 
                         for (Map.Entry<String, List<StructureReportEntity>> entry1 : stringListMap1.entrySet()) {
@@ -1561,7 +1623,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 objEntity.setPcImpression(((objEntity.getPcImpression() == null) ? 0 : objEntity.getPcImpression()) + ((entity.getPcImpression() == null) ? 0 : entity.getPcImpression()));
                 objEntity.setPcClick(((objEntity.getPcClick() == null) ? 0 : objEntity.getPcClick()) + ((entity.getPcClick() == null) ? 0 : entity.getPcClick()));
                 objEntity.setPcCost(((objEntity.getPcCost() == null) ? BigDecimal.valueOf(0) : objEntity.getPcCost()).add((entity.getPcCost() == null) ? BigDecimal.valueOf(0) : entity.getPcCost()));
-                objEntity.setPcConversion(((objEntity.getPcConversion() == null) ? 0 : objEntity.getMobileConversion()) + ((entity.getPcConversion() == null) ? 0 : entity.getPcConversion()));
+                objEntity.setPcConversion(((objEntity.getPcConversion() == null) ? 0 : objEntity.getPcConversion()) + ((entity.getPcConversion() == null) ? 0 : entity.getPcConversion()));
             }
         }
         List<StructureReportEntity> entityList = new ArrayList<>();

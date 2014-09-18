@@ -6,12 +6,14 @@ import com.perfect.dto.AccountReportDTO;
 import com.perfect.entity.StructureReportEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
+import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import static com.perfect.mongodb.utils.DateUtils.KEY_DATE;
 
 import java.util.Date;
 import java.util.List;
@@ -39,7 +41,8 @@ public class BasisReportDAOImpl extends AbstractUserBaseDAOImpl<StructureReportE
         } else {
             sort = new Sort(Sort.Direction.DESC, fieldName);
         }
-        List<AccountReportDTO> reportEntities = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())).with(sort), AccountReportDTO.class, TBL_ACCOUNT_REPORT);
+        List<Date> dates = DateUtils.getsLatestAnyDays("yyyy-MM-dd",2).get(KEY_DATE);
+        List<AccountReportDTO> reportEntities = mongoTemplate.find(Query.query(Criteria.where("date").lte(dates.get(0)).gte(dates.get(1)).and(ACCOUNT_ID).is(AppContext.getAccountId())).with(sort), AccountReportDTO.class, TBL_ACCOUNT_REPORT);
         return reportEntities;
     }
 

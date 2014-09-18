@@ -31,6 +31,9 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
     @Field(value = "agna")
     private String adgroupName; //单元
 
+    @Field(value = "campaign")
+    private Long campaignId;
+
     @Field(value = "cpna")
     private String campaignName; //计划
 
@@ -153,6 +156,14 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
 
     public void setAdgroupName(String adgroupName) {
         this.adgroupName = adgroupName;
+    }
+
+    public Long getCampaignId() {
+        return campaignId;
+    }
+
+    public void setCampaignId(Long campaignId) {
+        this.campaignId = campaignId;
     }
 
     public String getCampaignName() {

@@ -366,10 +366,10 @@
             <div class="tubiao2 over">
                 <div id="containerLegend"></div>
                 <div id="container" style="width:100%;height:400px;display: none"></div>
-                <div id="imprDiv" style="width:45%;height:400px;display: none;float: left"></div>
-                <div id="clickDiv" style="width:54%;height:400px;display: none;float: right"></div>
-                <div id="costDiv" style="width:45%;height:400px;display: none;float: left;margin-top: 40px;"></div>
-                <div id="convDiv" style="width:53%;height:400px;display: none;float: right;margin-top: 40px;"></div>
+                <div id="imprDiv" style="width:45%;display: none;float: left"></div>
+                <div id="clickDiv" style="width:54%;display: none;float: right"></div>
+                <div id="costDiv" style="width:45%;display: none;float: left;margin-top: 40px;"></div>
+                <div id="convDiv" style="width:53%;display: none;float: right;margin-top: 40px;"></div>
             </div>
 
         </div>
@@ -941,6 +941,7 @@ var reportData = function () {
                                 "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
                                 "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
+                        break;
                     case "4":
                         html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
                                 "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
@@ -971,14 +972,14 @@ var reportData = function () {
                         $.each(data.countData, function (i, countdata) {
                             $.each(data.impr, function (i, impr) {
                                 if (devices == 2) {
-                                    if(isNaN(impr.mobileImpression / countdata.mobileImpression)){
+                                    if(isNaN(impr.mobileImpression / countdata.mobileImpression) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity'){
                                         pie_impr.push([impr.regionName, 0]);
                                     }else {
                                         pie_impr.push([impr.regionName, Math.round((impr.mobileImpression / countdata.mobileImpression) * 10000) / 100]);
                                         pie_num1=1;
                                     }
                                 } else {
-                                    if(isNaN(impr.pcImpression / countdata.pcImpression)){
+                                    if(isNaN(impr.pcImpression / countdata.pcImpression) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity'){
                                         pie_impr.push([impr.regionName, 0]);
                                     }else{
                                         pie_impr.push([impr.regionName, Math.round((impr.pcImpression / countdata.pcImpression) * 10000) / 100]);
@@ -988,7 +989,7 @@ var reportData = function () {
                             });
                             $.each(data.click, function (i, impr) {
                                 if (devices == 2) {
-                                    if(isNaN(impr.mobileClick / countdata.mobileClick)){
+                                    if(isNaN(impr.mobileClick / countdata.mobileClick) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity'){
                                         pie_click.push([impr.regionName, 0]);
                                     }else {
                                         pie_click.push([impr.regionName, Math.round((impr.mobileClick / countdata.mobileClick) * 10000) / 100]);
@@ -1005,14 +1006,14 @@ var reportData = function () {
                             });
                             $.each(data.cost, function (i, impr) {
                                 if (devices == 2) {
-                                    if(isNaN(impr.mobileCost / countdata.mobileCost)){
+                                    if(isNaN(impr.mobileCost / countdata.mobileCost) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity'){
                                         pie_cost.push([impr.regionName, 0]);
                                     }else {
                                         pie_cost.push([impr.regionName, Math.round((impr.mobileCost / countdata.mobileCost) * 10000) / 100]);
                                         pie_num3=1;
                                     }
                                 } else {
-                                    if(isNaN(impr.pcCost / countdata.pcCost)){
+                                    if(isNaN(impr.pcCost / countdata.pcCost) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity'){
                                         pie_cost.push([impr.regionName, 0]);
                                     }else {
                                         pie_cost.push([impr.regionName, Math.round((impr.pcCost / countdata.pcCost) * 10000) / 100]);
@@ -1022,16 +1023,19 @@ var reportData = function () {
                             });
                             $.each(data.conv, function (i, impr) {
                                 if (devices == 2) {
-                                    if(isNaN(impr.mobileConversion / countdata.mobileConversion)){
+                                    if(isNaN(impr.mobileConversion / countdata.mobileConversion) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity'){
                                         pie_conv.push([impr.regionName, 0]);
                                     }else {
                                         pie_conv.push([impr.regionName, Math.round((impr.mobileConversion / countdata.mobileConversion) * 10000) / 100]);
                                         pie_num4=1;
                                     }
                                 } else {
-                                    if(isNaN(impr.pcConversion / countdata.pcConversion)){
+                                    if(isNaN(impr.pcConversion / countdata.pcConversion) || (impr.mobileImpression / countdata.mobileImpression) == Infinity){
                                         pie_conv.push([impr.regionName, 0]);
                                     }else {
+                                        alert(impr.pcConversion);
+                                        alert(countdata.pcConversion);
+                                        alert(impr.pcConversion/countdata.pcConversion);
                                         pie_conv.push([impr.regionName, Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100]);
                                         pie_num4=1;
                                     }
@@ -1560,16 +1564,53 @@ var accountBasisReport = function () {
 //曲线图
 var curve = function () {
     $("#container").show();
-    $("#imprDiv").hide();
-    $("#clickDiv").hide();
-    $("#costDiv").hide();
-    $("#convDiv").hide();
+    $("#imprDiv").empty();
+    $("#clickDiv").empty();
+    $("#costDiv").empty();
+    $("#convDiv").empty();
     $('#container').highcharts({
         chart: {
             zoomType: 'xy'
         },
         title: {
             text: ''
+        },
+        exporting: {
+            filename: 'Graph_Chart',
+            buttons: {
+                contextButton: {
+                    menuItems:[{
+                        text:'导出 JPEG图片',
+                        onclick:function() {
+                            this.exportChart({
+                                type:'image/jpeg'
+                            });
+                        }
+                    },{
+                        text:'导出 PNG图片',
+                        onclick:function() {
+                            this.exportChart({
+                                type:'image/png'
+                            });
+                        }
+                    },{
+                        text:'导出 PDF',
+                        onclick:function() {
+                            this.exportChart({
+                                type:'application/pdf'
+                            });
+                        }
+                    },{
+                        text:'导出 SVG',
+                        onclick:function() {
+                            this.exportChart({
+                                type:'svg'
+                            });
+                        }
+                    }
+                    ]
+                }
+            }
         },
         subtitle: {
             text: ''
@@ -1623,6 +1664,7 @@ var curve = function () {
 //饼状图
 var a = 1;
 var pieChart = function (showData, showName, showId) {
+    alert(showData);
     $(showId).show();
     $("#container").hide()
     if (a == 1) {
@@ -1656,6 +1698,43 @@ var pieChart = function (showData, showName, showId) {
         },
         credits: {
             enabled: false
+        },
+        exporting: {
+            filename: 'Pie_Chart',
+            buttons: {
+                contextButton: {
+                    menuItems:[{
+                        text:'导出 JPEG图片',
+                        onclick:function() {
+                            this.exportChart({
+                                type:'image/jpeg'
+                            });
+                        }
+                    },{
+                        text:'导出 PNG图片',
+                        onclick:function() {
+                            this.exportChart({
+                                type:'image/png'
+                            });
+                        }
+                    },{
+                        text:'导出 PDF',
+                        onclick:function() {
+                            this.exportChart({
+                                type:'application/pdf'
+                            });
+                        }
+                    },{
+                        text:'导出 SVG',
+                        onclick:function() {
+                            this.exportChart({
+                                type:'svg'
+                            });
+                        }
+                    }
+                    ]
+                }
+            }
         },
         title: {
             text: showName + '占有百分比',

@@ -136,10 +136,10 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
                 boolean repotr = false;
                 switch (report) {
                     case 1:
-                        repotr = mapValue1.getAdgroupName().equals(mapValue2.getAdgroupName());
+                        repotr = mapValue1.getAdgroupId().equals(mapValue2.getAdgroupId());
                         break;
                     case 2:
-                        repotr = mapValue1.getKeywordName().equals(mapValue2.getKeywordName());
+                        repotr = mapValue1.getKeywordId().equals(mapValue2.getKeywordId());
                         break;
                     case 3:
                         repotr = mapValue1.getCreativeId().equals(mapValue2.getCreativeId());
@@ -161,7 +161,21 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
                     mapValue1.setPcCtr(0d);
                     mapValue1.setPcCpc(BigDecimal.valueOf(0));
                     mapValue1.setPcImpression((mapValue1.getPcImpression() == null ? 0 : mapValue1.getPcImpression()) + (mapValue2.getPcImpression() == null ? 0 : mapValue2.getPcImpression()));
-                    dataMap.put(mapValue1.getAdgroupName(), mapValue1);
+                    switch (report) {
+                        case 1:
+                            dataMap.put(mapValue1.getAdgroupId().toString(), mapValue1);
+                            break;
+                        case 2:
+                            dataMap.put(mapValue1.getKeywordId().toString(), mapValue1);
+                            break;
+                        case 3:
+                            dataMap.put(mapValue1.getCreativeId().toString(), mapValue1);
+                            break;
+                        case 4:
+                            dataMap.put(mapValue1.getRegionId().toString(), mapValue1);
+                            break;
+                    }
+
                     entry1.remove();
                     entry2.remove();
                     break;

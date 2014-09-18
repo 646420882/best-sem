@@ -1741,6 +1741,43 @@ var curve = function () {
         subtitle: {
             text: ''
         },
+        exporting: {
+            filename: 'Graph_Chart',
+            buttons: {
+                contextButton: {
+                    menuItems:[{
+                        text:'导出 JPEG图片',
+                        onclick:function() {
+                            this.exportChart({
+                                type:'image/jpeg'
+                            });
+                        }
+                    },{
+                        text:'导出 PNG图片',
+                        onclick:function() {
+                            this.exportChart({
+                                type:'image/png'
+                            });
+                        }
+                    },{
+                        text:'导出 PDF',
+                        onclick:function() {
+                            this.exportChart({
+                                type:'application/pdf'
+                            });
+                        }
+                    },{
+                        text:'导出 SVG',
+                        onclick:function() {
+                            this.exportChart({
+                                type:'svg'
+                            });
+                        }
+                    }
+                    ]
+                }
+            }
+        },
         xAxis: {
             categories: t_date,
             tickInterval: (dateInterval)// 每个间隔
