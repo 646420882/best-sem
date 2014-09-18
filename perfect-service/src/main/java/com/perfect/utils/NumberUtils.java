@@ -1,5 +1,7 @@
 package com.perfect.utils;
 
+import java.math.BigDecimal;
+
 /**
  * Created by yousheng on 2014/8/11.
  *
@@ -41,6 +43,18 @@ public class NumberUtils {
             return Long.parseLong(obj.toString());
         } catch (Exception ex) {
             return 0l;
+        }
+    }
+
+    public static BigDecimal parseBigDecimal(Object obj) {
+        if (obj == null) {
+            return BigDecimal.ZERO;
+        }
+
+        try {
+            return BigDecimal.valueOf(Double.parseDouble(obj.toString()));
+        } catch (Exception ex) {
+            return BigDecimal.ZERO;
         }
     }
 

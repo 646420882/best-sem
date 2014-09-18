@@ -109,11 +109,11 @@ public class ReportDataTask implements IScheduleTaskDealSingle<SystemUserEntity>
             dataEntity.setKeywordName(resultType.getName(IDX_NAME_KEYWORD));
 
             dataEntity.setPcClick(NumberUtils.parseInt(resultType.getKPI(IDX_CLICK)));
-            dataEntity.setPcCost(NumberUtils.parseDouble(resultType.getKPI(IDX_COST)));
-            dataEntity.setPcCpc(NumberUtils.parseDouble(resultType.getKPI(IDX_CPC)));
+            dataEntity.setPcCost(NumberUtils.parseBigDecimal(resultType.getKPI(IDX_COST)));
+            dataEntity.setPcCpc(NumberUtils.parseBigDecimal(resultType.getKPI(IDX_CPC)));
             dataEntity.setPcCtr(NumberUtils.parseDouble(resultType.getKPI(IDX_CTR)));
             dataEntity.setPcImpression(NumberUtils.parseInt(resultType.getKPI(IDX_IMPRESSION)));
-            dataEntity.setPcCpm(NumberUtils.parseDouble(resultType.getKPI(IDX_CPM)));
+            dataEntity.setPcCpm(NumberUtils.parseBigDecimal(resultType.getKPI(IDX_CPM)));
             dataEntity.setPcPosition(NumberUtils.parseDouble(resultType.getKPI(IDX_POSITION)));
             dataEntity.setPcConversion(NumberUtils.parseDouble(resultType.getKPI(IDX_CONVERSION)));
 
@@ -139,11 +139,11 @@ public class ReportDataTask implements IScheduleTaskDealSingle<SystemUserEntity>
             }
 
             dataEntity.setMobileClick(NumberUtils.parseInt(resultType.getKPI(IDX_CLICK)));
-            dataEntity.setMobileCost(NumberUtils.parseDouble(resultType.getKPI(IDX_COST)));
-            dataEntity.setMobileCpc(NumberUtils.parseDouble(resultType.getKPI(IDX_CPC)));
+            dataEntity.setMobileCost(NumberUtils.parseBigDecimal(resultType.getKPI(IDX_COST)));
+            dataEntity.setMobileCpc(NumberUtils.parseBigDecimal(resultType.getKPI(IDX_CPC)));
             dataEntity.setMobileCtr(NumberUtils.parseDouble(resultType.getKPI(IDX_CTR)));
             dataEntity.setMobileImpression(NumberUtils.parseInt(resultType.getKPI(IDX_IMPRESSION)));
-            dataEntity.setMobileCpm(NumberUtils.parseDouble(resultType.getKPI(IDX_CPM)));
+            dataEntity.setMobileCpm(NumberUtils.parseBigDecimal(resultType.getKPI(IDX_CPM)));
             dataEntity.setMobilePosition(NumberUtils.parseDouble(resultType.getKPI(IDX_POSITION)));
             dataEntity.setMobileConversion(NumberUtils.parseDouble(resultType.getKPI(IDX_CONVERSION)));
 
