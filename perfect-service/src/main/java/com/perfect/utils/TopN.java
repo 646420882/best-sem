@@ -33,11 +33,12 @@ public class TopN {
         if (sort * sort != 1)
             return null;
 
-        Class _class = ts[0].getClass();
+        Class _class = ts.getClass();
+        Class _class1 = ts[0].getClass();
         TopN.sort = sort;
         try {
             String fieldGetterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-            TopN.method = _class.getDeclaredMethod(fieldGetterName);
+            TopN.method = _class1.getDeclaredMethod(fieldGetterName);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
