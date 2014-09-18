@@ -67,10 +67,6 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
     @Resource
     private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
 
-    @Resource
-    private TopN<BaiduKeywordDTO> topN;
-
-
     public Map<String, Object> getKeywordFromBaidu(List<String> seedWordList, int skip, int limit, String krFileId, int sort, String fieldName) {
         if (krFileId == null) {
             Map<String, Object> map = getKRResult(seedWordList, skip, limit, sort, fieldName);
@@ -98,7 +94,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
             }
             //sort
             int s = list.size();
-            BaiduKeywordDTO[] keywordVOs = topN.getTopN(list.toArray(new BaiduKeywordDTO[s]), s, fieldName, sort);
+            BaiduKeywordDTO[] keywordVOs = TopN.getTopN(list.toArray(new BaiduKeywordDTO[s]), s, fieldName, sort);
             List<BaiduKeywordDTO> voList = paging(keywordVOs, skip, limit);
             Map<String, Object> map = JSONUtils.getJsonMapData(voList);
             map.put("krFileId", krFileId);
@@ -481,7 +477,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
                 //拓展词文件解析
                 List<BaiduKeywordDTO> keywordList = httpFileHandler(krFilePath);
                 int s = keywordList.size();
-                BaiduKeywordDTO[] sortedKeywords = topN.getTopN(keywordList.toArray(new BaiduKeywordDTO[s]), s, fieldName, sort);
+                BaiduKeywordDTO[] sortedKeywords = TopN.getTopN(keywordList.toArray(new BaiduKeywordDTO[s]), s, fieldName, sort);
                 List<BaiduKeywordDTO> list = paging(sortedKeywords, skip, limit);
                 attributes = JSONUtils.getJsonMapData(list);
                 break;

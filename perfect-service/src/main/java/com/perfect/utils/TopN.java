@@ -1,7 +1,5 @@
 package com.perfect.utils;
 
-import org.springframework.stereotype.Component;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -9,12 +7,15 @@ import java.util.Arrays;
 /**
  * Created by baizz on 2014-08-16.
  */
-@Component("topN")
-public class TopN<T> {
+@SuppressWarnings("unchecked")
+public class TopN {
 
-    private Method getMethod;
+    private static Method getMethod;  //the field's declared method
 
-    private int sort = -1;  //default DESC, get topN data
+    private static int sort = -1;  //default DESC, get topN data
+
+    private TopN() {
+    }
 
     /**
      * topN算法
@@ -25,13 +26,15 @@ public class TopN<T> {
      * @param sort
      * @return
      */
-    @SuppressWarnings("unchecked")
-    public T[] getTopN(T[] ts, int n, String fieldName, int sort) {
+    public static <T> T[] getTopN(T[] ts, int n, String fieldName, int sort) {
+        if (ts == null || ts.length == 0)
+            return null;
+
         Class _class = ts[0].getClass();
-        this.sort = sort;
+        TopN.sort = sort;
         try {
             String fieldGetterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-            this.getMethod = _class.getDeclaredMethod(fieldGetterName);
+            TopN.getMethod = _class.getDeclaredMethod(fieldGetterName);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -52,7 +55,7 @@ public class TopN<T> {
         try {
             for (int i = n; i < l; i++) {
                 int index = (l >= n) ? (n - 1) : (l - 1);
-                if (((Comparable) getMethod.invoke(ts[i])).compareTo(getMethod.invoke(topNData[index])) == 1) {
+                if (((Comparable) TopN.getMethod.invoke(ts[i])).compareTo(TopN.getMethod.invoke(topNData[index])) == 1) {
                     topNData[index] = ts[i];
                     quickSort(topNData, 0, topNData.length - 1);
                 }
@@ -71,8 +74,8 @@ public class TopN<T> {
      * @param low
      * @param high
      */
-    @SuppressWarnings("unchecked")
-    private void quickSort(T arr[], int low, int high) {
+
+    private static <T> void quickSort(T arr[], int low, int high) {
         int l = low;
         int h = high;
 
@@ -84,7 +87,7 @@ public class TopN<T> {
 
         try {
             while (l != h) {
-                if (((Comparable) getMethod.invoke(arr[l])).compareTo(getMethod.invoke(arr[h])) == sort) {
+                if (((Comparable) TopN.getMethod.invoke(arr[l])).compareTo(TopN.getMethod.invoke(arr[h])) == TopN.sort) {
                     //交换数据
                     T tempObj = arr[l];
                     arr[l] = arr[h];
