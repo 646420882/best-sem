@@ -1,5 +1,8 @@
 package com.perfect.schedule.task.execute;
 
+import com.perfect.api.baidu.BaiduApiService;
+import com.perfect.api.baidu.BaiduApiServiceFactory;
+import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.KeywordType;
 import com.perfect.commons.context.ApplicationContextHelper;
@@ -14,7 +17,7 @@ import com.perfect.entity.bidding.BiddingLogEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.entity.bidding.StrategyEntity;
 import com.perfect.service.*;
-import com.perfect.service.impl.HTMLAnalyseServiceImpl;
+import com.perfect.api.baidu.BaiduPreviewHelper;
 import com.perfect.utils.BiddingRuleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +82,11 @@ public class BiddingSubTask implements Runnable {
     private SysAdgroupService adgroupService;
 
     private ApplicationContextHelper applicationContextHelper;
+
+
     private Integer region;
+    private BaiduPreviewHelperFactory baiduPreviewHelperFactory;
+    private BaiduApiServiceFactory baiduApiServiceFactory;
 
     @Override
     public void run() {
@@ -89,8 +96,8 @@ public class BiddingSubTask implements Runnable {
         }
 
         String host = accountInfoEntity.getRegDomain();
-        BaiduApiService apiService = new BaiduApiService(service);
-        HTMLAnalyseService htmlService = HTMLAnalyseServiceImpl.createService(service);
+        BaiduApiService apiService = baiduApiServiceFactory.createService(service);
+        BaiduPreviewHelper baiduPreviewHelper = baiduPreviewHelperFactory.createInstance(service);
 
         List<String> kwName = new ArrayList<>();
         Map<String, KeywordEntity> nameMap = new HashMap<>();
@@ -148,19 +155,14 @@ public class BiddingSubTask implements Runnable {
             logger.info("竞价地域..." + region);
         }
 
-        int retry = RETRY;
         while (!keywordEntityList.isEmpty()) {
-            List<HTMLAnalyseServiceImpl.PreviewData> datas = htmlService.getPageData(kwName.toArray(new String[]{}),
+            List<BaiduPreviewHelper.PreviewData> datas = baiduPreviewHelper.getPageData(kwName.toArray(new String[]{}),
                     region);
 
             if (datas.isEmpty()) {
                 try {
                     Thread.sleep(1000);
-                    if (retry-- == 0) {
-                        break;
-                    } else {
-                        continue;
-                    }
+                    continue;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -169,7 +171,7 @@ public class BiddingSubTask implements Runnable {
             List<KeywordType> typeList = new ArrayList<>();
             Map<KeywordType, BiddingLogEntity> typeLog = new HashMap<>();
 
-            for (HTMLAnalyseServiceImpl.PreviewData previewData : datas) {
+            for (BaiduPreviewHelper.PreviewData previewData : datas) {
 
                 if ((previewData.getLeft() == null || previewData.getLeft().isEmpty()) && (previewData.getRight() == null || previewData.getRight().isEmpty())) {
                     continue;
@@ -186,11 +188,7 @@ public class BiddingSubTask implements Runnable {
                     }
                     try {
                         Thread.sleep(10000);
-                        if (retry-- == 0) {
-                            break;
-                        } else {
-                            continue;
-                        }
+                        continue;
                     } catch (InterruptedException e) {
                         if (logger.isErrorEnabled()) {
                             logger.error("InterruptedException", e);
@@ -394,7 +392,7 @@ public class BiddingSubTask implements Runnable {
     }
 
 //    private boolean innerBidding(BiddingRuleEntity biddingRuleEntity, GetPreviewRequest request) {
-//        List<HTMLAnalyseServiceImpl.PreviewData> datas = service.getPageData(request);
+//        List<BaiduPreviewHelper.PreviewData> datas = service.getPageData(request);
 //
 //        if (datas.isEmpty()) {
 //            return true;
@@ -409,7 +407,7 @@ public class BiddingSubTask implements Runnable {
 ////                e.printStackTrace();
 ////            }
 //        }
-//        HTMLAnalyseServiceImpl.PreviewData previewData = datas.get(0);
+//        BaiduPreviewHelper.PreviewData previewData = datas.get(0);
 //        // 解析实况页面数据
 //
 //        if ((previewData.getLeft() == null || previewData.getLeft().isEmpty()) && (previewData.getRight() == null || previewData.getRight().isEmpty())) {
@@ -586,6 +584,22 @@ public class BiddingSubTask implements Runnable {
 
     public Integer getRegion() {
         return region;
+    }
+
+    public void setBaiduPreviewHelperFactory(BaiduPreviewHelperFactory baiduPreviewHelperFactory) {
+        this.baiduPreviewHelperFactory = baiduPreviewHelperFactory;
+    }
+
+    public BaiduPreviewHelperFactory getBaiduPreviewHelperFactory() {
+        return baiduPreviewHelperFactory;
+    }
+
+    public void setBaiduApiServiceFactory(BaiduApiServiceFactory baiduApiServiceFactory) {
+        this.baiduApiServiceFactory = baiduApiServiceFactory;
+    }
+
+    public BaiduApiServiceFactory getBaiduApiServiceFactory() {
+        return baiduApiServiceFactory;
     }
 
 //    public void setEsRunnableFactory(EsRunnableFactory esRunnableFactory) {

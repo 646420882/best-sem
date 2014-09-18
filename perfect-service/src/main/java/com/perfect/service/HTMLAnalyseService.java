@@ -1,7 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.autosdk.sms.v3.GetPreviewRequest;
-import com.perfect.service.impl.HTMLAnalyseServiceImpl;
+import com.perfect.api.baidu.BaiduPreviewHelper;
 
 import java.util.List;
 
@@ -24,5 +23,5 @@ public interface HTMLAnalyseService {
      * @param getPreviewRequest
      * @return
      */
-    List<HTMLAnalyseServiceImpl.PreviewData> getPageData(String[] keyword, Integer region);
+    List<BaiduPreviewHelper.PreviewData> getPageData(String[] keyword, Integer region);
 }

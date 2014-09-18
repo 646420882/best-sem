@@ -67,7 +67,6 @@ public class JsonConnection {
 
     protected OutputStream sendRequest() throws ApiException {
         OutputStream out = null;
-        int retryTime = retry;
         try {
             connection.setConnectTimeout(connectTimeout);
             connection.setReadTimeout(readTimeout);

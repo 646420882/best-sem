@@ -7,7 +7,7 @@ import com.perfect.entity.*;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.dao.impl.CampaignDAOImpl;
 import com.perfect.service.AccountDataService;
-import com.perfect.service.BaiduApiService;
+import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.BaiduServiceSupport;
 import com.perfect.utils.DBNameUtils;

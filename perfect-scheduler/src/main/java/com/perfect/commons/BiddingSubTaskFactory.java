@@ -1,5 +1,7 @@
 package com.perfect.commons;
 
+import com.perfect.api.baidu.BaiduApiServiceFactory;
+import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.elasticsearch.threads.EsThreadPoolTaskExecutor;
 import com.perfect.schedule.task.execute.BiddingSubTask;
@@ -31,10 +33,13 @@ public class BiddingSubTaskFactory extends AbstractFactoryBean<BiddingSubTask> {
     private SysAdgroupService sysAdgroupService;
 
     @Resource
-    private SysCampaignService sysCampaignService;
+    private ApplicationContextHelper applicationContextHelper;
 
     @Resource
-    private ApplicationContextHelper applicationContextHelper;
+    private BaiduPreviewHelperFactory baiduPreviewHelperFactory;
+
+    @Resource
+    private BaiduApiServiceFactory baiduApiServiceFactory;
 
     @Override
     public Class<?> getObjectType() {
@@ -50,6 +55,8 @@ public class BiddingSubTaskFactory extends AbstractFactoryBean<BiddingSubTask> {
         task.setBiddingRuleService(biddingRuleService);
         task.setAdgroupService(sysAdgroupService);
         task.setApplicationContextHelper(applicationContextHelper);
+        task.setBaiduPreviewHelperFactory(baiduPreviewHelperFactory);
+        task.setBaiduApiServiceFactory(baiduApiServiceFactory);
         return task;
     }
 
