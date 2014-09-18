@@ -172,7 +172,7 @@
         <div class="download over">
             <a href="/account/downAccountCSV" class="fr">下载全部 </a>
         </div>
-        <div class="list2 wd">
+        <div class="list2 fenrilist wd">
             <table border="0" cellspacing="0" cellspacing="0">
                 <thead>
                 <tr class="list2_top">
@@ -329,14 +329,14 @@
         下载全部
     </a>
 </div>
-<div class="list2 wd">
+<div class="list2 zhilianglist wd">
 <table border="0" cellspacing="0" cellspacing="0">
 <tr class="list2_top">
 
     <td>
         <ul>
             <li class="home_quality">
-                <span>质量度</span><b>
+               <span >质量度</span><b>
                 <p>
                     <input class="one" type="button">
                 </p>
@@ -940,7 +940,7 @@
     <div class="download over">
         <a href="javascript:void(0)" class="fr" onclick="importDownload(this);">下载全部 </a>
     </div>
-    <div class="list2 wd">
+    <div class="list2 gjclist wd">
         <table border="0" cellspacing="0" cellspacing="0">
             <tr class="list2_top">
                 <td>
@@ -1041,7 +1041,7 @@
                                        onclick="javascript:sort = 7;getImportKeywordDefault(null, statDate);">
                             </p></b>
                         </li>
-                        <li>
+                        <li class="home_quality">
                             <span>质量度</span><b>
                             <p>
                                 <input class="one" type="button">
@@ -1814,7 +1814,7 @@ var getImportKeywordDefault = function (obj, day) {
                 var calssStr = i % 2 != 0 ? "list2_box2" : "list2_box1";
                 var item = gson.list[i];
                 var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;￥" + item.pcCost + "</li><li> &nbsp;￥" + item.pcCpc + "</li>"
-                        + "<li> &nbsp;" + item.pcCtr * 100 + "%</li><li> &nbsp;" + item.pcConversion + "</li><li> &nbsp;" + item.pcPosition + "</li></ul></td></tr>";
+                        + "<li> &nbsp;" + item.pcCtr * 100 + "%</li><li class='home_quality'> &nbsp;" + item.pcConversion + "</li><li> &nbsp;" + item.pcPosition + "</li></ul></td></tr>";
                 $("#importTr").append(_div);
             }
         } else {

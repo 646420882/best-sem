@@ -55,6 +55,9 @@
     .t_list05 {
         width: 72%;
     }
+    .zhilianglist table tr td ul li {
+        width: 11.6%;
+    }
 }
 
 /******1600************/
@@ -106,6 +109,9 @@
 
     .t_list05 {
         width: 73%;
+    }
+    .zhilianglist table tr td ul li {
+        width: 11.7%;
     }
 }
 @media screen and (min-width: 1442px) and (max-width: 1579px) {
@@ -172,52 +178,92 @@
      .page ul {
          *margin-left: 20%;
      }
+
+     .fenrilist table tr td ul li {
+         width: 13.2%;
+     }
+     .zhilianglist table tr td ul li {
+         width: 11.5%;
+     }
+     .gjclist table tr td ul li {
+         width: 8.7%;
+     }
     }
 
 /******1368************/
 
-@media screen and (min-width: 1361px)and (max-width: 1368px) {
-        .mid {
-            width: 86.6%;
-            *width: 86.2%;
+@media screen and (min-width: 1360px)and (max-width: 1368px) {
+    .mid {
+        width: 86.6%;
+        *width: 86.2%;
 
-        }
-        .zs_top, {
-            margin-right:0px;
-        }
-        .t_list01 {
-            text-align: left;
-        }
-        .zs_bottom1 ul li .zs_input1 {
-            width: 82%;
-        }
-        .zs_bottom1 ul li .t_list03 .zs_input1 {
-            width: 64.5%;
-        }
-        .w_list01 {
-            width: 90px;
-        }
-        .zs_input3 {
-            height: 22px;
-            width: 61%;
-        }
-        .t_list02, .t_list03 {
-            width: 83%;
-        }
-        .zs_input2 {
-            margin: 0px 0 0 3px;
-        }
-        .t_list05 {
-            width: 60%;
-        }
+    }
+
+    .zs_top, {
+        margin-right: 0px;
+    }
+
+    .t_list01 {
+        text-align: left;
+    }
+
+    .zs_bottom1 ul li .zs_input1 {
+        width: 82%;
+    }
+
+    .zs_bottom1 ul li .t_list03 .zs_input1 {
+        width: 64.5%;
+    }
+
+    .w_list01 {
+        width: 90px;
+    }
+
+    .zs_input3 {
+        height: 22px;
+        width: 61%;
+    }
+
+    .t_list02, .t_list03 {
+        width: 83%;
+    }
+
+    .zs_input2 {
+        margin: 0px 0 0 3px;
+    }
+
+    .t_list05 {
+        width: 60%;
+    }
+
     .page ul {
         *margin-left: 20%;
     }
 
+    .zhilianglist table tr td ul li {
+        width: 11.5%;
     }
-@media screen and (min-width: 1350px)and (max-width: 1361px) {
-    .mid {
-        width: 86.5%;
+
+    .gjclist table tr td ul li {
+        width: 8.6%;
+    }
+
+    .fenrilist table tr td ul li {
+        width: 13.2%;
+    }
+}
+/******1360************/
+@media screen and (min-width: 1359px) and (max-width: 1361px)  {
+    .mid {width: 86.5%;
+    }
+    .zhilianglist table tr td ul li{
+        width: 11.2%;
+    }
+    .fenrilist table tr td ul li {
+        width: 13%;
+    }
+    .gjclist table tr td ul li {
+        width: 8.4%;
     }
 }
 /******1280************/
@@ -261,6 +307,16 @@
 
        *margin-left: 15%;
     }
+    .zhilianglist table tr td ul li{
+        width: 11.4%;
+    }
+    .fenrilist table tr td ul li {
+        width: 13%;
+    }
+    .gjclist table tr td ul li {
+        width: 8.5%;
+    }
+
 }
 
 /******1152************/
@@ -278,58 +334,95 @@
         *float: left;
         *margin-left: 5%;
     }
+    .zhilianglist table tr td ul li{
+        width:11%;
+    }
+
+    .fenrilist table tr td ul li {
+        width: 13%;
+    }
+
+    .gjclist table tr td ul li {
+        width: 8%;
+    }
 }
 /******1024************/
 @media screen and (max-width: 1030px) {
-        .mid{
-            width: 82.2%;
-            *width:82%;
-        }
-        .zs_top, {
-            margin-right:0px;
-        }
-        .zs_function ul li {
-            margin: 10px 0px 10px 0;
-        }
-        .zs_function ul li b {
-            margin-right: 0px;
-        }
-        .zs_function {
-            padding: 0 2px;
+    .mid {
+        width: 82.2%;
+        *width: 82%;
+    }
 
-        }
-        .t_list01 {
-            text-align: left;
-        }
-        .zs_bottom1 ul li .zs_input1 {
-            width: 82%;
-        }
-        .zs_bottom1 ul li .t_list03 .zs_input1 {
-            width: 94%;
-        }
+    .zs_top, {
+        margin-right: 0px;
+    }
 
-        .w_list01 {
-            width: 90px;
-        }
-        .zs_input3 {
-            height: 22px;
-            width: 56%;
-        }
-        .t_list02, .t_list03 {
-            width: 100%;
-        }
+    .zs_function ul li {
+        margin: 10px 0px 10px 0;
+    }
+
+    .zs_function ul li b {
+        margin-right: 0px;
+    }
+
+    .zs_function {
+        padding: 0 2px;
+
+    }
+
+    .t_list01 {
+        text-align: left;
+    }
+
+    .zs_bottom1 ul li .zs_input1 {
+        width: 82%;
+    }
+
+    .zs_bottom1 ul li .t_list03 .zs_input1 {
+        width: 94%;
+    }
+
+    .w_list01 {
+        width: 90px;
+    }
+
+    .zs_input3 {
+        height: 22px;
+        width: 56%;
+    }
+
+    .t_list02, .t_list03 {
+        width: 100%;
+    }
+
     .user_mid {
         width: 60%;
     }
+
     .page ul {
         *margin-left: 5%;
     }
+
     .wrap_list01 span {
-        *padding:0 5px;
-        *width:100%;
+        *padding: 0 5px;
+        *width: 100%;
     }
+    .fenrilist table tr td ul li{
+        width: 12.5%;
+    }
+    .zhilianglist table tr td ul li {
+        width: 10%;
+    }
+    .gjclist table tr td ul li{
+        width:7.5%;
 
     }
+
+    .list01_under2 ul li span {
+
+        font-size: 26px;
+    }
+}
 
     @media \0screen {
         .zs_function ul li { margin: 10px 2px 10px 0; }
