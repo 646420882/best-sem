@@ -319,6 +319,17 @@
         width: 8%;
     }
 }
+.fenrilist table tr td ul li{
+    width:13.5%;
+}
+.zhilianglist table tr td ul li{
+    width:11.8%;
+
+}
+.gjclist table tr td ul li{
+    width: 9.3%;
+
+}
 .list2 table tr td ul li p {
     margin: 0px;
 }
@@ -809,6 +820,7 @@
 .k_top2_text select {
     width: 100%;
     height: 30px;
+    line-height:30px;
     border: 1px solid #dadadd;
     color: #8d8d8d;
     margin-bottom: 10px;
