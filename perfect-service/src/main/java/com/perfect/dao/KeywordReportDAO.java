@@ -3,6 +3,7 @@ package com.perfect.dao;
 import com.perfect.entity.KeywordReportEntity;
 import com.perfect.mongodb.utils.PagerInfo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,4 +11,5 @@ import java.util.Map;
  */
 public interface KeywordReportDAO extends MongoCrudRepository<KeywordReportEntity,Long> {
     PagerInfo findByPagerInfo(Map<String, Object> params);
+    List<KeywordReportEntity> getAll(Map<String,Object> params);
 }

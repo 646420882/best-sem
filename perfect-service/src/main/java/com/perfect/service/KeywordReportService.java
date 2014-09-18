@@ -4,6 +4,8 @@ import com.perfect.dao.MongoCrudRepository;
 import com.perfect.entity.KeywordReportEntity;
 import com.perfect.mongodb.utils.PagerInfo;
 
+import java.io.OutputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,4 +13,6 @@ import java.util.Map;
  */
 public interface KeywordReportService extends MongoCrudRepository<KeywordReportEntity, Long> {
     PagerInfo findByPagerInfo(Map<String, Object> params);
+    void downAccountCSV(OutputStream os,List<KeywordReportEntity> list);
+    List<KeywordReportEntity> getAll(Map<String,Object> params);
 }

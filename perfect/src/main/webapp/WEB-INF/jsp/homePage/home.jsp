@@ -10,13 +10,15 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta id="viewport" name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/zTreeStyle/Normalize.css">--%>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
     <link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
@@ -65,15 +67,16 @@
                 <li class="current"><a href="javascript:" onclick="lisClick(this,1)">昨天</a></li>
                 <li><a href="javascript:" onclick="lisClick(this,7)">近7天</a></li>
                 <li><a href="javascript:" onclick="lisClick(this,30)">近30天</a></li>
-                <li class="date" id="date"><a href="javascript:" onclick="lisClick(this,null);">自定义<input name="reservation"
-                                                                                                type="image"
-                                                                                                onclick="javascript:genre = 'accountOverview';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
-                                                                                                src="${pageContext.request.contextPath}/public/img/date.png" id="test">
+                <li class="date" id="date"><a href="javascript:" onclick="lisClick(this,null);">自定义<input
+                        name="reservation"
+                        type="image"
+                        onclick="javascript:genre = 'accountOverview';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                        src="${pageContext.request.contextPath}/public/img/date.png" id="test">
                 </a>
                 </li>
             </ul>
         </div>
-        <div class="datebox hides" ></div>
+        <div class="datebox hides"></div>
         <div class="list01_under2 over">
             <ul>
                 <li>
@@ -134,7 +137,7 @@
                 </li>
             </ul>
         </div>
-        <div class="datebox hides" ></div>
+        <div class="datebox hides"></div>
         <div class="shuju">
             <div id="containerLegend"></div>
             <div id="container" style="width:100%;height:400px"></div>
@@ -165,7 +168,7 @@
                 </li>
             </ul>
         </div>
-        <div class="datebox hides" ></div>
+        <div class="datebox hides"></div>
         <div class="download over">
             <a href="/account/downAccountCSV" class="fr">下载全部 </a>
         </div>
@@ -176,7 +179,7 @@
                     <td>
                         <ul>
                             <li>
-                               <span>时间</span><b>
+                                <span>时间</span><b>
                                 <p>
                                     <input class="one" type="button"
                                            onclick="javascript:category = 'date';sort = -1;loadPerformance(statDate)">
@@ -212,7 +215,7 @@
                                 </p></b>
                             </li>
                             <li>
-                               <span>消费</span><b>
+                                <span>消费</span><b>
                                 <p>
                                     <input class="one" type="button"
                                            onclick="javascript:category = 'cost';sort = -4;loadPerformance(statDate)">
@@ -333,7 +336,7 @@
     <td>
         <ul>
             <li class="home_quality">
-               <span>质量度</span><b>
+                <span>质量度</span><b>
                 <p>
                     <input class="one" type="button">
                 </p>
@@ -353,7 +356,7 @@
                 </p></b>
             </li>
             <li>
-               <span>展现</span><b>
+                <span>展现</span><b>
                 <p>
                     <input class="one" type="button"
                            onclick="javascript:category = 'impression';sort = -1;loadKeywordQualityData();"/>
@@ -365,7 +368,7 @@
                 </p></b>
             </li>
             <li>
-               <span>点击</span><b>
+                <span>点击</span><b>
                 <p>
                     <input class="one" type="button"
                            onclick="javascript:category = 'click';sort = -1;loadKeywordQualityData();"/>
@@ -892,14 +895,14 @@
             style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#" class='page_go'> GO</a>
 
     </div>--%>
- <%--           <span class="fr">每页显示
-                <select id="keywordQuality1Page"
-                        onchange="javascript:limit = $('#keywordQuality1Page option:selected').val();loadKeywordQualityData(null, statDate);">
-                    <option selected="selected" value="10">10个</option>
-                    <option value="15">15个</option>
-                    <option value="20">20个</option>
-                </select>
-                </span>--%>
+    <%--           <span class="fr">每页显示
+                   <select id="keywordQuality1Page"
+                           onchange="javascript:limit = $('#keywordQuality1Page option:selected').val();loadKeywordQualityData(null, statDate);">
+                       <option selected="selected" value="10">10个</option>
+                       <option value="15">15个</option>
+                       <option value="20">20个</option>
+                   </select>
+                   </span>--%>
 </div>
 </div>
 </div>
@@ -933,9 +936,9 @@
             </li>
         </ul>
     </div>
-    <div class="datebox hides" ></div>
+    <div class="datebox hides"></div>
     <div class="download over">
-        <a href="#" class="fr">下载全部 </a>
+        <a href="javascript:void(0)" class="fr" onclick="importDownload(this);">下载全部 </a>
     </div>
     <div class="list2 wd">
         <table border="0" cellspacing="0" cellspacing="0">
@@ -955,7 +958,7 @@
                             </a>
                         </li>
                         <li>
-                           <span>展现</span><b>
+                            <span>展现</span><b>
                             <p>
                                 <input class="one" type="button"
                                        onclick="javascript:sort = -1;getImportKeywordDefault(null, statDate);">
@@ -979,7 +982,7 @@
                             </p></b>
                         </li>
                         <li>
-                           <span>消费</span><b>
+                            <span>消费</span><b>
                             <p>
                                 <input class="one" type="button"
                                        onclick="javascript:sort = -3;getImportKeywordDefault(null, statDate);">
@@ -1003,7 +1006,7 @@
                             </p></b>
                         </li>
                         <li>
-                           <span>点击率</span><b>
+                            <span>点击率</span><b>
                             <p>
                                 <input class="one" type="button"
                                        onclick="javascript:sort = -5;getImportKeywordDefault(null, statDate);">
@@ -1015,7 +1018,7 @@
                             </p></b>
                         </li>
                         <li>
-                           <span>转化</span><b>
+                            <span>转化</span><b>
                             <p>
                                 <input class="one" type="button"
                                        onclick="javascript:sort = -6;getImportKeywordDefault(null, statDate);">
@@ -1068,20 +1071,27 @@
         <div class="over">
         </div>
         <div class="download over">
-            <div class="page2 fl">
-                <a href="#" class="nextpage1"><span></span></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a
-                    href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="nextpage2"><span></span></a><span
-                    style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a href="#" class='page_go'>
-                GO</a>
-
-            </div>
-            <span class="fr">每页显示
+            <div class="page2 fl" id="importPager">
+                   <span class="fr">每页显示
                     <select id="importKeywordSel" onchange="selectChange()">
                         <option value="20">20个</option>
                         <option value="50">50个</option>
                         <option value="100">100个</option>
                     </select> </span>
+                <a href="javascript:void(0)">首页</a>
+                <a href="javascript:void(0)" class="nextpage1"><span></span></a>
+                <a href="javascript:void(0)" class="nextpage2"><span></span></a>
+                <a href="javascript:void(0)">尾页</a>
+                <span style="margin-right:10px;">当前页:0/0 </span>
+                <span style="margin-right:10px;">共0条</span>
+                <span style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
+                    href="javascript:void(0)" class='page_go'>
+                GO</a>
+
+            </div>
+
         </div>
+
     </div>
 </div>
 </div>
@@ -1095,7 +1105,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/keyword/keywordQuality.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/highcharts.js"></script>
@@ -1151,7 +1162,7 @@ var genre = "";
 
 //日期控件坐标定位
 var _posX = 0, _posY = 0;
-var clickdddd =null;
+var clickdddd = null;
 
 $(function () {
     var $tab_li = $('.tab_menu li');
@@ -1160,7 +1171,7 @@ $(function () {
         var index = $tab_li.index(this);
         $('div.tab_box > div').eq(index).show().siblings().hide();
     });
-    $("input[name=reservation]").click(function(){
+    $("input[name=reservation]").click(function () {
         clickdddd = $(this);
     });
     //加载日历控件
@@ -1201,6 +1212,9 @@ $(function () {
     loadPerformance(null, 7);
     //曲线图表现-----默认加载7天数据
     loadPerformanceCurve(null, 7);
+
+    //初始化重点关键词分页控件
+    initImportPagerClickEvent();
 
 });
 
@@ -1426,7 +1440,7 @@ var loadPerformanceCurve = function (obj, date) {
                 })
             }
             if (data.rows.length > 10) {
-                dateInterval = Math.round(data.rows.length/10);
+                dateInterval = Math.round(data.rows.length / 10);
             }
         }
     });
@@ -1769,7 +1783,7 @@ var curve = function () {
         ]
     });
 };
-
+var nowPage = 1;
 var getImportKeywordDefault = function (obj, day) {
     if (obj != null) {
         changedLiState(obj);
@@ -1778,66 +1792,49 @@ var getImportKeywordDefault = function (obj, day) {
     $("#importTr").append("<td style='color:red;'>加载中....</td>");
     statDate = day;
     getDateParam(day);
+    var nowPage = $("#importPager a:eq(2)").attr("name") != undefined ? $("#importPager a:eq(2)").attr("name") : 1;
     var _tr = $("#importTr");
-    $.post("/import/getImportKeywordList",{
+    $.post("/import/getImportKeywordList", {
         startDate: daterangepicker_start_date,
         endDate: daterangepicker_end_date,
         pageSize: limit,
         sort: sort,
-        nowPage:1
-    },function(result){
-        var gson= $.parseJSON(result);
-        if(gson.list.length>0){
+        nowPage: nowPage
+    }, function (result) {
+        var gson = $.parseJSON(result);
+        $("#importPager a:eq(0)").attr("name", 0);
+        $("#importPager a:eq(1)").attr("name", gson.prePage);
+        $("#importPager a:eq(2)").attr("name", gson.nextPage);
+        $("#importPager a:eq(3)").attr("name", gson.totalPage);
+        $("#importPager span:eq(4)").html("共" + gson.totalCount + "条");
+        $("#importPager span:eq(3)").html("当前页:" + gson.pageNo + "/" + gson.totalPage);
+        if (gson.list != "") {
             _tr.empty();
-            for(var i=0;i<gson.list.length;i++){
-                var calssStr=i%2!=0?"list2_box2":"list2_box1";
-                var item=gson.list[i];
+            for (var i = 0; i < gson.list.length; i++) {
+                var calssStr = i % 2 != 0 ? "list2_box2" : "list2_box1";
+                var item = gson.list[i];
                 var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;￥" + item.pcCost + "</li><li> &nbsp;￥" + item.pcCpc + "</li>"
                         + "<li> &nbsp;" + item.pcCtr * 100 + "%</li><li> &nbsp;" + item.pcConversion + "</li><li> &nbsp;" + item.pcPosition + "</li></ul></td></tr>";
                 $("#importTr").append(_div);
             }
-        }else{
+        } else {
             _tr.empty();
-            var _div = "<td colspan='9' style='color:royalblue;'></td>";
+            var _div = "<td colspan='9' style='color:royalblue;'>暂无数据...</td>";
             _tr.append(_div);
         }
     });
-//    $.ajax({
-//        url: "/import/getImportKeywordList",
-//        type: "POST",
-//        dataType: "json",
-//        data: {
-//            startDate: daterangepicker_start_date,
-//            endDate: daterangepicker_end_date,
-//            pageSize: limit,
-//            sort: sort,
-//            nowPage:1
-//        },
-//        success: function (data, textStatus, jqXHR) {
-//            var calssStr = "";
-//            var _tr = $("#importTr");
-//            if (data.length > 0) {
-//                _tr.empty();
-//                $.each(data, function (i, item) {
-//                    if (i % 2 == 0) {
-//                        calssStr = "list2_box1";
-//                    } else {
-//                        calssStr = "list2_box2";
-//                    }
-//                    var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.impression + "</li><li> &nbsp;" + item.click + "</li><li> &nbsp;￥" + item.cost + "</li><li> &nbsp;￥" + item.cpc + "</li>"
-//                            + "<li> &nbsp;" + item.ctr * 100 + "%</li><li> &nbsp;" + item.conversion + "</li><li> &nbsp;" + item.position + "</li></ul></td></tr>";
-//                    $("#importTr").append(_div);
-//
-//                })
-//            } else {
-//                _tr.empty();
-//                var _div = "<td colspan='9' style='color:royalblue;'></td>";
-//                _tr.append(_div);
-//            }
-//        }
-//    });
 };
+//初始化监控关键词分页控件点击事件
+function initImportPagerClickEvent() {
+    $("#importPager a").click(function () {
+        nowPage = $(this).attr("name");
+        getImportKeywordDefault(null, statDate);
+    });
+}
+function importDownload(rs) {
+    window.open("/import/getCSV?startDate="+daterangepicker_start_date+"&&endDate="+daterangepicker_end_date);
 
+}
 
 //根据最近几天获取数据
 function lisClick(obj, days) {
@@ -1884,11 +1881,11 @@ lisClick($("#clickLis .current>a"), 1);//默认显示昨天的汇总数据
 
 
 var showDate = function () {
-        $(".datebox").show();
-        clickdddd.parent().parent().parent().parent().next().text("当前时间范围："+daterangepicker_start_date +" 至 "+daterangepicker_end_date);
-        $(".list01_top ul li").click(function () {
-            $(".datebox").hide();
-        });
+    $(".datebox").show();
+    clickdddd.parent().parent().parent().parent().next().text("当前时间范围：" + daterangepicker_start_date + " 至 " + daterangepicker_end_date);
+    $(".list01_top ul li").click(function () {
+        $(".datebox").hide();
+    });
 };
 
 </script>
