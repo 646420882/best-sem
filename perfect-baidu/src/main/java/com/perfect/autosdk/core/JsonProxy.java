@@ -71,37 +71,26 @@ public class JsonProxy<I> implements InvocationHandler {
         if (log.isDebugEnabled())
             log.debug("Current Calling URL: " + addr);
 
-        int retry = 5;
-        while (true) {
-            if (retry == 0) {
-                return null;
+        JsonConnection conn = new GZIPJsonConnection(addr);
+        conn.setConnectTimeout(service.connectTimeoutMills);
+        conn.setReadTimeout(service.readTimeoutMills);
+        JsonEnvelop request = makeRequest(args[0]);
+        conn.sendRequest(request);
+        JsonEnvelop<ResHeader, ?> response = conn.readResponse(ResHeader.class, method.getReturnType());
+        ResHeader resHeader = response.getHeader();
+        if (!resHeader.getFailures().isEmpty()) {
+            if (log.isErrorEnabled()) {
+                log.error("Call Error: Head info = " + resHeader + "\n" +
+                        "account info = " + service.getUsername() + "\n" +
+                        "request info = " + addr + "\n" +
+                        "request param = " + args[0]
+                );
             }
-            JsonConnection conn = new GZIPJsonConnection(addr);
-            conn.setConnectTimeout(service.connectTimeoutMills);
-            conn.setReadTimeout(service.readTimeoutMills);
-            JsonEnvelop request = makeRequest(args[0]);
-            conn.sendRequest(request);
-            JsonEnvelop<ResHeader, ?> response = conn.readResponse(ResHeader.class, method.getReturnType());
-            ResHeader resHeader = response.getHeader();
-            if (!resHeader.getFailures().isEmpty()) {
-                if (log.isErrorEnabled()) {
-                    log.error("Call Error: Head info = " + resHeader + "\n" +
-                                    "account info = " + service.getUsername() + "\n" +
-                                    "request info = " + addr + "\n" +
-                                    "request param = " + args[0]
-                    );
-                }
 
-                if (resHeader.failures.get(0).getCode() == 8904) {
-                    Thread.sleep(60000);
-                    retry--;
-                    continue;
-                }
 
-            }
-            ResHeaderUtil.resHeader.set(response.getHeader());
-            return response.getBody();
         }
+        ResHeaderUtil.resHeader.set(response.getHeader());
+        return response.getBody();
     }
 
     private <K> JsonEnvelop<?, ?> makeRequest(Object args) {

@@ -1,6 +1,5 @@
-package com.perfect.service.impl;
+package com.perfect.api.baidu;
 
-import com.perfect.api.baidu.RequestHelper;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
@@ -8,6 +7,7 @@ import com.perfect.autosdk.sms.v3.GetPreviewRequest;
 import com.perfect.autosdk.sms.v3.GetPreviewResponse;
 import com.perfect.autosdk.sms.v3.PreviewInfo;
 import com.perfect.autosdk.sms.v3.SublinkInfo;
+import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.dto.CreativeDTO;
 import com.perfect.service.HTMLAnalyseService;
 import org.apache.commons.codec.binary.Base64;
@@ -25,18 +25,14 @@ import java.util.zip.GZIPInputStream;
 /**
  * Created by baizz on 2014-7-15.
  */
-public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
+public class BaiduPreviewHelper {
 
     private final CommonService serviceFactory;
+    private ApplicationContextHelper context;
 
-    private HTMLAnalyseServiceImpl(CommonService serviceFactory) {
+    public BaiduPreviewHelper(CommonService serviceFactory) {
         this.serviceFactory = serviceFactory;
     }
-
-    public static HTMLAnalyseService createService(CommonService serviceFactory) {
-        return new HTMLAnalyseServiceImpl(serviceFactory);
-    }
-
 
     //模糊匹配
     public boolean vagueMatch(String keyword, String matchWord) {
@@ -50,7 +46,6 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
     }
     //从模拟页面获取推广链接和关键词
 
-    @Override
     public List<PreviewData> getPageData(String[] keyword, Integer region) {
         GetPreviewRequest getPreviewRequest = new GetPreviewRequest();
 
@@ -200,7 +195,8 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
     }
 
     private Map<String, String> getHTML(GetPreviewRequest getPreviewRequest, CommonService commonService) {
-        GetPreviewResponse response = RequestHelper.addRequest(commonService, getPreviewRequest);
+        RequestHelper requestHelper = (RequestHelper) context.getBeanByClass(RequestHelper.class);
+        GetPreviewResponse response = requestHelper.addRequest(commonService, getPreviewRequest);
         if (response == null)
             return null;
         List<PreviewInfo> list1 = response.getPreviewInfos();
@@ -234,6 +230,14 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
             out.write(buffer, 0, n);
         }
         return out.toString("utf-8");
+    }
+
+    public void setContext(ApplicationContextHelper context) {
+        this.context = context;
+    }
+
+    public ApplicationContextHelper getContext() {
+        return context;
     }
 
 
@@ -291,28 +295,6 @@ public class HTMLAnalyseServiceImpl implements HTMLAnalyseService {
 
 
     public static void main(String[] args) {
-        System.out.println("HTMLAnalyseServiceImpl.main");
-
-
-        try {
-            ServiceFactory service = ServiceFactory.getInstance("baidu-上品折扣2103914", "SHANGpin8952", "f35d9f818141591cc4fd43ac8e8056b8", null);
-            HTMLAnalyseService htmlService = HTMLAnalyseServiceImpl.createService(service);
-
-            List<PreviewData> map = htmlService.getPageData(new String[]{"车贷", "婚纱照", "手机", "机票", "二手房"}, 28000);
-
-            for (PreviewData data : map) {
-
-                for (CreativeDTO dto : data.getLeft()) {
-                    System.out.println(dto);
-                }
-
-                for (CreativeDTO dto : data.getRight()) {
-                    System.out.println(dto);
-                }
-            }
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
 
 
     }

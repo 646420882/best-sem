@@ -1,15 +1,14 @@
-package com.perfect.service;
+package com.perfect.api.baidu;
 
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.dto.CreativeDTO;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.KeywordRankEntity;
-import com.perfect.service.impl.HTMLAnalyseServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -18,12 +17,13 @@ import java.util.*;
  *
  * @author yousheng
  */
-@Component
 public class BaiduApiService {
 
     private static Logger log = LoggerFactory.getLogger(BaiduApiService.class);
 
     private final CommonService commonService;
+    private ApplicationContextHelper context;
+    private BaiduPreviewHelperFactory baiduPreviewHelperFactory;
 
     public BaiduApiService(CommonService commonService) {
         this.commonService = commonService;
@@ -298,13 +298,13 @@ public class BaiduApiService {
         return keywordTypes.get(0);
     }
 
-    public List<HTMLAnalyseServiceImpl.PreviewData> getPreviewData(int region, List<String> keyList, HTMLAnalyseService rankService) {
+    public List<BaiduPreviewHelper.PreviewData> getPreviewData(int region, List<String> keyList, BaiduPreviewHelper helper) {
         GetPreviewRequest request = new GetPreviewRequest();
         request.setKeyWords(keyList);
         request.setRegion(region);
         request.setDevice(0);
         request.setPage(0);
-        List<HTMLAnalyseServiceImpl.PreviewData> previewDatas = rankService.getPageData(keyList.toArray(new
+        List<BaiduPreviewHelper.PreviewData> previewDatas = helper.getPageData(keyList.toArray(new
                 String[]{}), region);
         return previewDatas;
     }
@@ -321,9 +321,9 @@ public class BaiduApiService {
 
         initIdMap(keys.keySet(), keywordEntityMap);
         convertMap(keys, regionDataMap);
-        HTMLAnalyseService rankService = HTMLAnalyseServiceImpl.createService((com.perfect.autosdk.core.ServiceFactory) commonService);
+        BaiduPreviewHelper baiduPreviewHelper = baiduPreviewHelperFactory.createInstance(commonService);
 
-        List<HTMLAnalyseServiceImpl.PreviewData> resultDataList = new ArrayList<>();
+        List<BaiduPreviewHelper.PreviewData> resultDataList = new ArrayList<>();
         for (Map.Entry<Integer, List<KeywordEntity>> entry : regionDataMap.entrySet()) {
             Integer region = entry.getKey();
 
@@ -334,20 +334,20 @@ public class BaiduApiService {
                 for (KeywordEntity keywordEntity : keyEntityList) {
                     keyList.add(keywordEntity.getKeyword());
                 }
-                resultDataList.addAll(getPreviewData(region, keyList, rankService));
+                resultDataList.addAll(getPreviewData(region, keyList, baiduPreviewHelper));
             } else {
                 List<String> temp = new ArrayList<>();
                 for (KeywordEntity key : keyEntityList) {
                     temp.add(key.getKeyword());
 
                     if (temp.size() == 5) {
-                        resultDataList.addAll(getPreviewData(region, temp, rankService));
+                        resultDataList.addAll(getPreviewData(region, temp, baiduPreviewHelper));
                         temp.clear();
                     }
                 }
 
                 if (!temp.isEmpty()) {
-                    resultDataList.addAll(getPreviewData(region, temp, rankService));
+                    resultDataList.addAll(getPreviewData(region, temp, baiduPreviewHelper));
                 }
             }
         }
@@ -355,7 +355,7 @@ public class BaiduApiService {
         Map<String, KeywordRankEntity> keywordRankEntityMap = new HashMap<>();
 
         if (resultDataList != null && !resultDataList.isEmpty()) {
-            for (HTMLAnalyseServiceImpl.PreviewData previewData : resultDataList) {
+            for (BaiduPreviewHelper.PreviewData previewData : resultDataList) {
                 if ((previewData.getLeft() == null || previewData.getLeft().isEmpty()) && (previewData.getRight() == null || previewData.getRight().isEmpty())) {
                     continue;
                 }
@@ -441,5 +441,21 @@ public class BaiduApiService {
                 }
             }
         }
+    }
+
+    public void setContext(ApplicationContextHelper context) {
+        this.context = context;
+    }
+
+    public ApplicationContextHelper getContext() {
+        return context;
+    }
+
+    public void setBaiduPreviewHelperFactory(BaiduPreviewHelperFactory baiduPreviewHelperFactory) {
+        this.baiduPreviewHelperFactory = baiduPreviewHelperFactory;
+    }
+
+    public BaiduPreviewHelperFactory getBaiduPreviewHelperFactory() {
+        return baiduPreviewHelperFactory;
     }
 }

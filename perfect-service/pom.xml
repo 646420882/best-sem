@@ -66,9 +66,8 @@
 
         <!-- cron -->
         <dependency>
-            <groupId>quartz</groupId>
+            <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
-            <version>1.5.2</version>
         </dependency>
 
         <!-- JSON -->

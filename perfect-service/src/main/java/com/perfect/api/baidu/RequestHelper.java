@@ -5,34 +5,44 @@ import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.GetPreviewRequest;
 import com.perfect.autosdk.sms.v3.GetPreviewResponse;
 import com.perfect.autosdk.sms.v3.RankService;
+import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
 
 /**
  * Created by vbzer_000 on 2014/9/17.
  */
+@Component
 public class RequestHelper {
 
+    private int semaphoreValue;
 
-    private static Map<String, LinkedBlockingQueue<GetPreviewRequest>> accountRequestList = new ConcurrentHashMap<>();
+    private Map<String, Semaphore> accountSemaphore = new ConcurrentHashMap<>();
 
 
-    private static ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+    private Map<String, ExecutorService> executorServiceMap = new HashMap<>();
 
-    static {
+    public GetPreviewResponse addRequest(CommonService commonService, GetPreviewRequest request) {
 
-    }
 
-    public static GetPreviewResponse addRequest(CommonService commonService, GetPreviewRequest request) {
-//        String accountName = commonService.getUsername();
-//        if (!accountRequestList.containsKey(accountName)) {
-//            accountRequestList.put(accountName, new LinkedBlockingQueue<GetPreviewRequest>());
-//        }
+        String token = commonService.getToken();
 
-        Future<GetPreviewResponse> future = executorService.schedule(new AccountRequestSender(commonService,
-                request), 15, TimeUnit.SECONDS);
 
+        if (!executorServiceMap.containsKey(token)) {
+            executorServiceMap.put(token, Executors.newSingleThreadExecutor());
+        }
+
+        if (!accountSemaphore.containsKey(token)) {
+            accountSemaphore.put(token, new Semaphore(1));
+        }
+
+        AccountRequestSender sender = new AccountRequestSender(commonService,
+                request, accountSemaphore.get(token));
+
+
+        Future<GetPreviewResponse> future = executorServiceMap.get(token).submit(sender);
         try {
             return future.get();
         } catch (InterruptedException e) {
@@ -42,8 +52,14 @@ public class RequestHelper {
         }
 
         return null;
-        //        accountRequestList.get(accountName).add(request);
-//        accountRequestList.get(accountName).notify();
+    }
+
+    public int getSemaphoreValue() {
+        return semaphoreValue;
+    }
+
+    public void setSemaphoreValue(int semaphoreValue) {
+        this.semaphoreValue = semaphoreValue;
     }
 
 
@@ -52,24 +68,30 @@ public class RequestHelper {
 
         private final CommonService commonService;
         private final GetPreviewRequest request;
+        private Semaphore semaphore;
 
-        public AccountRequestSender(CommonService commonService, GetPreviewRequest request) {
+        public AccountRequestSender(CommonService commonService, GetPreviewRequest request, Semaphore semaphore) {
             this.commonService = commonService;
             this.request = request;
+            this.semaphore = semaphore;
         }
 
         @Override
         public GetPreviewResponse call() throws Exception {
-            RankService rankService = null;
+
             try {
+                semaphore.acquire();
+                RankService rankService = null;
                 rankService = commonService.getService(RankService.class);
-            } catch (ApiException e) {
-                e.printStackTrace();
+                GetPreviewResponse response = rankService.getPreview(request);
+                Thread.sleep(1000);
+                return response;
+            } catch (Exception ie) {
+
+            } finally {
+                semaphore.release();
             }
-
-            GetPreviewResponse response = rankService.getPreview(request);
-
-            return response;
+            return null;
         }
     }
 }

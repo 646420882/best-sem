@@ -360,6 +360,15 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                         qualityDTO.getCpc() + DEFAULT_DELIMITER +
                         qualityDTO.getConversion() + "(" + qualityDTO.getConversionRate() + "%)" + DEFAULT_END);
                 os.write(Bytes.concat(commonCSVHead, bytes.getBytes(StandardCharsets.UTF_8)));
+                os.write(Bytes.concat(commonCSVHead, ("" +
+                        DEFAULT_DELIMITER + "关键词" +
+                        DEFAULT_DELIMITER + "" +
+                        DEFAULT_DELIMITER + "" +
+                        DEFAULT_DELIMITER + "" +
+                        DEFAULT_DELIMITER + "" +
+                        DEFAULT_DELIMITER + "" +
+                        DEFAULT_DELIMITER + "" +
+                        DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
 
                 for (KeywordReportEntity entity : reportDTO.getReportList()) {
                     bytes = (grade + DEFAULT_DELIMITER +
