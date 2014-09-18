@@ -30,6 +30,11 @@ public class SysKeywordServiceImpl implements SysKeywordService {
     }
 
     @Override
+    public Long keywordCount(List<Long> adgroupIds) {
+        return keywordDAO.keywordCount(adgroupIds);
+    }
+
+    @Override
     public KeywordEntity findById(Long kwid) {
         return keywordDAO.findOne(kwid);
     }
@@ -42,7 +47,7 @@ public class SysKeywordServiceImpl implements SysKeywordService {
     @Override
     public List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param) {
 
-        return keywordDAO.findByNames(query,fullMatch,param);
+        return keywordDAO.findByNames(query, fullMatch, param);
     }
 
     @Override

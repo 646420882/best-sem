@@ -42,15 +42,17 @@ public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureRepor
                             objectList.get(i).setPcCtr(0d);
                         }else{
                             BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format((objectList.get(i).getPcClick().doubleValue() / objectList.get(i).getPcImpression().doubleValue()))));
-                            BigDecimal big = new BigDecimal(100);
+                            BigDecimal big = new BigDecimal(1);
                             double divide = ctrBig.multiply(big).doubleValue();
+                            divide = new BigDecimal(divide * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                             objectList.get(i).setPcCtr(divide);
                         }
                     }else{
-                        double newNumber = Double.parseDouble(df.format((objectList.get(i).getPcClick().doubleValue() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick().doubleValue()))/(objectList.get(i).getMobileImpression().doubleValue() + ((objectList.get(i).getMobileImpression() == null) ? 0 : objectList.get(i).getMobileImpression().doubleValue()))));
+                        double newNumber = Double.parseDouble(df.format((objectList.get(i).getPcClick().doubleValue() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick().doubleValue()))/(objectList.get(i).getPcImpression().doubleValue() + ((objectList.get(i).getMobileImpression() == null) ? 0 : objectList.get(i).getMobileImpression().doubleValue()))));
                         BigDecimal ctrBig = new BigDecimal(newNumber);
-                        BigDecimal big = new BigDecimal(100);
+                        BigDecimal big = new BigDecimal(1);
                         double divide = ctrBig.multiply(big).doubleValue();
+                        divide = new BigDecimal(divide * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                         objectList.get(i).setPcCtr(divide);
                     }
                     //计算平均点击价格

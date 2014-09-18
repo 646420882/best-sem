@@ -1,11 +1,14 @@
 package com.perfect.app.bidding.controller;
 
 import com.perfect.api.baidu.BaiduApiService;
+import com.perfect.api.baidu.Keyword10QualityService;
+import com.perfect.api.baidu.KeywordBiddingRankService;
 import com.perfect.app.bidding.dto.BiddingRuleParam;
 import com.perfect.app.bidding.dto.KeywordReportDTO;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
+import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.constants.KeywordStatusEnum;
 import com.perfect.core.AppContext;
 import com.perfect.entity.*;
@@ -65,6 +68,12 @@ public class BiddingController {
 
     @Resource
     private BasisReportService basisReportService;
+
+    @Resource
+    private KeywordBiddingRankService keywordBiddingRankService;
+
+    @Resource
+    private Keyword10QualityService keyword10QualityService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -278,6 +287,17 @@ public class BiddingController {
         return new ModelAndView("bidding/jingjia");
     }
 
+    @RequestMapping(value = "/getKeywordBiddingRank", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getKeywordBiddingRank(@RequestParam(value = "keyword", required = false) String keyword,
+                                              @RequestParam(value = "region", required = false) Integer region) {
+        Integer rank = keywordBiddingRankService.getKeywordBiddingRank(keyword, 1000);
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> value = new HashMap<>();
+        value.put("rank", rank);
+        jsonView.setAttributesMap(value);
+        return new ModelAndView(jsonView);
+    }
+
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json")
     public ModelAndView list(HttpServletRequest request,
                              @RequestParam(value = "cp", required = false) Long cp,
@@ -293,6 +313,7 @@ public class BiddingController {
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> q = new HashMap<>();
         List<KeywordEntity> entities = null;
+        Long total = 0l;
 
         PaginationParam param = new PaginationParam();
         param.setStart(skip);
@@ -313,8 +334,12 @@ public class BiddingController {
                 adGroupIds.add(adgroupEntity.getAdgroupId());
             }
             entities = sysKeywordService.findByAdgroupIds(adGroupIds, param);
+            total = sysKeywordService.keywordCount(adGroupIds);
         } else if (agid != null) {
+            List<Long> tmpList = new ArrayList<>();
+            tmpList.add(agid);
             entities = sysKeywordService.findByAdgroupId(agid, param);
+            total = sysKeywordService.keywordCount(tmpList);
         } else if (query != null) {
             if (filter == 0) {
                 entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param);
@@ -361,9 +386,22 @@ public class BiddingController {
 
         Map<Long, KeywordReportDTO> keywordReportDTOHashMap = new HashMap<>();
         List<KeywordReportDTO> resultList = new ArrayList<>();
+
+        //获取entities的质量度
+        List<Long> tmpKeywordIdList = new ArrayList<>();
+        for (KeywordEntity entity : entities) {
+            tmpKeywordIdList.add(entity.getKeywordId());
+        }
+        Map<Long, Quality10Type> quality10TypeMap = keyword10QualityService.getKeyword10Quality(tmpKeywordIdList);
+
         for (KeywordEntity entity : entities) {
             KeywordReportDTO keywordReportDTO = new KeywordReportDTO();
             BeanUtils.copyProperties(entity, keywordReportDTO);
+
+            //setting quality
+            Long kwid = entity.getKeywordId();
+            keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
+            keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
 
             if (entity.getStatus() != null) {
                 keywordReportDTO.setStatusStr(KeywordStatusEnum.getName(entity.getStatus()));
@@ -395,7 +433,7 @@ public class BiddingController {
         }
         String yesterday = DateUtils.getYesterdayStr();
 
-        Map<String, List<StructureReportEntity>> reports = basisReportService.getKeywordReport(ids.toArray(new Long[]{}), yesterday, yesterday, 0);
+        Map<String, List<StructureReportEntity>> reports = basisReportService.getKeywordReport(tmpKeywordIdList.toArray(new Long[tmpKeywordIdList.size()]), yesterday, yesterday, 0);
         List<StructureReportEntity> list = reports.get(yesterday);
 
         for (StructureReportEntity entity : list) {
@@ -411,8 +449,8 @@ public class BiddingController {
         }
 
         Map<String, Object> attributes = JSONUtils.getJsonMapData(resultList);
+        attributes.put("total", total);
         jsonView.setAttributesMap(attributes);
-
         // 获取报告信息
 
         return new ModelAndView(jsonView);

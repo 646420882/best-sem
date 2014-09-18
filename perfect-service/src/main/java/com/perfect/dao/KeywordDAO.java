@@ -38,12 +38,14 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
     List<KeywordInfo> getKeywordInfo();
 
+    Long keywordCount(List<Long> adgroupIds);
+
     /**
      * 安全添加
      *
      * @param keywordEntity
      */
-    public void insertAndQuery(List<KeywordEntity> keywordEntity);
+    void insertAndQuery(List<KeywordEntity> keywordEntity);
 
     KeywordEntity findByName(String name, Long accountId);
 

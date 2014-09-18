@@ -137,7 +137,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     @Override
     public List<KeywordEntity> findByIds(List<Long> ids) {
-        return getMongoTemplate().find(Query.query(Criteria.where(KEYWORD_ID).in(ids)),getEntityClass());
+        return getMongoTemplate().find(Query.query(Criteria.where(KEYWORD_ID).in(ids)), getEntityClass());
     }
 
     @Override
@@ -152,6 +152,14 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     public List<KeywordInfo> getKeywordInfo() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         return mongoTemplate.findAll(KeywordInfo.class, "keywordInfo");
+    }
+
+    @Override
+    public Long keywordCount(List<Long> adgroupIds) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return mongoTemplate.count(Query.query(
+                        Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(ADGROUP_ID).in(adgroupIds)),
+                getEntityClass());
     }
 
     @Override
@@ -300,7 +308,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
 
     //xj
-    public void update(KeywordEntity keywordEntity,KeyWordBackUpEntity keyWordBackUpEntity) {
+    public void update(KeywordEntity keywordEntity, KeyWordBackUpEntity keyWordBackUpEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Long id = keywordEntity.getKeywordId();
         Query query = new Query();
@@ -329,7 +337,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         }
         mongoTemplate.updateFirst(query, update, KeywordEntity.class, TBL_KEYWORD);
         KeyWordBackUpEntity keyWordBackUpEntityFind = keyWordBackUpDAO.findByObjectId(keywordEntity.getId());
-        if (keyWordBackUpEntityFind == null&&keywordEntity.getLocalStatus()==2) {
+        if (keyWordBackUpEntityFind == null && keywordEntity.getLocalStatus() == 2) {
             KeyWordBackUpEntity backUpEntity = new KeyWordBackUpEntity();
             BeanUtils.copyProperties(keyWordBackUpEntity, backUpEntity);
             keyWordBackUpDAO.insert(backUpEntity);
@@ -339,13 +347,14 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     /**
      * 还原功能的软删除
+     *
      * @param id
      */
-    public void updateLocalstatu(long id){
+    public void updateLocalstatu(long id) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Update update = new Update();
-        update.set("ls","");
-        mongoTemplate.updateFirst(new Query(Criteria.where(EntityConstants.KEYWORD_ID).is(id)),update,EntityConstants.TBL_KEYWORD);
+        update.set("ls", "");
+        mongoTemplate.updateFirst(new Query(Criteria.where(EntityConstants.KEYWORD_ID).is(id)), update, EntityConstants.TBL_KEYWORD);
     }
 
 
@@ -443,13 +452,14 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     /**
      * 根据Long类型id软删除
+     *
      * @param id
      */
     public void softDelete(Long id) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Update update = new Update();
-        update.set("ls",3);
-        mongoTemplate.updateFirst(new Query(Criteria.where(EntityConstants.KEYWORD_ID).is(id)),update,EntityConstants.TBL_KEYWORD);
+        update.set("ls", 3);
+        mongoTemplate.updateFirst(new Query(Criteria.where(EntityConstants.KEYWORD_ID).is(id)), update, EntityConstants.TBL_KEYWORD);
     }
 
 
@@ -520,7 +530,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         q.skip(p.getFirstStation());
         q.limit(p.getPageSize());
         q.with(new Sort(Sort.Direction.DESC, "name"));
-        if (totalCount<1) {
+        if (totalCount < 1) {
             p.setList(new ArrayList());
             return p;
         }

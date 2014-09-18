@@ -486,18 +486,19 @@ var systemWordPage = -1;
 var pageSelectCallback = function (page_index, jq) {
     pageIndex = page_index;
     if (type == 1) {
-        $("#pagination1").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber1' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:toAnyPage();' class='page_go'> GO</a>");
+        $("#pagination1").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber1' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipPage();' class='page_go'> GO</a>");
     } else {
-        $("#pagination2").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber2' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:toAnyPage();' class='page_go'> GO</a>");
+        $("#pagination2").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber2' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipPage();' class='page_go'> GO</a>");
     }
     toAnyPage(page_index);
     return false;
 };
 
-var getOptionsFromForm = function () {
+var getOptionsFromForm = function (current_page) {
     var opt = {callback: pageSelectCallback};
 
     opt["items_per_page"] = items_per_page;
+    opt["current_page"] = current_page;
 //    opt["num_display_entries"] = 10;
 //    opt["num_edge_entries"] = 2;
     opt["prev_text"] = "上一页";
@@ -512,7 +513,7 @@ var getOptionsFromForm = function () {
     return opt;
 };
 /***********************************************/
-var optInit = getOptionsFromForm();
+var optInit = getOptionsFromForm(0);
 $(function () {
     $(".showbox").click(function () {
         $(".TB_overlayBG").css({
@@ -790,6 +791,23 @@ var findWordFromSystem = function () {
     });
 };
 
+var skipPage = function () {
+    var _number = 0;
+    if (type == 1) {
+        _number = $("#anyPageNumber1").val() - 1;
+        if (_number <= -1 || _number == pageIndex) {
+            return;
+        }
+        $("#pagination1").pagination(total, getOptionsFromForm(_number));
+    } else {
+        _number = $("#anyPageNumber2").val() - 1;
+        if (_number <= -1 || _number == pageIndex) {
+            return;
+        }
+        $("#pagination2").pagination(total, getOptionsFromForm(_number));
+    }
+};
+
 var toAnyPage = function (page_index) {
     if (baiduWordPage == -1 && page_index == 0) {
         document.getElementById("background").style.display = "none";
@@ -803,14 +821,7 @@ var toAnyPage = function (page_index) {
     }
     baiduWordPage = 0;
     systemWordPage = 0;
-    if (page_index == null) {
-        skip = $("#anyPageNumber2").val() - 1;
-        if (skip <= -1 || skip == pageIndex) {
-            return;
-        }
-    } else {
-        skip = page_index;
-    }
+    skip = page_index;
 
     if (type == 1) {
         $.ajax({
