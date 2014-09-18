@@ -2,7 +2,6 @@ package com.perfect.app.controller;
 
 import com.perfect.core.AppContext;
 import com.perfect.entity.bidding.BiddingRuleEntity;
-import com.perfect.utils.JSONUtils;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
