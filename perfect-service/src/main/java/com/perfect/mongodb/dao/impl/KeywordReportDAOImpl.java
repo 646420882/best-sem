@@ -14,10 +14,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * Created by XiaoWei on 2014/9/17.
@@ -41,11 +39,13 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
         Map<Long, KeywordReportEntity> imptMap = new HashMap<>();
         List<String> dateList = getCurrDate(params);
         List<Long> kwdIds = (List<Long>) params.get("kwdIds");
+        String orderBy=params.get("orderBy").toString();
         if (dateList.size() > 0) {
             for (String str : dateList) {
                 for (Long l : kwdIds) {
                     KeywordReportEntity list = mongoTemplate.findOne(new Query(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(EntityConstants.KEYWORD_ID).is(l)), KeywordReportEntity.class, str + "-" + EntityConstants.TBL_KEYWORD);
                     if (list != null) {
+                        list.setOrderBy(orderBy);
                         findlList.add(list);
                     }
                 }
@@ -63,12 +63,12 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
                     Integer fClick=findlList.get(i).getMobileClick()!=null?findlList.get(i).getMobileClick():0;
                     Double tCtr=tmp.getMobileCtr()!=null?tmp.getMobileCtr():0.0;
                     Double fCtr=findlList.get(i).getMobileCtr()!=null?findlList.get(i).getMobileCtr():0.0;
-                    Double tCost=tmp.getMobileCost()!=null?tmp.getMobileCost():0;
-                    Double fCost=findlList.get(i).getMobileCost()!=null?findlList.get(i).getMobileCost():0.0;
-                    Double tCpc= tmp.getMobileCpc()!=null? tmp.getMobileCpc():0;
-                    Double fCpc= findlList.get(i).getMobileCpc()!=null? findlList.get(i).getMobileCpc():0.0;
-                    Double tCpm=tmp.getMobileCpm()!=null?tmp.getMobileCpm():0.0;
-                    Double fCpm=findlList.get(i).getMobileCpm()!=null?findlList.get(i).getMobileCpm():0.0;
+                    BigDecimal tCost=tmp.getMobileCost()!=null?tmp.getMobileCost():BigDecimal.ZERO;
+                    BigDecimal fCost=findlList.get(i).getMobileCost()!=null?findlList.get(i).getMobileCost():BigDecimal.ZERO;
+                    BigDecimal tCpc= tmp.getMobileCpc()!=null? tmp.getMobileCpc():BigDecimal.ZERO;
+                    BigDecimal fCpc= findlList.get(i).getMobileCpc()!=null? findlList.get(i).getMobileCpc():BigDecimal.ZERO;
+                    BigDecimal tCpm=tmp.getMobileCpm()!=null?tmp.getMobileCpm():BigDecimal.ZERO;
+                    BigDecimal fCpm=findlList.get(i).getMobileCpm()!=null?findlList.get(i).getMobileCpm():BigDecimal.ZERO;
                     Double tConversion=tmp.getMobileConversion()!=null?tmp.getMobileConversion():0.0;
                     Double fConversion= findlList.get(i).getMobileConversion()!=null? findlList.get(i).getMobileConversion():0.0;
                     Double tPosition=tmp.getMobilePosition()!=null?tmp.getMobilePosition():0.0;
@@ -77,9 +77,9 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
                     Integer mibPcImpression = tMobileImpression +fMobileImpression;
                     Integer mibClick = tClick + fClick;
                     Double mibCtr = tCtr + fCtr;
-                    Double mibCost = tCost + fCost;
-                    Double mibCpc =tCpc+ fCpc;
-                    Double mibCpm = tCpm+ fCpm;
+                    BigDecimal mibCost = tCost.add(fCost);
+                    BigDecimal mibCpc =tCpc.add(fCpc);
+                    BigDecimal mibCpm = tCpm.add(fCpm);
                     Double mibConversion = tConversion +fConversion;
                     Double mibPosition = tPosition + fPosition;
 
@@ -87,17 +87,24 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
                     if(mibClick>0.0&&mibPcImpression>0.0){
                         needMibCtr=Double.parseDouble(mibClick / mibPcImpression+"");
                     }
-                    Double needMibCpc=0.0;
-                    if(mibCost>0.0&&mibClick>0.0){
-                        needMibCpc= mibCost / mibClick;
+                    BigDecimal needMibCpc=BigDecimal.ZERO;
+                    if(mibCost.compareTo(BigDecimal.ZERO)==1&&mibClick>0.0){
+                        needMibCpc= mibCost.divide(BigDecimal.valueOf(mibClick),2,BigDecimal.ROUND_UP) ;
                     }
-
+                    BigDecimal tmpPcpc=BigDecimal.ONE;
+                    if(tmp.getPcClick()!=0){
+                        tmpPcpc= tmp.getPcCost().divide(BigDecimal.valueOf(tmp.getPcClick()),2,BigDecimal.ROUND_UP);
+                    }
+                    BigDecimal fmpPcpc=BigDecimal.ONE;
+                    if(findlList.get(i).getPcClick()!=0){
+                        fmpPcpc= findlList.get(i).getPcCost().divide(BigDecimal.valueOf(findlList.get(i).getPcClick()),2,BigDecimal.ROUND_UP);
+                    }
                     tmp.setPcImpression(tmp.getPcImpression() + findlList.get(i).getPcImpression() + mibPcImpression);
                     tmp.setPcClick(tmp.getPcClick() + findlList.get(i).getPcClick() + mibClick);
                     tmp.setPcCtr((tmp.getPcClick() / tmp.getPcImpression() + findlList.get(i).getPcClick() / findlList.get(i).getPcImpression()) +needMibCtr);
-                    tmp.setPcCost(tmp.getPcCost() + findlList.get(i).getPcCost() + mibCost);
-                    tmp.setPcCpc((tmp.getPcCost() / tmp.getPcClick() + findlList.get(i).getPcCost() / findlList.get(i).getPcClick()) +needMibCpc);
-                    tmp.setPcCpm(tmp.getPcCpm() + findlList.get(i).getPcCpm() + mibCpm);
+                    tmp.setPcCost(tmp.getPcCost().add(findlList.get(i).getPcCost()).add(mibCost));
+                    tmp.setPcCpc((tmpPcpc.add(fmpPcpc)).add(needMibCpc));
+                    tmp.setPcCpm(tmp.getPcCpm().add(findlList.get(i).getPcCpm()).add(mibCpm));
                     tmp.setPcConversion(tmp.getPcConversion() + findlList.get(i).getPcConversion() + mibConversion);
                     tmp.setPcPosition(tmp.getPcPosition() + findlList.get(i).getPcPosition() + mibPosition);
 
@@ -130,6 +137,7 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
                 importList = importList.subList(p.getFirstStation(), p.getPageSize());
             }
         }
+        Collections.sort(importList);
         p.setList(importList);
         return p;
     }

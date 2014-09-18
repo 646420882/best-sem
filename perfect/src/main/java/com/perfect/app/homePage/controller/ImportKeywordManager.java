@@ -36,7 +36,7 @@ public class ImportKeywordManager extends WebContextSupport {
                                      @RequestParam(value = "startDate", required = true) String startDate,
                                      @RequestParam(value = "endDate", required = true) String endDate,
                                      @RequestParam(value = "limt", required = false) Integer limit,
-                                     @RequestParam(value = "sort", required = false) Integer orderBy,
+                                     @RequestParam(value = "sort", required = false) String orderBy,
                                      @RequestParam(value = "nowPage")Integer nowPage,
                                      @RequestParam(value = "pageSize")Integer pageSize) {
 //       List<KeywordRealTimeDataVOEntity> list=importKeywordService.getMap(request);
@@ -48,7 +48,7 @@ public class ImportKeywordManager extends WebContextSupport {
         map.put("kwdIds",getMonitorIds());
         map.put("nowPage",nowPage);
         map.put("pageSize",pageSize);
-
+        map.put("orderBy",orderBy);
         PagerInfo p = keywordReportService.findByPagerInfo(map);
 
 

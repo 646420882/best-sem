@@ -10,7 +10,7 @@ import static com.perfect.mongodb.utils.EntityConstants.*;
 /**
  * Created by baizz on 2014-08-06.
  */
-public class KeywordReportEntity extends AccountIdEntity {
+public class KeywordReportEntity extends AccountIdEntity implements Comparable<KeywordReportEntity> {
 
     @Id
     private String id;
@@ -80,6 +80,16 @@ public class KeywordReportEntity extends AccountIdEntity {
 
     @Field(value = "mpt")
     private Double mobilePosition;
+
+    private String orderBy;//排序而已
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
 
     public String getId() {
         return id;
@@ -292,5 +302,39 @@ public class KeywordReportEntity extends AccountIdEntity {
                 ", mobileConversion=" + mobileConversion +
                 ", mobilePosition=" + mobilePosition +
                 '}';
+    }
+
+    @Override
+    public int compareTo(KeywordReportEntity o) {
+        switch (o.getOrderBy()){
+            case "1":
+                return this.getPcImpression().compareTo(o.getPcImpression());
+            case "2":
+                return this.getPcClick().compareTo(o.getPcClick());
+            case "-2":
+                return o.getPcClick().compareTo(this.getPcClick());
+            case "3":
+                return this.getPcCost().compareTo(o.getPcCost());
+            case "-3":
+                return o.getPcCost().compareTo(this.getPcCost());
+            case "4":
+                return this.getPcCpc().compareTo(o.getPcCpc());
+            case "-4":
+                return o.getPcCpc().compareTo(this.getPcCpc());
+            case "5":
+                return this.getPcCtr().compareTo(o.getPcCtr());
+            case "-5":
+                return o.getPcCtr().compareTo(this.getPcCtr());
+            case "6":
+                return this.getPcConversion().compareTo(o.getPcConversion());
+            case "-6":
+                return o.getPcConversion().compareTo(this.getPcConversion());
+            case "7":
+                return this.getPcPosition().compareTo(o.getPcPosition());
+            case "-7":
+                return o.getPcPosition().compareTo(this.getPcPosition());
+            default:
+                return o.getPcImpression().compareTo(this.getPcImpression());
+        }
     }
 }
