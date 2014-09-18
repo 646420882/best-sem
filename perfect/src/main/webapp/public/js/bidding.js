@@ -90,8 +90,14 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box2 ").css("display", "none");
     });
-//修改匹配模式
+//修改访问网址
     $("#showbox4").click(function () {
+        var items = checked("subbox");
+
+        if (items.length == 0) {
+            alert("请选择一个关键词!");
+            return;
+        }
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
