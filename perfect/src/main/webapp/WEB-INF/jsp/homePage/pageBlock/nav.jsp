@@ -183,8 +183,6 @@
     });
     $(document).ready(function () {
         $(".on_title").pin();
-        $(".top").pin();
-
     });
 
 </script>

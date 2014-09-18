@@ -6,8 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<div class="top_heade">
 <div class="top">
-
         <div class="nav_bg">
             <img src="${pageContext.request.contextPath}/public/img/top_bg.jpg" width="100%" height="100%">
         </div>
@@ -44,7 +44,6 @@
                 <ul>
                     <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<></li>
                     <li><span>余额预计可消费：${remainderDays}天</span><span>日预算：${accountBudget}元</span></li>
-
                 </ul>
             </div>
         </div>
@@ -60,6 +59,7 @@
     </div>
 
 </div>
+</div>
 <script type="text/javascript">
     now = new Date(),hour = now.getHours()
     var time= document.getElementById('time');
@@ -69,4 +69,6 @@
     else if (hour < 14){time.innerHTML="中午,好！"}
     else if (hour < 17){time.innerHTML="下午,好！"}
     else if (hour < 23){time.innerHTML="晚上,好！"}
+    else if (hour == 24){time.innerHTML="凌晨,好！"}
+    else{time.innerHTML="晚上,好！"}
 </script>
