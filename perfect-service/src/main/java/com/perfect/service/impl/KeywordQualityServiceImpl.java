@@ -53,9 +53,6 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
     @Resource
     private KeywordQualityDAO keywordQualityDAO;
 
-    @Resource
-    private TopN<KeywordReportEntity> topN;
-
     @Override
     public Map<String, Object> find(String redisKey, String fieldName, int n, int skip, int sort) {
         fieldName = "pc" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
@@ -181,7 +178,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                 qualityList.add(qualityDTO);
 
                 //每个质量度下具体的关键词信息
-                KeywordReportEntity topNData[] = topN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), n, fieldName, sort);
+                KeywordReportEntity topNData[] = TopN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), n, fieldName, sort);
 
                 if ((skip + 1) * n > topNData.length) {
                     List<KeywordReportEntity> data = new ArrayList<>();
@@ -333,7 +330,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                 qualityDTOMap.put(i, qualityDTO);
 
                 //每个质量度下具体的关键词信息
-                KeywordReportEntity topNData[] = topN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), tempList.size(), "pcImpression", -1);
+                KeywordReportEntity topNData[] = TopN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), tempList.size(), "pcImpression", -1);
                 reportList.add(new KeywordQualityReportDTO(i, Arrays.asList(topNData)));
             }
 
