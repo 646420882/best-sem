@@ -119,10 +119,8 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
                 }
             }
         }
-        List<KeywordReportEntity> importList=new ArrayList<>();
-        for (Map.Entry<Long,KeywordReportEntity> kwd:imptMap.entrySet()){
-            importList.add(kwd.getValue());
-        }
+        List<KeywordReportEntity> importList=new ArrayList<>(imptMap.values());
+
         Integer nowPage = Integer.parseInt(params.get("nowPage").toString());
         Integer pageSize = Integer.parseInt(params.get("pageSize").toString());
         Integer totalCount = imptMap.size();
@@ -227,10 +225,7 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
                 }
             }
         }
-        List<KeywordReportEntity> importList=new ArrayList<>();
-        for (Map.Entry<Long,KeywordReportEntity> kwd:imptMap.entrySet()){
-            importList.add(kwd.getValue());
-        }
+        List<KeywordReportEntity> importList=new ArrayList<>(imptMap.values());
         return importList;
     }
 
