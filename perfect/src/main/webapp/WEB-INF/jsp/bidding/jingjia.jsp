@@ -43,7 +43,7 @@
                 </div>
                 <div class="j_l_top2 over">
                     <span class="fl">查找计划单元</span>
-                    <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png">
+                    <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png" >
                 </div>
                 <div class="j_list01 over">
                     <ul id="zTree" class="ztree over">
@@ -147,7 +147,7 @@
                             <li id="showbox7">启动竞价</li>
                             <li id="showbox3">暂停竞价</li>
                             <li id="showbox4">修改访问网址</li>
-                            <li id="showbox5">分组</li>
+                            <li class="showbox5">分组</li>
                             <li id="showbox6">自定义列</li>
                         </ul>
                         <div class="over wd">
@@ -205,14 +205,15 @@
         <div class="jingjia_left fl over">
             <div class="j_l_top over">
                 <span class="fl"><h3>账户目录</h3></span>
-                <a href="#" class="fr">刷新</a>
+                <a href="javascript:;" onclick="initImzTree(true);" class="fr">刷新</a>
             </div>
             <div class="j_l_top2 over">
                 <span class="fl">查找计划单元</span>
                 <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png">
             </div>
             <div class="j_list01 over">
-                <ul id="zTree2" class="ztree over">
+                <ul id="zTreeImport" class="ztree over">
+
                 </ul>
             </div>
             <div class="j_l_under over">
@@ -224,12 +225,12 @@
                 <div class="zhushou_concent over">
                     <div class="w_list03">
                         <ul class="jiangjia_list">
-                            <li class="current Screenings">筛选</li>
-                            <li class="showbox3">暂停竞价</li>
-                            <li class="showbox2">修改出价</li>
-                            <li class="showbox4">修改访问网址</li>
-                            <li class="showbox5">分组</li>
-                            <li class="showbox6">自定义列</li>
+                            <li class="current Screenings">筛选2</li>
+                            <li class="showbox3">暂停竞价2</li>
+                            <li class="showbox2">修改出价2</li>
+                            <li class="showbox4">修改访问网址2</li>
+                            <li class="showbox5">分组2</li>
+                            <li class="showbox6">自定义列2</li>
                         </ul>
                         <div class="Screening_concent over">
                             <div class="Screening_row over">
@@ -241,9 +242,8 @@
                                 <span><input type="checkbox">&nbsp;<select>
                                     <option>按单元</option>
                                 </select>&nbsp;<input type="button" value="+" class="Screening_input1"></span>
-                                <span><input type="checkbox">&nbsp;<input type="text" class="sc_input3" value="如何在网上推广"
-                                                                          onfocus="if(value=='如何在网上推广') {value=''}"
-                                                                          onblur="if (value=='') {value='如何在网上推广'}"></span>
+                                <span><input type="checkbox">&nbsp;
+                                   <input type="text" class="sc_input3" value="如何在网上推广"onfocus="if(value=='如何在网上推广') {value=''}" onblur="if (value=='') {value='如何在网上推广'}"></span>
 
                             </div>
                         </div>
@@ -546,15 +546,17 @@
             <ul>
                 <li>关键词列表：</li>
                 <li><textarea class="zs_input5"></textarea></li>
-                <li>输入分组管理名：</li>
-                <li><input type="text" class="zs_input3"></li>
+                <li>选择分组名：</li>
+                <li><select id="cgroup" onchange="cgroupInsert();"></select></li>
             </ul>
+            <input type="button" value="+" id="showTxt" onclick="showGroupNameTxt()"/>
+            <input name="cgroupName" style="display: none;"/>
         </div>
     </div>
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li class="current">保存</li>
+                <li class="current" onclick="checkGroupOk()">保存</li>
                 <li class="close">取消</li>
             </ul>
         </div>
@@ -600,8 +602,10 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/importKeyword/importKeywordBidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
+
 <script type="text/javascript">
 
 <!--
@@ -772,7 +776,7 @@ $(function () {
         success: function (data, textStatus, jqXHR) {
             zNodes = data.trees;
             $.fn.zTree.init($("#zTree"), setting, zNodes);
-            $.fn.zTree.init($("#zTree2"), setting, zNodes);
+//            $.fn.zTree.init($("#zTree2"), setting, zNodes);
         }
     });
 });

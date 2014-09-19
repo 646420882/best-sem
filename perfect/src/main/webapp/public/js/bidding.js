@@ -19,6 +19,7 @@ $(function () {
         if (lis.eq(0).hasClass("selected")) {
             type = 1;
         } else {
+            initImzTree();
             type = 2;
         }
     });
@@ -211,7 +212,8 @@ $(function () {
         $(".box3 ").css("display", "none");
     });
 //设置规则
-    $("#showbox5").click(function () {
+    $(".showbox5").click(function () {
+        initCustomGroupSelect();
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
