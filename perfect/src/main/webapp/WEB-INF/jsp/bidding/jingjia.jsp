@@ -200,7 +200,6 @@
         </div>
 
     </div>
-</div>
 <div class="containers over hides">
     <div class=" jiangjia_concent over">
         <div class="jingjia_left fl over">

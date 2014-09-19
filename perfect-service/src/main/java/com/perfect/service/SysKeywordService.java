@@ -22,5 +22,7 @@ public interface SysKeywordService {
 
     List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param);
 
+    Integer countKeywordfindByNames(String[] query, boolean fullMatch, PaginationParam param);
+
     List<KeywordEntity> findByIds(List<Long> ids);
 }

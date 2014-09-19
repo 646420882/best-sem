@@ -314,12 +314,17 @@ public class BiddingController {
         Map<String, Object> q = new HashMap<>();
         List<KeywordEntity> entities = null;
         Long total = 0l;
+        Integer total1 = 0;
 
         PaginationParam param = new PaginationParam();
         param.setStart(skip);
         param.setLimit(limit);
         param.setOrderBy(sort);
         param.setAsc(asc);
+
+        PaginationParam param1 = new PaginationParam();
+        param1.setOrderBy(sort);
+        param1.setAsc(asc);
 
 
         Map<Long, BiddingRuleEntity> keywordIdRuleMap = new HashMap<>();
@@ -343,8 +348,10 @@ public class BiddingController {
         } else if (query != null) {
             if (filter == 0) {
                 entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param);
+                total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1);
             } else if (filter == -1) {
                 entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param);
+                total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1);
 
                 Map<Long, KeywordEntity> tmpMap = new HashMap<>();
                 for (KeywordEntity tmpEntity : entities) {
@@ -368,6 +375,7 @@ public class BiddingController {
             } else if (filter == 1) {
                 List<BiddingRuleEntity> ruleEntities = biddingRuleService.findByNames(query.split(" "), fullMatch,
                         param);
+                total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1);
                 for (BiddingRuleEntity tmpEntity : ruleEntities) {
                     keywordIdRuleMap.put(tmpEntity.getKeywordId(), tmpEntity);
                     ids.add(tmpEntity.getKeywordId());
@@ -449,7 +457,14 @@ public class BiddingController {
         }
 
         Map<String, Object> attributes = JSONUtils.getJsonMapData(resultList);
-        attributes.put("total", total);
+        if (total > 0) {
+            attributes.put("total", total);
+        } else if (total1 > 0) {
+            attributes.put("total", total1);
+        } else {
+            attributes.put("total", 0);
+        }
+
         jsonView.setAttributesMap(attributes);
         // 获取报告信息
 

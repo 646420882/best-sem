@@ -341,9 +341,12 @@ $(function () {
         var f = input('fullmatch').prop("checked");
         var filter = checkedValue('in');
         var tbl = "table1";
-        var curPage = $('.curpage').text();
-        var size = $("#size").find("option:selected").val();
-        var skip = (curPage - 1) * size;
+//        var curPage = $('.curpage').text();
+        var curPage = pageIndex;
+//        var size = $("#size").find("option:selected").val();
+        var size = limit;
+//        var skip = (curPage - 1) * size;
+        var skip = curPage * size;
 
         $.ajax({
             url: "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter,
@@ -354,6 +357,8 @@ $(function () {
                 if (datas.rows == undefined) {
                     emptyTable(tbl);
                 } else {
+                    total = datas.total;
+                    $("#pagination1").pagination(total, optInit);
                     fullItems(datas, tbl);
                 }
             }
@@ -691,10 +696,24 @@ var toAnyPage = function (page_index) {
 
     var _url = "";
     if (type == 1) {
-        if (_campaignId == null) {
+        if (_campaignId != null) {
+            _url = "/bidding/list?cp=" + _campaignId + "&s=" + skip + "&l=" + limit;
+        } else if (_adgroupId != null) {
             _url = "/bidding/list?ag=" + _adgroupId + "&s=" + skip + "&l=" + limit;
         } else {
-            _url = "/bidding/list?cp=" + _campaignId + "&s=" + skip + "&l=" + limit;
+            var txt = '关键词精准查询，多个关键词用半角逗号隔开';
+            var text = $('input[name=qtext]').val();
+            if (text == txt) {
+                return false;
+            }
+
+            var f = input('fullmatch').prop("checked");
+            var filter = checkedValue('in');
+            var tbl = "table1";
+            var curPage = pageIndex;
+            var size = limit;
+            var skip = curPage * size;
+            _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter;
         }
         $.ajax({
             url: _url,
