@@ -598,8 +598,8 @@ public class BiddingController {
         List<RegionCodeDTO> regionCodeDTOs = new ArrayList<>();
         for (final Map.Entry<Integer, Integer> entry : tmpMap.entrySet()) {
             RegionCodeDTO dto = new RegionCodeDTO();
-            Long regionId = entry.getKey().longValue();
-            Map<Long, String> regionMap = RegionalCodeUtils.regionalCode(Arrays.asList(regionId));
+            Integer regionId = entry.getKey();
+            Map<Integer, String> regionMap = RegionalCodeUtils.regionalCode(Arrays.asList(regionId));
             String regionName = regionMap.get(regionId);
             Integer rank = entry.getValue();
 //            dto.setRegionId(regionId);
