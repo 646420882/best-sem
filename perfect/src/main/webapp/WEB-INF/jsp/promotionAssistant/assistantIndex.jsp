@@ -118,7 +118,7 @@
                     src="../public/img/zs_function9.png"></span><b>还原</b></a><%--z_function_hover--%>
             </li>
 
-            <li><a href="#" id="searchword"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+            <li><a href="#" id="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
             <li><a href="#"><span class="z_function_hover"><img
                     src="../public/img/zs_function11.png"></span><b>激活</b></a>
             </li>
@@ -1537,15 +1537,6 @@
     </div>
 </div>
 
-<%--推广计划设置推广地域窗口--%>
-<div class="TB_overlayBG"></div>
-<div class="box" style="display:none;" id="setSchedule">
-    <h2 id="setScheduleDiv">
-        <span class="fl">推广地域列表</span>
-        <a href="#" class="close">关闭</a></h2><a href="javascript:testBatchDel()">测试批量删除</a>
-    <a href="">测试批量添加更新</a>
-    <jsp:include page="../promotionAssistant/alert/setRegionTarget.jsp"/>
-</div>
 
 <%--添加推广计划弹出窗口--%>
 <jsp:include page="../promotionAssistant/alert/addCampaign.jsp"/>

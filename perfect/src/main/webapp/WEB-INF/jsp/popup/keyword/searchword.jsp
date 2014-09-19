@@ -37,15 +37,23 @@
 <div style="background-color: #f3f5fd; width: 900px; height: 800px">
     <div class="searchword_top over">
         <ul>
-            <li class="current">
+            <li>
                 <span>报告分析对象</span>
-                <a href="#">关键词1个</a>
-                <input type="image" src="../public/img/zs_input.png">
+               <select>
+                   <option value="11">关键词</option>
+                   <option value="7">普通创意</option>
+                   <option value="5">推广单元</option>
+                   <option value="3">推广计划</option>
+                   <option value="2">账户</option>
+               </select>
             </li>
             <li>
                 <span>时间范围</span>
-                <a href="#">最近七天</a>
-                <input type="image" src="../public/img/zs_input.png">
+                <select>
+                    <option value="1">昨天</option>
+                    <option value="7">最近七天</option>
+                    <option value="30">最近一月</option>
+                </select>
             </li>
             <li>
                 <span>地域范围</span>
@@ -54,13 +62,19 @@
             </li>
             <li>
                 <span>投放设备</span>
-                <a href="#">全部设备</a>
-                <input type="image" src="../public/img/zs_input.png">
+               <select>
+                   <option value="0">全部设备</option>
+                   <option value="1">计算机设备</option>
+                   <option value="2">移动设备</option>
+               </select>
             </li>
             <li>
                 <span>搜索引擎范围</span>
-                <a href="#">全部</a>
-                <input type="image" src="../public/img/zs_input.png">
+               <select>
+                   <option>全部</option>
+                   <option>百度推广</option>
+                   <option>非百度推广</option>
+               </select>
             </li>
         </ul>
         <a class="become fr" href="javascript:"> 生成报告</a>

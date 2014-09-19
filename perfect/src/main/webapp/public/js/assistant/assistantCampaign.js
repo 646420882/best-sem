@@ -68,8 +68,8 @@ function setRedirectPageInfo_campaign(data) {
     $(".campaignPage").find("li>a:eq(1)").attr("name",data.prePage);
     $(".campaignPage").find("li>a:eq(2)").attr("name",data.nextPage);
     $(".campaignPage").find("li>a:eq(3)").attr("name",data.totalPage);
-    $(".campaignPage").find("li:eq(4)").html("当前页:"+data.pageNo+"/"+data.totalPage);
-    $(".campaignPage").find("li:eq(5)").html("共"+data.totalCount+"条");
+    $(".campaignPage").find("li:eq(5)").html("当前页:"+data.pageNo+"/"+data.totalPage);
+    $(".campaignPage").find("li:eq(6)").html("共"+data.totalCount+"条");
 }
 
 /**
@@ -155,7 +155,7 @@ function campaignDataToHtml(obj,index){
 
 
     //推广地域！！！！！！！！！！！！
-    html = html+until.convert(obj.regionTarget==null,"<td>使用账户推广地域</td>:"+"<td>使用账户推广地域</td>");
+    html = html+until.convert(obj.regionTarget==null,"<td>使用账户推广地域</td>:"+"<td>使用计划推广地域</td>");
 
     var fd;
     var jqfd;
@@ -282,8 +282,9 @@ function whenBlurEditCampaign(num,value){
         case 4:jsonData["schedule"] = value;break;
         case 5:jsonData["regionTarget"] = value;break;
         case 6:jsonData["isDynamicCreative"] = value;break;
-        case 7:jsonData["negativeWords"] = value;break;
-        case 8:jsonData["exactNegativeWords"] = value;break;
+        case 7:var words = value.split("\t");
+               jsonData["negativeWords"] = words[0];
+               jsonData["exactNegativeWords"] = words[1];break;
         case 9:jsonData["excludeIp"] = value;break;
         case 10:jsonData["showProb"] = value;break;
         case 11:jsonData["pause"] = value;break;
@@ -342,8 +343,7 @@ $(".ntwOk").click(function(){
     }
 
     if(windowName=="negativeWords_5"){
-        whenBlurEditCampaign(7,negativeWords);
-        whenBlurEditCampaign(8,exactNegativeWords);
+        whenBlurEditCampaign(7,negativeWords+"\t"+exactNegativeWords);
     }else if(windowName=="inputNegativeWords_add"){
         negativeWordsValue = negativeWords;
         exactNegativeWordsValue = exactNegativeWords;
@@ -669,7 +669,7 @@ function createChooseTimeUIByCampaignData(data){
     var weeks = new Array("星期一","星期二","星期三","星期四","星期五","星期六","星期日");
     var html = "";
     for(var i = 0;i<weeks.length;i++){
-        if(data.schedule==""){
+        if(data.schedule==undefined){
             html = html+"<ul>"+"<div><input type='checkbox' checked='checked'' name='"+(i+1)+"'/>"+weeks[i]+"</div>";
         }else{
             for(var s = 0;s<data.schedule.length;s++){
@@ -725,7 +725,18 @@ function createChooseTimeUIByCampaignData(data){
 
 /*显示设置推广地域窗口*/
 $(".regionTarget_5").click(function () {
-    setDialogCss("setSchedule");
+    var cid = $("#hiddenCampaignId").val();
+    top.dialog({title: "设置推广地域",
+        padding: "5px",
+        content: "<iframe src='/assistantCampaign/showSetPlace?cid="+cid+"' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        oniframeload: function () {
+        },
+        onclose: function () {
+//            window.location.reload(true);
+        },
+        onremove: function () {
+        }
+    }).showModal();
 });
 
 
@@ -859,7 +870,7 @@ $("#reduction_caipamgin").click(function () {
             case 1:reducCpg_Add(id);break;
             case 2:reducCpg_update(id);break;
             case 3:reducCpg_del(id);break;
-            case 4:alert("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");break;
+            case 4:;break;
         }
 
     }
@@ -874,7 +885,7 @@ function reducCpg_Add(id) {
     $.ajax({
         url:"/assistantCampaign/delete",
         type:"post",
-        data:{"id":id},
+        data:{"cid":id},
         dataType:"json",
         success: function (data) {
             $("#tbodyClick5").find(".list2_box3").remove();
@@ -929,13 +940,17 @@ $("#quickAddplan").click(function () {
             oniframeload: function () {
             },
             onclose: function () {
-//              if (this.returnValue) {
-//                  $('#value').html(this.returnValue);
-//              }
-//                window.location.reload(true);
+                window.location.reload(true);
             },
             onremove: function () {
             }
         }).showModal();
 });
 
+
+/**
+ * 弹出窗口的关闭事件
+ */
+$(".close").click(function () {
+    $(this).parent().parent().hide(0);
+})

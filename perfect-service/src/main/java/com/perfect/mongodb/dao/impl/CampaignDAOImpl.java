@@ -3,10 +3,7 @@ package com.perfect.mongodb.dao.impl;
 import com.google.common.collect.Lists;
 import com.perfect.constants.LogStatusConstant;
 import com.perfect.core.AppContext;
-import com.perfect.dao.CampaignBackUpDAO;
-import com.perfect.dao.CampaignDAO;
-import com.perfect.dao.LogDAO;
-import com.perfect.dao.LogProcessingDAO;
+import com.perfect.dao.*;
 import com.perfect.entity.*;
 import com.perfect.entity.backup.CampaignBackUpEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
@@ -50,6 +47,9 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
 
     @Resource
     private CampaignBackUpDAO campaignBackUpDAO;
+
+    @Resource
+    private AdgroupDAO adgroupDAO;
 
     @Resource
     private LogDAO logDAO;
@@ -172,6 +172,11 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
         Update update = new Update();
         update.set("ls","");
         mongoTemplate.updateFirst(new Query(Criteria.where(EntityConstants.CAMPAIGN_ID).is(cid)),update,EntityConstants.TBL_CAMPAIGN);
+        List<AdgroupEntity> list = adgroupDAO.findByCampaignId(cid);
+        for(AdgroupEntity adgroupEntity:list){
+            adgroupDAO.delBack(adgroupEntity.getAdgroupId());
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -265,7 +270,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
     }
 
     /**
-     * 根据mongoid删除计划
+     * 根据mongoid硬删除计划
      *
      * @param campaignId
      */
@@ -273,22 +278,31 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
         MongoTemplate mongoTemplate = getMongoTemplate();
         mongoTemplate.remove(
                 new Query(Criteria.where(EntityConstants.SYSTEM_ID).is(campaignId)), CampaignEntity.class, TBL_CAMPAIGN);
-       /* deleteSub(new ArrayList<Long>(1) {{
+        deleteSubByObjectId(new ArrayList<String>(1) {{
             add(campaignId);
-        }});*/
+        }});
     }
 
     /**
-     * 软删除计划
-     * @param id
+     * 根据计划id软删除
+     * @param cid
      */
-    public void softDel(final String id) {
+    public void softDel(long cid){
         MongoTemplate mongoTemplate = getMongoTemplate();
         Update update = new Update();
-        update.set("ls",3);
-        mongoTemplate.updateFirst(new Query(Criteria.where(EntityConstants.SYSTEM_ID).is(id)),update,EntityConstants.TBL_CAMPAIGN);
+        update.set("localStatus",3);
+        mongoTemplate.updateFirst(new Query(Criteria.where(EntityConstants.CAMPAIGN_ID).is(cid)),update,getEntityClass(),EntityConstants.TBL_CAMPAIGN);
 
+        List<AdgroupEntity> list = adgroupDAO.findByCampaignId(cid);
+        List<Long> ids = new ArrayList<>();
+        for(AdgroupEntity adgroupEntity:list){
+            ids.add(adgroupEntity.getAdgroupId());
+        }
+        adgroupDAO.deleteLinkedByAgid(ids);
     }
+
+
+
 
     public void deleteByIds(List<Long> campaignIds) {
         MongoTemplate mongoTemplate = getMongoTemplate();
@@ -374,6 +388,17 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
             logEntities.add(log);
         }
         logProcessingDAO.insertAll(logEntities);
+    }
+
+
+
+    //根据mongodbId删除下级内容
+    private void deleteSubByObjectId(List<String> ids) {
+        MongoTemplate mongoTemplate = getMongoTemplate();
+        List<String> adgroupIds = adgroupDAO.getObjAdgroupIdByCampaignId(ids);
+        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).in(adgroupIds)), AdgroupEntity.class, TBL_ADGROUP);
+        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).in(adgroupIds)), KeywordEntity.class, TBL_KEYWORD);
+        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).in(adgroupIds)), CreativeEntity.class, TBL_CREATIVE);
     }
 
 }

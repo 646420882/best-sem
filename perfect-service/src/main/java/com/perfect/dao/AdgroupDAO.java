@@ -52,4 +52,9 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
     AdgroupEntity getByCampaignIdAndName(Long campaignId, String name);
 
     List<AdgroupEntity> findByCampaignOId(String id);
+
+    List<String> getObjAdgroupIdByCampaignId(List<String> cids);
+
+    void deleteLinkedByAgid(List<Long> agid);
+
 }

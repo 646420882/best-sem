@@ -1,6 +1,8 @@
 package com.perfect.service;
 
 import com.perfect.dto.CampaignTreeDTO;
+import com.perfect.entity.AdgroupEntity;
+import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.mongodb.utils.PagerInfo;
 
@@ -33,4 +35,11 @@ public interface AssistantKeywordService {
 
     void batchUpdateKeyword(String keywords);
 
+    Iterable<CampaignEntity> getCampaignByAccountId();
+
+    Iterable<AdgroupEntity> getAdgroupByCid(String cid);
+
+    void saveSearchwordKeyword(List<KeywordEntity> list);
+
+    void setNeigWord(String agid, String keywords, Integer neigType);
 }
