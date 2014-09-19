@@ -38,6 +38,7 @@ window.onload = function () {
     rDrag.init(document.getElementById('box4'));
     rDrag.init(document.getElementById('box5'));
     rDrag.init(document.getElementById('box6'));
+    rDrag.init(document.getElementById('box8'));
     rDrag.init(document.getElementById('reachBudget_head'));
     rDrag.init(document.getElementById('downloadBox'));
 };

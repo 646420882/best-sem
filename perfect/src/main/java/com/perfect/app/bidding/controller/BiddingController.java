@@ -1,6 +1,7 @@
 package com.perfect.app.bidding.controller;
 
 import com.perfect.api.baidu.BaiduApiService;
+import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.api.baidu.Keyword10QualityService;
 import com.perfect.api.baidu.KeywordBiddingRankService;
 import com.perfect.app.bidding.dto.BiddingRuleParam;
@@ -11,6 +12,7 @@ import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.constants.KeywordStatusEnum;
 import com.perfect.core.AppContext;
+import com.perfect.dto.RegionCodeDTO;
 import com.perfect.entity.*;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.entity.bidding.KeywordRankEntity;
@@ -21,6 +23,7 @@ import com.perfect.service.*;
 import com.perfect.utils.BiddingRuleUtils;
 import com.perfect.utils.JSONUtils;
 import com.perfect.utils.NumberUtils;
+import com.perfect.utils.RegionalCodeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -74,6 +77,9 @@ public class BiddingController {
 
     @Resource
     private Keyword10QualityService keyword10QualityService;
+
+    @Resource
+    private BaiduPreviewHelperFactory baiduPreviewHelperFactory;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -542,6 +548,7 @@ public class BiddingController {
         }
 
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
+        baiduApiService.setBaiduPreviewHelperFactory(baiduPreviewHelperFactory);
         Map<String, KeywordRankEntity> rankMap = baiduApiService.getKeywordRank(searchMap, host);
 
         Long accountId = AppContext.getAccountId();
@@ -579,7 +586,30 @@ public class BiddingController {
         AbstractView jsonView = new MappingJackson2JsonView();
 
         KeywordRankEntity keywordRankEntity = keywordRankService.findRankByKeywordId(id);
-        Map<String, Object> mapObject = JSONUtils.getJsonMapData(keywordRankEntity);
+        if (keywordRankEntity == null) {
+            Map<String, Object> map = new HashMap<String, Object>() {{
+                put("rows", null);
+            }};
+            jsonView
+                    .setAttributesMap(map);
+            return new ModelAndView(jsonView);
+        }
+        Map<Integer, Integer> tmpMap = keywordRankEntity.getTargetRank();
+        List<RegionCodeDTO> regionCodeDTOs = new ArrayList<>();
+        for (final Map.Entry<Integer, Integer> entry : tmpMap.entrySet()) {
+            RegionCodeDTO dto = new RegionCodeDTO();
+            Long regionId = entry.getKey().longValue();
+            Map<Long, String> regionMap = RegionalCodeUtils.regionalCode(Arrays.asList(regionId));
+            String regionName = regionMap.get(regionId);
+            Integer rank = entry.getValue();
+//            dto.setRegionId(regionId);
+            dto.setRegionName(regionName);
+            dto.setRank(rank);
+            regionCodeDTOs.add(dto);
+
+        }
+//        Map<String, Object> mapObject = JSONUtils.getJsonMapData(keywordRankEntity);
+        Map<String, Object> mapObject = JSONUtils.getJsonMapData(regionCodeDTOs);
         jsonView.setAttributesMap(mapObject);
 
         return new ModelAndView(jsonView);

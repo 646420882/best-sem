@@ -34,14 +34,14 @@ $(function () {
     initOptions('start3', 14, 23);
     initOptions('end3', 15, 24);
 
-//顶部菜单切换
+    //顶部菜单切换
     var $tab_li = $('.tab_menu li');
     $('.tab_menu li').click(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
         var index = $tab_li.index(this);
         $('div.tab_box > div').eq(index).show().siblings().hide();
     });
-//设置规则
+    //设置规则
     $("#showbox").click(function () {
         var items = checked("subbox");
 
@@ -68,7 +68,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $("#seetingRules").css("display", "none");
     });
-//修改出价
+    //修改出价
     $("#showbox2").click(function () {
         var items = checked("subbox");
 
@@ -90,7 +90,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box2 ").css("display", "none");
     });
-//修改访问网址
+    //修改访问网址
     $("#showbox4").click(function () {
         var items = checked("subbox");
 
@@ -111,7 +111,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box4").css("display", "none");
     });
-//下载
+    //下载
     $("#updateBtn").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -127,7 +127,30 @@ $(function () {
         $("#downloadData").css("display", "none");
     });
 
-//暂停竞价规则
+    //关键词当前排名
+    $("#showbox8").click(function () {
+        var items = checked("subbox");
+
+        if (items.length == 0) {
+            alert("请选择至少一个关键词!");
+            return;
+        }
+
+        $(".TB_overlayBG").css({
+            display: "block", height: $(document).height()
+        });
+        $(".box8").css({
+            left: ($("body").width() - $(".box8").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $(".box8").height()) / 2 + $(window).scrollTop() + "px",
+            display: "block"
+        });
+    });
+    $(".close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $(".box8").css("display", "none");
+    });
+
+    //暂停竞价规则
     $("#showbox3").click(function () {
         var items = checked("subbox");
 
@@ -210,7 +233,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box3 ").css("display", "none");
     });
-//设置规则
+    //设置规则
     $("#showbox5").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -225,7 +248,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box5").css("display", "none");
     });
-//自定义列
+    //自定义列
     $("#showbox6").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -240,7 +263,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box6").css("display", "none");
     });
-//弹窗内部切换
+    //弹窗内部切换
     $(".time_sl").click(function () {
         $(".time_select").show();
         $(".time_select01").hide();
@@ -322,9 +345,9 @@ $(function () {
             data: {'ids': ids.toString()},
             type: "POST",
             success: function (datas) {
-                datas.rows.forEach(function (i, item) {
-                });
-                alert("排名检查完毕,请点击查看当前排名.");
+                if (datas.rows != undefined && datas.rows != null) {
+                    alert("排名检查完毕,请点击查看当前排名!");
+                }
             }
         })
     });
@@ -440,7 +463,7 @@ function fullItems(datas, name) {
             newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.keywordId + "'></td>" +
                 "<td>&nbsp;" + item.keyword + "</td>" +
                 "<td>&nbsp;" + item.cost + "</td>" +
-                "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.keywordId + "'>查看最新排名</a></td>" +
+                "<td id=>&nbsp;<a class='getRankBtn' onclick='getRank(this);' data-id='" + item.keywordId + "'>查看当前排名</a></td>" +
                 "<td>&nbsp;" + item.impression + "</td>" +
                 "<td>&nbsp;" + item.ctr + "%</td>" +
                 "<td>&nbsp;" + _price + "</td>" +
@@ -451,7 +474,7 @@ function fullItems(datas, name) {
             newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.id + "'></td>" +
                 "<td>&nbsp;" + item.keyword + "</td>" +
                 "<td>&nbsp;" + item.cost + "</td>" +
-                "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.id + "'>查看最新排名</a></td>" +
+                "<td id=>&nbsp;<a class='getRankBtn' onclick='getRank(this);' data-id='" + item.id + "'>查看当前排名</a></td>" +
                 "<td>&nbsp;" + item.impression + "</td>" +
                 "<td>&nbsp;" + item.ctr + "%</td>" +
                 "<td>&nbsp;" + _price + "</td>" +
@@ -692,7 +715,7 @@ var toAnyPage = function (page_index) {
     }
     keyWordPage = 0;
     VIPKeyWordPage = 0;
-    skip = page_index;
+    skip = page_index * limit;
 
     var _url = "";
     if (type == 1) {
@@ -711,9 +734,7 @@ var toAnyPage = function (page_index) {
             var filter = checkedValue('in');
             var tbl = "table1";
             var curPage = pageIndex;
-            var size = limit;
-            var skip = curPage * size;
-            _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter;
+            _url = "/bidding/list?s=" + skip + "&l=" + limit + "&q=" + text + "&f=" + f + "&filter=" + filter;
         }
         $.ajax({
             url: _url,
@@ -728,73 +749,7 @@ var toAnyPage = function (page_index) {
                 }
             }
         });
-
-        /*$.ajax({
-         url: "/getKRWords/bd",
-         type: "GET",
-         async: false,
-         data: {
-         "seedWords": getSeedWords,
-         "skip": skip,
-         "limit": limit,
-         "krFileId": krFileId,
-         "fieldName": fieldName
-         //                "sort": sort
-         },
-         success: function (data, textStatus, jqXHR) {
-         $("#tbody1").empty();
-         if (data.rows.length > 0) {
-         krFileId = data.krFileId;
-         var _class = "";
-         $.each(data.rows, function (i, item) {
-         if (i % 2 == 0) {
-         _class = "list2_box1";
-         } else {
-         _class = "list2_box2";
-         }
-         var newTr = "<tr class='" + _class + "'>" +
-         "<td>" + item.groupName + "</td>" +
-         "<td>" + item.seedWord + "</td>" +
-         "<td>" + item.keywordName + "</td>" +
-         "<td>" + item.dsQuantity + "</td>" +
-         "<td>" + item.competition + "%</td>" +
-         "</tr>";
-         $("#tbody1").append(newTr);
-         });
-         }
-         }
-         });*/
     } else {
-        $.ajax({
-            url: "/getKRWords/p",
-            type: "GET",
-            data: {
-                "trade": _trade,
-                "category": _category,
-                "skip": skip,
-                "limit": limit,
-                "status": 1
-            },
-            success: function (data, textStatus, jqXHR) {
-                $("#tbody2").empty();
-                if (data.rows.length > 0) {
-                    var _class = "";
-                    $.each(data.rows, function (i, item) {
-                        if (i % 2 == 0) {
-                            _class = "list2_box1";
-                        } else {
-                            _class = "list2_box2";
-                        }
-                        var newTr = "<tr class='" + _class + "'>" +
-                            "<td>" + _trade + "</td>" +
-                            "<td>" + _category + "</td>" +
-                            "<td>" + item.group + "</td>" +
-                            "<td>" + (item.keyword == null ? "" : item.keyword) + "</td>" +
-                            "</tr>";
-                        $("#tbody2").append(newTr);
-                    });
-                }
-            }
-        });
+
     }
 };
