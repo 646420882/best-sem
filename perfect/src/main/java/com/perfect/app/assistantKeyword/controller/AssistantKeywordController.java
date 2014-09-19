@@ -1,11 +1,18 @@
 package com.perfect.app.assistantKeyword.controller;
 
+import com.perfect.api.baidu.SearchTermsReport;
+import com.perfect.autosdk.sms.v3.AttributeType;
+import com.perfect.autosdk.sms.v3.RealTimeQueryResultType;
 import com.perfect.core.AppContext;
 import com.perfect.dto.CampaignTreeDTO;
+import com.perfect.dto.SearchwordReportDTO;
+import com.perfect.entity.AdgroupEntity;
+import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.service.KeyWordBackUpService;
+import com.perfect.utils.RegionalCodeUtils;
 import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +23,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +48,10 @@ public class AssistantKeywordController {
     private AssistantKeywordService assistantKeywordService;
 
     @Resource
-    KeyWordBackUpService keyWordBackUpService;
+    private KeyWordBackUpService keyWordBackUpService;
+
+    @Resource
+    private SearchTermsReport searchTermsReport;
 
     @Resource
     private WebContext webContext;
@@ -208,6 +222,17 @@ public class AssistantKeywordController {
 
 
     /**
+     * 显示搜索词报告弹出窗口
+     * @return
+     */
+    @RequestMapping(value = "assistantKeyword/showSearchWordDialog",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView showSearchWordDialog(){
+        return new ModelAndView("promotionAssistant/alert/searchwordReport");
+    }
+
+
+
+    /**
      * 还原新增的关键词
      * @param response
      * @param id
@@ -240,4 +265,120 @@ public class AssistantKeywordController {
         keyWordBackUpService.reducDel(id);
         webContext.writeJson(RES_SUCCESS,response);
     }
+
+
+    /**
+     * 根据账户id得到计划
+     */
+    @RequestMapping(value = "assistantKeyword/getCampaignByAccountId",method = {RequestMethod.GET,RequestMethod.POST})
+    public void getCampaignByAccountId(HttpServletResponse response){
+        Iterable<CampaignEntity> list = assistantKeywordService.getCampaignByAccountId();
+        webContext.writeJson(list,response);
+    }
+
+    /**
+     * 根据计划cid得到单元
+     */
+    @RequestMapping(value = "assistantKeyword/getAdgroupByCid",method = {RequestMethod.GET,RequestMethod.POST})
+    public void getAdgroupByCid(HttpServletResponse response,String cid){
+        Iterable<AdgroupEntity> list = assistantKeywordService.getAdgroupByCid(cid);
+        webContext.writeJson(list,response);
+    }
+
+
+    /**
+     * 从百度上获取搜索词报告
+     */
+    @RequestMapping(value = "assistantKeyword/getSearchWordReport",method = {RequestMethod.GET,RequestMethod.POST})
+    public void getSearchWordReport(HttpServletResponse response,Integer levelOfDetails,String startDate,String endDate,String attributes,Integer device,Integer searchType){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        List<AttributeType> list = null;
+
+        if(attributes!=null&&attributes!=""){
+            list = new ArrayList<>();
+            String[] attrs = attributes.split(",");
+            Map<Integer, String> regions = RegionalCodeUtils.regionalCodeName(Arrays.asList(attrs));
+            AttributeType attributeType = new AttributeType();
+            attributeType.setValue(new ArrayList<Integer>(regions.keySet()));
+            list.add(attributeType);
+        }
+
+        List<RealTimeQueryResultType> resultList = null;
+        try {
+            resultList = searchTermsReport.getSearchTermsReprot(levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        List<SearchwordReportDTO> dtoList = new ArrayList<>();
+       for(RealTimeQueryResultType resultType:resultList){
+           SearchwordReportDTO searchwordReportDTO = new SearchwordReportDTO();
+           searchwordReportDTO.setKeyword(resultType.getQueryInfo(3));
+           searchwordReportDTO.setSearchWord(resultType.getQuery());
+           searchwordReportDTO.setClick(resultType.getKPI(0));
+           searchwordReportDTO.setImpression(resultType.getKPI(1));
+           searchwordReportDTO.setSearchEngine(resultType.getQueryInfo(8));
+           searchwordReportDTO.setAdgroupName(resultType.getQueryInfo(2));
+           searchwordReportDTO.setCampaignName(resultType.getQueryInfo(1));
+           searchwordReportDTO.setCreateTitle(resultType.getQueryInfo(4));
+           searchwordReportDTO.setCreateDesc1(resultType.getQueryInfo(5));
+           searchwordReportDTO.setCreateDesc2(resultType.getQueryInfo(6));
+           searchwordReportDTO.setDate(resultType.getDate());
+           searchwordReportDTO.setParseExtent(resultType.getQueryInfo(9));
+           dtoList.add(searchwordReportDTO);
+       }
+
+
+        webContext.writeJson(dtoList,response);
+    }
+
+
+    /**
+     * 将搜索词报告中关键词添加到现登录的账户
+     */
+    @RequestMapping(value = "assistantKeyword/addSearchwordKeyword",method = {RequestMethod.GET,RequestMethod.POST})
+    public void addSearchwordKeyword(HttpServletResponse response,String agid,String keywords,String matchType){
+        String[] keywordArray = keywords.split("\n");
+
+        List<KeywordEntity> list = new ArrayList<>();
+        for(String kwd:keywordArray){
+            KeywordEntity keywordEntity = new KeywordEntity();
+            keywordEntity.setKeyword(kwd);
+            if(agid.matches("^\\d+$")){
+                keywordEntity.setAdgroupId(Long.parseLong(agid));
+             }else{
+                keywordEntity.setAdgroupObjId(agid);
+            }
+            String[] match = matchType.split("-");
+            if(match.length==1){
+                keywordEntity.setMatchType(Integer.parseInt(match[0]));
+            }else{
+                keywordEntity.setMatchType(Integer.parseInt(match[0]));
+                keywordEntity.setPhraseType(Integer.parseInt(match[1]));
+            }
+            keywordEntity.setAccountId(AppContext.getAccountId());
+            keywordEntity.setPause(false);
+            keywordEntity.setStatus(-1);
+            keywordEntity.setLocalStatus(1);
+            list.add(keywordEntity);
+        }
+        assistantKeywordService.saveSearchwordKeyword(list);
+        webContext.writeJson(RES_SUCCESS,response);
+    }
+
+    /**
+     * 将搜索词报告中关键词添加到现登录的账户
+     */
+    @RequestMapping(value = "assistantKeyword/setNeigWord",method = {RequestMethod.GET,RequestMethod.POST})
+    public void setNeigWord(HttpServletResponse response,String agid,String keywords,Integer neigType){
+        assistantKeywordService.setNeigWord(agid,keywords,neigType);
+        webContext.writeJson(RES_SUCCESS,response);
+    }
+
+
+
+
+
+
+
 }

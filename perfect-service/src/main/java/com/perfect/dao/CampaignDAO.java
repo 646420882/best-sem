@@ -29,4 +29,6 @@ public interface CampaignDAO extends MongoCrudRepository<CampaignEntity, Long> {
     void updateLocalstatu(long cid);
 
     String insertReturnId(CampaignEntity campaignEntity);
+
+    void softDel(long id);
 }

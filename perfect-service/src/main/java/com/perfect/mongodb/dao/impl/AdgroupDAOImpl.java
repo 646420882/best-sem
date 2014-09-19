@@ -107,6 +107,17 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
         return mongoTemplate.find(new Query(Criteria.where(EntityConstants.OBJ_CAMPAIGN_ID).is(id)),getEntityClass(),EntityConstants.TBL_ADGROUP);
     }
 
+    public   List<String> getObjAdgroupIdByCampaignId(List<String> cids){
+        MongoTemplate mongoTemplate = getMongoTemplate();
+        Query query = new BasicQuery("{}", "{" + EntityConstants.OBJ_ADGROUP_ID + " : 1}");
+        query.addCriteria(Criteria.where(EntityConstants.OBJ_CAMPAIGN_ID).in(cids));
+        List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class, TBL_ADGROUP);
+        List<String> adgroupIds = new ArrayList<>(list.size());
+        for (AdgroupEntity type : list)
+            adgroupIds.add(type.getId());
+        return adgroupIds;
+    }
+
 
     public List<com.perfect.entity.AdgroupEntity> getAdgroupByCampaignId(Long campaignId, Map<String, Object> params, int skip, int limit) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
@@ -460,6 +471,21 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
 //
 //        return update;
 //    }
+
+
+    /**
+     * 根据计划id级联软删除
+     * @param agid
+     */
+    @Override
+    public void deleteLinkedByAgid(List<Long> agid) {
+        Update up = new Update();
+        up.set("ls", 4);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.updateMulti(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(agid)),up,AdgroupEntity.class,TBL_ADGROUP);
+        mongoTemplate.updateMulti(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(agid)), up, KeywordEntity.class, EntityConstants.TBL_KEYWORD);
+        mongoTemplate.updateMulti(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(agid)), up, CreativeEntity.class, EntityConstants.TBL_CREATIVE);
+    }
 
     private void deleteSub(List<Long> adgroupIds) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();

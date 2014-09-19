@@ -6,16 +6,17 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.KeywordDAO;
-import com.perfect.entity.AdgroupEntity;
-import com.perfect.entity.CampaignEntity;
-import com.perfect.entity.KeywordEntity;
+import com.perfect.dao.SystemUserDAO;
+import com.perfect.entity.*;
 import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.CampaignBackUpService;
+import com.perfect.utils.RegionalCodeUtils;
 import com.perfect.utils.web.WebContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,10 +27,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.perfect.mongodb.utils.EntityConstants.ACCOUNT_ID;
 
@@ -40,7 +38,7 @@ import static com.perfect.mongodb.utils.EntityConstants.ACCOUNT_ID;
 @Scope("prototype")
 public class AssistantCampaignController {
 
-    private static final String RES_SUCCESS = "sucess";
+    private static final String RES_SUCCESS = "success";
     @Resource
     private CampaignDAO campaignDAO;
 
@@ -51,7 +49,12 @@ public class AssistantCampaignController {
     private AdgroupDAO adgroupDAO;
 
     @Resource
+    private SystemUserDAO systemUserDAO;
+
+    @Resource
     private KeywordDAO keywordDAO;
+
+
 
     @Resource
     private WebContext webContext;
@@ -81,11 +84,38 @@ public class AssistantCampaignController {
     @RequestMapping(value = "assistantCampaign/getObject", method = {RequestMethod.GET, RequestMethod.POST})
     public void getCampaignByCid(HttpServletResponse response, String cid) {
         String regex = "^\\d+$";
+        CampaignEntity campaignEntity = null;
+
         if (cid.matches(regex) == true) {
-            webContext.writeJson(campaignDAO.findOne(Long.parseLong(cid)), response);
+            campaignEntity = campaignDAO.findOne(Long.parseLong(cid));
         } else {
-            webContext.writeJson(campaignDAO.findByObjectId(cid), response);
+            campaignEntity = campaignDAO.findByObjectId(cid);
         }
+        webContext.writeJson(campaignEntity,response);
+    }
+
+
+    /**
+     * 根据cid查找
+     * @param response
+     * @param cid
+     */
+    @RequestMapping(value = "assistantCampaign/getRegion", method = {RequestMethod.GET, RequestMethod.POST})
+    public void getCampaign(HttpServletResponse response, String cid) {
+        String regex = "^\\d+$";
+        Map<String,Object> map = new HashMap<>();
+        CampaignEntity campaignEntity = null;
+
+        if (cid.matches(regex) == true) {
+            campaignEntity = campaignDAO.findOne(Long.parseLong(cid));
+        } else {
+            campaignEntity = campaignDAO.findByObjectId(cid);
+        }
+        Map<Integer, String> regionMap = RegionalCodeUtils.regionalCode(campaignEntity.getRegionTarget()==null?new ArrayList<Integer>():campaignEntity.getRegionTarget());
+
+        map.put("campObj",campaignEntity);
+        map.put("regions",regionMap.values());
+        webContext.writeJson(map,response);
     }
 
 
@@ -100,26 +130,87 @@ public class AssistantCampaignController {
         String regex = "^\\d+$";
         String[] cids = cid.split(",");
         for (String id : cids) {
-            List<AdgroupEntity> list;
             if(id.matches(regex)==true){
-                list = adgroupDAO.findByCampaignId(Long.parseLong(id));
-                CampaignEntity campaignEntity = campaignDAO.findOne(Long.parseLong(id));
-                campaignEntity.setLocalStatus(3);
-                campaignDAO.save(campaignEntity);
+                campaignDAO.softDel(Long.parseLong(id));
             }else{
-                list = adgroupDAO.findByCampaignOId(id);
                 campaignDAO.deleteByMongoId(id);
-            }
-            for(AdgroupEntity adgroupEntity : list){
-                if (adgroupEntity.getAdgroupId()==null) {
-                    adgroupDAO.deleteByObjId(adgroupEntity.getId());
-                } else {
-                    adgroupDAO.deleteByObjId(adgroupEntity.getAdgroupId());
-                }
             }
         }
         webContext.writeJson(RES_SUCCESS,response);
     }
+
+
+    /**
+     * 得到当前登录账户的推广地域
+     * @param response
+     */
+    @RequestMapping(value = "assistantCampaign/getRegionByAcid", method = {RequestMethod.GET, RequestMethod.POST})
+    public void getAccountRegion(HttpServletResponse response) {
+        SystemUserEntity currentUser = systemUserDAO.findByAid(AppContext.getAccountId());
+
+        List<BaiduAccountInfoEntity> accounts = currentUser.getBaiduAccountInfoEntities();
+        BaiduAccountInfoEntity baiduEntity = null;
+
+        for(BaiduAccountInfoEntity accountInfoEntity:accounts){
+            if(accountInfoEntity.getId().longValue()==AppContext.getAccountId().longValue()){
+                baiduEntity = accountInfoEntity;
+                break;
+            }
+        }
+
+        Map<Integer, String> map = RegionalCodeUtils.regionalCode(baiduEntity.getRegionTarget());
+
+        webContext.writeJson(map.values(), response);
+    }
+
+
+    /**
+     * 使用账户推广地域
+     * @param response
+     */
+    @RequestMapping(value = "assistantCampaign/useAccoutRegion", method = {RequestMethod.GET, RequestMethod.POST})
+    public void useAccoutRegion(HttpServletResponse response,String cid) {
+        String regex = "^\\d+$";
+        CampaignEntity campaignEntity = cid.matches(regex)?campaignDAO.findOne(Long.parseLong(cid)):campaignDAO.findByObjectId(cid);
+        campaignEntity.setRegionTarget(null);
+        campaignDAO.save(campaignEntity);
+        webContext.writeJson(RES_SUCCESS,response);
+    }
+
+
+
+    /**
+     * 使用计划推广地域
+     * @param
+     */
+    @RequestMapping(value = "assistantCampaign/usePlanRegion", method = {RequestMethod.GET, RequestMethod.POST})
+    public void usePlanRegion(HttpServletResponse response,String regions,String cid){
+        String regex = "^\\d+$";
+        CampaignEntity newCampaignEntity = cid.matches(regex)?campaignDAO.findOne(Long.parseLong(cid)):campaignDAO.findByObjectId(cid);
+
+        CampaignEntity oldCampaignEntity = new CampaignEntity();
+        BeanUtils.copyProperties(newCampaignEntity,oldCampaignEntity);
+
+        String[] regeionArray = regions.split(",");
+        List<String> regionList = Arrays.asList(regeionArray);
+        Map<Integer, String> regionName = RegionalCodeUtils.regionalCodeName(regionList);
+        newCampaignEntity.setRegionTarget(new ArrayList<Integer>(regionName.keySet()));
+
+        if(newCampaignEntity.getCampaignId()==null){
+            newCampaignEntity.setLocalStatus(1);
+        }else{
+            newCampaignEntity.setLocalStatus(2);
+        }
+        campaignDAO.updateByMongoId(newCampaignEntity,oldCampaignEntity);
+
+        webContext.writeJson(RES_SUCCESS,response);
+    }
+
+
+
+
+
+
 
 
     /**
@@ -267,6 +358,18 @@ public class AssistantCampaignController {
     public ModelAndView showCreatePlanWindow(){
         return new ModelAndView("promotionAssistant/alert/quickCreatePlan");
     }
+
+
+    /**
+     * 弹出设置推广地域窗口
+     *
+     */
+    @RequestMapping(value = "assistantCampaign/showSetPlace",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView showSetPlace(ModelMap map,String cid){
+        map.addAttribute("cid",cid);
+        return new ModelAndView("promotionAssistant/alert/setRegionTarget",map);
+    }
+
 
 
     /**
