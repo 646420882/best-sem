@@ -38,7 +38,7 @@
 
     <elasticsearch:repositories base-package="com.perfect.elasticsearch.repo"/>
 
-    <elasticsearch:transport-client id="client" cluster-nodes="182.92.188.177:19300" cluster-name="es-cluster"/>
+    <elasticsearch:transport-client id="client" cluster-nodes="182.92.188.177:29300" cluster-name="elasticsearch"/>
 
     <bean name="elasticsearchTemplate" class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
         <constructor-arg name="client" ref="client"/>

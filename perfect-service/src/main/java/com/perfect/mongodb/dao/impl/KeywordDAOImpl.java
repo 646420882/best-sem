@@ -119,19 +119,21 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     public List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param) {
 
         Query mongoQuery = new Query();
-        String prefix = "(";
-        String suffix = ")";
-        if (!fullMatch) {
-            prefix = ".*(";
-            suffix = ").*";
-        }
-        String reg = "";
-        for (String name : query) {
-            reg = reg + name + "|";
-        }
-        reg = reg.substring(0, reg.length() - 1);
 
-        mongoQuery.addCriteria(Criteria.where(NAME).regex(prefix + reg + suffix));
+        if (fullMatch) {
+            mongoQuery.addCriteria(Criteria.where(NAME).in(query));
+        } else {
+            String prefix = ".*(";
+            String suffix = ").*";
+            String reg = "";
+            for (String name : query) {
+                reg = reg + name + "|";
+            }
+            reg = reg.substring(0, reg.length() - 1);
+
+            mongoQuery.addCriteria(Criteria.where(NAME).regex(prefix + reg + suffix));
+
+        }
         return getMongoTemplate().find(param.withParam(mongoQuery), getEntityClass());
     }
 

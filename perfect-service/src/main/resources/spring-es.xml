@@ -8,11 +8,16 @@
     
     <elasticsearch:repositories base-package="com.perfect.elasticsearch"/>
 
-    <elasticsearch:transport-client id="client" cluster-nodes="182.92.188.177:19300" cluster-name="es-cluster"/>
-
+    <elasticsearch:transport-client id="esClient" cluster-nodes="182.92.188.177:19300" cluster-name="es-cluster"/>
     <bean name="elasticsearchTemplate" class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
-        <constructor-arg name="client" ref="client"/>
+        <constructor-arg name="client" ref="esClient"/>
     </bean>
+
+    <!--<elasticsearch:transport-client id="esClient" cluster-nodes="182.92.188.177:19300" cluster-name="es-cluster"/>-->
+
+    <!--<bean name="elasticsearchTemplate" class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">-->
+        <!--<constructor-arg name="client" ref="esClient"/>-->
+    <!--</bean>-->
 
     <bean name="esFactory"
           class="org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactory">

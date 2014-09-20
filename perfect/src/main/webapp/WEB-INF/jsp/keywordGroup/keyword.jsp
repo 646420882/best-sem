@@ -191,20 +191,21 @@ To change this template use File | Settings | File Templates.
     <div class="originality over">
         <div class="originality_left fl">
             <ul>
-                <li><input type="radio" name="originality"> 选择单元词</li>
-                <li><span>计划：</span><select>
-                    <option>sem1999</option>
-                </select></li>
-                <li><span>单元：</span><select>
-                    <option>sem1999</option>
-                </select></li>
-                <li><textarea></textarea></li>
+                <li><input type="radio" checked="checked" name="searchType" value="1"> 选择已有关键词</li>
+                <li><span>计划：</span>
+                    <select id="campagin"><option value="-1">请选择计划</option> </select></li>
+                <li><span>单元：</span>
+                    <select id="adgroup">
+                        <option value="-1">请选择单元</option>
+                    </select>
+                </li>
+                <li><textarea id="txt1"></textarea></li>
             </ul>
         </div>
         <div class="originality_right fl">
             <ul>
-                <li><input type="radio" name="originality"> 选择单元词</li>
-                <li><textarea></textarea></li>
+                <li><input type="radio"  name="searchType" value="2"> 输入新单元词</li>
+                <li><textarea name="txt2"></textarea></li>
                 <li><span class="fr">1/20行</span></li>
             </ul>
         </div>
@@ -213,7 +214,7 @@ To change this template use File | Settings | File Templates.
 <span>选择创意来源：<select>
     <option>河北</option>
 </select></span>
-        <span><a class="become2" href="javascript: findWordFromBaidu();">智能推荐</a></span>
+        <span><a class="become2" href="javascript: search();">智能推荐</a></span>
     </div>
     <div class="riginality_under over">
         <div class="r_under_left fl">
@@ -221,9 +222,9 @@ To change this template use File | Settings | File Templates.
                 <h3 class="fl">推荐创意</h3>
                 <a href="#" class="fr" id="bulid">新建创意</a>
             </div>
-            <ul>
+            <ul id="creativeList">
                 <li>
-                    <div><img src="${pageContext.request.contextPath}/public/images/shuju.jpg"></div>
+
                     <div>
 <span class="fr">
 <a href="#">置顶 </a>|<a href="#" class="showbox">编辑</a> |<a href="#">
@@ -259,7 +260,7 @@ To change this template use File | Settings | File Templates.
                 </ul>
             </div>
             <div class="r_under_bottom over ">
-                <ul>
+                <ul id="terms">
                     <li><span>搜索</span><b>8%</b></li>
                     <li><span>搜索</span><b>8%</b></li>
                     <li><span>搜索</span><b>8%</b></li>
@@ -893,6 +894,11 @@ var toAnyPage = function (page_index) {
         });
     }
 };
+
+
+
 </script>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/creativesearch.js"></script>
 </body>
 </html>

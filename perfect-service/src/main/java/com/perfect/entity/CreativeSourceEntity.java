@@ -9,28 +9,22 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 /**
  * Created by vbzer_000 on 2014/9/16.
  */
-@Document(indexName = "source", type = "creative", shards = 8, replicas = 1)
+@Document(indexName = "data", type = "creative")
 public class CreativeSourceEntity {
 
     @Id
     private String id;
 
-    @Field(searchAnalyzer = "smartcn", store = true, indexAnalyzer = "smartcn", type = FieldType.String)
     private String body;
 
-    @Field(searchAnalyzer = "smartcn", store = true, indexAnalyzer = "smartcn", type = FieldType.String)
     private String title;
 
-    @Field(store = true, type = FieldType.String, index = FieldIndex.not_analyzed)
     private String host;
 
-    @Field(searchAnalyzer = "smartcn", store = true, indexAnalyzer = "smartcn", type = FieldType.String)
     private String keyword;
 
-    @Field(store = true, type = FieldType.String, index = FieldIndex.not_analyzed)
     private String html;
 
-    @Field(store = true)
     private Integer region;
 
     public String getKeyword() {
