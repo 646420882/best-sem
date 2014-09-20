@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import com.perfect.redis.JRedisUtils;
 import redis.clients.jedis.Jedis;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,40 +14,27 @@ import java.util.Map;
  */
 public class RegionalCodeUtils {
 
-
-    public static Map<Long, String> allProvinces() {
-        Jedis redis = JRedisUtils.get();
-
-        String data = redis.get("RegionalCodeRedis");
-
-        return Collections.EMPTY_MAP;
-    }
-
-
-    public static Map<Long, String> regionalCode(List<Long> id) {
+    public static  Map<Integer,String> regionalCode(List<Integer> id){
         Jedis jc = JRedisUtils.get();
         String data = jc.get("RegionalCodeRedis");
         Gson gson = new Gson();
-        Map<String, String> d = gson.fromJson(data, new TypeToken<Map<Long, String>>() {
-        }.getType());
-        Map<Long, String> map = new HashMap<>();
-        for (Long aLong : id) {
+        Map<String,String> d = gson.fromJson(data, new TypeToken<Map<Integer,String>>() {}.getType());
+        Map<Integer,String> map = new HashMap<>();
+        for (Integer aLong : id){
             map.put(aLong, d.get(aLong));
         }
         return map;
     }
-
-    public static Map<Long, String> regionalCodeName(List<String> name) {
+    public static  Map<Integer,String> regionalCodeName(List<String> name){
         Jedis jc = JRedisUtils.get();
         String data = jc.get("RegionalCodeRedis");
         Gson gson = new Gson();
-        Map<Long, String> d = gson.fromJson(data, new TypeToken<Map<Long, String>>() {
-        }.getType());
-        Map<Long, String> map = new HashMap<>();
-        for (String aString : name) {
-            for (Map.Entry<Long, String> voEntity : d.entrySet()) {
-                if (aString.equals(voEntity.getValue())) {
-                    map.put(voEntity.getKey(), aString);
+        Map<Integer,String> d = gson.fromJson(data, new TypeToken<Map<Integer,String>>() {}.getType());
+        Map<Integer,String> map = new HashMap<>();
+        for (String aString : name){
+            for (Map.Entry<Integer, String> voEntity : d.entrySet()){
+                if(aString.equals(voEntity.getValue())){
+                    map.put(voEntity.getKey(),aString);
                 }
             }
         }

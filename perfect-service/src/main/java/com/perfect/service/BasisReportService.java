@@ -22,7 +22,7 @@ public interface BasisReportService {
      * @return
      * @return
      */
-    public Map<String,List<StructureReportEntity>> getReportDate(String[] date, int devices, int dateType, int reportType, int start, int limit,String sort);
+    public Map<String,List<StructureReportEntity>> getReportDate(String[] date, int devices, int dateType, int reportType, int start, int limit,String sort,Long dataId,String dateName);
 
     /**
      * 获取用户所有数据

@@ -23,10 +23,12 @@
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
-<div class="pinned on_title over">
-    <a href="#">
-        推广助手
-    </a>
+    <div class="title_box">
+        <div class="on_title over">
+            <a href="#">
+                推广助手
+            </a>
+        </div>
 </div>
 <div id="tab">
 <ul class="tab_menu">
@@ -34,19 +36,20 @@
     <li>重点词竞价</li>
 </ul>
 <div class="tab_box">
-<div class="containers over">
-    <div class=" jiangjia_concent over">
-        <div class="jingjia_left fl over">
-            <div class="j_l_top over">
-                <span class="fl"><h3>账户目录</h3></span>
-                <a href="#" class="fr">刷新</a>
-            </div>
-            <div class="j_l_top2 over">
-                <span class="fl">查找计划单元</span>
-                <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png">
-            </div>
-            <div class="j_list01 over">
-                <ul id="zTree" class="ztree over">
+    <div class="containers over">
+        <div class=" jiangjia_concent over">
+            <div class="jingjia_left fl over">
+                <div class="j_l_top over">
+                    <span class="fl"><h3>账户目录</h3></span>
+                    <a href="#" class="fr">刷新</a>
+                </div>
+                <div class="j_l_top2 over">
+                    <span class="fl">查找计划单元</span>
+                    <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png" >
+                </div>
+                <div class="j_list01 over">
+                    <ul id="zTree" class="ztree over">
+
 
                 </ul>
             </div>
@@ -135,84 +138,82 @@
                                                </span></div>
                             </li>
                         </ul>
-
+                   </div>
                     </div>
-                </div>
-                <div class="w_list03 ">
-                    <ul class="jiangjia_list">
-                        <li class="current" id="showbox">设置规则</li>
-                        <li id="updateBtn">更新账户数据</li>
-                        <li id="rankBtn">检查当前排名</li>
-                        <li id="showbox2">修改出价</li>
-                        <li id="showbox7">启动竞价</li>
-                        <li id="showbox3">暂停竞价</li>
-                        <li id="showbox4">修改访问网址</li>
-                        <li id="showbox5">分组</li>
-                        <li id="showbox6">自定义列</li>
-                    </ul>
-                    <div class="over wd">
-                        <span class="fl">当前显示数据日期：昨天</span>
+                    <div class="w_list03 ">
+                        <ul class="jiangjia_list">
+                            <li class="current" id="showbox">设置规则</li>
+                            <li id="updateBtn">更新账户数据</li>
+                            <li id="rankBtn">检查当前排名</li>
+                            <li id="showbox2">修改出价</li>
+                            <li id="showbox7">启动竞价</li>
+                            <li id="showbox3">暂停竞价</li>
+                            <li id="showbox4">修改访问网址</li>
+                            <li class="showbox5">分组</li>
+                            <li id="showbox6">自定义列</li>
+                        </ul>
+                        </div>
+                        <div class="over wd">
+                            <span class="fl">当前显示数据日期：昨天</span>
+                        </div>
+                        <div class="list4">
+                            <table border="0" cellspacing="0" width="101%" id="table1">
+                                <thead>
+                                <tr class="list02_top">
+                                    <td>&nbsp;<input type="checkbox" id="checkAll"></td>
+                                    <td>&nbsp;关键词</td>
+                                    <td>&nbsp;消费</td>
+                                    <td>&nbsp;当前排名</td>
+                                    <td>&nbsp;展现量</td>
+                                    <td>&nbsp;点击率</td>
+                                    <td>&nbsp;出价</td>
+                                    <td>&nbsp;质量度</td>
+                                    <td>&nbsp;移动端质量度</td>
+                                    <td>&nbsp;状态</td>
+                                    <td>&nbsp;竞价规则</td>
+                                    <td>&nbsp;PCURL</td>
+                                    <td>&nbsp;MobileURL</td>
+                                    <td>&nbsp;竞价状态</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <script type="application/javascript">
+                                var rows = [];
+                                for (i = 0; i < 10; i++) {
+                                    var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
+                                            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+                                    rows.push(row)
+                                }
+                                $("#table1 tbody").html(rows);
+                                $("#table1 tbody tr:odd").addClass("list2_box1");
+                                $("#table1 tbody tr:even").addClass("list2_boxNa2");
+                            </script>
+                        </div>
+                        <%--<div>每页显示<select id="size">
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>--%>
                     </div>
-                    <div class="list4">
-                        <table border="0" cellspacing="0" width="101%" id="table1">
-                            <thead>
-                            <tr class="list02_top">
-                                <td>&nbsp;<input type="checkbox" id="checkAll"></td>
-                                <td>&nbsp;关键词</td>
-                                <td>&nbsp;消费</td>
-                                <td>&nbsp;当前排名</td>
-                                <td>&nbsp;展现量</td>
-                                <td>&nbsp;点击率</td>
-                                <td>&nbsp;出价</td>
-                                <td>&nbsp;质量度</td>
-                                <td>&nbsp;移动端质量度</td>
-                                <td>&nbsp;状态</td>
-                                <td>&nbsp;竞价规则</td>
-                                <td>&nbsp;PCURL</td>
-                                <td>&nbsp;MobileURL</td>
-                                <td>&nbsp;竞价状态</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                        <script type="application/javascript">
-                            var rows = [];
-                            for (i = 0; i < 10; i++) {
-                                var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
-                                        "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
-                                rows.push(row)
-                            }
-                            $("#table1 tbody").html(rows);
-                            $("#table1 tbody tr:odd").addClass("list2_box1");
-                            $("#table1 tbody tr:even").addClass("list2_boxNa2");
-                        </script>
-                    </div>
-                    <%--<div>每页显示<select id="size">
-                        <option value="20">20</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>--%>
                 </div>
                 <div id="pagination1" class="pagination"></div>
             </div>
         </div>
-    </div>
-
-</div>
 <div class="containers over hides">
     <div class=" jiangjia_concent over">
         <div class="jingjia_left fl over">
             <div class="j_l_top over">
                 <span class="fl"><h3>账户目录</h3></span>
-                <a href="#" class="fr">刷新</a>
+                <a href="javascript:;" onclick="initImzTree(true);" class="fr">刷新</a>
             </div>
             <div class="j_l_top2 over">
                 <span class="fl">查找计划单元</span>
                 <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png">
             </div>
             <div class="j_list01 over">
-                <ul id="zTree2" class="ztree over">
+                <ul id="zTreeImport" class="ztree over">
                 </ul>
             </div>
             <div class="j_l_under over">
@@ -224,12 +225,12 @@
                 <div class="zhushou_concent over">
                     <div class="w_list03">
                         <ul class="jiangjia_list">
-                            <li class="current Screenings">筛选</li>
-                            <li class="showbox3">暂停竞价</li>
-                            <li class="showbox2">修改出价</li>
-                            <li class="showbox4">修改访问网址</li>
-                            <li class="showbox5">分组</li>
-                            <li class="showbox6">自定义列</li>
+                            <li class="current Screenings">筛选2</li>
+                            <li class="showbox3">暂停竞价2</li>
+                            <li class="showbox2">修改出价2</li>
+                            <li class="showbox4">修改访问网址2</li>
+                            <li class="showbox5">分组2</li>
+                            <li class="showbox6">自定义列2</li>
                         </ul>
                         <div class="Screening_concent over">
                             <div class="Screening_row over">
@@ -241,9 +242,8 @@
                                 <span><input type="checkbox">&nbsp;<select>
                                     <option>按单元</option>
                                 </select>&nbsp;<input type="button" value="+" class="Screening_input1"></span>
-                                <span><input type="checkbox">&nbsp;<input type="text" class="sc_input3" value="如何在网上推广"
-                                                                          onfocus="if(value=='如何在网上推广') {value=''}"
-                                                                          onblur="if (value=='') {value='如何在网上推广'}"></span>
+                                <span><input type="checkbox">&nbsp;
+                                   <input type="text" class="sc_input3" value="如何在网上推广"onfocus="if(value=='如何在网上推广') {value=''}" onblur="if (value=='') {value='如何在网上推广'}"></span>
 
                             </div>
                         </div>
@@ -546,15 +546,17 @@
             <ul>
                 <li>关键词列表：</li>
                 <li><textarea class="zs_input5"></textarea></li>
-                <li>输入分组管理名：</li>
-                <li><input type="text" class="zs_input3"></li>
+                <li>选择分组名：</li>
+                <li><select id="cgroup" onchange="cgroupInsert();"></select></li>
             </ul>
+            <input type="button" value="+" id="showTxt" onclick="showGroupNameTxt()"/>
+            <input name="cgroupName" style="display: none;"/>
         </div>
     </div>
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li class="current">保存</li>
+                <li class="current" onclick="checkGroupOk()">保存</li>
                 <li class="close">取消</li>
             </ul>
         </div>
@@ -620,8 +622,10 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/importKeyword/importKeywordBidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
+
 <script type="text/javascript">
 
 /******************zTree********************/
@@ -790,7 +794,7 @@ $(function () {
         success: function (data, textStatus, jqXHR) {
             zNodes = data.trees;
             $.fn.zTree.init($("#zTree"), setting, zNodes);
-            $.fn.zTree.init($("#zTree2"), setting, zNodes);
+//            $.fn.zTree.init($("#zTree2"), setting, zNodes);
         }
     });
 });

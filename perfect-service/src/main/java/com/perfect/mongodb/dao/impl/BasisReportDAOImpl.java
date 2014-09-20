@@ -26,8 +26,12 @@ import static com.perfect.mongodb.utils.EntityConstants.*;
 
 public class BasisReportDAOImpl extends AbstractUserBaseDAOImpl<StructureReportEntity,Long> implements BasisReportDAO {
     @Override
-    public List<StructureReportEntity> getUnitReportDate(String userTable) {
+    public List<StructureReportEntity> getUnitReportDate(String userTable,Long dataId, String dataName) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
+        if(dataId != 0 && !dataName.equals("0")){
+            List<StructureReportEntity> objectList = mongoTemplate.find(Query.query(Criteria.where(dataName).is(dataId).and(ACCOUNT_ID).is(AppContext.getAccountId())),StructureReportEntity.class, userTable);
+            return objectList;
+        }
         List<StructureReportEntity> objectList = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())),StructureReportEntity.class, userTable);
         return objectList;
     }

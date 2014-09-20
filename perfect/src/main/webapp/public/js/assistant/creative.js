@@ -472,13 +472,13 @@ function preview(obj) {
     var pcs = _this.find("td:eq(5) a").attr("title") != undefined ? _this.find("td:eq(5) a").attr("title") : _this.find("td:eq(5) input").val();
     var mib = _this.find("td:eq(6) span:eq(0)").text() != "" ? _this.find("td:eq(6) span:eq(0)").text() : _this.find("td:eq(6) input").val();
     var mibs = _this.find("td:eq(7) span:eq(0)").text() != "" ? _this.find("td:eq(7) span:eq(0)").text() : _this.find("td:eq(7) input").val();
-    title = title.replace("{", "<span style='color:red;'>").replace("}", "</span>").replace("{", "<span style='color:red;'>").replace("}", "</span>");
-    de1 = de1.replace("{", "<span style='color:red;'>").replace("}", "</span>");
-    de2 = de2.replace("{", "<span style='color:red;'>").replace("}", "</span>");
+    title = title.replace("{", "<span class='red-color'>").replace("}", "</span>").replace("{", "<span class='red-color'>").replace("}", "</span>");
+    de1 = de1.replace("{", "<span class='red-color'>").replace("}", "</span>");
+    de2 = de2.replace("{", "<span class='red-color'>").replace("}", "</span>");
     var h3 = "<a href='" + pc + "' target='_blank'><h3>" + title + "</h3></a>" +
-        "<span style='color:black;'>" + de1 + "</span></br>" +
-        "<span style='color:black;'>" + de2 + "<span></br>" +
-        "<span style='color:green;font-size: 12px;'>" + pc + "<span></br>";
+        "<span class='black-color'>" + de1 + "</span></br>" +
+        "<span class='black-color'>" + de2 + "<span></br>" +
+        "<span  class='green-color'>" + pc + "<span></br>";
     previeBody.append(h3);
 }
 /**

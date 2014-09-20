@@ -59,8 +59,8 @@ function setRedirectPageInfo_keyword(data) {
     $(".kwdPage").find("li>a:eq(1)").attr("name",data.prePage);
     $(".kwdPage").find("li>a:eq(2)").attr("name",data.nextPage);
     $(".kwdPage").find("li>a:eq(3)").attr("name",data.totalPage);
-    $(".kwdPage").find("li:eq(4)").html("当前页:"+data.pageNo+"/"+data.totalPage);
-    $(".kwdPage").find("li:eq(5)").html("共"+data.totalCount+"条");
+    $(".kwdPage").find("li:eq(5)").html("当前页:"+data.pageNo+"/"+data.totalPage);
+    $(".kwdPage").find("li:eq(6)").html("共"+data.totalCount+"条");
 }
 
 /**
@@ -109,9 +109,7 @@ $("#tbodyClick").delegate("tr","click", function () {
  */
 function keywordDataToHtml(obj, index) {
 
-    if(obj.keywordId==null){
         obj.keywordId = obj.id;
-    }
 
     var html = "";
     if (index == 0) {
@@ -403,6 +401,31 @@ $("#batchDelKwd").livequery('click', function () {
 });
 
 
+
+$("#searchwordReport").livequery('click', function () {
+    top.dialog({title: "搜索词报告",
+        padding: "5px",
+        content: "<iframe src='/assistantKeyword/showSearchWordDialog' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        oniframeload: function () {
+        },
+        onclose: function () {
+//              if (this.returnValue) {
+//                  $('#value').html(this.returnValue);
+//              }
+            // window.location.reload(true);
+        },
+        onremove: function () {
+        }
+    }).showModal();
+    return false;
+});
+
+
+
+
+
+
+
 /**
  * 还原按钮的事件
  */
@@ -475,3 +498,5 @@ function reducKwd_del(id) {
         }
     });
 }
+
+

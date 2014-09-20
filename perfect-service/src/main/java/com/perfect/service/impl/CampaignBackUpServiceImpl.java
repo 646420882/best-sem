@@ -1,5 +1,6 @@
 package com.perfect.service.impl;
 
+import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignBackUpDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.entity.CampaignEntity;
@@ -21,6 +22,9 @@ public class CampaignBackUpServiceImpl implements CampaignBackUpService{
 
     @Resource
     private CampaignDAO campaignDAO;
+
+    @Resource
+    private AdgroupDAO adgroupDAO;
 
     public CampaignEntity reducUpdate(String id){
         if(id.matches("^\\d+$")==true){
@@ -44,7 +48,7 @@ public class CampaignBackUpServiceImpl implements CampaignBackUpService{
      * @return
      */
     public void reducDel(String id){
-        if(id.matches("^\\d+$")){
+        if(id.matches("^\\d+$")==true){
             campaignDAO.updateLocalstatu(Long.parseLong(id));
         }
     }

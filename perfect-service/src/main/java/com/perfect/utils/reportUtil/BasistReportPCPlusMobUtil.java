@@ -17,21 +17,24 @@ public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureRepor
         private int endNumber;
         private int begin;
         private int terminal;
+        private String userName;
 
         private List<StructureReportEntity> objectList;
 
-        public BasistReportPCPlusMobUtil(List<StructureReportEntity> objects, int begin, int endNumber){
+        public BasistReportPCPlusMobUtil(List<StructureReportEntity> objects, int begin, int endNumber,String userName){
             this.objectList = objects;
             this.endNumber = endNumber;
             this.begin = begin;
+            this.userName = userName;
         }
 
         @Override
         protected List<StructureReportEntity> compute() {
             List<StructureReportEntity> list = new ArrayList<>();
             if ((endNumber - begin) < threshold) {
-                DecimalFormat df = new DecimalFormat("#.00");
+                DecimalFormat df = new DecimalFormat("#.0000");
                 for (int i = begin; i < endNumber; i++) {
+                    objectList.get(i).setAccount(userName);
                     objectList.get(i).setPcClick(objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()));
                     objectList.get(i).setPcConversion(objectList.get(i).getPcConversion() + ((objectList.get(i).getMobileConversion() == null) ? 0 : objectList.get(i).getMobileClick()));
                     objectList.get(i).setPcCost(objectList.get(i).getPcCost().add((objectList.get(i).getMobileCost() == null) ? BigDecimal.valueOf(0) : objectList.get(i).getMobileCost()));
@@ -78,8 +81,8 @@ public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureRepor
                 return list;
             } else {
                 int midpoint = (begin + endNumber) / 2;
-                BasistReportPCPlusMobUtil left = new BasistReportPCPlusMobUtil(objectList, begin, midpoint);
-                BasistReportPCPlusMobUtil right = new BasistReportPCPlusMobUtil(objectList, midpoint, endNumber);
+                BasistReportPCPlusMobUtil left = new BasistReportPCPlusMobUtil(objectList, begin, midpoint,userName);
+                BasistReportPCPlusMobUtil right = new BasistReportPCPlusMobUtil(objectList, midpoint, endNumber,userName);
                 left.fork();
                 right.fork();
                 list.addAll(left.join());

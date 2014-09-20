@@ -40,11 +40,13 @@ To change this template use File | Settings | File Templates.
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
-<div class="on_title over">
-    <a href="#">
-        账户全景
-    </a>
-    &nbsp;&nbsp;&gt;&nbsp;&nbsp;<span>账户分析</span>
+<div class="title_box">
+    <div class="on_title over">
+        <a href="#">
+            智能结构
+        </a>
+        &nbsp;&nbsp;&gt;&nbsp;&nbsp;<span>关键词拓词</span>
+    </div>
 </div>
 <div id="tab">
 <ul class="tab_menu" id="tab_menu">
@@ -74,6 +76,8 @@ To change this template use File | Settings | File Templates.
                             <div class="K_top2_detali fr over">
                                 <div class="k_top2_detali2 over">
                                     <div class="list01_top2 over">
+                                        <span>拓词来源</span>
+                                        <a href="#" class="question"></a>
                                     </div>
                                     <ul>
                                         <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>

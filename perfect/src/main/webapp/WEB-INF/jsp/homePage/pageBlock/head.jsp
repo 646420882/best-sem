@@ -67,7 +67,7 @@
     else if (hour < 9){time.innerHTML="早上,好！"}
     else if (hour < 12){time.innerHTML="上午,好！"}
     else if (hour < 14){time.innerHTML="中午,好！"}
-    else if (hour < 17){time.innerHTML="下午,好！"}
+    else if (hour < 18){time.innerHTML="下午,好！"}
     else if (hour < 23){time.innerHTML="晚上,好！"}
     else if (hour == 24){time.innerHTML="凌晨,好！"}
     else{time.innerHTML="晚上,好！"}

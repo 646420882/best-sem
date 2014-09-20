@@ -86,7 +86,7 @@ public class KeywordControllerTest extends JUnitBaseController {
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
-    /*@Resource
+    @Resource
     SystemUserDAO systemUserDAO;
     @Test
     public void test() throws Exception {
@@ -95,7 +95,7 @@ public class KeywordControllerTest extends JUnitBaseController {
         cal.add(Calendar.DATE, -1);
         String yesterday = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 
-        List<String> list = DateUtils.getPeriod("2014-08-30", "2014-08-30");
+        List<String> list = DateUtils.getPeriod(yesterday, yesterday);
         for (String dateStr : list) {
             dao.getAccountReportData(dateStr);
             dao.getCampaignReportData(dateStr);
@@ -104,6 +104,6 @@ public class KeywordControllerTest extends JUnitBaseController {
             dao.getKeywordReportData(dateStr);
             dao.getRegionReportData(dateStr);
         }
-    }*/
+    }
 
 }

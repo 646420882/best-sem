@@ -31,7 +31,7 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
     @Field(value = "agna")
     private String adgroupName; //单元
 
-    @Field(value = "campaign")
+    @Field(value = "cid")
     private Long campaignId;
 
     @Field(value = "cpna")
@@ -101,6 +101,8 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
     private String orderBy;
 
     private int terminal;
+
+    private String account;
 
     public String getId() {
         return id;
@@ -356,6 +358,14 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
 
     public void setTerminal(int terminal) {
         this.terminal = terminal;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     @Override

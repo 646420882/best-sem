@@ -43,8 +43,10 @@
 <div class="concent over">
   <jsp:include page="../homePage/pageBlock/nav.jsp"/>
     <div class="mid over">
-        <div class="on_title over">
-            <a href="#">用户中心</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<span>添加推广帐号</span>
+        <div class="title_box">
+            <div class="on_title over">
+                <a href="#">用户中心</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<span>添加推广帐号</span>
+            </div>
         </div>
         <div id="tab">
             <div class="configure over">

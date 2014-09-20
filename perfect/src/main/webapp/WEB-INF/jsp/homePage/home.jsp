@@ -37,12 +37,15 @@
 <div class="concent over">
 <jsp:include page="pageBlock/nav.jsp"/>
 <div class="mid over">
-<div class="on_title over">
-    <a href="#">
-        账户全景
-    </a>
-    &nbsp;&nbsp;>&nbsp;&nbsp;<span>账户分析</span>
+<div class="title_box">
+    <div class="on_title over">
+        <a href="#">
+            账户全景
+        </a>
+        &nbsp;&nbsp;>&nbsp;&nbsp;<span>账户分析</span>
+    </div>
 </div>
+
 <div id="tab">
 <ul class="tab_menu">
     <li class="selected">
@@ -449,13 +452,13 @@
                 </ul>
                 <span>0</span></li>
             <ol id="quality0">
-                <li>&nbsp;17(0.11%)</li>
-                <li>&nbsp;60(0.83%)</li>
-                <li>&nbsp;1(4.76%)</li>
-                <li>&nbsp;1.67%</li>
-                <li>&nbsp;￥2.98(11.26%)</li>
-                <li>&nbsp;￥2.98</li>
-                <li>&nbsp;22222</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
             </ol>
         </ul>
     </td>
@@ -490,13 +493,13 @@
                 </ul>
                 <span>1</span></li>
             <ol id="quality1">
-                <li>&nbsp;17(0.11%)</li>
-                <li>&nbsp;60(0.83%)</li>
-                <li>&nbsp;1(4.76%)</li>
-                <li>&nbsp;1.67%</li>
-                <li>&nbsp;￥2.98(11.26%)</li>
-                <li>&nbsp;￥2.98</li>
-                <li>&nbsp;22222</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
             </ol>
         </ul>
     </td>
@@ -531,13 +534,13 @@
                 </ul>
                 <span>2</span></li>
             <ol id="quality2">
-                <li>&nbsp;17(0.11%)</li>
-                <li>&nbsp;60(0.83%)</li>
-                <li>&nbsp;1(4.76%)</li>
-                <li>&nbsp;1.67%</li>
-                <li>&nbsp;￥2.98(11.26%)</li>
-                <li>&nbsp;￥2.98</li>
-                <li>&nbsp;22222</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
             </ol>
         </ul>
     </td>
@@ -572,13 +575,13 @@
                 </ul>
                 <span>3</span></li>
             <ol id="quality3">
-                <li>&nbsp;17(0.11%)</li>
-                <li>&nbsp;60(0.83%)</li>
-                <li>&nbsp;1(4.76%)</li>
-                <li>&nbsp;1.67%</li>
-                <li>&nbsp;￥2.98(11.26%)</li>
-                <li>&nbsp;￥2.98</li>
-                <li>&nbsp;22222</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
             </ol>
         </ul>
     </td>
@@ -613,13 +616,13 @@
                 </ul>
                 <span>4</span></li>
             <ol id="quality4">
-                <li>&nbsp;17(0.11%)</li>
-                <li>&nbsp;60(0.83%)</li>
-                <li>&nbsp;1(4.76%)</li>
-                <li>&nbsp;1.67%</li>
-                <li>&nbsp;￥2.98(11.26%)</li>
-                <li>&nbsp;￥2.98</li>
-                <li>&nbsp;22222</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
             </ol>
         </ul>
     </td>
@@ -654,13 +657,13 @@
                 </ul>
                 <span>5</span></li>
             <ol id="quality5">
-                <li>&nbsp;17(0.11%)</li>
-                <li>&nbsp;60(0.83%)</li>
-                <li>&nbsp;1(4.76%)</li>
-                <li>&nbsp;1.67%</li>
-                <li>&nbsp;￥2.98(11.26%)</li>
-                <li>&nbsp;￥2.98</li>
-                <li>&nbsp;22222</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
             </ol>
         </ul>
     </td>
@@ -695,13 +698,13 @@
                 </ul>
                 <span>6</span></li>
             <ol id="quality6">
-                <li>&nbsp;17(0.11%)</li>
-                <li>&nbsp;60(0.83%)</li>
-                <li>&nbsp;1(4.76%)</li>
-                <li>&nbsp;1.67%</li>
-                <li>&nbsp;￥2.98(11.26%)</li>
-                <li>&nbsp;￥2.98</li>
-                <li>&nbsp;22222</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
             </ol>
         </ul>
     </td>
@@ -736,13 +739,13 @@
                 </ul>
                 <span>7</span></li>
             <ol id="quality7">
-                <li>&nbsp;17(0.11%)</li>
-                <li>&nbsp;60(0.83%)</li>
-                <li>&nbsp;1(4.76%)</li>
-                <li>&nbsp;1.67%</li>
-                <li>&nbsp;￥2.98(11.26%)</li>
-                <li>&nbsp;￥2.98</li>
-                <li>&nbsp;22222</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
             </ol>
         </ul>
     </td>
@@ -777,13 +780,13 @@
                 </ul>
                 <span>8</span></li>
             <ol id="quality8">
-                <li>&nbsp;17(0.11%)</li>
-                <li>&nbsp;60(0.83%)</li>
-                <li>&nbsp;1(4.76%)</li>
-                <li>&nbsp;1.67%</li>
-                <li>&nbsp;￥2.98(11.26%)</li>
-                <li>&nbsp;￥2.98</li>
-                <li>&nbsp;22222</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
             </ol>
         </ul>
     </td>
@@ -818,13 +821,13 @@
                 </ul>
                 <span>9</span></li>
             <ol id="quality9">
-                <li>&nbsp;17(0.11%)</li>
-                <li>&nbsp;60(0.83%)</li>
-                <li>&nbsp;1(4.76%)</li>
-                <li>&nbsp;1.67%</li>
-                <li>&nbsp;￥2.98(11.26%)</li>
-                <li>&nbsp;￥2.98</li>
-                <li>&nbsp;22222</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
             </ol>
         </ul>
     </td>
@@ -859,13 +862,13 @@
                 </ul>
                 <span>10</span></li>
             <ol id="quality10">
-                <li>&nbsp;17(0.11%)</li>
-                <li>&nbsp;60(0.83%)</li>
-                <li>&nbsp;1(4.76%)</li>
-                <li>&nbsp;1.67%</li>
-                <li>&nbsp;￥2.98(11.26%)</li>
-                <li>&nbsp;￥2.98</li>
-                <li>&nbsp;22222</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
             </ol>
         </ul>
     </td>

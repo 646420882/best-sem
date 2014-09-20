@@ -55,7 +55,9 @@ public class BasisReportController {
                                @RequestParam(value = "dateType", required = false, defaultValue = "0") int dateType,
                                @RequestParam(value = "start", required = false, defaultValue = "0") int start,
                                @RequestParam(value = "sort", required = false, defaultValue = "-1") String sort,
-                               @RequestParam(value = "limit", required = false, defaultValue = "30") int limit) {
+                               @RequestParam(value = "limit", required = false, defaultValue = "30") int limit,
+                               @RequestParam(value = "dataId", required = false, defaultValue = "0") Long dataId,
+                               @RequestParam(value = "dataName", required = false, defaultValue = "0") String dateName) {
          Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
         String yesterday = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
@@ -67,7 +69,7 @@ public class BasisReportController {
         }
         List<String> list = DateUtils.getPeriod(startDate, endDate);
         String[] newDate = list.toArray(new String[list.size()]);
-        Map<String, List<StructureReportEntity>> responseDate = basisReportService.getReportDate(newDate, devices, dateType, reportType,start,limit,sort);
+        Map<String, List<StructureReportEntity>> responseDate = basisReportService.getReportDate(newDate, devices, dateType, reportType,start,limit,sort, dataId, dateName);
         StructureReportEntity objEntity = new StructureReportEntity();
 
         int totalRows =0;

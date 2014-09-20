@@ -57,6 +57,10 @@
 .list01 {
     padding-bottom: 60px;
 }
+.title_box{
+    height:32px;
+
+}
 /***标题***/
 .list01_top {
     font-size: 16px;
@@ -1303,6 +1307,7 @@ ul.ztree.zTreeDragUL {
 }
 .list4 {
     height: 500px;
+    /*height: 500px;*/
     width: 100%;
     overflow: auto;
 }
@@ -2676,5 +2681,27 @@ h2 .close {
 }
 .list2 table tr td ul .home_quality {
     min-width:120px;
+}
+
+.w_list02 input[type="text"]{
+    border-radius: 0px;
+    height:23px;
+
+}
+#sPreview{
+text-align: left;
+}
+.zs_bottom1 .red-color ,.red-color{
+    color:red;
+}
+.zs_bottom1 .black-color ,.black-color {
+    color:black;
+}
+.zs_bottom1 .green-color ,.green-color{
+    color:green;
+    font-size:12px;
+}
+.Senior ul li{
+    width:100%;
 }
 /* CSS Document */

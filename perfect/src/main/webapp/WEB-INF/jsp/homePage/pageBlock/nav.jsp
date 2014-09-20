@@ -28,13 +28,13 @@
                             <h3>帐户全景</h3>
                         </a>
                     </li>
-                    <li>
+                   <%-- <li>
                         <a href="/assistant/index">
                             <span class="list_2"></span>
 
                             <h3>推广助手</h3>
                         </a>
-                    </li>
+                    </li>--%>
                     <li>
                         <a href="/keyword_group"><span class="list_3"></span>
 
@@ -181,8 +181,8 @@
             }
         });
     });
-    $(document).ready(function () {
+/*    $(document).ready(function () {
         $(".on_title").pin();
-    });
+    });*/
 
 </script>

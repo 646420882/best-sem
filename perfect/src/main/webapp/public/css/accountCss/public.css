@@ -234,18 +234,23 @@ table tr ,table tr td{
     color: #f2ab00;
     height: 18px;
     line-height: 18px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    behavior: url(/public/css/accountCss/iecss3.htc);
+    border-radius: 10px;
     font-weight:bold;
-    background:url(/public/img/user_select.png)  no-repeat;
     cursor: pointer;
-    padding: 0 0 0 10px;
+    background:#000;
+    padding:0 10px;
     overflow:hidden;
 }
 .user_text{
-    width:122px;
+
 }
 .user_name span{
     display:block;
-    width:88px;
+    padding: 0 10px 0 0px;
+    background:url(/public/img/username_select.png)  no-repeat right;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

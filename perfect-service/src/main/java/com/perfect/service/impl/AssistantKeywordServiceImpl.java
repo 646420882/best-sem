@@ -15,11 +15,10 @@ import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.mongodb.utils.PaginationParam;
 import com.perfect.service.AssistantKeywordService;
-import com.perfect.service.KeyWordBackUpService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.beans.BeanUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -45,8 +44,6 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     @Resource
     private KeywordDAO keywordDAO;
 
-    @Resource
-    private KeyWordBackUpService keyWordBackUpService;
 
 
     /**
@@ -56,6 +53,37 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      */
     public List<KeywordEntity> getKeywordByIds(List<Long> ids){
         return keywordDAO.getKeywordByIds(ids);
+    }
+
+    public  Iterable<CampaignEntity> getCampaignByAccountId(){
+        return campaignDAO.findAll();
+    }
+
+    public  Iterable<AdgroupEntity> getAdgroupByCid(String cid){
+       return cid.matches("^\\d+$")?adgroupDAO.findByCampaignId(Long.parseLong(cid)):adgroupDAO.findByCampaignOId(cid);
+    }
+
+    public void saveSearchwordKeyword(List<KeywordEntity> list){
+        keywordDAO.insertAll(list);
+    }
+
+    public void setNeigWord(String agid, String keywords, Integer neigType){
+        String[] kwds = keywords.split("\n");
+
+        List<String> list = new ArrayList<>();
+        for(String kwd:kwds){
+            list.add(kwd);
+        }
+        AdgroupEntity adgroupEntity = agid.matches("^\\d+$")?adgroupDAO.findOne(Long.parseLong(agid)):adgroupDAO.findByObjId(agid);
+        AdgroupEntity newAdgroupEntity = new AdgroupEntity();
+        BeanUtils.copyProperties(adgroupEntity,newAdgroupEntity);
+       if(neigType==1){
+           adgroupEntity.setNegativeWords(list);
+       }else{
+           adgroupEntity.setExactNegativeWords(list);
+       }
+        adgroupEntity.setLocalStatus(2);
+        adgroupDAO.update(adgroupEntity,newAdgroupEntity);
     }
 
 
@@ -151,7 +179,6 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 query.addCriteria(Criteria.where(EntityConstants.SYSTEM_ID).is(aid));
                 page = keywordDAO.findByPageInfo(query, pageSize,nowPage);
             }
-            return page;
         }else if(cid!=null && !"".equals(cid) && (aid==null||"".equals(aid))){
             CampaignEntity campaignEntity;
             if(cid.matches(regex)==true){
@@ -182,11 +209,11 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             adQuery.addCriteria(Criteria.where(EntityConstants.ADGROUP_ID).in(longIds));
             page = keywordDAO.findByPageInfo(adQuery, pageSize, nowPage);
 
-            return page;
         }else{
             page = keywordDAO.findByPageInfo(query, pageSize,nowPage);
-            return page;
         }
+
+        return page;
     }
 
 
