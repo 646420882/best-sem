@@ -11,11 +11,11 @@ import java.util.List;
  */
 public interface BasisReportDAO{
     /**
-     * 基础报告
+     * 报告
      * @param userTable 数据表名
      * @return
      */
-    public List<StructureReportEntity> getUnitReportDate(String userTable);
+    public List<StructureReportEntity> getUnitReportDate(String userTable,Long dataId, String dataName);
 
     /**
      * 	                 _ooOoo_

@@ -54,6 +54,10 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     private List<RegionReportEntity> rrmList;
 
+    public AsynchronousReportDAOImpl(SystemUserDAO systemUserDAO){
+        this.systemUserDAO = systemUserDAO;
+    }
+
     public void getAccountReportData(String dateStr) {
         MongoTemplate mongoTemplate;
         Iterable<SystemUserEntity> entities = systemUserDAO.findAll();

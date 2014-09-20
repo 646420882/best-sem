@@ -1,10 +1,7 @@
 package com.perfect.utils.reportUtil;
 
-import com.perfect.core.AppContext;
 import com.perfect.entity.StructureReportEntity;
-import com.perfect.service.AccountManageService;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,7 +13,7 @@ import java.util.concurrent.RecursiveTask;
 /**
  * Created by SubDong on 2014/8/8.
  */
-public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureReportEntity>> {
+public class BasisReportPCus extends RecursiveTask<Map<String, StructureReportEntity>> {
 
     private final int threshold = 100;
 
@@ -24,16 +21,14 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
     private int begin;
     private int terminal;
     private int report;
-    private String userName;
 
     private List<StructureReportEntity> objectList;
 
-    public BasisReportDefaultUtil(List<StructureReportEntity> objects, int begin, int endNumber, int report,String userName) {
+    public BasisReportPCus(List<StructureReportEntity> objects, int begin, int endNumber, int report) {
         this.objectList = objects;
         this.endNumber = endNumber;
         this.begin = begin;
         this.report = report;
-        this.userName = userName;
     }
 
     @Override
@@ -98,19 +93,15 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
                             map.put(objectList.get(i).getCreativeId().toString(), voEntity);
                             break;
                         case 4:
-                            voEntity.setAccount(userName);
                             map.put(objectList.get(i).getRegionId().toString(), voEntity);
                             break;
                         case 5:
-                            voEntity.setAccount(userName);
                             map.put(objectList.get(i).getCampaignId().toString(), voEntity);
                             break;
                         case 6:
-                            voEntity.setAccount(userName);
                             map.put(objectList.get(i).getAdgroupId().toString(), voEntity);
                             break;
                         case 7:
-                            voEntity.setAccount(userName);
                             map.put(objectList.get(i).getKeywordId().toString(), voEntity);
                             break;
                     }
@@ -127,19 +118,15 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
                             map.put(objectList.get(i).getCreativeId().toString(), objectList.get(i));
                             break;
                         case 4:
-                            objectList.get(i).setAccount(userName);
                             map.put(objectList.get(i).getRegionId().toString(), objectList.get(i));
                             break;
                         case 5:
-                            objectList.get(i).setAccount(userName);
                             map.put(objectList.get(i).getCampaignId().toString(), objectList.get(i));
                             break;
                         case 6:
-                            objectList.get(i).setAccount(userName);
                             map.put(objectList.get(i).getAdgroupId().toString(), objectList.get(i));
                             break;
                         case 7:
-                            objectList.get(i).setAccount(userName);
                             map.put(objectList.get(i).getKeywordId().toString(), objectList.get(i));
                             break;
                     }
@@ -148,8 +135,8 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
             return map;
         } else {
             int midpoint = (begin + endNumber) / 2;
-            BasisReportDefaultUtil left = new BasisReportDefaultUtil(objectList, begin, midpoint, report,userName);
-            BasisReportDefaultUtil right = new BasisReportDefaultUtil(objectList, midpoint, endNumber, report,userName);
+            BasisReportPCus left = new BasisReportPCus(objectList, begin, midpoint, report);
+            BasisReportPCus right = new BasisReportPCus(objectList, midpoint, endNumber, report);
             invokeAll(left, right);
             try {
                 Map<String, StructureReportEntity> leftMap = left.get();

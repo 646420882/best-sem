@@ -100,6 +100,11 @@ public class ReportPageDetails {
                     if(entity.getMobileCtr() == null){entity.setMobileCtr(0.00);}
                     if(entity.getMobileConversion() == null){entity.setMobileConversion(0.00);}
                     entity.setDate(data);
+                    try {
+                        entity.setDateRep(dateFormat.parse(data.substring(0, 10)));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     entity.setCount(pageData.size());
                     accountReports.add(entity);
 

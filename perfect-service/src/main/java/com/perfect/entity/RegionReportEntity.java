@@ -21,13 +21,13 @@ public class RegionReportEntity extends AccountIdEntity {
     @Field(value = "rgna")
     private String regionName;
 
-    @Field(TBL_ADGROUP)
+    @Field(ADGROUP_ID)
     private Long adgroupId;
 
     @Field(value = "agna")
     private String adgroupName;
 
-    @Field(TBL_CAMPAIGN)
+    @Field(CAMPAIGN_ID)
     private Long campaignId;
 
     @Field(value = "cpna")
