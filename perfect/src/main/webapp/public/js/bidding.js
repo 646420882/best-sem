@@ -35,14 +35,14 @@ $(function () {
     initOptions('start3', 14, 23);
     initOptions('end3', 15, 24);
 
-//顶部菜单切换
+    //顶部菜单切换
     var $tab_li = $('.tab_menu li');
     $('.tab_menu li').click(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
         var index = $tab_li.index(this);
         $('div.tab_box > div').eq(index).show().siblings().hide();
     });
-//设置规则
+    //设置规则
     $("#showbox").click(function () {
         var items = checked("subbox");
 
@@ -69,7 +69,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $("#seetingRules").css("display", "none");
     });
-//修改出价
+    //修改出价
     $("#showbox2").click(function () {
         var items = checked("subbox");
 
@@ -91,7 +91,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box2 ").css("display", "none");
     });
-//修改访问网址
+    //修改访问网址
     $("#showbox4").click(function () {
         var items = checked("subbox");
 
@@ -112,7 +112,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box4").css("display", "none");
     });
-//下载
+    //下载
     $("#updateBtn").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -128,7 +128,7 @@ $(function () {
         $("#downloadData").css("display", "none");
     });
 
-//暂停竞价规则
+    //暂停竞价规则
     $("#showbox3").click(function () {
         var items = checked("subbox");
 
@@ -228,7 +228,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box5").css("display", "none");
     });
-//自定义列
+    //自定义列
     $("#showbox6").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -243,7 +243,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box6").css("display", "none");
     });
-//弹窗内部切换
+    //弹窗内部切换
     $(".time_sl").click(function () {
         $(".time_select").show();
         $(".time_select01").hide();
@@ -589,17 +589,17 @@ function sendReq(run) {
         req.times = times;
     }
 
-//竞价模式
+    //竞价模式
     req.mode = checked('mode').val();
 
-// 竞价设备
+    // 竞价设备
     req.device = seleValue('device');
 
     if (req.device == undefined) {
         req.device = 10000;
     }
 
-//竞价位置
+    //竞价位置
     req.expPosition = seleValue('pos');
     if (req.expPosition == 4) {
         req.customPos = $('input[name=rightpos]').val();
@@ -619,7 +619,7 @@ function sendReq(run) {
         }
     }
 
-//竞价区域
+    //竞价区域
     req.target = null;
 
     if (req.auto == 2) {
@@ -716,10 +716,6 @@ function checkedValue(name) {
     return $('input[name=' + name + ']:checked').val();
 }
 
-var skip = 0;
-
-var limit = 20;
-
 var skipPage = function () {
     var _number = 0;
     if (type == 1) {
@@ -750,7 +746,7 @@ var toAnyPage = function (page_index) {
     }
     keyWordPage = 0;
     VIPKeyWordPage = 0;
-    skip = page_index;
+    skip = page_index * limit;
 
     var _url = "";
     if (type == 1) {
@@ -767,92 +763,10 @@ var toAnyPage = function (page_index) {
 
             var f = input('fullmatch').prop("checked");
             var filter = checkedValue('in');
-            var tbl = "table1";
-            var curPage = pageIndex;
-            var size = limit;
-            var skip = curPage * size;
-            _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter;
+            _url = "/bidding/list?s=" + skip + "&l=" + limit + "&q=" + text + "&f=" + f + "&filter=" + filter;
         }
-        $.ajax({
-            url: _url,
-            type: "POST",
-            dataType: "json",
-            async: false,
-            success: function (datas) {
-                if (datas.rows == undefined) {
-                    emptyTable("table1");
-                } else {
-                    fullItems(datas, "table1");
-                }
-            }
-        });
-
-        /*$.ajax({
-         url: "/getKRWords/bd",
-         type: "GET",
-         async: false,
-         data: {
-         "seedWords": getSeedWords,
-         "skip": skip,
-         "limit": limit,
-         "krFileId": krFileId,
-         "fieldName": fieldName
-         //                "sort": sort
-         },
-         success: function (data, textStatus, jqXHR) {
-         $("#tbody1").empty();
-         if (data.rows.length > 0) {
-         krFileId = data.krFileId;
-         var _class = "";
-         $.each(data.rows, function (i, item) {
-         if (i % 2 == 0) {
-         _class = "list2_box1";
-         } else {
-         _class = "list2_box2";
-         }
-         var newTr = "<tr class='" + _class + "'>" +
-         "<td>" + item.groupName + "</td>" +
-         "<td>" + item.seedWord + "</td>" +
-         "<td>" + item.keywordName + "</td>" +
-         "<td>" + item.dsQuantity + "</td>" +
-         "<td>" + item.competition + "%</td>" +
-         "</tr>";
-         $("#tbody1").append(newTr);
-         });
-         }
-         }
-         });*/
+        grid.setGridParam({url: _url}).trigger("reloadGrid");
     } else {
-        $.ajax({
-            url: "/getKRWords/p",
-            type: "GET",
-            data: {
-                "trade": _trade,
-                "category": _category,
-                "skip": skip,
-                "limit": limit,
-                "status": 1
-            },
-            success: function (data, textStatus, jqXHR) {
-                $("#tbody2").empty();
-                if (data.rows.length > 0) {
-                    var _class = "";
-                    $.each(data.rows, function (i, item) {
-                        if (i % 2 == 0) {
-                            _class = "list2_box1";
-                        } else {
-                            _class = "list2_box2";
-                        }
-                        var newTr = "<tr class='" + _class + "'>" +
-                            "<td>" + _trade + "</td>" +
-                            "<td>" + _category + "</td>" +
-                            "<td>" + item.group + "</td>" +
-                            "<td>" + (item.keyword == null ? "" : item.keyword) + "</td>" +
-                            "</tr>";
-                        $("#tbody2").append(newTr);
-                    });
-                }
-            }
-        });
+
     }
 };
