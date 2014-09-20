@@ -115,6 +115,8 @@ public class BiddingController {
             }
 
             biddingRuleEntity.setKeyword(keywordEntity.getKeyword());
+            biddingRuleEntity.setMatchType(keywordEntity.getMatchType());
+            biddingRuleEntity.setPhraseType(keywordEntity.getPhraseType());
             biddingRuleEntity.setEnabled(param.isRun());
 
             biddingRuleEntity.setCurrentPrice(BigDecimal.ZERO);
@@ -314,10 +316,33 @@ public class BiddingController {
                              @RequestParam(value = "o", required = false, defaultValue = "true") boolean asc,
                              @RequestParam(value = "q", required = false) String query,
                              @RequestParam(value = "f", required = false, defaultValue = "false") boolean fullMatch,
-                             @RequestParam(value = "filter", required = true, defaultValue = "0") int filter) {
+                             @RequestParam(value = "filter", required = true, defaultValue = "0") int filter,
+                             @RequestParam(value = "matchType", required = false) Integer matchType,
+                             @RequestParam(value = "quality", required = false) String quality,
+                             @RequestParam(value = "price", required = false) String price) {
 
         AbstractView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> q = new HashMap<>();
+
+         Map<String, Object> queryParams = new HashMap<>();
+        if (matchType != null) {
+            queryParams.put("matchType", matchType);
+        }
+        BigDecimal minPrice = new BigDecimal(0);
+        BigDecimal maxPrice = new BigDecimal(0);
+        boolean priceStatus = (price != null && price.trim().length() > 0);//为真代表查询已参加竞价的关键词
+        if (priceStatus) {
+            String p[] = price.split(",");
+            minPrice.add(new BigDecimal(Double.valueOf(p[0])));
+            maxPrice.add(new BigDecimal(Double.valueOf(p[1])));
+        }
+        //暂不考虑关键词质量度搜索
+//        List<Integer> keywordQualityList = new ArrayList<>();
+//        if (quality != null && quality.trim().length() > 0) {
+//            for (String s : quality.split(",")) {
+//                keywordQualityList.add(Integer.valueOf(s));
+//            }
+//        }
+
         List<KeywordEntity> entities = null;
         Long total = 0l;
         Integer total1 = 0;
@@ -352,12 +377,12 @@ public class BiddingController {
             entities = sysKeywordService.findByAdgroupId(agid, param);
             total = sysKeywordService.keywordCount(tmpList);
         } else if (query != null) {
-            if (filter == 0) {
-                entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param);
-                total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1);
-            } else if (filter == -1) {
-                entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param);
-                total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1);
+            if (filter == 0 && !priceStatus) {//全部
+                entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param, queryParams);
+                total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
+            } else if (filter == -1 && !priceStatus) {//未参加竞价的
+                entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param, queryParams);
+                total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
 
                 Map<Long, KeywordEntity> tmpMap = new HashMap<>();
                 for (KeywordEntity tmpEntity : entities) {
@@ -378,10 +403,13 @@ public class BiddingController {
 
                 }
 
-            } else if (filter == 1) {
+            } else if (filter == 1 || priceStatus) {//已参加竞价的
+
                 List<BiddingRuleEntity> ruleEntities = biddingRuleService.findByNames(query.split(" "), fullMatch,
-                        param);
-                total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1);
+                        param, queryParams);
+
+                total1 = biddingRuleService.countBiddingRuleEntityfindByNames(query.split(" "), fullMatch,
+                        param1, queryParams);
                 for (BiddingRuleEntity tmpEntity : ruleEntities) {
                     keywordIdRuleMap.put(tmpEntity.getKeywordId(), tmpEntity);
                     ids.add(tmpEntity.getKeywordId());
@@ -391,6 +419,7 @@ public class BiddingController {
                     return new ModelAndView(jsonView);
                 }
                 entities = sysKeywordService.findByIds(ids);
+
                 ruleReady = !ruleEntities.isEmpty();
             }
         } else {
@@ -412,8 +441,14 @@ public class BiddingController {
             KeywordReportDTO keywordReportDTO = new KeywordReportDTO();
             BeanUtils.copyProperties(entity, keywordReportDTO);
 
-            //setting quality
             Long kwid = entity.getKeywordId();
+//            if(!keywordQualityList.isEmpty()){
+//                if(!keywordQualityList.contains(quality10TypeMap.get(kwid).getPcQuality())){
+//                    continue;
+//                }
+//            }
+
+            //setting quality
             keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
             keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
 
@@ -464,11 +499,11 @@ public class BiddingController {
 
         Map<String, Object> attributes = JSONUtils.getJsonMapData(resultList);
         if (total > 0) {
-            attributes.put("total", total);
+            attributes.put("records", total);
         } else if (total1 > 0) {
-            attributes.put("total", total1);
+            attributes.put("records", total1);
         } else {
-            attributes.put("total", 0);
+            attributes.put("records", 0);
         }
 
         jsonView.setAttributesMap(attributes);

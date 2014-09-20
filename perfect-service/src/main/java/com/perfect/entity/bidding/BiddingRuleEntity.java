@@ -9,9 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
 
-import static com.perfect.mongodb.utils.EntityConstants.KEYWORD_ID;
-import static com.perfect.mongodb.utils.EntityConstants.NAME;
-import static com.perfect.mongodb.utils.EntityConstants.TBL_BIDDINGRULE;
+import static com.perfect.mongodb.utils.EntityConstants.*;
 
 /**
  * Created by yousheng on 2014/7/30.
@@ -36,6 +34,12 @@ public class BiddingRuleEntity extends AccountIdEntity {
     @Field("stgy")
     private StrategyEntity strategyEntity;
 
+    @Field("mt")
+    private Integer matchType;
+
+    @Field("pt")
+    private Integer phraseType;
+
     @Field("cp")
     private BigDecimal currentPrice;
 
@@ -54,6 +58,21 @@ public class BiddingRuleEntity extends AccountIdEntity {
     @Field("ct")
     private int currentTimes = -1;
 
+    public Integer getMatchType() {
+        return matchType;
+    }
+
+    public void setMatchType(Integer matchType) {
+        this.matchType = matchType;
+    }
+
+    public Integer getPhraseType() {
+        return phraseType;
+    }
+
+    public void setPhraseType(Integer phraseType) {
+        this.phraseType = phraseType;
+    }
 
     public ObjectId getId() {
         return id;

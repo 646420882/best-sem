@@ -1,12 +1,12 @@
 package com.perfect.dao;
 
-import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.mongodb.utils.PaginationParam;
 import org.springframework.data.domain.Sort;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yousheng on 2014/7/30.
@@ -50,5 +50,5 @@ public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, L
 
     boolean setEnable(Long[] ids, boolean ebl);
 
-    List<BiddingRuleEntity> findByNames(String[] split, boolean fullMatch, PaginationParam param);
+    List<BiddingRuleEntity> findByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
 }

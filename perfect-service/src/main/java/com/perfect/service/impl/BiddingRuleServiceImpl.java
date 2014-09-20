@@ -120,12 +120,17 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
 
     @Override
     public boolean setEnable(Long[] ids, boolean ebl) {
-        return biddingRuleDAO.setEnable(ids,ebl);
+        return biddingRuleDAO.setEnable(ids, ebl);
     }
 
     @Override
-    public List<BiddingRuleEntity> findByNames(String[] split, boolean fullMatch, PaginationParam param) {
-        return biddingRuleDAO.findByNames(split,fullMatch,param);
+    public List<BiddingRuleEntity> findByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
+        return biddingRuleDAO.findByNames(split, fullMatch, param, queryParams);
+    }
+
+    @Override
+    public Integer countBiddingRuleEntityfindByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
+        return biddingRuleDAO.findByNames(split, fullMatch, param, queryParams).size();
     }
 
 
