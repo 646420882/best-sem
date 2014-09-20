@@ -54,12 +54,14 @@
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over ">
-<div class="on_title over">
-    <a href="#">
-        数据报告
-    </a>
-    &nbsp;&nbsp;>&nbsp;&nbsp;<span>基础报告</span>
-</div>
+    <div class="title_box">
+        <div class="on_title over">
+            <a href="#">
+                数据报告
+            </a>
+            &nbsp;&nbsp;>&nbsp;&nbsp;<span>基础报告</span>
+        </div>
+    </div>
 <div id="tab">
 <ul class="tab_menu">
     <li class="selected">账户报告</li>
@@ -1888,7 +1890,7 @@ $(document).ajaxStart(function () {
     ajaxbg.show();
 })
 $(document).ajaxStop(function () {
-    ajaxbg.fadeOut(1500);
+    ajaxbg.fadeOut(1000);
         });
 
 

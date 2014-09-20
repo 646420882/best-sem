@@ -32,11 +32,13 @@
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
-<div class="on_title over">
-    <a href="#">
-        推广助手
-    </a>
-</div>
+    <div class="title_box">
+        <div class="on_title over">
+            <a href="#">
+                推广助手
+            </a>
+        </div>
+    </div>
 <div id="tab">
 <div class=" jiangjia_concent over">
 <div class="jingjia_left fl over">
@@ -1585,7 +1587,7 @@
         ajaxbg.show();
     })
     $(document).ajaxStop(function () {
-        ajaxbg.fadeOut(1500);
+        ajaxbg.fadeOut(1000);
             });
 </script>
 </body>

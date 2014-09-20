@@ -23,10 +23,12 @@
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
-<div class="pinned on_title over">
-    <a href="#">
-        推广助手
-    </a>
+    <div class="title_box">
+        <div class="on_title over">
+            <a href="#">
+                推广助手
+            </a>
+        </div>
 </div>
 <div id="tab">
 <ul class="tab_menu">
@@ -34,7 +36,6 @@
     <li>重点词竞价</li>
 </ul>
 <div class="tab_box">
-
     <div class="containers over">
         <div class=" jiangjia_concent over">
             <div class="jingjia_left fl over">
@@ -94,7 +95,6 @@
                             </div>
                         </li>
                     </ul>
-                    </div>
                     <div class="Senior over hides">
                         <ul>
                             <li>
@@ -138,7 +138,7 @@
                                                </span></div>
                             </li>
                         </ul>
-
+                   </div>
                     </div>
                     <div class="w_list03 ">
                         <ul class="jiangjia_list">
@@ -201,9 +201,6 @@
                 <div id="pagination1" class="pagination"></div>
             </div>
         </div>
-    </div>
-
-</div>
 <div class="containers over hides">
     <div class=" jiangjia_concent over">
         <div class="jingjia_left fl over">
@@ -217,7 +214,6 @@
             </div>
             <div class="j_list01 over">
                 <ul id="zTreeImport" class="ztree over">
-
                 </ul>
             </div>
             <div class="j_l_under over">
