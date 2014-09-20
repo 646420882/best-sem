@@ -2704,4 +2704,17 @@ text-align: left;
 .Senior ul li{
     width:100%;
 }
+/*数据报告*/
+.nextOne:hover{
+    color:#fab30b;
+    text-decoration: underline;
+
+}
+.returnUp{
+    display:block;
+    margin:5px 0;
+    width:34px;
+    height:20px;
+    background:url(/public/img/shuju_jiantou.png) no-repeat ;
+}
 /* CSS Document */
