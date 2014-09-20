@@ -211,8 +211,9 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box3 ").css("display", "none");
     });
-//设置规则
-    $(".showbox5").click(function () {
+
+    //设置分组
+    $("#showbox5").click(function () {
         initCustomGroupSelect();
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -350,8 +351,63 @@ $(function () {
 //        var skip = (curPage - 1) * size;
         var skip = curPage * size;
 
+        var _url = "";
+
+        //高级搜索功能
+        var matchType = 0;
+        var keywordQuality = "";
+        var keywordPrice = "";
+        if (document.getElementById("advancedSearch").style.display == "block") {
+            //matchType
+            var checkedMatchType = $("input[name=matchType]:checked");
+            if (checkedMatchType.length > 1) {
+                alert("请选择一种匹配模式!");
+                return false;
+            }
+            $.each(checkedMatchType, function (i, item) {
+                matchType = item.value;
+                return false;
+            });
+
+            //keywordQuality
+            var checkedKeywordQuality = $("input[name=keywordQuality]:checked");
+            $.each(checkedKeywordQuality, function (i, item) {
+                keywordQuality += item.value + ",";
+            });
+            keywordQuality = keywordQuality.substring(0, keywordQuality.length - 1);
+            //keywordPrice
+            var texts = $("#keywordPrice").find("input[type=text]");
+            $.each(texts, function (i, item) {
+                if (i == 0) {
+                    if (item.value == null || item.value.trim().length == 0 || parseFloat(item.value.trim()) < 0) {
+                        keywordPrice = 0;
+                    } else {
+                        keywordPrice = item.value.trim();
+                    }
+                }
+                if (i == 1) {
+                    if (item.value == null || item.value.trim().length == 0 || parseFloat(item.value.trim()) < 0) {
+                        if (parseFloat(keywordPrice) > 0) {
+                            alert("价格区间不对!请重新输入！");
+                            return false;
+                        }
+                        keywordPrice += 0;
+                    } else {
+                        if (parseFloat(keywordPrice) > parseFloat(item.value.trim())) {
+                            alert("价格区间不对!请重新输入！");
+                            return false;
+                        }
+                        keywordPrice += ("," + item.value.trim());
+                    }
+                }
+            });
+            _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter + "&matchType=" + matchType + "&price=" + keywordPrice;
+        } else {
+            _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter;
+        }
+
         $.ajax({
-            url: "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter,
+            url: _url,
             type: "POST",
             dataType: "json",
             async: false,
@@ -671,13 +727,13 @@ var skipPage = function () {
         if (_number <= -1 || _number == pageIndex) {
             return;
         }
-        $("#pagination1").pagination(total, getOptionsFromForm(_number));
+        $("#pagination1").pagination(records, getOptionsFromForm(_number));
     } else {
         _number = $("#anyPageNumber2").val() - 1;
         if (_number <= -1 || _number == pageIndex) {
             return;
         }
-        $("#pagination2").pagination(total, getOptionsFromForm(_number));
+        $("#pagination2").pagination(records, getOptionsFromForm(_number));
     }
 };
 

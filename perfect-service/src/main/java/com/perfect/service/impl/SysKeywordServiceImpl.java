@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vbzer_000 on 2014/8/27.
@@ -45,14 +46,14 @@ public class SysKeywordServiceImpl implements SysKeywordService {
     }
 
     @Override
-    public List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param) {
+    public List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
 
-        return keywordDAO.findByNames(query, fullMatch, param);
+        return keywordDAO.findByNames(query, fullMatch, param, queryParams);
     }
 
     @Override
-    public Integer countKeywordfindByNames(String[] query, boolean fullMatch, PaginationParam param) {
-        return keywordDAO.findByNames(query, fullMatch, param).size();
+    public Integer countKeywordfindByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
+        return keywordDAO.findByNames(query, fullMatch, param, queryParams).size();
     }
 
     @Override

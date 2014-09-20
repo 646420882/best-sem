@@ -4,6 +4,7 @@ import com.perfect.entity.KeywordEntity;
 import com.perfect.mongodb.utils.PaginationParam;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vbzer_000 on 2014/8/27.
@@ -20,9 +21,9 @@ public interface SysKeywordService {
 
     KeywordEntity findByName(String keyword, Long accountId);
 
-    List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param);
+    List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
 
-    Integer countKeywordfindByNames(String[] query, boolean fullMatch, PaginationParam param);
+    Integer countKeywordfindByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
 
     List<KeywordEntity> findByIds(List<Long> ids);
 }

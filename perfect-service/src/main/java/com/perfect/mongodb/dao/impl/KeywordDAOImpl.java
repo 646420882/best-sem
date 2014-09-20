@@ -116,12 +116,13 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
     @Override
-    public List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param) {
+    public List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
 
         Query mongoQuery = new Query();
 
+        Criteria criteria = null;
         if (fullMatch) {
-            mongoQuery.addCriteria(Criteria.where(NAME).in(query));
+            criteria = Criteria.where(NAME).in(query);
         } else {
             String prefix = ".*(";
             String suffix = ").*";
@@ -131,9 +132,31 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
             }
             reg = reg.substring(0, reg.length() - 1);
 
-            mongoQuery.addCriteria(Criteria.where(NAME).regex(prefix + reg + suffix));
+            criteria = Criteria.where(NAME).regex(prefix + reg + suffix);
 
         }
+
+        if (queryParams != null && !queryParams.isEmpty() && queryParams.size() > 0) {
+//            Criteria criteria = Criteria.where(NAME).regex(prefix + reg + suffix);
+            for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
+                if ("matchType".equals(entry.getKey())) {
+                    Integer matchType = Integer.valueOf(entry.getValue().toString());
+                    if (matchType == 1) {
+                        criteria.and("mt").is(1);
+                    } else if (matchType == 2) {
+                        criteria.and("mt").is(2).and("pt").is(3);
+                    } else if (matchType == 3) {
+                        criteria.and("mt").is(2).and("pt").is(2);
+                    } else if (matchType == 4) {
+                        criteria.and("mt").is(2).and("pt").is(1);
+                    } else if (matchType == 5) {
+                        criteria.and("mt").is(3);
+                    }
+                }
+            }
+        }
+        mongoQuery.addCriteria(criteria);
+
         return getMongoTemplate().find(param.withParam(mongoQuery), getEntityClass());
     }
 

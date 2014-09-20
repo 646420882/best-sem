@@ -1,6 +1,5 @@
 package com.perfect.service;
 
-import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.mongodb.utils.PaginationParam;
 import org.springframework.data.domain.Sort;
@@ -55,5 +54,7 @@ public interface BiddingRuleService {
 
     boolean setEnable(Long[] ids, boolean ebl);
 
-    List<BiddingRuleEntity> findByNames(String[] split, boolean fullMatch,PaginationParam param);
+    List<BiddingRuleEntity> findByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
+
+    Integer countBiddingRuleEntityfindByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
 }

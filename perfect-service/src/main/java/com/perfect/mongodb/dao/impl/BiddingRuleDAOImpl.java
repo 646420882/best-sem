@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -252,7 +253,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     }
 
     @Override
-    public List<BiddingRuleEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param) {
+    public List<BiddingRuleEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
         Query mongoQuery = new Query();
         String prefix = "(";
         String suffix = ")";
@@ -266,9 +267,38 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
         }
         reg = reg.substring(0, reg.length() - 1);
 
-        Criteria criteria = Criteria.where(NAME).regex(prefix + reg + suffix);
+        if (queryParams != null && !queryParams.isEmpty() && queryParams.size() > 0) {
+            Criteria criteria = Criteria.where(NAME).regex(prefix + reg + suffix);
+            for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
+                if ("matchType".equals(entry.getKey())) {
+                    Integer matchType = Integer.valueOf(entry.getValue().toString());
+                    if (matchType == 1) {
+                        criteria.and("mt").is(1);
+                    } else if (matchType == 2) {
+                        criteria.and("mt").is(2).and("pt").is(3);
+                    } else if (matchType == 3) {
+                        criteria.and("mt").is(2).and("pt").is(2);
+                    } else if (matchType == 4) {
+                        criteria.and("mt").is(2).and("pt").is(1);
+                    } else if (matchType == 5) {
+                        criteria.and("mt").is(3);
+                    }
+                }
+                if ("keywordPrice".equals(entry.getKey())) {
+                    String prices[] = entry.getValue().toString().split(",");
+                    BigDecimal startPrice = new BigDecimal(Double.valueOf(prices[0]));
+                    BigDecimal endPrice = new BigDecimal(Double.valueOf(prices[1]));
+                    criteria.and("stgy.min").lte(startPrice).and("stgy.max").gte(endPrice);
+                }
+            }
+            mongoQuery.addCriteria(criteria);
+        } else {
+            mongoQuery.addCriteria(Criteria.where(NAME).regex(prefix + reg + suffix));
+        }
 
-        mongoQuery.addCriteria(criteria);
+//        Criteria criteria = Criteria.where(NAME).regex(prefix + reg + suffix);
+
+//        mongoQuery.addCriteria(criteria);
 
         return getMongoTemplate().find(param.withParam(mongoQuery), getEntityClass());
     }
