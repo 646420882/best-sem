@@ -2,14 +2,14 @@ function initOptions(id, start, end) {
 
     var select = $('#' + id);
     select.empty();
-    for (i = start; i <= end; i++) {
+    for (var i = start; i <= end; i++) {
         $("<option value='" + i + "'>" + i + "点</option>").appendTo(select);
     }
 }
 
-function emptydata() {
-
-}
+//function emptydata() {
+//
+//}
 
 var type = 1;   //智能竞价1, 重点词竞价2
 var selectedKeywordIds = [];
@@ -53,11 +53,11 @@ $(function () {
 
         selectedKeywordIds = keywordIds;
 
-        if (keywordIds.length == 1) {
+//        if (keywordIds.length == 1) {
 //            filldata(items.val());
-        } else {
-            emptydata();
-        }
+//        } else {
+//            emptydata();
+//        }
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
@@ -92,7 +92,7 @@ $(function () {
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box2 ").css("display", "none");
+        $(".box2").css("display", "none");
     });
     //修改访问网址
     $("#showbox4").click(function () {
@@ -167,9 +167,7 @@ $(function () {
                 }
             });
         } else {
-            if (items.length > 0) {
-                alert("所选关键词没有设置竞价规则!");
-            }
+            alert("所选关键词没有设置竞价规则!");
         }
     });
 
@@ -208,9 +206,7 @@ $(function () {
                 }
             });
         } else {
-            if (items.length > 0) {
-                alert("所选关键词没有设置竞价规则!");
-            }
+            alert("所选关键词没有设置竞价规则!");
         }
     });
     $(".close").click(function () {
@@ -260,7 +256,6 @@ $(function () {
 
     });
     //选择框全选
-
     $("#checkAll").click(function () {
         $('input[name="subbox"]').prop("checked", this.checked);
     });
@@ -328,9 +323,7 @@ $(function () {
             url: "/bidding/rank",
             data: {'ids': keywordIds.toString()},
             type: "POST",
-            success: function (datas) {
-                datas.rows.forEach(function (i, item) {
-                });
+            success: function (data) {
                 alert("排名检查完毕,请点击查看当前排名.");
             }
         })
@@ -409,98 +402,100 @@ $(function () {
             _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter;
         }
 
-        $.ajax({
-            url: _url,
-            type: "POST",
-            dataType: "json",
-            async: false,
-            success: function (datas) {
-                if (datas.rows == undefined) {
-                    emptyTable(tbl);
-                } else {
-                    total = datas.total;
-                    $("#pagination1").pagination(total, optInit);
-                    fullItems(datas, tbl);
-                }
-            }
-        })
+        grid.setGridParam({url: _url}).trigger("reloadGrid");
+
+//        $.ajax({
+//            url: _url,
+//            type: "POST",
+//            dataType: "json",
+//            async: false,
+//            success: function (datas) {
+//                if (datas.rows == undefined) {
+//                    emptyTable(tbl);
+//                } else {
+//                    total = datas.total;
+//                    $("#pagination1").pagination(total, optInit);
+//                    fullItems(datas, tbl);
+//                }
+//            }
+//        })
 
     });
 
 });
 
-function emptyTable(name) {
-    var rows = [];
-    for (i = 0; i < 10; i++) {
-        var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
-            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
-        rows.push(row)
-    }
-    $("#" + name + " tbody").html(rows);
-    $("#" + name + " tbody tr:odd").addClass("list2_box1");
-    $("#" + name + " tbody tr:even").addClass("list2_box2");
-}
+//function emptyTable(name) {
+//    var rows = [];
+//    for (i = 0; i < 10; i++) {
+//        var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
+//            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+//        rows.push(row)
+//    }
+//    $("#" + name + " tbody").html(rows);
+//    $("#" + name + " tbody tr:odd").addClass("list2_box1");
+//    $("#" + name + " tbody tr:even").addClass("list2_box2");
+//}
 
-function fullItems(datas, name) {
-    $('#' + name + ' tbody tr').remove();
-    var newrows = [];
-    datas.rows.forEach(function (item) {
-        var newrow = "";
-        var pcUrl = item.pcDestinationUrl;
-        if (pcUrl == null) {
-            pcUrl = "";
-        }
-        var mobileUrl = item.mobileDestinationUrl;
-        if (mobileUrl == null) {
-            mobileUrl = "";
-        }
-        var _price = 0;
-        if (item.price != null) {
-            _price = item.price;
-        }
-        if (item.keywordId != null) {
-            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.keywordId + "'></td>" +
-                "<td>&nbsp;" + item.keyword + "</td>" +
-                "<td>&nbsp;" + item.cost + "</td>" +
-                "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.keywordId + "'>查看最新排名</a></td>" +
-                "<td>&nbsp;" + item.impression + "</td>" +
-                "<td>&nbsp;" + item.ctr + "%</td>" +
-                "<td>&nbsp;" + _price + "</td>" +
-                "<td>&nbsp;" + item.pcQuality + "</td>" +
-                "<td>&nbsp;" + item.mQuality + "</td>" +
-                "<td>&nbsp;" + item.statusStr + "</td>";
-        } else {
-            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.id + "'></td>" +
-                "<td>&nbsp;" + item.keyword + "</td>" +
-                "<td>&nbsp;" + item.cost + "</td>" +
-                "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.id + "'>查看最新排名</a></td>" +
-                "<td>&nbsp;" + item.impression + "</td>" +
-                "<td>&nbsp;" + item.ctr + "%</td>" +
-                "<td>&nbsp;" + _price + "</td>" +
-                "<td>&nbsp;" + item.pcQuality + "</td>" +
-                "<td>&nbsp;" + item.mQuality + "</td>" +
-                "<td>&nbsp;" + item.statusStr + "</td>";
-        }
-
-        if (item.rule) {
-            var biddingStatus = "";
-            if (item.biddingStatus == 0) {
-                biddingStatus = "已暂停";
-            } else if (item.biddingStatus == 1) {
-                biddingStatus = "已启动";
-            }
-            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>" + item.ruleDesc + "</a></td><td><a target='_blank' href='" + pcUrl + "'>" + pcUrl + "</a></td><td><a target='_blank' href='" + mobileUrl + "'>" + mobileUrl + "</a></td><td>" + biddingStatus + "</td></tr>";
-        } else {
-            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "' onclick='addRule(this)'>" + "+添加规则</a></td><td><a target='_blank' href='" + pcUrl + "'>" + pcUrl + "</a></td><td><a target='_blank' href='" + mobileUrl + "'>" + mobileUrl + "</a></td><td>无</td></tr>";
-        }
-        newrows.push(newrow);
-    });
-
-    $('#' + name + ' tbody').html(newrows);
-    $("#" + name + " tbody tr:odd").addClass("list2_box1");
-    $("#" + name + " tbody tr:even").addClass("list2_box2");
-
-}
+//function fullItems(datas, name) {
+//    $('#' + name + ' tbody tr').remove();
+//    var newrows = [];
+//    datas.rows.forEach(function (item) {
+//        var newrow = "";
+//        var pcUrl = item.pcDestinationUrl;
+//        if (pcUrl == null) {
+//            pcUrl = "";
+//        }
+//        var mobileUrl = item.mobileDestinationUrl;
+//        if (mobileUrl == null) {
+//            mobileUrl = "";
+//        }
+//        var _price = 0;
+//        if (item.price != null) {
+//            _price = item.price;
+//        }
+//        if (item.keywordId != null) {
+//            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.keywordId + "'></td>" +
+//                "<td>&nbsp;" + item.keyword + "</td>" +
+//                "<td>&nbsp;" + item.cost + "</td>" +
+//                "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.keywordId + "'>查看最新排名</a></td>" +
+//                "<td>&nbsp;" + item.impression + "</td>" +
+//                "<td>&nbsp;" + item.ctr + "%</td>" +
+//                "<td>&nbsp;" + _price + "</td>" +
+//                "<td>&nbsp;" + item.pcQuality + "</td>" +
+//                "<td>&nbsp;" + item.mQuality + "</td>" +
+//                "<td>&nbsp;" + item.statusStr + "</td>";
+//        } else {
+//            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.id + "'></td>" +
+//                "<td>&nbsp;" + item.keyword + "</td>" +
+//                "<td>&nbsp;" + item.cost + "</td>" +
+//                "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.id + "'>查看最新排名</a></td>" +
+//                "<td>&nbsp;" + item.impression + "</td>" +
+//                "<td>&nbsp;" + item.ctr + "%</td>" +
+//                "<td>&nbsp;" + _price + "</td>" +
+//                "<td>&nbsp;" + item.pcQuality + "</td>" +
+//                "<td>&nbsp;" + item.mQuality + "</td>" +
+//                "<td>&nbsp;" + item.statusStr + "</td>";
+//        }
+//
+//        if (item.rule) {
+//            var biddingStatus = "";
+//            if (item.biddingStatus == 0) {
+//                biddingStatus = "已暂停";
+//            } else if (item.biddingStatus == 1) {
+//                biddingStatus = "已启动";
+//            }
+//            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>" + item.ruleDesc + "</a></td><td><a target='_blank' href='" + pcUrl + "'>" + pcUrl + "</a></td><td><a target='_blank' href='" + mobileUrl + "'>" + mobileUrl + "</a></td><td>" + biddingStatus + "</td></tr>";
+//        } else {
+//            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "' onclick='addRule(this)'>" + "+添加规则</a></td><td><a target='_blank' href='" + pcUrl + "'>" + pcUrl + "</a></td><td><a target='_blank' href='" + mobileUrl + "'>" + mobileUrl + "</a></td><td>无</td></tr>";
+//        }
+//        newrows.push(newrow);
+//    });
+//
+//    $('#' + name + ' tbody').html(newrows);
+//    $("#" + name + " tbody tr:odd").addClass("list2_box1");
+//    $("#" + name + " tbody tr:even").addClass("list2_box2");
+//
+//}
 
 //保存当前关键词竞价规则
 function sendReq(run) {
@@ -524,7 +519,7 @@ function sendReq(run) {
 //    } else {
 //        ids.push($.kwid);
 //    }
-    req.ids = getAllSelectedKeywordIds();
+    req.ids = selectedKeywordIds;
 
     var timeRange = checked('times').val();
     req.timerange = timeRange;
@@ -604,34 +599,34 @@ function sendReq(run) {
     })
 }
 
-function filldata(id) {
-    $.ajax({
-        url: "/bidding/keyword/" + id,
-        type: "GET",
-        success: function (datas) {
-            datas.rows.each(function (item) {
-                var s = item.strategyEntity;
-                setSeleValue('device', s.device);
-
-                var mtimes = (s.times.length == 2) ? 1 : 2;
-                checkValue('times', mtimes);
-
-                if (mtimes == 1) {
-                    setSeleValue('start', s.times[0]);
-                    setSeleValue('end', s.times[1]);
-                } else {
-                    for (i = 0; i < s.times.length; i + 2) {
-                        var start = s.times[i];
-                        if (start < 12) {
-                            checked()
-                        }
-                    }
-                }
-
-            });
-        }
-    })
-}
+//function filldata(id) {
+//    $.ajax({
+//        url: "/bidding/keyword/" + id,
+//        type: "GET",
+//        success: function (datas) {
+//            datas.rows.each(function (item) {
+//                var s = item.strategyEntity;
+//                setSeleValue('device', s.device);
+//
+//                var mtimes = (s.times.length == 2) ? 1 : 2;
+//                checkValue('times', mtimes);
+//
+//                if (mtimes == 1) {
+//                    setSeleValue('start', s.times[0]);
+//                    setSeleValue('end', s.times[1]);
+//                } else {
+//                    for (i = 0; i < s.times.length; i + 2) {
+//                        var start = s.times[i];
+//                        if (start < 12) {
+//                            checked()
+//                        }
+//                    }
+//                }
+//
+//            });
+//        }
+//    })
+//}
 
 function validate(start, end) {
     if (start == end) {

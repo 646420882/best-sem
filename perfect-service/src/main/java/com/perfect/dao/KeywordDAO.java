@@ -1,6 +1,7 @@
 package com.perfect.dao;
 
 import com.perfect.autosdk.sms.v3.KeywordInfo;
+import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.backup.KeyWordBackUpEntity;
 import com.perfect.mongodb.utils.Pager;
@@ -9,6 +10,7 @@ import com.perfect.mongodb.utils.PaginationParam;
 import org.springframework.data.mongodb.core.query.Query;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +27,10 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
      * @param value
      */
     void updateMulti(String field, String seedWord, Object value);
+
+    void updateMultiKeyword(Long[] ids, BigDecimal price, String pcUrl);
+
+    AdgroupEntity findByKeywordId(Long keywordId);
 
     List<Long> getKeywordIdByAdgroupId(Long adgroupId);
 

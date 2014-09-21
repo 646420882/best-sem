@@ -34,30 +34,30 @@
 <div class="tab_box">
 <div class="containers over">
 <div class=" jiangjia_concent over">
-<div class="jingjia_left fl over">
-    <div class="j_l_top over">
-        <span class="fl"><h3>账户目录</h3></span>
-        <a href="#" class="fr">刷新</a>
+    <div class="jingjia_left fl over">
+        <div class="j_l_top over">
+            <span class="fl"><h3>账户目录</h3></span>
+            <a href="#" class="fr">刷新</a>
+        </div>
+        <div class="j_l_top2 over">
+            <span class="fl">查找计划单元</span>
+            <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png">
+        </div>
+        <div class="j_list01 over">
+            <ul id="zTree" class="ztree over">
+            </ul>
+        </div>
+        <div class="j_l_under over">
+            <a href="#">监控文件夹</a>
+        </div>
     </div>
-    <div class="j_l_top2 over">
-        <span class="fl">查找计划单元</span>
-        <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png">
-    </div>
-    <div class="j_list01 over">
-        <ul id="zTree" class="ztree over">
-        </ul>
-    </div>
-    <div class="j_l_under over">
-        <a href="#">监控文件夹</a>
-    </div>
-</div>
-<div class="jingjia_right fr over">
-<div class="zhushou_concent over">
-    <div class="wrap_list01 over wd ">
-        <ul>
-            <li>
-                <div class="w_list01 fl over">是否参与竞价：</div>
-                <div class="w_list02 fl over">
+    <div class="jingjia_right fr over">
+        <div class="zhushou_concent over">
+            <div class="wrap_list01 over wd ">
+                <ul>
+                    <li>
+                        <div class="w_list01 fl over">是否参与竞价：</div>
+                        <div class="w_list02 fl over">
                                         <span>
                                             <form>
                                                 <input type="radio" name="in" checked="checked" value="0">&nbsp;全部
@@ -85,27 +85,27 @@
                                           <span>
                                               <input type="button" value="高级搜索∨" class="advanced_search">
                                         </span>
-                </div>
-            </li>
-        </ul>
-        <div id="advancedSearch" class="Senior over hides">
-            <ul>
-                <li>
-                    <div class="w_list01 fl over">匹配模式：</div>
-                    <div class="w_list02 fl over" id="matchType">
+                        </div>
+                    </li>
+                </ul>
+                <div id="advancedSearch" class="Senior over hides">
+                    <ul>
+                        <li>
+                            <div class="w_list01 fl over">匹配模式：</div>
+                            <div class="w_list02 fl over" id="matchType">
                                     <span><input type="checkbox" name="matchType" checked="checked"
                                                  value="1">&nbsp;精准</span>
-                        <span><input type="checkbox" name="matchType" value="2">&nbsp;短语-核心</span>
-                        <span><input type="checkbox" name="matchType" value="3">&nbsp;短语-精准</span>
-                        <span><input type="checkbox" name="matchType" value="4">&nbsp;短语-同义</span>
-                        <span><input type="checkbox" name="matchType" value="5">&nbsp;广泛</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="w_list01 fl over">质量度：</div>
-                    <div class="w_list02 fl over" id="keywordQuality">
-                        <ul>
-                            <li>
+                                <span><input type="checkbox" name="matchType" value="2">&nbsp;短语-核心</span>
+                                <span><input type="checkbox" name="matchType" value="3">&nbsp;短语-精准</span>
+                                <span><input type="checkbox" name="matchType" value="4">&nbsp;短语-同义</span>
+                                <span><input type="checkbox" name="matchType" value="5">&nbsp;广泛</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="w_list01 fl over">质量度：</div>
+                            <div class="w_list02 fl over" id="keywordQuality">
+                                <ul>
+                                    <li>
                                             <span><input type="checkbox" name="keywordQuality"
                                                          value="1">&nbsp;一分词</span>
                                             <span><input type="checkbox" name="keywordQuality"
@@ -116,8 +116,8 @@
                                                          value="4">&nbsp;四分词</span>
                                             <span><input type="checkbox" name="keywordQuality"
                                                          value="5">&nbsp;五分词</span>
-                            </li>
-                            <li>
+                                    </li>
+                                    <li>
                                             <span><input type="checkbox" name="keywordQuality"
                                                          value="6">&nbsp;六分词</span>
                                             <span><input type="checkbox" name="keywordQuality"
@@ -128,76 +128,45 @@
                                                          value="9">&nbsp;九分词</span>
                                             <span><input type="checkbox" name="keywordQuality"
                                                          value="10">&nbsp;十分词</span>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
 
-                <li>
-                    <div class="w_list01 fl over">出价：</div>
-                    <div class="w_list02 fl over" id="keywordPrice">
+                        <li>
+                            <div class="w_list01 fl over">出价：</div>
+                            <div class="w_list02 fl over" id="keywordPrice">
                                     <span>
                                         <input type="text" class="price"> - <input type="text" class="price">
                                     </span>
-                    </div>
-                </li>
-            </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
+        <div class="w_list03 ">
+            <ul class="jiangjia_list">
+                <li class="current" id="showbox">设置规则</li>
+                <li id="updateBtn">更新账户数据</li>
+                <li id="rankBtn">检查当前排名</li>
+                <li id="showbox2">修改出价</li>
+                <li id="showbox7">启动竞价</li>
+                <li id="showbox3">暂停竞价</li>
+                <li id="showbox4">修改访问网址</li>
+                <li id="showbox5">分组</li>
+                <li id="showbox6">自定义列</li>
+            </ul>
+            <div class="over wd">
+                <span class="fl">当前显示数据日期：昨天</span>
+            </div>
+            <div class="list4">
+                <table id="table1" border="0" cellspacing="0" width="100%">
+                </table>
+            </div>
+        </div>
+        <div id="pagination1" class="pagination"></div>
     </div>
-</div>
-<div class="w_list03 ">
-    <ul class="jiangjia_list">
-        <li class="current" id="showbox">设置规则</li>
-        <li id="updateBtn">更新账户数据</li>
-        <li id="rankBtn">检查当前排名</li>
-        <li id="showbox2">修改出价</li>
-        <li id="showbox7">启动竞价</li>
-        <li id="showbox3">暂停竞价</li>
-        <li id="showbox4">修改访问网址</li>
-        <li id="showbox5">分组</li>
-        <li id="showbox6">自定义列</li>
-    </ul>
-    <div class="over wd">
-        <span class="fl">当前显示数据日期：昨天</span>
-    </div>
-    <div class="list4">
-        <table border="0" cellspacing="0" width="101%" id="table1">
-            <%--<thead>
-            <tr class="list02_top">
-                <td>&nbsp;<input type="checkbox" id="checkAll"></td>
-                <td>&nbsp;关键词</td>
-                <td>&nbsp;消费</td>
-                <td>&nbsp;当前排名</td>
-                <td>&nbsp;展现量</td>
-                <td>&nbsp;点击率</td>
-                <td>&nbsp;出价</td>
-                <td>&nbsp;质量度</td>
-                <td>&nbsp;移动端质量度</td>
-                <td>&nbsp;状态</td>
-                <td>&nbsp;竞价规则</td>
-                <td>&nbsp;Pc&nbsp;URL</td>
-                <td>&nbsp;Mobile&nbsp;URL</td>
-                <td>&nbsp;竞价状态</td>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>--%>
-        </table>
-        <%--<script type="application/javascript">
-            var rows = [];
-            for (i = 0; i < 10; i++) {
-                var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
-                        "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
-                rows.push(row)
-            }
-            $("#table1 tbody").html(rows);
-            $("#table1 tbody tr:odd").addClass("list2_box1");
-            $("#table1 tbody tr:even").addClass("list2_boxNa2");
-        </script>--%>
-    </div>
-</div>
-<div id="pagination1" class="pagination"></div>
-</div>
 </div>
 <div class="containers over hides">
     <div class=" jiangjia_concent over">
@@ -473,16 +442,16 @@
     <div class="mainlist">
         <ul>
             <li>
-                <input type="radio" name="price1" checked="checked"> 输入新问价: <input class="zs_input3" type="text"></li>
+                <input type="radio" name="price1" checked="checked"> 输入新出价: <input name="newPrice" class="zs_input3"
+                                                                                   type="text"></li>
             <li><input type="radio" name="price1" checked="checked"><span class="mainlist_left"> 使用单元出价 </span></li>
         </ul>
     </div>
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li class="current">保存</li>
+                <li id="modifyPrice" class="current">保存</li>
                 <li class="close">取消</li>
-
             </ul>
         </div>
     </div>
@@ -523,13 +492,13 @@
     <div class="mainlist">
         <ul>
             <li>输入指向网址：</li>
-            <li>http://<input class="zs_input3" type="text"></li>
+            <li>http://<input name="urlAddress" class="zs_input3" type="text"></li>
         </ul>
     </div>
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li class="current">保存</li>
+                <li id="modifyUrl" class="current">保存</li>
                 <li class="close">取消</li>
 
             </ul>
@@ -624,7 +593,7 @@
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li id="customCol" class="current">保存</li>
+                <li id="customCol" class="current">确定</li>
                 <li class="close">取消</li>
             </ul>
         </div>
@@ -680,10 +649,11 @@ function beforeClick(treeId, treeNode) {
     if (treeNode.level == 0) {
         //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
 //            alert(treeNode.id + "," + treeNode.name);
-        campaignId = treeNode.id + "," + "0";
+//        campaignId = treeNode.id + "," + "0";
         _campaignId = treeNode.id;
         _adgroupId = null;
         keyWordPage = -1;
+        pageIndex = 0;
         //事件处理
         //var curPage = $('.curpage').text();
         //var size = $("#size").find("option:selected").val();
@@ -714,10 +684,11 @@ function beforeClick(treeId, treeNode) {
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元),则应该展示其下属的关键词数据
 //            alert(treeNode.id + "," + treeNode.name);
-        adgroupId = treeNode.id + "," + "1";
+//        adgroupId = treeNode.id + "," + "1";
         _campaignId = null;
         _adgroupId = treeNode.id;
         keyWordPage = -1;
+        pageIndex = 0;
         //事件处理
 
         skip = 0;
@@ -823,8 +794,8 @@ var grid = null;
 var getAllCheckedcb = function () {
     var rowIds = $("#table1").jqGrid('getGridParam', 'selarrrow');
     var keywordIds = [];
-    rowIds.forEach(function (i, item) {
-        keywordIds.push(grid.jqGrid('getCell', item, "keywordId"));
+    rowIds.forEach(function (rowId) {
+        keywordIds.push(grid.jqGrid('getCell', rowId, "keywordId"));
     });
     return keywordIds;
 };
@@ -832,11 +803,11 @@ var getAllCheckedcb = function () {
 var getAllSelectedBidRule = function () {
     var rowIds = $("#table1").jqGrid('getGridParam', 'selarrrow');
     var keywordIds = [];
-    $.each(rowIds, function (i, item) {
-        if (grid.jqGrid('getCell', item, "biddingStatus") == "无") {
+    $.each(rowIds, function (rowId) {
+        if (grid.jqGrid('getCell', rowId, "biddingStatus") == "无") {
             return true;
         }
-        keywordIds.push(grid.jqGrid('getCell', item, "keywordId"));
+        keywordIds.push(grid.jqGrid('getCell', rowId, "keywordId"));
     });
     return keywordIds;
 };
@@ -881,6 +852,68 @@ $(function () {
 
     $("#customCol").on('click', function () {
         changeGridCol();
+    });
+
+    $("#modifyPrice").on('click', function () {
+        if ($("#box2").next().find("input[name=price1]:checked").length == 0) {
+            return false;
+        }
+        var radios = $("#box2").next().find("input[name=price1]:radio");
+        var price = 0;
+        $.each(radios, function (i, item) {
+            if (i == 0 && item.checked) {
+                //自定义新的出价
+                if ($("#box2").next().find("input[name=newPrice]:text").val().trim().length > 0) {
+                    price = $("#box2").next().find("input[name=newPrice]:text").val();
+                    return false;
+                }
+            }
+            //使用单元出价
+        });
+        $.ajax({
+            url: "/keyword/update",
+            dataType: "json",
+            data: {
+                'ids': selectedKeywordIds.toString(),
+                "price": price
+            },
+            type: "POST",
+            success: function (data) {
+                if (data.stat) {
+                    $(".TB_overlayBG").css("display", "none");
+                    $(".box2").css("display", "none");
+                    alert("修改成功!");
+                } else {
+                    alert("修改失败!");
+                }
+            }
+        });
+    });
+
+    $("#modifyUrl").on('click', function () {
+        var url = $("input[name=urlAddress]:text").val();
+        if (url.trim().length == 0) {
+            return false;
+        }
+
+        url = "http://" + url;
+        $.ajax({
+            url: "/keyword/update",
+            data: {
+                'ids': selectedKeywordIds.toString(),
+                "pcUrl": url
+            },
+            type: "POST",
+            success: function (data) {
+                if (data.stat) {
+                    $(".TB_overlayBG").css("display", "none");
+                    $(".box4").css("display", "none");
+                    alert("修改成功!");
+                } else {
+                    alert("修改失败!");
+                }
+            }
+        });
     });
 
     //jqGrid

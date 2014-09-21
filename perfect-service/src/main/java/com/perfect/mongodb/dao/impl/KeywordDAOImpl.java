@@ -7,6 +7,7 @@ import com.perfect.dao.KeyWordBackUpDAO;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.dao.LogDAO;
 import com.perfect.dao.LogProcessingDAO;
+import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
 import com.perfect.entity.KeywordEntity;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -455,6 +457,43 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
             e.printStackTrace();
         }
         logProcessingDAO.insertAll(logEntities);
+    }
+
+    @Override
+    public void updateMultiKeyword(Long[] ids, BigDecimal price, String pcUrl) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Query query = Query.query(Criteria.where(KEYWORD_ID).in(ids));
+        Update update = new Update();
+        if (price != null) {
+            if (price.doubleValue() == 0) {
+                //使用单元出价
+                for (Long id : ids) {
+                    AdgroupEntity adgroupEntity = findByKeywordId(id);
+                    Double _price;
+                    if (adgroupEntity != null) {
+                        _price = adgroupEntity.getMaxPrice();
+                        BigDecimal adgroupPrice = new BigDecimal(_price);
+                        update.set("pr", adgroupPrice);
+                        mongoTemplate.updateMulti(query, update, getEntityClass());
+                    }
+                }
+            } else {
+                update.set("pr", price);
+                mongoTemplate.updateMulti(query, update, getEntityClass());
+            }
+        }
+        if (pcUrl != null) {
+            update.set("pc", pcUrl);
+            mongoTemplate.updateMulti(query, update, getEntityClass());
+        }
+    }
+
+    @Override
+    public AdgroupEntity findByKeywordId(Long keywordId) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        KeywordEntity keywordEntity = mongoTemplate.findOne(Query.query(Criteria.where(KEYWORD_ID).is(keywordId)), getEntityClass());
+        Long adgroupId = keywordEntity.getAdgroupId();
+        return mongoTemplate.findOne(Query.query(Criteria.where(ADGROUP_ID).is(adgroupId)), AdgroupEntity.class);
     }
 
     public void deleteById(Long id) {

@@ -6,12 +6,14 @@ import com.perfect.utils.JSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +90,20 @@ public class KeywordController {
                                     @PathVariable Object value,
                                     @RequestParam(value = "seedWord") String seedWord) {
         keywordDAO.updateMulti(field, seedWord, value);
+        return new ModelAndView(getJsonView());
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView updateMultiKeyword(@RequestParam(value = "ids") Long[] ids,
+                                           @RequestParam(value = "price", required = false) Double price,
+                                           @RequestParam(value = "pcUrl", required = false) String pcUrl) {
+        if (price != null) {
+            BigDecimal _price = new BigDecimal(price);
+            keywordDAO.updateMultiKeyword(ids, _price, null);
+        }
+        if (pcUrl != null) {
+            keywordDAO.updateMultiKeyword(ids, null, pcUrl);
+        }
         return new ModelAndView(getJsonView());
     }
 
