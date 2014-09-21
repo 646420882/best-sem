@@ -45,13 +45,10 @@
     </div>
     <div class="j_list01 over">
         <ul id="zTree" class="ztree over">
-
-
         </ul>
     </div>
     <div class="j_l_under over">
         <a href="#">监控文件夹</a>
-
     </div>
 </div>
 <div class="jingjia_right fr over">
@@ -147,64 +144,6 @@
             </ul>
         </div>
     </div>
-    <%--<<<<<<< HEAD
-                        <div class="w_list03 ">
-                            <ul class="jiangjia_list">
-                                <li class="current" id="showbox">设置规则</li>
-                                <li id="updateBtn">更新账户数据</li>
-                                <li id="rankBtn">检查当前排名</li>
-                                <li id="showbox2">修改出价</li>
-                                <li id="showbox7">启动竞价</li>
-                                <li id="showbox3">暂停竞价</li>
-                                <li id="showbox4">修改访问网址</li>
-                                <li class="showbox5">分组</li>
-                                <li id="showbox6">自定义列</li>
-                            </ul>
-                            </div>
-                            <div class="over wd">
-                                <span class="fl">当前显示数据日期：昨天</span>
-                            </div>
-                            <div class="list4">
-                                <table border="0" cellspacing="0" width="101%" id="table1">
-                                    <thead>
-                                    <tr class="list02_top">
-                                        <td>&nbsp;<input type="checkbox" id="checkAll"></td>
-                                        <td>&nbsp;关键词</td>
-                                        <td>&nbsp;消费</td>
-                                        <td>&nbsp;当前排名</td>
-                                        <td>&nbsp;展现量</td>
-                                        <td>&nbsp;点击率</td>
-                                        <td>&nbsp;出价</td>
-                                        <td>&nbsp;质量度</td>
-                                        <td>&nbsp;移动端质量度</td>
-                                        <td>&nbsp;状态</td>
-                                        <td>&nbsp;竞价规则</td>
-                                        <td>&nbsp;PCURL</td>
-                                        <td>&nbsp;MobileURL</td>
-                                        <td>&nbsp;竞价状态</td>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                                <script type="application/javascript">
-                                    var rows = [];
-                                    for (i = 0; i < 10; i++) {
-                                        var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
-                                                "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
-                                        rows.push(row)
-                                    }
-                                    $("#table1 tbody").html(rows);
-                                    $("#table1 tbody tr:odd").addClass("list2_box1");
-                                    $("#table1 tbody tr:even").addClass("list2_boxNa2");
-                                </script>
-                            </div>
-                            &lt;%&ndash;<div>每页显示<select id="size">
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>&ndash;%&gt;
-    =======--%>
 </div>
 <div class="w_list03 ">
     <ul class="jiangjia_list">
@@ -648,30 +587,37 @@
     <h2 id="box6">自定义列<a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
-        <ul>
-            <li><span class="define fl"><input type="checkbox" value="campaign"> 推广单元</span><span
-                    class="define fl"><input
-                    type="checkbox" value="matchType"> 匹配模式</span></li>
-            <li><span class="define fl"><input type="checkbox" value="adgroup"> 推广计划</span><span
-                    class="define fl"><input
-                    type="checkbox" value="impression"> 展现量</span></li>
-            <li><span class="define fl"><input type="checkbox" value="statusStr"> 状态</span><span
-                    class="define fl"><input type="checkbox"> 点击率</span>
+        <ul id="customColList">
+            <li>
+                <span class="define fl"><input type="checkbox" value="campaignName"> 推广单元</span>
+                <span class="define fl"><input type="checkbox" value="cpm"> 千次展现消费</span>
             </li>
-            <li><span class="define fl"><input type="checkbox" value="price"> 出价</span><span class="define fl"><input
-                    type="checkbox">平均点击价格 </span>
+            <li>
+                <span class="define fl"><input type="checkbox" value="adgroupName"> 推广计划</span>
+                <span class="define fl"><input type="checkbox" value="impression"> 展现量</span>
             </li>
-            <li><span class="define fl"><input type="checkbox" value="pcQuality"> 质量度</span><span
-                    class="define fl"><input
-                    type="checkbox" value="mQuality">移动端质量度 </span></li>
-            <li><span class="define fl"><input type="checkbox" value="ctr"> 点击量</span><span class="define fl"><input
-                    type="checkbox" value="currentRank"> 当前排名</span></li>
-            <li><span class="define fl"><input type="checkbox" value="cost"> 消费</span><span class="define fl"><input
-                    type="checkbox" value="pcDestinationUrl"> 访问URL</span>
+            <li>
+                <span class="define fl"><input type="checkbox" value="statusStr"> 状态</span>
+                <span class="define fl"><input type="checkbox" value="ctr"> 点击率</span>
             </li>
-            <li><span class="define fl"><input type="checkbox" value="ruleDesc"> 竞价规则</span><span
-                    class="define fl"><input
-                    type="checkbox"> </span></li>
+            <li>
+                <span class="define fl"><input type="checkbox" value="price"> 出价</span>
+                <span class="define fl"><input type="checkbox" value="cpc">平均点击价格</span>
+            </li>
+            <li>
+                <span class="define fl"><input type="checkbox" value="pcQuality"> PC端质量度</span>
+                <span class="define fl"><input type="checkbox" value="mQuality">移动端质量度</span>
+            </li>
+            <li>
+                <span class="define fl"><input type="checkbox" value="click"> 点击量</span>
+                <span class="define fl"><input type="checkbox" value="currentRank"> 当前排名</span>
+            </li>
+            <li>
+                <span class="define fl"><input type="checkbox" value="cost"> 消费</span>
+                <span class="define fl"><input type="checkbox" value="pcDestinationUrl"> Pc&nbsp;URL</span>
+            </li>
+            <li><span class="define fl"><input type="checkbox" value="ruleDesc"> 竞价规则</span>
+                <span class="define fl"><input type="checkbox" value="mobileDestinationUrl"> Mobile&nbsp;URL</span></li>
         </ul>
 
     </div>
@@ -726,14 +672,13 @@ function filter(treeId, parentNode, childNodes) {
     return childNodes;
 }
 function beforeClick(treeId, treeNode) {
-    var tbl = "table1";
-    if (treeId == 'zTree2') {
-        tbl = "table2";
-    }
+//    var tbl = "table1";
+//    if (treeId == 'zTree2') {
+//        tbl = "table2";
+//    }
 
     if (treeNode.level == 0) {
         //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
-
 //            alert(treeNode.id + "," + treeNode.name);
         campaignId = treeNode.id + "," + "0";
         _campaignId = treeNode.id;
@@ -871,8 +816,44 @@ var getOptionsFromForm = function (current_page) {
 var optInit = getOptionsFromForm(0);
 /*************************************************/
 
+/**********************jqGrid*********************/
 var dataUrl = "";
 var grid = null;
+
+var getAllCheckedcb = function () {
+    var rowIds = $("#table1").jqGrid('getGridParam', 'selarrrow');
+    var keywordIds = [];
+    rowIds.forEach(function (i, item) {
+        keywordIds.push(grid.jqGrid('getCell', item, "keywordId"));
+    });
+    return keywordIds;
+};
+
+var getAllSelectedBidRule = function () {
+    var rowIds = $("#table1").jqGrid('getGridParam', 'selarrrow');
+    var keywordIds = [];
+    $.each(rowIds, function (i, item) {
+        if (grid.jqGrid('getCell', item, "biddingStatus") == "无") {
+            return true;
+        }
+        keywordIds.push(grid.jqGrid('getCell', item, "keywordId"));
+    });
+    return keywordIds;
+};
+
+var changeGridCol = function () {
+    var cbs = $("#customColList").find("input[type=checkbox]");
+    $.each(cbs, function (i, item) {
+        if (item.checked) {
+            $("#table1").setGridParam().showCol(item.value);
+        } else {
+            $("#table1").setGridParam().hideCol(item.value);
+        }
+    });
+    $(".TB_overlayBG").css("display", "none");
+    $(".box6").css("display", "none");
+};
+/*************************************************/
 
 //loading
 var ajaxbg = $("#background,#progressBar");
@@ -899,7 +880,7 @@ $(function () {
     });
 
     $("#customCol").on('click', function () {
-        ;
+        changeGridCol();
     });
 
     //jqGrid
@@ -908,62 +889,62 @@ $(function () {
         url: false,
         jsonReader: {
             root: "rows",
-//            total: "total",
-//            page: "page",
             records: "records",
             repeatitems: false
         },
-//        caption: "",
-//        pager: 'pagebar',
-//        viewrecords: true,//定义是否在导航条上显示总的记录数
         forceFit: true,
         shrinkToFit: true,//此选项用于根据width计算每列宽度的算法,默认值true
-        //colNames: ["", "关键词", "消费", "当前排名", "展现量", "点击率", "出价", "质量度", "移动端质量度", "状态", "竞价规则", "Pc URL", "Mobile URL", "竞价状态"],
         colModel: [
             // {label: '<input type=\"checkbox\" name=\"check_all\" onclick=\"checkAll();\" id=\"check_all\" >', name: 'checkall', width: 30,
             //sortable: false, align: 'center', formatter:function(v,x,r){ return "<input type='checkbox'/>"; }},
-            {label: ' 关键词ID', name: 'keywordId', width: 0, sortable: false, align: 'center', hidden: true},
-            {label: ' 关键词', name: 'keyword', width: 100, sortable: false, align: 'center'},
-            {label: ' 消费', name: 'cost', width: 50, sortable: false, align: 'center'},
-            {label: ' 当前排名', name: 'currentRank', width: 50, sortable: false, align: 'center'},
-            {label: ' 展现量', name: 'impression', width: 50, sortable: false, align: 'center'},
-            {label: ' 点击率', name: 'ctr', width: 50, sortable: false, align: 'center'},
-            {label: ' 出价', name: 'price', width: 30, sortable: false, align: 'center'},
-            {label: ' 质量度', name: ' pcQuality', width: 50, sortable: false, align: 'center'},
-            {label: ' 移动端质量度', name: 'mQuality', width: 80, sortable: false, align: 'center'},
-            {label: ' 状态', name: 'statusStr', width: 50, sortable: false, align: 'center'},
-            {label: ' 竞价规则', name: 'ruleDesc', width: 100, sortable: false, align: 'center'},
-            {label: ' Pc URL', name: 'pcDestinationUrl', width: 100, sortable: false, align: 'center', formatter: 'link'},
-            {label: ' Mobile URL', name: 'mobileDestinationUrl', width: 100, sortable: false, align: 'center', formatter: 'link'},
-            {label: ' 竞价状态', name: 'biddingStatus', width: 50, sortable: false, align: 'center'},
-            {label: ' 是否设置竞价规则', name: 'rule', width: 0, sortable: false, align: 'center', hidden: true}
+            {label: ' 关键词ID', name: 'keywordId', sortable: false, align: 'center', hidden: true},
+            {label: ' 关键词', name: 'keyword', sortable: false, align: 'center'},
+            {label: ' 推广计划', name: 'campaignName', sortable: false, align: 'center', hidden: true},
+            {label: ' 推广单元', name: 'adgroupName', sortable: false, align: 'center', hidden: true},
+            {label: ' 消费', name: 'cost', sortable: false, align: 'center'},
+            {label: ' 当前排名', name: 'currentRank', sortable: false, align: 'center'},
+            {label: ' 展现量', name: 'impression', sortable: false, align: 'center'},
+            {label: ' 点击量', name: 'click', sortable: false, align: 'center', hidden: true},
+            {label: ' 点击率', name: 'ctr', sortable: false, align: 'center'},
+            {label: ' 出价', name: 'price', sortable: false, align: 'center'},
+            {label: ' 平均点击价格', name: 'cpc', sortable: false, align: 'center', hidden: true},
+            {label: ' 千次展现消费', name: 'cpm', sortable: false, align: 'center', hidden: true},
+            {label: ' 质量度', name: ' pcQuality', sortable: false, align: 'center'},
+            {label: ' 移动端质量度', name: 'mQuality', sortable: false, align: 'center'},
+            {label: ' 状态', name: 'statusStr', sortable: false, align: 'center'},
+            {label: ' 竞价规则', name: 'ruleDesc', sortable: false, align: 'center'},
+            {label: ' Pc URL', name: 'pcDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
+            {label: ' Mobile URL', name: 'mobileDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
+            {label: ' 竞价状态', name: 'biddingStatus', sortable: false, align: 'center'},
+            {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true}
         ],
 
-        rowNum: 20,// 默认的每页显示记录条数
-        pgbuttons: false,// 是否显示翻页按钮
+        rowNum: 20,// 默认每页显示记录条数
+        pgbuttons: false,
         resizable: true,
         scroll: false,
         altRows: true,
         altclass: 'list2_box2',
-        autowidth: true,
+        width: '100%',
         loadui: 'disable',
         rownumbers: false,
         multiselect: true,
         beforeRequest: function () {
         },
-        onSelectRow: function (rowId, status, e) {
-//            $("table1").jqGrid('setSelection', rowId);
-        },
-        onCellSelect: function (rowId, iCol, cellContent, e) {
-            var index = iCol;
-            var ruleFlag = $("#table1").jqGrid('getCell', rowId, 15); //true, 已经设置竞价规则
-            var keywordId = $("#table1").jqGrid('getCell', rowId, 1);
-
-            if (iCol == 4) {//查看当前排名
-                getRank(keywordId);
+        beforeSelectRow: function (rowId, event) {
+            var $myGrid = $(this),
+                    iCol = $.jgrid.getCellIndex($(event.target).closest('td')[0]),
+                    cm = $myGrid.jqGrid('getGridParam', 'colModel');
+            if (cm[iCol].name === "cb") {
+                return true;
             }
 
-            if (index == 11 && ruleFlag == "false") {
+            var ruleFlag = $("#table1").jqGrid('getCell', rowId, "rule"); //true, 已经设置竞价规则
+            var keywordId = $("#table1").jqGrid('getCell', rowId, "keywordId");
+            if (iCol === 6) {//查看当前排名
+                getRank(keywordId);
+            }
+            else if (iCol === 16 && ruleFlag == "false") {//设置竞价规则
                 $(".TB_overlayBG").css({
                     display: "block", height: $(document).height()
                 });
@@ -973,6 +954,13 @@ $(function () {
                     display: "block"
                 });
             }
+
+            return false;
+        },
+        onSelectRow: function (rowId, status, event) {
+//            $("table1").jqGrid('setSelection', rowId);
+        },
+        onCellSelect: function (rowId, index, contents, event) {
         },
 
         loadComplete: function () {
@@ -980,30 +968,26 @@ $(function () {
         },
 
         gridComplete: function () {
-            records = grid.getGridParam("records");
-            //var all = $("#table1").getGridParam("selarrrow");
-            //jQuery("#grid_id").setGridParam().showCol("colname");
-            //jQuery("#grid_id").setGridParam().hideCol("colname");
-//            $("#table1").jqGrid("getRowData");
 //            alert(JSON.stringify($("#table1").jqGrid("getRowData")));
+            records = grid.getGridParam("records");
             var graduateIds = jQuery("#table1").jqGrid('getDataIDs');
             for (var i = 0, l = graduateIds.length; i < l; i++) {
                 var rowId = graduateIds[i];
-                var rank = grid.jqGrid('getCell', rowId, 4).trim();//当前排名
-                var bidRule = grid.jqGrid('getCell', rowId, 11);//设置竞价规则
-                var bidStatus = grid.jqGrid('getCell', rowId, 14);//竞价状态
+                var rank = grid.jqGrid("getCell", rowId, "currentRank").trim();//当前排名
+                var bidRule = grid.jqGrid("getCell", rowId, "ruleDesc");//设置竞价规则
+                var bidStatus = grid.jqGrid("getCell", rowId, "biddingStatus");//竞价状态
                 if (rank == 0) {
-                    $("#table1").setCell(rowId, 4, "查看当前排名");
+                    $("#table1").setCell(rowId, "currentRank", "查看当前排名");
                 }
                 if (bidRule.length == 0) {
-                    $("#table1").setCell(rowId, 11, "添加规则");
+                    $("#table1").setCell(rowId, "ruleDesc", "添加规则");
                 }
                 if (bidStatus == 0 && bidRule.length > 0) {
-                    $("#table1").setCell(rowId, 14, "已暂停");
+                    $("#table1").setCell(rowId, "biddingStatus", "已暂停");
                 } else if (bidStatus == 1) {
-                    $("#table1").setCell(rowId, 14, "已启动");
+                    $("#table1").setCell(rowId, "biddingStatus", "已启动");
                 } else {
-                    $("#table1").setCell(rowId, 14, "无");
+                    $("#table1").setCell(rowId, "biddingStatus", "无");
                 }
             }
 

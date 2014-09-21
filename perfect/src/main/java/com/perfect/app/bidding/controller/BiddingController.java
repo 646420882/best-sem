@@ -323,7 +323,7 @@ public class BiddingController {
 
         AbstractView jsonView = new MappingJackson2JsonView();
 
-         Map<String, Object> queryParams = new HashMap<>();
+        Map<String, Object> queryParams = new HashMap<>();
         if (matchType != null) {
             queryParams.put("matchType", matchType);
         }
@@ -488,6 +488,8 @@ public class BiddingController {
         for (StructureReportEntity entity : list) {
             long kwid = entity.getKeywordId();
             KeywordReportDTO dto = keywordReportDTOHashMap.get(kwid);
+            dto.setCampaignName(entity.getCampaignName());
+            dto.setAdgroupName(entity.getAdgroupName());
             dto.setClick(NumberUtils.getInteger(entity.getPcClick()));
             dto.setConversion(NumberUtils.getDouble(entity.getPcConversion()));
             dto.setCost(entity.getPcCost());
@@ -589,7 +591,7 @@ public class BiddingController {
         Long accountId = AppContext.getAccountId();
 
         for (String key : rankMap.keySet()) {
-            String id = null;
+            String id;
             KeywordEntity keywordEntity = keywordEntityMap.get(key);
             if (keywordEntity.getKeywordId() == null) {
                 id = keywordEntity.getId();
@@ -603,7 +605,6 @@ public class BiddingController {
                 KeywordRankEntity keywordRankEntity = rankMap.get(key);
                 keywordRankEntity.setAccountId(accountId);
                 keywordRankEntity.setKwid(id);
-            } else {
             }
 
         }

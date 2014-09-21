@@ -12,6 +12,7 @@ function emptydata() {
 }
 
 var type = 1;   //智能竞价1, 重点词竞价2
+var selectedKeywordIds = [];
 
 $(function () {
     $(".tab_menu").on('click', function () {
@@ -44,14 +45,15 @@ $(function () {
     });
     //设置规则
     $("#showbox").click(function () {
-        var items = checked("subbox");
-
-        if (items.length == 0) {
+        var keywordIds = getAllCheckedcb();
+        if (keywordIds.length == 0) {
             alert("请选择至少一个关键词!");
             return false;
         }
 
-        if (items.length == 1) {
+        selectedKeywordIds = keywordIds;
+
+        if (keywordIds.length == 1) {
 //            filldata(items.val());
         } else {
             emptydata();
@@ -71,12 +73,13 @@ $(function () {
     });
     //修改出价
     $("#showbox2").click(function () {
-        var items = checked("subbox");
-
-        if (items.length == 0) {
+        var keywordIds = getAllCheckedcb();
+        if (keywordIds.length == 0) {
             alert("请选择至少一个关键词!");
-            return;
+            return false;
         }
+
+        selectedKeywordIds = keywordIds;
 
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -93,12 +96,13 @@ $(function () {
     });
     //修改访问网址
     $("#showbox4").click(function () {
-        var items = checked("subbox");
-
-        if (items.length == 0) {
-            alert("请选择一个关键词!");
-            return;
+        var keywordIds = getAllCheckedcb();
+        if (keywordIds.length == 0) {
+            alert("请选择至少一个关键词!");
+            return false;
         }
+
+        selectedKeywordIds = keywordIds;
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
@@ -130,20 +134,21 @@ $(function () {
 
     //暂停竞价规则
     $("#showbox3").click(function () {
-        var items = checked("subbox");
-
-        if (items.length == 0) {
+        var keywordIds = getAllCheckedcb();
+        if (keywordIds.length == 0) {
             alert("请选择至少一个关键词!");
-            return;
+            return false;
         }
 
-        var ids = [];
-        items.each(function (i, item) {
-            if (item.parentNode.parentNode.childNodes[12].innerHTML == "无") {
-                return true;
-            }
-            ids.push($(item).val());
-        });
+        selectedKeywordIds = keywordIds;
+
+        var ids = getAllSelectedBidRule();
+//        items.each(function (i, item) {
+//            if (item.parentNode.parentNode.childNodes[12].innerHTML == "无") {
+//                return true;
+//            }
+//            ids.push($(item).val());
+//        });
 
         if (ids.length > 0) {
             $.ajax({
@@ -170,20 +175,21 @@ $(function () {
 
     //启动竞价
     $("#showbox7").click(function () {
-        var items = checked("subbox");
-
-        if (items.length == 0) {
+        var keywordIds = getAllCheckedcb();
+        if (keywordIds.length == 0) {
             alert("请选择至少一个关键词!");
-            return;
+            return false;
         }
 
-        var ids = [];
-        items.each(function (i, item) {
-            if (item.parentNode.parentNode.childNodes[12].innerHTML == "无") {
-                return true;
-            }
-            ids.push($(item).val());
-        });
+        selectedKeywordIds = keywordIds;
+
+        var ids = getAllSelectedBidRule();
+//        items.each(function (i, item) {
+//            if (item.parentNode.parentNode.childNodes[12].innerHTML == "无") {
+//                return true;
+//            }
+//            ids.push($(item).val());
+//        });
 
         if (ids.length > 0) {
             $.ajax({
@@ -307,22 +313,20 @@ $(function () {
         sendReq(true);
     });
 
-
     $('#rankBtn').click(function () {
-        var items = checked("subbox");
-
-        if (items.length == 0) {
+        var keywordIds = getAllCheckedcb();
+        if (keywordIds.length == 0) {
             alert("请选择至少一个关键词!");
             return false;
         }
-        var ids = [];
-        items.each(function (i, item) {
-            ids.push(item.value);
-        });
+//        var ids = [];
+//        items.each(function (i, item) {
+//            ids.push(item.value);
+//        });
 
         $.ajax({
             url: "/bidding/rank",
-            data: {'ids': ids.toString()},
+            data: {'ids': keywordIds.toString()},
             type: "POST",
             success: function (datas) {
                 datas.rows.forEach(function (i, item) {
@@ -334,7 +338,7 @@ $(function () {
 
     var txt = '关键词精准查询，多个关键词用半角逗号隔开';
 
-    // 搜索框
+    //搜索框
     $('input[name=search]').click(function () {
         var text = $('input[name=qtext]').val();
         if (text == txt) {
@@ -345,12 +349,11 @@ $(function () {
         var filter = checkedValue('in');
         var tbl = "table1";
 //        var curPage = $('.curpage').text();
-        var curPage = pageIndex;
 //        var size = $("#size").find("option:selected").val();
-        var size = limit;
 //        var skip = (curPage - 1) * size;
+        var curPage = pageIndex;
+        var size = limit;
         var skip = curPage * size;
-
         var _url = "";
 
         //高级搜索功能
@@ -424,44 +427,6 @@ $(function () {
 
     });
 
-//    $('#rulesave').click(function () {
-//        sendReq(false);
-//    })
-//
-//    $('#rulesaverun').click(function () {
-//        sendReq(true);
-//        $(".close").click();
-//    })
-//
-//
-//    $('#rankBtn').click(function () {
-//        var items = checked("subbox2");
-//
-//        if (items.length == 0) {
-//            alert("请选择至少一个关键词!");
-//            return;
-//        }
-//        var ids = [];
-//        items.each(function (i, item) {
-//            ids.push(item.value);
-//        })
-//
-//        $.ajax({
-//            url: "/bidding/rank",
-//            data: {'ids': ids.toString()},
-//            type: "POST",
-//            success: function (datas) {
-//                datas.rows.each(function (item) {
-//                    if (item.rank == -1) {
-//                        $('#item.id').val("无当前排名");
-//                    } else {
-//                        $('#item.id').val(item.rank);
-//                    }
-//                });
-//            }
-//        })
-//    });
-
 });
 
 function emptyTable(name) {
@@ -477,7 +442,6 @@ function emptyTable(name) {
 }
 
 function fullItems(datas, name) {
-    var tbl = $('#' + name);
     $('#' + name + ' tbody tr').remove();
     var newrows = [];
     datas.rows.forEach(function (item) {
@@ -542,7 +506,7 @@ function fullItems(datas, name) {
 function sendReq(run) {
     var req = {};
 
-    // 最高最低出价
+    //最高最低出价
     req.max = $('#max').val();
     req.min = $('#min').val();
 
@@ -552,15 +516,15 @@ function sendReq(run) {
     }
 
     req.run = run;
-    var ids = [];
-    if ($.kwid == undefined) {
-        checked('subbox').each(function (i, item) {
-            ids.push(item.value);
-        });
-    } else {
-        ids.push($.kwid);
-    }
-    req.ids = ids;
+//    var ids = [];
+//    if ($.kwid == undefined) {
+//        checked('subbox').each(function (i, item) {
+//            ids.push(item.value);
+//        });
+//    } else {
+//        ids.push($.kwid);
+//    }
+    req.ids = getAllSelectedKeywordIds();
 
     var timeRange = checked('times').val();
     req.timerange = timeRange;
@@ -592,7 +556,7 @@ function sendReq(run) {
     //竞价模式
     req.mode = checked('mode').val();
 
-    // 竞价设备
+    //竞价设备
     req.device = seleValue('device');
 
     if (req.device == undefined) {
