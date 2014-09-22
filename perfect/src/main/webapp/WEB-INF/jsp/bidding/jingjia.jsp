@@ -131,8 +131,9 @@
                                 <div class="w_list01 fl over">出价：</div>
                                 <div class="w_list02 fl over" id="keywordPrice">
                                     <span>
-                                        <input type="text" class="price fl"><span class="fl">-</span>  <input type="text" class="price fl ">
+                                        <input type="text" class="price fl"><pre class="fl"> - </pre><input type="text" class="price fl "> <pre class="fl" > 元</pre>
                                     </span>
+
                                 </div>
                             </li>
                         </ul>
