@@ -57,7 +57,6 @@
 
     <!-- ============================================ -->
 
-    <import resource="spring-es.xml"/>
-    <import resource="bidding.xml"/>
+    <import resource="tasks.xml"/>
     <!-- ============================================= -->
 </beans>
