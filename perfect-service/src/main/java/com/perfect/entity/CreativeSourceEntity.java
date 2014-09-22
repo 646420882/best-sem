@@ -23,6 +23,8 @@ public class CreativeSourceEntity {
 
     private String keyword;
 
+    private String keywordAnalyzed;
+
     private String html;
 
     private Integer region;
@@ -81,5 +83,13 @@ public class CreativeSourceEntity {
 
     public void setRegion(Integer region) {
         this.region = region;
+    }
+
+    public String getKeywordAnalyzed() {
+        return keywordAnalyzed;
+    }
+
+    public void setKeywordAnalyzed(String keywordAnalyzed) {
+        this.keywordAnalyzed = keywordAnalyzed;
     }
 }

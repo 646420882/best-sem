@@ -23,7 +23,7 @@ function search() {
             datas.rows.list.forEach(function (item, i) {
                 var li = $("<li></li>");
 
-                li.append($("<div></div>").attr("id","sPreview").append("<a href='" + item.host + "'><h3>"+ item.title + "</h3></a>")
+                li.append($("<div></div>").attr("id", "sPreview").append("<a href='" + item.host + "'><h3>" + item.title + "</h3></a>")
                     .append("<br>" + item.body + "<br><a href=''" + item.host + "'>" + item.host + "</a>"));
 
                 li.append("<div><span class=\"fr\"><a href=\"#\">置顶</a>|<a href=\"#\" class=\"showbox\">编辑</a>|<a href=\"#\">删除</a></span></div>");
@@ -34,14 +34,31 @@ function search() {
 
             $("#terms").empty();
 
-            datas.rows.kvValue.forEach(function(item, i){
+            datas.rows.keywords.forEach(function (item, i) {
                 var termli = $("<li></li>");
                 termli.append("<span>" + item.key + "</span><b>" + item.value + "%</b>");
                 $("#terms").append(termli);
             })
+
+
+            $("#hosts").empty();
+
+            datas.rows.hosts.forEach(function (item, i) {
+                var termli = $("<li></li>");
+                termli.append("<span>" + item.key + "</span><b>" + item.value + "%</b>");
+                $("#hosts").append(termli);
+            })
+
+
+            $("#regions").empty();
+
+            datas.rows.regions.forEach(function (item, i) {
+                var termli = $("<li></li>");
+                termli.append("<span>" + item.key + "</span><b>" + item.value + "%</b>");
+                $("#regions").append(termli);
+            })
         }
     })
-
 
 }
 
@@ -50,7 +67,25 @@ function findKeywords(aid) {
     if (aid == -1)
         return;
 
-    // todo
+    $.ajax({
+        url: "/keyword/all/" + aid,
+        type: "GET",
+        async: false,
+        success: function (datas) {
+            if (datas.rows == undefined) {
+                return;
+            }
+            $('#txt1').val("");
+
+            var value = "";
+            datas.rows.forEach(function (item, i) {
+                value = value + item.keyword + "\n";
+            });
+            $("#txt1").val(value);
+
+        }
+    })
+
 }
 
 
@@ -66,21 +101,17 @@ function findAdgroup(cid) {
                 return;
             }
             $('#adgroup').empty();
+            $('#adgroup').append("<option value=\"-1\">请选择单元</option>");
 
             datas.rows.forEach(function (item, i) {
                 var opt = $("<option></option>").attr("value", item.adgroupId);
                 opt.append(item.adgroupName);
                 $('#adgroup').append(opt);
             });
-
         }
     })
 
 
-    $("#adgroupd").change(function () {
-        var aid = $(this).children('option:selected').val();
-        findKeywords(aid);
-    });
 }
 
 function load() {
@@ -88,6 +119,11 @@ function load() {
     $("#campagin").change(function () {
         var cid = $(this).children('option:selected').val();
         findAdgroup(cid);
+    });
+
+    $("#adgroup").change(function () {
+        var aid = $(this).children('option:selected').val();
+        findKeywords(aid);
     });
 
 
@@ -99,13 +135,15 @@ function load() {
             if (datas.rows == undefined) {
                 return;
             }
+
+
+            $('#campagin').append("<option value=\"-1\">请选择计划</option>");
+
             datas.rows.forEach(function (item, i) {
                 var opt = $("<option></option>").attr("value", item.campaignId);
                 opt.append(item.campaignName);
                 $('#campagin').append(opt);
-
             });
-
 
         }
     })

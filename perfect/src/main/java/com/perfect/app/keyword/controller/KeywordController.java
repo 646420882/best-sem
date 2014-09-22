@@ -2,6 +2,7 @@ package com.perfect.app.keyword.controller;
 
 import com.perfect.dao.KeywordDAO;
 import com.perfect.entity.KeywordEntity;
+import com.perfect.service.SysKeywordService;
 import com.perfect.utils.JSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +31,9 @@ public class KeywordController {
     @Autowired
     private KeywordDAO keywordDAO;
 
+    @Resource
+    private SysKeywordService sysKeywordService;
+
     public void setKeywordDAO(@Qualifier("keywordDAO") KeywordDAO keywordDAO) {
         this.keywordDAO = keywordDAO;
     }
@@ -39,6 +44,16 @@ public class KeywordController {
                                               @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
         AbstractView jsonView = new MappingJackson2JsonView();
         List<KeywordEntity> list = keywordDAO.getKeywordByAdgroupId(adgroupId, null, skip, limit);
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
+        jsonView.setAttributesMap(attributes);
+        return new ModelAndView(jsonView);
+    }
+
+    @RequestMapping(value = "/all/{adgroupId}", method = RequestMethod.GET, produces = "application/json")
+    public ModelAndView getAllKeywordsByAdgroupdId(@PathVariable Long adgroupId
+    ) {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        List<KeywordEntity> list = sysKeywordService.findByAdgroupId(adgroupId, null);
         Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);
