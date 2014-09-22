@@ -18,6 +18,9 @@ public class ReportConstants {
     public final static String REPORT_ROWS = "rows";
     //返回数据json头 常量
     public final static String REPORT_CHART = "chart";
+    //返回合计数据头  常量
+    public final static String REPORT_STATISTICS ="statist";
+
 
 
 

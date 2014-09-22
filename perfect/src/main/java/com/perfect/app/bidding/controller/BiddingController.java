@@ -332,16 +332,24 @@ public class BiddingController {
         boolean priceStatus = (price != null && price.trim().length() > 0);//为真代表查询已参加竞价的关键词
         if (priceStatus) {
             String p[] = price.split(",");
-            minPrice.add(new BigDecimal(Double.valueOf(p[0])));
-            maxPrice.add(new BigDecimal(Double.valueOf(p[1])));
+            if (p.length == 2) {
+                minPrice.add(new BigDecimal(Double.valueOf(p[0])));
+                maxPrice.add(new BigDecimal(Double.valueOf(p[1])));
+            } else {
+                priceStatus = false;
+            }
         }
         //暂不考虑关键词质量度搜索
-//        List<Integer> keywordQualityList = new ArrayList<>();
-//        if (quality != null && quality.trim().length() > 0) {
-//            for (String s : quality.split(",")) {
-//                keywordQualityList.add(Integer.valueOf(s));
-//            }
-//        }
+        List<Integer> keywordQualityList = new ArrayList<>();
+        if (quality != null && quality.trim().length() > 0) {
+            for (String s : quality.split(",")) {
+                keywordQualityList.add(Integer.valueOf(s));
+            }
+        }
+        int keywordQualityConditionSize = keywordQualityList.size();
+        if (keywordQualityConditionSize > 0) {
+            fullMatch = true;
+        }
 
         List<KeywordEntity> entities = null;
         Long total = 0l;
@@ -378,11 +386,21 @@ public class BiddingController {
             total = sysKeywordService.keywordCount(tmpList);
         } else if (query != null) {
             if (filter == 0 && !priceStatus) {//全部
-                entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param, queryParams);
-                total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
+                if (keywordQualityConditionSize > 0) {
+                    entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param1, queryParams);
+                    total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
+                } else {
+                    entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param, queryParams);
+                    total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
+                }
             } else if (filter == -1 && !priceStatus) {//未参加竞价的
-                entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param, queryParams);
-                total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
+                if (keywordQualityConditionSize > 0) {
+                    entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param1, queryParams);
+                    total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
+                } else {
+                    entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param, queryParams);
+                    total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
+                }
 
                 Map<Long, KeywordEntity> tmpMap = new HashMap<>();
                 for (KeywordEntity tmpEntity : entities) {
@@ -404,12 +422,21 @@ public class BiddingController {
                 }
 
             } else if (filter == 1 || priceStatus) {//已参加竞价的
+                List<BiddingRuleEntity> ruleEntities;
+                if (keywordQualityConditionSize > 0) {
+                    ruleEntities = biddingRuleService.findByNames(query.split(" "), fullMatch,
+                            param1, queryParams);
 
-                List<BiddingRuleEntity> ruleEntities = biddingRuleService.findByNames(query.split(" "), fullMatch,
-                        param, queryParams);
+                    total1 = biddingRuleService.countBiddingRuleEntityfindByNames(query.split(" "), fullMatch,
+                            param1, queryParams);
+                } else {
+                    ruleEntities = biddingRuleService.findByNames(query.split(" "), fullMatch,
+                            param, queryParams);
 
-                total1 = biddingRuleService.countBiddingRuleEntityfindByNames(query.split(" "), fullMatch,
-                        param1, queryParams);
+                    total1 = biddingRuleService.countBiddingRuleEntityfindByNames(query.split(" "), fullMatch,
+                            param1, queryParams);
+                }
+
                 for (BiddingRuleEntity tmpEntity : ruleEntities) {
                     keywordIdRuleMap.put(tmpEntity.getKeywordId(), tmpEntity);
                     ids.add(tmpEntity.getKeywordId());
@@ -437,16 +464,23 @@ public class BiddingController {
         }
         Map<Long, Quality10Type> quality10TypeMap = keyword10QualityService.getKeyword10Quality(tmpKeywordIdList);
 
+        Integer index = 0;
         for (KeywordEntity entity : entities) {
             KeywordReportDTO keywordReportDTO = new KeywordReportDTO();
             BeanUtils.copyProperties(entity, keywordReportDTO);
 
             Long kwid = entity.getKeywordId();
-//            if(!keywordQualityList.isEmpty()){
-//                if(!keywordQualityList.contains(quality10TypeMap.get(kwid).getPcQuality())){
-//                    continue;
-//                }
-//            }
+            if (keywordQualityConditionSize > 0) {
+                if (!keywordQualityList.contains(quality10TypeMap.get(kwid).getPcQuality())) {
+                    continue;
+                }
+            }
+
+            index++;
+            AdgroupEntity adgroupEntity = sysAdgroupService.findByAdgroupId(entity.getAdgroupId());
+            CampaignEntity campaignEntity = sysCampaignService.findById(adgroupEntity.getCampaignId());
+            keywordReportDTO.setCampaignName(campaignEntity.getCampaignName());
+            keywordReportDTO.setAdgroupName(adgroupEntity.getAdgroupName());
 
             //setting quality
             keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
@@ -480,6 +514,9 @@ public class BiddingController {
                 }
             }
         }
+        if (keywordQualityConditionSize > 0) {
+            total1 = index; //包含质量度查询时符合条件的最终记录数
+        }
         String yesterday = DateUtils.getYesterdayStr();
 
         Map<String, List<StructureReportEntity>> reports = basisReportService.getKeywordReport(tmpKeywordIdList.toArray(new Long[tmpKeywordIdList.size()]), yesterday, yesterday, 0);
@@ -488,8 +525,6 @@ public class BiddingController {
         for (StructureReportEntity entity : list) {
             long kwid = entity.getKeywordId();
             KeywordReportDTO dto = keywordReportDTOHashMap.get(kwid);
-            dto.setCampaignName(entity.getCampaignName());
-            dto.setAdgroupName(entity.getAdgroupName());
             dto.setClick(NumberUtils.getInteger(entity.getPcClick()));
             dto.setConversion(NumberUtils.getDouble(entity.getPcConversion()));
             dto.setCost(entity.getPcCost());
@@ -499,7 +534,23 @@ public class BiddingController {
             dto.setImpression(NumberUtils.getInteger(entity.getPcImpression()));
         }
 
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(resultList);
+        List<KeywordReportDTO> newResultList = new ArrayList<>();
+        if (keywordQualityConditionSize > 0) {
+            int tmpSize = resultList.size();
+            for (int i = skip; i < skip + limit; i++) {
+                if (i == tmpSize) {
+                    break;
+                }
+                newResultList.add(resultList.get(i));
+            }
+        }
+
+        Map<String, Object> attributes;
+        if (keywordQualityConditionSize > 0) {
+            attributes = JSONUtils.getJsonMapData(newResultList);
+        } else {
+            attributes = JSONUtils.getJsonMapData(resultList);
+        }
         if (total > 0) {
             attributes.put("records", total);
         } else if (total1 > 0) {
