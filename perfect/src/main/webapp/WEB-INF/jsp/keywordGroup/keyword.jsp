@@ -206,15 +206,16 @@ To change this template use File | Settings | File Templates.
                     </select>
                 </li>
                 <li>
-                    <textarea id="txt1"></textarea>
+                    <textarea id="textarea2" name="txt1" style="overflow:auto; resize: none"></textarea>
                 </li>
+                <li style="color: #f00"><%--<span class="fr" style="color: #f00">--%>1/20行<%--</span>--%></li>
             </ul>
         </div>
         <div class="originality_right fl">
             <ul>
                 <li><input type="radio" name="searchType" value="2"> 输入新单元词</li>
                 <li>
-                    <textarea id="textarea2" name="txt2" style="overflow:auto; resize: none"></textarea>
+                    <textarea id="textarea3" name="txt2" style="overflow:auto; resize: none"></textarea>
                 </li>
                 <li style="color: #f00"><%--<span class="fr" style="color: #f00">--%>1/20行<%--</span>--%></li>
             </ul>
@@ -607,6 +608,11 @@ $(function () {
     $("#textarea2").on('keyup', function () {
         var strs1 = $("#textarea2").val().trim().split("\n");
         $("#textarea2").parent().next().text("可输入" + (20 - strs1.length) + "/20行");
+    });
+
+    $("#textarea3").on('keyup', function () {
+        var strs1 = $("#textarea3").val().trim().split("\n");
+        $("#textarea3").parent().next().text("可输入" + (20 - strs1.length) + "/20行");
     });
 });
 var downloadCSV = function () {
