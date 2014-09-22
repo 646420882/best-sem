@@ -591,7 +591,7 @@
                 <span class="define fl"><input type="checkbox" checked="checked" value="mobileDestinationUrl"> Mobile&nbsp;URL</span>
             </li>
             <li><span class="define fl"><input type="checkbox" checked="checked" value="biddingStatus"> 竞价状态</span>
-                <%--<span class="define fl"><input type="checkbox" checked="checked" value="mobileDestinationUrl"> Mobile&nbsp;URL</span>--%>
+                <span class="define fl"><input type="checkbox" checked="checked" value="matchType"> 匹配模式</span>
             </li>
         </ul>
 
@@ -943,8 +943,10 @@ $(function () {
             {label: ' 关键词', name: 'keyword', sortable: false, align: 'center'},
             {label: ' 推广计划', name: 'campaignName', sortable: false, align: 'center', hidden: true},
             {label: ' 推广单元', name: 'adgroupName', sortable: false, align: 'center', hidden: true},
-            {label: ' 消费', name: 'cost', sortable: false, align: 'center'},
+            {label: ' 匹配模式', name: 'matchType', sortable: false, align: 'center', hidden: true},
+            {label: ' 高级短语匹配模式', name: 'phraseType', sortable: false, align: 'center', hidden: true},
             {label: ' 当前排名', name: 'currentRank', sortable: false, align: 'center'},
+            {label: ' 消费', name: 'cost', sortable: false, align: 'center'},
             {label: ' 展现量', name: 'impression', sortable: false, align: 'center'},
             {label: ' 点击量', name: 'click', sortable: false, align: 'center', hidden: true},
             {label: ' 点击率', name: 'ctr', sortable: false, align: 'center'},
@@ -983,10 +985,10 @@ $(function () {
 
             var ruleFlag = $("#table1").jqGrid('getCell', rowId, "rule"); //true, 已经设置竞价规则
             var keywordId = $("#table1").jqGrid('getCell', rowId, "keywordId");
-            if (iCol === 6) {//查看当前排名
+            if (iCol === 7) {//查看当前排名
                 getRank(keywordId);
             }
-            else if (iCol === 16 && ruleFlag == "false") {//设置竞价规则
+            else if (iCol === 18 && ruleFlag == "false") {//设置竞价规则
                 $(".TB_overlayBG").css({
                     display: "block", height: $(document).height()
                 });
@@ -1018,6 +1020,8 @@ $(function () {
                 var rank = grid.jqGrid("getCell", rowId, "currentRank").trim();//当前排名
                 var bidRule = grid.jqGrid("getCell", rowId, "ruleDesc");//设置竞价规则
                 var bidStatus = grid.jqGrid("getCell", rowId, "biddingStatus");//竞价状态
+                var matchType = grid.jqGrid("getCell", rowId, "matchType");//匹配模式
+                var phraseType = grid.jqGrid("getCell", rowId, "phraseType");//高级短语匹配模式
                 if (rank == 0) {
                     $("#table1").setCell(rowId, "currentRank", "查看当前排名");
                 }
@@ -1030,6 +1034,21 @@ $(function () {
                     $("#table1").setCell(rowId, "biddingStatus", "已启动");
                 } else {
                     $("#table1").setCell(rowId, "biddingStatus", "无");
+                }
+                if (matchType == 1) {
+                    $("#table1").setCell(rowId, "matchType", "精确匹配");
+                } else if (matchType == 2) {
+                    if (phraseType == 1) {
+                        $("#table1").setCell(rowId, "matchType", "同义包含");
+                    } else if (phraseType == 2) {
+                        $("#table1").setCell(rowId, "matchType", "精确包含");
+                    } else if (phraseType == 3) {
+                        $("#table1").setCell(rowId, "matchType", "核心包含");
+                    } else {
+                        $("#table1").setCell(rowId, "matchType", "高级短语匹配");
+                    }
+                } else if (matchType == 3) {
+                    $("#table1").setCell(rowId, "matchType", "广泛匹配");
                 }
             }
 
@@ -1056,7 +1075,7 @@ $(function () {
             {label: ' 展现量', name: 'impression', sortable: false, align: 'center'},
             {label: ' 点击率', name: 'ctr', sortable: false, align: 'center'},
             {label: ' 出价', name: 'price', sortable: false, align: 'center'},
-            {label: ' 质量度', name: ' pcQuality', sortable: false, align: 'center'},
+            {label: ' 质量度', name: 'pcQuality', sortable: false, align: 'center'},
             {label: ' 移动端质量度', name: 'mQuality', sortable: false, align: 'center'},
             {label: ' 状态', name: 'statusStr', sortable: false, align: 'center'},
             {label: ' 竞价规则', name: 'ruleDesc', sortable: false, align: 'center'},
