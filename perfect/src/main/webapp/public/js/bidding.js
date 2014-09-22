@@ -397,7 +397,7 @@ $(function () {
                     }
                 }
             });
-            _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter + "&matchType=" + matchType + "&price=" + keywordPrice;
+            _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter + "&matchType=" + matchType + "&price=" + keywordPrice + "&quality=" + keywordQuality;
         } else {
             _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter;
         }
