@@ -2,16 +2,17 @@ function initOptions(id, start, end) {
 
     var select = $('#' + id);
     select.empty();
-    for (i = start; i <= end; i++) {
+    for (var i = start; i <= end; i++) {
         $("<option value='" + i + "'>" + i + "点</option>").appendTo(select);
     }
 }
 
-function emptydata() {
-
-}
+//function emptydata() {
+//
+//}
 
 var type = 1;   //智能竞价1, 重点词竞价2
+var selectedKeywordIds = [];
 
 $(function () {
     $(".tab_menu").on('click', function () {
@@ -35,27 +36,28 @@ $(function () {
     initOptions('start3', 14, 23);
     initOptions('end3', 15, 24);
 
-//顶部菜单切换
+    //顶部菜单切换
     var $tab_li = $('.tab_menu li');
     $('.tab_menu li').click(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
         var index = $tab_li.index(this);
         $('div.tab_box > div').eq(index).show().siblings().hide();
     });
-//设置规则
+    //设置规则
     $("#showbox").click(function () {
-        var items = checked("subbox");
-
-        if (items.length == 0) {
+        var keywordIds = getAllCheckedcb();
+        if (keywordIds.length == 0) {
             alert("请选择至少一个关键词!");
             return false;
         }
 
-        if (items.length == 1) {
+        selectedKeywordIds = keywordIds;
+
+//        if (keywordIds.length == 1) {
 //            filldata(items.val());
-        } else {
-            emptydata();
-        }
+//        } else {
+//            emptydata();
+//        }
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
@@ -69,14 +71,15 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $("#seetingRules").css("display", "none");
     });
-//修改出价
+    //修改出价
     $("#showbox2").click(function () {
-        var items = checked("subbox");
-
-        if (items.length == 0) {
+        var keywordIds = getAllCheckedcb();
+        if (keywordIds.length == 0) {
             alert("请选择至少一个关键词!");
-            return;
+            return false;
         }
+
+        selectedKeywordIds = keywordIds;
 
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -89,16 +92,17 @@ $(function () {
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box2 ").css("display", "none");
+        $(".box2").css("display", "none");
     });
-//修改访问网址
+    //修改访问网址
     $("#showbox4").click(function () {
-        var items = checked("subbox");
-
-        if (items.length == 0) {
-            alert("请选择一个关键词!");
-            return;
+        var keywordIds = getAllCheckedcb();
+        if (keywordIds.length == 0) {
+            alert("请选择至少一个关键词!");
+            return false;
         }
+
+        selectedKeywordIds = keywordIds;
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
@@ -112,7 +116,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box4").css("display", "none");
     });
-//下载
+    //下载
     $("#updateBtn").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -128,22 +132,23 @@ $(function () {
         $("#downloadData").css("display", "none");
     });
 
-//暂停竞价规则
+    //暂停竞价规则
     $("#showbox3").click(function () {
-        var items = checked("subbox");
-
-        if (items.length == 0) {
+        var keywordIds = getAllCheckedcb();
+        if (keywordIds.length == 0) {
             alert("请选择至少一个关键词!");
-            return;
+            return false;
         }
 
-        var ids = [];
-        items.each(function (i, item) {
-            if (item.parentNode.parentNode.childNodes[12].innerHTML == "无") {
-                return true;
-            }
-            ids.push($(item).val());
-        });
+        selectedKeywordIds = keywordIds;
+
+        var ids = getAllSelectedBidRule();
+//        items.each(function (i, item) {
+//            if (item.parentNode.parentNode.childNodes[12].innerHTML == "无") {
+//                return true;
+//            }
+//            ids.push($(item).val());
+//        });
 
         if (ids.length > 0) {
             $.ajax({
@@ -162,28 +167,27 @@ $(function () {
                 }
             });
         } else {
-            if (items.length > 0) {
-                alert("所选关键词没有设置竞价规则!");
-            }
+            alert("所选关键词没有设置竞价规则!");
         }
     });
 
     //启动竞价
     $("#showbox7").click(function () {
-        var items = checked("subbox");
-
-        if (items.length == 0) {
+        var keywordIds = getAllCheckedcb();
+        if (keywordIds.length == 0) {
             alert("请选择至少一个关键词!");
-            return;
+            return false;
         }
 
-        var ids = [];
-        items.each(function (i, item) {
-            if (item.parentNode.parentNode.childNodes[12].innerHTML == "无") {
-                return true;
-            }
-            ids.push($(item).val());
-        });
+        selectedKeywordIds = keywordIds;
+
+        var ids = getAllSelectedBidRule();
+//        items.each(function (i, item) {
+//            if (item.parentNode.parentNode.childNodes[12].innerHTML == "无") {
+//                return true;
+//            }
+//            ids.push($(item).val());
+//        });
 
         if (ids.length > 0) {
             $.ajax({
@@ -202,17 +206,16 @@ $(function () {
                 }
             });
         } else {
-            if (items.length > 0) {
-                alert("所选关键词没有设置竞价规则!");
-            }
+            alert("所选关键词没有设置竞价规则!");
         }
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box3 ").css("display", "none");
     });
-//设置规则
-    $(".showbox5").click(function () {
+
+    //设置分组
+    $("#showbox5").click(function () {
         initCustomGroupSelect();
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -227,7 +230,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box5").css("display", "none");
     });
-//自定义列
+    //自定义列
     $("#showbox6").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -242,7 +245,7 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box6").css("display", "none");
     });
-//弹窗内部切换
+    //弹窗内部切换
     $(".time_sl").click(function () {
         $(".time_select").show();
         $(".time_select01").hide();
@@ -253,7 +256,6 @@ $(function () {
 
     });
     //选择框全选
-
     $("#checkAll").click(function () {
         $('input[name="subbox"]').prop("checked", this.checked);
     });
@@ -306,26 +308,22 @@ $(function () {
         sendReq(true);
     });
 
-
     $('#rankBtn').click(function () {
-        var items = checked("subbox");
-
-        if (items.length == 0) {
+        var keywordIds = getAllCheckedcb();
+        if (keywordIds.length == 0) {
             alert("请选择至少一个关键词!");
             return false;
         }
-        var ids = [];
-        items.each(function (i, item) {
-            ids.push(item.value);
-        });
+//        var ids = [];
+//        items.each(function (i, item) {
+//            ids.push(item.value);
+//        });
 
         $.ajax({
             url: "/bidding/rank",
-            data: {'ids': ids.toString()},
+            data: {'ids': keywordIds.toString()},
             type: "POST",
-            success: function (datas) {
-                datas.rows.forEach(function (i, item) {
-                });
+            success: function (data) {
                 alert("排名检查完毕,请点击查看当前排名.");
             }
         })
@@ -333,7 +331,7 @@ $(function () {
 
     var txt = '关键词精准查询，多个关键词用半角逗号隔开';
 
-    // 搜索框
+    //搜索框
     $('input[name=search]').click(function () {
         var text = $('input[name=qtext]').val();
         if (text == txt) {
@@ -344,149 +342,166 @@ $(function () {
         var filter = checkedValue('in');
         var tbl = "table1";
 //        var curPage = $('.curpage').text();
-        var curPage = pageIndex;
 //        var size = $("#size").find("option:selected").val();
-        var size = limit;
 //        var skip = (curPage - 1) * size;
+        var curPage = pageIndex;
+        var size = limit;
         var skip = curPage * size;
+        var _url = "";
 
-        $.ajax({
-            url: "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter,
-            type: "POST",
-            dataType: "json",
-            async: false,
-            success: function (datas) {
-                if (datas.rows == undefined) {
-                    emptyTable(tbl);
-                } else {
-                    total = datas.total;
-                    $("#pagination1").pagination(total, optInit);
-                    fullItems(datas, tbl);
-                }
+        //高级搜索功能
+        var matchType = 0;
+        var keywordQuality = "";
+        var keywordPrice = "";
+        if (document.getElementById("advancedSearch").style.display == "block") {
+            //matchType
+            var checkedMatchType = $("input[name=matchType]:checked");
+            if (checkedMatchType.length > 1) {
+                alert("请选择一种匹配模式!");
+                return false;
             }
-        })
+            $.each(checkedMatchType, function (i, item) {
+                matchType = item.value;
+                return false;
+            });
 
-    });
+            //keywordQuality
+            var checkedKeywordQuality = $("input[name=keywordQuality]:checked");
+            $.each(checkedKeywordQuality, function (i, item) {
+                keywordQuality += item.value + ",";
+            });
+            keywordQuality = keywordQuality.substring(0, keywordQuality.length - 1);
+            //keywordPrice
+            var texts = $("#keywordPrice").find("input[type=text]");
+            $.each(texts, function (i, item) {
+                if (i == 0) {
+                    if (item.value == null || item.value.trim().length == 0 || parseFloat(item.value.trim()) < 0) {
+                        keywordPrice = 0;
+                    } else {
+                        keywordPrice = item.value.trim();
+                    }
+                }
+                if (i == 1) {
+                    if (item.value == null || item.value.trim().length == 0 || parseFloat(item.value.trim()) < 0) {
+                        if (parseFloat(keywordPrice) > 0) {
+                            alert("价格区间不对!请重新输入！");
+                            return false;
+                        }
+                        keywordPrice += 0;
+                    } else {
+                        if (parseFloat(keywordPrice) > parseFloat(item.value.trim())) {
+                            alert("价格区间不对!请重新输入！");
+                            return false;
+                        }
+                        keywordPrice += ("," + item.value.trim());
+                    }
+                }
+            });
+            _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter + "&matchType=" + matchType + "&price=" + keywordPrice;
+        } else {
+            _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter;
+        }
 
-//    $('#rulesave').click(function () {
-//        sendReq(false);
-//    })
-//
-//    $('#rulesaverun').click(function () {
-//        sendReq(true);
-//        $(".close").click();
-//    })
-//
-//
-//    $('#rankBtn').click(function () {
-//        var items = checked("subbox2");
-//
-//        if (items.length == 0) {
-//            alert("请选择至少一个关键词!");
-//            return;
-//        }
-//        var ids = [];
-//        items.each(function (i, item) {
-//            ids.push(item.value);
-//        })
-//
+        grid.setGridParam({url: _url}).trigger("reloadGrid");
+
 //        $.ajax({
-//            url: "/bidding/rank",
-//            data: {'ids': ids.toString()},
+//            url: _url,
 //            type: "POST",
+//            dataType: "json",
+//            async: false,
 //            success: function (datas) {
-//                datas.rows.each(function (item) {
-//                    if (item.rank == -1) {
-//                        $('#item.id').val("无当前排名");
-//                    } else {
-//                        $('#item.id').val(item.rank);
-//                    }
-//                });
+//                if (datas.rows == undefined) {
+//                    emptyTable(tbl);
+//                } else {
+//                    total = datas.total;
+//                    $("#pagination1").pagination(total, optInit);
+//                    fullItems(datas, tbl);
+//                }
 //            }
 //        })
-//    });
+
+    });
 
 });
 
-function emptyTable(name) {
-    var rows = [];
-    for (i = 0; i < 10; i++) {
-        var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
-            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
-        rows.push(row)
-    }
-    $("#" + name + " tbody").html(rows);
-    $("#" + name + " tbody tr:odd").addClass("list2_box1");
-    $("#" + name + " tbody tr:even").addClass("list2_box2");
-}
+//function emptyTable(name) {
+//    var rows = [];
+//    for (i = 0; i < 10; i++) {
+//        var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
+//            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+//        rows.push(row)
+//    }
+//    $("#" + name + " tbody").html(rows);
+//    $("#" + name + " tbody tr:odd").addClass("list2_box1");
+//    $("#" + name + " tbody tr:even").addClass("list2_box2");
+//}
 
-function fullItems(datas, name) {
-    var tbl = $('#' + name);
-    $('#' + name + ' tbody tr').remove();
-    var newrows = [];
-    datas.rows.forEach(function (item) {
-        var newrow = "";
-        var pcUrl = item.pcDestinationUrl;
-        if (pcUrl == null) {
-            pcUrl = "";
-        }
-        var mobileUrl = item.mobileDestinationUrl;
-        if (mobileUrl == null) {
-            mobileUrl = "";
-        }
-        var _price = 0;
-        if (item.price != null) {
-            _price = item.price;
-        }
-        if (item.keywordId != null) {
-            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.keywordId + "'></td>" +
-                "<td>&nbsp;" + item.keyword + "</td>" +
-                "<td>&nbsp;" + item.cost + "</td>" +
-                "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.keywordId + "'>查看最新排名</a></td>" +
-                "<td>&nbsp;" + item.impression + "</td>" +
-                "<td>&nbsp;" + item.ctr + "%</td>" +
-                "<td>&nbsp;" + _price + "</td>" +
-                "<td>&nbsp;" + item.pcQuality + "</td>" +
-                "<td>&nbsp;" + item.mQuality + "</td>" +
-                "<td>&nbsp;" + item.statusStr + "</td>";
-        } else {
-            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.id + "'></td>" +
-                "<td>&nbsp;" + item.keyword + "</td>" +
-                "<td>&nbsp;" + item.cost + "</td>" +
-                "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.id + "'>查看最新排名</a></td>" +
-                "<td>&nbsp;" + item.impression + "</td>" +
-                "<td>&nbsp;" + item.ctr + "%</td>" +
-                "<td>&nbsp;" + _price + "</td>" +
-                "<td>&nbsp;" + item.pcQuality + "</td>" +
-                "<td>&nbsp;" + item.mQuality + "</td>" +
-                "<td>&nbsp;" + item.statusStr + "</td>";
-        }
-
-        if (item.rule) {
-            var biddingStatus = "";
-            if (item.biddingStatus == 0) {
-                biddingStatus = "已暂停";
-            } else if (item.biddingStatus == 1) {
-                biddingStatus = "已启动";
-            }
-            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>" + item.ruleDesc + "</a></td><td><a target='_blank' href='" + pcUrl + "'>" + pcUrl + "</a></td><td><a target='_blank' href='" + mobileUrl + "'>" + mobileUrl + "</a></td><td>" + biddingStatus + "</td></tr>";
-        } else {
-            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "' onclick='addRule(this)'>" + "+添加规则</a></td><td><a target='_blank' href='" + pcUrl + "'>" + pcUrl + "</a></td><td><a target='_blank' href='" + mobileUrl + "'>" + mobileUrl + "</a></td><td>无</td></tr>";
-        }
-        newrows.push(newrow);
-    });
-
-    $('#' + name + ' tbody').html(newrows);
-    $("#" + name + " tbody tr:odd").addClass("list2_box1");
-    $("#" + name + " tbody tr:even").addClass("list2_box2");
-
-}
+//function fullItems(datas, name) {
+//    $('#' + name + ' tbody tr').remove();
+//    var newrows = [];
+//    datas.rows.forEach(function (item) {
+//        var newrow = "";
+//        var pcUrl = item.pcDestinationUrl;
+//        if (pcUrl == null) {
+//            pcUrl = "";
+//        }
+//        var mobileUrl = item.mobileDestinationUrl;
+//        if (mobileUrl == null) {
+//            mobileUrl = "";
+//        }
+//        var _price = 0;
+//        if (item.price != null) {
+//            _price = item.price;
+//        }
+//        if (item.keywordId != null) {
+//            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.keywordId + "'></td>" +
+//                "<td>&nbsp;" + item.keyword + "</td>" +
+//                "<td>&nbsp;" + item.cost + "</td>" +
+//                "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.keywordId + "'>查看最新排名</a></td>" +
+//                "<td>&nbsp;" + item.impression + "</td>" +
+//                "<td>&nbsp;" + item.ctr + "%</td>" +
+//                "<td>&nbsp;" + _price + "</td>" +
+//                "<td>&nbsp;" + item.pcQuality + "</td>" +
+//                "<td>&nbsp;" + item.mQuality + "</td>" +
+//                "<td>&nbsp;" + item.statusStr + "</td>";
+//        } else {
+//            newrow = "<tr><td>&nbsp;<input type=\"checkbox\" name=\"subbox\" value='" + item.id + "'></td>" +
+//                "<td>&nbsp;" + item.keyword + "</td>" +
+//                "<td>&nbsp;" + item.cost + "</td>" +
+//                "<td id=>&nbsp;<a class='getRankBtn' data-id='" + item.id + "'>查看最新排名</a></td>" +
+//                "<td>&nbsp;" + item.impression + "</td>" +
+//                "<td>&nbsp;" + item.ctr + "%</td>" +
+//                "<td>&nbsp;" + _price + "</td>" +
+//                "<td>&nbsp;" + item.pcQuality + "</td>" +
+//                "<td>&nbsp;" + item.mQuality + "</td>" +
+//                "<td>&nbsp;" + item.statusStr + "</td>";
+//        }
+//
+//        if (item.rule) {
+//            var biddingStatus = "";
+//            if (item.biddingStatus == 0) {
+//                biddingStatus = "已暂停";
+//            } else if (item.biddingStatus == 1) {
+//                biddingStatus = "已启动";
+//            }
+//            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "'>" + item.ruleDesc + "</a></td><td><a target='_blank' href='" + pcUrl + "'>" + pcUrl + "</a></td><td><a target='_blank' href='" + mobileUrl + "'>" + mobileUrl + "</a></td><td>" + biddingStatus + "</td></tr>";
+//        } else {
+//            newrow = newrow + "<td>&nbsp;<a class='addRuleBtn' data-id='" + item.keywordId + "' onclick='addRule(this)'>" + "+添加规则</a></td><td><a target='_blank' href='" + pcUrl + "'>" + pcUrl + "</a></td><td><a target='_blank' href='" + mobileUrl + "'>" + mobileUrl + "</a></td><td>无</td></tr>";
+//        }
+//        newrows.push(newrow);
+//    });
+//
+//    $('#' + name + ' tbody').html(newrows);
+//    $("#" + name + " tbody tr:odd").addClass("list2_box1");
+//    $("#" + name + " tbody tr:even").addClass("list2_box2");
+//
+//}
 
 //保存当前关键词竞价规则
 function sendReq(run) {
     var req = {};
 
-    // 最高最低出价
+    //最高最低出价
     req.max = $('#max').val();
     req.min = $('#min').val();
 
@@ -496,15 +511,15 @@ function sendReq(run) {
     }
 
     req.run = run;
-    var ids = [];
-    if ($.kwid == undefined) {
-        checked('subbox').each(function (i, item) {
-            ids.push(item.value);
-        });
-    } else {
-        ids.push($.kwid);
-    }
-    req.ids = ids;
+//    var ids = [];
+//    if ($.kwid == undefined) {
+//        checked('subbox').each(function (i, item) {
+//            ids.push(item.value);
+//        });
+//    } else {
+//        ids.push($.kwid);
+//    }
+    req.ids = selectedKeywordIds;
 
     var timeRange = checked('times').val();
     req.timerange = timeRange;
@@ -533,17 +548,17 @@ function sendReq(run) {
         req.times = times;
     }
 
-//竞价模式
+    //竞价模式
     req.mode = checked('mode').val();
 
-// 竞价设备
+    //竞价设备
     req.device = seleValue('device');
 
     if (req.device == undefined) {
         req.device = 10000;
     }
 
-//竞价位置
+    //竞价位置
     req.expPosition = seleValue('pos');
     if (req.expPosition == 4) {
         req.customPos = $('input[name=rightpos]').val();
@@ -563,7 +578,7 @@ function sendReq(run) {
         }
     }
 
-//竞价区域
+    //竞价区域
     req.target = null;
 
     if (req.auto == 2) {
@@ -584,34 +599,34 @@ function sendReq(run) {
     })
 }
 
-function filldata(id) {
-    $.ajax({
-        url: "/bidding/keyword/" + id,
-        type: "GET",
-        success: function (datas) {
-            datas.rows.each(function (item) {
-                var s = item.strategyEntity;
-                setSeleValue('device', s.device);
-
-                var mtimes = (s.times.length == 2) ? 1 : 2;
-                checkValue('times', mtimes);
-
-                if (mtimes == 1) {
-                    setSeleValue('start', s.times[0]);
-                    setSeleValue('end', s.times[1]);
-                } else {
-                    for (i = 0; i < s.times.length; i + 2) {
-                        var start = s.times[i];
-                        if (start < 12) {
-                            checked()
-                        }
-                    }
-                }
-
-            });
-        }
-    })
-}
+//function filldata(id) {
+//    $.ajax({
+//        url: "/bidding/keyword/" + id,
+//        type: "GET",
+//        success: function (datas) {
+//            datas.rows.each(function (item) {
+//                var s = item.strategyEntity;
+//                setSeleValue('device', s.device);
+//
+//                var mtimes = (s.times.length == 2) ? 1 : 2;
+//                checkValue('times', mtimes);
+//
+//                if (mtimes == 1) {
+//                    setSeleValue('start', s.times[0]);
+//                    setSeleValue('end', s.times[1]);
+//                } else {
+//                    for (i = 0; i < s.times.length; i + 2) {
+//                        var start = s.times[i];
+//                        if (start < 12) {
+//                            checked()
+//                        }
+//                    }
+//                }
+//
+//            });
+//        }
+//    })
+//}
 
 function validate(start, end) {
     if (start == end) {
@@ -660,10 +675,6 @@ function checkedValue(name) {
     return $('input[name=' + name + ']:checked').val();
 }
 
-var skip = 0;
-
-var limit = 20;
-
 var skipPage = function () {
     var _number = 0;
     if (type == 1) {
@@ -671,13 +682,13 @@ var skipPage = function () {
         if (_number <= -1 || _number == pageIndex) {
             return;
         }
-        $("#pagination1").pagination(total, getOptionsFromForm(_number));
+        $("#pagination1").pagination(records, getOptionsFromForm(_number));
     } else {
         _number = $("#anyPageNumber2").val() - 1;
         if (_number <= -1 || _number == pageIndex) {
             return;
         }
-        $("#pagination2").pagination(total, getOptionsFromForm(_number));
+        $("#pagination2").pagination(records, getOptionsFromForm(_number));
     }
 };
 
@@ -694,7 +705,7 @@ var toAnyPage = function (page_index) {
     }
     keyWordPage = 0;
     VIPKeyWordPage = 0;
-    skip = page_index;
+    skip = page_index * limit;
 
     var _url = "";
     if (type == 1) {
@@ -711,92 +722,10 @@ var toAnyPage = function (page_index) {
 
             var f = input('fullmatch').prop("checked");
             var filter = checkedValue('in');
-            var tbl = "table1";
-            var curPage = pageIndex;
-            var size = limit;
-            var skip = curPage * size;
-            _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter;
+            _url = "/bidding/list?s=" + skip + "&l=" + limit + "&q=" + text + "&f=" + f + "&filter=" + filter;
         }
-        $.ajax({
-            url: _url,
-            type: "POST",
-            dataType: "json",
-            async: false,
-            success: function (datas) {
-                if (datas.rows == undefined) {
-                    emptyTable("table1");
-                } else {
-                    fullItems(datas, "table1");
-                }
-            }
-        });
-
-        /*$.ajax({
-         url: "/getKRWords/bd",
-         type: "GET",
-         async: false,
-         data: {
-         "seedWords": getSeedWords,
-         "skip": skip,
-         "limit": limit,
-         "krFileId": krFileId,
-         "fieldName": fieldName
-         //                "sort": sort
-         },
-         success: function (data, textStatus, jqXHR) {
-         $("#tbody1").empty();
-         if (data.rows.length > 0) {
-         krFileId = data.krFileId;
-         var _class = "";
-         $.each(data.rows, function (i, item) {
-         if (i % 2 == 0) {
-         _class = "list2_box1";
-         } else {
-         _class = "list2_box2";
-         }
-         var newTr = "<tr class='" + _class + "'>" +
-         "<td>" + item.groupName + "</td>" +
-         "<td>" + item.seedWord + "</td>" +
-         "<td>" + item.keywordName + "</td>" +
-         "<td>" + item.dsQuantity + "</td>" +
-         "<td>" + item.competition + "%</td>" +
-         "</tr>";
-         $("#tbody1").append(newTr);
-         });
-         }
-         }
-         });*/
+        grid.setGridParam({url: _url}).trigger("reloadGrid");
     } else {
-        $.ajax({
-            url: "/getKRWords/p",
-            type: "GET",
-            data: {
-                "trade": _trade,
-                "category": _category,
-                "skip": skip,
-                "limit": limit,
-                "status": 1
-            },
-            success: function (data, textStatus, jqXHR) {
-                $("#tbody2").empty();
-                if (data.rows.length > 0) {
-                    var _class = "";
-                    $.each(data.rows, function (i, item) {
-                        if (i % 2 == 0) {
-                            _class = "list2_box1";
-                        } else {
-                            _class = "list2_box2";
-                        }
-                        var newTr = "<tr class='" + _class + "'>" +
-                            "<td>" + _trade + "</td>" +
-                            "<td>" + _category + "</td>" +
-                            "<td>" + item.group + "</td>" +
-                            "<td>" + (item.keyword == null ? "" : item.keyword) + "</td>" +
-                            "</tr>";
-                        $("#tbody2").append(newTr);
-                    });
-                }
-            }
-        });
+
     }
 };

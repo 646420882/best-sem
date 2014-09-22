@@ -67,8 +67,8 @@ To change this template use File | Settings | File Templates.
                     <div class="k_r_top2 over">
                         <div class="k_r_middle over">
                             <div class="k_top2_text fl">
-                                <div class="k_top2_text1"><textarea id="textarea1"
-                                                                    style="overflow:auto; resize: none"></textarea>
+                                <div class="k_top2_text1">
+                                    <textarea id="textarea1" style="overflow:auto; resize: none"></textarea>
                                 </div>
                                 <p>可输入词根100/100</p>
                                 <a href="javascript: findWordFromBaidu();" class="become2">开始拓词</a>
@@ -197,20 +197,26 @@ To change this template use File | Settings | File Templates.
             <ul>
                 <li><input type="radio" checked="checked" name="searchType" value="1"> 选择已有关键词</li>
                 <li><span>计划：</span>
-                    <select id="campagin"><option value="-1">请选择计划</option> </select></li>
+                    <select id="campagin">
+                        <option value="-1">请选择计划</option>
+                    </select></li>
                 <li><span>单元：</span>
                     <select id="adgroup">
                         <option value="-1">请选择单元</option>
                     </select>
                 </li>
-                <li><textarea id="txt1"></textarea></li>
+                <li>
+                    <textarea id="txt1"></textarea>
+                </li>
             </ul>
         </div>
         <div class="originality_right fl">
             <ul>
-                <li><input type="radio"  name="searchType" value="2"> 输入新单元词</li>
-                <li><textarea name="txt2"></textarea></li>
-                <li><span class="fr">1/20行</span></li>
+                <li><input type="radio" name="searchType" value="2"> 输入新单元词</li>
+                <li>
+                    <textarea id="textarea2" name="txt2" style="overflow:auto; resize: none"></textarea>
+                </li>
+                <li style="color: #f00"><%--<span class="fr" style="color: #f00">--%>1/20行<%--</span>--%></li>
             </ul>
         </div>
     </div>
@@ -455,8 +461,10 @@ To change this template use File | Settings | File Templates.
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/creativesearch.js"></script>
 <script type="text/javascript">
-var type = 1; //1, baidu; 2, perfect
+
+var type = 1; //1, baidu; 2, system
 var krFileId;
 var fieldName = "dsQuantity";
 var sort = -1;
@@ -479,7 +487,7 @@ $(document).ajaxStart(function () {
     ajaxbg.show();
 });
 $(document).ajaxStop(function () {
-    ajaxbg.fadeOut(1500);
+    ajaxbg.fadeOut(1000);
 });
 
 /******************pagination*******************/
@@ -489,12 +497,16 @@ var baiduWordPage = -1;
 var systemWordPage = -1;
 
 var pageSelectCallback = function (page_index, jq) {
-    pageIndex = page_index;
     if (type == 1) {
         $("#pagination1").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber1' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipPage();' class='page_go'> GO</a>");
     } else {
         $("#pagination2").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber2' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipPage();' class='page_go'> GO</a>");
     }
+
+    if (pageIndex == page_index) {
+        return false;
+    }
+    pageIndex = page_index;
     toAnyPage(page_index);
     return false;
 };
@@ -509,7 +521,6 @@ var getOptionsFromForm = function (current_page) {
     opt["prev_text"] = "上一页";
     opt["next_text"] = "下一页";
 
-    //avoid html injections
     var htmlspecialchars = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"};
     $.each(htmlspecialchars, function (k, v) {
         opt.prev_text = opt.prev_text.replace(k, v);
@@ -530,6 +541,7 @@ $(function () {
             display: "block"
         });
     });
+
     $("#bulid").click(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
@@ -540,22 +552,27 @@ $(function () {
             display: "block"
         });
     });
+
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box ").css("display", "none");
+        $(".box").css("display", "none");
     });
+
     var $tab_li = $('#tab_menu li');
     $('#tab_menu li').click(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
         var index = $tab_li.index(this);
         $('.containers').eq(index).show().siblings().hide();
     });
+
     var $tab_li2 = $('.tab_menu2 li');
     $('.tab_menu2 li').click(function () {
         $(this).addClass('current').siblings().removeClass('current');
         var index = $tab_li2.index(this);
         $('div.table_concent2 > div').eq(index).show().siblings().hide();
     });
+
+
     $("#trade").change(function () {
         var trade = $("#trade option:selected").val();
         _trade = trade;
@@ -576,13 +593,20 @@ $(function () {
                     $("#category").append(category);
                 });
     });
+
     $("#category").change(function () {
         var category = $("#category option:selected").val();
         _category = category;
     });
+
     $("#textarea1").on('keyup', function () {
         var seedWords = $("#textarea1").val().trim().split("\n");
         $("#textarea1").parent().next().text("可输入词根" + (100 - seedWords.length) + "/100");
+    });
+
+    $("#textarea2").on('keyup', function () {
+        var strs1 = $("#textarea2").val().trim().split("\n");
+        $("#textarea2").parent().next().text("可输入" + (20 - strs1.length) + "/20行");
     });
 });
 var downloadCSV = function () {
@@ -900,9 +924,6 @@ var toAnyPage = function (page_index) {
 };
 
 
-
 </script>
-
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/creativesearch.js"></script>
 </body>
 </html>

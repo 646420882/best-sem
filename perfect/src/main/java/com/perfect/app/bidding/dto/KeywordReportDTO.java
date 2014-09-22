@@ -9,6 +9,10 @@ import java.math.BigDecimal;
  */
 public class KeywordReportDTO extends KeywordEntity {
 
+    private String campaignName;
+
+    private String adgroupName;
+
     private Integer impression = 0;     //PC展现次数
 
     private Integer click = 0;      //PC点击次数
@@ -147,5 +151,21 @@ public class KeywordReportDTO extends KeywordEntity {
 
     public void setStatusStr(String statusStr) {
         this.statusStr = statusStr;
+    }
+
+    public String getCampaignName() {
+        return campaignName;
+    }
+
+    public void setCampaignName(String campaignName) {
+        this.campaignName = campaignName;
+    }
+
+    public String getAdgroupName() {
+        return adgroupName;
+    }
+
+    public void setAdgroupName(String adgroupName) {
+        this.adgroupName = adgroupName;
     }
 }

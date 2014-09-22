@@ -7,6 +7,7 @@ import com.perfect.dao.KeyWordBackUpDAO;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.dao.LogDAO;
 import com.perfect.dao.LogProcessingDAO;
+import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
 import com.perfect.entity.KeywordEntity;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -116,12 +118,13 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
     @Override
-    public List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param) {
+    public List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
 
         Query mongoQuery = new Query();
 
+        Criteria criteria = null;
         if (fullMatch) {
-            mongoQuery.addCriteria(Criteria.where(NAME).in(query));
+            criteria = Criteria.where(NAME).in(query);
         } else {
             String prefix = ".*(";
             String suffix = ").*";
@@ -131,9 +134,31 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
             }
             reg = reg.substring(0, reg.length() - 1);
 
-            mongoQuery.addCriteria(Criteria.where(NAME).regex(prefix + reg + suffix));
+            criteria = Criteria.where(NAME).regex(prefix + reg + suffix);
 
         }
+
+        if (queryParams != null && !queryParams.isEmpty() && queryParams.size() > 0) {
+//            Criteria criteria = Criteria.where(NAME).regex(prefix + reg + suffix);
+            for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
+                if ("matchType".equals(entry.getKey())) {
+                    Integer matchType = Integer.valueOf(entry.getValue().toString());
+                    if (matchType == 1) {
+                        criteria.and("mt").is(1);
+                    } else if (matchType == 2) {
+                        criteria.and("mt").is(2).and("pt").is(3);
+                    } else if (matchType == 3) {
+                        criteria.and("mt").is(2).and("pt").is(2);
+                    } else if (matchType == 4) {
+                        criteria.and("mt").is(2).and("pt").is(1);
+                    } else if (matchType == 5) {
+                        criteria.and("mt").is(3);
+                    }
+                }
+            }
+        }
+        mongoQuery.addCriteria(criteria);
+
         return getMongoTemplate().find(param.withParam(mongoQuery), getEntityClass());
     }
 
@@ -432,6 +457,43 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
             e.printStackTrace();
         }
         logProcessingDAO.insertAll(logEntities);
+    }
+
+    @Override
+    public void updateMultiKeyword(Long[] ids, BigDecimal price, String pcUrl) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Query query = Query.query(Criteria.where(KEYWORD_ID).in(ids));
+        Update update = new Update();
+        if (price != null) {
+            if (price.doubleValue() == 0) {
+                //使用单元出价
+                for (Long id : ids) {
+                    AdgroupEntity adgroupEntity = findByKeywordId(id);
+                    Double _price;
+                    if (adgroupEntity != null) {
+                        _price = adgroupEntity.getMaxPrice();
+                        BigDecimal adgroupPrice = new BigDecimal(_price);
+                        update.set("pr", adgroupPrice);
+                        mongoTemplate.updateMulti(query, update, getEntityClass());
+                    }
+                }
+            } else {
+                update.set("pr", price);
+                mongoTemplate.updateMulti(query, update, getEntityClass());
+            }
+        }
+        if (pcUrl != null) {
+            update.set("pc", pcUrl);
+            mongoTemplate.updateMulti(query, update, getEntityClass());
+        }
+    }
+
+    @Override
+    public AdgroupEntity findByKeywordId(Long keywordId) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        KeywordEntity keywordEntity = mongoTemplate.findOne(Query.query(Criteria.where(KEYWORD_ID).is(keywordId)), getEntityClass());
+        Long adgroupId = keywordEntity.getAdgroupId();
+        return mongoTemplate.findOne(Query.query(Criteria.where(ADGROUP_ID).is(adgroupId)), AdgroupEntity.class);
     }
 
     public void deleteById(Long id) {
