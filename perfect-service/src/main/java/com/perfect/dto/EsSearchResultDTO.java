@@ -11,7 +11,11 @@ import java.util.List;
 public class EsSearchResultDTO {
     private long total;
     private List<CreativeSourceEntity> list;
-    private List<KeyValuePair> kvValue = new ArrayList<>();
+    private List<KeyValuePair> keywords = new ArrayList<>();
+
+    private List<KeyValuePair> hosts = new ArrayList<>();
+
+    private List<KeyValuePair> regions = new ArrayList<>();
 
     public void setTotal(long total) {
         this.total = total;
@@ -29,12 +33,29 @@ public class EsSearchResultDTO {
         return list;
     }
 
-    public void add(String key, Object value) {
-        kvValue.add(new KeyValuePair(key, value));
+    public void addKeyword(String key, Object value) {
+        keywords.add(new KeyValuePair(key, value));
     }
 
-    public List<KeyValuePair> getKvValue() {
-        return this.kvValue;
+    public List<KeyValuePair> getKeywords() {
+        return this.keywords;
+    }
+
+    public List<KeyValuePair> getHosts() {
+        return hosts;
+    }
+
+    public List<KeyValuePair> getRegions() {
+        return regions;
+    }
+
+    public void addHost(String key, Object value) {
+        hosts.add(new KeyValuePair(key, value));
+    }
+
+
+    public void addRegions(String key, Object value) {
+        regions.add(new KeyValuePair(key, value));
     }
 
     public static class KeyValuePair {

@@ -206,15 +206,16 @@ To change this template use File | Settings | File Templates.
                     </select>
                 </li>
                 <li>
-                    <textarea id="txt1"></textarea>
+                    <textarea id="txt1" name="" style="overflow:auto; resize: none"></textarea>
                 </li>
+                <li style="color: #f00"><%--<span class="fr" style="color: #f00">--%>1/20行<%--</span>--%></li>
             </ul>
         </div>
         <div class="originality_right fl">
             <ul>
                 <li><input type="radio" name="searchType" value="2"> 输入新单元词</li>
                 <li>
-                    <textarea id="textarea2" name="txt2" style="overflow:auto; resize: none"></textarea>
+                    <textarea id="txt2" name="txt2" style="overflow:auto; resize: none"></textarea>
                 </li>
                 <li style="color: #f00"><%--<span class="fr" style="color: #f00">--%>1/20行<%--</span>--%></li>
             </ul>
@@ -233,33 +234,6 @@ To change this template use File | Settings | File Templates.
                 <a href="#" class="fr" id="bulid">新建创意</a>
             </div>
             <ul id="creativeList">
-                <li>
-
-                    <div>
-<span class="fr">
-<a href="#">置顶 </a>|<a href="#" class="showbox">编辑</a> |<a href="#">
-    删除</a>
-</span>
-                    </div>
-                </li>
-                <li>
-                    <div><img src="${pageContext.request.contextPath}/public/images/shuju.jpg"></div>
-                    <div>
-<span class="fr">
-<a href="#">置顶 </a>|<a href="#" class="showbox">编辑</a> |<a href="#">
-    删除</a>
-</span>
-                    </div>
-                </li>
-                <li class="last">
-                    <div><img src="${pageContext.request.contextPath}/public/images/shuju.jpg"></div>
-                    <div>
-<span class="fr">
-<a href="#">置顶 </a>|<a href="#" class="showbox">编辑</a> |<a href="#">
-    删除</a>
-</span>
-                    </div>
-                </li>
             </ul>
         </div>
         <div class="r_under_right fl">
@@ -271,16 +245,32 @@ To change this template use File | Settings | File Templates.
             </div>
             <div class="r_under_bottom over ">
                 <ul id="terms">
-                    <li><span>搜索</span><b>8%</b></li>
-                    <li><span>搜索</span><b>8%</b></li>
-                    <li><span>搜索</span><b>8%</b></li>
-                    <li><span>搜索</span><b>8%</b></li>
-                    <li><span>搜索</span><b>8%</b></li>
-                    <li><span>搜索</span><b>8%</b></li>
-                    <li><span>搜索</span><b>8%</b></li>
-                    <li><span>搜索</span><b>8%</b></li>
-                    <li><span>搜索</span><b>8%</b></li>
-                    <li class="last"><span>搜索</span><b>8%</b></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="r_under_right fl">
+            <div class="r_under_top over">
+                <ul>
+                    <li><h3>竞争对手</h3></li>
+                    <li><h3>创意占比</h3></li>
+                </ul>
+            </div>
+            <div class="r_under_bottom over ">
+                <ul id="hosts">
+                </ul>
+            </div>
+        </div>
+
+        <div class="r_under_right fl">
+            <div class="r_under_top over">
+                <ul>
+                    <li><h3>地域</h3></li>
+                    <li><h3>创意占比</h3></li>
+                </ul>
+            </div>
+            <div class="r_under_bottom over ">
+                <ul id="regions">
                 </ul>
             </div>
         </div>
@@ -604,9 +594,14 @@ $(function () {
         $("#textarea1").parent().next().text("可输入词根" + (100 - seedWords.length) + "/100");
     });
 
-    $("#textarea2").on('keyup', function () {
-        var strs1 = $("#textarea2").val().trim().split("\n");
-        $("#textarea2").parent().next().text("可输入" + (20 - strs1.length) + "/20行");
+    $("#txt1").on('keyup', function () {
+        var strs1 = $("#txt1").val().trim().split("\n");
+        $("#txt1").parent().next().text("可输入" + (20 - strs1.length) + "/20行");
+    });
+
+    $("#txt2").on('keyup', function () {
+        var strs1 = $("#txt2").val().trim().split("\n");
+        $("#txt2").parent().next().text("可输入" + (20 - strs1.length) + "/20行");
     });
 });
 var downloadCSV = function () {

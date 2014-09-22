@@ -86,7 +86,7 @@ public class KeywordControllerTest extends JUnitBaseController {
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
-    @Resource
+    /*@Resource
     SystemUserDAO systemUserDAO;
     @Test
     public void test() throws Exception {
@@ -104,6 +104,6 @@ public class KeywordControllerTest extends JUnitBaseController {
             dao.getKeywordReportData(dateStr);
             dao.getRegionReportData(dateStr);
         }
-    }
+    }*/
 
 }

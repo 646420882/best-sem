@@ -408,6 +408,7 @@
     background: #ecf3f9;
     border-bottom: 1px solid #ffffff;
 }
+
 .paihang {
     display: block;
     float: left;
@@ -1266,6 +1267,7 @@ ul.ztree.zTreeDragUL {
 }
 .price2, .times{
     width: 26px;
+    padding:0 5px;
 }
 .w_list01 {
     width: 100px;
@@ -1400,11 +1402,12 @@ ul.ztree.zTreeDragUL {
     background-color: #fff;
     overflow: hidden;
 }
-.box10{
+.box10,.box4{
     width:400px;
 }
 .box6{
     min-width:200px;
+    max-width:300px;
 }
 .box h2, .box2 h2, .box3 h2, .box4 h2, .box5 h2, .box6 h2, .box7 h2, .box8 h2, .box9 h2, .box10 h2 {
     display:block;
@@ -1418,12 +1421,17 @@ ul.ztree.zTreeDragUL {
     color: #fff;
     cursor: Move;
 }
+#downloadData ,.box5{
+   *width:410px;
+}
+
 h2 .close {
     float:right;
     font-size: 12px;
     color: #fff;
 }
 .mainlist {
+    *width:93%;
     padding: 20px;
     background: #f8f8f8;
     border-bottom: 1px solid #cfcfcf;
@@ -1479,15 +1487,20 @@ h2 .close {
     background: #fff;
     padding: 20px 0;
     text-align: center;
+    width:100%;
 
 }
 .main_bottom .w_list03{
     width:100%;
     text-align: center;
+    *margin-left:30%;
 }
 .main_bottom .w_list03 ul li{
     float:none;
     display: inline-block;
+    *float:left;
+    *display:block;
+    max-width:30px;
 }
 .main_bottom .w_list03 ul{
     margin-bottom:0px;
@@ -1713,8 +1726,10 @@ h2 .close {
     width: 78%;
 
 }
-.w_list02 {
-  /*  margin-left: 10px;*/
+
+.input_box{
+    float:left;
+    overflow:hidden;
 }
 .zs_input3 {
     width: 70%;
@@ -2716,5 +2731,81 @@ text-align: left;
     width:34px;
     height:20px;
     background:url(/public/img/shuju_jiantou.png) no-repeat ;
+}
+/**checkbox**/
+.radio-btn input[type="radio"], .check-box input[type="checkbox"] {
+    visibility: hidden;
+}
+.check-box {
+    width: 11px;
+    height: 11px;
+    cursor: pointer;
+    display: inline-block;
+    float:left;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #0086ff;
+    background:#fff;
+    margin:5px 5px 0 0 ;
+
+}
+.check-box i {
+    background: url(/public/img/input_checkbox.png) no-repeat center center;
+    position: absolute;
+    left: 0px;
+    bottom: -15px;
+    width: 11px;
+    height: 11px;
+    -webkit-transition: all 400ms ease-in-out;
+    -moz-transition: all 400ms ease-in-out;
+    -o-transition: all 400ms ease-in-out;
+    transition: all 400ms ease-in-out;
+    -webkit-transform:rotateZ(-180deg);
+    -moz-transform:rotateZ(-180deg);
+    -o-transform:rotateZ(-180deg);
+    transform:rotateZ(-180deg);
+}
+.checkedBox {
+
+}
+.checkedBox i {
+    bottom: 0px;
+    -webkit-transform:rotateZ(0deg);
+    -moz-transform:rotateZ(0deg);
+    -o-transform:rotateZ(0deg);
+    transform:rotateZ(0deg);
+}
+/*Custom radio button*/
+.radio-btn {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    *float:left;
+    margin: 5px 0px 0 0;
+
+    cursor: pointer;
+    position: relative;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+    border: 1px solid #c1c1c1;
+    overflow:hidden;
+}
+
+.radio-btn i {
+    width: 6px;
+    height: 6px;
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+}
+.checkedRadio i {
+    background-color: #0086ff;
+}
+.box .radio-btn{
+float:none;
 }
 /* CSS Document */

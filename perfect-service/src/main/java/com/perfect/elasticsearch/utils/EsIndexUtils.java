@@ -2,7 +2,6 @@ package com.perfect.elasticsearch.utils;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
-import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -10,11 +9,7 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 
 /**
  * Created by vbzer_000 on 2014/9/20.
@@ -23,6 +18,8 @@ public class EsIndexUtils {
 
     public static void main(String[] args) {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-es.xml");
+
+        ElasticsearchTemplate elasticsearchTemplate = applicationContext.getBean(ElasticsearchTemplate.class);
 
         if (args.length != 2) {
             System.out.println("missing index name.");
@@ -50,16 +47,19 @@ public class EsIndexUtils {
                 return;
             }
             System.out.println("Index [" + indexName + "] created!");
-        }else{
+        } else {
             System.out.println("Index [" + indexName + "] already exists!");
         }
 
 
         String scrollId = null;
         SearchResponse searchResponse = null;
+        long total = 0;
+
         while (true) {
             if (scrollId == null) {
-                searchResponse = client.prepareSearch("source").setQuery(QueryBuilders.matchAllQuery())
+                searchResponse = client.prepareSearch("data").setTypes("creative").setQuery(QueryBuilders
+                        .matchAllQuery())
                         .setScroll(TimeValue
                                 .timeValueMinutes
                                         (5)).setFrom(start).setSize(size).get();
@@ -69,26 +69,35 @@ public class EsIndexUtils {
             }
 
             if (searchResponse == null) {
-                return;
+                break;
             }
 
             if (searchResponse.getHits().getHits().length == 0) {
-                return;
+                break;
             }
 
-            if(scrollId == null )
+            if (scrollId == null)
                 scrollId = searchResponse.getScrollId();
 
-
             BulkRequestBuilder builder = client.prepareBulk();
-
             for (SearchHit searchHit : searchResponse.getHits()) {
                 builder.add(client.prepareIndex(indexName, typeName).setSource(searchHit.getSource()));
-                if (builder.numberOfActions() == 500) {
+                total++;
+
+                if (builder.numberOfActions() == size) {
                     builder.execute();
+                    continue;
                 }
             }
+
+            if (builder.numberOfActions() > 0 && builder.numberOfActions() < size) {
+                builder.execute();
+            }
+
         }
+
+
+        System.out.println("total = " + total);
 
     }
 }

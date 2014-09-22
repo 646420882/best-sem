@@ -3,6 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <import resource="spring-es.xml"/>
 
     <bean name="requestHelper" class="com.perfect.api.baidu.RequestHelper">
         <property name="semaphoreValue" value="1"/>
@@ -24,23 +25,39 @@
             <value>work</value>
         </property>
     </bean>
-
-
-    <!--<bean name="biddingJobBean" class="org.springframework.scheduling.quartz.JobDetailBean">-->
-        <!--<property name="name" value="biddingJob"/>-->
-        <!--<property name="jobClass" value="com.perfect.schedule.task.execute.BiddingJob"/>-->
-    <!--</bean>-->
-
     <bean id="biddingTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="biddingJobBean"/>
         <property name="cronExpression" value="0 0/5 * * * ? "/>
     </bean>
+
+
+    <bean id="dataPullJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <bean class="com.perfect.schedule.task.execute.ReportDataPull"/>
+        </property>
+        <property name="targetMethod">
+            <value>pullStart</value>
+        </property>
+
+    </bean>
+    <bean id="dataPullTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="biddingJobBean"/>
+        <property name="cronExpression" value="0 30 0 */1 * ? "/>
+    </bean>
+
+
+    <!--<bean name="biddingJobBean" class="org.springframework.scheduling.quartz.JobDetailBean">-->
+    <!--<property name="name" value="biddingJob"/>-->
+    <!--<property name="jobClass" value="com.perfect.schedule.task.execute.BiddingJob"/>-->
+    <!--</bean>-->
+
 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="autoStartup" value="true"/>
         <property name="triggers">
             <list>
                 <ref bean="biddingTrigger"/>
+                <ref bean="dataPullTrigger"/>
             </list>
         </property>
     </bean>

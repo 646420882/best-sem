@@ -88,4 +88,5 @@ public class BiddingTest extends UnitilsJUnit4 {
         }
 
     }
+
 }

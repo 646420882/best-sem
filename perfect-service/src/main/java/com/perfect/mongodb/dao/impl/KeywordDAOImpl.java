@@ -248,7 +248,11 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     @Override
     public List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param) {
-        return getMongoTemplate().find(param.withParam(Query.query(Criteria.where(ADGROUP_ID).is(adgroupId))), getEntityClass());
+        if (param == null) {
+            return getMongoTemplate().find(Query.query(Criteria.where(ADGROUP_ID).is(adgroupId)), getEntityClass());
+        } else {
+            return getMongoTemplate().find(param.withParam(Query.query(Criteria.where(ADGROUP_ID).is(adgroupId))), getEntityClass());
+        }
     }
 
     /**
