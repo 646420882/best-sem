@@ -515,7 +515,7 @@
         <div class="gusuan_bottom1 over fl ">
             <ul>
                 <li>关键词列表：</li>
-                <li><textarea class="zs_input5"></textarea></li>
+                <li><textarea class="zs_input5"  id="imKwd" style="font-size: 12px;" disabled="disabled" readonly="readonly" ></textarea></li>
                 <li>选择分组名：</li>
                 <li><select id="cgroup" onchange="cgroupInsert();"></select></li>
             </ul>

@@ -19,6 +19,7 @@ public class EntityConstants {
     public static final String TBL_MONITORING_FOLDERS = "monitoring_folders";
     public static final String TBL_MONITORING_TARGETS = "monitoring_Targets";
     public static final String TBL_CUSTOMGROUP="custom_group";
+    public static final String TBL_IMPORTANT_KEYWORD="important_keyword_bidding";
 
     //backUp
     public static final String BAK_CREATIVE="creative_bak";

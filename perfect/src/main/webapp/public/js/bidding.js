@@ -216,16 +216,21 @@ $(function () {
 
     //设置分组
     $("#showbox5").click(function () {
-        initCustomGroupSelect();
-        $(".TB_overlayBG").css({
-            display: "block", height: $(document).height()
-        });
-        $(".box5").css({
-            left: ($("body").width() - $(".box5").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $(".box5").height()) / 2 + $(window).scrollTop() + "px",
-            display: "block"
-        });
+        if(initCustomGroupSelect()){
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });
+            $(".box5").css({
+                left: ($("body").width() - $(".box5").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $(".box5").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });
+        }else{
+            alert("请至少选择一个关键词！");
+        }
+
     });
+
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box5").css("display", "none");
