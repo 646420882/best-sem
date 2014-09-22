@@ -166,7 +166,8 @@
             </div>
         </div>
         <div id="pagination1" class="pagination"></div>
-    </div>
+</div>
+</div>
 </div>
 <div class="containers over hides">
     <div class=" jiangjia_concent over">
@@ -790,6 +791,7 @@ var optInit = getOptionsFromForm(0);
 /**********************jqGrid*********************/
 var dataUrl = "";
 var grid = null;
+var grid2 = null;
 
 var getAllCheckedcb = function () {
     var rowIds = $("#table1").jqGrid('getGridParam', 'selarrrow');
@@ -916,7 +918,7 @@ $(function () {
         });
     });
 
-    //jqGrid
+    //jqGrid table1
     grid = $("#table1").jqGrid({
         datatype: "json",
         url: false,
@@ -1027,7 +1029,48 @@ $(function () {
             $("#pagination1").pagination(records, getOptionsFromForm(pageIndex));
         }
     });
+    grid2 = $("#table2").jqGrid({
+        datatype: "json",
+        url: false,
+        jsonReader: {
+            root: "rows",
+            records: "records",
+            repeatitems: false
+        },
+        forceFit: true,
+        shrinkToFit: true,//此选项用于根据width计算每列宽度的算法,默认值true
+        colModel: [
+            // {label: '<input type=\"checkbox\" name=\"check_all\" onclick=\"checkAll();\" id=\"check_all\" >', name: 'checkall', width: 30,
+            //sortable: false, align: 'center', formatter:function(v,x,r){ return "<input type='checkbox'/>"; }},
+            {label: ' 关键词ID', name: 'keywordId', sortable: false, align: 'center', hidden: true},
+            {label: ' 关键词', name: 'keyword', sortable: false, align: 'center'},
+            {label: ' 消费', name: 'cost', sortable: false, align: 'center'},
+            {label: ' 当前排名', name: 'currentRank', sortable: false, align: 'center'},
+            {label: ' 展现量', name: 'impression', sortable: false, align: 'center'},
+            {label: ' 点击率', name: 'ctr', sortable: false, align: 'center'},
+            {label: ' 出价', name: 'price', sortable: false, align: 'center'},
+            {label: ' 质量度', name: ' pcQuality', sortable: false, align: 'center'},
+            {label: ' 移动端质量度', name: 'mQuality', sortable: false, align: 'center'},
+            {label: ' 状态', name: 'statusStr', sortable: false, align: 'center'},
+            {label: ' 竞价规则', name: 'ruleDesc', sortable: false, align: 'center'},
+            {label: ' Pc URL', name: 'pcDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
+            {label: ' Mobile URL', name: 'mobileDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
+            {label: ' 竞价状态', name: 'biddingStatus', sortable: false, align: 'center'},
+            {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true}
+        ],
 
+        rowNum: 20,// 默认每页显示记录条数
+        pgbuttons: false,
+        resizable: true,
+        scroll: false,
+        altRows: true,
+        altclass: 'list2_box2',
+        width: '100%',
+        loadui: 'disable',
+        rownumbers: false,
+        multiselect: true
+
+    });
 });
 
 function loadReady() {
