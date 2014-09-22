@@ -78,6 +78,7 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                                    @RequestParam(value = "imbiddingStatus") String[] imbiddingStatus,
                                    @RequestParam(value = "imrule") String[] imrule) {
         List<KeywordImEntity> keywordImEntities = new ArrayList<>();
+        //判断是否选择的关键词不止一个，如果不止一个，就进行循环添加
         if (imap.length > 1) {
             for (int i = 0; i < imap.length; i++) {
                 KeywordImEntity keywordImEntity = new KeywordImEntity();
@@ -101,6 +102,7 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                 keywordImEntities.add(keywordImEntity);
             }
             keywordImService.insertAll(keywordImEntities);
+            //如果不是则只进行一次添加
         }else{
             KeywordImEntity keywordImEntity = new KeywordImEntity();
             keywordImEntity.setCustomGroupId(cgroupId);
@@ -120,6 +122,7 @@ public class ImportKeywordBiddingController extends WebContextSupport {
             keywordImEntity.setMobileDestinationUrl(immobileDestinationUrl[0]);
             keywordImEntity.setBiddingStatus(getBidding(imbiddingStatus[0]));
             keywordImEntity.setRule(Boolean.parseBoolean(imrule[0]));
+            //
             keywordImService.insert(keywordImEntity);
         }
         writeHtml(SUCCESS,response);
