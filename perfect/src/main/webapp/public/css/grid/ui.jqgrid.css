@@ -74,7 +74,8 @@
 }
 
 .ui-jqgrid .ui-jqgrid-htable th {
-    height: 22px;
+    height: 30px;
+    line-height:30px;
     padding: 0 2px 0 2px;
 }
 
@@ -110,7 +111,7 @@
 .ui-jqgrid .ui-th-div-ie {
     white-space: nowrap;
     zoom: 1;
-    height: 17px;
+    height: 30px;
 }
 
 .ui-jqgrid .ui-jqgrid-resize {
