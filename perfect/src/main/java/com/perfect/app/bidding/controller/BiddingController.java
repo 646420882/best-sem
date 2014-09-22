@@ -448,6 +448,11 @@ public class BiddingController {
 //                }
 //            }
 
+            AdgroupEntity adgroupEntity = sysAdgroupService.findByAdgroupId(entity.getAdgroupId());
+            CampaignEntity campaignEntity = sysCampaignService.findById(adgroupEntity.getCampaignId());
+            keywordReportDTO.setCampaignName(campaignEntity.getCampaignName());
+            keywordReportDTO.setAdgroupName(adgroupEntity.getAdgroupName());
+
             //setting quality
             keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
             keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
@@ -488,8 +493,6 @@ public class BiddingController {
         for (StructureReportEntity entity : list) {
             long kwid = entity.getKeywordId();
             KeywordReportDTO dto = keywordReportDTOHashMap.get(kwid);
-            dto.setCampaignName(entity.getCampaignName());
-            dto.setAdgroupName(entity.getAdgroupName());
             dto.setClick(NumberUtils.getInteger(entity.getPcClick()));
             dto.setConversion(NumberUtils.getDouble(entity.getPcConversion()));
             dto.setCost(entity.getPcCost());

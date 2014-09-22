@@ -33,31 +33,31 @@
 </ul>
 <div class="tab_box">
 <div class="containers over">
-<div class=" jiangjia_concent over">
-    <div class="jingjia_left fl over">
-        <div class="j_l_top over">
-            <span class="fl"><h3>账户目录</h3></span>
-            <a href="#" class="fr">刷新</a>
+    <div class=" jiangjia_concent over">
+        <div class="jingjia_left fl over">
+            <div class="j_l_top over">
+                <span class="fl"><h3>账户目录</h3></span>
+                <a href="#" class="fr">刷新</a>
+            </div>
+            <div class="j_l_top2 over">
+                <span class="fl">查找计划单元</span>
+                <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png">
+            </div>
+            <div class="j_list01 over">
+                <ul id="zTree" class="ztree over">
+                </ul>
+            </div>
+            <div class="j_l_under over">
+                <a href="#">监控文件夹</a>
+            </div>
         </div>
-        <div class="j_l_top2 over">
-            <span class="fl">查找计划单元</span>
-            <input class="fr" type="image" src="${pageContext.request.contextPath}/public/img/search.png">
-        </div>
-        <div class="j_list01 over">
-            <ul id="zTree" class="ztree over">
-            </ul>
-        </div>
-        <div class="j_l_under over">
-            <a href="#">监控文件夹</a>
-        </div>
-    </div>
-    <div class="jingjia_right fr over">
-        <div class="zhushou_concent over">
-            <div class="wrap_list01 over wd ">
-                <ul>
-                    <li>
-                        <div class="w_list01 fl over">是否参与竞价：</div>
-                        <div class="w_list02 fl over">
+        <div class="jingjia_right fr over">
+            <div class="zhushou_concent over">
+                <div class="wrap_list01 over wd ">
+                    <ul>
+                        <li>
+                            <div class="w_list01 fl over">是否参与竞价：</div>
+                            <div class="w_list02 fl over">
                                         <span>
                                             <form>
                                                 <input type="radio" name="in" checked="checked" value="0">&nbsp;全部
@@ -85,27 +85,27 @@
                                           <span>
                                               <input type="button" value="高级搜索∨" class="advanced_search">
                                         </span>
-                        </div>
-                    </li>
-                </ul>
-                <div id="advancedSearch" class="Senior over hides">
-                    <ul>
-                        <li>
-                            <div class="w_list01 fl over">匹配模式：</div>
-                            <div class="w_list02 fl over" id="matchType">
-                                    <span><input type="checkbox" name="matchType" checked="checked"
-                                                 value="1">&nbsp;精准</span>
-                                <span><input type="checkbox" name="matchType" value="2">&nbsp;短语-核心</span>
-                                <span><input type="checkbox" name="matchType" value="3">&nbsp;短语-精准</span>
-                                <span><input type="checkbox" name="matchType" value="4">&nbsp;短语-同义</span>
-                                <span><input type="checkbox" name="matchType" value="5">&nbsp;广泛</span>
                             </div>
                         </li>
-                        <li>
-                            <div class="w_list01 fl over">质量度：</div>
-                            <div class="w_list02 fl over" id="keywordQuality">
-                                <ul>
-                                    <li>
+                    </ul>
+                    <div id="advancedSearch" class="Senior over hides">
+                        <ul>
+                            <li>
+                                <div class="w_list01 fl over">匹配模式：</div>
+                                <div class="w_list02 fl over" id="matchType">
+                                    <span><input type="checkbox" name="matchType" checked="checked"
+                                                 value="1">&nbsp;精准</span>
+                                    <span><input type="checkbox" name="matchType" value="2">&nbsp;短语-核心</span>
+                                    <span><input type="checkbox" name="matchType" value="3">&nbsp;短语-精准</span>
+                                    <span><input type="checkbox" name="matchType" value="4">&nbsp;短语-同义</span>
+                                    <span><input type="checkbox" name="matchType" value="5">&nbsp;广泛</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="w_list01 fl over">质量度：</div>
+                                <div class="w_list02 fl over" id="keywordQuality">
+                                    <ul>
+                                        <li>
                                             <span><input type="checkbox" name="keywordQuality"
                                                          value="1">&nbsp;一分词</span>
                                             <span><input type="checkbox" name="keywordQuality"
@@ -116,8 +116,8 @@
                                                          value="4">&nbsp;四分词</span>
                                             <span><input type="checkbox" name="keywordQuality"
                                                          value="5">&nbsp;五分词</span>
-                                    </li>
-                                    <li>
+                                        </li>
+                                        <li>
                                             <span><input type="checkbox" name="keywordQuality"
                                                          value="6">&nbsp;六分词</span>
                                             <span><input type="checkbox" name="keywordQuality"
@@ -128,46 +128,46 @@
                                                          value="9">&nbsp;九分词</span>
                                             <span><input type="checkbox" name="keywordQuality"
                                                          value="10">&nbsp;十分词</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
 
-                        <li>
-                            <div class="w_list01 fl over">出价：</div>
-                            <div class="w_list02 fl over" id="keywordPrice">
+                            <li>
+                                <div class="w_list01 fl over">出价：</div>
+                                <div class="w_list02 fl over" id="keywordPrice">
                                     <span>
                                         <input type="text" class="price"> - <input type="text" class="price">
                                     </span>
-                            </div>
-                        </li>
-                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="w_list03 ">
-            <ul class="jiangjia_list">
-                <li class="current" id="showbox">设置规则</li>
-                <li id="updateBtn">更新账户数据</li>
-                <li id="rankBtn">检查当前排名</li>
-                <li id="showbox2">修改出价</li>
-                <li id="showbox7">启动竞价</li>
-                <li id="showbox3">暂停竞价</li>
-                <li id="showbox4">修改访问网址</li>
-                <li id="showbox5">分组</li>
-                <li id="showbox6">自定义列</li>
-            </ul>
-            <div class="over wd">
-                <span class="fl">当前显示数据日期：昨天</span>
+            <div class="w_list03 ">
+                <ul class="jiangjia_list">
+                    <li class="current" id="showbox">设置规则</li>
+                    <li id="updateBtn">更新账户数据</li>
+                    <li id="rankBtn">检查当前排名</li>
+                    <li id="showbox2">修改出价</li>
+                    <li id="showbox7">启动竞价</li>
+                    <li id="showbox3">暂停竞价</li>
+                    <li id="showbox4">修改访问网址</li>
+                    <li id="showbox5">分组</li>
+                    <li id="showbox6">自定义列</li>
+                </ul>
+                <div class="over wd">
+                    <span class="fl">当前显示数据日期：昨天</span>
+                </div>
+                <div class="list4">
+                    <table id="table1" border="0" cellspacing="0" width="100%">
+                    </table>
+                </div>
             </div>
-            <div class="list4">
-                <table id="table1" border="0" cellspacing="0" width="100%">
-                </table>
-            </div>
+            <div id="pagination1" class="pagination"></div>
         </div>
-        <div id="pagination1" class="pagination"></div>
-</div>
-</div>
+    </div>
 </div>
 <div class="containers over hides">
     <div class=" jiangjia_concent over">
@@ -559,35 +559,40 @@
     <div class="mainlist">
         <ul id="customColList">
             <li>
-                <span class="define fl"><input type="checkbox" value="campaignName"> 推广单元</span>
-                <span class="define fl"><input type="checkbox" value="cpm"> 千次展现消费</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="campaignName"> 推广计划</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="cpm"> 千次展现消费</span>
             </li>
             <li>
-                <span class="define fl"><input type="checkbox" value="adgroupName"> 推广计划</span>
-                <span class="define fl"><input type="checkbox" value="impression"> 展现量</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="adgroupName"> 推广单元</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="impression"> 展现量</span>
             </li>
             <li>
-                <span class="define fl"><input type="checkbox" value="statusStr"> 状态</span>
-                <span class="define fl"><input type="checkbox" value="ctr"> 点击率</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="statusStr"> 状态</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="ctr"> 点击率</span>
             </li>
             <li>
-                <span class="define fl"><input type="checkbox" value="price"> 出价</span>
-                <span class="define fl"><input type="checkbox" value="cpc">平均点击价格</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="price"> 出价</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="cpc">平均点击价格</span>
             </li>
             <li>
-                <span class="define fl"><input type="checkbox" value="pcQuality"> PC端质量度</span>
-                <span class="define fl"><input type="checkbox" value="mQuality">移动端质量度</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="pcQuality"> PC端质量度</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="mQuality">移动端质量度</span>
             </li>
             <li>
-                <span class="define fl"><input type="checkbox" value="click"> 点击量</span>
-                <span class="define fl"><input type="checkbox" value="currentRank"> 当前排名</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="click"> 点击量</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="currentRank"> 当前排名</span>
             </li>
             <li>
-                <span class="define fl"><input type="checkbox" value="cost"> 消费</span>
-                <span class="define fl"><input type="checkbox" value="pcDestinationUrl"> Pc&nbsp;URL</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="cost"> 消费</span>
+                <span class="define fl"><input type="checkbox" checked="checked"
+                                               value="pcDestinationUrl"> Pc&nbsp;URL</span>
             </li>
-            <li><span class="define fl"><input type="checkbox" value="ruleDesc"> 竞价规则</span>
-                <span class="define fl"><input type="checkbox" value="mobileDestinationUrl"> Mobile&nbsp;URL</span></li>
+            <li><span class="define fl"><input type="checkbox" checked="checked" value="ruleDesc"> 竞价规则</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="mobileDestinationUrl"> Mobile&nbsp;URL</span>
+            </li>
+            <li><span class="define fl"><input type="checkbox" checked="checked" value="biddingStatus"> 竞价状态</span>
+                <%--<span class="define fl"><input type="checkbox" checked="checked" value="mobileDestinationUrl"> Mobile&nbsp;URL</span>--%>
+            </li>
         </ul>
 
     </div>
@@ -819,8 +824,10 @@ var changeGridCol = function () {
     $.each(cbs, function (i, item) {
         if (item.checked) {
             $("#table1").setGridParam().showCol(item.value);
+            $("#table1").jqGrid("setGridWidth", document.body.clientWidth * 0.8, true);
         } else {
             $("#table1").setGridParam().hideCol(item.value);
+            $("#table1").jqGrid("setGridWidth", document.body.clientWidth * 0.8, true);
         }
     });
     $(".TB_overlayBG").css("display", "none");
@@ -944,7 +951,7 @@ $(function () {
             {label: ' 出价', name: 'price', sortable: false, align: 'center'},
             {label: ' 平均点击价格', name: 'cpc', sortable: false, align: 'center', hidden: true},
             {label: ' 千次展现消费', name: 'cpm', sortable: false, align: 'center', hidden: true},
-            {label: ' 质量度', name: ' pcQuality', sortable: false, align: 'center'},
+            {label: ' 质量度', name: 'pcQuality', sortable: false, align: 'center'},
             {label: ' 移动端质量度', name: 'mQuality', sortable: false, align: 'center'},
             {label: ' 状态', name: 'statusStr', sortable: false, align: 'center'},
             {label: ' 竞价规则', name: 'ruleDesc', sortable: false, align: 'center'},
@@ -960,7 +967,7 @@ $(function () {
         scroll: false,
         altRows: true,
         altclass: 'list2_box2',
-        width: '100%',
+        autowidth: true,
         loadui: 'disable',
         rownumbers: false,
         multiselect: true,
