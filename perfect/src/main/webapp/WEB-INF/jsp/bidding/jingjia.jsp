@@ -15,7 +15,6 @@
         .tab_box {
             padding: 10px 0 80px 0;
         }
-
     </style>
 </head>
 <body>
@@ -66,16 +65,20 @@
                             <div class="w_list02 fl over">
                                         <span>
                                             <form>
-                                                <div class="input_box"><input type="radio" name="in" checked="checked" value="0">&nbsp;全部&nbsp;</div>
-                                                <div class="input_box"><input type="radio" name="in" value="-1">&nbsp;未参与 &nbsp;</div>
-                                                <div class="input_box"><input type="radio" name="in" value="1"> &nbsp;已参加&nbsp;</div>
+                                                <div class="input_box"><input type="radio" name="in" checked="checked"
+                                                                              value="0">&nbsp;全部&nbsp;</div>
+                                                <div class="input_box"><input type="radio" name="in" value="-1">&nbsp;未参与
+                                                    &nbsp;</div>
+                                                <div class="input_box"><input type="radio" name="in" value="1"> &nbsp;已参加&nbsp;
+                                                </div>
                                             </form>
                                         </span>
                                         <span>
                                                <dl><input type="image"
                                                           src="${pageContext.request.contextPath}/public/img/search2.png">
                                                </dl>
-                                               <dl><input type="checkbox" style=" margin-top:5px;" name="fullmatch" checked="checked">
+                                               <dl><input type="checkbox" style=" margin-top:5px;" name="fullmatch"
+                                                          checked="checked">
                                                </dl>
                                                 <dl>
                                                     <input type="text" class="w_text"
@@ -98,11 +101,17 @@
                             <li>
                                 <div class="w_list01 fl over">匹配模式：</div>
                                 <div class="w_list02 fl over" id="matchType">
-                                    <div class="input_box"><span><input type="checkbox" name="matchType" checked="checked" value="1">&nbsp;精准</span></div>
-                                    <div class="input_box"><span><input type="checkbox" name="matchType" value="2" >&nbsp;短语-核心</span></div>
-                                    <div class="input_box"><span><input type="checkbox" name="matchType" value="3">&nbsp;短语-精准</span></div>
-                                    <div class="input_box"><span><input type="checkbox" name="matchType" value="4" >&nbsp;短语-同义</span></div>
-                                    <div class="input_box"><span><input type="checkbox" name="matchType" value="5">&nbsp;广泛</span></div>
+                                    <div class="input_box"><span><input type="checkbox" name="matchType"
+                                                                        checked="checked" value="1">&nbsp;精准</span>
+                                    </div>
+                                    <div class="input_box"><span><input type="checkbox" name="matchType" value="2">&nbsp;短语-核心</span>
+                                    </div>
+                                    <div class="input_box"><span><input type="checkbox" name="matchType" value="3">&nbsp;短语-精准</span>
+                                    </div>
+                                    <div class="input_box"><span><input type="checkbox" name="matchType" value="4">&nbsp;短语-同义</span>
+                                    </div>
+                                    <div class="input_box"><span><input type="checkbox" name="matchType" value="5">&nbsp;广泛</span>
+                                    </div>
                                 </div>
                             </li>
                             <li>
@@ -110,18 +119,38 @@
                                 <div class="w_list02 fl over" id="keywordQuality">
                                     <ul>
                                         <li>
-                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality" value="1" checked="checked">&nbsp;一分词</span></div>
-                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality" value="2" checked="checked">&nbsp;二分词</span></div>
-                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality" value="3" checked="checked">&nbsp;三分词</span></div>
-                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality"  value="4" checked="checked">&nbsp;四分词</span></div>
-                                            <div class="input_box"> <span><input type="checkbox" name="keywordQuality" value="5" checked="checked">&nbsp;五分词</span></div>
+                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality"
+                                                                                value="1"
+                                                                                checked="checked">&nbsp;一分词</span></div>
+                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality"
+                                                                                value="2"
+                                                                                checked="checked">&nbsp;二分词</span></div>
+                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality"
+                                                                                value="3"
+                                                                                checked="checked">&nbsp;三分词</span></div>
+                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality"
+                                                                                value="4"
+                                                                                checked="checked">&nbsp;四分词</span></div>
+                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality"
+                                                                                value="5"
+                                                                                checked="checked">&nbsp;五分词</span></div>
                                         </li>
                                         <li>
-                                            <div class="input_box"> <span><input type="checkbox" name="keywordQuality" value="6" checked="checked">&nbsp;六分词</span></div>
-                                            <div class="input_box"> <span><input type="checkbox" name="keywordQuality" value="7" checked="checked">&nbsp;七分词</span></div>
-                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality" value="8" checked="checked">&nbsp;八分词</span></div>
-                                            <div class="input_box"> <span><input type="checkbox" name="keywordQuality" value="9" checked="checked">&nbsp;九分词</span></div>
-                                            <div class="input_box">  <span><input type="checkbox" name="keywordQuality" value="10" checked="checked">&nbsp;十分词</span></div>
+                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality"
+                                                                                value="6"
+                                                                                checked="checked">&nbsp;六分词</span></div>
+                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality"
+                                                                                value="7"
+                                                                                checked="checked">&nbsp;七分词</span></div>
+                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality"
+                                                                                value="8"
+                                                                                checked="checked">&nbsp;八分词</span></div>
+                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality"
+                                                                                value="9"
+                                                                                checked="checked">&nbsp;九分词</span></div>
+                                            <div class="input_box"><span><input type="checkbox" name="keywordQuality"
+                                                                                value="10"
+                                                                                checked="checked">&nbsp;十分词</span></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -131,7 +160,9 @@
                                 <div class="w_list01 fl over">出价：</div>
                                 <div class="w_list02 fl over" id="keywordPrice">
                                     <span>
-                                        <input type="text" class="price fl"><pre class="fl"> - </pre><input type="text" class="price fl "> <pre class="fl" > 元</pre>
+                                        <input type="text" class="price fl"><pre class="fl"> - </pre><input type="text"
+                                                                                                            class="price fl "> <pre
+                                            class="fl"> 元</pre>
                                     </span>
 
                                 </div>
@@ -394,9 +425,10 @@
                 <ul>
                     <li>
                         <p><input type="radio" name="auto" checked="checked" value="1"><span>单次竞价</span></p>
-                        <input type="radio" name="sbid" value="everyday" ><span>每天执行</span>
-                        <input type="radio" name="sbid" value="bytime"> <span>竞价次数:</span><input class="times" type="text"
-                                                                                    name="bytimes">
+                        <input type="radio" name="sbid" value="everyday"><span>每天执行</span>
+                        <input type="radio" name="sbid" value="bytime"> <span>竞价次数:</span><input class="times"
+                                                                                                 type="text"
+                                                                                                 name="bytimes">
                     </li>
                     <li><input type="radio" name="auto" value="2"><span>重复竞价速度 每隔
                         <select id="interval">
@@ -439,7 +471,7 @@
             <li>
                 <input type="radio" name="price1" checked="checked"> 输入新出价: <input name="newPrice" class="zs_input3"
                                                                                    type="text"></li>
-            <li><input type="radio" name="price1" ><span class="mainlist_left"> 使用单元出价 </span></li>
+            <li><input type="radio" name="price1"><span class="mainlist_left"> 使用单元出价 </span></li>
         </ul>
     </div>
     <div class="main_bottom">
@@ -458,14 +490,14 @@
     <div class="mainlist">
         <ul>
             <li><input type="radio" name="price2" checked="checked"><span class="mainlist_left"> 广泛 </span></li>
-            <li><input type="radio" name="price2" ><span class="mainlist_left">精准</span></li>
+            <li><input type="radio" name="price2"><span class="mainlist_left">精准</span></li>
             <li>
-                <div class="fl"><input type="radio" name="price2"  class="short"><span
+                <div class="fl"><input type="radio" name="price2" class="short"><span
                         class="mainlist_left">短语 </span></div>
                 <form class="shorts hides fl ">
-                    <input type="radio" name="price3" ><span class="mainlist_left">核心包含</span>
-                    <input type="radio" name="price3" ><span class="mainlist_left">同义包含</span>
-                    <input type="radio" name="price3" ><span class="mainlist_left">精准包含</span>
+                    <input type="radio" name="price3"><span class="mainlist_left">核心包含</span>
+                    <input type="radio" name="price3"><span class="mainlist_left">同义包含</span>
+                    <input type="radio" name="price3"><span class="mainlist_left">精准包含</span>
                 </form>
             </li>
         </ul>
@@ -509,7 +541,8 @@
         <div class="gusuan_bottom1 over fl ">
             <ul>
                 <li>关键词列表：</li>
-                <li><textarea class="zs_input5"  id="imKwd" style="font-size: 12px;" disabled="disabled" readonly="readonly" ></textarea></li>
+                <li><textarea class="zs_input5" id="imKwd" style="font-size: 12px;" disabled="disabled"
+                              readonly="readonly"></textarea></li>
                 <li>选择分组名：</li>
                 <li><select id="cgroup" onchange="cgroupInsert();"></select></li>
             </ul>
@@ -554,26 +587,30 @@
         <ul id="customColList">
             <li>
                 <span class="define fl"><input type="checkbox" checked="checked" value="campaignName" name="columns"> 推广计划</span>
-                <span class="define fl"><input type="checkbox" checked="checked" value="cpm" name="columns"> 千次展现消费</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="cpm"
+                                               name="columns"> 千次展现消费</span>
             </li>
             <li>
                 <span class="define fl"><input type="checkbox" checked="checked" value="adgroupName" name="columns"> 推广单元</span>
                 <span class="define fl"><input type="checkbox" checked="checked" value="impression" name="columns"> 展现量</span>
             </li>
             <li>
-                <span class="define fl"><input type="checkbox" checked="checked" value="statusStr" name="columns"> 状态</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="statusStr"
+                                               name="columns"> 状态</span>
                 <span class="define fl"><input type="checkbox" checked="checked" value="ctr" name="columns"> 点击率</span>
             </li>
             <li>
                 <span class="define fl"><input type="checkbox" checked="checked" value="price" name="columns"> 出价</span>
-                <span class="define fl"><input type="checkbox" checked="checked" value="cpc" name="columns">平均点击价格</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="cpc"
+                                               name="columns">平均点击价格</span>
             </li>
             <li>
                 <span class="define fl"><input type="checkbox" checked="checked" value="pcQuality" name="columns"> PC端质量度</span>
                 <span class="define fl"><input type="checkbox" checked="checked" value="mQuality" name="columns">移动端质量度</span>
             </li>
             <li>
-                <span class="define fl"><input type="checkbox" checked="checked" value="click" name="columns"> 点击量</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="click"
+                                               name="columns"> 点击量</span>
                 <span class="define fl"><input type="checkbox" checked="checked" value="currentRank" name="columns"> 当前排名</span>
             </li>
             <li>
@@ -581,8 +618,10 @@
                 <span class="define fl"><input type="checkbox" checked="checked"
                                                value="pcDestinationUrl" name="columns"> Pc&nbsp;URL</span>
             </li>
-            <li><span class="define fl"><input type="checkbox" checked="checked" value="ruleDesc" name="columns"> 竞价规则</span>
-                <span class="define fl"><input type="checkbox" checked="checked" value="mobileDestinationUrl" name="columns"> Mobile&nbsp;URL</span>
+            <li><span class="define fl"><input type="checkbox" checked="checked" value="ruleDesc"
+                                               name="columns"> 竞价规则</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="mobileDestinationUrl"
+                                               name="columns"> Mobile&nbsp;URL</span>
             </li>
             <li><span class="define fl"><input type="checkbox" checked="checked" value="biddingStatus" name="columns"> 竞价状态</span>
                 <span class="define fl"><input type="checkbox" checked="checked" value="matchType" name="columns"> 匹配模式</span>
@@ -641,50 +680,23 @@ function filter(treeId, parentNode, childNodes) {
     return childNodes;
 }
 function beforeClick(treeId, treeNode) {
-//    var tbl = "table1";
-//    if (treeId == 'zTree2') {
-//        tbl = "table2";
-//    }
-
     if (treeNode.level == 0) {
         //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
 //            alert(treeNode.id + "," + treeNode.name);
-//        campaignId = treeNode.id + "," + "0";
         _campaignId = treeNode.id;
         _adgroupId = null;
         keyWordPage = -1;
         pageIndex = 0;
         //事件处理
-        //var curPage = $('.curpage').text();
-        //var size = $("#size").find("option:selected").val();
-        //var skip = (curPage - 1) * size;
 
         skip = 0;
         limit = 20;
         dataUrl = "/bidding/list?cp=" + treeNode.id + "&s=" + skip + "&l=" + limit;
 
         grid.setGridParam({url: dataUrl}).trigger("reloadGrid");
-
-//        $.ajax({
-//            url: "/bidding/list?cp=" + treeNode.id + "&s=" + skip + "&l=" + limit,
-//            type: "GET",
-//            dataType: "json",
-////            async: false,
-//            success: function (datas) {
-//                if (datas.rows.length == 0) {
-//                    emptyTable(tbl);
-//                } else {
-//                    total = datas.total;
-//                    $("#pagination1").pagination(total, optInit);
-//                    //fullItems(datas, tbl);
-//                    jQuery("#table1").trigger("reloadGrid");
-//                }
-//            }
-//        })
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元),则应该展示其下属的关键词数据
 //            alert(treeNode.id + "," + treeNode.name);
-//        adgroupId = treeNode.id + "," + "1";
         _campaignId = null;
         _adgroupId = treeNode.id;
         keyWordPage = -1;
@@ -696,22 +708,6 @@ function beforeClick(treeId, treeNode) {
         dataUrl = "/bidding/list?ag=" + treeNode.id + "&s=" + skip + "&l=" + limit;
 
         grid.setGridParam({url: dataUrl}).trigger("reloadGrid");
-
-//        $.ajax({
-//            url: "/bidding/list?ag=" + treeNode.id,
-//            type: "GET",
-//            dataType: "json",
-////            async: false,
-//            success: function (datas) {
-//                if (datas.rows.length == 0) {
-//                    emptyTable(tbl);
-//                } else {
-//                    total = datas.total;
-//                    $("#pagination1").pagination(total, optInit);
-//                    fullItems(datas, tbl);
-//                }
-//            }
-//        })
     }
 
 }
@@ -788,7 +784,7 @@ var optInit = getOptionsFromForm(0);
 /*************************************************/
 
 /**********************jqGrid*********************/
-var dataUrl = "";
+var dataUrl = "/bidding/list";
 var grid = null;
 var grid2 = null;
 
@@ -921,7 +917,7 @@ $(function () {
     //jqGrid table1
     grid = $("#table1").jqGrid({
         datatype: "json",
-        url: false,
+        url: dataUrl,
         jsonReader: {
             root: "rows",
             records: "records",
@@ -1201,17 +1197,17 @@ $('.getRankBtn').click(function () {
 });
 /********checked**********/
 var inutstyle = $("input[name='keywordQuality'],input[name='fullmatch'],input[name='columns'],input[name='matchType']")
-$(function(){
+$(function () {
     inutstyle.wrap('<div class="check-box checkedBox"><i></i></div>');
     $('input[type="radio"]').wrap('<div class="radio-btn"><i></i></div>');
     $('input[checked="checked"]').parents("i").parents(".radio-btn").addClass('checkedRadio');
-        $(".radio-btn").on('click', function () {
+    $(".radio-btn").on('click', function () {
         var _this = $(this),
-         block = _this.parent().parent();
-         block.find(".radio-btn").removeClass('checkedRadio');
-         block.find(".radio-btn").find("input:radio").removeAttr("checked");
+                block = _this.parent().parent();
+        block.find(".radio-btn").removeClass('checkedRadio');
+        block.find(".radio-btn").find("input:radio").removeAttr("checked");
         _this.addClass('checkedRadio');
-        _this.find('input:radio').attr('checked',true);
+        _this.find('input:radio').attr('checked', true);
     });
     $.fn.toggleCheckbox = function () {
         this.attr('checked', !this.attr('checked'));

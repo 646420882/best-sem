@@ -216,7 +216,7 @@ $(function () {
 
     //设置分组
     $("#showbox5").click(function () {
-        if(initCustomGroupSelect()){
+        if (initCustomGroupSelect()) {
             $(".TB_overlayBG").css({
                 display: "block", height: $(document).height()
             });
@@ -225,7 +225,7 @@ $(function () {
                 top: ($(window).height() - $(".box5").height()) / 2 + $(window).scrollTop() + "px",
                 display: "block"
             });
-        }else{
+        } else {
             alert("请至少选择一个关键词！");
         }
 
@@ -343,16 +343,13 @@ $(function () {
             return false;
         }
 
+        var tmpValue = $("#table1").jqGrid("getGridParam", "postData");
+
         var f = input('fullmatch').prop("checked");
         var filter = checkedValue('in');
-        var tbl = "table1";
-//        var curPage = $('.curpage').text();
-//        var size = $("#size").find("option:selected").val();
-//        var skip = (curPage - 1) * size;
         var curPage = pageIndex;
         var size = limit;
         var skip = curPage * size;
-        var _url = "";
 
         //高级搜索功能
         var matchType = 0;
@@ -402,28 +399,29 @@ $(function () {
                     }
                 }
             });
-            _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter + "&matchType=" + matchType + "&price=" + keywordPrice + "&quality=" + keywordQuality;
+            $.extend(tmpValue, { postData: {
+                s: skip,
+                l: size,
+                q: text,
+                f: f,
+                filter: filter,
+                matchType: matchType,
+                price: keywordPrice,
+                quality: keywordQuality
+            }
+            });
         } else {
-            _url = "/bidding/list?s=" + skip + "&l=" + size + "&q=" + text + "&f=" + f + "&filter=" + filter;
+            $.extend(tmpValue, { postData: {
+                s: skip,
+                l: size,
+                q: text,
+                f: f,
+                filter: filter
+            }
+            });
         }
 
-        grid.setGridParam({url: _url}).trigger("reloadGrid");
-
-//        $.ajax({
-//            url: _url,
-//            type: "POST",
-//            dataType: "json",
-//            async: false,
-//            success: function (datas) {
-//                if (datas.rows == undefined) {
-//                    emptyTable(tbl);
-//                } else {
-//                    total = datas.total;
-//                    $("#pagination1").pagination(total, optInit);
-//                    fullItems(datas, tbl);
-//                }
-//            }
-//        })
+        $("#table1").jqGrid("setGridParam", tmpValue).trigger("reloadGrid");
 
     });
 
