@@ -836,5 +836,6 @@ a.g-menu-item, a.soptclass, a.clearsearchclass {
 
 .list4 {
     height: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
 }
