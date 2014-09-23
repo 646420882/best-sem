@@ -55,4 +55,10 @@ public class CustomGroupDAOImpl extends AbstractUserBaseDAOImpl<CustomGroupEntit
         }
         return arrayNode;
     }
+
+    @Override
+    public CustomGroupEntity findByCustomName(String customName) {
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
+        return mongoTemplate.findOne(new Query(Criteria.where("gname").is(customName)),CustomGroupEntity.class);
+    }
 }

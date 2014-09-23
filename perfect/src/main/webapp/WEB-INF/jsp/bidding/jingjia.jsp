@@ -4,12 +4,14 @@
 <head>
     <title>大数据智能营销</title>
     <meta charset="utf-8">
-    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta id="viewport" name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/grid/ui.jqgrid.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style type="text/css">
         .tab_box {
@@ -223,7 +225,7 @@
                             <li class="showbox3">暂停竞价2</li>
                             <li class="showbox2">修改出价2</li>
                             <li class="showbox4">修改访问网址2</li>
-                            <li class="showbox5">分组2</li>
+                            <li id="showbox5_im">分组2</li>
                             <li class="showbox6">自定义列2</li>
                         </ul>
                         <div class="Screening_concent over">
@@ -245,43 +247,8 @@
                         </div>
 
                         <div class="list4">
-                            <table id="table2" border="0" cellspacing="0" width="101%">
-
-
-                                <thead>
-                                <tr class="list02_top">
-                                    <td>&nbsp;<input type="checkbox" id="checkAll2"></td>
-                                    <%--  <td>&nbsp; 序号</td>--%>
-                                    <td>&nbsp;关键词</td>
-                                    <td>&nbsp;消费</td>
-                                    <td>&nbsp;当前排名</td>
-                                    <td>&nbsp;展现量</td>
-                                    <td>&nbsp;点击率</td>
-                                    <td>&nbsp;出价</td>
-                                    <td>&nbsp;质量度</td>
-                                    <td>&nbsp;移动端质量度</td>
-                                    <td>&nbsp;状态</td>
-                                    <td>&nbsp;竞价规则</td>
-                                    <td>&nbsp;Pc&nbsp;URL</td>
-                                    <td>&nbsp;Mobile&nbsp;URL</td>
-                                    <td>&nbsp;竞价状态</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
+                            <table id="table2" border="0" cellspacing="0" width="100%">
                             </table>
-                            <script type="application/javascript">
-                                var rows = [];
-                                for (i = 0; i < 10; i++) {
-                                    var row = "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>" +
-                                            "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
-                                    rows.push(row)
-                                }
-                                $("#table2 tbody").html(rows);
-                                $("#table2 tbody tr:odd").addClass("list2_box1");
-                                $("#table2 tbody tr:even").addClass("list2_box2");
-                            </script>
                         </div>
                         <div id="pagination2" class="pagination"></div>
                     </div>
@@ -641,11 +608,14 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/grid/jquery.jqGrid.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/importKeyword/importKeywordBidding.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/importKeyword/importKeywordBidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">
@@ -667,6 +637,23 @@ var setting = {
         beforeAsync: beforeAsync,
         onAsyncError: onAsyncError,
         onAsyncSuccess: onAsyncSuccess
+    }
+};
+var imzTreeSetting = {
+    view: {
+        showLine: false,
+        selectedMulti: false
+    },
+    data: {
+        simpleData: {
+            enable: true
+        }
+    },
+    callback: {
+        beforeClick: iMbeforeClick,
+        beforeAsync: null,
+        onAsyncError: null,
+        onAsyncSuccess: null
     }
 };
 var zNodes = "";
@@ -710,6 +697,20 @@ function beforeClick(treeId, treeNode) {
         grid.setGridParam({url: dataUrl}).trigger("reloadGrid");
     }
 
+}
+//重点词竞价树点击
+function iMbeforeClick(treeId, treeNode) {
+    if (treeNode.level == 0) {
+        keyWordPage = -1;
+        pageIndex = 0;
+        //事件处理
+
+        skip = 0;
+        limit = 20;
+        dataUrl2 = "/importBid/loadData?cgId=" + treeNode.id + "&s=" + skip + "&l=" + limit;
+
+        grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
+    }
 }
 var log, className = "dark";
 function beforeAsync(treeId, treeNode) {
@@ -786,7 +787,7 @@ var optInit = getOptionsFromForm(0);
 /**********************jqGrid*********************/
 var dataUrl = "/bidding/list";
 var grid = null;
-var grid2 = null;
+var dataUrl2 = "/importBid/loadData";
 
 var getAllCheckedcb = function () {
     var rowIds = $("#table1").jqGrid('getGridParam', 'selarrrow');
@@ -1051,7 +1052,8 @@ $(function () {
     });
     grid2 = $("#table2").jqGrid({
         datatype: "json",
-        url: false,
+        url: dataUrl2,
+        mtype: "POST",
         jsonReader: {
             root: "rows",
             records: "records",
@@ -1064,11 +1066,18 @@ $(function () {
             //sortable: false, align: 'center', formatter:function(v,x,r){ return "<input type='checkbox'/>"; }},
             {label: ' 关键词ID', name: 'keywordId', sortable: false, align: 'center', hidden: true},
             {label: ' 关键词', name: 'keyword', sortable: false, align: 'center'},
-            {label: ' 消费', name: 'cost', sortable: false, align: 'center'},
+            {label: ' 推广计划', name: 'campaignName', sortable: false, align: 'center', hidden: true},
+            {label: ' 推广单元', name: 'adgroupName', sortable: false, align: 'center', hidden: true},
+            {label: ' 匹配模式', name: 'matchType', sortable: false, align: 'center', hidden: true},
+            {label: ' 高级短语匹配模式', name: 'phraseType', sortable: false, align: 'center', hidden: true},
             {label: ' 当前排名', name: 'currentRank', sortable: false, align: 'center'},
+            {label: ' 消费', name: 'cost', sortable: false, align: 'center'},
             {label: ' 展现量', name: 'impression', sortable: false, align: 'center'},
+            {label: ' 点击量', name: 'click', sortable: false, align: 'center', hidden: true},
             {label: ' 点击率', name: 'ctr', sortable: false, align: 'center'},
             {label: ' 出价', name: 'price', sortable: false, align: 'center'},
+            {label: ' 平均点击价格', name: 'cpc', sortable: false, align: 'center', hidden: true},
+            {label: ' 千次展现消费', name: 'cpm', sortable: false, align: 'center', hidden: true},
             {label: ' 质量度', name: 'pcQuality', sortable: false, align: 'center'},
             {label: ' 移动端质量度', name: 'mQuality', sortable: false, align: 'center'},
             {label: ' 状态', name: 'statusStr', sortable: false, align: 'center'},
@@ -1080,16 +1089,99 @@ $(function () {
         ],
 
         rowNum: 20,// 默认每页显示记录条数
+        rownumbers: false,
+        loadui: 'disable',
         pgbuttons: false,
-        resizable: true,
-        scroll: false,
+        autowidth: true,
         altRows: true,
         altclass: 'list2_box2',
-        width: '100%',
-        loadui: 'disable',
-        rownumbers: false,
-        multiselect: true
+        resizable: true,
+        scroll: false,
+        multiselect: true,
+        beforeRequest: function () {
+        },
+        beforeSelectRow: function (rowId, event) {
+            var $myGrid = $(this),
+                    iCol = $.jgrid.getCellIndex($(event.target).closest('td')[0]),
+                    cm = $myGrid.jqGrid('getGridParam', 'colModel');
+            if (cm[iCol].name === "cb") {
+                return true;
+            }
 
+            var ruleFlag = $("#table2").jqGrid('getCell', rowId, "rule"); //true, 已经设置竞价规则
+            var keywordId = $("#table2").jqGrid('getCell', rowId, "keywordId");
+            if (iCol === 7) {//查看当前排名
+                getRank(keywordId);
+            }
+            else if (iCol === 18 && ruleFlag == "false") {//设置竞价规则
+                $(".TB_overlayBG").css({
+                    display: "block", height: $(document).height()
+                });
+                $(".box").css({
+                    left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
+                    top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
+                    display: "block"
+                });
+            }
+
+            return false;
+        },
+        onSelectRow: function (rowId, status, event) {
+//            $("table1").jqGrid('setSelection', rowId);
+        },
+        onCellSelect: function (rowId, index, contents, event) {
+        },
+
+        loadComplete: function () {
+//            alert($("#table1").jqGrid("getRowData").length);
+        },
+
+        gridComplete: function () {
+//            alert(JSON.stringify($("#table1").jqGrid("getRowData")));
+            records = grid2.getGridParam("records");
+            if (records == 0) {
+                return false;
+            }
+            var graduateIds = jQuery("#table2").jqGrid('getDataIDs');
+            for (var i = 0, l = graduateIds.length; i < l; i++) {
+                var rowId = graduateIds[i];
+                var rank = grid2.jqGrid("getCell", rowId, "currentRank").trim();//当前排名
+                var bidRule = grid2.jqGrid("getCell", rowId, "ruleDesc");//设置竞价规则
+                var bidStatus = grid2.jqGrid("getCell", rowId, "biddingStatus");//竞价状态
+                var matchType = grid2.jqGrid("getCell", rowId, "matchType");//匹配模式
+                var phraseType = grid2.jqGrid("getCell", rowId, "phraseType");//高级短语匹配模式
+                if (rank == 0) {
+                    $("#table2").setCell(rowId, "currentRank", "查看当前排名");
+                }
+                if (bidRule.length == 0) {
+                    $("#table2").setCell(rowId, "ruleDesc", "添加规则");
+                }
+                if (bidStatus == 0 && bidRule.length > 0) {
+                    $("#table2").setCell(rowId, "biddingStatus", "已暂停");
+                } else if (bidStatus == 1) {
+                    $("#table2").setCell(rowId, "biddingStatus", "已启动");
+                } else {
+                    $("#table2").setCell(rowId, "biddingStatus", "无");
+                }
+                if (matchType == 1) {
+                    $("#table2").setCell(rowId, "matchType", "精确匹配");
+                } else if (matchType == 2) {
+                    if (phraseType == 1) {
+                        $("#table2").setCell(rowId, "matchType", "同义包含");
+                    } else if (phraseType == 2) {
+                        $("#table2").setCell(rowId, "matchType", "精确包含");
+                    } else if (phraseType == 3) {
+                        $("#table2").setCell(rowId, "matchType", "核心包含");
+                    } else {
+                        $("#table2").setCell(rowId, "matchType", "高级短语匹配");
+                    }
+                } else if (matchType == 3) {
+                    $("#table2").setCell(rowId, "matchType", "广泛匹配");
+                }
+            }
+
+            $("#pagination2").pagination(records, getOptionsFromForm(pageIndex));
+        }
     });
 });
 

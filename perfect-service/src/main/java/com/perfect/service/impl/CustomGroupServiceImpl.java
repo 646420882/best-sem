@@ -44,4 +44,9 @@ public class CustomGroupServiceImpl extends AbstractUserBaseDAOImpl<CustomGroupE
         map.put(ZTREE,arrayNode);
        return map;
     }
+
+    @Override
+    public CustomGroupEntity findByCustomName(String customName) {
+        return customGroupDAO.findByCustomName(customName);
+    }
 }

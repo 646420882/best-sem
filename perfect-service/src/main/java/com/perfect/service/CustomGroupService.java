@@ -13,4 +13,5 @@ import java.util.Map;
 public interface CustomGroupService extends MongoCrudRepository<CustomGroupEntity,Long> {
     List<CustomGroupEntity> findAll(Long acId);
     Map<String,Object> getCustomGroupTree();
+    CustomGroupEntity findByCustomName(String customName);
 }
