@@ -180,6 +180,12 @@
                 $(this).addClass('current').append("<span class='nav_input1'></span>");
             }
         });
+        $(document).ajaxComplete(function (event, req, settings) {
+            if (req.getResponseHeader("sessionStatus") == "timeout") {
+                window.location = "/login";
+            }
+        });
+
     });
 /*    $(document).ready(function () {
         $(".on_title").pin();

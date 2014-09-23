@@ -1384,6 +1384,8 @@ var t_date = [];
 var dateInterval = 0;
 var colorOne = "#4572A7";
 var colorTow = "#40BC2A";
+var nameOne = "展现";
+var nameTow = "点击";
 /**初始化结束**/
 /**
  * 曲线图数据配置
@@ -1482,6 +1484,7 @@ var loadPerformanceCurve = function (obj, date) {
                     if (dataOne == "") {
                         $(this).attr("xname", "dataOne");
                         colorOne = "#078CC7";
+                        nameOne = "展现";
                         dataOne = {
                             name: '展现',
                             color: '#078CC7',
@@ -1496,6 +1499,7 @@ var loadPerformanceCurve = function (obj, date) {
                     } else if (dataTow == "") {
                         $(this).attr("xname", "dataTow");
                         colorTow = "#078CC7";
+                        nameTow = "展现";
                         dataTow = {
                             name: '展现',
                             color: '#078CC7',
@@ -1523,6 +1527,7 @@ var loadPerformanceCurve = function (obj, date) {
                     if (dataOne == "") {
                         $(this).attr("xname", "dataOne");
                         colorOne = "#40BC2A";
+                        nameOne = "点击";
                         dataOne = {
                             name: '点击',
                             color: '#40BC2A',
@@ -1537,6 +1542,7 @@ var loadPerformanceCurve = function (obj, date) {
                     } else if (dataTow == "") {
                         $(this).attr("xname", "dataTow");
                         colorTow = "#40BC2A";
+                        nameTow = "点击";
                         dataTow = {
                             name: '点击',
                             color: '#40BC2A',
@@ -1564,6 +1570,7 @@ var loadPerformanceCurve = function (obj, date) {
                     if (dataOne == "") {
                         $(this).attr("xname", "dataOne");
                         colorOne = "#F1521B";
+                        nameOne = "消费";
                         dataOne = {
                             name: '消费',
                             color: '#F1521B',
@@ -1578,6 +1585,7 @@ var loadPerformanceCurve = function (obj, date) {
                     } else if (dataTow == "") {
                         $(this).attr("xname", "dataTow");
                         colorTow = "#F1521B";
+                        nameTow = "消费";
                         dataTow = {
                             name: '消费',
                             color: '#F1521B',
@@ -1605,6 +1613,7 @@ var loadPerformanceCurve = function (obj, date) {
                     if (dataOne == "") {
                         $(this).attr("xname", "dataOne");
                         colorOne = "#26CAE5";
+                        nameOne = "点击率";
                         dataOne = {
                             name: '点击率',
                             color: '#26CAE5',
@@ -1619,6 +1628,7 @@ var loadPerformanceCurve = function (obj, date) {
                     } else if (dataTow == "") {
                         $(this).attr("xname", "dataTow");
                         colorTow = "#26CAE5";
+                        nameTow = "点击率";
                         dataTow = {
                             name: '点击率',
                             color: '#26CAE5',
@@ -1645,6 +1655,7 @@ var loadPerformanceCurve = function (obj, date) {
                 if ($(this).is(':checked')) {
                     $(this).attr("xname", "dataOne");
                     colorOne = "#60E47E";
+                    nameOne = "平均点击价格";
                     if (dataOne == "") {
                         dataOne = {
                             name: '平均点击价格',
@@ -1660,6 +1671,7 @@ var loadPerformanceCurve = function (obj, date) {
                     } else if (dataTow == "") {
                         $(this).attr("xname", "dataTow");
                         colorTow = "#60E47E";
+                        nameTow = "平均点击价格";
                         dataTow = {
                             name: '平均点击价格',
                             color: '#60E47E',
@@ -1686,6 +1698,7 @@ var loadPerformanceCurve = function (obj, date) {
                 if ($(this).is(':checked')) {
                     $(this).attr("xname", "dataOne");
                     colorOne = "#DEDF00";
+                    nameOne = "转化";
                     if (dataOne == "") {
                         dataOne = {
                             name: '转化',
@@ -1701,6 +1714,7 @@ var loadPerformanceCurve = function (obj, date) {
                     } else if (dataTow == "") {
                         $(this).attr("xname", "dataTow");
                         colorTow = "#DEDF00";
+                        nameTow = "转化";
                         dataTow = {
                             name: '转化',
                             color: '#DEDF00',
@@ -1787,6 +1801,11 @@ var curve = function () {
         },
         yAxis: [
             { // Primary yAxis
+                title: {
+                    text: nameTow,
+                    margin: 30,
+                    style:{'color':colorTow,'font-size':'16px','font-family': '宋体','font-weight': 'bold'}
+                },
                 labels: {
                     format: '{value}',
                     style: {
@@ -1795,6 +1814,11 @@ var curve = function () {
                 }
             },
             { // Secondary yAxis
+                title: {
+                    text: nameOne,
+                    margin: 30,
+                    style:{'color':colorOne,'font-size':'16px','font-family': '宋体','font-weight': 'bold'}
+                },
                 labels: {
                     format: '{value}',
                     style: {

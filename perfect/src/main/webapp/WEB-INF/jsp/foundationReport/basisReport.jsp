@@ -1758,15 +1758,23 @@ var accountBasisReport = function () {
                 if(item.pcClick !=0){
                     cpc = item.pcCost / item.pcClick;
                 }
-                if (i % 2 == 0) {
-                    basisHtml = "<tr class='list2_box1'><td>&nbsp;" + item.dateRep + "</td><td>&nbsp;" + item.pcImpression + "</td><td>&nbsp;" + item.pcClick + "</td>"
-                            + "<td>&nbsp;" + Math.round(item.pcCost * 100) / 100 + "</td><td>&nbsp;" + Math.round(ctr * 10000) / 100 + "%</td><td>&nbsp;" + Math.round(cpc * 100) / 100 + "</td><td>&nbsp;" + item.pcConversion + "</td>"
-                            + "<td>&nbsp;-</td></tr>"
-                } else {
-                    basisHtml = "<tr class='list2_box2'><td>&nbsp;" + item.dateRep + "</td><td>&nbsp;" + item.pcImpression + "</td><td>&nbsp;" + item.pcClick + "</td>"
-                            + "<td>&nbsp;" + Math.round(item.pcCost * 100) / 100 + "</td><td>&nbsp;" + Math.round(ctr * 10000) / 100 + "%</td><td>&nbsp;" + Math.round(cpc * 100) / 100 + "</td><td>&nbsp;" + item.pcConversion + "</td>"
-                            + "<td>&nbsp;-</td></tr>"
-                }
+                $.each(data.Ring,function(is,items){
+                    if (i % 2 == 0) {
+                        basisHtml = "<tr class='list2_box1'><td>&nbsp;" + item.dateRep + "</td>"
+                                + "<td><span>&nbsp;" + item.pcImpression + "</span>"+((items.mobileImpression < 0)?"<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")+"<span><strong>" + ((items.pcImpression == 0)?'-':items.pcImpression/100) +"%</strong></span></td>"
+                                + "<td><span>&nbsp;" + item.pcClick + "</span>"+((items.mobileClick < 0)?"<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")+"<span><strong>" + ((items.pcClick == 0)?'-':items.pcClick/100) +"%</strong></span></td>"
+                                + "<td><span>&nbsp;" + item.pcCost + "</span>"+((items.mobileCost < 0)?"<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")+"<span><strong>" + ((items.pcCost == 0)?'-':items.pcCost) +"%</strong></span></td>"
+                                + "<td><span>&nbsp;" + Math.round(ctr * 10000) / 100 +"%</span>"+((items.mobileCtr < 0)?"<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")+"<span><strong>" + ((items.pcCtr == 0)?'-':items.pcCtr) +"%</strong></span></td>"
+                                + "<td><span>&nbsp;" + Math.round(cpc * 100) / 100 +"</span>"+((items.mobileCpc < 0)?"<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")+"<span><strong>" + ((items.pcCpc == 0)?'-':items.pcCpc) +"%</strong></span></td>"
+                                + "<td><span>&nbsp;" + item.pcConversion +"</span>"+((items.mobileCpc < 0)?"<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")+"<span><strong>" + ((items.pcConversion == 0)?'-':items.pcConversion) +"%</strong></span></td>"
+                                + "<td><span>&nbsp;-</td></tr>"
+                    } else {
+                        basisHtml = "<tr class='list2_box2'><td>&nbsp;" + item.dateRep + "</td><td>&nbsp;" + item.pcImpression + "</td><td>&nbsp;" + item.pcClick + "</td>"
+                                + "<td>&nbsp;" + Math.round(item.pcCost * 100) / 100 + "</td><td>&nbsp;" + Math.round(ctr * 10000) / 100 + "%</td><td>&nbsp;" + Math.round(cpc * 100) / 100 + "</td><td>&nbsp;" + item.pcConversion + "</td>"
+                                + "<td>&nbsp;-</td></tr>"
+                    }
+                });
+
                 $("#basisAccount").append(basisHtml);
 
             });

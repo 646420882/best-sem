@@ -12,6 +12,7 @@ import java.security.Principal;
  *
  * @author yousheng
  */
+@Deprecated
 public class UserInfoFilter implements Filter {
 
     @Override
