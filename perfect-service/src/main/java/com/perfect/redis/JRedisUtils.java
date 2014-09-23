@@ -1,8 +1,10 @@
 package com.perfect.redis;
 
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Protocol;
 
 import java.util.ResourceBundle;
 
@@ -11,9 +13,11 @@ import java.util.ResourceBundle;
  *
  * @author yousheng
  */
+@Component
 public class JRedisUtils {
 
     private static JedisPool pool;
+
     static {
         ResourceBundle bundle = ResourceBundle.getBundle("redis");
         if (bundle == null) {
@@ -30,19 +34,19 @@ public class JRedisUtils {
         config.setTestOnReturn(Boolean.valueOf(bundle
                 .getString("redis.pool.testOnReturn")));
         pool = new JedisPool(config, bundle.getString("redis.ip"),
-                Integer.valueOf(bundle.getString("redis.port")));
+                Integer.valueOf(bundle.getString("redis.port")), Protocol.DEFAULT_TIMEOUT,
+                bundle.getString("redis.password"));
     }
 
-
-    public static Jedis get(){
+    public static Jedis get() {
         return pool.getResource();
     }
 
-    public static void returnJedis(Jedis jedis){
+    public static void returnJedis(Jedis jedis) {
         pool.returnResource(jedis);
     }
 
-    public static void main(String args[]){
+    public static void main(String args[]) {
 
     }
 }

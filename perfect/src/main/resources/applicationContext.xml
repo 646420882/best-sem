@@ -17,7 +17,7 @@
     <description>Spring public settings</description>
 
     <context:property-placeholder ignore-resource-not-found="true"
-                                  location="classpath:mongodb.properties"/>
+                                  location="classpath:mongodb.properties,classpath:redis.properties"/>
 
     <!--<bean id="data_source" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClass}"/>
@@ -130,6 +130,7 @@
 
     <!-- ============================================= -->
 
+    <import resource="spring-redis.xml"/>
     <import resource="spring-es.xml"/>
     <import resource="applicationContext-security.xml"/>
 
