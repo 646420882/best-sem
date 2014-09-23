@@ -1201,35 +1201,35 @@ $('.getRankBtn').click(function () {
     })
 });
 /********checked**********/
-var inutstyle = $("input[name='keywordQuality'],input[name='fullmatch'],input[name='columns'],input[name='matchType']")
-$(function () {
-    inutstyle.wrap('<div class="check-box checkedBox"><i></i></div>');
-    $('input[type="radio"]').wrap('<div class="radio-btn"><i></i></div>');
-    $('input[checked="checked"]').parents("i").parents(".radio-btn").addClass('checkedRadio');
-    $(".radio-btn").on('click', function () {
-        var _this = $(this),
-                block = _this.parent().parent();
-        block.find(".radio-btn").removeClass('checkedRadio');
-        block.find(".radio-btn").find("input:radio").removeAttr("checked");
-        _this.addClass('checkedRadio');
-        _this.find('input:radio').attr('checked', true);
-    });
-    $.fn.toggleCheckbox = function () {
-        this.attr('checked', !this.attr('checked'));
-    };
-    $('.check-box').on('click', function () {
-        $(this).find(':checkbox').toggleCheckbox();
-        $(this).toggleClass('checkedBox');
-        $(this).removeAttr("checked");
-    });
-
-    $("input[name=matchType]:checkbox").each(function (i, item) {
-        if (!item.checked) {
-            $(item).parent().parent().removeClass('checkedBox');
-        }
-    });
-
-})
+//var inutstyle = $("input[name='keywordQuality'],input[name='fullmatch'],input[name='columns'],input[name='matchType']");
+//$(function () {
+//    inutstyle.wrap('<div class="check-box checkedBox"><i></i></div>');
+//    $('input[type="radio"]').wrap('<div class="radio-btn"><i></i></div>');
+//    $('input[checked="checked"]').parents("i").parents(".radio-btn").addClass('checkedRadio');
+//    $(".radio-btn").on('click', function () {
+//        var _this = $(this),
+//                block = _this.parent().parent();
+//        block.find(".radio-btn").removeClass('checkedRadio');
+//        block.find(".radio-btn").find("input:radio").removeAttr("checked");
+//        _this.addClass('checkedRadio');
+//        _this.find('input:radio').attr('checked', true);
+//    });
+//    $.fn.toggleCheckbox = function () {
+//        this.attr('checked', !this.attr('checked'));
+//    };
+//    $('.check-box').on('click', function () {
+//        $(this).find(':checkbox').toggleCheckbox();
+//        $(this).toggleClass('checkedBox');
+//        $(this).removeAttr("checked");
+//    });
+//
+//    $("input[name=matchType]:checkbox").each(function (i, item) {
+//        if (!item.checked) {
+//            $(item).parent().parent().removeClass('checkedBox');
+//        }
+//    });
+//
+//})
 
 </script>
 </body>
