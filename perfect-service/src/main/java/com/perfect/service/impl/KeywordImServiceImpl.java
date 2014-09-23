@@ -8,6 +8,7 @@ import com.perfect.service.KeywordImService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,5 +26,15 @@ public class KeywordImServiceImpl extends AbstractUserBaseDAOImpl<KeywordImEntit
     @Override
     public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
         return null;
+    }
+
+    @Override
+    public KeywordImEntity findByKwdId(Long kwdId) {
+        return keywordImDAO.findByKwdId(kwdId);
+    }
+
+    @Override
+    public List<KeywordImEntity> findByCgId(String cgId) {
+        return keywordImDAO.findByCgId(cgId);
     }
 }

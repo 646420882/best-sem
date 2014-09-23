@@ -13,10 +13,10 @@ import java.io.IOException;
  */
 @Repository(value = "webContext")
 public class WebContextSupport implements WebContext {
-    public static final String SUCCESS = "1";
-    public static final String FAIL = "0";
-    public static final String EXCEPTION = "3";
-    public static final String NOLOGIN = "4";
+    public static final String SUCCESS = "1";//成功
+    public static final String FAIL = "0";//失败
+    public static final String EXCEPTION = "3";//异常;
+    public static final String NOLOGIN = "4";//未登陆;
 
     @Override
     public void writeHtml(String html, HttpServletResponse response) {

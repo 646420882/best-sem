@@ -35,47 +35,49 @@ public class AccountReportPCPlusMobUtil extends RecursiveTask<List<AccountReport
             DecimalFormat df = new DecimalFormat("#.00");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             for (int i = begin; i < endNumber; i++) {
-                objectList.get(i).setDateRep(dateFormat.format(objectList.get(i).getDate()));
-                objectList.get(i).setPcClick(objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()));
-                objectList.get(i).setPcConversion(objectList.get(i).getPcConversion() + ((objectList.get(i).getMobileConversion() == null) ? 0 : objectList.get(i).getMobileConversion()));
-                objectList.get(i).setPcCost(objectList.get(i).getPcCost().add((objectList.get(i).getMobileCost() == null) ? BigDecimal.valueOf(0) : objectList.get(i).getMobileCost()));
+                AccountReportDTO dto = new AccountReportDTO();
+                dto.setDateRep(dateFormat.format(objectList.get(i).getDate()));
+                dto.setPcClick(objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()));
+                dto.setPcConversion(objectList.get(i).getPcConversion() + ((objectList.get(i).getMobileConversion() == null) ? 0 : objectList.get(i).getMobileConversion()));
+                dto.setPcCost(objectList.get(i).getPcCost().add((objectList.get(i).getMobileCost() == null) ? BigDecimal.valueOf(0) : objectList.get(i).getMobileCost()));
                 //计算点击率
                 if (((objectList.get(i).getMobileImpression() == null) ? 0 : objectList.get(i).getMobileImpression()) == 0) {
-                    objectList.get(i).setPcCtr(0.00);
+                    dto.setPcCtr(0.00);
                     if (((objectList.get(i).getPcImpression() == null) ? 0 : objectList.get(i).getPcImpression()) == 0) {
-                        objectList.get(i).setPcCtr(0d);
+                        dto.setPcCtr(0d);
                     } else {
                         BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format((objectList.get(i).getPcClick().doubleValue() / objectList.get(i).getPcImpression().doubleValue()))));
                         BigDecimal big = new BigDecimal(100);
                         double divide = ctrBig.multiply(big).doubleValue();
-                        objectList.get(i).setPcCtr(divide);
+                        dto.setPcCtr(divide);
                     }
                 } else {
                     double newNumber = Double.parseDouble(df.format((objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick())) / (objectList.get(i).getMobileImpression() + ((objectList.get(i).getMobileImpression() == null) ? 0 : objectList.get(i).getMobileImpression()))));
                     BigDecimal ctrBig = new BigDecimal(newNumber);
                     BigDecimal big = new BigDecimal(100);
                     double divide = ctrBig.multiply(big).doubleValue();
-                    objectList.get(i).setPcCtr(divide);
+                    dto.setPcCtr(divide);
                 }
                 //计算平均点击价格
                 if (((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()) == 0) {
                     if (((objectList.get(i).getPcClick() == null) ? 0 : objectList.get(i).getPcClick()) == 0) {
-                        objectList.get(i).setPcCpc(BigDecimal.valueOf(0));
+                        dto.setPcCpc(BigDecimal.valueOf(0));
                     } else {
-                        objectList.get(i).setPcCpc((objectList.get(i).getPcCost().divide(BigDecimal.valueOf(objectList.get(i).getPcClick()), 2, BigDecimal.ROUND_UP)));
+                        dto.setPcCpc((objectList.get(i).getPcCost().divide(BigDecimal.valueOf(objectList.get(i).getPcClick()), 2, BigDecimal.ROUND_UP)));
                     }
                 } else {
                     BigDecimal newNumber = (objectList.get(i).getPcCost().add((objectList.get(i).getMobileCost() == null) ? BigDecimal.valueOf(0) : objectList.get(i).getMobileCost())).divide(BigDecimal.valueOf(objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick())),2,BigDecimal.ROUND_UP);
-                    objectList.get(i).setPcCpc(newNumber);
+                    dto.setPcCpc(newNumber);
                 }
-                objectList.get(i).setPcImpression(objectList.get(i).getPcImpression() + ((objectList.get(i).getMobileImpression() == null) ? 0 : objectList.get(i).getMobileImpression()));
-                objectList.get(i).setMobileClick(null);
-                objectList.get(i).setMobileConversion(null);
-                objectList.get(i).setMobileCost(null);
-                objectList.get(i).setMobileCtr(null);
-                objectList.get(i).setMobileCpc(null);
-                objectList.get(i).setMobileImpression(null);
-                list.add(objectList.get(i));
+                dto.setPcImpression(objectList.get(i).getPcImpression() + ((objectList.get(i).getMobileImpression() == null) ? 0 : objectList.get(i).getMobileImpression()));
+                dto.setMobileClick(0);
+                dto.setMobileConversion(0.00);
+                dto.setMobileCost(BigDecimal.ZERO);
+                dto.setMobileCtr(0.00);
+                dto.setMobileCpc(BigDecimal.ZERO);
+                dto.setMobileImpression(0);
+                dto.setMobileCpm(BigDecimal.ZERO);
+                list.add(dto);
             }
             return list;
         } else {

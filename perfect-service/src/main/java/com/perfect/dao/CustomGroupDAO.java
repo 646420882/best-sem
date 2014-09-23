@@ -11,4 +11,5 @@ import java.util.List;
 public interface CustomGroupDAO extends  MongoCrudRepository<CustomGroupEntity,Long> {
     public List<CustomGroupEntity> findAll(Long acId);
     ArrayNode getCustomGroupTree();
+    public CustomGroupEntity findByCustomName(String customName);
 }

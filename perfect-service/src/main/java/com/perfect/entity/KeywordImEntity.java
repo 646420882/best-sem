@@ -11,34 +11,29 @@ import java.math.BigDecimal;
  * Created by XiaoWei on 2014/9/22.
  */
 @Document(collection = EntityConstants.TBL_IMPORTANT_KEYWORD)
-public class KeywordImEntity extends KeywordEntity {
-    @Field(value = "cgId")
+public class KeywordImEntity  {
+    @Id
+    private String id;
+    @Field(value = "cgid")
     private String customGroupId;
-    @Field(value = "im")
-    private Integer impression = 0;     //PC展现次数
-    @Field(value = "click")
-    private Integer click = 0;      //PC点击次数
-    @Field(value = "ctr")
-    private Double ctr = 0.0;     //PC点击次数/展现次数
-    @Field(value = "cost")
-    private BigDecimal cost = BigDecimal.valueOf(0.0);        //PC消费
-    @Field(value = "cpc")
-    private BigDecimal cpc = BigDecimal.valueOf(0.0);     //PC平均点击价格=消费/点击次数
-    @Field(value = "cpm")
-    private BigDecimal cpm = BigDecimal.valueOf(0.0);       //PC千次展现消费
-    private Double conversion = 0.0;
-    private int currentRank = 0;
-    @Field(value = "pcqu")
-    private int pcQuality = 0;
-    @Field(value = "mqu")
-    private int mQuality = 0;
+    @Field(value = "kwid")
+    private Long keywordId;
+    @Field(value = "name")
+    private String keywordName;
+    @Field(value =EntityConstants.ACCOUNT_ID)
+    private Long accountId;
     @Field(value = "bs")
-    private int biddingStatus = 0;
+    private String biddingStatus;
     @Field(value = "rule")
-    private boolean rule = false;
-    private String ruleDesc;
-    @Field(value = "ss")
-    private String statusStr;
+    private Boolean rule;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getCustomGroupId() {
         return customGroupId;
@@ -48,115 +43,43 @@ public class KeywordImEntity extends KeywordEntity {
         this.customGroupId = customGroupId;
     }
 
-    public Integer getImpression() {
-        return impression;
+    public Long getKeywordId() {
+        return keywordId;
     }
 
-    public void setImpression(Integer impression) {
-        this.impression = impression;
+    public void setKeywordId(Long keywordId) {
+        this.keywordId = keywordId;
     }
 
-    public Integer getClick() {
-        return click;
+    public String getKeywordName() {
+        return keywordName;
     }
 
-    public void setClick(Integer click) {
-        this.click = click;
+    public void setKeywordName(String keywordName) {
+        this.keywordName = keywordName;
     }
 
-    public Double getCtr() {
-        return ctr;
+    public Long getAccountId() {
+        return accountId;
     }
 
-    public void setCtr(Double ctr) {
-        this.ctr = ctr;
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
     }
 
-    public BigDecimal getCost() {
-        return cost;
-    }
-
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
-    }
-
-    public BigDecimal getCpc() {
-        return cpc;
-    }
-
-    public void setCpc(BigDecimal cpc) {
-        this.cpc = cpc;
-    }
-
-    public BigDecimal getCpm() {
-        return cpm;
-    }
-
-    public void setCpm(BigDecimal cpm) {
-        this.cpm = cpm;
-    }
-
-    public Double getConversion() {
-        return conversion;
-    }
-
-    public void setConversion(Double conversion) {
-        this.conversion = conversion;
-    }
-
-    public int getCurrentRank() {
-        return currentRank;
-    }
-
-    public void setCurrentRank(int currentRank) {
-        this.currentRank = currentRank;
-    }
-
-    public int getPcQuality() {
-        return pcQuality;
-    }
-
-    public void setPcQuality(int pcQuality) {
-        this.pcQuality = pcQuality;
-    }
-
-    public int getmQuality() {
-        return mQuality;
-    }
-
-    public void setmQuality(int mQuality) {
-        this.mQuality = mQuality;
-    }
-
-    public int getBiddingStatus() {
+    public String getBiddingStatus() {
         return biddingStatus;
     }
 
-    public void setBiddingStatus(int biddingStatus) {
+    public void setBiddingStatus(String biddingStatus) {
         this.biddingStatus = biddingStatus;
     }
 
-    public boolean isRule() {
+    public Boolean getRule() {
         return rule;
     }
 
-    public void setRule(boolean rule) {
+    public void setRule(Boolean rule) {
         this.rule = rule;
-    }
-
-    public String getRuleDesc() {
-        return ruleDesc;
-    }
-
-    public void setRuleDesc(String ruleDesc) {
-        this.ruleDesc = ruleDesc;
-    }
-
-    public String getStatusStr() {
-        return statusStr;
-    }
-
-    public void setStatusStr(String statusStr) {
-        this.statusStr = statusStr;
     }
 }

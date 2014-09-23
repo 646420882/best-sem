@@ -57,7 +57,7 @@ public class SysKeywordServiceImpl implements SysKeywordService {
     }
 
     @Override
-    public List<KeywordEntity> findByIds(List<Long> ids) {
-        return keywordDAO.findByIds(ids);
+    public List<KeywordEntity> findByIds(List<Long> ids, PaginationParam...param) {
+        return keywordDAO.findByIds(ids,param);
     }
 }

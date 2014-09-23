@@ -163,7 +163,10 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
     @Override
-    public List<KeywordEntity> findByIds(List<Long> ids) {
+    public List<KeywordEntity> findByIds(List<Long> ids,PaginationParam...param) {
+        if(param.length>0){
+            return getMongoTemplate().find(param[0].withParam(Query.query(Criteria.where(KEYWORD_ID).in(ids))), getEntityClass());
+        }
         return getMongoTemplate().find(Query.query(Criteria.where(KEYWORD_ID).in(ids)), getEntityClass());
     }
 

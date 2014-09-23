@@ -891,8 +891,10 @@ public class BasisReportServiceImpl implements BasisReportService {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
         //关闭并行计算框架
         joinPoolTow.shutdown();
+
         List<AccountReportDTO> finalList = new ArrayList<>();
         for (int i = startJC; i < limitJC; i++) {
             if (i < entities.size()) {
@@ -900,7 +902,32 @@ public class BasisReportServiceImpl implements BasisReportService {
                 finalList.add(entities.get(i));
             }
         }
+        List<AccountReportDTO> listAve = AccountReportStatisticsUtil.getAveragePro(finalList);
+        AccountReportDTO dtoRing = null;
+        List<AccountReportDTO> list = new ArrayList<>();
+        for (int x = 0; x < listAve.size(); x++) {
+            if (x % 2 == 0) {
+                dtoRing = new AccountReportDTO();
+                dtoRing = listAve.get(x);
+            }else {
+                AccountReportDTO dtoRings = new AccountReportDTO();
+                dtoRings.setMobileImpression(dtoRing.getPcImpression()-listAve.get(x).getPcImpression());
+                dtoRings.setMobileClick(dtoRing.getPcClick() - listAve.get(x).getPcClick());
+                dtoRings.setMobileCost(dtoRing.getPcCost().subtract(listAve.get(x).getPcCost()));
+                dtoRings.setMobileCpc(dtoRing.getPcCpc().subtract(listAve.get(x).getPcCpc()));
+                dtoRings.setMobileCtr(dtoRing.getPcCtr() - listAve.get(x).getPcCtr());
+                dtoRings.setMobileConversion(dtoRing.getPcConversion() - listAve.get(x).getPcConversion());
+                dtoRings.setPcImpression((int) (((dtoRing.getPcImpression().doubleValue() - listAve.get(x).getPcImpression().doubleValue()) / ((listAve.get(x).getPcImpression() <= 0) ? 1 : listAve.get(x).getPcImpression())) * 10000));
+                dtoRings.setPcClick((int) (((dtoRing.getPcClick().doubleValue() - listAve.get(x).getPcClick().doubleValue()) / ((listAve.get(x).getPcClick() <= 0) ? 1 : listAve.get(x).getPcClick())) * 10000));
+                dtoRings.setPcCost(((dtoRing.getPcCost().subtract(listAve.get(x).getPcCost())).divide((listAve.get(x).getPcCost() == BigDecimal.ZERO) ? BigDecimal.valueOf(1) : listAve.get(x).getPcCost(), 4, BigDecimal.ROUND_UP)).multiply(BigDecimal.valueOf(100)));
+                dtoRings.setPcCtr((double) Math.round((dtoRing.getPcCtr() - listAve.get(x).getPcCtr()) / ((listAve.get(x).getPcCtr() <= 0) ? 1 : listAve.get(x).getPcCtr()) * 10000 / 100));
+                dtoRings.setPcCpc(((dtoRing.getPcCpc().subtract(listAve.get(x).getPcCpc())).divide((listAve.get(x).getPcCpc() == BigDecimal.ZERO) ? BigDecimal.valueOf(1) : listAve.get(x).getPcCpc(), 4, BigDecimal.ROUND_UP)).multiply(BigDecimal.valueOf(100)));
+                dtoRings.setPcConversion((double) Math.round((dtoRing.getPcConversion()-listAve.get(x).getPcConversion())/((listAve.get(x).getPcConversion() <= 0)?1:listAve.get(x).getPcConversion())*10000/100));
+                list.add(dtoRings);
+            }
+        }
         map.put(REPORT_ROWS, finalList);
+        map.put("Ring", list);
         return map;
     }
 

@@ -30,6 +30,18 @@ public class ContextInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+        /**
+         * 在经过Spring Security认证之后, Security会把一个SecurityContextImpl对象存储到session中, 这个对象中存有当前用户的信息
+         * ((SecurityContextImpl) request.getSession().getAttribute("SPRING_SECURITY_CONTEXT")).getAuthentication().getName()
+         */
+        if (request.getSession().getAttribute("SPRING_SECURITY_CONTEXT") == null) {//判断session里是否有用户信息
+            if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
+                response.addHeader("sessionStatus", "timeout");
+                return false;
+            }
+
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return true;
@@ -118,24 +130,7 @@ public class ContextInterceptor implements HandlerInterceptor {
                     modelMap.put("accountBudget", 0);
                     modelMap.put("remainderDays", 0);
                 }
-
             }
-
-
-            /*BaiduAccountInfoEntity baiduAccountInfoEntity = null;
-            CommonService commonService = BaiduServiceSupport.getCommonService(accountManageService.getBaiduAccountInfoById(accountId));
-            BaiduApiService apiService = new BaiduApiService(commonService);
-            //获取账户信息
-            AccountInfoType accountInfoType = apiService.getAccountInfo();
-            BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
-
-            MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
-            Update update = new Update();
-            update.set("bdAccounts.$", baiduAccountInfoEntity);
-            mongoTemplate.updateFirst(
-                    Query.query(
-                            Criteria.where("userName").is(WebUtils.getUserName(request)).and("bdAccounts._id").is(accountId)),
-                    update, SystemUserEntity.class);*/
         }
     }
 
