@@ -170,22 +170,22 @@
                         </ul>
                     </div>
                 </div>
-            <div class="w_list03 ">
-                <ul class="jiangjia_list">
-                    <li class="current" id="showbox">设置规则</li>
-                    <li id="updateBtn">更新账户数据</li>
-                    <li id="rankBtn">检查当前排名</li>
-                    <li id="showbox2">修改出价</li>
-                    <li id="showbox7">启动竞价</li>
-                    <li id="showbox3">暂停竞价</li>
-                    <li id="showbox4">修改访问网址</li>
-                    <li id="showbox5">分组</li>
-                    <li id="showbox6">自定义列</li>
-                </ul>
-                <div class="over wd">
-                    <span class="fl">当前显示数据日期：昨天</span>
+                <div class="w_list03 ">
+                    <ul class="jiangjia_list">
+                        <li class="current" id="showbox">设置规则</li>
+                        <li id="updateBtn">更新账户数据</li>
+                        <li id="rankBtn">检查当前排名</li>
+                        <li id="showbox2">修改出价</li>
+                        <li id="showbox7">启动竞价</li>
+                        <li id="showbox3">暂停竞价</li>
+                        <li id="showbox4">修改访问网址</li>
+                        <li id="showbox5">分组</li>
+                        <li id="showbox6">自定义列</li>
+                    </ul>
+                    <div class="over wd">
+                        <span class="fl">当前显示数据日期：昨天</span>
+                    </div>
                 </div>
-            </div>
                 <div class="list4">
                     <table id="table1" border="0" cellspacing="0" width="100%">
                     </table>
@@ -818,7 +818,8 @@ var changeGridCol = function () {
             $("#table1").setGridParam().hideCol(item.value);
         }
     });
-    $("#table1").jqGrid("setGridWidth", document.body.clientWidth * 0.8, true);
+    $("#table1").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
+//    $("#table1").closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
     $(".TB_overlayBG").css("display", "none");
     $(".box6").css("display", "none");
 };
@@ -918,6 +919,7 @@ $(function () {
     grid = $("#table1").jqGrid({
         datatype: "json",
         url: dataUrl,
+        mtype: "POST",
         jsonReader: {
             root: "rows",
             records: "records",
@@ -929,7 +931,7 @@ $(function () {
             // {label: '<input type=\"checkbox\" name=\"check_all\" onclick=\"checkAll();\" id=\"check_all\" >', name: 'checkall', width: 30,
             //sortable: false, align: 'center', formatter:function(v,x,r){ return "<input type='checkbox'/>"; }},
             {label: ' 关键词ID', name: 'keywordId', sortable: false, align: 'center', hidden: true},
-            {label: ' 关键词', name: 'keyword', sortable: false, align: 'center', frozen: true},
+            {label: ' 关键词', name: 'keyword', sortable: false, align: 'center'},
             {label: ' 推广计划', name: 'campaignName', sortable: false, align: 'center', hidden: true},
             {label: ' 推广单元', name: 'adgroupName', sortable: false, align: 'center', hidden: true},
             {label: ' 匹配模式', name: 'matchType', sortable: false, align: 'center', hidden: true},
@@ -953,14 +955,14 @@ $(function () {
         ],
 
         rowNum: 20,// 默认每页显示记录条数
+        rownumbers: false,
+        loadui: 'disable',
         pgbuttons: false,
-        resizable: true,
-        scroll: false,
+        autowidth: true,
         altRows: true,
         altclass: 'list2_box2',
-        autowidth: true,
-        loadui: 'disable',
-        rownumbers: false,
+        resizable: true,
+        scroll: false,
         multiselect: true,
         beforeRequest: function () {
         },
@@ -1003,6 +1005,9 @@ $(function () {
         gridComplete: function () {
 //            alert(JSON.stringify($("#table1").jqGrid("getRowData")));
             records = grid.getGridParam("records");
+            if (records == 0) {
+                return false;
+            }
             var graduateIds = jQuery("#table1").jqGrid('getDataIDs');
             for (var i = 0, l = graduateIds.length; i < l; i++) {
                 var rowId = graduateIds[i];
@@ -1043,7 +1048,7 @@ $(function () {
 
             $("#pagination1").pagination(records, getOptionsFromForm(pageIndex));
         }
-    }).jqGrid('setFrozenColumns');
+    });
     grid2 = $("#table2").jqGrid({
         datatype: "json",
         url: false,
