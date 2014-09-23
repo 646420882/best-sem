@@ -170,7 +170,6 @@
                         </ul>
                     </div>
                 </div>
-            </div>
             <div class="w_list03 ">
                 <ul class="jiangjia_list">
                     <li class="current" id="showbox">设置规则</li>
@@ -186,12 +185,13 @@
                 <div class="over wd">
                     <span class="fl">当前显示数据日期：昨天</span>
                 </div>
+            </div>
                 <div class="list4">
                     <table id="table1" border="0" cellspacing="0" width="100%">
                     </table>
                 </div>
+                <div id="pagination1" class="pagination"></div>
             </div>
-            <div id="pagination1" class="pagination"></div>
         </div>
     </div>
 </div>

@@ -236,44 +236,48 @@ To change this template use File | Settings | File Templates.
             <ul id="creativeList">
             </ul>
         </div>
-        <div class="r_under_right fl">
-            <div class="r_under_top over">
-                <ul>
-                    <li><h3>推荐词根</h3></li>
-                    <li><h3>词频占比</h3></li>
-                </ul>
+        <div class="r_under_mid fl">
+            <div class="r_under_right">
+                <div class="r_under_top over">
+                    <ul>
+                        <li><h3>推荐词根</h3></li>
+                        <li><h3>词频占比</h3></li>
+                    </ul>
+                </div>
+                <div class="r_under_bottom over ">
+                    <ul id="terms">
+                    </ul>
+                </div>
             </div>
-            <div class="r_under_bottom over ">
-                <ul id="terms">
-                </ul>
+
+            <div class="r_under_right">
+                <div class="r_under_top over">
+                    <ul>
+                        <li><h3>竞争对手</h3></li>
+                        <li><h3>创意占比</h3></li>
+                    </ul>
+                </div>
+                <div class="r_under_bottom over ">
+                    <ul id="hosts">
+                    </ul>
+                </div>
             </div>
+
+            <div class="r_under_right">
+                <div class="r_under_top over">
+                    <ul>
+                        <li><h3>地域</h3></li>
+                        <li><h3>创意占比</h3></li>
+                    </ul>
+                </div>
+                <div class="r_under_bottom over ">
+                    <ul id="regions">
+                    </ul>
+                </div>
+            </div>
+
         </div>
 
-        <div class="r_under_right fl">
-            <div class="r_under_top over">
-                <ul>
-                    <li><h3>竞争对手</h3></li>
-                    <li><h3>创意占比</h3></li>
-                </ul>
-            </div>
-            <div class="r_under_bottom over ">
-                <ul id="hosts">
-                </ul>
-            </div>
-        </div>
-
-        <div class="r_under_right fl">
-            <div class="r_under_top over">
-                <ul>
-                    <li><h3>地域</h3></li>
-                    <li><h3>创意占比</h3></li>
-                </ul>
-            </div>
-            <div class="r_under_bottom over ">
-                <ul id="regions">
-                </ul>
-            </div>
-        </div>
     </div>
 </div>
 </div>
