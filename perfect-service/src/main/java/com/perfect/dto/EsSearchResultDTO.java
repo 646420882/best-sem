@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class EsSearchResultDTO {
     private long total;
-    private List<CreativeSourceEntity> list;
+    private List<CreativeSourceDTO> list;
     private List<KeyValuePair> keywords = new ArrayList<>();
 
     private List<KeyValuePair> hosts = new ArrayList<>();
@@ -25,11 +25,11 @@ public class EsSearchResultDTO {
         return total;
     }
 
-    public void setList(List<CreativeSourceEntity> list) {
+    public void setList(List<CreativeSourceDTO> list) {
         this.list = list;
     }
 
-    public List<CreativeSourceEntity> getList() {
+    public List<CreativeSourceDTO> getList() {
         return list;
     }
 

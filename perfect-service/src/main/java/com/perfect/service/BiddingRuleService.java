@@ -57,4 +57,7 @@ public interface BiddingRuleService {
     List<BiddingRuleEntity> findByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
 
     Integer countBiddingRuleEntityfindByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
+
+    BiddingRuleEntity takeOne(String userName, Long id, long hour);
+
 }

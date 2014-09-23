@@ -26,9 +26,7 @@ public class RequestHelper {
 
     public GetPreviewResponse addRequest(CommonService commonService, GetPreviewRequest request) {
 
-
         String token = commonService.getToken();
-
 
         if (!executorServiceMap.containsKey(token)) {
             executorServiceMap.put(token, Executors.newSingleThreadExecutor());
@@ -84,7 +82,7 @@ public class RequestHelper {
                 RankService rankService = null;
                 rankService = commonService.getService(RankService.class);
                 GetPreviewResponse response = rankService.getPreview(request);
-                Thread.sleep(1000);
+                Thread.sleep(3000);
                 return response;
             } catch (Exception ie) {
 
