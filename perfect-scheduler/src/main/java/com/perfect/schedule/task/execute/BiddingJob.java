@@ -2,7 +2,7 @@ package com.perfect.schedule.task.execute;
 
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
-import com.perfect.commons.BiddingThreadTaskExecutors;
+import com.perfect.commons.AccountThreadTaskExecutors;
 import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.constants.KeywordStatusEnum;
 import com.perfect.core.AppContext;
@@ -46,7 +46,7 @@ public class BiddingJob {
     private SysKeywordService sysKeywordService;
 
     @Resource
-    private BiddingThreadTaskExecutors executors;
+    private AccountThreadTaskExecutors executors;
 
     @Resource
     private ApplicationContextHelper applicationContextHelper;
@@ -56,7 +56,7 @@ public class BiddingJob {
     @Resource
     private SysCampaignService sysCampaignService;
 
-    public boolean execute(TaskObject[] tasks) throws Exception {
+    public boolean execute1(TaskObject[] tasks) throws Exception {
 
         // 调度策略
         for (TaskObject taskObject : tasks) {
@@ -162,9 +162,6 @@ public class BiddingJob {
 
         long timeInMillis = Calendar.getInstance().getTimeInMillis();
         for (SystemUserEntity userEntity : userEntityList) {
-//            if (userEntity.getAccess().compareTo(1) == 0) {
-//                continue;
-//            }
             List<BaiduAccountInfoEntity> accountInfoEntityList = userEntity.getBaiduAccountInfoEntities();
             for (BaiduAccountInfoEntity baiduAccountInfoEntity : accountInfoEntityList) {
                 List<BiddingRuleEntity> biddingRuleEntityList = biddingRuleService.getTaskByAccountId(userEntity.getUserName(), baiduAccountInfoEntity.getId(), timeInMillis);
@@ -208,12 +205,11 @@ public class BiddingJob {
         return -1;
     }
 
-
-    public void work() throws JobExecutionException {
+    public void work1() throws JobExecutionException {
         try {
             List<TaskObject> taskObjects = selectTasks();
 
-            execute(taskObjects.toArray(new TaskObject[]{}));
+            execute1(taskObjects.toArray(new TaskObject[]{}));
         } catch (Exception e) {
             e.printStackTrace();
         }

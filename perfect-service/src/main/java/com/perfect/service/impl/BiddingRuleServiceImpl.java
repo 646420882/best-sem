@@ -133,6 +133,11 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
         return biddingRuleDAO.findByNames(split, fullMatch, param, queryParams).size();
     }
 
+    @Override
+    public BiddingRuleEntity takeOne(String userName, Long id, long hour) {
+        return biddingRuleDAO.takeOne(userName, id, hour);
+    }
+
 
     public long countRule(String userName) {
         return biddingRuleDAO.count();

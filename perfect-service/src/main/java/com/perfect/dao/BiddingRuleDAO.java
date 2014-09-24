@@ -19,17 +19,11 @@ public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, L
 
     public List<BiddingRuleEntity> findByCampagainId(long cid, int skip, int limit, String field, Sort.Direction direction);
 
-    public void batchCreate(List<BiddingRuleEntity> biddingRuleEntityList);
-
-    public void updateBiddingRule(BiddingRuleEntity biddingRuleEntity);
-
     public BiddingRuleEntity getBiddingRuleByKeywordId(Long keywordId);
 
     public List<BiddingRuleEntity> getReadyRule();
 
     public boolean disableRule(String id);
-
-    public int startRule(List<String> id);
 
     public List<BiddingRuleEntity> getTaskByAccoundId(String userName, Long id, long hour);
 
@@ -51,4 +45,6 @@ public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, L
     boolean setEnable(Long[] ids, boolean ebl);
 
     List<BiddingRuleEntity> findByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
+
+    BiddingRuleEntity takeOne(String userName, Long id, long hour);
 }

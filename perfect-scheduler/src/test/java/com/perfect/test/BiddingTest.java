@@ -29,7 +29,7 @@ public class BiddingTest extends UnitilsJUnit4 {
         List<BiddingJob.TaskObject> list = null;
         try {
             list = biddingJob.selectTasks();
-            biddingJob.execute(list.toArray(new BiddingJob.TaskObject[]{}));
+            biddingJob.execute1(list.toArray(new BiddingJob.TaskObject[]{}));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,7 +45,7 @@ public class BiddingTest extends UnitilsJUnit4 {
         List<BiddingJob.TaskObject> list = null;
         try {
             list = biddingJob.selectTasks();
-            biddingJob.execute(list.toArray(new BiddingJob.TaskObject[]{}));
+            biddingJob.execute1(list.toArray(new BiddingJob.TaskObject[]{}));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,7 +82,7 @@ public class BiddingTest extends UnitilsJUnit4 {
             BiddingJob biddingJob = new BiddingJob();
             List<BiddingJob.TaskObject> list = biddingJob.selectTasks();
 
-            biddingJob.execute(list.toArray(new BiddingJob.TaskObject[]{}));
+            biddingJob.execute1(list.toArray(new BiddingJob.TaskObject[]{}));
         } catch (Exception e) {
             e.printStackTrace();
         }

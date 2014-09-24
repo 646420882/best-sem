@@ -100,7 +100,7 @@ public class BiddingRuleUtils {
         boolean now = runNow(new Integer[]{1, 4, 12, 16});
         System.out.println("now = " + now);
 
-        Date longTime = new Date(getNextHourTime(new Integer[]{1, 4, 12, 16}));
+        Date longTime = getNextHourTime(new Integer[]{1, 4, 12, 16});
         System.out.println("longTime = " + longTime);
 
         Date date = getDateInvMinute(new Integer[]{1, 4, 14, 16}, 40);
@@ -119,22 +119,22 @@ public class BiddingRuleUtils {
         return arrays.toArray(new Integer[]{});
     }
 
-    public static long getNextHourTime(Integer[] times) {
+    public static Date getNextHourTime(Integer[] times) {
         try {
             List<Date> dates = new ArrayList<>();
             Date now = Calendar.getInstance().getTime();
-            for (int i = 0 ; i <times.length ; i++) {
+            for (int i = 0; i < times.length; i++) {
                 CronExpression expression = new CronExpression("0 0 " + times[i++] + " * * ?");
                 dates.add(expression.getNextValidTimeAfter(now));
             }
 
             Collections.sort(dates);
 
-            return dates.get(0).getTime();
+            return dates.get(0);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return -1;
+        return null;
     }
 }

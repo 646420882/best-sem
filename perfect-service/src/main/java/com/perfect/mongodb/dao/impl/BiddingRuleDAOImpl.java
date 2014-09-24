@@ -9,6 +9,7 @@ import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
 import com.perfect.mongodb.utils.PaginationParam;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -172,16 +173,6 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     }
 
     @Override
-    public void batchCreate(List<BiddingRuleEntity> biddingRuleEntityList) {
-        save(biddingRuleEntityList);
-    }
-
-    @Override
-    public void updateBiddingRule(BiddingRuleEntity biddingRuleEntity) {
-        save(biddingRuleEntity);
-    }
-
-    @Override
     public BiddingRuleEntity getBiddingRuleByKeywordId(Long keywordId) {
         return getMongoTemplate().findOne(Query.query(Criteria.where(KEYWORD_ID).is(keywordId)), getEntityClass());
     }
@@ -194,12 +185,6 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
     @Override
     public boolean disableRule(String id) {
         return false;
-    }
-
-    @Override
-    public int startRule(List<String> id) {
-        WriteResult wr = getMongoTemplate().updateMulti(Query.query(Criteria.where(SYSTEM_ID).in(id)), Update.update("ebl", true), BiddingRuleEntity.class);
-        return wr.getN();
     }
 
     @Override
@@ -301,5 +286,16 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
 //        mongoQuery.addCriteria(criteria);
 
         return getMongoTemplate().find(param.withParam(mongoQuery), getEntityClass());
+    }
+
+    @Override
+    public BiddingRuleEntity takeOne(String userName, Long id, long time) {
+        Query query = Query.query(Criteria.where("ebl").is(true).and("r").is(false).and("nxt").lte(time).not().and("ct")
+                .ne(0)
+                .and
+                        (ACCOUNT_ID).is(id));
+        return BaseMongoTemplate.getUserMongo(userName).findAndModify(query, Update.update("r", true),
+                FindAndModifyOptions.options().returnNew(true), getEntityClass());
+
     }
 }

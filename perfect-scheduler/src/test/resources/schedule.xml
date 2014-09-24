@@ -65,34 +65,13 @@
 
     <!--<bean name="esRunnableFactory" class="com.perfect.elasticsearch.threads.EsRunnableFactory"/>-->
 
-    <bean name="biddingThreadTaskExecutors" class="com.perfect.commons.BiddingThreadTaskExecutors">
-        <property name="threadNamePrefix" value="bidding"/>
+    <bean name="accountThreadTaskExecutors" class="com.perfect.commons.AccountThreadTaskExecutors">
+        <property name="threadNamePrefix" value="account-"/>
         <property name="corePoolSize" value="8"/>
     </bean>
 
 
-    <elasticsearch:repositories base-package="com.perfect.elasticsearch"/>
-
-    <elasticsearch:transport-client id="client" cluster-nodes="182.92.188.177:19300" cluster-name="es-cluster"/>
-
-    <bean name="elasticsearchTemplate" class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
-        <constructor-arg name="client" ref="client"/>
-    </bean>
-
-    <bean name="esFactory"
-          class="org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactory">
-        <constructor-arg name="elasticsearchOperations" ref="elasticsearchTemplate"/>
-    </bean>
-
-    <bean id="esThreadPoolTaskExecutor" class="com.perfect.elasticsearch.threads.EsThreadPoolTaskExecutor">
-        <property name="corePoolSize" value="10"/>
-        <property name="maxPoolSize" value="20"/>
-        <property name="keepAliveSeconds" value="60"/>
-        <property name="threadNamePrefix" value="es"/>
-        <property name="rejectedExecutionHandler">
-            <bean name="rejectedHandler" class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
-        </property>
-    </bean>
+    <import resource="spring-es.xml"/>
 
     <!-- ============================================= -->
 </beans>

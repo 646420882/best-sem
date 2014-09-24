@@ -3,18 +3,6 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <import resource="spring-es.xml"/>
-
-    <bean name="requestHelper" class="com.perfect.api.baidu.RequestHelper">
-        <property name="semaphoreValue" value="1"/>
-    </bean>
-
-    <bean name="biddingThreadTaskExecutors" class="com.perfect.commons.BiddingThreadTaskExecutors">
-        <property name="threadNamePrefix" value="bidding-thread-"/>
-        <property name="corePoolSize" value="8"/>
-    </bean>
-
-
     <bean id="biddingJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 调用的类 -->
         <property name="targetObject">
@@ -22,7 +10,7 @@
         </property>
         <!-- 调用类中的方法 -->
         <property name="targetMethod">
-            <value>work</value>
+            <value>work1</value>
         </property>
     </bean>
     <bean id="biddingTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
@@ -56,7 +44,6 @@
         <property name="autoStartup" value="true"/>
         <property name="triggers">
             <list>
-                <ref bean="biddingTrigger"/>
                 <ref bean="dataPullTrigger"/>
             </list>
         </property>

@@ -24,6 +24,9 @@ import org.apache.commons.logging.LogFactory;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 
 
 /**
@@ -81,13 +84,24 @@ public class JsonProxy<I> implements InvocationHandler {
         if (!resHeader.getFailures().isEmpty()) {
             if (log.isErrorEnabled()) {
                 log.error("Call Error: Head info = " + resHeader + "\n" +
-                        "account info = " + service.getUsername() + "\n" +
-                        "request info = " + addr + "\n" +
-                        "request param = " + args[0]
+                                "account info = " + service.getUsername() + "\n" +
+                                "request info = " + addr + "\n" +
+                                "request param = " + args[0]
                 );
             }
+            if (resHeader.getFailures().get(0).getCode() == 8904) {
+                Timer timer = new Timer("waitLock");
+                final CountDownLatch latch = new CountDownLatch(1);
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        System.out.println("waiting....");
+                        latch.countDown();
+                    }
+                }, 15000);
 
-
+                latch.await();
+            }
         }
         ResHeaderUtil.resHeader.set(response.getHeader());
         return response.getBody();

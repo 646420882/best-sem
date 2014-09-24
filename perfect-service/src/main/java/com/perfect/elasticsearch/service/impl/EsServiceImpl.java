@@ -1,8 +1,8 @@
 package com.perfect.elasticsearch.service.impl;
 
+import com.perfect.dto.CreativeSourceDTO;
 import com.perfect.dto.EsSearchResultDTO;
 import com.perfect.elasticsearch.service.EsService;
-import com.perfect.entity.CreativeSourceEntity;
 import com.perfect.utils.RegionalCodeUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.search.SearchResponse;
@@ -65,19 +65,29 @@ public class EsServiceImpl implements EsService {
         EsSearchResultDTO esSearchResultDTO = new EsSearchResultDTO();
 
         esSearchResultDTO.setTotal(sr.getHits().totalHits());
+        Map<Integer, String> regionMap = new HashMap<>();
 
-
-        List<CreativeSourceEntity> hitList = new ArrayList<>();
+        List<CreativeSourceDTO> hitList = new ArrayList<>();
         for (SearchHit searchHit : sr.getHits()) {
             Map<String, Object> map = searchHit.getSource();
-            CreativeSourceEntity creativeSourceEntity = new CreativeSourceEntity();
+            CreativeSourceDTO creativeSourceEntity = new CreativeSourceDTO();
             for (Map.Entry<String, HighlightField> entry : searchHit.getHighlightFields().entrySet()) {
                 HighlightField field = entry.getValue();
                 map.put(field.name(), field.fragments()[0]);
             }
 
+
             try {
                 BeanUtils.populate(creativeSourceEntity, map);
+                Object regionObj = map.get("region");
+                if (regionObj == null) {
+                    creativeSourceEntity.setRegion("无");
+                } else {
+                    int region = Integer.parseInt(regionObj.toString());
+                    regionMap.putAll(RegionalCodeUtils.regionalCode(Arrays.asList(region)));
+
+                    creativeSourceEntity.setRegion(regionMap.get(region));
+                }
                 hitList.add(creativeSourceEntity);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -88,7 +98,7 @@ public class EsServiceImpl implements EsService {
         }
 
         esSearchResultDTO.setList(hitList);
-        Map<String, Integer> termcount = new TreeMap<>();
+
         BigDecimal total = BigDecimal.valueOf(sr.getHits().totalHits());
         for (Aggregation aggregation : sr.getAggregations()) {
             if (aggregation.getName().equals(AGG_KEYWORDS)) {
@@ -106,7 +116,6 @@ public class EsServiceImpl implements EsService {
 
             } else if (aggregation.getName().equals(AGG_REGIONS)) {
                 Terms tr = (Terms) aggregation;
-                Map<Integer, String> regionMap = new HashMap<>();
                 for (Terms.Bucket bucket : tr.getBuckets()) {
                     int region = bucket.getKeyAsNumber().intValue();
                     String name = regionMap.get(region);

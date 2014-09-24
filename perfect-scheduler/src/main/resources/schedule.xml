@@ -11,6 +11,7 @@
 		http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"
        default-lazy-init="true" default-autowire="byName">
 
+    <context:property-placeholder location="bidding.properties"/>
     <!--<bean id="senderTask" class="com.perfect.schedule.task.execute.SenderTask"/>-->
     <!--<bean id="countYesterdayCostTask" class="com.perfect.schedule.task.execute.CountYesterdayCostTask"/>-->
     <!--<bean id="dataPullTask" class="com.perfect.schedule.task.execute.DataPullTask"/>-->
@@ -56,7 +57,9 @@
     </bean>
 
     <!-- ============================================ -->
-
+    <import resource="bidding.xml"/>
     <import resource="tasks.xml"/>
+    <import resource="spring-es.xml"/>
+
     <!-- ============================================= -->
 </beans>

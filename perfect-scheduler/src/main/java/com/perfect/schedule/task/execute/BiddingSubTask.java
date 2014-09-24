@@ -2,6 +2,7 @@ package com.perfect.schedule.task.execute;
 
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduApiServiceFactory;
+import com.perfect.api.baidu.BaiduPreviewHelper;
 import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.KeywordType;
@@ -16,8 +17,9 @@ import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.bidding.BiddingLogEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.entity.bidding.StrategyEntity;
-import com.perfect.service.*;
-import com.perfect.api.baidu.BaiduPreviewHelper;
+import com.perfect.service.BiddingLogService;
+import com.perfect.service.BiddingRuleService;
+import com.perfect.service.SysAdgroupService;
 import com.perfect.utils.BiddingRuleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,7 +132,7 @@ public class BiddingSubTask implements Runnable {
             } else if (interval == -1) {
 
                 //第一次执行竞价策略
-                long nextTime = BiddingRuleUtils.getNextHourTime(strategyEntity.getTimes());
+                long nextTime = BiddingRuleUtils.getNextHourTime(strategyEntity.getTimes()).getTime();
                 biddingRuleEntity.setNext(nextTime);
             }
 
@@ -160,12 +162,7 @@ public class BiddingSubTask implements Runnable {
                     region);
 
             if (datas.isEmpty()) {
-                try {
-                    Thread.sleep(1000);
-                    continue;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                continue;
             }
 
             List<KeywordType> typeList = new ArrayList<>();
@@ -186,14 +183,7 @@ public class BiddingSubTask implements Runnable {
                     if (logger.isDebugEnabled()) {
                         logger.debug("暂未获取到任何排名信息");
                     }
-                    try {
-                        Thread.sleep(10000);
-                        continue;
-                    } catch (InterruptedException e) {
-                        if (logger.isErrorEnabled()) {
-                            logger.error("InterruptedException", e);
-                        }
-                    }
+                    continue;
                 } else {
                     //保存到ES数据库
                     List<CreativeDTO> list = new ArrayList<>();
@@ -363,12 +353,6 @@ public class BiddingSubTask implements Runnable {
                             logger.debug("未达到排名..." + host + "\n出价完成,十秒后进行下一次出价.");
                         }
 
-                        try {
-                            //竞价完成一个阶段
-                            Thread.sleep(10000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                     }
                 }
             }
