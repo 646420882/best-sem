@@ -2,10 +2,10 @@ var redisKey = "";
 var ie_iframe;
 
 var downloadKeywordQualityCSV = function () {
-    document.getElementById("background").style.display = "block";
-    document.getElementById("progressBar1").style.display = "block";
     var _url = "/keywordQuality/downloadCSV";
     if (!!window.ActiveXObject || "ActiveXObject" in window) {
+        document.getElementById("background").style.display = "block";
+        document.getElementById("progressBar1").style.display = "block";
         ie_iframe = document.createElement("iframe");
         ie_iframe.id = "downloadhelper_iframe";
         ie_iframe.width = 0;
@@ -14,16 +14,22 @@ var downloadKeywordQualityCSV = function () {
         ie_iframe.onload = ie_iframe.onreadystatechange = iframeLoad;
         document.body.appendChild(ie_iframe);
     } else {
-        var iframe1 = document.createElement("iframe");
-        iframe1.id = "downloadhelper_iframe";
-        iframe1.width = 0;
-        iframe1.height = 0;
-        iframe1.src = _url;
-        document.body.appendChild(iframe1);
-        iframe1.onload = function () {
-            document.getElementById("background").style.display = "none";
-            document.getElementById("progressBar1").style.display = "none";
-        };
+        if (window.navigator.userAgent.indexOf("Chrome") != -1) {
+            window.open(_url, "");
+        } else {
+            document.getElementById("background").style.display = "block";
+            document.getElementById("progressBar1").style.display = "block";
+            var iframe1 = document.createElement("iframe");
+            iframe1.id = "downloadhelper_iframe";
+            iframe1.width = 0;
+            iframe1.height = 0;
+            iframe1.src = _url;
+            document.body.appendChild(iframe1);
+            iframe1.onload = function () {
+                document.getElementById("background").style.display = "none";
+                document.getElementById("progressBar1").style.display = "none";
+            };
+        }
     }
 };
 
