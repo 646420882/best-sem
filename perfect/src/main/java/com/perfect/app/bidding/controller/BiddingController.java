@@ -479,12 +479,13 @@ public class BiddingController {
             index++;
             AdgroupEntity adgroupEntity = sysAdgroupService.findByAdgroupId(entity.getAdgroupId());
             CampaignEntity campaignEntity = sysCampaignService.findById(adgroupEntity.getCampaignId());
+            keywordReportDTO.setAdgroupId(adgroupEntity.getAdgroupId());
             keywordReportDTO.setCampaignName(campaignEntity.getCampaignName());
             keywordReportDTO.setAdgroupName(adgroupEntity.getAdgroupName());
 
-            //setting quality
-            keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
-            keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
+//            //setting quality //暂时注释掉，配额不够！
+//            keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
+//            keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
 
             if (entity.getStatus() != null) {
                 keywordReportDTO.setStatusStr(KeywordStatusEnum.getName(entity.getStatus()));

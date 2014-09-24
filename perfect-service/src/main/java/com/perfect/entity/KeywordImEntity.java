@@ -26,6 +26,16 @@ public class KeywordImEntity  {
     private String biddingStatus;
     @Field(value = "rule")
     private Boolean rule;
+    @Field(value = EntityConstants.ADGROUP_ID)
+    private Long adgroupId;
+
+    public Long getAdgroupId() {
+        return adgroupId;
+    }
+
+    public void setAdgroupId(Long adgroupId) {
+        this.adgroupId = adgroupId;
+    }
 
     public String getId() {
         return id;

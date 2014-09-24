@@ -222,32 +222,34 @@
                     <div class="w_list03">
                         <ul class="jiangjia_list">
                             <li class="current Screenings">筛选2</li>
-                            <li class="showbox3">暂停竞价2</li>
-                            <li class="showbox2">修改出价2</li>
-                            <li class="showbox4">修改访问网址2</li>
+                            <li id="showbox3_im">暂停竞价2</li>
+                            <li id="showbox2_im">修改出价2</li>
+                            <li id="showbox4_im">修改访问网址2</li>
                             <li id="showbox5_im">分组2</li>
                             <li class="showbox6">自定义列2</li>
                         </ul>
                         <div class="Screening_concent over">
                             <div class="Screening_row over">
                             </div>
-                            <div class="Screening over wd">
-                                筛选设置：<span><input type="checkbox">&nbsp;<select>
-                                <option>按计划</option>
-                            </select>&nbsp;<input type="button" value="+" class="Screening_input"></span>
-                                <span><input type="checkbox">&nbsp;<select>
-                                    <option>按单元</option>
-                                </select>&nbsp;<input type="button" value="+" class="Screening_input1"></span>
-                                <span><input type="checkbox">&nbsp;
-                                   <input type="text" class="sc_input3" value="如何在网上推广"
-                                          onfocus="if(value=='如何在网上推广') {value=''}"
-                                          onblur="if (value=='') {value='如何在网上推广'}"></span>
-
+                            <div class="Screening over wd" id="search_div">
+                                筛选设置：<span><input type="checkbox" onclick="checkedStatus(this)">&nbsp;<select
+                                    name="campaignId" id="imCampaignSelect" onchange="imloadUnit(this.value)">
+                            </select>&nbsp;</span>
+                                <span><input type="checkbox" onclick="checkedStatus(this)">&nbsp;<select id="sUnit"
+                                                                                                         name="adgroupId">
+                                    <option value='-1'>--请选择单元--</option>
+                                </select>&nbsp;</span>
+                                <span><input type="checkbox" onclick="checkedStatus(this)">&nbsp;
+                                 <input type="text" class="sc_input3" value="如何在网上推广" name="keywordName"
+                                        onfocus="if(value=='如何在网上推广') {value=''}"
+                                        onblur="if (value=='') {value='如何在网上推广'}"></span>
+                                <span><input type="button" value="搜索" class="Screening_input1" id="imSearch"
+                                             onclick="imSearchSubmit(this)"></span>
                             </div>
                         </div>
 
                         <div class="list4">
-                            <table id="table2" border="0" cellspacing="0" width="100%">
+                            <table id="table2" border="0" cellspacing="0" width="101%">
                             </table>
                         </div>
                         <div id="pagination2" class="pagination"></div>
@@ -712,6 +714,38 @@ function iMbeforeClick(treeId, treeNode) {
         grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
     }
 }
+//重点词竞价搜索按钮提交事件
+function imSearchSubmit(rs) {
+    if ($(rs).attr("class") != "Screening_input1") {
+        var _checkBox = $("#search_div input[type='checkbox']");
+        imSearchData = {};
+        for (var i = 0; i < _checkBox.length; i++) {
+            var _check = $("#search_div input[type='checkbox']:eq(" + i + ")");
+            if (_check.is(":checked") == true) {
+                imSearchData[_check.next().attr("name")] = _check.next().val();
+            }
+        }
+        if (imSearchData.campaignId != undefined && imSearchData.adgroupId != undefined) {
+            if (imSearchData.adgroupId == -1) {
+                alert("请选择一个单元!");
+            } else {
+                dataUrl2 = "/importBid/loadData?campaignId=" + imSearchData.campaignId + "&adgroupId=" + imSearchData.adgroupId;
+                grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
+            }
+        } else if (imSearchData.campaignId != undefined) {
+            if(imSearchData.campaignId==-1){
+                alert("请选择一个计划!");
+            }else{
+                dataUrl2 = "/importBid/loadData?campaignId=" + imSearchData.campaignId;
+                grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
+            }
+        }
+
+
+    } else {
+        alert("请选择筛选条件！");
+    }
+}
 var log, className = "dark";
 function beforeAsync(treeId, treeNode) {
     className = (className === "dark" ? "" : "dark");
@@ -797,6 +831,14 @@ var getAllCheckedcb = function () {
     });
     return keywordIds;
 };
+var getAllCheckedcbIm = function () {
+    var rowIds = $("#table2").jqGrid('getGridParam', 'selarrrow');
+    var keywordIds = [];
+    rowIds.forEach(function (rowId) {
+        keywordIds.push(grid2.jqGrid('getCell', rowId, "keywordId"));
+    });
+    return keywordIds;
+};
 
 var getAllSelectedBidRule = function () {
     var rowIds = $("#table1").jqGrid('getGridParam', 'selarrrow');
@@ -809,17 +851,31 @@ var getAllSelectedBidRule = function () {
     });
     return keywordIds;
 };
+var getAllSelectedBidRuleIm = function () {
+    var rowIds = $("#table2").jqGrid('getGridParam', 'selarrrow');
+    var keywordIds = [];
+    $.each(rowIds, function (rowId) {
+        if (grid.jqGrid('getCell', rowId, "biddingStatus") == "无") {
+            return true;
+        }
+        keywordIds.push(grid2.jqGrid('getCell', rowId, "keywordId"));
+    });
+    return keywordIds;
+};
 
 var changeGridCol = function () {
     var cbs = $("#customColList").find("input[type=checkbox]");
     $.each(cbs, function (i, item) {
         if (item.checked) {
             $("#table1").setGridParam().showCol(item.value);
+            $("#table2").setGridParam().showCol(item.value);
         } else {
             $("#table1").setGridParam().hideCol(item.value);
+            $("#table2").setGridParam().hideCol(item.value);
         }
     });
     $("#table1").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
+    $("#table2").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
 //    $("#table1").closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
     $(".TB_overlayBG").css("display", "none");
     $(".box6").css("display", "none");
@@ -952,7 +1008,8 @@ $(function () {
             {label: ' Pc URL', name: 'pcDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
             {label: ' Mobile URL', name: 'mobileDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
             {label: ' 竞价状态', name: 'biddingStatus', sortable: false, align: 'center'},
-            {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true}
+            {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true},
+            {label: ' adgroupId', name: 'adgroupId', sortable: false, align: 'center', hidden: true}
         ],
 
         rowNum: 20,// 默认每页显示记录条数
