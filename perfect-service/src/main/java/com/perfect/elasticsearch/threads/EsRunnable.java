@@ -1,12 +1,12 @@
 package com.perfect.elasticsearch.threads;
 
+import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.dto.CreativeDTO;
 import com.perfect.entity.CreativeSourceEntity;
 import com.perfect.entity.MD5;
 import com.perfect.service.CreativeSourceService;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +14,7 @@ import java.util.List;
 /**
  * Created by vbzer_000 on 2014/9/16.
  */
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class EsRunnable implements Runnable {
-
-    private ElasticsearchTemplate elasticsearchTemplate;
-
-    private CreativeSourceService creativeSourceService;
 
     private List<CreativeDTO> list;
     private Integer region;
@@ -28,6 +23,7 @@ public class EsRunnable implements Runnable {
     @Override
     public void run() {
 
+        CreativeSourceService creativeSourceService = (CreativeSourceService) ApplicationContextHelper.getBeanByName("creativeSourceService");
         List<CreativeSourceEntity> resultList = new ArrayList<>();
 
         for (CreativeDTO creativeDTO : list) {
@@ -58,21 +54,6 @@ public class EsRunnable implements Runnable {
         creativeSourceService.save(resultList);
     }
 
-    public ElasticsearchTemplate getElasticsearchTemplate() {
-        return elasticsearchTemplate;
-    }
-
-    public void setElasticsearchTemplate(ElasticsearchTemplate elasticsearchTemplate) {
-        this.elasticsearchTemplate = elasticsearchTemplate;
-    }
-
-    public CreativeSourceService getCreativeSourceService() {
-        return creativeSourceService;
-    }
-
-    public void setCreativeSourceService(CreativeSourceService creativeSourceService) {
-        this.creativeSourceService = creativeSourceService;
-    }
 
     public void setList(List<CreativeDTO> list) {
         this.list = list;

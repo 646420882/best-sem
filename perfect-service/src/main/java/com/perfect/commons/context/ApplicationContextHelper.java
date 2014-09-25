@@ -11,8 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationContextHelper implements ApplicationContextAware {
 
-
-    private ApplicationContext context;
+    private static ApplicationContext context;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -20,11 +19,11 @@ public class ApplicationContextHelper implements ApplicationContextAware {
     }
 
 
-    public Object getBeanByName(String name) {
+    public static Object getBeanByName(String name) {
         return context.getBean(name);
     }
 
-    public Object getBeanByClass(Class<?> clz) {
+    public static Object getBeanByClass(Class<?> clz) {
         return context.getBean(clz);
     }
 }

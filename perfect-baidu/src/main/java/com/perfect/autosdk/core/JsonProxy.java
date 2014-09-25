@@ -71,8 +71,6 @@ public class JsonProxy<I> implements InvocationHandler {
      */
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         String addr = service.serverUrl + AddressUtil.getJsonAddr(interfaces) + '/' + method.getName();
-        if (log.isDebugEnabled())
-            log.debug("Current Calling URL: " + addr);
 
         JsonConnection conn = new GZIPJsonConnection(addr);
         conn.setConnectTimeout(service.connectTimeoutMills);

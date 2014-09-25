@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by vbzer_000 on 2014/9/16.
  */
-@Component
+@Component("creativeSourceService")
 public class CreativeSourceServiceImpl implements CreativeSourceService {
 
     @Resource

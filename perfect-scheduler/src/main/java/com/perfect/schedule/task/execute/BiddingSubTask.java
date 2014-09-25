@@ -2,7 +2,7 @@ package com.perfect.schedule.task.execute;
 
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduApiServiceFactory;
-import com.perfect.api.baidu.BaiduPreviewHelper;
+import com.perfect.api.baidu.BaiduSpiderHelper;
 import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.KeywordType;
@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author yousheng
  */
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Deprecated
 public class BiddingSubTask implements Runnable {
 
     private Logger logger = LoggerFactory.getLogger(BiddingSubTask.class);
@@ -99,7 +99,7 @@ public class BiddingSubTask implements Runnable {
 
         String host = accountInfoEntity.getRegDomain();
         BaiduApiService apiService = baiduApiServiceFactory.createService(service);
-        BaiduPreviewHelper baiduPreviewHelper = baiduPreviewHelperFactory.createInstance(service);
+        BaiduSpiderHelper baiduSpiderHelper = baiduPreviewHelperFactory.createInstance(service);
 
         List<String> kwName = new ArrayList<>();
         Map<String, KeywordEntity> nameMap = new HashMap<>();
@@ -158,7 +158,7 @@ public class BiddingSubTask implements Runnable {
         }
 
         while (!keywordEntityList.isEmpty()) {
-            List<BaiduPreviewHelper.PreviewData> datas = baiduPreviewHelper.getPageData(kwName.toArray(new String[]{}),
+            List<BaiduSpiderHelper.PreviewData> datas = baiduSpiderHelper.getPageData(kwName.toArray(new String[]{}),
                     region);
 
             if (datas.isEmpty()) {
@@ -168,7 +168,7 @@ public class BiddingSubTask implements Runnable {
             List<KeywordType> typeList = new ArrayList<>();
             Map<KeywordType, BiddingLogEntity> typeLog = new HashMap<>();
 
-            for (BaiduPreviewHelper.PreviewData previewData : datas) {
+            for (BaiduSpiderHelper.PreviewData previewData : datas) {
 
                 if ((previewData.getLeft() == null || previewData.getLeft().isEmpty()) && (previewData.getRight() == null || previewData.getRight().isEmpty())) {
                     continue;

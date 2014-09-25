@@ -1,23 +1,16 @@
 package com.perfect.elasticsearch.threads;
 
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-
-import javax.annotation.Resource;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.Executors;
 
 /**
  * Created by vbzer_000 on 2014/9/16.
  */
-public class EsThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
+public class EsThreadPoolTaskExecutor {
 
-    @Resource
-    private ElasticsearchTemplate elasticsearchTemplate;
+    private static ExecutorService executorService = Executors.newCachedThreadPool();
 
-    @Override
-    protected ExecutorService initializeExecutor(ThreadFactory threadFactory, RejectedExecutionHandler rejectedExecutionHandler) {
-        return super.initializeExecutor(threadFactory, rejectedExecutionHandler);
+    public static void execute(Runnable runnable) {
+        executorService.execute(runnable);
     }
 }

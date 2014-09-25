@@ -17,7 +17,7 @@ import java.util.Map;
  *
  * @author yousheng
  */
-@Component
+@Component("biddingRuleService")
 public class BiddingRuleServiceImpl implements BiddingRuleService {
 
     @Resource

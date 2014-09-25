@@ -3,22 +3,6 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="biddingJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <!-- 调用的类 -->
-        <property name="targetObject">
-            <bean class="com.perfect.schedule.task.execute.BiddingJob"/>
-        </property>
-        <!-- 调用类中的方法 -->
-        <property name="targetMethod">
-            <value>work1</value>
-        </property>
-    </bean>
-    <bean id="biddingTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="biddingJobBean"/>
-        <property name="cronExpression" value="0 0/5 * * * ? "/>
-    </bean>
-
-
     <bean id="dataPullJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject">
             <bean class="com.perfect.schedule.task.execute.ReportDataPull"/>
@@ -32,13 +16,6 @@
         <property name="jobDetail" ref="dataPullJobBean"/>
         <property name="cronExpression" value="0 30 0 */1 * ? "/>
     </bean>
-
-
-    <!--<bean name="biddingJobBean" class="org.springframework.scheduling.quartz.JobDetailBean">-->
-    <!--<property name="name" value="biddingJob"/>-->
-    <!--<property name="jobClass" value="com.perfect.schedule.task.execute.BiddingJob"/>-->
-    <!--</bean>-->
-
 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="autoStartup" value="true"/>

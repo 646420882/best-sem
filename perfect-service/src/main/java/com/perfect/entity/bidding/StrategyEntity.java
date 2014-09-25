@@ -63,6 +63,9 @@ public class StrategyEntity {
     @Field("bt")
     private int runByTimes;
 
+    @Field("a")
+    private int auto;
+
     public int getStrategy() {
         return strategy;
     }
@@ -166,5 +169,13 @@ public class StrategyEntity {
 
     public void setRunByTimes(int runByTimes) {
         this.runByTimes = runByTimes;
+    }
+
+    public int getAuto() {
+        return auto;
+    }
+
+    public void setAuto(int auto) {
+        this.auto = auto;
     }
 }

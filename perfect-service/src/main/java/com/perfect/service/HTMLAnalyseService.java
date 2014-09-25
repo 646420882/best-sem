@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.api.baidu.BaiduPreviewHelper;
+import com.perfect.api.baidu.BaiduSpiderHelper;
 
 import java.util.List;
 
@@ -23,5 +23,5 @@ public interface HTMLAnalyseService {
      * @param getPreviewRequest
      * @return
      */
-    List<BaiduPreviewHelper.PreviewData> getPageData(String[] keyword, Integer region);
+    List<BaiduSpiderHelper.PreviewData> getPageData(String[] keyword, Integer region);
 }

@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 /**
  * Created by vbzer_000 on 2014/9/16.
  */
-@Component("biddingSubTaskFactory")
+@Deprecated
 public class BiddingSubTaskFactory extends AbstractFactoryBean<BiddingSubTask> {
 
     @Resource

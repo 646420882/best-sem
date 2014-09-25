@@ -2,7 +2,7 @@ package com.perfect.commons;
 
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduApiServiceFactory;
-import com.perfect.api.baidu.BaiduPreviewHelper;
+import com.perfect.api.baidu.BaiduSpiderHelper;
 import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
@@ -36,6 +36,7 @@ import java.util.List;
 /**
  * Created by vbzer_000 on 2014/9/23.
  */
+@Deprecated
 public class AccountRunnable implements Runnable {
 
     private Logger logger = LoggerFactory.getLogger(AccountRunnable.class);
@@ -78,7 +79,7 @@ public class AccountRunnable implements Runnable {
 
 
         BaiduPreviewHelperFactory baiduPreviewHelperFactory = (BaiduPreviewHelperFactory) context.getBeanByClass(BaiduPreviewHelperFactory.class);
-        BaiduPreviewHelper baiduPreviewHelper = baiduPreviewHelperFactory.createInstance(commonService);
+        BaiduSpiderHelper baiduSpiderHelper = baiduPreviewHelperFactory.createInstance(commonService);
         if (biddingRuleService == null) {
             return;
         }
@@ -153,7 +154,7 @@ public class AccountRunnable implements Runnable {
                         logger.debug("竞价词" + keywordEntity.getKeyword() + " 竞价地域 " + region);
                     }
 
-                    List<BaiduPreviewHelper.PreviewData> datas = baiduPreviewHelper.getPageData(new String[]{
+                    List<BaiduSpiderHelper.PreviewData> datas = baiduSpiderHelper.getPageData(new String[]{
                             keywordEntity.getKeyword()}, region);
 
                     if (datas.isEmpty()) {
@@ -161,7 +162,7 @@ public class AccountRunnable implements Runnable {
                         continue;
                     }
 
-                    BaiduPreviewHelper.PreviewData previewData = datas.get(0);
+                    BaiduSpiderHelper.PreviewData previewData = datas.get(0);
 
                     if ((previewData.getLeft() == null || previewData.getLeft().isEmpty()) && (previewData.getRight() == null || previewData.getRight().isEmpty())) {
                         sleep(1000);

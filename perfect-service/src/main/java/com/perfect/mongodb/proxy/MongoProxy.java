@@ -13,7 +13,6 @@ import java.lang.reflect.Proxy;
 /**
  * Created by vbzer_000 on 2014/6/26.
  */
-@Component
 public class MongoProxy<T> implements InvocationHandler, ApplicationContextAware {
 
     private final Class<T> interfaceClass;
