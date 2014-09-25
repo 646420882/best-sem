@@ -1,6 +1,7 @@
 package com.perfect.mongodb.dao.impl;
 
 import com.perfect.dao.KeywordImDAO;
+import com.perfect.entity.CustomGroupEntity;
 import com.perfect.entity.KeywordImEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
@@ -85,5 +86,14 @@ public class KeywordImDAOImpl extends AbstractUserBaseDAOImpl<KeywordImEntity,Lo
             }
         }
         return keywordIds;
+    }
+
+    @Override
+    public void deleteByObjId(String cgid) {
+        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(EntityConstants.SYSTEM_ID).is(cgid)), CustomGroupEntity.class);
+        deleteBySubData(cgid);
+    }
+    private void deleteBySubData(String cgid){
+        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where("cgid").in(cgid)), KeywordImEntity.class);
     }
 }

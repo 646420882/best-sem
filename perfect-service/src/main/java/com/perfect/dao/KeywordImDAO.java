@@ -14,4 +14,5 @@ public interface KeywordImDAO extends MongoCrudRepository<KeywordImEntity,Long> 
     public List<Long> findByAdgroupIds(List<Long> adgroupIds);
     List<Long> findByAdgroupId(Long adgroupId);
     List<Long> findByKeywordName(String str);
+    public void deleteByObjId(String cgid);
 }

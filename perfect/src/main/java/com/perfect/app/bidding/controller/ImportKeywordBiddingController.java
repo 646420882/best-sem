@@ -125,6 +125,11 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                     keywordImEntity.setRule(Boolean.parseBoolean(imrule[i]));
                     keywordImEntity.setAdgroupId(Long.valueOf(imadgroupId[i]));
                     keywordImEntities.add(keywordImEntity);
+                } else {
+                    if (!keywordImEntityFind.getCustomGroupId().equals(cgroupId)) {
+                        keywordImEntityFind.setCustomGroupId(cgroupId);
+                        keywordImService.update(keywordImEntityFind);
+                    }
                 }
             }
             if (keywordImEntities.size() > 0) {
@@ -144,6 +149,11 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                 keywordImEntity.setAdgroupId(Long.valueOf(imadgroupId[0]));
                 keywordImEntities.add(keywordImEntity);
                 keywordImService.insert(keywordImEntity);
+            } else {
+                if (!keywordImEntityFind.getCustomGroupId().equals(cgroupId)) {
+                    keywordImEntityFind.setCustomGroupId(cgroupId);
+                    keywordImService.update(keywordImEntityFind);
+                }
             }
         }
         writeHtml(SUCCESS, response);
@@ -193,30 +203,20 @@ public class ImportKeywordBiddingController extends WebContextSupport {
             for (AdgroupEntity adgroupEntity : adgroupEntityList) {
                 adGroupIds.add(adgroupEntity.getAdgroupId());
             }
-            entities=sysKeywordService.findByIds(keywordImService.findByAdgroupIds(adGroupIds));
+            entities = sysKeywordService.findByIds(keywordImService.findByAdgroupIds(adGroupIds));
             total = entities.size();
         } else if (campaignId != null && adgroupId != null) {
-            entities=sysKeywordService.findByIds(keywordImService.findByAdgroupId(adgroupId));
+            entities = sysKeywordService.findByIds(keywordImService.findByAdgroupId(adgroupId));
             total = entities.size();
-        }else if(keywordName!=null){
-            entities=sysKeywordService.findByIds(keywordImService.findByKeywordName(keywordName));
+        } else if (keywordName != null) {
+            entities = sysKeywordService.findByIds(keywordImService.findByKeywordName(keywordName));
             total = entities.size();
         }
-//        else {
-//            keywordImEntities = keywordImService.getAll();
-//            List<Long> keywordIds = new ArrayList<>(keywordImEntities.size());
-//            for (KeywordImEntity kwd : keywordImEntities) {
-//                keywordIds.add(kwd.getKeywordId());
-//            }
-//            entities = sysKeywordService.findByIds(keywordIds);
-//        }
 
 
         if (entities != null) {
 
             //根据筛选条件处理数据
-
-
 
 
             //获取entities的质量度
@@ -242,10 +242,11 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                 keywordReportDTO.setCampaignName(campaignEntity.getCampaignName());
                 keywordReportDTO.setAdgroupName(adgroupEntity.getAdgroupName());
 
-                //setting quality/暂时注释掉，配额不够！
-//                keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
-//                keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
-
+//                setting quality/暂时注释掉，配额不够！
+                if (quality10TypeMap.size() > 0) {
+                    keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
+                    keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
+                }
                 if (entity.getStatus() != null) {
                     keywordReportDTO.setStatusStr(KeywordStatusEnum.getName(entity.getStatus()));
                 } else {
@@ -292,5 +293,20 @@ public class ImportKeywordBiddingController extends WebContextSupport {
             default:
                 return 2;
         }
+    }
+    //删除方法
+    @RequestMapping(value = "/deleteByCGId", method = RequestMethod.GET)
+    public ModelAndView deleteByCGId(HttpServletResponse response, @RequestParam(value = "cgid", required = true, defaultValue = "") String cgid) {
+        try {
+            if (!cgid.equals("")) {
+                keywordImService.deleteByObjId(cgid);
+            }
+            writeHtml(SUCCESS, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            writeHtml(EXCEPTION, response);
+        }
+
+        return null;
     }
 }

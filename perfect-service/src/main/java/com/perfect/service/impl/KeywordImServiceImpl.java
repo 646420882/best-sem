@@ -57,4 +57,9 @@ public class KeywordImServiceImpl extends AbstractUserBaseDAOImpl<KeywordImEntit
     public List<Long> findByKeywordName(String str) {
         return keywordImDAO.findByKeywordName(str);
     }
+
+    @Override
+    public void deleteByObjId(String cgid) {
+        keywordImDAO.deleteByObjId(cgid);
+    }
 }

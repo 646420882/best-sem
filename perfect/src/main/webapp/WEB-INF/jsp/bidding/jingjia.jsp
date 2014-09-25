@@ -219,14 +219,14 @@
                 <div class="zhushou_concent over">
                     <div class="w_list03">
                         <ul class="jiangjia_list">
-                            <li class="current Screenings">筛选2</li>
-                            <li id="showbox3_im">暂停竞价2</li>
-                            <li id="showbox2_im">修改出价2</li>
-                            <li id="showbox4_im">修改访问网址2</li>
-                            <li id="showbox5_im">分组2</li>
-                            <li class="showbox6">自定义列2</li>
+                            <li class="current Screenings">筛选</li>
+                            <li id="showbox3_im">暂停竞价</li>
+                            <li id="showbox2_im">修改出价</li>
+                            <li id="showbox4_im">修改访问网址</li>
+                            <li id="showbox5_im">分组(改变分组)</li>
+                            <li class="showbox6">自定义列</li>
                         </ul>
-                        <div class="Screening_concent over">
+                        <div class="Screening_concent over" style="display: none;">
                             <div class="Screening_row over">
                             </div>
                             <div class="Screening over wd" id="search_div">
@@ -510,7 +510,7 @@
                 <li>关键词列表：</li>
                 <li><textarea class="zs_input5" id="imKwd" style="font-size: 12px;" disabled="disabled"
                               readonly="readonly"></textarea></li>
-                <li>选择分组名：</li>
+                <li>选择分组名：<a href="javascript:void(0)"  onclick="ImDeleteCustomGroup()">删除该分组</a></li>
                 <li><select id="cgroup" onchange="cgroupInsert();"></select></li>
             </ul>
             <input type="button" value="+" id="showTxt" onclick="showGroupNameTxt()"/>
@@ -1150,7 +1150,8 @@ $(function () {
             {label: ' Pc URL', name: 'pcDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
             {label: ' Mobile URL', name: 'mobileDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
             {label: ' 竞价状态', name: 'biddingStatus', sortable: false, align: 'center'},
-            {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true}
+            {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true},
+            {label: ' adgroupId', name: 'adgroupId', sortable: false, align: 'center', hidden: true}
         ],
 
         rowNum: 20,// 默认每页显示记录条数
