@@ -183,33 +183,40 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                 keywordIds.add(kwd.getKeywordId());
             }
             entities = sysKeywordService.findByIds(keywordIds, param);
-        } else {
-            keywordImEntities = keywordImService.getAll();
-            List<Long> keywordIds = new ArrayList<>(keywordImEntities.size());
-            for (KeywordImEntity kwd : keywordImEntities) {
-                keywordIds.add(kwd.getKeywordId());
-            }
-            entities = sysKeywordService.findByIds(keywordIds);
         }
+        //判定，如果只传入计划编号
+        if (campaignId != null && adgroupId == null) {
+            //查询单元列表
+            List<AdgroupEntity> adgroupEntityList = sysAdgroupService.findIdByCampaignId(campaignId);
+            //定义单元编号列表
+            List<Long> adGroupIds = new ArrayList<>(adgroupEntityList.size());
+            for (AdgroupEntity adgroupEntity : adgroupEntityList) {
+                adGroupIds.add(adgroupEntity.getAdgroupId());
+            }
+            entities=sysKeywordService.findByIds(keywordImService.findByAdgroupIds(adGroupIds));
+            total = entities.size();
+        } else if (campaignId != null && adgroupId != null) {
+            entities=sysKeywordService.findByIds(keywordImService.findByAdgroupId(adgroupId));
+            total = entities.size();
+        }else if(keywordName!=null){
+            entities=sysKeywordService.findByIds(keywordImService.findByKeywordName(keywordName));
+            total = entities.size();
+        }
+//        else {
+//            keywordImEntities = keywordImService.getAll();
+//            List<Long> keywordIds = new ArrayList<>(keywordImEntities.size());
+//            for (KeywordImEntity kwd : keywordImEntities) {
+//                keywordIds.add(kwd.getKeywordId());
+//            }
+//            entities = sysKeywordService.findByIds(keywordIds);
+//        }
 
 
         if (entities != null) {
 
             //根据筛选条件处理数据
 
-            //判定，如果只传入计划编号
-            if (campaignId != null && adgroupId == null) {
-                //查询单元列表
-                List<AdgroupEntity> adgroupEntityList = sysAdgroupService.findIdByCampaignId(campaignId);
-                //定义单元编号列表
-                List<Long> adGroupIds = new ArrayList<>(adgroupEntityList.size());
-                for (AdgroupEntity adgroupEntity : adgroupEntityList) {
-                    adGroupIds.add(adgroupEntity.getAdgroupId());
-                }
-                entities=sysKeywordService.findByIds(keywordImService.findByAdgroupIds(adGroupIds));
-            } else if (campaignId != null && adgroupId != null) {
-                entities=sysKeywordService.findByIds(keywordImService.findByAdgroupId(adgroupId));
-            }
+
 
 
             //获取entities的质量度
@@ -262,7 +269,7 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                 dto.setCtr(NumberUtils.getDouble(entity.getPcCtr()));
                 dto.setImpression(NumberUtils.getInteger(entity.getPcImpression()));
             }
-            total = keywordImEntities.size();
+
             Map<String, Object> attributes = new HashMap<>();
             attributes = JSONUtils.getJsonMapData(resultList);
             if (total > 0) {

@@ -52,4 +52,9 @@ public class KeywordImServiceImpl extends AbstractUserBaseDAOImpl<KeywordImEntit
     public List<Long> findByAdgroupId(Long adgroupId) {
         return keywordImDAO.findByAdgroupId(adgroupId);
     }
+
+    @Override
+    public List<Long> findByKeywordName(String str) {
+        return keywordImDAO.findByKeywordName(str);
+    }
 }
