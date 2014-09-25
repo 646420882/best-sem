@@ -1,5 +1,6 @@
 package com.perfect.app.bidding.controller;
 
+import com.google.common.collect.Lists;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.api.baidu.Keyword10QualityService;
@@ -374,7 +375,16 @@ public class BiddingController {
 
         boolean ruleReady = false;
         if (cp != null) {
+            List<AdgroupEntity> adgroupEntityList = sysAdgroupService.findIdByCampaignId(cp);
+
+            List<Long> adGroupIds = new ArrayList<>(adgroupEntityList.size());
+            for (AdgroupEntity adgroupEntity : adgroupEntityList) {
+                adGroupIds.add(adgroupEntity.getAdgroupId());
+            }
+
             if (query != null) {
+                queryParams.put("adgroupIds", adGroupIds);
+
                 if (keywordQualityConditionSize > 0) {
                     entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param1, queryParams);
                     total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
@@ -383,17 +393,15 @@ public class BiddingController {
                     total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
                 }
             } else {
-                List<AdgroupEntity> adgroupEntityList = sysAdgroupService.findIdByCampaignId(cp);
-
-                List<Long> adGroupIds = new ArrayList<>(adgroupEntityList.size());
-                for (AdgroupEntity adgroupEntity : adgroupEntityList) {
-                    adGroupIds.add(adgroupEntity.getAdgroupId());
-                }
                 entities = sysKeywordService.findByAdgroupIds(adGroupIds, param);
                 total = sysKeywordService.keywordCount(adGroupIds);
             }
         } else if (agid != null) {
             if (query != null) {
+                List<Long> adgroupIds = Lists.newArrayList();
+                adgroupIds.add(agid);
+                queryParams.put("adgroupIds", adgroupIds);
+
                 if (keywordQualityConditionSize > 0) {
                     entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param1, queryParams);
                     total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);

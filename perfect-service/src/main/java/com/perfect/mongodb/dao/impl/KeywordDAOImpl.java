@@ -118,6 +118,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
 
         Query mongoQuery = new Query();
@@ -155,6 +156,9 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
                         criteria.and("mt").is(3);
                     }
                 }
+                if ("adgroupIds".equals(entry.getKey())) {
+                    criteria.and(ADGROUP_ID).in((ArrayList<Long>) entry.getValue());
+                }
             }
         }
         mongoQuery.addCriteria(criteria);
@@ -163,8 +167,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
     @Override
-    public List<KeywordEntity> findByIds(List<Long> ids,PaginationParam...param) {
-        if(param.length>0){
+    public List<KeywordEntity> findByIds(List<Long> ids, PaginationParam... param) {
+        if (param.length > 0) {
             return getMongoTemplate().find(param[0].withParam(Query.query(Criteria.where(KEYWORD_ID).in(ids))), getEntityClass());
         }
         return getMongoTemplate().find(Query.query(Criteria.where(KEYWORD_ID).in(ids)), getEntityClass());
@@ -272,11 +276,11 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     @Override
     public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param) {
-        if(param!=null){
-        return getMongoTemplate().find(param.withParam(Query.query(Criteria.where(ADGROUP_ID).in(adgroupIds)))
-                , getEntityClass());
-        }else{
-            return getMongoTemplate().find(new Query(Criteria.where(ADGROUP_ID).in(adgroupIds)),getEntityClass());
+        if (param != null) {
+            return getMongoTemplate().find(param.withParam(Query.query(Criteria.where(ADGROUP_ID).in(adgroupIds)))
+                    , getEntityClass());
+        } else {
+            return getMongoTemplate().find(new Query(Criteria.where(ADGROUP_ID).in(adgroupIds)), getEntityClass());
         }
     }
 
