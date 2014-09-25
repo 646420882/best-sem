@@ -728,9 +728,9 @@ function imSearchSubmit(rs) {
                 grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
             }
         } else if (imSearchData.campaignId != undefined) {
-            if(imSearchData.campaignId==-1){
+            if (imSearchData.campaignId == -1) {
                 alert("请选择一个计划!");
-            }else{
+            } else {
                 dataUrl2 = "/importBid/loadData?campaignId=" + imSearchData.campaignId;
                 grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
             }
@@ -842,23 +842,23 @@ var getAllCheckedcbIm = function () {
 var getAllSelectedBidRule = function () {
     var rowIds = $("#table1").jqGrid('getGridParam', 'selarrrow');
     var keywordIds = [];
-    $.each(rowIds, function (rowId) {
-        if (grid.jqGrid('getCell', rowId, "biddingStatus") == "无") {
-            return true;
-        }
-        keywordIds.push(grid.jqGrid('getCell', rowId, "keywordId"));
-    });
+    for (var i = 0, l = rowIds.length; i < l; i++) {
+        if (grid.jqGrid('getCell', rowIds[i], "biddingStatus") == "无")
+            continue;
+
+        keywordIds.push(grid.jqGrid('getCell', rowIds[i], "keywordId"));
+    }
     return keywordIds;
 };
 var getAllSelectedBidRuleIm = function () {
     var rowIds = $("#table2").jqGrid('getGridParam', 'selarrrow');
     var keywordIds = [];
-    $.each(rowIds, function (rowId) {
-        if (grid.jqGrid('getCell', rowId, "biddingStatus") == "无") {
-            return true;
-        }
-        keywordIds.push(grid2.jqGrid('getCell', rowId, "keywordId"));
-    });
+    for (var i = 0, l = rowIds.length; i < l; i++) {
+        if (grid.jqGrid('getCell', rowIds[i], "biddingStatus") == "无")
+            continue;
+
+        keywordIds.push(grid.jqGrid('getCell', rowIds[i], "keywordId"));
+    }
     return keywordIds;
 };
 
