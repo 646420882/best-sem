@@ -339,7 +339,7 @@ public class BiddingController {
                 priceStatus = false;
             }
         }
-        //暂不考虑关键词质量度搜索
+        //关键词质量度搜索
         List<Integer> keywordQualityList = new ArrayList<>();
         if (quality != null && quality.trim().length() > 0) {
             for (String s : quality.split(",")) {
@@ -350,6 +350,9 @@ public class BiddingController {
         if (keywordQualityConditionSize > 0) {
             fullMatch = true;
         }
+
+        //是否启用了高级搜索
+        boolean advancedSearch = (matchType != null) || (priceStatus) || (keywordQualityConditionSize > 0);
 
         List<KeywordEntity> entities = null;
         Long total = 0l;
@@ -371,19 +374,39 @@ public class BiddingController {
 
         boolean ruleReady = false;
         if (cp != null) {
-            List<AdgroupEntity> adgroupEntityList = sysAdgroupService.findIdByCampaignId(cp);
+            if (query != null) {
+                if (keywordQualityConditionSize > 0) {
+                    entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param1, queryParams);
+                    total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
+                } else {
+                    entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param, queryParams);
+                    total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
+                }
+            } else {
+                List<AdgroupEntity> adgroupEntityList = sysAdgroupService.findIdByCampaignId(cp);
 
-            List<Long> adGroupIds = new ArrayList<>(adgroupEntityList.size());
-            for (AdgroupEntity adgroupEntity : adgroupEntityList) {
-                adGroupIds.add(adgroupEntity.getAdgroupId());
+                List<Long> adGroupIds = new ArrayList<>(adgroupEntityList.size());
+                for (AdgroupEntity adgroupEntity : adgroupEntityList) {
+                    adGroupIds.add(adgroupEntity.getAdgroupId());
+                }
+                entities = sysKeywordService.findByAdgroupIds(adGroupIds, param);
+                total = sysKeywordService.keywordCount(adGroupIds);
             }
-            entities = sysKeywordService.findByAdgroupIds(adGroupIds, param);
-            total = sysKeywordService.keywordCount(adGroupIds);
         } else if (agid != null) {
-            List<Long> tmpList = new ArrayList<>();
-            tmpList.add(agid);
-            entities = sysKeywordService.findByAdgroupId(agid, param);
-            total = sysKeywordService.keywordCount(tmpList);
+            if (query != null) {
+                if (keywordQualityConditionSize > 0) {
+                    entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param1, queryParams);
+                    total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
+                } else {
+                    entities = sysKeywordService.findByNames(query.split(" "), fullMatch, param, queryParams);
+                    total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
+                }
+            } else {
+                List<Long> tmpList = new ArrayList<>();
+                tmpList.add(agid);
+                entities = sysKeywordService.findByAdgroupId(agid, param);
+                total = sysKeywordService.keywordCount(tmpList);
+            }
         } else if (query != null) {
             if (filter == 0 && !priceStatus) {//全部
                 if (keywordQualityConditionSize > 0) {
@@ -463,6 +486,7 @@ public class BiddingController {
             tmpKeywordIdList.add(entity.getKeywordId());
         }
         Map<Long, Quality10Type> quality10TypeMap = keyword10QualityService.getKeyword10Quality(tmpKeywordIdList);
+        Integer quality10TypeSize = quality10TypeMap.size();
 
         Integer index = 0;
         for (KeywordEntity entity : entities) {
@@ -483,9 +507,10 @@ public class BiddingController {
             keywordReportDTO.setCampaignName(campaignEntity.getCampaignName());
             keywordReportDTO.setAdgroupName(adgroupEntity.getAdgroupName());
 
-//            //setting quality //暂时注释掉，配额不够！
-//            keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
-//            keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
+            if (quality10TypeSize > 0) {
+                keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
+                keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
+            }
 
             if (entity.getStatus() != null) {
                 keywordReportDTO.setStatusStr(KeywordStatusEnum.getName(entity.getStatus()));
