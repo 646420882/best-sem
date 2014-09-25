@@ -44,9 +44,9 @@ function whenClickTreeLoadData(tabName, param) {
     param = param != null ? param : {aid: null, cid: null};
     var tabName = $.trim(tabName);
     if (tabName == "关键词") {
-        getKwdList(1);
+        getKwdList(0);
     } else if (tabName == "推广计划") {
-        getCampaignList(1);
+        getCampaignList(0);
     } else if (tabName == "普通创意") {
         if (param.cid != null && param.aid != null) {
             getCreativeUnit(param);

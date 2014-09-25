@@ -1,23 +1,78 @@
 /*加载列表数据start*/
+/******************pagination*********************/
+var items_per_page = 20;    //默认每页显示20条数据
+var pageIndex = 0;  //当前页码
+var records = 0;//数据的总条数
+var skip = 0;
+var limit = 20;//每一页显示的条数
+
+var pageType = 1;
+
+var pageSelectCallback = function (page_index, jq) {
+    //值为1的时候代表是关键词的分页,2代表是推广计划的分页
+    if(pageType==1){
+        $("#pagination_keywordPage").append("<span style='margin-right:10px;'>跳转到 <input id='keywordPageNum' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipKeywordPage();' class='page_go'> GO</a>");
+    }else if(pageType==2){
+        $("#pagination_campaignPage").append("<span style='margin-right:10px;'>跳转到 <input id='campaignPageNum' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipCampaignPage();' class='page_go'> GO</a>");
+    }
+
+    if (pageIndex == page_index) {
+        return false;
+    }
+    pageIndex = page_index;
+    if(pageType==1){
+        getKwdList(page_index);
+    }else if(pageType==2){
+        getCampaignList(page_index);
+    }
+    return false;
+};
+
+var getOptionsFromForm = function (current_page) {
+    var opt = {callback: pageSelectCallback};
+
+    opt["items_per_page"] = items_per_page;
+    opt["current_page"] = current_page;
+    opt["prev_text"] = "上一页";
+    opt["next_text"] = "下一页";
+
+    //avoid html injections
+    var htmlspecialchars = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"};
+    $.each(htmlspecialchars, function (k, v) {
+        opt.prev_text = opt.prev_text.replace(k, v);
+        opt.next_text = opt.next_text.replace(k, v);
+    });
+    return opt;
+};
+//var optInit = getOptionsFromForm(0);
+/*************************************************/
 
 
+//Go按钮单击事件
+function skipKeywordPage() {
+    var pageNo = $("#keywordPageNum").val();
+    getKwdList(/^\d+$/.test(pageNo) == false?0:parseInt(pageNo)-1);
+}
 
 
 //得到当前账户的所有关键词
 function getKwdList(nowPage) {
+    pageType=1;
+
     $("#tbodyClick").empty();
     $("#tbodyClick").html("加载中...");
 
     if(/^\d+$/.test(nowPage) == false){
-        nowPage = 1;
+        nowPage = 0;
     }
 
     var param = getNowChooseCidAndAid();
     if(param==null){
         param = {};
     }
+
     param["nowPage"] = nowPage;
-    param["pageSize"] = $("#kwd_PageSize").val();
+    param["pageSize"] = items_per_page;
 
     $.ajax({
         url: "/assistantKeyword/list",
@@ -26,17 +81,21 @@ function getKwdList(nowPage) {
         dataType: "json",
         success: function (data) {
             $("#tbodyClick").empty();
-            setRedirectPageInfo_keyword(data);
+            records = data.totalCount;
+            pageIndex = data.pageNo;
+            $("#pagination_keywordPage").pagination(records, getOptionsFromForm(pageIndex));
+
             if(data.list.length==0){
                 $("#tbodyClick").html("暂无数据!");
                 return;
             }
+
             for (var i = 0; i < data.list.length; i++) {
-                var html = keywordDataToHtml(data.list[i], i);
+                var html = keywordDataToHtml(data.list[i].object, i,data.list[i].campaignName);
                 $("#tbodyClick").append(html);
                 if (i == 0) {
-                    setKwdValue($(".firstKeyword"), data.list[i].keywordId);
-                    if(data.list[i].localStatus!=null){
+                    setKwdValue($(".firstKeyword"),data.list[i].object.keywordId);
+                    if(data.list[i].object.localStatus!=null){
                         $("#reduction").find("span").removeClass("z_function_hover");
                         $("#reduction").find("span").addClass("zs_top");
                     }else{
@@ -50,38 +109,6 @@ function getKwdList(nowPage) {
 }
 
 
-/**
- * 设置首页，上下页，尾页跳转信息
- * @param data
- */
-function setRedirectPageInfo_keyword(data) {
-    $(".kwdPage").find("li>a:eq(0)").attr("name",0);
-    $(".kwdPage").find("li>a:eq(1)").attr("name",data.prePage);
-    $(".kwdPage").find("li>a:eq(2)").attr("name",data.nextPage);
-    $(".kwdPage").find("li>a:eq(3)").attr("name",data.totalPage);
-    $(".kwdPage").find("li:eq(5)").html("当前页:"+data.pageNo+"/"+data.totalPage);
-    $(".kwdPage").find("li:eq(6)").html("共"+data.totalCount+"条");
-}
-
-/**
- * 首页，上下页，尾页单击事件
- */
-$(".kwdPage ul li>a").click(function(){
-    var nowPage = $(this).attr("name");
-    getKwdList(nowPage);
-});
-/**
- * 关键词Go按钮的单击事件
- */
-$("#kwdGo").click(function(){
-    var nowPage = $(".kwdPageNo").val();
-    var totalPage = $(".kwdPage").find("li>a:eq(3)").attr("name");
-    if(nowPage>parseInt(totalPage)){
-        nowPage = parseInt(totalPage);
-    }
-    getKwdList(nowPage);
-    $(".kwdPageNo").val("");
-});
 
 
 
@@ -107,9 +134,11 @@ $("#tbodyClick").delegate("tr","click", function () {
 /**
  *将一条数据加到html中
  */
-function keywordDataToHtml(obj, index) {
+function keywordDataToHtml(obj, index,campaignName) {
 
+    if(obj.keywordId==null){
         obj.keywordId = obj.id;
+    }
 
     var html = "";
     if (index == 0) {
@@ -203,7 +232,7 @@ function keywordDataToHtml(obj, index) {
     }
     html = html + "<td>" + pcUrl + "</td>";
     html = html + "<td>" + mobUrl + "</td>";
-    html = html + "<td>推广单元名称</td>";
+    html = html + "<td>"+campaignName+"</td>";
 
     if(obj.localStatus!=null){
         if(obj.localStatus==3){
@@ -274,7 +303,7 @@ function editKwdInfo(jsonData) {
         data: jsonData,
         dataType:"json",
         success:function(data){
-            var html = keywordDataToHtml(data,0);
+            var html = keywordDataToHtml(data,0,$("#tbodyClick").find(".list2_box3 td:eq(9)").html());
             var tr = $("#tbodyClick").find(".list2_box3");
             tr.replaceWith(html);
         }
@@ -402,10 +431,10 @@ $("#batchDelKwd").livequery('click', function () {
 
 
 
-$("#searchwordReport").livequery('click', function () {
+$(".searchwordReport").livequery('click', function () {
     top.dialog({title: "搜索词报告",
         padding: "5px",
-        content: "<iframe src='/assistantKeyword/showSearchWordDialog' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showSearchWordDialog' width='900' height='570' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -475,7 +504,7 @@ function reducKwd_update(id) {
         data:{"id":id},
         dataType:"json",
         success: function (data) {
-            var html = keywordDataToHtml(data,0);
+            var html = keywordDataToHtml(data,0,$("#tbodyClick").find(".list2_box3 td:eq(9)").html());
             var tr = $("#tbodyClick").find(".list2_box3");
             tr.replaceWith(html);
         }
@@ -498,5 +527,7 @@ function reducKwd_del(id) {
         }
     });
 }
+
+
 
 

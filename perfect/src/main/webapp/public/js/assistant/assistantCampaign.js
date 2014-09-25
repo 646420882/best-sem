@@ -13,6 +13,8 @@ window.onload=function(){
  * 得到所有推广计划
  */
 function getCampaignList(nowPage){
+    pageType=2;
+
     $("#tbodyClick5").empty();
     $("#tbodyClick5").html("加载中...");
 
@@ -25,7 +27,7 @@ function getCampaignList(nowPage){
         param = {};
     }
     param["nowPage"] = nowPage;
-    param["pageSize"] = $("#camp_PageSize").val();
+    param["pageSize"] = items_per_page;
     $.ajax({
         url:"/assistantCampaign/list",
         type:"post",
@@ -33,7 +35,12 @@ function getCampaignList(nowPage){
         dataType:"json",
         success:function(data){
             $("#tbodyClick5").empty();
-            setRedirectPageInfo_campaign(data);
+
+            records = data.totalCount;
+            pageIndex = data.pageNo;
+            $("#pagination_campaignPage").pagination(records, getOptionsFromForm(pageIndex));
+
+
             if(data.list.length==0){
                 $("#tbodyClick5").html("暂无数据!");
                 return ;
@@ -58,39 +65,13 @@ function getCampaignList(nowPage){
 }
 
 
-
-/**
- * 设置首页，上下页，尾页跳转信息
- * @param data
- */
-function setRedirectPageInfo_campaign(data) {
-    $(".campaignPage").find("li>a:eq(0)").attr("name",0);
-    $(".campaignPage").find("li>a:eq(1)").attr("name",data.prePage);
-    $(".campaignPage").find("li>a:eq(2)").attr("name",data.nextPage);
-    $(".campaignPage").find("li>a:eq(3)").attr("name",data.totalPage);
-    $(".campaignPage").find("li:eq(5)").html("当前页:"+data.pageNo+"/"+data.totalPage);
-    $(".campaignPage").find("li:eq(6)").html("共"+data.totalCount+"条");
-}
-
-/**
- * 首页，上下页，尾页单击事件
- */
-$(".campaignPage ul li>a").click(function(){
-    var nowPage = $(this).attr("name");
-    getCampaignList(nowPage);
-});
 /**
  * 关键词Go按钮的单击事件
  */
-$("#campaignGo").click(function(){
-    var nowPage = $(".campaignPageNo").val();
-    var totalPage =  $(".campaignPage").find("li>a:eq(3)").attr("name");
-    if(nowPage>parseInt(totalPage)){
-        nowPage = parseInt(totalPage);
-    }
-    getCampaignList(nowPage);
-    $(".campaignPageNo").val("");
-});
+function skipCampaignPage() {
+    var pageNo = $("#campaignPageNum").val();
+    getCampaignList(/^\d+$/.test(pageNo) == false?0:parseInt(pageNo)-1);
+}
 
 
 
@@ -154,8 +135,8 @@ function campaignDataToHtml(obj,index){
     html = html+until.convert(obj.schedule==""||obj.schedule==null,"<td>全部</td>:"+"<td>已设置</td>");
 
 
-    //推广地域！！！！！！！！！！！！
-    html = html+until.convert(obj.regionTarget==null,"<td>使用账户推广地域</td>:"+"<td>使用计划推广地域</td>");
+    //推广地域
+    html = html+until.convert(obj.regionTarget==""||obj.regionTarget==null,"<td>账户推广地域</td>"+":"+"<td>计划推广地域</td>");
 
     var fd;
     var jqfd;
@@ -724,30 +705,25 @@ function createChooseTimeUIByCampaignData(data){
 
 
 /*显示设置推广地域窗口*/
-$(".regionTarget_5").click(function () {
+    $(".regionTarget_5").click(function () {
     var cid = $("#hiddenCampaignId").val();
-    top.dialog({title: "设置推广地域",
+   top.dialog({title: "设置推广地域",
         padding: "5px",
-        content: "<iframe src='/assistantCampaign/showSetPlace?cid="+cid+"' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantCampaign/showSetPlace?cid="+cid+"' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
+              if (this.returnValue) {
+                  $('#value').html(this.returnValue);
+                  alert( $('#value').html());
+              }
 //            window.location.reload(true);
         },
         onremove: function () {
         }
     }).showModal();
+
 });
-
-
-/**
- * 得到用户选择的推广地域()????????????
- */
-function getChooseRegionTarget() {
-
-}
-
-
 
 
 
@@ -778,6 +754,11 @@ $("#createCampaignOk").click(function(){
     var exactNegativeWords = exactNegativeWordsValue
     var excludeIp = excludeIpStr;
 
+    var adgroupName = $("#inputAdgroupName").val();
+    var maxPrice = $("#inputAdgroupPrice").val();
+    var adgroupPause = $("#inputAdgroupPause").val();
+    var adgroupPriceRatio = $("#inputAdgroupPriceRatio").val();
+
     if(campaignName == ""||campaignName=="<请输入推广计划名称>"){
         alert("请输入推广计划名称");
         return;
@@ -789,6 +770,19 @@ $("#createCampaignOk").click(function(){
     }
     if(/^[0-9]+|[0-9]+\.[0-9]{2}$/.test(priceRatio)==false){
         alert("移动出价比例只能是数值");
+        return;
+    }
+    if(adgroupName==""||adgroupName=="<请输入推广单元名称>"){
+        alert("请输入推广单元名称");
+        return;
+    }
+    if(!maxPrice=="" && /^[0-9]+|[0-9]+\.[0-9]{2}$/.test(maxPrice)==false){
+        alert("推广单元的出价只能是数值");
+        return;
+    }
+
+    if(!adgroupPriceRatio=="" && /^[0-9]+|[0-9]+\.[0-9]{2}$/.test(adgroupPriceRatio)==false){
+        alert("推广单元的出价比例只能是数值");
         return;
     }
 
@@ -805,17 +799,22 @@ $("#createCampaignOk").click(function(){
            "schedule":schedule,
            "negativeWords":negativeWords,
            "exactNegativeWords":exactNegativeWords,
-           "excludeIp":excludeIp
+           "excludeIp":excludeIp,
+           "adgroupName":adgroupName,
+           "maxPrice":maxPrice,
+           "adgroupPause":adgroupPause,
+           "adgroupPriceRatio":adgroupPriceRatio
        }
     });
+
 
     jsonSchdule_add=null;
      negativeWordsValue = "";
      exactNegativeWordsValue = "";
     excludeIpStr="";
+    $("#plan input[type=text]").val("");
     $(".TB_overlayBG,#plan").hide(0);
 });
-
 
 
 
@@ -936,7 +935,7 @@ function reducCpg_del(id) {
 $("#quickAddplan").click(function () {
         top.dialog({title: "快速新建计划",
             padding: "5px",
-            content: "<iframe src='/assistantCampaign/showCreatePlanWindow' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+            content: "<iframe src='/assistantCampaign/showCreatePlanWindow' width='900' height='590' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
             oniframeload: function () {
             },
             onclose: function () {
@@ -952,5 +951,19 @@ $("#quickAddplan").click(function () {
  * 弹出窗口的关闭事件
  */
 $(".close").click(function () {
-    $(this).parent().parent().hide(0);
+   $(this).parent().parent().hide(0);
 })
+
+//推广时段的取消按钮的事件
+function closeSetExtension() {
+    $("#setExtension").hide(0);
+    $(".TB_overlayBG").hide(0);
+}
+function closeSetExcludeIp() {
+    $("#setExcludeIp").hide(0);
+    $(".TB_overlayBG").hide(0);
+}
+function closeSetNegtiveWord() {
+    $("#setNegtiveWord").hide(0);
+    $(".TB_overlayBG").hide(0);
+}

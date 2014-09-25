@@ -6,15 +6,18 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%--<html>
 <head>
+
+<head>
+<body>--%>
+
 <link rel="shortcut icon" type="image/ico" href="http://tuiguang-s1.bdstatic.com/nirvana/asset/resource/img/1d95fd9f0985feb4.ico">
 <script src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/public/css/style.css">
-<head>
-<body>
+
+<div id="updateRegionDialog" class="ui_dialog" control="planRegionDialog" style="width: 548px; left: 100px; z-index: 401; top: 0px;display: none;">
 <input type="hidden" value="${cid}" id="campaignId">
-<div id="ctrldialogplanRegionDialog" class="ui_dialog" control="planRegionDialog" style="width:100%;height:100%;border: none;">
 
 <div class="ui_dialog_body" id="ctrldialogplanRegionDialogbody">
 <div class="manage_dialog">
@@ -2589,7 +2592,6 @@
 </dl>
 </div>
 </div>
-<br/><br/>
 <div class="ui_dialog_foot">
     <div  class="ui_button" logswitch="true" control="regionOk" id="ctrlbuttonregionOk" ui=""><a href="javascript:void(0)" id="ctrlbuttonregionOklabel" class="ui_button_label">确定</a></div>
     <div class="ui_button" logswitch="true" control="regionCancel" id="ctrlbuttonregionCancel" ui=""><a href="javascript:void(0)" id="ctrlbuttonregionCancellabel" class="ui_button_label">取消</a></div>
@@ -2700,71 +2702,14 @@
     })
     /*******关闭窗口*****/
     $("#ctrldialogplanRegionDialogclose").click(function(){
-        $("#ctrldialogplanRegionDialog").css("display","none");
+        $("#updateRegionDialog").css("display","none");
     });
     $("#ctrlbuttonregionCancellabel").click(function(){
-        $("#ctrldialogplanRegionDialog").css("display","none");
+        $("#updateRegionDialog").css("display","none");
     });
 </script>
 
 <script type="text/javascript">
-
-    function getCampaignData() {
-        var cid = $("#campaignId").val();
-        $.ajax({
-            url:"/assistantCampaign/getRegion",
-            type:"post",
-            data:{"cid":cid},
-            dataType:"json",
-            success:function(data){
-
-               //得到账户级别的推广地域
-                getAccountRegion();
-                if(data.campObj.regionTarget==null||data.campObj.regionTarget.length==0){
-                    $("#useAcctRegion").addClass("current_region");
-                    $("#usePlanRegion").removeClass("current_region");
-                    $("#ctrlregionregionBody").hide(0);
-                    $("#planRegionset").hide(0);
-                    $("#acctRegionList").show(0);
-                }else{
-                    $("#ctrlradioboxallRegion")[0].checked=false;
-                    $("#ctrlradioboxpartRegion")[0].checked=true;
-                    $("#ctrlregionregionBody").show(0);
-                    if(data.regions[0]=="全部区域"){
-                        $("#ctrlradioboxallRegion")[0].checked=true;
-                        $("#ctrlregionregionBody").hide(0);
-                    }else{
-                        setRegionTargetToChecked(data.regions);
-                    }
-                }
-            }
-        });
-    }
-
-    //进入该页面的时候得到该计划
-    getCampaignData();
-
-
-    //将该计划现已有的推广地域展示出来
-    function setRegionTargetToChecked(regionsName) {
-        var label = $("#regionList").find("div[class=leaf]").find("label");
-        for(var i=0;i<regionsName.length;i++){
-              label.each(function () {
-                  if(regionsName[i]==$(this).html()){
-                      if($(this).parent().parent().parent().attr("class")!="second-area-container hide"){
-                          $(this).parent().find("input[type=checkbox]")[0].checked=true;
-                      }else{
-                          var ico = $(this).parentsUntil(".area-hover-event").parent().find(".first-area-container>.half-checked-icon");
-                          ico.removeClass("hide");
-                          ico.addClass("half-checked-icon-hover");
-                          $(this).parent().find("input[type=checkbox]")[0].checked=true;
-                      }
-                  }
-              });
-        }
-
-    }
-
 
     /**
     *得到账户级别的推广地域
@@ -2783,68 +2728,10 @@
         });
     }
 
-
-
-    /**
-    *使用账户推广地域的确定按钮的事件
-     */
-    $("#Oklabel").click(function(){
-        var cid = $("#campaignId").val();
-        $.ajax({
-            url:"/assistantCampaign/useAccoutRegion",
-            type:"post",
-            data:{"cid":cid},
-            dataType:"json",
-            success:function(data){
-                alert("使用账户推广地域成功！");
-            }
-        });
-    });
-
-
-    /**
-    *推广计划的推广地域的确定按钮的事件
-     */
-    $("#ctrlbuttonregionOklabel").click(function () {
-     var region = $("input[name=region]")
-     var value = null;
-        region.each(function(){
-            if($(this)[0].checked==true){
-                value = $(this).val();
-            }
-        });
-
-        //0是全部地域,1是部分地域
-        var regions = "";
-        if(value==0){
-            regions+="全部区域"+",";
-        }else if(value==1){
-          var leaf = $("#regionList").find("div[class=leaf]");
-          leaf.each(function(){
-              if($(this).find("input[type=checkbox]")[0].checked==true){
-                  regions+=$(this).find("label").html()+",";
-              }
-          });
-        }
-
-        var cid = $("#campaignId").val();
-        $.ajax({
-            url:"/assistantCampaign/usePlanRegion",
-            type:"post",
-            data:{"regions":regions,"cid":cid},
-            dataType:"json",
-            success:function(data){
-                alert("使用计划推广地域成功！");
-            }
-        });
-
-
-
-    });
-
+    getAccountRegion();
 
 </script>
 
-</body>
-</html>
+<%--</body>
+</html>--%>
 

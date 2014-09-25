@@ -62,6 +62,9 @@ public class AdgroupEntity extends AccountIdEntity {
     @Field("m")
     private Double mib;
 
+    @Field("priceR")
+    private Double priceRatio;
+
     @Field("ls")
     private Integer localStatus;
 
@@ -97,6 +100,14 @@ public class AdgroupEntity extends AccountIdEntity {
 
     public void setLocalStatus(Integer localStatus) {
         this.localStatus = localStatus;
+    }
+
+    public Double getPriceRatio() {
+        return priceRatio;
+    }
+
+    public void setPriceRatio(Double priceRatio) {
+        this.priceRatio = priceRatio;
     }
 
     public boolean setAdgroupId(Long aAdgroupId) {

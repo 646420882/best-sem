@@ -1,18 +1,20 @@
 package com.perfect.dto;
 
+import com.perfect.entity.KeywordEntity;
+
 /**
  * Created by john on 2014/9/2.
  * 可以被删除的关键词
  */
-public class KeywordDTO {
+public class KeywordDTO{
 
     private String campaignName;
 
     private String adgroupName;
 
-    private Object object;
+    private KeywordEntity object;
 
-    public KeywordDTO(String campaignName, String adgroupName, Object object) {
+    public KeywordDTO(String campaignName, String adgroupName, KeywordEntity object) {
         this.campaignName = campaignName;
         this.adgroupName = adgroupName;
         this.object = object;
@@ -37,11 +39,11 @@ public class KeywordDTO {
         this.adgroupName = adgroupName;
     }
 
-    public Object getObject() {
+    public KeywordEntity getObject() {
         return object;
     }
 
-    public void setObject(Object object) {
+    public void setObject(KeywordEntity object) {
         this.object = object;
     }
 }

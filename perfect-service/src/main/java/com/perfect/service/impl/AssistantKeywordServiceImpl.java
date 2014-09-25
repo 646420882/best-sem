@@ -13,7 +13,6 @@ import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.backup.KeyWordBackUpEntity;
 import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.PagerInfo;
-import com.perfect.mongodb.utils.PaginationParam;
 import com.perfect.service.AssistantKeywordService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -91,30 +90,21 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * 批量添加关键词
      * @param keywords
      */
-   public void batchAddkeyword(String keywords){
-       List<KeywordEntity> keywordEntityList = new ArrayList<>();
-       String[] keywordArray = keywords.split(";");
+   public void batchAddkeyword(List<KeywordDTO> keywords){
 
-       for(String kwd:keywordArray){
-           KeywordEntity keywordEntity = new KeywordEntity();
-           String[] kwdFields = kwd.split(",");
-           CampaignEntity campaignEntity = campaignDAO.findCampaignByName(kwdFields[0]);
-           AdgroupEntity adgroupEntity = adgroupDAO.getByCampaignIdAndName(campaignEntity.getCampaignId(),kwdFields[1]);
-           keywordEntity.setAdgroupId(adgroupEntity.getAdgroupId());
-           keywordEntity.setAdgroupObjId(adgroupEntity.getId());
-           keywordEntity.setKeyword(kwdFields[2]);
-           keywordEntity.setPrice(kwdFields[3].equals("null") ? null : BigDecimal.valueOf(Double.parseDouble(kwdFields[3])));
-           keywordEntity.setPcDestinationUrl(kwdFields[4].equals("null") ? "" : kwdFields[4]);
-           keywordEntity.setMobileDestinationUrl(kwdFields[5].equals("null") ? "" : kwdFields[5]);
-           keywordEntity.setMatchType(kwdFields[6].equals("null") ? 1 : Integer.parseInt(kwdFields[6]));
-           keywordEntity.setPause(kwdFields[7].equals("null") ? false : Boolean.parseBoolean(kwdFields[7]));
-           keywordEntity.setPhraseType(kwdFields[8].equals("null") ? null : Integer.parseInt(kwdFields[8]));
-           keywordEntity.setAccountId(AppContext.getAccountId());
-           keywordEntity.setLocalStatus(1);
-           keywordEntity.setStatus(-1);
-           keywordEntityList.add(keywordEntity);
-       }
-       keywordDAO.insertAll(keywordEntityList);
+       List<KeywordEntity> list = new ArrayList<>();
+        for(KeywordDTO dto:keywords){
+           CampaignEntity campaignEntity = campaignDAO.findCampaignByName(dto.getCampaignName());
+           AdgroupEntity adgroupEntity = adgroupDAO.getByCampaignIdAndName(campaignEntity.getCampaignId(),dto.getAdgroupName());
+           KeywordEntity kwd = dto.getObject();
+            if(adgroupEntity.getAdgroupId()==null){
+                kwd.setAdgroupObjId(adgroupEntity.getId());
+            }else{
+                kwd.setAdgroupId(adgroupEntity.getAdgroupId());
+            }
+          list.add(kwd);
+        }
+        keywordDAO.insertAll(list);
     }
 
 
@@ -122,34 +112,16 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * 批量修改关键词
      * @param keywords
      */
-    public void batchUpdateKeyword(String keywords){
-        List<KeywordEntity> keywordEntityList = new ArrayList<>();
-        String[] kwds = keywords.split("\t");
-       for(String k:kwds){
-        String[] kwdField = k.split(",");
-           KeywordEntity keywordEntity = new KeywordEntity();
-           keywordEntity.setAccountId(AppContext.getAccountId());
-           keywordEntity.setId(kwdField[0]);
-           keywordEntity.setKeywordId(kwdField[1].equals("null")?null:Long.parseLong(kwdField[1]));
-           keywordEntity.setAdgroupId(kwdField[2].equals("null")?null:Long.parseLong(kwdField[2]));
-           keywordEntity.setAdgroupObjId(kwdField[3].equals("null")?"":kwdField[3]);
-           keywordEntity.setKeyword(kwdField[4]);
-           keywordEntity.setPrice(kwdField[5].equals("null")?null:BigDecimal.valueOf(Double.parseDouble(kwdField[5])));
-           keywordEntity.setPcDestinationUrl(kwdField[6].equals("null")?"":kwdField[6]);
-           keywordEntity.setMobileDestinationUrl(kwdField[7].equals("null")?"":kwdField[7]);
-           keywordEntity.setMatchType(kwdField[8].equals("null")?1:Integer.parseInt(kwdField[8]));
-           keywordEntity.setPause(kwdField[9].equals("null")?false:Boolean.parseBoolean(kwdField[9]));
-           keywordEntity.setStatus(kwdField[10].equals("null")?null:Integer.parseInt(kwdField[10]));
-           keywordEntity.setPhraseType(kwdField[11].equals("null")?null:Integer.parseInt(kwdField[11]));
-          if(kwdField[12].equals("1")){
-              keywordEntity.setLocalStatus(1);
-          }else{
+    public void batchUpdateKeyword(List<KeywordDTO> keywords){
+       for(KeywordDTO dto:keywords){
+           KeywordEntity keywordEntity = dto.getObject();
+          if(keywordEntity.getLocalStatus()==null){
               keywordEntity.setLocalStatus(2);
           }
-           keywordEntityList.add(keywordEntity);
+           KeyWordBackUpEntity backUpEntity = new KeyWordBackUpEntity();
+           BeanUtils.copyProperties(keywordDAO.findByObjectId(keywordEntity.getId()),backUpEntity);
+           keywordDAO.update(keywordEntity,backUpEntity);
        }
-
-        keywordDAO.save(keywordEntityList);
     }
 
 
@@ -164,11 +136,20 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         if(nowPage==null){
             nowPage = 0;
         }
-
         PagerInfo page = null;
-
-       Query query = new Query();
+        Query query = new Query();
         query.addCriteria(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
+
+        CampaignEntity campaignEntity = null;
+        if(cid!=null&&!"".equals(cid)){
+            if(cid.matches(regex)==true){
+                campaignEntity = campaignDAO.findOne(Long.parseLong(cid));
+            }else{
+                campaignEntity = campaignDAO.findByObjectId(cid);
+            }
+        }
+
+        Map<String,Object> map = null;
 
         //若cid和aid都不为空，就是查询某单元下的关键词,在aid为空的时候就查询该计划下的关键词
         if(cid!=null && !"".equals(cid) && aid!=null && !"".equals(aid)){
@@ -180,41 +161,53 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 page = keywordDAO.findByPageInfo(query, pageSize,nowPage);
             }
         }else if(cid!=null && !"".equals(cid) && (aid==null||"".equals(aid))){
-            CampaignEntity campaignEntity;
-            if(cid.matches(regex)==true){
-                campaignEntity = campaignDAO.findOne(Long.parseLong(cid));
-            }else{
-                campaignEntity = campaignDAO.findByObjectId(cid);
-            }
-                List<AdgroupEntity> adgroupEntityList = new ArrayList<>();
-                if(campaignEntity.getCampaignId()==null){
-                   adgroupEntityList.addAll(adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(EntityConstants.OBJ_CAMPAIGN_ID).is(campaignEntity.getId())))) ;
-                }else{
-                    adgroupEntityList.addAll( adgroupDAO.findByCampaignId(campaignEntity.getCampaignId()));
-                }
-
-
-            //待？？？？？
-            Query adQuery = new Query();
             List<Long> longIds = new ArrayList<>();
-            List<String> objIds = new ArrayList<>();
-            for(int i = 0;i<adgroupEntityList.size();i++){
-                AdgroupEntity ad = adgroupEntityList.get(i);
-                if(ad.getAdgroupId()==null){
-                    objIds.add(ad.getId());
-                }else{
-                    longIds.add(ad.getAdgroupId());
+                if(campaignEntity.getCampaignId()!=null){
+                    longIds.addAll(adgroupDAO.getAdgroupIdByCampaignId(campaignEntity.getCampaignId()));
                 }
-            }
+            Query adQuery = new Query();
             adQuery.addCriteria(Criteria.where(EntityConstants.ADGROUP_ID).in(longIds));
             page = keywordDAO.findByPageInfo(adQuery, pageSize, nowPage);
-
         }else{
             page = keywordDAO.findByPageInfo(query, pageSize,nowPage);
         }
 
+        page.setList(setCampaignNameByKeywordEntitys((List<KeywordEntity>) page.getList(),campaignEntity));
+
         return page;
     }
+
+
+    private List<KeywordDTO> setCampaignNameByKeywordEntitys(List<KeywordEntity> list,CampaignEntity camp){
+        List<KeywordDTO> dtoList = new ArrayList<>();
+
+        Map<String,CampaignEntity> map = new HashMap<>();
+        CampaignEntity cam = null;
+        for(KeywordEntity kwd:list){
+            if(camp==null){
+                if(!(new ArrayList<>(map.keySet()).contains(kwd.getAdgroupObjId())||new ArrayList<>(map.keySet()).contains(kwd.getAdgroupId()+""))){
+                    AdgroupEntity ad = kwd.getAdgroupId()==null?adgroupDAO.findByObjId(kwd.getAdgroupObjId()):adgroupDAO.findOne(kwd.getAdgroupId());
+                    cam = ad.getCampaignId()==null?campaignDAO.findByObjectId(ad.getCampaignObjId()):campaignDAO.findOne(ad.getCampaignId());
+                    map.put(kwd.getAdgroupId()==null?kwd.getAdgroupObjId():kwd.getAdgroupId()+"",cam);
+                }else{
+                    cam = map.get(kwd.getAdgroupId()==null?kwd.getAdgroupObjId():kwd.getAdgroupId()+"");
+                }
+
+                KeywordDTO dto = new KeywordDTO();
+                dto.setCampaignName(cam.getCampaignName());
+                dto.setObject(kwd);
+                dtoList.add(dto);
+            }else{
+                KeywordDTO dto = new KeywordDTO();
+                dto.setCampaignName(camp.getCampaignName());
+                dto.setObject(kwd);
+                dtoList.add(dto);
+            }
+
+        }
+        return dtoList;
+    }
+
 
 
     /**
@@ -387,7 +380,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         String[] everyDeleInfo = deleteInfos.split("\n");
 
         for (String str : everyDeleInfo) {
-            String[] fields = str.split(",|\t");
+            String[] fields = str.split(",|，|\t");
             List<CampaignEntity> campaignEntityList = findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and("name").is(fields[0])));
             CampaignEntity campaignEntity = campaignEntityList == null || campaignEntityList.size() == 0 ? null : campaignEntityList.get(0);
 
@@ -470,40 +463,35 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             //切割出推广计划和推广单元ID
             String[] fieds = row.split(",");
             for (String info : everyInfo) {
-                //若为true，将现在的关键词替换该单元下的所有相应内容,为false时，就将现在输入的关键词添加到数据库
-                String[] kwInfo = info.split(",|\t");
-                if (isReplace == true) {
-                    KeywordEntity keywordEntity = validateKewword(kwInfo);
+                String[] kwInfo = info.split(",|，|\t");
+                KeywordEntity keywordEntity = validateKewword(kwInfo);
+                List<KeywordEntity>  list = null;
+                if(fieds[1].matches(regex)==true){
+                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(EntityConstants.ADGROUP_ID).is(Long.parseLong(fieds[1])).and("name").is(keywordEntity.getKeyword())));
+                }else{
+                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(EntityConstants.SYSTEM_ID).is(fieds[1]).and("name").is(keywordEntity.getKeyword())));
+                }
 
-                    List<KeywordEntity> list = null;
-                    if(fieds[1].matches(regex)==true){
-                        list = keywordDAO.findByQuery(new Query(Criteria.where(EntityConstants.ADGROUP_ID).is(Long.parseLong(fieds[1])).and("name").is(kwInfo[0])));
+                if(list.size()>0 && kwInfo.length==1){
+                    AssistantkwdIgnoreDeleDTO dto = new AssistantkwdIgnoreDeleDTO();
+
+                    if(fieds[0].matches(regex)==true){
+                        dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
                     }else{
-                        list = keywordDAO.findByQuery(new Query(Criteria.where(EntityConstants.ADGROUP_ID).is(fieds[1]).and("name").is(kwInfo[0])));
+                        dto.setCampaignName(campaignDAO.findByObjectId(fieds[0]).getCampaignName());
                     }
 
-
-                    if(list.size()>0 && kwInfo.length==1){
-                        AssistantkwdIgnoreDeleDTO dto = new AssistantkwdIgnoreDeleDTO();
-
-                        if(fieds[0].matches(regex)==true){
-                            dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
-                        }else{
-                            dto.setCampaignName(campaignDAO.findByObjectId(fieds[0]).getCampaignName());
-                        }
-
-                        if(fieds[1].matches(regex)==true){
-                            dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
-                        }else{
-                            dto.setAdgroupName(adgroupDAO.findByObjId(fieds[1]).getAdgroupName());
-                        }
-                        dto.setKeywordName(kwInfo[0]);
-                        igoneList.add(dto);
-                        continue;
+                    if(fieds[1].matches(regex)==true){
+                        dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
+                    }else{
+                        dto.setAdgroupName(adgroupDAO.findByObjId(fieds[1]).getAdgroupName());
                     }
+                    dto.setKeywordName(kwInfo[0]);
+                    igoneList.add(dto);
+                    continue;
+                }
 
-
-
+                if (isReplace == true) {
                     if(list.size()==0){
                         insertList.add(setFieldToDTO(fieds,keywordEntity,null));
                     }else{
@@ -511,35 +499,6 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     }
 
                 } else {
-                    KeywordEntity keywordEntity = validateKewword(kwInfo);
-
-                    List<KeywordEntity>  list = null;
-                    if(fieds[1].matches(regex)==true){
-                        list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(EntityConstants.ADGROUP_ID).is(Long.parseLong(fieds[1])).and("name").is(keywordEntity.getKeyword())));
-                    }else{
-                        list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(EntityConstants.SYSTEM_ID).is(fieds[1]).and("name").is(keywordEntity.getKeyword())));
-                    }
-
-                    if(list.size()>0 && kwInfo.length==1){
-                        AssistantkwdIgnoreDeleDTO dto = new AssistantkwdIgnoreDeleDTO();
-
-                        if(fieds[0].matches(regex)==true){
-                            dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
-                        }else{
-                            dto.setCampaignName(campaignDAO.findByObjectId(fieds[0]).getCampaignName());
-                        }
-
-                        if(fieds[1].matches(regex)==true){
-                            dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
-                        }else{
-                            dto.setAdgroupName(adgroupDAO.findByObjId(fieds[1]).getAdgroupName());
-                        }
-                        dto.setKeywordName(kwInfo[0]);
-                        igoneList.add(dto);
-                        continue;
-                    }
-
-
                     //若查询没有数据就添加这条数据,若有就更新这条数据
                     if(list.size()==0){
                         insertList.add(setFieldToDTO(fieds,keywordEntity,null));
@@ -550,56 +509,6 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             }
         }
 
-
-
-      /*  List<KeywordEntity> entities = new ArrayList<>();
-        if(isReplace==true){
-
-            for(String row:everyRow){
-                String[] fieds = row.split(",");
-
-                List<KeywordEntity>  list = null;
-                if(fieds[1].matches(regex)==true){
-                    list = keywordDAO.findByAdgroupId(Long.parseLong(fieds[1]),getBasePagintionParam());
-                }else{
-                    list = keywordDAO.findByAdgroupId(fieds[1],getBasePagintionParam());
-                }
-
-                Iterator ita = list.iterator();
-                while (ita.hasNext()){
-                    KeywordEntity keywordEntity = (KeywordEntity)ita.next();
-                    for(AssistantkwdIgnoreDeleDTO dto:igoneList){
-                        if(dto.getKeywordName().equals(keywordEntity.getKeyword())){
-                                ita.remove();
-                        }
-                    }
-
-                    for(KeywordDTO dto:updateList){
-                       if(((KeywordEntity)dto.getObject()).getKeyword().equals(keywordEntity.getKeyword())){
-                            ita.remove();
-                        }
-                    }
-                }
-
-                entities.addAll(list);
-                KeywordDTO keywordDTO = new KeywordDTO();
-
-                if(fieds[0].matches(regex)==true){
-                    keywordDTO.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
-                }else{
-                    keywordDTO.setCampaignName(campaignDAO.findByObjectId(fieds[0]).getCampaignName());
-                }
-
-                if(fieds[1].matches(regex)==true){
-                    keywordDTO.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
-                }else{
-                    keywordDTO.setAdgroupName(adgroupDAO.findByObjId(fieds[1]).getAdgroupName());
-                }
-                keywordDTO.setObject(entities);
-                delList.add(keywordDTO);
-            }
-        }*/
-
         Map<String,Object> map = new HashMap<>();
         map.put("insertList",insertList);
         map.put("updateList",updateList);
@@ -609,14 +518,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         return map;
     }
 
-    public PaginationParam getBasePagintionParam(){
-        PaginationParam page = new PaginationParam();
-        page.setAsc(true);
-        page.setLimit(Integer.MAX_VALUE);
-        page.setStart(0);
-        page.setOrderBy("name");
-        return page;
-    }
+
 
     private KeywordDTO setFieldToDTO(String[] fieds,KeywordEntity updateKeywordEntity,KeywordEntity beforeKeywordEntity){
         KeywordDTO keywordDTO = new KeywordDTO();
@@ -624,6 +526,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         keywordDTO.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
 
         if(beforeKeywordEntity==null){
+            updateKeywordEntity.setAccountId(AppContext.getAccountId());
+            updateKeywordEntity.setStatus(-1);
+            updateKeywordEntity.setLocalStatus(1);
             keywordDTO.setObject(updateKeywordEntity);
         }else{
             beforeKeywordEntity.setPause(updateKeywordEntity.getPause());
@@ -647,6 +552,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             }
 
             keywordDTO.setObject(beforeKeywordEntity);
+//            keywordDAO.findB
         }
 
         return keywordDTO;
@@ -681,7 +587,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     keywordEntity.setMatchType(1);
                 }
             }else if(i==2){
-                if(kwInfo[i].matches("^\\d+|\\.\\d+$")==true){
+                if(kwInfo[i].matches("^[1-9]\\d*\\.\\d*|0\\.\\d*[1-9]\\d*$")==true){
                     keywordEntity.setPrice(BigDecimal.valueOf(Double.parseDouble(kwInfo[i])));
                 }else{
                     keywordEntity.setPrice(null);
@@ -701,6 +607,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
         if(keywordEntity.getPause()==null){
             keywordEntity.setPause(false);
+        }
+        if(keywordEntity.getMatchType()==null){
+            keywordEntity.setMatchType(1);
         }
 
         return keywordEntity;
