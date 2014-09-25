@@ -1075,30 +1075,16 @@
         <div class="over">
         </div>
         <div class="download over">
-                <div class="page2 fl" id="importPager">
-                   <span class="fr">每页显示
-                    <select id="importKeywordSel" onchange="selectChange()">
-                        <option value="20">20个</option>
-                        <option value="50">50个</option>
-                        <option value="100">100个</option>
-                    </select> </span>
-                    <a href="javascript:void(0)">首页</a>
-                    <a href="javascript:void(0)" class="nextpage1"><span></span></a>
-                    <a href="javascript:void(0)" class="nextpage2"><span></span></a>
-                    <a href="javascript:void(0)">尾页</a>
-                    <span style="margin-right:10px;">当前页:0/0 </span>
-                    <span style="margin-right:10px;">共0条</span>
-                    <span style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
-                        href="javascript:void(0)" class='page_go'>
-                    GO</a>
-
-                </div>
-
-
-
-
+                <span class="fr">每页显示
+                            <select id="importKeywordselect"
+                                    onchange="javascript:limit = $('#importKeywordselect option:selected').val();getImportKeywordDefault();">
+                                <option selected="selected" value="10">10个</option>
+                                <option value="20">20个</option>
+                                <option value="30">30个</option>
+                            </select> </span>
         </div>
-
+        <%--getImportKeywordDefault--%>
+        <div class="pagination" id="importPager"></div>
     </div>
 </div>
 </div>
@@ -1178,6 +1164,21 @@ $(function () {
     $('.tab_menu li').click(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
         var index = $tab_li.index(this);
+        typepage=index+1;
+        switch(typepage){
+            case 2:
+                //曲线图表现-----默认加载7天数据
+                loadPerformanceCurve(null, 7);
+                break;
+            case 3:
+                //默认加载昨天的数据(质量度)
+                loadKeywordQualityData(null, 1);
+                break;
+            case 4:
+                    //重点词加载
+                getImportKeywordDefault(null,1);
+                break;
+        }
         $('div.tab_box > div').eq(index).show().siblings().hide();
     });
     $("input[name=reservation]").click(function () {
@@ -1214,16 +1215,11 @@ $(function () {
     document.getElementById("background").style.display = "none";
     document.getElementById("progressBar1").style.display = "none";
 
-    //默认加载昨天的数据
-    loadKeywordQualityData(null, 1);
-    getImportKeywordDefault(1);
+
+
     //账户表现-----默认加载7天数据
     loadPerformance(null, 7);
-    //曲线图表现-----默认加载7天数据
-    loadPerformanceCurve(null, 7);
 
-    //初始化重点关键词分页控件
-    initImportPagerClickEvent();
 
 });
 
@@ -1323,12 +1319,16 @@ var pageIndex = 0;
 var records = 0;
 var skip = 0;
 var typepage = 1;
+var nowPage = 0;
 
 var pageSelectCallback = function (page_index, jq) {
     if (typepage == 1) {
         $("#pagination1").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber1' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipPagePer();' class='page_go'> GO</a>");
-    } else {
+    } else if(typepage==2){
         $("#pagination2").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber2' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipPagePer();' class='page_go'> GO</a>");
+    }else if(typepage==4){
+        $("#importPager").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber4' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipPagePer();' class='page_go'> GO</a>");
+
     }
     if (pageIndex == page_index) {
         return false;
@@ -1343,6 +1343,8 @@ var pageSelectCallback = function (page_index, jq) {
         startPer =(page_index+1) * items_per_page - items_per_page;
         endPer =(page_index+1) * items_per_page;
         loadPerformance();
+    }else if(typepage==4){
+
     }
     return false;
 };
@@ -1378,12 +1380,15 @@ skipPagePer = function () {
             return;
         }
         $("#pagination1").pagination(records, getOptionsFromForm(_number));
-    } else {
+    } else if(typepage == 2) {
         _number = $("#anyPageNumber2").val() - 1;
         if (_number <= -1 || _number == pageIndex) {
             return;
         }
         $("#pagination2").pagination(records, getOptionsFromForm(_number));
+    }else if(typepage == 4){
+        _number = $("#anyPageNumber4").val();
+        $("#importPager").pagination(records, getOptionsFromForm(/^\d+$/.test(_number) == false?0:parseInt(_number)-1));
     }
 };
 /**********************************************************************************/
@@ -1867,7 +1872,7 @@ var curve = function () {
         ]
     });
 };
-var nowPage = 1;
+
 var getImportKeywordDefault = function (obj, day) {
     if (obj != null) {
         changedLiState(obj);
@@ -1876,7 +1881,6 @@ var getImportKeywordDefault = function (obj, day) {
     $("#importTr").append("<td style='color:red;'>加载中....</td>");
     statDate = day;
     getDateParam(day);
-    var nowPage = $("#importPager a:eq(2)").attr("name") != undefined ? $("#importPager a:eq(2)").attr("name") : 1;
     var _tr = $("#importTr");
     $.post("/import/getImportKeywordList", {
         startDate: daterangepicker_start_date,
@@ -1886,12 +1890,7 @@ var getImportKeywordDefault = function (obj, day) {
         nowPage: nowPage
     }, function (result) {
         var gson = $.parseJSON(result);
-        $("#importPager a:eq(0)").attr("name", 0);
-        $("#importPager a:eq(1)").attr("name", gson.prePage);
-        $("#importPager a:eq(2)").attr("name", gson.nextPage);
-        $("#importPager a:eq(3)").attr("name", gson.totalPage);
-        $("#importPager span:eq(4)").html("共" + gson.totalCount + "条");
-        $("#importPager span:eq(3)").html("当前页:" + gson.pageNo + "/" + gson.totalPage);
+        $("#importPager").pagination(gson.totaCount,getOptionsFromForm(gson.pageNo));
         if (gson.list != "") {
             _tr.empty();
             for (var i = 0; i < gson.list.length; i++) {
@@ -1908,13 +1907,6 @@ var getImportKeywordDefault = function (obj, day) {
         }
     });
 };
-//初始化监控关键词分页控件点击事件
-function initImportPagerClickEvent() {
-    $("#importPager a").click(function () {
-        nowPage = $(this).attr("name");
-        getImportKeywordDefault(null, statDate);
-    });
-}
 //初始化加载下载功能
 function importDownload(rs) {
     window.open("/import/getCSV?startDate="+daterangepicker_start_date+"&&endDate="+daterangepicker_end_date);
