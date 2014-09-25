@@ -11,7 +11,6 @@ $(function () {
     rDrag.init(document.getElementById("apKwd"));
     rDrag.init(document.getElementById("apKwd"));
     initNoKwdKeyUp();
-    adgPagerClickInit();
 });
 var atmp = null;
 var sp = null;
@@ -124,7 +123,10 @@ function initNoKwdKeyUp() {
  * 加载单元数据
  * @param plans 根据点击树结构的计划id，如果有则根据计划加载，如果没有，查询所有单元
  */
-function loadAdgroupData(plans) {
+function loadAdgroupData(page_index) {
+    pageType=4;
+    plans.pageSize=items_per_page;
+    plans.nowPage=page_index;
     initAgReback();
     var _adGroudTable = $("#adGroupTable tbody");
     _adGroudTable.empty().html("加载中....");
@@ -169,42 +171,18 @@ function loadAdgroupData(plans) {
  * @param data
  */
 function adgPagerInit(data){
-    $(".adgPage").find("li>a:eq(0)").attr("name", 0);
-    $(".adgPage").find("li>a:eq(1)").attr("name", data.prePage);
-    $(".adgPage").find("li>a:eq(2)").attr("name", data.nextPage);
-    $(".adgPage").find("li>a:eq(3)").attr("name", data.totalPage);
-    $(".adgPage").find("li:eq(4)").html("当前页:" + data.pageNo + "/" + data.totalPage);
-    $(".adgPage").find("li:eq(5)").html("共" + data.totalCount + "条");
+    if(data.totalCount==0){
+        return false;
+    }
+    $("#adgroupPager").pagination(data.totalCount, getOptionsFromForm(data.pageNo));
 }
-/**
- * 推广单元分页控件点击事件初始化
- */
-function adgPagerClickInit(){
-    $(".adgPage ul li>a").click(function () {
-        var nowPage = $(this).attr("name");
-        plans.nowPage = nowPage;
-        loadAdgroupData(plans);
-    });
+//输入数字传入分页
+function skipAdgroupPage(){
+    var pageNo = $("#adgroupPageNum").val();
+    loadAdgroupData(/^\d+$/.test(pageNo) == false?0:parseInt(pageNo)-1);
+}
 
-    $("#adgGo").click(function () {
-        var nowPage = $(".adgPageNo").val();
-        var totalPage = $(".adgPage").find("li>a:eq(3)").attr("name");
-        if (nowPage > parseInt(totalPage)) {
-            nowPage = parseInt(totalPage);
-        }
-        plans.nowPage = nowPage;
-        loadAdgroupData(plans);
-        $(".adgPageNo").val("");
-    });
-}
-/**
- * 显示分页条目select下拉事件
- * @param rs
- */
-function adgpagerSelectClick(rs){
-    plans.pageSize=$(rs).val();
-    loadAdgroupData(plans);
-}
+
 /**
  * 添加成功后显示否定词比例
  * @param exp1
@@ -266,7 +244,7 @@ function aon(ts) {
 function getAdgroupPlan(rs, name) {
     plans.cid = rs;
     plans.cn = name;
-    loadAdgroupData(plans);
+    loadAdgroupData(0);
 }
 /**
  * 点击添加按钮弹出框

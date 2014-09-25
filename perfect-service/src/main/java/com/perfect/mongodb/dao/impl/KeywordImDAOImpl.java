@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Created by XiaoWei on 2014/9/22.
@@ -71,5 +72,18 @@ public class KeywordImDAOImpl extends AbstractUserBaseDAOImpl<KeywordImEntity,Lo
             }
         }
         return keywords;
+    }
+
+    @Override
+    public List<Long> findByKeywordName(String str) {
+        Pattern pattern=Pattern.compile("^.*"+str+".*$",Pattern.CASE_INSENSITIVE);
+        List<KeywordImEntity> keywordImEntities=BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where("name").regex(pattern)),KeywordImEntity.class);
+        List<Long> keywordIds=new ArrayList<>();
+        if (keywordImEntities.size()>0){
+            for (KeywordImEntity kwd:keywordImEntities){
+                keywordIds.add(kwd.getKeywordId());
+            }
+        }
+        return keywordIds;
     }
 }

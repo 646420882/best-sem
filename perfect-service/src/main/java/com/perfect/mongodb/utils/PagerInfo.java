@@ -16,7 +16,7 @@ public PagerInfo(int pageNo, int pageSize, int totalCount,List<?> list) {
 	this.list=list;
 }
 public int getFirstStation(){
-	return  (pageNo - 1) * pageSize;
+	return  pageNo * pageSize;
 }
 public List<?> getList(){
 	return list;

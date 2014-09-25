@@ -617,6 +617,10 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">
 
+String.prototype.trims = function () {
+    return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+};
+
 /******************zTree********************/
 
 var setting = {
@@ -720,7 +724,13 @@ function imSearchSubmit(rs) {
                 imSearchData[_check.next().attr("name")] = _check.next().val();
             }
         }
-        if (imSearchData.campaignId != undefined && imSearchData.adgroupId != undefined) {
+        if (imSearchData.campaignId != undefined && imSearchData.adgroupId != undefined && imSearchData.keywordName != undefined) {
+            dataUrl2 = "/importBid/loadData?keywordName=" + imSearchData.keywordName;
+            grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
+        } else if (imSearchData.keywordName != undefined) {
+            dataUrl2 = "/importBid/loadData?keywordName=" + imSearchData.keywordName;
+            grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
+        } else if (imSearchData.campaignId != undefined && imSearchData.adgroupId != undefined) {
             if (imSearchData.adgroupId == -1) {
                 alert("请选择一个单元!");
             } else {
@@ -734,9 +744,6 @@ function imSearchSubmit(rs) {
                 dataUrl2 = "/importBid/loadData?campaignId=" + imSearchData.campaignId;
                 grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
             }
-        }else if(imSearchData.keywordName!=undefined){
-            dataUrl2 = "/importBid/loadData?keywordName=" + imSearchData.keywordName;
-            grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
         }
 
 
@@ -825,17 +832,17 @@ var dataUrl2 = "/importBid/loadData";
 var getAllCheckedcb = function () {
     var rowIds = $("#table1").jqGrid('getGridParam', 'selarrrow');
     var keywordIds = [];
-    rowIds.forEach(function (rowId) {
-        keywordIds.push(grid.jqGrid('getCell', rowId, "keywordId"));
-    });
+    for (var i = 0, l = rowIds.length; i < l; i++) {
+        keywordIds.push(grid.jqGrid('getCell', rowIds[i], "keywordId"));
+    }
     return keywordIds;
 };
 var getAllCheckedcbIm = function () {
     var rowIds = $("#table2").jqGrid('getGridParam', 'selarrrow');
     var keywordIds = [];
-    rowIds.forEach(function (rowId) {
-        keywordIds.push(grid2.jqGrid('getCell', rowId, "keywordId"));
-    });
+    for (var i = 0, l = rowIds.length; i < l; i++) {
+        keywordIds.push(grid2.jqGrid('getCell', rowIds[i], "keywordId"));
+    }
     return keywordIds;
 };
 
@@ -854,10 +861,10 @@ var getAllSelectedBidRuleIm = function () {
     var rowIds = $("#table2").jqGrid('getGridParam', 'selarrrow');
     var keywordIds = [];
     for (var i = 0, l = rowIds.length; i < l; i++) {
-        if (grid.jqGrid('getCell', rowIds[i], "biddingStatus") == "无")
+        if (grid2.jqGrid('getCell', rowIds[i], "biddingStatus") == "无")
             continue;
 
-        keywordIds.push(grid.jqGrid('getCell', rowIds[i], "keywordId"));
+        keywordIds.push(grid2.jqGrid('getCell', rowIds[i], "keywordId"));
     }
     return keywordIds;
 };
@@ -918,7 +925,7 @@ $(function () {
         $.each(radios, function (i, item) {
             if (i == 0 && item.checked) {
                 //自定义新的出价
-                if ($("#box2").next().find("input[name=newPrice]:text").val().trim().length > 0) {
+                if ($("#box2").next().find("input[name=newPrice]:text").val().trims().length > 0) {
                     price = $("#box2").next().find("input[name=newPrice]:text").val();
                     return false;
                 }
@@ -947,7 +954,7 @@ $(function () {
 
     $("#modifyUrl").on('click', function () {
         var url = $("input[name=urlAddress]:text").val();
-        if (url.trim().length == 0) {
+        if (url.trims().length == 0) {
             return false;
         }
 
@@ -1070,7 +1077,7 @@ $(function () {
             var graduateIds = jQuery("#table1").jqGrid('getDataIDs');
             for (var i = 0, l = graduateIds.length; i < l; i++) {
                 var rowId = graduateIds[i];
-                var rank = grid.jqGrid("getCell", rowId, "currentRank").trim();//当前排名
+                var rank = grid.jqGrid("getCell", rowId, "currentRank").trims();//当前排名
                 var bidRule = grid.jqGrid("getCell", rowId, "ruleDesc");//设置竞价规则
                 var bidStatus = grid.jqGrid("getCell", rowId, "biddingStatus");//竞价状态
                 var matchType = grid.jqGrid("getCell", rowId, "matchType");//匹配模式
@@ -1203,7 +1210,7 @@ $(function () {
             var graduateIds = jQuery("#table2").jqGrid('getDataIDs');
             for (var i = 0, l = graduateIds.length; i < l; i++) {
                 var rowId = graduateIds[i];
-                var rank = grid2.jqGrid("getCell", rowId, "currentRank").trim();//当前排名
+                var rank = grid2.jqGrid("getCell", rowId, "currentRank").trims();//当前排名
                 var bidRule = grid2.jqGrid("getCell", rowId, "ruleDesc");//设置竞价规则
                 var bidStatus = grid2.jqGrid("getCell", rowId, "biddingStatus");//竞价状态
                 var matchType = grid2.jqGrid("getCell", rowId, "matchType");//匹配模式
@@ -1342,9 +1349,9 @@ $('.getRankBtn').click(function () {
             if (data.length == 0) {
                 msg = msg + "暂无排名";
             } else {
-                data.forEach(function (i, item) {
-                    msg = msg + item.region + "\t" + item.rank + "\n";
-                })
+                for (var i = 0, l = data.length; i < l; i++) {
+                    msg = msg + data[i].region + "\t" + data[i].rank + "\n";
+                }
             }
             alert(msg);
         }

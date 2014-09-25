@@ -6,12 +6,11 @@
  * @type {{aid: null, cid: null}}
  */
 
-var sparams = {aid: null, cid: null, nowPage: 1, pageSize: 20};
+var sparams = {aid: null, cid: null,nowPage:0,pageSize:20};
 $(function () {
     InitMenu();
     rDrag.init(document.getElementById("dAdd"));
     rDrag.init(document.getElementById("dUpdate"));
-    pagerClickInit();
 });
 
 /**
@@ -115,15 +114,14 @@ function InitMenu() {
  * 加载创意数据
  * @param params
  */
-function loadCreativeData(params) {
+function loadCreativeData(page_index) {
     initRbackBtn();
     var _createTable = $("#createTable tbody");
     _createTable.empty().html("加载中...");
-    if (/^\d+$/.test(params.nowPage) == false) {
-        params.nowPage = 1;
-    }
-
-    $.post("/assistantCreative/getList", params, function (result) {
+    sparams.nowPage=page_index;
+    sparams.pageSize=items_per_page;
+    pageType=3;
+    $.post("/assistantCreative/getList", sparams, function (result) {
         var gson = $.parseJSON(result);
         if (gson != "[]") {
             if (gson.list.length > 0) {
@@ -162,48 +160,15 @@ function loadCreativeData(params) {
  * 初始化分页控件
  */
 function pagerInit(data) {
-    $(".criPage").find("li>a:eq(0)").attr("name", 0);
-    $(".criPage").find("li>a:eq(1)").attr("name", data.prePage);
-    $(".criPage").find("li>a:eq(2)").attr("name", data.nextPage);
-    $(".criPage").find("li>a:eq(3)").attr("name", data.totalPage);
-    $(".criPage").find("li:eq(4)").html("当前页:" + data.pageNo + "/" + data.totalPage);
-    $(".criPage").find("li:eq(5)").html("共" + data.totalCount + "条");
-
+    if(data.totalCount==0){
+        return false;
+    }
+    $("#creativePager").pagination(data.totalCount, getOptionsFromForm(data.pageNo));
 }
-/**
- * 分页控件点击事件初始化
- */
-function pagerClickInit(){
-    $(".criPage ul li>a").click(function () {
-        var nowPage = $(this).attr("name");
-        sparams.nowPage = nowPage;
-        if (sparams.cid != null && sparams.aid != null) {
-            loadCreativeData(sparams);
-        } else {
-            loadCreativeData(sparams);
-        }
-    });
-
-    $("#criGo").click(function () {
-        var nowPage = $(".criPageNo").val();
-        var totalPage = $(".criPage").find("li>a:eq(3)").attr("name");
-        if (nowPage > parseInt(totalPage)) {
-            nowPage = parseInt(totalPage);
-        }
-        sparams.nowPage = nowPage;
-        loadCreativeData(sparams);
-        $(".criPageNo").val("");
-    });
+function skipCreativePage(){
+    var pageNo = $("#creativePageNum").val();
+    loadCreativeData(/^\d+$/.test(pageNo) == false?0:parseInt(pageNo)-1);
 }
-/**
- * 分页控件输入页数跳转
- */
-function pagerSelectClick(rs){
-    sparams.pageSize=$(rs).val();
-    loadCreativeData(sparams);
-
-}
-
 
 /**
  * 鼠标单击显示详细信息
@@ -497,7 +462,7 @@ function edit(rs) {
 function getCreativePlan(cid) {
     sparams.cid = cid;
     sparams.aid = null;
-    loadCreativeData(sparams);
+    loadCreativeData(0);
 }
 /**
  * 动态更新创意中的数据，如果点击单元树
@@ -506,7 +471,7 @@ function getCreativePlan(cid) {
 function getCreativeUnit(con) {
     sparams.cid = con.cid;
     sparams.aid = con.aid;
-    loadCreativeData(sparams);
+    loadCreativeData(0);
 }
 /**
  * 选择推广计划和单元

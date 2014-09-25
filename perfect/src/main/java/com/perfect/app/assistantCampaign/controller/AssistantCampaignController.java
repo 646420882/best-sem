@@ -321,9 +321,21 @@ public class AssistantCampaignController {
         campaignEntity.setBudgetOfflineTime(new ArrayList<OfflineTimeType>());
         campaignEntity.setAccountId(AppContext.getAccountId());
         campaignEntity.setStatus(-1);
+        campaignEntity.setLocalStatus(1);
 
         //开始添加
-        campaignDAO.insert(campaignEntity);
+        String id = campaignDAO.insertReturnId(campaignEntity);
+
+        AdgroupEntity adgroupEntity = new AdgroupEntity();
+        adgroupEntity.setCampaignObjId(id);
+        adgroupEntity.setAdgroupName(adgroupName);
+        adgroupEntity.setMaxPrice(maxPrice);
+        adgroupEntity.setPause(adgroupPause);
+        adgroupEntity.setStatus(-1);
+        adgroupEntity.setLocalStatus(1);
+        adgroupEntity.setPriceRatio(adgroupPriceRatio);
+        adgroupDAO.insert(adgroupEntity);
+
     }
 
     /**
@@ -377,8 +389,11 @@ public class AssistantCampaignController {
      * @return
      */
     @RequestMapping(value = "/assistantCampaign/quickCreateCampaign", method = RequestMethod.POST, produces = "application/json")
-    public void quickCreateCampaign(@RequestBody List<KeywordEntity> list,String name,HttpServletResponse response) {
+    public void quickCreateCampaign(@RequestBody List<KeywordEntity> list,String name,String regions,HttpServletResponse response) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        List<String> regionsStr = regions==null||"".equals(regions)?null:Arrays.asList(regions.split(","));
+        Map<Integer, String> regionMap = RegionalCodeUtils.regionalCodeName(regionsStr==null?new ArrayList<String>():regionsStr);
 
         //推广计划
         CampaignEntity campaignEntity = new CampaignEntity();
@@ -388,6 +403,12 @@ public class AssistantCampaignController {
         campaignEntity.setStatus(-1);
         campaignEntity.setPriceRatio(1.0);
         campaignEntity.setIsDynamicCreative(true);
+        campaignEntity.setRegionTarget(new ArrayList<Integer>(regionMap.keySet()));
+        campaignEntity.setExcludeIp(new ArrayList<String>());
+        campaignEntity.setNegativeWords(new ArrayList<String>());
+        campaignEntity.setExactNegativeWords(new ArrayList<String>());
+        campaignEntity.setSchedule(new ArrayList<ScheduleType>());
+        campaignEntity.setBudgetOfflineTime(new ArrayList<OfflineTimeType>());
         campaignEntity.setAccountId(AppContext.getAccountId());
         campaignEntity.setLocalStatus(1);
 

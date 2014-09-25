@@ -5,6 +5,7 @@ import com.perfect.autosdk.sms.v3.AttributeType;
 import com.perfect.autosdk.sms.v3.RealTimeQueryResultType;
 import com.perfect.core.AppContext;
 import com.perfect.dto.CampaignTreeDTO;
+import com.perfect.dto.KeywordDTO;
 import com.perfect.dto.SearchwordReportDTO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
@@ -15,6 +16,7 @@ import com.perfect.service.KeyWordBackUpService;
 import com.perfect.utils.RegionalCodeUtils;
 import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,11 +41,6 @@ import java.util.Map;
 public class AssistantKeywordController {
     private static final String RES_SUCCESS = "success";
 
-
-    //当前的账户id test
-//    Long currentAccountId = 6243012L;
-
-
     @Resource
     private AssistantKeywordService assistantKeywordService;
 
@@ -60,10 +57,12 @@ public class AssistantKeywordController {
     /**
      * 批量添加关键词
      */
-    @RequestMapping(value = "assistantKeyword/batchAdd",method = {RequestMethod.GET,RequestMethod.POST})
-    public void batchAddkeyword(HttpServletResponse response,String keywords){
-        assistantKeywordService.batchAddkeyword(keywords);
+    @RequestMapping(value = "assistantKeyword/batchAdd",method = RequestMethod.POST , produces = "application/json")
+    public void batchAddkeyword(@RequestBody List<KeywordDTO> list,HttpServletResponse response){
+        assistantKeywordService.batchAddkeyword(list);
+        webContext.writeJson(RES_SUCCESS,response);
     }
+
 
 
     /**
@@ -71,9 +70,10 @@ public class AssistantKeywordController {
      * @param response
      * @param keywords
      */
-    @RequestMapping(value = "assistantKeyword/batchUpdate",method = {RequestMethod.GET,RequestMethod.POST})
-    public  void batchUpdateKeyword(HttpServletResponse response,String keywords){
+    @RequestMapping(value = "assistantKeyword/batchUpdate",method = {RequestMethod.GET,RequestMethod.POST},produces = "application/json")
+    public  void batchUpdateKeyword(@RequestBody List<KeywordDTO> keywords,HttpServletResponse response){
         assistantKeywordService.batchUpdateKeyword(keywords);
+        webContext.writeJson(RES_SUCCESS,response);
     }
 
 
@@ -194,8 +194,8 @@ public class AssistantKeywordController {
      * @param keywordInfos 用户输入的多个关键词信息
      * @return
      */
-   /* @RequestMapping(value = "assistantKeyword/addOrUpdateKeywordByInput",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView batchAddOrUpdateKeywordByInput(Boolean isReplace,String keywordInfos){
+    /*@RequestMapping(value = "assistantKeyword/addOrUpdateKeywordByInput",method = {RequestMethod.GET,RequestMethod.POST})
+       public ModelAndView batchAddOrUpdateKeywordByInput(Boolean isReplace,String keywordInfos){
         assistantKeywordService.batchAddOrUpdateKeywordByInput(currentAccountId,isReplace,keywordInfos);
         return new ModelAndView();
     }*/
@@ -299,6 +299,7 @@ public class AssistantKeywordController {
             String[] attrs = attributes.split(",");
             Map<Integer, String> regions = RegionalCodeUtils.regionalCodeName(Arrays.asList(attrs));
             AttributeType attributeType = new AttributeType();
+            attributeType.setKey("provid");
             attributeType.setValue(new ArrayList<Integer>(regions.keySet()));
             list.add(attributeType);
         }

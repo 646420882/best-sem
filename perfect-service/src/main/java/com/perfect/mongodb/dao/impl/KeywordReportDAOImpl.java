@@ -39,9 +39,12 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
         List<KeywordReportEntity> findlList = new ArrayList<>();
         Map<Long, KeywordReportEntity> imptMap = new HashMap<>();
         List<String> dateList = getCurrDate(params);
-        List<Long> kwdIds = (List<Long>) params.get("kwdIds");
+        List<Long> kwdIds = new ArrayList<>();
+        if(params.containsKey("kwdIds")){
+            kwdIds= (List<Long>) params.get("kwdIds");
+        }
         String orderBy=params.get("orderBy").toString();
-        if (dateList.size() > 0) {
+        if (dateList.size() > 0&&kwdIds.size()>0) {
             for (String str : dateList) {
                 for (Long l : kwdIds) {
                     KeywordReportEntity list = mongoTemplate.findOne(new Query(Criteria.where(EntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(EntityConstants.KEYWORD_ID).is(l)), KeywordReportEntity.class, str + "-" + EntityConstants.TBL_KEYWORD);

@@ -20,7 +20,7 @@ function search() {
 
             $("#creativeList").empty();
 
-            datas.rows.list.forEach(function (item, i) {
+            $.each(datas.rows.list, function (item, i) {
                 var li = $("<li></li>");
 
                 li.append($("<div></div>").attr("id", "sPreview").append("<a href='" + item.host + "'><h3>" + item.title + "</h3></a>")
@@ -34,25 +34,24 @@ function search() {
 
             $("#terms").empty();
 
-            datas.rows.keywords.forEach(function (item, i) {
+            $.each(datas.rows.keywords, function (item, i) {
                 var termli = $("<li></li>");
                 termli.append("<span>" + item.key + "</span><b>" + item.value + "%</b>");
                 $("#terms").append(termli);
-            })
+            });
 
 
             $("#hosts").empty();
 
-            datas.rows.hosts.forEach(function (item, i) {
+            $.each(datas.rows.hosts, function (item, i) {
                 var termli = $("<li></li>");
                 termli.append("<span>" + item.key + "</span><b>" + item.value + "%</b>");
                 $("#hosts").append(termli);
-            })
-
+            });
 
             $("#regions").empty();
 
-            datas.rows.regions.forEach(function (item, i) {
+            $.each(datas.rows.regions, function (item, i) {
                 var termli = $("<li></li>");
                 termli.append("<span>" + item.key + "</span><b>" + item.value + "%</b>");
                 $("#regions").append(termli);
@@ -78,7 +77,7 @@ function findKeywords(aid) {
             $('#txt1').val("");
 
             var value = "";
-            datas.rows.forEach(function (item, i) {
+            $.each(datas.rows, function (item, i) {
                 value = value + item.keyword + "\n";
             });
             $("#txt1").val(value);
@@ -103,7 +102,7 @@ function findAdgroup(cid) {
             $('#adgroup').empty();
             $('#adgroup').append("<option value=\"-1\">请选择单元</option>");
 
-            datas.rows.forEach(function (item, i) {
+            $.each(datas.rows, function (item, i) {
                 var opt = $("<option></option>").attr("value", item.adgroupId);
                 opt.append(item.adgroupName);
                 $('#adgroup').append(opt);
@@ -139,7 +138,7 @@ function load() {
 
             $('#campagin').append("<option value=\"-1\">请选择计划</option>");
 
-            datas.rows.forEach(function (item, i) {
+            $.each(datas.rows, function (item, i) {
                 var opt = $("<option></option>").attr("value", item.campaignId);
                 opt.append(item.campaignName);
                 $('#campagin').append(opt);
@@ -154,4 +153,4 @@ function load() {
 
 $(function () {
     load();
-})
+});

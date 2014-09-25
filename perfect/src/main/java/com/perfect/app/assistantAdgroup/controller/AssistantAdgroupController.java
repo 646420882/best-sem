@@ -50,8 +50,8 @@ public class AssistantAdgroupController extends WebContextSupport {
     @RequestMapping(value = "/getAdgroupList")
     public ModelAndView getList(HttpServletRequest request, HttpServletResponse response,
                                 @RequestParam(value = "cid", required = false)String cid,
-                                @RequestParam(value = "nowPage",required = true)Integer nowPage,
-                                @RequestParam(value = "pageSize",required = true)Integer pageSize) {
+                                @RequestParam(value = "nowPage",required = false,defaultValue = "0")int nowPage,
+                                @RequestParam(value = "pageSize",required = false,defaultValue = "20")int pageSize) {
         PagerInfo pagerInfo=null;
         Map<String, Object> parms = new HashMap<>();
         if (cid.length() > OBJ_SIZE) {

@@ -5,7 +5,7 @@ $(function(){
         var iMms = 60 * iCms;
         var iHms = 3600 * iCms;
         var iDms = 24 * 3600 * iCms;
-        var roundr = Math.round(Math.random()*10+80);
+        var roundr = Math.round(Math.random()*10+70);
         var canshu = 0;var iPerc = 0;
         var dian = 0;
         var aString ="";
@@ -43,7 +43,7 @@ $(function(){
                     var iHours = parseInt((iLeftMs - (iDays * iDms)) / iHms); // elapsed hours
                     var iMin = parseInt((iLeftMs - (iDays * iDms) - (iHours * iHms)) / iMms); // elapsed minutes
                     var iSec = parseInt((iLeftMs - (iDays * iDms) - (iMin * iMms) - (iHours * iHms)) / iCms); // elapsed seconds
-                    iPerc = iPerc+0.53;
+                    iPerc = iPerc+1.1;
                 }else{
                     iPerc = iPerc+0.005;
                 }
@@ -54,17 +54,20 @@ $(function(){
             // display current positions and progress
             $(vPb).children('#percentNumber').html('<b>'+iPerc.toFixed(1)+'%</b>');
 
-            if(dian <=5){
-                dian ++;
-                for(var s=1; s<=dian;s++){
-                    aString = aString + ".";
-                }
-                if(dian >=5){
-                    dian =0;
-                    aString="";
+            if (iPerc <= 100) {
+                if (dian <= 5) {
+                    dian++;
+                    for (var s = 1; s <= dian; s++) {
+                        aString = aString + ".";
+                    }
+                    if (dian >= 5) {
+                        dian = 0;
+                        aString = "";
+                    }
                 }
             }
-            $(vPb).children('.elapsed').html("报告生成中！请稍后"+aString);
+            $(vPb).children("#Tips").html("小提示：生成报告时，选择时间范围越广，花费时间越长。")
+            $(vPb).children('.elapsed').html("(第一次生成报告时需要时间较长！请耐心等待！)报告生成中！请稍后"+aString);
             $(vPb).children('.pbar').children('.ui-progressbar-value').css('width', iPerc+'%');
             $("#jindut").val(iPerc.toFixed(1));
             // in case of Finish

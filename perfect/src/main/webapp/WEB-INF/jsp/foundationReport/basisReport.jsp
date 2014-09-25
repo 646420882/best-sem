@@ -21,6 +21,7 @@
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/jquery.cxcalendar.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style>
         .example{background:#FFF;width:650px;font-size:80%;margin:20px auto;padding:15px;position:relative;-moz-border-radius: 3px;-webkit-border-radius: 3px}
@@ -28,10 +29,10 @@
         .ui-progressbar-value {display:block !important;color: #F7B54A;}
         .pbar {overflow: hidden;}
         .percent {position:relative;text-align: right;}
-        .elapsed {position:relative;margin: 10px 0px 0px 500px;}
+        .elapsed {position:relative;margin: 10px 0px 0px 250px;}
         .pbar .ui-widget-header {
             border: 1px solid #ddd;
-            background: #F7B54A url("images/ui-bg_highlight-soft_50_dddddd_1x100.png") 50% 50% repeat-x;
+            background: #F7B54A;
             color: #444;
             font-weight: bold;
         }
@@ -316,9 +317,8 @@
             </tbody>
         </table>
     </div>
-    <div class="page2 fl" id="pageVS">
-
-    </div>
+    <!--<div class="page2 fl" id="pageVS"></div>-->
+    <div id="pagination1" class="pagination"></div>
     <div id="pageNumberVSSelect">
         <span class='fr'>每页显示<select id='importKeywordSelVS' onchange='selectChangeVs()'><option value='20'>20个</option><option value='50'>50个</option><option value='100'>100个</option></select> </span>
     </div>
@@ -379,9 +379,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="page2 fl" id="pageDet">
-
-            </div>
+            <!--<div class="page2 fl" id="pageDet"></div>-->
+            <div id="pagination2" class="pagination"></div>
             <div id="pageNumberDetSelect">
                 <span class='fr'>每页显示<select id='importKeywordSelDet' onchange='selectChangeDet()'><option value='20'>20个</option><option value='50'>50个</option><option value='100'>100个</option></select> </span>
             </div>
@@ -410,6 +409,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>

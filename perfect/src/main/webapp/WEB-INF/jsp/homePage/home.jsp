@@ -19,6 +19,7 @@
     <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/zTreeStyle/Normalize.css">--%>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
     <link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
@@ -279,19 +280,19 @@
 
                 </tbody>
             </table>
-            <div class="download over">
-                <div class="page2 fl" id="pageUser">
 
-                </div>
-                <!--<span class="fr">每页显示
+            <div class="download over">
+
+                <%--<div class="page2 fl" id="pageUser"></div>--%>
+                <span class="fr">每页显示
                             <select id="performanceLimit"
-                                    onchange="javascript:limit = $('#performanceLimit option:selected').val();loadPerformance(statDate);">
+                                    onchange="javascript:limitPer = $('#performanceLimit option:selected').val();startPer = 0;endPer = limitPer;loadPerformance();">
                                 <option selected="selected" value="10">10个</option>
                                 <option value="20">20个</option>
                                 <option value="30">30个</option>
                             </select> </span>
--->
             </div>
+            <div id="pagination1" class="pagination"></div>
         </div>
     </div>
 </div>
@@ -1074,30 +1075,16 @@
         <div class="over">
         </div>
         <div class="download over">
-                <div class="page2 fl" id="importPager">
-                   <span class="fr">每页显示
-                    <select id="importKeywordSel" onchange="selectChange()">
-                        <option value="20">20个</option>
-                        <option value="50">50个</option>
-                        <option value="100">100个</option>
-                    </select> </span>
-                    <a href="javascript:void(0)">首页</a>
-                    <a href="javascript:void(0)" class="nextpage1"><span></span></a>
-                    <a href="javascript:void(0)" class="nextpage2"><span></span></a>
-                    <a href="javascript:void(0)">尾页</a>
-                    <span style="margin-right:10px;">当前页:0/0 </span>
-                    <span style="margin-right:10px;">共0条</span>
-                    <span style="margin-right:10px;">跳转到 <input type="text" class="price"></span>&nbsp;&nbsp;<a
-                        href="javascript:void(0)" class='page_go'>
-                    GO</a>
-
-                </div>
-
-
-
-
+                <span class="fr">每页显示
+                            <select id="importKeywordselect"
+                                    onchange="javascript:limit = $('#importKeywordselect option:selected').val();getImportKeywordDefault();">
+                                <option selected="selected" value="10">10个</option>
+                                <option value="20">20个</option>
+                                <option value="30">30个</option>
+                            </select> </span>
         </div>
-
+        <%--getImportKeywordDefault--%>
+        <div class="pagination" id="importPager"></div>
     </div>
 </div>
 </div>
@@ -1119,6 +1106,7 @@
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript">
     // 对Date的扩展，将 Date 转化为指定格式的String
     // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
@@ -1176,6 +1164,21 @@ $(function () {
     $('.tab_menu li').click(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
         var index = $tab_li.index(this);
+        typepage=index+1;
+        switch(typepage){
+            case 2:
+                //曲线图表现-----默认加载7天数据
+                loadPerformanceCurve(null, 7);
+                break;
+            case 3:
+                //默认加载昨天的数据(质量度)
+                loadKeywordQualityData(null, 1);
+                break;
+            case 4:
+                    //重点词加载
+                getImportKeywordDefault(null,1);
+                break;
+        }
         $('div.tab_box > div').eq(index).show().siblings().hide();
     });
     $("input[name=reservation]").click(function () {
@@ -1212,16 +1215,11 @@ $(function () {
     document.getElementById("background").style.display = "none";
     document.getElementById("progressBar1").style.display = "none";
 
-    //默认加载昨天的数据
-    loadKeywordQualityData(null, 1);
-    getImportKeywordDefault(1);
+
+
     //账户表现-----默认加载7天数据
     loadPerformance(null, 7);
-    //曲线图表现-----默认加载7天数据
-    loadPerformanceCurve(null, 7);
 
-    //初始化重点关键词分页控件
-    initImportPagerClickEvent();
 
 });
 
@@ -1271,6 +1269,8 @@ var perCount = 0;
 var startPer = 0;
 var pageDetNumber = 0;
 var endPer = 10;
+var limitPer =20;
+var skipPagePer;
 /**
  * 分日表现数据加载
  * */
@@ -1305,72 +1305,93 @@ var loadPerformance = function (obj, date) {
                             + "<li> &nbsp;" + Math.round(item.pcCpc * 100) / 100 + "</li><li> &nbsp;" + item.pcConversion + "</li></ul></td></tr>";
                     $("#performance").append(_div);
                 });
-                if (judgeDet < 1) {
-                    var countNumber = 0;
-                    if (pageDetNumber % endPer == 0) {
-                        countNumber = pageDetNumber / endPer;
-                    } else {
-                        countNumber = (pageDetNumber / endPer);
-                    }
-                    var page_html = "<a href='javascript:' id='pageUpDet' class='nextpage1'><span></span></a>"
-                    for (var i = 0; i < countNumber; i++) {
-                        if (i < 10) {
-                            if (i == 0) {
-                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startPer = " + i + ";endPer = " + (i + endPer) + ";loadPerformance()'>" + (i + 1) + "</a>";
-                            } else {
-                                page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startPer = " + (i * endPer) + ";endPer = " + (i * endPer + endPer) + ";loadPerformance()'>" + (i + 1) + "</a>";
-                            }
-                        } else {
-                            if (i == 0) {
-                                page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startPer = " + i + ";endPer = " + (i + endPer) + ";loadPerformance()' style='display:none'>" + (i + 1) + "</a>";
-                            } else {
-                                page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startPer = " + (i * endPer) + ";endPer = " + (i * endPer + endPer) + ";loadPerformance()' style='display:none'>" + (i + 1) + "</a>";
-                            }
-                        }
-
-                    }
-                    page_html = page_html + "<a href='javascript:' id='pageDownDet' class='nextpage2'><span></span></a>" +
-                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goDetID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goDet' class='page_go'> GO</a>"
-                    $("#pageUser").append(page_html);
-                    judgeDet++;
-                }
+                records = pageDetNumber;
+                typepage = 1;
+                $("#pagination1").pagination(pageDetNumber, getOptionsFromForm(pageIndex));
             }
         }
-    });
-    var noneNumStart = 0;
-    var noneNumEnd = endPer;
-    //明细报告分页手动跳转
-    $("body").on("click", "#goDet", function () {
-        if (($('#goDetID').val() * endPer - 1) <= (pageDetNumber + (endPer - 1))) {
-            startPer = ($('#goDetID').val() * endPer - endPer);
-            endPer = startPer + endPer - 1;
-            loadPerformance();
-        }
-    });
-    $("body").on("click", "#pageUpDet", function () {
-        if (noneNumStart >= 10) {
-            $("a[cname=nameDet]").hide();
-            noneNumStart -= 10;
-            noneNumEnd -= 10;
-            for (var i = noneNumStart; i <= noneNumEnd; i++) {
-                $("a[cname=nameDet]").eq(i).show();
-            }
-        }
-    });
-    $("body").on("click", "#pageDownDet", function () {
-        if (noneNumEnd < pageDetNumber / endPer) {
-            $("a[cname=nameDet]").hide();
-            noneNumStart += 10;
-            noneNumEnd += 10;
-            for (var i = noneNumStart; i <= noneNumEnd; i++) {
-                $("a[cname=nameDet]").eq(i).show();
-            }
-        }
-    });
-    $("body").on("click", "a[cname=nameDet]", function () {
-        $(this).addClass('ajc').siblings().removeClass('ajc');
     });
 };
+/******************pagination*********************/
+var items_per_page = 10;    //默认每页显示20条数据
+var limitPer = 10;
+var pageIndex = 0;
+var records = 0;
+var skip = 0;
+var typepage = 1;
+var nowPage = 0;
+
+var pageSelectCallback = function (page_index, jq) {
+    if (typepage == 1) {
+        $("#pagination1").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber1' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipPagePer();' class='page_go'> GO</a>");
+    } else if(typepage==2){
+        $("#pagination2").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber2' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipPagePer();' class='page_go'> GO</a>");
+    }else if(typepage==4){
+        $("#importPager").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber4' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipPagePer();' class='page_go'> GO</a>");
+
+    }
+    if (pageIndex == page_index) {
+        return false;
+    }
+    pageIndex = page_index;
+    if(typepage == 1){
+        startPer = (page_index+1) * items_per_page - items_per_page;
+        endPer = (page_index+1) * items_per_page;
+        loadPerformance();
+    }else if(typepage == 2){
+        judety =1;
+        startPer =(page_index+1) * items_per_page - items_per_page;
+        endPer =(page_index+1) * items_per_page;
+        loadPerformance();
+    }else if(typepage==4){
+
+    }
+    return false;
+};
+
+var getOptionsFromForm = function (current_page) {
+    if(typepage == 1){
+        items_per_page = limitPer;
+    }else if(typepage == 2){
+        items_per_page = limitPer;
+    }
+
+    var opt = {callback: pageSelectCallback};
+    opt["items_per_page"] = items_per_page;
+    opt["current_page"] = current_page;
+    opt["prev_text"] = "上一页";
+    opt["next_text"] = "下一页";
+
+    //avoid html injections
+    var htmlspecialchars = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"};
+    $.each(htmlspecialchars, function (k, v) {
+        opt.prev_text = opt.prev_text.replace(k, v);
+        opt.next_text = opt.next_text.replace(k, v);
+    });
+    return opt;
+};
+var optInit = getOptionsFromForm(0);
+
+skipPagePer = function () {
+    var _number = 0;
+    if (typepage == 1) {
+        _number = $("#anyPageNumber1").val() - 1;
+        if (_number <= -1 || _number == pageIndex) {
+            return;
+        }
+        $("#pagination1").pagination(records, getOptionsFromForm(_number));
+    } else if(typepage == 2) {
+        _number = $("#anyPageNumber2").val() - 1;
+        if (_number <= -1 || _number == pageIndex) {
+            return;
+        }
+        $("#pagination2").pagination(records, getOptionsFromForm(_number));
+    }else if(typepage == 4){
+        _number = $("#anyPageNumber4").val();
+        $("#importPager").pagination(records, getOptionsFromForm(/^\d+$/.test(_number) == false?0:parseInt(_number)-1));
+    }
+};
+/**********************************************************************************/
 </script>
 <script>
 
@@ -1851,7 +1872,7 @@ var curve = function () {
         ]
     });
 };
-var nowPage = 1;
+
 var getImportKeywordDefault = function (obj, day) {
     if (obj != null) {
         changedLiState(obj);
@@ -1860,7 +1881,6 @@ var getImportKeywordDefault = function (obj, day) {
     $("#importTr").append("<td style='color:red;'>加载中....</td>");
     statDate = day;
     getDateParam(day);
-    var nowPage = $("#importPager a:eq(2)").attr("name") != undefined ? $("#importPager a:eq(2)").attr("name") : 1;
     var _tr = $("#importTr");
     $.post("/import/getImportKeywordList", {
         startDate: daterangepicker_start_date,
@@ -1870,12 +1890,7 @@ var getImportKeywordDefault = function (obj, day) {
         nowPage: nowPage
     }, function (result) {
         var gson = $.parseJSON(result);
-        $("#importPager a:eq(0)").attr("name", 0);
-        $("#importPager a:eq(1)").attr("name", gson.prePage);
-        $("#importPager a:eq(2)").attr("name", gson.nextPage);
-        $("#importPager a:eq(3)").attr("name", gson.totalPage);
-        $("#importPager span:eq(4)").html("共" + gson.totalCount + "条");
-        $("#importPager span:eq(3)").html("当前页:" + gson.pageNo + "/" + gson.totalPage);
+        $("#importPager").pagination(gson.totaCount,getOptionsFromForm(gson.pageNo));
         if (gson.list != "") {
             _tr.empty();
             for (var i = 0; i < gson.list.length; i++) {
@@ -1892,13 +1907,6 @@ var getImportKeywordDefault = function (obj, day) {
         }
     });
 };
-//初始化监控关键词分页控件点击事件
-function initImportPagerClickEvent() {
-    $("#importPager a").click(function () {
-        nowPage = $(this).attr("name");
-        getImportKeywordDefault(null, statDate);
-    });
-}
 //初始化加载下载功能
 function importDownload(rs) {
     window.open("/import/getCSV?startDate="+daterangepicker_start_date+"&&endDate="+daterangepicker_end_date);

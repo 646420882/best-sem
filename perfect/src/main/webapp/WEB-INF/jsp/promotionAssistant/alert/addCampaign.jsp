@@ -68,23 +68,23 @@
                             <span></span>推广时段：
                         </div>
                         <div class="planbox2 fl">
-                            <a href="#" class="inputSchedule_add">全部</a>
+                            <a href="#" class="inputSchedule_add">点击设置</a>
                         </div>
                     </li>
-                    <li>
+                   <%-- <li>
                         <div class="planbox1 fl">
                             <span></span>推广地域：
                         </div>
                         <div class="planbox2 fl">
                             <a href="#">使用账户推广地域</a>
                         </div>
-                    </li>
+                    </li>--%>
                     <li>
                         <div class="planbox1 fl">
                             <span></span>否定关键词：
                         </div>
                         <div class="planbox2 fl">
-                            <a href="#" class="inputNegativeWords_add">未设置</a>
+                            <a href="#" class="inputNegativeWords_add">点击设置</a>
                         </div>
                     </li>
                     <li>
@@ -92,18 +92,18 @@
                             <span></span>IP排除：
                         </div>
                         <div class="planbox2 fl">
-                            <a href="#" class="inputExcludeIp_add">未设置</a>
+                            <a href="#" class="inputExcludeIp_add">点击设置</a>
                         </div>
                     </li>
                 </ul>
-               <%-- <h3>为此推广计划创建第一个推广单元</h3>
+                <h3>为此推广计划创建第一个推广单元</h3>
                 <ul>
                     <li>
                         <div class="planbox1 fl">
                             <span>*</span>单元名称：
                         </div>
                         <div class="planbox2 fl">
-                            <input type="text" class="plan_input" value="<请输入推广单元名称>"  onfocus="if(value=='<请输入推广单元名称>') {value=''}" onblur="if (value=='') {value='<请输入推广单元名称>'}">
+                            <input type="text" class="plan_input" id="inputAdgroupName" value="<请输入推广单元名称>"  onfocus="if(value=='<请输入推广单元名称>') {value=''}" onblur="if (value=='') {value='<请输入推广单元名称>'}">
                         </div>
                     </li>
                     <li>
@@ -111,9 +111,7 @@
                             <span></span>出价：
                         </div>
                         <div class="planbox2 fl">
-                            <select>
-                                <option>1</option><option>2</option>
-                            </select>
+                           <input type="text" id="inputAdgroupPrice" />
 
                         </div>
                     </li>
@@ -122,8 +120,8 @@
                             <span></span>启用/暂停：
                         </div>
                         <div class="planbox2 fl">
-                            <select>
-                                <option>启用</option><option>暂停</option>
+                            <select id="inputAdgroupPause">
+                                <option value="false">启用</option><option value="true">暂停</option>
                             </select>
 
                         </div>
@@ -133,14 +131,11 @@
                             <span></span>移动出价比例：
                         </div>
                         <div class="planbox2 fl">
-                            <select>
-                                <option>1</option><option>2</option>
-                            </select>
+                           <input type="text" id="inputAdgroupPriceRatio"/>
                             默认为计划移动出价比例
-
                         </div>
                     </li>
-                </ul>--%>
+                </ul>
 
             </div>
 
@@ -148,7 +143,7 @@
         <div class="main_bottom">
             <div class="w_list03">
                 <ul>
-                    <li id = "createCampaignOk">创建推广计划并转到关键词</li>
+                    <li id = "createCampaignOk">确定创建推广计划</li>
                 </ul>
             </div>
         </div>

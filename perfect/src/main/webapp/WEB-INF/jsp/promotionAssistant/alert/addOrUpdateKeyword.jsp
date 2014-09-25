@@ -61,21 +61,17 @@
                                 </div>
                                 <div class="newkeyword_top2">
                                     <ul id="treeDemo" class="ztree"></ul>
-                                    <%--<div class="newkeyword_top3">
-                                        <a href="#">空</a><a href="#">有效</a><a href="#">已暂停</a><a href="#" class="current">全部</a>
-                                    </div>--%>
                                 </div>
                            </div>
                             <div class="newkeyword_right fr over">
                                 <h3> 输入关键词 </h3>
-                               <p>请输入关键词信息（每行一个），并用Tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴，输入-， 则将对应信息恢复为默认</p>
+                               <p>请输入关键词信息（每行一个），并用逗号（中文或者英文即可）分隔各字段，也可直接从Excel复制并粘贴</p>
                                 <div class="newkeyword_right_mid">
                                     <p>格式：关键词名称（必填），匹配模式，出价（为0则使用推广单元出价），访问URL，移动访问URL，启用/暂停</p>
                                     <p>例如：鲜花，精确，1.0，www.baidu.com,www.baidu.com,启用</p>
                                     <textarea id = "TextAreaChoose"></textarea>
                                     <p><input type="checkbox" id = "isReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容</p>
                                    <%-- <p><input type="checkbox">&nbsp;用输入的关键词搜索更多相关关键词，把握题词质量</p>--%>
-
                                 </div>
                             </div>
 
@@ -83,7 +79,7 @@
                         <div class="containers2 over hides">
                             <div class="newkeyword_right fr over" style="width:100%;">
                                 <h3> 输入关键词 </h3>
-                                <p>请输入关键词信息（每行一个），并用Tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴，输入-， 则将对应信息恢复为默认</p>
+                                <p>请输入关键词信息（每行一个），并用Tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>
                                 <div class="newkeyword_right_mid">
                                     <p>格式：关键词名称（必填），匹配模式，出价（为0则使用推广单元出价），访问URL，移动访问URL，启用/暂停</p>
                                     <p>例如：鲜花，精确，1.0，www.baidu.com,www.baidu.com,启用</p>
@@ -139,12 +135,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript">
     $(function () {
-        var $tab_li = $('.addplan_top ul li');
-        $('.addplan_top ul li').click(function () {
-            $(this).addClass('current');
-            var index = $tab_li.index(this);
-            $('div.plan_under > div').eq(index).show().siblings().hide();
-        });
         var $tab_li = $('.newkeyeord_title ul li input');
         $('.newkeyeord_title ul li input').click(function () {
             $(this).addClass('current').siblings().removeClass('current');
@@ -239,7 +229,10 @@
         });
     }
 
-//进入此页面加载属性列表数据
+
+
+
+//进入此页面加载树形列表数据
 getCampaiTreeData();
 
     var setting = {
@@ -381,7 +374,6 @@ getCampaiTreeData();
             data:{"isReplace":isReplace,"chooseInfos":selectNode,"keywordInfos":keywordInfos},
             dataType:"json",
             success:function(data){
-//                alert(JSON.stringify(data));
                 pdata = data;
                 $("#valideKwd").html("");
                if(data.insertList.length>0){
@@ -540,9 +532,6 @@ getCampaiTreeData();
 
     }
 
-
-
-
     /**
     *单击上一步的事件
      */
@@ -558,28 +547,29 @@ getCampaiTreeData();
  *完成按钮的事件
 */
 $("#finish").click(function () {
+    var isReplace = $("#isReplace")[0].checked;
+    if(isReplace==true){
+        var isOk = window.confirm("该次操作会将已选定单元下的所有关键词替换，是否继续?");
+        if(!isOk){
+            return;
+        }
+    }
+
 
     if( $("#addRadio")[0]!=undefined){
         var isAdd = $("#addRadio")[0].checked;
         if(isAdd==true){
             var keywords = pdata.insertList;
-            var str = "";
-            for(var i = 0;i<keywords.length;i++){
-                str+=keywords[i].campaignName+",";
-                str+=keywords[i].adgroupName+",";
-                str+=keywords[i].object.keyword+",";
-                str+=keywords[i].object.price+",";
-                str+=keywords[i].object.pcDestinationUrl+",";
-                str+=keywords[i].object.mobileDestinationUrl+",";
-                str+=keywords[i].object.matchType+",";
-                str+=keywords[i].object.pause+",";
-                str+=keywords[i].object.phraseType+",;";
-            }
-
+            var jsonArray = new Array();
             $.ajax({
                 url:"/assistantKeyword/batchAdd",
                 type:"post",
-                data:{"keywords":str}
+                data:JSON.stringify(keywords),
+                dataType:"json",
+                contentType:"application/json; charset=UTF-8",
+                success: function (data) {
+                    alert("操作成功!");
+                }
             });
         }
     }
@@ -587,28 +577,16 @@ $("#finish").click(function () {
     if($("#updateRadio")[0]!=undefined){
         var isUpdate = $("#updateRadio")[0].checked;
         if(isUpdate==true){
-            var str = "";
             var keywords = pdata.updateList;
-            for(var i=0;i<keywords.length;i++){
-               str+=keywords[i].object.id+",";
-               str+=keywords[i].object.keywordId+",";
-               str+=keywords[i].object.adgroupId+",";
-               str+=keywords[i].object.adgroupObjId+",";
-               str+=keywords[i].object.keyword+",";
-               str+=keywords[i].object.price+",";
-               str+=keywords[i].object.pcDestinationUrl+",";
-               str+=keywords[i].object.mobileDestinationUrl+",";
-               str+=keywords[i].object.matchType+",";
-               str+=keywords[i].object.pause+",";
-               str+=keywords[i].object.status+",";
-               str+=keywords[i].object.phraseType+",";
-                str+=keywords[i].object.localStatus+"\t";
-            }
-
             $.ajax({
                 url:"/assistantKeyword/batchUpdate",
                 type:"post",
-                data:{"keywords":str}
+                data:JSON.stringify(keywords),
+                dataType:"json",
+                contentType:"application/json; charset=UTF-8",
+                success:function(data){
+                    alert("操作成功!");
+                }
             });
         }
 

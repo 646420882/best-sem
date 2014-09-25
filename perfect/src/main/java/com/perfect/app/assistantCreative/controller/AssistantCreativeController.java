@@ -54,8 +54,8 @@ public class AssistantCreativeController extends WebContextSupport {
     public ModelAndView getCreativeList(HttpServletRequest request, HttpServletResponse response,
                                         @RequestParam(value = "cid", required = false) String cid,
                                         @RequestParam(value = "aid", required = false) String aid,
-                                        @RequestParam(value = "nowPage",required = true)Integer nowPage,
-                                        @RequestParam(value = "pageSize",required = true)Integer pageSize){
+                                        @RequestParam(value = "nowPage",required = false,defaultValue = "0")int nowPage,
+                                        @RequestParam(value = "pageSize",required = false,defaultValue = "20")int pageSize){
         PagerInfo pagerInfo=null;
         Map<String,Object> map=new HashMap<>();
         if (aid.length() > OBJ_SIZE || cid.length() > OBJ_SIZE) {

@@ -83,7 +83,7 @@
                         <div class="containers2 over inputKwdInfoDiv hides">
                             <div class="newkeyword_right fr over" style = "width: 100%;">
                                 <h3> 删除关键词 </h3>
-                                <p>请输入关键词信息（每行一个），并用Tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>
+                                <p>请输入关键词信息（每行一个），并用逗号（中文或者英文即可）分隔各字段，也可直接从Excel复制并粘贴</p>
                                 <div class="newkeyword_right_mid">
                                     <p>格式：推广计划名称（必填），推广单元名称（必填），关键词名称（必填）</p>
                                     <p>例如：北京推广，礼品，鲜花</p>
@@ -136,12 +136,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript">
     $(function () {
-        var $tab_li = $('.addplan_top ul li');
-        $('.addplan_top ul li').click(function () {
-            $(this).addClass('current');
-            var index = $tab_li.index(this);
-            $('div.plan_under > div').eq(index).show().siblings().hide();
-        });
         var $tab_li = $('.newkeyeord_title ul li input');
         $('.newkeyeord_title ul li input').click(function () {
             $(this).addClass('current').siblings().removeClass('current');
@@ -430,7 +424,11 @@
             html+=" <tbody>";
 
             for(var i = 0;i<list.length;i++){
-                ids+=list[i].object.id+",";
+                if(list[i].object.keywordId==null){
+                    ids+=list[i].object.id+",";
+                }else{
+                    ids+=list[i].object.keywordId+",";
+                }
                 html+="<tr class='list2_box2'>"+
                         "<td> &nbsp;"+list[i].campaignName+"</td>"+
                         "<td>&nbsp;"+list[i].adgroupName+"</td>"+
@@ -443,19 +441,6 @@
                         "</tr>";
             }
             html+=" </tbody></table> </div>";
-           /* html+=" <div class='page delkwdPage over'>"+
-                    "<ul>"+
-                    "<div>每页显示条数<select style='width:60px;' id = 'camp_PageSize' onchange='nextStepAjax(1,this.value)'><option value = '20'>20</option><option value = '40'>40</option><option value = '60'>60</option></select></div>"+
-                    "<li><a href='#' name='1'>首页</a></li>"+
-                    "<li><a href='#' name="+pager.prePage+">上一页</a></li>"+
-                    "<li><a href='#' name="+pager.nextPage+">下一页</a></li>"+
-                    "<li><a href='#' name="+pager.totalPage+">尾页</a></li>"+
-                    "<li>当前页:"+pager.pageNo+"/"+pager.totalPage+"</li>"+
-                    "<li>共"+pager.totalCount+"条</li>"+
-                    "<li><input type='text' maxlength='10' class='inputNo delkwdPageNo'/>&nbsp;<input type='button' value='GO' id='delkwdGo'/></li>"+
-                    "</ul>"+
-                    "</div>";*/
-
             html+="</div>"
         }else if(listType=="igone"){
             html+="<div class='newkeyword_end1'> <span>[-]</span>忽略的关键词:"+list.length+"个,所选的范围不包含关键词</div>";
@@ -476,20 +461,6 @@
                         "</tr>";
             }
             html+=" </tbody></table> </div>";
-
-           /* html+=" <div class='page campaignPage over'>"+
-                        "<ul>"+
-                        "<div>每页显示条数<select style='width:60px;' id = 'camp_PageSize' onchange='s'><option value = '20'>20</option><option value = '40'>40</option><option value = '60'>60</option></select></div>"+
-                        "<li><a href='#'>首页</a></li>"+
-                        "<li><a href='#'>上一页</a></li>"+
-                        "<li><a href='#'>下一页</a></li>"+
-                        "<li><a href='#'>尾页</a></li>"+
-                        "<li>当前页:1/0</li>"+
-                        "<li>共0条</li>"+
-                        "<li><input type='text' maxlength='10' class='inputNo campaignPageNo'/>&nbsp;<input type='button' value='GO' id='campaignGo'/></li>"+
-                        "</ul>"+
-                    "</div>";
-*/
             html+="</div>"
         }
         html+="</li>";
@@ -509,10 +480,9 @@
             return;
         }
 
+        var regExp = new RegExp("，","g");//第二个参数,g指替换所有的，其中，第二参数也可以设置为("i"),表示只替换第一个字符串。
+        deleteInfos  = deleteInfos.replace(regExp,",")
         if((deleteInfos.split(",").length)!=3){
-            if((deleteInfos.split("\t").length)!=3){
-
-            }
             alert("输入格式不正确");
             return;
         }
@@ -564,31 +534,6 @@
     //取消按钮的事件
     $(".close").click(function () {
 
-    });
-
-
-
-
-
-    //可删除关键列表分页
-    /**
-     * 首页，上下页，尾页单击事件
-     */
-    $(".delkwdPage ul li>a").click(function(){
-        var nowPage = $(this).attr("name");
-        getKwdList(nowPage);
-    });
-    /**
-     * 关键词Go按钮的单击事件
-     */
-    $("#delkwdGo").click(function(){
-        var nowPage = $(".delkwdPageNo").val();
-        var totalPage = $(".delkwdPage").find("li>a:eq(3)").attr("name");
-        if(nowPage>parseInt(totalPage)){
-            nowPage = parseInt(totalPage);
-        }
-        getKwdList(nowPage);
-        $(".delkwdPageNo").val("");
     });
 
 </script>

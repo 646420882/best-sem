@@ -14,4 +14,5 @@ public interface KeywordImService extends MongoCrudRepository<KeywordImEntity,Lo
     List<KeywordImEntity> getAll();
     List<Long> findByAdgroupIds(List<Long> adgroupIds);
     List<Long> findByAdgroupId(Long adgroupId);
+    List<Long> findByKeywordName(String str);
 }

@@ -25,7 +25,7 @@
         .keyworld_text2 {
             height: 320px;}
         .assembly_under{
-            height:440px
+            height:500px
 
          }
     </style>
@@ -48,7 +48,7 @@
                              </li>
                              <li><h3>希望哪里的客户看到您的商品或服务</h3>
                                  <p>比如你是北京学校的老板，想让北京学英语的客户看到</p>
-                                 <p><span>投放地域</span>&nbsp;&nbsp;&nbsp;<span>使用账户推广地域</span><a href="#">修改</a></p>
+                                 <p><span>投放地域</span>&nbsp;&nbsp;&nbsp;<span>使用账户推广地域</span><a href="#" id="updateRegion">修改</a></p>
                              </li>
                              <li><h3>计划每天花费多少让百度带来新客户</h3>
                                  <p>该消费只会帮助我们提供更适合的方案给您，不会对您的预算造成任何影响</p>
@@ -90,14 +90,14 @@
                                  <textarea style="width: 100%;height:100%;font-size:13px;" id="addedkwd"></textarea>
                              </div>
                          </div>
-                         <div class="k_l_under over">
+                        <%-- <div class="k_l_under over">
                              <div class="k_l_under1 over">
                                  <ul>
                                      <li><input class="zs_input3" placeholder="根据已添加关键词精准搜词">
                                      </li>
                                  </ul>
                              </div>
-                         </div>
+                         </div>--%>
                      </div>
                  </div>
 
@@ -112,7 +112,7 @@
                                  <div class="zs_function over">
                                      <ul class="fl">
                                          <li><a href="#" id="addAllKeyword"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加全部</b></a></li>
-                                         <li><a href="#" id="addChooseKeyword" onclick="javascript:saveChooseKeyword();"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加选中</b></a></li>
+                                         <li><a href="#" id="addChooseKeyword"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加选中</b></a></li>
                                      </ul>
                                  </div>
                                  <div class="list4" style="height: 336px">
@@ -137,7 +137,7 @@
                          <div class="w_list03">
                              <ul>
                                  <li class="current lastStep" >上一步</li>
-                                 <li>完成</li>
+                                 <li onclick="javascript:saveChooseKeyword();">完成</li>
                                  <li class="close">取消</li>
                              </ul>
                          </div>
@@ -145,6 +145,10 @@
                  </div>
              </div>
 </div>
+</div>
+</div>
+
+<jsp:include page="./updateRegionTarget.jsp"/>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 
@@ -238,17 +242,29 @@
     };
 
 
+    //添加选中按钮的事件
+    $("#addChooseKeyword").click(function () {
+        var checkboxs = $("#tbody1>tr input[type=checkbox]");
+        checkboxs.each(function () {
+           if($(this)[0].checked==true){
+               var value = $(this).parent().next().html();
+               $("#addedkwd").append(value+"\r");
+           }
+        });
+    });
 
 
+
+
+    //完成按钮的事件
     var saveChooseKeyword = function () {
         //获取所有选中的关键词
         var jsonArr = [];
-            var checkedTds1 = $("input[name=baiduKeyword]:checkbox");
-            for (var i = 0, l = checkedTds1.length; i < l; i++) {
-                if (checkedTds1[i].checked) {
+            var kwds = $("#addedkwd").val().split("\n");
+            for (var i = 0,l = kwds.length; i < l; i++) {
                     var entity1 = {};
                     entity1["accountId"] = "${sessionScope._accountId}";
-                    entity1["keyword"] = $("#" + wordType + i).find("td").eq(1).text();
+                    entity1["keyword"] = kwds[i];
                     entity1["price"] = 1.0;
                     entity1["matchType"] = 1;
                     entity1["pause"] = false;
@@ -256,7 +272,6 @@
                     entity1["phraseType"] = 1;
                     entity1["localStatus"] = 1;
                     jsonArr.push(entity1);
-                }
             }
 
         if(jsonArr.length == 0){
@@ -265,16 +280,14 @@
         }
 
         $.ajax({
-            url: "/assistantCampaign/quickCreateCampaign?name="+wordName,
+            url: "/assistantCampaign/quickCreateCampaign?name="+wordName+"&regions="+getChooseRegions(),
             type: "POST",
             dataType: "json",
             data:JSON.stringify(jsonArr),
             async: false,
             contentType: "application/json; charset=UTF-8",
             success: function (data, textStatus, jqXHR) {
-                   for(var i=0;i<jsonArr.length;i++){
-                        $("#addedkwd").append(jsonArr[i].keyword+"\r");
-                   }
+               alert("快速创建成功!");
             }
         });
     };
@@ -318,6 +331,66 @@
             }
         });
     }
+
+
+
+    /**
+    *修改推广地域的单击事件
+     */
+    $("#updateRegion").click(function () {
+        $("#updateRegionDialog").show(0);
+    });
+
+
+
+
+
+    /***************************************************修改推广地域*******************************************************************/
+    /**
+     *使用账户推广地域的确定按钮的事件
+     */
+    var regions = "";
+    $("#Oklabel").click(function(){
+        regions="";
+        $("#updateRegionDialog").css("display","none");
+    });
+
+    function getChooseRegions() {
+        return regions;
+    }
+
+    function getRegionsStr() {
+        var region = $("input[name=region]");
+        var value = null;
+        region.each(function(){
+            if($(this)[0].checked==true){
+                value = $(this).val();
+            }
+        });
+
+        //0是全部地域,1是部分地域
+        var regionstr = "";
+        if(value==0){
+            regionstr+="全部区域"+",";
+        }else if(value==1){
+            var leaf = $("#regionList").find("div[class=leaf]");
+            leaf.each(function(){
+                if($(this).find("input[type=checkbox]")[0].checked==true){
+                    regionstr+=$(this).find("label").html()+",";
+                }
+            });
+        }
+        return regionstr;
+    }
+
+    /**
+     *推广计划的推广地域的确定按钮的事件
+     */
+    $("#ctrlbuttonregionOklabel").click(function () {
+        regions = getRegionsStr();
+        $("#updateRegionDialog").css("display","none");
+    });
+
 
 
 </script>
