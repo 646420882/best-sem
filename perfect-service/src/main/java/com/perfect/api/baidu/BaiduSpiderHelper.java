@@ -1,36 +1,40 @@
 package com.perfect.api.baidu;
 
 import com.perfect.autosdk.core.CommonService;
-import com.perfect.autosdk.core.ServiceFactory;
-import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.GetPreviewRequest;
 import com.perfect.autosdk.sms.v3.GetPreviewResponse;
-import com.perfect.autosdk.sms.v3.PreviewInfo;
 import com.perfect.autosdk.sms.v3.SublinkInfo;
 import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.dto.CreativeDTO;
-import com.perfect.service.HTMLAnalyseService;
+import com.perfect.elasticsearch.threads.EsRunnable;
+import com.perfect.elasticsearch.threads.EsThreadPoolTaskExecutor;
 import org.apache.commons.codec.binary.Base64;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.zip.GZIPInputStream;
 
 /**
  * Created by baizz on 2014-7-15.
  */
-public class BaiduPreviewHelper {
+public class BaiduSpiderHelper {
+
+    private static Logger logger = LoggerFactory.getLogger(BaiduSpiderHelper.class);
 
     private final CommonService serviceFactory;
     private ApplicationContextHelper context;
 
-    public BaiduPreviewHelper(CommonService serviceFactory) {
+    public BaiduSpiderHelper(CommonService serviceFactory) {
         this.serviceFactory = serviceFactory;
     }
 
@@ -82,7 +86,7 @@ public class BaiduPreviewHelper {
         return previewDatas;
     }
 
-    private void handleRight(Document doc, final List<CreativeDTO> rightCreativeVOList) {
+    private static void handleRight(Document doc, final List<CreativeDTO> rightCreativeVOList) {
         Elements div_right = null;
         boolean _temp2 = (doc.getElementById("ec_im_container") != null) && (doc.getElementById("ec_im_container").children().size() > 0);
 
@@ -109,6 +113,7 @@ public class BaiduPreviewHelper {
                 _description.replace(_url, "");
 
                 creativeVO = new CreativeDTO();
+                creativeVO.setDescSource(e.html());
                 creativeVO.setTitle(_title);
                 creativeVO.setDescription(_description);
                 creativeVO.setUrl(_url);
@@ -117,7 +122,7 @@ public class BaiduPreviewHelper {
         }
     }
 
-    private void handleLeft(Document doc, final List<CreativeDTO> leftCreativeVOList) {
+    private static void  handleLeft(Document doc, final List<CreativeDTO> leftCreativeVOList) {
         LinkedList<CreativeDTO> creativeDTOList = new LinkedList<>();
 
         //获取左侧推广数据
@@ -127,6 +132,7 @@ public class BaiduPreviewHelper {
             Elements elements = doc.select("#content_left > div");
             for (Element element : elements) {
                 CreativeDTO creativeDTO = new CreativeDTO();
+                creativeDTO.setDescSource(element.html());
                 creativeDTO.setTitle(element.select(".ec_title").text());
 
                 creativeDTO.setTitle(element.select(".ec_title").text());
@@ -147,7 +153,6 @@ public class BaiduPreviewHelper {
                     }
                 } else {
                     creativeDTO.setDescription(element.select(".ec_desc").text());
-                    creativeDTO.setDescSource(element.select(".ec_desc").html());
                     creativeDTO.setUrl(element.select(".ec_meta .ec_url").text());
                     creativeDTO.setTime(element.select(".ec_meta .ec_date").text());
                 }
@@ -162,6 +167,7 @@ public class BaiduPreviewHelper {
                     continue;
                 }
                 CreativeDTO creativeDTO = new CreativeDTO();
+                creativeDTO.setDescSource(table.html());
                 creativeDTO.setTitle(table.select(".EC_title").text());
 
                 Elements descs = table.select(".EC_body");
@@ -196,23 +202,35 @@ public class BaiduPreviewHelper {
 
     private Map<String, String> getHTML(GetPreviewRequest getPreviewRequest, CommonService commonService) {
         RequestHelper requestHelper = (RequestHelper) context.getBeanByClass(RequestHelper.class);
-        GetPreviewResponse response = requestHelper.addRequest(commonService, getPreviewRequest);
-        if (response == null)
-            return null;
-        List<PreviewInfo> list1 = response.getPreviewInfos();
-        if (list1 == null || list1.isEmpty()) {
-            return null;
-        }
 
+        Future<String> response = requestHelper.addRequest(getPreviewRequest);
         Map<String, String> htmls = new HashMap<>();
 
-        for (PreviewInfo info : list1) {
-            try {
-                htmls.put(info.getKeyword(), uncompress(info.getData()));
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+        try {
+            htmls.put(getPreviewRequest.getKeyWord(0), response.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
+
+//        GetPreviewResponse response = requestHelper.addRequest(commonService, getPreviewRequest);
+//        if (response == null)
+//            return null;
+//        List<PreviewInfo> list1 = response.getPreviewInfos();
+//        if (list1 == null || list1.isEmpty()) {
+//            return null;
+//        }
+//
+//        Map<String, String> htmls = new HashMap<>();
+//
+//        for (PreviewInfo info : list1) {
+//            try {
+//                htmls.put(info.getKeyword(), uncompress(info.getData()));
+//            } catch (IOException e1) {
+//                e1.printStackTrace();
+//            }
+//        }
         return htmls;
     }
 
@@ -238,6 +256,69 @@ public class BaiduPreviewHelper {
 
     public ApplicationContextHelper getContext() {
         return context;
+    }
+
+    public static List<PreviewData> crawl(String keyword, Integer region) {
+
+        Future<String> response = RequestHelper.addRequest(keyword,region);
+        Map<String, String> htmls = new HashMap<>();
+
+        try {
+            htmls.put(keyword, response.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+        List<CreativeDTO> leftCreativeVOList = new LinkedList<>();
+        List<CreativeDTO> rightCreativeVOList = new LinkedList<>();
+
+
+        if (htmls == null)
+            return Collections.EMPTY_LIST;
+
+        List<PreviewData> previewDatas = new ArrayList<>(htmls.size());
+
+        for (Map.Entry<String, String> htmlEntry : htmls.entrySet()) {
+            Document doc = Jsoup.parse(htmlEntry.getValue());
+
+            handleLeft(doc, leftCreativeVOList);
+            handleRight(doc, rightCreativeVOList);
+
+            List<CreativeDTO> list = new ArrayList<>();
+            list.addAll(leftCreativeVOList);
+            list.addAll(rightCreativeVOList);
+
+            try {
+                EsRunnable esRunnable = (EsRunnable) ApplicationContextHelper.getBeanByClass(EsRunnable.class);
+                esRunnable.setKeyword(keyword);
+                esRunnable.setRegion(region);
+                esRunnable.setList(list);
+
+                EsThreadPoolTaskExecutor executors = (EsThreadPoolTaskExecutor) ApplicationContextHelper.getBeanByClass(EsThreadPoolTaskExecutor
+                        .class);
+                executors.execute(esRunnable);
+            } catch (Exception e) {
+                if (logger.isErrorEnabled()) {
+                    logger.error("ES error", e);
+                }
+            }
+
+            PreviewData previewData = new PreviewData();
+
+            previewData.setKeyword(htmlEntry.getKey());
+            previewData.setRegion(region);
+            previewData.setDevice(1);
+            previewData.setLeft(leftCreativeVOList);
+            previewData.setRight(rightCreativeVOList);
+            previewDatas.add(previewData);
+        }
+
+        return previewDatas;
+
+
     }
 
 

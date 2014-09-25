@@ -33,12 +33,12 @@ public class KeywordBiddingRankService {
 
         CommonService service = BaiduServiceSupport.getCommonService(entity);
 
-        BaiduPreviewHelper baiduPreviewHelper = baiduPreviewHelperFactory.createInstance(service);
+        BaiduSpiderHelper baiduSpiderHelper = baiduPreviewHelperFactory.createInstance(service);
 
         String[] keywords = {keyword};
-        List<BaiduPreviewHelper.PreviewData> previewDatas = baiduPreviewHelper.getPageData(keywords, region);
+        List<BaiduSpiderHelper.PreviewData> previewDatas = baiduSpiderHelper.getPageData(keywords, region);
 
-        for (BaiduPreviewHelper.PreviewData previewData : previewDatas) {
+        for (BaiduSpiderHelper.PreviewData previewData : previewDatas) {
             if ((previewData.getLeft() == null || previewData.getLeft().isEmpty()) && (previewData.getRight() == null || previewData.getRight().isEmpty())) {
                 continue;
             }

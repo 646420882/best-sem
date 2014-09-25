@@ -1,4 +1,4 @@
-package com.perfect.commons;
+package com.perfect.bidding.core;
 
 import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.entity.BaiduAccountInfoEntity;
@@ -14,7 +14,6 @@ import java.util.List;
 /**
  * Created by vbzer_000 on 2014/9/23.
  */
-@Deprecated
 public class JobBoostrap {
 
     private Logger logger = LoggerFactory.getLogger(JobBoostrap.class);

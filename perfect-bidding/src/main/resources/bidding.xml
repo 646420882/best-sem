@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+	    http://www.springframework.org/schema/context/spring-context.xsd
+	    		http://www.springframework.org/schema/data/mongo
+		http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       default-lazy-init="true" default-autowire="byName">
+
+    <context:property-placeholder location="bidding.properties"/>
+
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com.perfect"/>
+
+    <!-- MongoDB配置 -->
+    <!--<mongo:mongo id="mongo" replica-set="115.29.103.38:27017">-->
+    <mongo:mongo id="mongo" replica-set="182.92.188.177:23135">
+        <mongo:options connections-per-host="8"
+                       threads-allowed-to-block-for-connection-multiplier="4"
+                       auto-connect-retry="true"/>
+    </mongo:mongo>
+    <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"/>
+    <mongo:mapping-converter id="mongoConverter"/>
+    <bean id="noClassMongoConverter" class="com.perfect.mongodb.base.MongoConverterEnhanceFactoryBean">
+        <property name="mongoConverter" ref="mongoConverter"/>
+    </bean>
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+        <constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>
+    </bean>
+
+
+    <bean id="jobBoostrap" class="com.perfect.bidding.core.JobBoostrap" init-method="start"/>
+
+    <bean name="requestHelper" class="com.perfect.api.baidu.RequestHelper">
+        <property name="semaphoreValue" value="1"/>
+    </bean>
+
+
+    <bean name="accountThreadTaskExecutors" class="com.perfect.bidding.core.AccountThreadTaskExecutors">
+        <property name="threadNamePrefix" value="bidding-thread-"/>
+        <property name="corePoolSize" value="8"/>
+    </bean>
+
+
+    <bean name="parseWorkerExecutor" class="com.perfect.bidding.core.ParseWorkerExecutor">
+        <property name="threadNamePrefix" value="parser-thread-"/>
+    </bean>
+    <!-- ============================================ -->
+    <import resource="spring-es.xml"/>
+
+    <!-- ============================================= -->
+
+</beans>
