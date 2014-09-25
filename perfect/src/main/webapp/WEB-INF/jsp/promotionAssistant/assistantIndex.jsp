@@ -22,6 +22,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/smartMenu.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
 </head>
 <body>
@@ -120,7 +121,7 @@
                     src="../public/img/zs_function9.png"></span><b>还原</b></a><%--z_function_hover--%>
             </li>
 
-            <li><a href="#" id="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+            <li><a href="#" class="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
             <li><a href="#"><span class="z_function_hover"><img
                     src="../public/img/zs_function11.png"></span><b>激活</b></a>
             </li>
@@ -169,18 +170,7 @@
     </div>
     <div class="zhanghu_input"></div>
 
-    <div class="page kwdPage over">
-        <ul>
-            <li>每页显示条数 <select style="width:60px;" id = "kwd_PageSize" onchange="getKwdList(1)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></li>
-            <li><a href="#">首页</a></li>
-            <li><a href="#">上一页</a></li>
-            <li><a href="#">下一页</a></li>
-            <li><a href="#">尾页</a></li>
-            <li>当前页:1/0</li>
-            <li>共0条</li>
-            <li><input type="text" maxlength="10" class="inputNo kwdPageNo"/>&nbsp;<input type="button" value="GO" id="kwdGo"/></li>
-        </ul>
-    </div>
+    <div id="pagination_keywordPage" class="pagination"></div>
 
     <div class="zs_bottom over">
         <input type = "hidden" id="hiddenkwid_1" />
@@ -859,7 +849,7 @@
                     type="image" src="../public/img/zs_input.png"></b></a></li>
 
             <li><a href="#" id = "reduction_caipamgin"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+            <li><a href="#" class="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
         </ul>
         <span class="fr">1/10</span>
     </div>
@@ -903,18 +893,7 @@
     </div>
     <div class="zhanghu_input"></div>
 
-    <div class="page campaignPage over">
-        <ul>
-            <li> 每页显示条数 <select style="width:60px;" id = "camp_PageSize" onchange="getCampaignList(1)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></li>
-            <li><a href="#">首页</a></li>
-            <li><a href="#">上一页</a></li>
-            <li><a href="#">下一页</a></li>
-            <li><a href="#">尾页</a></li>
-            <li>当前页:1/0</li>
-            <li>共0条</li>
-            <li><input type="text" maxlength="10" class="inputNo campaignPageNo"/>&nbsp;<input type="button" value="GO" id="campaignGo"/></li>
-        </ul>
-    </div>
+    <div id="pagination_campaignPage" class="pagination"></div>
 
     <div class="zs_bottom over">
         <input type = "hidden" id="hiddenCampaignId" />
@@ -1457,7 +1436,7 @@
         <div class="w_list03">
             <ul>
                 <li class="current ntwOk">确认</li>
-                <li class="close">取消</li>
+                <li onclick="closeSetNegtiveWord()">取消</li>
             </ul>
         </div>
     </div>
@@ -1508,7 +1487,7 @@
         <div class="w_list03">
             <ul>
                 <li class="current excludeIpOk">确认</li>
-                <li class="close">取消</li>
+                <li onclick="closeSetExcludeIp()">取消</li>
             </ul>
         </div>
     </div>
@@ -1533,7 +1512,7 @@
         <div class="w_list03">
             <ul>
                 <li class="current scheduleOk">确认</li>
-                <li class="close">取消</li>
+                <li onclick="closeSetExtension()">取消</li>
             </ul>
         </div>
     </div>
@@ -1568,6 +1547,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/addKeyword.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/Monitoring.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript">
     $(function () {
         window.dialog = dialog;

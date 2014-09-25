@@ -600,7 +600,6 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     public PagerInfo findByPageInfo(Query q, int pageSize, int pageNo) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         int totalCount = getListTotalCount(q);
-
         PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
         q.skip(p.getFirstStation());
         q.limit(p.getPageSize());

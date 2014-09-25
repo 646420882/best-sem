@@ -72,7 +72,7 @@
             </li>
             <li>
                 <span>地域范围</span>
-                <a href="#">全部地域</a>
+                <a href="#" id="chooseRegion">选择地域</a>
                 <input type="image" src="../public/img/zs_input.png">
             </li>
             <li>
@@ -83,14 +83,14 @@
                    <option value="2">移动设备</option>
                </select>
             </li>
-            <li>
+            <%--<li>
                 <span>搜索引擎范围</span>
                <select id="searchEngine">
                    <option>全部</option>
                    <option>百度推广</option>
                    <option>非百度推广</option>
                </select>
-            </li>
+            </li>--%>
         </ul>
         <a class="become fr createReport" href="javascript:"> 生成报告</a>
     </div>
@@ -157,7 +157,6 @@
             <input id="addKeyword"  type="button" value="添加为关键词"/>
             <input id="addNeigWord" type="button" value="添加为否定词"/>
             <div class="search_mid over" style="height:430px;overflow: scroll;">
-                 <%-- <span>请于上方确定报告对象及范围后再生成报告</span>--%>
                 <table style="width:1500px;" cellspacing="0" border="0">
                     <thead>
                         <td>关键词</td>
@@ -174,7 +173,6 @@
                         <td>精确匹配扩展(地域词)触发</td>
                     </thead>
                     <tbody id="searchWordTbody">
-
                     </tbody>
                 </table>
 
@@ -184,6 +182,9 @@
         </div>
     </div>
 </div>
+
+<%--设置推广地域--%>
+<jsp:include page="./Region.jsp"/>
 </body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">
@@ -327,7 +328,17 @@
 
 
 
-
+    //得到已经选中的的地域
+    function getRegionNames() {
+        var regions = "";
+        var leaf = $("#regionList").find("div[class=leaf]");
+        leaf.each(function(){
+            if($(this).find("input[type=checkbox]")[0].checked==true){
+                regions+=$(this).find("label").html()+",";
+            }
+        });
+        return regions;
+    }
 
 
 
@@ -341,19 +352,24 @@
         var startDate = timeRange["startDate"];//开始日期
         var endDate = timeRange["endDate"];//结束日期
         var device = $("#device").val();//投放设备
-//        var regions;//推广地域
+        var regions= getRegionNames();//推广地域
 //        var searchEngine = $("#searchEngine").val();//搜索引擎范围
 
         $("#searchWordTbody").html("正在联网为您获取搜索词报告...");
         $.ajax({
             url:"/assistantKeyword/getSearchWordReport",
             type:"post",
-            data:{"levelOfDetails":levelOfDetails,"startDate":startDate,"endDate":endDate,"device":device},
+            data:{"levelOfDetails":levelOfDetails,"startDate":startDate,"endDate":endDate,"device":device,"attributes":regions},
             dataType:"json",
             success: function (data) {
-                var html = toTableHtml(data);
-               $("#searchWordTbody").empty();
-               $("#searchWordTbody").html(html);
+                if(data.length==0){
+                    $("#searchWordTbody").empty();
+                    $("#searchWordTbody").html("没有该范围的数据!");
+                }else{
+                    var html = toTableHtml(data);
+                    $("#searchWordTbody").empty();
+                    $("#searchWordTbody").html(html);
+                }
             }
         });
     });
@@ -545,6 +561,13 @@ $("#setNeigWordDiv_ok").click(function () {
         }
     });
 
+});
+
+/**
+*选中推广地域
+ */
+$("#chooseRegion").click(function () {
+      $("#ctrldialogplanRegionDialog").show(0);
 });
 
 

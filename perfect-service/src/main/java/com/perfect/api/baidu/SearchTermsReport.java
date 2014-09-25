@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by john on 2014/9/18.
@@ -88,8 +85,13 @@ public class SearchTermsReport {
         GetRealTimeQueryDataRequest getRealTimeQueryDataRequest = new GetRealTimeQueryDataRequest();
         getRealTimeQueryDataRequest.setRealTimeQueryRequestTypes(realTimeQueryRequestType);
         GetRealTimeQueryDataResponse response1 = reportService.getRealTimeQueryData(getRealTimeQueryDataRequest);
-        List<RealTimeQueryResultType> resList = response1.getRealTimeQueryResultTypes();
-        return resList;
+
+        if(response1==null){
+            return new ArrayList<>();
+        }else{
+            List<RealTimeQueryResultType> resList = response1.getRealTimeQueryResultTypes();
+            return resList;
+        }
     }
 
 

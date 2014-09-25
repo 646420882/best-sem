@@ -1,6 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dto.CampaignTreeDTO;
+import com.perfect.dto.KeywordDTO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.KeywordEntity;
@@ -31,9 +32,9 @@ public interface AssistantKeywordService {
 
     List<KeywordEntity> getKeywordByIds(List<Long> ids);
 
-    void batchAddkeyword(String keywords);
+    void batchAddkeyword(List<KeywordDTO> keywords);
 
-    void batchUpdateKeyword(String keywords);
+    void batchUpdateKeyword(List<KeywordDTO> keywords);
 
     Iterable<CampaignEntity> getCampaignByAccountId();
 

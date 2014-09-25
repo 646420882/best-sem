@@ -90,10 +90,12 @@ public class AbstractPager{
 		}
 	}
 	public void setPageNo(int pageNo){
-		if (pageNo < 1) {
-			this.pageNo = 1;
-		} else {
-			this.pageNo = pageNo;
-		}
+		if (pageNo < 0) {
+			this.pageNo = 0;
+		} else if(pageNo>getTotalPage()-1){
+			this.pageNo = getTotalPage()-1;
+		}else{
+            this.pageNo = pageNo;
+        }
 	}
 }
