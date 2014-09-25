@@ -72,11 +72,6 @@ function skipCampaignPage() {
     var pageNo = $("#campaignPageNum").val();
     getCampaignList(/^\d+$/.test(pageNo) == false?0:parseInt(pageNo)-1);
 }
-
-
-
-
-
 /**
  * 单击某一行时将改行的数据放入文本框内
  */

@@ -50,8 +50,10 @@ public class PromotionMonitoring {
         request.setFolderIds(Arrays.asList(folderIds));
         //获取当前用户下的所有监控文件夹信息
         GetFolderResponse folder = folderService.getFolder(request);
-        List<Folder> folderList = folder.getFolders();
-
+        List<Folder> folderList = new ArrayList<>();
+        if (folder != null) {
+            folderList = folder.getFolders();
+        }
         return folderList;
     }
 
@@ -70,8 +72,10 @@ public class PromotionMonitoring {
         request.setFolderIds(folderLong);
         //接收请求API后的数据
         GetMonitorWordByFolderIdResponse monitorword = folderService.getMonitorWordByFolderId(request);
-
-        List<FolderMonitor> folderMonitors = monitorword.getFolderMonitors();
+        List<FolderMonitor> folderMonitors=new ArrayList<>();
+        if (monitorword != null) {
+            folderMonitors = monitorword.getFolderMonitors();
+        }
         return folderMonitors;
     }
 

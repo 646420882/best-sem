@@ -862,10 +862,10 @@ var getAllSelectedBidRuleIm = function () {
     var rowIds = $("#table2").jqGrid('getGridParam', 'selarrrow');
     var keywordIds = [];
     for (var i = 0, l = rowIds.length; i < l; i++) {
-        if (grid.jqGrid('getCell', rowIds[i], "biddingStatus") == "无")
+        if (grid2.jqGrid('getCell', rowIds[i], "biddingStatus") == "无")
             continue;
 
-        keywordIds.push(grid.jqGrid('getCell', rowIds[i], "keywordId"));
+        keywordIds.push(grid2.jqGrid('getCell', rowIds[i], "keywordId"));
     }
     return keywordIds;
 };
