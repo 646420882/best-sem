@@ -1,3 +1,7 @@
+var skipPage;
+var selectChange;
+var selectChangeVs;
+var selectChangeDet;
 $(function () {
     // 对Date的扩展，将 Date 转化为指定格式的String
     // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
@@ -85,6 +89,7 @@ $(function () {
 
     var startDet = 0;
     var sorts = "-11";
+    var endDet = 20;
     var limitDet = 20;
     var sortVS = "-1";
     var pageDetNumber = 0;
@@ -94,9 +99,11 @@ $(function () {
     var limitJC = 20;
 //账户报告
     var startVS = 0;
+    var endVs = 20;
     var limitVS = 20;
     var dataid = 0;
     var dataname = "0";
+    var judety = 0;
     $(document).ready(function () {
         //加载日历控件
         $("input[name=reservation]").daterangepicker();
@@ -155,7 +162,6 @@ $(function () {
             var index = $tab_li.index(this);
             $('div.tab_box > div').eq(index).show().siblings().hide();
             $("#pageDet").empty();
-            judgeDet = 0;
         });
         $("#reportType>a").click(function () {
             $("#reportType>a").removeClass("current");
@@ -213,7 +219,7 @@ $(function () {
         });
         $("#checkboxInput").click(function () {
             if ($(this).is(":checked")) {
-                $("#inputTow").attr("style", "height:20px;width:150px;border:1px solid #dadada; padding:0 12px;background:#fff url('/public/img/date.png ') 130px 0px no-repeat;");
+                $("#inputTow").attr("style", "height:20px;width:150px;border:1px solid #dadada; padding:0 12px;background:#fff url('/public/img/date.png ') 150px 0px no-repeat;");
                 $("#inputOne").removeAttr("disabled");
                 $("#checkboxhidden").val(1);
                 $("#dataComputing").append("起 " + distance + " 天");
@@ -516,10 +522,17 @@ $(function () {
         $("#costDiv").empty();
         $("#convDiv").empty();
 
-        $("#shuju").append("<div class='example'><div id='progress2'><div id='percentNumber'></div><div class='pbar'></div><div class='elapsed'></div></div></div>");
+        $("#shuju").append("<div class='example'><div id='progress2'><div id='Tips'></div><div id='percentNumber'></div><div class='pbar'></div><div class='elapsed'></div></div></div>");
+        var isMin = 0;
+        if(judety <= 0){
+            isMin=8;
+        }else{
+            isMin=3;
+            judety = 0;
+        }
         // from second #5 till 15
         var iNow = new Date().setTime(new Date().getTime() + 1 * 1000); // now plus 1 secs
-        var iEnd = new Date().setTime(new Date().getTime() + 8 * 1000); // now plus 10 secs
+        var iEnd = new Date().setTime(new Date().getTime() + isMin * 1000); // now plus 10 secs
         $('#progress2').anim_progressbar({start: iNow, finish: iEnd, interval: 100});
 
 
@@ -539,7 +552,7 @@ $(function () {
                 dateType: dateLis,
                 start: startDet,
                 sort: sorts,
-                limit: limitDet,
+                limit: endDet,
                 dataId: dataid,
                 dataName: dataname
             },
@@ -1092,7 +1105,10 @@ $(function () {
                     });
                     $("#shujuAll").empty();
                     $("#shujuAll").append(html_GoAll);
-                    if (judgeDet < 1) {
+                    records = pageDetNumber;
+                    typepage = 2;
+                    $("#pagination2").pagination(pageDetNumber, getOptionsFromForm(pageIndex));
+                    /*if (judgeDet < 1) {
                         var countNumber = 0;
                         if (pageDetNumber % limitDet == 0) {
                             countNumber = pageDetNumber / limitDet;
@@ -1120,7 +1136,7 @@ $(function () {
                             "<span style='margin-right:10px;'>跳转到 <input type='text' id='goDetID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goDet' class='page_go'> GO</a>"
                         $("#pageDet").append(page_html);
                         judgeDet++;
-                    }
+                    }*/
                 }
                     if (data.rows.length > 10) {
                         dateInterval = Math.round(data.rows.length / 10);
@@ -1153,7 +1169,7 @@ $(function () {
                 compare: checkboxhidden,
                 sortVS: sortVS,
                 startVS: startVS,
-                limitVS: limitVS
+                limitVS: endVs
             },
             success: function (data) {
                 $("#userTbody").empty();
@@ -1215,7 +1231,10 @@ $(function () {
                     });
 
                     $("#userStits").append(html_UserPro);
-                    if (judgeVS < 1) {
+                    records = pageNumberVS;
+                    typepage = 1;
+                    $("#pagination1").pagination(pageNumberVS, getOptionsFromForm(pageIndex));
+                    /*if (judgeVS < 1) {
                         var countNumber = 0;
                         if (pageNumberVS % limitVS == 0) {
                             countNumber = pageNumberVS / limitVS;
@@ -1243,7 +1262,7 @@ $(function () {
                             "<span style='margin-right:10px;'>跳转到 <input type='text' id='goVSID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goVS' class='page_go'> GO</a>"
                         $("#pageVS").append(page_html);
                         judgeVS++;
-                    }
+                    }*/
                 } else {
                     /*$("#trTop").removeAttr("class");
                      $("#trTop").addClass("list03_top");*/
@@ -1649,112 +1668,7 @@ $(function () {
             ]
         });
     }
-//基础报告分页手动跳转
-    $("body").on("click", "#go", function () {
-        var juo = ($('#goID').val() * 10 - 1);
-        if (juo != null && juo != "" && juo >= 0 && juo <= (number + 9)) {
-            startJC = ($('#goID').val() * 10 - 10);
-            limitJC = startJC + 10 - 1;
-            accountBasisReport();
-        }
-    });
 
-    var noneStart = 0;
-    var noneEnd = 10;
-//基础报告上一页
-    $("body").on("click", "#pageUp", function () {
-        if (noneStart >= 10) {
-            $("a[cname=nameJC]").hide();
-            noneStart -= 10;
-            noneEnd -= 10;
-            for (var i = noneStart; i <= noneEnd; i++) {
-                $("a[cname=nameJC]").eq(i).show();
-            }
-        }
-    });
-//基础报告下一页
-    $("body").on("click", "#pageDown", function () {
-        if (noneEnd < number / 10) {
-            $("a[cname=nameJC]").hide();
-            noneStart += 10;
-            noneEnd += 10;
-            for (var i = noneStart; i <= noneEnd; i++) {
-                $("a[cname=nameJC]").eq(i).show();
-            }
-        }
-    });
-    $("body").on("click", "a[cname=nameJC]", function () {
-        $(this).addClass('ajc').siblings().removeClass('ajc');
-    });
-//账户统计分页手动跳转
-    $("body").on("click", "#goVS", function () {
-        if ($('#goVSID').val() != null && $('#goVSID').val() != "" && $('#goVSID').val() >= 0 && ($('#goVSID').val() * 10 - 1) <= (pageNumberVS + 9)) {
-            startVS = ($('#goVSID').val() * 10 - 10);
-            limitVS = startVS + 10 - 1;
-            reportDataVS();
-        }
-    });
-
-    var noneVsStart = 0;
-    var noneVsEnd = 10;
-//账户统计上一页
-    $("body").on("click", "#pageUpVS", function () {
-        if (noneVsStart >= 10) {
-            $("a[cname=nameVS]").hide();
-            noneVsStart -= 10;
-            noneVsEnd -= 10;
-            for (var i = noneVsStart; i <= noneVsEnd; i++) {
-                $("a[cname=nameVS]").eq(i).show();
-            }
-        }
-    });
-//账户下一页
-    $("body").on("click", "#pageDownVS", function () {
-        if (noneVsEnd < pageNumberVS / 10) {
-            $("a[cname=nameVS]").hide();
-            noneVsStart += 10;
-            noneVsEnd += 10;
-            for (var i = noneVsStart; i <= noneVsEnd; i++) {
-                $("a[cname=nameVS]").eq(i).show();
-            }
-        }
-    });
-    $("body").on("click", "a[cname=nameVS]", function () {
-        $(this).addClass('ajc').siblings().removeClass('ajc');
-    });
-
-//明细报告分页手动跳转
-    $("body").on("click", "#goDet", function () {
-        if ($('#goDet').val() != null && $('#goDet').val() != "" && $('#goDet').val() >= 0 && ($('#goDetID').val() * 30 - 1) <= (pageDetNumber + 29)) {
-            startDet = ($('#goDetID').val() * 30 - 30);
-            limitDet = startDet + 30 - 1;
-            reportData();
-        }
-    });
-    var noneNumStart = 0;
-    var noneNumEnd = 10;
-//明细报告上一页
-    $("body").on("click", "#pageUpDet", function () {
-        if (noneNumStart >= 10) {
-            $("a[cname=nameDet]").hide();
-            noneNumStart -= 10;
-            noneNumEnd -= 10;
-            for (var i = noneNumStart; i <= noneNumEnd; i++) {
-                $("a[cname=nameDet]").eq(i).show();
-            }
-        }
-    });
-//明细报告下一页
-    $("body").on("click", "#pageDownDet", function () {
-        if (noneNumEnd < pageDetNumber / 30) {
-            $("a[cname=nameDet]").hide();
-            noneNumStart += 10;
-            noneNumEnd += 10;
-            for (var i = noneNumStart; i <= noneNumEnd; i++) {
-                $("a[cname=nameDet]").eq(i).show();
-            }
-        }
-    });
     $("body").on("click", "a[cname=nameDet]", function () {
         $(this).addClass('ajc').siblings().removeClass('ajc');
     });
@@ -1777,30 +1691,95 @@ $(function () {
     });
 
 
-    function selectChange() {
-        noneStart = 0;
-        noneEnd = 10;
+    selectChange = function() {
         limitJC = parseInt($("#importKeywordSel :selected").val());
         $("#pageJC").empty();
         jci = 0;
         accountBasisReport();
     }
-
-    function selectChangeVs() {
-        noneVsStart = 0;
-        noneVsEnd = 10;
+    selectChangeVs = function() {
         limitVS = parseInt($("#importKeywordSelVS :selected").val());
+        startVS = 0;
+        endVs =  limitVS;
         $("#pageVS").empty();
-        judgeVS = 0;
         reportDataVS();
     }
-
-    function selectChangeDet() {
-        noneNumStart = 0;
-        noneNumEnd = 10;
+    selectChangeDet =function () {
         limitDet = parseInt($("#importKeywordSelDet :selected").val());
+        startDet =0;
+        endDet =limitDet;
         $("#pageDet").empty();
-        judgeDet = 0;
         reportData();
     }
+
+    /******************pagination*********************/
+    var items_per_page = 20;    //默认每页显示20条数据
+    var pageIndex = 0;
+    var records = 0;
+    var skip = 0;
+    var typepage = 1;
+
+    var pageSelectCallback = function (page_index, jq) {
+        if (typepage == 1) {
+            $("#pagination1").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber1' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipPage();' class='page_go'> GO</a>");
+        } else {
+            $("#pagination2").append("<span style='margin-right:10px;'>跳转到 <input id='anyPageNumber2' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipPage();' class='page_go'> GO</a>");
+        }
+        if (pageIndex == page_index) {
+            return false;
+        }
+        pageIndex = page_index;
+        if(typepage == 1){
+            startVS = (page_index+1) * items_per_page - items_per_page;
+            endVs = (page_index+1) * items_per_page;
+            reportDataVS();
+        }else if(typepage == 2){
+            judety =1;
+            startDet =(page_index+1) * items_per_page - items_per_page;
+            endDet =(page_index+1) * items_per_page;
+            reportData();
+        }
+        return false;
+    };
+
+    var getOptionsFromForm = function (current_page) {
+        if(typepage == 1){
+            items_per_page = limitVS;
+        }else if(typepage == 2){
+            items_per_page = limitDet;
+        }
+
+        var opt = {callback: pageSelectCallback};
+        opt["items_per_page"] = items_per_page;
+        opt["current_page"] = current_page;
+        opt["prev_text"] = "上一页";
+        opt["next_text"] = "下一页";
+
+        //avoid html injections
+        var htmlspecialchars = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"};
+        $.each(htmlspecialchars, function (k, v) {
+            opt.prev_text = opt.prev_text.replace(k, v);
+            opt.next_text = opt.next_text.replace(k, v);
+        });
+        return opt;
+    };
+    var optInit = getOptionsFromForm(0);
+
+    skipPage = function () {
+        var _number = 0;
+        if (typepage == 1) {
+            _number = $("#anyPageNumber1").val() - 1;
+            if (_number <= -1 || _number == pageIndex) {
+                return;
+            }
+            $("#pagination1").pagination(records, getOptionsFromForm(_number));
+        } else {
+            _number = $("#anyPageNumber2").val() - 1;
+            if (_number <= -1 || _number == pageIndex) {
+                return;
+            }
+            $("#pagination2").pagination(records, getOptionsFromForm(_number));
+        }
+    };
+    /**********************************************************************************/
 });
