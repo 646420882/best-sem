@@ -458,6 +458,10 @@ To change this template use File | Settings | File Templates.
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/creativesearch.js"></script>
 <script type="text/javascript">
 
+String.prototype.trims = function () {
+    return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+};
+
 var type = 1; //1, baidu; 2, system
 var krFileId;
 var fieldName = "dsQuantity";
@@ -594,17 +598,17 @@ $(function () {
     });
 
     $("#textarea1").on('keyup', function () {
-        var seedWords = $("#textarea1").val().trim().split("\n");
+        var seedWords = $("#textarea1").val().trims().split("\n");
         $("#textarea1").parent().next().text("可输入词根" + (100 - seedWords.length) + "/100");
     });
 
     $("#txt1").on('keyup', function () {
-        var strs1 = $("#txt1").val().trim().split("\n");
+        var strs1 = $("#txt1").val().trims().split("\n");
         $("#txt1").parent().next().text("可输入" + (20 - strs1.length) + "/20行");
     });
 
     $("#txt2").on('keyup', function () {
-        var strs1 = $("#txt2").val().trim().split("\n");
+        var strs1 = $("#txt2").val().trims().split("\n");
         $("#txt2").parent().next().text("可输入" + (20 - strs1.length) + "/20行");
     });
 });
@@ -704,7 +708,7 @@ var save1Keyword = function () {
 };
 var save2Keyword = function () {
     var value1 = $("#category option:selected").val();
-    if (value1 == null || value1.trim().length == 0) {
+    if (value1 == null || value1.trims().length == 0) {
         alert("请选择一个类别!");
         return;
     }
@@ -737,7 +741,7 @@ var findWordFromBaidu = function () {
     var seedWords = "";
     var words = $("#textarea1").val().split("\n");//种子词数组
     for (var i = 0, l = words.length; i < l; i++) {
-        if (words[i].trim().length == 0) {
+        if (words[i].trims().length == 0) {
             continue;
         }
         if (i == 0)

@@ -417,7 +417,10 @@ $(function () {
                 l: size,
                 q: text,
                 f: f,
-                filter: filter
+                filter: filter,
+                matchType: null,
+                price: null,
+                quality: null
             }
             });
         }
