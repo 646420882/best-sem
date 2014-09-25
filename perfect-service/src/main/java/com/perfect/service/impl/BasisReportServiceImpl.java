@@ -1,10 +1,12 @@
 package com.perfect.service.impl;
 
+import com.google.common.primitives.Bytes;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.perfect.core.AppContext;
 import com.perfect.dao.BasisReportDAO;
 import com.perfect.dto.AccountReportDTO;
+import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.StructureReportEntity;
 import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.redis.JRedisUtils;
@@ -15,7 +17,10 @@ import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,6 +42,9 @@ public class BasisReportServiceImpl implements BasisReportService {
     private AccountManageService accountManageService;
 
     private static int REDISKEYTIME = 1 * 60 * 60;
+    private static final String DEFAULT_DELIMITER = ",";
+    private static final String DEFAULT_END = "\r\n";
+    private static final byte commonCSVHead[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
 
     /**
      * 生成报告
@@ -909,9 +917,9 @@ public class BasisReportServiceImpl implements BasisReportService {
             if (x % 2 == 0) {
                 dtoRing = new AccountReportDTO();
                 dtoRing = listAve.get(x);
-            }else {
+            } else {
                 AccountReportDTO dtoRings = new AccountReportDTO();
-                dtoRings.setMobileImpression(dtoRing.getPcImpression()-listAve.get(x).getPcImpression());
+                dtoRings.setMobileImpression(dtoRing.getPcImpression() - listAve.get(x).getPcImpression());
                 dtoRings.setMobileClick(dtoRing.getPcClick() - listAve.get(x).getPcClick());
                 dtoRings.setMobileCost(dtoRing.getPcCost().subtract(listAve.get(x).getPcCost()));
                 dtoRings.setMobileCpc(dtoRing.getPcCpc().subtract(listAve.get(x).getPcCpc()));
@@ -922,7 +930,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 dtoRings.setPcCost(((dtoRing.getPcCost().subtract(listAve.get(x).getPcCost())).divide((listAve.get(x).getPcCost() == BigDecimal.ZERO) ? BigDecimal.valueOf(1) : listAve.get(x).getPcCost(), 4, BigDecimal.ROUND_UP)).multiply(BigDecimal.valueOf(100)));
                 dtoRings.setPcCtr((double) Math.round((dtoRing.getPcCtr() - listAve.get(x).getPcCtr()) / ((listAve.get(x).getPcCtr() <= 0) ? 1 : listAve.get(x).getPcCtr()) * 10000 / 100));
                 dtoRings.setPcCpc(((dtoRing.getPcCpc().subtract(listAve.get(x).getPcCpc())).divide((listAve.get(x).getPcCpc() == BigDecimal.ZERO) ? BigDecimal.valueOf(1) : listAve.get(x).getPcCpc(), 4, BigDecimal.ROUND_UP)).multiply(BigDecimal.valueOf(100)));
-                dtoRings.setPcConversion((double) Math.round((dtoRing.getPcConversion()-listAve.get(x).getPcConversion())/((listAve.get(x).getPcConversion() <= 0)?1:listAve.get(x).getPcConversion())*10000/100));
+                dtoRings.setPcConversion((double) Math.round((dtoRing.getPcConversion() - listAve.get(x).getPcConversion()) / ((listAve.get(x).getPcConversion() <= 0) ? 1 : listAve.get(x).getPcConversion()) * 10000 / 100));
                 list.add(dtoRings);
             }
         }
@@ -1611,6 +1619,114 @@ public class BasisReportServiceImpl implements BasisReportService {
                 return retrunMap3;
         }
         return null;
+    }
+
+    @Override
+    public void downReportCSV(OutputStream os, String redisKey, int dateType, int terminal,int reportType,String dateHead) {
+        Jedis jc = JRedisUtils.get();
+        Gson gson = new Gson();
+        String data = jc.get(redisKey);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DecimalFormat df = new DecimalFormat("#.0000");
+        String head = ReportDownUtil.getHead(reportType);
+        if (dateType < 1) {
+            List<StructureReportEntity> list = gson.fromJson(data, new TypeToken<List<StructureReportEntity>>() {
+            }.getType());
+            try {
+
+                os.write(Bytes.concat(commonCSVHead, (head).getBytes(StandardCharsets.UTF_8)));
+                if(terminal != 2){
+                    for (StructureReportEntity entity : list) {
+                        os.write(Bytes.concat(commonCSVHead, (dateHead +
+                                ((entity.getAccount() == null)?"":DEFAULT_DELIMITER + entity.getAccount()) +
+                                ((entity.getCampaignName() == null)?"":DEFAULT_DELIMITER + entity.getCampaignName()) +
+                                ((entity.getAdgroupName() == null)?"":DEFAULT_DELIMITER + entity.getAdgroupName()) +
+                                ((entity.getKeywordName() == null)?"":DEFAULT_DELIMITER + entity.getKeywordName()) +
+                                ((entity.getCreativeTitle() == null)?"":DEFAULT_DELIMITER + entity.getCreativeTitle()) +
+                                ((entity.getRegionName() == null)?"":DEFAULT_DELIMITER + entity.getRegionName()) +
+                                DEFAULT_DELIMITER + entity.getPcImpression() +
+                                DEFAULT_DELIMITER + entity.getPcClick() +
+                                DEFAULT_DELIMITER + entity.getPcCost() +
+                                DEFAULT_DELIMITER + entity.getPcCtr() * 100 / 100 + "%" +
+                                DEFAULT_DELIMITER + entity.getPcCpc() +
+                                DEFAULT_DELIMITER + entity.getPcConversion() +
+                                DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
+                    }
+                }else{
+                    for (StructureReportEntity entity : list) {
+                        os.write(Bytes.concat(commonCSVHead, (dateHead +
+                                ((entity.getAccount() == null)?"":DEFAULT_DELIMITER + entity.getAccount()) +
+                                ((entity.getCampaignName() == null)?"":DEFAULT_DELIMITER + entity.getCampaignName()) +
+                                ((entity.getAdgroupName() == null)?"":DEFAULT_DELIMITER + entity.getAdgroupName()) +
+                                ((entity.getKeywordName() == null)?"":DEFAULT_DELIMITER + entity.getKeywordName()) +
+                                ((entity.getCreativeTitle() == null)?"":DEFAULT_DELIMITER + entity.getCreativeTitle()) +
+                                ((entity.getRegionName() == null)?"":DEFAULT_DELIMITER + entity.getRegionName()) +
+                                DEFAULT_DELIMITER + entity.getMobileImpression() +
+                                DEFAULT_DELIMITER + entity.getMobileClick() +
+                                DEFAULT_DELIMITER + entity.getMobileCost() +
+                                DEFAULT_DELIMITER + entity.getMobileCtr() * 100 / 100 + "%" +
+                                DEFAULT_DELIMITER + entity.getMobileCpc() +
+                                DEFAULT_DELIMITER + entity.getMobileConversion() +
+                                DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
+                    }
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Map<String, List<StructureReportEntity>> responseMap = gson.fromJson(data, new TypeToken<Map<String, List<StructureReportEntity>>>() {
+            }.getType());
+
+            try {
+
+                os.write(Bytes.concat(commonCSVHead, (head).getBytes(StandardCharsets.UTF_8)));
+                if(terminal != 2){
+                    for (Map.Entry<String, List<StructureReportEntity>> voEntity : responseMap.entrySet()) {
+                        for (StructureReportEntity entity : voEntity.getValue()) {
+                            os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
+                                    ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
+                                    ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
+                                    ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName()) +
+                                    ((entity.getKeywordName() == null)?"":DEFAULT_DELIMITER + entity.getKeywordName()) +
+                                    ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle()) +
+                                    ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName()) +
+                                    DEFAULT_DELIMITER + entity.getPcImpression() +
+                                    DEFAULT_DELIMITER + entity.getPcClick() +
+                                    DEFAULT_DELIMITER + entity.getPcCost() +
+                                    DEFAULT_DELIMITER + entity.getPcCtr() * 100 / 100 + "%" +
+                                    DEFAULT_DELIMITER + entity.getPcCpc() +
+                                    DEFAULT_DELIMITER + entity.getPcConversion() +
+                                    DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
+                        }
+                    }
+                }else{
+                    for (Map.Entry<String, List<StructureReportEntity>> voEntity : responseMap.entrySet()) {
+                        for (StructureReportEntity entity : voEntity.getValue()) {
+                            os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
+                                    ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
+                                    ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
+                                    ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName()) +
+                                    ((entity.getKeywordName() == null)?"":DEFAULT_DELIMITER + entity.getKeywordName()) +
+                                    ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle()) +
+                                    ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName()) +
+                                    DEFAULT_DELIMITER + entity.getMobileImpression() +
+                                    DEFAULT_DELIMITER + entity.getMobileClick() +
+                                    DEFAULT_DELIMITER + entity.getMobileCost() +
+                                    DEFAULT_DELIMITER + entity.getMobileCtr() * 100 / 100 + "%" +
+                                    DEFAULT_DELIMITER + entity.getMobileCpc() +
+                                    DEFAULT_DELIMITER + entity.getMobileConversion() +
+                                    DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
+                        }
+                    }
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     /**

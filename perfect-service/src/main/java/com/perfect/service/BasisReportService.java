@@ -3,6 +3,7 @@ package com.perfect.service;
 import com.perfect.dto.AccountReportDTO;
 import com.perfect.entity.StructureReportEntity;
 
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,16 @@ public interface BasisReportService {
      * @return
      */
     public Map<String,List<Object>> getAccountDateVS(Date startDate, Date endDate,Date startDate1, Date endDate1,int dateType,int devices,int compare,String sortVS,int startVS,int limitVS);
+
+
+    /**
+     * 下载已生成的数据报告
+     * @param os
+     * @param redisKey  redisKey值
+     * @param reportTime 报告分为时间
+     * @param terminal 报告选择终端
+     */
+    public void downReportCSV(OutputStream os,String redisKey,int reportTime,int terminal,int reportType,String dateHead);
 
 
 /*******************************************AIP***************************************************/

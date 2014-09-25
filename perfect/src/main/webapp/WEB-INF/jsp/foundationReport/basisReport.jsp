@@ -383,7 +383,11 @@
                     <a href="javascript:" cname="3">分月</a>
                 </li>
             </ul>
-            <a href="javascript:" id="shengc" class="become"> 生成报告</a>
+
+            <a href="javascript:" id="shengc" class="become fl" style="margin-right:50px; "> 生成报告</a>
+            <div id="downReport">
+
+            </div>
             <input type="hidden" id="jindut" value="">
         </div>
         <input type="hidden" id="reportTypes" value="1">

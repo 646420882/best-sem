@@ -1,11 +1,13 @@
 package com.perfect.app.homePage.controller;
 
 import com.google.gson.Gson;
+import com.perfect.core.AppContext;
 import com.perfect.dto.AccountReportDTO;
 import com.perfect.entity.StructureReportEntity;
 import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.service.BasisReportService;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,7 +61,7 @@ public class BasisReportController {
                                @RequestParam(value = "limit", required = false, defaultValue = "30") int limit,
                                @RequestParam(value = "dataId", required = false, defaultValue = "0") Long dataId,
                                @RequestParam(value = "dataName", required = false, defaultValue = "0") String dateName) {
-         Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
         String yesterday = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
         if(startDate == null || startDate.equals("")){
@@ -70,7 +73,6 @@ public class BasisReportController {
         List<String> list = DateUtils.getPeriod(startDate, endDate);
         String[] newDate = list.toArray(new String[list.size()]);
         Map<String, List<StructureReportEntity>> responseDate = basisReportService.getReportDate(newDate, devices, dateType, reportType,start,limit,sort, dataId, dateName);
-        StructureReportEntity objEntity = new StructureReportEntity();
 
         int totalRows =0;
         for(List<StructureReportEntity> entity : responseDate.values()){
@@ -190,6 +192,51 @@ public class BasisReportController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 下载报告
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/report/downReportCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ModelAndView downReportCSV(HttpServletResponse response,
+                                       @RequestParam(value = "startDate", required = false) String startDate,
+                                       @RequestParam(value = "endDate", required = false) String endDate,
+                                       @RequestParam(value = "reportType", required = false, defaultValue = "1") int reportType,
+                                       @RequestParam(value = "devices", required = false, defaultValue = "0") int devices,
+                                       @RequestParam(value = "dateType", required = false, defaultValue = "0") int dateType,
+                                       @RequestParam(value = "dataId", required = false, defaultValue = "0") Long dataId) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        String yesterday = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+        if(startDate == null || startDate.equals("") ||startDate.equals("null")){
+            startDate = yesterday;
+            endDate = yesterday;
+        }else if(endDate == null || endDate.equals("") || startDate.equals("null")){
+            endDate = yesterday;
+        }
+        String redisKey = (startDate + "|" + endDate + "|" + devices + "|" + dateType + "|" + reportType + "|" + AppContext.getAccountId()+"|"+dataId);
+        String dateHead = startDate + " 至 " +endDate;
+        String filename = DateUtils.getYesterdayStr() + "-Performance.csv";
+        OutputStream os = null;
+        try {
+            response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
+            os = response.getOutputStream();
+            basisReportService.downReportCSV(os,redisKey,dateType,devices,reportType,dateHead);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (os != null) {
+                    os.flush();
+                    os.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
 }

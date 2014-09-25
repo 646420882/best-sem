@@ -2,6 +2,11 @@ var skipPage;
 var selectChange;
 var selectChangeVs;
 var selectChangeDet;
+var reportData;
+var reportDataVS;
+var accountBasisReport;
+var curve;
+var pieChart;
 $(function () {
     // 对Date的扩展，将 Date 转化为指定格式的String
     // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
@@ -239,6 +244,7 @@ $(function () {
          *生成报告按钮点击
          */
         $("#shengc").click(function () {
+            $("#downReport").empty();
             reportData();
         });
 
@@ -511,7 +517,7 @@ $(function () {
         });
     });
 //明细报告
-    var reportData = function () {
+    reportData = function () {
         $("#containerLegend").empty();
         $("#shujuthead").empty();
         $('#container').empty();
@@ -1108,35 +1114,11 @@ $(function () {
                     records = pageDetNumber;
                     typepage = 2;
                     $("#pagination2").pagination(pageDetNumber, getOptionsFromForm(pageIndex));
-                    /*if (judgeDet < 1) {
-                        var countNumber = 0;
-                        if (pageDetNumber % limitDet == 0) {
-                            countNumber = pageDetNumber / limitDet;
-                        } else {
-                            countNumber = (pageDetNumber / limitDet);
-                        }
-                        var page_html = "<a href='javascript:' id='pageUpDet' class='nextpage1'><span></span></a>"
-                        for (var i = 0; i < countNumber; i++) {
-                            if (i < 10) {
-                                if (i == 0) {
-                                    page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startDet = " + i + ";limitDet = " + (i + limitDet) + ";reportData()'>" + (i + 1) + "</a>";
-                                } else {
-                                    page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startDet = " + (i * limitDet) + ";limitDet = " + (i * limitDet + limitDet) + ";reportData()'>" + (i + 1) + "</a>";
-                                }
-                            } else {
-                                if (i == 0) {
-                                    page_html = page_html + "<a href='javascript:' class='ajc' cname='nameDet' onclick='javascript:startDet = " + i + ";limitDet = " + (i + limitDet) + ";reportData()' style='display:none'>" + (i + 1) + "</a>";
-                                } else {
-                                    page_html = page_html + "<a href='javascript:' cname='nameDet' onclick='javascript:startDet = " + (i * limitDet) + ";limitDet = " + (i * limitDet + limitDet) + ";reportData()' style='display:none'>" + (i + 1) + "</a>";
-                                }
-                            }
 
-                        }
-                        page_html = page_html + "<a href='javascript:' id='pageDownDet' class='nextpage2'><span></span></a>" +
-                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goDetID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goDet' class='page_go'> GO</a>"
-                        $("#pageDet").append(page_html);
-                        judgeDet++;
-                    }*/
+                    $("#downReport").empty();
+                    var downUrl = "startDate="+daterangepicker_start_date+"&endDate="+daterangepicker_end_date+"&reportType="+reportTypes
+                                 +"&devices="+devices+"&dateType="+dateLis+"&dataId="+dataid;
+                    $("#downReport").append("<a href='/report/downReportCSV?"+downUrl+"'  class='become fl'>下载报告</a>")
                 }
                     if (data.rows.length > 10) {
                         dateInterval = Math.round(data.rows.length / 10);
@@ -1151,7 +1133,7 @@ $(function () {
     var pageNumberVS = 0;
     var judgeVS = 0;
 //账户报告比较数据
-    var reportDataVS = function () {
+    reportDataVS = function () {
         var date3 = $("#inputTow").val();
         var devicesUser = $("#devicesUser").val();
         var dateLisUser = $("#dateLisUser").val();
@@ -1378,7 +1360,7 @@ $(function () {
      */
     var number = 0;
     var jci = 0;
-    var accountBasisReport = function () {
+    accountBasisReport = function () {
         $.ajax({
             url: "/account/accountReport",
             type: "GET",
@@ -1448,7 +1430,7 @@ $(function () {
     }
 
 //曲线图
-    var curve = function () {
+    curve = function () {
         $("#container").show();
         $("#imprDiv").empty();
         $("#clickDiv").empty();
@@ -1563,7 +1545,7 @@ $(function () {
     }
 //饼状图
     var a = 1;
-    var pieChart = function (showData, showName, showId) {
+    pieChart = function (showData, showName, showId) {
         $(showId).show();
         $("#container").hide()
         if (a == 1) {
