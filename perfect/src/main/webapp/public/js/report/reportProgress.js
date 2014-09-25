@@ -66,8 +66,8 @@ $(function(){
                     }
                 }
             }
-            $(vPb).children("#Tips").html("小提示：生成报告时，选择时间范围越广，花费时间越长。")
-            $(vPb).children('.elapsed').html("(第一次生成报告时需要时间较长！请耐心等待！)报告生成中！请稍后"+aString);
+           /* $(vPb).children("#Tips").html("小提示：生成报告时，选择时间范围越广，花费时间越长。")*/
+            $(vPb).children('.elapsed').html("报告生成中！请稍后"+aString);
             $(vPb).children('.pbar').children('.ui-progressbar-value').css('width', iPerc+'%');
             $("#jindut").val(iPerc.toFixed(1));
             // in case of Finish

@@ -522,7 +522,7 @@ $(function () {
         $("#costDiv").empty();
         $("#convDiv").empty();
 
-        $("#shuju").append("<div class='example'><div id='progress2'><div id='Tips'></div><div id='percentNumber'></div><div class='pbar'></div><div class='elapsed'></div></div></div>");
+        $("#shuju").append("<div class='example'><div id='progress2'><div id='percentNumber'></div><div class='pbar'></div><div class='elapsed'></div></div></div>");
         var isMin = 0;
         if(judety <= 0){
             isMin=8;

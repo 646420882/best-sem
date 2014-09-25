@@ -35,7 +35,7 @@
     <div class="addplan_top over">
          <ul>
              <li class="current">1、推广业务描述</li>
-             <li><span></span>1、关键词筛选</li>
+             <li><span></span>2、关键词筛选</li>
          </ul>
     </div>
      <div class="plan_under">

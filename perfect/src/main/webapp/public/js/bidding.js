@@ -250,6 +250,7 @@ $(function () {
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box6").css("display", "none");
+        $("#paiming").css("display", "none");
     });
     //弹窗内部切换
     $(".time_sl").click(function () {

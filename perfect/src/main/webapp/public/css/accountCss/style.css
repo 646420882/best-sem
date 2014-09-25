@@ -99,7 +99,6 @@
     border-radius: 15px;
     position: relative;
     z-index: 3;
-    /*    behavior: url(iecss3.htc);*/
     overflow: hidden;
 }
 .list01_top ul li {
@@ -196,7 +195,7 @@
     margin-right: 1%;
     margin-bottom:10px;
     white-space: nowrap;
-    overflow: hidden
+    overflow: hidden;
 }
 .list01_under2 ul li span {
     display: block;
@@ -208,7 +207,7 @@
 .list01_under2 ul li p {
     color: #fff;
     line-height: 20px;
-    font-siae: 14px;
+    font-size: 14px;
 }
 .list01_under2 ul li .blue1 {
     background: #34befe url(/public/img/blue1.png) center no-repeat;
@@ -1317,7 +1316,7 @@ ul.ztree.zTreeDragUL {
     border: 1px solid #eaf0f3;
     width: 101%;
     min-width: 900px;
-    *width:1200px;
+
     overflow: auto;
 }
 .list4 table thead {
@@ -1403,7 +1402,7 @@ ul.ztree.zTreeDragUL {
     overflow: hidden;
 }
 .box10,.box4{
-    width:400px;
+    *width:600px;
 }
 .box6{
     min-width:200px;
@@ -1500,7 +1499,7 @@ h2 .close {
     display: inline-block;
     *float:left;
     *display:block;
-    max-width:30px;
+    max-width:60px;
 }
 .main_bottom .w_list03 ul{
     margin-bottom:0px;
@@ -1671,11 +1670,11 @@ h2 .close {
     color: #1f50a1;
 }
 .zhanghu_input {
-    position: absolute;
     width: 26px;
     height: 11px;
     background: url(/public/img/zh_bottom.jpg) no-repeat;
-    margin-left: 30%;
+    margin-left: 45%;
+    overflow:hidden;
 }
 .zs_bottom {
     padding: 20px 10px 60px 10px;
@@ -1802,6 +1801,8 @@ h2 .close {
 }
 .z_bottom3 {
     margin-right: 3%;
+    overflow:hidden;
+    *width:30%;
 }
 .cy_menu {
     height: 36px;
@@ -2787,7 +2788,6 @@ text-align: left;
     display: inline-block;
     *float:left;
     margin: 5px 0px 0 0;
-
     cursor: pointer;
     position: relative;
     -webkit-border-radius: 100%;
@@ -2813,4 +2813,82 @@ text-align: left;
 .box .radio-btn{
 float:none;
 }
+.list04_top{
+    background:#e4eafa;
+}
+#rankTable tr td{
+    text-align: center;
+    border-right:1px solid #fff;
+}
+#rankTable {
+    border:1px solid #fff;
+}
+
+#seetingRules{
+    *width:458px;
+
+}
+#downloadData{
+    *width:400px;
+}
+.zhushou .pagination{
+    margin:20px 0;
+}
+.mainlist h3{
+    font-size:14px;
+}
+.chuangyi input{
+    height:22px;
+    line-height:22px;
+    width:98%;
+    *width:94%;
+    color:#ccc;
+}
+/*input[type=checkbox],
+input[type=radio]{
+    -webkit-appearance: none;
+    appearance: none;
+    width: 13px;
+    height: 13px;
+    margin: 0;
+    cursor: pointer;
+    vertical-align: middle;
+    background: #fff;
+    border: 1px solid #0086ff;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+}
+input[type=checkbox]:active,
+input[type=radio]:active {
+    border-color: #c6c6c6;
+    background: #ebebeb;
+}
+input[type=checkbox]:hover {
+    border-color: #c6c6c6;
+    -webkit-box-shadow: inset 0 2px 2px rgba(0,0,0,0.1);
+    -moz-box-shadow: inset 0 2px 2px rgba(0,0,0,0.1);
+    box-shadow: inset 0 2px 2px rgba(0,0,0,0.1);
+}
+input[type=checkbox]:checked,
+input[type=radio]:checked {
+    background: url(/public/img/input_checkbox.png) no-repeat center;
+}
+input[type=checkbox]:checked::after {
+    background: url(/public/img/input_checkbox.png) no-repeat center;
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+input[type=checkbox]:focus {
+    outline: none;
+    border-color:#4d90fe;
+}*/
+
+
 /* CSS Document */

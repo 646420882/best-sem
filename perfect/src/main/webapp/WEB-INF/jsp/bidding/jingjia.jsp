@@ -383,8 +383,8 @@
                 <span class="fl">当出价达不到排名时  </span>
 
                 <form class="fl" style=" margin-left:5px;">
-                    <input name="failed" type="radio" checked="checked" value="1"> &nbsp;自动匹配最佳排名
-                    &nbsp;<input type="radio" name="failed" value="2"> &nbsp;恢复账户设置 &nbsp;
+                    <input name="failed" type="radio" checked="checked" value="11"> &nbsp;自动匹配最佳排名
+                    &nbsp;<input type="radio" name="failed" value="12"> &nbsp;恢复账户设置 &nbsp;
                 </form>
             </li>
             <li>
@@ -430,7 +430,7 @@
     </div>
 </div>
 <!-------修改出价------------>
-<div class="box2" style="display:none">
+<div class="box2" style="display:none; *width:400px;">
     <h2 id="box2"><span class="fl">修改出价</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
@@ -480,7 +480,7 @@
 </div>
 
 <!---------修改访问网址----------->
-<div class="box4" style="display:none">
+<div class="box4" style="display:none;*width:400px;">
     <h2 id="box4"><span class="fl">修改访问网址</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
@@ -501,7 +501,7 @@
 </div>
 
 <!---------分组管理----------->
-<div class="box5" style="display:none">
+<div class="box5" style="display:none;*width:400px;*width:410px;">
     <h2 id="box5"><span class="fl">分组管理</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
@@ -528,14 +528,14 @@
 </div>
 
 <!--------------关键词当前排名----------------->
-<div class="box8" style="display:none">
+<div class="box" id="paiming" style="display:none;*width:410px;">
     <h2 id="box8"><span class="fl">当前排名</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
         <div class="gusuan_bottom1 over fl ">
             <table id="rankTable" border="0" cellspacing="0" width="100%">
                 <thead>
-                <tr class="list02_top">
+                <tr class="list04_top">
                     <td>地域</td>
                     <td>排名</td>
                 </tr>
@@ -547,7 +547,7 @@
 </div>
 
 <!---------自定义列----------->
-<div class="box6" style="display:none">
+<div class="box6" style="display:none; *width:280px;">
     <h2 id="box6"><span class="fl">自定义列</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
@@ -1308,7 +1308,7 @@ function getRank(keywordId) {
                     display: "block", height: $(document).height()
                 });
 
-                $(".box8").css({
+                $("#paiming").css({
                     left: ($("body").width() - $(".box8").width()) / 2 - 20 + "px",
                     top: ($(window).height() - $(".box8").height()) / 2 + $(window).scrollTop() + "px",
                     display: "block"

@@ -9,7 +9,7 @@
     background: none repeat scroll 0 0 #e4eafa;
     border: 1px solid #f3f5fd;
     color: #000;
-    height: 24px;
+    *height: 24px;
     margin-right: 8px;
     line-height: 24px;
     padding: 0 8px;
@@ -17,7 +17,6 @@
 
 .pagination a, .pagination span {
     display:inline-block;
-    height: 24px;
     margin-right: 8px;
     line-height: 24px;
     padding: 0 8px;

@@ -1170,7 +1170,7 @@
 
 <!---------下载账户----------->
 <div class="TB_overlayBG"></div>
-<div class="box" style="display:none" id="download">
+<div class="box" style="display:none;*width:400px;" id="download" >
     <h2 id="box2"><span class="fl">账户下载</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
@@ -1205,7 +1205,7 @@
     </div>
 </div>
 <!---------查找重复关键词----------->
-<div class="box3" style="display:none">
+<div class="box3" style="display:none;*width:400px;">
     <h2 id="box3">
         <span class="fl">查找重复关键词</span><a href="#" class="close">关闭</a></h2>
 
@@ -1244,7 +1244,7 @@
     </div>
 </div>
 <!---------估算工具----------->
-<div class="box4" style="display:none">
+<div class="box4" style="display:none;*width:520px;">
     <h2 id="box4">
         <span class="fl">估算工具</span><a href="#" class="close">关闭</a></h2>
 
@@ -1420,22 +1420,25 @@
     </div>
 </div>
 <%--创意修改弹出窗口--%>
-<div  class="box" style="display:none" id="jcUpdate">
+<div  class="box" style="display:none;*width:400px;" id="jcUpdate">
     <h2 id="dUpdate">
         <span class="fl">修改创意</span>
         <a href="#" class="close">关闭</a></h2>
     <div class="mainlist">
         <form id="cUpdateForm">
-            <input name="oid" type="hidden"/>
-            <label>创意标题:</label><input name="title" maxlength="50"/>
-            <label>创意描述1:</label><input name="description1" maxlength="80"/></br>
-            <label>创意描述2:</label><input name="description2" maxlength="80"/>
-            <label>默认访问URL:</label><input name="pcDestinationUrl" maxlength="1024"/></br>
-            <label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/>
-            <label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></br>
-            <label>移动显示URL:</label><input name="mobileDisplayUrl" maxlength="36"/>
-            <label>创意状态:</label><label id="cuStatus">暂无</label><input type="hidden" name="status"></br>
-            <label>是否启用:</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select>
+            <ul class="chuangyi">
+                <li><input name="oid" type="hidden"/></li>
+                <li><label>创意标题:</label><input name="title" maxlength="50"/></li>
+                <li><label>创意描述1:</label><input name="description1" maxlength="80"/></li>
+                <li><label>创意描述2:</label><input name="description2" maxlength="80"/></li>
+                <li><label>默认访问URL:</label><input name="pcDestinationUrl" maxlength="1024"/></li>
+                <li><label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/></li>
+                <li><label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></li>
+                <li><label>移动显示URL:</label><input name="mobileDisplayUrl" maxlength="36"/></li>
+                <li> <label>创意状态:</label><label id="cuStatus">暂无</label><input type="hidden" name="status"></li>
+                <li><label>是否启用:</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select></li>
+            </ul>
+
         </form>
     </div>
     <div class="main_bottom">

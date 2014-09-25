@@ -24,17 +24,45 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style>
-        .example{background:#FFF;width:650px;font-size:80%;margin:20px auto;padding:15px;position:relative;-moz-border-radius: 3px;-webkit-border-radius: 3px}
-         h3 {text-align:center}
-        .ui-progressbar-value {display:block !important;color: #F7B54A;}
-        .pbar {overflow: hidden;}
-        .percent {position:relative;text-align: right;}
-        .elapsed {position:relative;margin: 10px 0px 0px 250px;}
+        .example{
+            background:#FFF;
+            width:650px;
+            margin:20px auto;
+            padding:15px;
+            position:relative;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            line-height:24px;}
+         h3 {
+             text-align:center
+         }
+        .ui-progressbar-value {
+            display:block !important;
+            color: #F7B54A;
+        }
+        .pbar {
+            overflow: hidden;
+        }
+        .percent {
+            position:relative;
+            text-align: right;
+        }
+        .elapsed {
+            position:relative;
+            font-size:14px;
+            margin: 10px 0px 0px 0px;
+            color:#F7B54A;
+            font-weight:bold;
+        }
         .pbar .ui-widget-header {
             border: 1px solid #ddd;
             background: #F7B54A;
             color: #444;
             font-weight: bold;
+        }
+        #percentNumber b{
+            line-height:2em;
+            margin:0px 5px 0 0 ;
         }
 
     </style>
@@ -230,7 +258,7 @@
     </div>
 </div>
 <div class="list01_under3 over">
-    <div class="list3 wd">
+    <div class="list3 over">
         <table border="0" cellspacing="0" cellspacing="0">
             <thead>
             <tr class="list2_top" id="trTop">
@@ -318,10 +346,10 @@
         </table>
     </div>
     <!--<div class="page2 fl" id="pageVS"></div>-->
-    <div id="pagination1" class="pagination"></div>
-    <div id="pageNumberVSSelect">
+    <div id="pageNumberVSSelect " class="over">
         <span class='fr'>每页显示<select id='importKeywordSelVS' onchange='selectChangeVs()'><option value='20'>20个</option><option value='50'>50个</option><option value='100'>100个</option></select> </span>
     </div>
+    <div id="pagination1" class="pagination over"></div>
 </div>
 </div>
 <div class="containers hides over">
@@ -367,7 +395,7 @@
         <div class="list01_under3 over">
 
             <div class="list3 wd" style="overflow-x: auto; width: 100%;">
-                <table border="0" cellspacing="0" cellspacing="0" style="width:1600px;">
+                <table border="0" cellspacing="0" cellspacing="0" >
                     <thead id="shujuthead">
 
                     </thead>
@@ -380,10 +408,10 @@
                 </table>
             </div>
             <!--<div class="page2 fl" id="pageDet"></div>-->
-            <div id="pagination2" class="pagination"></div>
-            <div id="pageNumberDetSelect">
+            <div id="pageNumberDetSelect" class="over">
                 <span class='fr'>每页显示<select id='importKeywordSelDet' onchange='selectChangeDet()'><option value='20'>20个</option><option value='50'>50个</option><option value='100'>100个</option></select> </span>
             </div>
+            <div id="pagination2" class="pagination over"></div>
             <br/>
             <div class="tubiao2 over">
                 <div id="containerLegend"></div>
