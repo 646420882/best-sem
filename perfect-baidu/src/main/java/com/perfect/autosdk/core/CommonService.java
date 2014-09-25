@@ -266,8 +266,6 @@ public abstract class CommonService implements Config {
         authHeader.setToken(token);
         authHeader.setTarget(target);
 
-        if(log.isDebugEnabled())
-            log.debug("Current user: " + username);
     }
 
     /**

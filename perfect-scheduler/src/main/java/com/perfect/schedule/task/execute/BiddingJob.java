@@ -28,7 +28,7 @@ import java.util.*;
  *
  * @author yousheng
  */
-@Component("biddingJob")
+@Deprecated
 public class BiddingJob {
 
     private Logger logger = LoggerFactory.getLogger(BiddingJob.class);

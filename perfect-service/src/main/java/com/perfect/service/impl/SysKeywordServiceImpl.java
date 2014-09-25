@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by vbzer_000 on 2014/8/27.
  */
-@Component
+@Component("sysKeywordService")
 public class SysKeywordServiceImpl implements SysKeywordService {
 
     @Resource

@@ -1,21 +1,19 @@
 package com.perfect.bidding.core;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
-import org.springframework.stereotype.Component;
 
 /**
  * Created by vbzer_000 on 2014/9/23.
  */
 
-@Component
-public class AccountRunnableFactory extends AbstractFactoryBean<AccountRunnable> {
+public class AccountRunnableFactory extends AbstractFactoryBean<AccountWorker> {
     @Override
     public Class<?> getObjectType() {
-        return AccountRunnable.class;
+        return AccountWorker.class;
     }
 
     @Override
-    protected AccountRunnable createInstance() throws Exception {
+    protected AccountWorker createInstance() throws Exception {
 
         return null;
     }

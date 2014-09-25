@@ -2,7 +2,6 @@ package com.perfect.api.baidu;
 
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.GetPreviewRequest;
-import com.perfect.autosdk.sms.v3.GetPreviewResponse;
 import com.perfect.autosdk.sms.v3.SublinkInfo;
 import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.dto.CreativeDTO;
@@ -122,15 +121,18 @@ public class BaiduSpiderHelper {
         }
     }
 
-    private static void  handleLeft(Document doc, final List<CreativeDTO> leftCreativeVOList) {
+    private static void handleLeft(Document doc, final List<CreativeDTO> leftCreativeVOList) {
         LinkedList<CreativeDTO> creativeDTOList = new LinkedList<>();
 
         //获取左侧推广数据
         if (doc.select("#content_left > table").isEmpty()) {
             //div
             // ec_title
-            Elements elements = doc.select("#content_left > div");
+            Elements elements = doc.select("#content_left > .Ec_result");
             for (Element element : elements) {
+                if (element.attr("id").startsWith("5"))
+                    continue;
+
                 CreativeDTO creativeDTO = new CreativeDTO();
                 creativeDTO.setDescSource(element.html());
                 creativeDTO.setTitle(element.select(".ec_title").text());
@@ -260,11 +262,16 @@ public class BaiduSpiderHelper {
 
     public static List<PreviewData> crawl(String keyword, Integer region) {
 
-        Future<String> response = RequestHelper.addRequest(keyword,region);
+        Future<String> response = RequestHelper.addRequest(keyword, region);
         Map<String, String> htmls = new HashMap<>();
 
         try {
-            htmls.put(keyword, response.get());
+            while (!response.isDone()) {
+                Thread.sleep(100);
+            }
+            String html = response.get();
+
+            htmls.put(keyword, html);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -292,14 +299,12 @@ public class BaiduSpiderHelper {
             list.addAll(rightCreativeVOList);
 
             try {
-                EsRunnable esRunnable = (EsRunnable) ApplicationContextHelper.getBeanByClass(EsRunnable.class);
+                EsRunnable esRunnable = new EsRunnable();
                 esRunnable.setKeyword(keyword);
                 esRunnable.setRegion(region);
                 esRunnable.setList(list);
 
-                EsThreadPoolTaskExecutor executors = (EsThreadPoolTaskExecutor) ApplicationContextHelper.getBeanByClass(EsThreadPoolTaskExecutor
-                        .class);
-                executors.execute(esRunnable);
+                EsThreadPoolTaskExecutor.execute(esRunnable);
             } catch (Exception e) {
                 if (logger.isErrorEnabled()) {
                     logger.error("ES error", e);

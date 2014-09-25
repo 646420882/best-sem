@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author yousheng
  */
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Deprecated
 public class BiddingSubTask implements Runnable {
 
     private Logger logger = LoggerFactory.getLogger(BiddingSubTask.class);

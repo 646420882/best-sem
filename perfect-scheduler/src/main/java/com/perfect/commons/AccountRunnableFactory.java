@@ -1,13 +1,12 @@
 package com.perfect.commons;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
-import org.springframework.stereotype.Component;
 
 /**
  * Created by vbzer_000 on 2014/9/23.
  */
 
-@Component
+@Deprecated
 public class AccountRunnableFactory extends AbstractFactoryBean<AccountRunnable> {
     @Override
     public Class<?> getObjectType() {

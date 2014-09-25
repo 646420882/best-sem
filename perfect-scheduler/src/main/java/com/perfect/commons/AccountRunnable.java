@@ -36,6 +36,7 @@ import java.util.List;
 /**
  * Created by vbzer_000 on 2014/9/23.
  */
+@Deprecated
 public class AccountRunnable implements Runnable {
 
     private Logger logger = LoggerFactory.getLogger(AccountRunnable.class);

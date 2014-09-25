@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 /**
  * Created by Administrator on 14-9-4.
  */
-@Component
+@Component("biddingLogService")
 public class BiddingLogServiceImpl implements BiddingLogService {
 
     @Resource

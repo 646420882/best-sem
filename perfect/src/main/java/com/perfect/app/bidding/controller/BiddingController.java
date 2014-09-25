@@ -159,6 +159,7 @@ public class BiddingController {
             strategyEntity.setMode(param.getMode());
 
             //竞价次数
+            strategyEntity.setAuto(param.getAuto());
             strategyEntity.setRunByTimes(param.getRunByTimes());
             biddingRuleEntity.setCurrentTimes(param.getRunByTimes());
             // 目标区域

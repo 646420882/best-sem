@@ -4,7 +4,6 @@ import com.google.common.io.Files;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.GetPreviewRequest;
 import com.perfect.autosdk.sms.v3.GetPreviewResponse;
-import com.perfect.autosdk.sms.v3.RankService;
 import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.dao.FarmDAO;
 import com.perfect.entity.UrlEntity;
@@ -35,9 +34,6 @@ public class RequestHelper {
 
     private static Map<String, Semaphore> accountSemaphore = new ConcurrentHashMap<>();
 
-    @Resource
-    private FarmDAO farmDAO;
-
     private static ExecutorService crawlExecutor = Executors.newCachedThreadPool();
 
     @Deprecated
@@ -46,39 +42,42 @@ public class RequestHelper {
     @Deprecated
     public GetPreviewResponse addRequest(CommonService commonService, GetPreviewRequest request) {
 
-        String token = commonService.getToken();
-
-        if (!executorServiceMap.containsKey(token)) {
-            executorServiceMap.put(token, Executors.newSingleThreadExecutor());
-        }
-
-        if (!accountSemaphore.containsKey(token)) {
-            accountSemaphore.put(token, new Semaphore(1));
-        }
-
-        AccountRequestSender sender = new AccountRequestSender(commonService,
-                request, accountSemaphore.get(token));
-
-
-        Future<GetPreviewResponse> future = executorServiceMap.get(token).submit(sender);
-        try {
-            return future.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+//        String token = commonService.getToken();
+//
+//        if (!executorServiceMap.containsKey(token)) {
+//            executorServiceMap.put(token, Executors.newSingleThreadExecutor());
+//        }
+//
+//        if (!accountSemaphore.containsKey(token)) {
+//            accountSemaphore.put(token, new Semaphore(1));
+//        }
+//
+//        AccountRequestSender sender = new AccountRequestSender(commonService,
+//                request, accountSemaphore.get(token));
+//
+//
+//        Future<GetPreviewResponse> future = executorServiceMap.get(token).submit(sender);
+//        try {
+//            return future.get();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
 
         return null;
     }
 
 
+    @Deprecated
     public Future<String> addRequest(GetPreviewRequest request) {
 
-        UrlSearchCallable urlSender = new UrlSearchCallable(request, farmDAO);
-        System.out.println("add!");
-        Future<String> future = this.crawlExecutor.submit(urlSender);
-        return future;
+//        UrlSearchCallable urlSender = new UrlSearchCallable(request, farmDAO);
+//        System.out.println("add!");
+//        Future<String> future = this.crawlExecutor.submit(urlSender);
+//        return future;
+
+        return null;
     }
 
 
@@ -98,49 +97,44 @@ public class RequestHelper {
     }
 
 
-    private static class AccountRequestSender implements Callable<GetPreviewResponse> {
-
-
-        private final CommonService commonService;
-        private final GetPreviewRequest request;
-        private Semaphore semaphore;
-
-        public AccountRequestSender(CommonService commonService, GetPreviewRequest request, Semaphore semaphore) {
-            this.commonService = commonService;
-            this.request = request;
-            this.semaphore = semaphore;
-        }
-
-        @Override
-        public GetPreviewResponse call() throws Exception {
-
-            try {
-                semaphore.acquire();
-                RankService rankService = null;
-                rankService = commonService.getService(RankService.class);
-                GetPreviewResponse response = rankService.getPreview(request);
-                Thread.sleep(3000);
-                return response;
-            } catch (Exception ie) {
-
-            } finally {
-                semaphore.release();
-            }
-            return null;
-        }
-    }
+//    private static class AccountRequestSender implements Callable<GetPreviewResponse> {
+//
+//
+//        private final CommonService commonService;
+//        private final GetPreviewRequest request;
+//        private Semaphore semaphore;
+//
+//        public AccountRequestSender(CommonService commonService, GetPreviewRequest request, Semaphore semaphore) {
+//            this.commonService = commonService;
+//            this.request = request;
+//            this.semaphore = semaphore;
+//        }
+//
+//        @Override
+//        public GetPreviewResponse call() throws Exception {
+//
+//            try {
+//                semaphore.acquire();
+//                RankService rankService = null;
+//                rankService = commonService.getService(RankService.class);
+//                GetPreviewResponse response = rankService.getPreview(request);
+//                Thread.sleep(3000);
+//                return response;
+//            } catch (Exception ie) {
+//
+//            } finally {
+//                semaphore.release();
+//            }
+//            return null;
+//        }
+//    }
 
 
     static class UrlSearchCallable implements Callable<String> {
 
         private static final int BUFFER_SIZE = 1024 * 20;
-        private FarmDAO farmDAO;
         private String keyword;
         private Integer region;
-
-        public UrlSearchCallable(GetPreviewRequest request, FarmDAO farmDAO) {
-            this.farmDAO = farmDAO;
-        }
 
         public UrlSearchCallable(String keyword, Integer region) {
             this.keyword = keyword;
@@ -150,7 +144,7 @@ public class RequestHelper {
         @Override
         public String call() throws Exception {
             UrlEntity urlEntity = null;
-            FarmDAO farmDAO = (FarmDAO) ApplicationContextHelper.getBeanByClass(FarmDAO.class);
+            FarmDAO farmDAO = (FarmDAO) ApplicationContextHelper.getBeanByName("farmDAO");
             try {
                 while (true) {
 
@@ -182,18 +176,16 @@ public class RequestHelper {
                             }
                             Files.write(out.toByteArray(), new File(keyword + ".html"));
                             String html = out.toString();
-                            if (html.contains("频繁")) {
-
-                                if (logger.isInfoEnabled()) {
-                                    logger.info("===== " + keyword + " 操作过于频繁,休息10秒");
+                            if (html.length() < 5000 && html.contains("频繁")) {
+                                if (logger.isDebugEnabled()) {
+                                    logger.debug("===== " + keyword + " 操作过于频繁,休息10秒");
                                 }
-
                                 Thread.sleep(10000);
                                 if (urlEntity != null && urlEntity.getId() != null) {
                                     urlEntity.setFinishTime(System.currentTimeMillis() + 5000);
                                     farmDAO.returnOne(urlEntity);
-                                    if (logger.isInfoEnabled()) {
-                                        logger.info("----- " + keyword + " return :  " + urlEntity.getId() +
+                                    if (logger.isDebugEnabled()) {
+                                        logger.debug("----- " + keyword + " return :  " + urlEntity.getId() +
                                                 " " +
                                                 urlEntity.getFinishTime());
                                     }
@@ -202,22 +194,26 @@ public class RequestHelper {
                             }
                             return out.toString();
                         } catch (ZipException ze) {
-                            is = method.getResponseBodyAsStream();
-                            int count;
-                            byte[] bytes = new byte[BUFFER_SIZE];
-                            ByteArrayOutputStream out = new ByteArrayOutputStream();
-                            while ((count = is.read(bytes)) != -1) {
-                                out.write(bytes, 0, count);
+
+                            if (logger.isWarnEnabled()) {
+                                logger.warn(urlEntity.getId() + " 需要重新登录.");
                             }
-                            Files.write(out.toByteArray(), new File(keyword + ".html"));
-                            String html = out.toString();
-                            if (html.contains("redirecturl")) {
-                                System.out.println("该账号过期.");
-                                farmDAO.delete(urlEntity.getId());
-                                urlEntity.setId(null);
-                            }
-                            Thread.sleep(10000);
+                            farmDAO.delete(urlEntity.getId());
                             continue;
+
+//                            is = method.getResponseBodyAsStream();
+//                            int count;
+//                            byte[] bytes = new byte[BUFFER_SIZE];
+//                            ByteArrayOutputStream out = new ByteArrayOutputStream();
+//                            while ((count = is.read(bytes)) != -1) {
+//                                out.write(bytes, 0, count);
+//                            }
+//                            Files.write(out.toByteArray(), new File(keyword + ".html"));
+//                            String html = out.toString();
+//                            if (html.contains("redirecturl")) {
+//                            }
+//                            Thread.sleep(10000);
+//                            continue;
                         }
                     }
                 }
@@ -228,8 +224,8 @@ public class RequestHelper {
                 if (urlEntity != null && urlEntity.getId() != null) {
                     urlEntity.setFinishTime(System.currentTimeMillis() + 3000);
                     farmDAO.returnOne(urlEntity);
-                    if (logger.isInfoEnabled()) {
-                        logger.info("----- " + keyword + " return :  " + urlEntity.getId() +
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("----- " + keyword + " return :  " + urlEntity.getId() +
                                 " " +
                                 urlEntity.getFinishTime());
                     }

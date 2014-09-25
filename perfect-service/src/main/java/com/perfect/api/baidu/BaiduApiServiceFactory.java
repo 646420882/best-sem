@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 /**
  * Created by vbzer_000 on 14-9-18.
  */
-@Component
+@Component("baiduApiServiceFactory")
 public class BaiduApiServiceFactory {
 
     @Resource

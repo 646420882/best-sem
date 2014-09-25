@@ -10,13 +10,7 @@ import javax.annotation.Resource;
 /**
  * Created by vbzer_000 on 2014/9/16.
  */
-@Component("esRunnableFactory")
 public class EsRunnableFactory extends AbstractFactoryBean<EsRunnable> {
-    @Resource
-    private ElasticsearchTemplate elasticsearchTemplate;
-
-    @Resource
-    private CreativeSourceService creativeSourceService;
 
     @Override
     public Class<?> getObjectType() {
@@ -26,8 +20,6 @@ public class EsRunnableFactory extends AbstractFactoryBean<EsRunnable> {
     @Override
     protected EsRunnable createInstance() throws Exception {
         EsRunnable runnable = new EsRunnable();
-        runnable.setCreativeSourceService(creativeSourceService);
-        runnable.setElasticsearchTemplate(elasticsearchTemplate);
         return runnable;
     }
 

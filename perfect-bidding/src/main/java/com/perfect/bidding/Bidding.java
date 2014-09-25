@@ -1,11 +1,12 @@
 package com.perfect.bidding;
 
+import com.perfect.bidding.core.JobBoostrap;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Created by vbzer_000 on 2014/9/24.
  */
-public class Main {
+public class Bidding {
 
     public static void main(String[] args) {
         String xml = "bidding.xml";
@@ -15,6 +16,8 @@ public class Main {
         }
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(xml);
+
+        JobBoostrap jobBoostrap = context.getBean(JobBoostrap.class);
 
         while (true) {
             try {

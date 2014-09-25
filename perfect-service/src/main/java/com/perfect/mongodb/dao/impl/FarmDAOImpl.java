@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +42,16 @@ public class FarmDAOImpl extends AbstractSysBaseDAOImpl<UrlEntity, String> imple
     public void returnOne(UrlEntity urlEntity) {
         urlEntity.setIdle(true);
         getSysMongoTemplate().save(urlEntity);
+    }
+
+    @Override
+    /*
+     查询最后执行时间在5分钟之前的账号
+     */
+    public List<UrlEntity> allIdle() {
+        return getSysMongoTemplate().find(Query.query(Criteria.where("i").is(true).and("f").lte(System
+                .currentTimeMillis() - 5 * 60 * 1000))
+                .with(new Sort(Sort.Direction.ASC, "f")), getEntityClass());
     }
 
 }
