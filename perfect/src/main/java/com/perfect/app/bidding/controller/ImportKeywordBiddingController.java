@@ -108,7 +108,8 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                                    @RequestParam(value = "imId", required = true) String[] imId,
                                    @RequestParam(value = "imap") String[] imap,
                                    @RequestParam(value = "imbiddingStatus") String[] imbiddingStatus,
-                                   @RequestParam(value = "imrule") String[] imrule) {
+                                   @RequestParam(value = "imrule") String[] imrule,
+                                   @RequestParam(value = "imadgroupId") String[] imadgroupId) {
         List<KeywordImEntity> keywordImEntities = new ArrayList<>();
         //判断是否选择的关键词不止一个，如果不止一个，就进行循环添加
         if (imap.length > 1) {
@@ -122,6 +123,7 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                     keywordImEntity.setKeywordName(imap[i]);
                     keywordImEntity.setBiddingStatus(imbiddingStatus[i]);
                     keywordImEntity.setRule(Boolean.parseBoolean(imrule[i]));
+                    keywordImEntity.setAdgroupId(Long.valueOf(imadgroupId[i]));
                     keywordImEntities.add(keywordImEntity);
                 }
             }
@@ -139,6 +141,7 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                 keywordImEntity.setKeywordName(imap[0]);
                 keywordImEntity.setBiddingStatus(imbiddingStatus[0]);
                 keywordImEntity.setRule(Boolean.parseBoolean(imrule[0]));
+                keywordImEntity.setAdgroupId(Long.valueOf(imadgroupId[0]));
                 keywordImEntities.add(keywordImEntity);
                 keywordImService.insert(keywordImEntity);
             }
@@ -147,29 +150,67 @@ public class ImportKeywordBiddingController extends WebContextSupport {
         return null;
     }
 
-    @RequestMapping(value = "/loadData", method = {RequestMethod.GET,RequestMethod.POST},produces = "application/json")
+    @RequestMapping(value = "/loadData", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json")
     public ModelAndView loadData(
-                                 @RequestParam(value = "cgId", required = false) String cgId,
-                                 @RequestParam(value = "s", required = false, defaultValue = "0") int skip,
-                                 @RequestParam(value = "l", required = false, defaultValue = "20") int limit,
-                                 @RequestParam(value = "sort", required = false, defaultValue = "name") String sort,
-                                 @RequestParam(value = "o", required = false, defaultValue = "true") boolean asc) {
+            @RequestParam(value = "cgId", required = false) String cgId,
+            @RequestParam(value = "campaignId", required = false) Long campaignId,
+            @RequestParam(value = "adgroupId", required = false) Long adgroupId,
+            @RequestParam(value = "keywordName", required = false) String keywordName,
+            @RequestParam(value = "s", required = false, defaultValue = "0") int skip,
+            @RequestParam(value = "l", required = false, defaultValue = "20") int limit,
+            @RequestParam(value = "sort", required = false, defaultValue = "name") String sort,
+            @RequestParam(value = "o", required = false, defaultValue = "true") boolean asc
+    ) {
         AbstractView jsonView = new MappingJackson2JsonView();
-        System.out.println(cgId+">>>>");
         List<KeywordEntity> entities = null;
-        Integer  total = 0;
-        List<KeywordImEntity> keywordImEntities = keywordImService.findByCgId(cgId);
-        if (keywordImEntities.size() > 0) {
+        Integer total = 0;
+        List<KeywordImEntity> keywordImEntities = null;
+        PaginationParam param = new PaginationParam();
+        if (campaignId != null || adgroupId == null || keywordName != null) {
+            param.setOrderBy(sort);
+            param.setAsc(asc);
+        } else {
+            param.setOrderBy(sort);
+            param.setAsc(asc);
+            param.setStart(skip);
+            param.setLimit(limit);
+        }
+
+        if (cgId != null) {
+            keywordImEntities = keywordImService.findByCgId(cgId);
             List<Long> keywordIds = new ArrayList<>(keywordImEntities.size());
             for (KeywordImEntity kwd : keywordImEntities) {
                 keywordIds.add(kwd.getKeywordId());
             }
-            PaginationParam param = new PaginationParam();
-            param.setStart(skip);
-            param.setLimit(limit);
-            param.setOrderBy(sort);
-            param.setAsc(asc);
+            entities = sysKeywordService.findByIds(keywordIds, param);
+        } else {
+            keywordImEntities = keywordImService.getAll();
+            List<Long> keywordIds = new ArrayList<>(keywordImEntities.size());
+            for (KeywordImEntity kwd : keywordImEntities) {
+                keywordIds.add(kwd.getKeywordId());
+            }
             entities = sysKeywordService.findByIds(keywordIds);
+        }
+
+
+        if (entities != null) {
+
+            //根据筛选条件处理数据
+
+            //判定，如果只传入计划编号
+            if (campaignId != null && adgroupId == null) {
+                //查询单元列表
+                List<AdgroupEntity> adgroupEntityList = sysAdgroupService.findIdByCampaignId(campaignId);
+                //定义单元编号列表
+                List<Long> adGroupIds = new ArrayList<>(adgroupEntityList.size());
+                for (AdgroupEntity adgroupEntity : adgroupEntityList) {
+                    adGroupIds.add(adgroupEntity.getAdgroupId());
+                }
+                entities=sysKeywordService.findByIds(keywordImService.findByAdgroupIds(adGroupIds));
+            } else if (campaignId != null && adgroupId != null) {
+                entities=sysKeywordService.findByIds(keywordImService.findByAdgroupId(adgroupId));
+            }
+
 
             //获取entities的质量度
             Map<Long, KeywordReportDTO> keywordReportDTOHashMap = new HashMap<>();
@@ -194,9 +235,9 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                 keywordReportDTO.setCampaignName(campaignEntity.getCampaignName());
                 keywordReportDTO.setAdgroupName(adgroupEntity.getAdgroupName());
 
-                //setting quality
-                keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
-                keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
+                //setting quality/暂时注释掉，配额不够！
+//                keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
+//                keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
 
                 if (entity.getStatus() != null) {
                     keywordReportDTO.setStatusStr(KeywordStatusEnum.getName(entity.getStatus()));
@@ -222,16 +263,15 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                 dto.setImpression(NumberUtils.getInteger(entity.getPcImpression()));
             }
             total = keywordImEntities.size();
-            Map<String, Object> attributes=new HashMap<>();
-            attributes=JSONUtils.getJsonMapData(resultList);
-            if(total>0){
-                attributes.put("records",total);
+            Map<String, Object> attributes = new HashMap<>();
+            attributes = JSONUtils.getJsonMapData(resultList);
+            if (total > 0) {
+                attributes.put("records", total);
             }
             jsonView.setAttributesMap(attributes);
             return new ModelAndView(jsonView);
-            // 获取报告信息
-        }else{
-            jsonView.setAttributesMap(new HashMap<String,Object>());
+        } else {
+            jsonView.setAttributesMap(new HashMap<String, Object>());
             return new ModelAndView(jsonView);
         }
     }

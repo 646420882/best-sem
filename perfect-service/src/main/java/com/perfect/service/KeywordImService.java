@@ -11,4 +11,7 @@ import java.util.List;
 public interface KeywordImService extends MongoCrudRepository<KeywordImEntity,Long> {
     KeywordImEntity findByKwdId(Long kwdId);
     List<KeywordImEntity> findByCgId(String cgId);
+    List<KeywordImEntity> getAll();
+    List<Long> findByAdgroupIds(List<Long> adgroupIds);
+    List<Long> findByAdgroupId(Long adgroupId);
 }

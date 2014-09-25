@@ -20,6 +20,7 @@ $(function () {
         if (lis.eq(0).hasClass("selected")) {
             type = 1;
         } else {
+            changeGridCol();
             initImzTree();
             type = 2;
         }

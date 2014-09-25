@@ -10,4 +10,7 @@ import java.util.List;
 public interface KeywordImDAO extends MongoCrudRepository<KeywordImEntity,Long>  {
     public KeywordImEntity findByKwdId(Long kwdId);
     public List<KeywordImEntity> findByCgId(String cgId);
+    public List<KeywordImEntity> getAll();
+    public List<Long> findByAdgroupIds(List<Long> adgroupIds);
+    List<Long> findByAdgroupId(Long adgroupId);
 }

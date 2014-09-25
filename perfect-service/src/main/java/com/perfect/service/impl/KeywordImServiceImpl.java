@@ -37,4 +37,19 @@ public class KeywordImServiceImpl extends AbstractUserBaseDAOImpl<KeywordImEntit
     public List<KeywordImEntity> findByCgId(String cgId) {
         return keywordImDAO.findByCgId(cgId);
     }
+
+    @Override
+    public List<KeywordImEntity> getAll() {
+        return keywordImDAO.getAll();
+    }
+
+    @Override
+    public List<Long> findByAdgroupIds(List<Long> adgroupIds) {
+        return keywordImDAO.findByAdgroupIds(adgroupIds);
+    }
+
+    @Override
+    public List<Long> findByAdgroupId(Long adgroupId) {
+        return keywordImDAO.findByAdgroupId(adgroupId);
+    }
 }

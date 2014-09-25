@@ -4,14 +4,12 @@
 <head>
     <title>大数据智能营销</title>
     <meta charset="utf-8">
-    <meta id="viewport" name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/grid/ui.jqgrid.css">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style type="text/css">
         .tab_box {
@@ -222,32 +220,34 @@
                     <div class="w_list03">
                         <ul class="jiangjia_list">
                             <li class="current Screenings">筛选2</li>
-                            <li class="showbox3">暂停竞价2</li>
-                            <li class="showbox2">修改出价2</li>
-                            <li class="showbox4">修改访问网址2</li>
+                            <li id="showbox3_im">暂停竞价2</li>
+                            <li id="showbox2_im">修改出价2</li>
+                            <li id="showbox4_im">修改访问网址2</li>
                             <li id="showbox5_im">分组2</li>
                             <li class="showbox6">自定义列2</li>
                         </ul>
                         <div class="Screening_concent over">
                             <div class="Screening_row over">
                             </div>
-                            <div class="Screening over wd">
-                                筛选设置：<span><input type="checkbox">&nbsp;<select>
-                                <option>按计划</option>
-                            </select>&nbsp;<input type="button" value="+" class="Screening_input"></span>
-                                <span><input type="checkbox">&nbsp;<select>
-                                    <option>按单元</option>
-                                </select>&nbsp;<input type="button" value="+" class="Screening_input1"></span>
-                                <span><input type="checkbox">&nbsp;
-                                   <input type="text" class="sc_input3" value="如何在网上推广"
-                                          onfocus="if(value=='如何在网上推广') {value=''}"
-                                          onblur="if (value=='') {value='如何在网上推广'}"></span>
-
+                            <div class="Screening over wd" id="search_div">
+                                筛选设置：<span><input type="checkbox" onclick="checkedStatus(this)">&nbsp;<select
+                                    name="campaignId" id="imCampaignSelect" onchange="imloadUnit(this.value)">
+                            </select>&nbsp;</span>
+                                <span><input type="checkbox" onclick="checkedStatus(this)">&nbsp;<select id="sUnit"
+                                                                                                         name="adgroupId">
+                                    <option value='-1'>--请选择单元--</option>
+                                </select>&nbsp;</span>
+                                <span><input type="checkbox" onclick="checkedStatus(this)">&nbsp;
+                                 <input type="text" class="sc_input3" value="如何在网上推广" name="keywordName"
+                                        onfocus="if(value=='如何在网上推广') {value=''}"
+                                        onblur="if (value=='') {value='如何在网上推广'}"></span>
+                                <span><input type="button" value="搜索" class="Screening_input1" id="imSearch"
+                                             onclick="imSearchSubmit(this)"></span>
                             </div>
                         </div>
 
                         <div class="list4">
-                            <table id="table2" border="0" cellspacing="0" width="100%">
+                            <table id="table2" border="0" cellspacing="0" width="101%">
                             </table>
                         </div>
                         <div id="pagination2" class="pagination"></div>
@@ -608,14 +608,11 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/grid/jquery.jqGrid.min.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/importKeyword/importKeywordBidding.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/importKeyword/importKeywordBidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">
@@ -712,6 +709,41 @@ function iMbeforeClick(treeId, treeNode) {
         grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
     }
 }
+//重点词竞价搜索按钮提交事件
+function imSearchSubmit(rs) {
+    if ($(rs).attr("class") != "Screening_input1") {
+        var _checkBox = $("#search_div input[type='checkbox']");
+        imSearchData = {};
+        for (var i = 0; i < _checkBox.length; i++) {
+            var _check = $("#search_div input[type='checkbox']:eq(" + i + ")");
+            if (_check.is(":checked") == true) {
+                imSearchData[_check.next().attr("name")] = _check.next().val();
+            }
+        }
+        if (imSearchData.campaignId != undefined && imSearchData.adgroupId != undefined) {
+            if (imSearchData.adgroupId == -1) {
+                alert("请选择一个单元!");
+            } else {
+                dataUrl2 = "/importBid/loadData?campaignId=" + imSearchData.campaignId + "&adgroupId=" + imSearchData.adgroupId;
+                grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
+            }
+        } else if (imSearchData.campaignId != undefined) {
+            if (imSearchData.campaignId == -1) {
+                alert("请选择一个计划!");
+            } else {
+                dataUrl2 = "/importBid/loadData?campaignId=" + imSearchData.campaignId;
+                grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
+            }
+        }else if(imSearchData.keywordName!=undefined){
+            dataUrl2 = "/importBid/loadData?keywordName=" + imSearchData.keywordName;
+            grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
+        }
+
+
+    } else {
+        alert("请选择筛选条件！");
+    }
+}
 var log, className = "dark";
 function beforeAsync(treeId, treeNode) {
     className = (className === "dark" ? "" : "dark");
@@ -748,6 +780,7 @@ var pageIndex = 0;
 var keyWordPage = -1;
 var VIPKeyWordPage = -1;
 var records = 0;
+var records2 = 0;
 var skip = 0;
 var limit = 20;
 
@@ -797,16 +830,35 @@ var getAllCheckedcb = function () {
     });
     return keywordIds;
 };
+var getAllCheckedcbIm = function () {
+    var rowIds = $("#table2").jqGrid('getGridParam', 'selarrrow');
+    var keywordIds = [];
+    rowIds.forEach(function (rowId) {
+        keywordIds.push(grid2.jqGrid('getCell', rowId, "keywordId"));
+    });
+    return keywordIds;
+};
 
 var getAllSelectedBidRule = function () {
     var rowIds = $("#table1").jqGrid('getGridParam', 'selarrrow');
     var keywordIds = [];
-    $.each(rowIds, function (rowId) {
-        if (grid.jqGrid('getCell', rowId, "biddingStatus") == "无") {
-            return true;
-        }
-        keywordIds.push(grid.jqGrid('getCell', rowId, "keywordId"));
-    });
+    for (var i = 0, l = rowIds.length; i < l; i++) {
+        if (grid.jqGrid('getCell', rowIds[i], "biddingStatus") == "无")
+            continue;
+
+        keywordIds.push(grid.jqGrid('getCell', rowIds[i], "keywordId"));
+    }
+    return keywordIds;
+};
+var getAllSelectedBidRuleIm = function () {
+    var rowIds = $("#table2").jqGrid('getGridParam', 'selarrrow');
+    var keywordIds = [];
+    for (var i = 0, l = rowIds.length; i < l; i++) {
+        if (grid.jqGrid('getCell', rowIds[i], "biddingStatus") == "无")
+            continue;
+
+        keywordIds.push(grid.jqGrid('getCell', rowIds[i], "keywordId"));
+    }
     return keywordIds;
 };
 
@@ -815,11 +867,14 @@ var changeGridCol = function () {
     $.each(cbs, function (i, item) {
         if (item.checked) {
             $("#table1").setGridParam().showCol(item.value);
+            $("#table2").setGridParam().showCol(item.value);
         } else {
             $("#table1").setGridParam().hideCol(item.value);
+            $("#table2").setGridParam().hideCol(item.value);
         }
     });
     $("#table1").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
+    $("#table2").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
 //    $("#table1").closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
     $(".TB_overlayBG").css("display", "none");
     $(".box6").css("display", "none");
@@ -952,7 +1007,8 @@ $(function () {
             {label: ' Pc URL', name: 'pcDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
             {label: ' Mobile URL', name: 'mobileDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
             {label: ' 竞价状态', name: 'biddingStatus', sortable: false, align: 'center'},
-            {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true}
+            {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true},
+            {label: ' adgroupId', name: 'adgroupId', sortable: false, align: 'center', hidden: true}
         ],
 
         rowNum: 20,// 默认每页显示记录条数
@@ -989,6 +1045,8 @@ $(function () {
                     top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
                     display: "block"
                 });
+                selectedKeywordIds = [];
+                selectedKeywordIds.push(keywordId);
             }
 
             return false;
@@ -1056,7 +1114,7 @@ $(function () {
         mtype: "POST",
         jsonReader: {
             root: "rows",
-            records: "records",
+            records2: "records",
             repeatitems: false
         },
         forceFit: true,
@@ -1138,8 +1196,8 @@ $(function () {
 
         gridComplete: function () {
 //            alert(JSON.stringify($("#table1").jqGrid("getRowData")));
-            records = grid2.getGridParam("records");
-            if (records == 0) {
+            records2 = grid2.getGridParam("records");
+            if (records2 == 0) {
                 return false;
             }
             var graduateIds = jQuery("#table2").jqGrid('getDataIDs');
@@ -1180,7 +1238,7 @@ $(function () {
                 }
             }
 
-            $("#pagination2").pagination(records, getOptionsFromForm(pageIndex));
+            $("#pagination2").pagination(records2, getOptionsFromForm(pageIndex));
         }
     });
 });
