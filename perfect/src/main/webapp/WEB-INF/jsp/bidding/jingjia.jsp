@@ -734,6 +734,9 @@ function imSearchSubmit(rs) {
                 dataUrl2 = "/importBid/loadData?campaignId=" + imSearchData.campaignId;
                 grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
             }
+        }else if(imSearchData.keywordName!=undefined){
+            dataUrl2 = "/importBid/loadData?keywordName=" + imSearchData.keywordName;
+            grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
         }
 
 
@@ -777,6 +780,7 @@ var pageIndex = 0;
 var keyWordPage = -1;
 var VIPKeyWordPage = -1;
 var records = 0;
+var records2 = 0;
 var skip = 0;
 var limit = 20;
 
@@ -1110,7 +1114,7 @@ $(function () {
         mtype: "POST",
         jsonReader: {
             root: "rows",
-            records: "records",
+            records2: "records",
             repeatitems: false
         },
         forceFit: true,
@@ -1192,8 +1196,8 @@ $(function () {
 
         gridComplete: function () {
 //            alert(JSON.stringify($("#table1").jqGrid("getRowData")));
-            records = grid2.getGridParam("records");
-            if (records == 0) {
+            records2 = grid2.getGridParam("records");
+            if (records2 == 0) {
                 return false;
             }
             var graduateIds = jQuery("#table2").jqGrid('getDataIDs');
@@ -1234,7 +1238,7 @@ $(function () {
                 }
             }
 
-            $("#pagination2").pagination(records, getOptionsFromForm(pageIndex));
+            $("#pagination2").pagination(records2, getOptionsFromForm(pageIndex));
         }
     });
 });
