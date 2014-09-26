@@ -11,15 +11,15 @@
 
 
 .inputKwdDiv{
-    width:380px;
+    /*width:380px;*/
 }
 #setNegtiveWord .inputKwdDiv{
-    float:left;
-    margin-left: 16px;
+   /* float:left;
+    margin-left: 16px;*/
 }
 
 #setNegtiveWord{
-    width: 800px;
+    width: 724px;
 }
 
 
@@ -48,15 +48,17 @@
     background-color:gray;
 }
 .changeGreen{
-    background-color: #00D300;
+    background-color: #89a4e8;
+    color: #fff;
 }
 .hours>ul li{
-    float:left;
-    width:17px;
-    height:17px;
-    margin-left:3px;
     cursor: pointer;
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    margin-left: 3px;
     text-align: center;
+    width: 20px;
 }
 
 .hours>ul div{
@@ -75,7 +77,7 @@
 .chooseTime>ul .tfsjd span{
     width:15px;
     height:15px;
-    background-color: #00D300;
+    background-color: #89a4e8;
 }
 
 .chooseTime>ul li{
@@ -136,4 +138,7 @@
 
 .page ul{
    text-align: center;
+}
+.hours input[type="radio"], .hours input[type="checkbox"] {
+    margin:0 5px 0 0 ;
 }
