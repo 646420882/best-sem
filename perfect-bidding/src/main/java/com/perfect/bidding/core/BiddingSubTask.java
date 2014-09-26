@@ -175,7 +175,9 @@ public class BiddingSubTask implements Runnable {
                             KeywordType keywordType = new KeywordType();
                             keywordType.setKeywordId(keywordEntity.getKeywordId());
                             keywordType.setPrice(keywordEntity.getPrice().doubleValue());
-                            apiService.setKeywordPrice(keywordType);
+
+                            ApiWorker apiWorker = new ApiWorker(apiService, keywordType);
+                            ApiWorkerExecutor.execute(apiWorker);
 
                             biddingLogEntity.setAfter(BigDecimal.valueOf(keywordType.getPrice()));
                             biddingLogService.save(biddingLogEntity);
@@ -187,7 +189,8 @@ public class BiddingSubTask implements Runnable {
                         KeywordType keywordType = new KeywordType();
                         keywordType.setKeywordId(keywordEntity.getKeywordId());
                         keywordType.setPrice(currentPrice.doubleValue());
-                        apiService.setKeywordPrice(keywordType);
+                        ApiWorker apiWorker = new ApiWorker(apiService, keywordType);
+                        ApiWorkerExecutor.execute(apiWorker);
 
                         biddingLogService.save(biddingLogEntity);
 
@@ -201,6 +204,9 @@ public class BiddingSubTask implements Runnable {
         }
 
         done(biddingRuleEntity);
+        if (logger.isDebugEnabled()) {
+            logger.debug("竞价规则结束 " + keyword);
+        }
     }
 
     public void done(BiddingRuleEntity biddingRuleEntity) {

@@ -13,7 +13,6 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -64,18 +63,6 @@ public class RequestHelper {
 //        } catch (ExecutionException e) {
 //            e.printStackTrace();
 //        }
-
-        return null;
-    }
-
-
-    @Deprecated
-    public Future<String> addRequest(GetPreviewRequest request) {
-
-//        UrlSearchCallable urlSender = new UrlSearchCallable(request, farmDAO);
-//        System.out.println("add!");
-//        Future<String> future = this.crawlExecutor.submit(urlSender);
-//        return future;
 
         return null;
     }
@@ -154,8 +141,8 @@ public class RequestHelper {
                         Thread.sleep(500);
                         continue;
                     }
-                    if (logger.isInfoEnabled()) {
-                        logger.info("+++++ " + keyword + " obtains :  " + urlEntity.getId() + " " +
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("+++++ " + keyword + " obtains :  " + urlEntity.getId() + " " +
                                 urlEntity.getFinishTime());
                     }
                     String requestStr = urlEntity.getRequest();
@@ -177,15 +164,15 @@ public class RequestHelper {
                             Files.write(out.toByteArray(), new File(keyword + ".html"));
                             String html = out.toString();
                             if (html.length() < 5000 && html.contains("频繁")) {
-                                if (logger.isDebugEnabled()) {
-                                    logger.debug("===== " + keyword + " 操作过于频繁,休息10秒");
+                                if (logger.isWarnEnabled()) {
+                                    logger.warn("===== " + keyword + " 操作过于频繁,休息10秒");
                                 }
                                 Thread.sleep(10000);
                                 if (urlEntity != null && urlEntity.getId() != null) {
                                     urlEntity.setFinishTime(System.currentTimeMillis() + 5000);
                                     farmDAO.returnOne(urlEntity);
-                                    if (logger.isDebugEnabled()) {
-                                        logger.debug("----- " + keyword + " return :  " + urlEntity.getId() +
+                                    if (logger.isWarnEnabled()) {
+                                        logger.warn("----- " + keyword + " return :  " + urlEntity.getId() +
                                                 " " +
                                                 urlEntity.getFinishTime());
                                     }

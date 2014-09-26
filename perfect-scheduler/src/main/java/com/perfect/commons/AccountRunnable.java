@@ -287,7 +287,7 @@ public class AccountRunnable implements Runnable {
                                 KeywordType keywordType = new KeywordType();
                                 keywordType.setKeywordId(keywordEntity.getKeywordId());
                                 keywordType.setPrice(keywordEntity.getPrice().doubleValue());
-                                apiService.setKeywordPrice(keywordType);
+//                                apiService.setKeywordPrice(keywordType);
 
                                 biddingRuleEntity.setCurrentPrice(keywordEntity.getPrice());
 
@@ -301,7 +301,7 @@ public class AccountRunnable implements Runnable {
                             KeywordType keywordType = new KeywordType();
                             keywordType.setKeywordId(keywordEntity.getKeywordId());
                             keywordType.setPrice(currentPrice.doubleValue());
-                            apiService.setKeywordPrice(keywordType);
+//                            apiService.setKeywordPrice(keywordType);
 
                             biddingRuleEntity.setCurrentPrice(currentPrice);
                             biddingRuleService.updateRule(biddingRuleEntity);

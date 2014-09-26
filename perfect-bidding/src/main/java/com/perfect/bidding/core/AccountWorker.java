@@ -136,7 +136,7 @@ public class AccountWorker implements Runnable {
                 List<Future> futures = new ArrayList<>();
                 // 根据不同地域进行竞价
                 if (logger.isDebugEnabled()) {
-                    logger.debug("竞价词" + keywordEntity.getKeyword() + " 竞价地域 " + regionList.toString());
+                    logger.debug("竞价词 " + keywordEntity.getKeyword() + " 竞价地域 " + regionList.toString());
                 }
                 BiddingSubTask spiderSubTask = new BiddingSubTask(keywordEntity.getKeyword(),
                         newRegion.toArray(new Integer[]{}));

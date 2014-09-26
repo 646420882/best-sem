@@ -269,30 +269,25 @@ public class BaiduApiService {
     }
 
     @SuppressWarnings("unchecked")
-    public List<KeywordType> setKeywordPrice(List<KeywordType> list) {
+    public List<KeywordType> setKeywordPrice(List<KeywordType> list) throws ApiException {
         if (list == null || list.size() == 0) {
             return Collections.EMPTY_LIST;
         }
         UpdateKeywordRequest request = new UpdateKeywordRequest();
         request.setKeywordTypes(list);
 
-        try {
-            KeywordService keywordService = commonService.getService(KeywordService.class);
-            UpdateKeywordResponse response = keywordService.updateKeyword(request);
-            if (response == null) {
-                return Collections.EMPTY_LIST;
-            }
-            return response.getKeywordTypes();
-        } catch (ApiException e) {
-            e.printStackTrace();
+        KeywordService keywordService = commonService.getService(KeywordService.class);
+        UpdateKeywordResponse response = keywordService.updateKeyword(request);
+        if (response == null) {
+            return Collections.EMPTY_LIST;
         }
+        return response.getKeywordTypes();
 
-        return Collections.EMPTY_LIST;
     }
 
-    public KeywordType setKeywordPrice(KeywordType type) {
+    public KeywordType setKeywordPrice(KeywordType type) throws ApiException {
         List<KeywordType> keywordTypes = setKeywordPrice(Arrays.asList(type));
-        if(keywordTypes == null || keywordTypes.isEmpty()){
+        if (keywordTypes == null || keywordTypes.isEmpty()) {
             return null;
         }
         return keywordTypes.get(0);

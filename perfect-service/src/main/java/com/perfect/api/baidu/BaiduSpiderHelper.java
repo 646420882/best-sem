@@ -203,9 +203,9 @@ public class BaiduSpiderHelper {
     }
 
     private Map<String, String> getHTML(GetPreviewRequest getPreviewRequest, CommonService commonService) {
-        RequestHelper requestHelper = (RequestHelper) context.getBeanByClass(RequestHelper.class);
+        Future<String> response = RequestHelper.addRequest(getPreviewRequest.getKeyWord(0),
+                getPreviewRequest.getRegion());
 
-        Future<String> response = requestHelper.addRequest(getPreviewRequest);
         Map<String, String> htmls = new HashMap<>();
 
         try {
