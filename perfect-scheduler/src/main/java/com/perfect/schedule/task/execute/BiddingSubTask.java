@@ -2,9 +2,10 @@ package com.perfect.schedule.task.execute;
 
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduApiServiceFactory;
-import com.perfect.api.baidu.BaiduSpiderHelper;
 import com.perfect.api.baidu.BaiduPreviewHelperFactory;
+import com.perfect.api.baidu.BaiduSpiderHelper;
 import com.perfect.autosdk.core.CommonService;
+import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.KeywordType;
 import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.constants.BiddingStrategyConstants;
@@ -23,8 +24,6 @@ import com.perfect.service.SysAdgroupService;
 import com.perfect.utils.BiddingRuleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -358,11 +357,15 @@ public class BiddingSubTask implements Runnable {
             }
 
             // 发送竞价请求
-            List<KeywordType> returnList = apiService.setKeywordPrice(typeList);
-            for (KeywordType returnType : returnList) {
-                if (typeLog.containsKey(returnType)) {
-                    biddingLogService.save(typeLog.get(returnType));
+            try {
+                List<KeywordType> returnList = apiService.setKeywordPrice(typeList);
+                for (KeywordType returnType : returnList) {
+                    if (typeLog.containsKey(returnType)) {
+                        biddingLogService.save(typeLog.get(returnType));
+                    }
                 }
+            } catch (ApiException e) {
+                e.printStackTrace();
             }
 
         }

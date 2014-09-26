@@ -92,4 +92,14 @@ public class HomePageManageController {
         return new ModelAndView("keywordGroup/keyword");
     }
 
+    /**
+     * 智能竞价后台页面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/biddingConsole", method = RequestMethod.GET)
+    public ModelAndView biddingConsole() {
+        return new ModelAndView("bidding/biddingConsole");
+    }
+
 }
