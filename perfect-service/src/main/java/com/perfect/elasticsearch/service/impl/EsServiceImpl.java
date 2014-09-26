@@ -45,7 +45,7 @@ public class EsServiceImpl implements EsService {
 
         String request = builder.toString();
 
-        SearchResponse sr = esClient.prepareSearch("datacreative").setTypes("creative").setQuery(builder).setFrom(
+        SearchResponse sr = esClient.prepareSearch("data").setTypes("creative").setQuery(builder).setFrom(
                 (page -
                         1) *
                         size)
@@ -53,6 +53,7 @@ public class EsServiceImpl implements EsService {
                         (size)
                 .addHighlightedField("title").addHighlightedField("body").setHighlighterPreTags("<font color='red'>")
                 .setHighlighterPostTags("</font>")
+                .addAggregation(AggregationBuilders.terms("all").field("title").field("body").size(10))
                 .addAggregation(AggregationBuilders.terms(AGG_KEYWORDS).field("keyword").size(10))
                 .addAggregation(AggregationBuilders.terms(AGG_REGIONS).field("region").size(10))
                 .addAggregation(AggregationBuilders.terms(AGG_HOSTS).field("host").size(10))
@@ -124,6 +125,12 @@ public class EsServiceImpl implements EsService {
                         name = regionMap.get(region);
                     }
                     esSearchResultDTO.addRegions(name, new BigDecimal(bucket.getDocCount()).divide(total, 4,
+                            BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.TEN.multiply(BigDecimal.TEN)));
+                }
+            }else if (aggregation.getName().equals("all")) {
+                Terms tr = (Terms) aggregation;
+                for (Terms.Bucket bucket : tr.getBuckets()) {
+                    esSearchResultDTO.addTerm(bucket.getKey(), new BigDecimal(bucket.getDocCount()).divide(total, 4,
                             BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.TEN.multiply(BigDecimal.TEN)));
                 }
             }

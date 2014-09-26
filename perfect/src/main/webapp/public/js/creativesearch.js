@@ -23,8 +23,10 @@ function search() {
             $.each(datas.rows.list, function (i, item) {
                 var li = $("<li></li>");
 
-                li.append($("<div></div>").attr("id", "sPreview").append("<a href='" + item.host + "'><h3>" + item.title + "</h3></a>")
-                    .append("<br>" + item.body + "<br><a href=''" + item.host + "'>" + item.host + "</a>创意来源: " + item.region));
+//                li.append($("<div></div>").attr("id", "sPreview").append("<a href='" + item.host + "'><h3>" + item.title + "</h3></a>")
+//                    .append("<br>" + item.body + "<br><a href=''" + item.host + "'>" + item.host + "</a>创意来源: " + item.region));
+
+                li.append($("<div></div>")).append(item.html);
 
                 li.append("<div><span class=\"fr\"><a href=\"#\">置顶</a>|<a href=\"#\" class=\"showbox\">编辑</a>|<a href=\"#\">删除</a></span></div>");
 
@@ -34,7 +36,7 @@ function search() {
 
             $("#terms").empty();
 
-            $.each(datas.rows.keywords, function (i, item) {
+            $.each(datas.rows.terms, function (i, item) {
                 var termli = $("<li></li>");
                 termli.append("<span>" + item.key + "</span><b>" + item.value + "%</b>");
                 $("#terms").append(termli);

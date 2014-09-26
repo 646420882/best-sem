@@ -1,7 +1,5 @@
 package com.perfect.dto;
 
-import com.perfect.entity.CreativeSourceEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +14,16 @@ public class EsSearchResultDTO {
     private List<KeyValuePair> hosts = new ArrayList<>();
 
     private List<KeyValuePair> regions = new ArrayList<>();
+
+    private List<KeyValuePair> terms = new ArrayList<>();
+
+    public void addTerm(String key, Object value) {
+        terms.add(new KeyValuePair(key, value));
+    }
+
+    public List<KeyValuePair> getTerms() {
+        return terms;
+    }
 
     public void setTotal(long total) {
         this.total = total;
