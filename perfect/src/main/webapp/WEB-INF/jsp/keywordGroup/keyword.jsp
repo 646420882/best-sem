@@ -91,7 +91,7 @@ To change this template use File | Settings | File Templates.
                                 <%--<a class="fr" href="javascript: save1Keyword();">保存</a>--%>
                                 <a class="fr" href="javascript: downloadCSV();">下载全部</a>
                             </div>
-                            <div class="list3 over">
+                            <div class="list3 tuoci over">
                                 <table border="0" cellspacing="0">
                                     <thead>
                                     <tr class="list2_top">
@@ -166,7 +166,7 @@ To change this template use File | Settings | File Templates.
                                 <%--<a class="fr" href="javascript: save2Keyword();">保存</a>--%>
                                 <a class="fr" href="javascript: downloadCSV();">下载全部</a>
                             </div>
-                            <div class="list3 over">
+                            <div class="list3 hangyetuoci over">
                                 <table border="0" cellspacing="0">
                                     <thead>
                                     <tr class="list2_top">

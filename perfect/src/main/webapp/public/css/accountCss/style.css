@@ -51,7 +51,7 @@
     display: none;
 }
 .tab_box {
-    padding: 20px 3%  80px 3%;
+    padding: 20px 2%  80px 2%;
 
 }
 .list01 {
@@ -280,7 +280,7 @@
     overflow: hidden;
 }
 .list3 table td {
-    max-width: 120px;
+   /* max-width: 120px;*/
     padding-left:5px;
 }
 .list2 table tr td dl {
@@ -1235,6 +1235,12 @@ ul.ztree.zTreeDragUL {
 .wrap_list01 span dl input {
     display: block;
     float: left;
+}
+.schedule_5 ,.negativeWords_5 ,.regionTarget_5 ,.excluedIp_5{
+    cursor: pointer;
+}
+.schedule_5:hover ,.negativeWords_5:hover ,.regionTarget_5:hover ,.excluedIp_5:hover{
+    color:#ffb900;
 }
 .w_text {
     width: 258px;
@@ -2360,7 +2366,7 @@ h2 .close {
     color: #a1a1a1;
 }
 .planbox2 select {
-    height: 22px;
+   /* height: 22px;*/
     border: 1px solid #CCC;
     width: 100px;
 }
@@ -2813,6 +2819,7 @@ text-align: left;
 .box .radio-btn{
 float:none;
 }
+/**********弹窗调整********/
 .list04_top{
     background:#e4eafa;
 }
@@ -2832,7 +2839,7 @@ float:none;
     *width:400px;
 }
 .zhushou .pagination{
-    margin:20px 0;
+    margin:10px 0;
 }
 .mainlist h3{
     font-size:14px;
@@ -2843,6 +2850,18 @@ float:none;
     width:98%;
     *width:94%;
     color:#ccc;
+}
+.riginality_under h3{
+    font-size:14px;
+}
+/**********table间距调整********/
+.tuoci table tr td{
+    width:20%;
+
+}
+.hangyetuoci table tr td{
+    width:25%;
+
 }
 /*input[type=checkbox],
 input[type=radio]{

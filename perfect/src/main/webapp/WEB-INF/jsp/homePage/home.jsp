@@ -32,8 +32,8 @@
     </style>
 </head>
 <body>
-<div id="background" class="background"></div>
-<div id="progressBar1" class="progressBar">正在生成报告，请稍等...</div>
+<div id="background" class="background hides"></div>
+<div id="progressBar1" class="progressBar hides">正在生成报告，请稍等...</div>
 <jsp:include page="pageBlock/head.jsp"/>
 <div class="concent over">
 <jsp:include page="pageBlock/nav.jsp"/>
@@ -940,7 +940,7 @@
             </li>
         </ul>
     </div>
-    <div class="datebox hides"></div>
+    <div class="datebox hides" style="margin-bottom:0px;"></div>
     <div class="download over">
         <a href="javascript:void(0)" class="fr" onclick="importDownload(this);">下载全部 </a>
     </div>

@@ -1456,14 +1456,16 @@
     <h2 id="setExcludeIpDiv">
         <span class="fl">IP排除列表</span>
         <a href="#" class="close">关闭</a></h2>
+    <div class="mainlist">
+           <ul>
+               <li>你可将IP最后一段设为*，以屏蔽一段地址内的创意展现。</li>
+               <li>每个IP地址占一行。IP排除的数量不能超过20</li>
+           </ul>
 
-    <span>你可将IP最后一段设为*，以屏蔽一段地址内的创意展现。</span><br>
-    <span>每个IP地址占一行。IP排除的数量不能超过20</span>
-
-    <div class="inputIpDiv">
-        <textarea id="IpListTextarea" rows="15" cols="55"></textarea>
-    </div>
-
+            <div class="inputIpDiv" style="margin-left:0px;">
+                <textarea id="IpListTextarea" rows="15" cols="55"></textarea>
+            </div>
+  </div>
     <div class="main_bottom">
         <div class="w_list03">
             <ul>

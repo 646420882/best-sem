@@ -156,7 +156,7 @@ $(function () {
 
         $("#userClick").click(function () {
             judgeVS = 0;
-            $("#pageVS").empty();
+            $("#pagination1").empty();
             reportDataVS();
         });
 

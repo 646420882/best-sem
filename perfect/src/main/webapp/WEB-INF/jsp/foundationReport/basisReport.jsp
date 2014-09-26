@@ -23,7 +23,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/jquery.cxcalendar.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
-    <style>
+    <style type="text/css">
         .example{
             background:#FFF;
             width:650px;
@@ -64,10 +64,12 @@
             line-height:2em;
             margin:0px 5px 0 0 ;
         }
+/*
+       #trTop td{
+           width:11%;
+       }
+*/
 
-    </style>
-
-    <style type="text/css">
         .tab_box {
             padding: 0px;
         }
@@ -86,9 +88,11 @@
             color: #fff;
         }
         .list3{
-            min-height:200px;
+            min-height:100px;
         }
+
     </style>
+
 </head>
 <body>
 <%--<div id="background" class="background"></div>
@@ -262,7 +266,7 @@
         <table border="0" cellspacing="0" cellspacing="0">
             <thead>
             <tr class="list2_top" id="trTop">
-                <td>&nbsp;<span>时间</span><b>
+                <td >&nbsp;<span>时间</span><b>
                     <p>
                         <input class="one" type="button"
                                onclick="javascript:sortVS = '1';reportDataVS()">
