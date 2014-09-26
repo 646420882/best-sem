@@ -64,11 +64,12 @@
             line-height:2em;
             margin:0px 5px 0 0 ;
         }
-/*
        #trTop td{
            width:11%;
        }
-*/
+        #userStits,#shujuAll{
+            background:#D8E1E8;
+        }
 
         .tab_box {
             padding: 0px;
@@ -251,14 +252,17 @@
             <li id="dateLiUser">选择时间单位：
                 <a href="javascript:" class="current" cname="0">默认</a><span>|</span>
                 <a href="javascript:" cname="1">分日</a><span>|</span>
-                <a href="javascript:" cname="2">分周</a><span>|</span>
-                <a href="javascript:" cname="3">分月</a></li>
+                <a href="javascript:" cname="2">分周</a><span id="fenyeo">|</span>
+                <a href="javascript:" id="fenyue" cname="3">分月</a></li>
         </ul>
 
         <input type="hidden" id="devicesUser" value="0">
         <input type="hidden" id="dateLisUser" value="0">
         <input type="hidden" id="checkboxhidden" value="0">
-        <a href="javascript:" id="userClick" class="become"> 生成报告</a>
+        <a href="javascript:" id="userClick" class="become fl" style="margin-right:50px; "> 生成报告</a>
+        <div id="downAccountReport">
+
+        </div>
     </div>
 </div>
 <div class="list01_under3 over">

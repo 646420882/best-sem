@@ -2,6 +2,7 @@ package com.perfect.mongodb.base;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.core.AppContext;
 import com.perfect.utils.DBNameUtils;
 import org.springframework.data.mongodb.MongoDbFactory;
@@ -12,7 +13,6 @@ import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -23,9 +23,6 @@ import java.util.Properties;
 public class BaseMongoTemplate {
 
     private static Mongo mongo;
-
-    @Resource(name = "mongoSysTemplate")
-    private MongoTemplate mongoSysTemplate;
 
     static {
         InputStream is = BaseMongoTemplate.class.getResourceAsStream("/mongodb.properties");
@@ -41,10 +38,6 @@ public class BaseMongoTemplate {
     private BaseMongoTemplate() {
     }
 
-    public MongoTemplate getSysMongoTemplate() {
-        return mongoSysTemplate;
-    }
-
     public static MongoTemplate getMongoTemplate(String databaseName) {
         MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongo, databaseName);
 
@@ -56,7 +49,11 @@ public class BaseMongoTemplate {
     }
 
     public static MongoTemplate getSysMongo() {
-        return new BaseMongoTemplate().mongoSysTemplate;
+        Object mongoObj = ApplicationContextHelper.getCurrentApplicationContext().getBean("mongoSysTemplate");
+        if (mongoObj != null) {
+            return (MongoTemplate) mongoObj;
+        }
+        return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
     }
 
     public static MongoTemplate getUserMongo() {

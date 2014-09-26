@@ -42,7 +42,7 @@
     </div>
 <div id="tab">
 <div class=" jiangjia_concent over">
-<div class="jingjia_left fl over">
+<div class="jingjia_left fl over" id="left">
     <div class="j_l_top over">
         <span class="fl"><h3>账户目录</h3></span>
         <a href="javascript:void(0)" onclick="loadCreativeData(sparams)" class="fr">刷新</a>
@@ -67,7 +67,7 @@
         </div>
     </div>
 </div>
-<div class="jingjia_right fr over">
+<div class="jingjia_right fr over" id="right">
 <div ID="testIframe" Name="testIframe" width="100%" onLoad="iFrameHeight()">
 <div class="content_wraps over">
 <div class="zhushou over wd ">
@@ -1399,17 +1399,18 @@
     <h2 id="setFdKeywordDiv">
         <span class="fl">否定关键词设置</span>
         <a href="#" class="close">关闭</a></h2>
+    <div class="mainlist">
+    <p>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，没词20汉字以内，最多200项。</p>
 
-    <span>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，没词20汉字以内，最多200项。</span>
-
-    <div class="inputKwdDiv">
-        <div><span>否定关键词</span><span>(0/200)</span></div>
+    <div class="inputKwdDiv fl">
+        <div><p>否定关键词<span>(0/200)</span></p></div>
         <textarea id="ntwTextarea" rows="15" cols="45"></textarea>
     </div>
-    <div class="inputKwdDiv">
-        <div><span>精确否定关键词</span><span>(0/200)</span></div>
+    <div class="inputKwdDiv fr">
+        <div><p>精确否定关键词<span>(0/200) </span></p></div>
         <textarea id = "entwTextarea" rows="15" cols="45"></textarea>
     </div>
+     </div>
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
@@ -1482,8 +1483,8 @@
         <span class="fl">推广时段管理</span>
         <a href="#" class="close">关闭</a></h2>
     <div class="chooseTime">
-        <span>请选择时段</span>
-        <ul>
+        <b class="fl">请选择时段</b>
+        <ul class="fr">
             <li class="tfsjd"><span></span>&nbsp;&nbsp;&nbsp;投放时间段</li>
             <li class="ztsjd"><span></span>&nbsp;&nbsp;&nbsp;暂停时间段</li>
         </ul>
@@ -1552,6 +1553,7 @@
     $(document).ajaxStop(function () {
         ajaxbg.fadeOut(1000);
             });
+
 </script>
 </body>
 </html>
