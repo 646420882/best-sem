@@ -26,15 +26,9 @@ public interface AssistantKeywordService {
 
     List<CampaignTreeDTO> getCampaignTree(Long accountId);
 
-    void batchAddOrUpdateKeywordByInput(Long accountId, Boolean isReplace, String keywordInfos);
-
     Map<String,Object> batchAddOrUpdateKeywordByChoose(Long accountId, Boolean isReplace, String chooseInfos, String keywordInfos);
 
-    List<KeywordEntity> getKeywordByIds(List<Long> ids);
-
-    void batchAddkeyword(List<KeywordDTO> keywords);
-
-    void batchUpdateKeyword(List<KeywordDTO> keywords);
+    void batchAddUpdateKeyword(List<KeywordDTO> insertDtos, List<KeywordDTO> updateDtos, Boolean isReplace);
 
     Iterable<CampaignEntity> getCampaignByAccountId();
 

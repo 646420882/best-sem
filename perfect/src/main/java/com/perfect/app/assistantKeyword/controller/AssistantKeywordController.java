@@ -1,5 +1,7 @@
 package com.perfect.app.assistantKeyword.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.perfect.api.baidu.SearchTermsReport;
 import com.perfect.autosdk.sms.v3.AttributeType;
 import com.perfect.autosdk.sms.v3.RealTimeQueryResultType;
@@ -16,7 +18,6 @@ import com.perfect.service.KeyWordBackUpService;
 import com.perfect.utils.RegionalCodeUtils;
 import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,27 +56,18 @@ public class AssistantKeywordController {
 
 
     /**
-     * 批量添加关键词
+     * 批量添加或者修改关键词
      */
-    @RequestMapping(value = "assistantKeyword/batchAdd",method = RequestMethod.POST , produces = "application/json")
-    public void batchAddkeyword(@RequestBody List<KeywordDTO> list,HttpServletResponse response){
-        assistantKeywordService.batchAddkeyword(list);
+    @RequestMapping(value = "assistantKeyword/batchAddOrUpdate",method = RequestMethod.POST)
+    public void batchAddkeyword(String insertList,String updateList,Boolean isReplace,HttpServletResponse response){
+        Gson gson = new Gson();
+        List<KeywordDTO> insertDtos = gson.fromJson(insertList,new TypeToken<List<KeywordDTO>>(){}.getType());
+        List<KeywordDTO> updateDtos = gson.fromJson(updateList,new TypeToken<List<KeywordDTO>>(){}.getType());
+        insertDtos = insertDtos==null?new ArrayList<KeywordDTO>():insertDtos;
+        updateDtos = updateDtos==null?new ArrayList<KeywordDTO>():updateDtos;
+        assistantKeywordService.batchAddUpdateKeyword(insertDtos,updateDtos,isReplace);
         webContext.writeJson(RES_SUCCESS,response);
     }
-
-
-
-    /**
-     * 批量修改关键词
-     * @param response
-     * @param keywords
-     */
-    @RequestMapping(value = "assistantKeyword/batchUpdate",method = {RequestMethod.GET,RequestMethod.POST},produces = "application/json")
-    public  void batchUpdateKeyword(@RequestBody List<KeywordDTO> keywords,HttpServletResponse response){
-        assistantKeywordService.batchUpdateKeyword(keywords);
-        webContext.writeJson(RES_SUCCESS,response);
-    }
-
 
 
     /**
@@ -184,22 +176,6 @@ public class AssistantKeywordController {
         Map<String,Object> map = assistantKeywordService.batchAddOrUpdateKeywordByChoose(AppContext.getAccountId(),isReplace,chooseInfos,keywordInfos);
         webContext.writeJson(map,response);
     }
-
-
-    //未完成
-    /**
-     * （输入的方式）
-     * 将用户输入的关键词信息添加或更新到数据库
-     * @param isReplace 是否将用户输入的信息替换该单元下相应的内容
-     * @param keywordInfos 用户输入的多个关键词信息
-     * @return
-     */
-    /*@RequestMapping(value = "assistantKeyword/addOrUpdateKeywordByInput",method = {RequestMethod.GET,RequestMethod.POST})
-       public ModelAndView batchAddOrUpdateKeywordByInput(Boolean isReplace,String keywordInfos){
-        assistantKeywordService.batchAddOrUpdateKeywordByInput(currentAccountId,isReplace,keywordInfos);
-        return new ModelAndView();
-    }*/
-
 
     /**
      * 显示批量删除弹出窗口

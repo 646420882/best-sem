@@ -2,11 +2,13 @@ package com.perfect.dto;
 
 import com.perfect.entity.KeywordEntity;
 
+import java.io.Serializable;
+
 /**
  * Created by john on 2014/9/2.
  * 可以被删除的关键词
  */
-public class KeywordDTO{
+public class KeywordDTO implements Serializable{
 
     private String campaignName;
 

@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +37,16 @@ public class KeyWordBackUpServiceImpl extends AbstractUserBaseDAOImpl<KeyWordBac
         return null;
     }
 
+
+    @Override
+    public void insertAll(List<KeyWordBackUpEntity> entities) {
+        for(KeyWordBackUpEntity tempKwdBack:entities){
+            KeyWordBackUpEntity kwdBack = keyWordBackUpDAO.findByObjectId(tempKwdBack.getId());
+            if (kwdBack == null) {
+                keyWordBackUpDAO.insert(tempKwdBack);
+            }
+        }
+    }
 
     /**
      * 还原修改的关键词

@@ -401,6 +401,38 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
 
     /**
+     * xj
+     * 根据推广单元的mongodb ID 删除该单元下的所有与关键词
+     * @param agids
+     */
+    public void deleteByObjectAdgroupIds(List<String> agids){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).in(agids)),EntityConstants.TBL_KEYWORD);
+    }
+
+
+    /**
+     * xj
+     * 根据推广单元Long id 软删除该单元下的所有关键词(实则是修改localStaut 为 3);
+     * @param longSet
+     */
+    public  void softDeleteByLongAdgroupIds(List<Long> longSet){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Update update = new Update();
+        update.set("ls",3);
+        mongoTemplate.updateMulti(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(longSet)),update,EntityConstants.TBL_KEYWORD);
+    }
+
+
+    /**
+     *根据关键词的多个mongdb id得到关键词
+     */
+    public  List<KeywordEntity> findByObjectIds(List<String> strIds){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return mongoTemplate.find(new Query(Criteria.where(EntityConstants.SYSTEM_ID).in(strIds)),getEntityClass(),EntityConstants.TBL_KEYWORD);
+    }
+
+    /**
      * 根据mongodbID修改
      *
      * @param keywordEntity

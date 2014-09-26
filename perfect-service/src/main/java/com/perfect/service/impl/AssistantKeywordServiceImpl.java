@@ -14,6 +14,7 @@ import com.perfect.entity.backup.KeyWordBackUpEntity;
 import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
+import com.perfect.service.KeyWordBackUpService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -21,10 +22,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.perfect.mongodb.utils.EntityConstants.*;
 
@@ -43,16 +41,8 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     @Resource
     private KeywordDAO keywordDAO;
 
-
-
-    /**
-     * 根据多个关键词id查询关键词
-     * @param ids
-     * @return
-     */
-    public List<KeywordEntity> getKeywordByIds(List<Long> ids){
-        return keywordDAO.getKeywordByIds(ids);
-    }
+    @Resource
+    private KeyWordBackUpService keyWordBackUpService;
 
     public  Iterable<CampaignEntity> getCampaignByAccountId(){
         return campaignDAO.findAll();
@@ -87,13 +77,16 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
 
     /**
-     * 批量添加关键词
-     * @param keywords
+     * 批量添加或者更新关键词
+     * @param insertDtos
+     * @param updateDtos
+     * @param isReplace
      */
-   public void batchAddkeyword(List<KeywordDTO> keywords){
+   public void batchAddUpdateKeyword(List<KeywordDTO> insertDtos, List<KeywordDTO> updateDtos, Boolean isReplace){
+
 
        List<KeywordEntity> list = new ArrayList<>();
-        for(KeywordDTO dto:keywords){
+        for(KeywordDTO dto:insertDtos){
            CampaignEntity campaignEntity = campaignDAO.findCampaignByName(dto.getCampaignName());
            AdgroupEntity adgroupEntity = adgroupDAO.getByCampaignIdAndName(campaignEntity.getCampaignId(),dto.getAdgroupName());
            KeywordEntity kwd = dto.getObject();
@@ -104,25 +97,114 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             }
           list.add(kwd);
         }
-        keywordDAO.insertAll(list);
+
+
+       //若isReplace值为true 就将替换该单元下的所有关键词,为false就只添加或者更新
+       if(isReplace==false){
+           keywordDAO.insertAll(list);
+
+           for(KeywordDTO dto:updateDtos){
+               KeywordEntity keywordEntity = dto.getObject();
+               KeyWordBackUpEntity backUpEntity = new KeyWordBackUpEntity();
+               BeanUtils.copyProperties(keywordDAO.findByObjectId(keywordEntity.getId()),backUpEntity);
+               keywordDAO.update(keywordEntity,backUpEntity);
+           }
+       }else{
+           Map<String,Object> adgroupIdMap = getNoRepeatAdgroupId(insertDtos,updateDtos);
+
+           //不是本地新增的关键词将要备份
+           List<KeywordEntity> keywordBackups = keywordDAO.findByObjectIds(getKwdObjIdByKeywordList(getKwdListByDTO(updateDtos)));
+
+           //根据String id删除该单元的关键词(硬删除)
+           keywordDAO.deleteByObjectAdgroupIds(new ArrayList<String>((Set<String>)adgroupIdMap.get("strSet")));
+           //根据long id删除该单元的关键词(软删除)
+           keywordDAO.softDeleteByLongAdgroupIds(new ArrayList<Long>((Set<Long>) adgroupIdMap.get("longSet")));
+           keywordDAO.insertAll(list);
+
+           //开始备份需要备份的关键词
+           List<KeyWordBackUpEntity> keyWordBackUpEntities = copyKeywordEntityToKeywordBack(keywordBackups);
+           keyWordBackUpService.insertAll(keyWordBackUpEntities);
+           keywordDAO.save(getKwdListByDTO(updateDtos));
+       }
     }
 
 
     /**
-     * 批量修改关键词
-     * @param keywords
+     * 根据多个关键词得到这些关键词的所在单元的id(无重复的)
+     * @param insertList
+     * @param updateList
+     * @return
      */
-    public void batchUpdateKeyword(List<KeywordDTO> keywords){
-       for(KeywordDTO dto:keywords){
-           KeywordEntity keywordEntity = dto.getObject();
-          if(keywordEntity.getLocalStatus()==null){
-              keywordEntity.setLocalStatus(2);
-          }
-           KeyWordBackUpEntity backUpEntity = new KeyWordBackUpEntity();
-           BeanUtils.copyProperties(keywordDAO.findByObjectId(keywordEntity.getId()),backUpEntity);
-           keywordDAO.update(keywordEntity,backUpEntity);
-       }
+    private Map<String,Object>  getNoRepeatAdgroupId(List<KeywordDTO> insertList,List<KeywordDTO> updateList){
+        Set<String> strSet = new HashSet<>();
+        Set<Long> longSet = new HashSet<>();
+        for(KeywordDTO insertDTO:insertList){
+            if(insertDTO.getObject().getAdgroupId()==null){
+                strSet.add(insertDTO.getObject().getAdgroupObjId());
+            }else{
+                longSet.add(insertDTO.getObject().getAdgroupId());
+            }
+        }
+        for(KeywordDTO updateDTO:updateList){
+            if(updateDTO.getObject().getAdgroupId()==null){
+              strSet.add(updateDTO.getObject().getAdgroupObjId());
+            }else{
+              longSet.add(updateDTO.getObject().getAdgroupId());
+            }
+        }
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("strSet",strSet);
+        map.put("longSet",longSet);
+        return map;
     }
+
+
+    private List<KeywordEntity> getKwdListByDTO(List<KeywordDTO> updateDtos){
+        List<KeywordEntity> list = new ArrayList<>();
+        for(KeywordDTO dto:updateDtos){
+            list.add(dto.getObject());
+        }
+        return list;
+    }
+
+    private List<String> getKwdObjIdByKeywordList(List<KeywordEntity> list){
+        List<String> objIds = new ArrayList<>();
+        for(KeywordEntity kwd:list){
+            objIds.add(kwd.getId());
+        }
+        return objIds;
+    }
+
+    /**
+     * 将KeywordEntity list转换为List<KeyWordBackUpEntity>
+     * @param list
+     * @return
+     */
+    private List<KeyWordBackUpEntity> copyKeywordEntityToKeywordBack(List<KeywordEntity> list){
+        List<KeyWordBackUpEntity> backList = new ArrayList<>();
+        for(KeywordEntity kwd:list){
+            KeyWordBackUpEntity kwdBack = new KeyWordBackUpEntity();
+            kwdBack.setId(kwd.getId());
+            kwdBack.setKeywordId(kwd.getKeywordId());
+            kwdBack.setAdgroupId(kwd.getAdgroupId());
+            kwdBack.setAdgroupObjId(kwd.getAdgroupObjId());
+            kwdBack.setKeyword(kwd.getKeyword());
+            kwdBack.setPrice(kwd.getPrice());
+            kwdBack.setPcDestinationUrl(kwd.getPcDestinationUrl());
+            kwdBack.setMobileDestinationUrl(kwd.getMobileDestinationUrl());
+            kwdBack.setMatchType(kwd.getMatchType());
+            kwdBack.setPause(kwd.getPause());
+            kwdBack.setStatus(kwd.getStatus());
+            kwdBack.setPhraseType(kwd.getPhraseType());
+            kwdBack.setLocalStatus(kwd.getLocalStatus());
+            kwdBack.setOrderBy(kwd.getOrderBy());
+            backList.add(kwdBack);
+        }
+        return backList;
+    }
+
+
 
 
     /**
@@ -550,9 +632,11 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             if(updateKeywordEntity.getMobileDestinationUrl()!=null){
                  beforeKeywordEntity.setMobileDestinationUrl(updateKeywordEntity.getMobileDestinationUrl());
             }
+            if(updateKeywordEntity.getLocalStatus()==null){
+                beforeKeywordEntity.setLocalStatus(2);
+            }
 
             keywordDTO.setObject(beforeKeywordEntity);
-//            keywordDAO.findB
         }
 
         return keywordDTO;
@@ -616,49 +700,4 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     }
 
 
-    /**未完
-     * （输入的方式）
-     * 将用户输入的关键词信息添加或更新到数据库
-     *
-     * @param accountId    当前账户id
-     * @param isReplace    是否将用户输入的信息替换该单元下相应的内容
-     * @param keywordInfos 用户输入的多个关键词信息
-     * @return
-     */
-    @Override
-    public void batchAddOrUpdateKeywordByInput(Long accountId, Boolean isReplace, String keywordInfos) {
-        String[] everyRow = keywordInfos.split("\r\n");
-
-        for (String row : everyRow) {
-            String[] fileds = row.split(",|\t");
-
-            //根据计划名称得到一个推广计划对象
-            List<CampaignEntity> campaignEntityList = campaignDAO.find(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and("name").is(fileds[0])));
-            CampaignEntity campaignEntity = campaignEntityList == null || campaignEntityList.size() == 0 ? null : campaignEntityList.get(0);
-
-            if (campaignEntity != null) {
-
-                //根据单元名称得到一个推广单元对象
-                List<AdgroupEntity> adgrounp = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and("name").is(fileds[1]).and(CAMPAIGN_ID).is(campaignEntity.getCampaignId())));
-                AdgroupEntity adgroupEntity = adgrounp == null || adgrounp.size() == 0 ? null : adgrounp.get(0);
-
-                if (adgroupEntity != null) {
-
-                    //若为true，将现在的关键词替换该单元下的所有相应内容,为false时，就将现在输入的关键词添加到数据库
-                    if (isReplace == true) {
-                        //删除现在该单元下的所有关键词
-                        keywordDAO.remove(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).is(adgroupEntity.getAdgroupId())));
-
-                        //开始添加现在用户输入的关键词
-
-                    } else {
-                        //开始添加现在用户输入的关键词
-                    }
-
-                }
-
-            }
-        }
-
-    }
 }

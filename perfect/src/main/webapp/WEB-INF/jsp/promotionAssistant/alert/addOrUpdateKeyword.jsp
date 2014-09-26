@@ -547,34 +547,43 @@ getCampaiTreeData();
  *完成按钮的事件
 */
 $("#finish").click(function () {
+
     var isReplace = $("#isReplace")[0].checked;
     if(isReplace==true){
-        var isOk = window.confirm("该次操作会将已选定单元下的所有关键词替换，是否继续?");
+        var isOk = window.confirm("该次操作会将已选定单元下的所有关键词替换，确定要继续?");
         if(!isOk){
             return;
         }
     }
 
+    var jsonData = {};
 
     if( $("#addRadio")[0]!=undefined){
         var isAdd = $("#addRadio")[0].checked;
         if(isAdd==true){
-            var keywords = pdata.insertList;
-            var jsonArray = new Array();
-            $.ajax({
-                url:"/assistantKeyword/batchAdd",
-                type:"post",
-                data:JSON.stringify(keywords),
-                dataType:"json",
-                contentType:"application/json; charset=UTF-8",
-                success: function (data) {
-                    alert("操作成功!");
-                }
-            });
+           jsonData["insertList"] = JSON.stringify(pdata.insertList);
         }
     }
 
     if($("#updateRadio")[0]!=undefined){
+        var isUpdate = $("#updateRadio")[0].checked;
+        if(isUpdate==true){
+            jsonData["updateList"] = JSON.stringify(pdata.updateList);
+        }
+    }
+
+      jsonData["isReplace"] = isReplace;
+      $.ajax({
+        url:"/assistantKeyword/batchAddOrUpdate",
+        type:"post",
+        data:jsonData,
+        dataType:"json",
+        success: function (data) {
+        alert("操作成功!");
+        }
+      });
+
+   /* if($("#updateRadio")[0]!=undefined){
         var isUpdate = $("#updateRadio")[0].checked;
         if(isUpdate==true){
             var keywords = pdata.updateList;
@@ -589,10 +598,9 @@ $("#finish").click(function () {
                 }
             });
         }
+    }*/
 
-    }
-
-    if( $("#delRadio")[0]!=undefined){
+   /* if( $("#delRadio")[0]!=undefined){
         var isDel = $("#delRadio")[0].checked;
         if(isDel==true){
             var ids = "";
@@ -606,10 +614,7 @@ $("#finish").click(function () {
                 });
             }
         }
-    }
-
-
-//    window.location.reload(true);
+    }*/
 });
 
 </script>

@@ -228,18 +228,9 @@ function keywordDataToHtml(obj, index, campaignName) {
     html = html + "<td>" + matchType + "</td>";
 
 
-    //url
-    var pcUrl = "";
-    var mobUrl = "";
-    if (obj.pcDestinationUrl != null) {
-        pcUrl = "<a href='" + obj.pcDestinationUrl + "'>" + obj.pcDestinationUrl.substr(0, 20) + "</a>";
-    }
-    if (obj.mobileDestinationUrl != null) {
-        mobUrl = "<a href='" + obj.mobileDestinationUrl + "'>" + obj.mobileDestinationUrl.substr(0, 20) + "</a>";
-    }
-    html = html + "<td>" + pcUrl + "</td>";
-    html = html + "<td>" + mobUrl + "</td>";
-    html = html + "<td>" + campaignName + "</td>";
+    html = html + "<td>" + (obj.pcDestinationUrl != null?"<a href='" + obj.pcDestinationUrl + "'>" + obj.pcDestinationUrl.substr(0, 20) + "</a>":"") + "</td>";
+    html = html + "<td>" + (obj.mobileDestinationUrl != null?"<a href='" + obj.mobileDestinationUrl + "'>" + obj.mobileDestinationUrl.substr(0, 20) + "</a>":"") + "</td>";
+    html = html + "<td>"+campaignName+"</td>";
 
     if (obj.localStatus != null) {
         if (obj.localStatus == 3) {

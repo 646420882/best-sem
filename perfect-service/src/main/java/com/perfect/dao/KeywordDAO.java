@@ -86,4 +86,10 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
     void softDelete(Long id);
 
     void updateLocalstatu(long cid);
+
+    void deleteByObjectAdgroupIds(List<String> agids);
+
+    void softDeleteByLongAdgroupIds(List<Long> longSet);
+
+    List<KeywordEntity> findByObjectIds(List<String> strIds);
 }
