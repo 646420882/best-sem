@@ -31,7 +31,6 @@
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="application/javascript">
     var submitUrl = function () {
         var url = $("#url").val();
@@ -40,9 +39,8 @@
             type: "POST",
             dataType: "json",
             data: {
-                url: JSON.stringify(encodeURIComponent(url))
+                url: encodeURIComponent(url)
             },
-            contentType: "charset=UTF-8",
             success: function (data, textStatus, jqXHR) {
                 alert(data.status);
             }
