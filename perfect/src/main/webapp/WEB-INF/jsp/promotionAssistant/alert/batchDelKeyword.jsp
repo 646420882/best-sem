@@ -518,6 +518,7 @@
                 type:"post",
                 data:{"kwids":ids},
                 success:function(data){
+                    alert("操作成功!");
                     window.location.reload(true);
                 }
             });
