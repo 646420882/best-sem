@@ -161,7 +161,7 @@ public class RequestHelper {
                             while ((count = is.read(bytes)) != -1) {
                                 out.write(bytes, 0, count);
                             }
-                            Files.write(out.toByteArray(), new File(keyword + ".html"));
+//                            Files.write(out.toByteArray(), new File(keyword + ".html"));
                             String html = out.toString();
                             if (html.length() < 5000 && html.contains("频繁")) {
                                 if (logger.isWarnEnabled()) {

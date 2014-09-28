@@ -7,12 +7,15 @@ import com.perfect.utils.RegionalCodeUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.highlight.HighlightField;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Component;
 
@@ -38,21 +41,20 @@ public class EsServiceImpl implements EsService {
     private final String AGG_REGIONS = "regions";
 
     @Override
-    public EsSearchResultDTO search(String query, int page, int size) {
+    public EsSearchResultDTO search(String query, int page, int size, int[] regions) {
 
         QueryStringQueryBuilder builder = new QueryStringQueryBuilder(query);
         builder.analyzer("ik").field("title").field("body").defaultOperator(QueryStringQueryBuilder.Operator.OR);
 
-        String request = builder.toString();
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 
-        SearchResponse sr = esClient.prepareSearch("data").setTypes("creative").setQuery(builder).setFrom(
-                (page -
-                        1) *
-                        size)
-                .setSize
-                        (size)
-                .addHighlightedField("title").addHighlightedField("body").setHighlighterPreTags("<font color='red'>")
-                .setHighlighterPostTags("</font>")
+        boolQueryBuilder.must(builder);
+        boolQueryBuilder.must(QueryBuilders.termsQuery("region", regions));
+
+        SearchResponse sr = esClient.prepareSearch("data").setTypes("creative").setQuery(boolQueryBuilder).setFrom(
+                (page - 1) * size).setSize(size).addSort("_score", SortOrder.DESC)
+//                .addHighlightedField("title").addHighlightedField("body").setHighlighterPreTags("<font color='red'>")
+//                .setHighlighterPostTags("</font>")
                 .addAggregation(AggregationBuilders.terms("all").field("title").field("body").size(10))
                 .addAggregation(AggregationBuilders.terms(AGG_KEYWORDS).field("keyword").size(10))
                 .addAggregation(AggregationBuilders.terms(AGG_REGIONS).field("region").size(10))
@@ -127,7 +129,7 @@ public class EsServiceImpl implements EsService {
                     esSearchResultDTO.addRegions(name, new BigDecimal(bucket.getDocCount()).divide(total, 4,
                             BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.TEN.multiply(BigDecimal.TEN)));
                 }
-            }else if (aggregation.getName().equals("all")) {
+            } else if (aggregation.getName().equals("all")) {
                 Terms tr = (Terms) aggregation;
                 for (Terms.Bucket bucket : tr.getBuckets()) {
                     esSearchResultDTO.addTerm(bucket.getKey(), new BigDecimal(bucket.getDocCount()).divide(total, 4,

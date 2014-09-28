@@ -13,6 +13,6 @@ public interface FarmDAO extends MongoCrudRepository<UrlEntity, String> {
 
     public void returnOne(UrlEntity urlEntity);
 
-    public List<UrlEntity> allIdle();
+    public List<UrlEntity> allUnused();
 //    public List<UrlEntity> takeBySize(int size);
 }

@@ -30,7 +30,8 @@ public class CreativeSearchController {
     public ModelAndView search(@RequestParam(value = "q", required = true) String query,
                                @RequestParam(value = "p", required = false, defaultValue = "1") int page,
                                @RequestParam(value = "s", required = false, defaultValue = "20") int size) {
-        EsSearchResultDTO entityList = esService.search(query, page, size);
+        int[] regions = new int[]{};
+        EsSearchResultDTO entityList = esService.search(query, page, size, regions);
 
         AbstractView view = new MappingJackson2JsonView();
 
