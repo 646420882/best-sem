@@ -228,12 +228,16 @@ $(function () {
                 $("#inputOne").removeAttr("disabled");
                 $("#checkboxhidden").val(1);
                 $("#dataComputing").append("起 " + distance + " 天");
+                $("#fenyue").hide();
+                $("#fenyeo").hide();
             } else {
                 $("#inputTow").attr("style", "display:none");
                 $("#inputOne").attr("disabled", "disabled");
                 $("#checkboxhidden").val(0);
                 $("#inputTow").val("");
                 $("#dataComputing").empty();
+                $("#fenyue").show();
+                $("#fenyeo").show();
             }
         });
 
@@ -1447,6 +1451,7 @@ $(function () {
                 filename: 'Graph_Chart',
                 buttons: {
                     contextButton: {
+                        symbol: 'url(/public/images/reportDown.jpg)',
                         menuItems: [
                             {
                                 text: '导出 JPEG图片',
@@ -1584,6 +1589,7 @@ $(function () {
                 filename: 'Pie_Chart',
                 buttons: {
                     contextButton: {
+                        symbol: 'url(/public/images/reportDown.jpg)',
                         menuItems: [
                             {
                                 text: '导出 JPEG图片',
