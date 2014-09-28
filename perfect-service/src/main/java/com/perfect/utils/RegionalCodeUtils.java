@@ -23,6 +23,7 @@ public class RegionalCodeUtils {
         for (Integer aLong : id){
             map.put(aLong, d.get(aLong));
         }
+        JRedisUtils.returnJedis(jc);
         return map;
     }
     public static  Map<Integer,String> regionalCodeName(List<String> name){
@@ -38,6 +39,7 @@ public class RegionalCodeUtils {
                 }
             }
         }
+        JRedisUtils.returnJedis(jc);
         return map;
     }
 }
