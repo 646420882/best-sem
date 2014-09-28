@@ -307,17 +307,16 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         List<KeywordDTO> dtoList = new ArrayList<>();
 
         Map<String, CampaignEntity> map = new HashMap<>();
-        CampaignEntity cam = null;
+        CampaignEntity cam;
         for (KeywordEntity kwd : list) {
             if (camp == null) {
                 if (!(new ArrayList<>(map.keySet()).contains(kwd.getAdgroupObjId()) || new ArrayList<>(map.keySet()).contains(kwd.getAdgroupId() + ""))) {
                     AdgroupEntity ad = kwd.getAdgroupId() == null ? adgroupDAO.findByObjId(kwd.getAdgroupObjId()) : adgroupDAO.findOne(kwd.getAdgroupId());
                     cam = ad.getCampaignId() == null ? campaignDAO.findByObjectId(ad.getCampaignObjId()) : campaignDAO.findOne(ad.getCampaignId());
                     map.put(kwd.getAdgroupId() == null ? kwd.getAdgroupObjId() : kwd.getAdgroupId() + "", cam);
-                } else {
-                    cam = map.get(kwd.getAdgroupId() == null ? kwd.getAdgroupObjId() : kwd.getAdgroupId() + "");
                 }
 
+                cam = map.get(kwd.getAdgroupId() == null ? kwd.getAdgroupObjId() : kwd.getAdgroupId() + "");
                 KeywordDTO dto = new KeywordDTO();
                 dto.setCampaignName(cam.getCampaignName());
                 dto.setObject(kwd);

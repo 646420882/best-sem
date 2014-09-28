@@ -667,7 +667,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
         q.skip(p.getFirstStation());
         q.limit(p.getPageSize());
-        q.with(new Sort(Sort.Direction.DESC, "name"));
+//        q.with(new Sort(Sort.Direction.DESC, "name"));
         if (totalCount < 1) {
             p.setList(new ArrayList());
             return p;
