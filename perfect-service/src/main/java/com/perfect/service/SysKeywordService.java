@@ -11,9 +11,9 @@ import java.util.Map;
  */
 public interface SysKeywordService {
 
-    public List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param);
+    public List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param, Map<String, Object> queryParams);
 
-    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param);
+    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param, Map<String, Object> queryParams);
 
     public Long keywordCount(List<Long> adgroupIds);
 
@@ -25,5 +25,5 @@ public interface SysKeywordService {
 
     Integer countKeywordfindByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
 
-    List<KeywordEntity> findByIds(List<Long> ids, PaginationParam...param);
+    List<KeywordEntity> findByIds(List<Long> ids, PaginationParam... param);
 }

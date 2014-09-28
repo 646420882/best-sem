@@ -42,7 +42,7 @@
         <div class="jingjia_left fl over">
             <div class="j_l_top over">
                 <span class="fl"><h3>账户目录</h3></span>
-                <a href="#" class="fr">刷新</a>
+                <a href="javascript:refreshAccountTree();" class="fr">刷新</a>
             </div>
             <div class="j_l_top2 over">
                 <span class="fl">查找计划单元</span>
@@ -510,7 +510,7 @@
                 <li>关键词列表：</li>
                 <li><textarea class="zs_input5" id="imKwd" style="font-size: 12px;" disabled="disabled"
                               readonly="readonly"></textarea></li>
-                <li>选择分组名：<a href="javascript:void(0)"  onclick="ImDeleteCustomGroup()">删除该分组</a></li>
+                <li>选择分组名：<a href="javascript:void(0)" onclick="ImDeleteCustomGroup()">删除该分组</a></li>
                 <li><select id="cgroup" onchange="cgroupInsert();"></select></li>
             </ul>
             <input type="button" value="+" id="showTxt" onclick="showGroupNameTxt()"/>
@@ -605,6 +605,55 @@
         </div>
     </div>
 </div>
+
+<div class="box9" style="display:none; *width:200px;">
+    <h2 id="box9"><span class="fl">竞价状态</span><a href="#" class="close">关闭</a></h2>
+
+    <div class="mainlist">
+        <select id="biddingStatus">
+            <option value="1" selected="selected">已启动</option>
+            <option value="0">已暂停</option>
+            <option value="2">无</option>
+        </select>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li id="biddingStatusOk" class="current">确定</li>
+                <li class="close">取消</li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="box7" style="display:none; *width:200px;">
+    <h2 id="box7"><span class="fl">关键词状态</span><a href="#" class="close">关闭</a></h2>
+
+    <div class="mainlist">
+        <select id="statusStr">
+            <option value="41" selected="selected">有效</option>
+            <option value="42">暂停推广</option>
+            <option value="43">不宜推广</option>
+            <option value="44">搜索无效</option>
+            <option value="45">待激活</option>
+            <option value="46">审核中</option>
+            <option value="47">搜索量过低</option>
+            <option value="48">部分无效</option>
+            <option value="49">计算机搜索无效</option>
+            <option value="50">移动搜索无效</option>
+        </select>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li id="statusStrOk" class="current">确定</li>
+                <li class="close">取消</li>
+
+            </ul>
+        </div>
+    </div>
+</div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/grid/jquery.jqGrid.min.js"></script>
@@ -673,29 +722,85 @@ function beforeClick(treeId, treeNode) {
 //            alert(treeNode.id + "," + treeNode.name);
         _campaignId = treeNode.id;
         _adgroupId = null;
+        text = null;
+        f = null;
+        _filter = null;
+        matchType = null;
+        keywordQuality = null;
+        keywordPrice = null;
+        _statusStr = null;
+        _biddingStatus = null;
         keyWordPage = -1;
         pageIndex = 0;
         //事件处理
 
         skip = 0;
         limit = 20;
-        dataUrl = "/bidding/list?cp=" + treeNode.id + "&s=" + skip + "&l=" + limit;
+//        dataUrl = "/bidding/list?cp=" + treeNode.id + "&s=" + skip + "&l=" + limit;
+//
+//        grid.setGridParam({url: dataUrl}).trigger("reloadGrid");
 
-        grid.setGridParam({url: dataUrl}).trigger("reloadGrid");
+        var tmpValue1 = $("#table1").jqGrid("getGridParam", "postData");
+        $.extend(tmpValue1, { postData: {
+            cp: treeNode.id,
+            ag: _adgroupId,
+            s: skip,
+            l: limit,
+            q: text,
+            f: f,
+            filter: _filter,
+            matchType: matchType,
+            price: keywordPrice,
+            quality: keywordQuality,
+            biddingStatus: _biddingStatus,
+            statusStr: _statusStr
+        }
+        });
+
+        $("#table1").jqGrid("setGridParam", tmpValue1).trigger("reloadGrid");
+
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元),则应该展示其下属的关键词数据
 //            alert(treeNode.id + "," + treeNode.name);
         _campaignId = null;
         _adgroupId = treeNode.id;
+        text = null;
+        f = null;
+        _filter = null;
+        matchType = null;
+        keywordQuality = null;
+        keywordPrice = null;
+        _statusStr = null;
+        _biddingStatus = null;
         keyWordPage = -1;
         pageIndex = 0;
         //事件处理
 
         skip = 0;
         limit = 20;
-        dataUrl = "/bidding/list?ag=" + treeNode.id + "&s=" + skip + "&l=" + limit;
+//        dataUrl = "/bidding/list?ag=" + treeNode.id + "&s=" + skip + "&l=" + limit;
+//
+//        grid.setGridParam({url: dataUrl}).trigger("reloadGrid");
 
-        grid.setGridParam({url: dataUrl}).trigger("reloadGrid");
+        var tmpValue2 = $("#table1").jqGrid("getGridParam", "postData");
+        $.extend(tmpValue2, { postData: {
+            cp: _campaignId,
+            ag: treeNode.id,
+            s: skip,
+            l: limit,
+            q: text,
+            f: f,
+            filter: _filter,
+            matchType: matchType,
+            price: keywordPrice,
+            quality: keywordQuality,
+            biddingStatus: _biddingStatus,
+            statusStr: _statusStr
+        }
+        });
+
+        $("#table1").jqGrid("setGridParam", tmpValue2).trigger("reloadGrid");
+
     }
 
 }
@@ -898,6 +1003,23 @@ $(document).ajaxStop(function () {
     ajaxbg.fadeOut(1000);
 });
 
+var refreshAccountTree = function () {
+    $.ajax({
+        url: "/account/get_tree",
+        type: "GET",
+        async: false,
+        dataType: "json",
+        success: function (data, textStatus, jqXHR) {
+            zNodes = data.trees;
+            $.fn.zTree.init($("#zTree"), setting, zNodes);
+//            $.fn.zTree.init($("#zTree2"), setting, zNodes);
+        }
+    });
+};
+
+var _biddingStatus = null;
+var _statusStr = null;
+
 $(function () {
     //获取账户树数据
     $.ajax({
@@ -976,6 +1098,60 @@ $(function () {
                 }
             }
         });
+    });
+
+    $("#biddingStatusOk").on('click', function () {
+        _biddingStatus = $("#biddingStatus option:selected").val();
+        skip = pageIndex * limit;
+
+        var tmpValue = $("#table1").jqGrid("getGridParam", "postData");
+        $.extend(tmpValue, { postData: {
+            cp: _campaignId,
+            ag: _adgroupId,
+            s: skip,
+            l: limit,
+            q: text,
+            f: f,
+            filter: _filter,
+            matchType: matchType,
+            price: keywordPrice,
+            quality: keywordQuality,
+            biddingStatus: _biddingStatus,
+            statusStr: _statusStr
+        }
+        });
+
+        $(".TB_overlayBG").css("display", "none");
+        $(".box9").css("display", "none");
+
+        $("#table1").jqGrid("setGridParam", tmpValue).trigger("reloadGrid");
+    });
+
+    $("#statusStrOk").on('click', function () {
+        _statusStr = $("#statusStr option:selected").val();
+        skip = pageIndex * limit;
+
+        var tmpValue = $("#table1").jqGrid("getGridParam", "postData");
+        $.extend(tmpValue, { postData: {
+            cp: _campaignId,
+            ag: _adgroupId,
+            s: skip,
+            l: limit,
+            q: text,
+            f: f,
+            filter: _filter,
+            matchType: matchType,
+            price: keywordPrice,
+            quality: keywordQuality,
+            biddingStatus: _biddingStatus,
+            statusStr: _statusStr
+        }
+        });
+
+        $(".TB_overlayBG").css("display", "none");
+        $(".box7").css("display", "none");
+
+        $("#table1").jqGrid("setGridParam", tmpValue).trigger("reloadGrid");
     });
 
     //jqGrid table1
@@ -1070,6 +1246,27 @@ $(function () {
 
         gridComplete: function () {
 //            alert(JSON.stringify($("#table1").jqGrid("getRowData")));
+            $("#jqgh_table1_biddingStatus").on('click', function () {
+                $(".TB_overlayBG").css({
+                    display: "block", height: $(document).height()
+                });
+                $(".box9").css({
+                    left: ($("body").width() - $(".box9").width()) / 2 - 20 + "px",
+                    top: ($(window).height() - $(".box9").height()) / 2 + $(window).scrollTop() + "px",
+                    display: "block"
+                });
+            });
+
+            $("#jqgh_table1_statusStr").on('click', function () {
+                $(".TB_overlayBG").css({
+                    display: "block", height: $(document).height()
+                });
+                $(".box7").css({
+                    left: ($("body").width() - $(".box7").width()) / 2 - 20 + "px",
+                    top: ($(window).height() - $(".box7").height()) / 2 + $(window).scrollTop() + "px",
+                    display: "block"
+                });
+            });
             records = grid.getGridParam("records");
             if (records == 0) {
                 return false;
@@ -1113,6 +1310,8 @@ $(function () {
             }
 
             $("#pagination1").pagination(records, getOptionsFromForm(pageIndex));
+            _biddingStatus = null;
+            _statusStr = null;
         }
     });
     grid2 = $("#table2").jqGrid({

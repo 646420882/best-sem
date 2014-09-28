@@ -1,16 +1,14 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.perfect.api.baidu.BaiduApiService;
+import com.perfect.autosdk.core.CommonService;
+import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.KeywordInfo;
+import com.perfect.autosdk.sms.v3.KeywordType;
 import com.perfect.constants.LogStatusConstant;
 import com.perfect.core.AppContext;
-import com.perfect.dao.KeyWordBackUpDAO;
-import com.perfect.dao.KeywordDAO;
-import com.perfect.dao.LogDAO;
-import com.perfect.dao.LogProcessingDAO;
-import com.perfect.entity.AdgroupEntity;
-import com.perfect.entity.DataAttributeInfoEntity;
-import com.perfect.entity.DataOperationLogEntity;
-import com.perfect.entity.KeywordEntity;
+import com.perfect.dao.*;
+import com.perfect.entity.*;
 import com.perfect.entity.backup.KeyWordBackUpEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
@@ -18,6 +16,7 @@ import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.Pager;
 import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.mongodb.utils.PaginationParam;
+import com.perfect.utils.BaiduServiceSupport;
 import com.perfect.utils.LogUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
@@ -57,6 +56,9 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
 
     @Resource
     private KeyWordBackUpDAO keyWordBackUpDAO;
+
+    @Resource
+    private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
 
     @Override
     public String getId() {
@@ -156,8 +158,13 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
                         criteria.and("mt").is(3);
                     }
                 }
+
                 if ("adgroupIds".equals(entry.getKey())) {
                     criteria.and(ADGROUP_ID).in((ArrayList<Long>) entry.getValue());
+                }
+
+                if ("status".equals(entry.getKey())) {
+                    criteria.and("s").is((Integer) entry.getValue());
                 }
             }
         }
@@ -254,11 +261,23 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
     @Override
-    public List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param) {
+    public List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param, Map<String, Object> queryParams) {
+        Query query = new Query();
+        Criteria criteria = Criteria.where(ADGROUP_ID).is(adgroupId);
+        if (queryParams != null && !queryParams.isEmpty()) {
+            for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
+                if ("status".equals(entry.getKey())) {
+                    criteria.and("s").is(entry.getValue());
+                }
+            }
+        }
+
         if (param == null) {
-            return getMongoTemplate().find(Query.query(Criteria.where(ADGROUP_ID).is(adgroupId)), getEntityClass());
+            query.addCriteria(criteria);
+            return getMongoTemplate().find(query, getEntityClass());
         } else {
-            return getMongoTemplate().find(param.withParam(Query.query(Criteria.where(ADGROUP_ID).is(adgroupId))), getEntityClass());
+            query.addCriteria(criteria);
+            return getMongoTemplate().find(param.withParam(query), getEntityClass());
         }
     }
 
@@ -275,12 +294,24 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     }
 
     @Override
-    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param) {
+    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param, Map<String, Object> queryParams) {
+
+        Query query = new Query();
+        Criteria criteria = Criteria.where(ADGROUP_ID).in(adgroupIds);
+        if (queryParams != null && !queryParams.isEmpty()) {
+            for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
+                if ("status".equals(entry.getKey())) {
+                    criteria.and("s").is(entry.getValue());
+                }
+            }
+        }
+
         if (param != null) {
-            return getMongoTemplate().find(param.withParam(Query.query(Criteria.where(ADGROUP_ID).in(adgroupIds)))
-                    , getEntityClass());
+            query.addCriteria(criteria);
+            return getMongoTemplate().find(param.withParam(query), getEntityClass());
         } else {
-            return getMongoTemplate().find(new Query(Criteria.where(ADGROUP_ID).in(adgroupIds)), getEntityClass());
+            query.addCriteria(criteria);
+            return getMongoTemplate().find(query, getEntityClass());
         }
     }
 
@@ -403,33 +434,35 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
     /**
      * xj
      * 根据推广单元的mongodb ID 删除该单元下的所有与关键词
+     *
      * @param agids
      */
-    public void deleteByObjectAdgroupIds(List<String> agids){
+    public void deleteByObjectAdgroupIds(List<String> agids) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).in(agids)),EntityConstants.TBL_KEYWORD);
+        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).in(agids)), EntityConstants.TBL_KEYWORD);
     }
 
 
     /**
      * xj
      * 根据推广单元Long id 软删除该单元下的所有关键词(实则是修改localStaut 为 3);
+     *
      * @param longSet
      */
-    public  void softDeleteByLongAdgroupIds(List<Long> longSet){
+    public void softDeleteByLongAdgroupIds(List<Long> longSet) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Update update = new Update();
-        update.set("ls",3);
-        mongoTemplate.updateMulti(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(longSet)),update,EntityConstants.TBL_KEYWORD);
+        update.set("ls", 3);
+        mongoTemplate.updateMulti(new Query(Criteria.where(EntityConstants.ADGROUP_ID).in(longSet)), update, EntityConstants.TBL_KEYWORD);
     }
 
 
     /**
-     *根据关键词的多个mongdb id得到关键词
+     * 根据关键词的多个mongdb id得到关键词
      */
-    public  List<KeywordEntity> findByObjectIds(List<String> strIds){
+    public List<KeywordEntity> findByObjectIds(List<String> strIds) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        return mongoTemplate.find(new Query(Criteria.where(EntityConstants.SYSTEM_ID).in(strIds)),getEntityClass(),EntityConstants.TBL_KEYWORD);
+        return mongoTemplate.find(new Query(Criteria.where(EntityConstants.SYSTEM_ID).in(strIds)), getEntityClass(), EntityConstants.TBL_KEYWORD);
     }
 
     /**
@@ -511,6 +544,11 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = Query.query(Criteria.where(KEYWORD_ID).in(ids));
         Update update = new Update();
+
+        CommonService commonService = BaiduServiceSupport.getCommonService(accountManageDAO.findByBaiduUserId(AppContext.getAccountId()));
+        BaiduApiService apiService = new BaiduApiService(commonService);
+        List<KeywordType> keywordTypeList = new ArrayList<>(ids.length);
+
         if (price != null) {
             if (price.doubleValue() == 0) {
                 //使用单元出价
@@ -522,16 +560,47 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
                         BigDecimal adgroupPrice = new BigDecimal(_price);
                         update.set("pr", adgroupPrice);
                         mongoTemplate.updateMulti(query, update, getEntityClass());
+
+                        //baidu api
+                        KeywordType keywordType = new KeywordType();
+                        keywordType.setKeywordId(id);
+                        keywordType.setPrice(adgroupPrice.doubleValue());
+                        keywordTypeList.add(keywordType);
                     }
                 }
             } else {
                 update.set("pr", price);
                 mongoTemplate.updateMulti(query, update, getEntityClass());
+
+                //baidu api
+                for (Long id : ids) {
+                    KeywordType keywordType = new KeywordType();
+                    keywordType.setKeywordId(id);
+                    keywordType.setPrice(price.doubleValue());
+                    keywordTypeList.add(keywordType);
+                }
             }
         }
         if (pcUrl != null) {
             update.set("pc", pcUrl);
             mongoTemplate.updateMulti(query, update, getEntityClass());
+
+            //baidu api
+            for (Long id : ids) {
+                KeywordType keywordType = new KeywordType();
+                keywordType.setKeywordId(id);
+                keywordType.setPcDestinationUrl(pcUrl);
+                keywordTypeList.add(keywordType);
+            }
+        }
+
+        try {
+            List<KeywordType> list = apiService.updateKeyword(keywordTypeList);
+            if (list.isEmpty()) {
+                throw new ApiException();
+            }
+        } catch (ApiException e) {
+            e.printStackTrace();
         }
     }
 
