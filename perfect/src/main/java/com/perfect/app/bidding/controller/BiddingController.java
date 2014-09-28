@@ -25,6 +25,7 @@ import com.perfect.utils.BiddingRuleUtils;
 import com.perfect.utils.JSONUtils;
 import com.perfect.utils.NumberUtils;
 import com.perfect.utils.RegionalCodeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -321,11 +322,22 @@ public class BiddingController {
                              @RequestParam(value = "filter", required = true, defaultValue = "0") int filter,
                              @RequestParam(value = "matchType", required = false) Integer matchType,
                              @RequestParam(value = "quality", required = false) String quality,
-                             @RequestParam(value = "price", required = false) String price) {
+                             @RequestParam(value = "price", required = false) String price,
+                             @RequestParam(value = "statusStr", required = false) Integer status,
+                             @RequestParam(value = "biddingStatus", required = false) Integer biddingStatus) {
 
         AbstractView jsonView = new MappingJackson2JsonView();
 
+        if (StringUtils.isBlank(query)) {
+            query = null;
+        }
+
         Map<String, Object> queryParams = new HashMap<>();
+        //是否包含有竞价状态的查询条件
+        boolean bidding_status = (biddingStatus != null) && (biddingStatus.toString().length() > 0);
+        if (status != null && status.toString().trim().length() > 0) {
+            queryParams.put("status", status);
+        }
         if (matchType != null) {
             queryParams.put("matchType", matchType);
         }
@@ -394,7 +406,7 @@ public class BiddingController {
                     total1 = sysKeywordService.countKeywordfindByNames(query.split(" "), fullMatch, param1, queryParams);
                 }
             } else {
-                entities = sysKeywordService.findByAdgroupIds(adGroupIds, param);
+                entities = sysKeywordService.findByAdgroupIds(adGroupIds, param, queryParams);
                 total = sysKeywordService.keywordCount(adGroupIds);
             }
         } else if (agid != null) {
@@ -413,7 +425,7 @@ public class BiddingController {
             } else {
                 List<Long> tmpList = new ArrayList<>();
                 tmpList.add(agid);
-                entities = sysKeywordService.findByAdgroupId(agid, param);
+                entities = sysKeywordService.findByAdgroupId(agid, param, queryParams);
                 total = sysKeywordService.keywordCount(tmpList);
             }
         } else if (query != null) {
@@ -497,7 +509,7 @@ public class BiddingController {
         Map<Long, Quality10Type> quality10TypeMap = keyword10QualityService.getKeyword10Quality(tmpKeywordIdList);
         Integer quality10TypeSize = quality10TypeMap.size();
 
-        Integer index = 0;
+//        Integer index = 0;
         for (KeywordEntity entity : entities) {
             KeywordReportDTO keywordReportDTO = new KeywordReportDTO();
             BeanUtils.copyProperties(entity, keywordReportDTO);
@@ -505,11 +517,12 @@ public class BiddingController {
             Long kwid = entity.getKeywordId();
             if (keywordQualityConditionSize > 0) {
                 if (!keywordQualityList.contains(quality10TypeMap.get(kwid).getPcQuality())) {
+                    total1--;
                     continue;
                 }
             }
 
-            index++;
+//            index++;
             AdgroupEntity adgroupEntity = sysAdgroupService.findByAdgroupId(entity.getAdgroupId());
             CampaignEntity campaignEntity = sysCampaignService.findById(adgroupEntity.getCampaignId());
             keywordReportDTO.setAdgroupId(adgroupEntity.getAdgroupId());
@@ -527,8 +540,6 @@ public class BiddingController {
                 keywordReportDTO.setStatusStr(KeywordStatusEnum.STATUS_UNKNOWN.name());
             }
 
-            keywordReportDTOHashMap.put(entity.getKeywordId(), keywordReportDTO);
-            resultList.add(keywordReportDTO);
             if (ruleReady)
                 ids.add(entity.getKeywordId());
 
@@ -541,17 +552,38 @@ public class BiddingController {
                 }
             }
 
+            Integer tempBiddingStatus;
             if (ruleEntity != null) {
                 keywordReportDTO.setRule(true);
                 keywordReportDTO.setRuleDesc(BiddingRuleUtils.getRule(ruleEntity));
                 if (ruleEntity.isEnabled()) {
                     keywordReportDTO.setBiddingStatus(1);
+                    tempBiddingStatus = 1;
+                } else {
+                    tempBiddingStatus = 0;
+                }
+            } else {
+                //当前关键词没有设置竞价规则
+                tempBiddingStatus = 2;
+            }
+
+            if (bidding_status) {
+                if (biddingStatus.compareTo(tempBiddingStatus) != 0) {
+                    if (total > 0) {
+                        total--;
+                    } else if (total1 > 0) {
+                        total1--;
+                    }
+                    continue;
                 }
             }
+
+            keywordReportDTOHashMap.put(entity.getKeywordId(), keywordReportDTO);
+            resultList.add(keywordReportDTO);
         }
-        if (keywordQualityConditionSize > 0) {
-            total1 = index; //包含质量度查询时符合条件的最终记录数
-        }
+//        if (keywordQualityConditionSize > 0) {
+//            total1 = index; //包含质量度查询时符合条件的最终记录数
+//        }
         String yesterday = DateUtils.getYesterdayStr();
 
         Map<String, List<StructureReportEntity>> reports = basisReportService.getKeywordReport(tmpKeywordIdList.toArray(new Long[tmpKeywordIdList.size()]), yesterday, yesterday, 0);

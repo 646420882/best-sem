@@ -36,7 +36,7 @@ public class BiddingMaintenanceController {
         requestUrl = java.net.URLDecoder.decode(requestUrl, "UTF-8");
         UrlEntity urlEntity = new UrlEntity();
         urlEntity.setRequest(requestUrl);
-        urlEntity.setIdle(false);
+        urlEntity.setIdle(true);
         urlEntity.setFinishTime(0l);
         biddingMaintenanceService.saveUrlEntity(urlEntity);
         AbstractView jsonView = new MappingJackson2JsonView();

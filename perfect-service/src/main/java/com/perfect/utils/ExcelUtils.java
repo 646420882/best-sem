@@ -7,11 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +24,7 @@ import java.util.Map;
  */
 public class ExcelUtils {
 
-    protected Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    protected static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     /**
      * @param srcFilePath
@@ -35,20 +37,36 @@ public class ExcelUtils {
         try {
             Map<String, List<T>> map = new HashMap<>();
             //绑定XML文件
-            XLSReader xlsReader = ReaderBuilder.buildFromXML(new FileInputStream(templateFilePath));
-            //构建Excel文件高级输入流
-            File file = new File(srcFilePath);
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+            if (logger.isInfoEnabled()) {
+                logger.info("binding excel template xml ... ");
+            }
+            XLSReader xlsReader = ReaderBuilder.buildFromXML(Files.newInputStream(Paths.get(templateFilePath)));
+
+            if (logger.isInfoEnabled()) {
+                logger.info("loading excel srcFile ... ");
+            }
+            Path path = Paths.get(srcFilePath);
+            if (logger.isInfoEnabled()) {
+                logger.info("construct inputStream ... ");
+            }
+            InputStream is = Files.newInputStream(path, StandardOpenOption.READ);
             T bean = _class.newInstance();
             List<T> beans = new ArrayList<>(0);
 
+            if (logger.isInfoEnabled()) {
+                logger.info("starting read excel ... ");
+            }
             Map<String, Object> beanParams = new HashMap<>();
             beanParams.put("bean", bean);
             beanParams.put("beans", beans);
-            xlsReader.read(bis, beanParams);
+            xlsReader.read(is, beanParams);
             beans = new ArrayList<>((List<T>) beanParams.get("beans"));
+            if (logger.isInfoEnabled()) {
+                logger.info("read finish !!! ");
+            }
 
-            map.put(file.getName(), beans);
+            map.put(path.getFileName().toString(), beans);
+            is.close();
             return map;
         } catch (InstantiationException | IllegalAccessException | IOException | SAXException | InvalidFormatException e) {
             e.printStackTrace();

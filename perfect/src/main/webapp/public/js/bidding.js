@@ -14,6 +14,15 @@ function initOptions(id, start, end) {
 var type = 1;   //智能竞价1, 重点词竞价2
 var selectedKeywordIds = [];
 
+var text = null;
+var f = null;
+var _filter = null;
+
+//高级搜索功能
+var matchType = null;
+var keywordQuality = null;
+var keywordPrice = null;
+
 $(function () {
     $(".tab_menu").on('click', function () {
         var lis = $(".tab_menu").find("li");
@@ -116,6 +125,14 @@ $(function () {
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box4").css("display", "none");
+    });
+    $(".close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $(".box9").css("display", "none");
+    });
+    $(".close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $(".box7").css("display", "none");
     });
     //下载
     $("#updateBtn").click(function () {
@@ -340,23 +357,19 @@ $(function () {
 
     //搜索框
     $('input[name=search]').click(function () {
-        var text = $('input[name=qtext]').val();
+        text = $('input[name=qtext]').val();
         if (text == txt) {
             return false;
         }
 
         var tmpValue = $("#table1").jqGrid("getGridParam", "postData");
 
-        var f = input('fullmatch').prop("checked");
-        var filter = checkedValue('in');
+        f = input('fullmatch').prop("checked");
+        _filter = checkedValue('in');
         var curPage = pageIndex;
         var size = limit;
         var skip = curPage * size;
 
-        //高级搜索功能
-        var matchType = 0;
-        var keywordQuality = "";
-        var keywordPrice = "";
         if (document.getElementById("advancedSearch").style.display == "block") {
             //matchType
             var checkedMatchType = $("input[name=matchType]:checked");
@@ -406,10 +419,12 @@ $(function () {
                 l: size,
                 q: text,
                 f: f,
-                filter: filter,
+                filter: _filter,
                 matchType: matchType,
                 price: keywordPrice,
-                quality: keywordQuality
+                quality: keywordQuality,
+                biddingStatus: _biddingStatus,
+                statusStr: _statusStr
             }
             });
         } else {
@@ -418,10 +433,12 @@ $(function () {
                 l: size,
                 q: text,
                 f: f,
-                filter: filter,
+                filter: _filter,
                 matchType: null,
                 price: null,
-                quality: null
+                quality: null,
+                biddingStatus: _biddingStatus,
+                statusStr: _statusStr
             }
             });
         }
@@ -715,24 +732,25 @@ var toAnyPage = function (page_index) {
     VIPKeyWordPage = 0;
     skip = page_index * limit;
 
-    var _url = "";
     if (type == 1) {
-        if (_campaignId != null) {
-            _url = "/bidding/list?cp=" + _campaignId + "&s=" + skip + "&l=" + limit;
-        } else if (_adgroupId != null) {
-            _url = "/bidding/list?ag=" + _adgroupId + "&s=" + skip + "&l=" + limit;
-        } else {
-            var txt = '关键词精准查询，多个关键词用半角逗号隔开';
-            var text = $('input[name=qtext]').val();
-            if (text == txt) {
-                return false;
-            }
-
-            var f = input('fullmatch').prop("checked");
-            var filter = checkedValue('in');
-            _url = "/bidding/list?s=" + skip + "&l=" + limit + "&q=" + text + "&f=" + f + "&filter=" + filter;
+        var tmpValue = $("#table1").jqGrid("getGridParam", "postData");
+        $.extend(tmpValue, { postData: {
+            cp: _campaignId,
+            ag: _adgroupId,
+            s: skip,
+            l: limit,
+            q: text,
+            f: f,
+            filter: _filter,
+            matchType: matchType,
+            price: keywordPrice,
+            quality: keywordQuality,
+            biddingStatus: _biddingStatus,
+            statusStr: _statusStr
         }
-        grid.setGridParam({url: _url}).trigger("reloadGrid");
+        });
+
+        $("#table1").jqGrid("setGridParam", tmpValue).trigger("reloadGrid");
     } else {
 
     }
