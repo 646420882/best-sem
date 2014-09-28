@@ -58,6 +58,12 @@ public interface BasisReportService {
      */
     public void downReportCSV(OutputStream os,String redisKey,int reportTime,int terminal,int reportType,String dateHead);
 
+    /**
+     * 下载已生成的账户数据报告
+     * @param os
+     */
+    public void downAccountReportCSV(OutputStream os,Date startDate, Date endDate,Date startDate1, Date endDate1,int dateType,int devices,String sortVS,int startVS,int limitVS);
+
 
 /*******************************************AIP***************************************************/
     /**

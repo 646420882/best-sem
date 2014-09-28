@@ -1,5 +1,11 @@
 $(function(){
     jQuery.fn.anim_progressbar = function (aOptions) {
+        if ((navigator.userAgent.indexOf('MSIE') >= 0)
+            && (navigator.userAgent.indexOf('Opera') < 0)){
+            document.execCommand("Stop");
+        }else{
+            window.stop();
+        }
         // def values
         var iCms = 1000;
         var iMms = 60 * iCms;

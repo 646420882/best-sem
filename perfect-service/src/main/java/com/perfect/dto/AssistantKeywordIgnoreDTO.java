@@ -4,7 +4,7 @@ package com.perfect.dto;
  * Created by john on 2014/8/22.
  * 推广助手关键字忽略批量删除信息
  */
-public class AssistantkwdIgnoreDeleDTO {
+public class AssistantKeywordIgnoreDTO {
     private String campaignName;
 
     private String adgroupName;
@@ -13,14 +13,14 @@ public class AssistantkwdIgnoreDeleDTO {
 
     private String matchModel = "精确";
 
-    public AssistantkwdIgnoreDeleDTO(String campaignName, String adgroupName, String keywordName, String matchModel) {
+    public AssistantKeywordIgnoreDTO(String campaignName, String adgroupName, String keywordName, String matchModel) {
         this.campaignName = campaignName;
         this.adgroupName = adgroupName;
         this.keywordName = keywordName;
         this.matchModel = matchModel;
     }
 
-    public AssistantkwdIgnoreDeleDTO() {
+    public AssistantKeywordIgnoreDTO() {
     }
 
     public String getCampaignName() {

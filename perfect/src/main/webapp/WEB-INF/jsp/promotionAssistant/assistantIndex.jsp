@@ -927,8 +927,10 @@
                     <div class="w_list02 fl over"><b class="status_5"></b></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">IP排除：</div>
-                    <div class="w_list02 fl over"><span> 0次</span></div>
+                    <%--<div class="w_list01 fl over">IP排除：</div>
+                    <div class="w_list02 fl over"><span> 0次</span></div>--%>
+                    <div class="w_list01 fl over">达到预算下线：</div>
+                    <div class="w_list02 fl over"><span class="budgetOfflineTime_5"></span></div>
                 </li>
                 <li>
                     <div class="w_list01 fl over">启用/暂停：</div>
@@ -1401,14 +1403,14 @@
         <a href="#" class="close">关闭</a></h2>
     <div class="mainlist">
     <p>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，没词20汉字以内，最多200项。</p>
-
     <div class="inputKwdDiv fl">
-        <div><p>否定关键词<span>(0/200)</span></p></div>
-        <textarea id="ntwTextarea" rows="15" cols="45"></textarea>
+        <div><p>否定关键词<span id="ntwCount">(0/200)</span></p></div>
+        <textarea id="ntwTextarea" onkeydown="ntwTextareaCount();" style="height: 300px;width: 350px;"></textarea>
     </div>
+
     <div class="inputKwdDiv fr">
-        <div><p>精确否定关键词<span>(0/200) </span></p></div>
-        <textarea id = "entwTextarea" rows="15" cols="45"></textarea>
+        <div><p>精确否定关键词<span id="entwCount">(0/200)</span></p></div>
+        <textarea id = "entwTextarea" onkeydown="entwTextareaCount();" style="height: 300px;width: 350px;"></textarea>
     </div>
      </div>
     <div class="main_bottom">
@@ -1462,11 +1464,12 @@
                <li>你可将IP最后一段设为*，以屏蔽一段地址内的创意展现。</li>
                <li>每个IP地址占一行。IP排除的数量不能超过20</li>
            </ul>
-
+            <span id="IpListCount">IP排除(0/20)</span>
             <div class="inputIpDiv" style="margin-left:0px;">
-                <textarea id="IpListTextarea" rows="15" cols="55"></textarea>
+                <textarea id="IpListTextarea" onkeydown="IpListTextareaCount();" style="width:365px;height: 350px;"></textarea>
             </div>
-  </div>
+    </div>
+
     <div class="main_bottom">
         <div class="w_list03">
             <ul>

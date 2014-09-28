@@ -218,12 +218,85 @@ public class BasisReportController {
         }
         String redisKey = (startDate + "|" + endDate + "|" + devices + "|" + dateType + "|" + reportType + "|" + AppContext.getAccountId()+"|"+dataId);
         String dateHead = startDate + " 至 " +endDate;
-        String filename = DateUtils.getYesterdayStr() + "-Performance.csv";
+        String filename = DateUtils.getYesterdayStr() + "-ReportDetails.csv";
         OutputStream os = null;
         try {
             response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
             os = response.getOutputStream();
             basisReportService.downReportCSV(os,redisKey,dateType,devices,reportType,dateHead);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (os != null) {
+                    os.flush();
+                    os.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * 下载账户报告
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/report/downAccoutReportCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ModelAndView downAccoutReportCSV(HttpServletResponse response,
+                                            @RequestParam(value = "date1", required = true) String date1,
+                                            @RequestParam(value = "date2", required = true) String date2,
+                                            @RequestParam(value = "date3", required = false) String date3,
+                                            @RequestParam(value = "dateType", required = false) int dateType,
+                                            @RequestParam(value = "devices", required = false) int devices,
+                                            @RequestParam(value = "sortVS", required = false,defaultValue = "-1") String sortVS,
+                                            @RequestParam(value = "startVS", required = false,defaultValue = "0") int startVS,
+                                            @RequestParam(value = "limitVS", required = false,defaultValue = "9") int limitVS) {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar YesterdayCal = Calendar.getInstance();
+        YesterdayCal.add(Calendar.DATE,   -1);
+        String Yesterday = dateFormat.format(YesterdayCal.getTime());
+        Date endDate1 = null;
+        Date endDate2 = null;
+        Date endDate3 = null;
+        Date endDate4 = null;
+        try {
+            if(date1 == null || date1.equals("") || date1.equals("null")){
+                endDate1 = dateFormat.parse(Yesterday);
+            }else{
+                endDate1 = dateFormat.parse(date1);
+            }
+            if(date2 == null || date2.equals("") || date2.equals("null")){
+                endDate2 = dateFormat.parse(Yesterday);
+            }else{
+                endDate2 = dateFormat.parse(date2);
+            }
+
+            if(date3 == null || date3.equals("") || date3.equals("null")){
+                endDate3 = null;
+            }else{
+                endDate3 = dateFormat.parse(date3);
+                Calendar cal1 = Calendar.getInstance();
+                long kk = endDate3.getTime() + (endDate2.getTime()-endDate1.getTime());
+                cal1.setTimeInMillis(kk);
+                endDate4 = cal1.getTime();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+        String filename = DateUtils.getYesterdayStr() + "-AccountReport.csv";
+        OutputStream os = null;
+        try {
+            response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
+            os = response.getOutputStream();
+            basisReportService.downAccountReportCSV(os, endDate1,endDate2,endDate3,endDate4,dateType,devices,sortVS,startVS,limitVS);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
