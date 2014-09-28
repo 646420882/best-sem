@@ -49,7 +49,8 @@ public class EsServiceImpl implements EsService {
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 
         boolQueryBuilder.must(builder);
-        boolQueryBuilder.must(QueryBuilders.termsQuery("region", regions));
+        if (regions.length > 0)
+            boolQueryBuilder.must(QueryBuilders.termsQuery("region", regions));
 
         SearchResponse sr = esClient.prepareSearch("data").setTypes("creative").setQuery(boolQueryBuilder).setFrom(
                 (page - 1) * size).setSize(size).addSort("_score", SortOrder.DESC)
@@ -82,7 +83,12 @@ public class EsServiceImpl implements EsService {
 
             try {
                 BeanUtils.populate(creativeSourceEntity, map);
-                Object regionObj = map.get("region");
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            Object regionObj = map.get("region");
                 if (regionObj == null) {
                     creativeSourceEntity.setRegion("无");
                 } else {
@@ -92,11 +98,6 @@ public class EsServiceImpl implements EsService {
                     creativeSourceEntity.setRegion(regionMap.get(region));
                 }
                 hitList.add(creativeSourceEntity);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
 
         }
 

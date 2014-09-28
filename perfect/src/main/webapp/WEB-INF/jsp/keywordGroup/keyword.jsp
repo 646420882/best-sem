@@ -222,8 +222,8 @@ To change this template use File | Settings | File Templates.
         </div>
     </div>
     <div class="riginality_middle over">
-<span>选择创意来源：<select>
-    <option>河北</option>
+<span>选择创意来源：<select id="region">
+    <option value="1">河北</option>
 </select></span>
         <span><a class="become2" href="javascript: search();">智能推荐</a></span>
     </div>

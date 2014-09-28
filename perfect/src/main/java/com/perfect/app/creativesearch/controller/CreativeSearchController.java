@@ -29,9 +29,13 @@ public class CreativeSearchController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView search(@RequestParam(value = "q", required = true) String query,
                                @RequestParam(value = "p", required = false, defaultValue = "1") int page,
-                               @RequestParam(value = "s", required = false, defaultValue = "20") int size) {
-        int[] regions = new int[]{};
-        EsSearchResultDTO entityList = esService.search(query, page, size, regions);
+                               @RequestParam(value = "s", required = false, defaultValue = "20") int size,
+                               @RequestParam(value = "r", required = true) int region) {
+        //  TODO 通过region获取下属地域编码
+        // int[] regions = new int[]{};
+
+
+        EsSearchResultDTO entityList = esService.search(query, page, size, new int[]{});
 
         AbstractView view = new MappingJackson2JsonView();
 

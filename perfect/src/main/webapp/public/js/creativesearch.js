@@ -7,11 +7,16 @@ function search() {
 
     var kw = $("#txt" + type).val();
 
+
+    var region = $("#region").children('option:selected').attr("value");
+
+
     $.ajax({
         url: "/creative/q",
         data: {'q': kw,
             'p': 1,
-            's': 10},
+            's': 10,
+            'r': region},
         type: "GET",
         success: function (datas) {
             if (datas.rows == undefined) {
@@ -137,7 +142,7 @@ function load() {
                 return;
             }
 
-
+            $('#campagin').empty();
             $('#campagin').append("<option value=\"-1\">请选择计划</option>");
 
             $.each(datas.rows, function (i, item) {
