@@ -24,13 +24,16 @@
 .EC_desc font{
     color:#000;
 }
+.EC_desc .EC_url{
+    color: #080;
+}
 .EC_pic a {
     text-decoration: none;
 }
 .EC_im {
     margin-bottom: 1em;
 }
-.EC_url ,.ec_url,.ec_date{
+.EC_url ,.ec_url ,.ec_date{
     color: #080;
 }
 .EC_im .EC_url {
