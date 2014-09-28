@@ -17,7 +17,7 @@ public class EntityConstants {
     public static final String TBL_LOG = "logs";
     public static final String TBL_ACCOUNT_REPORT = "account_report";
     public static final String TBL_MONITORING_FOLDERS = "monitoring_folders";
-    public static final String TBL_MONITORING_TARGETS = "monitoring_Targets";
+    public static final String TBL_MONITORING_TARGETS = "monitoring_targets";
     public static final String TBL_CUSTOMGROUP="custom_group";
     public static final String TBL_IMPORTANT_KEYWORD="important_keyword_bidding";
 
@@ -42,7 +42,7 @@ public class EntityConstants {
     public static final String OBJ_ADGROUP_ID = "oagid";
     public static final String OBJ_ID = "oid";
     public static final String BAIDU_ID = "bid";
-    public static final String FOLDER_ID = "fdid";
+    public static final String FOLDER_ID = "fdId";
 
     public static final String NAME = "name";
 }

@@ -936,7 +936,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 list.add(dtoRings);
             }
         }
-        map.put(REPORT_ROWS, finalList);
+        map.put(REPORT_ROWS, listAve);
         map.put("Ring", list);
         return map;
     }

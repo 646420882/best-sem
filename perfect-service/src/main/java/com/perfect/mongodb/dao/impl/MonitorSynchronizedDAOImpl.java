@@ -1,5 +1,6 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.MonitorSynchronizedDAO;
 import com.perfect.entity.FolderEntity;
 import com.perfect.entity.FolderMonitorEntity;
@@ -20,12 +21,12 @@ public class MonitorSynchronizedDAOImpl implements MonitorSynchronizedDAO {
 
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         int i = -1;
-        boolean verify = mongoTemplate.getDb().collectionExists(TBL_MONITORING_FOLDERS);
+        boolean verify = mongoTemplate.getDb().collectionExists(TBL_MONITORING_FOLDERS+"_"+ AppContext.getAccountId());
         if (verify) {
-            mongoTemplate.dropCollection(TBL_MONITORING_FOLDERS);
+            mongoTemplate.dropCollection(TBL_MONITORING_FOLDERS+"_"+ AppContext.getAccountId());
         }
         try {
-            mongoTemplate.insert(forlderEntities, TBL_MONITORING_FOLDERS);
+            mongoTemplate.insert(forlderEntities, TBL_MONITORING_FOLDERS+"_"+ AppContext.getAccountId());
             i = 1;
         } catch (Exception e) {
             i = -1;
@@ -39,12 +40,12 @@ public class MonitorSynchronizedDAOImpl implements MonitorSynchronizedDAO {
     public int insterMoniterData(List<FolderMonitorEntity> folderMonitorEntities) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         int i = -1;
-        boolean verify = mongoTemplate.getDb().collectionExists(TBL_MONITORING_TARGETS);
+        boolean verify = mongoTemplate.getDb().collectionExists(TBL_MONITORING_TARGETS+"_"+ AppContext.getAccountId());
         if (verify) {
-            mongoTemplate.dropCollection(TBL_MONITORING_TARGETS);
+            mongoTemplate.dropCollection(TBL_MONITORING_TARGETS+"_"+ AppContext.getAccountId());
         }
         try {
-            mongoTemplate.insert(folderMonitorEntities, TBL_MONITORING_TARGETS);
+            mongoTemplate.insert(folderMonitorEntities, TBL_MONITORING_TARGETS+"_"+ AppContext.getAccountId());
             i = 1;
         } catch (Exception e) {
             i = -1;

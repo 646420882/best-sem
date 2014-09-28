@@ -977,7 +977,7 @@
 <div class="zs_concent_top over">
     <ul class="zh_menu2 fl">
         <li class="current" cname="table1">已监控关键词</li>
-        <li cname="table2">监控文件夹</li>
+        <li cname="table2" id="jkwjj">监控文件夹</li>
     </ul>
 </div>
 <div class="zs_line"></div>
@@ -1116,7 +1116,6 @@
                 <tr class="list02_top">
                     <th>&nbsp;监控文件夹</th>
                     <th>&nbsp;监控文件夹内</th>
-                    <th>&nbsp;本地存在的关键词数目</th>
                     <th class="username-column" data-noresize> <div class="set fr"></div></th>
                 </tr>
                 </thead>
@@ -1125,20 +1124,6 @@
             </table>
 
         </div>
-
-        <div class="more_list over" style="display:none;">
-            <ul>
-                <li class="current" onclick="alert(123);"><span class="zs_top"><img
-                        src="../public/img/zs_function1.png"></span><b>添加创意</b></li>
-                <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除创意</b></li>
-                <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证创意</b></li>
-                <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原创意</b></li>
-                <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
-                <li><span class="zs_top"><img src="../public/img/zs_function14.png"></span><b>剪贴</b></li>
-                <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
-                <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
-            </ul>
-        </div>
     </div>
     <div class="zhanghu_input"></div>
     <div class="zs_bottom over">
@@ -1146,11 +1131,11 @@
             <ul>
                 <li>
                     <div class="t_list01 fl over" style="width:100px;">监控关键词数量：</div>
-                    <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
+                    <div class="t_list02 fl over"><input type="text" class="zs_input1" id="count" readonly></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over"  style="width:100px;">监控文件夹名称：</div>
-                    <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
+                    <div class="t_list02 fl over"><input type="text" class="zs_input1" id="folder" readonly></div>
                 </li>
 
             </ul>
