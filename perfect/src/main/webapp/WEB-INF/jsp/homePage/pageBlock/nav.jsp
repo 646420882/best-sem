@@ -28,7 +28,7 @@
                             <h3>帐户全景</h3>
                         </a>
                     </li>
-             <%--       <li>
+                    <%--<li>
                         <a href="/assistant/index">
                             <span class="list_2"></span>
 

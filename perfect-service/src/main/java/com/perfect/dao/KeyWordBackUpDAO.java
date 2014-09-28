@@ -15,4 +15,6 @@ public interface KeyWordBackUpDAO extends MongoCrudRepository<KeyWordBackUpEntit
     KeyWordBackUpEntity findById(long id);
 
     void deleteByKwid(long kwid);
+
+    boolean existsByObjectId(String id);
 }

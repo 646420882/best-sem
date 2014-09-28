@@ -379,7 +379,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         }
         mongoTemplate.updateFirst(query, update, KeywordEntity.class, TBL_KEYWORD);
         KeyWordBackUpEntity keyWordBackUpEntityFind = keyWordBackUpDAO.findByObjectId(keywordEntity.getId());
-        if (keyWordBackUpEntityFind == null && keywordEntity.getLocalStatus() == 2) {
+        if (keyWordBackUpEntityFind==null && keywordEntity.getLocalStatus() == 2) {
             KeyWordBackUpEntity backUpEntity = new KeyWordBackUpEntity();
             BeanUtils.copyProperties(keyWordBackUpEntity, backUpEntity);
             keyWordBackUpDAO.insert(backUpEntity);

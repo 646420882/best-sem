@@ -42,6 +42,19 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpE
     }
 
     /**
+     * 根据mongodb id判断该记录是否存在
+     * @param id
+     * @return
+     */
+    public boolean existsByObjectId(String id){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return mongoTemplate.exists(new Query(),getEntityClass(),EntityConstants.BAK_KEYWORD);
+    }
+
+
+
+
+    /**
      * 根据mongogdbID删除备份的关键词
      * @param id
      */
