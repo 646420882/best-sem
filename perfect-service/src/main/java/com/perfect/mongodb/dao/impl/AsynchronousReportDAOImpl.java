@@ -221,13 +221,13 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
 
                 String pcFilePath = report.getRegionalReportDataPC(null, null, dateStr, dateStr);
-                String mobileFilePath = report.getRegionalReportDataMobile(null, null, dateStr, dateStr);
-                if (pcFilePath == null || mobileFilePath == null) {
+                /*String mobileFilePath = report.getRegionalReportDataMobile(null, null, dateStr, dateStr); */
+                if (pcFilePath == null /*|| mobileFilePath == null*/) {
                     continue;
                 }
 
                 List<RegionReportEntity> pcList = httpFileHandler.getRegionReport(pcFilePath, 1);
-                rrmList = httpFileHandler.getRegionReport(mobileFilePath, 2);
+                /*rrmList = httpFileHandler.getRegionReport(mobileFilePath, 2);*/
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 RegionReportHandler task = new RegionReportHandler(pcList, 0, pcList.size());
