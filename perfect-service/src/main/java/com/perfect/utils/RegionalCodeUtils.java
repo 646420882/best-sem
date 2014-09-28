@@ -33,6 +33,7 @@ public class RegionalCodeUtils {
         for (Integer aLong : id) {
             map.put(aLong, d.get(aLong));
         }
+        JRedisUtils.returnJedis(jc);
         return map;
     }
 
@@ -56,6 +57,7 @@ public class RegionalCodeUtils {
                 }
             }
         }
+        JRedisUtils.returnJedis(jc);
         return map;
     }
 
@@ -98,7 +100,7 @@ public class RegionalCodeUtils {
             }
             map.put(integer, redisRegionalList);
         }
-
+        JRedisUtils.returnJedis(jc);
         return map;
     }
 }
