@@ -558,6 +558,7 @@ $(".scheduleOk").click(function () {
 });
 
 
+
 //得到用户选择的推广时段数据
 function getInputScheduleData() {
     var jsonArray = new Array();
@@ -607,15 +608,35 @@ $(".hours").delegate("li", "click", function () {
         $(this).removeClass("changeGray");
         $(this).addClass("changeGreen");
     }
+    whenChooseLiToSetCheckBox($(this));
+});
 
-    var ul = $(this).parent();
+//当选中了某时段时，将复选框状态设置为未选中，若当天没有选中任何时段，则将复选框设置为选中状态
+function whenChooseLiToSetCheckBox(thisLi) {
+    var ul = thisLi.parent();
     if (ul.find(".changeGray").length == 0) {
         ul.find("input[type=checkbox]")[0].checked = true;
     } else {
         ul.find("input[type=checkbox]")[0].checked = false;
     }
+}
+
+
+$(".hours").delegate("li", "mouseover", function () {
+    if(isPressDownCtrl==true){
+        if ($(this).attr("class") == "changeGreen") {
+            $(this).removeClass("changeGreen");
+            $(this).addClass("changeGray");
+        } else{
+            $(this).removeClass("changeGray");
+            $(this).addClass("changeGreen");
+        }
+        whenChooseLiToSetCheckBox( $(this));
+    }
 
 });
+
+
 
 
 /**
@@ -669,11 +690,13 @@ function createChooseTimeUIByCampaignData(data) {
         }
 
         var changeGrayArray = new Array();
-        for (var m = 0; m < data.schedule.length; m++) {
-            if (data.schedule[m].weekDay == (i + 1)) {
-                for (var n = 0; n < 24; n++) {
-                    if (n >= data.schedule[m].startHour && n < data.schedule[m].endHour) {
-                        changeGrayArray.push(n);
+        if(data.schedule!=null){
+            for (var m = 0; m < data.schedule.length; m++) {
+                if (data.schedule[m].weekDay == (i + 1)) {
+                    for (var n = 0; n < 24; n++) {
+                        if (n >= data.schedule[m].startHour && n < data.schedule[m].endHour) {
+                            changeGrayArray.push(n);
+                        }
                     }
                 }
             }
@@ -791,7 +814,7 @@ $("#createCampaignOk").click(function () {
             "priceRatio": priceRatio,
             "pause": campaignPause,
             "showProb": showProb,
-            "schedule": schedule,
+            "schedule": JSON.stringify(schedule),
             "negativeWords": negativeWords,
             "exactNegativeWords": exactNegativeWords,
             "excludeIp": excludeIp,
@@ -966,3 +989,39 @@ function closeSetNegtiveWord() {
     $("#setNegtiveWord").hide(0);
     $(".TB_overlayBG").hide(0);
 }
+
+
+
+
+
+
+
+
+//Ctrl键按下
+var isPressDownCtrl = false;
+$(window).on("keydown keyup",function (event) {
+    var keyCode = event.keyCode;
+    if(keyCode==17){
+        if(event.type=="keydown"){
+            isPressDownCtrl = true;
+        }else{
+            isPressDownCtrl = false;
+        }
+    }
+});
+
+
+//多行选中
+/*
+$("tbody").delegate("tr","click", function (event) {
+    if(isPressDownCtrl==true){
+        if(/list2_box3/.test($(this).attr("class"))){
+            $(this).removeClass("list2_box3");
+        }else{
+            $(this).addClass("list2_box3");
+        }
+    }else{
+        $(this).parent().find("tr").removeClass("list2_box3");
+        $(this).addClass("list2_box3");
+    }
+});*/
