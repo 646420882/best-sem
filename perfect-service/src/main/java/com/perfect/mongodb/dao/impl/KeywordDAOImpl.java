@@ -432,6 +432,34 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordEntity, Long>
         return mongoTemplate.find(new Query(Criteria.where(EntityConstants.SYSTEM_ID).in(strIds)),getEntityClass(),EntityConstants.TBL_KEYWORD);
     }
 
+
+    /**
+     * 根据传过来的关键词的long id 分页查询
+     * @param ids
+     * @param nowPage
+     * @param pageSize
+     * @return
+     */
+    public  PagerInfo findKeywordByIds(List<Long> ids, Integer nowPage, Integer pageSize){
+        Query q = new Query();
+        q.addCriteria(Criteria.where(EntityConstants.KEYWORD_ID).in(ids));
+
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        int totalCount = getListTotalCount(q);
+        PagerInfo p = new PagerInfo(nowPage, pageSize, totalCount);
+        q.skip(p.getFirstStation());
+        q.limit(p.getPageSize());
+        q.with(new Sort(Sort.Direction.DESC, "name"));
+        if (totalCount < 1) {
+            p.setList(new ArrayList());
+            return p;
+        }
+        List list = mongoTemplate.find(q, getEntityClass());
+        p.setList(list);
+        return p;
+
+    }
+
     /**
      * 根据mongodbID修改
      *

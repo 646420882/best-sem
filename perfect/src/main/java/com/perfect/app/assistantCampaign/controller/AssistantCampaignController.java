@@ -69,7 +69,7 @@ public class AssistantCampaignController {
     @RequestMapping(value = "assistantCampaign/list", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAllCampaignList(HttpServletResponse response, Integer nowPage, Integer pageSize) {
         if (nowPage == null) {
-            nowPage = 1;
+            nowPage = 0;
         }
         Query query = new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()));
         PagerInfo page = campaignDAO.findByPageInfo(query, pageSize, nowPage);
@@ -288,21 +288,14 @@ public class AssistantCampaignController {
         campaignEntity.setPriceRatio(priceRatio);
         campaignEntity.setPause(pause);
         campaignEntity.setShowProb(showProb);
-        List<ScheduleType> scheduleEntityList = null;
-        if (schedule != null && !"".equals(schedule)) {
-            scheduleEntityList = new ArrayList<>();
-            String[] strSchedule = schedule.split(";");
-            for (String str : strSchedule) {
-                String[] fieds = str.split("-");
-                ScheduleType scheduleType = new ScheduleType();
-                int i = 0;
-                scheduleType.setWeekDay(Long.parseLong(fieds[i++]));
-                scheduleType.setStartHour(Long.parseLong(fieds[i++]));
-                scheduleType.setEndHour(Long.parseLong(fieds[i++]));
-                scheduleEntityList.add(scheduleType);
-            }
+
+        if(schedule!=null){
+            Gson gson = new Gson();
+            List<ScheduleType> scheduleTypes = gson.fromJson(schedule, new TypeToken<List<ScheduleType>>() {
+            }.getType());
+            campaignEntity.setSchedule(scheduleTypes == null ? new ArrayList<ScheduleType>() : scheduleTypes);
         }
-        campaignEntity.setSchedule(scheduleEntityList);
+
         campaignEntity.setRegionTarget(regionTarget == null ? new ArrayList<Integer>() : Arrays.asList(regionTarget));
         campaignEntity.setNegativeWords(negativeWords == null ? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
         campaignEntity.setExactNegativeWords(exactNegativeWords == null ? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));

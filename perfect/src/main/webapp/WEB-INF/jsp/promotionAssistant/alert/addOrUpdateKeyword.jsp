@@ -571,6 +571,7 @@ $("#finish").click(function () {
         dataType:"json",
         success: function (data) {
         alert("操作成功!");
+        window.location.reload(true);
         }
       });
 });

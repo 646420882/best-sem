@@ -92,4 +92,6 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
     void softDeleteByLongAdgroupIds(List<Long> longSet);
 
     List<KeywordEntity> findByObjectIds(List<String> strIds);
+
+    PagerInfo findKeywordByIds(List<Long> ids, Integer nowPage, Integer pageSize);
 }
