@@ -8,3 +8,7 @@ function addCreativeOk(){
 //        alert(result);
 //    });
 }
+function reView(res){
+    var _this=$(res);
+    alert(_this..parents("tr").html());
+}

@@ -220,6 +220,7 @@
                     <div class="w_list03">
                         <ul class="jiangjia_list">
                             <li class="current Screenings">筛选</li>
+                            <li  id="showbox_im">设置规则</li>
                             <li id="showbox3_im">暂停竞价</li>
                             <li id="showbox2_im">修改出价</li>
                             <li id="showbox4_im">修改访问网址</li>

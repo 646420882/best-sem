@@ -4,6 +4,7 @@
 $(function () {
     initImUpdatePrice();
     initImUpdateURL();
+    initImGuiZe();
     initImStopBidStatus();
     imiUpdateCustomGroup();
 });
@@ -237,6 +238,32 @@ function initImStopBidStatus(){
                 alert("所选关键词没有设置竞价规则!");
             }
         }
+    });
+}
+//设置规则
+function initImGuiZe(){
+    $("#showbox_im").click(function(){
+        var keywordIds = getAllCheckedcbIm();
+        if (keywordIds.length == 0) {
+            alert("请选择至少一个关键词!");
+            return false;
+        }
+
+        selectedKeywordIds = keywordIds;
+
+//        if (keywordIds.length == 1) {
+//            filldata(items.val());
+//        } else {
+//            emptydata();
+//        }
+        $(".TB_overlayBG").css({
+            display: "block", height: $(document).height()
+        });
+        $("#seetingRules").css({
+            left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
+            display: "block"
+        });
     });
 }
 function imiUpdateCustomGroup(){
