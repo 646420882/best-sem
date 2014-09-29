@@ -84,6 +84,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 KeywordDTO dto = new KeywordDTO();
                 dto.setCampaignName(((CampaignEntity)getMap.get("campaign")).getCampaignName());
                 dto.setAdgroupName(((AdgroupEntity)getMap.get("adgroup")).getAdgroupName());
+                dto.setCampaignId(((CampaignEntity)getMap.get("campaign")).getCampaignId());
                 dto.setObject(kwd);
                 dtoList.add(dto);
         }

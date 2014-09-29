@@ -12,12 +12,15 @@ public class KeywordDTO implements Serializable{
 
     private String campaignName;
 
+    private Long CampaignId;
+
     private String adgroupName;
 
     private KeywordEntity object;
 
-    public KeywordDTO(String campaignName, String adgroupName, KeywordEntity object) {
+    public KeywordDTO(String campaignName, Long campaignId, String adgroupName, KeywordEntity object) {
         this.campaignName = campaignName;
+        CampaignId = campaignId;
         this.adgroupName = adgroupName;
         this.object = object;
     }
@@ -31,6 +34,14 @@ public class KeywordDTO implements Serializable{
 
     public void setCampaignName(String campaignName) {
         this.campaignName = campaignName;
+    }
+
+    public Long getCampaignId() {
+        return CampaignId;
+    }
+
+    public void setCampaignId(Long campaignId) {
+        CampaignId = campaignId;
     }
 
     public String getAdgroupName() {
