@@ -974,20 +974,28 @@ var getAllSelectedBidRuleIm = function () {
     return keywordIds;
 };
 
+var changeGridCol1 = function () {
+    var cbs = $("#customColList").find("input[type=checkbox]");
+    $.each(cbs, function (i, item) {
+        if (item.checked)
+            $("#table1").setGridParam().showCol(item.value);
+        else
+            $("#table1").setGridParam().showCol(item.value);
+    });
+    $("#table1").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
+//    $("#table1").closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
+    $(".TB_overlayBG").css("display", "none");
+    $(".box6").css("display", "none");
+};
 var changeGridCol = function () {
     var cbs = $("#customColList").find("input[type=checkbox]");
     $.each(cbs, function (i, item) {
-        if (item.checked) {
-            $("#table1").setGridParam().showCol(item.value);
+        if (item.checked)
             $("#table2").setGridParam().showCol(item.value);
-        } else {
-            $("#table1").setGridParam().hideCol(item.value);
-            $("#table2").setGridParam().hideCol(item.value);
-        }
+        else
+            $("#table2").setGridParam().showCol(item.value);
     });
-    $("#table1").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
     $("#table2").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
-//    $("#table1").closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
     $(".TB_overlayBG").css("display", "none");
     $(".box6").css("display", "none");
 };
@@ -1035,7 +1043,7 @@ $(function () {
     });
 
     $("#customCol").on('click', function () {
-        changeGridCol();
+        changeGridCol1();
     });
 
     $("#modifyPrice").on('click', function () {
