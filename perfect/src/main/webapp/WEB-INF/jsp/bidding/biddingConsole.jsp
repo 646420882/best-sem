@@ -11,26 +11,22 @@
 <head>
     <title>Bidding Console</title>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
 </head>
 <body>
-
-<div style="margin-left: 15%; margin-top: 20%">
-    <div class="control-group info">
-        <label class="control-label" for="url">请输入URL请求地址</label>
-
-        <div class="controls">
-            <input type="text" id="url">
-        </div>
+<div id="bidding_box" style="position:absolute; top:15%; left:20%;">
+<div style="overflow:hidden;">
+    <div class="control-group fl">
+        <label class="control-label fl" for="url" style="line-height:30px; margin-right: 10px;">请输入URL请求地址</label>
+        <input type="text"  class="form-control fl" id="url">
     </div>
-    <div>
-        <p>
-            <button class="btn btn-primary" type="button" onclick=submitUrl()>提交</button>
-        </p>
+    <div  class="control-group fl " >
+            <button class="btn btn-primary btn-lg" type="button" style="width:80px; margin-left:10px;" onclick=submitUrl() >提交</button>
     </div>
 </div>
-<div style="margin-left: 45%; margin-top: -20%; width: 800px; height: 600px; border: 1px solid #30b0eb;">
-    <table id="table1" border="0" cellspacing="0" width="100%">
+<div style="  width: 800px; height: 600px;  overflow:hidden; ">
+    <table id="table1" border="0" cellspacing="0" width="100%" class="table table-striped table-bordered table-hover datatable dataTable" aria-describedby="DataTables_Table_0_info">
         <thead>
         <tr>
             <td>URL</td>
@@ -38,8 +34,36 @@
             <td>下次启动时间</td>
         </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+        <tr>
+            <td>URL</td>
+            <td>是否空闲</td>
+            <td>下次启动时间</td>
+        </tr>
+        <tr>
+            <td>URL</td>
+            <td>是否空闲</td>
+            <td>下次启动时间</td>
+        </tr>
+        <tr>
+            <td>URL</td>
+            <td>是否空闲</td>
+            <td>下次启动时间</td>
+        </tr>
+        <tr>
+            <td>URL</td>
+            <td>是否空闲</td>
+            <td>下次启动时间</td>
+        </tr>
+        <tr>
+            <td>URL</td>
+            <td>是否空闲</td>
+            <td>下次启动时间</td>
+        </tr>
+
+        </tbody>
     </table>
+</div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
@@ -59,8 +83,7 @@
         });
     };
 
-    $(function () {
-    });
+
 </script>
 </body>
 </html>
