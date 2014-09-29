@@ -13,8 +13,6 @@ import com.perfect.schedule.core.IScheduleTaskDealSingle;
 import com.perfect.schedule.core.TaskItemDefine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 
 import javax.annotation.Resource;
 import java.text.DateFormat;
@@ -25,6 +23,7 @@ import java.util.*;
  * Created by john on 2014/8/8.
  * 每天凌晨1点执行
  */
+@Deprecated
 public class CountYesterdayCostTask implements IScheduleTaskDealSingle<Map<String, Object>> {
     protected static transient Logger log = LoggerFactory.getLogger(IScheduleTaskDealSingle.class);
 
@@ -49,7 +48,7 @@ public class CountYesterdayCostTask implements IScheduleTaskDealSingle<Map<Strin
     public List<Map<String, Object>> selectTasks(String taskParameter, String ownSign, int taskItemNum, List<TaskItemDefine> taskItemList, int eachFetchDataNum) throws Exception {
 
         //得到所有已经启用的的预警
-        List<WarningRuleEntity> warningRuleList = accountWarningDAO.find(new Query().addCriteria(Criteria.where("isEnable").is(1)), WarningRuleEntity.class);
+        List<WarningRuleEntity> warningRuleList = accountWarningDAO.findEnableIsOne();
         //得到所有系统用户
         Iterable<SystemUserEntity> systemUserEntityList = systemUserDAO.findAll();
 
