@@ -5,6 +5,7 @@ import com.perfect.autosdk.sms.v3.RealTimeResultType;
 import com.perfect.dao.GetAccountReportDAO;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
+import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.utils.DBNameUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -28,7 +29,7 @@ public class GetAccountReportDAOImpl implements GetAccountReportDAO {
      */
     public List<AccountReportEntity> getLocalAccountRealData(String userName,Date startDate,Date endDate){
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(userName));
-        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.ASC, "date")), AccountReportEntity.class, "account_report");
+        List<AccountReportEntity> list = mongoTemplate.find(new Query(Criteria.where("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.ASC, "date")), AccountReportEntity.class, EntityConstants.TBL_ACCOUNT_REPORT);
         return list;
     }
 

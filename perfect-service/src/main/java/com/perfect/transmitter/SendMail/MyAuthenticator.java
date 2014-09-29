@@ -1,4 +1,4 @@
-package com.perfect.app.transmitter;
+package com.perfect.transmitter.sendMail;
 
 import javax.mail.*;
 

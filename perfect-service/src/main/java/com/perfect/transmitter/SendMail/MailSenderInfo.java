@@ -1,9 +1,10 @@
-package com.perfect.app.transmitter;
+package com.perfect.transmitter.sendMail;
 
 /**
  * 发送邮件需要使用的基本信息
  */
 import java.util.Properties;
+
 public class MailSenderInfo {
     // 发送邮件的服务器的IP和端口
     private String mailServerHost;
@@ -23,6 +24,19 @@ public class MailSenderInfo {
     private String content;
     // 邮件附件的文件名
     private String[] attachFileNames;
+
+
+
+   public MailSenderInfo(){
+       this.mailServerHost = "smtp.163.com";
+       this.mailServerPort = "25";
+       this.validate = true;
+       this.userName = "perfecttest2014@163.com";
+       this.password = "perfect2014";
+       this.fromAddress = "perfecttest2014@163.com";
+    }
+
+
     /**
      * 获得邮件会话属性
      */
