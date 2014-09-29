@@ -40,7 +40,8 @@ public class BiddingMaintenanceDAOImpl implements BiddingMaintenanceDAO {
 
     @Override
     public List<UrlEntity> findAll() {
-        return null;
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        return mongoTemplate.findAll(UrlEntity.class, "sys_urlpool");
     }
 
     @Override
