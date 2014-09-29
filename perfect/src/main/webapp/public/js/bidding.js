@@ -128,12 +128,17 @@ $(function () {
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box9").css("display", "none");
+        $(".box7").css("display", "none");
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box7").css("display", "none");
+        $(".box8").css("display", "none");
     });
+    $(".close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $(".box9").css("display", "none");
+    });
+
     //下载
     $("#updateBtn").click(function () {
         $(".TB_overlayBG").css({

@@ -528,7 +528,7 @@
 </div>
 
 <!--------------关键词当前排名----------------->
-<div class="box" id="paiming" style="display:none;*width:410px;">
+<div class="box8" id="paiming" style="display:none;*width:410px;">
     <h2 id="box8"><span class="fl">当前排名</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
