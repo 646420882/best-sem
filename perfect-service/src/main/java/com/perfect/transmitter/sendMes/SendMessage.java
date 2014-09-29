@@ -1,4 +1,4 @@
-package com.perfect.transmitter.sendMessage;
+package com.perfect.transmitter.sendMes;
 
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
 

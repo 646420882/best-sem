@@ -18,7 +18,7 @@ import java.util.Properties;
       */
      public boolean sendTextMail(MailSenderInfo mailInfo) {
          // 判断是否需要身份认证
-         com.perfect.transmitter.sendMail.MyAuthenticator authenticator = null;
+         MyAuthenticator authenticator = null;
          Properties pro = mailInfo.getProperties();
          if (mailInfo.isValidate()) {
              // 如果需要身份认证，则创建一个密码验证器

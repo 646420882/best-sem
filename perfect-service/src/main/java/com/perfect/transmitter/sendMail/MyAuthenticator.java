@@ -1,6 +1,7 @@
 package com.perfect.transmitter.sendMail;
 
-import javax.mail.*;
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
 
 public class MyAuthenticator extends Authenticator {
 	String userName=null;

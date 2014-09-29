@@ -2,7 +2,7 @@ package com.perfect.transmitter.sender;
 
 import com.perfect.transmitter.sendMail.MailSenderInfo;
 import com.perfect.transmitter.sendMail.SimpleMailSender;
-import com.perfect.transmitter.sendMessage.SendMessage;
+import com.perfect.transmitter.sendMes.SendMessage;
 
 import java.util.Map;
 
@@ -14,7 +14,7 @@ public class Sender implements Runnable{
     private Map<String,Object> map;
 
 
-    public Sender(Map<String,Object> map) {
+    public Sender(Map<String, Object> map) {
         this.map = map;
     }
 
