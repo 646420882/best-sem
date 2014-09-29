@@ -24,6 +24,7 @@ public class AsynchronousReport {
 
     private ReportService reportService = null;
 
+
     public AsynchronousReport() {
         service = BaseBaiduService.getCommonService();
         init();
@@ -106,15 +107,28 @@ public class AsynchronousReport {
         // 0：全部搜索推广设备  1：仅计算机 2：仅移动
         requestType.setDevice(device);
 
-
         //创建访问百度接口请求
         GetProfessionalReportIdRequest dataRequest = new GetProfessionalReportIdRequest();
         dataRequest.setReportRequestType(requestType);
-        GetProfessionalReportIdResponse dataResponse = reportService.getProfessionalReportId(dataRequest);
+        GetProfessionalReportIdResponse dataResponse = null;
+        int reRetry = 1;
+        while (reRetry > 0){
+            try{
+                dataResponse = reportService.getProfessionalReportId(dataRequest);
+                reRetry = 0;
+            }catch (Exception e){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+
 
         int reTime = 0;
         while (dataResponse == null) {
-            if (reTime >= 5) {
+            if (reTime >= 3) {
                 return null;
             }
             try {
@@ -122,7 +136,20 @@ public class AsynchronousReport {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            dataResponse = reportService.getProfessionalReportId(dataRequest);
+            int reRetry1 = 1;
+            while (reRetry1 > 0){
+                try{
+                    dataResponse = reportService.getProfessionalReportId(dataRequest);
+                    reRetry1 = 0;
+                }catch (Exception e){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+
             reTime++;
         }
 
@@ -130,8 +157,21 @@ public class AsynchronousReport {
 
         GetReportStateRequest reportStateRequest = new GetReportStateRequest();
         reportStateRequest.setReportId(reportId);
+        GetReportStateResponse reportStateResponse = null;
+        int reRetry2 = 1;
+        while (reRetry2 > 0){
+            try{
+                reportStateResponse = reportService.getReportState(reportStateRequest);
+                reRetry2 = 0;
+            }catch (Exception e){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
 
-        GetReportStateResponse reportStateResponse = reportService.getReportState(reportStateRequest);
 
         int reTimeTow = 0;
         while (reportStateResponse == null) {
@@ -143,7 +183,20 @@ public class AsynchronousReport {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            reportStateResponse = reportService.getReportState(reportStateRequest);
+            int reRetry3 = 1;
+            while (reRetry3 > 0){
+                try{
+                    reportStateResponse = reportService.getReportState(reportStateRequest);
+                    reRetry3 = 0;
+                }catch (Exception e){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+
             reTimeTow++;
         }
 
@@ -165,7 +218,22 @@ public class AsynchronousReport {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                GetReportStateResponse reportState = reportService.getReportState(reportStateRequest);
+
+                GetReportStateResponse reportState =null;
+                int reRetry4 = 1;
+                while (reRetry4 > 0){
+                    try{
+                        reportState = reportService.getReportState(reportStateRequest);
+                        reRetry4 = 0;
+                    }catch (Exception e){
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+
                 views++;
                 if (reportState == null) {
                     continue;
@@ -174,7 +242,22 @@ public class AsynchronousReport {
             } else if (isGenerated == 3) {
                 GetReportFileUrlRequest fileUrlRequest = new GetReportFileUrlRequest();
                 fileUrlRequest.setReportId(reportId);
-                GetReportFileUrlResponse stateResponse = reportService.getReportFileUrl(fileUrlRequest);
+
+                GetReportFileUrlResponse stateResponse = null;
+                int reRetry4 = 1;
+                while (reRetry4 > 0){
+                    try{
+                        stateResponse = reportService.getReportFileUrl(fileUrlRequest);
+                        reRetry4 = 0;
+                    }catch (Exception e){
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+
                 if (stateResponse == null) {
                     fileUrl = null;
                 } else

@@ -41,8 +41,8 @@ public class KeyWordBackUpServiceImpl extends AbstractUserBaseDAOImpl<KeyWordBac
     @Override
     public void insertAll(List<KeyWordBackUpEntity> entities) {
         for(KeyWordBackUpEntity tempKwdBack:entities){
-            KeyWordBackUpEntity kwdBack = keyWordBackUpDAO.findByObjectId(tempKwdBack.getId());
-            if (kwdBack == null) {
+            boolean exists = keyWordBackUpDAO.existsByObjectId(tempKwdBack.getId());
+            if (exists == false) {
                 keyWordBackUpDAO.insert(tempKwdBack);
             }
         }

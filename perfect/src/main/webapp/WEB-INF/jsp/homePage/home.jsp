@@ -1783,6 +1783,7 @@ var curve = function () {
             filename: 'Graph_Chart',
             buttons: {
                 contextButton: {
+                    symbol: 'url(/public/images/reportDown.jpg)',
                     menuItems:[{
                         text:'导出 JPEG图片',
                         onclick:function() {

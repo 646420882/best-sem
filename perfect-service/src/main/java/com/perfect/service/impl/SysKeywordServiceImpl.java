@@ -21,13 +21,13 @@ public class SysKeywordServiceImpl implements SysKeywordService {
     KeywordDAO keywordDAO;
 
     @Override
-    public List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param) {
-        return keywordDAO.findByAdgroupId(adgroupId, param);
+    public List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param, Map<String, Object> queryParams) {
+        return keywordDAO.findByAdgroupId(adgroupId, param, queryParams);
     }
 
     @Override
-    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param) {
-        return keywordDAO.findByAdgroupIds(adgroupIds, param);
+    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param, Map<String, Object> queryParams) {
+        return keywordDAO.findByAdgroupIds(adgroupIds, param, queryParams);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class SysKeywordServiceImpl implements SysKeywordService {
     }
 
     @Override
-    public List<KeywordEntity> findByIds(List<Long> ids, PaginationParam...param) {
-        return keywordDAO.findByIds(ids,param);
+    public List<KeywordEntity> findByIds(List<Long> ids, PaginationParam... param) {
+        return keywordDAO.findByIds(ids, param);
     }
 }

@@ -359,9 +359,8 @@ getCampaiTreeData();
             return;
         }
 
-        if($(".TextAreaChoose").val()==""){
+        if($("#TextAreaChoose").val()==""){
             alert("请输入要添加或者更新的数据");
-            $(".TextAreaChoose").val("");
             return ;
         }
 
@@ -382,9 +381,6 @@ getCampaiTreeData();
                if(data.updateList.length>0){
                    toHtml("update",data.updateList);
                 }
-                if(data.delList.length>0){
-                    toHtml("delete",data.delList);
-                }
                 if(data.igoneList.length>0){
                     toHtml("igone",data.igoneList);
                 }
@@ -399,7 +395,7 @@ getCampaiTreeData();
         var otherField = new Array("推广计划名称","推广单元名称","关键词名称","匹配模式","出价","访问url","移动访问url","启用/暂停");
         var html = "";
 
-        if(listType=="insert"||listType=="update"||listType=="delete"){
+        if(listType=="insert"||listType=="update"){
             html = createHtml(otherField,list,listType);
         }else if(listType=="igone"){
             html = createIgoneHtml(igoneField,list);
@@ -407,7 +403,6 @@ getCampaiTreeData();
         $("#valideKwd").append(html);
         $("#inputDwdInfo").hide();
         $("#validateDiv").show();
-        $("#tabUl li:eq(0)").removeClass("current");
         $("#tabUl li:eq(1)").addClass("current");
     }
 
@@ -419,7 +414,6 @@ getCampaiTreeData();
         switch (listType){
             case "insert":stringName = "新增的关键词"+list.length+"个";break;
             case "update":stringName = "更新的关键词"+list.length+"个";break;
-            case "delete":stringName = "删除的关键词"+list.length+"个";break;
         }
 
 
@@ -432,8 +426,6 @@ getCampaiTreeData();
                           html+=" <p><input type='radio' name='addnew'>不添加</p>";break;
             case "update":html+=" <p><input type='radio' id='updateRadio' checked='checkde' name='updatenew'>更新已选择的关键词</p>";
                           html+=" <p><input type='radio'  name='updatenew'>不更新</p>";break;
-            case "delete":html+=" <p><input type='radio' id='delRadio' checked='checkde' name='delnew'>删除已选择的关键词</p>";
-                          html+=" <p><input type='radio'  name='delnew'>不删除</p>";break;
         }
 
         html+=" <div class='list4' style='height:300px;'>";
@@ -466,11 +458,11 @@ getCampaiTreeData();
                     break;
                 case 2:
                     matchType = "短语";
-                    if (obj.phraseType == 1) {
+                    if (list[i].object.phraseType == 1) {
                         matchType = matchType + "-同义包含";
-                    } else if (obj.phraseType == 2) {
+                    } else if (list[i].object.phraseType == 2) {
                         matchType = matchType + "-精确包含";
-                    } else if (obj.phraseType == 3) {
+                    } else if (list[i].object.phraseType == 3) {
                         matchType = matchType + "-核心包含";
                     }
                     ;
@@ -539,7 +531,6 @@ getCampaiTreeData();
         $("#inputDwdInfo").show();
         $("#validateDiv").hide();
         $("#tabUl li:eq(1)").removeClass("current");
-        $("#tabUl li:eq(0)").addClass("current");
     });
 
 
@@ -580,41 +571,9 @@ $("#finish").click(function () {
         dataType:"json",
         success: function (data) {
         alert("操作成功!");
+        window.location.reload(true);
         }
       });
-
-   /* if($("#updateRadio")[0]!=undefined){
-        var isUpdate = $("#updateRadio")[0].checked;
-        if(isUpdate==true){
-            var keywords = pdata.updateList;
-            $.ajax({
-                url:"/assistantKeyword/batchUpdate",
-                type:"post",
-                data:JSON.stringify(keywords),
-                dataType:"json",
-                contentType:"application/json; charset=UTF-8",
-                success:function(data){
-                    alert("操作成功!");
-                }
-            });
-        }
-    }*/
-
-   /* if( $("#delRadio")[0]!=undefined){
-        var isDel = $("#delRadio")[0].checked;
-        if(isDel==true){
-            var ids = "";
-            for(var i=0;i<pdata.delList.length;i++){
-                ids+=pdata.delList[i].object.id+",";
-
-                $.ajax({
-                    url:"/assistantKeyword/deleteById",
-                    type:"post",
-                    data:{"kwids":ids}
-                });
-            }
-        }
-    }*/
 });
 
 </script>

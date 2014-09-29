@@ -37,4 +37,6 @@ public interface AssistantKeywordService {
     void saveSearchwordKeyword(List<KeywordEntity> list);
 
     void setNeigWord(String agid, String keywords, Integer neigType);
+
+    PagerInfo getKeywordListByIds(List<Long> ids,Integer nowPage,Integer pageSize);
 }

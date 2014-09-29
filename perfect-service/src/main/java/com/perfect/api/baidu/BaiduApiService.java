@@ -293,6 +293,22 @@ public class BaiduApiService {
         return keywordTypes.get(0);
     }
 
+    @SuppressWarnings("unchecked")
+    public List<KeywordType> updateKeyword(List<KeywordType> list) throws ApiException {
+        if (list == null || list.size() == 0) {
+            return Collections.EMPTY_LIST;
+        }
+        UpdateKeywordRequest request = new UpdateKeywordRequest();
+        request.setKeywordTypes(list);
+
+        KeywordService keywordService = commonService.getService(KeywordService.class);
+        UpdateKeywordResponse response = keywordService.updateKeyword(request);
+        if (response == null) {
+            return Collections.EMPTY_LIST;
+        }
+        return response.getKeywordTypes();
+    }
+
     public List<BaiduSpiderHelper.PreviewData> getPreviewData(int region, List<String> keyList, BaiduSpiderHelper helper) {
         GetPreviewRequest request = new GetPreviewRequest();
         request.setKeyWords(keyList);

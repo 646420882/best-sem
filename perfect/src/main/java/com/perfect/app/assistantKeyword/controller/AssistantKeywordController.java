@@ -344,7 +344,7 @@ public class AssistantKeywordController {
     }
 
     /**
-     * 将搜索词报告中关键词添加到现登录的账户
+     * 将搜索词报告中关键词作为否定词设置到现登录的账户
      */
     @RequestMapping(value = "assistantKeyword/setNeigWord",method = {RequestMethod.GET,RequestMethod.POST})
     public void setNeigWord(HttpServletResponse response,String agid,String keywords,Integer neigType){

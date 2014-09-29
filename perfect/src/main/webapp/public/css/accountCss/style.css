@@ -2080,16 +2080,19 @@ h2 .close {
 .r_under_left ul li {
     padding: 10px 2%;
     border-bottom: 1px solid #b6bbc8;
+    font-family: arial;
     overflow: hidden;
 }
 .r_under_left ul li:hover {
     background: #e4eafa;
 }
-.r_under_left ul li span a {
+.r_under_left ul li .cretiveunder a {
+    font-family: "微软雅黑";
     padding: 0 16px;
     color: #7696d0;
 }
-.r_under_left ul li span {
+
+.r_under_left ul li .cretiveunder {
     color: #7696d0;
 }
 .sets li {
@@ -2853,15 +2856,14 @@ float:none;
 }
 .riginality_under h3{
     font-size:14px;
+    line-height:26px;
 }
 /**********table间距调整********/
 .tuoci table tr td{
     width:20%;
-
 }
 .hangyetuoci table tr td{
     width:25%;
-
 }
 /*input[type=checkbox],
 input[type=radio]{

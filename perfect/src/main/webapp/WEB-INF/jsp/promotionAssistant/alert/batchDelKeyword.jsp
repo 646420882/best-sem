@@ -337,7 +337,6 @@
     //上一步按钮的事件
     $(".delKwdLastStep").click(function(){
         $("#tabUl li:eq(1)").removeClass("current");
-        $("#tabUl li:eq(0)").addClass("current");
         $("#showValidateDiv").addClass("hides");
         $("#delKwdByChoose").removeClass("hides");
     });
@@ -396,7 +395,6 @@
                     $("#validateDelKwdUl").append(html);
                 }
 
-                $("#tabUl li:eq(0)").removeClass("current");
                 $("#tabUl li:eq(1)").addClass("current");
                 $("#delKwdByChoose").addClass("hides");
                 $("#showValidateDiv").removeClass("hides");
@@ -502,7 +500,7 @@
                 $("#validateDelKwdUl").html(html);
             }
         });
-
+        $("#tabUl li:eq(1)").addClass("current");
         $("#delKwdByChoose").addClass("hides");
         $("#showValidateDiv").removeClass("hides");
     });
@@ -520,6 +518,7 @@
                 type:"post",
                 data:{"kwids":ids},
                 success:function(data){
+                    alert("操作成功!");
                     window.location.reload(true);
                 }
             });

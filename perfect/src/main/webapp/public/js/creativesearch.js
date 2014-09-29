@@ -28,7 +28,7 @@ function search() {
 
                 li.append($("<div></div>")).append(item.html);
 
-                li.append("<div><span class=\"fr\"><a href=\"#\">置顶</a>|<a href=\"#\" class=\"showbox\">编辑</a>|<a href=\"#\">删除</a></span></div>");
+                li.append("<div><span class=\"cretiveunder fr\"><a href=\"#\">置顶</a>|<a href=\"#\" class=\"showbox\">编辑</a>|<a href=\"#\">删除</a></span></div>");
 
                 $("#creativeList").append(li);
 
@@ -137,7 +137,7 @@ function load() {
                 return;
             }
 
-
+            $('#campagin').empty();
             $('#campagin').append("<option value=\"-1\">请选择计划</option>");
 
             $.each(datas.rows, function (i, item) {

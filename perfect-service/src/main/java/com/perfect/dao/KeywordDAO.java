@@ -59,11 +59,11 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
     List<KeywordEntity> findByQuery(Query query);
 
-    List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param);
+    List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param, Map<String, Object> queryParams);
 
     List<KeywordEntity> findByAdgroupId(String adgroupId, PaginationParam param);
 
-    List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param);
+    List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param, Map<String, Object> queryParams);
 
     KeywordEntity findByObjectId(String oid);
 
@@ -79,7 +79,7 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
     List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
 
-    List<KeywordEntity> findByIds(List<Long> ids,PaginationParam...param);
+    List<KeywordEntity> findByIds(List<Long> ids, PaginationParam... param);
 
     void update(KeywordEntity keywordEntity, KeyWordBackUpEntity keyWordBackUpEntity);
 
@@ -92,4 +92,6 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
     void softDeleteByLongAdgroupIds(List<Long> longSet);
 
     List<KeywordEntity> findByObjectIds(List<String> strIds);
+
+    PagerInfo findKeywordByIds(List<Long> ids, Integer nowPage, Integer pageSize);
 }

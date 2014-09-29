@@ -7,6 +7,85 @@ var reportDataVS;
 var accountBasisReport;
 var curve;
 var pieChart;
+
+/*初始化数据变量*/
+var dataOne = "";
+var dataTow = "";
+
+//日期
+var t_date = new Array();
+var dateInterval = 0;
+var colorOne = "#4572A7";
+var colorTow = "#40BC2A";
+
+var nameOne = "展现";
+var nameTow = "点击";
+//展现
+var t_impr = new Array();
+//点击数
+var t_clicks = new Array();
+//消费
+var t_cost = new Array();
+//点击率
+var t_ctr = new Array();
+//平均点击价格
+var t_cpc = new Array();
+//转化
+var t_conversion = new Array();
+//饼状图参数
+//展现
+var tsay_impr = new Array();
+var tsa_impr = 0;
+
+//点击
+var tsay_clicks = new Array();
+var tsa_clicks = 0;
+
+//消费
+var tsay_cost = new Array();
+var tsa_cost = 0;
+
+//转化
+var tsay_conversion = new Array();
+var tsa_conversion = 0;
+
+//点击率
+var tsay_ctr = new Array();
+var tsa_ctr = 0;
+
+//平均价格
+var tsay_cpc = new Array();
+var tsa_cpc = 0;
+
+var fieldName = 'date';
+
+var sort = 1;
+var dateclicks = "";
+
+//日期控件-开始日期
+var daterangepicker_start_date = null;
+
+//日期控件-结束日期
+var daterangepicker_end_date = null;
+
+
+var startDet = 0;
+var sorts = "-11";
+var endDet = 20;
+var limitDet = 20;
+var sortVS = "-1";
+var pageDetNumber = 0;
+var judgeDet = 0;
+//基础报告
+var startJC = 0;
+var limitJC = 20;
+//账户报告
+var startVS = 0;
+var endVs = 20;
+var limitVS = 20;
+var dataid = 0;
+var dataname = "0";
+var judety = 0;
 $(function () {
     // 对Date的扩展，将 Date 转化为指定格式的String
     // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
@@ -31,84 +110,7 @@ $(function () {
                 fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     }
-    /*初始化数据变量*/
-    var dataOne = "";
-    var dataTow = "";
 
-//日期
-    var t_date = new Array();
-    var dateInterval = 0;
-    var colorOne = "#4572A7";
-    var colorTow = "#40BC2A";
-
-    var nameOne = "展现";
-    var nameTow = "点击";
-//展现
-    var t_impr = new Array();
-//点击数
-    var t_clicks = new Array();
-//消费
-    var t_cost = new Array();
-//点击率
-    var t_ctr = new Array();
-//平均点击价格
-    var t_cpc = new Array();
-//转化
-    var t_conversion = new Array();
-//饼状图参数
-//展现
-    var tsay_impr = new Array();
-    var tsa_impr = 0;
-
-//点击
-    var tsay_clicks = new Array();
-    var tsa_clicks = 0;
-
-//消费
-    var tsay_cost = new Array();
-    var tsa_cost = 0;
-
-//转化
-    var tsay_conversion = new Array();
-    var tsa_conversion = 0;
-
-//点击率
-    var tsay_ctr = new Array();
-    var tsa_ctr = 0;
-
-//平均价格
-    var tsay_cpc = new Array();
-    var tsa_cpc = 0;
-
-    var fieldName = 'date';
-
-    var sort = 1;
-    var dateclicks = "";
-
-//日期控件-开始日期
-    var daterangepicker_start_date = null;
-
-//日期控件-结束日期
-    var daterangepicker_end_date = null;
-
-
-    var startDet = 0;
-    var sorts = "-11";
-    var endDet = 20;
-    var limitDet = 20;
-    var sortVS = "-1";
-    var pageDetNumber = 0;
-    var judgeDet = 0;
-//基础报告
-    var startJC = 0;
-    var limitJC = 20;
-//账户报告
-    var startVS = 0;
-    var endVs = 20;
-    var limitVS = 20;
-    var dataid = 0;
-    var dataname = "0";
-    var judety = 0;
     $(document).ready(function () {
         //加载日历控件
         $("input[name=reservation]").daterangepicker();
@@ -151,6 +153,8 @@ $(function () {
                 }
                 dataid = 0;
                 dataname = "0";
+                $("#downAccountReport").empty();
+                $("#downReport").empty();
             }
         });
 
@@ -180,7 +184,7 @@ $(function () {
             if (types == "4" || types == "5" || types == "6" || types == "7") {
                 $("#reportTypes").val(4)
             }
-
+            $("#downReport").empty();
         });
         $("#device>a").click(function () {
             $("#device>a").removeClass("current");
@@ -194,6 +198,7 @@ $(function () {
             if (types == "4" || types == "5" || types == "6" || types == "7") {
                 $("#reportTypes").val(4)
             }
+            $("#downReport").empty();
         });
         $("#dateLi>a").click(function () {
             $("#dateLi>a").removeClass("current");
@@ -207,20 +212,21 @@ $(function () {
             if (types == "4" || types == "5" || types == "6" || types == "7") {
                 $("#reportTypes").val(4)
             }
+            $("#downReport").empty();
         })
         $("#deviceUser>a").click(function () {
             $("#deviceUser>a").removeClass("current");
             $(this).addClass("current");
             $("#devicesUser").val($(this).attr("cname"));
             $("#pageVS").empty();
-            judgeVS = 0;
+            $("#downAccountReport").empty();
         });
         $("#dateLiUser>a").click(function () {
             $("#dateLiUser>a").removeClass("current");
             $(this).addClass("current");
             $("#dateLisUser").val($(this).attr("cname"));
             $("#pageVS").empty();
-            judgeVS = 0;
+            $("#downAccountReport").empty();
         });
         $("#checkboxInput").click(function () {
             if ($(this).is(":checked")) {
@@ -228,12 +234,16 @@ $(function () {
                 $("#inputOne").removeAttr("disabled");
                 $("#checkboxhidden").val(1);
                 $("#dataComputing").append("起 " + distance + " 天");
+                $("#fenyeo").hide();
+                $("#fenyue").hide();
             } else {
                 $("#inputTow").attr("style", "display:none");
                 $("#inputOne").attr("disabled", "disabled");
                 $("#checkboxhidden").val(0);
                 $("#inputTow").val("");
                 $("#dataComputing").empty();
+                $("#fenyeo").show();
+                $("#fenyue").show();
             }
         });
 
@@ -245,6 +255,8 @@ $(function () {
          */
         $("#shengc").click(function () {
             $("#downReport").empty();
+            $("#pagination1").empty()
+            $("#pagination2").empty();
             reportData();
         });
 
@@ -1074,32 +1086,32 @@ $(function () {
                     $.each(data.statist, function (i, items) {
 
                         if (reportTypes == "2" || reportTypes == "3") {
-                            html_GoAll = "<tr class='list2_box2'><td>合计</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
-                            html_GoAll = html_GoAll + "<tr class='list2_box2'><td>计算机</td>"
+                            html_GoAll = "<tr><td>合计</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+                            html_GoAll = html_GoAll + "<tr><td>计算机</td>"
                                 + "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
                                 + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
                                 + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
-                            html_GoAll = html_GoAll + "<tr class='list2_box2'><td>移动设备</td>"
+                            html_GoAll = html_GoAll + "<tr><td>移动设备</td>"
                                 + "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td>"
                                 + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
                                 + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
-                            html_GoAll = html_GoAll + "<tr class='list2_box2'><td>合计</td>"
+                            html_GoAll = html_GoAll + "<tr><td>合计</td>"
                                 + "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
                                 + "<td>" + Math.round((items.pcCost + items.mobileCost) * 100) / 100 + "</td>"
                                 + "<td>" + Math.round(((items.pcClick + items.mobileClick) / (items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
                                 + "<td>" + Math.round(((items.pcCost + items.mobileCost) / (items.pcClick + items.mobileClick)) * 100) / 100 + "</td>"
                                 + "<td>" + (items.pcConversion + items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
                         } else {
-                            html_GoAll = "<tr class='list2_box2'><td>合计</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
-                            html_GoAll = html_GoAll + "<tr class='list2_box2'><td>计算机</td>"
+                            html_GoAll = "<tr><td>合计</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+                            html_GoAll = html_GoAll + "<tr><td>计算机</td>"
                                 + "<td>&nbsp;</td><td>&nbsp;</td><td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
                                 + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
                                 + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
-                            html_GoAll = html_GoAll + "<tr class='list2_box2'><td>移动设备</td>"
+                            html_GoAll = html_GoAll + "<tr><td>移动设备</td>"
                                 + "<td>&nbsp;</td><td>&nbsp;</td><td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td>"
                                 + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
                                 + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
-                            html_GoAll = html_GoAll + "<tr class='list2_box2'><td>合计</td>"
+                            html_GoAll = html_GoAll + "<tr><td>合计</td>"
                                 + "<td>&nbsp;</td><td>&nbsp;</td><td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
                                 + "<td>" + Math.round((items.pcCost + items.mobileCost) * 100) / 100 + "</td>"
                                 + "<td>" + Math.round(((items.pcClick + items.mobileClick) / (items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
@@ -1194,16 +1206,16 @@ $(function () {
                     var html_UserPro = "";
                     $.each(data.statist, function (i, items) {
 
-                        html_UserPro = "<tr class='list2_box2'><td>合计</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
-                        html_UserPro = html_UserPro + "<tr class='list2_box2'><td>计算机</td>"
+                        html_UserPro = "<tr><td>合计</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+                        html_UserPro = html_UserPro + "<tr><td>计算机</td>"
                             + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
                             + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
                             + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
-                        html_UserPro = html_UserPro + "<tr class='list2_box2'><td>移动设备</td>"
+                        html_UserPro = html_UserPro + "<tr><td>移动设备</td>"
                             + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td>"
                             + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
                             + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
-                        html_UserPro = html_UserPro + "<tr class='list2_box2'><td>合计</td>"
+                        html_UserPro = html_UserPro + "<tr><td>合计</td>"
                             + "<td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
                             + "<td>" + Math.round((items.pcCost + items.mobileCost) * 100) / 100 + "</td>"
                             + "<td>" + Math.round(((items.pcClick + items.mobileClick) / (items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
@@ -1212,42 +1224,18 @@ $(function () {
 
                     });
 
+
                     $("#userStits").append(html_UserPro);
                     records = pageNumberVS;
                     typepage = 1;
                     $("#pagination1").pagination(pageNumberVS, getOptionsFromForm(pageIndex));
-                    /*if (judgeVS < 1) {
-                        var countNumber = 0;
-                        if (pageNumberVS % limitVS == 0) {
-                            countNumber = pageNumberVS / limitVS;
-                        } else {
-                            countNumber = (pageNumberVS / limitVS);
-                        }
-                        var page_html = "<a href='javascript:' id='pageUpVS' class='nextpage1'><span></span></a>"
-                        for (var i = 0; i < countNumber; i++) {
-                            if (i < 10) {
-                                if (i == 0) {
-                                    page_html = page_html + "<a href='javascript:' class='ajc' cname='nameVS' onclick='javascript:startVS = " + i + ";limitVS = " + (i + limitVS) + ";reportDataVS()'>" + (i + 1) + "</a>";
-                                } else {
-                                    page_html = page_html + "<a href='javascript:' cname='nameVS' onclick='javascript:startVS = " + (i * limitVS) + ";limitVS = " + (i * limitVS + limitVS) + ";reportDataVS()'>" + (i + 1) + "</a>";
-                                }
-                            } else {
-                                if (i == 0) {
-                                    page_html = page_html + "<a href='javascript:' class='ajc' style='display:none' cname='nameVS' onclick='javascript:startVS = " + i + ";limitVS = " + (i + limitVS) + ";reportDataVS()'>" + (i + 1) + "</a>";
-                                } else {
-                                    page_html = page_html + "<a href='javascript:'style='display:none' cname='nameVS' onclick='javascript:startVS = " + (i * limitVS) + ";limitVS = " + (i * limitVS + limitVS) + ";reportDataVS()'>" + (i + 1) + "</a>";
-                                }
-                            }
 
-                        }
-                        page_html = page_html + "<a href='javascript:' id='pageDownVS' class='nextpage2'><span></span></a>" +
-                            "<span style='margin-right:10px;'>跳转到 <input type='text' id='goVSID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='goVS' class='page_go'> GO</a>"
-                        $("#pageVS").append(page_html);
-                        judgeVS++;
-                    }*/
+                    $("#downAccountReport").empty();
+                    var downUrl = "date1="+daterangepicker_start_date+"&date2="+daterangepicker_end_date+"&date3="+date3
+                        +"&dateType="+dateLisUser+"&devices="+devicesUser+"&sortVS="+sortVS+"&startVS"+startVS+"&limitVS"+endVs;
+                    $("#downAccountReport").append("<a href='/report/downAccoutReportCSV?"+downUrl+"'  class='become fl'>下载报告</a>")
                 } else {
-                    /*$("#trTop").removeAttr("class");
-                     $("#trTop").addClass("list03_top");*/
+                    $("#downAccountReport").empty();
                     var dateEach = new Array(), impression = new Array(), click = new Array(), cost = new Array(), ctr = new Array(), cpc = new Array(), conversion = new Array();
                     var dateEach1 = new Array(), impression1 = new Array(), click1 = new Array(), cost1 = new Array(), ctr1 = new Array(), cpc1 = new Array(), conversion1 = new Array();
                     $.each(data.date, function (i, item) {
@@ -1257,12 +1245,12 @@ $(function () {
                                 $.each(item1[item], function (i, items) {
                                     if (item1[item] != null) {
                                         if (devicesUser == 2) {
-                                            impression.push((items.mobileImpression == null) ? "-" : items.mobileImpression);
-                                            click.push((items.mobileClick == null) ? "-" : items.mobileClick);
-                                            cost.push((items.mobileCost == null) ? "-" : Math.round(items.mobileCost * 100) / 100);
-                                            ctr.push((items.mobileCtr == null) ? "-" : Math.round(items.mobileCtr * 100) / 100);
-                                            cpc.push((items.mobileCpc == null) ? "-" : Math.round(items.mobileCpc * 100) / 100);
-                                            conversion.push((items.mobileConversion == null) ? "-" : items.mobileConversion);
+                                            impression.push((items.mobileImpression == null) ? 0 : items.mobileImpression);
+                                            click.push((items.mobileClick == null) ? 0 : items.mobileClick);
+                                            cost.push((items.mobileCost == null) ? 0 : Math.round(items.mobileCost * 100) / 100);
+                                            ctr.push((items.mobileCtr == null) ? 0 : Math.round(items.mobileCtr * 100) / 100);
+                                            cpc.push((items.mobileCpc == null) ? 0 : Math.round(items.mobileCpc * 100) / 100);
+                                            conversion.push((items.mobileConversion == null) ? 0 : items.mobileConversion);
                                         } else {
                                             impression.push(items.pcImpression);
                                             click.push(items.pcClick);
@@ -1283,19 +1271,19 @@ $(function () {
                                 $.each(item1[item], function (i, items) {
                                     if (item1[item] != null) {
                                         if (devicesUser == 2) {
-                                            impression1.push((items.mobileImpression == null) ? "-" : items.mobileImpression);
-                                            click1.push((items.mobileClick == null) ? "-" : items.mobileClick);
-                                            cost1.push((items.mobileCost == null) ? "-" : Math.round(items.mobileCost * 100) / 100);
-                                            ctr1.push((items.mobileCtr == null) ? "-" : Math.round(items.mobileCtr * 100) / 100);
-                                            cpc1.push((items.mobileCpc == null) ? "-" : Math.round(items.mobileCpc * 100) / 100);
-                                            conversion1.push((items.mobileConversion == null) ? "-" : items.mobileConversion);
+                                            impression1.push((items.mobileImpression == null) ? 0 : items.mobileImpression);
+                                            click1.push((items.mobileClick == null) ? 0 : items.mobileClick);
+                                            cost1.push((items.mobileCost == null) ? 0 : Math.round(items.mobileCost * 100) / 100);
+                                            ctr1.push((items.mobileCtr == null) ? 0 : Math.round(items.mobileCtr * 100) / 100);
+                                            cpc1.push((items.mobileCpc == null) ? 0 : Math.round(items.mobileCpc * 100) / 100);
+                                            conversion1.push((items.mobileConversion == null) ? 0 : items.mobileConversion);
                                         } else {
-                                            impression1.push((items.pcImpression == null) ? "-" : items.pcImpression);
-                                            click1.push((items.pcClick == null) ? "-" : items.pcClick);
-                                            cost1.push((items.pcCost == null) ? "-" : Math.round(items.pcCost * 100) / 100);
-                                            ctr1.push((items.pcCtr == null) ? "-" : Math.round(items.pcCtr * 100) / 100);
-                                            cpc1.push((items.pcCpc == null) ? "-" : Math.round(items.pcCpc * 100) / 100);
-                                            conversion1.push((items.pcConversion == null) ? "-" : items.pcConversion);
+                                            impression1.push((items.pcImpression == null) ? 0 : items.pcImpression);
+                                            click1.push((items.pcClick == null) ? 0 : items.pcClick);
+                                            cost1.push((items.pcCost == null) ? 0 : Math.round(items.pcCost * 100) / 100);
+                                            ctr1.push((items.pcCtr == null) ? 0 : Math.round(items.pcCtr * 100) / 100);
+                                            cpc1.push((items.pcCpc == null) ? 0 : Math.round(items.pcCpc * 100) / 100);
+                                            conversion1.push((items.pcConversion == null) ? 0 : items.pcConversion);
                                         }
                                     }
                                 });
@@ -1307,7 +1295,7 @@ $(function () {
                         var html_User2 = "";
                         if (i % 2 == 0) {
                             html_User1 = "<tr class='list2_box1'><td>" + dateEach[i] + "</td>"
-                                + "<td><span>" + ((impression[i] == undefined) ? '-' : (isNaN(impression1[i])) ? '-' : impression[i]) + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<td><span>" + ((impression[i] == undefined) ? '-' : (isNaN(impression[i])) ? '-' : impression[i]) + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
                                 + "<span>" + ((impression1[i] == 0) ? '-%' : ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100)) ? '-' : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100)) ? '-' : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
                                 + "<td><span>" + ((click[i] == undefined) ? '-' : (isNaN(click[i])) ? '-' : click[i]) + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
                                 + "<span>" + ((click1[i] == 0) ? '-%' : ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100)) ? '-' : Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100)) ? '-' : Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
@@ -1322,12 +1310,12 @@ $(function () {
                                 + "</td><td>-</td><td>-</td></tr>";
 
                             html_User2 = "<tr class='list2_box1'><td>" + dateEach1[i] + "</td>"
-                                + "<td>" + impression1[i] + "</td><td>" + click1[i] + "</td><td>" + cost1[i] + "</td>"
-                                + "<td>" + ctr1[i] + "%</td><td>" + cpc1[i] + "</td><td>" + conversion1[i] + "</td><td>-</td><td>-</td></tr>"
+                                + "<td>" + ((impression1[i]==undefined)?0:impression1[i]) + "</td><td>" + ((click1[i]==undefined)?0:click1[i]) + "</td><td>" + ((cost1[i]==undefined)?0:cost1[i]) + "</td>"
+                                + "<td>" + ((ctr1[i]==undefined)?0:ctr1[i]) + "%</td><td>" + ((cpc1[i]==undefined)?0:cpc1[i]) + "</td><td>" + ((conversion1[i]==undefined)?0:conversion1[i]) + "</td><td>-</td><td>-</td></tr>"
                                 + "<tr><td colspan='9'>&nbsp;</td></tr>";
                         } else {
                             html_User1 = "<tr class='list2_box2'><td>" + dateEach[i] + "</td>"
-                                + "<td><span>" + ((impression[i] == undefined) ? '-' : (isNaN(impression1[i])) ? '-' : impression[i]) + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                                + "<td><span>" + ((impression[i] == undefined) ? '-' : (isNaN(impression[i])) ? '-' : impression[i]) + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
                                 + "<span>" + ((impression1[i] == 0) ? '-%' : ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100)) ? '-' : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100)) ? '-' : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
                                 + "<td><span>" + ((click[i] == undefined) ? '-' : (isNaN(click[i])) ? '-' : click[i]) + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
                                 + "<span>" + ((click1[i] == 0) ? '-%' : ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100)) ? '-' : Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100)) ? '-' : Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
@@ -1342,8 +1330,8 @@ $(function () {
                                 + "</td><td>-</td><td>-</td></tr>";
 
                             html_User2 = "<tr class='list2_box2'><td>" + dateEach1[i] + "</td>"
-                                + "<td>" + ((impression1[i] == undefined) ? '-' : impression1[i]) + "</td><td>" + click1[i] + "</td><td>" + cost1[i] + "</td>"
-                                + "<td>" + ctr1[i] + "%</td><td>" + cpc1[i] + "</td><td>" + conversion1[i] + "</td><td>-</td><td>-</td></tr>"
+                                + "<td>" + ((impression1[i]==undefined)?0:impression1[i]) + "</td><td>" + ((click1[i]==undefined)?0:click1[i]) + "</td><td>" + ((cost1[i]==undefined)?0:cost1[i]) + "</td>"
+                                + "<td>" + ((ctr1[i]==undefined)?0:ctr1[i]) + "%</td><td>" + ((cpc1[i]==undefined)?0:cpc1[i]) + "</td><td>" + ((conversion1[i]==undefined)?0:conversion1[i]) + "</td><td>-</td><td>-</td></tr>"
                                 + "<tr><td colspan='9'>&nbsp;</td></tr>";
                         }
                         $("#userTbody").append(html_User1);
@@ -1376,27 +1364,19 @@ $(function () {
                 $("#basisAccount").empty();
                 $.each(data.rows, function (i, item) {
                     number = item.count;
-                    var ctr = 0;
-                    if (item.pcImpression != 0) {
-                        ctr = item.pcClick / item.pcImpression;
-                    }
-                    var cpc = 0;
-                    if (item.pcClick != 0) {
-                        cpc = item.pcCost / item.pcClick;
-                    }
                     $.each(data.Ring, function (is, items) {
                         if (i % 2 == 0) {
                             basisHtml = "<tr class='list2_box1'><td>&nbsp;" + item.dateRep + "</td>"
                                 + "<td><span>&nbsp;" + item.pcImpression + "</span>" + ((items.mobileImpression < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcImpression == 0) ? '-' : items.pcImpression / 100) + "%</strong></span></td>"
                                 + "<td><span>&nbsp;" + item.pcClick + "</span>" + ((items.mobileClick < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcClick == 0) ? '-' : items.pcClick / 100) + "%</strong></span></td>"
                                 + "<td><span>&nbsp;" + item.pcCost + "</span>" + ((items.mobileCost < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCost == 0) ? '-' : items.pcCost) + "%</strong></span></td>"
-                                + "<td><span>&nbsp;" + Math.round(ctr * 10000) / 100 + "%</span>" + ((items.mobileCtr < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCtr == 0) ? '-' : items.pcCtr) + "%</strong></span></td>"
-                                + "<td><span>&nbsp;" + Math.round(cpc * 100) / 100 + "</span>" + ((items.mobileCpc < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCpc == 0) ? '-' : items.pcCpc) + "%</strong></span></td>"
-                                + "<td><span>&nbsp;" + item.pcConversion + "</span>" + ((items.mobileCpc < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcConversion == 0) ? '-' : items.pcConversion) + "%</strong></span></td>"
+                                + "<td><span>&nbsp;" + item.pcCtr + "%</span>" + ((items.mobileCtr < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCtr == 0) ? '-' : items.pcCtr/100) + "%</strong></span></td>"
+                                + "<td><span>&nbsp;" + item.pcCpc + "</span>" + ((items.mobileCpc < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCpc == 0) ? '-' : items.pcCpc) + "%</strong></span></td>"
+                                + "<td><span>&nbsp;" + item.pcConversion + "</span>" + ((items.mobileCpc < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcConversion == 0) ? '-' : items.pcConversion/100) + "%</strong></span></td>"
                                 + "<td><span>&nbsp;-</td></tr>"
                         } else {
                             basisHtml = "<tr class='list2_box2'><td>&nbsp;" + item.dateRep + "</td><td>&nbsp;" + item.pcImpression + "</td><td>&nbsp;" + item.pcClick + "</td>"
-                                + "<td>&nbsp;" + Math.round(item.pcCost * 100) / 100 + "</td><td>&nbsp;" + Math.round(ctr * 10000) / 100 + "%</td><td>&nbsp;" + Math.round(cpc * 100) / 100 + "</td><td>&nbsp;" + item.pcConversion + "</td>"
+                                + "<td>&nbsp;" + Math.round(item.pcCost * 100) / 100 + "</td><td>&nbsp;" + item.pcCtr + "%</td><td>&nbsp;" + item.pcCpc + "</td><td>&nbsp;" + item.pcConversion + "</td>"
                                 + "<td>&nbsp;-</td></tr>"
                         }
                     });
@@ -1404,27 +1384,6 @@ $(function () {
                     $("#basisAccount").append(basisHtml);
 
                 });
-                /*if (jci < 1) {
-                 var countNumber = 0;
-                 if (number % limitJC == 0) {
-                 countNumber = number / limitJC;
-                 } else {
-                 countNumber = (number / limitJC);
-                 }
-                 var page_html = "<a href='javascript:' id='pageUp' class='nextpage1'><span></span></a>"
-                 for (var i = 0; i < countNumber; i++) {
-                 if (i == 0) {
-                 page_html = page_html + "<a href='javascript:' class='ajc' cname='nameJC' onclick='javascript:startJC = " + i + ";limitJC = " + (i + limitJC) + ";accountBasisReport()'>" + (i + 1) + "</a>";
-                 } else {
-                 page_html = page_html + "<a href='javascript:' cname='nameJC' onclick='javascript:startJC = " + (i * limitJC) + ";limitJC = " + (i * limitJC + limitJC) + ";accountBasisReport()'>" + (i + 1) + "</a>";
-                 }
-                 }
-                 page_html = page_html + "<a href='javascript:' id='pageDown' class='nextpage2'><span></span></a>" +
-                 "<span style='margin-right:10px;'>跳转到 <input type='text' id='goID' class='price'></span>&nbsp;&nbsp;<a href='javascript:' id='go' class='page_go'> GO</a>"
-
-                 $("#pageJC").append(page_html);
-                 jci++;
-                 }*/
             }
         });
     }
@@ -1447,6 +1406,7 @@ $(function () {
                 filename: 'Graph_Chart',
                 buttons: {
                     contextButton: {
+                        symbol: 'url(/public/images/reportDown.jpg)',
                         menuItems: [
                             {
                                 text: '导出 JPEG图片',
@@ -1584,6 +1544,7 @@ $(function () {
                 filename: 'Pie_Chart',
                 buttons: {
                     contextButton: {
+                        symbol: 'url(/public/images/reportDown.jpg)',
                         menuItems: [
                             {
                                 text: '导出 JPEG图片',

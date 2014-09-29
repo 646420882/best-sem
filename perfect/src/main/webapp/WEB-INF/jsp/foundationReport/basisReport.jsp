@@ -128,69 +128,69 @@
                 <td>&nbsp;<span>时间</span> <b>
                     <p>
                         <input class="one" type="button"
-                               onclick="javascript:fieldName = 'date';sort = 0;accountBasisReport();">
+                               <%--onclick="javascript:fieldName = 'date';sort = 0;accountBasisReport();"--%>>
                     </p>
 
                     <p>
                         <input class="two" type="button"
-                               onclick="javascript:fieldName = 'date';sort = 1;accountBasisReport();">
+                               <%--onclick="javascript:fieldName = 'date';sort = 1;accountBasisReport();"--%>>
                     </p>
                 </b></td>
                 <td>&nbsp;<span>展现量</span><b>
                     <p>
                         <input class="one" type="button"
-                               onclick="javascript:fieldName = 'pcImpression';sort = 0;accountBasisReport();">
+                               <%--onclick="javascript:fieldName = 'pcImpression';sort = 0;accountBasisReport();"--%>>
                     </p>
 
                     <p>
                         <input class="two" type="button"
-                               onclick="javascript:fieldName = 'pcImpression';sort = 1;accountBasisReport();">
+                               <%--onclick="javascript:fieldName = 'pcImpression';sort = 1;accountBasisReport();"--%>>
                     </p>
-                </b><a href="#" class="question"></a></td>
+                </b><%--<a href="#" class="question"></a>--%></td>
                 <td>&nbsp;<span>点击量</span><b>
                     <p>
                         <input class="one" type="button"
-                               onclick="javascript:fieldName = 'pcClick';sort = 0;accountBasisReport();">
+                               <%--onclick="javascript:fieldName = 'pcClick';sort = 0;accountBasisReport();"--%>>
                     </p>
 
                     <p>
                         <input class="two" type="button"
-                               onclick="javascript:fieldName = 'pcClick';sort = 1;accountBasisReport();">
+                               <%--onclick="javascript:fieldName = 'pcClick';sort = 1;accountBasisReport();"--%>>
                     </p>
                 </b></td>
                 <td>&nbsp;<span>消费</span><b>
                     <p>
                         <input class="one" type="button"
-                               onclick="javascript:fieldName = 'pcCost';sort = 0;accountBasisReport();">
+                               <%--onclick="javascript:fieldName = 'pcCost';sort = 0;accountBasisReport();"--%>>
                     </p>
 
                     <p>
                         <input class="two" type="button"
-                               onclick="javascript:fieldName = 'pcCost';sort = 1;accountBasisReport();">
+                               <%--onclick="javascript:fieldName = 'pcCost';sort = 1;accountBasisReport();"--%>>
                     </p>
-                </b><a href="#" class="question"></a></td>
+                </b><%--<a href="#" class="question"></a>--%></td>
                 <td>&nbsp;<span>点击率</span><b>
                     <p>
                         <input class="one" type="button"
-                               onclick="javascript:fieldName = 'pcCtr';sort = 0;accountBasisReport();">
+                               <%--onclick="javascript:fieldName = 'pcCtr';sort = 0;accountBasisReport();"--%>>
                     </p>
 
                     <p>
                         <input class="two" type="button"
-                               onclick="javascript:fieldName = 'pcCtr';sort = 1;accountBasisReport();">
+                               <%--onclick="javascript:fieldName = 'pcCtr';sort = 1;accountBasisReport();"--%>>
                     </p>
-                </b><a href="#" class="question"></a></td>
+                </b><%--<a href="#" class="question"></a>--%></td>
                 <td>&nbsp;<span>平均点击价格</span><b>
                     <p>
                         <input class="one" type="button"
-                               onclick="javascript:fieldName = 'pcCpc';sort = 0;accountBasisReport();">
+                               <%--onclick="javascript:fieldName = 'pcCpc';sort = 0;accountBasisReport();"--%>>
                     </p>
 
                     <p>
                         <input class="two" type="button"
-                               onclick="javascript:fieldName = 'pcCpc';sort = 1;accountBasisReport();">
+                               <%--onclick="javascript:fieldName = 'pcCpc';sort = 1;accountBasisReport();"--%>>
                     </p>
-                </b><a href="#" class="question"></a></td>
+                </b><%--<a href="#" class="question"></a>--%></td>
                 <td>&nbsp;<span>转化(网页)</span><b>
                     <p>
                         <input class="one" type="button"
@@ -201,7 +201,7 @@
                         <input class="two" type="button"
                         <%--onclick="javascript:fieldName = 'pcConversion';sort = 1;accountBasisReport();"--%>>
                     </p>
-                </b> <a href="#" class="question"></a></td>
+                </b> <%--<a href="#" class="question"></a>--%></td>
                 <td>&nbsp;<span>转化(商桥)</span><b>
                     <p>
                         <input class="one" type="button">
@@ -210,7 +210,7 @@
                     <p>
                         <input class="two" type="button">
                     </p>
-                </b><a href="#" class="question"></a></td>
+                </b><%--<a href="#" class="question"></a>--%></td>
 
 
             </tr>
