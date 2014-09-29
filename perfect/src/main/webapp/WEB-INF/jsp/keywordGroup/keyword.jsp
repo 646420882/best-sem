@@ -416,7 +416,7 @@ To change this template use File | Settings | File Templates.
             <div class="main_bottom">
                 <div class="w_list03">
                     <ul>
-                        <li class="current">确认</li>
+                        <li class="current" onclick="addCreativeOk()">确认</li>
                         <li class="close">取消</li>
                     </ul>
                 </div>
@@ -458,6 +458,7 @@ To change this template use File | Settings | File Templates.
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/creativesearch.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/tuijianCreative.js"></script>
 <script type="text/javascript">
 
 String.prototype.trims = function () {
@@ -548,7 +549,7 @@ $(function () {
         });
         $("#new_riginality").css({
             left: ($("body").width() - $("#new_riginality").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $("#new_riginality").height()) / 2 + ($(window).scrollTop() - 153) + "px",
+            top: ($(window).height() - $("#new_riginality").height()) / 2 + ($(window).scrollTop() - 83) + "px",
             display: "block"
         });
     });
