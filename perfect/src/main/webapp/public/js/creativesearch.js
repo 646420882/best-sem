@@ -28,7 +28,7 @@ function search() {
 
                 li.append($("<div></div>")).append(item.html);
 
-                li.append("<div><span class=\"cretiveunder fr\"><a href=\"#\">置顶</a>|<a href=\"#\" class=\"showbox\" onclick='reView(this)'>编辑</a>|<a href=\"#\">删除</a></span></div>");
+                li.append("<div><span class=\"cretiveunder fr\"><a href=\"#\">置顶</a>|<a href='javascript:void(0)' class=\"showbox\" onclick='reView(this)'>编辑</a>|<a href=\"#\">删除</a></span></div>");
 
                 $("#creativeList").append(li);
 

@@ -294,39 +294,39 @@ To change this template use File | Settings | File Templates.
 
     <div class="mainlist2 over">
         <div class="riginality_editor1 fl">
-            <div class="mainlist">
+            <div class="mainlist" id="_editor">
                 <ul>
                     <li>
                         <h3>标题：</h3>
-                        <dl><input type="text" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span></dl>
+                        <dl><input type="text" name="title" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span></dl>
                         <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
                     </li>
                     <li>
                         <h3>描述1：</h3>
-                        <dl><textarea></textarea><span>27/50</span></dl>
+                        <dl><textarea name="desc1" ></textarea><span>27/50</span></dl>
                         <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
                     </li>
                     <li>
                         <h3>描述2：</h3>
-                        <dl><textarea></textarea><span>27/50</span></dl>
+                        <dl><textarea name="desc2"></textarea><span>27/50</span></dl>
                         <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
                     </li>
                     <li>
                         <h3>访问URL：</h3>
-                        <dl><textarea></textarea><span>27/50</span></dl>
+                        <dl><textarea name="pcUrl"></textarea><span>27/50</span></dl>
                         <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
                     </li>
                     <li>
                         <h3>显示URL：</h3>
-                        <dl><input type="text" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span></dl>
+                        <dl><input type="text" name="pcsUrl" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span></dl>
                     </li>
                 </ul>
             </div>
             <div class="main_bottom">
                 <div class="w_list03">
                     <ul>
-                        <li class="current">保存</li>
-                        <li>保存并上传</li>
+                        <li class="current" onclick="reSave()">保存</li>
+                        <li onclick="reSave()">保存并上传</li>
                         <li class="close">取消</li>
                     </ul>
                 </div>
@@ -335,17 +335,8 @@ To change this template use File | Settings | File Templates.
         <div class="riginality_editor2 fl">
             <div class="tuijian over">
                 <h3>推荐词根<span>|</span> 词頻占比</h3>
-                <ul>
+                <ul id="repUl">
                     <li>搜索<span>8%</span></li>
-                    <li>营销<span>8%</span></li>
-                    <li>推广<span>8%</span></li>
-                    <li>baidu<span>8%</span></li>
-                    <li>sem<span>8%</span></li>
-                    <li>去看<span>8%</span></li>
-                    <li>优化<span>8%</span></li>
-                    <li>全国<span>8%</span></li>
-                    <li>百度<span>8%</span></li>
-                    <li>seo<span>8%</span></li>
                 </ul>
             </div>
             <div class="tuijian_under over">
@@ -353,27 +344,24 @@ To change this template use File | Settings | File Templates.
                     <li>
                         <p>左侧推广连接位预览：</p>
 
-                        <div>
-                            <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
+                        <div id="reLeft1">
                         </div>
                     </li>
                     <li>
                         <p>左侧推广连接位预览：</p>
 
-                        <div>
-                            <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
+                        <div id="reLeft2">
                         </div>
                     </li>
                     <li>
                         <p>右侧推广位预览：：</p>
 
-                        <div>
-                            <img src="${pageContext.request.contextPath}/public/images/shuju.jpg">
+                        <div id="reRight" style="width: 300px;">
                         </div>
                     </li>
                 </ul>
-<span><a class="become2 fl" href="javascript: findWordFromBaidu();">评估匹配度</a><a class="question"
-                                                                                href="#"></a></span>
+<%--<span><a class="become2 fl" href="javascript: findWordFromBaidu();">评估匹配度</a><a class="question"--%>
+                                                                                <%--href="#"></a></span>--%>
             </div>
         </div>
     </div>
@@ -451,6 +439,30 @@ To change this template use File | Settings | File Templates.
         </div>
     </div>
 </div>
+
+<%--创意添加选择计划，单元弹出窗口--%>
+<div  class="box" style="display:none" id="jcAdd">
+    <h2 id="dAdd">
+        <span class="fl">添加创意</span>
+        <a href="#" class="close">关闭</a></h2>
+
+    <div class="mainlist">
+        选择要添加到的计划或者单元!
+        <ul class="zs_set" id="jcUl">
+            <%--<li><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</li>--%>
+        </ul>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li onclick="replanUnit()">确认</li>
+                <li onclick="recloseAlert();">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
@@ -478,6 +490,7 @@ var _category;
 window.onload = function () {
     rDrag.init(document.getElementById('riginality_editor1'));
     rDrag.init(document.getElementById('new_riginality2'));
+    rDrag.init(document.getElementById('dAdd'));
 };
 
 //loading
