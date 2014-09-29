@@ -403,5 +403,11 @@ public class AssistantCreativeController extends WebContextSupport {
         }
         return null;
     }
+
+    @RequestMapping(value = "uploadToFC",method = RequestMethod.POST)
+    public ModelAndView updateCreativeToFengCao(HttpServletResponse response){
+        writeHtml(SUCCESS,response);
+        return null;
+    }
 }
 
