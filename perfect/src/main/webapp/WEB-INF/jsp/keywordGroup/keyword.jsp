@@ -283,7 +283,7 @@ To change this template use File | Settings | File Templates.
             </div>
 
         </div>
-        <div class="r_under_mid fl">
+        <div class="r_under_mid fl" id="reOkView" style="display: none;">
 
             <div class="r_under_top over">
                 <h3 class="fl">上传创意预览</h3>

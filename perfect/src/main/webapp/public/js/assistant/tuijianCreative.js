@@ -126,6 +126,7 @@ function reSave() {
     getPlans();
     jcBox.append("<li>推广计划<select id='sPlan' onchange='loadUnit(this.value)'><option value='-1'>请选择计划</option></select></li>");
     jcBox.append("<li>推广单元<select id='sUnit' ><option value='-1'>请选择单元</option></select></li>");
+    $("#reOkView").show();
 }
 function getPlans() {
     $.get("/assistantCreative/getPlans", function (rs) {
@@ -210,6 +211,7 @@ function addCreativeOk(){
                 $("#rDesc").html("xxxxxxxx");
                 $("#rUrl").html("xxxxxxxxx");
                 alert("上传成功!");
+                $("#reOkView").hide();
             }
         });
     }else{
