@@ -134,7 +134,7 @@ function load() {
 
 
     $.ajax({
-        url: "/xxxx",
+        url: "/regional/getProvince",
         type: "GET",
         async: false,
         success: function (datas) {

@@ -430,7 +430,6 @@ public class AssistantCreativeController extends WebContextSupport {
         creativeTypes.setPcDisplayUrl(pcUrl);
         creativeTypes.setPcDestinationUrl(pcsUrl);
         creativeTypes.setAdgroupId(aid);
-        creativeTypes.setAdgroupId(AppContext.getAccountId());
         creativeTypes.setDevicePreference(1);
         BaiduAccountInfoEntity baiduAccountInfoEntity=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
         CommonService commonService= BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
