@@ -209,6 +209,7 @@ function addCreativeOk(){
                 $("#rTitle").html("xxxxxxxx");
                 $("#rDesc").html("xxxxxxxx");
                 $("#rUrl").html("xxxxxxxxx");
+                alert("上传成功!");
             }
         });
     }else{

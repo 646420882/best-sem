@@ -292,11 +292,11 @@ To change this template use File | Settings | File Templates.
             <ul id="reViewUl">
                 <li style="border:1px solid #b6bbc8;">
                     <div></div>
-                    <a data-is-main-url="true" href="#" class="EC_t EC_BL" id="rTitle">
-                        2015<font color="#CC0000">婚博会门票团购</font>在线网站..</a>
+                    <a data-is-main-url="true" href="javascript:void(0);" class="EC_t EC_BL" id="rTitle">
+                        暂无</a>
                     <br>
-                    <a id="bdfs1" href="#" class="EC_BL EC_desc"><font size="-1" id="rDesc">订婚宴网,国内人气婚宴预订网站,汇集数千家热门婚宴场所.</font><br>
-                        <font  size="-1" class="EC_url" id="rUrl">www.dinghunyan.cn</font></a>
+                    <a id="bdfs1" href="javascript:void(0);" class="EC_BL EC_desc"><font size="-1" id="rDesc">暂无</font><br>
+                        <font  size="-1" class="EC_url" id="rUrl">暂无</font></a>
 
                     <div class="c-tools" style="margin-left:5px;" id="tools_2">
                         <a class="c-tip-icon"></a>
@@ -344,7 +344,7 @@ To change this template use File | Settings | File Templates.
                     <li>
                         <h3>访问URL：</h3>
                         <dl><textarea name="pcUrl"></textarea><span>27/50</span></dl>
-                        <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
+                        <dl><input type="button" class="r_input2" value="{} 插入通配符"></dl>
                     </li>
                     <li>
                         <h3>显示URL：</h3>
