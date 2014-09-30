@@ -1,5 +1,6 @@
 import com.perfect.transmitter.sendMail.MailSenderInfo;
 import com.perfect.transmitter.sendMail.SimpleMailSender;
+import com.perfect.transmitter.sendMes.SendMessage;
 import org.junit.Test;
 
 public class SendTest {
@@ -15,5 +16,11 @@ public class SendTest {
         SimpleMailSender sms = new SimpleMailSender();
         sms.sendTextMail(mailInfo);//发送文体格式
         sms.sendHtmlMail(mailInfo);//发送html格式
+    }
+
+    @Test
+    public void message(){
+        SendMessage mes = new SendMessage();
+        mes.SendMes("15923844052",new String[]{});
     }
 }

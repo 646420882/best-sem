@@ -9,9 +9,11 @@ import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.dao.SystemUserDAO;
+import com.perfect.dto.RegionalCodeDTO;
 import com.perfect.entity.*;
 import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.CampaignBackUpService;
+import com.perfect.service.SysRegionalService;
 import com.perfect.utils.RegionalCodeUtils;
 import com.perfect.utils.web.WebContext;
 import org.springframework.beans.BeanUtils;
@@ -56,6 +58,8 @@ public class AssistantCampaignController {
     @Resource
     private KeywordDAO keywordDAO;
 
+    @Resource
+    private SysRegionalService sysRegionalService;
 
     @Resource
     private WebContext webContext;
@@ -113,10 +117,11 @@ public class AssistantCampaignController {
         } else {
             campaignEntity = campaignDAO.findByObjectId(cid);
         }
-        Map<Integer, String> regionMap = RegionalCodeUtils.regionalCode(campaignEntity.getRegionTarget() == null ? new ArrayList<Integer>() : campaignEntity.getRegionTarget());
+//        Map<Integer, String> regionMap = RegionalCodeUtils.regionalCode(campaignEntity.getRegionTarget() == null ? new ArrayList<Integer>() : campaignEntity.getRegionTarget());
+        List<RegionalCodeDTO> regionList = sysRegionalService.getRegionalId(campaignEntity.getRegionTarget() == null ? new ArrayList<Integer>() : campaignEntity.getRegionTarget());
 
         map.put("campObj", campaignEntity);
-        map.put("regions", regionMap.values());
+        map.put("regions", regionList);
         webContext.writeJson(map, response);
     }
 
@@ -197,8 +202,18 @@ public class AssistantCampaignController {
 
         String[] regeionArray = regions.split(",");
         List<String> regionList = Arrays.asList(regeionArray);
-        Map<Integer, String> regionName = RegionalCodeUtils.regionalCodeName(regionList);
-        newCampaignEntity.setRegionTarget(new ArrayList<Integer>(regionName.keySet()));
+        List<RegionalCodeDTO> regionName = sysRegionalService.getRegionalName(regionList);
+
+        List<Integer> regionId = new ArrayList<>();
+        for(RegionalCodeDTO dto:regionName){
+            if(dto.getRegionName()==null||"".equals(dto.getRegionName())){
+                regionId.add(Integer.parseInt(dto.getProvinceId()));
+            }else{
+                regionId.add(Integer.parseInt(dto.getRegionId()));
+            }
+        }
+
+        newCampaignEntity.setRegionTarget(regionId);
 
         if (newCampaignEntity.getCampaignId() == null) {
             newCampaignEntity.setLocalStatus(1);

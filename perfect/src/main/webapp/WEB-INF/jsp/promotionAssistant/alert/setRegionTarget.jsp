@@ -2717,7 +2717,7 @@
             data:{"cid":cid},
             dataType:"json",
             success:function(data){
-
+                alert(JSON.stringify(data));
                //得到账户级别的推广地域
                 getAccountRegion();
                 if(data.campObj.regionTarget==null||data.campObj.regionTarget.length==0){
@@ -2730,7 +2730,7 @@
                     $("#ctrlradioboxallRegion")[0].checked=false;
                     $("#ctrlradioboxpartRegion")[0].checked=true;
                     $("#ctrlregionregionBody").show(0);
-                    if(data.regions[0]=="全部区域"){
+                    if(data.regions[0].regionName=="全部区域"){
                         $("#ctrlradioboxallRegion")[0].checked=true;
                         $("#ctrlregionregionBody").hide(0);
                     }else{
@@ -2750,7 +2750,12 @@
         var label = $("#regionList").find("div[class=leaf]").find("label");
         for(var i=0;i<regionsName.length;i++){
               label.each(function () {
-                  if(regionsName[i]==$(this).html()){
+                  if(regionsName[i].regionName==null||regionsName[i].regionName==""){
+
+                  }
+
+
+                  if(regionsName[i].regionName==$(this).html()){
                       if($(this).parent().parent().parent().attr("class")!="second-area-container hide"){
                           $(this).parent().find("input[type=checkbox]")[0].checked=true;
                       }else{

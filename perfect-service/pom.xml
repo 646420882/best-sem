@@ -271,9 +271,14 @@
         <!--YunTongXun-->
         <dependency>
             <groupId>com.perfect.sms</groupId>
-            <artifactId>CCP_REST_SMS_SDK_JAVA_v2.6.3r</artifactId>
+            <artifactId>CCP_REST</artifactId>
             <version>2.6.3</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/lib/MSM.jar</systemPath>
         </dependency>
+
+
+
     </dependencies>
 
     <build>

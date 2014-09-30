@@ -110,20 +110,59 @@ public class SysRegionalServiceImpl implements SysRegionalService{
         for(String dto:proName){
             List<RegionalCodeDTO> regionals = regionalCodeDAO.getRegional(fideName,dto);
             if(regionals.size() == 0){
-                RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
-                regionalCodeDTO.setRegionId("-1");
-                regionalCodeDTO.setRegionName(dto);
-                dtos.add(regionalCodeDTO);
+                String fideName1 = "provinceName";
+                List<RegionalCodeDTO> regionals1 = regionalCodeDAO.getRegional(fideName1,dto);
+                if(regionals1.size() == 0){
+                    RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                    regionalCodeDTO.setRegionId("-1");
+                    regionalCodeDTO.setRegionName(dto);
+                    dtos.add(regionalCodeDTO);
+                }else{
+                    for(RegionalCodeDTO codeDTO1:regionals1){
+                        if(!codeDTO1.getRegionId().equals("999")){
+                            RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                            regionalCodeDTO.setProvinceId(codeDTO1.getProvinceId()+"000");
+                            regionalCodeDTO.setProvinceName(codeDTO1.getProvinceName());
+                            regionalCodeDTO.setRegionId(codeDTO1.getProvinceId()+codeDTO1.getRegionId());
+                            regionalCodeDTO.setRegionName(codeDTO1.getRegionName());
+                            regionalCodeDTO.setStateId(codeDTO1.getStateId()+"00000");
+                            regionalCodeDTO.setStateName(codeDTO1.getStateName());
+                            dtos.add(regionalCodeDTO);
+                        }else{
+                            RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                            regionalCodeDTO.setProvinceId("");
+                            regionalCodeDTO.setProvinceName("");
+                            regionalCodeDTO.setRegionId("");
+                            regionalCodeDTO.setRegionName("");
+                            regionalCodeDTO.setStateId(codeDTO1.getStateId()+codeDTO1.getProvinceId()+codeDTO1.getRegionId());
+                            regionalCodeDTO.setStateName(codeDTO1.getRegionName());
+                            dtos.add(regionalCodeDTO);
+                        }
+
+                    }
+                }
             }else{
                 for(RegionalCodeDTO codeDTO:regionals){
-                    RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
-                    regionalCodeDTO.setProvinceId(codeDTO.getProvinceId()+"000");
-                    regionalCodeDTO.setProvinceName(codeDTO.getProvinceName());
-                    regionalCodeDTO.setRegionId(codeDTO.getProvinceId()+codeDTO.getRegionId());
-                    regionalCodeDTO.setRegionName(codeDTO.getRegionName());
-                    regionalCodeDTO.setStateId(codeDTO.getStateId()+"00000");
-                    regionalCodeDTO.setStateName(codeDTO.getStateName());
-                    dtos.add(regionalCodeDTO);
+                    if(!codeDTO.getRegionId().equals("999")){
+                        RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                        regionalCodeDTO.setProvinceId(codeDTO.getProvinceId()+"000");
+                        regionalCodeDTO.setProvinceName(codeDTO.getProvinceName());
+                        regionalCodeDTO.setRegionId(codeDTO.getProvinceId()+codeDTO.getRegionId());
+                        regionalCodeDTO.setRegionName(codeDTO.getRegionName());
+                        regionalCodeDTO.setStateId(codeDTO.getStateId()+"00000");
+                        regionalCodeDTO.setStateName(codeDTO.getStateName());
+                        dtos.add(regionalCodeDTO);
+                    }else{
+                        RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                        regionalCodeDTO.setProvinceId("");
+                        regionalCodeDTO.setProvinceName("");
+                        regionalCodeDTO.setRegionId("");
+                        regionalCodeDTO.setRegionName("");
+                        regionalCodeDTO.setStateId(codeDTO.getStateId()+codeDTO.getProvinceId()+codeDTO.getRegionId());
+                        regionalCodeDTO.setStateName(codeDTO.getRegionName());
+                        dtos.add(regionalCodeDTO);
+                    }
+
                 }
             }
 
@@ -138,21 +177,75 @@ public class SysRegionalServiceImpl implements SysRegionalService{
         for(Integer dto:listId){
             List<RegionalCodeDTO> regionals = new ArrayList<>();
             if(dto < 1000){
+                String regionid = "";
+                if(dto<10){
+                    regionid = "00"+dto;
+                }else if(dto<100){
+                    regionid = "0"+dto;
+                }
                 regionals = regionalCodeDAO.getRegional(fideName, String.valueOf(dto));
-            }else if(dto < 10000){
-                int i = dto%1000;
-                regionals = regionalCodeDAO.getRegional(fideName, String.valueOf(i));
+            }else if(dto < 100000){
+                if(dto%1000 != 0){
+                    String regionid = "";
+                    int i = dto%1000;
+                    if(i<10){
+                        regionid = "00"+i;
+                    }else if(i<100){
+                        regionid = "0"+i;
+                    }
+                    regionals = regionalCodeDAO.getRegional(fideName, String.valueOf(regionid));
+                }
+            }else if(dto >= 100000 && dto <= 10000000 ){
+                if(dto%1000 != 0){
+                    String regionid = "";
+                    int i = dto%1000;
+                    if(i<10){
+                        regionid = "00"+i;
+                    }else if(i<100){
+                        regionid = "0"+i;
+                    }
+                    regionals = regionalCodeDAO.getRegional(fideName, String.valueOf(regionid));
+                }
             }else{
                 regionals = new ArrayList<>();
             }
 
             if(regionals.size() == 0){
-                RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
-                regionalCodeDTO.setRegionId("-1");
-                regionalCodeDTO.setRegionName(String.valueOf(dto));
-                dtos.add(regionalCodeDTO);
+                String fideName1 = "provinceId";
+                int i = dto/1000;
+                List<RegionalCodeDTO> regionals1 = regionalCodeDAO.getRegional(fideName1, String.valueOf(i));
+                if(regionals1.size() == 0){
+                    RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                    regionalCodeDTO.setRegionId("-1");
+                    regionalCodeDTO.setRegionName(String.valueOf(dto));
+                    dtos.add(regionalCodeDTO);
+                }else{
+                    for(RegionalCodeDTO codeDTO1:regionals1){
+                        if(!codeDTO1.getRegionId().equals("999")){
+                            RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                            regionalCodeDTO.setProvinceId(codeDTO1.getProvinceId()+"000");
+                            regionalCodeDTO.setProvinceName(codeDTO1.getProvinceName());
+                            regionalCodeDTO.setRegionId(codeDTO1.getProvinceId()+codeDTO1.getRegionId());
+                            regionalCodeDTO.setRegionName(codeDTO1.getRegionName());
+                            regionalCodeDTO.setStateId(codeDTO1.getStateId()+"00000");
+                            regionalCodeDTO.setStateName(codeDTO1.getStateName());
+                            dtos.add(regionalCodeDTO);
+                        }else{
+                            RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                            regionalCodeDTO.setProvinceId("");
+                            regionalCodeDTO.setProvinceName("");
+                            regionalCodeDTO.setRegionId("");
+                            regionalCodeDTO.setRegionName("");
+                            regionalCodeDTO.setStateId(codeDTO1.getStateId()+codeDTO1.getProvinceId()+codeDTO1.getRegionId());
+                            regionalCodeDTO.setStateName(codeDTO1.getRegionName());
+                            dtos.add(regionalCodeDTO);
+                        }
+
+                    }
+                }
             }else{
                 for(RegionalCodeDTO codeDTO:regionals){
+                if(!codeDTO.getRegionId().equals("999")){
                     RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
                     regionalCodeDTO.setProvinceId(codeDTO.getProvinceId()+"000");
                     regionalCodeDTO.setProvinceName(codeDTO.getProvinceName());
@@ -161,9 +254,134 @@ public class SysRegionalServiceImpl implements SysRegionalService{
                     regionalCodeDTO.setStateId(codeDTO.getStateId()+"00000");
                     regionalCodeDTO.setStateName(codeDTO.getStateName());
                     dtos.add(regionalCodeDTO);
+                }else{
+                    RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                    regionalCodeDTO.setProvinceId("");
+                    regionalCodeDTO.setProvinceName("");
+                    regionalCodeDTO.setRegionId("");
+                    regionalCodeDTO.setRegionName("");
+                    regionalCodeDTO.setStateId(codeDTO.getStateId()+codeDTO.getProvinceId()+codeDTO.getRegionId());
+                    regionalCodeDTO.setStateName(codeDTO.getRegionName());
+                    dtos.add(regionalCodeDTO);
+                }
                 }
             }
         }
         return dtos;
     }
+
+
+
+
+
+    /******************************备份Start**********************************************/
+    /*@Override
+    public List<RegionalCodeDTO> getRegionalId(List<Integer> listId) {
+        String fideName = "regionId";
+        List<RegionalCodeDTO> dtos = new ArrayList<>();
+        for(Integer dto:listId){
+            List<RegionalCodeDTO> regionals = new ArrayList<>();
+            if(dto < 1000){
+                String regionid = "";
+                if(dto<10){
+                    regionid = "00"+dto;
+                }else if(dto<100){
+                    regionid = "0"+dto;
+                }
+                regionals = regionalCodeDAO.getRegional(fideName, String.valueOf(regionid));
+            }else if(dto < 100000){
+                String regionid = "";
+                int i = dto%1000;
+                if(i<10){
+                    regionid = "00"+i;
+                }else if(i<100){
+                    regionid = "0"+i;
+                }
+                regionals = regionalCodeDAO.getRegional(fideName, String.valueOf(regionid));
+            }else if(dto >= 100000 && dto <= 10000000 ){
+                String regionid = "";
+                int i = dto%1000;
+                if(i<10){
+                    regionid = "00"+i;
+                }else if(i<100){
+                    regionid = "0"+i;
+                }
+                regionals = regionalCodeDAO.getRegional(fideName, String.valueOf(regionid));
+            }else{
+                regionals = new ArrayList<>();
+            }
+
+            if(regionals.size() == 0){
+
+                RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                regionalCodeDTO.setRegionId("-1");
+                regionalCodeDTO.setRegionName(String.valueOf(dto));
+                dtos.add(regionalCodeDTO);
+            }else{
+                for(RegionalCodeDTO codeDTO:regionals){
+                    if(!codeDTO.getRegionId().equals("999")){
+                        RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                        regionalCodeDTO.setProvinceId(codeDTO.getProvinceId()+"000");
+                        regionalCodeDTO.setProvinceName(codeDTO.getProvinceName());
+                        regionalCodeDTO.setRegionId(codeDTO.getProvinceId()+codeDTO.getRegionId());
+                        regionalCodeDTO.setRegionName(codeDTO.getRegionName());
+                        regionalCodeDTO.setStateId(codeDTO.getStateId()+"00000");
+                        regionalCodeDTO.setStateName(codeDTO.getStateName());
+                        dtos.add(regionalCodeDTO);
+                    }else{
+                        RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                        regionalCodeDTO.setProvinceId("");
+                        regionalCodeDTO.setProvinceName("");
+                        regionalCodeDTO.setRegionId("");
+                        regionalCodeDTO.setRegionName("");
+                        regionalCodeDTO.setStateId(codeDTO.getStateId()+codeDTO.getProvinceId()+codeDTO.getRegionId());
+                        regionalCodeDTO.setStateName(codeDTO.getRegionName());
+                        dtos.add(regionalCodeDTO);
+                    }
+                }
+            }
+        }
+        return dtos;
+    }*/
+   /* @Override
+    public List<RegionalCodeDTO> getRegionalName(List<String> proName) {
+        String fideName = "regionName";
+        List<RegionalCodeDTO> dtos = new ArrayList<>();
+        for(String dto:proName){
+            List<RegionalCodeDTO> regionals = regionalCodeDAO.getRegional(fideName,dto);
+            if(regionals.size() == 0){
+                RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                regionalCodeDTO.setRegionId("-1");
+                regionalCodeDTO.setRegionName(dto);
+                dtos.add(regionalCodeDTO);
+            }else{
+                for(RegionalCodeDTO codeDTO:regionals){
+                    if(!codeDTO.getRegionId().equals("999")){
+                        RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                        regionalCodeDTO.setProvinceId(codeDTO.getProvinceId()+"000");
+                        regionalCodeDTO.setProvinceName(codeDTO.getProvinceName());
+                        regionalCodeDTO.setRegionId(codeDTO.getProvinceId()+codeDTO.getRegionId());
+                        regionalCodeDTO.setRegionName(codeDTO.getRegionName());
+                        regionalCodeDTO.setStateId(codeDTO.getStateId()+"00000");
+                        regionalCodeDTO.setStateName(codeDTO.getStateName());
+                        dtos.add(regionalCodeDTO);
+                    }else{
+                        RegionalCodeDTO regionalCodeDTO = new RegionalCodeDTO();
+                        regionalCodeDTO.setProvinceId("");
+                        regionalCodeDTO.setProvinceName("");
+                        regionalCodeDTO.setRegionId("");
+                        regionalCodeDTO.setRegionName("");
+                        regionalCodeDTO.setStateId(codeDTO.getStateId()+codeDTO.getProvinceId()+codeDTO.getRegionId());
+                        regionalCodeDTO.setStateName(codeDTO.getRegionName());
+                        dtos.add(regionalCodeDTO);
+                    }
+
+                }
+            }
+
+        }
+        return dtos;
+    }*/
+
+    /******************************备份end**********************************************/
 }
