@@ -102,4 +102,14 @@ public class HomePageManageController {
         return new ModelAndView("bidding/biddingConsole");
     }
 
+    /**
+     * 注册页面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public ModelAndView register() {
+        return new ModelAndView("homePage/pageBlock/register");
+    }
+
 }
