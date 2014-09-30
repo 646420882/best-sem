@@ -15,10 +15,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**??
+/**
  * Created by john on 2014/8/6.
  * 每隔十分钟执行
  */
+@Deprecated
 public class SenderTask implements IScheduleTaskDealSingle<WarningRuleEntity> {
 
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -61,7 +62,7 @@ public class SenderTask implements IScheduleTaskDealSingle<WarningRuleEntity> {
 
         List<WarningRuleEntity> executeList = new ArrayList<>();
         //得到已经启用并且当天没有预警过的
-        List<WarningRuleEntity> warningRuleList = accountWarningDAO.find(new Query().addCriteria(Criteria.where("isEnable").is(1).and("isWarninged").is(0)), WarningRuleEntity.class);
+        List<WarningRuleEntity> warningRuleList = null;/*accountWarningDAO.find(new Query().addCriteria(Criteria.where("isEnable").is(1).and("isWarninged").is(0)), WarningRuleEntity.class);*/
         //得到当天的账户实时数据
         List<RealTimeResultType> todayAccountRealDataList = getAccountReportDAO.getAccountRealTimeTypeByDate(df.format(new Date()), df.format(new Date()));
 

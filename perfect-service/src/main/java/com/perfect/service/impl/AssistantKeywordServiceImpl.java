@@ -56,6 +56,46 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         keywordDAO.insertAll(list);
     }
 
+
+    /**
+     * 根据传过来的关键词的多个 long id 查询关键词
+     * @param ids
+     * @return
+     */
+    public PagerInfo getKeywordListByIds(List<Long> ids,Integer nowPage,Integer pageSize){
+        PagerInfo page = keywordDAO.findKeywordByIds(ids,nowPage,pageSize);
+        List<KeywordDTO> dtoList = new ArrayList<>();
+        Map<String, Map<String,Object>> map = new HashMap<>();
+        List<KeywordEntity> list = (List<KeywordEntity>) page.getList();
+        Map<String,Object> getMap;
+        CampaignEntity cam;
+        for (KeywordEntity kwd : list) {
+                if (!(new ArrayList<>(map.keySet()).contains(kwd.getAdgroupObjId()) || new ArrayList<>(map.keySet()).contains(kwd.getAdgroupId() + ""))) {
+                    AdgroupEntity ad = kwd.getAdgroupId() == null ? adgroupDAO.findByObjId(kwd.getAdgroupObjId()) : adgroupDAO.findOne(kwd.getAdgroupId());
+                    cam = ad.getCampaignId() == null ? campaignDAO.findByObjectId(ad.getCampaignObjId()) : campaignDAO.findOne(ad.getCampaignId());
+                    Map<String,Object> tempMap = new HashMap<>();
+                    tempMap.put("adgroup",ad);
+                    tempMap.put("campaign",cam);
+                    map.put(kwd.getAdgroupId() == null ? kwd.getAdgroupObjId() : kwd.getAdgroupId() + "", tempMap);
+                }
+
+                getMap = map.get(kwd.getAdgroupId() == null ? kwd.getAdgroupObjId() : kwd.getAdgroupId() + "");
+
+                KeywordDTO dto = new KeywordDTO();
+                dto.setCampaignName(((CampaignEntity)getMap.get("campaign")).getCampaignName());
+                dto.setAdgroupName(((AdgroupEntity)getMap.get("adgroup")).getAdgroupName());
+                dto.setCampaignId(((CampaignEntity)getMap.get("campaign")).getCampaignId());
+                dto.setObject(kwd);
+                dtoList.add(dto);
+        }
+
+        page.setList(dtoList);
+        return page;
+    }
+
+
+
+
     public void setNeigWord(String agid, String keywords, Integer neigType) {
         String[] kwds = keywords.split("\n");
 
@@ -268,17 +308,16 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         List<KeywordDTO> dtoList = new ArrayList<>();
 
         Map<String, CampaignEntity> map = new HashMap<>();
-        CampaignEntity cam = null;
+        CampaignEntity cam;
         for (KeywordEntity kwd : list) {
             if (camp == null) {
                 if (!(new ArrayList<>(map.keySet()).contains(kwd.getAdgroupObjId()) || new ArrayList<>(map.keySet()).contains(kwd.getAdgroupId() + ""))) {
                     AdgroupEntity ad = kwd.getAdgroupId() == null ? adgroupDAO.findByObjId(kwd.getAdgroupObjId()) : adgroupDAO.findOne(kwd.getAdgroupId());
                     cam = ad.getCampaignId() == null ? campaignDAO.findByObjectId(ad.getCampaignObjId()) : campaignDAO.findOne(ad.getCampaignId());
                     map.put(kwd.getAdgroupId() == null ? kwd.getAdgroupObjId() : kwd.getAdgroupId() + "", cam);
-                } else {
-                    cam = map.get(kwd.getAdgroupId() == null ? kwd.getAdgroupObjId() : kwd.getAdgroupId() + "");
                 }
 
+                cam = map.get(kwd.getAdgroupId() == null ? kwd.getAdgroupObjId() : kwd.getAdgroupId() + "");
                 KeywordDTO dto = new KeywordDTO();
                 dto.setCampaignName(cam.getCampaignName());
                 dto.setObject(kwd);

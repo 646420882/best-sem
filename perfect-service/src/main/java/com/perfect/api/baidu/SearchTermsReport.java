@@ -27,7 +27,7 @@ public class SearchTermsReport {
             Date baseDate = df.parse("11:51:00");
             Calendar beforeYesterDay = Calendar.getInstance();
             beforeYesterDay.add(Calendar.DAY_OF_YEAR,-2);//前天的日期
-            Calendar yesterDay = Calendar.getInstance();//昨天的日历
+            Calendar yesterDay = Calendar.getInstance();
             yesterDay.add(Calendar.DAY_OF_YEAR,-1);//昨天的日期
 
            //若小于baseDate，则是11:51之前的,否则是11:51之后的,     请求时间在当天中午11:51前，startDate范围可取：[前天，前天-30] 请求时间在当天中午11:51后，startDate范围可取：[昨天，昨天-30]

@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by john on 2014/8/5.
  */
 @Repository("accountWarningDAO")
-public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleEntity, Long> implements AccountWarningDAO {
+public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleEntity, Long>  implements AccountWarningDAO {
 
     @Override
     public WarningRuleEntity findOne(Long aLong) {
@@ -35,13 +35,13 @@ public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleEnt
         return null;
     }
 
-    public List<WarningRuleEntity> find(Query query, Class entityClass) {
-        return getSysMongoTemplate().find(query, entityClass, "sys_warning");
+    public List<WarningRuleEntity> findEnableIsOne() {
+        return getSysMongoTemplate().find(new Query(Criteria.where("isEnable").is(1)), getEntityClass(), "sys_warning");
     }
 
     @Override
     public Class<WarningRuleEntity> getEntityClass() {
-        return null;
+        return WarningRuleEntity.class;
     }
 
     @Override
@@ -95,53 +95,22 @@ public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleEnt
         getSysMongoTemplate().updateMulti(query,update,WarningRuleEntity.class,"sys_warning");
     }
 
+
+    /**
+     * 根据预警规则启用状态和当天预警状态查询
+     * @param isEnable
+     * @param isWarninged
+     * @return
+     */
+    public List<WarningRuleEntity> findWarningRule(int isEnable, int isWarninged){
+        return getSysMongoTemplate().find(new Query(Criteria.where("isEnable").is(isEnable).and("isWarninged").is(isWarninged)),getEntityClass(),"sys_warning");
+    }
+
+
+
     @Override
     public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
         return null;
     }
 }
 
-
-
-
-
-/*  if(warningRuleEntity==null){
-           return;
-        }
-        Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(warningRuleEntity.getId()));
-
-        Update update = new Update();
-
-        if (warningRuleEntity.getId() == null) {
-            return;
-        }
-
-        if (warningRuleEntity.getAccountId() != null) {
-            update.set("accountId", warningRuleEntity.getAccountId());
-        }
-        if (warningRuleEntity.getBudget() != null) {
-            update.set("budget", warningRuleEntity.getBudget());
-        }
-        if (warningRuleEntity.getBudgetType() != null) {
-            update.set("budgetType", warningRuleEntity.getBudgetType());
-        }
-        if (warningRuleEntity.getWarningPercent() != null) {
-            update.set("warningPercent", warningRuleEntity.getWarningPercent());
-        }
-        if (warningRuleEntity.getTels() != null) {
-            update.set("tels", warningRuleEntity.getTels());
-        }
-        if (warningRuleEntity.getMails() != null) {
-            update.set("mails", warningRuleEntity.getMails());
-        }
-        if (warningRuleEntity.getIsEnable() != null) {
-            update.set("isEnable", warningRuleEntity.getIsEnable());
-        }
-        if (warningRuleEntity.getIsWarninged() != null) {
-            update.set("isWarninged", warningRuleEntity.getIsWarninged());
-        }
-        if (warningRuleEntity.getDayCountDate() != null) {
-            update.set("dayCountDate", warningRuleEntity.getDayCountDate());
-        }
-        getSysMongoTemplate().updateFirst(query, update, WarningRuleEntity.class, "sys_warning");*/

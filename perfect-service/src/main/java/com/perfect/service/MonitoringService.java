@@ -13,6 +13,16 @@ import java.util.List;
  */
 public interface MonitoringService {
 
+    /**
+     * 获取监控文件夹
+     * @return
+     */
     public List<FolderEntity> getFolder();
+
+    /**
+     * 获取监控文件夹下的所有内容
+     * @return
+     */
+    public List<FolderMonitorEntity> getMonitor();
 
 }

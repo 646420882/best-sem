@@ -123,8 +123,8 @@ function loadCreativeData(page_index) {
     pageType=3;
     $.post("/assistantCreative/getList", sparams, function (result) {
         var gson = $.parseJSON(result);
-        if (gson != "[]") {
-            if (gson.list.length > 0) {
+
+            if (gson.list.length !="[]") {
                 var json = gson.list;
                 pagerInit(gson);
                 _createTable.empty();
@@ -149,11 +149,11 @@ function loadCreativeData(page_index) {
                         "</tr>";
                     _createTable.append(_tbody);
                 }
+            }else {
+                _createTable.empty();
+                _createTable.append("<tr><td>暂无数据</td></tr>");
             }
-        } else {
-            _createTable.empty();
-            _createTable.append("<tr><td>暂无数据</td></tr>");
-        }
+
     });
 }
 /**

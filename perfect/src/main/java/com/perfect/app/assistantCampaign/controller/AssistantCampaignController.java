@@ -9,9 +9,11 @@ import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.dao.SystemUserDAO;
+import com.perfect.dto.RegionalCodeDTO;
 import com.perfect.entity.*;
 import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.CampaignBackUpService;
+import com.perfect.service.SysRegionalService;
 import com.perfect.utils.RegionalCodeUtils;
 import com.perfect.utils.web.WebContext;
 import org.springframework.beans.BeanUtils;
@@ -56,6 +58,8 @@ public class AssistantCampaignController {
     @Resource
     private KeywordDAO keywordDAO;
 
+    @Resource
+    private SysRegionalService sysRegionalService;
 
     @Resource
     private WebContext webContext;
@@ -69,7 +73,7 @@ public class AssistantCampaignController {
     @RequestMapping(value = "assistantCampaign/list", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAllCampaignList(HttpServletResponse response, Integer nowPage, Integer pageSize) {
         if (nowPage == null) {
-            nowPage = 1;
+            nowPage = 0;
         }
         Query query = new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()));
         PagerInfo page = campaignDAO.findByPageInfo(query, pageSize, nowPage);
@@ -113,10 +117,11 @@ public class AssistantCampaignController {
         } else {
             campaignEntity = campaignDAO.findByObjectId(cid);
         }
-        Map<Integer, String> regionMap = RegionalCodeUtils.regionalCode(campaignEntity.getRegionTarget() == null ? new ArrayList<Integer>() : campaignEntity.getRegionTarget());
+//        Map<Integer, String> regionMap = RegionalCodeUtils.regionalCode(campaignEntity.getRegionTarget() == null ? new ArrayList<Integer>() : campaignEntity.getRegionTarget());
+        List<RegionalCodeDTO> regionList = sysRegionalService.getRegionalId(campaignEntity.getRegionTarget() == null ? new ArrayList<Integer>() : campaignEntity.getRegionTarget());
 
         map.put("campObj", campaignEntity);
-        map.put("regions", regionMap.values());
+        map.put("regions", regionList);
         webContext.writeJson(map, response);
     }
 
@@ -197,8 +202,18 @@ public class AssistantCampaignController {
 
         String[] regeionArray = regions.split(",");
         List<String> regionList = Arrays.asList(regeionArray);
-        Map<Integer, String> regionName = RegionalCodeUtils.regionalCodeName(regionList);
-        newCampaignEntity.setRegionTarget(new ArrayList<Integer>(regionName.keySet()));
+        List<RegionalCodeDTO> regionName = sysRegionalService.getRegionalName(regionList);
+
+        List<Integer> regionId = new ArrayList<>();
+        for(RegionalCodeDTO dto:regionName){
+            if(dto.getRegionName()==null||"".equals(dto.getRegionName())){
+                regionId.add(Integer.parseInt(dto.getProvinceId()));
+            }else{
+                regionId.add(Integer.parseInt(dto.getRegionId()));
+            }
+        }
+
+        newCampaignEntity.setRegionTarget(regionId);
 
         if (newCampaignEntity.getCampaignId() == null) {
             newCampaignEntity.setLocalStatus(1);
@@ -288,21 +303,14 @@ public class AssistantCampaignController {
         campaignEntity.setPriceRatio(priceRatio);
         campaignEntity.setPause(pause);
         campaignEntity.setShowProb(showProb);
-        List<ScheduleType> scheduleEntityList = null;
-        if (schedule != null && !"".equals(schedule)) {
-            scheduleEntityList = new ArrayList<>();
-            String[] strSchedule = schedule.split(";");
-            for (String str : strSchedule) {
-                String[] fieds = str.split("-");
-                ScheduleType scheduleType = new ScheduleType();
-                int i = 0;
-                scheduleType.setWeekDay(Long.parseLong(fieds[i++]));
-                scheduleType.setStartHour(Long.parseLong(fieds[i++]));
-                scheduleType.setEndHour(Long.parseLong(fieds[i++]));
-                scheduleEntityList.add(scheduleType);
-            }
+
+        if(schedule!=null){
+            Gson gson = new Gson();
+            List<ScheduleType> scheduleTypes = gson.fromJson(schedule, new TypeToken<List<ScheduleType>>() {
+            }.getType());
+            campaignEntity.setSchedule(scheduleTypes == null ? new ArrayList<ScheduleType>() : scheduleTypes);
         }
-        campaignEntity.setSchedule(scheduleEntityList);
+
         campaignEntity.setRegionTarget(regionTarget == null ? new ArrayList<Integer>() : Arrays.asList(regionTarget));
         campaignEntity.setNegativeWords(negativeWords == null ? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
         campaignEntity.setExactNegativeWords(exactNegativeWords == null ? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));

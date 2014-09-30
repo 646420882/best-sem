@@ -53,7 +53,7 @@ public class KeywordController {
     public ModelAndView getAllKeywordsByAdgroupdId(@PathVariable Long adgroupId
     ) {
         AbstractView jsonView = new MappingJackson2JsonView();
-        List<KeywordEntity> list = sysKeywordService.findByAdgroupId(adgroupId, null);
+        List<KeywordEntity> list = sysKeywordService.findByAdgroupId(adgroupId, null, null);
         Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(attributes);
         return new ModelAndView(jsonView);

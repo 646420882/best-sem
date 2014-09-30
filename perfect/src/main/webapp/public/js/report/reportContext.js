@@ -7,6 +7,85 @@ var reportDataVS;
 var accountBasisReport;
 var curve;
 var pieChart;
+
+/*初始化数据变量*/
+var dataOne = "";
+var dataTow = "";
+
+//日期
+var t_date = new Array();
+var dateInterval = 0;
+var colorOne = "#4572A7";
+var colorTow = "#40BC2A";
+
+var nameOne = "展现";
+var nameTow = "点击";
+//展现
+var t_impr = new Array();
+//点击数
+var t_clicks = new Array();
+//消费
+var t_cost = new Array();
+//点击率
+var t_ctr = new Array();
+//平均点击价格
+var t_cpc = new Array();
+//转化
+var t_conversion = new Array();
+//饼状图参数
+//展现
+var tsay_impr = new Array();
+var tsa_impr = 0;
+
+//点击
+var tsay_clicks = new Array();
+var tsa_clicks = 0;
+
+//消费
+var tsay_cost = new Array();
+var tsa_cost = 0;
+
+//转化
+var tsay_conversion = new Array();
+var tsa_conversion = 0;
+
+//点击率
+var tsay_ctr = new Array();
+var tsa_ctr = 0;
+
+//平均价格
+var tsay_cpc = new Array();
+var tsa_cpc = 0;
+
+var fieldName = 'date';
+
+var sort = 1;
+var dateclicks = "";
+
+//日期控件-开始日期
+var daterangepicker_start_date = null;
+
+//日期控件-结束日期
+var daterangepicker_end_date = null;
+
+
+var startDet = 0;
+var sorts = "-11";
+var endDet = 20;
+var limitDet = 20;
+var sortVS = "-1";
+var pageDetNumber = 0;
+var judgeDet = 0;
+//基础报告
+var startJC = 0;
+var limitJC = 20;
+//账户报告
+var startVS = 0;
+var endVs = 20;
+var limitVS = 20;
+var dataid = 0;
+var dataname = "0";
+var judety = 0;
 $(function () {
     // 对Date的扩展，将 Date 转化为指定格式的String
     // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
@@ -31,84 +110,7 @@ $(function () {
                 fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     }
-    /*初始化数据变量*/
-    var dataOne = "";
-    var dataTow = "";
 
-//日期
-    var t_date = new Array();
-    var dateInterval = 0;
-    var colorOne = "#4572A7";
-    var colorTow = "#40BC2A";
-
-    var nameOne = "展现";
-    var nameTow = "点击";
-//展现
-    var t_impr = new Array();
-//点击数
-    var t_clicks = new Array();
-//消费
-    var t_cost = new Array();
-//点击率
-    var t_ctr = new Array();
-//平均点击价格
-    var t_cpc = new Array();
-//转化
-    var t_conversion = new Array();
-//饼状图参数
-//展现
-    var tsay_impr = new Array();
-    var tsa_impr = 0;
-
-//点击
-    var tsay_clicks = new Array();
-    var tsa_clicks = 0;
-
-//消费
-    var tsay_cost = new Array();
-    var tsa_cost = 0;
-
-//转化
-    var tsay_conversion = new Array();
-    var tsa_conversion = 0;
-
-//点击率
-    var tsay_ctr = new Array();
-    var tsa_ctr = 0;
-
-//平均价格
-    var tsay_cpc = new Array();
-    var tsa_cpc = 0;
-
-    var fieldName = 'date';
-
-    var sort = 1;
-    var dateclicks = "";
-
-//日期控件-开始日期
-    var daterangepicker_start_date = null;
-
-//日期控件-结束日期
-    var daterangepicker_end_date = null;
-
-
-    var startDet = 0;
-    var sorts = "-11";
-    var endDet = 20;
-    var limitDet = 20;
-    var sortVS = "-1";
-    var pageDetNumber = 0;
-    var judgeDet = 0;
-//基础报告
-    var startJC = 0;
-    var limitJC = 20;
-//账户报告
-    var startVS = 0;
-    var endVs = 20;
-    var limitVS = 20;
-    var dataid = 0;
-    var dataname = "0";
-    var judety = 0;
     $(document).ready(function () {
         //加载日历控件
         $("input[name=reservation]").daterangepicker();
@@ -1362,27 +1364,19 @@ $(function () {
                 $("#basisAccount").empty();
                 $.each(data.rows, function (i, item) {
                     number = item.count;
-                    var ctr = 0;
-                    if (item.pcImpression != 0) {
-                        ctr = item.pcClick / item.pcImpression;
-                    }
-                    var cpc = 0;
-                    if (item.pcClick != 0) {
-                        cpc = item.pcCost / item.pcClick;
-                    }
                     $.each(data.Ring, function (is, items) {
                         if (i % 2 == 0) {
                             basisHtml = "<tr class='list2_box1'><td>&nbsp;" + item.dateRep + "</td>"
                                 + "<td><span>&nbsp;" + item.pcImpression + "</span>" + ((items.mobileImpression < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcImpression == 0) ? '-' : items.pcImpression / 100) + "%</strong></span></td>"
                                 + "<td><span>&nbsp;" + item.pcClick + "</span>" + ((items.mobileClick < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcClick == 0) ? '-' : items.pcClick / 100) + "%</strong></span></td>"
                                 + "<td><span>&nbsp;" + item.pcCost + "</span>" + ((items.mobileCost < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCost == 0) ? '-' : items.pcCost) + "%</strong></span></td>"
-                                + "<td><span>&nbsp;" + Math.round(ctr * 10000) / 100 + "%</span>" + ((items.mobileCtr < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCtr == 0) ? '-' : items.pcCtr/100) + "%</strong></span></td>"
-                                + "<td><span>&nbsp;" + Math.round(cpc * 100) / 100 + "</span>" + ((items.mobileCpc < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCpc == 0) ? '-' : items.pcCpc) + "%</strong></span></td>"
+                                + "<td><span>&nbsp;" + Math.round(item.pcCtr) + "%</span>" + ((items.mobileCtr < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCtr == 0) ? '-' : items.pcCtr/100) + "%</strong></span></td>"
+                                + "<td><span>&nbsp;" + Math.round(item.pcCpc) + "</span>" + ((items.mobileCpc < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCpc == 0) ? '-' : items.pcCpc) + "%</strong></span></td>"
                                 + "<td><span>&nbsp;" + item.pcConversion + "</span>" + ((items.mobileCpc < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcConversion == 0) ? '-' : items.pcConversion/100) + "%</strong></span></td>"
                                 + "<td><span>&nbsp;-</td></tr>"
                         } else {
                             basisHtml = "<tr class='list2_box2'><td>&nbsp;" + item.dateRep + "</td><td>&nbsp;" + item.pcImpression + "</td><td>&nbsp;" + item.pcClick + "</td>"
-                                + "<td>&nbsp;" + Math.round(item.pcCost * 100) / 100 + "</td><td>&nbsp;" + Math.round(ctr * 10000) / 100 + "%</td><td>&nbsp;" + Math.round(cpc * 100) / 100 + "</td><td>&nbsp;" + item.pcConversion + "</td>"
+                                + "<td>&nbsp;" + Math.round(item.pcCost * 100) / 100 + "</td><td>&nbsp;" + item.pcCtr + "%</td><td>&nbsp;" + item.pcCpc + "</td><td>&nbsp;" + item.pcConversion + "</td>"
                                 + "<td>&nbsp;-</td></tr>"
                         }
                     });

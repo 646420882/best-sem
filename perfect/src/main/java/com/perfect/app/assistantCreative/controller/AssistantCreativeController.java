@@ -1,16 +1,25 @@
 package com.perfect.app.assistantCreative.controller;
 
+import com.perfect.autosdk.core.CommonService;
+import com.perfect.autosdk.exception.ApiException;
+import com.perfect.autosdk.sms.v3.AddCreativeRequest;
+import com.perfect.autosdk.sms.v3.AddCreativeResponse;
+import com.perfect.autosdk.sms.v3.CreativeService;
+import com.perfect.autosdk.sms.v3.CreativeType;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.CreativeDAO;
 import com.perfect.entity.AdgroupEntity;
+import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.backup.CreativeBackUpEntity;
 import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.PagerInfo;
+import com.perfect.service.AccountManageService;
 import com.perfect.service.CreativeBackUpService;
+import com.perfect.utils.BaiduServiceSupport;
 import com.perfect.utils.web.WebContextSupport;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -24,10 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.perfect.mongodb.utils.EntityConstants.*;
 
@@ -49,6 +55,8 @@ public class AssistantCreativeController extends WebContextSupport {
     CampaignDAO campaignDAO;
     @Resource
     CreativeBackUpService creativeBackUpService;
+    @Resource
+    AccountManageService accountManageService;
 
     @RequestMapping(value = "/getList",method = RequestMethod.POST)
     public ModelAndView getCreativeList(HttpServletRequest request, HttpServletResponse response,
@@ -400,6 +408,47 @@ public class AssistantCreativeController extends WebContextSupport {
         }catch (Exception e){
             e.printStackTrace();
             writeHtml(EXCEPTION,response);
+        }
+        return null;
+    }
+
+
+    @RequestMapping(value = "uploadCreative",method = RequestMethod.POST)
+    public ModelAndView uploadCreative(HttpServletResponse response,
+                                       @RequestParam(value = "cid",required = true) Long cid,
+                                       @RequestParam(value = "aid",required = true) Long aid,
+                                       @RequestParam(value = "title",defaultValue = "") String title,
+                                       @RequestParam(value = "desc1",defaultValue = "") String desc1,
+                                       @RequestParam(value = "desc2",defaultValue = "") String desc2,
+                                       @RequestParam(value = "pcUrl",defaultValue = "") String pcUrl,
+                                       @RequestParam(value = "pcsUrl",defaultValue = "") String pcsUrl){
+//        System.out.println("cid:"+cid+"aid"+aid+"title:"+title+"desc1"+desc1+"desc2"+desc2+"pcUrl"+pcUrl+"pcsUrl"+pcsUrl);
+        CreativeType creativeTypes=new CreativeType();
+        creativeTypes.setTitle(title);
+        creativeTypes.setDescription1(desc1);
+        creativeTypes.setDescription2(desc2);
+        creativeTypes.setPcDisplayUrl(pcUrl);
+        creativeTypes.setPcDestinationUrl(pcsUrl);
+        creativeTypes.setAdgroupId(aid);
+        creativeTypes.setAdgroupId(AppContext.getAccountId());
+        creativeTypes.setDevicePreference(1);
+        BaiduAccountInfoEntity baiduAccountInfoEntity=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        CommonService commonService= BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
+        try {
+           CreativeService service= commonService.getService(CreativeService.class);
+
+            AddCreativeRequest addCreativeRequest=new AddCreativeRequest();
+            addCreativeRequest.setCreativeTypes(Arrays.asList(creativeTypes));
+            AddCreativeResponse addCreativeResponse=  service.addCreative(addCreativeRequest);
+           CreativeType creativeTypeResponse= addCreativeResponse.getCreativeType(0);
+            if (creativeTypeResponse.getCreativeId()!=null){
+                writeHtml(SUCCESS, response);
+            }else{
+                writeHtml(FAIL,response);
+            }
+        } catch (ApiException e) {
+            e.printStackTrace();
+            writeHtml(EXCEPTION, response);
         }
         return null;
     }

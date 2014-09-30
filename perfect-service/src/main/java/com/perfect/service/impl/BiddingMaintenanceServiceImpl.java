@@ -6,6 +6,7 @@ import com.perfect.service.BiddingMaintenanceService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by baizz on 2014-9-26.
@@ -15,6 +16,11 @@ public class BiddingMaintenanceServiceImpl implements BiddingMaintenanceService 
 
     @Resource
     private BiddingMaintenanceDAO biddingMaintenanceDAO;
+
+    @Override
+    public List<UrlEntity> findAll() {
+        return biddingMaintenanceDAO.findAll();
+    }
 
     @Override
     public void saveUrlEntity(UrlEntity urlEntity) {

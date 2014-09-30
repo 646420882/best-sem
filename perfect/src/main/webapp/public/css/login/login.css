@@ -1,3 +1,7 @@
+ul, ol {
+    margin:0;
+    padding: 0;
+}
 .login {
     position: absolute;
     width: 100%;
@@ -18,15 +22,20 @@
     padding: 10px;
     background: url(/public/img/login_box_bg.png) no-repeat;
 }
+.login_box2{
+    width: 490px;
+
+}
 
 .login_box2 {
     background: url(/public/img/register.png) no-repeat;
+    height:490px;
 
 }
 
 .login_part1 {
     padding: 0 80px;
-    height: 378px;
+    height: 386px;
 }
 
 .login_logo {
@@ -53,11 +62,13 @@
 .login_click a:hover {
     background: #f18b20;
     color: #fff;
+   text-decoration: none;
 }
 
 .login_input ul li {
-    margin-bottom: 10px;
+    margin-top: 20px;
     height:34px;
+    line-height:34px;
     position: relative;
 }
 
@@ -143,40 +154,45 @@
     position: relative;
     height: 34px;
     margin-bottom: 10px;
-
+    *margin-bottom:5px;
 }
 
 .login_input2 ul li input {
     display: block;
     float: left;
-    width: 65%;
+    width: 100%;
     padding: 6px 1%;
     margin-bottom: 5px;
     position: relative;
     font-size: 12px;
-    color: #d4d4d4;
+    color: #000;
     border: 1px solid #cccccc;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
+    height:34px;
+    *height:20px;
 }
 
 .login_input2 ul li span {
     display: block;
     float: left;
-    width: 30%;
+    width:80px;
     padding: 6px 0;
     margin-bottom: 5px;
 }
 
-.login_box2 .login_part2 a {
+.login_box2 .login_part2 input{
     color: #055d9c;
 
 }
 
 .login_input2 ul li .proving {
-    width: 44%;
+    width: 150px;
+    *width:120px;
     margin-right: 10px;
+    font-size:14px;
+    color:#000;
 
 }
 
@@ -185,6 +201,9 @@
 
 }
 .login_part2 input{
+    display:block;
+    width:100%;
+    height:100%;
     border:0px;
    background:none;
     color: #796100;
@@ -192,4 +211,89 @@
     font-weight:bold;
     cursor: pointer;
 
+}
+
+.login_input ul li .red ,.login_input2 ul li .red{
+    border-color: #a94442;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.login_input ul li .red:focus ,.login_input2 ul li .red:focus {
+    border-color: #843534;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #ce8483;
+}
+.bv-form .help-block {
+    margin-bottom: 0;
+}
+.bv-form .tooltip-inner {
+    text-align: left;
+}
+.nav-tabs li.bv-tab-success > a {
+    color: #3c763d;
+}
+.nav-tabs li.bv-tab-error > a {
+    color: #a94442;
+}
+.help-block{
+   width:210px;
+    height: 34px;
+    font-weight:bold;
+    position: absolute;
+    padding:0 10px 0 15px;
+    top: -5px;
+    left:240px;
+    *left:220px;
+    line-height: 34px;
+    background:#343535 url(/public/img/left_rejister.jpg) left no-repeat;
+    color: #fff;
+    z-index: 4;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+
+
+}
+.has-error .help-block{
+    color:#fff;
+}
+.col-lg-5{
+    width:230px;
+    *width:210px;
+    height:34px;
+    padding:0px;
+}
+.form-horizontal .form-group{
+    margin:0px;
+    padding:0px;
+}
+.login_input2 ul li .code{
+    float:right;
+    font-family:Arial;
+    font-style:italic;
+    color:#000;
+    border:0;
+    padding:2px 3px;
+    letter-spacing:3px;
+    font-weight:bolder;
+    font-size:16px;
+}
+.login_input2 ul li #checkCode{
+    float:right;
+    font-family:Arial;
+    font-style:italic;
+    color:#000;
+    border:0;
+    padding:2px 3px;
+    letter-spacing:3px;
+    font-weight:bolder;
+    font-size:16px;
+    height:30px;
+    line-height:30px;
+
+
+}
+.unchanged
+{
+    border:0;
+}
+.has-feedback .form-control{
+    padding-right:0px;
 }
