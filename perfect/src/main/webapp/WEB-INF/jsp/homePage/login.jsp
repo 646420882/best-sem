@@ -13,6 +13,7 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">
 </head>
 <body>
@@ -27,7 +28,7 @@
                     <img src="${pageContext.request.contextPath}/public/img/login_logo.png">
                 </div>
                 <div class="login_click over">
-                    <a href="#">→ 还没有帐号？点击注册</a>
+                    <a href="/register">→ 还没有帐号？点击注册</a>
                 </div>
 
                 <div class="login_input">
@@ -63,7 +64,7 @@
     </div>
 
 </div>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
 <script type="text/javascript">
     window.jQuery || document.write("<script src='${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js'>\x3C/script>");
 </script>
@@ -93,6 +94,7 @@
 
         if (_invalidPassword == "") {
             $("#invalidPassword").parent().removeClass("login_checkbox");
+
         } else {
             $("#invalidPassword").parent().addClass("login_checkbox");
         }
