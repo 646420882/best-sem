@@ -202,7 +202,17 @@ function saveUpload(){
 function addCreativeOk(){
     reViewData["aid"]=reParms.aid;
     reViewData["cid"]=reParms.cid;
-    $.post("/assistantCreative/uploadCreative",reViewData,function(result){
-        alert(result);
-    });
+    if(reViewData["aid"]!=null&&reViewData["cid"]!=null){
+        $.post("/assistantCreative/uploadCreative",reViewData,function(result){
+            if(result=="1"){
+                reParms.aid,reParms.cid=null;
+                $("#rTitle").html("xxxxxxxx");
+                $("#rDesc").html("xxxxxxxx");
+                $("#rUrl").html("xxxxxxxxx");
+            }
+        });
+    }else{
+        alert("请选择计划或者单元！");
+    }
+
 }
