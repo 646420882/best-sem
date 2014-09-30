@@ -1,83 +1,79 @@
 /**
  * Created by XiaoWei on 2014/9/28.
  */
-var reViewData={};//记录点击编辑按钮时读取的信息数据
-var reParms={cid:null,aid:null};
-function addCreativeOk(){
-
-//    $.post("/assistantCreative/uploadToFC",function(result){
-//        alert(result);
-//    });
-}
+var reViewData = {};//记录点击编辑按钮时读取的信息数据
+var reParms = {cid: null, aid: null};
 //预览方法
-function reView(res){
-    var _this=$(res);
+function reView(res) {
+    var _this = $(res);
 
-    var _liObj=_this.parents("li");
-    var title=_liObj.find("a:eq(0) span").html()!=undefined?_liObj.find("a:eq(0) span").html():_liObj.find("a:eq(0)").html();
-    var regxl=new RegExp("<font color=\"#CC0000\">","g");
-    var regxr=new RegExp("</font>","g");
-    var reggn=new RegExp("\n","g");
-    title=  title.replace(regxl,"{");
-    title=title.replace(regxr,"}");
-    var destmp=_liObj.find("a:eq(1)").html()!=""?_liObj.find("a:eq(1)").html():_liObj.find("div:eq(2)").html();
-    var url="请输入";
-    url=destmp.split("<br>")[1]!=undefined?$(destmp.split("<br>")[1]).text():_liObj.find("a:eq(1) span").text();
-    if(url==""){
-        url=_liObj.find("div:eq(3) span:eq(0)").text();
+    var _liObj = _this.parents("li");
+    var title = _liObj.find("a:eq(0) span").html() != undefined ? _liObj.find("a:eq(0) span").html() : _liObj.find("a:eq(0)").html();
+    var regxl = new RegExp("<font color=\"#CC0000\">", "g");
+    var regxr = new RegExp("</font>", "g");
+    var reggn = new RegExp("\n", "g");
+    title = title.replace(regxl, "{");
+    title = title.replace(regxr, "}");
+    var destmp = _liObj.find("a:eq(1)").html() != "" ? _liObj.find("a:eq(1)").html() : _liObj.find("div:eq(2)").html();
+    var url = "请输入";
+    url = destmp.split("<br>")[1] != undefined ? $(destmp.split("<br>")[1]).text() : _liObj.find("a:eq(1) span").text();
+    if (url == "") {
+        url = _liObj.find("div:eq(3) span:eq(0)").text();
     }
-    if(destmp.indexOf("<br>")>-1){
-        destmp=destmp.substr(0,destmp.indexOf("<br>"));
+    if (destmp.indexOf("<br>") > -1) {
+        destmp = destmp.substr(0, destmp.indexOf("<br>"));
     }
-    var des1=$(destmp).text();
-    if(des1==""){
-        des1=_liObj.find("div:eq(2)").html();
-        des1=des1.replace(reggn,"");
-        des1=des1.replace(regxl,"{");
-        des1=des1.replace(regxr,"}");
-    }
+    var des1 = $(destmp).text();
+        if (des1 == "") {
+            des1 = _liObj.find("div:eq(2)").html();
+            des1 = des1.replace(reggn, "");
+            des1 = des1.replace(regxl, "{");
+            des1 = des1.replace(regxr, "}");
+        }
+
 
 //    alert(title+"\n"+des1+"\n"+url);
-    reViewData["title"]=title;
-    reViewData["desc1"]=des1;
-    reViewData["desc2"]=des1;
-    reViewData["pcUrl"]=url;
-    reViewData["pcsUrl"]=url;
-    $("#_editor [name='title']").val(title);
+    reViewData["title"] = title;
+    reViewData["desc1"] = des1;
+    reViewData["desc2"] = des1;
+    reViewData["pcUrl"] = url;
+    reViewData["pcsUrl"] = url;
+   $("#_editor [name='title']").val(title);
     $("#_editor [name='desc1']").val(des1);
     $("#_editor [name='desc2']").val(des1);
     $("#_editor [name='pcUrl']").val(url);
     $("#_editor [name='pcsUrl']").val(url);
+
     initEditView(res);
     reShowEditor();
 }
 //初始化编辑窗体
-function initEditView(res){
+function initEditView(res) {
     $("#_editor input[type='text']").empty();
     $("#_editor input[type='textarea']").empty();
-    var _thisUl=$("#terms li");
-    var _thatUl=$("#repUl");
+    var _thisUl = $("#terms li");
+    var _thatUl = $("#repUl");
     _thatUl.empty();
-    _thisUl.each(function(i,o){
-        var n=$(o).find("span").text();
-        var v=$(o).find("b").text();
-        _thatUl.append("<li>"+n+"<span>"+v+"</span></li>");
+    _thisUl.each(function (i, o) {
+        var n = $(o).find("span").text();
+        var v = $(o).find("b").text();
+        _thatUl.append("<li>" + n + "<span>" + v + "</span></li>");
     });
-    var regxl=new RegExp("{","g");
-    var regxr=new RegExp("}","g");
-    var title=reViewData["title"].replace(regxl,"<font color=\"#CC0000\">");
-    title=title.replace(regxr,"</font>");
-    var desc=reViewData["desc1"].replace(regxl,"<font color=\"#CC0000\">");
-    desc=desc.replace(regxr,"</font>");
-    var url=reViewData["pcUrl"];
-    var _reView="<a href='javascript:void(0)' class='EC_t EC_BL'>"+title+"</a><br><span  class='ec_desc ec_font_small'>"+desc+"</span><br><span class='ec_url'>"+url+"</span>";
-    var _reView2="<a href='javascript:void(0)' class='EC_t EC_BL'>"+title+"<font color='#080'>"+url+"</font></a><br><span  class='ec_desc ec_font_small'>"+desc+"</span><br>";
-    var _reView3="<a href='javascript:void(0)' class='EC_t EC_BL'>"+title+"</a><br><span  class='ec_desc ec_font_small'>"+desc+"</span><br><span class='ec_url'>"+url+"</span>";
+    var regxl = new RegExp("{", "g");
+    var regxr = new RegExp("}", "g");
+    var title = reViewData["title"].replace(regxl, "<font color=\"#CC0000\">");
+    title = title.replace(regxr, "</font>");
+    var desc = reViewData["desc1"].replace(regxl, "<font color=\"#CC0000\">");
+    desc = desc.replace(regxr, "</font>");
+    var url = reViewData["pcUrl"];
+    var _reView = "<a href='javascript:void(0)' class='EC_t EC_BL'>" + title + "</a><br><span  class='ec_desc ec_font_small'>" + desc + "</span><br><span class='ec_url'>" + url + "</span>";
+    var _reView2 = "<a href='javascript:void(0)' class='EC_t EC_BL'>" + title + "<font color='#080'>" + url + "</font></a><br><span  class='ec_desc ec_font_small'>" + desc + "</span><br>";
+    var _reView3 = "<a href='javascript:void(0)' class='EC_t EC_BL'>" + title + "</a><br><span  class='ec_desc ec_font_small'>" + desc + "</span><br><span class='ec_url'>" + url + "</span>";
     $("#reLeft1").empty().append(_reView);
     $("#reLeft2").empty().append(_reView2);
     $("#reRight").empty().append(_reView3);
 }
-function reShowEditor(){
+function reShowEditor() {
     $(".TB_overlayBG").css({
         display: "block", height: $(document).height()
     });
@@ -87,7 +83,7 @@ function reShowEditor(){
         display: "block"
     });
 }
-function reHideEditor(){
+function reHideEditor() {
     $(".TB_overlayBG").css({
         display: "none", height: $(document).height()
     });
@@ -97,7 +93,7 @@ function reHideEditor(){
         display: "none"
     });
 }
-function reShowSelect(){
+function reShowSelect() {
     $(".TB_overlayBG").css({
         display: "block", height: $(document).height()
     });
@@ -107,7 +103,7 @@ function reShowSelect(){
         display: "block"
     });
 }
-function reHideSelect(){
+function reHideSelect() {
     $(".TB_overlayBG").css({
         display: "none", height: $(document).height()
     });
@@ -117,7 +113,12 @@ function reHideSelect(){
         display: "none"
     });
 }
-function reSave(){
+function reSave() {
+    reViewData["title"]=$("#_editor [name='title']").val();
+    reViewData["desc1"]=$("#_editor [name='desc1']").val();
+    reViewData["desc2"]=$("#_editor [name='desc2']").val();
+    reViewData["pcUrl"]=$("#_editor [name='pcUrl']").val();
+    reViewData["pcsUrl"]=$("#_editor [name='pcsUrl']").val();
     reHideEditor();
     reShowSelect();
     var jcBox = $("#jcUl");
@@ -164,7 +165,7 @@ function loadUnit(rs) {
         }
     });
 }
-function replanUnit(){
+function replanUnit() {
     var cid = $("#sPlan :selected").val() == undefined ? sparams.cid : $("#sPlan :selected").val();
     var aid = $("#sUnit :selected").val() == undefined ? sparams.aid : $("#sUnit :selected").val();
     if (cid == "-1") {
@@ -174,11 +175,34 @@ function replanUnit(){
     } else {
         reParms.cid = cid;
         reParms.aid = aid;
+        saveUpload();
         reHideEditor();
         reHideSelect();
     }
 }
-function recloseAlert(){
+function recloseAlert() {
+    reParms.cid = null;
+    reParms.aid = null;
     reHideSelect();
     reShowEditor();
+}
+function saveUpload(){
+    var regxl = new RegExp("{", "g");
+    var regxr = new RegExp("}", "g");
+    var title = reViewData["title"].replace(regxl, "<font color=\"#CC0000\">");
+    title = title.replace(regxr, "</font>");
+    var desc1 = reViewData["desc1"].replace(regxl, "<font color=\"#CC0000\">");
+    desc1 = desc1.replace(regxr, "</font>");
+    var desc2 = reViewData["desc2"].replace(regxl, "<font color=\"#CC0000\">");
+    desc2 = desc2.replace(regxr, "</font>");
+    $("#rTitle").html(title);
+    $("#rDesc").html(desc1+desc2);
+    $("#rUrl").html(reViewData["pcUrl"]);
+}
+function addCreativeOk(){
+    reViewData["aid"]=reParms.aid;
+    reViewData["cid"]=reParms.cid;
+    $.post("/assistantCreative/uploadCreative",reViewData,function(result){
+        alert(result);
+    });
 }

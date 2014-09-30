@@ -404,8 +404,17 @@ public class AssistantCreativeController extends WebContextSupport {
         return null;
     }
 
-    @RequestMapping(value = "uploadToFC",method = RequestMethod.POST)
-    public ModelAndView updateCreativeToFengCao(HttpServletResponse response){
+
+    @RequestMapping(value = "uploadCreative",method = RequestMethod.POST)
+    public ModelAndView uploadCreative(HttpServletResponse response,
+                                       @RequestParam(value = "cid",required = true) Long cid,
+                                       @RequestParam(value = "aid",required = true) Long aid,
+                                       @RequestParam(value = "title",defaultValue = "") String title,
+                                       @RequestParam(value = "desc1",defaultValue = "") String desc1,
+                                       @RequestParam(value = "desc2",defaultValue = "") String desc2,
+                                       @RequestParam(value = "pcUrl",defaultValue = "") String pcUrl,
+                                       @RequestParam(value = "pcsUrl",defaultValue = "") String pcsUrl){
+        System.out.println("cid:"+cid+"aid"+aid+"title:"+title+"desc1"+desc1+"desc2"+desc2+"pcUrl"+pcUrl+"pcsUrl"+pcsUrl);
         writeHtml(SUCCESS,response);
         return null;
     }

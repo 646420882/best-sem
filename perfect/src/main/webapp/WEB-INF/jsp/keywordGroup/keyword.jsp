@@ -12,13 +12,17 @@ To change this template use File | Settings | File Templates.
     <title></title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
-    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta id="viewport" name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/creative/creativesearch.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/creative/creativesearch_img.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/css/creative/creativesearch.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/css/creative/creativesearch_img.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style type="text/css">
         .list2 table tr td ul li {
@@ -279,6 +283,31 @@ To change this template use File | Settings | File Templates.
             </div>
 
         </div>
+        <div class="r_under_mid fl">
+
+            <div class="r_under_top over">
+                <h3 class="fl">上传创意预览</h3>
+            </div>
+
+            <ul id="reViewUl">
+                <li style="border:1px solid #b6bbc8;">
+                    <div></div>
+                    <a data-is-main-url="true" href="#" class="EC_t EC_BL" id="rTitle">
+                        2015<font color="#CC0000">婚博会门票团购</font>在线网站..</a>
+                    <br>
+                    <a id="bdfs1" href="#" class="EC_BL EC_desc"><font size="-1" id="rDesc">订婚宴网,国内人气婚宴预订网站,汇集数千家热门婚宴场所.</font><br>
+                        <font  size="-1" class="EC_url" id="rUrl">www.dinghunyan.cn</font></a>
+
+                    <div class="c-tools" style="margin-left:5px;" id="tools_2">
+                        <a class="c-tip-icon"></a>
+                    </div>
+                    <div>
+                        <input type="button" value="保存" onclick="addCreativeOk()"/>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
 
     </div>
 </div>
@@ -298,12 +327,13 @@ To change this template use File | Settings | File Templates.
                 <ul>
                     <li>
                         <h3>标题：</h3>
-                        <dl><input type="text" name="title" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span></dl>
+                        <dl><input type="text" name="title" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span>
+                        </dl>
                         <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
                     </li>
                     <li>
                         <h3>描述1：</h3>
-                        <dl><textarea name="desc1" ></textarea><span>27/50</span></dl>
+                        <dl><textarea name="desc1"></textarea><span>27/50</span></dl>
                         <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
                     </li>
                     <li>
@@ -318,7 +348,8 @@ To change this template use File | Settings | File Templates.
                     </li>
                     <li>
                         <h3>显示URL：</h3>
-                        <dl><input type="text" name="pcsUrl" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span></dl>
+                        <dl><input type="text" name="pcsUrl" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span>
+                        </dl>
                     </li>
                 </ul>
             </div>
@@ -360,8 +391,8 @@ To change this template use File | Settings | File Templates.
                         </div>
                     </li>
                 </ul>
-<%--<span><a class="become2 fl" href="javascript: findWordFromBaidu();">评估匹配度</a><a class="question"--%>
-                                                                                <%--href="#"></a></span>--%>
+                <%--<span><a class="become2 fl" href="javascript: findWordFromBaidu();">评估匹配度</a><a class="question"--%>
+                <%--href="#"></a></span>--%>
             </div>
         </div>
     </div>
@@ -404,7 +435,7 @@ To change this template use File | Settings | File Templates.
             <div class="main_bottom">
                 <div class="w_list03">
                     <ul>
-                        <li class="current" onclick="addCreativeOk()">确认</li>
+                        <li class="current">确认</li>
                         <li class="close">取消</li>
                     </ul>
                 </div>
@@ -441,7 +472,7 @@ To change this template use File | Settings | File Templates.
 </div>
 
 <%--创意添加选择计划，单元弹出窗口--%>
-<div  class="box" style="display:none" id="jcAdd">
+<div class="box" style="display:none" id="jcAdd">
     <h2 id="dAdd">
         <span class="fl">添加创意</span>
         <a href="#" class="close">关闭</a></h2>
@@ -465,7 +496,8 @@ To change this template use File | Settings | File Templates.
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
