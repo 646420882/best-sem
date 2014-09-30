@@ -46,6 +46,10 @@ public class JRedisUtils {
         pool.returnResource(jedis);
     }
 
+    public static void returnBrokenJedis(Jedis jedis) {
+        pool.returnBrokenResource(jedis);
+    }
+
     public static void main(String args[]) {
 
     }

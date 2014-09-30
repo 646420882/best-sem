@@ -134,6 +134,25 @@ function load() {
 
 
     $.ajax({
+        url: "/xxxx",
+        type: "GET",
+        async: false,
+        success: function (datas) {
+            if(datas.rows == undefined){
+                return;
+            }
+
+            $('#region').empty();
+            $.each(datas.rows,function(i, item){
+                var opt = $("<option></option>").attr("value",item.value);
+                opt.append(item.name);
+                $('#region').append(opt);
+            })
+        }
+    })
+
+
+    $.ajax({
         url: "/campaign/getAllCampaign",
         type: "GET",
         async: false,

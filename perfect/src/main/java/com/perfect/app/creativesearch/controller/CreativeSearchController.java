@@ -31,11 +31,8 @@ public class CreativeSearchController {
                                @RequestParam(value = "p", required = false, defaultValue = "1") int page,
                                @RequestParam(value = "s", required = false, defaultValue = "20") int size,
                                @RequestParam(value = "r", required = true) int region) {
-        //  TODO 通过region获取下属地域编码
-        // int[] regions = new int[]{};
 
-
-        EsSearchResultDTO entityList = esService.search(query, page, size, new int[]{});
+        EsSearchResultDTO entityList = esService.search(query, page, size, new int[]{region});
 
         AbstractView view = new MappingJackson2JsonView();
 

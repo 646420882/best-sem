@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.perfect.dto.RegionalCodeDTO;
 import com.perfect.redis.JRedisUtils;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.exceptions.JedisException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,17 +24,25 @@ public class RegionalCodeUtils {
      * @return
      */
     public static Map<Integer, String> regionalCode(List<Integer> id) {
-        Jedis jc = JRedisUtils.get();
-        String data = jc.get("RegionalCodeRedis");
-        Gson gson = new Gson();
-        Map<String, String> d = gson.fromJson(data, new TypeToken<Map<Integer, String>>() {
-        }.getType());
-        Map<Integer, String> map = new HashMap<>();
-        for (Integer aLong : id) {
-            map.put(aLong, d.get(aLong));
+        Jedis jc = null;
+        try {
+            jc = JRedisUtils.get();
+            String data = jc.get("RegionalCodeRedis");
+            Gson gson = new Gson();
+            Map<String, String> d = gson.fromJson(data, new TypeToken<Map<Integer, String>>() {
+            }.getType());
+            Map<Integer, String> map = new HashMap<>();
+            for (Integer aLong : id) {
+                map.put(aLong, d.get(aLong));
+            }
+            JRedisUtils.returnJedis(jc);
+            return map;
+        } catch (JedisException e) {
+            if (jc != null) {
+                JRedisUtils.returnBrokenJedis(jc);
+            }
         }
-        JRedisUtils.returnJedis(jc);
-        return map;
+        return null;
     }
 
     /**
@@ -43,21 +52,29 @@ public class RegionalCodeUtils {
      * @return
      */
     public static Map<Integer, String> regionalCodeName(List<String> name) {
-        Jedis jc = JRedisUtils.get();
-        String data = jc.get("RegionalCodeRedis");
-        Gson gson = new Gson();
-        Map<Integer, String> d = gson.fromJson(data, new TypeToken<Map<Integer, String>>() {
-        }.getType());
-        Map<Integer, String> map = new HashMap<>();
-        for (String aString : name) {
-            for (Map.Entry<Integer, String> voEntity : d.entrySet()) {
-                if (aString.equals(voEntity.getValue())) {
-                    map.put(voEntity.getKey(), aString);
+        Jedis jc = null;
+        try {
+            jc = JRedisUtils.get();
+            String data = jc.get("RegionalCodeRedis");
+            Gson gson = new Gson();
+            Map<Integer, String> d = gson.fromJson(data, new TypeToken<Map<Integer, String>>() {
+            }.getType());
+            Map<Integer, String> map = new HashMap<>();
+            for (String aString : name) {
+                for (Map.Entry<Integer, String> voEntity : d.entrySet()) {
+                    if (aString.equals(voEntity.getValue())) {
+                        map.put(voEntity.getKey(), aString);
+                    }
                 }
             }
+            JRedisUtils.returnJedis(jc);
+            return map;
+        } catch (JedisException e) {
+            if (jc != null) {
+                JRedisUtils.returnBrokenJedis(jc);
+            }
         }
-        JRedisUtils.returnJedis(jc);
-        return map;
+        return null;
     }
 
     /**
@@ -72,34 +89,42 @@ public class RegionalCodeUtils {
      * @return
      */
     public static Map<Integer, List<RegionalCodeDTO>> provinceCode(List<Integer> id) {
-        Jedis jc = JRedisUtils.get();
-        String data = jc.get("RegionalCodeRedis");
-        Gson gson = new Gson();
-        Map<Integer, String> mapKey = gson.fromJson(data, new TypeToken<Map<Integer, String>>() {
-        }.getType());
+        Jedis jc = null;
+        try {
+            jc = JRedisUtils.get();
+            String data = jc.get("RegionalCodeRedis");
+            Gson gson = new Gson();
+            Map<Integer, String> mapKey = gson.fromJson(data, new TypeToken<Map<Integer, String>>() {
+            }.getType());
 
-        Map<Integer, List<RegionalCodeDTO>> map = new HashMap<>();
+            Map<Integer, List<RegionalCodeDTO>> map = new HashMap<>();
 
-        for (Integer integer : id) {
+            for (Integer integer : id) {
 
-            List<RegionalCodeDTO> redisRegionalList = new ArrayList<>();
+                List<RegionalCodeDTO> redisRegionalList = new ArrayList<>();
 
-            for (Map.Entry<Integer, String> voEntity : mapKey.entrySet()) {
+                for (Map.Entry<Integer, String> voEntity : mapKey.entrySet()) {
 
-                RegionalCodeDTO redisRegional = new RegionalCodeDTO();
-                int regional = voEntity.getKey() / 1000;
-                int proCode = integer / 1000;
-                if (regional == proCode) {
-                    if (voEntity.getKey().intValue() != integer.intValue()) {
+                    RegionalCodeDTO redisRegional = new RegionalCodeDTO();
+                    int regional = voEntity.getKey() / 1000;
+                    int proCode = integer / 1000;
+                    if (regional == proCode) {
+                        if (voEntity.getKey().intValue() != integer.intValue()) {
                       /*  redisRegional.setRegionalId(voEntity.getKey());
                         redisRegional.setRegionalName(voEntity.getValue());*/
-                        redisRegionalList.add(redisRegional);
+                            redisRegionalList.add(redisRegional);
+                        }
                     }
                 }
+                map.put(integer, redisRegionalList);
             }
-            map.put(integer, redisRegionalList);
+            JRedisUtils.returnJedis(jc);
+            return map;
+        } catch (JedisException e) {
+            if (jc != null) {
+                JRedisUtils.returnBrokenJedis(jc);
+            }
         }
-        JRedisUtils.returnJedis(jc);
-        return map;
+        return null;
     }
 }
