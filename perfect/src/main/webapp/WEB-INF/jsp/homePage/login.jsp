@@ -28,7 +28,7 @@
                     <img src="${pageContext.request.contextPath}/public/img/login_logo.png">
                 </div>
                 <div class="login_click over">
-                    <a href="/register">→ 还没有帐号？点击注册</a>
+                    <a href="/register/page">→ 还没有帐号？点击注册</a>
                 </div>
 
                 <div class="login_input">

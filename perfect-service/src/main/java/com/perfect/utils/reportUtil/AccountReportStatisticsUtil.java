@@ -63,10 +63,10 @@ public abstract class AccountReportStatisticsUtil {
                 if (response.getPcImpression() == null || response.getPcImpression() == 0) {
                     response.setPcCtr(0.00);
                 } else {
-                    BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(response.getPcClick().doubleValue() / response.getPcImpression().doubleValue())));
-                    BigDecimal big = new BigDecimal(10000);
-                    double divide = ctrBig.multiply(big).doubleValue();
-                    response.setPcCtr(divide/100);
+                    double ctrBig = Double.parseDouble(df.format(response.getPcClick().doubleValue() / response.getPcImpression().doubleValue()));
+                    int i= (int) (ctrBig*10000);
+                    double big = i/100.00;
+                    response.setPcCtr(big);
                 }
                 if (response.getPcClick() == null || response.getPcClick() == 0) {
                     response.setPcCpc(BigDecimal.valueOf(0.00));
