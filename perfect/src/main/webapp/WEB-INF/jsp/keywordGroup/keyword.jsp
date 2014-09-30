@@ -86,8 +86,7 @@ To change this template use File | Settings | File Templates.
                                         <a href="#" class="question"></a>
                                     </div>
                                     <ul>
-                                        <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
-                                        <li>· 普菲特智能词库</li>
+                                        <li>·百度、Google、360等搜索引擎平台抓取调用·百思智能词库</li>
                                     </ul>
                                 </div>
                             </div>
@@ -161,8 +160,7 @@ To change this template use File | Settings | File Templates.
                                         <a href="#" class="question"></a>
                                     </div>
                                     <ul>
-                                        <li>· 抓取搜索引擎先关搜索结果：baidu/google/sougo/soso/bing</li>
-                                        <li>· 普菲特智能词库</li>
+                                        <li>·百度、Google、360等搜索引擎平台抓取调用·百思智能词库</li>
                                     </ul>
                                 </div>
                             </div>

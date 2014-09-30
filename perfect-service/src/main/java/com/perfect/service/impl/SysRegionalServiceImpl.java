@@ -104,6 +104,27 @@ public class SysRegionalServiceImpl implements SysRegionalService{
     }
 
     @Override
+    public Map<String,List<Object>> getProvince() {
+        String fideName = "regionId";
+        String id = "000";
+        List<RegionalCodeDTO> regionals = regionalCodeDAO.getRegional(fideName,id);
+        Map<String,List<Object>> returnMap = new HashMap<>();
+        List<Object> dtos = new ArrayList<>();
+        for(RegionalCodeDTO codeDTO:regionals){
+            if(!"00".equals(codeDTO.getProvinceId())){
+                RedisRegionalDTO regionalDTO = new RedisRegionalDTO();
+                Map<String,String> map = new HashMap<>();
+                map.put("value",codeDTO.getProvinceId());
+                map.put("name",codeDTO.getProvinceName());
+                dtos.add(map);
+            }
+        }
+        returnMap.put("rows",dtos);
+
+        return returnMap;
+    }
+
+    @Override
     public List<RegionalCodeDTO> getRegionalName(List<String> proName) {
         String fideName = "regionName";
         List<RegionalCodeDTO> dtos = new ArrayList<>();

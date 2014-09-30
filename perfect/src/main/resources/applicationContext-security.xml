@@ -16,7 +16,7 @@
     <security:http pattern="/**/*.swf" security="none"/>
     <security:http pattern="/**/*.js" security="none"/>
     <security:http pattern="/login" security="none"/>
-    <security:http pattern="/register" security="none"/>
+    <security:http pattern="/register/*" security="none"/>
     <security:http pattern="/upload/uploadFile" security="none"/>
     <security:http pattern="/upload/upTotal" security="none"/>
 

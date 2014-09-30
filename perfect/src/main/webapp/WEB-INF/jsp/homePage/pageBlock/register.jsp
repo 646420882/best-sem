@@ -19,19 +19,20 @@
 </head>
 <body>
 <div class="login over">
-    <img src="${pageContext.request.contextPath}public/img/login_bg.jpg" width="100%" height="100%">
+    <img src="/public/img/login_bg.jpg" width="100%" height="100%">
 </div>
 <div class="login_box">
     <div class="login_box2">
         <div class="login_part1 ">
             <div class="login_logo2 ">
-                <img src="${pageContext.request.contextPath}public/img/login_logo.png">
+                <img src="/public/img/login_logo.png">
             </div>
             <div class="login_click over">
+                <span id="tishi"></span>
                 <a href="/login">→ 已有帐号？登陆</a>
             </div>
             <div class="login_input2">
-                <form id="defaultForm" method="post"  class="form-horizontal">
+                <form id="defaultForm" method="post" class="form-horizontal" action="/register/add">
                 <ul>
                     <li >
                         <span>公司名称：</span>
@@ -75,11 +76,11 @@
                             </div>
                     </li>
                 </ul>
+                    <div class="login_part2">
+                        <input  type="submit" id="" value="立即注册"  class="submit"></a>
+                    </div>
                 </form>
             </div>
-        </div>
-        <div class="login_part2">
-            <input  type="submit" value="立即注册"  class="submit"></a>
         </div>
     </div>
     <div class="login_contact over" >
@@ -87,6 +88,7 @@
     </div>
 </div>
 </div>
+<input type="hidden" id="dataRe" value="${state}">
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/bootstrapValidator.js"></script>
@@ -224,6 +226,15 @@ $(document).ready(function() {
             checkCode.value = code;
         }
 
+    }
+$("#submitBtn").click(function(){
+    alert(1);
+    $("#defaultForm").submit;
+});
+    if($("#dataRe").val() == 1){
+        $("#tishi").append("注册成功！                ");
+    }else{
+        $("#tishi").append("注册失败！用户名已存在！   ");
     }
 
 </script>

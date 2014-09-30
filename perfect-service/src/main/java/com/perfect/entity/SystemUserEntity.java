@@ -23,6 +23,10 @@ public class SystemUserEntity implements Serializable {
     private String userName;
 
     private String password;
+    //公司名字
+    private String companyName;
+    //审核状态
+    private Integer state;
 
     private Integer access;     //1.admin; 2.user
 
@@ -76,6 +80,22 @@ public class SystemUserEntity implements Serializable {
         return baiduAccountInfoEntities;
     }
 
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
     public void setBaiduAccountInfoEntities(List<BaiduAccountInfoEntity> baiduAccountInfoEntities) {
         this.baiduAccountInfoEntities = baiduAccountInfoEntities;
     }
@@ -93,6 +113,8 @@ public class SystemUserEntity implements Serializable {
                 "id='" + id + '\'' +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", state=" + state +
                 ", access=" + access +
                 ", baiduAccountInfoEntities=" + baiduAccountInfoEntities +
                 '}';
