@@ -13,9 +13,9 @@
     <modules>
         <module>perfect-baidu</module>
         <module>perfect-service</module>
+        <module>perfect-bidding</module>
         <module>perfect-scheduler</module>
         <module>perfect</module>
-        <module>perfect-bidding</module>
     </modules>
     <properties>
         <springframework-version>4.0.7.RELEASE</springframework-version>
@@ -27,20 +27,20 @@
             <url>http://repo1.maven.org/maven2/</url>
         </repository>
 
-        <repository>
-            <id>sonatype</id>
-            <url>http://repository.sonatype.org/content/groups/public/</url>
-        </repository>
+        <!--<repository>-->
+            <!--<id>sonatype</id>-->
+            <!--<url>http://repository.sonatype.org/content/groups/public/</url>-->
+        <!--</repository>-->
 
         <repository>
             <id>spring-release</id>
             <url>http://repo.springsource.org/libs-release</url>
         </repository>
 
-        <repository>
-            <id>ibiblio.mirrors</id>
-            <url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>
-        </repository>
+        <!--<repository>-->
+            <!--<id>ibiblio.mirrors</id>-->
+            <!--<url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>-->
+        <!--</repository>-->
 
     </repositories>
 

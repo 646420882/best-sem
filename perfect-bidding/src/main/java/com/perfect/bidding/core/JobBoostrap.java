@@ -37,13 +37,5 @@ public class JobBoostrap {
             }
         }
 
-
-        while(true) {
-            try {
-                Thread.sleep(Integer.MAX_VALUE);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

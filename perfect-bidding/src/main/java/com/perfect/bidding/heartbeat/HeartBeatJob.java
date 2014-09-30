@@ -25,6 +25,9 @@ public class HeartBeatJob {
     @Resource
     private FarmDAO farmDAO;
 
+    public HeartBeatJob(){
+        System.out.println("Started!");
+    }
 
     public void start() {
 

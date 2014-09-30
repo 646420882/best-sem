@@ -16,7 +16,7 @@
         <dependency>
             <groupId>com.perfect</groupId>
             <artifactId>perfect-service</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -39,9 +39,40 @@
                     <include>bidding.xml</include>
                     <include>**/*.properties</include>
                 </includes>
+                <!--<excludes>-->
+                    <!--<exclude>**/log4j.properties</exclude>-->
+                <!--</excludes>-->
             </resource>
         </resources>
+
+
         <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <encoding>UTF-8</encoding>
+                            <outputDirectory>${project.build.directory}/conf</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>bidding.xml</include>
+                                        <include>log4j.properties</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -53,6 +84,7 @@
 
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2.1</version>
                 <configuration>
                     <descriptors>
                         <descriptor>src/main/resources/assembly.xml</descriptor>

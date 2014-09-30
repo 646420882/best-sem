@@ -1,1 +1,1 @@
-java -cp .:./lib/*:./conf/* com.perfect.Bidding
+java -cp .:./lib/*:./conf/* com.perfect.bidding.Bidding
