@@ -36,6 +36,12 @@ To change this template use File | Settings | File Templates.
         .download a {
             margin-right: 20px;
         }
+       #_editor .span-error{
+            color:red;
+        }
+        #_editor .span-ok{
+            color:#9f9f9f;
+        }
     </style>
 </head>
 <body>
@@ -331,22 +337,22 @@ To change this template use File | Settings | File Templates.
                     </li>
                     <li>
                         <h3>描述1：</h3>
-                        <dl><textarea name="desc1"></textarea><span>27/50</span></dl>
+                        <dl><textarea name="desc1"></textarea><span>27/80</span></dl>
                         <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
                     </li>
                     <li>
                         <h3>描述2：</h3>
-                        <dl><textarea name="desc2"></textarea><span>27/50</span></dl>
+                        <dl><textarea name="desc2"></textarea><span>27/80</span></dl>
                         <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
                     </li>
                     <li>
                         <h3>访问URL：</h3>
-                        <dl><textarea name="pcUrl"></textarea><span>27/50</span></dl>
+                        <dl><textarea name="pcUrl"></textarea><span>27/1024</span></dl>
                         <dl><input type="button" class="r_input2" value="{} 插入通配符"></dl>
                     </li>
                     <li>
                         <h3>显示URL：</h3>
-                        <dl><input type="text" name="pcsUrl" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span>
+                        <dl><input type="text" name="pcsUrl" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/36</span>
                         </dl>
                     </li>
                 </ul>
@@ -355,7 +361,6 @@ To change this template use File | Settings | File Templates.
                 <div class="w_list03">
                     <ul>
                         <li class="current" onclick="reSave()">保存</li>
-                        <li onclick="reSave()">保存并上传</li>
                         <li class="close">取消</li>
                     </ul>
                 </div>

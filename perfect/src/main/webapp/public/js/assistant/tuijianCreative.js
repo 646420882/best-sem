@@ -3,6 +3,9 @@
  */
 var reViewData = {};//记录点击编辑按钮时读取的信息数据
 var reParms = {cid: null, aid: null};
+$(function(){
+    textSizeValid();
+});
 //预览方法
 function reView(res) {
     var _this = $(res);
@@ -51,6 +54,20 @@ function reView(res) {
 function initEditView(res) {
     $("#_editor input[type='text']").empty();
     $("#_editor input[type='textarea']").empty();
+    var _span=$("#_editor span");
+    _span.each(function(i,o){
+        var _max=$(o).html().split("/")[1];
+        var _thisStr=0;
+        if($(o).prev("input[type=text]").val()!=undefined){
+            _thisStr=$(o).prev("input[type=text]").val().length;
+        }else{
+            _thisStr=$(o).prev("textarea").val().length;
+        }
+        if(parseInt(_thisStr)>parseInt(_max)){
+            $(o).addClass("span-error");
+        }
+        $(o).html(_thisStr+"/"+_max);
+    });
     var _thisUl = $("#terms li");
     var _thatUl = $("#repUl");
     _thatUl.empty();
@@ -114,6 +131,14 @@ function reHideSelect() {
     });
 }
 function reSave() {
+    var _span=$("#_editor span");
+    var error=0;
+    _span.each(function(i,o){
+        if($(o).attr("class")=="span-error"){
+            error++;
+        }
+    });
+    if(parseInt(error)==0){
     reViewData["title"]=$("#_editor [name='title']").val();
     reViewData["desc1"]=$("#_editor [name='desc1']").val();
     reViewData["desc2"]=$("#_editor [name='desc2']").val();
@@ -127,6 +152,9 @@ function reSave() {
     jcBox.append("<li>推广计划<select id='sPlan' onchange='loadUnit(this.value)'><option value='-1'>请选择计划</option></select></li>");
     jcBox.append("<li>推广单元<select id='sUnit' ><option value='-1'>请选择单元</option></select></li>");
     $("#reOkView").show();
+    }else{
+        alert("请核对数据后再提交！");
+    }
 }
 function getPlans() {
     $.get("/assistantCreative/getPlans", function (rs) {
@@ -212,10 +240,33 @@ function addCreativeOk(){
                 $("#rUrl").html("xxxxxxxxx");
                 alert("上传成功!");
                 $("#reOkView").hide();
+            }else{
+                alert("创意描述存在非法字符，请检查后提交！");
             }
         });
     }else{
         alert("请选择计划或者单元！");
     }
-
+}
+function textSizeValid(){
+    $("#_editor input[type='text']").keyup(function(){
+        var _max=$(this).next("span").html().split("/")[1];
+        var _thisStr=$(this).val().length;
+        if(parseInt(_thisStr)>parseInt(_max)){
+            $(this).next("span").removeClass().addClass("span-error");
+        }else{
+            $(this).next("span").removeClass().addClass("span-ok");
+        }
+        $(this).next("span").html(_thisStr+"/"+_max);
+    });
+    $("#_editor textarea").keyup(function(){
+        var _max=$(this).next("span").html().split("/")[1];
+        var _thisStr=$(this).val().length;
+        if(parseInt(_thisStr)>parseInt(_max)){
+            $(this).next("span").removeClass().addClass("span-error");
+        }else{
+            $(this).next("span").removeClass().addClass("span-ok");
+        }
+        $(this).next("span").html(_thisStr+"/"+_max);
+    });
 }

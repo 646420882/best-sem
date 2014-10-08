@@ -1,11 +1,9 @@
 package com.perfect.app.assistantCreative.controller;
 
 import com.perfect.autosdk.core.CommonService;
+import com.perfect.autosdk.core.ResHeader;
 import com.perfect.autosdk.exception.ApiException;
-import com.perfect.autosdk.sms.v3.AddCreativeRequest;
-import com.perfect.autosdk.sms.v3.AddCreativeResponse;
-import com.perfect.autosdk.sms.v3.CreativeService;
-import com.perfect.autosdk.sms.v3.CreativeType;
+import com.perfect.autosdk.sms.v3.*;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
@@ -423,15 +421,16 @@ public class AssistantCreativeController extends WebContextSupport {
                                        @RequestParam(value = "pcUrl",defaultValue = "") String pcUrl,
                                        @RequestParam(value = "pcsUrl",defaultValue = "") String pcsUrl){
 //        System.out.println("cid:"+cid+"aid"+aid+"title:"+title+"desc1"+desc1+"desc2"+desc2+"pcUrl"+pcUrl+"pcsUrl"+pcsUrl);
+        BaiduAccountInfoEntity baiduAccountInfoEntity=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
         CreativeType creativeTypes=new CreativeType();
         creativeTypes.setTitle(title);
         creativeTypes.setDescription1(desc1);
         creativeTypes.setDescription2(desc2);
-        creativeTypes.setPcDisplayUrl(pcUrl);
-        creativeTypes.setPcDestinationUrl(pcsUrl);
+        creativeTypes.setPcDisplayUrl(baiduAccountInfoEntity.getRegDomain());
+        creativeTypes.setPcDestinationUrl(baiduAccountInfoEntity.getRegDomain());
         creativeTypes.setAdgroupId(aid);
         creativeTypes.setDevicePreference(1);
-        BaiduAccountInfoEntity baiduAccountInfoEntity=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        SublinkType sublinkType=new SublinkType();
         CommonService commonService= BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
         try {
            CreativeService service= commonService.getService(CreativeService.class);
@@ -440,7 +439,7 @@ public class AssistantCreativeController extends WebContextSupport {
             addCreativeRequest.setCreativeTypes(Arrays.asList(creativeTypes));
             AddCreativeResponse addCreativeResponse=  service.addCreative(addCreativeRequest);
            CreativeType creativeTypeResponse= addCreativeResponse.getCreativeType(0);
-            if (creativeTypeResponse.getCreativeId()!=null){
+            if (creativeTypeResponse.getCreativeId()!=0){
                 writeHtml(SUCCESS, response);
             }else{
                 writeHtml(FAIL,response);
@@ -451,5 +450,9 @@ public class AssistantCreativeController extends WebContextSupport {
         }
         return null;
     }
+//    @RequestMapping(value = "uploadNewCreative",method = RequestMethod.GET)
+//    public ModelAndView uploadNewCreative(@RequestParam(value = "")){
+//        return  null;
+//    }
 }
 
