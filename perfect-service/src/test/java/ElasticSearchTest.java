@@ -1,20 +1,10 @@
 import com.perfect.elasticsearch.service.impl.ElasticSearchServiceImpl;
 import com.perfect.entity.CreativeSourceEntity;
-import com.perfect.utils.JSONUtils;
-import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
-import org.elasticsearch.action.admin.indices.template.put.PutIndexTemplateRequestBuilder;
-import org.elasticsearch.action.delete.DeleteRequestBuilder;
-import org.elasticsearch.action.get.GetRequestBuilder;
-import org.elasticsearch.action.index.IndexRequestBuilder;
-import org.elasticsearch.action.update.UpdateRequestBuilder;
-import org.elasticsearch.client.support.AbstractClient;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;
-import org.unitils.spring.annotation.SpringBean;
 import org.unitils.spring.annotation.SpringBeanByType;
 
 import java.lang.invoke.MethodHandles;
@@ -29,29 +19,15 @@ public class ElasticSearchTest extends UnitilsJUnit4 {
 
 //    @SpringBeanByType
 //    private ElasticsearchRepositoryFactory elasticsearchRepositoryFactory;
-
+//
 //    @SpringBeanByType
 //    private ElasticsearchTemplate elasticsearchTemplate;
-
-    @SpringBean("esClient")
-    private AbstractClient client;
+//
+//    @SpringBean("esClient")
+//    private AbstractClient esClient;
 
     @SpringBeanByType
     private ElasticSearchServiceImpl elasticSearchService;
-
-    private static IndexRequestBuilder indexRequestBuilder;
-
-    private static PutIndexTemplateRequestBuilder putIndexTemplateRequestBuilder;
-
-    private static DeleteIndexRequestBuilder deleteIndexRequestBuilder;
-
-    private static GetRequestBuilder getRequestBuilder;
-
-    private static PutRepositoryRequestBuilder putRepositoryRequestBuilder;
-
-    private static UpdateRequestBuilder updateRequestBuilder;
-
-    private static DeleteRequestBuilder deleteRequestBuilder;
 
     private static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -68,35 +44,12 @@ public class ElasticSearchTest extends UnitilsJUnit4 {
         creativeSourceEntity1.setHost("http://182.92.188.177");
         creativeSourceEntity1.setRegion(2000);
         creativeSourceEntity1.setTitle("婚博会title");
-
         List<CreativeSourceEntity> list = Arrays.asList(creativeSourceEntity, creativeSourceEntity1);
 
-        //Spring Data API
-//        ElasticsearchEntityInformation<CreativeSourceEntity, String> entityElasticsearchEntityInformation = elasticsearchRepositoryFactory.getEntityInformation(CreativeSourceEntity.class);
-//        SimpleElasticsearchRepository<CreativeSourceEntity> elasticSearchRepository = new SimpleElasticsearchRepository<>(entityElasticsearchEntityInformation, elasticsearchTemplate);
-
-//        elasticSearchRepository.delete("");
-
-//        creativeSourceEntity = elasticSearchRepository.save(creativeSourceEntity);
-
-
         //ElasticSearch API
-        //PUT document
-        IndexRequestBuilder indexRequestBuilder = client.prepareIndex();
-        indexRequestBuilder.setIndex("test").setType("creative");
-        String jsonString = JSONUtils.getJsonString(creativeSourceEntity);
-//        IndexResponse indexResponse = indexRequestBuilder.setSource(jsonString).execute().actionGet();
-
-        //DELETE document
-//        DeleteRequestBuilder deleteRequeZF8LkhjITlSQbtiXEjVtbQstBuilder = client.prepareDelete();
-//        deleteRequestBuilder.setIndex("test").setType("creative");
-//        DeleteResponse
-
-
-
         elasticSearchService.setIndex("data");
         elasticSearchService.setType("creative");
-        System.out.println(elasticSearchService.toString());
+        CreativeSourceEntity creativeSourceEntity2 = elasticSearchService.findOne("CFuFLKCYS6mpeMrEYD62gg");
 
 //        elasticSearchService.save(list);
 //        elasticSearchService.delete("");
