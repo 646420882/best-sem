@@ -66,9 +66,9 @@ function initEditView(res) {
     var desc = reViewData["desc1"].replace(regxl, "<font color=\"#CC0000\">");
     desc = desc.replace(regxr, "</font>");
     var url = reViewData["pcUrl"];
-    var _reView = "<a href='javascript:void(0)' class='EC_t EC_BL'>" + title + "</a><br><span  class='ec_desc ec_font_small'>" + desc + "</span><br><span class='ec_url'>" + url + "</span>";
+    var _reView = "<a href='javascript:void(0)' class='EC_t EC_BL'>" + title + "</a><br><span  class='ec_desc ec_font_small'>" + desc + "</span><span class='ec_url'>" + url + "</span>";
     var _reView2 = "<a href='javascript:void(0)' class='EC_t EC_BL'>" + title + "<font color='#080'>" + url + "</font></a><br><span  class='ec_desc ec_font_small'>" + desc + "</span><br>";
-    var _reView3 = "<a href='javascript:void(0)' class='EC_t EC_BL'>" + title + "</a><br><span  class='ec_desc ec_font_small'>" + desc + "</span><br><span class='ec_url'>" + url + "</span>";
+    var _reView3 = "<a href='javascript:void(0)' class='EC_t EC_BL'>" + title + "</a><br><span  class='ec_desc ec_font_small'>" + desc + "</span><span class='ec_url'>" + url + "</span>";
     $("#reLeft1").empty().append(_reView);
     $("#reLeft2").empty().append(_reView2);
     $("#reRight").empty().append(_reView3);

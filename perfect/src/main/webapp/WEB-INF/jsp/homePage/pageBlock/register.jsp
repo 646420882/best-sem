@@ -233,7 +233,8 @@ $("#submitBtn").click(function(){
 });
     if($("#dataRe").val() == 1){
         $("#tishi").append("注册成功！                ");
-    }else{
+    }else if($("#dataRe").val() == -1)
+    {
         $("#tishi").append("注册失败！用户名已存在！   ");
     }
 

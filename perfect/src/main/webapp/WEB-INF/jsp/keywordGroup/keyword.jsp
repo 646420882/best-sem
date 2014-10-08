@@ -288,7 +288,7 @@ To change this template use File | Settings | File Templates.
             </div>
 
             <ul id="reViewUl">
-                <li style="border:1px solid #b6bbc8;">
+                <li>
                     <div></div>
                     <a data-is-main-url="true" href="javascript:void(0);" class="EC_t EC_BL" id="rTitle">
                         暂无</a>
@@ -300,7 +300,7 @@ To change this template use File | Settings | File Templates.
                         <a class="c-tip-icon"></a>
                     </div>
                     <div>
-                        <input type="button" value="保存" onclick="addCreativeOk()"/>
+                        <input type="button" value="保存" class="chuanyi_input" onclick="addCreativeOk()"/>
                     </div>
                 </li>
             </ul>
@@ -383,7 +383,7 @@ To change this template use File | Settings | File Templates.
                         </div>
                     </li>
                     <li>
-                        <p>右侧推广位预览：：</p>
+                        <p>右侧推广位预览：</p>
 
                         <div id="reRight" style="width: 300px;">
                         </div>

@@ -2170,6 +2170,7 @@ h2 .close {
     width: 300px;
     border: 1px solid #cfcfcf;
     height: 68px;
+    font-size:12px;
 }
 .riginality_editor1 span {
     color: #9f9f9f;
@@ -2864,6 +2865,27 @@ float:none;
 }
 .hangyetuoci table tr td{
     width:25%;
+}
+.tuijian_under ul li #reLeft1 span{
+    margin-top:0px;
+
+}
+#reLeft2 span{
+    margin-top:5px;
+
+}
+#reRight span{
+    margin-top:5px;
+}
+.mainlist2{
+    width:900px;
+}
+#reViewUl li{
+    border:1px solid #b6bbc8;
+    padding:10px;
+}
+.chuanyi_input{
+    margin-top:5px;
 }
 /*input[type=checkbox],
 input[type=radio]{
