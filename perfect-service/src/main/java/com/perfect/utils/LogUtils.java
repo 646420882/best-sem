@@ -8,6 +8,7 @@ import java.util.Date;
 /**
  * Created by baizz on 2014-08-13.
  */
+@Deprecated
 public class LogUtils {
 
     /**

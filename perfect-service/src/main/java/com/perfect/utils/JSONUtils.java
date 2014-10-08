@@ -1,5 +1,7 @@
 package com.perfect.utils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -24,6 +26,7 @@ public class JSONUtils {
             mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
     }
 
@@ -31,6 +34,26 @@ public class JSONUtils {
         return new HashMap<String, Object>() {{
             put("rows", getJsonObject(o));
         }};
+    }
+
+    /**
+     * 获取JSON字符串
+     *
+     * @param o
+     * @return
+     */
+    public static String getJsonString(Object o) {
+        if (o == null) {
+            return null;
+        }
+
+        try {
+            return mapper.writeValueAsString(o);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     /**
