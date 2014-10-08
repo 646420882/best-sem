@@ -22,4 +22,11 @@ public interface RegionalCodeDAO {
      */
     public List<RegionalCodeDTO> getRegional(String FieldName,String id);
 
+
+    /**
+     * 根据一个省id得到一个省的信息
+     * @param id
+     * @return
+     */
+    public RegionalCodeDTO getRegionalByRegionId(String feidName,String id);
 }

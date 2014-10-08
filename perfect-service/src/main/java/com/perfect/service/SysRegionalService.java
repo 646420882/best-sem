@@ -44,4 +44,12 @@ public interface SysRegionalService {
      * @return
      */
     public List<RegionalCodeDTO> getRegionalId(List<Integer> listId);
+
+
+    /**
+     * 通过多个省id得到该省的信息
+     * @param listId
+     * @return
+     */
+    public List<RegionalCodeDTO> getRegionalByRegionalId(List<Integer> listId);
 }
