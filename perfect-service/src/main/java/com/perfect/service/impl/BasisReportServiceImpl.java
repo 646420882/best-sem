@@ -2649,10 +2649,9 @@ public class BasisReportServiceImpl implements BasisReportService {
             if (voEntity.getValue().getPcImpression() == null || voEntity.getValue().getPcImpression() == 0) {
                 voEntity.getValue().setPcCtr(0.00);
             } else {
-                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getPcClick().doubleValue() / voEntity.getValue().getPcImpression().doubleValue())));
-                BigDecimal big = new BigDecimal(100);
-                double divide = ctrBig.multiply(big).doubleValue();
-                voEntity.getValue().setPcCtr(divide);
+                double ctrAve = voEntity.getValue().getPcClick().doubleValue() / voEntity.getValue().getPcImpression();
+                double divide = ctrAve*10000;
+                voEntity.getValue().setPcCtr(divide/100);
             }
             if (voEntity.getValue().getPcClick() == null || voEntity.getValue().getPcClick() == 0) {
                 voEntity.getValue().setPcCpc(BigDecimal.valueOf(0.00));
