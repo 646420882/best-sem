@@ -4,12 +4,16 @@ import com.google.common.base.Strings;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
+import com.perfect.core.AppContext;
 import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.service.AccountManageService;
+import com.perfect.service.impl.AccountManageServiceImpl;
 
 /**
  * Created by baizz on 2014-6-12.
  */
 public class BaiduServiceSupport {
+
     private static CommonService commonService;
 
     private BaiduServiceSupport() {
@@ -17,11 +21,9 @@ public class BaiduServiceSupport {
 
     public synchronized static CommonService getCommonService() {
         if (commonService == null) {
-            try {
-                commonService = ServiceFactory.getInstance();
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
+            AccountManageService accountService = new AccountManageServiceImpl();
+            BaiduAccountInfoEntity baiduAccountInfoEntity = accountService.getBaiduAccountInfoById(AppContext.getAccountId());
+            commonService = getCommonService(baiduAccountInfoEntity);
         }
         return commonService;
     }
@@ -37,9 +39,9 @@ public class BaiduServiceSupport {
             return ServiceFactory.getInstance(username, pwd, tokenId, null);
         } catch (ApiException e) {
             e.printStackTrace();
-        } finally {
-            return null;
         }
+
+        return null;
     }
 
     public static CommonService getCommonService(BaiduAccountInfoEntity baiduAccountInfoEntity) {

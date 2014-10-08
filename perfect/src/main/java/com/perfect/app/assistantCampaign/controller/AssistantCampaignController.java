@@ -200,14 +200,22 @@ public class AssistantCampaignController {
         CampaignEntity oldCampaignEntity = new CampaignEntity();
         BeanUtils.copyProperties(newCampaignEntity, oldCampaignEntity);
 
-        String[] regeionArray = regions.split(",");
-        List<String> regionList = Arrays.asList(regeionArray);
-        List<RegionalCodeDTO> regionName = sysRegionalService.getRegionalName(regionList);
+        String[] regeionArray = "".equals(regions)?new String[]{}:regions.split(",");
+
+        List<RegionalCodeDTO> regionName = new ArrayList<>();
+        if(regeionArray.length!=0){
+            List<String> list = Arrays.asList(regeionArray);
+           regionName = sysRegionalService.getRegionalName(list);
+        }
 
         List<Integer> regionId = new ArrayList<>();
         for(RegionalCodeDTO dto:regionName){
             if(dto.getRegionName()==null||"".equals(dto.getRegionName())){
-                regionId.add(Integer.parseInt(dto.getProvinceId()));
+                if("全部区域".equals(dto.getStateName())){
+                    regionId.add(Integer.parseInt(dto.getStateId()));
+                }else{
+                    regionId.add(Integer.parseInt(dto.getProvinceId()));
+                }
             }else{
                 regionId.add(Integer.parseInt(dto.getRegionId()));
             }

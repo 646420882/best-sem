@@ -4,7 +4,7 @@ package com.perfect.api.baidu;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.mongodb.utils.BaseBaiduService;
+import com.perfect.utils.BaiduServiceSupport;
 import org.springframework.util.Assert;
 
 import java.text.ParseException;
@@ -26,12 +26,12 @@ public class AsynchronousReport {
 
 
     public AsynchronousReport() {
-        service = BaseBaiduService.getCommonService();
+        service = BaiduServiceSupport.getCommonService();
         init();
     }
 
     public AsynchronousReport(String userName, String password, String token, String target) {
-        service = BaseBaiduService.getCommonServiceUser(userName, password, token, target);
+        service = BaiduServiceSupport.getCommonService(userName, password, token);
         init();
     }
 
@@ -112,11 +112,11 @@ public class AsynchronousReport {
         dataRequest.setReportRequestType(requestType);
         GetProfessionalReportIdResponse dataResponse = null;
         int reRetry = 1;
-        while (reRetry > 0){
-            try{
+        while (reRetry > 0) {
+            try {
                 dataResponse = reportService.getProfessionalReportId(dataRequest);
                 reRetry = 0;
-            }catch (Exception e){
+            } catch (Exception e) {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e1) {
@@ -137,11 +137,11 @@ public class AsynchronousReport {
                 e.printStackTrace();
             }
             int reRetry1 = 1;
-            while (reRetry1 > 0){
-                try{
+            while (reRetry1 > 0) {
+                try {
                     dataResponse = reportService.getProfessionalReportId(dataRequest);
                     reRetry1 = 0;
-                }catch (Exception e){
+                } catch (Exception e) {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e1) {
@@ -159,11 +159,11 @@ public class AsynchronousReport {
         reportStateRequest.setReportId(reportId);
         GetReportStateResponse reportStateResponse = null;
         int reRetry2 = 1;
-        while (reRetry2 > 0){
-            try{
+        while (reRetry2 > 0) {
+            try {
                 reportStateResponse = reportService.getReportState(reportStateRequest);
                 reRetry2 = 0;
-            }catch (Exception e){
+            } catch (Exception e) {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e1) {
@@ -184,11 +184,11 @@ public class AsynchronousReport {
                 e.printStackTrace();
             }
             int reRetry3 = 1;
-            while (reRetry3 > 0){
-                try{
+            while (reRetry3 > 0) {
+                try {
                     reportStateResponse = reportService.getReportState(reportStateRequest);
                     reRetry3 = 0;
-                }catch (Exception e){
+                } catch (Exception e) {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e1) {
@@ -219,13 +219,13 @@ public class AsynchronousReport {
                     e.printStackTrace();
                 }
 
-                GetReportStateResponse reportState =null;
+                GetReportStateResponse reportState = null;
                 int reRetry4 = 1;
-                while (reRetry4 > 0){
-                    try{
+                while (reRetry4 > 0) {
+                    try {
                         reportState = reportService.getReportState(reportStateRequest);
                         reRetry4 = 0;
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e1) {
@@ -245,11 +245,11 @@ public class AsynchronousReport {
 
                 GetReportFileUrlResponse stateResponse = null;
                 int reRetry4 = 1;
-                while (reRetry4 > 0){
-                    try{
+                while (reRetry4 > 0) {
+                    try {
                         stateResponse = reportService.getReportFileUrl(fileUrlRequest);
                         reRetry4 = 0;
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e1) {

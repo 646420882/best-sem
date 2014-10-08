@@ -1,11 +1,9 @@
 package com.perfect.api.baidu;
 
 import com.perfect.autosdk.core.CommonService;
-import com.perfect.autosdk.core.ResHeader;
-import com.perfect.autosdk.core.ResHeaderUtil;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.mongodb.utils.BaseBaiduService;
+import com.perfect.utils.BaiduServiceSupport;
 import org.springframework.util.Assert;
 
 import java.text.ParseException;
@@ -20,7 +18,7 @@ import java.util.List;
  */
 public class AccountRealTimeData {
 
-    private static CommonService service = BaseBaiduService.getCommonService();
+    private static CommonService service = BaiduServiceSupport.getCommonService();
 
     public static List<RealTimeResultType> getAccountRealTimeData(String _startDate, String _endDate) {
         if (_startDate == null && _endDate != null) {

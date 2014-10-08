@@ -228,7 +228,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
                 List<RegionReportEntity> pcList = httpFileHandler.getRegionReport(pcFilePath, 1);
                 /*rrmList = httpFileHandler.getRegionReport(mobileFilePath, 2);*/
-
+                rrmList = new ArrayList<>();
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 RegionReportHandler task = new RegionReportHandler(pcList, 0, pcList.size());
                 Future<List<RegionReportEntity>> voResult = forkJoinPool.submit(task);
