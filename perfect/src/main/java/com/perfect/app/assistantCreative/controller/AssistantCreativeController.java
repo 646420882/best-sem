@@ -430,7 +430,7 @@ public class AssistantCreativeController extends WebContextSupport {
         creativeTypes.setPcDestinationUrl(baiduAccountInfoEntity.getRegDomain());
         creativeTypes.setAdgroupId(aid);
         creativeTypes.setDevicePreference(1);
-        SublinkType sublinkType=new SublinkType();
+
         CommonService commonService= BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
         try {
            CreativeService service= commonService.getService(CreativeService.class);
@@ -450,9 +450,38 @@ public class AssistantCreativeController extends WebContextSupport {
         }
         return null;
     }
-//    @RequestMapping(value = "uploadNewCreative",method = RequestMethod.GET)
-//    public ModelAndView uploadNewCreative(@RequestParam(value = "")){
-//        return  null;
-//    }
+    @RequestMapping(value = "uploadNewCreative",method = RequestMethod.GET)
+    public ModelAndView uploadNewCreative(HttpServletResponse response,@RequestParam(value = "title",defaultValue = "")String title,
+                                          @RequestParam(value = "desc")String[] desc,
+                                          @RequestParam(value = "descUrl")String[] descUrl,
+                                          @RequestParam(value = "aid")Long aid){
+        SublinkType sublinkType=new SublinkType();
+        sublinkType.setAdgroupId(aid);
+        List<SublinkInfo> sublinkInfos=new ArrayList<>();
+        for (int i=0;i<desc.length;i++){
+            SublinkInfo sublinkInfo=new SublinkInfo();
+            sublinkInfo.setDescription(desc[i]);
+            sublinkInfo.setDestinationUrl(descUrl[i]);
+            sublinkInfos.add(sublinkInfo);
+        }
+        sublinkType.setSublinkInfos(sublinkInfos);
+        BaiduAccountInfoEntity baiduAccountInfoEntity=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        CommonService commonService= BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
+        try {
+            NewCreativeService newCreativeService=commonService.getService(NewCreativeService.class);
+            AddSublinkRequest addSublinkRequest=new AddSublinkRequest();
+            addSublinkRequest.addSublinkType(sublinkType);
+            AddSublinkResponse addSublinkResponse=  newCreativeService.addSublink(addSublinkRequest);
+            if(addSublinkResponse.getSublinkType(0).getSublinkId()!=0){
+                writeHtml(SUCCESS,response);
+            }else{
+                writeHtml(FAIL,response);
+            }
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+        return  null;
+    }
 }
 

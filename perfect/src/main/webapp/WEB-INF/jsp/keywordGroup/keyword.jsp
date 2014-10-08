@@ -495,6 +495,31 @@ To change this template use File | Settings | File Templates.
         </div>
     </div>
 </div>
+<%--创意添加选择计划，单元弹出窗口--%>
+<div class="box" style="display:none" id="subLinkType">
+    <h2 id="sublink">
+        <span class="fl">添加创意</span>
+        <a href="#" class="close">关闭</a></h2>
+
+    <div class="mainlist">
+        添加
+        <input type="button" value="添加" onclick="addSub()">
+        <p id="subTitle"></p>
+        <div>
+            <ul id="sub">
+            </ul>
+            <p id="Url" style="color: green;"></p>
+        </div>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li onclick="">确认</li>
+                <li onclick="subHideEditor()">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
@@ -526,6 +551,7 @@ window.onload = function () {
     rDrag.init(document.getElementById('riginality_editor1'));
     rDrag.init(document.getElementById('new_riginality2'));
     rDrag.init(document.getElementById('dAdd'));
+    rDrag.init(document.getElementById('sublink'));
 };
 
 //loading
