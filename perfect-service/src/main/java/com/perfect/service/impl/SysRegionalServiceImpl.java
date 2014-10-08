@@ -183,7 +183,7 @@ public class SysRegionalServiceImpl implements SysRegionalService{
                 }else if(dto<100){
                     regionid = "0"+dto;
                 }
-                regionals = regionalCodeDAO.getRegional(fideName, String.valueOf(dto));
+                regionals = regionalCodeDAO.getRegional(fideName, "".equals(regionid)?dto+"":String.valueOf(dto));
             }else if(dto < 100000){
                 if(dto%1000 != 0){
                     String regionid = "";
@@ -192,8 +192,10 @@ public class SysRegionalServiceImpl implements SysRegionalService{
                         regionid = "00"+i;
                     }else if(i<100){
                         regionid = "0"+i;
+                    }else{
+                        regionid = i+"";
                     }
-                    regionals = regionalCodeDAO.getRegional(fideName, String.valueOf(regionid));
+                    regionals = regionalCodeDAO.getRegional(fideName, "".equals(regionid)?i+"":String.valueOf(regionid));
                 }
             }else if(dto >= 100000 && dto <= 10000000 ){
                 if(dto%1000 != 0){
@@ -204,7 +206,7 @@ public class SysRegionalServiceImpl implements SysRegionalService{
                     }else if(i<100){
                         regionid = "0"+i;
                     }
-                    regionals = regionalCodeDAO.getRegional(fideName, String.valueOf(regionid));
+                    regionals = regionalCodeDAO.getRegional(fideName, "".equals(regionid)?i+"":String.valueOf(regionid));
                 }
             }else{
                 regionals = new ArrayList<>();
