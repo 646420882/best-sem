@@ -12,6 +12,7 @@ public class SendTest {
         mailInfo.setToAddress("1582980368@qq.com");
         mailInfo.setSubject("我的测试邮件");
         mailInfo.setContent("邮件可以了!");
+
         //这个类主要来发送邮件
         SimpleMailSender sms = new SimpleMailSender();
         sms.sendTextMail(mailInfo);//发送文体格式
