@@ -1,13 +1,13 @@
-package com.perfect.app.keyword.service;
+package com.perfect.utils.lexicon;
 
 import com.perfect.entity.LexiconEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
+import com.perfect.utils.DBNameUtils;
 import com.perfect.utils.ExcelUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
-import java.lang.invoke.MethodHandles;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,37 +15,22 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
 /**
- * Created by baizz on 2014-8-30.
+ * Created by baizz on 2014-10-8.
  */
-@Service("importLexiconExcelService")
-public class ImportLexiconExcelService {
-
-    private static final String SUFFIX = "template/keyword.xml";
+public class ImportLexiconExcel {
 
     private static String trade;
 
-    public void importExcel() {
-        URL url = MethodHandles.lookup().lookupClass().getClassLoader().getResource("");
-        String templatePath = "";
-        if (url != null) {
-            templatePath = url.getPath() + SUFFIX;
-            templatePath = templatePath.substring(1);
-        }
-
+    public static void main(String[] args) {
         Map<String, List<LexiconEntity>> map = ExcelUtils
-                .readExcel("xlsxPath", templatePath, LexiconEntity.class);
+                .readExcel("/home/baizz/文档/五大行业词包20140808/电商行业.xlsx", "/home/baizz/keyword.xml", LexiconEntity.class);
         List<LexiconEntity> list = new ArrayList<>();
-
         for (Map.Entry<String, List<LexiconEntity>> entry : map.entrySet()) {
             list = entry.getValue();
-            if (trade == null || "".equals(trade)) {
-                trade = entry.getKey();
-            }
+            trade = entry.getKey();
         }
-
         trade = trade.substring(0, trade.indexOf("."));
         trade = trade.substring(0, trade.length() - 2);
-//        System.out.println("list.size() = " + list.size());
 
         ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors() + 1);
         try {
@@ -55,6 +40,11 @@ public class ImportLexiconExcelService {
             pool.shutdown();
         }
 
+    }
+
+    private void deleteOldLexicon(String trade) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+        mongoTemplate.remove(Query.query(Criteria.where("tr").is(trade)), LexiconEntity.class);
     }
 
     static class LexiconTask extends RecursiveAction {
@@ -78,9 +68,9 @@ public class ImportLexiconExcelService {
                     entity.setTrade(trade);
                     list.add(entity);
                 }
-                MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+                MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
                 mongoTemplate.insertAll(list);
-//                System.out.println("=======================" + first);
+                System.out.println("=======================" + first);
             } else {
                 int middle = (last - first) / 2;
                 LexiconTask task1 = new LexiconTask(entityList, first, middle + first);

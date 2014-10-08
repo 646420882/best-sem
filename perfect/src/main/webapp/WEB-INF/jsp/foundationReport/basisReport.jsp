@@ -64,8 +64,8 @@
             line-height:2em;
             margin:0px 5px 0 0 ;
         }
-       #trTop td{
-           width:11%;
+       #trTop .shijian_top{
+           width:180px;
        }
         #userStits,#shujuAll{
             background:#D8E1E8;
@@ -270,7 +270,7 @@
         <table border="0" cellspacing="0" cellspacing="0">
             <thead>
             <tr class="list2_top" id="trTop">
-                <td >&nbsp;<span>时间</span><b>
+                <td class="shijian_top">&nbsp;<span>时间</span><b>
                     <p>
                         <input class="one" type="button"
                                onclick="javascript:sortVS = '1';reportDataVS()">

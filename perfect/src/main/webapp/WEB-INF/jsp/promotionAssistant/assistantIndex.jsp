@@ -1471,7 +1471,7 @@
         <span class="fl">推广时段管理</span>
         <a href="#" class="close">关闭</a></h2>
     <div class="chooseTime">
-        <b class="fl">请选择时段</b>
+        <b class="fl">请选择时段&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(按住Ctrl键并且鼠标经过可多选时间段)</b>
         <ul class="fr">
             <li class="tfsjd"><span></span>&nbsp;&nbsp;&nbsp;投放时间段</li>
             <li class="ztsjd"><span></span>&nbsp;&nbsp;&nbsp;暂停时间段</li>

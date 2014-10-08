@@ -295,6 +295,19 @@ public class SysRegionalServiceImpl implements SysRegionalService{
 
 
 
+    public List<RegionalCodeDTO> getRegionalByRegionalId(List<Integer> listId){
+        List<RegionalCodeDTO> dtos = new ArrayList<>();
+
+        String fideName = "provinceId";
+        for(Integer dto:listId){
+            dto = dto/1000%100;
+          dtos.add(regionalCodeDAO.getRegionalByRegionId(fideName, dto+""));
+        }
+        return dtos;
+    }
+
+
+
 
 
     /******************************备份Start**********************************************/
