@@ -13,7 +13,7 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
-   <%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">--%>
+    <%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">--%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">
 </head>
@@ -33,57 +33,66 @@
             </div>
             <div class="login_input2">
                 <form id="defaultForm" method="post" class="form-horizontal" action="/register/add">
-                <ul>
-                    <li >
-                        <span>公司名称：</span>
-                        <div class="form-group has-feedback fl">
-                            <div class="col-lg-5">
-                                <input type="text" name="companyname"  class="form-control" value="个人用户请填写姓名" onfocus="if(value=='个人用户请填写姓名') {value=''}" onblur="if (value=='') {value='个人用户请填写姓名'}">
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <span>用户名：</span>
-                        <div class="form-group has-feedback fl">
-                            <div class="col-lg-5">
-                                <input type="text" class="form-control" name="username" id="text1"  >
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <span>密码：</span>
-                        <div class="form-group has-feedback fl">
-                            <div class="col-lg-5">
-                                <input  type="password" class="form-control" name="password" >
-                            </div>
-                           </div>
-                    </li>
-                    <li>
-                        <span>确认密码：</span>
-                        <div class="form-group has-feedback fl">
-                            <div class="col-lg-5">   <input type="password" class="form-control" name="confirmPassword">
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <span>验证码：</span>
-                        <div class="form-group has-feedback fl">
-                            <div class="col-lg-5">
-                                    <input type="text" class="form-control proving" id="input1" name="code_text">
-                                   <input type="text" onclick="createCode()" name="code"  readonly="readonly"  id="checkCode" class="unchanged" style="width: 65px"  />
+                    <ul>
+                        <li>
+                            <span>公司名称：</span>
 
-                              </div>
+                            <div class="form-group has-feedback fl">
+                                <div class="col-lg-5">
+                                    <input type="text" name="companyname" class="form-control" value="个人用户请填写姓名"
+                                           onfocus="if(value=='个人用户请填写姓名') {value=''}"
+                                           onblur="if (value=='') {value='个人用户请填写姓名'}">
+                                </div>
                             </div>
-                    </li>
-                </ul>
+                        </li>
+                        <li>
+                            <span>用户名：</span>
+
+                            <div class="form-group has-feedback fl">
+                                <div class="col-lg-5">
+                                    <input type="text" class="form-control" name="username" id="text1">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>密码：</span>
+
+                            <div class="form-group has-feedback fl">
+                                <div class="col-lg-5">
+                                    <input type="password" class="form-control" name="password">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>确认密码：</span>
+
+                            <div class="form-group has-feedback fl">
+                                <div class="col-lg-5"><input type="password" class="form-control"
+                                                             name="confirmPassword">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>验证码：</span>
+
+                            <div class="form-group has-feedback fl">
+                                <div class="col-lg-5">
+                                    <input type="text" class="form-control proving" id="input1" name="code_text">
+                                    <input type="text" onclick="createCode()" name="code" readonly="readonly"
+                                           id="checkCode" class="unchanged" style="width: 65px"/>
+
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                     <div class="login_part2">
-                        <input  type="submit" id="" value="立即注册"  class="submit"></a>
+                        <input type="submit" id="" value="立即注册" class="submit"></a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <div class="login_contact over" >
+    <div class="login_contact over">
         <a href="#">普菲特官网 </a>如在使用过程中有任何问题请联系客服：010-84922996
     </div>
 </div>
@@ -94,17 +103,17 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/bootstrapValidator.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-    $(window).resize(function(){
+    $(window).resize(function () {
         $('.login_box').css({
-            position:'absolute',
-            left: ($(window).width() - $('.login_box').outerWidth())/2,
-            top: ($(window).height() - $('.login_box').outerHeight())/2 + $(document).scrollTop()
+            position: 'absolute',
+            left: ($(window).width() - $('.login_box').outerWidth()) / 2,
+            top: ($(window).height() - $('.login_box').outerHeight()) / 2 + $(document).scrollTop()
         });
     });
     //初始化函数
     $(window).resize();
-$(document).ready(function() {
-         createCode();
+    $(document).ready(function () {
+        createCode();
         $('#defaultForm').bootstrapValidator({
             message: '此值无效',
             feedbackIcons: {
@@ -129,8 +138,8 @@ $(document).ready(function() {
                             message: '用户名包括数字、字母和下划线'
                         }
                     }
-                 },
-                companyname:{
+                },
+                companyname: {
                     validators: {
                         notEmpty: {
                             message: '公司名称不能为空'
@@ -148,13 +157,13 @@ $(document).ready(function() {
                         },
                         stringLength: {
                             min: 4,
-                            max:14,
+                            max: 14,
                             message: '密码字段须大于4且小于14'
                         }
                         /*identical: {
-                            field: 'confirmPassword',
-                            message: '密码和确认是不一样的'
-                        }*/
+                         field: 'confirmPassword',
+                         message: '密码和确认是不一样的'
+                         }*/
                     }
                 },
                 confirmPassword: {
@@ -168,23 +177,23 @@ $(document).ready(function() {
                         }
                     }
                 },
-    /*            code_text:{
-                    validators: {
-                        notEmpty: {
-                           message: '验证码不能为空'
-                        },
-                        identical: {
-                            field: 'code',
-                            message: '请输入正确的验证码'
-                        }
-                    }
-                }
-                */
-                code_text:{
+                /*            code_text:{
+                 validators: {
+                 notEmpty: {
+                 message: '验证码不能为空'
+                 },
+                 identical: {
+                 field: 'code',
+                 message: '请输入正确的验证码'
+                 }
+                 }
+                 }
+                 */
+                code_text: {
                     validators: {
                         callback: {
                             message: '验证码错误',
-                            callback: function(value, validator) {
+                            callback: function (value, validator) {
                                 if (value == null || value == "") {
                                     return false;
                                 }
@@ -203,37 +212,33 @@ $(document).ready(function() {
         });
     });
 
-    var  code; //在全局 定义验证码
-    function createCode()
-    {
+    var code; //在全局 定义验证码
+    function createCode() {
         code = "";
         var codeLength = 4;//验证码的长度
         var checkCode = document.getElementById("checkCode");
-        var selectChar = new Array(0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');//所有候选组成验证码的字符，当然也可以用中文的
+        var selectChar = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');//所有候选组成验证码的字符，当然也可以用中文的
 
-        for(var i=0;i<codeLength;i++)
-        {
+        for (var i = 0; i < codeLength; i++) {
 
-            var charIndex = Math.floor(Math.random()*36);
-            code +=selectChar[charIndex];
+            var charIndex = Math.floor(Math.random() * 36);
+            code += selectChar[charIndex];
 
 
         }
 //       alert(code);
-        if(checkCode)
-        {
-            checkCode.className="code";
+        if (checkCode) {
+            checkCode.className = "code";
             checkCode.value = code;
         }
 
     }
-$("#submitBtn").click(function(){
-    alert(1);
-    $("#defaultForm").submit;
-});
-    if($("#dataRe").val() == 1){
+    $("#submitBtn").click(function () {
+        $("#defaultForm").submit;
+    });
+    if ($("#dataRe").val() == 1) {
         $("#tishi").append("注册成功！                ");
-    }else{
+    } else {
         $("#tishi").append("注册失败！用户名已存在！   ");
     }
 
