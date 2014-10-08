@@ -27,6 +27,12 @@ public class RegionalCodeDAOImpl extends AbstractSysBaseDAOImpl<RegionalCodeDTO,
         return list;
     }
 
+    @Override
+    public RegionalCodeDTO getRegionalByRegionId(String feidName,String id){
+        List<RegionalCodeDTO> dtos = getSysMongoTemplate().find(new Query(Criteria.where(feidName).is(id).and("regionName").is("")), getEntityClass(), "sys_regional");
+        return dtos.size()==0?null:dtos.get(0);
+    }
+
 
     @Override
     public Class<RegionalCodeDTO> getEntityClass() {

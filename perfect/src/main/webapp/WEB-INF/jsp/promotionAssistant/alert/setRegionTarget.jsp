@@ -2783,8 +2783,13 @@
             dataType:"json",
             success:function(data){
                 for(var i=0;i<data.length;i++){
-                    $("#ctrllabelacctRegionList").attr("title",data[i]);
-                    $("#ctrllabelacctRegionList").append(data[i]+"\t");
+                    if(data[i].stateName=="全部区域"){
+                        $("#ctrllabelacctRegionList").attr("title",data[i].stateName);
+                        $("#ctrllabelacctRegionList").append(data[i].stateName+"\t");
+                    }else{
+                        $("#ctrllabelacctRegionList").attr("title",data[i].provinceName);
+                        $("#ctrllabelacctRegionList").append(data[i].provinceName+"\t");
+                    }
                 }
             }
         });
@@ -2830,7 +2835,16 @@
           leaf.each(function(){
               var checkbox = $(this).find("input[type=checkbox]");
               if(checkbox[0].checked==true){
-                  regions+=$(this).find("label").html()+",";
+                  var parentsNode = $(this).parentsUntil(".area-hover-event").parent();
+                 if(parentsNode.html()==undefined){
+                     regions+=$(this).find("label").html()+",";
+                 }else{
+                     if(parentsNode.next().find("input[type=checkbox]")[0].checked==true){
+                         regions+=parentsNode.next().find("input[type=checkbox]").next().html()+",";
+                     }else{
+                         regions+=$(this).find("label").html()+",";
+                     }
+                 }
               }
           });
         }

@@ -166,9 +166,9 @@ public class AssistantCampaignController {
             }
         }
 
-        Map<Integer, String> map = RegionalCodeUtils.regionalCode(baiduEntity.getRegionTarget());
+        List<RegionalCodeDTO> regionalCodeDTOs = sysRegionalService.getRegionalByRegionalId(baiduEntity.getRegionTarget());
 
-        webContext.writeJson(map.values(), response);
+        webContext.writeJson(regionalCodeDTOs, response);
     }
 
 
@@ -200,23 +200,23 @@ public class AssistantCampaignController {
         CampaignEntity oldCampaignEntity = new CampaignEntity();
         BeanUtils.copyProperties(newCampaignEntity, oldCampaignEntity);
 
-        String[] regeionArray = "".equals(regions)?new String[]{}:regions.split(",");
+        String[] regeionArray = "".equals(regions) ? new String[]{} : regions.split(",");
 
         List<RegionalCodeDTO> regionName = new ArrayList<>();
-        if(regeionArray.length!=0){
+        if (regeionArray.length != 0) {
             List<String> list = Arrays.asList(regeionArray);
-           regionName = sysRegionalService.getRegionalName(list);
+            regionName = sysRegionalService.getRegionalName(list);
         }
 
         List<Integer> regionId = new ArrayList<>();
-        for(RegionalCodeDTO dto:regionName){
-            if(dto.getRegionName()==null||"".equals(dto.getRegionName())){
-                if("全部区域".equals(dto.getStateName())){
+        for (RegionalCodeDTO dto : regionName) {
+            if (dto.getRegionName() == null || "".equals(dto.getRegionName())) {
+                if ("全部区域".equals(dto.getStateName())) {
                     regionId.add(Integer.parseInt(dto.getStateId()));
-                }else{
+                } else {
                     regionId.add(Integer.parseInt(dto.getProvinceId()));
                 }
-            }else{
+            } else {
                 regionId.add(Integer.parseInt(dto.getRegionId()));
             }
         }
@@ -276,7 +276,7 @@ public class AssistantCampaignController {
         newCampaign.setShowProb(showProb == null ? newCampaign.getShowProb() : showProb);
         newCampaign.setPause(pause == null ? newCampaign.getPause() : pause);
 
-        if(schedule!=null){
+        if (schedule != null) {
             Gson gson = new Gson();
             List<ScheduleType> scheduleTypes = gson.fromJson(schedule, new TypeToken<List<ScheduleType>>() {
             }.getType());
@@ -312,7 +312,7 @@ public class AssistantCampaignController {
         campaignEntity.setPause(pause);
         campaignEntity.setShowProb(showProb);
 
-        if(schedule!=null){
+        if (schedule != null) {
             Gson gson = new Gson();
             List<ScheduleType> scheduleTypes = gson.fromJson(schedule, new TypeToken<List<ScheduleType>>() {
             }.getType());
