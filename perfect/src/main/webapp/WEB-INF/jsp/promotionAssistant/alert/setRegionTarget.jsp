@@ -2717,7 +2717,6 @@
             data:{"cid":cid},
             dataType:"json",
             success:function(data){
-                alert(JSON.stringify(data));
                //得到账户级别的推广地域
                 getAccountRegion();
                 if(data.campObj.regionTarget==null||data.campObj.regionTarget.length==0){
@@ -2730,7 +2729,8 @@
                     $("#ctrlradioboxallRegion")[0].checked=false;
                     $("#ctrlradioboxpartRegion")[0].checked=true;
                     $("#ctrlregionregionBody").show(0);
-                    if(data.regions[0].regionName=="全部区域"){
+
+                    if(data.regions[0].stateName=="全部区域"){
                         $("#ctrlradioboxallRegion")[0].checked=true;
                         $("#ctrlregionregionBody").hide(0);
                     }else{
@@ -2750,12 +2750,14 @@
         var label = $("#regionList").find("div[class=leaf]").find("label");
         for(var i=0;i<regionsName.length;i++){
               label.each(function () {
+                  var regName;
                   if(regionsName[i].regionName==null||regionsName[i].regionName==""){
-
+                      regName = regionsName[i].provinceName;
+                  }else{
+                      regName = regionsName[i].regionName;
                   }
 
-
-                  if(regionsName[i].regionName==$(this).html()){
+                  if(regName==$(this).html()){
                       if($(this).parent().parent().parent().attr("class")!="second-area-container hide"){
                           $(this).parent().find("input[type=checkbox]")[0].checked=true;
                       }else{
@@ -2811,7 +2813,7 @@
     *推广计划的推广地域的确定按钮的事件
      */
     $("#ctrlbuttonregionOklabel").click(function () {
-     var region = $("input[name=region]")
+     var region = $("input[name=region]");
      var value = null;
         region.each(function(){
             if($(this)[0].checked==true){
@@ -2826,7 +2828,8 @@
         }else if(value==1){
           var leaf = $("#regionList").find("div[class=leaf]");
           leaf.each(function(){
-              if($(this).find("input[type=checkbox]")[0].checked==true){
+              var checkbox = $(this).find("input[type=checkbox]");
+              if(checkbox[0].checked==true){
                   regions+=$(this).find("label").html()+",";
               }
           });
@@ -2853,3 +2856,13 @@
 </body>
 </html>
 
+<%--
+if(/ctrlregionregionBody/.test(checkbox.attr("id"))){
+regions+=$(this).find("label").html()+"-prov"+",";
+}else{
+if($(this).find("label").html()=="日本"||$(this).find("label").html()=="其他国家（除日本外）"){
+regions+=$(this).find("label").html()+"-contr"+",";
+}else{
+regions+=$(this).find("label").html()+"-region"+",";
+}
+}--%>
