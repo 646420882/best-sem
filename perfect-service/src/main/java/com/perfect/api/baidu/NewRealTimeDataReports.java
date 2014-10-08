@@ -3,7 +3,6 @@ package com.perfect.api.baidu;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.mongodb.utils.BaseBaiduService;
 import org.springframework.util.Assert;
 
 import java.text.ParseException;
@@ -20,7 +19,7 @@ public class NewRealTimeDataReports {
     //得到百度aip
     private final CommonService service;
 
-    public NewRealTimeDataReports(CommonService commonService){
+    public NewRealTimeDataReports(CommonService commonService) {
         this.service = commonService;
         init();
     }
@@ -66,7 +65,6 @@ public class NewRealTimeDataReports {
         //baiduAccountUserId = getAccountInfoResponse.getAccountInfoType().getUserid();
 
 
-
         //单元
         GetAllAdgroupIdRequest getAllAdgroupIdRequest = new GetAllAdgroupIdRequest();
         GetAllAdgroupIdResponse getAllAdgroupIdResponse = adgroupService.getAllAdgroupId(getAllAdgroupIdRequest);
@@ -79,7 +77,7 @@ public class NewRealTimeDataReports {
         GetCreativeIdByAdgroupIdRequest getCreativeIdByAdgroupIdRequest = new GetCreativeIdByAdgroupIdRequest();
         getCreativeIdByAdgroupIdRequest.setAdgroupIds(allAdgroupId);
         GetCreativeIdByAdgroupIdResponse getCreativeIdByAdgroupIdResponse = creativeService.getCreativeIdByAdgroupId(getCreativeIdByAdgroupIdRequest);
-        for (GroupCreativeId entity : getCreativeIdByAdgroupIdResponse.getGroupCreativeIds()){
+        for (GroupCreativeId entity : getCreativeIdByAdgroupIdResponse.getGroupCreativeIds()) {
             listCreative.addAll(entity.getCreativeIds());
         }
 
@@ -94,10 +92,11 @@ public class NewRealTimeDataReports {
 
     /**
      * 初始化API中需要共用到的属性
+     *
      * @param _startDate 开始时间
-     * @param _endDate 结束时间
+     * @param _endDate   结束时间
      */
-    private void processingTime(String _startDate, String _endDate){
+    private void processingTime(String _startDate, String _endDate) {
         if (_startDate == null) {
             Assert.notNull(_startDate, "_startDate must not be null!");
         }
@@ -131,13 +130,14 @@ public class NewRealTimeDataReports {
 
     /**
      * 获取账户数据
+     *
      * @param _startDate
      * @param _endDate
      * @return
      */
-    public List<RealTimeResultType> getAccountRealTimeData(String _startDate, String _endDate){
+    public List<RealTimeResultType> getAccountRealTimeData(String _startDate, String _endDate) {
         //初始化时间
-        processingTime(_startDate,_endDate);
+        processingTime(_startDate, _endDate);
 
         //得到设置返回数据工厂
         RealTimeRequestType requestType = new RealTimeRequestType();
@@ -158,20 +158,21 @@ public class NewRealTimeDataReports {
         //创建访问百度接口请求
         GetRealTimeDataRequest dataRequest = new GetRealTimeDataRequest();
         dataRequest.setRealTimeRequestTypes(requestType);
-        GetRealTimeDataResponse dataResponse =  reportService.getRealTimeData(dataRequest);
+        GetRealTimeDataResponse dataResponse = reportService.getRealTimeData(dataRequest);
         List<RealTimeResultType> list = dataResponse.getRealTimeResultTypes();
         return list;
     }
 
     /**
      * 获取关键词PC端数据
+     *
      * @param _startDate
      * @param _endDate
      * @return
      */
-    public List<RealTimeResultType> getKeyWordidRealTimeDataPC(String _startDate, String _endDate){
+    public List<RealTimeResultType> getKeyWordidRealTimeDataPC(String _startDate, String _endDate) {
         //初始化时间
-        processingTime(_startDate,_endDate);
+        processingTime(_startDate, _endDate);
 
         //得到设置返回数据工厂
         RealTimeRequestType requestType = new RealTimeRequestType();
@@ -197,20 +198,21 @@ public class NewRealTimeDataReports {
         //创建访问百度接口请求
         GetRealTimeDataRequest dataRequest = new GetRealTimeDataRequest();
         dataRequest.setRealTimeRequestTypes(requestType);
-        GetRealTimeDataResponse dataResponse =  reportService.getRealTimeData(dataRequest);
+        GetRealTimeDataResponse dataResponse = reportService.getRealTimeData(dataRequest);
         List<RealTimeResultType> list = dataResponse.getRealTimeResultTypes();
         return list;
     }
 
     /**
      * 获取关键词移动端数据
+     *
      * @param _startDate
      * @param _endDate
      * @return
      */
-    public List<RealTimeResultType> getKeyWordidRealTimeDataMobile(String _startDate, String _endDate){
+    public List<RealTimeResultType> getKeyWordidRealTimeDataMobile(String _startDate, String _endDate) {
         //初始化时间
-        processingTime(_startDate,_endDate);
+        processingTime(_startDate, _endDate);
 
         //得到设置返回数据工厂
         RealTimeRequestType requestType = new RealTimeRequestType();
@@ -236,19 +238,21 @@ public class NewRealTimeDataReports {
         //创建访问百度接口请求
         GetRealTimeDataRequest dataRequest = new GetRealTimeDataRequest();
         dataRequest.setRealTimeRequestTypes(requestType);
-        GetRealTimeDataResponse dataResponse =  reportService.getRealTimeData(dataRequest);
+        GetRealTimeDataResponse dataResponse = reportService.getRealTimeData(dataRequest);
         List<RealTimeResultType> list = dataResponse.getRealTimeResultTypes();
         return list;
     }
+
     /**
      * 获取单元PC端数据
+     *
      * @param _startDate
      * @param _endDate
      * @return
      */
-    public List<RealTimeResultType> getUnitRealTimeDataPC(String _startDate, String _endDate){
+    public List<RealTimeResultType> getUnitRealTimeDataPC(String _startDate, String _endDate) {
         //初始化时间
-        processingTime(_startDate,_endDate);
+        processingTime(_startDate, _endDate);
 
         //得到设置返回数据工厂
         RealTimeRequestType requestType = new RealTimeRequestType();
@@ -274,19 +278,21 @@ public class NewRealTimeDataReports {
         //创建访问百度接口请求
         GetRealTimeDataRequest dataRequest = new GetRealTimeDataRequest();
         dataRequest.setRealTimeRequestTypes(requestType);
-        GetRealTimeDataResponse dataResponse =  reportService.getRealTimeData(dataRequest);
+        GetRealTimeDataResponse dataResponse = reportService.getRealTimeData(dataRequest);
         List<RealTimeResultType> list = dataResponse.getRealTimeResultTypes();
         return list;
     }
+
     /**
      * 获取单元移动端数据
+     *
      * @param _startDate
      * @param _endDate
      * @return
      */
-    public List<RealTimeResultType> getUnitRealTimeDataMobile(String _startDate, String _endDate){
+    public List<RealTimeResultType> getUnitRealTimeDataMobile(String _startDate, String _endDate) {
         //初始化时间
-        processingTime(_startDate,_endDate);
+        processingTime(_startDate, _endDate);
 
         //得到设置返回数据工厂
         RealTimeRequestType requestType = new RealTimeRequestType();
@@ -312,19 +318,21 @@ public class NewRealTimeDataReports {
         //创建访问百度接口请求
         GetRealTimeDataRequest dataRequest = new GetRealTimeDataRequest();
         dataRequest.setRealTimeRequestTypes(requestType);
-        GetRealTimeDataResponse dataResponse =  reportService.getRealTimeData(dataRequest);
+        GetRealTimeDataResponse dataResponse = reportService.getRealTimeData(dataRequest);
         List<RealTimeResultType> list = dataResponse.getRealTimeResultTypes();
         return list;
     }
+
     /**
      * 获取创意PC端数据
+     *
      * @param _startDate
      * @param _endDate
      * @return
      */
-    public List<RealTimeResultType> getCreativeRealTimeDataPC(String _startDate, String _endDate){
+    public List<RealTimeResultType> getCreativeRealTimeDataPC(String _startDate, String _endDate) {
         //初始化时间
-        processingTime(_startDate,_endDate);
+        processingTime(_startDate, _endDate);
 
         //得到设置返回数据工厂
         RealTimeRequestType requestType = new RealTimeRequestType();
@@ -350,19 +358,21 @@ public class NewRealTimeDataReports {
         //创建访问百度接口请求
         GetRealTimeDataRequest dataRequest = new GetRealTimeDataRequest();
         dataRequest.setRealTimeRequestTypes(requestType);
-        GetRealTimeDataResponse dataResponse =  reportService.getRealTimeData(dataRequest);
+        GetRealTimeDataResponse dataResponse = reportService.getRealTimeData(dataRequest);
         List<RealTimeResultType> list = dataResponse.getRealTimeResultTypes();
         return list;
     }
+
     /**
      * 获取创意移动端数据
+     *
      * @param _startDate
      * @param _endDate
      * @return
      */
-    public List<RealTimeResultType> getCreativeRealTimeDataMobile(String _startDate, String _endDate){
+    public List<RealTimeResultType> getCreativeRealTimeDataMobile(String _startDate, String _endDate) {
         //初始化时间
-        processingTime(_startDate,_endDate);
+        processingTime(_startDate, _endDate);
 
         //得到设置返回数据工厂
         RealTimeRequestType requestType = new RealTimeRequestType();
@@ -388,19 +398,21 @@ public class NewRealTimeDataReports {
         //创建访问百度接口请求
         GetRealTimeDataRequest dataRequest = new GetRealTimeDataRequest();
         dataRequest.setRealTimeRequestTypes(requestType);
-        GetRealTimeDataResponse dataResponse =  reportService.getRealTimeData(dataRequest);
+        GetRealTimeDataResponse dataResponse = reportService.getRealTimeData(dataRequest);
         List<RealTimeResultType> list = dataResponse.getRealTimeResultTypes();
         return list;
     }
+
     /**
      * 获取地域PC端数据
+     *
      * @param _startDate
      * @param _endDate
      * @return
      */
-    public List<RealTimeResultType> getRegionalRealTimeDataPC(String _startDate, String _endDate){
+    public List<RealTimeResultType> getRegionalRealTimeDataPC(String _startDate, String _endDate) {
         //初始化时间
-        processingTime(_startDate,_endDate);
+        processingTime(_startDate, _endDate);
 
         //得到设置返回数据工厂
         RealTimeRequestType requestType = new RealTimeRequestType();
@@ -426,19 +438,21 @@ public class NewRealTimeDataReports {
         //创建访问百度接口请求
         GetRealTimeDataRequest dataRequest = new GetRealTimeDataRequest();
         dataRequest.setRealTimeRequestTypes(requestType);
-        GetRealTimeDataResponse dataResponse =  reportService.getRealTimeData(dataRequest);
+        GetRealTimeDataResponse dataResponse = reportService.getRealTimeData(dataRequest);
         List<RealTimeResultType> list = dataResponse.getRealTimeResultTypes();
         return list;
     }
+
     /**
      * 获取地域移动端数据
+     *
      * @param _startDate
      * @param _endDate
      * @return
      */
-    public List<RealTimeResultType> getRegionalRealTimeDataMobile(String _startDate, String _endDate){
+    public List<RealTimeResultType> getRegionalRealTimeDataMobile(String _startDate, String _endDate) {
         //初始化时间
-        processingTime(_startDate,_endDate);
+        processingTime(_startDate, _endDate);
 
         //得到设置返回数据工厂
         RealTimeRequestType requestType = new RealTimeRequestType();
@@ -464,7 +478,7 @@ public class NewRealTimeDataReports {
         //创建访问百度接口请求
         GetRealTimeDataRequest dataRequest = new GetRealTimeDataRequest();
         dataRequest.setRealTimeRequestTypes(requestType);
-        GetRealTimeDataResponse dataResponse =  reportService.getRealTimeData(dataRequest);
+        GetRealTimeDataResponse dataResponse = reportService.getRealTimeData(dataRequest);
         List<RealTimeResultType> list = dataResponse.getRealTimeResultTypes();
         return list;
     }
