@@ -5,6 +5,7 @@ var reViewData = {};//记录点击编辑按钮时读取的信息数据
 var reParms = {cid: null, aid: null};
 $(function () {
     textSizeValid();
+    onKeyDownView();
 });
 //预览方法
 function reView(res) {
@@ -38,10 +39,12 @@ function reView(res) {
             des1 = des1.replace(regxr, "}");
         }
     }
+    //判断如果这里是闪投创意
     if (viewType == 1) {
-        $("#subTitle").html(title);
-        $("#Url").html(_liObj.find("div:eq(4) span:eq(0)").html());
-        subShowEditor();
+        alert("该创意是闪投创意，暂不支持！");
+//        $("#subTitle").html(title);
+//        $("#Url").html(_liObj.find("div:eq(4) span:eq(0)").html());
+//        subShowEditor(_liObj);
     } else {
         reViewData["title"] = title;
         reViewData["desc1"] = des1;
@@ -90,9 +93,9 @@ function initEditView(res) {
     var desc = reViewData["desc1"].replace(regxl, "<font color=\"#CC0000\">");
     desc = desc.replace(regxr, "</font>");
     var url = reViewData["pcUrl"];
-    var _reView = "<a href='javascript:void(0)' class='EC_t EC_BL'>" + title + "</a><br><span  class='ec_desc ec_font_small'>" + desc + "</span><span class='ec_url'>" + url + "</span>";
-    var _reView2 = "<a href='javascript:void(0)' class='EC_t EC_BL'>" + title + "<font color='#080'>" + url + "</font></a><br><span  class='ec_desc ec_font_small'>" + desc + "</span><br>";
-    var _reView3 = "<a href='javascript:void(0)' class='EC_t EC_BL'>" + title + "</a><br><span  class='ec_desc ec_font_small'>" + desc + "</span><span class='ec_url'>" + url + "</span>";
+    var _reView = "<a href='javascript:void(0)' class='EC_t EC_BL' id='left1Title'>" + title + "</a><br><span  class='ec_desc ec_font_small' id='left1Desc'>" + desc +desc+ "</span><span class='ec_url' id='left1Url'>" + url + "</span>";
+    var _reView2 = "<a href='javascript:void(0)' class='EC_t EC_BL' id='left2Title'>" + title + "</a><font color='#080' id='left2Url'>" + url + "</font><br><span  class='ec_desc ec_font_small' id='left2Desc'>" + desc+desc + "</span><br>";
+    var _reView3 = "<a href='javascript:void(0)' class='EC_t EC_BL' id='rightTitle'>" + title + "</a><br><span  class='ec_desc ec_font_small' id='rightDesc'>" + desc+desc + "</span><span class='ec_url' id='rightUrl'>" + url + "</span>";
     $("#reLeft1").empty().append(_reView);
     $("#reLeft2").empty().append(_reView2);
     $("#reRight").empty().append(_reView3);
@@ -107,7 +110,8 @@ function reShowEditor() {
         display: "block"
     });
 }
-function subShowEditor() {
+function subShowEditor(_liObj) {
+    $("#sub").empty();
     $(".TB_overlayBG").css({
         display: "block", height: $(document).height()
     });
@@ -115,6 +119,16 @@ function subShowEditor() {
         left: ($("body").width() - $("#subLinkType").width()) / 2 - 20 + "px",
         top: ($(window).height() - $("#subLinkType").height()) / 2 + ($(window).scrollTop() - 53) + "px",
         display: "block"
+    });
+    var _ul = _liObj.find("div:eq(3) li");
+    _ul.each(function (i, o) {
+        var _a = $(o).find("a");
+        _a.each(function (j, k) {
+            if ($(k).html() != "更多》") {
+                var _input = "<li>描述：<input type='text' name='subtitle' value='" + $(k).html() + "'/>访问地址：<input type='text' name='subUrl'/><a href='javascript:void(0)' onclick='removeLi(this)'>删除</a></li>";
+                $("#sub").append(_input);
+            }
+        });
     });
 }
 function subHideEditor() {
@@ -158,14 +172,29 @@ function reHideSelect() {
     });
 }
 function reSave() {
+    var error = 0;//记录字符超出错误
+    var emaiError=0;
+    var strRegex ="^((https|http|ftp|rtsp|mms)://)?[a-z0-9A-Z]{3}\.[a-z0-9A-Z][a-z0-9A-Z]{0,61}?[a-z0-9A-Z]\.com|net|cn|cc (:s[0-9]{1-4})?/$";
+    var re = new RegExp(strRegex);
     var _span = $("#_editor span");
-    var error = 0;
+    var pcUrl=$("textarea[name='pcUrl']").val();
+    var pcsUrl=$("input[name='pcsUrl']").val();
     _span.each(function (i, o) {
         if ($(o).attr("class") == "span-error") {
             error++;
         }
     });
+    if(!re.test(pcUrl)){
+        emaiError++;
+    }
+    if(!re.test(pcsUrl)){
+        emaiError++;
+    }
+    alert(emaiError);
     if (parseInt(error) == 0) {
+        if(parseInt(emaiError)>0){
+            alert("请输入有效的Url地址");
+        }else{
         reViewData["title"] = $("#_editor [name='title']").val();
         reViewData["desc1"] = $("#_editor [name='desc1']").val();
         reViewData["desc2"] = $("#_editor [name='desc2']").val();
@@ -179,8 +208,9 @@ function reSave() {
         jcBox.append("<li>推广计划<select id='sPlan' onchange='loadUnit(this.value)'><option value='-1'>请选择计划</option></select></li>");
         jcBox.append("<li>推广单元<select id='sUnit' ><option value='-1'>请选择单元</option></select></li>");
         $("#reOkView").show();
+        }
     } else {
-        alert("请核对数据后再提交！");
+        alert("字符超出限制！");
     }
 }
 function getPlans() {
@@ -276,7 +306,7 @@ function addCreativeOk() {
     }
 }
 function textSizeValid() {
-    $("#_editor input[type='text']").keyup(function () {
+    $("#_editor input[type='text']").keydown(function () {
         var _max = $(this).next("span").html().split("/")[1];
         var _thisStr = $(this).val().length;
         if (parseInt(_thisStr) > parseInt(_max)) {
@@ -286,7 +316,7 @@ function textSizeValid() {
         }
         $(this).next("span").html(_thisStr + "/" + _max);
     });
-    $("#_editor textarea").keyup(function () {
+    $("#_editor textarea").keydown(function () {
         var _max = $(this).next("span").html().split("/")[1];
         var _thisStr = $(this).val().length;
         if (parseInt(_thisStr) > parseInt(_max)) {
@@ -310,7 +340,7 @@ function addSub() {
         if (error > 0) {
             alert("请正确输入！");
         } else {
-            var _input = "<li>描述：<input type='text' name='subtitle'/>描述url<input type='text' name='subUrl'/><a href='javascript:void(0)' onclick='removeLi(this)'>删除</a></li>";
+            var _input = "<li>描述：<input type='text' name='subtitle'/>访问地址：<input type='text' name='subUrl'/><a href='javascript:void(0)' onclick='removeLi(this)'>删除</a></li>";
             $("#sub").append(_input);
         }
     } else {
@@ -319,4 +349,61 @@ function addSub() {
 }
 function removeLi(rs) {
     $(rs).parents("li").remove();
+}
+function onKeyDownView() {
+    $("input[name='title']").keyup(function () {
+        var regxl = new RegExp("{", "g");
+        var regxr = new RegExp("}", "g");
+        var title = $(this).val().replace(regxl, "<font color=\"#CC0000\">");
+        title = title.replace(regxr, "</font>");
+        $("#left1Title").html(title);
+        $("#left2Title").html(title);
+        $("#rightTitle").html(title);
+    });
+    $("textarea[name='desc1']").keyup(function () {
+        var desc2 = $("textarea[name='desc2']").val();
+        var desc = $(this).val();
+        var regxl = new RegExp("{", "g");
+        var regxr = new RegExp("}", "g");
+        var descTotal = (desc + desc2).replace(regxl, "<font color=\"#CC0000\">");
+        descTotal = descTotal.replace(regxr, "</font>");
+        $("#left1Desc").html(descTotal);
+        $("#left2Desc").html(descTotal);
+        $("#rightDesc").html(descTotal);
+    });
+    $("textarea[name='desc2']").keyup(function () {
+        var desc1 = $("textarea[name='desc1']").val();
+        var desc = $(this).val();
+        var regxl = new RegExp("{", "g");
+        var regxr = new RegExp("}", "g");
+        var descTotal = (desc1 + desc).replace(regxl, "<font color=\"#CC0000\">");
+        descTotal = descTotal.replace(regxr, "</font>");
+        $("#left1Desc").html(descTotal);
+        $("#left2Desc").html(descTotal);
+        $("#rightDesc").html(descTotal);
+    });
+    $("textarea[name='pcUrl']").keyup(function () {
+//        var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        var title = $(this).val();
+//        if (!myreg.test(title.value)) {
+//            alert('请输入有效的E_mail！');
+//            $(this).val(reViewData["pcUrl"]);
+//            return false;
+//        }
+        $("#left1Url").html(title);
+        $("#left2Url").html(title);
+        $("#rightUrl").html(title);
+    });
+    $("input[name='pcsUrl']").keyup(function () {
+//        var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        var title = $(this).val();
+//        if (!myreg.test(title.value)) {
+//            alert('请输入有效的E_mail！');
+//            $(this).val(reViewData["pcsUrl"]);
+//            return false;
+//        }
+        $("#left1Url").html(title);
+        $("#left2Url").html(title);
+        $("#rightUrl").html(title);
+    });
 }

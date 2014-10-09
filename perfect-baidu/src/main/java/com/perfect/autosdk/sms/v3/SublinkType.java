@@ -24,7 +24,7 @@ public class SublinkType
 
   //------------------------
   // INTERFACE
-  //------------------------
+    //------------------------
 
   public boolean setSublinkId(Long aSublinkId)
   {

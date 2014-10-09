@@ -348,7 +348,6 @@ To change this template use File | Settings | File Templates.
                     <li>
                         <h3>访问URL：</h3>
                         <dl><textarea name="pcUrl"></textarea><span>27/1024</span></dl>
-                        <dl><input type="button" class="r_input2" value="{} 插入通配符"></dl>
                     </li>
                     <li>
                         <h3>显示URL：</h3>
