@@ -190,7 +190,6 @@ function reSave() {
     if(!re.test(pcsUrl)){
         emaiError++;
     }
-    alert(emaiError);
     if (parseInt(error) == 0) {
         if(parseInt(emaiError)>0){
             alert("请输入有效的Url地址");
