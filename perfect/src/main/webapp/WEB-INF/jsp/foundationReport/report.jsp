@@ -18,7 +18,8 @@
 <body>
 <div style="margin-top: 180px;">
         <ul style="width: 500px;text-align: left;margin-left: 35%;padding: 30px;border: 1px solid #ddd">
-            <li>
+            <li><span style="color: red">注：如果没有选取时间则为默认拉取昨天的数据</span></li>
+            <li style="margin-top: 10px">
                 选择时间范围：
                 <input type="text" id="date" style="width: 200px;height:25px;" readonly>
                 <input name="reservationa" type="image"
