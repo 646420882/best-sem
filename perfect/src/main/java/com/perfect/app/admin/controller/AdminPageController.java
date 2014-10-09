@@ -33,4 +33,13 @@ public class AdminPageController {
     public ModelAndView lexiconConsole() {
         return new ModelAndView("/keywordGroup/lexicon");
     }
+
+    /**
+     * 数据拉取后台页面
+     * @return
+     */
+    @RequestMapping(value = "/pullPage", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView pullPage() {
+        return new ModelAndView("foundationReport/report");
+    }
 }
