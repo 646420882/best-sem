@@ -61,7 +61,7 @@
 
     $(function () {
         $.ajax({
-            url: "/biddingUrl/list",
+            url: "/admin/biddingUrl/list",
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
                 $("#table1 tbody").empty();
@@ -82,7 +82,7 @@
             return false;
         }
         $.ajax({
-            url: "/biddingUrl/add",
+            url: "/admin/biddingUrl/add",
             type: "POST",
             dataType: "json",
             data: {

@@ -14,8 +14,6 @@ import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
@@ -26,13 +24,14 @@ import java.util.TreeMap;
  */
 @RestController
 @Scope("prototype")
+@RequestMapping("/admin/biddingUrl")
 public class BiddingMaintenanceController {
 
     @Resource
     private BiddingMaintenanceService biddingMaintenanceService;
 
-    @RequestMapping(value = "/biddingUrl/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView listRequestUrl(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView listRequestUrl() {
         AbstractView jsonView = new MappingJackson2JsonView();
         List<UrlEntity> list = biddingMaintenanceService.findAll();
         Map<String, Object> values = JSONUtils.getJsonMapData(list);
@@ -40,7 +39,7 @@ public class BiddingMaintenanceController {
         return new ModelAndView(jsonView);
     }
 
-    @RequestMapping(value = "/biddingUrl/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView addRequestUrl(@RequestParam(value = "url", required = true) String requestUrl)
             throws UnsupportedEncodingException {
         if (requestUrl == null)

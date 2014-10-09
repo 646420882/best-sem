@@ -5,7 +5,6 @@ import com.perfect.entity.SystemUserEntity;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemUserService;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +30,7 @@ public class HomePageManageController {
     private SystemUserService systemUserService;
     @Resource
     private AccountRegisterService accountRegisterService;
+
     /**
      * 登陆页面
      *
@@ -97,49 +97,40 @@ public class HomePageManageController {
     }
 
     /**
-     * 智能竞价后台页面
-     *
-     * @return
-     */
-    @RequestMapping(value = "/biddingConsole", method = RequestMethod.GET)
-    public ModelAndView biddingConsole() {
-        return new ModelAndView("bidding/biddingConsole");
-    }
-
-    /**
      * 注册页面
      *
      * @return
      */
     @RequestMapping(value = "/register/page", method = RequestMethod.GET)
     public ModelAndView register(ModelMap model) {
-        return new ModelAndView("homePage/pageBlock/register",model);
+        return new ModelAndView("homePage/pageBlock/register", model);
     }
 
     /**
      * 注册帐号
+     *
      * @return
      */
-    @RequestMapping(value = "/register/add" , method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView registerData(ModelMap model,HttpServletResponse response,HttpServletRequest request,
-                                       @RequestParam(value = "username", required = false) String account,
-                                       @RequestParam(value = "password", required = false) String pwd,
-                                       @RequestParam(value = "companyname", required = false) String company){
-        if(account == null || "".equals(account)){
-            model.addAttribute("state",-1);
-            return new ModelAndView("homePage/pageBlock/register",model);
+    @RequestMapping(value = "/register/add", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView registerData(ModelMap model, HttpServletResponse response, HttpServletRequest request,
+                                     @RequestParam(value = "username", required = false) String account,
+                                     @RequestParam(value = "password", required = false) String pwd,
+                                     @RequestParam(value = "companyname", required = false) String company) {
+        if (account == null || "".equals(account)) {
+            model.addAttribute("state", -1);
+            return new ModelAndView("homePage/pageBlock/register", model);
         }
-        if(pwd == null || "".equals(pwd)){
-            model.addAttribute("state",-1);
-            return new ModelAndView("homePage/pageBlock/register",model);
+        if (pwd == null || "".equals(pwd)) {
+            model.addAttribute("state", -1);
+            return new ModelAndView("homePage/pageBlock/register", model);
         }
-        if(company == null || "".equals(company)){
-            model.addAttribute("state",-1);
-            return new ModelAndView("homePage/pageBlock/register",model);
+        if (company == null || "".equals(company)) {
+            model.addAttribute("state", -1);
+            return new ModelAndView("homePage/pageBlock/register", model);
         }
 
-        int flag = accountRegisterService.addAccount(account,pwd,company);
-        model.addAttribute("state",flag);
-        return new ModelAndView("homePage/pageBlock/register",model);
+        int flag = accountRegisterService.addAccount(account, pwd, company);
+        model.addAttribute("state", flag);
+        return new ModelAndView("homePage/pageBlock/register", model);
     }
 }
