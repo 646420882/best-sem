@@ -23,7 +23,7 @@
 <div id="acctRegionList" style="display: none;"> 账户推广地域：<span ui="" id="ctrllabelacctRegionList" control="acctRegionList"  logswitch="true" class="ui_label" title=""></span><br/><br/>
     <div class="ui_dialog_foot">
         <div  class="ui_button" logswitch="true" control="regionOk" id="useAcctregionOk" ui=""><a href="javascript:void(0)" id="Oklabel" class="ui_button_label">确定</a></div>
-        <div class="ui_button" logswitch="true" control="regionCancel" id="useAcctregionCancel" ui=""><a href="javascript:void(0)" id="Cancellabel" class="ui_button_label">取消</a></div>
+        <%--<div class="ui_button" logswitch="true" control="regionCancel" id="useAcctregionCancel" ui=""><a href="javascript:void(0)" id="Cancellabel" class="ui_button_label">取消</a></div>--%>
         <span id="useRegionErrorTooltip"></span>
     </div>
 </div>
@@ -2592,7 +2592,7 @@
 <br/><br/>
 <div class="ui_dialog_foot">
     <div  class="ui_button" logswitch="true" control="regionOk" id="ctrlbuttonregionOk" ui=""><a href="javascript:void(0)" id="ctrlbuttonregionOklabel" class="ui_button_label">确定</a></div>
-    <div class="ui_button" logswitch="true" control="regionCancel" id="ctrlbuttonregionCancel" ui=""><a href="javascript:void(0)" id="ctrlbuttonregionCancellabel" class="ui_button_label">取消</a></div>
+    <%--<div class="ui_button" logswitch="true" control="regionCancel" id="ctrlbuttonregionCancel" ui=""><a href="javascript:void(0)" id="ctrlbuttonregionCancellabel" class="ui_button_label">取消</a></div>--%>
     <span id="regionErrorTooltip"></span>
 </div>
 

@@ -733,11 +733,6 @@ $(".regionTarget_5").click(function () {
         oniframeload: function () {
         },
         onclose: function () {
-            if (this.returnValue) {
-                $('#value').html(this.returnValue);
-                alert($('#value').html());
-            }
-//            window.location.reload(true);
         },
         onremove: function () {
         }
@@ -767,7 +762,7 @@ $("#createCampaignOk").click(function () {
     var campaignPause = $(".inputCampaignPause").val();
     var showProb = $(".inputShowProb").val();
     var schedule = getInputScheduleData();
-//    var regionTarget =//未完成
+//    var regionTarget =//
     var negativeWords = negativeWordsValue;
     var exactNegativeWords = exactNegativeWordsValue
     var excludeIp = excludeIpStr;

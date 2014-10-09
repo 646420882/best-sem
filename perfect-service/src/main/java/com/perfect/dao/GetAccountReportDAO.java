@@ -17,7 +17,7 @@ public interface GetAccountReportDAO {
      * @param endDate
      * @return
      */
-    List<AccountReportEntity> getLocalAccountRealData(String userName,Date startDate,Date endDate);
+    List<AccountReportEntity> getLocalAccountRealData(String userName, Date startDate, Date endDate);
 
     /**
      * 在百度上实时获取数据报告(数据来自百度)
@@ -25,5 +25,5 @@ public interface GetAccountReportDAO {
      * @param endDate
      * @return
      */
-    List<RealTimeResultType> getAccountRealTimeTypeByDate(String startDate,String endDate);
+    List<RealTimeResultType> getAccountRealTimeTypeByDate(Long accountId, String startDate, String endDate);
 }

@@ -100,7 +100,7 @@ function getKwdList(nowPage) {
             }
 
             for (var i = 0; i < data.list.length; i++) {
-                var html = keywordDataToHtml(data.list[i].object, i, data.list[i].campaignName);
+                var html = keywordDataToHtml(data.list[i], i);
                 $("#tbodyClick").append(html);
                 if (i == 0) {
                     setKwdValue($(".firstKeyword"), data.list[i].object.keywordId);
@@ -139,10 +139,10 @@ $("#tbodyClick").delegate("tr", "click", function () {
 /**
  *将一条数据加到html中
  */
-function keywordDataToHtml(obj, index, campaignName) {
+function keywordDataToHtml(obj, index) {
 
-    if (obj.keywordId == null) {
-        obj.keywordId = obj.id;
+    if (obj.object.keywordId == null) {
+        obj.object.keywordId = obj.object.id;
     }
 
     var html = "";
@@ -156,10 +156,10 @@ function keywordDataToHtml(obj, index, campaignName) {
     }
 
     //kwid
-    html = html + "<input type='hidden' value = " + obj.keywordId + " />";
-    html = html + "<td>" + obj.keyword + "</td>";
+    html = html + "<input type='hidden' value = " + obj.object.keywordId + " />";
+    html = html + "<td>" + obj.object.keyword + "</td>";
 
-    switch (obj.status) {
+    switch (obj.object.status) {
         case 41:
             html = html + "<td>有效</td>";
             break;
@@ -194,27 +194,83 @@ function keywordDataToHtml(obj, index, campaignName) {
             html = html + "<td>本地新增</td>";
     }
 
-    html = html + "<td>" + until.convert(obj.pause, "暂停:启用") + "</td>";
+    html = html + "<td>" + until.convert(obj.object.pause, "暂停:启用") + "</td>";
 
-    html = html + until.convert(obj.price == null, "<td><0.10></td>:<td>" + obj.price + "</td>");
+    html = html + until.convert(obj.object.price == null, "<td><0.10></td>:<td>" + obj.object.price + "</td>");
 
-    //质量度
-    html = html + "<td>一星</td>";
-    html = html + "<td>二星</td>";
+
+    //计算机质量度
+    var quanlityHtml = "<span>";
+    var quanlityText = "";
+    if(obj.quality>0){
+        switch(parseInt(obj.quality)){
+            case 11:
+            case 12:
+            case 13:
+                quanlityHtml+="<img src='/public/img/star.png'>";
+                quanlityHtml+="<img src='/public/img/star3.png'>";
+                quanlityHtml+="<img src='/public/img/star3.png'>";
+                quanlityHtml+="<img src='/public/img/star3.png'>";
+                quanlityHtml+="<img src='/public/img/star3.png'>";
+                break;
+            case 21:
+            case 22:
+                quanlityHtml+="<img src='/public/img/star.png'>";
+                quanlityHtml+="<img src='/public/img/star.png'>";
+                quanlityHtml+="<img src='/public/img/star3.png'>";
+                quanlityHtml+="<img src='/public/img/star3.png'>";
+                quanlityHtml+="<img src='/public/img/star3.png'>";
+                break;
+            case 3:
+                quanlityHtml+="<img src='/public/img/star3.png'>";
+                quanlityHtml+="<img src='/public/img/star3.png'>";
+                quanlityHtml+="<img src='/public/img/star3.png'>";
+                quanlityHtml+="<img src='/public/img/star3.png'>";
+                quanlityHtml+="<img src='/public/img/star3.png'>";
+        }
+
+        switch (parseInt(obj.quality)){
+            case 11:quanlityText = "一星较难优化";break;
+            case 12:quanlityText = "一星难度中等";break;
+            case 13:quanlityText = "一星较易优化";break;
+            case 21:quanlityText = "二星较难优化";break;
+            case 22:quanlityText = "二星较易优化";break;
+            case 3:quanlityText = "三星";break;
+        }
+    }
+    quanlityHtml+="&nbsp;&nbsp;&nbsp;"+quanlityText+"</span>";
+    html = html + "<td cname="+obj.quality+">"+quanlityHtml+"</td>";
+
+
+    //移动质量度
+    var mobileQuanlityHtml = "<span>";
+    if(parseInt(obj.mobileQuality)>0){
+        for(var i=1;i<=5;i++){
+            if(parseInt(obj.mobileQuality)>=i){
+                mobileQuanlityHtml+="<img src='/public/img/star.png'>";
+            }else{
+                mobileQuanlityHtml+="<img src='/public/img/star3.png'>";
+            }
+        }
+        mobileQuanlityHtml+="&nbsp;&nbsp;&nbsp;"+obj.mobileQuality;
+    }
+    mobileQuanlityHtml+="</span>";
+    html = html + "<td cname="+obj.mobileQuality+">"+mobileQuanlityHtml+"</td>";
+
 
     //匹配模式
     var matchType;
-    switch (obj.matchType) {
+    switch (obj.object.matchType) {
         case 1:
             matchType = "精确";
             break;
         case 2:
             matchType = "短语";
-            if (obj.phraseType == 1) {
+            if (obj.object.phraseType == 1) {
                 matchType = matchType + "-同义包含";
-            } else if (obj.phraseType == 2) {
+            } else if (obj.object.phraseType == 2) {
                 matchType = matchType + "-精确包含";
-            } else if (obj.phraseType == 3) {
+            } else if (obj.object.phraseType == 3) {
                 matchType = matchType + "-核心包含";
             }
             ;
@@ -228,15 +284,15 @@ function keywordDataToHtml(obj, index, campaignName) {
     html = html + "<td>" + matchType + "</td>";
 
 
-    html = html + "<td>" + (obj.pcDestinationUrl != null?"<a href='" + obj.pcDestinationUrl + "'>" + obj.pcDestinationUrl.substr(0, 20) + "</a>":"") + "</td>";
-    html = html + "<td>" + (obj.mobileDestinationUrl != null?"<a href='" + obj.mobileDestinationUrl + "'>" + obj.mobileDestinationUrl.substr(0, 20) + "</a>":"") + "</td>";
-    html = html + "<td>"+campaignName+"</td>";
+    html = html + "<td>" + (obj.object.pcDestinationUrl != null?"<a href='" + obj.object.pcDestinationUrl + "'>" + obj.object.pcDestinationUrl.substr(0, 20) + "</a>":"") + "</td>";
+    html = html + "<td>" + (obj.object.mobileDestinationUrl != null?"<a href='" + obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>":"") + "</td>";
+    html = html + "<td>"+obj.campaignName+"</td>";
 
-    if (obj.localStatus != null) {
-        if (obj.localStatus == 3) {
+    if (obj.object.localStatus != null) {
+        if (obj.object.localStatus == 3) {
             html = html + "<td><span class='error' step='3'></span></td>";
         } else {
-            html = html + "<td><span class='pen' step='" + obj.localStatus + "'></span></td>";
+            html = html + "<td><span class='pen' step='" + obj.object.localStatus + "'></span></td>";
         }
     } else {
         html = html + "<td>&nbsp;</td>";
@@ -301,7 +357,13 @@ function editKwdInfo(jsonData) {
         data: jsonData,
         dataType: "json",
         success: function (data) {
-            var html = keywordDataToHtml(data, 0, $("#tbodyClick").find(".list2_box3 td:eq(9)").html());
+            var jsonData = {};
+            jsonData["object"] = data;
+            jsonData["campaignName"] = $("#tbodyClick").find(".list2_box3 td:eq(9)").html();
+            jsonData["quality"] = $("#tbodyClick").find(".list2_box3 td:eq(4)").attr("cname");
+            jsonData["mobileQuality"] = $("#tbodyClick").find(".list2_box3 td:eq(5)").attr("cname");
+
+            var html = keywordDataToHtml(jsonData, 0);
             var tr = $("#tbodyClick").find(".list2_box3");
             tr.replaceWith(html);
         }
@@ -503,7 +565,13 @@ function reducKwd_update(id) {
         data: {"id": id},
         dataType: "json",
         success: function (data) {
-            var html = keywordDataToHtml(data, 0, $("#tbodyClick").find(".list2_box3 td:eq(9)").html());
+            var jsonData = {};
+            jsonData["object"] = data;
+            jsonData["campaignName"] = $("#tbodyClick").find(".list2_box3 td:eq(9)").html();
+            jsonData["quality"] = $("#tbodyClick").find(".list2_box3 td:eq(4)").attr("cname");
+            jsonData["mobileQuality"] = $("#tbodyClick").find(".list2_box3 td:eq(5)").attr("cname");
+
+            var html = keywordDataToHtml(jsonData, 0);
             var tr = $("#tbodyClick").find(".list2_box3");
             tr.replaceWith(html);
         }

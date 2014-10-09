@@ -3,9 +3,12 @@ package com.perfect.api.baidu;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.core.AppContext;
+import com.perfect.service.AccountManageService;
 import com.perfect.utils.BaiduServiceSupport;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,7 +22,8 @@ import java.util.*;
 @Service
 public class SearchTermsReport {
 
-    private CommonService service = BaiduServiceSupport.getCommonService();
+    @Resource
+    private AccountManageService accountManageService;
 
     public List<RealTimeQueryResultType> getSearchTermsReprot(Integer levelOfDetails, Date startDate, Date endDate, List<AttributeType> attributes, Integer device, Integer searchType) {
         DateFormat df = new SimpleDateFormat("hh:mm:ss");
@@ -59,10 +63,10 @@ public class SearchTermsReport {
             e.printStackTrace();
         }
 
-
+        CommonService commonService = BaiduServiceSupport.getCommonService(accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()));
         ReportService reportService = null;
         try {
-            reportService = service.getService(ReportService.class);
+            reportService = commonService.getService(ReportService.class);
         } catch (ApiException e) {
             e.printStackTrace();
         }
@@ -92,15 +96,5 @@ public class SearchTermsReport {
             List<RealTimeQueryResultType> resList = response1.getRealTimeQueryResultTypes();
             return resList;
         }
-    }
-
-
-    public static void main(String[] args) throws ParseException {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String start = "2014-09-02";
-        String end = "2014-09-19";
-
-        List<RealTimeQueryResultType> list = new SearchTermsReport().getSearchTermsReprot(12, df.parse(start), df.parse(end), null, 0, null);
-        System.out.println(list.size());
     }
 }

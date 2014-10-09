@@ -63,10 +63,11 @@ public class SenderTask implements IScheduleTaskDealSingle<WarningRuleEntity> {
         List<WarningRuleEntity> executeList = new ArrayList<>();
         //得到已经启用并且当天没有预警过的
         List<WarningRuleEntity> warningRuleList = null;/*accountWarningDAO.find(new Query().addCriteria(Criteria.where("isEnable").is(1).and("isWarninged").is(0)), WarningRuleEntity.class);*/
-        //得到当天的账户实时数据
-        List<RealTimeResultType> todayAccountRealDataList = getAccountReportDAO.getAccountRealTimeTypeByDate(df.format(new Date()), df.format(new Date()));
 
         for (WarningRuleEntity wre : warningRuleList) {
+            //得到当天的账户实时数据
+            List<RealTimeResultType> todayAccountRealDataList = getAccountReportDAO.getAccountRealTimeTypeByDate(wre.getAccountId(),df.format(new Date()), df.format(new Date()));
+
             //根据不同的比例和预算金额算出当天消费的金额
             double cost = wre.getWarningPercent() / 100 * wre.getBudget();
             for (RealTimeResultType rtr : todayAccountRealDataList) {

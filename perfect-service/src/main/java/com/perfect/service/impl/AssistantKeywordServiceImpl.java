@@ -1,5 +1,7 @@
 package com.perfect.service.impl;
 
+import com.perfect.api.baidu.QualityTypeService;
+import com.perfect.autosdk.sms.v3.QualityType;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
@@ -43,6 +45,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     @Resource
     private KeyWordBackUpService keyWordBackUpService;
+
+    @Resource
+    private QualityTypeService qualityTypeService;
+
 
     public Iterable<CampaignEntity> getCampaignByAccountId() {
         return campaignDAO.findAll();
@@ -306,10 +312,15 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     private List<KeywordDTO> setCampaignNameByKeywordEntitys(List<KeywordEntity> list, CampaignEntity camp) {
         List<KeywordDTO> dtoList = new ArrayList<>();
+        List<Long> keywordIds = new ArrayList<>();
 
         Map<String, CampaignEntity> map = new HashMap<>();
         CampaignEntity cam;
         for (KeywordEntity kwd : list) {
+           if(kwd.getKeywordId()!=null){
+               keywordIds.add(kwd.getKeywordId());
+           }
+
             if (camp == null) {
                 if (!(new ArrayList<>(map.keySet()).contains(kwd.getAdgroupObjId()) || new ArrayList<>(map.keySet()).contains(kwd.getAdgroupId() + ""))) {
                     AdgroupEntity ad = kwd.getAdgroupId() == null ? adgroupDAO.findByObjId(kwd.getAdgroupObjId()) : adgroupDAO.findOne(kwd.getAdgroupId());
@@ -330,6 +341,18 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             }
 
         }
+        //在百度上得到关键词的质量度
+        List<QualityType> qualityList = qualityTypeService.getQualityType(keywordIds);
+        for(QualityType qualityType:qualityList){
+            for(KeywordDTO dto:dtoList){
+                if(qualityType.getId().longValue()==dto.getObject().getKeywordId().longValue()){
+                    dto.setQuality(qualityType.getQuality());
+                    dto.setMobileQuality(qualityType.getMobileQuality());
+                    break;
+                }
+            }
+        }
+
         return dtoList;
     }
 

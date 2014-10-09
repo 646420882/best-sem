@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * Created by john on 2014/9/2.
- * 可以被删除的关键词
  */
 public class KeywordDTO implements Serializable{
 
@@ -18,11 +17,17 @@ public class KeywordDTO implements Serializable{
 
     private KeywordEntity object;
 
-    public KeywordDTO(String campaignName, Long campaignId, String adgroupName, KeywordEntity object) {
+    private long quality;
+
+    private long mobileQuality;
+
+    public KeywordDTO(String campaignName, Long campaignId, String adgroupName, KeywordEntity object, long quality, long mobileQuality) {
         this.campaignName = campaignName;
         CampaignId = campaignId;
         this.adgroupName = adgroupName;
         this.object = object;
+        this.quality = quality;
+        this.mobileQuality = mobileQuality;
     }
 
     public KeywordDTO() {
@@ -58,5 +63,21 @@ public class KeywordDTO implements Serializable{
 
     public void setObject(KeywordEntity object) {
         this.object = object;
+    }
+
+    public long getQuality() {
+        return quality;
+    }
+
+    public void setQuality(long quality) {
+        this.quality = quality;
+    }
+
+    public long getMobileQuality() {
+        return mobileQuality;
+    }
+
+    public void setMobileQuality(long mobileQuality) {
+        this.mobileQuality = mobileQuality;
     }
 }
