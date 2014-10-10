@@ -11,40 +11,52 @@
     <title></title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
+
 </head>
 <body>
-<div style="margin-top: 180px;">
-        <ul style="width: 500px;text-align: left;margin-left: 35%;padding: 30px;border: 1px solid #ddd">
-            <li><span style="color: red">注：如果没有选取时间则为默认拉取昨天的数据</span></li>
-            <li style="margin-top: 10px">
-                选择时间范围：
-                <input type="text" id="date" style="width: 200px;height:25px;" readonly>
-                <input name="reservationa" type="image"
-                       onclick=" _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
-                       src="${pageContext.request.contextPath}/public/img/date.png">
-            </li>
-            <li style="margin-top: 10px">
-                选择拉取报告类型：
-                <select id="selectOP">
-                    <option value="0">拉取全部报告</option>
-                    <option value="1">拉取账户报告</option>
-                    <option value="2">拉取计划报告</option>
-                    <option value="3">拉取单元报告</option>
-                    <option value="4">拉取创意报告</option>
-                    <option value="5">拉取关键词报告</option>
-                    <option value="6">拉取地域报告</option>
-                </select>
-            </li>
-            <li style="margin-top: 10px;text-align: center">
-                <input type="button" id="tijiao" value="确定">
-            </li>
-            <li>
-                <div id="appendtext"></div>
-            </li>
-        </ul>
+<div id="background" class="background"></div>
+<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
+<div id="progressBar1" class="progressBar">正在生成数据，请稍等...</div>
+<jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
+<div class="backstage_concent mid over">
+        <div class="backstage_notice over">
+            <span>注：如果没有选取时间则默认拉取昨天的数据,拉取时间较长，请勿关闭页面。</span>
+        </div>
+        <div class="backstage_list over">
+            <ul>
+                <li>
+                    <span>选择时间范围：</span>
+                    <input type="text" id="date" readonly>
+                    <input name="reservationa" type="image" class="date"
+                           onclick=" _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                           src="${pageContext.request.contextPath}/public/img/date.png">
+                </li>
+                <li>
+                    <span>选择拉取报告类型：</span>
+                    <select id="selectOP">
+                        <option value="0">拉取全部报告</option>
+                        <option value="1">拉取账户报告</option>
+                        <option value="2">拉取计划报告</option>
+                        <option value="3">拉取单元报告</option>
+                        <option value="4">拉取创意报告</option>
+                        <option value="5">拉取关键词报告</option>
+                        <option value="6">拉取地域报告</option>
+                    </select>
+                </li>
+                <li>
+                    <input type="button" id="tijiao" value="确定" class="sure">
+                </li>
+                <li>
+                    <div id="appendtext"></div>
+                </li>
+            </ul>
+
+        </div>
+
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
@@ -124,6 +136,17 @@
 
             }
         });
+        //loading
+        var ajaxbg = $("#background,#progressBar");
+        $("#progressBar1").hide();
+        ajaxbg.hide();
+        $(document).ajaxStart(function () {
+            ajaxbg.show();
+        });
+        $(document).ajaxStop(function () {
+            ajaxbg.fadeOut(1000);
+        });
+
     });
 
 </script>
