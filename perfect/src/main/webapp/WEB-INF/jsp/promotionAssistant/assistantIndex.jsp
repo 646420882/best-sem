@@ -285,26 +285,19 @@
                 <li>
                     <div class="t_list01 fl over">创意标题：</div>
                     <div class="t_list03 fl over">
-                        <input type="text" class="zs_input1" id="sTitle"><input type="button"
-                                                                                value="{}插入通配符"
-                                                                                onclick="addTb(this)"
-                                                                                class="zs_input2"><span><span
+                        <input type="text" class="zs_input1" id="sTitle"><span><span
                             id="sTitle_size">49</span>/50</span>
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">创意描述1：</div>
-                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes1"><input type="button"
-                                                                                                         value="{}插入通配符"
-                                                                                                         class="zs_input2"><span><span
+                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes1"><span><span
                             id="sDes1_size">49</span>/80</span>
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">创意描述2：</div>
-                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes2"><input type="button"
-                                                                                                         value="{}插入通配符"
-                                                                                                         class="zs_input2"><span><span
+                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes2"><span><span
                             id="sDes2_size">49</span>/80</span>
                     </div>
                 </li>
@@ -1416,9 +1409,9 @@
         <form id="cUpdateForm">
             <ul class="chuangyi">
                 <li><input name="oid" type="hidden"/></li>
-                <li><label>创意标题:</label><input name="title" maxlength="50"/></li>
-                <li><label>创意描述1:</label><input name="description1" maxlength="80"/></li>
-                <li><label>创意描述2:</label><input name="description2" maxlength="80"/></li>
+                <li><label>创意标题:</label><input name="title" maxlength="50"/> <input type="button" value="{}插入通配符" onclick="addTb()" /></li>
+                <li><label>创意描述1:</label><input name="description1" maxlength="80"/><input type="button" value="{}插入通配符" onclick="addTbDes1()" /></li>
+                <li><label>创意描述2:</label><input name="description2" maxlength="80"/><input type="button" value="{}插入通配符" onclick="addTbDes2()" /></li>
                 <li><label>默认访问URL:</label><input name="pcDestinationUrl" maxlength="1024"/></li>
                 <li><label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/></li>
                 <li><label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></li>
