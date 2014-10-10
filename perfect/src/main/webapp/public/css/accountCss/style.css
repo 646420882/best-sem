@@ -1278,6 +1278,16 @@ ul.ztree.zTreeDragUL {
     width: 100px;
     text-align: right;
 }
+.zs_bottom2 .w_list01 {
+    width: 100px;
+   /* text-align:left;*/
+}
+.zs_bottom2 .t_list06{
+    width:70%;
+}
+.w_list02 .zs_input3{
+    width: 80%;
+}
 .advanced_search {
     display: block;
     width: 114px;
@@ -1711,13 +1721,13 @@ h2 .close {
     border: 1px solid #cfcfcf;
 }
 .t_list03 .zs_input1 {
-    width: 78%;
+    width:90%;
 }
 .w_list04 {
     width: 100%;
 }
 .t_list01 {
-    width: 90px;
+    width: 96px;
     text-align:left;
 }
 .t_list02, .t_list03 {
@@ -1728,7 +1738,7 @@ h2 .close {
     margin-bottom: 10px;
 }
 .t_list05{
-    width: 78%;
+    width: 75%;
 
 }
 
@@ -1737,8 +1747,11 @@ h2 .close {
     overflow:hidden;
 }
 .zs_input3 {
-    width: 70%;
+    width: 82%;
     height: 22px;
+}
+.t_list06 .zs_input3{
+    width:80%;
 }
 .zs_input4 {
     display: block;
@@ -1806,9 +1819,8 @@ h2 .close {
     background: #d2e9ff;
 }
 .z_bottom3 {
-    margin-right: 3%;
     overflow:hidden;
-    *width:30%;
+    width:33%;
 }
 .cy_menu {
     height: 36px;
@@ -1830,7 +1842,10 @@ h2 .close {
     border-radius: 10px;
 }
 .cy_bottom1 {
-    width: 48%;
+    width: 50%;
+}
+.t_list05 .zs_input3{
+    width:80%;
 }
 @media screen and (max-width :1300px) {
     .cy_bottom1 {
@@ -1850,7 +1865,7 @@ h2 .close {
     background: url(/public/img/list06_point.png) center bottom no-repeat;
 }
 .list06_textarea {
-    width: 98%;
+    width: 95%;
     height: 142px;
     border-top: 2px solid #555555;
     border-left: 1px solid #cfcfcf;
@@ -2854,6 +2869,16 @@ float:none;
     width:98%;
     *width:94%;
     color:#ccc;
+}
+.chuangyi li .chuangyi_input{
+    width:65%;
+}
+.chuangyi li .chuangyi_fu{
+    color: #333;
+    height: 26px;
+    line-height: 20px;
+    margin-left:1%;
+    width: 30%;
 }
 .riginality_under h3{
     font-size:14px;

@@ -197,19 +197,19 @@
         <div class="zs_bottom2 over fr">
             <ul>
                 <li>
-                    <div class="w_list01 fl over">所属监控文件夹：</div>
+                    <div class="t_list01 fl over">所属监控文件夹：</div>
                     <div class="w_list02 fl over"><em>0个</em></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">匹配模式：</div>
+                    <div class="t_list01 fl over">匹配模式：</div>
                     <div class="w_list02 fl over"><em class="matchModel_1"></em></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">状态：</div>
+                    <div class="t_list01 fl over">状态：</div>
                     <div class="w_list02 fl over"><b class="status_1"></b></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">启用/暂停：</div>
+                    <div class="t_list01 fl over">启用/暂停：</div>
                     <div class="w_list02 fl over"><select class="pause_1" onchange="whenBlurEditKeyword(7,this.value)">
                     </select></div>
                 </li>
@@ -337,18 +337,18 @@
         <div class="zs_bottom2 over fr" style="border:none;">
             <ul>
                 <li>
-                    <div class="w_list01 fl over">状态：</div>
+                    <div class="t_list01 fl over">状态：</div>
                     <div class="w_list02 fl over"> <b id="sStatus">有效</b></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">设备偏好：</div>
+                    <div class="t_list01 fl over">设备偏好：</div>
                     <div class="w_list02 fl over">
                         <select>
                             <option>全部</option>
                         </select></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">启用/暂停：</div>
+                    <div class="t_list01 fl over">启用/暂停：</div>
                     <div class="w_list02 fl over" id="sPause">
                         <select >
                             <option value="true">启用</option>
@@ -694,17 +694,17 @@
     <div class="zs_bottom2 over fr">
         <ul>
             <li>
-                <div class="w_list01 fl over"><span>状态:</span></div>
+                <div class="t_list01 fl over"><span>状态:</span></div>
                 <div class="w_list02 fl over"><b></b></div>
             </li>
             <li>
-                <div class="w_list01 fl over"><span>设备偏好：</span></div>
+                <div class="t_list01 fl over"><span>设备偏好：</span></div>
                 <div class="w_list02 fl over"><select>
                     <option>全部</option>
                 </select></div>
             </li>
             <li>
-                <div class="w_list01 fl over"><span>启用/暂停：</span></div>
+                <div class="t_list01 fl over"><span>启用/暂停：</span></div>
                 <div class="w_list02 fl over"><select>
                     <option>启用</option>
                 </select></div>
@@ -793,11 +793,11 @@
         <div class="zs_bottom2 over fr">
             <ul>
                 <li>
-                    <div class="w_list01 fl over">状态：</div>
+                    <div class="t_list01 fl over">状态：</div>
                     <div class="w_list02 fl over"><b id="apStatus">有效</b></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">启用/暂停：</div>
+                    <div class="t_list01 fl over">启用/暂停：</div>
                     <div class="w_list02 fl over"><select id="apPause" onchange="adgroupdSelectChange(this);">
                         <option value="true">启用</option><option value="false">暂停</option>
                     </select></div>
@@ -871,62 +871,62 @@
         <div class="zs_bottom2 over fl " style="border-right: 1px solid #e7e7e7;">
             <ul>
                 <li>
-                    <div class="w_list01 fl over">名称：</div>
-                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditCampaign(1,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 campaignName_5"></div>
+                    <div class="t_list01 fl over">名称：</div>
+                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(1,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 campaignName_5"></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">每日预算：</div>
-                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditCampaign(2,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 budget_5"></div>
+                    <div class="t_list01 fl over">每日预算：</div>
+                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(2,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 budget_5"></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">移动出价比例：</div>
-                    <div class="w_list02 fl over"><input type="text" onblur="whenBlurEditCampaign(3,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 priceRatio_5"><span>0/1024</span></div>
+                    <div class="t_list01 fl over">移动出价比例：</div>
+                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(3,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 priceRatio_5"><span>0/1024</span></div>
                 </li>
             </ul>
         </div>
         <div class="zs_bottom1 over fr" style="border-right:none;">
             <ul class="z_bottom3 fl">
                 <li>
-                    <div class="w_list01 fl over">推广时段：</div>
+                    <div class="t_list01 fl over">推广时段：</div>
                     <div class="w_list02 fl over"><em class="schedule_5">全部</em></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">推广地域：</div>
+                    <div class="t_list01 fl over">推广地域：</div>
                     <div class="w_list02 fl over"><em class="regionTarget_5">使用账户推广地域</em></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">动态创意状态：</div>
+                    <div class="t_list01 fl over">动态创意状态：</div>
                     <div class="w_list02 fl over"><b class="isDynamicCreative_5"></b></div>
                 </li>
             </ul>
             <ul class="z_bottom3 fl">
                 <li>
-                    <div class="w_list01 fl over">否定关键词：</div>
+                    <div class="t_list01 fl over">否定关键词：</div>
                     <div class="w_list02 fl over "><em class="negativeWords_5"></em></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">IP排除：</div>
+                    <div class="t_list01 fl over">IP排除：</div>
                     <div class="w_list02 fl over"><em class="excluedIp_5"></em></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">创意展现方式：</div>
+                    <div class="t_list01 fl over">创意展现方式：</div>
                     <div class="w_list02 fl over"><select class="selectShowProb_5" onchange="whenBlurEditCampaign(10,this.value);">
                     </select></div>
                 </li>
             </ul>
             <ul class="z_bottom3 fl">
                 <li>
-                    <div class="w_list01 fl over">状态：</div>
+                    <div class="t_list01 fl over">状态：</div>
                     <div class="w_list02 fl over"><b class="status_5"></b></div>
                 </li>
                 <li>
                     <%--<div class="w_list01 fl over">IP排除：</div>
                     <div class="w_list02 fl over"><span> 0次</span></div>--%>
-                    <div class="w_list01 fl over">达到预算下线：</div>
+                    <div class="t_list01 fl over">达到预算下线：</div>
                     <div class="w_list02 fl over"><span class="budgetOfflineTime_5"></span></div>
                 </li>
                 <li>
-                    <div class="w_list01 fl over">启用/暂停：</div>
+                    <div class="t_list01 fl over">启用/暂停：</div>
                     <div class="w_list02 fl over"><select class="selectPause_5" onchange="whenBlurEditCampaign(11,this.value);">
                     </select></div>
                 </li>
@@ -1364,15 +1364,15 @@
         <form id="cUpdateForm">
             <ul class="chuangyi">
                 <li><input name="oid" type="hidden"/></li>
-                <li><label>创意标题:</label><input name="title" maxlength="50"/> <input type="button" value="{}插入通配符" onclick="addTb()" /></li>
-                <li><label>创意描述1:</label><input name="description1" maxlength="80"/><input type="button" value="{}插入通配符" onclick="addTbDes1()" /></li>
-                <li><label>创意描述2:</label><input name="description2" maxlength="80"/><input type="button" value="{}插入通配符" onclick="addTbDes2()" /></li>
+                <li><label>创意标题:</label><input name="title" class="chuangyi_input" maxlength="50"/> <input type="button" class="chuangyi_fu" value="{}插入通配符" onclick="addTb()" /></li>
+                <li><label>创意描述1:</label><input name="description1" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="{}插入通配符" onclick="addTbDes1()" /></li>
+                <li><label>创意描述2:</label><input name="description2" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="{}插入通配符" onclick="addTbDes2()" /></li>
                 <li><label>默认访问URL:</label><input name="pcDestinationUrl" maxlength="1024"/></li>
                 <li><label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/></li>
                 <li><label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></li>
                 <li><label>移动显示URL:</label><input name="mobileDisplayUrl" maxlength="36"/></li>
-                <li> <label>创意状态:</label><label id="cuStatus">暂无</label><input type="hidden" name="status"></li>
-                <li><label>是否启用:</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select></li>
+                <li> <label class="fl">创意状态:</label><label id="cuStatus" class="fl">暂无</label><input type="hidden" name="status"></li>
+                <li><label class="fl">是否启用:</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select></li>
             </ul>
 
         </form>
@@ -1380,7 +1380,7 @@
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li onclick="updateOk();">确认</li>
+                <li class="current" onclick="updateOk();">确认</li>
                 <li onclick="closeAlert();">取消</li>
             </ul>
         </div>
@@ -1486,8 +1486,7 @@
     $(document).ajaxStart(function () {
         ajaxbg.show();
     })
-    $(document).ajaxStop(function () {
-        ajaxbg.fadeOut(1000);
+    $(document).ajaxStop(function () {       ajaxbg.fadeOut(1000);
             });
 
 </script>
