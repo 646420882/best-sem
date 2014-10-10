@@ -397,6 +397,8 @@ public class AssistantCampaignController {
     public void quickCreateCampaign(@RequestBody List<KeywordEntity> list, String name, String regions, HttpServletResponse response) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
+        list.remove(list.size()-1);
+
         List<String> regionsStr = regions == null || "".equals(regions) ? null : Arrays.asList(regions.split(","));
         Map<Integer, String> regionMap = RegionalCodeUtils.regionalCodeName(regionsStr == null ? new ArrayList<String>() : regionsStr);
 

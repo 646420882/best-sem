@@ -396,7 +396,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignEntity, Lon
     private void deleteSubByObjectId(List<String> ids) {
         MongoTemplate mongoTemplate = getMongoTemplate();
         List<String> adgroupIds = adgroupDAO.getObjAdgroupIdByCampaignId(ids);
-        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).in(adgroupIds)), AdgroupEntity.class, TBL_ADGROUP);
+        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.SYSTEM_ID).in(adgroupIds)), AdgroupEntity.class, TBL_ADGROUP);
         mongoTemplate.remove(new Query(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).in(adgroupIds)), KeywordEntity.class, TBL_KEYWORD);
         mongoTemplate.remove(new Query(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).in(adgroupIds)), CreativeEntity.class, TBL_CREATIVE);
     }

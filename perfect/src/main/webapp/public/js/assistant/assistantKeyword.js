@@ -289,8 +289,8 @@ function keywordDataToHtml(obj, index) {
     html = html + "<td>"+obj.campaignName+"</td>";
 
     if (obj.object.localStatus != null) {
-        if (obj.object.localStatus == 3) {
-            html = html + "<td><span class='error' step='3'></span></td>";
+        if (obj.object.localStatus == 3||obj.object.localStatus == 4) {
+            html = html + "<td><span class='error' step='" + obj.object.localStatus + "'></span></td>";
         } else {
             html = html + "<td><span class='pen' step='" + obj.object.localStatus + "'></span></td>";
         }
