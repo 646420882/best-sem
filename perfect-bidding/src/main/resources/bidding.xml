@@ -7,7 +7,8 @@
        xmlns:context="http://www.springframework.org/schema/context"
        default-autowire="byName">
 
-    <context:property-placeholder location="mongodb.properties"/>
+    <context:property-placeholder
+            location="classpath:mongodb.properties,classpath:elasticsearch.properties,classpath:redis.properties"/>
 
     <context:annotation-config/>
     <context:component-scan base-package="com.perfect"/>
@@ -16,7 +17,7 @@
     <bean id="jobBoostrap" class="com.perfect.bidding.core.JobBoostrap" init-method="start"/>
 
     <!--<bean name="requestHelper" class="com.perfect.api.baidu.RequestHelper">-->
-        <!--<property name="semaphoreValue" value="1"/>-->
+    <!--<property name="semaphoreValue" value="1"/>-->
     <!--</bean>-->
 
     <!-- 单账户独立进程 -->

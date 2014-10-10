@@ -226,12 +226,12 @@
             <version>2.12.3</version>
         </dependency>
 
-        <!-- 数据库连接池 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>1.0.6</version>
-        </dependency>
+        <!--&lt;!&ndash; 数据库连接池 &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>com.alibaba</groupId>-->
+        <!--<artifactId>druid</artifactId>-->
+        <!--<version>1.0.6</version>-->
+        <!--</dependency>-->
 
         <!-- JSON -->
         <dependency>
@@ -308,7 +308,25 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <filters>
+            <filter>src/main/resources/mongodb.properties</filter>
+            <filter>src/main/resources/redis.properties</filter>
+            <filter>src/main/resources/elasticsearch.properties</filter>
+        </filters>
         <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>utf-8</encoding>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

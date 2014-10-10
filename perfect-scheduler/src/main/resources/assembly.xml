@@ -7,19 +7,19 @@
     </formats>
 
     <includeBaseDirectory>false</includeBaseDirectory>
-    <files>
-        <!--<file>-->
-            <!--<source>src/main/resources/*.xml</source>-->
-            <!--<outputDirectory>/conf</outputDirectory>-->
-            <!--<filtered>true</filtered>-->
-        <!--</file>-->
-
-        <file>
-            <source>src/main/resources/log4j.properties</source>
+    <fileSets>
+        <fileSet>
+            <directory>src/main/resources</directory>
             <outputDirectory>/conf</outputDirectory>
             <filtered>true</filtered>
-        </file>
+            <excludes>
+                <exclude>**/*.sh</exclude>
+                <exclude>**/assembly.xml</exclude>
+            </excludes>
+        </fileSet>
+    </fileSets>
 
+    <files>
         <file>
             <source>src/main/resources/run.sh</source>
             <outputDirectory>/</outputDirectory>

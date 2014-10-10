@@ -13,10 +13,47 @@
     <modules>
         <module>perfect-baidu</module>
         <module>perfect-service</module>
-        <module>perfect-bidding</module>
-        <module>perfect-scheduler</module>
         <module>perfect</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <redis.host>182.92.188.177</redis.host>
+                <redis.port>16379</redis.port>
+                <redis.password>3edcvfr4</redis.password>
+
+                <mongo.host>182.92.188.177:23135</mongo.host>
+                <mongo.username>perfect</mongo.username>
+                <mongo.password>perfect</mongo.password>
+
+                <es.host>182.92.188.177:19300</es.host>
+                <es.cluster>es-cluster</es.cluster>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <env>prod</env>
+
+                <redis.host>mongo2</redis.host>
+                <redis.port>16379</redis.port>
+                <redis.password>3edcvfr4</redis.password>
+
+                <mongo.host>mongo1:23135,mongo2:23136</mongo.host>
+                <mongo.username>perfect</mongo.username>
+                <mongo.password>perfect</mongo.password>
+
+                <es.host>web1:19300,web2:19300</es.host>
+                <es.cluster>es-cluster</es.cluster>
+            </properties>
+        </profile>
+    </profiles>
+
     <properties>
         <springframework-version>4.0.7.RELEASE</springframework-version>
     </properties>
@@ -28,8 +65,8 @@
         </repository>
 
         <!--<repository>-->
-            <!--<id>sonatype</id>-->
-            <!--<url>http://repository.sonatype.org/content/groups/public/</url>-->
+        <!--<id>sonatype</id>-->
+        <!--<url>http://repository.sonatype.org/content/groups/public/</url>-->
         <!--</repository>-->
 
         <repository>
@@ -38,8 +75,8 @@
         </repository>
 
         <!--<repository>-->
-            <!--<id>ibiblio.mirrors</id>-->
-            <!--<url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>-->
+        <!--<id>ibiblio.mirrors</id>-->
+        <!--<url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>-->
         <!--</repository>-->
 
     </repositories>
@@ -115,6 +152,7 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
