@@ -1,7 +1,7 @@
 /**
  * Created by XiaoWei on 2014/9/28.
  */
-$.fn.selectionTp= function () {
+$.fn.selectionTp = function () {
     var s, e, range, stored_range;
     if (this[0].selectionStart == undefined) {
         var selection = document.selection;
@@ -48,53 +48,64 @@ function reView(res) {
     var viewType = 0;
     var _liObj = _this.parents("li");
     if (_liObj.html().indexOf("tbody") == -1) {
-        var title = _liObj.find("a:eq(0) span").html() != undefined ? _liObj.find("a:eq(0) span").html() : _liObj.find("a:eq(0)").html();
-        var regxl = new RegExp("<font color=\"#CC0000\">", "g");
-        var regxr = new RegExp("</font>", "g");
-        var reggn = new RegExp("\n", "g");
-        title = title.replace(regxl, "{");
-        title = title.replace(regxr, "}");
-        var destmp = _liObj.find("a:eq(1)").html() != "" ? _liObj.find("a:eq(1)").html() : _liObj.find("div:eq(2)").html();
-        var url = "请输入";
-        url = destmp.split("<br>")[1] != undefined ? $(destmp.split("<br>")[1]).text() : _liObj.find("a:eq(1) span").text();
-        if (url == "") {
-            url = _liObj.find("div:eq(3) span:eq(0)").text();
-        }
-        if (destmp.indexOf("<br>") > -1) {
-            destmp = destmp.substr(0, destmp.indexOf("<br>"));
-        }
-        var des1 = $(destmp).text();
-        if (des1 == "") {
-            if (_liObj.find("div:eq(2) ul").html() != undefined) {
-                viewType = 1;
-            } else {
-                des1 = _liObj.find("div:eq(2)").html();
-                des1 = des1.replace(reggn, "");
-                des1 = des1.replace(regxl, "{");
-                des1 = des1.replace(regxr, "}");
-            }
-        }
-        //判断如果这里是闪投创意
-        if (viewType == 1) {
-            alert("该创意是闪投创意，暂不支持！");
+        if (_liObj.find("div:eq(2)").html().indexOf("EC_palist") == -1) {
+            if (_liObj.find("div:eq(2)").html().indexOf("EC_pap_big") == -1) {
+                var title = _liObj.find("a:eq(0) span").html() != undefined ? _liObj.find("a:eq(0) span").html() : _liObj.find("a:eq(0)").html();
+                var regxl = new RegExp("<font color=\"#CC0000\">", "g");
+                var regxr = new RegExp("</font>", "g");
+                var reggn = new RegExp("\n", "g");
+                title = title.replace(regxl, "{");
+                title = title.replace(regxr, "}");
+                var destmp = _liObj.find("a:eq(1)").html() != "" ? _liObj.find("a:eq(1)").html() : _liObj.find("div:eq(2)").html();
+                var url = "请输入";
+                url = destmp.split("<br>")[1] != undefined ? $(destmp.split("<br>")[1]).text() : _liObj.find("a:eq(1) span").text();
+                if (url == "") {
+                    url = _liObj.find("div:eq(3) span:eq(0)").text();
+                }
+                if (destmp.indexOf("<br>") > -1) {
+                    destmp = destmp.substr(0, destmp.indexOf("<br>"));
+                }
+                var des1 = $(destmp).text();
+                if (des1 == "") {
+                    if (_liObj.find("div:eq(2) ul").html() != undefined) {
+                        viewType = 1;
+                    } else {
+                        des1 = _liObj.find("div:eq(2)").html();
+                        des1 = des1.replace(reggn, "");
+                        des1 = des1.replace(regxl, "{");
+                        des1 = des1.replace(regxr, "}");
+                    }
+                }
+                //判断如果这里是闪投创意
+                if (viewType == 1) {
+                    alert("该创意是闪投创意，暂不支持！");
 //        $("#subTitle").html(title);
 //        $("#Url").html(_liObj.find("div:eq(4) span:eq(0)").html());
 //        subShowEditor(_liObj);
-        } else {
-            reViewData["title"] = title;
-            reViewData["desc1"] = des1;
-            reViewData["desc2"] = des1;
-            reViewData["pcUrl"] = url;
-            reViewData["pcsUrl"] = url;
-            $("#_editor [name='title']").val(title);
-            $("#_editor [name='desc1']").val(des1);
-            $("#_editor [name='desc2']").val("");
-            $("#_editor [name='pcUrl']").val(url);
-            $("#_editor [name='pcsUrl']").val(url);
-            initEditView(res);
-            reShowEditor();
-        }
-    }
+                } else {
+                    reViewData["title"] = title;
+                    reViewData["desc1"] = des1;
+                    reViewData["desc2"] = des1;
+                    reViewData["pcUrl"] = url;
+                    reViewData["pcsUrl"] = url;
+                    $("#_editor [name='title']").val(title);
+                    $("#_editor [name='desc1']").val(des1);
+                    $("#_editor [name='desc2']").val("");
+                    $("#_editor [name='pcUrl']").val(url);
+                    $("#_editor [name='pcsUrl']").val(url);
+                    initEditView(res);
+                    reShowEditor();
+                }
+            }else{
+                alert("该创意是闪投创意，暂不支持！");
+            } //end EC_pap_big
+        }else{
+            alert("该创意是闪投创意，暂不支持！");
+        } //end EC_palist
+    }else{
+        alert("该创意是闪投创意，暂不支持！");
+    }//end tbody
+
 }
 //初始化编辑窗体
 function initEditView(res) {
@@ -522,10 +533,10 @@ function callBackEditor() {
     reShowEditor();
 }
 
-function addTongPei(){
-    var s=$("#title").selectionTp();
-   var _val=$("#title");
-    _val.val(_val.val().replace(s.text,"{"+ s.text+"}"));
+function addTongPei() {
+    var s = $("#title").selectionTp();
+    var _val = $("#title");
+    _val.val(_val.val().replace(s.text, "{" + s.text + "}"));
     var regxl = new RegExp("{", "g");
     var regxr = new RegExp("}", "g");
     var title = _val.val().replace(regxl, "<font color=\"#CC0000\">");
@@ -534,10 +545,10 @@ function addTongPei(){
     $("#left2Title").html(title);
     $("#rightTitle").html(title);
 }
-function addTongPeiDe1(){
-    var s=$("#desc1").selectionTp();
-    var _val=$("#desc1");
-    _val.val(_val.val().replace(s.text,"{"+ s.text+"}"));
+function addTongPeiDe1() {
+    var s = $("#desc1").selectionTp();
+    var _val = $("#desc1");
+    _val.val(_val.val().replace(s.text, "{" + s.text + "}"));
     var desc2 = $("textarea[name='desc2']").val();
     var desc = _val.val();
     var regxl = new RegExp("{", "g");
@@ -548,10 +559,10 @@ function addTongPeiDe1(){
     $("#left2Desc").html(descTotal);
     $("#rightDesc").html(descTotal);
 }
-function addTongPeiDe2(){
-    var s=$("#desc2").selectionTp();
-    var _val=$("#desc2");
-    _val.val(_val.val().replace(s.text,"{"+ s.text+"}"));
+function addTongPeiDe2() {
+    var s = $("#desc2").selectionTp();
+    var _val = $("#desc2");
+    _val.val(_val.val().replace(s.text, "{" + s.text + "}"));
     var desc1 = $("textarea[name='desc1']").val();
     var desc = _val.val();
     var regxl = new RegExp("{", "g");
