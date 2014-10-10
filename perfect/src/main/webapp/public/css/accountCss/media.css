@@ -25,6 +25,7 @@
     .t_list05 {
         width: 75%;
     }
+
 }
 /******1680************/
 @media screen and (min-width: 1601px) and (max-width: 1681px) {
@@ -38,7 +39,7 @@
     }
 
     .zs_bottom1 ul li .t_list03 .zs_input1 {
-        width: 70%;
+        width: 88%;
     }
 
     .w_list01 {
@@ -46,7 +47,7 @@
     }
 
     .zs_input3 {
-        width: 70%;
+        width: 78%;
     }
 
     .t_list02, .t_list03 {
@@ -57,6 +58,12 @@
     }
     .zhilianglist table tr td ul li {
         width: 11.6%;
+    }
+    .t_list05 .zs_input3 {
+        width: 73%;
+    }
+    .t_list06 .zs_input3 {
+        width: 76%;
     }
 }
 
@@ -73,7 +80,7 @@
     }
 
     .zs_bottom1 ul li .t_list03 .zs_input1 {
-        width: 70%;
+        width: 88%;
     }
     .w_list01 {
         width: 90px;
@@ -93,11 +100,11 @@
         width: 88.6%;
     }
     .zs_bottom1 ul li .zs_input1 {
-        width: 82%;
+        width: 89%;
     }
 
     .zs_bottom1 ul li .t_list03 .zs_input1 {
-        width: 70%;
+        width: 88%;
     }
     .w_list01 {
         width: 90px;
@@ -108,10 +115,20 @@
     }
 
     .t_list05 {
-        width: 73%;
+        width: 70%;
     }
     .zhilianglist table tr td ul li {
         width: 11.7%;
+    }
+    .t_list05 .zs_input3 {
+        width: 70%;
+    }
+    .cy_bottom1 .zs_input3 {
+        width: 78%;
+    }
+
+    .t_list06 .zs_input3 {
+        width: 76%;
     }
 }
 @media screen and (min-width: 1442px) and (max-width: 1579px) {
@@ -124,7 +141,7 @@
     }
 
     .zs_bottom1 ul li .t_list03 .zs_input1 {
-        width: 65%;
+        width: 88%;
     }
     .w_list01 {
         width: 90px;
@@ -140,6 +157,10 @@
     .zs_input3 {
         width: 65%;
     }
+
+    .t_list05 .zs_input3 {
+        width: 67%;
+    }
 }
 /******1440************/
  @media screen and (min-width: 1371px) and (max-width: 1441px) {
@@ -154,17 +175,17 @@
             text-align: left;
         }
         .zs_bottom1 ul li .zs_input1 {
-            width: 82%;
+            width: 87%;
         }
         .zs_bottom1 ul li .t_list03 .zs_input1 {
-            width: 64.5%;
+            width: 88%;
         }
         .w_list01 {
             width: 90px;
         }
         .zs_input3 {
             height: 22px;
-            width: 61%;
+            width: 75%;
         }
         .t_list02, .t_list03 {
             width: 83%;
@@ -173,7 +194,7 @@
             margin: 0px 0 0 3px;
         }
         .t_list05 {
-            width: 60%;
+            width: 65%;
         }
      .page ul {
          *margin-left: 20%;
@@ -187,6 +208,16 @@
      }
      .gjclist table tr td ul li {
          width: 8.7%;
+     }
+     .zs_bottom2 .t_list06 {
+         width: 65%;
+     }
+
+     .t_list05 .zs_input3 {
+         width: 67%;
+     }
+     .t_list06 .zs_input3 {
+         width: 69%;
      }
     }
 
@@ -208,11 +239,11 @@
     }
 
     .zs_bottom1 ul li .zs_input1 {
-        width: 82%;
+        width: 85%;
     }
 
     .zs_bottom1 ul li .t_list03 .zs_input1 {
-        width: 64.5%;
+        width: 88%;
     }
 
     .w_list01 {
@@ -233,9 +264,22 @@
     }
 
     .t_list05 {
-        width: 60%;
+        width: 65%;
     }
 
+    .t_list05 .zs_input3 {
+        width: 67%;
+    }
+   .cy_bottom1 .zs_input3 {
+        width: 70%;
+    }
+
+    .zs_bottom2 .t_list06 {
+        width: 62%;
+    }
+    .t_list06 .zs_input3 {
+        width: 65%;
+    }
     .page ul {
         *margin-left: 20%;
     }
@@ -279,10 +323,10 @@
       text-align: left;
   }
   .zs_bottom1 ul li .zs_input1 {
-      width: 82%;
+      width: 85%;
   }
   .zs_bottom1 ul li .t_list03 .zs_input1 {
-      width: 64.5%;
+      width: 85%;
   }
   .w_list01 {
       width: 90px;
@@ -317,6 +361,24 @@
         width: 8.5%;
     }
 
+    .t_list02, .t_list03 {
+        width: 80%;
+    }
+
+    .t_list05 .zs_input3 {
+        width: 60%;
+    }
+    .cy_bottom1 .zs_input3 {
+        width: 70%;
+    }
+    .zs_bottom2 .t_list06 {
+        width: 60%;
+    }
+
+    .t_list06 .zs_input3 {
+        width: 60%;
+    }
+
 }
 
 /******1152************/
@@ -344,6 +406,31 @@
 
     .gjclist table tr td ul li {
         width: 8%;
+    }
+    .t_list02, .t_list03 {
+        width: 78%;
+    }
+
+    .t_list05 {
+        width: 58%;
+    }
+    .t_list05 .zs_input3 {
+        width: 55%;
+    }
+
+    .zs_bottom2 .t_list06 {
+        width: 55%;
+    }
+    .cy_bottom1 .zs_input3 {
+        width: 65%;
+    }
+
+    .zs_bottom1 ul li .zs_input1 {
+        width: 82%;
+    }
+
+    .wrap_list01 .w_list02 ul li span {
+        padding: 0 10px 0 20px;
     }
 }
 /******1024************/
@@ -379,20 +466,38 @@
     }
 
     .zs_bottom1 ul li .t_list03 .zs_input1 {
-        width: 94%;
+        width: 85%;
     }
 
     .w_list01 {
-        width: 90px;
+        width: 96px;
     }
 
     .zs_input3 {
         height: 22px;
-        width: 56%;
+        width: 60%;
     }
 
     .t_list02, .t_list03 {
         width: 100%;
+    }
+    .t_list05 .zs_input3 {
+        width: 70%;
+    }
+    .wrap_list01 span {
+         padding:0 10px;
+    }
+    .wrap_list01 .w_list02 ul li span {
+        padding: 0 0px 0 20px;
+    }
+    .t_list05 {
+        width: 100%;
+    }
+    .zs_bottom2 .t_list06 {
+        width: 100%;
+    }
+    .t_list06 .zs_input3 {
+        width: 70%;
     }
 
     .user_mid {
