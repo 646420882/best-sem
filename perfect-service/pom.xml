@@ -118,6 +118,23 @@
             <version>17.0</version>
         </dependency>
 
+        <!-- POI -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.10.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.10.1</version>
+        </dependency>
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
         <!-- jxls -->
         <dependency>
             <groupId>net.sf.jxls</groupId>
@@ -128,11 +145,6 @@
             <groupId>net.sf.jxls</groupId>
             <artifactId>jxls-reader</artifactId>
             <version>1.0.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.10-FINAL</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -276,7 +288,6 @@
             <scope>system</scope>
             <systemPath>${basedir}/src/main/resources/lib/MSM.jar</systemPath>
         </dependency>
-
 
 
     </dependencies>
