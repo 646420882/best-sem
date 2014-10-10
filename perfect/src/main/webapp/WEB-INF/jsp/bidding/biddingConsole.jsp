@@ -21,9 +21,6 @@
     </style>
 </head>
 <body>
-<div id="background" class="background"></div>
-<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
-<div id="progressBar1" class="progressBar">正在生成数据，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
 <div class="backstage_concent mid over">
 <div id="bidding_box">
@@ -88,16 +85,6 @@
             success: function (data, textStatus, jqXHR) {
                 alert(data.status);
             }
-        });
-        //loading
-        var ajaxbg = $("#background,#progressBar");
-        $("#progressBar1").hide();
-        ajaxbg.hide();
-        $(document).ajaxStart(function () {
-            ajaxbg.show();
-        });
-        $(document).ajaxStop(function () {
-            ajaxbg.fadeOut(1000);
         });
 
     };
