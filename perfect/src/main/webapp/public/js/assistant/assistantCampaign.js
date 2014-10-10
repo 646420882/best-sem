@@ -956,7 +956,7 @@ $("#quickAddplan").click(function () {
         oniframeload: function () {
         },
         onclose: function () {
-            window.location.reload(true);
+            whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
         },
         onremove: function () {
         }

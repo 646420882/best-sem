@@ -285,26 +285,19 @@
                 <li>
                     <div class="t_list01 fl over">创意标题：</div>
                     <div class="t_list03 fl over">
-                        <input type="text" class="zs_input1" id="sTitle"><input type="button"
-                                                                                value="{}插入通配符"
-                                                                                onclick="addTb(this)"
-                                                                                class="zs_input2"><span><span
+                        <input type="text" class="zs_input1" id="sTitle"><span><span
                             id="sTitle_size">49</span>/50</span>
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">创意描述1：</div>
-                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes1"><input type="button"
-                                                                                                         value="{}插入通配符"
-                                                                                                         class="zs_input2"><span><span
+                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes1"><span><span
                             id="sDes1_size">49</span>/80</span>
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">创意描述2：</div>
-                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes2"><input type="button"
-                                                                                                         value="{}插入通配符"
-                                                                                                         class="zs_input2"><span><span
+                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes2"><span><span
                             id="sDes2_size">49</span>/80</span>
                     </div>
                 </li>
@@ -987,17 +980,14 @@
     <div class="zs_function">
         <ul class="fl">
             <li><a  href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>停止</b></a></li>
-            <li><a href="javascript:deleteKwd()"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function11.png"></span><b>激活&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a> </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function8.png"></span><b>监控</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
         </ul>
-        <span class="fr">1/10</span>
     </div>
     <div class="list4">
         <div class="container">
@@ -1020,7 +1010,7 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody >
+                <tbody id="monitorFolder">
                 </tbody>
             </table>
 
@@ -1054,47 +1044,6 @@
             <li><input type="text" maxlength="10" class="inputNo kwdPageNo"/>&nbsp;<input type="button" value="GO" /></li>
         </ul>
     </div>
-
-    <div class="zs_bottom over">
-        <input type = "hidden"  />
-        <div class="zs_bottom1 over fl ">
-            <ul>
-                <li>
-                    <div class="t_list01 fl over">关键词名称：</div>
-                    <div class="t_list02 fl over"><input type="text" disabled="disabled"  class="zs_input1 keyword_1"></div>
-                </li>
-                <li>
-                    <div class="t_list01 fl over">出价：</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(2,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 price_1"></div>
-                </li>
-                <li>
-                    <div class="t_list01 fl over">访问URL:</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(3,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 pcurl_1"><span class="pcurlSize_1">0/1024</span></div>
-                </li>
-                <li>
-                    <div class="t_list01 fl over">移动访问URL：</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(4,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 mourl_1"><span class="mourlSize_1">0/1024</span></div>
-                </li>
-            </ul>
-        </div>
-        <div class="zs_bottom2 over fr">
-            <ul>
-                <li>
-                    <div class="w_list01 fl over">匹配模式：</div>
-                    <div class="w_list02 fl over"><em class="matchModel_1"></em></div>
-                </li>
-                <li>
-                    <div class="w_list01 fl over">状态：</div>
-                    <div class="w_list02 fl over"><b class="status_1"></b></div>
-                </li>
-                <li>
-                    <div class="w_list01 fl over">启用/暂停：</div>
-                    <div class="w_list02 fl over"><select class="pause_1" onchange="whenBlurEditKeyword(7,this.value)">
-                    </select></div>
-                </li>
-            </ul>
-        </div>
-    </div>
 </div>
 <!--监控文件夹-->
 <div class="containers  over hides">
@@ -1107,7 +1056,6 @@
             <li id="downSync"><a href="javascript:void(0)"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
         </ul>
-        <span class="fr">1/10</span>
     </div>
     <div class="list4" style="height:480px;">
         <div  class="container">
@@ -1416,9 +1364,9 @@
         <form id="cUpdateForm">
             <ul class="chuangyi">
                 <li><input name="oid" type="hidden"/></li>
-                <li><label>创意标题:</label><input name="title" maxlength="50"/></li>
-                <li><label>创意描述1:</label><input name="description1" maxlength="80"/></li>
-                <li><label>创意描述2:</label><input name="description2" maxlength="80"/></li>
+                <li><label>创意标题:</label><input name="title" maxlength="50"/> <input type="button" value="{}插入通配符" onclick="addTb()" /></li>
+                <li><label>创意描述1:</label><input name="description1" maxlength="80"/><input type="button" value="{}插入通配符" onclick="addTbDes1()" /></li>
+                <li><label>创意描述2:</label><input name="description2" maxlength="80"/><input type="button" value="{}插入通配符" onclick="addTbDes2()" /></li>
                 <li><label>默认访问URL:</label><input name="pcDestinationUrl" maxlength="1024"/></li>
                 <li><label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/></li>
                 <li><label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></li>

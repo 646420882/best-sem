@@ -68,11 +68,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * @param ids
      * @return
      */
-    public PagerInfo getKeywordListByIds(List<Long> ids,Integer nowPage,Integer pageSize){
-        PagerInfo page = keywordDAO.findKeywordByIds(ids,nowPage,pageSize);
+    public List<KeywordDTO> getKeywordListByIds(List<Long> ids){
+        List<KeywordEntity> list = keywordDAO.findKeywordByIds(ids);
         List<KeywordDTO> dtoList = new ArrayList<>();
         Map<String, Map<String,Object>> map = new HashMap<>();
-        List<KeywordEntity> list = (List<KeywordEntity>) page.getList();
         Map<String,Object> getMap;
         CampaignEntity cam;
         for (KeywordEntity kwd : list) {
@@ -95,8 +94,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 dtoList.add(dto);
         }
 
-        page.setList(dtoList);
-        return page;
+        return dtoList;
     }
 
 
@@ -345,7 +343,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         List<QualityType> qualityList = qualityTypeService.getQualityType(keywordIds);
         for(QualityType qualityType:qualityList){
             for(KeywordDTO dto:dtoList){
-                if(qualityType.getId().longValue()==dto.getObject().getKeywordId().longValue()){
+                if(dto.getObject().getKeywordId()!=null&&qualityType.getId().longValue()==dto.getObject().getKeywordId().longValue()){
                     dto.setQuality(qualityType.getQuality());
                     dto.setMobileQuality(qualityType.getMobileQuality());
                     break;

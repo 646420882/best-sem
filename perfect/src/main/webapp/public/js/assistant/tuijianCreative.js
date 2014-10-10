@@ -1,64 +1,111 @@
 /**
  * Created by XiaoWei on 2014/9/28.
  */
+$.fn.selectionTp = function () {
+    var s, e, range, stored_range;
+    if (this[0].selectionStart == undefined) {
+        var selection = document.selection;
+        if (this[0].tagName.toLowerCase() != "textarea") {
+            var val = this.val();
+            range = selection.createRange().duplicate();
+            range.moveEnd("character", val.length);
+            s = (range.text == "" ? val.length : val.lastIndexOf(range.text));
+            range = selection.createRange().duplicate();
+            range.moveStart("character", -val.length);
+            e = range.text.length;
+        } else {
+            range = selection.createRange(),
+                stored_range = range.duplicate();
+            stored_range.moveToElementText(this[0]);
+            stored_range.setEndPoint('EndToEnd', range);
+            s = stored_range.text.length - range.text.length;
+            e = s + range.text.length;
+        }
+    } else {
+        s = this[0].selectionStart,
+            e = this[0].selectionEnd;
+    }
+    var te = this[0].value.substring(s, e);
+    return {start: s, end: e, text: te};
+};
 var reViewData = {};//记录点击编辑按钮时读取的信息数据
 var reParms = {cid: null, aid: null};
+var doMain = "";
 $(function () {
     textSizeValid();
     onKeyDownView();
 });
 //预览方法
 function reView(res) {
+    if ($("#dm").val() == "") {
+        $.get("/assistantCreative/getDomain", function (result) {
+            if (result != "0") {
+                $("#dm").val(result);
+            }
+        });
+    }
     var _this = $(res);
-
     var viewType = 0;
     var _liObj = _this.parents("li");
-    var title = _liObj.find("a:eq(0) span").html() != undefined ? _liObj.find("a:eq(0) span").html() : _liObj.find("a:eq(0)").html();
-    var regxl = new RegExp("<font color=\"#CC0000\">", "g");
-    var regxr = new RegExp("</font>", "g");
-    var reggn = new RegExp("\n", "g");
-    title = title.replace(regxl, "{");
-    title = title.replace(regxr, "}");
-    var destmp = _liObj.find("a:eq(1)").html() != "" ? _liObj.find("a:eq(1)").html() : _liObj.find("div:eq(2)").html();
-    var url = "请输入";
-    url = destmp.split("<br>")[1] != undefined ? $(destmp.split("<br>")[1]).text() : _liObj.find("a:eq(1) span").text();
-    if (url == "") {
-        url = _liObj.find("div:eq(3) span:eq(0)").text();
-    }
-    if (destmp.indexOf("<br>") > -1) {
-        destmp = destmp.substr(0, destmp.indexOf("<br>"));
-    }
-    var des1 = $(destmp).text();
-    if (des1 == "") {
-        if (_liObj.find("div:eq(2) ul").html() != undefined) {
-            viewType = 1;
-        } else {
-            des1 = _liObj.find("div:eq(2)").html();
-            des1 = des1.replace(reggn, "");
-            des1 = des1.replace(regxl, "{");
-            des1 = des1.replace(regxr, "}");
-        }
-    }
-    //判断如果这里是闪投创意
-    if (viewType == 1) {
-        alert("该创意是闪投创意，暂不支持！");
+    if (_liObj.html().indexOf("tbody") == -1) {
+        if (_liObj.find("div:eq(2)").html().indexOf("EC_palist") == -1) {
+            if (_liObj.find("div:eq(2)").html().indexOf("EC_pap_big") == -1) {
+                var title = _liObj.find("a:eq(0) span").html() != undefined ? _liObj.find("a:eq(0) span").html() : _liObj.find("a:eq(0)").html();
+                var regxl = new RegExp("<font color=\"#CC0000\">", "g");
+                var regxr = new RegExp("</font>", "g");
+                var reggn = new RegExp("\n", "g");
+                title = title.replace(regxl, "{");
+                title = title.replace(regxr, "}");
+                var destmp = _liObj.find("a:eq(1)").html() != "" ? _liObj.find("a:eq(1)").html() : _liObj.find("div:eq(2)").html();
+                var url = "请输入";
+                url = destmp.split("<br>")[1] != undefined ? $(destmp.split("<br>")[1]).text() : _liObj.find("a:eq(1) span").text();
+                if (url == "") {
+                    url = _liObj.find("div:eq(3) span:eq(0)").text();
+                }
+                if (destmp.indexOf("<br>") > -1) {
+                    destmp = destmp.substr(0, destmp.indexOf("<br>"));
+                }
+                var des1 = $(destmp).text();
+                if (des1 == "") {
+                    if (_liObj.find("div:eq(2) ul").html() != undefined) {
+                        viewType = 1;
+                    } else {
+                        des1 = _liObj.find("div:eq(2)").html();
+                        des1 = des1.replace(reggn, "");
+                        des1 = des1.replace(regxl, "{");
+                        des1 = des1.replace(regxr, "}");
+                    }
+                }
+                //判断如果这里是闪投创意
+                if (viewType == 1) {
+                    alert("该创意是闪投创意，暂不支持！");
 //        $("#subTitle").html(title);
 //        $("#Url").html(_liObj.find("div:eq(4) span:eq(0)").html());
 //        subShowEditor(_liObj);
-    } else {
-        reViewData["title"] = title;
-        reViewData["desc1"] = des1;
-        reViewData["desc2"] = des1;
-        reViewData["pcUrl"] = url;
-        reViewData["pcsUrl"] = url;
-        $("#_editor [name='title']").val(title);
-        $("#_editor [name='desc1']").val(des1);
-        $("#_editor [name='desc2']").val(des1);
-        $("#_editor [name='pcUrl']").val(url);
-        $("#_editor [name='pcsUrl']").val(url);
-        initEditView(res);
-        reShowEditor();
-    }
+                } else {
+                    reViewData["title"] = title;
+                    reViewData["desc1"] = des1;
+                    reViewData["desc2"] = des1;
+                    reViewData["pcUrl"] = url;
+                    reViewData["pcsUrl"] = url;
+                    $("#_editor [name='title']").val(title);
+                    $("#_editor [name='desc1']").val(des1);
+                    $("#_editor [name='desc2']").val("");
+                    $("#_editor [name='pcUrl']").val(url);
+                    $("#_editor [name='pcsUrl']").val(url);
+                    initEditView(res);
+                    reShowEditor();
+                }
+            }else{
+                alert("该创意是闪投创意，暂不支持！");
+            } //end EC_pap_big
+        }else{
+            alert("该创意是闪投创意，暂不支持！");
+        } //end EC_palist
+    }else{
+        alert("该创意是闪投创意，暂不支持！");
+    }//end tbody
+
 }
 //初始化编辑窗体
 function initEditView(res) {
@@ -69,14 +116,27 @@ function initEditView(res) {
         var _max = $(o).html().split("/")[1];
         var _thisStr = 0;
         if ($(o).prev("input[type=text]").val() != undefined) {
-            _thisStr = $(o).prev("input[type=text]").val().length;
+            var _thisSttmpr = $(o).prev("input[type=text]").val();
+            var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
+            _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
+            if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) == 0) {
+                $(o).removeClass().addClass("span-error");
+            } else {
+                $(o).removeClass().addClass("span-ok");
+            }
+            $(o).html(_thisStr + "/" + _max);
         } else {
-            _thisStr = $(o).prev("textarea").val().length;
+            var _thisSttmpr = $(o).prev("textarea").val();
+            var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
+            _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
+            if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) == 0) {
+                $(o).removeClass().addClass("span-error");
+            } else {
+                $(o).removeClass().addClass("span-ok");
+            }
+            $(o).html(_thisStr + "/" + _max);
         }
-        if (parseInt(_thisStr) > parseInt(_max)) {
-            $(o).addClass("span-error");
-        }
-        $(o).html(_thisStr + "/" + _max);
+
     });
     var _thisUl = $("#terms li");
     var _thatUl = $("#repUl");
@@ -93,9 +153,9 @@ function initEditView(res) {
     var desc = reViewData["desc1"].replace(regxl, "<font color=\"#CC0000\">");
     desc = desc.replace(regxr, "</font>");
     var url = reViewData["pcUrl"];
-    var _reView = "<a href='javascript:void(0)' class='EC_t EC_BL' id='left1Title'>" + title + "</a><br><span  class='ec_desc ec_font_small' id='left1Desc'>" + desc +desc+ "</span><span class='ec_url' id='left1Url'>" + url + "</span>";
-    var _reView2 = "<a href='javascript:void(0)' class='EC_t EC_BL' id='left2Title'>" + title + "</a><font color='#080' id='left2Url'>" + url + "</font><br><span  class='ec_desc ec_font_small' id='left2Desc'>" + desc+desc + "</span><br>";
-    var _reView3 = "<a href='javascript:void(0)' class='EC_t EC_BL' id='rightTitle'>" + title + "</a><br><span  class='ec_desc ec_font_small' id='rightDesc'>" + desc+desc + "</span><span class='ec_url' id='rightUrl'>" + url + "</span>";
+    var _reView = "<a href='javascript:void(0)' class='EC_t EC_BL' id='left1Title'>" + title + "</a><br><span  class='ec_desc ec_font_small' id='left1Desc'>" + desc + "</span><span class='ec_url' id='left1Url'>" + url + "</span>";
+    var _reView2 = "<a href='javascript:void(0)' class='EC_t EC_BL' id='left2Title'>" + title + "</a><font color='#080' id='left2Url'>" + url + "</font><br><span  class='ec_desc ec_font_small' id='left2Desc'>" + desc + "</span><br>";
+    var _reView3 = "<a href='javascript:void(0)' class='EC_t EC_BL' id='rightTitle'>" + title + "</a><br><span  class='ec_desc ec_font_small' id='rightDesc'>" + desc + "</span><span class='ec_url' id='rightUrl'>" + url + "</span>";
     $("#reLeft1").empty().append(_reView);
     $("#reLeft2").empty().append(_reView2);
     $("#reRight").empty().append(_reView3);
@@ -172,45 +232,62 @@ function reHideSelect() {
     });
 }
 function reSave() {
-    var error = 0;//记录字符超出错误
-    var emaiError=0;
-    var strRegex ="^((https|http|ftp|rtsp|mms)://)?[a-z0-9A-Z]{3}\.[a-z0-9A-Z][a-z0-9A-Z]{0,61}?[a-z0-9A-Z]\.com|net|cn|cc (:s[0-9]{1-4})?/$";
-    var re = new RegExp(strRegex);
-    var _span = $("#_editor span");
-    var pcUrl=$("textarea[name='pcUrl']").val();
-    var pcsUrl=$("input[name='pcsUrl']").val();
-    _span.each(function (i, o) {
-        if ($(o).attr("class") == "span-error") {
-            error++;
-        }
-    });
-    if(!re.test(pcUrl)){
-        emaiError++;
+
+    var dm = "." + $("#dm").val();
+    var pcUrl = $("textarea[name='pcUrl']").val();
+    var pcsUrl = $("input[name='pcsUrl']").val();
+    if ($("#_editor span:eq(0)").attr("class") == "span-error") {
+        alert("标题字符不符合规范，请重新输入！");
+        return false;
     }
-    if(!re.test(pcsUrl)){
-        emaiError++;
+    if ($("#_editor span:eq(1)").attr("class") == "span-error") {
+        alert("描述1字符不符合规范，请重新输入！");
+        return false;
     }
-    if (parseInt(error) == 0) {
-        if(parseInt(emaiError)>0){
-            alert("请输入有效的Url地址");
-        }else{
-        reViewData["title"] = $("#_editor [name='title']").val();
-        reViewData["desc1"] = $("#_editor [name='desc1']").val();
-        reViewData["desc2"] = $("#_editor [name='desc2']").val();
-        reViewData["pcUrl"] = $("#_editor [name='pcUrl']").val();
-        reViewData["pcsUrl"] = $("#_editor [name='pcsUrl']").val();
-        reHideEditor();
-        reShowSelect();
-        var jcBox = $("#jcUl");
-        jcBox.empty();
-        getPlans();
-        jcBox.append("<li>推广计划<select id='sPlan' onchange='loadUnit(this.value)'><option value='-1'>请选择计划</option></select></li>");
-        jcBox.append("<li>推广单元<select id='sUnit' ><option value='-1'>请选择单元</option></select></li>");
-        $("#reOkView").show();
-        }
-    } else {
-        alert("字符超出限制！");
+    if ($("#_editor span:eq(2)").attr("class") == "span-error") {
+        alert("描述2字符不符合规范，请重新输入！");
+        return false;
     }
+    if ($("#_editor span:eq(3)").attr("class") == "span-error") {
+        alert("访问Url字符不符合规范，请重新输入！");
+        return false;
+    }
+    if ($("#_editor span:eq(4)").attr("class") == "span-error") {
+        alert("显示Url字符不符合规范，请重新输入！");
+        return false;
+    }
+    if ($("#pcUrlMsg").html() != "") {
+        alert("请验证访问Url格式！!");
+        return false;
+    }
+    if ($("#pcsUrlMsg").html() != "") {
+        alert("请验证显示Url格式！!");
+        return false;
+    }
+    if ($("#_editor textarea[name='pcUrl']").val().indexOf(dm) == -1) {
+        alert("访问地址中必须包含" + dm + "的域名后缀!");
+        return false;
+    }
+    if ($("#_editor input[name='pcsUrl']").val().indexOf(dm) == -1) {
+        alert("显示地址中必须包含" + dm + "的域名后缀!");
+        return false;
+    }
+
+
+    reViewData["title"] = $("#_editor [name='title']").val();
+    reViewData["desc1"] = $("#_editor [name='desc1']").val();
+    reViewData["desc2"] = $("#_editor [name='desc2']").val();
+    reViewData["pcUrl"] = $("#_editor [name='pcUrl']").val();
+    reViewData["pcsUrl"] = $("#_editor [name='pcsUrl']").val();
+    reHideEditor();
+    reShowSelect();
+    var jcBox = $("#jcUl");
+    jcBox.empty();
+    getPlans();
+    jcBox.append("<li>推广计划<select id='sPlan' onchange='loadUnit(this.value)'><option value='-1'>请选择计划</option></select></li>");
+    jcBox.append("<li>推广单元<select id='sUnit' ><option value='-1'>请选择单元</option></select></li>");
+    $("#reOkView").show();
+
 }
 function getPlans() {
     $.get("/assistantCreative/getPlans", function (rs) {
@@ -272,6 +349,7 @@ function recloseAlert() {
     reShowEditor();
 }
 function saveUpload() {
+    doMain = "";
     var regxl = new RegExp("{", "g");
     var regxr = new RegExp("}", "g");
     var title = reViewData["title"].replace(regxl, "<font color=\"#CC0000\">");
@@ -295,6 +373,7 @@ function addCreativeOk() {
                 $("#rDesc").html("xxxxxxxx");
                 $("#rUrl").html("xxxxxxxxx");
                 alert("上传成功!");
+                $("#dm").val("");
                 $("#reOkView").hide();
             } else {
                 alert("创意描述存在非法字符，请检查后提交！");
@@ -305,20 +384,11 @@ function addCreativeOk() {
     }
 }
 function textSizeValid() {
-    $("#_editor input[type='text']").keydown(function () {
+
+    $("#_editor textarea").keyup(function () {
         var _max = $(this).next("span").html().split("/")[1];
         var _thisStr = $(this).val().length;
-        if (parseInt(_thisStr) > parseInt(_max)) {
-            $(this).next("span").removeClass().addClass("span-error");
-        } else {
-            $(this).next("span").removeClass().addClass("span-ok");
-        }
-        $(this).next("span").html(_thisStr + "/" + _max);
-    });
-    $("#_editor textarea").keydown(function () {
-        var _max = $(this).next("span").html().split("/")[1];
-        var _thisStr = $(this).val().length;
-        if (parseInt(_thisStr) > parseInt(_max)) {
+        if (8 > parseInt(_thisStr) > parseInt(_max)) {
             $(this).next("span").removeClass().addClass("span-error");
         } else {
             $(this).next("span").removeClass().addClass("span-ok");
@@ -350,6 +420,8 @@ function removeLi(rs) {
     $(rs).parents("li").remove();
 }
 function onKeyDownView() {
+    var strRegex = "^((https|http|ftp|rtsp|mms)://)?[a-z0-9A-Z]{3}\.[a-z0-9A-Z][a-z0-9A-Z]{0,61}?[a-z0-9A-Z]\.com|net|cn|cc (:s[0-9]{1-4})?/$";
+    var re = new RegExp(strRegex);
     $("input[name='title']").keyup(function () {
         var regxl = new RegExp("{", "g");
         var regxr = new RegExp("}", "g");
@@ -358,6 +430,16 @@ function onKeyDownView() {
         $("#left1Title").html(title);
         $("#left2Title").html(title);
         $("#rightTitle").html(title);
+        var _max = $(this).next("span").html().split("/")[1];
+        var _thisSttmpr = $(this).next("span").prev("input[type=text]").val();
+        var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
+        var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
+        if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 8) {
+            $(this).next("span").removeClass().addClass("span-error");
+        } else {
+            $(this).next("span").removeClass().addClass("span-ok");
+        }
+        $(this).next("span").html(_thisStr + "/" + _max);
     });
     $("textarea[name='desc1']").keyup(function () {
         var desc2 = $("textarea[name='desc2']").val();
@@ -369,6 +451,16 @@ function onKeyDownView() {
         $("#left1Desc").html(descTotal);
         $("#left2Desc").html(descTotal);
         $("#rightDesc").html(descTotal);
+        var _max = $(this).next("span").html().split("/")[1];
+        var _thisSttmpr = $(this).next("span").prev("textarea").val();
+        var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
+        var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
+        if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 8) {
+            $(this).next("span").removeClass().addClass("span-error");
+        } else {
+            $(this).next("span").removeClass().addClass("span-ok");
+        }
+        $(this).next("span").html(_thisStr + "/" + _max);
     });
     $("textarea[name='desc2']").keyup(function () {
         var desc1 = $("textarea[name='desc1']").val();
@@ -380,29 +472,104 @@ function onKeyDownView() {
         $("#left1Desc").html(descTotal);
         $("#left2Desc").html(descTotal);
         $("#rightDesc").html(descTotal);
+        var _max = $(this).next("span").html().split("/")[1];
+        var _thisSttmpr = $(this).next("span").prev("textarea").val();
+        var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
+        var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
+        if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 8) {
+            $(this).next("span").removeClass().addClass("span-error");
+        } else {
+            $(this).next("span").removeClass().addClass("span-ok");
+        }
+        $(this).next("span").html(_thisStr + "/" + _max);
     });
     $("textarea[name='pcUrl']").keyup(function () {
-//        var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
         var title = $(this).val();
-//        if (!myreg.test(title.value)) {
-//            alert('请输入有效的E_mail！');
-//            $(this).val(reViewData["pcUrl"]);
-//            return false;
-//        }
         $("#left1Url").html(title);
         $("#left2Url").html(title);
         $("#rightUrl").html(title);
+        var _max = $(this).next("span").html().split("/")[1];
+        var _thisSttmpr = $(this).next("span").prev("textarea").val();
+        var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
+        var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
+        if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 5) {
+            $(this).next("span").removeClass().addClass("span-error");
+        } else {
+            $(this).next("span").removeClass().addClass("span-ok");
+        }
+        $(this).next("span").html(_thisStr + "/" + _max);
+    }).focusout(function () {
+        if (!re.test($(this).val())) {
+            $("#pcUrlMsg").html("<b style='color: red;'>访问Url地址输入错误！</b>");
+        } else {
+            $("#pcUrlMsg").html("");
+        }
     });
     $("input[name='pcsUrl']").keyup(function () {
-//        var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
         var title = $(this).val();
-//        if (!myreg.test(title.value)) {
-//            alert('请输入有效的E_mail！');
-//            $(this).val(reViewData["pcsUrl"]);
-//            return false;
-//        }
         $("#left1Url").html(title);
         $("#left2Url").html(title);
         $("#rightUrl").html(title);
+        var _max = $(this).next("span").html().split("/")[1];
+        var _thisSttmpr = $(this).next("span").prev("input[type=text]").val();
+        var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
+        var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
+        if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 5) {
+            $(this).next("span").removeClass().addClass("span-error");
+        } else {
+            $(this).next("span").removeClass().addClass("span-ok");
+        }
+        $(this).next("span").html(_thisStr + "/" + _max);
+    }).focusout(function () {
+        $(this).focus;
+        if (!re.test($(this).val())) {
+            $("#pcsUrlMsg").html("<b style='color: red;'>显示Url地址输入错误！</b>");
+        } else {
+            $("#pcsUrlMsg").html("");
+        }
     });
+}
+function callBackEditor() {
+    reShowEditor();
+}
+
+function addTongPei() {
+    var s = $("#title").selectionTp();
+    var _val = $("#title");
+    _val.val(_val.val().replace(s.text, "{" + s.text + "}"));
+    var regxl = new RegExp("{", "g");
+    var regxr = new RegExp("}", "g");
+    var title = _val.val().replace(regxl, "<font color=\"#CC0000\">");
+    title = title.replace(regxr, "</font>");
+    $("#left1Title").html(title);
+    $("#left2Title").html(title);
+    $("#rightTitle").html(title);
+}
+function addTongPeiDe1() {
+    var s = $("#desc1").selectionTp();
+    var _val = $("#desc1");
+    _val.val(_val.val().replace(s.text, "{" + s.text + "}"));
+    var desc2 = $("textarea[name='desc2']").val();
+    var desc = _val.val();
+    var regxl = new RegExp("{", "g");
+    var regxr = new RegExp("}", "g");
+    var descTotal = (desc + desc2).replace(regxl, "<font color=\"#CC0000\">");
+    descTotal = descTotal.replace(regxr, "</font>");
+    $("#left1Desc").html(descTotal);
+    $("#left2Desc").html(descTotal);
+    $("#rightDesc").html(descTotal);
+}
+function addTongPeiDe2() {
+    var s = $("#desc2").selectionTp();
+    var _val = $("#desc2");
+    _val.val(_val.val().replace(s.text, "{" + s.text + "}"));
+    var desc1 = $("textarea[name='desc1']").val();
+    var desc = _val.val();
+    var regxl = new RegExp("{", "g");
+    var regxr = new RegExp("}", "g");
+    var descTotal = (desc1 + desc).replace(regxl, "<font color=\"#CC0000\">");
+    descTotal = descTotal.replace(regxr, "</font>");
+    $("#left1Desc").html(descTotal);
+    $("#left2Desc").html(descTotal);
+    $("#rightDesc").html(descTotal);
 }

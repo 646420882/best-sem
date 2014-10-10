@@ -5,7 +5,33 @@
  * 树加载数据需要的计划，单元参数，默认都为空
  * @type {{aid: null, cid: null}}
  */
-
+$.fn.selectionTp= function () {
+    var s, e, range, stored_range;
+    if (this[0].selectionStart == undefined) {
+        var selection = document.selection;
+        if (this[0].tagName.toLowerCase() != "textarea") {
+            var val = this.val();
+            range = selection.createRange().duplicate();
+            range.moveEnd("character", val.length);
+            s = (range.text == "" ? val.length : val.lastIndexOf(range.text));
+            range = selection.createRange().duplicate();
+            range.moveStart("character", -val.length);
+            e = range.text.length;
+        } else {
+            range = selection.createRange(),
+                stored_range = range.duplicate();
+            stored_range.moveToElementText(this[0]);
+            stored_range.setEndPoint('EndToEnd', range);
+            s = stored_range.text.length - range.text.length;
+            e = s + range.text.length;
+        }
+    } else {
+        s = this[0].selectionStart,
+            e = this[0].selectionEnd;
+    }
+    var te = this[0].value.substring(s, e);
+    return {start: s, end: e, text: te};
+};
 var sparams = {aid: null, cid: null,nowPage:0,pageSize:20};
 $(function () {
     InitMenu();
@@ -260,8 +286,19 @@ function on(obj) {
  * @param rs
  */
 function addTb(rs) {
-    var _this = $(rs);
-    var val = _this.prev("input");
+    var s=$("#cUpdateForm input[name='title']").selectionTp();
+    var _val=$("#cUpdateForm input[name='title']");
+    _val.val(_val.val().replace(s.text,"{"+ s.text+"}"));
+}
+function addTbDes1(){
+    var s=$("#cUpdateForm input[name='description1']").selectionTp();
+    var _val=$("#cUpdateForm input[name='description1']");
+    _val.val(_val.val().replace(s.text,"{"+ s.text+"}"));
+}
+function addTbDes2(){
+    var s=$("#cUpdateForm input[name='description2']").selectionTp();
+    var _val=$("#cUpdateForm input[name='description2']");
+    _val.val(_val.val().replace(s.text,"{"+ s.text+"}"));
 }
 /**
  * 添加创意

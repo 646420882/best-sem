@@ -26,6 +26,13 @@ public class MonitoringDaoImpl implements MonitoringDao{
     }
 
     @Override
+    public List<FolderEntity> getForlderId(Long folderId) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        List<FolderEntity> forlderEntities = mongoTemplate.find(Query.query(Criteria.where(FOLDER_ID).is(folderId)),FolderEntity.class,TBL_MONITORING_FOLDERS+"_"+ AppContext.getAccountId());
+        return forlderEntities;
+    }
+
+    @Override
     public List<FolderMonitorEntity> getMonitor() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<FolderMonitorEntity> entities = mongoTemplate.find(new Query(),FolderMonitorEntity.class,TBL_MONITORING_TARGETS+"_"+ AppContext.getAccountId());
@@ -33,9 +40,9 @@ public class MonitoringDaoImpl implements MonitoringDao{
     }
 
     @Override
-    public List<FolderMonitorEntity> getMonitor(Long forlderId) {
+    public List<FolderMonitorEntity> getMonitorId(Long folderId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        List<FolderMonitorEntity> entities = mongoTemplate.find(Query.query(Criteria.where(FOLDER_ID).is(forlderId)),FolderMonitorEntity.class,TBL_MONITORING_TARGETS+"_"+ AppContext.getAccountId());
+        List<FolderMonitorEntity> entities = mongoTemplate.find(Query.query(Criteria.where(FOLDER_ID).is(folderId)),FolderMonitorEntity.class,TBL_MONITORING_TARGETS+"_"+ AppContext.getAccountId());
         return entities;
     }
 }

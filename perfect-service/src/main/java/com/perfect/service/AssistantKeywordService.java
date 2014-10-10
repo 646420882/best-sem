@@ -38,5 +38,5 @@ public interface AssistantKeywordService {
 
     void setNeigWord(String agid, String keywords, Integer neigType);
 
-    PagerInfo getKeywordListByIds(List<Long> ids,Integer nowPage,Integer pageSize);
+    List<KeywordDTO> getKeywordListByIds(List<Long> ids);
 }

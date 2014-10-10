@@ -426,11 +426,10 @@ public class AssistantCreativeController extends WebContextSupport {
         creativeTypes.setTitle(title);
         creativeTypes.setDescription1(desc1);
         creativeTypes.setDescription2(desc2);
-        creativeTypes.setPcDisplayUrl(baiduAccountInfoEntity.getRegDomain());
-        creativeTypes.setPcDestinationUrl(baiduAccountInfoEntity.getRegDomain());
+        creativeTypes.setPcDisplayUrl(pcUrl);
+        creativeTypes.setPcDestinationUrl(pcsUrl);
         creativeTypes.setAdgroupId(aid);
         creativeTypes.setDevicePreference(1);
-
         CommonService commonService= BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
         try {
            CreativeService service= commonService.getService(CreativeService.class);
@@ -447,6 +446,16 @@ public class AssistantCreativeController extends WebContextSupport {
         } catch (ApiException e) {
             e.printStackTrace();
             writeHtml(EXCEPTION, response);
+        }
+        return null;
+    }
+    @RequestMapping(value = "/getDomain",method = RequestMethod.GET)
+    public ModelAndView getDomain(HttpServletResponse response){
+        BaiduAccountInfoEntity baiduAccountInfoEntity=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        if(baiduAccountInfoEntity!=null){
+        writeHtml(baiduAccountInfoEntity.getRegDomain(),response);
+        }else{
+            writeHtml(FAIL,response);
         }
         return null;
     }

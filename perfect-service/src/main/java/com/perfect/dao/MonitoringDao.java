@@ -17,14 +17,20 @@ public interface MonitoringDao {
     public List<FolderEntity> getForlder();
 
     /**
+     * 通过id获取监控文件夹
+     * @return
+     */
+    public List<FolderEntity> getForlderId(Long folderId);
+
+    /**
      * 获取所有监控对象
      * @return
      */
     public List<FolderMonitorEntity> getMonitor();
 
     /**
-     * 通过监控问价家ID 获取对应的监控对象
+     * 通过监控文件夹ID 获取对应的监控对象
      * @return
      */
-    public List<FolderMonitorEntity> getMonitor(Long forlderId);
+    public List<FolderMonitorEntity> getMonitorId(Long folderId);
 }

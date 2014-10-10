@@ -51,9 +51,9 @@
                     <div class="newkeyword_content over">
                         <div class="containers2 over chooseKwdInfoDiv">
                             <div class="newkeyword_left fl  over" >
-                                <div class="newkeyword_top1">
+                               <%-- <div class="newkeyword_top1">
                                     <input type="text" placeholder="请输入关键词" class="zs_input3">
-                                </div>
+                                </div>--%>
                                 <div class="newkeyword_top2">
                                     <ul id="treeDemo" class="ztree" style="height: 330px;"></ul>
                                 </div>
@@ -72,7 +72,7 @@
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current" id="kwdNextStep">下一步</li>
-                                            <li class="close">取消</li>
+                                            <%--<li class="close">取消</li>--%>
                                         </ul>
                                     </div>
                                 </div>
@@ -96,7 +96,7 @@
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current delKwdByinputNext">下一步</li>
-                                            <li class="close">取消</li>
+                                            <%--<li class="close">取消</li>--%>
                                         </ul>
                                     </div>
                                 </div>
@@ -119,7 +119,7 @@
                             <ul>
                                 <li class="current delKwdLastStep" >上一步</li>
                                 <li class="delkwdFinish">完成</li>
-                                <li class="close">取消</li>
+                                <%--<li class="close">取消</li>--%>
                             </ul>
                         </div>
                     </div>

@@ -307,6 +307,7 @@ To change this template use File | Settings | File Templates.
                     </div>
                     <div>
                         <input type="button" value="保存" class="chuanyi_input" onclick="addCreativeOk()"/>
+                        <input type="button" value="返回编辑" class="chuanyi_input" onclick="callBackEditor()"/>
                     </div>
                 </li>
             </ul>
@@ -330,28 +331,31 @@ To change this template use File | Settings | File Templates.
             <div class="mainlist" id="_editor">
                 <ul>
                     <li>
+                        <input type="hidden"  id="dm"/>
                         <h3>标题：</h3>
-                        <dl><input type="text" name="title" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/50</span>
+                        <dl><input type="text" name="title" id="title" class="r_input" placeholder="请输入创意标题.且必须大于8个字符!"><span>27/50</span>
                         </dl>
-                        <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
+                        <dl><input type="button" class="r_input2" value="{}插入通配符" onclick="addTongPei()"></dl>
                     </li>
                     <li>
                         <h3>描述1：</h3>
-                        <dl><textarea name="desc1"></textarea><span>27/80</span></dl>
-                        <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
+                        <dl><textarea name="desc1" id="desc1" placeholder="请输入描述1.且必须大于8个字符!"></textarea><span>27/80</span></dl>
+                        <dl><input type="button" class="r_input2" value="{}插入通配符" onclick="addTongPeiDe1()"></dl>
                     </li>
                     <li>
                         <h3>描述2：</h3>
-                        <dl><textarea name="desc2"></textarea><span>27/80</span></dl>
-                        <dl><input type="button" class="r_input2" value="{}插入通配符"></dl>
+                        <dl><textarea name="desc2" id="desc2" placeholder="请输入描述2.且必须大于8个字符!"></textarea><span>27/80</span></dl>
+                        <dl><input type="button" class="r_input2" value="{}插入通配符" onclick="addTongPeiDe2()"></dl>
                     </li>
                     <li>
                         <h3>访问URL：</h3>
-                        <dl><textarea name="pcUrl"></textarea><span>27/1024</span></dl>
+                        <dl><textarea name="pcUrl"  placeholder="该Url是真实访问Url."></textarea><span>27/1024</span></dl>
+                        <dl id="pcUrlMsg"></dl>
                     </li>
                     <li>
                         <h3>显示URL：</h3>
-                        <dl><input type="text" name="pcsUrl" class="r_input" placeholder="{sem搜索搜索引擎营销}，17个……"><span>27/36</span>
+                        <dl><input type="text" name="pcsUrl" class="r_input" placeholder="请输入显示Url."><span>27/36</span>
+                            <dl id="pcsUrlMsg"></dl>
                         </dl>
                     </li>
                 </ul>

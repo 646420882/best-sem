@@ -36,25 +36,25 @@ public class KeywordEntity extends AccountIdEntity implements Comparable<Keyword
     private String keyword;
 
     @Field("pr")
-    private BigDecimal price;
+    private BigDecimal price;//出价
 
     @Field("pc")
-    private String pcDestinationUrl;
+    private String pcDestinationUrl;//pc访问url
 
     @Field("mobile")
-    private String mobileDestinationUrl;
+    private String mobileDestinationUrl;//mobile访问URL
 
     @Field("mt")
-    private Integer matchType;
+    private Integer matchType;//匹配模式
 
     @Field("p")
-    private Boolean pause;
+    private Boolean pause;//启用状态
 
     @Field("s")
-    private Integer status;
+    private Integer status;//关键词状态
 
     @Field("pt")
-    private Integer phraseType;
+    private Integer phraseType;//高级短语细分  匹配模式  注：
 
     @Field("ls")
     private Integer localStatus;//关键词本地状态，1为新增，2为修改，3为删除（软删除），4为级联删除标识

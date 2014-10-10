@@ -72,7 +72,7 @@
                         <div class="w_list03">
                             <ul>
                                 <li class="current nextStep" id="downloadAccount">下一步</li>
-                                <li class="close">取消</li>
+                                <%--<li class="close">取消</li>--%>
                             </ul>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                              <ul>
                                  <li class="current lastStep" >上一步</li>
                                  <li onclick="javascript:saveChooseKeyword();">完成</li>
-                                 <li class="close">取消</li>
+                                 <%--<li class="close">取消</li>--%>
                              </ul>
                          </div>
                      </div>
@@ -171,7 +171,6 @@
 
         searchKeyword($("#inputKwd").val());
 
-        $('.addplan_top ul li:eq(0)').removeClass("current");
         $('.addplan_top ul li:eq(1)').addClass("current");
 
         $(".inputCreateInfo").addClass("hides");
