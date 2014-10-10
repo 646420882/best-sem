@@ -17,18 +17,25 @@ public class KeywordDTO implements Serializable{
 
     private KeywordEntity object;
 
-    private long quality;
+    private long quality;//计算机质量度
 
-    private long mobileQuality;
+    private long mobileQuality;//移动端质量度
 
-    public KeywordDTO(String campaignName, Long campaignId, String adgroupName, KeywordEntity object, long quality, long mobileQuality) {
+    private Long folderId;
+
+    private String folderName;
+
+    public KeywordDTO(String campaignName, Long campaignId, String adgroupName, KeywordEntity object, long quality, long mobileQuality, Long folderId, String folderName) {
         this.campaignName = campaignName;
         CampaignId = campaignId;
         this.adgroupName = adgroupName;
         this.object = object;
         this.quality = quality;
         this.mobileQuality = mobileQuality;
+        this.folderId = folderId;
+        this.folderName = folderName;
     }
+
 
     public KeywordDTO() {
     }
@@ -79,5 +86,21 @@ public class KeywordDTO implements Serializable{
 
     public void setMobileQuality(long mobileQuality) {
         this.mobileQuality = mobileQuality;
+    }
+
+    public Long getFolderId() {
+        return folderId;
+    }
+
+    public void setFolderId(Long folderId) {
+        this.folderId = folderId;
+    }
+
+    public String getFolderName() {
+        return folderName;
+    }
+
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
     }
 }

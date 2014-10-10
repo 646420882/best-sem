@@ -362,7 +362,6 @@ $(function () {
         success: function (data, textStatus, jqXHR) {
             zNodes = data.trees;
             $.fn.zTree.init($("#zTree"), setting, zNodes);
-            $.fn.zTree.init($("#zTree2"), setting, zNodes);
         }
     });
 
