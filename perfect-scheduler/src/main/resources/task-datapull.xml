@@ -42,7 +42,7 @@
     </bean>
     <bean id="senderWarningTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="senderWarningJobBean"/>
-        <property name="cronExpression" value="0 0 */2 * * * "/>
+        <property name="cronExpression" value="0 0 */2 * * ? "/>
     </bean>
 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
