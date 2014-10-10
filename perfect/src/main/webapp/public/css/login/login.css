@@ -91,6 +91,7 @@ ul, ol {
     position: absolute;
     right: 10px;
     top: 4px;
+    *top:10px;
     z-index: 3;
 }
 
@@ -210,6 +211,7 @@ ul, ol {
     font-size:24px;
     font-weight:bold;
     cursor: pointer;
+    line-height:78px;
 
 }
 

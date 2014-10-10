@@ -13,32 +13,28 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
     <style type="text/css">
-        #table1 {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        #table1 thead td {
-            vertical-align: middle;
-            text-align: center;
+        .backstage_list ul li input ,.backstage_list ul li select{
+            height:28px;
         }
     </style>
 </head>
 <body>
-<div id="bidding_box" style="position:absolute; top:15%; left:10%;">
-    <div style="overflow:hidden;">
-        <div class="control-group fl">
-            <label class="control-label fl" for="url" style="line-height:30px; margin-right: 10px;">请输入URL请求地址</label>
-            <input type="text" class="form-control fl" id="url">
-        </div>
-        <div class="control-group fl ">
-            <button class="btn btn-primary btn-lg" type="button" style="width:80px; margin-left:10px;"
-                    onclick=submitUrl()>提交
-            </button>
-        </div>
-    </div>
-    <div style="width: 80%; height: 60%;">
+<div id="background" class="background"></div>
+<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
+<div id="progressBar1" class="progressBar">正在生成数据，请稍等...</div>
+<jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
+<div class="backstage_concent mid over">
+<div id="bidding_box">
+    <div class="backstage_list over">
+        <ul>
+            <li><span>请输入URL请求地址:</span>  <input type="text" class="form-control fl" id="url"><button class="btn btn-primary btn-lg" type="button" style="width:80px; margin-left:10px;"
+                                                                                                      onclick=submitUrl()>提交
+            </button></li>
+        </ul>
+     </div>
+    <div>
         <table id="table1"
                class="table table-striped table-bordered table-hover datatable dataTable"
                aria-describedby="DataTables_Table_0_info">
@@ -54,6 +50,7 @@
             </tbody>
         </table>
     </div>
+</div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
@@ -92,6 +89,17 @@
                 alert(data.status);
             }
         });
+        //loading
+        var ajaxbg = $("#background,#progressBar");
+        $("#progressBar1").hide();
+        ajaxbg.hide();
+        $(document).ajaxStart(function () {
+            ajaxbg.show();
+        });
+        $(document).ajaxStop(function () {
+            ajaxbg.fadeOut(1000);
+        });
+
     };
 
 
