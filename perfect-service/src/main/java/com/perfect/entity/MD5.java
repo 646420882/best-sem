@@ -10,6 +10,10 @@ public class MD5 {
 
     private String md5;
 
+    public MD5(String plainText) {
+        this.md5 = generateMD5(plainText);
+    }
+
     private MD5(String password, Object salt) {
         this.md5 = generateMD5(password + "{" + salt.toString() + "}");
     }
