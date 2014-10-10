@@ -93,5 +93,5 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
     List<KeywordEntity> findByObjectIds(List<String> strIds);
 
-    PagerInfo findKeywordByIds(List<Long> ids, Integer nowPage, Integer pageSize);
+    List<KeywordEntity> findKeywordByIds(List<Long> ids);
 }
