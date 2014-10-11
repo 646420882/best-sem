@@ -10,21 +10,31 @@
 <html>
 <head>
     <title>Lexicon Console</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
 </head>
 <body>
-<!-- 用于文件上传的表单元素 -->
-<form name="demoForm" id="demoForm" method="post" enctype="multipart/form-data"
-      action="/admin/lexicon/upload">
-    <p>Upload File: <input type="file" name="excelFile"/></p>
+<div>
+    <!-- 用于文件上传的表单元素 -->
+    <form id="fileForm" name="fileForm" method="post" class="form-inline" enctype="multipart/form-data"
+          action="${pageContext.request.contextPath}/admin/lexicon/upload">
+        <p>Upload File: <input type="file" name="excelFile"/></p>
 
-    <p><input type="submit" value="Submit"/></p>
-</form>
+        <p><input type="submit" class="btn btn-primary" value="导入"/></p>
+    </form>
+</div>
+<!--
 <div>Progessing (in Bytes): <span id="bytesRead">
  </span> / <span id="bytesTotal"></span>
 </div>
+-->
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
 <script type="application/javascript">
     var uploadAndSubmit = function () {
-        var form = document.forms["demoForm"];
+        var form = document.forms["fileForm"];
 
         if (form["file"].files.length > 0) {
             // 寻找表单域中的 <input type="file" ... /> 标签
@@ -78,6 +88,5 @@
         }
     };
 </script>
->
 </body>
 </html>

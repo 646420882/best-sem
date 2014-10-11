@@ -394,6 +394,7 @@ var saveKeyword = function () {
                 entity1["pause"] = false;
                 entity1["status"] = -1;
                 entity1["phraseType"] = 1;
+                entity1["localStatus"] = 1;
                 jsonArr.push(entity1);
             }
         }
@@ -414,6 +415,7 @@ var saveKeyword = function () {
                 entity2["pause"] = false;
                 entity2["status"] = -1;
                 entity2["phraseType"] = 1;
+                entity2["localStatus"] = 1;
                 jsonArr.push(entity2);
             }
         }

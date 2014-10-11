@@ -34,7 +34,7 @@ class LexiconTask extends RecursiveAction {
             }
             MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
             mongoTemplate.insertAll(list);
-            System.out.println("=======================" + first);
+//            System.out.println("=======================" + first);
         } else {
             int middle = (last - first) / 2;
             LexiconTask task1 = new LexiconTask(entityList, first, middle + first);
