@@ -42,12 +42,12 @@ public class HomePageManageController {
         if (error) {
             int badCredentialsNum = CustomUserDetailsService.getPasswdBadCredentialsNum();
             if (CustomUserDetailsService.isUsernameNotFound())
-                model.put("invalidUserName", "用户名不对");
+                model.put("invalidUserName", "用户名不存在");
             else if (badCredentialsNum > 0) {
                 if (badCredentialsNum == 3)
                     model.put("invalidPassword", "账户已被锁定");
                 else
-                    model.put("invalidPassword", "密码不对");
+                    model.put("invalidPassword", "密码错误, 剩余" + (3 - badCredentialsNum) + "次");
             }
         } else {
             model.put("error", "");

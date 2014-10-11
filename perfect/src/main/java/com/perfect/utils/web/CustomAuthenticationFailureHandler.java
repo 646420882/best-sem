@@ -49,7 +49,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
                         CustomUserDetailsService.setPasswdBadCredentialsNum(newValue);
                     }
                 }
-                jedis.expire(key, 600);
+                jedis.expire(key, 10800);
             } finally {
                 if (jedis != null) {
                     JRedisUtils.returnJedis(jedis);

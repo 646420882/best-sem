@@ -16,27 +16,49 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
 </head>
 <body>
+<div id="background" class="background"></div>
+<div id="progressBar" class="progressBar">正在更新词库, 请稍候...</div>
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
 <div class="backstage_concent mid over">
     <!-- 用于文件上传的表单元素 -->
     <div class="backstage_list over">
-      <form id="fileForm" name="fileForm" method="post" class="form-inline" enctype="multipart/form-data"
-          action="${pageContext.request.contextPath}/admin/lexicon/upload">
-          <ul>
-              <li><span>Upload File: </span><input type="file" name="excelFile" style="border:none;"/></li>
-              <li><input type="submit" class="btn sure" value="导入"/></li>
-          </ul>
-      </form>
-       </div>
+        <form id="fileForm" name="fileForm" method="post" class="form-inline" enctype="multipart/form-data"
+              action="${pageContext.request.contextPath}/admin/lexicon/upload" target="fileIframe">
+            <ul>
+                <li><span>Upload File: </span><input type="file" name="excelFile" style="border:none;"/></li>
+                <li><input type="button" id="submitForm" class="btn sure" value="导入"/></li>
+            </ul>
+        </form>
+    </div>
 </div>
-<!--
-<div>Progessing (in Bytes): <span id="bytesRead">
- </span> / <span id="bytesTotal"></span>
-</div>
--->
+<iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
 <script type="application/javascript">
+
+    $(function () {
+        document.getElementById("background").style.display = "none";
+        document.getElementById("progressBar").style.display = "none";
+
+        $("#submitForm").on('click', function () {
+            $("#fileForm").submit();
+            document.getElementById("background").style.display = "block";
+            document.getElementById("progressBar").style.display = "block";
+        });
+    });
+
+    var callback = function (data) {
+        if (data == "true") {
+            document.getElementById("background").style.display = "none";
+            document.getElementById("progressBar").style.display = "none";
+            alert("更新成功!");
+        } else {
+            document.getElementById("background").style.display = "none";
+            document.getElementById("progressBar").style.display = "none";
+            alert("更新失败!");
+        }
+    };
+
     var uploadAndSubmit = function () {
         var form = document.forms["fileForm"];
 
