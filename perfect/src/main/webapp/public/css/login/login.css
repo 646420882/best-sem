@@ -118,7 +118,8 @@ ul, ol {
 }
 
 .login_checkbox b {
-    padding: 0 20px;
+    display: block;
+    padding: 0 10px 0 15px;
 }
 
 .login_part2 {
