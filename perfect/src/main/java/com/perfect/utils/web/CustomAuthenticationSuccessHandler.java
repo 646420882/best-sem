@@ -1,5 +1,8 @@
-package com.perfect.app.homePage.service;
+package com.perfect.utils.web;
 
+import com.perfect.app.homePage.service.CustomUserDetailsService;
+import com.perfect.entity.MD5;
+import com.perfect.redis.JRedisUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -8,6 +11,7 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +24,7 @@ import java.util.Collection;
 /**
  * Created by baizz on 2014-10-10.
  */
-public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     protected Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -33,6 +37,33 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
     }
 
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+
+        String userName = CustomUserDetailsService.getUserName();
+        MD5.Builder md5Builder = new MD5.Builder();
+        MD5 md5 = md5Builder.password(userName).salt("passwd").build();
+        String key = md5.getMD5();
+
+        Jedis jedis = null;
+        try {
+            jedis = JRedisUtils.get();
+            if (jedis.exists(key)) {
+                Integer value = Integer.valueOf(jedis.get(key));
+                if (value == 3) {
+                    redirectStrategy.sendRedirect(request, response, "/login");
+                    return;
+                } else {
+                    jedis.expire(key, 0);
+                    CustomUserDetailsService.setPasswdBadCredentialsNum(0);
+                }
+            }
+        } finally {
+            if (jedis != null) {
+                JRedisUtils.returnJedis(jedis);
+            }
+        }
+
+        CustomUserDetailsService.setUsernameNotFound(false);
+
         String targetUrl = determineTargetUrl(authentication);
 
         if (response.isCommitted()) {
