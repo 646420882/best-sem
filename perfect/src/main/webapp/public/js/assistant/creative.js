@@ -38,6 +38,7 @@ $(function () {
     rDrag.init(document.getElementById("dAdd"));
     rDrag.init(document.getElementById("dUpdate"));
     initsDivKeyup();
+    initUpdateInputKeyUp();
 });
 
 /**
@@ -104,39 +105,39 @@ function InitMenu() {
             var _thisStr = getChar(_title.val());
             var dm = "." + $("#doMain").val();
             if (parseInt(_thisStr) > 50 || parseInt(_thisStr) <= 8) {
-                alert("标题长度应大于8个字符小于50个字符，汉子占两个字符!");
+                alert("\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
                 return false;
             }
             var _desc1 = $(this).parents("tr").find("input:eq(3)");
             var _thisStrDesc1 = getChar(_desc1.val());
             if (parseInt(_thisStrDesc1) > 80 || parseInt(_thisStrDesc1) <= 8) {
-                alert("创意描述1长度应大于8个字符小于80个字符，汉子占两个字符!");
+                alert("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
                 return false;
             }
             var _desc2 = $(this).parents("tr").find("input:eq(4)");
             var _thisStrDesc2 = getChar(_desc2.val());
             if (parseInt(_thisStrDesc2) > 80 || parseInt(_thisStrDesc2) <= 8) {
-                alert("创意描述2长度应大于8个字符小于80个字符，汉子占两个字符!");
+                alert("\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
                 return false;
             }
             var _pc = $(this).parents("tr").find("input:eq(5)");
             var _thisStrpc = getChar(_pc.val());
             if (parseInt(_thisStrpc) > 1024 || parseInt(_thisStrpc) <= 1) {
-                alert("默认访问Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
+                alert("默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
                 return false;
             } else {
-                if (!re.test(_pc.val())) {
-                    alert("默认访问Url地址格式不正确，请重新输入");
-                    _pc.val("");
-                    return false;
-                }
+//                if (!re.test(_pc.val())) {
+//                    alert("默认\"访问\"Url地址格式不正确，请重新输入");
+//                    _pc.val("");
+//                    return false;
+//                }
                 if (_pc.val().indexOf(dm) == -1) {
-                    alert("默认访问Url地址必须包含以\"" + dm + "\"的域名！");
+                    alert("默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 } else {
                     var _pcSize = _pc.val();
                     if (_pc.val().substr(_pc.val().indexOf(dm)) != dm) {
-                        alert("默认访问Url地址必须以\"" + dm + "\"结尾！");
+                        alert("默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
                         return false;
                     }
                 }
@@ -144,21 +145,45 @@ function InitMenu() {
             var _pcs = $(this).parents("tr").find("input:eq(6)");
             var _thisStrpcs = getChar(_pcs.val());
             if (parseInt(_thisStrpcs) > 50 || parseInt(_thisStrpcs) <= 1) {
-                alert("默认显示Url地址长度应大于2个字符小于50个字符，汉子占两个字符!");
+                alert("默认\"显示\"Url地址长度应大于2个字符小于50个字符，汉子占两个字符!");
                 return false;
             } else {
-                if (!re.test(_pcs.val())) {
-                    alert("默认显示Url地址格式不正确，请重新输入");
-                    _pcs.val("");
-                    return false;
-                }
+//                if (!re.test(_pcs.val())) {
+//                    alert("默认\"显示\"Url地址格式不正确，请重新输入");
+//                    _pcs.val("");
+//                    return false;
+//                }
                 if (_pcs.val().indexOf(dm) == -1) {
-                    alert("默认显示Url地址必须包含以\"" + dm + "\"的域名！");
+                    alert("默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 } else {
                     var _pcsSize = _pcs.val();
                     if (_pcs.val().substr(_pcs.val().indexOf(dm)) != dm) {
-                        alert("默认显示Url地址必须以\"" + dm + "\"结尾！");
+                        alert("默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                        return false;
+                    }
+                }
+            }
+            var _mib=$(this).parents("tr").find("input:eq(7)");
+            if (_mib.val() != "空"||_mib.val() != "") {
+                if (_mib.val().indexOf(dm) == -1) {
+                    alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    return false;
+                } else {
+                    if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
+                        alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                        return false;
+                    }
+                }
+            }
+            var _mibs=$(this).parents("tr").find("input:eq(8)");
+            if (_mibs.val() != ""||_mibs.val() != "空") {
+                if (_mibs.val().indexOf(dm) == -1) {
+                    alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    return false;
+                } else {
+                    if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
+                        alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
                         return false;
                     }
                 }
@@ -529,6 +554,26 @@ function onKey(rs) {
     }
 
 }
+function initUpdateInputKeyUp() {
+    var _this = $("#cUpdateForm :text");
+    _this.each(function (i, o) {
+        if (i < 3) {
+            $(o).keyup(function () {
+                initUpdateKeyupChar($(o));
+            });
+        }
+        if (i >= 3 && i < 5) {
+            $(o).keyup(function () {
+                initUpdateKeyupChar($(o), 1);
+            });
+        }
+        if (i >= 5) {
+            $(o).keyup(function () {
+                initUpdateKeyupChar($(o), -1);
+            });
+        }
+    })
+}
 /**
  * 初始化工具栏
  */
@@ -721,6 +766,14 @@ function updateCreatvie(temp) {
         top: ($(window).height() - _update.height()) / 2 + $(window).scrollTop() + "px",
         display: "block"
     });
+    var dm = $("#doMain").val();
+    if (dm == "") {
+        $.get("/assistantCreative/getDomain", function (result) {
+            if (result != "0") {
+                $("#doMain").val(result);
+            }
+        });
+    }
     var _tr = $(temp);
     var creativeId = _tr.find("td:eq(0) input").val() != undefined ? _tr.find("td:eq(0) input").val() : _tr.find("td:eq(0) span").html();
     var title = _tr.find("td:eq(1) a").attr("title") != undefined ? _tr.find("td:eq(1) a").attr("title") : _tr.find("td:eq(1) span").html();
@@ -747,11 +800,128 @@ function updateCreatvie(temp) {
     } else {
         $("#cUpdateForm select[name='pause']").get(0).selectedIndex = 1;
     }
+    var titleObj = $("#cUpdateForm input[name='title']");
+    var des1Obj = $("#cUpdateForm input[name='description1']");
+    var des2Obj = $("#cUpdateForm input[name='description2']");
+    var pcUrlObj = $("#cUpdateForm input[name='pcDestinationUrl']");
+    var pcsUrlObj = $("#cUpdateForm input[name='pcDisplayUrl']");
+    var mibUrlObj = $("#cUpdateForm input[name='mobileDestinationUrl']");
+    var mibsUrlObj = $("#cUpdateForm input[name='mobileDisplayUrl']");
+    initUpdateKeyupChar(titleObj);
+    initUpdateKeyupChar(des1Obj);
+    initUpdateKeyupChar(des2Obj);
+    initUpdateKeyupChar(pcUrlObj, 1);
+    initUpdateKeyupChar(pcsUrlObj, 1);
+    initUpdateKeyupChar(mibUrlObj, -1);
+    initUpdateKeyupChar(mibsUrlObj, -1);
+}
+function initUpdateKeyupChar(res, gtval) {
+    gtval = gtval != undefined ? gtval : 8;
+    var _max = $(res).prev("label").find("span").text().split("/")[1];
+    var val = $(res).val();
+    var _thisStr = getChar(val);
+    if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= gtval) {
+        $(res).prev("label").find("span").css("color", "red");
+    } else {
+        $(res).prev("label").find("span").css("color", "#b4b4b4");
+    }
+    $(res).prev("label").find("span").text(_thisStr + "/" + _max);
 }
 /**
  * 修改确认提交方法
  */
 function updateOk() {
+    var strRegex = "^((https|http|ftp|rtsp|mms)://)?[a-z0-9A-Z]{3}\.[a-z0-9A-Z][a-z0-9A-Z]{0,61}?[a-z0-9A-Z]\.com|net|cn|cc (:s[0-9]{1-4})?/$";
+    var re = new RegExp(strRegex);
+    var _title = $("#cUpdateForm input[name='title']");
+    var _desc1 = $("#cUpdateForm input[name='description1']");
+    var _desc2 = $("#cUpdateForm input[name='description2']");
+    var _pc = $("#cUpdateForm input[name='pcDestinationUrl']");
+    var _pcs = $("#cUpdateForm input[name='pcDisplayUrl']");
+    var _mib = $("#cUpdateForm input[name='mobileDestinationUrl']");
+    var _mibs = $("#cUpdateForm input[name='mobileDisplayUrl']");
+
+    var _thisStr = getChar(_title.val());
+    var dm = "." + $("#doMain").val();
+    if (parseInt(_thisStr) > 50 || parseInt(_thisStr) <= 8) {
+        alert("\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
+        return false;
+    }
+    var _thisStrDesc1 = getChar(_desc1.val());
+    if (parseInt(_thisStrDesc1) > 80 || parseInt(_thisStrDesc1) <= 8) {
+        alert("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        return false;
+    }
+    var _thisStrDesc2 = getChar(_desc2.val());
+    if (parseInt(_thisStrDesc2) > 80 || parseInt(_thisStrDesc2) <= 8) {
+        alert("\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        return false;
+    }
+    var _thisStrpc = getChar(_pc.val());
+    if (parseInt(_thisStrpc) > 1024 || parseInt(_thisStrpc) <= 1) {
+        alert("默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
+        return false;
+    } else {
+//        if (!re.test(_pc.val())) {
+//            alert("默认\"访问\"Url地址格式不正确，请重新输入");
+//            _pc.val("");
+//            return false;
+//        }
+        if (_pc.val().indexOf(dm) == -1) {
+            alert("默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+            return false;
+        } else {
+            var _pcSize = _pc.val();
+            if (_pc.val().substr(_pc.val().indexOf(dm)) != dm) {
+                alert("默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                return false;
+            }
+        }
+    }
+    var _thisStrpcs = getChar(_pcs.val());
+    if (parseInt(_thisStrpcs) > 50 || parseInt(_thisStrpcs) <= 1) {
+        alert("默认\"显示\"Url地址长度应大于2个字符小于50个字符，汉子占两个字符!");
+        return false;
+    } else {
+//        if (!re.test(_pcs.val())) {
+//            alert("默认\"显示\"Url地址格式不正确，请重新输入");
+//            _pcs.val("");
+//            return false;
+//        }
+        if (_pcs.val().indexOf(dm) == -1) {
+            alert("默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+            return false;
+        } else {
+            if (_pcs.val().substr(_pcs.val().indexOf(dm)) != dm) {
+                alert("默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                return false;
+            }
+        }
+    }
+    if (_mib.val() != "空"||_mib.val() != "") {
+        if (_mib.val().indexOf(dm) == -1) {
+            alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+            return false;
+        } else {
+            if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
+                alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                return false;
+            }
+        }
+    }
+    if (_mibs.val() != ""||_mibs.val() != "空") {
+        if (_mibs.val().indexOf(dm) == -1) {
+            alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+            return false;
+        } else {
+            if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
+                alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                return false;
+            }
+        }
+    }
+    var con = confirm("你确定要修改该创意吗？");
+    if (con) {
     var _this = $(tmp);
     $("#cUpdateForm").formSubmit("/assistantCreative/update", function (rs) {
         if (rs == "1") {
@@ -783,6 +953,7 @@ function updateOk() {
 
         }
     });
+    }
 }
 /**
  * 获取10为数字的随机数

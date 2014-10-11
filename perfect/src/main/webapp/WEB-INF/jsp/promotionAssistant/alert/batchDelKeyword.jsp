@@ -32,11 +32,13 @@
     </style>
 </head>
 <body>
+<div id="background" class="background hides"></div>
+<div id="progressBar" class="progressBar hides">数据处理中，请稍等...</div>
 <div style="background-color: #f3f5fd; width: 900px; height: 700px">
     <div class="addplan_top over">
         <ul id = "tabUl">
             <li class="current">1、输入内容</li>
-            <li><span></span>1、验证数据</li>
+            <li><span></span>2、验证数据</li>
         </ul>
     </div>
     <div class="plan_under">
@@ -479,11 +481,22 @@
         }
 
         var regExp = new RegExp("，","g");//第二个参数,g指替换所有的，其中，第二参数也可以设置为("i"),表示只替换第一个字符串。
-        deleteInfos  = deleteInfos.replace(regExp,",")
-        if((deleteInfos.split(",").length)!=3){
-            alert("输入格式不正确");
-            return;
+
+        var rows = deleteInfos.split("\n");
+        var errorFormart = "";
+        for(var i=0;i<rows.length;i++){
+            var row = rows[i].replace(regExp,",");
+            if((row.split(",").length)!=3){
+                errorFormart+=row+"\n";
+            }
         }
+
+        if(errorFormart!=""){
+           alert("以下输入格式错误!\n"+errorFormart);
+           return;
+        }
+
+
         $.ajax({
             url:"/assistantKeyword/validateDeleteByInput",
             type:"post",
@@ -498,11 +511,11 @@
                     html = createDeleteKwdHtml("del",data.deleteKwd);
                 }
                 $("#validateDelKwdUl").html(html);
+                $("#tabUl li:eq(1)").addClass("current");
+                $("#delKwdByChoose").addClass("hides");
+                $("#showValidateDiv").removeClass("hides");
             }
         });
-        $("#tabUl li:eq(1)").addClass("current");
-        $("#delKwdByChoose").addClass("hides");
-        $("#showValidateDiv").removeClass("hides");
     });
 
 
@@ -518,7 +531,6 @@
                 type:"post",
                 data:{"kwids":ids},
                 success:function(data){
-                    alert("操作成功!");
                     window.location.reload(true);
                 }
             });
@@ -533,6 +545,17 @@
     //取消按钮的事件
     $(".close").click(function () {
 
+    });
+
+
+    //loading
+    var ajaxbg = $("#background,#progressBar");
+    ajaxbg.hide();
+    $(document).ajaxStart(function () {
+        ajaxbg.show();
+    });
+    $(document).ajaxStop(function () {
+        ajaxbg.fadeOut(1000);
     });
 
 </script>

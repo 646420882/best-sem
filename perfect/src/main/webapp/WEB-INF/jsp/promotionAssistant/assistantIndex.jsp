@@ -1319,7 +1319,7 @@
         <ul class="zs_set" id="jcUl">
             <%--<li><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</li>--%>
         </ul>
-        <input type="text" id="doMain">
+        <input type="hidden" id="doMain">
     </div>
     <div class="main_bottom">
         <div class="w_list03">
@@ -1366,14 +1366,14 @@
     <div class="mainlist">
         <form id="cUpdateForm">
             <ul class="chuangyi">
-                <li><input name="oid" type="hidden"/></li>
-                <li><label>创意标题:</label><input name="title" class="chuangyi_input" maxlength="50"/> <input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTb()" /></li>
-                <li><label>创意描述1:</label><input name="description1" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes1()" /></li>
-                <li><label>创意描述2:</label><input name="description2" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes2()" /></li>
-                <li><label>默认访问URL:</label><input name="pcDestinationUrl" maxlength="1024"/></li>
-                <li><label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/></li>
-                <li><label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></li>
-                <li><label>移动显示URL:</label><input name="mobileDisplayUrl" maxlength="36"/></li>
+                <li><label style="display: none;">---:<span>4/50</span></label><input name="oid" type="hidden"/></li>
+                <li><label>创意标题:<span>49/50</span></label><input name="title"  class="chuangyi_input" maxlength="50"/> <input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTb()" /></li>
+                <li><label>创意描述1:<span>49/80</span></label><input name="description1" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes1()" /></li>
+                <li><label>创意描述2:<span>49/80</span></label><input name="description2" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes2()" /></li>
+                <li><label>默认访问URL:<span>49/1024</span></label><input name="pcDestinationUrl" maxlength="1024"/></li>
+                <li><label>默认显示URL:<span>49/50</span></label><input name="pcDisplayUrl" maxlength="50"/></li>
+                <li><label>移动访问URL:<span>49/1024</span></label><input name="mobileDestinationUrl" maxlength="1024"/></li>
+                <li><label>移动显示URL:<span>35/36</span></label><input name="mobileDisplayUrl" maxlength="36"/></li>
                 <li> <label class="fl">创意状态:</label><label id="cuStatus" class="fl">暂无</label><input type="hidden" name="status"></li>
                 <li><label class="fl">是否启用:</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select></li>
             </ul>
