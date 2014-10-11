@@ -24,6 +24,14 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
+    <style rel="stylesheet" type="text/css">
+        #sDiv .span-error{
+            color:red;
+        }
+        #sDiv .span-ok{
+            color:#9f9f9f;
+        }
+    </style>
 </head>
 <body>
 <%--<div id="background" class="background"></div>
@@ -285,46 +293,40 @@
                 <li>
                     <div class="t_list01 fl over">创意标题：</div>
                     <div class="t_list03 fl over">
-                        <input type="text" class="zs_input1" id="sTitle"><span><span
-                            id="sTitle_size">49</span>/50</span>
+                        <input type="text" class="zs_input1" id="sTitle"><span>49/50</span>
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">创意描述1：</div>
-                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes1"><span><span
-                            id="sDes1_size">49</span>/80</span>
+                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes1"><span>79/80</span>
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">创意描述2：</div>
-                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes2"><span><span
-                            id="sDes2_size">49</span>/80</span>
+                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes2"><span>79/80</span>
                     </div>
                 </li>
                 <li>
                     <div class="t_list04 fl over">
                         <div class="t_list01 fl over">默认访问URL：</div>
-                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPc"/><span><span
-                                id="sPc_size">0</span>/1024</span>
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPc"/><span>0/1024</span>
                         </div>
                     </div>
                     <div class="t_list04 fr over">
                         <div class="t_list01 fl over">默认显示URL：</div>
-                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPcs"/><span><span
-                                id="sPcs_size">49</span>/50</span></div>
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPcs"/><span>49/50</span></div>
                     </div>
                 </li>
                 <li>
                     <div class="t_list04 fl over">
                         <div class="t_list01 fl over">移动访问URL：</div>
                         <div class="t_list05 fl over"><input type="text" class="zs_input3"
-                                                             id="sMib"><span><span id="sMib_size">49</span>/1024</span>
+                                                             id="sMib"><span>49/1024</span>
                         </div>
                     </div>
                     <div class="t_list04 fr over">
                         <div class="t_list01 fl over">移动显示URL：</div>
-                        <div class="t_list05 fl over"> <input type="text" class="zs_input3" id="sMibs"><span><span
-                                id="sMibs_size">35</span>/36</span></div>
+                        <div class="t_list05 fl over"> <input type="text" class="zs_input3" id="sMibs"><span>35/36</span></div>
                     </div>
                 </li>
                 <li>
@@ -1356,7 +1358,7 @@
     </div>
 </div>
 <%--创意修改弹出窗口--%>
-<div  class="box" style="display:none;*width:400px;" id="jcUpdate">
+<div  class="box" style="display:none;width:500px;" id="jcUpdate">
     <h2 id="dUpdate">
         <span class="fl">修改创意</span>
         <a href="#" class="close">关闭</a></h2>
@@ -1364,9 +1366,9 @@
         <form id="cUpdateForm">
             <ul class="chuangyi">
                 <li><input name="oid" type="hidden"/></li>
-                <li><label>创意标题:</label><input name="title" class="chuangyi_input" maxlength="50"/> <input type="button" class="chuangyi_fu" value="{}插入通配符" onclick="addTb()" /></li>
-                <li><label>创意描述1:</label><input name="description1" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="{}插入通配符" onclick="addTbDes1()" /></li>
-                <li><label>创意描述2:</label><input name="description2" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="{}插入通配符" onclick="addTbDes2()" /></li>
+                <li><label>创意标题:</label><input name="title" class="chuangyi_input" maxlength="50"/> <input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTb()" /></li>
+                <li><label>创意描述1:</label><input name="description1" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes1()" /></li>
+                <li><label>创意描述2:</label><input name="description2" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes2()" /></li>
                 <li><label>默认访问URL:</label><input name="pcDestinationUrl" maxlength="1024"/></li>
                 <li><label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/></li>
                 <li><label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></li>

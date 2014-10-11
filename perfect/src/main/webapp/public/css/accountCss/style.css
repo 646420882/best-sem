@@ -2866,19 +2866,20 @@ float:none;
 .chuangyi input{
     height:22px;
     line-height:22px;
-    width:98%;
+    width:97%;
     *width:94%;
-    color:#ccc;
+    padding: 4px 6px;
+    color:#333;
 }
 .chuangyi li .chuangyi_input{
-    width:65%;
+    width:80%;
 }
 .chuangyi li .chuangyi_fu{
     color: #333;
-    height: 26px;
-    line-height: 20px;
+    height:33px;
     margin-left:1%;
-    width: 30%;
+    width: 15%;
+    padding:0px;
 }
 .riginality_under h3{
     font-size:14px;
