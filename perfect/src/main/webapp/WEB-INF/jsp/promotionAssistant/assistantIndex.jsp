@@ -1358,7 +1358,7 @@
     </div>
 </div>
 <%--创意修改弹出窗口--%>
-<div  class="box" style="display:none;*width:400px;" id="jcUpdate">
+<div  class="box" style="display:none;width:500px;" id="jcUpdate">
     <h2 id="dUpdate">
         <span class="fl">修改创意</span>
         <a href="#" class="close">关闭</a></h2>
@@ -1366,9 +1366,9 @@
         <form id="cUpdateForm">
             <ul class="chuangyi">
                 <li><input name="oid" type="hidden"/></li>
-                <li><label>创意标题:</label><input name="title" class="chuangyi_input" maxlength="50"/> <input type="button" class="chuangyi_fu" value="{}插入通配符" onclick="addTb()" /></li>
-                <li><label>创意描述1:</label><input name="description1" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="{}插入通配符" onclick="addTbDes1()" /></li>
-                <li><label>创意描述2:</label><input name="description2" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="{}插入通配符" onclick="addTbDes2()" /></li>
+                <li><label>创意标题:</label><input name="title" class="chuangyi_input" maxlength="50"/> <input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTb()" /></li>
+                <li><label>创意描述1:</label><input name="description1" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes1()" /></li>
+                <li><label>创意描述2:</label><input name="description2" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes2()" /></li>
                 <li><label>默认访问URL:</label><input name="pcDestinationUrl" maxlength="1024"/></li>
                 <li><label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/></li>
                 <li><label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></li>
