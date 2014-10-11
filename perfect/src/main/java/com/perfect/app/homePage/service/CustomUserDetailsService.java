@@ -42,7 +42,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Jedis jedis = null;
         try {
             jedis = JRedisUtils.get();
-            if (jedis.ttl(key) != -1) {
+            if (jedis.exists(key) && jedis.ttl(key) != -1) {
                 if (Integer.valueOf(jedis.get(key)) == 3) {
                     throw new BadCredentialsException("badCredentials");
                 }

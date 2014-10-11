@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 
 /**
  * Created by baizz on 2014-10-9.
@@ -82,15 +83,20 @@ public class ImportLexiconExcelController {
         //delete tempFile
         Files.deleteIfExists(Paths.get(tempFile));
 
-//        ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors() + 1);
-//        try {
-//            LexiconTask task = new LexiconTask(list, 0, list.size() - 1);
+        ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors() + 1);
+        try {
+            LexiconTask task = new LexiconTask(list, 0, list.size() - 1);
 //            pool.invoke(task);
-//        } finally {
-//            pool.shutdown();
-//        }
+        } finally {
+            pool.shutdown();
+        }
 
-        return new ModelAndView();
+//        AbstractView jsonView = new MappingJackson2JsonView();
+//        Map<String, Object> value = new HashMap<String, Object>() {{
+//            put("status", true);
+//        }};
+//        jsonView.setAttributesMap(value);
+        return new ModelAndView("keywordGroup/lexicon");
     }
 
     @RequestMapping(value = "/delete/{trade}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
