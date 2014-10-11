@@ -16,14 +16,18 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
 </head>
 <body>
-<div>
+<jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
+<div class="backstage_concent mid over">
     <!-- 用于文件上传的表单元素 -->
-    <form id="fileForm" name="fileForm" method="post" class="form-inline" enctype="multipart/form-data"
+    <div class="backstage_list over">
+      <form id="fileForm" name="fileForm" method="post" class="form-inline" enctype="multipart/form-data"
           action="${pageContext.request.contextPath}/admin/lexicon/upload">
-        <p>Upload File: <input type="file" name="excelFile"/></p>
-
-        <p><input type="submit" class="btn btn-primary" value="导入"/></p>
-    </form>
+          <ul>
+              <li><span>Upload File: </span><input type="file" name="excelFile" style="border:none;"/></li>
+              <li><input type="submit" class="btn sure" value="导入"/></li>
+          </ul>
+      </form>
+       </div>
 </div>
 <!--
 <div>Progessing (in Bytes): <span id="bytesRead">

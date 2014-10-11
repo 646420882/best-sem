@@ -21,6 +21,7 @@
                 <li><a href="${pageContext.request.contextPath}/admin/lexiconConsole">词库管理</a></li>
             </ul>
         </div>
+        <a href="#" class="fr" style="color:#b4bcbf;">退出</a>
     </div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>

@@ -29,6 +29,20 @@
         .newkeyword_right_mid textarea {
             height: 200px;
         }
+        .ztree{
+            height:440px;
+        }
+
+        .list02_top {
+            background: none repeat scroll 0 0 #edf0f1;
+            color: #333;
+            font-weight: bold;
+            height: 30px;
+            overflow: hidden;
+        }
+        .list2 table .list2_top td, th {
+            color: #333;
+        }
 
     </style>
 </head>
@@ -93,9 +107,8 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="containers2 over inputKwdInfoDiv hides">
 
-
-                        <div class="containers2 over inputKwdInfoDiv">
                             <div class="newkeyword_right fr over" style="width: 100%;">
                                 <h3> 删除关键词 </h3>
 
@@ -111,6 +124,7 @@
                                     </p>
 
                                 </div>
+
 
                                 <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
                                     <div class="w_list03">
@@ -133,8 +147,8 @@
                     <div class="newkeword_end">
                         <ul id="creativeMultivalidateDelKwdUl">
                         </ul>
-                        <div style="width:99%;height: 300px; border: 1px solid red; overflow: auto; font-size:12px;">
-                            <p><span style="font-weight: bold;">新增的创意：<span id="criSize">0</span></span></p>
+                        <div style="width:99%;height: 400px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
+                            <p><span style="font-weight: bold; line-height:30px;padding:10px;">新增的创意：<span id="criSize">0</span></span></p>
                             <table border="0" cellspacing="0" width="100%" id="createTable"
                                    class="table2 table-bordered" data-resizable-columns-id="demo-table">
                                 <thead>
@@ -352,8 +366,10 @@ function nextStep() {
         var _createTable = $("#createTable tbody");
         var txtSize = txt.split("\n");
         _createTable.empty();
+        var _trClass="";
         $("#criSize").html(txtSize.length);
         for (var i = 0; i < names.length; i++) {
+            _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
             for (var j = 0; j < txtSize.length; j++) {
                 var c0 = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";
                 var c1 = txtSize[j].split(",")[1] != undefined ? txtSize[j].split(",")[1] : "";
@@ -365,7 +381,7 @@ function nextStep() {
                 var c7 = txtSize[j].split(",")[7] != undefined ? txtSize[j].split(",")[7] : "";
                 var c7_pause = c7 == "停用" ? "停用" : "启用";
                 var c8 = txtSize[j].split(",")[8] != undefined ? txtSize[j].split(",")[8] : "";
-                var _tbody = "<tr>" +
+                var _tbody = "<tr class='"+_trClass+"'>" +
                         "<td>" + names[i].split(",")[0] + "<input type='hidden' value=" + ids[i].split(",")[0] + "></td>" +
                         "<td>" + names[i].split(",")[1] + "<input type='hidden' value=" + ids[i].split(",")[1] + "></td>" +
                         "<td>" + c0 + "</td>" +
