@@ -265,11 +265,11 @@ function reSave() {
         return false;
     }
     if ($("#_editor textarea[name='pcUrl']").val().indexOf(dm) == -1) {
-        alert("访问地址中必须包含" + dm + "的域名后缀!");
+        alert("访问Url地址中必须包含" + dm + "的域名后缀!");
         return false;
     }
     if ($("#_editor input[name='pcsUrl']").val().indexOf(dm) == -1) {
-        alert("显示地址中必须包含" + dm + "的域名后缀!");
+        alert("显示Url地址中必须包含" + dm + "的域名后缀!");
         return false;
     }
 
