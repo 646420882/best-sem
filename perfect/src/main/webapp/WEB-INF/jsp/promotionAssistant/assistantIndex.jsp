@@ -231,7 +231,7 @@
         <ul class="fl">
             <li><a href="javascript:void(0)" onclick="addCreative();"><span class="zs_top"><img
                     src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+            <li><a href="javascript:void(0)" ><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
             <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b onclick="creativeMulti();">批量添加/更新</b></a>
             </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
@@ -1319,6 +1319,7 @@
         <ul class="zs_set" id="jcUl">
             <%--<li><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</li>--%>
         </ul>
+        <input type="text" id="doMain">
     </div>
     <div class="main_bottom">
         <div class="w_list03">

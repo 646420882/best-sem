@@ -84,6 +84,10 @@ var menuExt = {
         $.smartMenu.remove();
     }
 };
+function getChar(str) {
+    var char = str.match(/[^\x00-\xff]/ig);
+    return  str.length + (char == null ? 0 : char.length);
+}
 /**
  * 初始化右键菜单
  * @constructor
@@ -94,6 +98,71 @@ function InitMenu() {
     });
     $("#createTable").on("keydown", "input", function (event) {
         if (event.keyCode == 13) {
+            var strRegex = "^((https|http|ftp|rtsp|mms)://)?[a-z0-9A-Z]{3}\.[a-z0-9A-Z][a-z0-9A-Z]{0,61}?[a-z0-9A-Z]\.com|net|cn|cc (:s[0-9]{1-4})?/$";
+            var re = new RegExp(strRegex);
+            var _title = $(this).parents("tr").find("input:eq(2)");
+            var _thisStr = getChar(_title.val());
+            var dm = "." + $("#doMain").val();
+            if (parseInt(_thisStr) > 50 || parseInt(_thisStr) <= 8) {
+                alert("标题长度应大于8个字符小于50个字符，汉子占两个字符!");
+                return false;
+            }
+            var _desc1 = $(this).parents("tr").find("input:eq(3)");
+            var _thisStrDesc1 = getChar(_desc1.val());
+            if (parseInt(_thisStrDesc1) > 80 || parseInt(_thisStrDesc1) <= 8) {
+                alert("创意描述1长度应大于8个字符小于80个字符，汉子占两个字符!");
+                return false;
+            }
+            var _desc2 = $(this).parents("tr").find("input:eq(4)");
+            var _thisStrDesc2 = getChar(_desc2.val());
+            if (parseInt(_thisStrDesc2) > 80 || parseInt(_thisStrDesc2) <= 8) {
+                alert("创意描述2长度应大于8个字符小于80个字符，汉子占两个字符!");
+                return false;
+            }
+            var _pc = $(this).parents("tr").find("input:eq(5)");
+            var _thisStrpc = getChar(_pc.val());
+            if (parseInt(_thisStrpc) > 1024 || parseInt(_thisStrpc) <= 1) {
+                alert("默认访问Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
+                return false;
+            } else {
+                if (!re.test(_pc.val())) {
+                    alert("默认访问Url地址格式不正确，请重新输入");
+                    _pc.val("");
+                    return false;
+                }
+                if (_pc.val().indexOf(dm) == -1) {
+                    alert("默认访问Url地址必须包含以\"" + dm + "\"的域名！");
+                    return false;
+                } else {
+                    var _pcSize = _pc.val();
+                    if (_pc.val().substr(_pc.val().indexOf(dm)) != dm) {
+                        alert("默认访问Url地址必须以\"" + dm + "\"结尾！");
+                        return false;
+                    }
+                }
+            }
+            var _pcs = $(this).parents("tr").find("input:eq(6)");
+            var _thisStrpcs = getChar(_pcs.val());
+            if (parseInt(_thisStrpcs) > 50 || parseInt(_thisStrpcs) <= 1) {
+                alert("默认显示Url地址长度应大于2个字符小于50个字符，汉子占两个字符!");
+                return false;
+            } else {
+                if (!re.test(_pcs.val())) {
+                    alert("默认显示Url地址格式不正确，请重新输入");
+                    _pcs.val("");
+                    return false;
+                }
+                if (_pcs.val().indexOf(dm) == -1) {
+                    alert("默认显示Url地址必须包含以\"" + dm + "\"的域名！");
+                    return false;
+                } else {
+                    var _pcsSize = _pcs.val();
+                    if (_pcs.val().substr(_pcs.val().indexOf(dm)) != dm) {
+                        alert("默认显示Url地址必须以\"" + dm + "\"结尾！");
+                        return false;
+                    }
+                }
+            }
             var con = confirm("你确定要添加么？");
             if (con) {
                 var _selects = $(this).parents("tr").find("select");
@@ -151,7 +220,7 @@ function loadCreativeData(page_index) {
     $.post("/assistantCreative/getList", sparams, function (result) {
         var gson = $.parseJSON(result);
 
-            if (gson.list.length !="[]") {
+        if (gson.list != undefined) {
                 var json = gson.list;
                 pagerInit(gson);
                 _createTable.empty();
@@ -245,77 +314,62 @@ function on(obj) {
     var status = _this.find("td:eq(9) select") == "" ? _this.find("td:eq(9)").find("select") : _this.find("td:eq(9)").html();
 
     $("#sTitle").val(title);
-    var _maxTitle=$("#sTitle").next("span").text().split("/")[1];
-    var charTitle = title.match(/[^\x00-\xff]/ig);
-    var _thisStrTitle = title.length + (charTitle == null ? 0 : charTitle.length);
-    if(parseInt(_thisStrTitle)>parseInt(_maxTitle)||parseInt(_thisStrTitle)<=8){
-        $("#sTitle").next("span").css("color","red");
-    }else{
-        $("#sTitle").next("span").css("color","#b4b4b4");
-    }
-    $("#sTitle").next("span").text(_thisStrTitle+"/"+_maxTitle);
+    initKeyUp($("#sTitle"));
 
     $("#sDes1").val(de1);
-    var _maxDesc1=$("#sDesc1").next("span").text().split("/")[1];
-    var charDesc1 = de1.match(/[^\x00-\xff]/ig);
-    var _thisStrDesc1 = de1.length + (charDesc1 == null ? 0 : charDesc1.length);
-    if(parseInt(_thisStrDesc1)>parseInt(_maxDesc1)||parseInt(_thisStrDesc1)<=8){
-        $("#sDes1").next("span").css("color","red");
-    }else{
-        $("#sDes1").next("span").css("color","#b4b4b4");
-    }
-    $("#sDes1").next("span").text(_thisStrDesc1+"/"+_maxDesc1);
-
+    initKeyUp($("#sDes1"));
 
     $("#sDes2").val(de2);
-
+    initKeyUp($("#sDes2"));
 
     $("#sPc").val(pc);
-
+    initKeyUp($("#sPc"), 1);
 
     $("#sPcs").val(pcs);
-
+    initKeyUp($("#sPcs"), 1);
 
     $("#sMib").val(mib);
-
+    initKeyUp($("#sMib"), -1);
 
     $("#sMibs").val(mibs);
-
+    initKeyUp($("#sMibs"), -1);
 
     $("#sPause").html(pause);
     $("#sStatus").html(status);
 
 }
+function initKeyUp(res, gtval) {
+    gtval = gtval != undefined ? gtval : 8;
+    var _max = $(res).next("span").text().split("/")[1];
+    var _thisSttmpr = $(res).val();
+    var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
+    var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
+    if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= gtval) {
+        $(res).next("span").css("color", "red");
+    } else {
+        $(res).next("span").css("color", "#b4b4b4");
+    }
+    $(res).next("span").text(_thisStr + "/" + _max);
+}
+
 function initsDivKeyup(){
-    $("#sTitle").keyup(function (e) {
-        var _max=$(this).next("span").text().split("/")[1];
-        var _thisSttmpr = $(this).val();
-        var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
-        var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
-        if(parseInt(_thisStr)>parseInt(_max)||parseInt(_thisStr)<=8){
-            $(this).next("span").removeClass().addClass("span-error");
-        }else{
-            $(this).next("span").removeClass().addClass("span-ok");
+    var _input = $("#sDiv input");
+    _input.each(function (i, o) {
+        if (i < 3) {
+            $(o).keyup(function () {
+                initKeyUp($(o));
+            });
         }
-        $(this).next("span").text(_thisStr+"/"+_max);
-    });
-    $("#sDes1").keyup(function () {
-        $("#sDes1_size").text($("#sDes1").val().length);
-    });
-    $("#sDes2").keyup(function () {
-        $("#sDes2_size").text($("#sDes2").val().length);
-    });
-    $("#sPc").keyup(function () {
-        $("#sPc_size").text($("#sPc").val().length);
-    });
-    $("#sPcs") .keyup(function () {
-        $("#sPcs_size").text($("#sPcs").val().length);
-    });
-    $("#sMib").keyup(function () {
-        $("#Mib_size").text($("#sMib").val().length);
-    });
-    $("#sMibs").keyup(function () {
-        $("#Mibs_size").text($("#sMibs").val().length);
+        if (i >= 3 && i < 5) {
+            $(o).keyup(function () {
+                initKeyUp($(o), 1);
+            });
+        }
+        if (i >= 5) {
+            $(o).keyup(function () {
+                initKeyUp($(o), -1);
+            });
+        }
     });
 }
 /**
@@ -351,10 +405,10 @@ function addCreative() {
             "<td><input name='title' onkeyup='onKey(this);' style='width:140px;' maxlength='50'></td>" +
             " <td><input name='description1' onkeyup='onKey(this);'  style='width:140px;'  maxlength='80'></td>" +
             " <td><input name='description2' onkeyup='onKey(this);'  style='width:140px;' maxlength='80'></td>" +
-            " <td><input name='pcDestinationUrl' onkeyup='onKey(this);' style='width:40px;'  maxlength='1024'></td>" +
-            " <td><input name='pcDisplayUrl' onkeyup='onKey(this);' style='width:40px;'  maxlength='36'></td>" +
-            " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='1024'></td>" +
-            " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:40px;' maxlength='36'></td>" +
+            " <td><input name='pcDestinationUrl' onkeyup='onKey(this);' style='width:140px;'  maxlength='1024'></td>" +
+            " <td><input name='pcDisplayUrl' onkeyup='onKey(this);' style='width:140px;'  maxlength='36'></td>" +
+            " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='1024'></td>" +
+            " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='36'></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
             " <td><span>本地新增</span><input type='hidden' value='-1' name='status'></td>" +
             " <td><span class='pen'></span></td>" +
@@ -446,31 +500,31 @@ function onKey(rs) {
     switch (name) {
         case "title":
             $("#sTitle").val(val);
-            $("#sTitle_size").text(val.length);
+            initKeyUp($("#sTitle"));
             break;
         case "description1":
             $("#sDes1").val(val);
-            $("#sDes1_size").text(val.length);
+            initKeyUp($("#sDes1"));
             break;
         case "description2":
             $("#sDes2").val(val);
-            $("#sDes2_size").text(val.length);
+            initKeyUp($("#sDes2"));
             break;
         case "pcDestinationUrl":
             $("#sPc").val(val);
-            $("#sPc_size").text(val.length);
+            initKeyUp($("#sPc"), 1);
             break;
         case "pcDisplayUrl":
             $("#sPcs").val(val);
-            $("#sPcs_size").text(val.length);
+            initKeyUp($("#sPcs"), 1);
             break;
         case "mobileDisplayUrl":
             $("#sMibs").val(val);
-            $("#sMibs_size").text(val.length);
+            initKeyUp($("#sMibs"), -1);
             break;
         case "mobileDestinationUrl":
             $("#sMib").val(val);
-            $("#sMib_size").text(val.length);
+            initKeyUp($("#sMib"), -1);
             break;
     }
 
@@ -558,6 +612,14 @@ function planUnit() {
     } else if (aid == "-1") {
         alert("请选择单元");
     } else {
+        var dm = $("#doMain").val();
+        if (dm == "") {
+            $.get("/assistantCreative/getDomain", function (result) {
+                if (result != "0") {
+                    $("#doMain").val(result);
+                }
+            });
+        }
         sparams.cid = cid;
         sparams.aid = aid;
         closeAlert();
@@ -626,7 +688,7 @@ function loadTree(rs) {
     if (rs != "-1") {
         var cid = $("#sPlan :selected").val() == undefined ? sparams.cid : $("#sPlan :selected").val();
         sparams = {cid: cid, aid: rs};
-        loadCreativeData(sparams);
+        loadCreativeData(0);
     }
 }
 /**

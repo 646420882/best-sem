@@ -352,8 +352,10 @@ function nextStep() {
         var _createTable = $("#createTable tbody");
         var txtSize = txt.split("\n");
         _createTable.empty();
+        var _trClass="";
         $("#criSize").html(txtSize.length);
         for (var i = 0; i < names.length; i++) {
+            _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
             for (var j = 0; j < txtSize.length; j++) {
                 var c0 = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";
                 var c1 = txtSize[j].split(",")[1] != undefined ? txtSize[j].split(",")[1] : "";
@@ -365,7 +367,7 @@ function nextStep() {
                 var c7 = txtSize[j].split(",")[7] != undefined ? txtSize[j].split(",")[7] : "";
                 var c7_pause = c7 == "停用" ? "停用" : "启用";
                 var c8 = txtSize[j].split(",")[8] != undefined ? txtSize[j].split(",")[8] : "";
-                var _tbody = "<tr>" +
+                var _tbody = "<tr class='"+_trClass+"'>" +
                         "<td>" + names[i].split(",")[0] + "<input type='hidden' value=" + ids[i].split(",")[0] + "></td>" +
                         "<td>" + names[i].split(",")[1] + "<input type='hidden' value=" + ids[i].split(",")[1] + "></td>" +
                         "<td>" + c0 + "</td>" +
