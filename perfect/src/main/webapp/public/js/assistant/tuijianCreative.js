@@ -237,40 +237,52 @@ function reSave() {
     var pcUrl = $("textarea[name='pcUrl']").val();
     var pcsUrl = $("input[name='pcsUrl']").val();
     if ($("#_editor span:eq(0)").attr("class") == "span-error") {
-        alert("标题字符不符合规范，请重新输入！");
+        alert("\"标题\"字符不符合规范，请重新输入！");
         return false;
     }
     if ($("#_editor span:eq(1)").attr("class") == "span-error") {
-        alert("描述1字符不符合规范，请重新输入！");
+        alert("\"描述1\"字符不符合规范，请重新输入！");
         return false;
     }
     if ($("#_editor span:eq(2)").attr("class") == "span-error") {
-        alert("描述2字符不符合规范，请重新输入！");
+        alert("\"描述2\"字符不符合规范，请重新输入！");
         return false;
     }
     if ($("#_editor span:eq(3)").attr("class") == "span-error") {
-        alert("访问Url字符不符合规范，请重新输入！");
+        alert("\"访问\"Url字符不符合规范，请重新输入！");
         return false;
     }
     if ($("#_editor span:eq(4)").attr("class") == "span-error") {
-        alert("显示Url字符不符合规范，请重新输入！");
+        alert("\"显示\"Url字符不符合规范，请重新输入！");
         return false;
     }
     if ($("#pcUrlMsg").html() != "") {
-        alert("请验证访问Url格式！!");
+        alert("请验证\"访问\"Url格式！!");
         return false;
     }
     if ($("#pcsUrlMsg").html() != "") {
-        alert("请验证显示Url格式！!");
+        alert("请验证\"显示\"Url格式！!");
         return false;
     }
     if ($("#_editor textarea[name='pcUrl']").val().indexOf(dm) == -1) {
-        alert("访问Url地址中必须包含" + dm + "的域名后缀!");
+        alert("\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!");
         return false;
+    }else {
+        var _pcSize = $("#_editor textarea[name='pcUrl']").val();
+        if ($("#_editor textarea[name='pcUrl']").val().substr($("#_editor textarea[name='pcUrl']").val().indexOf(dm)) != dm) {
+            alert("\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+            return false;
+        }
     }
     if ($("#_editor input[name='pcsUrl']").val().indexOf(dm) == -1) {
-        alert("显示Url地址中必须包含" + dm + "的域名后缀!");
+        alert("\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!");
         return false;
+    }else {
+        var _pcSize = $("#_editor input[name='pcsUrl']").val();
+        if ($("#_editor input[name='pcsUrl']").val().substr($("#_editor input[name='pcsUrl']").val().indexOf(dm)) != dm) {
+            alert("\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+            return false;
+        }
     }
 
 
