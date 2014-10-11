@@ -14,8 +14,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.AbstractView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -23,7 +26,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ForkJoinPool;
 
 /**
@@ -37,11 +42,12 @@ public class ImportLexiconExcelController {
     static String trade;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ModelAndView importLexicon(HttpServletRequest request, @RequestParam(value = "excelFile") MultipartFile[] files)
+    public void importLexicon(HttpServletRequest request, HttpServletResponse response,
+                              @RequestParam(value = "excelFile") MultipartFile[] files)
             throws Exception {
         URL url = Thread.currentThread().getContextClassLoader().getResource("/");
         if (url == null) {
-            return null;
+            return;
         }
         final String rootPath = url.getPath();
 
@@ -57,7 +63,7 @@ public class ImportLexiconExcelController {
             }
         }
         if (StringUtils.isEmpty(tempFile)) {
-            return null;
+            return;
         }
 
         trade = fileName.substring(0, fileName.indexOf("."));
@@ -91,12 +97,8 @@ public class ImportLexiconExcelController {
             pool.shutdown();
         }
 
-//        AbstractView jsonView = new MappingJackson2JsonView();
-//        Map<String, Object> value = new HashMap<String, Object>() {{
-//            put("status", true);
-//        }};
-//        jsonView.setAttributesMap(value);
-        return new ModelAndView("keywordGroup/lexicon");
+
+        response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
     }
 
     @RequestMapping(value = "/delete/{trade}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -104,7 +106,12 @@ public class ImportLexiconExcelController {
         trade = java.net.URLDecoder.decode(trade, "UTF-8");
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         mongoTemplate.remove(Query.query(Criteria.where("tr").is(trade)), LexiconEntity.class);
-        return new ModelAndView();
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> value = new HashMap<String, Object>() {{
+            put("status", true);
+        }};
+        jsonView.setAttributesMap(value);
+        return new ModelAndView(jsonView);
     }
 
 }

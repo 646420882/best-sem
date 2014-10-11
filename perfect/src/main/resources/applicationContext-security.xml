@@ -25,7 +25,8 @@
         <security:intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>
         <security:intercept-url pattern="/**" access="ROLE_USER"/>
         <security:form-login login-page="/login"
-                             authentication-success-handler-ref="myAuthenticationSuccessHandler"
+                             authentication-success-handler-ref="customAuthenticationSuccessHandler"
+                             authentication-failure-handler-ref="customAuthenticationFailureHandler"
                              authentication-failure-url="/login?error=true"/>
 
         <security:logout invalidate-session="true" logout-url="/logout" logout-success-url="/login"/>
@@ -43,14 +44,18 @@
         <property name="saltSource" ref="saltSource"/>
     </bean>
 
-    <bean id="customUserDetailsService" class="com.perfect.app.homePage.service.CustomUserDetailsService"/>
-
     <bean id="passwordEncode" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
 
     <bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
         <property name="userPropertyToUse" value="username"/>
     </bean>
 
-    <bean id="myAuthenticationSuccessHandler" class="com.perfect.app.homePage.service.MyAuthenticationSuccessHandler"/>
+    <bean id="customUserDetailsService" class="com.perfect.app.homePage.service.CustomUserDetailsService"/>
+
+    <bean id="customAuthenticationSuccessHandler" class="com.perfect.utils.web.CustomAuthenticationSuccessHandler"/>
+
+    <bean id="customAuthenticationFailureHandler" class="com.perfect.utils.web.CustomAuthenticationFailureHandler">
+        <constructor-arg index="0" value="/login?error=true"/>
+    </bean>
 
 </beans>

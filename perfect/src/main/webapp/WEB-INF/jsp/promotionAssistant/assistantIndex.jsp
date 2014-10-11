@@ -231,7 +231,7 @@
         <ul class="fl">
             <li><a href="javascript:void(0)" onclick="addCreative();"><span class="zs_top"><img
                     src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+            <li><a href="javascript:void(0)" ><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
             <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b onclick="creativeMulti();">批量添加/更新</b></a>
             </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
@@ -332,7 +332,7 @@
                 <li>
                     <div class="t_list01 fl over">创意预览：</div>
                     <div class="w_list01 fl over" id="sPreview"
-                         style="width:557px;height: 98px;border:1px solid #CCC;"></div>
+                         style="width:76%;height: 98px;border:1px solid #CCC;"></div>
                 </li>
             </ul>
         </div>
@@ -1319,6 +1319,7 @@
         <ul class="zs_set" id="jcUl">
             <%--<li><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</li>--%>
         </ul>
+        <input type="hidden" id="doMain">
     </div>
     <div class="main_bottom">
         <div class="w_list03">
@@ -1365,14 +1366,14 @@
     <div class="mainlist">
         <form id="cUpdateForm">
             <ul class="chuangyi">
-                <li><input name="oid" type="hidden"/></li>
-                <li><label>创意标题:</label><input name="title" class="chuangyi_input" maxlength="50"/> <input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTb()" /></li>
-                <li><label>创意描述1:</label><input name="description1" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes1()" /></li>
-                <li><label>创意描述2:</label><input name="description2" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes2()" /></li>
-                <li><label>默认访问URL:</label><input name="pcDestinationUrl" maxlength="1024"/></li>
-                <li><label>默认显示URL:</label><input name="pcDisplayUrl" maxlength="36"/></li>
-                <li><label>移动访问URL:</label><input name="mobileDestinationUrl" maxlength="1024"/></li>
-                <li><label>移动显示URL:</label><input name="mobileDisplayUrl" maxlength="36"/></li>
+                <li><label style="display: none;">---:<span>4/50</span></label><input name="oid" type="hidden"/></li>
+                <li><label>创意标题:<span>49/50</span></label><input name="title"  class="chuangyi_input" maxlength="50"/> <input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTb()" /></li>
+                <li><label>创意描述1:<span>49/80</span></label><input name="description1" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes1()" /></li>
+                <li><label>创意描述2:<span>49/80</span></label><input name="description2" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes2()" /></li>
+                <li><label>默认访问URL:<span>49/1024</span></label><input name="pcDestinationUrl" maxlength="1024"/></li>
+                <li><label>默认显示URL:<span>49/50</span></label><input name="pcDisplayUrl" maxlength="50"/></li>
+                <li><label>移动访问URL:<span>49/1024</span></label><input name="mobileDestinationUrl" maxlength="1024"/></li>
+                <li><label>移动显示URL:<span>35/36</span></label><input name="mobileDisplayUrl" maxlength="36"/></li>
                 <li> <label class="fl">创意状态:</label><label id="cuStatus" class="fl">暂无</label><input type="hidden" name="status"></li>
                 <li><label class="fl">是否启用:</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select></li>
             </ul>
