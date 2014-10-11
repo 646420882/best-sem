@@ -29,7 +29,7 @@ public class BaseMongoTemplate {
         Properties p = new Properties();
         try {
             p.load(is);
-            mongo = new MongoClient(p.getProperty("mongo.host"), Integer.valueOf(p.getProperty("mongo.port")));
+            mongo = new MongoClient(p.getProperty("mongo.host"));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -22,6 +22,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-08-18.
  */
+@Deprecated
 public class ExcelUtils {
 
     protected static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

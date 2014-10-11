@@ -24,7 +24,7 @@
             </activation>
             <properties>
                 <redis.host>182.92.188.177</redis.host>
-                <redis.port>16379</redis.port>
+                <redis.port>6379</redis.port>
                 <redis.password>3edcvfr4</redis.password>
 
                 <mongo.host>182.92.188.177:23135</mongo.host>

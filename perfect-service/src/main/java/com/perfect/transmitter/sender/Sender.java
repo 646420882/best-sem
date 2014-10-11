@@ -23,7 +23,9 @@ public class Sender implements Runnable{
         String[] tels = ((String)map.get("tels")).split(",");
         if(mails.length>0){
             sendMail(mails);
-        }else if(tels.length>0){
+        }
+
+        if(tels.length>0){
             sendMessage((String)map.get("tels"));
         }
     }
