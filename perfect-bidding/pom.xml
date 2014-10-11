@@ -107,6 +107,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.3.5</version>
@@ -138,30 +144,30 @@
                 </configuration>
             </plugin>
             <!--<plugin>-->
-                <!--<artifactId>maven-resources-plugin</artifactId>-->
-                <!--<version>2.6</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>copy-resources</id>-->
-                        <!--<phase>package</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>copy-resources</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<encoding>UTF-8</encoding>-->
-                            <!--<outputDirectory>${project.build.directory}/conf</outputDirectory>-->
-                            <!--<resources>-->
-                                <!--<resource>-->
-                                    <!--<directory>src/main/resources</directory>-->
-                                    <!--<includes>-->
-                                        <!--<include>bidding.xml</include>-->
-                                        <!--<include>*.properties</include>-->
-                                    <!--</includes>-->
-                                <!--</resource>-->
-                            <!--</resources>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
+            <!--<artifactId>maven-resources-plugin</artifactId>-->
+            <!--<version>2.6</version>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>copy-resources</id>-->
+            <!--<phase>package</phase>-->
+            <!--<goals>-->
+            <!--<goal>copy-resources</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<encoding>UTF-8</encoding>-->
+            <!--<outputDirectory>${project.build.directory}/conf</outputDirectory>-->
+            <!--<resources>-->
+            <!--<resource>-->
+            <!--<directory>src/main/resources</directory>-->
+            <!--<includes>-->
+            <!--<include>bidding.xml</include>-->
+            <!--<include>*.properties</include>-->
+            <!--</includes>-->
+            <!--</resource>-->
+            <!--</resources>-->
+            <!--</configuration>-->
+            <!--</execution>-->
+            <!--</executions>-->
             <!--</plugin>-->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
