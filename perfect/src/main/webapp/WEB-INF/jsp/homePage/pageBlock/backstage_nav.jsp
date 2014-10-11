@@ -1,4 +1,3 @@
-<%@ page import="com.perfect.app.web.WebUtils" %>
 <%--
   Created by IntelliJ IDEA.
   User: guochunyan
@@ -8,21 +7,21 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="backstage_nav over">
- <div class="backstage_wd mid over">
-     <div class="backstage_logo fl">
-         <img src="${pageContext.request.contextPath}/public/img/logo.png">
-     </div>
-     <div class="backstage_text fl">
-      后台管理系统
-     </div>
-     <div class="backstage_menu fl">
-        <ul>
-            <li class="current"><a href="/admin/pullPage">数据拉取</a></li>
-            <li><a href="/admin/biddingConsole">智能竞价</a></li>
-            <li><a href="#">词库管理</a></li>
-        </ul>
-     </div>
- </div>
+    <div class="backstage_wd mid over">
+        <div class="backstage_logo fl">
+            <img src="${pageContext.request.contextPath}/public/img/logo.png">
+        </div>
+        <div class="backstage_text fl">
+            后台管理系统
+        </div>
+        <div class="backstage_menu fl">
+            <ul>
+                <li class="current"><a href="${pageContext.request.contextPath}/admin/pullPage">数据拉取</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/biddingConsole">智能竞价</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/lexiconConsole">词库管理</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">

@@ -94,13 +94,13 @@ public abstract class RowMapper extends DefaultHandler {
         String tmp = value.toString();
         Object result = tmp;
 
-        if ("s".equals(cellType)) {     //字符串
+        if ("s".equals(cellType)) {     //string
             Integer key = Integer.parseInt(tmp);
             result = strMap.get(key);
             if (result == null)
                 strMap.put(key, (String) (result = new XSSFRichTextString(sst.getEntryAt(key)).toString()));
         } else if ("n".equals(cellType)) {
-            if ("2".equals(cells)) {    //日期
+            if ("2".equals(cells)) {    //date
                 result = HSSFDateUtil.getJavaDate(Double.valueOf(tmp));
             }
         }

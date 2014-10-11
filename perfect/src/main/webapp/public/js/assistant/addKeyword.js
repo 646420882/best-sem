@@ -26,7 +26,8 @@ $(function () {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
-                window.location.reload(true);
+               // window.location.reload(true);
+                whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
             },
             onremove: function () {
             }
@@ -43,7 +44,8 @@ $(function () {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
-                window.location.reload(true);
+               // window.location.reload(true);
+                whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
             },
             onremove: function () {
             }

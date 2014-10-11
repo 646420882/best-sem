@@ -57,7 +57,7 @@ public class HomePageManageController {
                     Jedis jedis = null;
                     try {
                         jedis = JRedisUtils.get();
-                        if (jedis.ttl(key) == -1) {
+                        if (!jedis.exists(key)) {
                             jedis.set(key, 1 + "");
                             model.put("invalidPassword", "密码不对");
                         } else {

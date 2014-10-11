@@ -18,13 +18,20 @@ import java.util.Iterator;
  */
 public class XSSFUtils {
 
-    static SheetDatasHandler read(Path file) throws Exception {
-        SheetDatasHandler handler = new SheetDatasHandler((int) (Files.size(file) / 50));
-        read(file, handler);
-        return handler;
+    public static SheetContentsHandler read(Path file) throws Exception {
+        SheetContentsHandler sheetHandler = new SheetContentsHandler((int) (Files.size(file) / 50));
+        read(file, sheetHandler);
+        return sheetHandler;
     }
 
-    static void read(InputStream is, RowMapper mapper) throws Exception {
+    public static void read(Path file, RowMapper mapper) throws Exception {
+        final long size = Files.size(file);
+        try (InputStream is = new BufferedInputStream(new FileInputStream(file.toFile()), size > Integer.MAX_VALUE ? 1024 * 1024 * 10 : (int) size)) {
+            process(is, mapper);
+        }
+    }
+
+    static void process(InputStream is, RowMapper mapper) throws Exception {
         XSSFReader reader = new XSSFReader(OPCPackage.open(is));
         XMLReader parser = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
 
@@ -35,13 +42,6 @@ public class XSSFUtils {
             try (InputStream sheetIn = iterator.next()) {
                 parser.parse(new InputSource(sheetIn));
             }
-        }
-    }
-
-    public static void read(Path file, RowMapper mapper) throws Exception {
-        final long size = Files.size(file);
-        try (InputStream is = new BufferedInputStream(new FileInputStream(file.toFile()), size > Integer.MAX_VALUE ? 1024 * 1024 * 10 : (int) size)) {
-            read(is, mapper);
         }
     }
 }

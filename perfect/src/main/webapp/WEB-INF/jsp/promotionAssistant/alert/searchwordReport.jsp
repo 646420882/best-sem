@@ -42,9 +42,15 @@
         }
 
         .choose{
-            background-color: lightgray;
+            background-color: #f7ecb5;
         }
 
+
+        table tbody td{
+            border: 1px solid #ffffff;
+            height: 30px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -159,24 +165,24 @@
             <div class="search_mid over" style="height:430px;overflow: scroll;">
                 <table style="width:1500px;" cellspacing="0" border="0">
                     <thead>
-                        <td>关键词</td>
-                        <td>搜索词</td>
-                        <td>点击量</td>
-                        <td>展现量</td>
-                        <td>搜索引擎</td>
-                        <td>推广单元</td>
-                        <td>推广计划</td>
-                        <td>创意标题</td>
-                        <td>创意描述1</td>
-                        <td>创意描述2</td>
-                        <td>日期</td>
-                        <td>精确匹配扩展(地域词)触发</td>
+                        <tr class="list02_top">
+                    <th>&nbsp;关键词</th>
+                    <th>&nbsp;搜索词</th>
+                    <th>&nbsp;点击量</th>
+                    <th>&nbsp;展现量</th>
+                    <th>&nbsp;搜索引擎</th>
+                    <th>&nbsp;推广单元</th>
+                    <th>&nbsp;推广计划</th>
+                    <th>&nbsp;创意标题</th>
+                    <th>&nbsp;创意描述1</th>
+                    <th>&nbsp;创意描述2</th>
+                    <th>&nbsp;日期</th>
+                    <th>&nbsp;精确匹配扩展(地域词)触发</th>
+                </tr>
                     </thead>
                     <tbody id="searchWordTbody">
                     </tbody>
                 </table>
-
-
             </div>
             <%--<input type="button" value="导出全部到文件" class="zs_input2">--%>
         </div>
@@ -382,7 +388,12 @@
     function toTableHtml(data) {
         var html = "";
         for(var i = 0;i<data.length;i++){
-            html+="<tr>";
+            var className = "list2_box2";
+            if(i%2==0){
+                className = "list1_box1";
+            }
+
+            html+="<tr class='"+className+"'>";
             html+="<td>"+data[i].keyword+"</td>";
             html+="<td>"+data[i].searchWord+"</td>";
             html+="<td>"+data[i].click+"</td>";
@@ -390,9 +401,9 @@
             html+="<td>"+data[i].searchEngine+"</td>";
             html+="<td>"+data[i].adgroupName+"</td>";
             html+="<td>"+data[i].campaignName+"</td>";
-            html+="<td>"+data[i].createTitle+"</td>";
-            html+="<td>"+data[i].createDesc1+"</td>";
-            html+="<td>"+data[i].createDesc2+"</td>";
+            html+="<td>"+(data[i].createTitle.substring(0,12))+"</td>";
+            html+="<td>"+(data[i].createDesc1.substring(0,12))+"</td>";
+            html+="<td>"+(data[i].createDesc2.substring(0,12))+"</td>";
             html+="<td>"+data[i].date+"</td>";
             html+="<td>"+data[i].parseExtent+"</td>";
             html+="</tr>";
@@ -402,10 +413,10 @@
 
     //choose
     $("#searchWordTbody").delegate("tr","click", function () {
-        if($(this).attr("class")==undefined){
-            $(this).addClass("choose");
-        }else{
+        if(/choose/.test($(this).attr("class"))){
             $(this).removeClass("choose");
+        }else{
+            $(this).addClass("choose");
         }
     });
 
