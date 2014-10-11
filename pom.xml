@@ -143,6 +143,13 @@
                 <version>1.4.0.RELEASE</version>
             </dependency>
 
+            <!-- for msm -->
+            <dependency>
+                <groupId>de.javakaffee.msm</groupId>
+                <artifactId>msm-kryo-serializer</artifactId>
+                <version>1.8.0</version>
+                <scope>runtime</scope>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
