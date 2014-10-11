@@ -2,9 +2,11 @@ package com.perfect.mongodb.base;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.core.AppContext;
 import com.perfect.utils.DBNameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
@@ -15,6 +17,8 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -29,7 +33,24 @@ public class BaseMongoTemplate {
         Properties p = new Properties();
         try {
             p.load(is);
-            mongo = new MongoClient(p.getProperty("mongo.host"));
+
+            String hosts = p.getProperty("mongo.host");
+            if (!StringUtils.isEmpty(hosts)) {
+                String[] hostArray = hosts.split(",");
+                List<ServerAddress> serverAddresses = new ArrayList<>();
+                for (String host : hostArray) {
+                    String[] hostPort = host.split(":");
+                    ServerAddress address = null;
+                    if (hostPort.length == 1) {
+                        address = new ServerAddress(hostPort[0]);
+                    } else {
+                        address = new ServerAddress(hostPort[0], Integer.parseInt(hostPort[1]));
+                    }
+                    serverAddresses.add(address);
+                }
+
+                mongo = new MongoClient(serverAddresses);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
