@@ -1,1 +1,1 @@
-java -cp .:./lib/*:./conf/* com.perfect.Main
+java -cp .:./lib/*:./conf com.perfect.Main
