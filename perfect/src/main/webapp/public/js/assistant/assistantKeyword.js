@@ -462,7 +462,7 @@ $("#addOrUpdateKwd").livequery('click', function () {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
-            // window.location.reload(true);
+            whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
         },
         onremove: function () {
         }
@@ -480,7 +480,7 @@ $("#batchDelKwd").livequery('click', function () {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
-            // window.location.reload(true);
+            whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
         },
         onremove: function () {
         }

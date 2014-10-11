@@ -332,7 +332,7 @@
                 <li>
                     <div class="t_list01 fl over">创意预览：</div>
                     <div class="w_list01 fl over" id="sPreview"
-                         style="width:557px;height: 98px;border:1px solid #CCC;"></div>
+                         style="width:76%;height: 98px;border:1px solid #CCC;"></div>
                 </li>
             </ul>
         </div>

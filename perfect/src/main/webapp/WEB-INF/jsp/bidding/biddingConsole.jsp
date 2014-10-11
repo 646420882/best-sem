@@ -26,9 +26,9 @@
 <div id="bidding_box">
     <div class="backstage_list over">
         <ul>
-            <li><span>请输入URL请求地址:</span>  <input type="text" class="form-control fl" id="url"><button class="btn btn-primary btn-lg" type="button" style="width:80px; margin-left:10px;"
-                                                                                                      onclick=submitUrl()>提交
-            </button></li>
+            <li><span>请输入URL请求地址:</span>  <input type="text" class="form-control fl" id="url">
+                <button class="btn sure btn-lg" type="button" style="width:80px; margin-left:10px;"  onclick=submitUrl()>提交 </button>
+            </li>
         </ul>
      </div>
     <div>
