@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ContextInterceptor implements HandlerInterceptor {
 
+    private boolean adminFlag;
+
     @Resource
     private SystemUserService systemUserService;
 
@@ -61,7 +63,13 @@ public class ContextInterceptor implements HandlerInterceptor {
             if (entity == null) {
                 return false;
             }
-            if (entity.getBaiduAccountInfoEntities().size() == 0) {
+            int size = entity.getBaiduAccountInfoEntities().size();
+            if (entity.getAccess() == 1) {
+                adminFlag = true;
+                return true;
+            }
+
+            if (entity.getAccess() == 2 && size == 0) {
                 return false;
             }
 
@@ -92,44 +100,42 @@ public class ContextInterceptor implements HandlerInterceptor {
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            return;
-        }
+        if (authentication == null) return;
 
-        if (modelAndView != null) {
+        if (isAdmin()) return;
 
-            Long accountId = WebUtils.getAccountId(request);
-            Double datas[] = getBalanceAndBudget(accountId);
 
-            ModelMap modelMap = modelAndView.getModelMap();
-            modelMap.put("currSystemUserName", WebUtils.getUserName(request));
+        Long accountId = WebUtils.getAccountId(request);
+        Double datas[] = getBalanceAndBudget(accountId);
 
-            if (datas[0] == null) {
-                if (datas[1] == null) {
-                    modelMap.put("accountBalance", 0);
-                    modelMap.put("accountBudget", 0);
-                    modelMap.put("remainderDays", 0);
-                } else {
-                    modelMap.put("accountBalance", 0);
-                    modelMap.put("accountBudget", datas[1]);
-                    modelMap.put("remainderDays", 0);
-                }
+        ModelMap modelMap = modelAndView.getModelMap();
+        modelMap.put("currSystemUserName", WebUtils.getUserName(request));
+
+        if (datas[0] == null) {
+            if (datas[1] == null) {
+                modelMap.put("accountBalance", 0);
+                modelMap.put("accountBudget", 0);
+                modelMap.put("remainderDays", 0);
+            } else {
+                modelMap.put("accountBalance", 0);
+                modelMap.put("accountBudget", datas[1]);
+                modelMap.put("remainderDays", 0);
             }
-            if (datas[0] != null) {
-                if (datas[1] != null) {
-                    if (datas[0] == 0 || datas[1] == 0) {
-                        modelMap.put("remainderDays", 0);
-                    } else {
-                        String vStr = Double.valueOf(datas[0] / datas[1]).toString();
-                        modelMap.put("remainderDays", vStr.substring(0, vStr.indexOf(".")));
-                    }
-                    modelMap.put("accountBalance", datas[0]);
-                    modelMap.put("accountBudget", datas[1]);
-                } else {
-                    modelMap.put("accountBalance", datas[0]);
-                    modelMap.put("accountBudget", 0);
+        }
+        if (datas[0] != null) {
+            if (datas[1] != null) {
+                if (datas[0] == 0 || datas[1] == 0) {
                     modelMap.put("remainderDays", 0);
+                } else {
+                    String vStr = Double.valueOf(datas[0] / datas[1]).toString();
+                    modelMap.put("remainderDays", vStr.substring(0, vStr.indexOf(".")));
                 }
+                modelMap.put("accountBalance", datas[0]);
+                modelMap.put("accountBudget", datas[1]);
+            } else {
+                modelMap.put("accountBalance", datas[0]);
+                modelMap.put("accountBudget", 0);
+                modelMap.put("remainderDays", 0);
             }
         }
     }
@@ -144,5 +150,9 @@ public class ContextInterceptor implements HandlerInterceptor {
         Double balance = accountManageService.getBaiduAccountInfoById(accountId).getBalance();
         Double yesterdayCost = accountManageService.getBaiduAccountInfoById(accountId).getBudget();
         return new Double[]{balance, yesterdayCost};
+    }
+
+    boolean isAdmin() {
+        return adminFlag;
     }
 }

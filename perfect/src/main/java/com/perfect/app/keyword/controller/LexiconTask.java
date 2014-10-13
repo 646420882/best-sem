@@ -2,7 +2,6 @@ package com.perfect.app.keyword.controller;
 
 import com.perfect.entity.LexiconEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
-import com.perfect.utils.DBNameUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.ArrayList;
@@ -29,12 +28,10 @@ class LexiconTask extends RecursiveAction {
             List<LexiconEntity> list = new ArrayList<>();
             for (int i = first; i <= last; i++) {
                 LexiconEntity entity = entityList.get(i);
-                entity.setTrade(ImportLexiconExcelController.trade);
                 list.add(entity);
             }
-            MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+            MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
             mongoTemplate.insertAll(list);
-//            System.out.println("=======================" + first);
         } else {
             int middle = (last - first) / 2;
             LexiconTask task1 = new LexiconTask(entityList, first, middle + first);

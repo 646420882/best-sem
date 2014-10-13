@@ -11,7 +11,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.AbstractView;
@@ -20,7 +23,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -69,22 +72,24 @@ public class ImportLexiconExcelController {
         trade = fileName.substring(0, fileName.indexOf("."));
         trade = trade.substring(0, trade.length() - 2);
         Path file = Paths.get(tempFile);
-        final List<LexiconEntity> list = new ArrayList<>();
+        final Map<String, LexiconEntity> map = new HashMap<>(1 << 16);
         XSSFUtils.read(file, new RowMapper() {
             @Override
             protected void mapRow(int sheetIndex, int rowIndex, List<Object> row) {
                 LexiconEntity lexiconEntity = new LexiconEntity();
                 lexiconEntity.setTrade(trade);
                 if (!row.isEmpty() && row.size() == 3) {
+                    String keyword = row.get(2).toString();
                     lexiconEntity.setCategory(row.get(0).toString());
                     lexiconEntity.setGroup(row.get(1).toString());
-                    lexiconEntity.setKeyword(row.get(2).toString());
-                    list.add(lexiconEntity);
+                    lexiconEntity.setKeyword(keyword);
+                    map.put(trade + keyword, lexiconEntity);
                 }
 
             }
 
         });
+        List<LexiconEntity> list = new ArrayList<>(map.values());
 
         //delete tempFile
         Files.deleteIfExists(Paths.get(tempFile));
@@ -92,25 +97,31 @@ public class ImportLexiconExcelController {
         ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors() + 1);
         try {
             LexiconTask task = new LexiconTask(list, 0, list.size() - 1);
-//            pool.invoke(task);
+            pool.invoke(task);
         } finally {
             pool.shutdown();
         }
 
-
         response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
     }
 
-    @RequestMapping(value = "/delete/{trade}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView deleteLexicon(@PathVariable("trade") String trade) throws UnsupportedEncodingException {
-        trade = java.net.URLDecoder.decode(trade, "UTF-8");
+    @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView deleteLexiconByTrade(@RequestParam(value = "trade") String trade,
+                                             @RequestParam(value = "category", required = false) String category)
+            throws IOException {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        mongoTemplate.remove(Query.query(Criteria.where("tr").is(trade)), LexiconEntity.class);
+        Query query = new Query();
+        if (category != null && category.length() > 0) {
+            query.addCriteria(Criteria.where("tr").is(trade).and("cg").is(category));
+        } else {
+            query.addCriteria(Criteria.where("tr").is(trade));
+        }
+//        mongoTemplate.remove(query, LexiconEntity.class);
         AbstractView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> value = new HashMap<String, Object>() {{
+        Map<String, Object> result = new HashMap<String, Object>() {{
             put("status", true);
         }};
-        jsonView.setAttributesMap(value);
+        jsonView.setAttributesMap(result);
         return new ModelAndView(jsonView);
     }
 
