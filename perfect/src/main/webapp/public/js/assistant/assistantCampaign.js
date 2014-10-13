@@ -418,8 +418,8 @@ $(".inputNegativeWords_add").click(function () {
  * @param data
  */
 function setNegativeWordsToTextArea(data) {
-    var negativeWords = data.negativeWords;
-    var exactNegativeWords = data.exactNegativeWords;
+    var negativeWords = data.negativeWords==undefined?new Array():data.negativeWords;
+    var exactNegativeWords = data.exactNegativeWords==undefined?new Array():data.exactNegativeWords;
     var ntwcontent = "";
     var exntcontent = "";
 
@@ -456,7 +456,7 @@ $(".excluedIp_5").click(function () {
         dataType: "json",
         success: function (data) {
             var content = "";
-            var excludeIp = data.excludeIp;
+            var excludeIp = data.excludeIp==undefined?new Array():data.excludeIp;
             for (var i = 0; i < excludeIp.length; i++) {
                 if (i < excludeIp.length - 1) {
                     content = content + excludeIp[i] + "\r";
@@ -745,11 +745,15 @@ $(".regionTarget_5").click(function () {
  * 弹出添加推广计划的窗口
  */
 $("#addCampaign").click(function () {
+    showAddCampaignWindow();
+});
+
+function showAddCampaignWindow() {
     $(".inputCampaignName").val("<请输入推广计划名称>");
     $(".inputBudget").val("<请输入每日预算，不填默认为不限定>");
     $(".inputPriceRatio").val("");
     setDialogCss("plan");
-});
+}
 
 
 /**
@@ -867,6 +871,11 @@ $(".closeAddCampaign").click(function () {
  * 还原按钮的单击事件
  */
 $("#reduction_caipamgin").click(function () {
+    showReductionCampaignWindow();
+});
+
+
+function showReductionCampaignWindow() {
     var choose = $("#tbodyClick5").find(".list2_box3");
     if (choose != undefined && choose.find("td:last").html() != "&nbsp;") {
         if (confirm("是否还原选择的数据?") == false) {
@@ -890,7 +899,7 @@ $("#reduction_caipamgin").click(function () {
         }
 
     }
-});
+}
 
 
 /**
@@ -950,6 +959,10 @@ function reducCpg_del(id) {
  * 弹出快速创建计划窗口
  */
 $("#quickAddplan").click(function () {
+    showQuickAddPlanWindow();
+});
+
+function showQuickAddPlanWindow() {
     top.dialog({title: "快速新建计划",
         padding: "5px",
         content: "<iframe src='/assistantCampaign/showCreatePlanWindow' width='900' height='590' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
@@ -961,7 +974,7 @@ $("#quickAddplan").click(function () {
         onremove: function () {
         }
     }).showModal();
-});
+}
 
 
 /**
@@ -1006,10 +1019,77 @@ $(window).on("keydown keyup",function (event) {
 });
 
 
+
+
+/************************************************************关键词的右击菜单************************************************************/
+/**
+ * 菜单名，方法
+ * @type {{text: string, func: func}}
+ */
+var menu_campaign_add = {
+    text: "添加计划",
+    func: function () {
+        showAddCampaignWindow();
+    }
+}, menu_campaign_quickCreatePlan = {
+    text: "快速创建计划",
+    func: function () {
+        showQuickAddPlanWindow();
+    }
+},menu_campaign_del = {
+    text:"删除计划",
+    func: function () {
+        deleteCampaign();
+    }
+},menu_campaign_redu = {
+    text:"还原",
+        func: function () {
+        showReductionCampaignWindow();
+    }
+},menu_campaign_searchWord = {
+    text:"搜索词",
+    func: function () {
+        searchword();
+    }
+}
+/**
+ * 右键菜单显示的选项
+ * @type {*[]}
+ */
+var campaignMenuData = [
+    [menu_campaign_add,menu_campaign_quickCreatePlan,menu_campaign_del,menu_campaign_redu,menu_campaign_searchWord]
+];
+/**
+ * 用户缓存右键点击的对象
+ * @type {null}
+ */
+var tmp = null;
+/**
+ * 菜单name值，标识唯一，beforeShow显示完成后方法
+ * @type {{name: string, beforeShow: beforeShow}}
+ */
+var campaignMenuExt = {
+    name: "campaign",
+    beforeShow: function () {
+        var _this = $(this);
+        tmp = _this;
+        $.smartMenu.remove();
+    }
+};
+
+$("#tbodyClick5").on("mousedown", "tr", function () {
+    $(this).smartMenu(campaignMenuData, campaignMenuExt);
+});
+
+
+
+
+
+
 //多行选中
-/*
-$("tbody").delegate("tr","click", function (event) {
+/*$("tbody").delegate("tr","click", function () {
     if(isPressDownCtrl==true){
+        alert($(this).attr("class"));
         if(/list2_box3/.test($(this).attr("class"))){
             $(this).removeClass("list2_box3");
         }else{

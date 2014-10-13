@@ -51,6 +51,8 @@
     </style>
 </head>
 <body>
+<div id="background" class="background hides"></div>
+<div id="progressBar" class="progressBar hides">数据加载中，请稍等...</div>
 <div style="background-color: #f3f5fd; width: 900px; height: 700px">
 
     <div class="assembly_under over">
@@ -439,6 +441,20 @@ var saveKeyword = function () {
     });
 
 };
+
+
+//loading
+var ajaxbg = $("#background,#progressBar");
+ajaxbg.hide();
+$(document).ajaxStart(function () {
+    ajaxbg.show();
+});
+$(document).ajaxStop(function () {
+    ajaxbg.fadeOut(1000);
+});
+
+
+
 </script>
 </body>
 </html>
