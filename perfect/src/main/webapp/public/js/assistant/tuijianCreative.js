@@ -256,30 +256,26 @@ function reSave() {
         alert("\"显示\"Url字符不符合规范，请重新输入！");
         return false;
     }
-    if ($("#pcUrlMsg").html() != "") {
-        alert("请验证\"访问\"Url格式！!");
-        return false;
-    }
-    if ($("#pcsUrlMsg").html() != "") {
-        alert("请验证\"显示\"Url格式！!");
-        return false;
-    }
     if ($("#_editor textarea[name='pcUrl']").val().indexOf(dm) == -1) {
+         $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
         alert("\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!");
         return false;
     }else {
         var _pcSize = $("#_editor textarea[name='pcUrl']").val();
         if ($("#_editor textarea[name='pcUrl']").val().substr($("#_editor textarea[name='pcUrl']").val().indexOf(dm)) != dm) {
+            $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址必须以\"" + dm + "\"结尾！</b>");
             alert("\"访问\"Url地址必须以\"" + dm + "\"结尾！");
             return false;
         }
     }
     if ($("#_editor input[name='pcsUrl']").val().indexOf(dm) == -1) {
+        $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
         alert("\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!");
         return false;
     }else {
         var _pcSize = $("#_editor input[name='pcsUrl']").val();
         if ($("#_editor input[name='pcsUrl']").val().substr($("#_editor input[name='pcsUrl']").val().indexOf(dm)) != dm) {
+            $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址必须以\"" + dm + "\"结尾！</b>");
             alert("\"显示\"Url地址必须以\"" + dm + "\"结尾！");
             return false;
         }
@@ -511,10 +507,15 @@ function onKeyDownView() {
         }
         $(this).next("span").html(_thisStr + "/" + _max);
     }).focusout(function () {
-        if (!re.test($(this).val())) {
-            $("#pcUrlMsg").html("<b style='color: red;'>访问Url地址输入错误！</b>");
+        var dm = "." + $("#dm").val();
+        if ($(this).val().indexOf(dm) == -1) {
+            $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
         } else {
-            $("#pcUrlMsg").html("");
+            if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
+                $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址必须以\"" + dm + "\"结尾！</b>");
+            } else {
+                $("#pcUrlMsg").html("");
+            }
         }
     });
     $("input[name='pcsUrl']").keyup(function () {
@@ -533,11 +534,15 @@ function onKeyDownView() {
         }
         $(this).next("span").html(_thisStr + "/" + _max);
     }).focusout(function () {
-        $(this).focus;
-        if (!re.test($(this).val())) {
-            $("#pcsUrlMsg").html("<b style='color: red;'>显示Url地址输入错误！</b>");
+        var dm = "." + $("#dm").val();
+        if ($(this).val().indexOf(dm) == -1) {
+            $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
         } else {
-            $("#pcsUrlMsg").html("");
+            if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
+                $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址必须以\"" + dm + "\"结尾！</b>");
+            } else {
+                $("#pcsUrlMsg").html("");
+            }
         }
     });
 }
