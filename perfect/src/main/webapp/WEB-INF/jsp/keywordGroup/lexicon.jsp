@@ -21,32 +21,41 @@
 <div id="progressBar1" class="progressBar">loading...</div>
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
 <div class="backstage_concent mid over">
+     <div class="backstage_title over">
+         <span class="backstage_title_mid">词库添加</span>
+     </div>
     <!-- 用于文件上传的表单元素 -->
     <div class="backstage_list over">
         <form id="fileForm" name="fileForm" method="post" class="form-inline" enctype="multipart/form-data"
               action="${pageContext.request.contextPath}/admin/lexicon/upload" target="fileIframe">
             <ul>
-                <li><span>Upload File: </span><input type="file" name="excelFile" style="border:none;"/></li>
-                <li><input type="button" id="submitForm" class="btn sure" value="导入"/></li>
+                <li><span>Upload File: </span><input type="file" name="excelFile" style="border:none; width:160px;"/><input type="button" id="submitForm" class="btn sure" value="导入"/></li>
+                <li></li>
             </ul>
         </form>
     </div>
-</div>
-<div>
-    <div class="k_top2_text1">
-        <select id="trade">
-            <option selected="selected" value="">请选择行业</option>
-            <option value="电商">电商</option>
-            <option value="房产">房产</option>
-            <option value="教育">教育</option>
-            <option value="金融">金融</option>
-            <option value="旅游">旅游</option>
-        </select>
-        <select id="category">
-        </select>
-        <input type="button" value="删除" onclick="deleteLexicon();"/>
+    <div class="backstage_title over">
+        <span class="backstage_title_mid">词库内容删除</span>
+    </div>
+    <div class="backstage_list over">
+        <div class="k_top2_text1">
+            <ul>
+                <li><select id="trade">
+                    <option selected="selected" value="">请选择行业</option>
+                    <option value="电商">电商</option>
+                    <option value="房产">房产</option>
+                    <option value="教育">教育</option>
+                    <option value="金融">金融</option>
+                    <option value="旅游">旅游</option>
+                </select></li>
+                <li><select id="category">
+                </select></li>
+                <li> <input type="button" class="sure" value="删除" onclick="deleteLexicon();"/></li>
+            </ul>
+        </div>
     </div>
 </div>
+
 <iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
 <iframe id="iframe1" name="iframe1" style="display: none"></iframe>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>

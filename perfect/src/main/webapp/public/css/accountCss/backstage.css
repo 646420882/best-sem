@@ -163,3 +163,20 @@ body{
     font-weight: bold;
     z-index: 2001;
 }
+.backstage_title {
+    height:30px;
+    line-height:30px;
+    background:#edf0f2;
+    margin-bottom:20px;
+}
+.backstage_title .backstage_title_mid{
+    display:block;
+    width:120px;
+    height:30px;
+    padding:0px 5px;
+    text-align: center;
+    border-right:2px solid #fff;
+    background:#99A1A6;
+    color:#fff;
+
+}
