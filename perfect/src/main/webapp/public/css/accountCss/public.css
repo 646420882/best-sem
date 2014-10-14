@@ -136,10 +136,10 @@ table tr ,table tr td{
 .nav {
     width:180px;
     height:100%;
-    position:absolute;
+    position:fixed;
     z-index:112;
     left:0px;
-    top:0px;
+    top:94px;
 }
 .nav_left {
     height:100%;

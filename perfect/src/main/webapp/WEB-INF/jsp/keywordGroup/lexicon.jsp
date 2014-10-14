@@ -29,7 +29,7 @@
         <form id="fileForm" name="fileForm" method="post" class="form-inline" enctype="multipart/form-data"
               action="${pageContext.request.contextPath}/admin/lexicon/upload" target="fileIframe">
             <ul>
-                <li><span>Upload File: </span><input type="file" name="excelFile" style="border:none; width:160px;"/><input type="button" id="submitForm" class="btn sure" value="导入"/></li>
+                <li><b class="fl">Upload File: </b><input type="file" name="excelFile" style="border:none; width:160px;"/><input type="button" id="submitForm" class="btn sure" value="导入"/></li>
                 <li></li>
             </ul>
         </form>

@@ -1142,9 +1142,9 @@ a.icon-gw:active {
         width: 538px;
     }
 }
-body {
+/*body {
     min-width: 1000px;
-}
+}*/
 #ftCon {
     display: none;
 }

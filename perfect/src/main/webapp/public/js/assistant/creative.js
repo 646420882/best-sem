@@ -442,13 +442,13 @@ function addCreative() {
     } else if (sparams.cid != null && sparams.aid == null) {
         jcBox.empty();
         loadUnit(sparams.cid);
-        jcBox.append("<li>推广单元<select id='sUnit' onchange='loadTree(this.value)'><option value='-1'>请选择单元</option></select></li>");
+        jcBox.append("<li><span>推广单元</span><select id='sUnit' onchange='loadTree(this.value)'><option value='-1'>请选择单元</option></select></li>");
         creativeAddBoxShow();
     } else if (sparams.cid == null && sparams.aid == null) {
         jcBox.empty();
         getPlans();
-        jcBox.append("<li>推广计划<select id='sPlan' onchange='loadUnit(this.value)'><option value='-1'>请选择计划</option></select></li>");
-        jcBox.append("<li>推广单元<select id='sUnit' onchange='loadTree(this.value)'><option value='-1'>请选择单元</option></select></li>");
+        jcBox.append("<li><span>推广计划</span><select id='sPlan' onchange='loadUnit(this.value)'><option value='-1'>请选择计划</option></select></li>");
+        jcBox.append("<li><span>推广单元</span><select id='sUnit' onchange='loadTree(this.value)'><option value='-1'>请选择单元</option></select></li>");
         creativeAddBoxShow();
     } else {
         alert(sparams.cid + ":" + sparams.aid);

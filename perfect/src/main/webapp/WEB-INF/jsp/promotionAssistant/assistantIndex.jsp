@@ -11,24 +11,17 @@
 <head>
     <meta charset="utf-8">
     <title>大数据智能营销</title>
-    <meta id="viewport" name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/smartMenu.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/smartMenu.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap.css">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style rel="stylesheet" type="text/css">
         #sDiv .span-error {
@@ -56,9 +49,7 @@
 <div class="mid over">
 <div class="title_box">
     <div class="on_title over">
-        <a href="#">
-            推广助手
-        </a>
+        <a href="#">  推广助手</a>
     </div>
 </div>
 <div id="tab">
@@ -74,14 +65,12 @@
     </div>
     <div class="j_list01 over">
         <div id="loading">
-
         </div>
         <ul id="zTree" class="ztree over">
         </ul>
     </div>
     <div class="j_l_under over">
         <a href="javascript:void(0)" class="jiangkong">监控文件夹</a>
-
         <div class="j_list02 over hides" style="height:100px; background:#fff;">
             <div id="jiangkong_box">监控文件夹</div>
             <ul id="zTree2" class="ztree over">
@@ -95,8 +84,7 @@
 <div class="zhushou over wd ">
 <div class="zhushou_menu wd">
     <ul class="zs_nav">
-        <li class="showbox"><a id="downloadAccountData"><span><img
-                src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
+        <li class="showbox"><a id="downloadAccountData"><span><img  src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
         <li><a><span><img src="../public/img/update.png"></span><span>上传更新</span></a></li>
         <li class="current"><a><span><img src="../public/img/Advanced_search.png"></span><span>高级搜索</span></a></li>
         <li class="nav_menu"><a><span><img src="../public/img/Repeat_keyword.png"></span><span>重复关键词</span></a>
@@ -125,38 +113,23 @@
 <div class="containers  over">
     <div class="zs_function">
         <ul class="fl">
-            <li><a id="addKeyword" href="#"><span class="zs_top"><img
-                    src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-            <li><a href="javascript:deleteKwd()"><span class="zs_top"><img
-                    src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-            <li><a id="addOrUpdateKwd" href="#"><span class="zs_top"><img
-                    src="../public/img/zs_function3.png"></span><b>批量添加/更新&nbsp;</b></a><input type="image"
-                                                                                               id="deletekeywords"
-                                                                                               src="../public/img/zs_input.png">
+            <li><a id="addKeyword" href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="javascript:deleteKwd()"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+            <li><a id="addOrUpdateKwd" href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新&nbsp;</b></a><input type="image"id="deletekeywords"
+                                                                                                                                                     src="../public/img/zs_input.png">
                 <ul id="deletekeywordes" class="hides">
-                    <li id="batchDelKwd"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function3.png"></span><b>批量删除</b></a></li>
+                    <li id="batchDelKwd"><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量删除</b></a></li>
                 </ul>
             </li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;
-                <input type="image" src="../public/img/zs_input.png"></b></a>
-
-            </li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a></li>
             <li><a id="search_keyword" href="#"><span class="zs_top"><img
                     src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
-            <li><a href="javascript:void(0)" onclick="MonitorDialog()"><span class="zs_top"><img
-                    src="../public/img/zs_function8.png"></span><b>监控</b></a></li>
-            <li><a href="#" id="reduction"><span class="z_function_hover"><img
-                    src="../public/img/zs_function9.png"></span><b>还原</b></a><%--z_function_hover--%>
-            </li>
-
-            <li><a href="#" class="searchwordReport"><span class="zs_top"><img
-                    src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
-            <li><a href="#"><span class="z_function_hover"><img
-                    src="../public/img/zs_function11.png"></span><b>激活</b></a>
-            </li>
+            <li><a href="javascript:void(0)" onclick="MonitorDialog()"><span class="zs_top"><img src="../public/img/zs_function8.png"></span><b>监控</b></a></li>
+            <li><a href="#" id="reduction"><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原</b></a><%--z_function_hover--%> </li>
+            <li><a href="#" class="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+            <li><a href="#"><span class="z_function_hover"><img  src="../public/img/zs_function11.png"></span><b>激活</b></a></li>
         </ul>
         <span class="fr">1/10</span>
     </div>
@@ -184,11 +157,8 @@
                 <tbody id="tbodyClick">
                 </tbody>
             </table>
-
         </div>
-
     </div>
-
     <div class="more_list over" style="display:none;">
         <ul>
             <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加关键词</b></li>
@@ -202,37 +172,28 @@
         </ul>
     </div>
     <div class="zhanghu_input"></div>
-
     <div id="pagination_keywordPage" class="pagination"></div>
-
     <div class="zs_bottom over">
         <input type="hidden" id="hiddenkwid_1"/>
-
         <div class="zs_bottom1 over fl ">
             <ul>
                 <li>
                     <div class="t_list01 fl over">关键词名称：</div>
-                    <div class="t_list02 fl over"><input type="text" disabled="disabled" class="zs_input1 keyword_1">
-                    </div>
+                    <div class="t_list02 fl over"><input type="text" disabled="disabled" class="zs_input1 keyword_1"></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">出价：</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(2,this.value)"
-                                                         onkeydown="missBlur(event,this)" class="zs_input1 price_1">
+                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(2,this.value)" onkeydown="missBlur(event,this)" class="zs_input1 price_1">
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">访问URL:</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(3,this.value)"
-                                                         onkeydown="missBlur(event,this)"
-                                                         class="zs_input1 pcurl_1"><span
+                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(3,this.value)" onkeydown="missBlur(event,this)"class="zs_input1 pcurl_1"><span
                             class="pcurlSize_1">0/1024</span></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">移动访问URL：</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(4,this.value)"
-                                                         onkeydown="missBlur(event,this)"
-                                                         class="zs_input1 mourl_1"><span
+                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(4,this.value)"  onkeydown="missBlur(event,this)"class="zs_input1 mourl_1"><span
                             class="mourlSize_1">0/1024</span></div>
                 </li>
             </ul>
@@ -264,24 +225,13 @@
 <div class="containers  over hides">
     <div class="zs_function over">
         <ul class="fl">
-            <li><a href="javascript:void(0)" onclick="addCreative();"><span class="zs_top"><img
-                    src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-            <li><a href="javascript:void(0)"><span class="zs_top"><img
-                    src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-            <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b
-                    onclick="creativeMulti();">批量添加/更新</b></a>
-
-            </li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                    type="image" src="../public/img/zs_input.png"></b></a></li>
-            <li><a href="#"><span class="z_function_hover" id="reBak" onclick="reBakClick();"><img
-                    src="../public/img/zs_function9.png"></span><b onclick="reBakClick();">还原</b></a>
-            </li>
+            <li><a href="javascript:void(0)" onclick="addCreative();"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="javascript:void(0)"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+            <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b onclick="creativeMulti();">批量添加/更新</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a></li>
+            <li><a href="#"><span class="z_function_hover" id="reBak" onclick="reBakClick();"><img src="../public/img/zs_function9.png"></span><b onclick="reBakClick();">还原</b></a>  </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
-            <li><a href="#"><span class="z_function_hover"><img
-                    src="../public/img/zs_function11.png"></span><b>激活</b></a>
-            </li>
-
+            <li><a href="#"><span class="z_function_hover"><img src="../public/img/zs_function11.png"></span><b>激活</b></a>  </li>
         </ul>
         <span class="fr">1/10</span>
     </div>
@@ -309,13 +259,10 @@
                 <tbody id="tbodyClick2">
                 </tbody>
             </table>
-
         </div>
-
         <div class="more_list over" style="display:none;">
             <ul>
-                <li class="current" onclick="alert(123);"><span class="zs_top"><img
-                        src="../public/img/zs_function1.png"></span><b>添加创意</b></li>
+                <li class="current" onclick="alert(123);"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加创意</b></li>
                 <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除创意</b></li>
                 <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证创意</b></li>
                 <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原创意</b></li>
@@ -375,7 +322,7 @@
                 <li>
                     <div class="t_list01 fl over">创意预览：</div>
                     <div class="w_list01 fl over" id="sPreview"
-                         style="width:76%;height: 98px;border:1px solid #CCC;"></div>
+                         style="width:74%;height: 98px;border:1px solid #CCC; padding:1%;"></div>
                 </li>
             </ul>
         </div>
@@ -416,17 +363,11 @@
 <div class="zs_function over">
     <ul class="fl">
         <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-
         <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
         <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a></li>
-
-
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                type="image" src="../public/img/zs_input.png"></b></a></li>
-
+        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a></li>
         <li><a href="#"><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原</b></a>
         </li>
-
     </ul>
     <span class="fr">1/10</span>
 </div>
@@ -644,8 +585,6 @@
 </tbody>
 </table>
 </div>
-
-
 </div>
 <div class="more_list over" style="display:none;">
     <ul>
@@ -669,7 +608,6 @@
                 </div>
                 <div class="cy_bottom1 fl over">
                     <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
-
                 </div>
             </li>
             <li>
@@ -679,7 +617,6 @@
                 </div>
                 <div class="cy_bottom1 fl over">
                     <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
-
                 </div>
             </li>
             <li>
@@ -689,7 +626,6 @@
                 </div>
                 <div class="cy_bottom1 fl over">
                     <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
-
                 </div>
             </li>
             <li>
@@ -699,7 +635,6 @@
                 </div>
                 <div class="cy_bottom1 fl over">
                     <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
-
                 </div>
             </li>
             <li>
@@ -709,7 +644,6 @@
                 </div>
                 <div class="cy_bottom1 fl over">
                     <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
-
                 </div>
             </li>
         </ul>
@@ -732,7 +666,6 @@
                     <textarea class="list06_textarea">
                     </textarea>
                 </div>
-
             </div>
         </div>
     </div>
@@ -762,24 +695,18 @@
 <div class="containers  over hides">
     <div class="zs_function over">
         <ul class="fl">
-            <li><a href="javascript:void(0)" onclick="addAdgroup()"><span class="zs_top"><img
-                    src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="javascript:void(0)" onclick="addAdgroup()"><span class="zs_top"><img  src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b
-                    onclick="adgroupMutli();">批量添加/更新</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                    type="image" src="../public/img/zs_input.png"></b></a></li>
-
-            <li><a href="#"><span class="z_function_hover" id="agReback" onclick="agreBakClick()"><img
-                    src="../public/img/zs_function9.png"></span><b onclick="agreBakClick()">还原</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b  onclick="adgroupMutli();">批量添加/更新</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a></li>
+            <li><a href="#"><span class="z_function_hover" id="agReback" onclick="agreBakClick()"><img src="../public/img/zs_function9.png"></span><b onclick="agreBakClick()">还原</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
         </ul>
         <span class="fr">1/10</span>
     </div>
     <div class="list4">
         <div class="container">
-            <table border="0" cellspacing="0" width="100%" id="adGroupTable" class="table4 table-bordered"
-                   data-resizable-columns-id="demo-table">
+            <table border="0" cellspacing="0" width="100%" id="adGroupTable" class="table4 table-bordered" data-resizable-columns-id="demo-table">
                 <thead>
                 <tr class="list02_top">
                     <th>&nbsp;操作</th>
@@ -808,7 +735,6 @@
                 </tbody>
             </table>
         </div>
-
     </div>
     <div class="more_list over" style="display:none;">
         <ul>
@@ -862,28 +788,18 @@
 <div class="containers  over hides">
     <div class="zs_function over">
         <ul class="fl">
-            <li><a href="#" id="addCampaign"><span class="zs_top"><img
-                    src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-            <li><a href="#" id="quickAddplan"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a>
-            </li>
-
-            <li><a href="javascript:deleteCampaign();"><span class="zs_top"><img
-                    src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                    type="image" src="../public/img/zs_input.png"></b></a></li>
-
-            <li><a href="#" id="reduction_caipamgin"><span class="zs_top"><img
-                    src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
-            <li><a href="#" class="searchwordReport"><span class="zs_top"><img
-                    src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+            <li><a href="#" id="addCampaign"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="#" id="quickAddplan"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a></li>
+            <li><a href="javascript:deleteCampaign();"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a></li>
+            <li><a href="#" id="reduction_caipamgin"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
+            <li><a href="#" class="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
         </ul>
         <span class="fr">1/10</span>
     </div>
     <div class="list4">
         <div class="container">
-            <table border="0" cellspacing="0" width="100%" class="table5 table-bordered"
-                   data-resizable-columns-id="demo-table">
+            <table border="0" cellspacing="0" width="100%" class="table5 table-bordered" data-resizable-columns-id="demo-table">
                 <thead>
                 <tr class="list02_top">
                     <th>&nbsp;推广计划名称</th>
@@ -897,20 +813,16 @@
                     <th>&nbsp;否定关键词</th>
                     <th>&nbsp;IP排除</th>
                     <th>&nbsp;到预算下线时间</th>
-                    <th class="username-column" data-noresize style="text-align:left; width:150px;"><span
-                            class="fl"> </span>
-
+                    <th class="username-column" data-noresize style="text-align:left; width:150px;"><span class="fl"> </span>
                         <div class="set fr"></div>
                     </th>
                 </tr>
                 </thead>
                 <tbody id="tbodyClick5">
-
                 </tbody>
             </table>
         </div>
     </div>
-
     <div class="more_list over" style="display:none;">
         <ul>
             <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加推广计划</b></li>
@@ -923,31 +835,23 @@
         </ul>
     </div>
     <div class="zhanghu_input"></div>
-
     <div id="pagination_campaignPage" class="pagination"></div>
-
     <div class="zs_bottom over">
         <input type="hidden" id="hiddenCampaignId"/>
-
         <div class="zs_bottom2 over fl " style="border-right: 1px solid #e7e7e7;">
             <ul>
                 <li>
                     <div class="t_list01 fl over">名称：</div>
-                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(1,this.value);"
-                                                         onkeydown="missBlur(event,this);"
-                                                         class="zs_input3 campaignName_5"></div>
+                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(1,this.value);"onkeydown="missBlur(event,this);" class="zs_input3 campaignName_5"></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">每日预算：</div>
-                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(2,this.value);"
-                                                         onkeydown="missBlur(event,this);" class="zs_input3 budget_5">
+                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(2,this.value);"onkeydown="missBlur(event,this);" class="zs_input3 budget_5">
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">移动出价比例：</div>
-                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(3,this.value);"
-                                                         onkeydown="missBlur(event,this);"
-                                                         class="zs_input3 priceRatio_5"><span>0/1024</span></div>
+                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(3,this.value);" onkeydown="missBlur(event,this);"class="zs_input3 priceRatio_5"><span>0/1024</span></div>
                 </li>
             </ul>
         </div>
@@ -977,9 +881,9 @@
                 </li>
                 <li>
                     <div class="t_list01 fl over">创意展现方式：</div>
-                    <div class="w_list02 fl over"><select class="selectShowProb_5"
-                                                          onchange="whenBlurEditCampaign(10,this.value);">
-                    </select></div>
+                    <div class="w_list02 fl over">
+                        <select class="selectShowProb_5" onchange="whenBlurEditCampaign(10,this.value);"> </select>
+                    </div>
                 </li>
             </ul>
             <ul class="z_bottom3 fl">
@@ -995,9 +899,10 @@
                 </li>
                 <li>
                     <div class="t_list01 fl over">启用/暂停：</div>
-                    <div class="w_list02 fl over"><select class="selectPause_5"
-                                                          onchange="whenBlurEditCampaign(11,this.value);">
-                    </select></div>
+                    <div class="w_list02 fl over">
+                        <select class="selectPause_5"  onchange="whenBlurEditCampaign(11,this.value);">
+                        </select>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -1035,7 +940,7 @@
 </div>
 </div>
 </div>
-<div class="zhushou_concent2 over hides" id="jiangkong_box3">
+<div class="zhushou_concent over hides" id="jiangkong_box3">
     <div class="zs_concent_top over">
         <ul class="zh_menu2 fl">
             <li class="current" cname="table1">已监控关键词</li>
@@ -1043,6 +948,22 @@
         </ul>
     </div>
     <div class="zs_line"></div>
+
+    <!--已监控关键词-->
+    <%--<div class="containers  over">
+        <div class="zs_function">
+            <ul class="fl">
+                <li><a  href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>停止</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function11.png"></span><b>激活&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a> </li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
+            </ul>
+        </div>
+        <div class="zs_line"></div>--%>
     <div class="zs_box over">
         <!--已监控关键词-->
         <div class="containers  over">
@@ -1091,9 +1012,7 @@
                     </table>
                     <input type="hidden" id="remoneMonitor">
                 </div>
-
             </div>
-
             <div class="more_list over" style="display:none;">
                 <ul>
                     <li class="current"><span class="zs_top"><img
@@ -1123,8 +1042,7 @@
                     <li><a href="#">尾页</a></li>
                     <li>当前页:1/0</li>
                     <li>共0条</li>
-                    <li><input type="text" maxlength="10" class="inputNo kwdPageNo"/>&nbsp;<input type="button"
-                                                                                                  value="GO"/></li>
+                    <li><input type="text" maxlength="10" class="inputNo kwdPageNo"/>&nbsp;<input type="button"value="GO"/></li>
                 </ul>
             </div>
         </div>
@@ -1132,17 +1050,11 @@
         <div class="containers  over hides">
             <div class="zs_function over">
                 <ul class="fl">
-                    <li><a href="javascript:void(0)" onclick="folderDialog();"><span class="zs_top"><img
-                            src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-                    <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b
-                            id="removeFolder">删除</b></a>
-                    </li>
-                    <li><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
-                    <li id="downSync"><a href="javascript:void(0)"><span class="zs_top"><img
-                            src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
-                    <li><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
+                    <li><a href="javascript:void(0)" onclick="folderDialog();"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+                    <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b id="removeFolder">删除</b></a></li>
+                    <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+                    <li id="downSync"><a href="javascript:void(0)"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
+                    <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
                 </ul>
             </div>
             <div class="list4" style="height:480px;">
@@ -1161,7 +1073,6 @@
                         <tbody id="MonitorTbody">
                         </tbody>
                     </table>
-
                 </div>
             </div>
             <div class="zhanghu_input"></div>
@@ -1178,10 +1089,8 @@
                             <div class="t_list02 fl over"><input type="text" class="zs_input1" id="folder" readonly>
                             </div>
                         </li>
-
                     </ul>
                 </div>
-
             </div>
         </div>
     </div>
@@ -1195,7 +1104,6 @@
 <jsp:include page="../homePage/pageBlock/footer.jsp"/>
 </div>
 </div>
-
 <!---------下载账户----------->
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;*width:400px;" id="download">
@@ -1422,7 +1330,6 @@
         </div>
     </div>
 </div>
-
 <%--推广计划设置否定关键词窗口--%>
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setNegtiveWord">
@@ -1464,29 +1371,17 @@
                 <li><label style="display: none;">---:<span>4/50</span></label><input name="oid" type="hidden"/></li>
                 <li><label>创意标题:<span>49/50</span></label><input name="title" class="chuangyi_input" maxlength="50"/>
                     <input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTb()"/></li>
-                <li><label>创意描述1:<span>49/80</span></label><input name="description1" class="chuangyi_input"
-                                                                  maxlength="80"/><input type="button"
-                                                                                         class="chuangyi_fu"
-                                                                                         value="插入{}符"
-                                                                                         onclick="addTbDes1()"/></li>
-                <li><label>创意描述2:<span>49/80</span></label><input name="description2" class="chuangyi_input"
-                                                                  maxlength="80"/><input type="button"
-                                                                                         class="chuangyi_fu"
-                                                                                         value="插入{}符"
-                                                                                         onclick="addTbDes2()"/></li>
+                <li><label>创意描述1:<span>49/80</span></label><input name="description1" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符"
+                                                                                                                                     onclick="addTbDes1()"/></li>
+                <li><label>创意描述2:<span>49/80</span></label><input name="description2" class="chuangyi_input"   maxlength="80"/><input type="button"class="chuangyi_fu" value="插入{}符"
+                                                                                                                                      onclick="addTbDes2()"/></li>
                 <li><label>默认访问URL:<span>49/1024</span></label><input name="pcDestinationUrl" maxlength="1024"/></li>
                 <li><label>默认显示URL:<span>49/50</span></label><input name="pcDisplayUrl" maxlength="50"/></li>
-                <li><label>移动访问URL:<span>49/1024</span></label><input name="mobileDestinationUrl" maxlength="1024"/>
-                </li>
+                <li><label>移动访问URL:<span>49/1024</span></label><input name="mobileDestinationUrl" maxlength="1024"/></li>
                 <li><label>移动显示URL:<span>35/36</span></label><input name="mobileDisplayUrl" maxlength="36"/></li>
-                <li><label class="fl">创意状态:</label><label id="cuStatus" class="fl">暂无</label><input type="hidden"
-                                                                                                    name="status"></li>
-                <li><label class="fl">是否启用:</label><select name="pause">
-                    <option value="true">启用</option>
-                    <option value="false">暂停</option>
-                </select></li>
+                <li> <label class="fl"><span>创意状态:</span></label><label id="cuStatus" class="fl">暂无</label><input type="hidden" name="status"></li>
+                <li><label class="fl"><span>是否启用:</span></label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select></li>
             </ul>
-
         </form>
     </div>
     <div class="main_bottom">
@@ -1517,7 +1412,6 @@
                       style="width:365px;height: 350px;"></textarea>
         </div>
     </div>
-
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
@@ -1542,9 +1436,7 @@
         </ul>
     </div>
     <br/>
-
     <div class="hours">
-
     </div>
     <div class="main_bottom">
         <div class="w_list03">
@@ -1560,11 +1452,9 @@
     <h2 id="folderTUO">
         <span class="fl">添加监控文件夹</span>
         <a href="#" class="close">关闭</a></h2>
-
     <div class="mainlist">
         <label id="dialogMsg">请输入要创建的监控文件夹名称!</label>
         <ul class="zs_set" id="adfd">
-
         </ul>
     </div>
     <div class="main_bottom">
@@ -1577,14 +1467,12 @@
     </div>
 </div>
 <%--添加监控对象弹出窗口--%>
-<div class="box3" style="display:none" id="addMonitorDiv">
+<div class="box" style="display:none" id="addMonitorDiv">
     <h2 id="MonitorTUO">
         <span class="fl">添加监控对象</span>
         <a href="#" class="close">关闭</a></h2>
-
     <div class="mainlist">
         <ul class="zs_set" id="admon">
-
         </ul>
     </div>
     <div class="main_bottom">
@@ -1596,19 +1484,15 @@
         </div>
     </div>
 </div>
-
 <%--添加推广计划弹出窗口--%>
 <jsp:include page="../promotionAssistant/alert/addCampaign.jsp"/>
-
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/jquery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/store.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/table/jquery.resizableColumns.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/jquery.resizableColumns.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/jquery-smartMenu-min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/jquery-smartMenu-min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog-plus.js"></script>
@@ -1618,21 +1502,16 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/creative.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/assistant/assistantKeyword.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantKeyword.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/global.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/assistant/assistantCampaign.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/assistant/assistantAccount.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantCampaign.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantAccount.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/adgroup.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/addKeyword.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/Monitoring.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript">
     $(function () {
         window.dialog = dialog;
