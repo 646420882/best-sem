@@ -149,6 +149,20 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
     }
 
     @Override
+    public SystemUserEntity getCurrUserInfo() {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        return mongoTemplate.findOne(Query.query(Criteria.where("userName").is(AppContext.getUser())), SystemUserEntity.class);
+    }
+
+    @Override
+    public void uploadImg(byte[] bytes) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        Update update = new Update();
+        update.set("img", bytes);
+        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(AppContext.getUser())), update, SystemUserEntity.class);
+    }
+
+    @Override
     public void updateBaiduAccountInfo(BaiduAccountInfoEntity entity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
         String currUser = AppContext.getUser();

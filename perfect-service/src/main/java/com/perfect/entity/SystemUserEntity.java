@@ -30,6 +30,8 @@ public class SystemUserEntity implements Serializable {
 
     private Integer access;     //1.admin; 2.user
 
+    private byte[] img;
+
     @Field(value = "bdAccounts")
     private List<BaiduAccountInfoEntity> baiduAccountInfoEntities;
 
@@ -74,6 +76,14 @@ public class SystemUserEntity implements Serializable {
 
     public void setAccess(Integer access) {
         this.access = access;
+    }
+
+    public byte[] getImgBytes() {
+        return img;
+    }
+
+    public void setImgBytes(byte[] bytes) {
+        this.img = bytes;
     }
 
     public List<BaiduAccountInfoEntity> getBaiduAccountInfoEntities() {

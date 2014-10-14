@@ -2,6 +2,7 @@ package com.perfect.dao;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.perfect.entity.AccountReportEntity;
+import com.perfect.entity.SystemUserEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -42,6 +43,20 @@ public interface AccountManageDAO<T> {
      * @return
      */
     T findByBaiduUserId(Long baiduUserId);
+
+    /**
+     * 获取当前登陆的系统用户信息
+     *
+     * @return
+     */
+    SystemUserEntity getCurrUserInfo();
+
+    /**
+     * 上传用户头像
+     *
+     * @param bytes
+     */
+    void uploadImg(byte[] bytes);
 
     /**
      * 更新百度账户信息

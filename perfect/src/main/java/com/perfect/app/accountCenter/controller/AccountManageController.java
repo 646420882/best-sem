@@ -19,6 +19,12 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,6 +86,38 @@ public class AccountManageController {
         Map<String, Object> result = accountManageService.getBaiduAccountInfoByUserId(userId);
         jsonView.setAttributesMap(result);
         return new ModelAndView(jsonView);
+    }
+
+    /**
+     * 获取用户头像
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping(value = "/getImg", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void getImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        byte[] imgBytes = accountManageService.getCurrUserInfo().getImgBytes();
+        response.getOutputStream().write(imgBytes);
+    }
+
+    /**
+     * 上传用户头像
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ModelAndView uploadImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        InputStream is = Files.newInputStream(Paths.get("/home/baizz/bdlogo.png"), StandardOpenOption.READ);
+        byte[] bytes = new byte[1024 * 8];
+        if (is.read(bytes) != -1) {
+            accountManageService.uploadImg(bytes);
+            return new ModelAndView();
+        }
+        return new ModelAndView();
     }
 
     /**

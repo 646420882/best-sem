@@ -11,6 +11,7 @@ import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.AccountManageDAO;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.SystemUserEntity;
 import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.service.AccountManageService;
 import com.perfect.utils.JSONUtils;
@@ -35,6 +36,16 @@ public class AccountManageServiceImpl implements AccountManageService {
         Map<String, Object> trees = new HashMap<>();
         trees.put("trees", treeNodes);
         return trees;
+    }
+
+    @Override
+    public SystemUserEntity getCurrUserInfo() {
+        return accountManageDAO.getCurrUserInfo();
+    }
+
+    @Override
+    public void uploadImg(byte[] bytes) {
+        accountManageDAO.uploadImg(bytes);
     }
 
     @Override

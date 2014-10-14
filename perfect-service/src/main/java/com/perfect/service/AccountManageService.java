@@ -1,6 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.SystemUserEntity;
 
 import java.util.Map;
 
@@ -15,6 +16,20 @@ public interface AccountManageService {
      * @return
      */
     Map<String, Object> getAccountTree();
+
+    /**
+     * 获取当前登陆的系统用户信息
+     *
+     * @return
+     */
+    SystemUserEntity getCurrUserInfo();
+
+    /**
+     * 上传用户头像
+     *
+     * @param bytes
+     */
+    void uploadImg(byte[] bytes);
 
     /**
      * 获取当前登录的系统用户下的所有百度账号
