@@ -48,7 +48,7 @@ public class ComparableGrantedAuthority implements Comparable<ComparableGrantedA
             return -1;
         }
 
-        if (o.getAuthority() == null) {
+        if (this.getAuthority() == null) {
             return 1;
         }
 
