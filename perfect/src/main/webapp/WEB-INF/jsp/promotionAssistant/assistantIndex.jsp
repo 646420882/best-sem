@@ -71,9 +71,9 @@
     </div>
     <div class="j_l_under over">
         <a href="javascript:void(0)" class="jiangkong">监控文件夹</a>
-        <div class="j_list02 over hides" style="height:100px; background:#fff;">
+        <div class="j_list02 hides" style="height:100px; background:#fff;overflow:auto;">
             <div id="jiangkong_box">监控文件夹</div>
-            <ul id="zTree2" class="ztree over">
+            <ul id="zTree2" class="ztree over" style="height:100px;">
             </ul>
         </div>
     </div>

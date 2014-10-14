@@ -97,7 +97,7 @@ public class MonitoringServiceImpl implements MonitoringService {
         int i;
         if(monitorEntities.size()>0){
             WriteResult remove = monitoringDao.deleteMonitor(folderId);
-            if(remove.getN() == 1){
+            if(remove.getN() > 0){
                 WriteResult folderRemove = monitoringDao.deleteFoder(folderId);
                 i = folderRemove.getN();
             }else{
@@ -107,7 +107,7 @@ public class MonitoringServiceImpl implements MonitoringService {
             WriteResult folderRemove = monitoringDao.deleteFoder(folderId);
             i = folderRemove.getN();
         }
-        if(i == 1){
+        if(i > 0){
             returnFolder = true;
         }else{
             returnFolder = false;
@@ -205,7 +205,7 @@ public class MonitoringServiceImpl implements MonitoringService {
     public boolean deleteMonitorId(Long MonitorId) {
         boolean returnFolder = false;
         WriteResult folderRemove = monitoringDao.deleteMonitorId(MonitorId);
-        if(folderRemove.getN() == 1){
+        if(folderRemove.getN() > 0){
             returnFolder = true;
         }else{
             returnFolder = false;
