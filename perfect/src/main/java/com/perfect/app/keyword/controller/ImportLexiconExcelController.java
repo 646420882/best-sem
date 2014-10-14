@@ -2,7 +2,7 @@ package com.perfect.app.keyword.controller;
 
 import com.perfect.entity.LexiconEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
-import com.perfect.utils.excel.RowMapper;
+import com.perfect.utils.excel.RowHandler;
 import com.perfect.utils.excel.XSSFUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -55,25 +55,24 @@ public class ImportLexiconExcelController {
         final String rootPath = url.getPath();
 
         //上传临时文件
-        String tempFile = "";
+        String tmpFile = "";
         String fileName = "";
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
                 fileName = file.getOriginalFilename();
                 File _file = new File(rootPath, fileName);
                 FileUtils.copyInputStreamToFile(file.getInputStream(), _file);
-                tempFile = rootPath + fileName;
+                tmpFile = rootPath + fileName;
             }
         }
-        if (StringUtils.isEmpty(tempFile)) {
+        if (StringUtils.isEmpty(tmpFile)) {
             return;
         }
 
-        trade = fileName.substring(0, fileName.indexOf("."));
-        trade = trade.substring(0, trade.length() - 2);
-        Path file = Paths.get(tempFile);
+        trade = fileName.substring(0, 2);
+        Path file = Paths.get(tmpFile);
         final Map<String, LexiconEntity> map = new HashMap<>(1 << 16);
-        XSSFUtils.read(file, new RowMapper() {
+        XSSFUtils.read(file, new RowHandler() {
             @Override
             protected void mapRow(int sheetIndex, int rowIndex, List<Object> row) {
                 LexiconEntity lexiconEntity = new LexiconEntity();
@@ -91,8 +90,8 @@ public class ImportLexiconExcelController {
         });
         List<LexiconEntity> list = new ArrayList<>(map.values());
 
-        //delete tempFile
-        Files.deleteIfExists(Paths.get(tempFile));
+        //delete tmpFile
+        Files.deleteIfExists(Paths.get(tmpFile));
 
         ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors() + 1);
         try {

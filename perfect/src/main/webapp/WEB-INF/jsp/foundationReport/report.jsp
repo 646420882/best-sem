@@ -104,7 +104,7 @@
             {
                 selectOP = $("#selectOP").find("option:selected").val();
                 $("#appendtext").empty();
-                $("#appendtext").append("<span style='color:red'>数据拉取中，需要时间较长！请耐心等待。。。</span>");
+                $("#appendtext").append("<label class='mesLable'>数据拉取中，需要时间较长！请耐心等待。。。</label>");
                 if(number==0){
                     number++;
                     $.ajax({
@@ -119,19 +119,19 @@
                         success: function (data) {
                             $("#appendtext").empty();
                             if(data == 1){
-                                $("#appendtext").append("<span style='color:red'>数据拉取成功</span>");
+                                $("#appendtext").append("<label class='mesLable'>数据拉取成功</label>");
                             }
                             if(data == -1){
-                                $("#appendtext").append("<span style='color:red'>数据拉取失败</span>");
+                                $("#appendtext").append("<label class='mesLable'>数据拉取失败</label>");
                             }
                             if(data == -2){
-                                $("#appendtext").append("<span style='color:red'>登陆帐号无拉取数据权限</span>");
+                                $("#appendtext").append("<label class='mesLable'>登陆帐号无拉取数据权限</label>");
                             }
                             number = 0;
                         }
                     });
                 }else{
-                    alert("请耐心等待之前的拉取操作完成，请勿重复操作。")
+                    alert("请耐心等待,上一次的拉取操作尚未完成，请勿重复操作。")
                 }
 
             }

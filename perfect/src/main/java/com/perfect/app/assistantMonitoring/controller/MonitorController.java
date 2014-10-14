@@ -3,6 +3,7 @@ package com.perfect.app.assistantMonitoring.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.mongodb.WriteResult;
 import com.perfect.autosdk.sms.v3.Folder;
 import com.perfect.autosdk.sms.v3.Monitor;
 import com.perfect.dto.KeywordDTO;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,6 +115,129 @@ public class MonitorController {
         Map<String,List<KeywordDTO>> listMap = new HashMap<>();
         listMap.put("rows",keywordDTOs);
         webContext.writeJson(listMap, response);
+    }
+
+    /**
+     * 修改监控文件夹名称
+     *
+     * @param response
+     */
+    @RequestMapping(value = "/monitoring/updateFolderName", method = {RequestMethod.GET, RequestMethod.POST})
+    public void updateFolderName(HttpServletResponse response,
+                             @RequestParam(value = "forlderId", required = false) Long forlderId,
+                             @RequestParam(value = "forlderName", required = false) String forlderName) {
+        boolean writeResult = monitoringService.updateFolderName(forlderId, forlderName);
+
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            response.setHeader("Pragma", "No-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            response.getWriter().write(String.valueOf(writeResult));
+            response.getWriter().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 添加监控文件夹
+     *
+     * @param response
+     */
+    @RequestMapping(value = "/monitoring/addFolder", method = {RequestMethod.GET, RequestMethod.POST})
+    public void updateFolderName(HttpServletResponse response,
+                                 @RequestParam(value = "forlderName", required = false) String forlderName) {
+        int folder = monitoringService.addFolder(forlderName);
+
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            response.setHeader("Pragma", "No-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            response.getWriter().write(String.valueOf(folder));
+            response.getWriter().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 删除监控文件夹
+     *
+     * @param response
+     */
+    @RequestMapping(value = "/monitoring/removeFolder", method = {RequestMethod.GET, RequestMethod.POST})
+    public void deleteFolder(HttpServletResponse response,
+                                 @RequestParam(value = "forlderId", required = false) Long forlderId) {
+
+        boolean folder = monitoringService.deleteFolder(forlderId);
+
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            response.setHeader("Pragma", "No-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            response.getWriter().write(String.valueOf(folder));
+            response.getWriter().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 删除监控对象
+     *
+     * @param response
+     */
+    @RequestMapping(value = "/monitoring/removeMonitor", method = {RequestMethod.GET, RequestMethod.POST})
+    public void deleteMonitor(HttpServletResponse response,
+                             @RequestParam(value = "monitorId", required = false) Long monitorId) {
+
+        boolean folder = monitoringService.deleteMonitorId(monitorId);
+
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            response.setHeader("Pragma", "No-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            response.getWriter().write(String.valueOf(folder));
+            response.getWriter().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /**
+     * 添加监控对象
+     *
+     * @param response
+     */
+    @RequestMapping(value = "/monitoring/addMonitor", method = {RequestMethod.GET, RequestMethod.POST})
+    public void addMonitor(HttpServletResponse response,
+                              @RequestParam(value = "folderID", required = false) Long folderID,
+                              @RequestParam(value = "campaignId", required = false) Long campaignId,
+                              @RequestParam(value = "adgroupId", required = false) Long adgroupId,
+                              @RequestParam(value = "acliId", required = false) Long acliId) {
+
+        int folder = monitoringService.addMonitorId(folderID,campaignId,adgroupId,acliId);
+
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            response.setHeader("Pragma", "No-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            response.getWriter().write(String.valueOf(folder));
+            response.getWriter().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

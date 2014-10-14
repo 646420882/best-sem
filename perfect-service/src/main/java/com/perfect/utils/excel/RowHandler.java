@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-10-10.
  */
-public abstract class RowMapper extends DefaultHandler {
+public abstract class RowHandler extends DefaultHandler {
 
     private SharedStringsTable sst;
     private Map<Integer, String> strMap;

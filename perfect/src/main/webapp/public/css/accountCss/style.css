@@ -2918,6 +2918,16 @@ float:none;
 .chuanyi_input{
     margin-top:5px;
 }
+.list2_input{
+    border: 0px none;
+    background:none;
+    boeder:none;
+    text-align: center;
+}
+.folder td input[readonly]{
+    background: none;
+    cursor: auto;
+}
 /*input[type=checkbox],
 input[type=radio]{
     -webkit-appearance: none;

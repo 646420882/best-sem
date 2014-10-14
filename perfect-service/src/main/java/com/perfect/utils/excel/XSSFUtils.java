@@ -24,19 +24,20 @@ public class XSSFUtils {
         return sheetHandler;
     }
 
-    public static void read(Path file, RowMapper mapper) throws Exception {
+    public static void read(Path file, RowHandler handler) throws Exception {
         final long size = Files.size(file);
         try (InputStream is = new BufferedInputStream(new FileInputStream(file.toFile()), size > Integer.MAX_VALUE ? 1024 * 1024 * 10 : (int) size)) {
-            process(is, mapper);
+            process(is, handler);
         }
     }
 
-    static void process(InputStream is, RowMapper mapper) throws Exception {
+    static void process(InputStream is, RowHandler handler) throws Exception {
         XSSFReader reader = new XSSFReader(OPCPackage.open(is));
-        XMLReader parser = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
+//        XMLReader parser = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
+        XMLReader parser = XMLReaderFactory.createXMLReader();
 
-        mapper.setSharedStringsTable(reader.getSharedStringsTable());
-        parser.setContentHandler(mapper);
+        handler.setSharedStringsTable(reader.getSharedStringsTable());
+        parser.setContentHandler(handler);
 
         for (Iterator<InputStream> iterator = reader.getSheetsData(); iterator.hasNext(); ) {
             try (InputStream sheetIn = iterator.next()) {

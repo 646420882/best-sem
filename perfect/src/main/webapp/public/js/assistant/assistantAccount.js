@@ -432,7 +432,7 @@ var loadAccountData = function () {
                     var temp = result.excludeIp;
                     for (var i = 0, l = result.excludeIp.length; i < l; i++) {
                         var _val = $("#excludeIP_ta").val();
-                        if (_val == null || _val.trim().length == 0)
+                        if (_val == null || _val.trims().length == 0)
                             $("#excludeIP_ta").val(temp[i]);
                         else
                             $("#excludeIP_ta").val(_val + "\n" + temp[i]);
@@ -444,7 +444,7 @@ var loadAccountData = function () {
 
             //账户到达预算
             var _budgetOfflineTime = data.budgetOfflineTime;
-            if (_budgetOfflineTime.trim().length > 0) {
+            if (_budgetOfflineTime.trims().length > 0) {
                 $.each(_budgetOfflineTime, function (i, item) {
                     var _time = parseInt((item.flag.split("/"))[1]);    //当日时间-小时
                     var _day = (item.flag.split("/"))[0];
@@ -544,7 +544,7 @@ var excludeIP = function () {
     var excludeIps = [];
 
     //获取ip排除文本域输入框的ip值
-    var ips = $("#excludeIP_ta").val().trim().split("\n");
+    var ips = $("#excludeIP_ta").val().trims().split("\n");
     for (var i = 0, l = ips.length; i < l; i++) {
         excludeIps.push(ips[i]);
     }
