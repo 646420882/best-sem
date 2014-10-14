@@ -29,6 +29,10 @@ public interface SysRegionalService {
 
     public Map<String,List<Object>> getProvince();
 
+    public String getProvinceNameById(Integer provinceId);
+
+    public String getRegionNameById(Integer regionId);
+
     /**
      * 通过区域名称获得 相应的区域id 以及省份 id 及名称
      * 如未查询到对应的区域名称 则 区域ID返回-1

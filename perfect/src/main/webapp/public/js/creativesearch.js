@@ -19,7 +19,7 @@ function search() {
             'r': region},
         type: "GET",
         success: function (datas) {
-            if (datas.rows == undefined) {
+            if (datas.rows == undefined || datas.rows.total == 0) {
                 return;
             }
 

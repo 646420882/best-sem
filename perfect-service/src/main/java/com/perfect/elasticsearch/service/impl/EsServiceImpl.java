@@ -3,6 +3,7 @@ package com.perfect.elasticsearch.service.impl;
 import com.perfect.dto.CreativeSourceDTO;
 import com.perfect.dto.EsSearchResultDTO;
 import com.perfect.elasticsearch.service.EsService;
+import com.perfect.service.SysRegionalService;
 import com.perfect.utils.RegionalCodeUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.search.SearchResponse;
@@ -34,6 +35,9 @@ public class EsServiceImpl implements EsService {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     @Resource
+    private SysRegionalService sysRegionalServicel;
+
+    @Resource
     private Client esClient;
 
     private final String AGG_KEYWORDS = "keywords";
@@ -42,6 +46,8 @@ public class EsServiceImpl implements EsService {
 
     @Override
     public EsSearchResultDTO search(String query, int page, int size, int[] regions) {
+
+        query = query.replaceAll("\n", " ");
 
         QueryStringQueryBuilder builder = new QueryStringQueryBuilder(query);
         builder.analyzer("ik").field("title").field("body").defaultOperator(QueryStringQueryBuilder.Operator.OR);
@@ -62,11 +68,12 @@ public class EsServiceImpl implements EsService {
                 .addAggregation(AggregationBuilders.terms(AGG_HOSTS).field("host").size(10))
                 .get();
 
-        if (sr == null) {
-            return null;
+        EsSearchResultDTO esSearchResultDTO = new EsSearchResultDTO();
+
+        if (sr == null || sr.getHits().totalHits() == 0) {
+            return esSearchResultDTO;
         }
 
-        EsSearchResultDTO esSearchResultDTO = new EsSearchResultDTO();
 
         esSearchResultDTO.setTotal(sr.getHits().totalHits());
         Map<Integer, String> regionMap = new HashMap<>();
@@ -89,15 +96,25 @@ public class EsServiceImpl implements EsService {
                 e.printStackTrace();
             }
             Object regionObj = map.get("region");
-                if (regionObj == null) {
-                    creativeSourceEntity.setRegion("无");
-                } else {
-                    int region = Integer.parseInt(regionObj.toString());
-                    regionMap.putAll(RegionalCodeUtils.regionalCode(Arrays.asList(region)));
+            if (regionObj == null) {
+                creativeSourceEntity.setRegion("无");
+            } else {
+                int region = Integer.parseInt(regionObj.toString());
 
-                    creativeSourceEntity.setRegion(regionMap.get(region));
+                if (region < 100) {
+                    // 获取省名称
+                    String name = sysRegionalServicel.getProvinceNameById(region);
+                    regionMap.put(region, name);
+                } else {
+                    // 获取市级名称
+                    String name = sysRegionalServicel.getRegionNameById(region);
+                    regionMap.put(region, name);
                 }
-                hitList.add(creativeSourceEntity);
+
+
+                creativeSourceEntity.setRegion(regionMap.get(region));
+            }
+            hitList.add(creativeSourceEntity);
 
         }
 
