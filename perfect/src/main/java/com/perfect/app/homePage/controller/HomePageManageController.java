@@ -1,6 +1,6 @@
 package com.perfect.app.homePage.controller;
 
-import com.perfect.app.homePage.service.CustomUserDetailsService;
+import com.perfect.commons.CustomUserDetailsService;
 import com.perfect.app.web.WebUtils;
 import com.perfect.entity.SystemUserEntity;
 import com.perfect.service.AccountRegisterService;

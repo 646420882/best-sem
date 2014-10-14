@@ -50,7 +50,7 @@
         <property name="userPropertyToUse" value="username"/>
     </bean>
 
-    <bean id="customUserDetailsService" class="com.perfect.app.homePage.service.CustomUserDetailsService"/>
+    <bean id="customUserDetailsService" class="com.perfect.commons.CustomUserDetailsService"/>
 
     <bean id="customAuthenticationSuccessHandler" class="com.perfect.utils.web.CustomAuthenticationSuccessHandler"/>
 
