@@ -10,6 +10,7 @@ import com.perfect.service.AccountDataService;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.LogService;
 import com.perfect.utils.JSONUtils;
+import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,29 @@ public class AccountManageController {
     private AccountDataService accountDataService;
 
     @Resource
+    private WebContext webContext;
+
+    @Resource
     private LogService logService;
+
+
+    /**
+     * 修改账户密码
+     * @return
+     */
+    @RequestMapping(value = "/updatePwd", method = {RequestMethod.GET,RequestMethod.POST})
+    public void updatePwd(HttpServletResponse response,
+                                  @RequestParam(value = "password", required = false) String password,
+                                  @RequestParam(value = "newPwd", required = false) String newPwd) {
+
+        int flag = accountManageService.updatePwd(password, newPwd);
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("sturts",flag);
+
+        webContext.writeJson(map, response);
+
+    }
 
     /**
      * 获取账户树

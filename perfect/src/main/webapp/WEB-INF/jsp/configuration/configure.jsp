@@ -99,6 +99,7 @@
                 </div>
             </div>
         </div>
+        <jsp:include page="../configuration/changePwd.jsp"/>
         <jsp:include page="../homePage/pageBlock/footer.jsp"/>
     </div>
 </div>

@@ -1,6 +1,7 @@
 package com.perfect.dao;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.mongodb.WriteResult;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.SystemUserEntity;
 
@@ -50,6 +51,13 @@ public interface AccountManageDAO<T> {
      * @return
      */
     SystemUserEntity getCurrUserInfo();
+
+    /**
+     * 修改密码
+     * @param pwd
+     * @return
+     */
+    public WriteResult updatePwd(String userName, String pwd);
 
     /**
      * 上传用户头像

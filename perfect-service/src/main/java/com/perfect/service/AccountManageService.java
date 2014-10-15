@@ -11,6 +11,14 @@ import java.util.Map;
 public interface AccountManageService {
 
     /**
+     * 修改密码
+     * @param password
+     * @param newPwd
+     * @return
+     */
+    public int updatePwd(String password, String newPwd);
+
+    /**
      * 获取账户树
      *
      * @return
