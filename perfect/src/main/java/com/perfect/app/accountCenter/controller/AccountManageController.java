@@ -22,9 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -111,13 +108,19 @@ public class AccountManageController {
      */
     @RequestMapping(value = "/uploadImg", method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ModelAndView uploadImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        InputStream is = Files.newInputStream(Paths.get("/home/baizz/bdlogo.png"), StandardOpenOption.READ);
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> map = new HashMap<>();
+        InputStream is = request.getInputStream();
         byte[] bytes = new byte[1024 * 8];
         if (is.read(bytes) != -1) {
             accountManageService.uploadImg(bytes);
-            return new ModelAndView();
+            map.put("status", true);
+            jsonView.setAttributesMap(map);
+            return new ModelAndView(jsonView);
         }
-        return new ModelAndView();
+        map.put("status", false);
+        jsonView.setAttributesMap(map);
+        return new ModelAndView(jsonView);
     }
 
     /**
