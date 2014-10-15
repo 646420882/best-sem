@@ -111,13 +111,15 @@ public class AccountManageController {
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> map = new HashMap<>();
         InputStream is = request.getInputStream();
-        byte[] bytes = new byte[1024 * 8];
+        byte[] bytes = new byte[4_194_304];
         if (is.read(bytes) != -1) {
             accountManageService.uploadImg(bytes);
             map.put("status", true);
             jsonView.setAttributesMap(map);
+            is.close();
             return new ModelAndView(jsonView);
         }
+        is.close();
         map.put("status", false);
         jsonView.setAttributesMap(map);
         return new ModelAndView(jsonView);
