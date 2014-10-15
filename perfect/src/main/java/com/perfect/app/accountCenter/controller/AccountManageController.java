@@ -14,6 +14,7 @@ import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -22,7 +23,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,17 +51,18 @@ public class AccountManageController {
 
     /**
      * 修改账户密码
+     *
      * @return
      */
-    @RequestMapping(value = "/updatePwd", method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/updatePwd", method = {RequestMethod.GET, RequestMethod.POST})
     public void updatePwd(HttpServletResponse response,
-                                  @RequestParam(value = "password", required = false) String password,
-                                  @RequestParam(value = "newPwd", required = false) String newPwd) {
+                          @RequestParam(value = "password", required = false) String password,
+                          @RequestParam(value = "newPwd", required = false) String newPwd) {
 
         int flag = accountManageService.updatePwd(password, newPwd);
 
         Map<String, Integer> map = new HashMap<>();
-        map.put("sturts",flag);
+        map.put("sturts", flag);
 
         webContext.writeJson(map, response);
 
@@ -130,22 +131,11 @@ public class AccountManageController {
      * @throws IOException
      */
     @RequestMapping(value = "/uploadImg", method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ModelAndView uploadImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        AbstractView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> map = new HashMap<>();
-        InputStream is = request.getInputStream();
-        byte[] bytes = new byte[4_194_304];
-        if (is.read(bytes) != -1) {
-            accountManageService.uploadImg(bytes);
-            map.put("status", true);
-            jsonView.setAttributesMap(map);
-            is.close();
-            return new ModelAndView(jsonView);
-        }
-        is.close();
-        map.put("status", false);
-        jsonView.setAttributesMap(map);
-        return new ModelAndView(jsonView);
+    public void uploadImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        byte[] bytes = multipartRequest.getFile("userImgFile").getBytes();
+        accountManageService.uploadImg(bytes);
+        response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
     }
 
     /**

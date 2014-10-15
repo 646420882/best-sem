@@ -6,6 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+%>
 <div class="top_heade">
     <div class="top">
         <div class="nav_bg">
@@ -16,12 +19,14 @@
                 <div class="user_logo fl">
                     <div class="user_logo1">
                         <div class="user_img fl over">
-                            <span id="head_click"><img src="${pageContext.request.contextPath}/account/getImg"></span>
+                            <span id="head_click"><img id="user_img"
+                                                       src="${pageContext.request.contextPath}/account/getImg"></span>
                         </div>
                         <div class="user_text fl">
                             <p><b id="time"></b><a
                                     href="${pageContext.request.contextPath}/configuration/"><span>${currSystemUserName}</span></a>
                             </p>
+
                             <div class="user_select">
                                 <div class="user_name">
                                     <span></span>
@@ -65,55 +70,75 @@
     <h2 id="head_top">
         <span class="fl">修改头像</span>
         <a href="#" class="close2 fr" style="color:#fff;">关闭</a></h2>
+
     <div class="mainlist">
-        <%--<div id="imgDiv"> </div>
-        <form action="/account/uploadImg" method="post" enctype="multipart/form-data">
-            <input type="file" id="userImg" name="userImg"/>
-        </form>--%>
-            <form action="/account/uploadImg" method="post" enctype="multipart/form-data">
-            <div id="divPreview1" class="user_photo"><img id="imgHeadPhoto1" src="${pageContext.request.contextPath}/public/img/user_img.png" height="72" width="72" alt="照片预览"/></div>
-           <div class="user_photo">图片像素为：72*72</div>
+        <form id="userImg" name="userImg" action="${pageContext.request.contextPath}/account/uploadImg" method="post"
+              enctype="multipart/form-data" target="fileIframe">
+            <div id="divPreview1" class="user_photo">
+                <img id="imgHeadPhoto1" src="${pageContext.request.contextPath}/public/img/user_img.png"
+                     height="72" width="72" alt="照片预览"/>
+            </div>
+            <div class="user_photo">图片像素为：72*72</div>
             <div class="user_photo">图片支持jpg , jpeg , png, gif , bmp格式</div>
-            <div id="divNewPreview1"  style="filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image); border: solid 1px #d2e2e2; display: none; "></div>
-            <input name="webOrgUserFrom.pic" id="webOrgUserFrom_pic" fileindex="1" class="input_200" onchange="imageChange(this)" type="file"  />
-             </form>
+            <div id="divNewPreview1"
+                 style="filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image); border: solid 1px #d2e2e2; display: none; "></div>
+            <input id="userImgFile" name="userImgFile" class="input_200" type="file" fileindex="1"
+                   onchange="imageChange(this)"/>
+        </form>
     </div>
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li onclick="" class="current"> 确定</li>
+                <li onclick="uploadUserImg();" class="current"> 确定</li>
                 <li class="close2">取消</li>
             </ul>
         </div>
     </div>
 </div>
+<iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/userimg.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript">
     <!--
-    //预览领导照片
-    function imageChange(obj){
-        var fileFormat="jpg,jpeg,png,gif,bmp";
+    function imageChange(obj) {
+        var fileFormat = "jpg,jpeg,png,gif,bmp";
         var path = $(obj).val();
-        var index=$(obj).attr('fileindex');
+        var index = $(obj).attr('fileindex');
         var fileName = getFileName(path);
-        var fileExtLowerCase=(/[.]/.exec(fileName)) ? /[^.]+$/.exec(fileName.toLowerCase()) : '';//文件后缀
-        if(fileFormat.indexOf(fileExtLowerCase) >=0){
-            ShowImage(obj,index,72,72);
-        }else{
+        var fileExtLowerCase = (/[.]/.exec(fileName)) ? /[^.]+$/.exec(fileName.toLowerCase()) : '';//文件后缀
+        if (fileFormat.indexOf(fileExtLowerCase) >= 0) {
+            ShowImage(obj, index, 72, 72);
+        } else {
             alert('请选择图片,格式（*.jpg|*.jpeg|*.png|*.gif|*.bmp）');
             $(obj).val('');
-            alert($("#imgHeadPhoto"+index).get(0).src);
-            $("#imgHeadPhoto"+index).get(0).src='';
+            alert($("#imgHeadPhoto" + index).get(0).src);
+            $("#imgHeadPhoto" + index).get(0).src = '';
         }
     }
 
-    function getFileName(obj){
-        var pos = obj.lastIndexOf("\\")*1;
-        return obj.substring(pos+1);
+    function getFileName(obj) {
+        var pos = obj.lastIndexOf("\\") * 1;
+        return obj.substring(pos + 1);
     }
     //-->
+
+    var uploadUserImg = function () {
+        document.getElementById("userImg").submit();
+    };
+
+    var basePath = "<%=basePath%>";
+
+    var callback = function (data) {
+        if (data == "true") {
+            $(".TB_overlayBG").css("display", "none");
+            $("#head_img").css("display", "none");
+            alert("上传成功!");
+            window.location.reload(true);
+        }
+        else
+            alert("上传失败!");
+    };
 </script>
 <script type="text/javascript">
     //时间提示
@@ -143,7 +168,7 @@
     else {
         time.innerHTML = "晚上,好！"
     }
-   //弹窗
+    //弹窗
     window.onload = function () {
         rDrag.init(document.getElementById('head_top'));
     };
@@ -161,9 +186,6 @@
         $(".close2").click(function () {
             $(".TB_overlayBG").css("display", "none");
             $("#head_img").css("display", "none");
-        });
-        $("#userImg").change(function() {
-            $("#head_click").attr("src", "file:///" + $("#userImg").val());
         });
     });
 </script>
