@@ -1,8 +1,10 @@
 package com.perfect.service.impl;
 
+import com.perfect.dao.AccountManageDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
+import com.perfect.service.AccountManageService;
 import com.perfect.service.SystemUserService;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,8 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Resource
     private SystemUserDAO systemUserDAO;
+    @Resource
+    private AccountManageDAO accountManageDAO;
 
     @Override
     public SystemUserEntity getSystemUser(String userName) {
@@ -48,5 +52,10 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Override
     public void addAccount(String user, BaiduAccountInfoEntity baiduAccountInfoEntity) {
         systemUserDAO.insertAccountInfo(user, baiduAccountInfoEntity);
+    }
+
+    @Override
+    public boolean updatePassword(String userName, String pwd){
+        return accountManageDAO.updatePwd(userName,pwd).isUpdateOfExisting();
     }
 }

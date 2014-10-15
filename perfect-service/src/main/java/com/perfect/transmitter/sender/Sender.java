@@ -1,9 +1,11 @@
 package com.perfect.transmitter.sender;
 
 import com.perfect.transmitter.sendMail.MailSenderInfo;
+import com.perfect.transmitter.sendMail.SendMail;
 import com.perfect.transmitter.sendMail.SimpleMailSender;
 import com.perfect.transmitter.sendMes.SendMessage;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -11,6 +13,14 @@ import java.util.Map;
  */
 
 public class Sender implements Runnable{
+
+
+    @Resource
+    private SendMail sendMail;
+
+    @Resource
+    private SendMessage sendMessage;
+
     private Map<String,Object> map;
 
 
@@ -35,18 +45,8 @@ public class Sender implements Runnable{
      * 发送邮件
      */
     public void sendMail(String[] mails){
-        SimpleMailSender sms = new SimpleMailSender();
         for(String mail:mails){
-            //这个类主要是设置邮件
-            MailSenderInfo mailInfo = new MailSenderInfo();
-            //接收地址
-            mailInfo.setToAddress(mail);
-            //邮件主题
-            mailInfo.setSubject("账户预警");
-            //邮件内容太
-            mailInfo.setContent("超出了当天的预算");
-            //这个类主要来发送邮件
-            sms.sendTextMail(mailInfo);//发送文体格式
+            sendMail.startSendMail(mail,"账户预警","超出了预算!");
         }
     }
 
@@ -55,8 +55,7 @@ public class Sender implements Runnable{
      * 发送手机短信
      */
     public void sendMessage(String tels){
-        SendMessage sms = new SendMessage();
-        sms.SendMes(tels,new String[]{});
+        sendMessage.startSendMes(tels,new String[]{});
     }
 
 }
