@@ -13,7 +13,7 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
+    <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">--%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">
 </head>
 <body>
@@ -49,7 +49,7 @@
                                 <b id="invalidPassword">${invalidPassword}</b>
                             </div>
                         </li>
-                        <li><a hre="#">忘记密码</a></li>
+                        <li><a id="forgetPassword" href="#'">忘记密码</a></li>
                     </ul>
                 </div>
 
@@ -64,10 +64,11 @@
     </div>
 
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>--%>
 <script type="text/javascript">
     window.jQuery || document.write("<script src='${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js'>\x3C/script>");
 </script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/forgetPassword.js"></script>
 
 <script type="text/javascript">
 

@@ -1,6 +1,7 @@
 package com.perfect.transmitter.sendMes;
 
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
@@ -8,6 +9,7 @@ import java.util.HashMap;
  * Created by john on 2014/9/29.
  * 发送模板短信
  */
+@Component("sendMessage")
 public class SendMessage {
     //短信服务器地址("sandboxapp.cloopen.com"是开发调试环境下使用的，若正式上线则修改为"app.cloopen.com")
     private static final String SERVER_ADDRESS  = "sandboxapp.cloopen.com";
@@ -30,10 +32,10 @@ public class SendMessage {
 
     /**
      * 发送短信
-     * @param phoneNums
+     * @param phoneNums 多个以逗号分隔
      * @param data
      */
-    public void SendMes(String phoneNums,String[] data){
+    public void startSendMes(String phoneNums,String[] data){
             HashMap<String, Object> result = null;
 
             //初始化SDK
