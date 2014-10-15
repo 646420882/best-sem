@@ -1,11 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>大数据智能营销</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
@@ -35,6 +34,11 @@
             }
         });
     </script>
+    <style type="text/css">
+        .tab_box {
+            padding: 0px;
+        }
+    </style>
 
 </head>
 <body>
@@ -48,7 +52,17 @@
             </div>
         </div>
         <div id="tab">
-            <div class="configure over">
+            <ul class="tab_menu">
+                <li class="selected">
+                    关联账户
+                </li>
+                <li>
+                    修改密码
+                </li>
+            </ul>
+            <div class="tab_box">
+                <div class="containers">
+                 <div class="configure over">
                 <div class="configure_top over">
                     <h3 class="fl">添加推广帐号</h3>
                     <a href="../configuration/"  class="fr"> → 返回管理</a>
@@ -93,6 +107,11 @@
 
                 </div>
             </div>
+               </div>
+                <div class="containers hides" >
+                    <jsp:include page="../configuration/changePwd.jsp"/>
+                </div>
+            </div>
 
         </div>
         <jsp:include page="../homePage/pageBlock/footer.jsp"/>
@@ -119,7 +138,14 @@
                 $("form[name='frm']").submit();
             }
         })
+        var $tab_li = $('.tab_menu li');
+        $('.tab_menu li').click(function () {
+            $(this).addClass('selected').siblings().removeClass('selected');
+            var index = $tab_li.index(this);
+            $('div.tab_box > div').eq(index).show().siblings().hide();
+        });
     });
+
 </script>
 </body>
 </html>

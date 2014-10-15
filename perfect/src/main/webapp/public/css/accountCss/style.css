@@ -1313,6 +1313,7 @@ ul.ztree.zTreeDragUL {
     margin-right: 15px;
     margin-bottom:10px;
     line-height: 24px;
+    font-size:12px;
     background: #e4eafa;
     cursor: pointer;
     overflow: hidden;
@@ -1437,6 +1438,7 @@ ul.ztree.zTreeDragUL {
     background-color: #282538;
     position: relative;
     padding: 0 5%;
+    margin:0px;
     line-height: 46px;
     color: #fff;
     cursor: Move;
@@ -1446,9 +1448,21 @@ ul.ztree.zTreeDragUL {
 }
 
 h2 .close {
-    float:right;
-    font-size: 12px;
     color: #fff;
+    float: right;
+    font-size: 12px;
+    line-height: 46px;
+}
+.close {
+    color: #000;
+    float: right;
+    font-size: 12px;
+    font-weight: normal;
+    opacity:  inherit ;
+    text-shadow: none;
+}
+.close:hover{
+    color:#fff;
 }
 .mainlist {
     *width:93%;
@@ -1520,7 +1534,7 @@ h2 .close {
     display: inline-block;
     *float:left;
     *display:block;
-    max-width:60px;
+    *max-width:60px;
 }
 .main_bottom .w_list03 ul{
     margin-bottom:0px;
@@ -2263,6 +2277,10 @@ h2 .close {
 }
 .configure_top h3 {
     color: #000;
+    font-size:16px;
+    margin:0px;
+    line-height:inherit;
+    *line-height:40px;
 }
 .configure_top a {
     color: #015fff;
@@ -2927,6 +2945,20 @@ float:none;
 .folder td input[readonly]{
     background: none;
     cursor: auto;
+}
+#divPreview1{
+    text-align: center;
+}
+.user_photo{
+    text-align: center;
+    margin-bottom:5px;
+
+}
+.input_200{
+    margin-left:100px;
+}
+.mainlist form{
+    margin:0px;
 }
 /*input[type=checkbox],
 input[type=radio]{

@@ -16,13 +16,12 @@
                 <div class="user_logo fl">
                     <div class="user_logo1">
                         <div class="user_img fl over">
-                            <span> <img src="${pageContext.request.contextPath}/account/getImg"></span>
+                            <span id="head_click"><img src="${pageContext.request.contextPath}/account/getImg"></span>
                         </div>
                         <div class="user_text fl">
                             <p><b id="time"></b><a
                                     href="${pageContext.request.contextPath}/configuration/"><span>${currSystemUserName}</span></a>
                             </p>
-
                             <div class="user_select">
                                 <div class="user_name">
                                     <span></span>
@@ -41,7 +40,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="user_detali fl over">
                     <ul>
                         <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<<a href="/ext/demo"
@@ -58,12 +56,67 @@
                     <img src="${pageContext.request.contextPath}/public/img/logo.png">
                 </div>
             </div>
-
         </div>
-
     </div>
 </div>
+<%--用户头像修改--%>
+<div class="TB_overlayBG"></div>
+<div class="box" style="display:none; width:400px;" id="head_img">
+    <h2 id="head_top">
+        <span class="fl">修改头像</span>
+        <a href="#" class="close2 fr" style="color:#fff;">关闭</a></h2>
+    <div class="mainlist">
+        <%--<div id="imgDiv"> </div>
+        <form action="/account/uploadImg" method="post" enctype="multipart/form-data">
+            <input type="file" id="userImg" name="userImg"/>
+        </form>--%>
+            <form action="/account/uploadImg" method="post" enctype="multipart/form-data">
+            <div id="divPreview1" class="user_photo"><img id="imgHeadPhoto1" src="${pageContext.request.contextPath}/public/img/user_img.png" height="72" width="72" alt="照片预览"/></div>
+           <div class="user_photo">图片像素为：72*72</div>
+            <div class="user_photo">图片支持jpg , jpeg , png, gif , bmp格式</div>
+            <div id="divNewPreview1"  style="filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image); border: solid 1px #d2e2e2; display: none; "></div>
+            <input name="webOrgUserFrom.pic" id="webOrgUserFrom_pic" fileindex="1" class="input_200" onchange="imageChange(this)" type="file"  />
+             </form>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li onclick="" class="current"> 确定</li>
+                <li class="close2">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/userimg.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript">
+    <!--
+    //预览领导照片
+    function imageChange(obj){
+        var fileFormat="jpg,jpeg,png,gif,bmp";
+        var path = $(obj).val();
+        var index=$(obj).attr('fileindex');
+        var fileName = getFileName(path);
+        var fileExtLowerCase=(/[.]/.exec(fileName)) ? /[^.]+$/.exec(fileName.toLowerCase()) : '';//文件后缀
+        if(fileFormat.indexOf(fileExtLowerCase) >=0){
+            ShowImage(obj,index,72,72);
+        }else{
+            alert('请选择图片,格式（*.jpg|*.jpeg|*.png|*.gif|*.bmp）');
+            $(obj).val('');
+            alert($("#imgHeadPhoto"+index).get(0).src);
+            $("#imgHeadPhoto"+index).get(0).src='';
+        }
+    }
+
+    function getFileName(obj){
+        var pos = obj.lastIndexOf("\\")*1;
+        return obj.substring(pos+1);
+    }
+    //-->
+</script>
+<script type="text/javascript">
+    //时间提示
     var now = new Date(), hour = now.getHours();
     var time = document.getElementById('time');
     if (0 < hour && hour < 6) {
@@ -90,4 +143,29 @@
     else {
         time.innerHTML = "晚上,好！"
     }
+   //弹窗
+    window.onload = function () {
+        rDrag.init(document.getElementById('head_top'));
+    };
+    $(function () {
+        $("#head_click").click(function () {
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });
+            $("#head_img").css({
+                left: ($("body").width() - $("#head_img").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#head_img").height()) / 2 + ($(window).scrollTop() - 153) + "px",
+                display: "block"
+            });
+        });
+        $(".close2").click(function () {
+            $(".TB_overlayBG").css("display", "none");
+            $("#head_img").css("display", "none");
+        });
+        $("#userImg").change(function() {
+            $("#head_click").attr("src", "file:///" + $("#userImg").val());
+        });
+    });
 </script>
+
+

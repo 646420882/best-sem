@@ -7,36 +7,37 @@
 <head>
     <meta charset="utf-8">
     <title>大数据智能营销</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">--%>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
-    <script type="text/javascript">
-        window.onload = function () {
-            rDrag.init(document.getElementById('new_riginality2'));
-        };
-        $(function () {
-            $(".showbox").click(function () {
-                $(".TB_overlayBG").css({
-                    display: "block", height: $(document).height()
-                });
-                $("#new_riginality").css({
-                    left: ($("body").width() - $("#new_riginality").width()) / 2 - 20 + "px",
-                    top: ($(window).height() - $("#new_riginality").height()) / 2 + $(window).scrollTop() + "px",
-                    display: "block"
-                });
-            });
-            $(".close").click(function () {
-                $(".TB_overlayBG").css("display", "none");
-                $(".box").css("display", "none");
-            });
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
+    <style type="text/css">
+        .tab_box {
+            padding: 0px;
+        }
+        .box h2{
+                   width:100%;
+                   *width:90%;
+               }
+        .close:hover, .close:focus{
+            color:#fff;
+        }
+        .login_input2 ul li{
+            *height:38px;
+        }
+        .login_input2 ul li input{
+            width:230px;
+            *width:210px;
+            *padding:0px;
+            *line-height:30px;
+        }
 
-        });
-    </script>
+    </style>
 </head>
 <body>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
@@ -49,57 +50,70 @@
             </div>
          </div>
         <div id="tab">
-            <div class="configure over">
-                <div class="configure_top over">
-                    <h3 class="fl">关联账户</h3>
-                    <a href="add" class="fr"> + 添加推广账户</a>
-                </div>
-                <div class="configure_under over">
-                    <table width="100%" cellspacing="0" border="1">
-                        <thead>
-                        <tr>
-                            <td>&nbsp;<b>已绑定推广账户</b></td>
-                            <td>&nbsp;<b>推广URL</b></td>
-                            <td>&nbsp;<b>Token</b></td>
-                            <td>&nbsp;<b>操作</b></td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="i" items="${accountList}">
+            <ul class="tab_menu">
+                <li class="selected">
+                    关联账户
+                </li>
+                <li>
+                    修改密码
+                </li>
+            </ul>
+            <div class="tab_box">
+            <div class="containers">
+                <div class="configure over">
+                    <div class="configure_top over">
+                        <h3 class="fl">关联账户</h3>
+                        <a href="add" class="fr"> + 添加推广账户</a>
+                    </div>
+                    <div class="configure_under over">
+                        <table width="100%" cellspacing="0" border="1">
+                            <thead>
                             <tr>
-                                <td>&nbsp;<span class="fl"><img
-                                        src="${pageContext.request.contextPath}/public/images/c_logo.jpg"></span><b
-                                        class="fl">${i.baiduUserName}</b></td>
-                                <td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>
-                                <td>&nbsp;${i.token}</td>
-                                <td>&nbsp;<a href="#" class="showbox">同步密码</a> &nbsp; <a data-id="${i.id}"
-                                                                                         class="delBtn">删除</a></td>
+                                <td>&nbsp;<b>已绑定推广账户</b></td>
+                                <td>&nbsp;<b>推广URL</b></td>
+                                <td>&nbsp;<b>Token</b></td>
+                                <td>&nbsp;<b>操作</b></td>
                             </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="i" items="${accountList}">
+                                <tr>
+                                    <td>&nbsp;<span class="fl"><img
+                                            src="${pageContext.request.contextPath}/public/images/c_logo.jpg"></span><b
+                                            class="fl">${i.baiduUserName}</b></td>
+                                    <td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>
+                                    <td>&nbsp;${i.token}</td>
+                                    <td>&nbsp;<a href="#" class="showbox">同步密码</a> &nbsp; <a data-id="${i.id}"
+                                                                                             class="delBtn">删除</a></td>
+                                </tr>
 
-                        </c:forEach>
-                        <script type="application/javascript">
-                            $('.delBtn').click(function () {
-                                var id = this.data('id');
-                                $.ajax({
-                                    url: "/configuration/acc/" + id,
-                                    type: "DELETE",
-                                    success: function (datas) {
-                                        if (datas.status != null && datas.status == true) {
-                                            alert("删除成功!");
-                                            window.location.reload(true);
-                                        } else {
-                                            alert("删除失败!")
+                            </c:forEach>
+                            <script type="application/javascript">
+                                $('.delBtn').click(function () {
+                                    var id = this.data('id');
+                                    $.ajax({
+                                        url: "/configuration/acc/" + id,
+                                        type: "DELETE",
+                                        success: function (datas) {
+                                            if (datas.status != null && datas.status == true) {
+                                                alert("删除成功!");
+                                                window.location.reload(true);
+                                            } else {
+                                                alert("删除失败!")
+                                            }
                                         }
-                                    }
-                                });
-                            })
-                        </script>
-                        </tbody>
-                    </table>
+                                    });
+                                })
+                            </script>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-        <jsp:include page="../configuration/changePwd.jsp"/>
+             <div class="containers hides" >
+                   <jsp:include page="../configuration/changePwd.jsp"/>
+             </div>
+            </div>
         <jsp:include page="../homePage/pageBlock/footer.jsp"/>
     </div>
 </div>
@@ -143,5 +157,39 @@
     </div>
 </div>
 </div>
+<script type="text/javascript">
+    window.onload = function () {
+        rDrag.init(document.getElementById('new_riginality2'));
+    };
+    $(function () {
+        $(".showbox").click(function () {
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });
+            $("#new_riginality").css({
+                left: ($("body").width() - $("#new_riginality").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#new_riginality").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });
+        });
+        $(".close").click(function () {
+            $(".TB_overlayBG").css("display", "none");
+            $(".box").css("display", "none");
+        });
+
+    });
+    $(function () {
+        var $tab_li = $('.tab_menu li');
+        $('.tab_menu li').click(function () {
+            $(this).addClass('selected').siblings().removeClass('selected');
+            var index = $tab_li.index(this);
+            $('div.tab_box > div').eq(index).show().siblings().hide();
+        });
+
+    });
+
+
+</script>
+
 </body>
 </html>
