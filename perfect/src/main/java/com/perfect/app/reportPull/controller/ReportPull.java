@@ -49,10 +49,7 @@ public class ReportPull {
             String yesterday = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
             list = DateUtils.getPeriod(yesterday, yesterday);
         } else {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            String srde = df.format(startDate);
-            String edde = df.format(endDate);
-            list = DateUtils.getPeriod(srde, edde);
+            list = DateUtils.getPeriod(startDate, endDate);
         }
         int flag = 0;
         try {

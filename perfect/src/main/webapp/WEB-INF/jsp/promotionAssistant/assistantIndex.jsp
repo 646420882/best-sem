@@ -11,7 +11,6 @@
 <head>
     <meta charset="utf-8">
     <title>大数据智能营销</title>
-    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
@@ -25,13 +24,20 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style rel="stylesheet" type="text/css">
-        #sDiv .span-error{
-            color:red;
+        #sDiv .span-error {
+            color: red;
         }
-        #sDiv .span-ok{
-            color:#9f9f9f;
+
+        #sDiv .span-ok {
+            color: #9f9f9f;
         }
     </style>
+    <script>
+        String.prototype.trims = function () {
+            return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+        };
+
+    </script>
 </head>
 <body>
 <%--<div id="background" class="background"></div>
@@ -41,13 +47,11 @@
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
-    <div class="title_box">
-        <div class="on_title over">
-            <a href="#">
-                推广助手
-            </a>
-        </div>
+<div class="title_box">
+    <div class="on_title over">
+        <a href="#">  推广助手</a>
     </div>
+</div>
 <div id="tab">
 <div class=" jiangjia_concent over">
 <div class="jingjia_left fl over" id="left">
@@ -59,18 +63,17 @@
         <span class="fl">查找计划单元</span>
         <input class="fr" type="image" src="../public/img/search.png">
     </div>
-    <div class="j_list01 over" >
+    <div class="j_list01 over">
         <div id="loading">
-
         </div>
         <ul id="zTree" class="ztree over">
         </ul>
     </div>
     <div class="j_l_under over">
-            <a href="javascript:void(0)" class="jiangkong">监控文件夹</a>
-        <div class="j_list02 over hides" style="height:100px; background:#fff;">
-             <div id="jiangkong_box">监控文件夹</div>
-            <ul id="zTree2" class="ztree over">
+        <a href="javascript:void(0)" class="jiangkong">监控文件夹</a>
+        <div class="j_list02 hides" style="height:100px; background:#fff;overflow:auto;">
+            <div id="jiangkong_box">监控文件夹</div>
+            <ul id="zTree2" class="ztree over" style="height:100px;">
             </ul>
         </div>
     </div>
@@ -81,7 +84,7 @@
 <div class="zhushou over wd ">
 <div class="zhushou_menu wd">
     <ul class="zs_nav">
-        <li class="showbox"><a id="downloadAccountData"><span><img src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
+        <li class="showbox"><a id="downloadAccountData"><span><img  src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
         <li><a><span><img src="../public/img/update.png"></span><span>上传更新</span></a></li>
         <li class="current"><a><span><img src="../public/img/Advanced_search.png"></span><span>高级搜索</span></a></li>
         <li class="nav_menu"><a><span><img src="../public/img/Repeat_keyword.png"></span><span>重复关键词</span></a>
@@ -93,7 +96,7 @@
         <li class="showbox4"><a> <span><img src="../public/img/Estimate.png"></span><span>估算工具</span></a></li>
     </ul>
 </div>
-<div class="zhushou_concent over"  id="jiangkong_box2">
+<div class="zhushou_concent over" id="jiangkong_box2">
 <div class="zs_concent_top over">
     <ul class="zh_menu2 fl" id="tabMenu">
         <li class="current" cname="table1">关键词</li>
@@ -112,33 +115,28 @@
         <ul class="fl">
             <li><a id="addKeyword" href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="javascript:deleteKwd()"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-            <li><a id="addOrUpdateKwd" href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新&nbsp;</b></a><input type="image"  id="deletekeywords" src="../public/img/zs_input.png">
+            <li><a id="addOrUpdateKwd" href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量添加/更新&nbsp;</b></a><input type="image"id="deletekeywords"
+                                                                                                                                                     src="../public/img/zs_input.png">
                 <ul id="deletekeywordes" class="hides">
-                    <li id="batchDelKwd"><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b >批量删除</b></a></li>
+                    <li id="batchDelKwd"><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b>批量删除</b></a></li>
                 </ul>
             </li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;
-                <input type="image" src="../public/img/zs_input.png"></b></a>
-
-            </li>
-            <li><a id="search_keyword" href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a></li>
+            <li><a id="search_keyword" href="#"><span class="zs_top"><img
+                    src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function8.png"></span><b>监控</b></a></li>
-            <li><a href="#" id = "reduction"><span class="z_function_hover"><img
-                    src="../public/img/zs_function9.png"></span><b>还原</b></a><%--z_function_hover--%>
-            </li>
-
+            <li><a href="javascript:void(0)" onclick="MonitorDialog()"><span class="zs_top"><img src="../public/img/zs_function8.png"></span><b>监控</b></a></li>
+            <li><a href="#" id="reduction"><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原</b></a><%--z_function_hover--%> </li>
             <li><a href="#" class="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
-            <li><a href="#"><span class="z_function_hover"><img
-                    src="../public/img/zs_function11.png"></span><b>激活</b></a>
-            </li>
+            <li><a href="#"><span class="z_function_hover"><img  src="../public/img/zs_function11.png"></span><b>激活</b></a></li>
         </ul>
         <span class="fr">1/10</span>
     </div>
     <div class="list4">
         <div class="container">
-            <table border="0" cellspacing="0" width="100%" class="table1 table-bordered"  data-resizable-columns-id="demo-table" >
+            <table border="0" cellspacing="0" width="100%" class="table1 table-bordered"
+                   data-resizable-columns-id="demo-table">
                 <thead>
                 <tr class="list02_top">
                     <th>&nbsp;关键词名称</th>
@@ -159,11 +157,8 @@
                 <tbody id="tbodyClick">
                 </tbody>
             </table>
-
         </div>
-
     </div>
-
     <div class="more_list over" style="display:none;">
         <ul>
             <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加关键词</b></li>
@@ -177,28 +172,29 @@
         </ul>
     </div>
     <div class="zhanghu_input"></div>
-
     <div id="pagination_keywordPage" class="pagination"></div>
-
     <div class="zs_bottom over">
-        <input type = "hidden" id="hiddenkwid_1" />
+        <input type="hidden" id="hiddenkwid_1"/>
         <div class="zs_bottom1 over fl ">
             <ul>
                 <li>
                     <div class="t_list01 fl over">关键词名称：</div>
-                    <div class="t_list02 fl over"><input type="text" disabled="disabled"  class="zs_input1 keyword_1"></div>
+                    <div class="t_list02 fl over"><input type="text" disabled="disabled" class="zs_input1 keyword_1"></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">出价：</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(2,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 price_1"></div>
+                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(2,this.value)" onkeydown="missBlur(event,this)" class="zs_input1 price_1">
+                    </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">访问URL:</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(3,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 pcurl_1"><span class="pcurlSize_1">0/1024</span></div>
+                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(3,this.value)" onkeydown="missBlur(event,this)"class="zs_input1 pcurl_1"><span
+                            class="pcurlSize_1">0/1024</span></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">移动访问URL：</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(4,this.value)" onkeydown="missBlur(event,this)"  class="zs_input1 mourl_1"><span class="mourlSize_1">0/1024</span></div>
+                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(4,this.value)"  onkeydown="missBlur(event,this)"class="zs_input1 mourl_1"><span
+                            class="mourlSize_1">0/1024</span></div>
                 </li>
             </ul>
         </div>
@@ -229,27 +225,20 @@
 <div class="containers  over hides">
     <div class="zs_function over">
         <ul class="fl">
-            <li><a href="javascript:void(0)" onclick="addCreative();"><span class="zs_top"><img
-                    src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-            <li><a href="javascript:void(0)" ><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-            <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b onclick="creativeMulti();">批量添加/更新</b></a>
-            </li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                    type="image" src="../public/img/zs_input.png"></b></a></li>
-            <li><a href="#"><span class="z_function_hover" id="reBak" onclick="reBakClick();"><img
-                    src="../public/img/zs_function9.png"></span><b onclick="reBakClick();">还原</b></a>
-            </li>
+            <li><a href="javascript:void(0)" onclick="addCreative();"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="javascript:void(0)"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+            <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b onclick="creativeMulti();">批量添加/更新</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a></li>
+            <li><a href="#"><span class="z_function_hover" id="reBak" onclick="reBakClick();"><img src="../public/img/zs_function9.png"></span><b onclick="reBakClick();">还原</b></a>  </li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
-            <li><a href="#"><span class="z_function_hover"><img
-                    src="../public/img/zs_function11.png"></span><b>激活</b></a>
-            </li>
-
+            <li><a href="#"><span class="z_function_hover"><img src="../public/img/zs_function11.png"></span><b>激活</b></a>  </li>
         </ul>
         <span class="fr">1/10</span>
     </div>
     <div class="list4" style="height:480px;">
-        <div  class="container">
-            <table border="0" cellspacing="0" width="100%" id="createTable" class="table2 table-bordered" data-resizable-columns-id="demo-table">
+        <div class="container">
+            <table border="0" cellspacing="0" width="100%" id="createTable" class="table2 table-bordered"
+                   data-resizable-columns-id="demo-table">
                 <thead>
                 <tr class="list02_top">
                     <th>&nbsp;操作</th>
@@ -260,21 +249,20 @@
                     <th>&nbsp;默认显示URL</th>
                     <th>&nbsp;移动访问URL</th>
                     <th>&nbsp;移动显示URL</th>
-                    <th >&nbsp;启用/暂停</th>
+                    <th>&nbsp;启用/暂停</th>
                     <th>&nbsp;创意状态</th>
-                    <th class="username-column" data-noresize> <div class="set fr"></div></th>
+                    <th class="username-column" data-noresize>
+                        <div class="set fr"></div>
+                    </th>
                 </tr>
                 </thead>
                 <tbody id="tbodyClick2">
                 </tbody>
             </table>
-
         </div>
-
         <div class="more_list over" style="display:none;">
             <ul>
-                <li class="current" onclick="alert(123);"><span class="zs_top"><img
-                        src="../public/img/zs_function1.png"></span><b>添加创意</b></li>
+                <li class="current" onclick="alert(123);"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加创意</b></li>
                 <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除创意</b></li>
                 <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证创意</b></li>
                 <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原创意</b></li>
@@ -314,7 +302,8 @@
                     </div>
                     <div class="t_list04 fr over">
                         <div class="t_list01 fl over">默认显示URL：</div>
-                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPcs"/><span>49/50</span></div>
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPcs"/><span>49/50</span>
+                        </div>
                     </div>
                 </li>
                 <li>
@@ -326,13 +315,14 @@
                     </div>
                     <div class="t_list04 fr over">
                         <div class="t_list01 fl over">移动显示URL：</div>
-                        <div class="t_list05 fl over"> <input type="text" class="zs_input3" id="sMibs"><span>35/36</span></div>
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sMibs"><span>35/36</span>
+                        </div>
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">创意预览：</div>
                     <div class="w_list01 fl over" id="sPreview"
-                         style="width:76%;height: 98px;border:1px solid #CCC;"></div>
+                         style="width:74%;height: 98px;border:1px solid #CCC; padding:1%;"></div>
                 </li>
             </ul>
         </div>
@@ -340,7 +330,7 @@
             <ul>
                 <li>
                     <div class="t_list01 fl over">状态：</div>
-                    <div class="w_list02 fl over"> <b id="sStatus">有效</b></div>
+                    <div class="w_list02 fl over"><b id="sStatus">有效</b></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">设备偏好：</div>
@@ -352,7 +342,7 @@
                 <li>
                     <div class="t_list01 fl over">启用/暂停：</div>
                     <div class="w_list02 fl over" id="sPause">
-                        <select >
+                        <select>
                             <option value="true">启用</option>
                             <option value="false">暂停</option>
                         </select></div>
@@ -373,23 +363,17 @@
 <div class="zs_function over">
     <ul class="fl">
         <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-
         <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
         <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a></li>
-
-
-        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                type="image" src="../public/img/zs_input.png"></b></a></li>
-
+        <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a></li>
         <li><a href="#"><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原</b></a>
         </li>
-
     </ul>
     <span class="fr">1/10</span>
 </div>
 <div class="list4" style="height:368px;">
 <div class="container">
-<table border="0" cellspacing="0" width="100%" class="table3 table-bordered"  data-resizable-columns-id="demo-table">
+<table border="0" cellspacing="0" width="100%" class="table3 table-bordered" data-resizable-columns-id="demo-table">
 <thead>
 <tr class="list02_top">
     <th>&nbsp;子链一名称</th>
@@ -601,8 +585,6 @@
 </tbody>
 </table>
 </div>
-
-
 </div>
 <div class="more_list over" style="display:none;">
     <ul>
@@ -626,7 +608,6 @@
                 </div>
                 <div class="cy_bottom1 fl over">
                     <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
-
                 </div>
             </li>
             <li>
@@ -636,7 +617,6 @@
                 </div>
                 <div class="cy_bottom1 fl over">
                     <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
-
                 </div>
             </li>
             <li>
@@ -646,7 +626,6 @@
                 </div>
                 <div class="cy_bottom1 fl over">
                     <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
-
                 </div>
             </li>
             <li>
@@ -656,7 +635,6 @@
                 </div>
                 <div class="cy_bottom1 fl over">
                     <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
-
                 </div>
             </li>
             <li>
@@ -666,7 +644,6 @@
                 </div>
                 <div class="cy_bottom1 fl over">
                     <span>URL：</span><input type="text" class="zs_input3">&nbsp;<span>0/1024</span>
-
                 </div>
             </li>
         </ul>
@@ -689,7 +666,6 @@
                     <textarea class="list06_textarea">
                     </textarea>
                 </div>
-
             </div>
         </div>
     </div>
@@ -719,20 +695,18 @@
 <div class="containers  over hides">
     <div class="zs_function over">
         <ul class="fl">
-            <li><a href="javascript:void(0)" onclick="addAdgroup()"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="javascript:void(0)" onclick="addAdgroup()"><span class="zs_top"><img  src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b onclick="adgroupMutli();">批量添加/更新</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                    type="image" src="../public/img/zs_input.png"></b></a></li>
-
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b  onclick="adgroupMutli();">批量添加/更新</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a></li>
             <li><a href="#"><span class="z_function_hover" id="agReback" onclick="agreBakClick()"><img src="../public/img/zs_function9.png"></span><b onclick="agreBakClick()">还原</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
         </ul>
         <span class="fr">1/10</span>
     </div>
-    <div class="list4" >
+    <div class="list4">
         <div class="container">
-            <table border="0" cellspacing="0" width="100%" id="adGroupTable"  class="table4 table-bordered"  data-resizable-columns-id="demo-table">
+            <table border="0" cellspacing="0" width="100%" id="adGroupTable" class="table4 table-bordered" data-resizable-columns-id="demo-table">
                 <thead>
                 <tr class="list02_top">
                     <th>&nbsp;操作</th>
@@ -742,8 +716,10 @@
                     <th>&nbsp;出价</th>
                     <th>&nbsp;否定关键词</th>
                     <th>&nbsp;移动出价比例</th>
-                    <th >&nbsp;推广计划名称 </th>
-                    <th class="username-column" data-noresize><div class="set fr"></div></th>
+                    <th>&nbsp;推广计划名称</th>
+                    <th class="username-column" data-noresize>
+                        <div class="set fr"></div>
+                    </th>
                 </tr>
                 </thead>
                 <tbody id="tbodyClick_campaign">
@@ -759,7 +735,6 @@
                 </tbody>
             </table>
         </div>
-
     </div>
     <div class="more_list over" style="display:none;">
         <ul>
@@ -801,7 +776,8 @@
                 <li>
                     <div class="t_list01 fl over">启用/暂停：</div>
                     <div class="w_list02 fl over"><select id="apPause" onchange="adgroupdSelectChange(this);">
-                        <option value="true">启用</option><option value="false">暂停</option>
+                        <option value="true">启用</option>
+                        <option value="false">暂停</option>
                     </select></div>
                 </li>
             </ul>
@@ -813,22 +789,17 @@
     <div class="zs_function over">
         <ul class="fl">
             <li><a href="#" id="addCampaign"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-            <li><a href="#" id="quickAddplan"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a>
-            </li>
-
+            <li><a href="#" id="quickAddplan"><span class="zs_top"><img src="../public/img/zs_function17.png"></span><b>快速新建计划</b></a></li>
             <li><a href="javascript:deleteCampaign();"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                    type="image" src="../public/img/zs_input.png"></b></a></li>
-
-            <li><a href="#" id = "reduction_caipamgin"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
+            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a></li>
+            <li><a href="#" id="reduction_caipamgin"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
             <li><a href="#" class="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
         </ul>
         <span class="fr">1/10</span>
     </div>
     <div class="list4">
         <div class="container">
-            <table border="0" cellspacing="0" width="100%" class="table5 table-bordered"  data-resizable-columns-id="demo-table">
+            <table border="0" cellspacing="0" width="100%" class="table5 table-bordered" data-resizable-columns-id="demo-table">
                 <thead>
                 <tr class="list02_top">
                     <th>&nbsp;推广计划名称</th>
@@ -841,18 +812,17 @@
                     <th>&nbsp;推广地域</th>
                     <th>&nbsp;否定关键词</th>
                     <th>&nbsp;IP排除</th>
-                    <th>&nbsp;到预算下线时间 </th>
-                    <th class="username-column" data-noresize style="text-align:left; width:150px;"><span class="fl"> </span><div class="set fr"></div>
+                    <th>&nbsp;到预算下线时间</th>
+                    <th class="username-column" data-noresize style="text-align:left; width:150px;"><span class="fl"> </span>
+                        <div class="set fr"></div>
                     </th>
                 </tr>
                 </thead>
                 <tbody id="tbodyClick5">
-
                 </tbody>
             </table>
         </div>
     </div>
-
     <div class="more_list over" style="display:none;">
         <ul>
             <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加推广计划</b></li>
@@ -865,24 +835,23 @@
         </ul>
     </div>
     <div class="zhanghu_input"></div>
-
     <div id="pagination_campaignPage" class="pagination"></div>
-
     <div class="zs_bottom over">
-        <input type = "hidden" id="hiddenCampaignId" />
+        <input type="hidden" id="hiddenCampaignId"/>
         <div class="zs_bottom2 over fl " style="border-right: 1px solid #e7e7e7;">
             <ul>
                 <li>
                     <div class="t_list01 fl over">名称：</div>
-                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(1,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 campaignName_5"></div>
+                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(1,this.value);"onkeydown="missBlur(event,this);" class="zs_input3 campaignName_5"></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">每日预算：</div>
-                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(2,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 budget_5"></div>
+                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(2,this.value);"onkeydown="missBlur(event,this);" class="zs_input3 budget_5">
+                    </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">移动出价比例：</div>
-                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(3,this.value);" onkeydown="missBlur(event,this);" class="zs_input3 priceRatio_5"><span>0/1024</span></div>
+                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(3,this.value);" onkeydown="missBlur(event,this);"class="zs_input3 priceRatio_5"><span>0/1024</span></div>
                 </li>
             </ul>
         </div>
@@ -912,8 +881,9 @@
                 </li>
                 <li>
                     <div class="t_list01 fl over">创意展现方式：</div>
-                    <div class="w_list02 fl over"><select class="selectShowProb_5" onchange="whenBlurEditCampaign(10,this.value);">
-                    </select></div>
+                    <div class="w_list02 fl over">
+                        <select class="selectShowProb_5" onchange="whenBlurEditCampaign(10,this.value);"> </select>
+                    </div>
                 </li>
             </ul>
             <ul class="z_bottom3 fl">
@@ -929,8 +899,10 @@
                 </li>
                 <li>
                     <div class="t_list01 fl over">启用/暂停：</div>
-                    <div class="w_list02 fl over"><select class="selectPause_5" onchange="whenBlurEditCampaign(11,this.value);">
-                    </select></div>
+                    <div class="w_list02 fl over">
+                        <select class="selectPause_5"  onchange="whenBlurEditCampaign(11,this.value);">
+                        </select>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -968,132 +940,160 @@
 </div>
 </div>
 </div>
-<div class="zhushou_concent2 over hides" id="jiangkong_box3">
-<div class="zs_concent_top over">
-    <ul class="zh_menu2 fl">
-        <li class="current" cname="table1">已监控关键词</li>
-        <li cname="table2" id="jkwjj">监控文件夹</li>
-    </ul>
-</div>
-<div class="zs_line"></div>
-<div class="zs_box over">
-<!--已监控关键词-->
-<div class="containers  over">
-    <div class="zs_function">
-        <ul class="fl">
-            <li><a  href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>停止</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function11.png"></span><b>激活&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a> </li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
+<div class="zhushou_concent over hides" id="jiangkong_box3">
+    <div class="zs_concent_top over">
+        <ul class="zh_menu2 fl">
+            <li class="current" cname="table1">已监控关键词</li>
+            <li cname="table2" id="jkwjj">监控文件夹</li>
         </ul>
     </div>
-    <div class="list4">
-        <div class="container">
-            <table border="0" cellspacing="0" width="100%" class="table1 table-bordered"  data-resizable-columns-id="demo-table" >
-                <thead>
-                <tr class="list02_top">
-                    <th>&nbsp;关键词名称</th>
-                    <th>&nbsp;推广计划名称</th>
-                    <th>&nbsp;推广单元名称</th>
-                    <th>&nbsp;关键词状态</th>
-                    <th>&nbsp;启动/暂停</th>
-                    <th>&nbsp;出价</th>
-                    <th>&nbsp;计算机质量度</th>
-                    <th>&nbsp;移动质量度</th>
-                    <th>&nbsp;匹配模式</th>
-                    <th>&nbsp;访问URL</th>
-                    <th>&nbsp;移动访问URL</th>
-                    <th class="username-column" data-noresize>&nbsp;监控文件夹
-                        <div class="set fr"></div>
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="monitorFolder">
-                </tbody>
-            </table>
+    <div class="zs_line"></div>
 
-        </div>
-
-    </div>
-
-    <div class="more_list over" style="display:none;">
-        <ul>
-            <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加关键词</b></li>
-            <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除关键词</b></li>
-            <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证关键词</b></li>
-            <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原关键词</b></li>
-            <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
-            <li><span class="zs_top"><img src="../public/img/zs_function14.png"></span><b>剪贴</b></li>
-            <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
-            <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
-        </ul>
-    </div>
-    <div class="zhanghu_input"></div>
-
-    <div class="page kwdPage over">
-        <ul>
-            <div>每页显示条数<select style="width:60px;" onchange="getKwdList(1)"><option value = "20">20</option><option value = "40">40</option><option value = "60">60</option></select></div>
-            <li><a href="#">首页</a></li>
-            <li><a href="#">上一页</a></li>
-            <li><a href="#">下一页</a></li>
-            <li><a href="#">尾页</a></li>
-            <li>当前页:1/0</li>
-            <li>共0条</li>
-            <li><input type="text" maxlength="10" class="inputNo kwdPageNo"/>&nbsp;<input type="button" value="GO" /></li>
-        </ul>
-    </div>
-</div>
-<!--监控文件夹-->
-<div class="containers  over hides">
-    <div class="zs_function over">
-        <ul class="fl">
-            <li><a href="javascript:void(0)" onclick="addCreative();"><span class="zs_top"><img
-                    src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
-            <li id="downSync"><a href="javascript:void(0)"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
-        </ul>
-    </div>
-    <div class="list4" style="height:480px;">
-        <div  class="container">
-            <table border="0" cellspacing="0" width="100%"  class="table2 table-bordered" data-resizable-columns-id="demo-table">
-                <thead>
-                <tr class="list02_top">
-                    <th>&nbsp;监控文件夹</th>
-                    <th>&nbsp;监控文件夹内</th>
-                    <th class="username-column" data-noresize> <div class="set fr"></div></th>
-                </tr>
-                </thead>
-                <tbody id="MonitorTbody">
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-    <div class="zhanghu_input"></div>
-    <div class="zs_bottom over">
-        <div class="zs_bottom1 over" style="width:100%;" >
-            <ul>
-                <li>
-                    <div class="t_list01 fl over" style="width:100px;">监控关键词数量：</div>
-                    <div class="t_list02 fl over"><input type="text" class="zs_input1" id="count" readonly></div>
-                </li>
-                <li>
-                    <div class="t_list01 fl over"  style="width:100px;">监控文件夹名称：</div>
-                    <div class="t_list02 fl over"><input type="text" class="zs_input1" id="folder" readonly></div>
-                </li>
-
+    <!--已监控关键词-->
+    <%--<div class="containers  over">
+        <div class="zs_function">
+            <ul class="fl">
+                <li><a  href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>停止</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function11.png"></span><b>激活&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a> </li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
             </ul>
         </div>
+        <div class="zs_line"></div>--%>
+    <div class="zs_box over">
+        <!--已监控关键词-->
+        <div class="containers  over">
+            <div class="zs_function">
+                <ul class="fl">
+                    <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b
+                            id="removeMonitor">停止监控</b></a>
+                    </li>
+                    <li><a href="#"><span class="zs_top"><img
+                            src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+                    <li><a href="#"><span class="zs_top"><img
+                            src="../public/img/zs_function11.png"></span><b id="activate">激活</b></a>
+                    </li>
+                    <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a>
+                    </li>
+                    <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a>
+                    </li>
+                    <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>估算</b></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="list4">
+                <div class="container">
+                    <table border="0" cellspacing="0" width="100%" class="table1 table-bordered"
+                           data-resizable-columns-id="demo-table">
+                        <thead>
+                        <tr class="list02_top">
+                            <th>&nbsp;关键词名称</th>
+                            <th>&nbsp;推广计划名称</th>
+                            <th>&nbsp;推广单元名称</th>
+                            <th>&nbsp;关键词状态</th>
+                            <th>&nbsp;启动/暂停</th>
+                            <th>&nbsp;出价</th>
+                            <th>&nbsp;计算机质量度</th>
+                            <th>&nbsp;移动质量度</th>
+                            <th>&nbsp;匹配模式</th>
+                            <th>&nbsp;访问URL</th>
+                            <th>&nbsp;移动访问URL</th>
+                            <th class="username-column" data-noresize>&nbsp;监控文件夹
+                                <div class="set fr"></div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="monitorFolder">
+                        </tbody>
+                    </table>
+                    <input type="hidden" id="remoneMonitor">
+                </div>
+            </div>
+            <div class="more_list over" style="display:none;">
+                <ul>
+                    <li class="current"><span class="zs_top"><img
+                            src="../public/img/zs_function1.png"></span><b>添加关键词</b></li>
+                    <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除关键词</b></li>
+                    <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证关键词</b></li>
+                    <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原关键词</b>
+                    </li>
+                    <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
+                    <li><span class="zs_top"><img src="../public/img/zs_function14.png"></span><b>剪贴</b></li>
+                    <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
+                    <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
+                </ul>
+            </div>
+            <div class="zhanghu_input"></div>
 
+            <div class="page kwdPage over">
+                <ul>
+                    <div>每页显示条数<select style="width:60px;" onchange="getKwdList(1)">
+                        <option value="20">20</option>
+                        <option value="40">40</option>
+                        <option value="60">60</option>
+                    </select></div>
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">上一页</a></li>
+                    <li><a href="#">下一页</a></li>
+                    <li><a href="#">尾页</a></li>
+                    <li>当前页:1/0</li>
+                    <li>共0条</li>
+                    <li><input type="text" maxlength="10" class="inputNo kwdPageNo"/>&nbsp;<input type="button"value="GO"/></li>
+                </ul>
+            </div>
+        </div>
+        <!--监控文件夹-->
+        <div class="containers  over hides">
+            <div class="zs_function over">
+                <ul class="fl">
+                    <li><a href="javascript:void(0)" onclick="folderDialog();"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+                    <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b id="removeFolder">删除</b></a></li>
+                    <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+                    <li id="downSync"><a href="javascript:void(0)"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
+                    <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
+                </ul>
+            </div>
+            <div class="list4" style="height:480px;">
+                <div class="container">
+                    <table border="0" cellspacing="0" width="100%" class="table2 table-bordered"
+                           data-resizable-columns-id="demo-table">
+                        <thead>
+                        <tr class="list02_top">
+                            <th>&nbsp;监控文件夹</th>
+                            <th>&nbsp;监控文件夹内</th>
+                            <th class="username-column" data-noresize>
+                                <div class="set fr"></div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="MonitorTbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="zhanghu_input"></div>
+            <div class="zs_bottom over">
+                <div class="zs_bottom1 over" style="width:100%;">
+                    <ul>
+                        <li>
+                            <div class="t_list01 fl over" style="width:100px;">监控关键词数量：</div>
+                            <div class="t_list02 fl over"><input type="text" class="zs_input1" id="count" readonly>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="t_list01 fl over" style="width:100px;">监控文件夹名称：</div>
+                            <div class="t_list02 fl over"><input type="text" class="zs_input1" id="folder" readonly>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -1104,10 +1104,9 @@
 <jsp:include page="../homePage/pageBlock/footer.jsp"/>
 </div>
 </div>
-
 <!---------下载账户----------->
 <div class="TB_overlayBG"></div>
-<div class="box" style="display:none;*width:400px;" id="download" >
+<div class="box" style="display:none;*width:400px;" id="download">
     <h2 id="box2"><span class="fl">账户下载</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
@@ -1301,6 +1300,7 @@
     <h2 id="reachBudget_head">
         <span class="fl">账户预算</span>
         <a href="#" class="close">关闭</a></h2>
+
     <div class="mainlist">
         <div class="tu_top over">
             <ul id="budgetList" class="zs_set">
@@ -1309,7 +1309,7 @@
     </div>
 </div>
 <%--创意添加选择计划，单元弹出窗口--%>
-<div  class="box" style="display:none" id="jcAdd">
+<div class="box" style="display:none" id="jcAdd">
     <h2 id="dAdd">
         <span class="fl">添加创意</span>
         <a href="#" class="close">关闭</a></h2>
@@ -1330,25 +1330,26 @@
         </div>
     </div>
 </div>
-
 <%--推广计划设置否定关键词窗口--%>
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setNegtiveWord">
     <h2 id="setFdKeywordDiv">
         <span class="fl">否定关键词设置</span>
         <a href="#" class="close">关闭</a></h2>
-    <div class="mainlist">
-    <p>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，没词20汉字以内，最多200项。</p>
-    <div class="inputKwdDiv fl">
-        <div><p>否定关键词<span id="ntwCount">(0/200)</span></p></div>
-        <textarea id="ntwTextarea" onkeydown="ntwTextareaCount();" style="height: 300px;width: 350px;"></textarea>
-    </div>
 
-    <div class="inputKwdDiv fr">
-        <div><p>精确否定关键词<span id="entwCount">(0/200)</span></p></div>
-        <textarea id = "entwTextarea" onkeydown="entwTextareaCount();" style="height: 300px;width: 350px;"></textarea>
+    <div class="mainlist">
+        <p>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，没词20汉字以内，最多200项。</p>
+
+        <div class="inputKwdDiv fl">
+            <div><p>否定关键词<span id="ntwCount">(0/200)</span></p></div>
+            <textarea id="ntwTextarea" onkeydown="ntwTextareaCount();" style="height: 300px;width: 350px;"></textarea>
+        </div>
+
+        <div class="inputKwdDiv fr">
+            <div><p>精确否定关键词<span id="entwCount">(0/200)</span></p></div>
+            <textarea id="entwTextarea" onkeydown="entwTextareaCount();" style="height: 300px;width: 350px;"></textarea>
+        </div>
     </div>
-     </div>
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
@@ -1359,25 +1360,28 @@
     </div>
 </div>
 <%--创意修改弹出窗口--%>
-<div  class="box" style="display:none;width:500px;" id="jcUpdate">
+<div class="box" style="display:none;width:500px;" id="jcUpdate">
     <h2 id="dUpdate">
         <span class="fl">修改创意</span>
         <a href="#" class="close">关闭</a></h2>
+
     <div class="mainlist">
         <form id="cUpdateForm">
             <ul class="chuangyi">
                 <li><label style="display: none;">---:<span>4/50</span></label><input name="oid" type="hidden"/></li>
-                <li><label>创意标题:<span>49/50</span></label><input name="title"  class="chuangyi_input" maxlength="50"/> <input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTb()" /></li>
-                <li><label>创意描述1:<span>49/80</span></label><input name="description1" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes1()" /></li>
-                <li><label>创意描述2:<span>49/80</span></label><input name="description2" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTbDes2()" /></li>
+                <li><label>创意标题:<span>49/50</span></label><input name="title" class="chuangyi_input" maxlength="50"/>
+                    <input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTb()"/></li>
+                <li><label>创意描述1:<span>49/80</span></label><input name="description1" class="chuangyi_input"  maxlength="80"/><input type="button" class="chuangyi_fu" value="插入{}符"
+                                                                                                                                     onclick="addTbDes1()"/></li>
+                <li><label>创意描述2:<span>49/80</span></label><input name="description2" class="chuangyi_input"   maxlength="80"/><input type="button"class="chuangyi_fu" value="插入{}符"
+                                                                                                                                      onclick="addTbDes2()"/></li>
                 <li><label>默认访问URL:<span>49/1024</span></label><input name="pcDestinationUrl" maxlength="1024"/></li>
                 <li><label>默认显示URL:<span>49/50</span></label><input name="pcDisplayUrl" maxlength="50"/></li>
                 <li><label>移动访问URL:<span>49/1024</span></label><input name="mobileDestinationUrl" maxlength="1024"/></li>
                 <li><label>移动显示URL:<span>35/36</span></label><input name="mobileDisplayUrl" maxlength="36"/></li>
-                <li> <label class="fl">创意状态:</label><label id="cuStatus" class="fl">暂无</label><input type="hidden" name="status"></li>
-                <li><label class="fl">是否启用:</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select></li>
+                <li> <label class="fl"><span>创意状态:</span></label><label id="cuStatus" class="fl">暂无</label><input type="hidden" name="status"></li>
+                <li><label class="fl"><span>是否启用:</span></label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select></li>
             </ul>
-
         </form>
     </div>
     <div class="main_bottom">
@@ -1395,17 +1399,19 @@
     <h2 id="setExcludeIpDiv">
         <span class="fl">IP排除列表</span>
         <a href="#" class="close">关闭</a></h2>
-    <div class="mainlist">
-           <ul>
-               <li>你可将IP最后一段设为*，以屏蔽一段地址内的创意展现。</li>
-               <li>每个IP地址占一行。IP排除的数量不能超过20</li>
-           </ul>
-            <span id="IpListCount">IP排除(0/20)</span>
-            <div class="inputIpDiv" style="margin-left:0px;">
-                <textarea id="IpListTextarea" onkeydown="IpListTextareaCount();" style="width:365px;height: 350px;"></textarea>
-            </div>
-    </div>
 
+    <div class="mainlist">
+        <ul>
+            <li>你可将IP最后一段设为*，以屏蔽一段地址内的创意展现。</li>
+            <li>每个IP地址占一行。IP排除的数量不能超过20</li>
+        </ul>
+        <span id="IpListCount">IP排除(0/20)</span>
+
+        <div class="inputIpDiv" style="margin-left:0px;">
+            <textarea id="IpListTextarea" onkeydown="IpListTextareaCount();"
+                      style="width:365px;height: 350px;"></textarea>
+        </div>
+    </div>
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
@@ -1421,15 +1427,16 @@
     <h2 id="setExtensionDiv">
         <span class="fl">推广时段管理</span>
         <a href="#" class="close">关闭</a></h2>
+
     <div class="chooseTime">
         <b class="fl">请选择时段&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(按住Ctrl键并且鼠标经过可多选时间段)</b>
         <ul class="fr">
             <li class="tfsjd"><span></span>&nbsp;&nbsp;&nbsp;投放时间段</li>
             <li class="ztsjd"><span></span>&nbsp;&nbsp;&nbsp;暂停时间段</li>
         </ul>
-    </div><br/>
+    </div>
+    <br/>
     <div class="hours">
-
     </div>
     <div class="main_bottom">
         <div class="w_list03">
@@ -1440,11 +1447,45 @@
         </div>
     </div>
 </div>
-
-
+<%--添加监控文件夹弹出窗口--%>
+<div class="box" style="display:none" id="addFolderDiv">
+    <h2 id="folderTUO">
+        <span class="fl">添加监控文件夹</span>
+        <a href="#" class="close">关闭</a></h2>
+    <div class="mainlist">
+        <label id="dialogMsg">请输入要创建的监控文件夹名称!</label>
+        <ul class="zs_set" id="adfd">
+        </ul>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li id="addFolderQR">确认</li>
+                <li onclick="closeAlert();">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<%--添加监控对象弹出窗口--%>
+<div class="box" style="display:none" id="addMonitorDiv">
+    <h2 id="MonitorTUO">
+        <span class="fl">添加监控对象</span>
+        <a href="#" class="close">关闭</a></h2>
+    <div class="mainlist">
+        <ul class="zs_set" id="admon">
+        </ul>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li id="addMonitorQR">确认</li>
+                <li onclick="closeAlert();">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
 <%--添加推广计划弹出窗口--%>
 <jsp:include page="../promotionAssistant/alert/addCampaign.jsp"/>
-
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/jquery.js"></script>
@@ -1479,7 +1520,7 @@
         setTimeout("resizable('table1')", 300);
     });
     var resizable = function (cla) {
-        $("."+cla).resizableColumns({
+        $("." + cla).resizableColumns({
             store: store
         });
     };
@@ -1489,8 +1530,9 @@
     $(document).ajaxStart(function () {
         ajaxbg.show();
     })
-    $(document).ajaxStop(function () {       ajaxbg.fadeOut(1000);
-            });
+    $(document).ajaxStop(function () {
+        ajaxbg.fadeOut(1000);
+    });
 
 </script>
 </body>

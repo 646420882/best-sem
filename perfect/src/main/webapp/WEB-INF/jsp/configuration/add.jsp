@@ -1,16 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
-    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>大数据智能营销</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/login.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
@@ -36,6 +34,11 @@
             }
         });
     </script>
+    <style type="text/css">
+        .tab_box {
+            padding: 0px;
+        }
+    </style>
 
 </head>
 <body>
@@ -49,7 +52,17 @@
             </div>
         </div>
         <div id="tab">
-            <div class="configure over">
+            <ul class="tab_menu">
+                <li class="selected">
+                    关联账户
+                </li>
+                <li>
+                    修改密码
+                </li>
+            </ul>
+            <div class="tab_box">
+                <div class="containers">
+                 <div class="configure over">
                 <div class="configure_top over">
                     <h3 class="fl">添加推广帐号</h3>
                     <a href="../configuration/"  class="fr"> → 返回管理</a>
@@ -74,9 +87,7 @@
                         </tr>
                         </tbody>
                     </table>
-
                 </div>
-
                 <div id="step1">
                     <input name="source" type="radio"/> <img
                         src="${pageContext.request.contextPath}/public/images/bdlogo.png"/>
@@ -94,6 +105,11 @@
                         <input id="submit" class="add_submit" type="submit"/>
                     </form>
 
+                </div>
+            </div>
+               </div>
+                <div class="containers hides" >
+                    <jsp:include page="../configuration/changePwd.jsp"/>
                 </div>
             </div>
 
@@ -122,7 +138,14 @@
                 $("form[name='frm']").submit();
             }
         })
+        var $tab_li = $('.tab_menu li');
+        $('.tab_menu li').click(function () {
+            $(this).addClass('selected').siblings().removeClass('selected');
+            var index = $tab_li.index(this);
+            $('div.tab_box > div').eq(index).show().siblings().hide();
+        });
     });
+
 </script>
 </body>
 </html>

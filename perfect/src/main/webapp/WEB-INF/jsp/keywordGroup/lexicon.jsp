@@ -18,23 +18,61 @@
 <body>
 <div id="background" class="background"></div>
 <div id="progressBar" class="progressBar">正在更新词库, 请稍候...</div>
+<div id="progressBar1" class="progressBar">loading...</div>
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
 <div class="backstage_concent mid over">
+     <div class="backstage_title over">
+         <span class="backstage_title_mid">词库添加</span>
+     </div>
     <!-- 用于文件上传的表单元素 -->
     <div class="backstage_list over">
         <form id="fileForm" name="fileForm" method="post" class="form-inline" enctype="multipart/form-data"
               action="${pageContext.request.contextPath}/admin/lexicon/upload" target="fileIframe">
             <ul>
-                <li><span>Upload File: </span><input type="file" name="excelFile" style="border:none;"/></li>
-                <li><input type="button" id="submitForm" class="btn sure" value="导入"/></li>
+                <li><b class="fl">Upload File: </b><input type="file" name="excelFile" style="border:none; width:160px;"/><input type="button" id="submitForm" class="btn sure" value="导入"/></li>
+                <li></li>
             </ul>
         </form>
     </div>
+    <div class="backstage_title over">
+        <span class="backstage_title_mid">词库内容删除</span>
+    </div>
+    <div class="backstage_list over">
+        <div class="k_top2_text1">
+            <ul>
+                <li><select id="trade">
+                    <option selected="selected" value="">请选择行业</option>
+                    <option value="电商">电商</option>
+                    <option value="房产">房产</option>
+                    <option value="教育">教育</option>
+                    <option value="金融">金融</option>
+                    <option value="旅游">旅游</option>
+                </select></li>
+                <li><select id="category">
+                </select></li>
+                <li> <input type="button" class="sure" value="删除" onclick="deleteLexicon();"/></li>
+            </ul>
+        </div>
+    </div>
 </div>
+
 <iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
+<iframe id="iframe1" name="iframe1" style="display: none"></iframe>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
 <script type="application/javascript">
+
+    var _trade = "";
+    var _category = "";
+
+    var ajaxbg = $("#background,#progressBar1");
+    ajaxbg.hide();
+    $(document).ajaxStart(function () {
+        ajaxbg.show();
+    });
+    $(document).ajaxStop(function () {
+        ajaxbg.hide();
+    });
 
     $(function () {
         document.getElementById("background").style.display = "none";
@@ -45,6 +83,28 @@
             document.getElementById("background").style.display = "block";
             document.getElementById("progressBar").style.display = "block";
         });
+
+        $("#trade").change(function () {
+            var trade = $("#trade option:selected").val();
+            _trade = trade;
+            $.getJSON("/getKRWords/getCategories",
+                    {trade: trade},
+                    function (data) {
+                        var category = "", datas = data.rows;
+                        category += "<option value='' selected='selected'>全部类别</option>";
+                        for (var i = 0, l = datas.length; i < l; i++) {
+                            if (i == 0) {
+                                category += "<option value='" + datas[i].category + "' selected='selected'>" + datas[i].category + "</option>";
+                                _category = datas[i].category;
+                                continue;
+                            }
+                            category += "<option value='" + datas[i].category + "'>" + datas[i].category + "</option>";
+                        }
+                        $("#category").empty();
+                        $("#category").append(category);
+                    });
+        });
+
     });
 
     var callback = function (data) {
@@ -57,6 +117,29 @@
             document.getElementById("progressBar").style.display = "none";
             alert("更新失败!");
         }
+    };
+
+    var deleteLexicon = function () {
+        if ($('#trade option:selected').val().length == 0) {
+            alert("请选择行业!");
+            return false;
+        }
+
+        $.ajax({
+            url: "/admin/lexicon/delete",
+            type: "POST",
+            dataType: "json",
+            data: {
+                "trade": $('#trade option:selected').val(),
+                "category": $('#category option:selected').val()
+            },
+            success: function (data, statusText, jqXHR) {
+                if (data.status) {
+                    alert("删除成功!");
+                }
+            }
+        });
+
     };
 
     var uploadAndSubmit = function () {

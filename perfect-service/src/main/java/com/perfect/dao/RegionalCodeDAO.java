@@ -16,11 +16,11 @@ public interface RegionalCodeDAO {
 
     /**
      * 查询多条
-     * @param FieldName
+     * @param fieldName
      * @param id
      * @return
      */
-    public List<RegionalCodeDTO> getRegional(String FieldName,String id);
+    public List<RegionalCodeDTO> getRegional(String fieldName,String id);
 
 
     /**

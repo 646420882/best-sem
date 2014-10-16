@@ -5,20 +5,23 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Created by baizz on 2014-08-16.
+ * TopN algorithm, include QuickSort and TimSort
+ * Date: 2014-08-16
+ *
+ * @author baizz
  */
 @SuppressWarnings("unchecked")
 public class TopN {
 
     private static Method method;  //the field's declared method
 
-    private static int sort = -1;  //default DESC, get topN data
+    private static int sort = -1;  //default DESC
 
     private TopN() {
     }
 
     /**
-     * topN算法
+     * QuickSort
      *
      * @param ts
      * @param n
@@ -33,12 +36,10 @@ public class TopN {
         if (sort * sort != 1)
             return null;
 
-        Class _class = ts.getClass();
-        Class _class1 = ts[0].getClass();
         TopN.sort = sort;
         try {
             String fieldGetterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-            TopN.method = _class1.getDeclaredMethod(fieldGetterName);
+            TopN.method = ts[0].getClass().getDeclaredMethod(fieldGetterName);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -47,7 +48,7 @@ public class TopN {
         T topNData[];
         int l = ts.length;
         if (l >= n) {
-            topNData = (T[]) Array.newInstance(_class.getComponentType(), n);
+            topNData = (T[]) Array.newInstance(ts.getClass().getComponentType(), n);
             System.arraycopy(ts, 0, topNData, 0, n);
         } else {
             topNData = ts;
@@ -117,4 +118,62 @@ public class TopN {
         quickSort(arr, low, l);
         quickSort(arr, h, high);
     }
+
+    /**
+     * TimSort
+     *
+     * @param ts
+     * @param n
+     * @param fieldName
+     * @param sort
+     * @param <T>
+     * @return
+     */
+    public static <T> T[] getTopNByTimSort(T[] ts, int n, String fieldName, int sort) {
+        if (ts == null || ts.length == 0)
+            return null;
+
+        if (sort * sort != 1)
+            return null;
+
+        try {
+            String fieldGetterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+            Method method = ts[0].getClass().getDeclaredMethod(fieldGetterName);
+            java.util.Arrays.sort(ts, Comparators.getComparator(method, sort));
+
+            T topNData[];
+            int l = ts.length;
+            if (l >= n) {
+                topNData = (T[]) Array.newInstance(ts.getClass().getComponentType(), n);
+                System.arraycopy(ts, 0, topNData, 0, n);
+            } else topNData = ts;
+
+            return topNData;
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return (T[]) Array.newInstance(ts.getClass().getComponentType(), 0);
+    }
+
+    static class Comparators {
+        public static <T> java.util.Comparator<T> getComparator(final Method _method, final int sort) {
+            return new java.util.Comparator<T>() {
+                @Override
+                public int compare(T t1, T t2) {
+                    try {
+                        int compareResult = ((Comparable) _method.invoke(t1)).compareTo(_method.invoke(t2));
+                        if (sort == -1) {//DESC
+                            return ~compareResult;
+                        } else {//ASC
+                            return compareResult;
+                        }
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                    return 0;
+                }
+            };
+        }
+    }
+
 }

@@ -12,17 +12,12 @@ To change this template use File | Settings | File Templates.
     <title></title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
-    <meta id="viewport" name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/css/creative/creativesearch.css">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/css/creative/creativesearch_img.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/creative/creativesearch.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/creative/creativesearch_img.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style type="text/css">
         .list2 table tr td ul li {
@@ -85,7 +80,7 @@ To change this template use File | Settings | File Templates.
                                 <p>可输入词根100/100</p>
                                 <a href="javascript: findWordFromBaidu();" class="become2">开始拓词</a>
                             </div>
-                            <div class="K_top2_detali fr over">
+                            <div class="K_top2_detali fl over">
                                 <div class="k_top2_detali2 over">
                                     <div class="list01_top2 over">
                                         <span>拓词来源</span>
@@ -159,7 +154,7 @@ To change this template use File | Settings | File Templates.
                                 </div>
                                 <a href="javascript:findWordFromSystem();" class="become2">开始拓词</a>
                             </div>
-                            <div class="K_top2_detali fr over">
+                            <div class="K_top2_detali fl over">
                                 <div class="k_top2_detali2 over">
                                     <div class="list01_top2 over">
                                         <span>拓词来源</span>
@@ -527,8 +522,7 @@ To change this template use File | Settings | File Templates.
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
@@ -1017,7 +1011,6 @@ var toAnyPage = function (page_index) {
         });
     }
 };
-
 
 </script>
 </body>

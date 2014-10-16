@@ -51,10 +51,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
 
     //推广计划名称
-    private Map<String,CampaignEntity> campaignNameMap = new HashMap<>();
+    private Map<String,CampaignEntity> campaignMap = new HashMap<>();
 
     //推广单元名称
-    private Map<String,AdgroupEntity> adgroupNameMap = new HashMap<>();
+    private Map<String,AdgroupEntity> adgroupMap = new HashMap<>();
 
     public Iterable<CampaignEntity> getCampaignByAccountId() {
         return campaignDAO.findAll();
@@ -286,12 +286,16 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 page = keywordDAO.findByPageInfo(query, pageSize, nowPage);
             }
         } else if (cid != null && !"".equals(cid) && (aid == null || "".equals(aid))) {
-            List<Long> longIds = new ArrayList<>();
-            if (campaignEntity.getCampaignId() != null) {
-                longIds.addAll(adgroupDAO.getAdgroupIdByCampaignId(campaignEntity.getCampaignId()));
-            }
             Query adQuery = new Query();
-            adQuery.addCriteria(Criteria.where(EntityConstants.ADGROUP_ID).in(longIds));
+            if (campaignEntity.getCampaignId() != null) {
+                List<Long> longIds = new ArrayList<>();
+                longIds.addAll(adgroupDAO.getAdgroupIdByCampaignId(campaignEntity.getCampaignId()));
+                adQuery.addCriteria(Criteria.where(EntityConstants.ADGROUP_ID).in(longIds));
+            }else{
+                List<String> objIds = new ArrayList<>();
+                objIds.addAll(adgroupDAO.getAdgroupIdByCampaignId(campaignEntity.getId()));
+                adQuery.addCriteria(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).in(objIds));
+            }
             page = keywordDAO.findByPageInfo(adQuery, pageSize, nowPage);
         } else {
             page = keywordDAO.findByPageInfo(query, pageSize, nowPage);
@@ -308,7 +312,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         List<Long> keywordIds = new ArrayList<>();
 
         Map<String, CampaignEntity> map = new HashMap<>();
-        CampaignEntity cam;
+        CampaignEntity cam = null;
         for (KeywordEntity kwd : list) {
            if(kwd.getKeywordId()!=null){
                keywordIds.add(kwd.getKeywordId());
@@ -325,11 +329,13 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 KeywordDTO dto = new KeywordDTO();
                 dto.setCampaignName(cam.getCampaignName());
                 dto.setObject(kwd);
+                dto.setCampaignId(cam.getCampaignId());
                 dtoList.add(dto);
             } else {
                 KeywordDTO dto = new KeywordDTO();
                 dto.setCampaignName(camp.getCampaignName());
                 dto.setObject(kwd);
+                dto.setCampaignId(camp.getCampaignId());
                 dtoList.add(dto);
             }
 
@@ -435,7 +441,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     @Override
     public List<CampaignTreeDTO> getCampaignTree(Long accountId) {
         List<CampaignTreeDTO> campaignTreeList = new ArrayList<>();
-        List<CampaignEntity> campaignList = campaignDAO.find(new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId)));
+        Iterable<CampaignEntity> campaignList = campaignDAO.findAll();
 
         for (CampaignEntity campaignEntity : campaignList) {
             List<AdgroupEntity> adgroupList = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where(CAMPAIGN_ID).is(campaignEntity.getCampaignId()).and(ACCOUNT_ID).is(accountId)));
@@ -467,9 +473,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         //可删除的关键词集合
         List<KeywordDTO> deleteKwd = new ArrayList<>();
 
-
         for (String row : everyChoose) {
             String[] fileds = row.split(",");//fileds[0]推广计划id，fileds[1]推广单元id
+            adgroupMap.clear();
             for (String name : names) {
                 List<KeywordEntity> list;
                 if (fileds[1].matches(regex) == true) {
@@ -479,29 +485,29 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 }
 
 
-                if(!(new ArrayList<>(campaignNameMap.keySet()).contains(fileds[0]))){
+                if(!(new ArrayList<>(campaignMap.keySet()).contains(fileds[0]))){
                     CampaignEntity camName = fileds[0].matches(regex) == true ? campaignDAO.findOne(Long.parseLong(fileds[0])) : campaignDAO.findByObjectId(fileds[0]);
-                    campaignNameMap.put(fileds[0],camName);
+                    campaignMap.put(fileds[0], camName);
                 }
 
-                if(!(new ArrayList<>(adgroupNameMap.keySet()).contains(fileds[1]))){
+                if(!(new ArrayList<>(adgroupMap.keySet()).contains(fileds[1]))){
                     AdgroupEntity adgName = fileds[1].matches(regex) == true ? adgroupDAO.findOne(Long.parseLong(fileds[1])) : adgroupDAO.findByObjId(fileds[0]);
-                    adgroupNameMap.put(fileds[1],adgName);
+                    adgroupMap.put(fileds[1], adgName);
                 }
 
 
                 if (list.size() != 0) {
                     for(KeywordEntity entity:list){
                         KeywordDTO keywordDTO = new KeywordDTO();
-                        keywordDTO.setCampaignName(campaignNameMap.get(fileds[0]).getCampaignName());
-                        keywordDTO.setAdgroupName(adgroupNameMap.get(fileds[1]).getAdgroupName());
+                        keywordDTO.setCampaignName(campaignMap.get(fileds[0]).getCampaignName());
+                        keywordDTO.setAdgroupName(adgroupMap.get(fileds[1]).getAdgroupName());
                         keywordDTO.setObject(entity);
                         deleteKwd.add(keywordDTO);
                     }
                 } else {
                     AssistantKeywordIgnoreDTO assistantKeywordIgnoreDTO = new AssistantKeywordIgnoreDTO();
-                    assistantKeywordIgnoreDTO.setCampaignName(campaignNameMap.get(fileds[0]).getCampaignName());
-                    assistantKeywordIgnoreDTO.setAdgroupName(adgroupNameMap.get(fileds[1]).getAdgroupName());
+                    assistantKeywordIgnoreDTO.setCampaignName(campaignMap.get(fileds[0]).getCampaignName());
+                    assistantKeywordIgnoreDTO.setAdgroupName(adgroupMap.get(fileds[1]).getAdgroupName());
                     assistantKeywordIgnoreDTO.setKeywordName(name);
                     ignoreList.add(assistantKeywordIgnoreDTO);
                 }
@@ -677,28 +683,28 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         String regex = "^\\d+$";
         KeywordDTO keywordDTO = new KeywordDTO();
 
-        if(!(new ArrayList<>(campaignNameMap.keySet()).contains(fieds[0]))){
+        if(!(new ArrayList<>(campaignMap.keySet()).contains(fieds[0]))){
             CampaignEntity campaign = fieds[0].matches(regex) ? campaignDAO.findOne(Long.parseLong(fieds[0])) : campaignDAO.findByObjectId(fieds[0]);
-            campaignNameMap.put(fieds[0], campaign);
+            campaignMap.put(fieds[0], campaign);
         }
 
-        if(!(new ArrayList<>(adgroupNameMap.keySet()).contains(fieds[1]))){
+        if(!(new ArrayList<>(adgroupMap.keySet()).contains(fieds[1]))){
             AdgroupEntity adgroupName = fieds[1].matches(regex) ? adgroupDAO.findOne(Long.parseLong(fieds[1])) : adgroupDAO.findByObjId(fieds[1]);
-            adgroupNameMap.put(fieds[1],adgroupName);
+            adgroupMap.put(fieds[1],adgroupName);
         }
 
-        keywordDTO.setCampaignName(campaignNameMap.get(fieds[0]).getCampaignName());
-        keywordDTO.setAdgroupName(adgroupNameMap.get(fieds[1]).getAdgroupName());
+        keywordDTO.setCampaignName(campaignMap.get(fieds[0]).getCampaignName());
+        keywordDTO.setAdgroupName(adgroupMap.get(fieds[1]).getAdgroupName());
 
 
         if (beforeKeywordEntity == null) {
             updateKeywordEntity.setAccountId(AppContext.getAccountId());
             updateKeywordEntity.setStatus(-1);
             updateKeywordEntity.setLocalStatus(1);
-            if(adgroupNameMap.get(fieds[1]).getCampaignId()==null){
-                updateKeywordEntity.setAdgroupObjId(adgroupNameMap.get(fieds[1]).getCampaignObjId());
+            if(adgroupMap.get(fieds[1]).getCampaignId()==null){
+                updateKeywordEntity.setAdgroupObjId(adgroupMap.get(fieds[1]).getCampaignObjId());
             }else{
-                updateKeywordEntity.setAdgroupId(adgroupNameMap.get(fieds[1]).getAdgroupId());
+                updateKeywordEntity.setAdgroupId(adgroupMap.get(fieds[1]).getAdgroupId());
             }
             keywordDTO.setObject(updateKeywordEntity);
         } else {

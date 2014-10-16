@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.mongodb.WriteResult;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
@@ -11,6 +12,8 @@ import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.AccountManageDAO;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.MD5;
+import com.perfect.entity.SystemUserEntity;
 import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.service.AccountManageService;
 import com.perfect.utils.JSONUtils;
@@ -30,11 +33,42 @@ public class AccountManageServiceImpl implements AccountManageService {
     @Resource
     private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
 
+    @Override
+    public int updatePwd(String password, String newPwd) {
+        SystemUserEntity currUserInfo = getCurrUserInfo();
+
+        MD5.Builder builder = new MD5.Builder();
+        MD5 md5 = builder.password(password).salt(currUserInfo.getUserName()).build();
+
+        int i;
+        if(md5.getMD5().equals(currUserInfo.getPassword())){
+            WriteResult writeResult = accountManageDAO.updatePwd(currUserInfo.getUserName(), newPwd);
+            if(writeResult.isUpdateOfExisting()){
+                i=1;
+            }else{
+                i=0;
+            }
+        }else{
+            i=-1;
+        }
+        return i;
+    }
+
     public Map<String, Object> getAccountTree() {
         ArrayNode treeNodes = accountManageDAO.getAccountTree();
         Map<String, Object> trees = new HashMap<>();
         trees.put("trees", treeNodes);
         return trees;
+    }
+
+    @Override
+    public SystemUserEntity getCurrUserInfo() {
+        return accountManageDAO.getCurrUserInfo();
+    }
+
+    @Override
+    public void uploadImg(byte[] bytes) {
+        accountManageDAO.uploadImg(bytes);
     }
 
     @Override

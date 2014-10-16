@@ -140,7 +140,6 @@ $("#tbodyClick").delegate("tr", "click", function () {
  *将一条数据加到html中
  */
 function keywordDataToHtml(obj, index) {
-
     if (obj.object.keywordId == null) {
         obj.object.keywordId = obj.object.id;
     }
@@ -156,7 +155,7 @@ function keywordDataToHtml(obj, index) {
     }
 
     //kwid
-    html = html + "<input type='hidden' value = " + obj.object.keywordId + " />";
+    html = html + "<input type='hidden' camp='"+obj.campaignId+"' adg='"+obj.object.adgroupId+"' value = " + obj.object.keywordId + " />";
     html = html + "<td>" + obj.object.keyword + "</td>";
 
     switch (obj.object.status) {
@@ -284,8 +283,8 @@ function keywordDataToHtml(obj, index) {
     html = html + "<td>" + matchType + "</td>";
 
 
-    html = html + "<td>" + (obj.object.pcDestinationUrl != null?"<a href='" + obj.object.pcDestinationUrl + "'>" + obj.object.pcDestinationUrl.substr(0, 20) + "</a>":"") + "</td>";
-    html = html + "<td>" + (obj.object.mobileDestinationUrl != null?"<a href='" + obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>":"") + "</td>";
+    html = html + "<td>" + (obj.object.pcDestinationUrl != null?"<a target='_blank' href='" + obj.object.pcDestinationUrl + "'>" + obj.object.pcDestinationUrl.substr(0, 20) + "</a>":"") + "</td>";
+    html = html + "<td>" + (obj.object.mobileDestinationUrl != null?"<a target='_blank' href='" + obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>":"") + "</td>";
     html = html + "<td>"+obj.campaignName+"</td>";
 
     if (obj.object.localStatus != null) {
@@ -453,6 +452,10 @@ function missBlur(even, obj) {
 
 
 $("#addOrUpdateKwd").livequery('click', function () {
+    batchAddOrUpdate();
+});
+
+function batchAddOrUpdate() {
     top.dialog({title: "批量添加/更新",
         padding: "5px",
         content: "<iframe src='/assistantKeyword/showAddOrUpdateKeywordDialog' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
@@ -468,9 +471,13 @@ $("#addOrUpdateKwd").livequery('click', function () {
         }
     }).showModal();
     return false;
-});
+}
 
 $("#batchDelKwd").livequery('click', function () {
+    batchDelKeyword();
+});
+
+function batchDelKeyword() {
     top.dialog({title: "批量删除",
         padding: "5px",
         content: "<iframe src='/assistantKeyword/showBatchDelDialog' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
@@ -486,10 +493,14 @@ $("#batchDelKwd").livequery('click', function () {
         }
     }).showModal();
     return false;
-});
+}
 
 
 $(".searchwordReport").livequery('click', function () {
+    searchword();
+});
+
+function searchword() {
     top.dialog({title: "搜索词报告",
         padding: "5px",
         content: "<iframe src='/assistantKeyword/showSearchWordDialog' width='900' height='570' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
@@ -505,13 +516,18 @@ $(".searchwordReport").livequery('click', function () {
         }
     }).showModal();
     return false;
-});
+}
 
 
 /**
  * 还原按钮的事件
  */
 $("#reduction").click(function () {
+    reductionKeyword();
+});
+
+//还原关键词
+function reductionKeyword() {
     var choose = $("#tbodyClick").find(".list2_box3");
     if (choose != undefined && choose.find("td:last").html() != "&nbsp;") {
         if (confirm("是否还原选择的数据?") == false) {
@@ -533,9 +549,8 @@ $("#reduction").click(function () {
                 alert("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");
                 break;
         }
-
     }
-});
+}
 
 
 /**
@@ -598,3 +613,76 @@ function reducKwd_del(id) {
 
 
 
+
+
+/************************************************************关键词的右击菜单************************************************************/
+/**
+ * 菜单名，方法
+ * @type {{text: string, func: func}}
+ */
+var menu_keyword_add = {
+        text: "添加关键词",
+        func: function () {
+            top.dialog({title: "关键词工具",
+                padding: "5px",
+                content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+                onclose: function () {
+                    whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
+                }
+            }).showModal();
+            return false;
+        }
+    }, menu_keyword_del = {
+        text: "删除关键词",
+        func: function () {
+            deleteKwd();
+        }
+    }, menu_keyword_batchAddOrUpdate = {
+        text: "批量添加/更新",
+        func: function () {
+            batchAddOrUpdate();
+        }
+    },menu_keyword_batchDel={
+        text:"批量删除",
+        func: function () {
+            batchDelKeyword();
+        }
+    },menu_keyword_redu = {
+        text:"还原",
+        func: function () {
+            reductionKeyword();
+        }
+    },menu_keyword_searchWord = {
+    text:"搜索词",
+    func: function () {
+        searchword();
+    }
+}
+/**
+ * 右键菜单显示的选项
+ * @type {*[]}
+ */
+var keywordMenuData = [
+    [menu_keyword_add, menu_keyword_del, menu_keyword_batchAddOrUpdate,menu_keyword_batchDel,menu_keyword_redu,menu_keyword_searchWord]
+];
+/**
+ * 用户缓存右键点击的对象
+ * @type {null}
+ */
+var tmp = null;
+/**
+ * 菜单name值，标识唯一，beforeShow显示完成后方法
+ * @type {{name: string, beforeShow: beforeShow}}
+ */
+var keywordMenuExt = {
+    name: "keyword",
+    beforeShow: function () {
+        var _this = $(this);
+        tmp = _this;
+        $.smartMenu.remove();
+    }
+};
+
+$("#tbodyClick").on("mousedown", "tr", function () {
+    $(this).smartMenu(keywordMenuData, keywordMenuExt);
+});

@@ -3,6 +3,7 @@ package com.perfect.mongodb.dao.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.mongodb.WriteResult;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
@@ -146,6 +147,29 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         }
 
         return baiduAccount;
+    }
+
+    @Override
+    public SystemUserEntity getCurrUserInfo() {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        return mongoTemplate.findOne(Query.query(Criteria.where("userName").is(AppContext.getUser())), SystemUserEntity.class);
+    }
+
+    @Override
+    public WriteResult updatePwd(String account,String pwd) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        Update update = new Update();
+        update.set("password",pwd);
+        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(account)), update, "sys_user");
+        return writeResult;
+    }
+
+    @Override
+    public void uploadImg(byte[] bytes) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        Update update = new Update();
+        update.set("img", bytes);
+        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(AppContext.getUser())), update, SystemUserEntity.class);
     }
 
     @Override

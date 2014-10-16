@@ -3,12 +3,14 @@ package com.perfect.dto;
 /**
  * Created by SubDong on 2014/9/29.
  */
-public class RedisRegionalDTO {
+public class RedisRegionalDTO implements Comparable<RedisRegionalDTO>{
 
     //地域id
     private String regionalId;
     //地域名称
     private String regionalName;
+
+    private Integer shots;
 
     public String getRegionalId() {
         return regionalId;
@@ -26,13 +28,16 @@ public class RedisRegionalDTO {
         this.regionalName = regionalName;
     }
 
-    @Override
-    public String toString() {
-        return "RedisRegionalDTO{" +
-                "regionalId='" + regionalId + '\'' +
-                ", regionalName='" + regionalName + '\'' +
-                '}';
+    public Integer getShots() {
+        return shots;
     }
 
+    public void setShots(Integer shots) {
+        this.shots = shots;
+    }
 
+    @Override
+    public int compareTo(RedisRegionalDTO o) {
+        return this.getShots().compareTo(o.getShots());
+    }
 }

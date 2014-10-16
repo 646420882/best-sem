@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,6 +30,10 @@ public class SystemUserEntity implements Serializable {
     private Integer state;
 
     private Integer access;     //1.admin; 2.user
+
+    private byte[] img;
+
+    private String email;
 
     @Field(value = "bdAccounts")
     private List<BaiduAccountInfoEntity> baiduAccountInfoEntities;
@@ -76,6 +81,22 @@ public class SystemUserEntity implements Serializable {
         this.access = access;
     }
 
+    public byte[] getImgBytes() {
+        return img;
+    }
+
+    public void setImgBytes(byte[] bytes) {
+        this.img = bytes;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public List<BaiduAccountInfoEntity> getBaiduAccountInfoEntities() {
         return baiduAccountInfoEntities;
     }
@@ -102,7 +123,7 @@ public class SystemUserEntity implements Serializable {
 
     public void addBaiduAccountInfo(BaiduAccountInfoEntity baiduAccountInfoEntity) {
         if (baiduAccountInfoEntities == null) {
-            baiduAccountInfoEntities = new ArrayList<BaiduAccountInfoEntity>();
+            baiduAccountInfoEntities = new ArrayList<>();
         }
         baiduAccountInfoEntities.add(baiduAccountInfoEntity);
     }
@@ -110,12 +131,13 @@ public class SystemUserEntity implements Serializable {
     @Override
     public String toString() {
         return "SystemUserEntity{" +
-                "id='" + id + '\'' +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", companyName='" + companyName + '\'' +
                 ", state=" + state +
                 ", access=" + access +
+                ", img=" + Arrays.toString(img) +
+                ", email='" + email + '\'' +
                 ", baiduAccountInfoEntities=" + baiduAccountInfoEntities +
                 '}';
     }

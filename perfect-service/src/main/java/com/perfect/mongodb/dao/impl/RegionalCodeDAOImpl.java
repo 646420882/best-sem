@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 
+import static com.perfect.mongodb.utils.RegionalConstants.*;
+
 /**
  * Created by SubDong on 2014/9/29.
  */
@@ -18,18 +20,18 @@ import java.util.Map;
 public class RegionalCodeDAOImpl extends AbstractSysBaseDAOImpl<RegionalCodeDTO,Long> implements RegionalCodeDAO {
     @Override
     public void insertRegionalCode(List<RegionalCodeDTO> redisList) {
-        getSysMongoTemplate().insert(redisList,"sys_regional");
+        getSysMongoTemplate().insert(redisList,TBL_SYS_REGIONAL);
     }
 
     @Override
-    public List<RegionalCodeDTO> getRegional(String FieldName,String id) {
-        List<RegionalCodeDTO> list = getSysMongoTemplate().find(Query.query(Criteria.where(FieldName).is(id)),RegionalCodeDTO.class,"sys_regional");
+    public List<RegionalCodeDTO> getRegional(String fieldName,String id) {
+        List<RegionalCodeDTO> list = getSysMongoTemplate().find(Query.query(Criteria.where(fieldName).is(id)),RegionalCodeDTO.class,TBL_SYS_REGIONAL);
         return list;
     }
 
     @Override
     public RegionalCodeDTO getRegionalByRegionId(String feidName,String id){
-        List<RegionalCodeDTO> dtos = getSysMongoTemplate().find(new Query(Criteria.where(feidName).is(id).and("regionName").is("")), getEntityClass(), "sys_regional");
+        List<RegionalCodeDTO> dtos = getSysMongoTemplate().find(new Query(Criteria.where(feidName).is(id).and(FIDE_REGIONNAME).is("")), getEntityClass(), TBL_SYS_REGIONAL);
         return dtos.size()==0?null:dtos.get(0);
     }
 

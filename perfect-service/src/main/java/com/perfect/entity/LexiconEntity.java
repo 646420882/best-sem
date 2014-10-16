@@ -15,7 +15,7 @@ import static com.perfect.mongodb.utils.EntityConstants.SYS_KEYWORD;
  */
 @Document(collection = SYS_KEYWORD)
 @CompoundIndexes({
-        @CompoundIndex(name = "keyword_index", def = "{tr : 1, kw : 1}")
+        @CompoundIndex(name = "sys_keyword_index", def = "{tr : 1, kw : 1}", unique = true)
 })
 public class LexiconEntity implements Serializable {
 

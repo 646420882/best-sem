@@ -549,7 +549,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     if (type == 1) {
                         entity1.setAdgroupId(Long.valueOf(arr[5]));
                         entity1.setAdgroupName(arr[6]);
-                        entity1.setRegionId(Long.valueOf(arr[7]));
+                        entity1.setRegionId(((arr[7].equals("-"))?-1l:Long.valueOf(arr[7])));
                         entity1.setRegionName(arr[8]);
                         entity1.setPcImpression(Integer.valueOf(arr[9]));
                         entity1.setPcClick(Integer.valueOf(arr[10]));

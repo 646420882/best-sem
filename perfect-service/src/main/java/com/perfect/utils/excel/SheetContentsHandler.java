@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by baizz on 2014-10-10.
  */
-public class SheetContentsHandler extends RowMapper {
+public class SheetContentsHandler extends RowHandler {
 
     private int bufRowSize, curSheetIndex = -1;
     private List<List<List<Object>>> sheetsData = new ArrayList<>();

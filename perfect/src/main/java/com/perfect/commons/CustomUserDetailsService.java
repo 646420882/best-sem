@@ -1,9 +1,8 @@
-package com.perfect.app.homePage.service;
+package com.perfect.commons;
 
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.SystemUserEntity;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -49,11 +48,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authList = new ArrayList<>(2);
 
         //所有的用户默认拥有ROLE_USER权限
-        authList.add(new SimpleGrantedAuthority("ROLE_USER"));
+        authList.add(new ComparableGrantedAuthority("ROLE_USER"));
 
         //如果参数access为1, 则拥有ROLE_ADMIN权限
         if (access.compareTo(1) == 0)
-            authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            authList.add(new ComparableGrantedAuthority("ROLE_ADMIN"));
 
         return authList;
     }

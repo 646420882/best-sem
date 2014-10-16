@@ -27,7 +27,15 @@ public interface SysRegionalService {
      */
     public Map<String, List<RedisRegionalDTO>> regionalProvinceName(List<String> listId);
 
-    public Map<String,List<Object>> getProvince();
+    /**
+     * 获取所有省份
+     * @return
+     */
+    public Map<String,List<RedisRegionalDTO>> getProvince();
+
+    public String getProvinceNameById(Integer provinceId);
+
+    public String getRegionNameById(Integer regionId);
 
     /**
      * 通过区域名称获得 相应的区域id 以及省份 id 及名称
@@ -51,5 +59,5 @@ public interface SysRegionalService {
      * @param listId
      * @return
      */
-    public List<RegionalCodeDTO> getRegionalByRegionalId(List<Integer> listId);
+    public List<RegionalCodeDTO> getProvinceIdByRegionalId(List<Integer> listId);
 }

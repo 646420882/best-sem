@@ -1,11 +1,8 @@
 package com.perfect.app.regional.controller;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.gson.Gson;
 import com.perfect.dto.RedisRegionalDTO;
 import com.perfect.service.SysRegionalService;
-import com.perfect.utils.JSONUtils;
-import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +25,7 @@ public class SysRegionalController {
 
     @RequestMapping(value = "/regional/getProvince", method = {RequestMethod.GET,RequestMethod.POST})
     public void register(HttpServletResponse response) {
-        Map<String, List<Object>> dtos = sysRegionalService.getProvince();
+        Map<String, List<RedisRegionalDTO>> dtos = sysRegionalService.getProvince();
         String gson = new Gson().toJson(dtos);
 
         try {

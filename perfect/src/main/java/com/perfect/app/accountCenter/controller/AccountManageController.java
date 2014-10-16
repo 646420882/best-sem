@@ -10,15 +10,19 @@ import com.perfect.service.AccountDataService;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.LogService;
 import com.perfect.utils.JSONUtils;
+import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +43,30 @@ public class AccountManageController {
     private AccountDataService accountDataService;
 
     @Resource
+    private WebContext webContext;
+
+    @Resource
     private LogService logService;
+
+
+    /**
+     * 修改账户密码
+     *
+     * @return
+     */
+    @RequestMapping(value = "/updatePwd", method = {RequestMethod.GET, RequestMethod.POST})
+    public void updatePwd(HttpServletResponse response,
+                          @RequestParam(value = "password", required = false) String password,
+                          @RequestParam(value = "newPwd", required = false) String newPwd) {
+
+        int flag = accountManageService.updatePwd(password, newPwd);
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("sturts", flag);
+
+        webContext.writeJson(map, response);
+
+    }
 
     /**
      * 获取账户树
@@ -80,6 +107,35 @@ public class AccountManageController {
         Map<String, Object> result = accountManageService.getBaiduAccountInfoByUserId(userId);
         jsonView.setAttributesMap(result);
         return new ModelAndView(jsonView);
+    }
+
+    /**
+     * 获取用户头像
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping(value = "/getImg", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void getImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        byte[] imgBytes = accountManageService.getCurrUserInfo().getImgBytes();
+        response.getOutputStream().write(imgBytes);
+    }
+
+    /**
+     * 上传用户头像
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void uploadImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        byte[] bytes = multipartRequest.getFile("userImgFile").getBytes();
+        accountManageService.uploadImg(bytes);
+        response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
     }
 
     /**

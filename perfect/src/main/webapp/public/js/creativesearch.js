@@ -19,7 +19,7 @@ function search() {
             'r': region},
         type: "GET",
         success: function (datas) {
-            if (datas.rows == undefined) {
+            if (datas.rows == undefined || datas.rows.total == 0) {
                 return;
             }
 
@@ -136,6 +136,7 @@ function load() {
     $.ajax({
         url: "/regional/getProvince",
         type: "GET",
+        dataType: "json",
         async: false,
         success: function (datas) {
             if(datas.rows == undefined){
@@ -144,8 +145,8 @@ function load() {
 
             $('#region').empty();
             $.each(datas.rows,function(i, item){
-                var opt = $("<option></option>").attr("value",item.value);
-                opt.append(item.name);
+                var opt = $("<option></option>").attr("value",item.regionalId);
+                opt.append(item.regionalName);
                 $('#region').append(opt);
             })
         }

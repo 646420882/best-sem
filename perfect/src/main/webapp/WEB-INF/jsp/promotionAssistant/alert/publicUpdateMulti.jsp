@@ -19,6 +19,10 @@
             border: 1px solid #eaf0f3;
             overflow: auto;
             width: 100%;
+
+        }
+        .table2 tr td{
+            text-align: center;
         }
 
         .assembly_under {

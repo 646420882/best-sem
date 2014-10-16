@@ -1,6 +1,6 @@
 package com.perfect.utils.web;
 
-import com.perfect.app.homePage.service.CustomUserDetailsService;
+import com.perfect.commons.CustomUserDetailsService;
 import com.perfect.entity.MD5;
 import com.perfect.redis.JRedisUtils;
 import org.slf4j.Logger;

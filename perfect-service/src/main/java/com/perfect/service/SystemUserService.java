@@ -23,4 +23,6 @@ public interface SystemUserService {
     boolean removeAccount(Long id);
 
     void addAccount(String user, BaiduAccountInfoEntity baiduAccountInfoEntity);
+
+    boolean updatePassword(String userName, String pwd);
 }

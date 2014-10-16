@@ -279,7 +279,7 @@ ul, ol {
     font-size:16px;
 }
 .login_input2 ul li #checkCode{
-    float:right;
+    float:left;
     font-family:Arial;
     font-style:italic;
     color:#000;
@@ -290,8 +290,6 @@ ul, ol {
     font-size:16px;
     height:30px;
     line-height:30px;
-
-
 }
 .unchanged
 {
@@ -299,4 +297,21 @@ ul, ol {
 }
 .has-feedback .form-control{
     padding-right:0px;
+}
+
+.configure_under ul li{
+    margin-top:10px;
+    line-height:30px;
+    font-size:14px;
+    width:100%;
+    overflow:hidden;
+}
+.configure_under ul li span{
+    width:100px;
+    float:left;
+    padding:0px;
+}
+.configure_under ul li input{
+    height:30px;
+
 }

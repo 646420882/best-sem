@@ -166,7 +166,7 @@ public class AssistantCampaignController {
             }
         }
 
-        List<RegionalCodeDTO> regionalCodeDTOs = sysRegionalService.getRegionalByRegionalId(baiduEntity.getRegionTarget());
+        List<RegionalCodeDTO> regionalCodeDTOs = sysRegionalService.getProvinceIdByRegionalId(baiduEntity.getRegionTarget());
 
         webContext.writeJson(regionalCodeDTOs, response);
     }

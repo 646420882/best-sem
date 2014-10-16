@@ -31,6 +31,8 @@
     </style>
 </head>
 <body>
+<div id="background" class="background hides"></div>
+<div id="progressBar" class="progressBar hides">数据处理中，请稍等...</div>
 <div style="background-color: #f3f5fd; width: 900px; height: 700px">
     <div class="addplan_top over">
          <ul id="tabUL">
@@ -252,7 +254,13 @@
         });
     });
 
-
+    //添加全部按钮的单击事件
+    $("#addAllKeyword").click(function () {
+        var checkedTds1 = $("input[name=baiduKeyword]:checkbox");
+        for (var i = 0, l = checkedTds1.length; i < l; i++) {
+            $("#addedkwd").append($("#" + wordType + i).find("td").eq(1).text()+"\r");
+        }
+    });
 
 
     //完成按钮的事件
@@ -286,51 +294,11 @@
             async: false,
             contentType: "application/json; charset=UTF-8",
             success: function (data, textStatus, jqXHR) {
-               alert("快速创建成功!");
+               window.location.reload(true);
             }
         });
     };
-
-
-    /**
-    *保存全部关键词
-     */
-    var saveAllKeyword = function () {
-        var jsonArr = [];
-        var checkedTds1 = $("input[name=baiduKeyword]:checkbox");
-        for (var i = 0, l = checkedTds1.length; i < l; i++) {
-                var entity1 = {};
-                entity1["accountId"] = "${sessionScope._accountId}";
-                entity1["keyword"] = $("#" + wordType + i).find("td").eq(1).text();
-                entity1["price"] = 1.0;
-                entity1["matchType"] = 1;
-                entity1["pause"] = false;
-                entity1["status"] = -1;
-                entity1["phraseType"] = 1;
-                entity1["localStatus"] = 1;
-                jsonArr.push(entity1);
-        }
-
-        if(jsonArr.length == 0){
-            alert("没有关键词！");
-            return;
-        }
-
-        $.ajax({
-            url: "/assistantCampaign/quickCreateCampaign?name="+wordName,
-            type: "POST",
-            dataType: "json",
-            data:JSON.stringify(jsonArr),
-            async: false,
-            contentType: "application/json; charset=UTF-8",
-            success: function (data, textStatus, jqXHR) {
-                for(var i=0;i<jsonArr.length;i++){
-                    $("#addedkwd").append(jsonArr[i].keyword+"\r");
-                }
-            }
-        });
-    }
-
+    
 
 
     /**
@@ -388,6 +356,21 @@
     $("#ctrlbuttonregionOklabel").click(function () {
         regions = getRegionsStr();
         $("#updateRegionDialog").css("display","none");
+    });
+
+
+
+
+
+
+    //loading
+    var ajaxbg = $("#background,#progressBar");
+    ajaxbg.hide();
+    $(document).ajaxStart(function () {
+        ajaxbg.show();
+    });
+    $(document).ajaxStop(function () {
+        ajaxbg.fadeOut(1000);
     });
 
 

@@ -1,5 +1,7 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.mongodb.WriteResult;
+import com.perfect.autosdk.sms.v3.Monitor;
 import com.perfect.core.AppContext;
 import com.perfect.dao.MonitoringDao;
 import com.perfect.entity.FolderEntity;
@@ -8,6 +10,7 @@ import com.perfect.mongodb.base.BaseMongoTemplate;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import static com.perfect.mongodb.utils.EntityConstants.*;
@@ -33,6 +36,36 @@ public class MonitoringDaoImpl implements MonitoringDao{
     }
 
     @Override
+    public boolean updataForlderId(Long folderId,String folderName) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        Update update = new Update();
+        update.set("fdna",folderName);
+        WriteResult writeResult= mongoTemplate.updateFirst(Query.query(Criteria.where(FOLDER_ID).is(folderId)), update, TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
+        boolean b = writeResult.isUpdateOfExisting();
+        return b;
+    }
+
+    @Override
+    public void addFolder(FolderEntity folderEntity) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.insert(folderEntity, TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
+    }
+
+    @Override
+    public WriteResult deleteFoder(Long folderId) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        WriteResult remove = mongoTemplate.remove(Query.query(Criteria.where(FOLDER_ID).is(folderId)),TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
+        return remove;
+    }
+
+    @Override
+    public WriteResult deleteMonitor(Long folderId) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        WriteResult remove = mongoTemplate.remove(Query.query(Criteria.where(FOLDER_ID).is(folderId)), TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
+        return remove;
+    }
+
+    @Override
     public List<FolderMonitorEntity> getMonitor() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<FolderMonitorEntity> entities = mongoTemplate.find(new Query(),FolderMonitorEntity.class,TBL_MONITORING_TARGETS+"_"+ AppContext.getAccountId());
@@ -44,5 +77,18 @@ public class MonitoringDaoImpl implements MonitoringDao{
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<FolderMonitorEntity> entities = mongoTemplate.find(Query.query(Criteria.where(FOLDER_ID).is(folderId)),FolderMonitorEntity.class,TBL_MONITORING_TARGETS+"_"+ AppContext.getAccountId());
         return entities;
+    }
+
+    @Override
+    public WriteResult deleteMonitorId(Long MonitorId) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        WriteResult remove = mongoTemplate.remove(Query.query(Criteria.where(MONITOR_ID).is(MonitorId)), TBL_MONITORING_TARGETS+"_"+ AppContext.getAccountId());
+        return remove;
+    }
+
+    @Override
+    public void addMonitor(FolderMonitorEntity folderMonitorEntity) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        mongoTemplate.insert(folderMonitorEntity, TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
     }
 }
