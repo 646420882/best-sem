@@ -1231,9 +1231,9 @@ $(function () {
                 $(".TB_overlayBG").css({
                     display: "block", height: $(document).height()
                 });
-                $(".box").css({
-                    left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
-                    top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
+                $("#seetingRules").css({
+                    left: ($("body").width() - $("#seetingRules").width()) / 2 - 20 + "px",
+                    top: ($(window).height() - $("#seetingRules").height()) / 2 + $(window).scrollTop() + "px",
                     display: "block"
                 });
                 selectedKeywordIds = [];

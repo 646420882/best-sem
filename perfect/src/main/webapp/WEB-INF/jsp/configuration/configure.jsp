@@ -36,6 +36,9 @@
             *padding:0px;
             *line-height:30px;
         }
+        .help-block{
+            width:150px;
+        }
 
     </style>
 </head>
@@ -117,7 +120,7 @@
         <jsp:include page="../homePage/pageBlock/footer.jsp"/>
     </div>
 </div>
-<!------------------------------->
+
 <div class="TB_overlayBG"></div>
 <div class="box" id="new_riginality" style="display:none; width:552px;">
     <h2 id="new_riginality2">同步baidu推广帐号密码-如果您更改了推广帐号密码，请立即同步密码。<a href="#" class="close">关闭</a></h2>
