@@ -109,31 +109,18 @@ public class KeywordGroupController {
     @RequestMapping(value = "/downloadBaiduCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ModelAndView downloadBaiduCSV(HttpServletResponse response,
                                          @RequestParam(value = "seedWords", required = false) String seedWords,
-                                         @RequestParam(value = "krFileId") String krFileId) {
+                                         @RequestParam(value = "krFileId") String krFileId) throws IOException {
         List<String> seedWordList = new ArrayList<>(Arrays.asList(seedWords.split(",")));
         String filename = new ObjectId().toString() + ".csv";
-        OutputStream os = null;
-        try {
-            response.addHeader("Content-Disposition", "attachment;filename=" + filename);
-            os = response.getOutputStream();
+        response.addHeader("Content-Disposition", "attachment;filename=" + filename);
+        try (OutputStream os = response.getOutputStream()) {
             keywordGroupService.downloadBaiduCSV(seedWordList, krFileId, os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (os != null) {
-                    os.flush();
-                    os.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return null;
     }
 
     /**
-     * 下载系统CSV词库文件
+     * 下载系统词库CSV文件
      *
      * @param response
      * @param trade
@@ -143,24 +130,11 @@ public class KeywordGroupController {
     @RequestMapping(value = "/downloadCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ModelAndView downloadCSV(HttpServletResponse response,
                                     @RequestParam(value = "trade", required = false) String trade,
-                                    @RequestParam(value = "category", required = false) String category) {
+                                    @RequestParam(value = "category", required = false) String category) throws IOException {
         String filename = new ObjectId().toString() + ".csv";
-        OutputStream os = null;
-        try {
-            response.addHeader("Content-Disposition", "attachment;filename=" + filename);
-            os = response.getOutputStream();
+        response.addHeader("Content-Disposition", "attachment;filename=" + filename);
+        try (OutputStream os = response.getOutputStream()) {
             keywordGroupService.downloadCSV(trade, category, os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (os != null) {
-                    os.flush();
-                    os.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return null;
     }

@@ -41,24 +41,12 @@ public class KeywordQualityController {
 
     @RequestMapping(value = "/keywordQuality/downloadCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ModelAndView downloadQualityReportCSV(HttpServletResponse response,
-                                                 @RequestParam(value = "redisKey", required = false) String redisKey) {
+                                                 @RequestParam(value = "redisKey", required = false) String redisKey)
+            throws IOException {
         String filename = DateUtils.getYesterdayStr() + "-quality.csv";
-        OutputStream os = null;
-        try {
-            response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
-            os = response.getOutputStream();
+        response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
+        try (OutputStream os = response.getOutputStream()) {
             keywordQualityService.downloadQualityCSV(redisKey, os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (os != null) {
-                    os.flush();
-                    os.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return null;
     }

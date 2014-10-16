@@ -119,7 +119,9 @@ public class AccountManageController {
     @RequestMapping(value = "/getImg", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void getImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
         byte[] imgBytes = accountManageService.getCurrUserInfo().getImgBytes();
-        response.getOutputStream().write(imgBytes);
+        if (imgBytes != null) {
+            response.getOutputStream().write(imgBytes);
+        }
     }
 
     /**
