@@ -21,15 +21,19 @@
 <div id="progressBar1" class="progressBar">loading...</div>
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
 <div class="backstage_concent mid over">
-     <div class="backstage_title over">
-         <span class="backstage_title_mid">词库添加</span>
-     </div>
+    <div class="backstage_title over">
+        <span class="backstage_title_mid">词库添加</span>
+    </div>
     <!-- 用于文件上传的表单元素 -->
     <div class="backstage_list over">
         <form id="fileForm" name="fileForm" method="post" class="form-inline" enctype="multipart/form-data"
               action="${pageContext.request.contextPath}/admin/lexicon/upload" target="fileIframe">
             <ul>
-                <li><b class="fl">Upload File: </b><input type="file" name="excelFile" style="border:none; width:160px;"/><input type="button" id="submitForm" class="btn sure" value="导入"/></li>
+                <li><b class="fl">Upload File: </b><input type="file" name="excelFile"
+                                                          style="border:none; width:160px;"/><input type="button"
+                                                                                                    id="submitForm"
+                                                                                                    class="btn sure"
+                                                                                                    value="导入"/></li>
                 <li></li>
             </ul>
         </form>
@@ -50,14 +54,13 @@
                 </select></li>
                 <li><select id="category">
                 </select></li>
-                <li> <input type="button" class="sure" value="删除" onclick="deleteLexicon();"/></li>
+                <li><input type="button" class="sure" value="删除" onclick="deleteLexicon();"/></li>
             </ul>
         </div>
     </div>
 </div>
 
 <iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
-<iframe id="iframe1" name="iframe1" style="display: none"></iframe>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
 <script type="application/javascript">
@@ -79,6 +82,10 @@
         document.getElementById("progressBar").style.display = "none";
 
         $("#submitForm").on('click', function () {
+            var excelFile = $("input[name='excelFile']").val();
+            if (excelFile == null || excelFile == "") {
+                return false;
+            }
             $("#fileForm").submit();
             document.getElementById("background").style.display = "block";
             document.getElementById("progressBar").style.display = "block";
