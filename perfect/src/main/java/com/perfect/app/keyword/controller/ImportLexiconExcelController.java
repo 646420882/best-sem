@@ -69,6 +69,11 @@ public class ImportLexiconExcelController {
             return;
         }
 
+        if (!"xlsx".equals(com.google.common.io.Files.getFileExtension(fileName))) {
+            Files.delete(Paths.get(tmpFile));
+            return;
+        }
+
         trade = fileName.substring(0, 2);
         Path file = Paths.get(tmpFile);
         final Map<String, LexiconEntity> map = new HashMap<>(1 << 16);
@@ -91,7 +96,7 @@ public class ImportLexiconExcelController {
         List<LexiconEntity> list = new ArrayList<>(map.values());
 
         //delete tmpFile
-        Files.deleteIfExists(Paths.get(tmpFile));
+        Files.delete(Paths.get(tmpFile));
 
         ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors() + 1);
         try {
