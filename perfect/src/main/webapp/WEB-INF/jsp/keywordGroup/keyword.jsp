@@ -2,7 +2,7 @@
 Created by IntelliJ IDEA.
 User: baizz
 Date: 2014-08-07
-Time: 上午11:28
+Time: 11:28
 To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -30,12 +30,6 @@ To change this template use File | Settings | File Templates.
 
         .download a {
             margin-right: 20px;
-        }
-       #_editor .span-error{
-            color:red;
-        }
-        #_editor .span-ok{
-            color:#9f9f9f;
         }
     </style>
 </head>
@@ -294,8 +288,9 @@ To change this template use File | Settings | File Templates.
                     <a data-is-main-url="true" href="javascript:void(0);" class="EC_t EC_BL" id="rTitle">
                         暂无</a>
                     <br>
-                    <a id="bdfs1" href="javascript:void(0);" class="EC_BL EC_desc"><font size="-1" id="rDesc">暂无</font><br>
-                        <font  size="-1" class="EC_url" id="rUrl">暂无</font></a>
+                    <a id="bdfs1" href="javascript:void(0);" class="EC_BL EC_desc"><font size="-1"
+                                                                                         id="rDesc">暂无</font><br>
+                        <font size="-1" class="EC_url" id="rUrl">暂无</font></a>
 
                     <div class="c-tools" style="margin-left:5px;" id="tools_2">
                         <a class="c-tip-icon"></a>
@@ -326,7 +321,8 @@ To change this template use File | Settings | File Templates.
             <div class="mainlist" id="_editor">
                 <ul>
                     <li>
-                        <input type="hidden"  id="dm"/>
+                        <input type="hidden" id="dm"/>
+
                         <h3>标题：</h3>
                         <dl><input type="text" name="title" id="title" class="r_input" placeholder="请输入创意标题.且必须大于8个字符!"><span>27/50</span>
                         </dl>
@@ -335,19 +331,21 @@ To change this template use File | Settings | File Templates.
                     </li>
                     <li>
                         <h3>描述1：</h3>
-                        <dl><textarea name="desc1" id="desc1" placeholder="请输入描述1.且必须大于8个字符!"></textarea><span>27/80</span></dl>
+                        <dl><textarea name="desc1" id="desc1"
+                                      placeholder="请输入描述1.且必须大于8个字符!"></textarea><span>27/80</span></dl>
                         <dl><input type="button" class="r_input2" value="{}插入通配符" onclick="addTongPeiDe1()"></dl>
                         <dl id="desc1Msg"></dl>
                     </li>
                     <li>
                         <h3>描述2：</h3>
-                        <dl><textarea name="desc2" id="desc2" placeholder="请输入描述2.且必须大于8个字符!"></textarea><span>27/80</span></dl>
+                        <dl><textarea name="desc2" id="desc2"
+                                      placeholder="请输入描述2.且必须大于8个字符!"></textarea><span>27/80</span></dl>
                         <dl><input type="button" class="r_input2" value="{}插入通配符" onclick="addTongPeiDe2()"></dl>
                         <dl id="desc2Msg"></dl>
                     </li>
                     <li>
                         <h3>访问URL：</h3>
-                        <dl><textarea name="pcUrl"  placeholder="该Url是真实访问Url."></textarea><span>27/1024</span></dl>
+                        <dl><textarea name="pcUrl" placeholder="该Url是真实访问Url."></textarea><span>27/1024</span></dl>
                         <dl id="pcUrlMsg"></dl>
                     </li>
                     <li>
@@ -505,7 +503,9 @@ To change this template use File | Settings | File Templates.
     <div class="mainlist">
         添加
         <input type="button" value="添加" onclick="addSub()">
+
         <p id="subTitle"></p>
+
         <div>
             <ul id="sub">
             </ul>
@@ -692,6 +692,9 @@ $(function () {
 var downloadCSV = function () {
     var _url;
     if (type == 1) {
+        if ($("#textarea1").val() != null && $("#textarea1").val().trims().length == 0) {
+            return;
+        }
         _url = "/getKRWords/downloadBaiduCSV?seedWords=" + getSeedWords() + "&krFileId=" + krFileId;
 
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
@@ -724,6 +727,9 @@ var downloadCSV = function () {
             }
         }
     } else if (type == 2) {
+        if (_trade == null || _trade == "") {
+            return;
+        }
         _url = "/getKRWords/downloadCSV?trade=" + _trade + "&category=" + _category;
 
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
@@ -816,6 +822,9 @@ var findWordFromBaidu = function () {
 
     type = 1;
     var seedWords = "";
+    if ($("#textarea1").val() != null && $("#textarea1").val().trims().length == 0) {
+        return;
+    }
     var words = $("#textarea1").val().split("\n");//种子词数组
     for (var i = 0, l = words.length; i < l; i++) {
         if (words[i].trims().length == 0) {
@@ -877,6 +886,9 @@ var findWordFromSystem = function () {
 
     type = 2;
     var trade = $("#trade option:selected").val();
+    if (trade == null || trade == "") {
+        return;
+    }
     var category = $("#category option:selected").val();
     $.ajax({
         url: "/getKRWords/p",
