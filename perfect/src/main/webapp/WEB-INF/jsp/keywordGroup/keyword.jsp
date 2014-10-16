@@ -331,16 +331,19 @@ To change this template use File | Settings | File Templates.
                         <dl><input type="text" name="title" id="title" class="r_input" placeholder="请输入创意标题.且必须大于8个字符!"><span>27/50</span>
                         </dl>
                         <dl><input type="button" class="r_input2" value="{}插入通配符" onclick="addTongPei()"></dl>
+                        <dl id="titleMsg"></dl>
                     </li>
                     <li>
                         <h3>描述1：</h3>
                         <dl><textarea name="desc1" id="desc1" placeholder="请输入描述1.且必须大于8个字符!"></textarea><span>27/80</span></dl>
                         <dl><input type="button" class="r_input2" value="{}插入通配符" onclick="addTongPeiDe1()"></dl>
+                        <dl id="desc1Msg"></dl>
                     </li>
                     <li>
                         <h3>描述2：</h3>
                         <dl><textarea name="desc2" id="desc2" placeholder="请输入描述2.且必须大于8个字符!"></textarea><span>27/80</span></dl>
                         <dl><input type="button" class="r_input2" value="{}插入通配符" onclick="addTongPeiDe2()"></dl>
+                        <dl id="desc2Msg"></dl>
                     </li>
                     <li>
                         <h3>访问URL：</h3>

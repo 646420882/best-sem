@@ -136,8 +136,65 @@ function initEditView(res) {
             }
             $(o).html(_thisStr + "/" + _max);
         }
-
     });
+    var _text=$("#_editor :text");
+    _text.each(function(i,o){
+        if(i==0){
+            var _max = $(o).next("span").html().split("/")[1];
+            var char = $(o).val().match(/[^\x00-\xff]/ig);
+           var  _thisStr = $(o).val().length + (char == null ? 0 : char.length);
+            if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 0) {
+                $("#titleMsg").html("<b style='color:red'>标题长度必须大于5个字符小于50个字符！</b>");
+            } else {
+                $("#titleMsg").html("");
+            }
+        }if(i==1){
+            var dm = "." + $("#dm").val();
+            if ($(this).val().indexOf(dm) == -1) {
+                $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
+            } else {
+                if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
+                    $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址必须以\"" + dm + "\"结尾！</b>");
+                } else {
+                    $("#pcsUrlMsg").html("");
+                }
+            }
+        }
+    });
+    var _textarea=$("#_editor textarea");
+    _textarea.each(function(i,o){
+        if(i==0){
+            var _max = $(o).next("span").html().split("/")[1];
+            var char = $(o).val().match(/[^\x00-\xff]/ig);
+            var  _thisStr = $(o).val().length + (char == null ? 0 : char.length);
+            if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 8) {
+                $("#desc1Msg").html("<b style='color:red'>创意\"描述1\"长度必须大于8个字符小于50个字符！</b>");
+            } else {
+                $("#desc1Msg").html("");
+            }
+        }if(i==1){
+            var _max = $(o).next("span").html().split("/")[1];
+            var char = $(o).val().match(/[^\x00-\xff]/ig);
+            var  _thisStr = $(o).val().length + (char == null ? 0 : char.length);
+            if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 8) {
+                $("#desc2Msg").html("<b style='color:red'>创意\"描述2\"长度必须大于8个字符小于50个字符！</b>");
+            } else {
+                $("#desc2Msg").html("");
+            }
+        }if(i==2){
+            var dm = "." + $("#dm").val();
+            if ($(this).val().indexOf(dm) == -1) {
+                $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
+            } else {
+                if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
+                    $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址必须以\"" + dm + "\"结尾！</b>");
+                } else {
+                    $("#pcUrlMsg").html("");
+                }
+            }
+        }
+    });
+
     var _thisUl = $("#terms li");
     var _thatUl = $("#repUl");
     _thatUl.empty();
@@ -444,8 +501,10 @@ function onKeyDownView() {
         var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
         if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 8) {
             $(this).next("span").removeClass().addClass("span-error");
+            $("#titleMsg").html("<b style='color:red'>标题长度必须大于8个字符小于50个字符！</b>");
         } else {
             $(this).next("span").removeClass().addClass("span-ok");
+            $("#titleMsg").html("");
         }
         $(this).next("span").html(_thisStr + "/" + _max);
     });
@@ -465,8 +524,10 @@ function onKeyDownView() {
         var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
         if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 8) {
             $(this).next("span").removeClass().addClass("span-error");
+            $("#desc1Msg").html("<b style='color:red'>创意\"描述1\"长度必须大于8个字符小于80个字符！</b>");
         } else {
             $(this).next("span").removeClass().addClass("span-ok");
+            $("#desc1Msg").html("");
         }
         $(this).next("span").html(_thisStr + "/" + _max);
     });
@@ -486,8 +547,10 @@ function onKeyDownView() {
         var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
         if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 8) {
             $(this).next("span").removeClass().addClass("span-error");
+            $("#desc2Msg").html("<b style='color:red'>创意\"描述2\"长度必须大于8个字符小于80个字符！</b>");
         } else {
             $(this).next("span").removeClass().addClass("span-ok");
+            $("#desc2Msg").html("");
         }
         $(this).next("span").html(_thisStr + "/" + _max);
     });
@@ -504,19 +567,18 @@ function onKeyDownView() {
             $(this).next("span").removeClass().addClass("span-error");
         } else {
             $(this).next("span").removeClass().addClass("span-ok");
-        }
-        $(this).next("span").html(_thisStr + "/" + _max);
-    }).focusout(function () {
-        var dm = "." + $("#dm").val();
-        if ($(this).val().indexOf(dm) == -1) {
-            $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
-        } else {
-            if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
-                $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址必须以\"" + dm + "\"结尾！</b>");
+            var dm = "." + $("#dm").val();
+            if ($(this).val().indexOf(dm) == -1) {
+                $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
             } else {
-                $("#pcUrlMsg").html("");
+                if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
+                    $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址必须以\"" + dm + "\"结尾！</b>");
+                } else {
+                    $("#pcUrlMsg").html("");
+                }
             }
         }
+        $(this).next("span").html(_thisStr + "/" + _max);
     });
     $("input[name='pcsUrl']").keyup(function () {
         var title = $(this).val();
@@ -531,19 +593,18 @@ function onKeyDownView() {
             $(this).next("span").removeClass().addClass("span-error");
         } else {
             $(this).next("span").removeClass().addClass("span-ok");
-        }
-        $(this).next("span").html(_thisStr + "/" + _max);
-    }).focusout(function () {
-        var dm = "." + $("#dm").val();
-        if ($(this).val().indexOf(dm) == -1) {
-            $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
-        } else {
-            if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
-                $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址必须以\"" + dm + "\"结尾！</b>");
+            var dm = "." + $("#dm").val();
+            if ($(this).val().indexOf(dm) == -1) {
+                $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
             } else {
-                $("#pcsUrlMsg").html("");
+                if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
+                    $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址必须以\"" + dm + "\"结尾！</b>");
+                } else {
+                    $("#pcsUrlMsg").html("");
+                }
             }
         }
+        $(this).next("span").html(_thisStr + "/" + _max);
     });
 }
 function callBackEditor() {

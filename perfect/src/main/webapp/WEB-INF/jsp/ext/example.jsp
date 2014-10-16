@@ -12,11 +12,6 @@
     <script src="${pageContext.request.contextPath}/public/ext/js/ext-all.js"></script>
     <script src="${pageContext.request.contextPath}/public/ext/js/AppFramework.js"></script>
     <script>
-        Ext.define("SEM.controller.Users",{
-            init:function(){
-                console.log("草泥马的！");
-            }
-        });
     </script>
 </head>
 <body >
