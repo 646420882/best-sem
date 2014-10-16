@@ -17,6 +17,12 @@ public interface AccountManageService {
      * @return
      */
     public int updatePwd(String password, String newPwd);
+    /**
+     * 当前密码判断
+     * @param password
+     * @return
+     */
+    public int JudgePwd(String password);
 
     /**
      * 获取账户树

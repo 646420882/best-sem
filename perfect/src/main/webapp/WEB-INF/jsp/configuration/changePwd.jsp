@@ -5,55 +5,58 @@
             <h3 class="fl">修改密码</h3>
         </div>
         <div class="configure_under over">
-              <div class="login_input2">
-                  <form id="defaultForm" method="post" class="form-horizontal" action="/register/add">
-                      <ul>
-                          <li>
-                              <span> * 当前密码：</span>
+            <div class="login_input2">
+                <form id="defaultForm" method="post" class="form-horizontal" action="/account/updatePwd">
+                    <ul>
+                        <li>
+                            <span> * 当前密码：</span>
 
-                              <div class="form-group has-feedback fl">
-                                  <div class="col-lg-5">
-                                      <input type="text" class="form-control" name="username" id="text1">
-                                  </div>
-                              </div>
-                          </li>
-                          <li>
-                              <span> * 新密码：</span>
+                            <div class="form-group has-feedback fl">
+                                <div class="col-lg-5">
+                                    <input type="password" class="form-control" id="currentPWD" name="chenPwd">
+                                </div>
+                                <span id="messageSpan"></span>
+                            </div>
+                        </li>
+                        <li>
+                            <span> * 新密码：</span>
 
-                              <div class="form-group has-feedback fl">
-                                  <div class="col-lg-5">
-                                      <input type="password" class="form-control" name="password">
-                                  </div>
-                              </div>
-                          </li>
-                          <li>
-                              <span> * 确认新密码：</span>
+                            <div class="form-group has-feedback fl">
+                                <div class="col-lg-5">
+                                    <input type="password" class="form-control" name="newPWD">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <span> * 确认新密码：</span>
 
-                              <div class="form-group has-feedback fl">
-                                  <div class="col-lg-5"><input type="password" class="form-control"
-                                                               name="confirmPassword">
-                                  </div>
-                              </div>
-                          </li>
-                          <li>
-                              <span> * 验证码：</span>
+                            <div class="form-group has-feedback fl">
+                                <div class="col-lg-5"><input type="password" class="form-control"
+                                                             name="confirmPassword">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <span> * 验证码：</span>
 
-                              <div class="form-group has-feedback fl">
-                                  <div class="col-lg-5">
-                                      <input type="text" class="form-control proving" id="input1" name="code_text">
-                                      <input type="text" onclick="createCode()" name="code" readonly="readonly"
-                                             id="checkCode" class="unchanged" style="width: 65px"/>
-                                  </div>
-                              </div>
-                          </li>
-                          <li style="margin:20px 0 0 30px;">
-                              <button type="button" class="btn btn-primary" style="margin-right:10px; ">确认</button>
-                              <button type="button" class="btn btn-default">取消</button>
-                          </li>
-                      </ul>
-                  </form>
-              </div>
+                            <div class="form-group has-feedback fl">
+                                <div class="col-lg-5">
+                                    <input type="text" class="form-control proving" id="input1" name="code_text">
+                                    <input type="text" onclick="createCode()" name="code" readonly="readonly"
+                                           id="checkCode" class="unchanged" style="width: 65px"/>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="margin:20px 0 0 30px;">
+                            <button type="button" id="submitPwd" class="btn btn-primary" style="margin-right:10px; ">确认</button>
+                            <button type="button" class="btn btn-default">取消</button>
+                        </li>
+                        <li id="showPwdMsg"></li>
+                    </ul>
+                </form>
+            </div>
         </div>
+        <input type="hidden" id="flag" value="${flag}">
     </div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
@@ -62,8 +65,27 @@
 <script type="text/javascript">
     $(window).resize();
     $(document).ready(function () {
+        if($("#flag").val() == 1){
+            $('.containers').hide();
+            $('.tab_menu li').removeClass('selected');
+            $("#showPwdDiv").show();
+            $("#showPwdLi").addClass('selected');
+            $("#showPwdMsg").html("<label style='color: red'>密码修改成功，请重新登陆</label>")
+            $("#showPwdMsg").fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200);
+
+            setTimeout('$.ajax({url: "/logout",type: "post",success: function (data) {}});',3000);
+
+        }else if($("#flag").val() == 0){
+            $('.containers').hide();
+            $('.tab_menu li').removeClass('selected');
+            $("#showPwdDiv").show();
+            $("#showPwdLi").addClass('selected');
+            $("#showPwdMsg").html("<label style='color: red'>密码修改失败</label>")
+            $("#showPwdMsg").fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200);
+        }
+        var pwdPub = 0;
         createCode();
-        $('#defaultForm').bootstrapValidator({
+        var dd = $('#defaultForm').bootstrapValidator({
             message: '此值无效',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
@@ -71,19 +93,26 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
-                password: {
+                chenPwd: {
                     validators: {
                         notEmpty: {
-                            message: '密码不能为空'
+                            message: '当前密码不能为空'
+                        }
+                    }
+                },
+                newPWD: {
+                    validators: {
+                        notEmpty: {
+                            message: '新密码不能为空'
                         },
                         regexp: {
                             regexp: /^[a-zA-Z0-9_\.]+$/,
-                            message: '密码包括数字、字母和下划线'
+                            message: '新密码包括数字、字母和下划线'
                         },
                         stringLength: {
                             min: 4,
                             max: 14,
-                            message: '密码字段须大于4且小于14'
+                            message: '新密码字段须大于4且小于14'
                         }
                         /*identical: {
                          field: 'confirmPassword',
@@ -97,8 +126,8 @@
                             message: '确认密码不能为空'
                         },
                         identical: {
-                            field: 'password',
-                            message: '输入密码需和上面密码一致'
+                            field: 'newPWD',
+                            message: '第二次输入确认密码不一致'
                         }
                     }
                 },
@@ -121,8 +150,37 @@
 
                     }
                 }
-
             }
+        });
+
+        $("#currentPWD").blur(function(){
+            $.ajax({
+                url: "/account/judgePwd",
+                type: "GET",
+                dataType: "json",
+                data:{
+                    password:$(this).val()
+                },
+                success: function (data) {
+                    if (data.sturts == 1) {
+                        $("#messageSpan").html("密码验证成功");
+                        $("#submitPwd").attr("type","submit");
+                        pwdPub = 1;
+                    }else{
+                        $("#messageSpan").html("当前密码不匹配");
+                        $("#submitPwd").attr("type","button");
+                        pwdPub = 0;
+                    }
+                }
+            });
+        });
+
+        $("#submitPwd").click(function(){
+            if(pwdPub == 0){
+                $("#messageSpan").html("当前密码不匹配");
+                $("#messageSpan").fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+            }
+
         });
     });
 

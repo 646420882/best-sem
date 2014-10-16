@@ -54,7 +54,7 @@
                 <li class="selected">
                     关联账户
                 </li>
-                <li>
+                <li id="showPwdLi">
                     修改密码
                 </li>
             </ul>
@@ -110,7 +110,7 @@
                     </div>
                 </div>
             </div>
-             <div class="containers hides" >
+             <div class="containers hides" id="showPwdDiv">
                    <jsp:include page="../configuration/changePwd.jsp"/>
              </div>
             </div>

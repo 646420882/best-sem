@@ -13,6 +13,7 @@ import com.perfect.utils.JSONUtils;
 import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -55,11 +56,26 @@ public class AccountManageController {
      * @return
      */
     @RequestMapping(value = "/updatePwd", method = {RequestMethod.GET, RequestMethod.POST})
-    public void updatePwd(HttpServletResponse response,
-                          @RequestParam(value = "password", required = false) String password,
-                          @RequestParam(value = "newPwd", required = false) String newPwd) {
+    public ModelAndView updatePwd(ModelMap modelMap,
+                                  @RequestParam(value = "chenPwd", required = false) String oldpassword,
+                                  @RequestParam(value = "newPWD", required = false) String newPWD) {
 
-        int flag = accountManageService.updatePwd(password, newPwd);
+        int flag = accountManageService.updatePwd(oldpassword, newPWD);
+
+        modelMap.addAttribute("flag", flag);
+        return new ModelAndView("configuration/configure", modelMap);
+    }
+
+    /**
+     * 验证账户密码
+     *
+     * @return
+     */
+    @RequestMapping(value = "/judgePwd", method = {RequestMethod.GET, RequestMethod.POST})
+    public void judgePwd(HttpServletResponse response,
+                         @RequestParam(value = "password", required = false) String password) {
+
+        int flag = accountManageService.JudgePwd(password);
 
         Map<String, Integer> map = new HashMap<>();
         map.put("sturts", flag);

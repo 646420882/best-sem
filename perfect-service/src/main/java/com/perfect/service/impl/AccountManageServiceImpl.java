@@ -40,9 +40,11 @@ public class AccountManageServiceImpl implements AccountManageService {
         MD5.Builder builder = new MD5.Builder();
         MD5 md5 = builder.password(password).salt(currUserInfo.getUserName()).build();
 
+        MD5 md5NewPwd = builder.password(newPwd).salt(currUserInfo.getUserName()).build();
+
         int i;
         if(md5.getMD5().equals(currUserInfo.getPassword())){
-            WriteResult writeResult = accountManageDAO.updatePwd(currUserInfo.getUserName(), newPwd);
+            WriteResult writeResult = accountManageDAO.updatePwd(currUserInfo.getUserName(), md5NewPwd.getMD5());
             if(writeResult.isUpdateOfExisting()){
                 i=1;
             }else{
@@ -51,6 +53,22 @@ public class AccountManageServiceImpl implements AccountManageService {
         }else{
             i=-1;
         }
+        return i;
+    }
+
+    @Override
+    public int JudgePwd(String password) {
+        SystemUserEntity currUserInfo = getCurrUserInfo();
+
+        MD5.Builder builder = new MD5.Builder();
+        MD5 md5 = builder.password(password).salt(currUserInfo.getUserName()).build();
+        int i;
+        if(md5.getMD5().equals(currUserInfo.getPassword())){
+            i=1;
+        }else{
+            i=-1;
+        }
+
         return i;
     }
 
