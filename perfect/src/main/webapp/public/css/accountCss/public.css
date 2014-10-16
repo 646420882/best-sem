@@ -189,13 +189,13 @@ table tr ,table tr td{
     overflow:hidden;
 }
 .user_img span img{
-    height: 38px;
-    width: 38px;
+    height: 36px;
+    width: 36px;
 }
 .user_logo{
     height:55px;
    /* padding:0 2%;*/
-    *width:220px;
+    *width:245px;
     position:relative;
 }
 .user_logo1{

@@ -260,8 +260,8 @@ function initImGuiZe(){
             display: "block", height: $(document).height()
         });
         $("#seetingRules").css({
-            left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
+            left: ($("body").width() - $("#seetingRules").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#seetingRules").height()) / 2 + $(window).scrollTop() + "px",
             display: "block"
         });
     });

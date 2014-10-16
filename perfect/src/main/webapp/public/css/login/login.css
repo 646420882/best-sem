@@ -45,13 +45,13 @@ ul, ol {
 
 .login_logo2 {
     text-align: center;
-    padding: 30px 0px;
+    padding: 30px 0 0 0;
 }
 
 .login_click {
     font-size: 14px;
     text-align: right;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .login_click a {
@@ -156,7 +156,7 @@ ul, ol {
     position: relative;
     height: 34px;
     margin-bottom: 10px;
-    *margin-bottom:5px;
+    *margin-bottom: 5px;
 }
 
 .login_input2 ul li input {
@@ -195,6 +195,7 @@ ul, ol {
     margin-right: 10px;
     font-size:14px;
     color:#000;
+    float:left;
 
 }
 
@@ -226,6 +227,7 @@ ul, ol {
 }
 .bv-form .help-block {
     margin-bottom: 0;
+    color:#fff;
 }
 .bv-form .tooltip-inner {
     text-align: left;

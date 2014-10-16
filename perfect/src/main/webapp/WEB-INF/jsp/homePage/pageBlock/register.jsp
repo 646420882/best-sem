@@ -50,8 +50,15 @@
 
                             <div class="form-group has-feedback fl">
                                 <div class="col-lg-5">
-                                    <input type="text" class="form-control" name="username" id="text1">
+                                    <input type="text" class="form-control" name="username" >
                                 </div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>注册邮箱：</span>
+                            <div class="form-group has-feedback fl">
+                                <div class="col-lg-5">
+                                    <input type="text" class="form-control" name="email" />
                             </div>
                         </li>
                         <li>
@@ -142,6 +149,13 @@
                     validators: {
                         notEmpty: {
                             message: '公司名称不能为空'
+                        }
+                    }
+                },
+                email: {
+                    validators: {
+                        emailAddress: {
+                            message: '请输入正确的邮箱地址'
                         }
                     }
                 },
