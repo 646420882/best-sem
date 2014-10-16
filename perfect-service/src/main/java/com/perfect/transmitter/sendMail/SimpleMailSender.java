@@ -56,7 +56,7 @@ import java.util.Properties;
       * 以HTML格式发送邮件
       * @param mailInfo 待发送的邮件信息
       */
-     public static boolean sendHtmlMail(MailSenderInfo mailInfo){
+     public boolean sendHtmlMail(MailSenderInfo mailInfo){
          // 判断是否需要身份认证
          MyAuthenticator authenticator = null;
          Properties pro = mailInfo.getProperties();

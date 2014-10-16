@@ -46,7 +46,7 @@ public class Sender implements Runnable{
      */
     public void sendMail(String[] mails){
         for(String mail:mails){
-            sendMail.startSendMail(mail,"账户预警","超出了预算!");
+            sendMail.startSendTextMail(mail,"账户预警","超出了预算!");
         }
     }
 

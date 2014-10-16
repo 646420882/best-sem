@@ -38,7 +38,7 @@ $("#forgetPassword").click(function () {
                 if(text=='"userName Exists!"'){
                     alert("找回密码的邮件已发送至您的邮箱,请注意查收");
                 }else{
-                    $("#invalidUserName").html("用户名不存在");
+                    window.location = "/forgetPassword/login?mes=该用户名不存在";
                 }
             }
         }
@@ -47,20 +47,4 @@ $("#forgetPassword").click(function () {
 
     sendAjaxRequest("/validate/validateUserNameIsExists?userName="+userName);
 
-
-
-
-    /*$.ajax({
-        url:"/validate/validateUserNameIsExists",
-        type:"post",
-        data:{"j_username":userName},
-        dataType:"json",
-        success: function (data) {
-            if(data=="userName Exists!"){
-                alert("找回密码的邮件已发送至您的邮箱,请注意查收");
-            }else{
-                $("#invalidUserName").html("用户名不存在");
-            }
-        }
-    });*/
 });

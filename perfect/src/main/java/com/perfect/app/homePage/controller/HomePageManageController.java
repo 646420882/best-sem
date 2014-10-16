@@ -24,6 +24,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by baizz on 2014-6-23.
@@ -157,32 +158,38 @@ public class HomePageManageController {
             String path = request.getContextPath();
             String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
+            String key = UUID.randomUUID().toString();
             Jedis jedis = JRedisUtils.get();
-            jedis.set(userName,"");
-            jedis.expire(userName, 60 * 30);
-            basePath+="forgetPassword/findPasswordPage?userName="+userName+"&key="+userName;
+            jedis.set(key,"");
+            jedis.expire(userName, 60 * 30);//30分钟后失效
 
-            String content = "亲爱的用户 '"+userName+"' , 您好！\n" +
-                    "\n" +
-                    "请点击这里，重置您的密码： \n" +
-                    ""+basePath+"\n" +
-                    "该邮件链接地址点击后会失效，或者30分钟后失效\n"+
-                    "(如果链接无法点击，请将它拷贝到浏览器的地址栏中)\n" +
-                    "\n" +
-                    "好的密码，不但应该容易记住，还要尽量符合以下强度标准： \n" +
-                    "·包含大小写字母、数字和符号 \n" +
-                    "·不少于 10 位 \n" +
-                    "·不包含生日、手机号码等易被猜出的信息 \n" +
-                    "\n" +
-                    "\n" +
-                    "\n" +
-                    "\n" +
-                    "普菲特安全中心 敬启\n" +
-                    "\n" +
-                    "\n" +
-                    "此为自动发送邮件，请勿直接回复\n";
+            basePath+="forgetPassword/findPasswordPage?userName="+userName+"&key="+key;
 
-            sendMail.startSendMail(entity.getEmail(),"找回密码-普菲特安全中心",content);
+            String html = "<a href='"+basePath+"'>"+basePath+"</a>";
+
+            String subject = "找回密码-普菲特安全中心";
+
+            String content = "亲爱的用户 '"+userName+"' , 您好！<br/>" +
+                    "<br/>" +
+                    "请点击这里，重置您的密码： <br/>" +
+                    ""+html+"<br/>" +
+                    "该邮件链接地址在成功重置密码后会失效，或者30分钟后失效<br/>"+
+                    "(如果链接无法点击，请将它拷贝到浏览器的地址栏中)<br/>" +
+                    "<br/>" +
+                    "好的密码，不但应该容易记住，还要尽量符合以下强度标准： <br/>" +
+                    "·包含大小写字母、数字和符号 <br/>" +
+                    "·不少于 10 位 <br/>" +
+                    "·不包含生日、手机号码等易被猜出的信息 <br/>" +
+                    "<br/>" +
+                    "<br/>" +
+                    "<br/>" +
+                    "<br/>" +
+                    "普菲特安全中心 敬启<br/>" +
+                    "<br/>" +
+                    "<br/>" +
+                    "此为自动发送邮件，请勿直接回复<br/>";
+
+            sendMail.startSendHtmlMail(entity.getEmail(),subject,content);
             webContext.writeJson("userName Exists!",response);
         }
     }
@@ -238,14 +245,21 @@ public class HomePageManageController {
                     webContext.writeJson("updateFail", response);
                 }
             }else{
-                webContext.writeJson("NoAccount", response);
                 //返回结果，没有该子账户，不能重置密码
+                webContext.writeJson("NoAccount", response);
             }
         }else{
             //找回密码的url失效
            webContext.writeJson("urlInvali",response);
         }
 
+    }
+
+
+    @RequestMapping(value = "/forgetPassword/login", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView loginPage(ModelMap model) {
+        model.put("invalidUserName", "该用户名不存在");
+        return new ModelAndView("homePage/login", model);
     }
 
 
