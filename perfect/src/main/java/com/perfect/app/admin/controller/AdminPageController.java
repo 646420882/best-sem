@@ -54,4 +54,13 @@ public class AdminPageController implements Controller {
         return new ModelAndView("foundationReport/report");
     }
 
+    /**
+     * Ext后台界面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/newPage",method ={RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView getNewPage(){return new ModelAndView("homePage/pageBlock/index");}
+
+
 }

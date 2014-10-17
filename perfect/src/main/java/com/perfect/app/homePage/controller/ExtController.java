@@ -13,6 +13,6 @@ public class ExtController {
 
     @RequestMapping("/demo")
     public ModelAndView returnExtDemo(){
-        return new ModelAndView("ext/example");
+        return new ModelAndView("homePage/pageBlock/index");
     }
 }
