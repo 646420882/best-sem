@@ -14,10 +14,10 @@ import java.util.Map;
  * Created by SubDong on 2014/9/30.
  */
 @Repository("accountRegisterDao")
-public class AccountRegisterDaoImpl extends AbstractSysBaseDAOImpl<SystemUserEntity,Long> implements AccountRegisterDAO {
+public class AccountRegisterDaoImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, Long> implements AccountRegisterDAO {
     @Override
     public void addAccount(SystemUserEntity systemUserEntity) {
-        getSysMongoTemplate().insert(systemUserEntity,"sys_user");
+        getSysMongoTemplate().insert(systemUserEntity, "sys_user");
     }
 
     @Override

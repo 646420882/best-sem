@@ -41,7 +41,7 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
         List<FolderMonitorEntity> monitorEntities = new ArrayList<>();
 
         //监控文件夹数据
-        for (Folder folder:folders){
+        for (Folder folder : folders) {
             FolderEntity forlderEntity = new FolderEntity();
             forlderEntity.setFolderId(folder.getFolderId());
             forlderEntity.setFolderName(folder.getFolderName());
@@ -49,8 +49,8 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
             forlderEntities.add(forlderEntity);
         }
         //监控对象数据
-        for (FolderMonitor folder:folderMonitors){
-            for(Monitor monitor:folder.getMonitors()){
+        for (FolderMonitor folder : folderMonitors) {
+            for (Monitor monitor : folder.getMonitors()) {
                 FolderMonitorEntity folderMonitorEntity = new FolderMonitorEntity();
                 folderMonitorEntity.setFolderId(monitor.getFolderId());
                 folderMonitorEntity.setAdgroupId(monitor.getAdgroupId());
@@ -66,9 +66,9 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
         int JudgeFD = monitorSynchronizedDAO.insterData(forlderEntities);
         int JudgeMT = monitorSynchronizedDAO.insterMoniterData(monitorEntities);
 
-        if(JudgeFD ==1 && JudgeMT == 1){
+        if (JudgeFD == 1 && JudgeMT == 1) {
             return 1;
-        }else{
+        } else {
             return -1;
         }
     }

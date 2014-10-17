@@ -66,7 +66,7 @@ public class AccountReportPCPlusMobUtil extends RecursiveTask<List<AccountReport
                         dto.setPcCpc((objectList.get(i).getPcCost().divide(BigDecimal.valueOf(objectList.get(i).getPcClick()), 2, BigDecimal.ROUND_UP)));
                     }
                 } else {
-                    BigDecimal newNumber = (objectList.get(i).getPcCost().add((objectList.get(i).getMobileCost() == null) ? BigDecimal.valueOf(0) : objectList.get(i).getMobileCost())).divide(BigDecimal.valueOf(objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick())),2,BigDecimal.ROUND_UP);
+                    BigDecimal newNumber = (objectList.get(i).getPcCost().add((objectList.get(i).getMobileCost() == null) ? BigDecimal.valueOf(0) : objectList.get(i).getMobileCost())).divide(BigDecimal.valueOf(objectList.get(i).getPcClick() + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick())), 2, BigDecimal.ROUND_UP);
                     dto.setPcCpc(newNumber);
                 }
                 dto.setPcImpression(objectList.get(i).getPcImpression() + ((objectList.get(i).getMobileImpression() == null) ? 0 : objectList.get(i).getMobileImpression()));

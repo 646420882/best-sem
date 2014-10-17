@@ -9,7 +9,7 @@
 
 <%
     String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <html>
 <head>
@@ -18,20 +18,20 @@
     <link type="text/css" href="../public/css/accountCss/public.css" rel="stylesheet">
     <title></title>
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function () {
             alert(1);
             var $tab_li = $('.tab_menu li');
-            $tab_li.hover(function(){
+            $tab_li.hover(function () {
                 $(this).addClass('selected').siblings().removeClass('selected');
                 var index = $tab_li.index(this);
                 $('div.tab_box > div').eq(index).show().siblings().hide();
             });
         });
-        function TestBlack(TagName){
+        function TestBlack(TagName) {
             var obj = document.getElementById(TagName);
-            if(obj.style.display==""){
+            if (obj.style.display == "") {
                 obj.style.display = "none";
-            }else{
+            } else {
                 obj.style.display = "";
             }
         }
@@ -40,28 +40,28 @@
 <body>
 <div class="concent over">
     <jsp:include page="pageBlock/nav.jsp" flush="true"/>
-    <div class="list01 over"  style="border-bottom:1px solid #d5d5d8;">
-        <div class="list01_top over"> <Span>账户趋势图</Span> <a href="#" class="question"></a>
+    <div class="list01 over" style="border-bottom:1px solid #d5d5d8;">
+        <div class="list01_top over"><Span>账户趋势图</Span> <a href="#" class="question"></a>
             <ul>
                 <li class="current"><a href="#">昨天</a></li>
                 <li><a href="#">近7天</a></li>
                 <li><a href="#">近30天</a></li>
                 <li class="date"><a href="#">自定义
                     <input type="image" src="img/date.png">
-                </a> </li>
+                </a></li>
             </ul>
         </div>
-        <div class="shuju"> <img src="images/tu.jpg"> </div>
+        <div class="shuju"><img src="images/tu.jpg"></div>
     </div>
-    <div class="list01_under3 over" >
-        <div class="list01_top over"> <Span>分日表现</Span> <a href="#" class="question"></a>
+    <div class="list01_under3 over">
+        <div class="list01_top over"><Span>分日表现</Span> <a href="#" class="question"></a>
             <ul>
                 <li class="current"><a href="#">昨天</a></li>
                 <li><a href="#">近7天</a></li>
                 <li><a href="#">近30天</a></li>
                 <li class="date"><a href="#">自定义
                     <input type="image" src="img/date.png">
-                </a> </li>
+                </a></li>
             </ul>
         </div>
         <div class="list02 wd">
@@ -71,6 +71,7 @@
                         <p>
                             <input class="one" type="button">
                         </p>
+
                         <p>
                             <input class="two" type="button">
                         </p>
@@ -79,6 +80,7 @@
                         <p>
                             <input class="one" type="button">
                         </p>
+
                         <p>
                             <input class="two" type="button">
                         </p>
@@ -87,6 +89,7 @@
                         <p>
                             <input class="one" type="button">
                         </p>
+
                         <p>
                             <input class="two" type="button">
                         </p>
@@ -95,6 +98,7 @@
                         <p>
                             <input class="one" type="button">
                         </p>
+
                         <p>
                             <input class="two" type="button">
                         </p>
@@ -103,6 +107,7 @@
                         <p>
                             <input class="one" type="button">
                         </p>
+
                         <p>
                             <input class="two" type="button">
                         </p>
@@ -111,6 +116,7 @@
                         <p>
                             <input class="one" type="button">
                         </p>
+
                         <p>
                             <input class="two" type="button">
                         </p>
@@ -119,6 +125,7 @@
                         <p>
                             <input class="one" type="button">
                         </p>
+
                         <p>
                             <input class="two" type="button">
                         </p>
@@ -127,6 +134,7 @@
                         <p>
                             <input class="one" type="button">
                         </p>
+
                         <p>
                             <input class="two" type="button">
                         </p>
@@ -209,7 +217,7 @@
                     <option>9个</option>
                     <option>8个</option>
                 </select>
-                </span><a href="#">下载全部</a> </div>
+                </span><a href="#">下载全部</a></div>
         </div>
         <jsp:include page="pageBlock/footer.jsp" flush="true"/>
     </div>

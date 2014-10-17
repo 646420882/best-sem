@@ -3,7 +3,6 @@ package com.perfect.service.impl;
 
 import com.google.common.primitives.Bytes;
 import com.perfect.dao.AccountAnalyzeDAO;
-import com.perfect.entity.AccountRealTimeDataVOEntity;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import com.perfect.mongodb.utils.Performance;
@@ -11,7 +10,8 @@ import com.perfect.service.PerformanceService;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
@@ -291,9 +291,9 @@ public class PerformanceServiceImpl implements PerformanceService {
                 cal1.setTime(date.get(i));
                 cal2.setTime(date.get(i - 1));
                 long e = (cal1.getTimeInMillis() - cal2.getTimeInMillis()) / (1000 * 60 * 60 * 24);
-                long dataMis =  cal2.getTimeInMillis();
+                long dataMis = cal2.getTimeInMillis();
                 for (int s = 0; s < e; s++) {
-                    dataMis =  dataMis + (1000 * 60 * 60 * 24);
+                    dataMis = dataMis + (1000 * 60 * 60 * 24);
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis(dataMis);
                     date.add(calendar.getTime());

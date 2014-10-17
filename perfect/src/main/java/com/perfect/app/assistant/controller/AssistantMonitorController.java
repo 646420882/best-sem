@@ -3,9 +3,6 @@ package com.perfect.app.assistant.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.mongodb.WriteResult;
-import com.perfect.autosdk.sms.v3.Folder;
-import com.perfect.autosdk.sms.v3.Monitor;
 import com.perfect.dto.KeywordDTO;
 import com.perfect.entity.FolderEntity;
 import com.perfect.service.MonitorSynchronizedService;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,8 +56,8 @@ public class AssistantMonitorController {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
         ObjectNode jsonNodes = null;
-        if(folder.size() > 0){
-            for(FolderEntity entity : folder){
+        if (folder.size() > 0) {
+            for (FolderEntity entity : folder) {
                 jsonNodes = mapper.createObjectNode();
                 jsonNodes.put("id", entity.getFolderId());
                 jsonNodes.put("pid", 0);
@@ -69,8 +65,8 @@ public class AssistantMonitorController {
                 arrayNode.add(jsonNodes);
             }
         }
-        Map<String,Object> listMap = new HashMap<>();
-        listMap.put("tree",arrayNode);
+        Map<String, Object> listMap = new HashMap<>();
+        listMap.put("tree", arrayNode);
         webContext.writeJson(listMap, response);
     }
 
@@ -83,8 +79,8 @@ public class AssistantMonitorController {
     public void getFolder(HttpServletResponse response) {
         List<FolderEntity> folder = monitoringService.getFolder();
 
-        Map<String,List<FolderEntity>> listMap = new HashMap<>();
-            listMap.put("rows",folder);
+        Map<String, List<FolderEntity>> listMap = new HashMap<>();
+        listMap.put("rows", folder);
         webContext.writeJson(listMap, response);
     }
 
@@ -97,8 +93,8 @@ public class AssistantMonitorController {
     public void getMonitor(HttpServletResponse response) {
         List<KeywordDTO> keywordDTOs = monitoringService.getMonitor();
 
-        Map<String,List<KeywordDTO>> listMap = new HashMap<>();
-        listMap.put("rows",keywordDTOs);
+        Map<String, List<KeywordDTO>> listMap = new HashMap<>();
+        listMap.put("rows", keywordDTOs);
         webContext.writeJson(listMap, response);
     }
 
@@ -112,8 +108,8 @@ public class AssistantMonitorController {
                              @RequestParam(value = "forlder", required = false) Long forlder) {
         List<KeywordDTO> keywordDTOs = monitoringService.getMonitorId(forlder);
 
-        Map<String,List<KeywordDTO>> listMap = new HashMap<>();
-        listMap.put("rows",keywordDTOs);
+        Map<String, List<KeywordDTO>> listMap = new HashMap<>();
+        listMap.put("rows", keywordDTOs);
         webContext.writeJson(listMap, response);
     }
 
@@ -124,8 +120,8 @@ public class AssistantMonitorController {
      */
     @RequestMapping(value = "/monitoring/updateFolderName", method = {RequestMethod.GET, RequestMethod.POST})
     public void updateFolderName(HttpServletResponse response,
-                             @RequestParam(value = "forlderId", required = false) Long forlderId,
-                             @RequestParam(value = "forlderName", required = false) String forlderName) {
+                                 @RequestParam(value = "forlderId", required = false) Long forlderId,
+                                 @RequestParam(value = "forlderName", required = false) String forlderName) {
         boolean writeResult = monitoringService.updateFolderName(forlderId, forlderName);
 
         try {
@@ -171,7 +167,7 @@ public class AssistantMonitorController {
      */
     @RequestMapping(value = "/monitoring/removeFolder", method = {RequestMethod.GET, RequestMethod.POST})
     public void deleteFolder(HttpServletResponse response,
-                                 @RequestParam(value = "forlderId", required = false) Long forlderId) {
+                             @RequestParam(value = "forlderId", required = false) Long forlderId) {
 
         boolean folder = monitoringService.deleteFolder(forlderId);
 
@@ -195,7 +191,7 @@ public class AssistantMonitorController {
      */
     @RequestMapping(value = "/monitoring/removeMonitor", method = {RequestMethod.GET, RequestMethod.POST})
     public void deleteMonitor(HttpServletResponse response,
-                             @RequestParam(value = "monitorId", required = false) Long monitorId) {
+                              @RequestParam(value = "monitorId", required = false) Long monitorId) {
 
         boolean folder = monitoringService.deleteMonitorId(monitorId);
 
@@ -220,12 +216,12 @@ public class AssistantMonitorController {
      */
     @RequestMapping(value = "/monitoring/addMonitor", method = {RequestMethod.GET, RequestMethod.POST})
     public void addMonitor(HttpServletResponse response,
-                              @RequestParam(value = "folderID", required = false) Long folderID,
-                              @RequestParam(value = "campaignId", required = false) Long campaignId,
-                              @RequestParam(value = "adgroupId", required = false) Long adgroupId,
-                              @RequestParam(value = "acliId", required = false) Long acliId) {
+                           @RequestParam(value = "folderID", required = false) Long folderID,
+                           @RequestParam(value = "campaignId", required = false) Long campaignId,
+                           @RequestParam(value = "adgroupId", required = false) Long adgroupId,
+                           @RequestParam(value = "acliId", required = false) Long acliId) {
 
-        int folder = monitoringService.addMonitorId(folderID,campaignId,adgroupId,acliId);
+        int folder = monitoringService.addMonitorId(folderID, campaignId, adgroupId, acliId);
 
         try {
             response.setContentType("text/html;charset=UTF-8");

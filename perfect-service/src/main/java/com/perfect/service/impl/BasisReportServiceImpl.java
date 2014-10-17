@@ -1626,7 +1626,7 @@ public class BasisReportServiceImpl implements BasisReportService {
     }
 
     @Override
-    public void downReportCSV(OutputStream os, String redisKey, int dateType, int terminal,int reportType,String dateHead) {
+    public void downReportCSV(OutputStream os, String redisKey, int dateType, int terminal, int reportType, String dateHead) {
         Jedis jc = JRedisUtils.get();
         Gson gson = new Gson();
         String data = jc.get(redisKey);
@@ -1639,15 +1639,15 @@ public class BasisReportServiceImpl implements BasisReportService {
             try {
 
                 os.write(Bytes.concat(commonCSVHead, (head).getBytes(StandardCharsets.UTF_8)));
-                if(terminal != 2){
+                if (terminal != 2) {
                     for (StructureReportEntity entity : list) {
                         os.write(Bytes.concat(commonCSVHead, (dateHead +
-                                ((entity.getAccount() == null)?"":DEFAULT_DELIMITER + entity.getAccount()) +
-                                ((entity.getCampaignName() == null)?"":DEFAULT_DELIMITER + entity.getCampaignName()) +
-                                ((entity.getAdgroupName() == null)?"":DEFAULT_DELIMITER + entity.getAdgroupName()) +
-                                ((entity.getKeywordName() == null)?"":DEFAULT_DELIMITER + entity.getKeywordName()) +
-                                ((entity.getCreativeTitle() == null)?"":DEFAULT_DELIMITER + entity.getCreativeTitle()) +
-                                ((entity.getRegionName() == null)?"":DEFAULT_DELIMITER + entity.getRegionName()) +
+                                ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
+                                ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
+                                ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName()) +
+                                ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName()) +
+                                ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle()) +
+                                ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName()) +
                                 DEFAULT_DELIMITER + entity.getPcImpression() +
                                 DEFAULT_DELIMITER + entity.getPcClick() +
                                 DEFAULT_DELIMITER + entity.getPcCost() +
@@ -1656,15 +1656,15 @@ public class BasisReportServiceImpl implements BasisReportService {
                                 DEFAULT_DELIMITER + entity.getPcConversion() +
                                 DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
                     }
-                }else{
+                } else {
                     for (StructureReportEntity entity : list) {
                         os.write(Bytes.concat(commonCSVHead, (dateHead +
-                                ((entity.getAccount() == null)?"":DEFAULT_DELIMITER + entity.getAccount()) +
-                                ((entity.getCampaignName() == null)?"":DEFAULT_DELIMITER + entity.getCampaignName()) +
-                                ((entity.getAdgroupName() == null)?"":DEFAULT_DELIMITER + entity.getAdgroupName()) +
-                                ((entity.getKeywordName() == null)?"":DEFAULT_DELIMITER + entity.getKeywordName()) +
-                                ((entity.getCreativeTitle() == null)?"":DEFAULT_DELIMITER + entity.getCreativeTitle()) +
-                                ((entity.getRegionName() == null)?"":DEFAULT_DELIMITER + entity.getRegionName()) +
+                                ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
+                                ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
+                                ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName()) +
+                                ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName()) +
+                                ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle()) +
+                                ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName()) +
                                 DEFAULT_DELIMITER + entity.getMobileImpression() +
                                 DEFAULT_DELIMITER + entity.getMobileClick() +
                                 DEFAULT_DELIMITER + entity.getMobileCost() +
@@ -1685,14 +1685,14 @@ public class BasisReportServiceImpl implements BasisReportService {
             try {
 
                 os.write(Bytes.concat(commonCSVHead, (head).getBytes(StandardCharsets.UTF_8)));
-                if(terminal != 2){
+                if (terminal != 2) {
                     for (Map.Entry<String, List<StructureReportEntity>> voEntity : responseMap.entrySet()) {
                         for (StructureReportEntity entity : voEntity.getValue()) {
                             os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
                                     ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
                                     ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
                                     ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName()) +
-                                    ((entity.getKeywordName() == null)?"":DEFAULT_DELIMITER + entity.getKeywordName()) +
+                                    ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName()) +
                                     ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle()) +
                                     ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName()) +
                                     DEFAULT_DELIMITER + entity.getPcImpression() +
@@ -1704,14 +1704,14 @@ public class BasisReportServiceImpl implements BasisReportService {
                                     DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
                         }
                     }
-                }else{
+                } else {
                     for (Map.Entry<String, List<StructureReportEntity>> voEntity : responseMap.entrySet()) {
                         for (StructureReportEntity entity : voEntity.getValue()) {
                             os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
                                     ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
                                     ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
                                     ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName()) +
-                                    ((entity.getKeywordName() == null)?"":DEFAULT_DELIMITER + entity.getKeywordName()) +
+                                    ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName()) +
                                     ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle()) +
                                     ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName()) +
                                     DEFAULT_DELIMITER + entity.getMobileImpression() +
@@ -1734,7 +1734,7 @@ public class BasisReportServiceImpl implements BasisReportService {
     }
 
     @Override
-    public void downAccountReportCSV(OutputStream os, Date startDate, Date endDate,Date startDate1, Date endDate1,int dateType,int devices,String sortVS,int startVS,int limitVS) {
+    public void downAccountReportCSV(OutputStream os, Date startDate, Date endDate, Date startDate1, Date endDate1, int dateType, int devices, String sortVS, int startVS, int limitVS) {
         Date[] dateOne = getDateProcessing(startDate, endDate);
         Date[] dateTow = getDateProcessing(startDate1, endDate1);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -1782,11 +1782,11 @@ public class BasisReportServiceImpl implements BasisReportService {
                         e.printStackTrace();
                     }
 
-                }else {
+                } else {
                     //计算点击率、平均价格
                     Map<String, List<AccountReportDTO>> responseMapAverageOne = getAverage(responseMapOne);
 
-                    if(devices == 1){
+                    if (devices == 1) {
                         try {
                             os.write(Bytes.concat(commonCSVHead, ("时间" +
                                     DEFAULT_DELIMITER + "展现量" +
@@ -1811,7 +1811,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }else if(devices == 2){
+                    } else if (devices == 2) {
                         try {
                             os.write(Bytes.concat(commonCSVHead, ("时间" +
                                     DEFAULT_DELIMITER + "展现量" +
@@ -1864,7 +1864,6 @@ public class BasisReportServiceImpl implements BasisReportService {
                 }
 
 
-
                 if (devices == 0) {
                     Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne1);
                     List<Object> objectList1 = new ArrayList<>();
@@ -1905,7 +1904,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }else{
+                } else {
                     for (Object o : objectListDateOne1) {
                         if (responseMapOne1.get(o) == null) {
                             List<AccountReportDTO> accountReportDTOs = new ArrayList<>();
@@ -1915,7 +1914,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         }
                     }
 
-                    if(devices == 1){
+                    if (devices == 1) {
                         try {
                             os.write(Bytes.concat(commonCSVHead, ("时间" +
                                     DEFAULT_DELIMITER + "展现量" +
@@ -1941,7 +1940,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }else{
+                    } else {
                         try {
                             os.write(Bytes.concat(commonCSVHead, ("时间" +
                                     DEFAULT_DELIMITER + "展现量" +
@@ -2074,7 +2073,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                             e.printStackTrace();
                         }
                     } else {
-                        if(devices == 1){
+                        if (devices == 1) {
                             try {
                                 for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMapOne3.entrySet()) {
                                     for (AccountReportDTO entity : voEntity.getValue()) {
@@ -2091,7 +2090,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                        }else {
+                        } else {
                             try {
                                 for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMapOne3.entrySet()) {
                                     for (AccountReportDTO entity : voEntity.getValue()) {
@@ -2171,7 +2170,6 @@ public class BasisReportServiceImpl implements BasisReportService {
                 for (AccountReportDTO responseYue : listOne3) {
                     objectListDateOne3.add(responseYue.getDate());
                 }
-
 
 
                 Map<String, List<AccountReportDTO>> objectList3 = new HashMap<>();
@@ -2292,7 +2290,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         e.printStackTrace();
                     }
                 } else {
-                    if(devices == 1){
+                    if (devices == 1) {
                         try {
                             os.write(Bytes.concat(commonCSVHead, ("时间" +
                                     DEFAULT_DELIMITER + "展现量" +
@@ -2318,7 +2316,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }else {
+                    } else {
                         try {
                             os.write(Bytes.concat(commonCSVHead, ("时间" +
                                     DEFAULT_DELIMITER + "展现量" +
@@ -2652,8 +2650,8 @@ public class BasisReportServiceImpl implements BasisReportService {
                 voEntity.getValue().setPcCtr(0.00);
             } else {
                 double ctrAve = voEntity.getValue().getPcClick().doubleValue() / voEntity.getValue().getPcImpression();
-                double divide = ctrAve*10000;
-                voEntity.getValue().setPcCtr(divide/100);
+                double divide = ctrAve * 10000;
+                voEntity.getValue().setPcCtr(divide / 100);
             }
             if (voEntity.getValue().getPcClick() == null || voEntity.getValue().getPcClick() == 0) {
                 voEntity.getValue().setPcCpc(BigDecimal.valueOf(0.00));

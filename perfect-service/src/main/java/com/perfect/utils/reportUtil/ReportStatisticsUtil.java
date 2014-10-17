@@ -46,7 +46,7 @@ public class ReportStatisticsUtil extends RecursiveTask<Map<String, StructureRep
                 voEntity.setPcCpc(BigDecimal.valueOf(0));
                 voEntity.setPcImpression((voEntity.getPcImpression() == null ? 0 : voEntity.getPcImpression()) + ((objectList.get(i).getPcImpression() == null) ? 0 : objectList.get(i).getPcImpression()));
             }
-            map.put("Statist",voEntity);
+            map.put("Statist", voEntity);
             return map;
         } else {
             int midpoint = (begin + endNumber) / 2;
@@ -78,24 +78,24 @@ public class ReportStatisticsUtil extends RecursiveTask<Map<String, StructureRep
             for (Iterator<Map.Entry<String, StructureReportEntity>> entry2 = rightMap.entrySet().iterator(); entry2.hasNext(); ) {
 
                 StructureReportEntity mapValue2 = entry2.next().getValue();
-                    mapValue1.setMobileClick((mapValue1.getMobileClick() == null ? 0 : mapValue1.getMobileClick()) + (mapValue2.getMobileClick() == null ? 0 : mapValue2.getMobileClick()));
-                    mapValue1.setMobileConversion((mapValue1.getMobileConversion() == null ? 0 : mapValue1.getMobileConversion()) + (mapValue2.getMobileConversion() == null ? 0 : mapValue2.getMobileConversion()));
-                    mapValue1.setMobileCost((mapValue1.getMobileCost() == null ? BigDecimal.valueOf(0) : mapValue1.getMobileCost()).add(mapValue2.getMobileCost() == null ? BigDecimal.valueOf(0) : mapValue2.getMobileCost()));
-                    mapValue1.setMobileCtr(0d);
-                    mapValue1.setMobileCtr(0d);
-                    mapValue1.setMobileImpression((mapValue1.getMobileImpression() == null ? 0 : mapValue1.getMobileImpression()) + (mapValue2.getMobileImpression() == null ? 0 : mapValue2.getMobileImpression()));
-                    mapValue1.setPcClick((mapValue1.getPcClick() == null ? 0 : mapValue1.getPcClick()) + (mapValue2.getPcClick() == null ? 0 : mapValue2.getPcClick()));
-                    mapValue1.setPcConversion((mapValue1.getPcConversion() == null ? 0 : mapValue1.getPcConversion()) + (mapValue2.getPcConversion() == null ? 0 : mapValue2.getPcConversion()));
-                    mapValue1.setPcCost((mapValue1.getPcCost() == null ? BigDecimal.valueOf(0) : mapValue1.getPcCost()).add(mapValue2.getPcCost() == null ? BigDecimal.valueOf(0) : mapValue2.getPcCost()));
-                    mapValue1.setPcCtr(0d);
-                    mapValue1.setPcCpc(BigDecimal.valueOf(0));
-                    mapValue1.setPcImpression((mapValue1.getPcImpression() == null ? 0 : mapValue1.getPcImpression()) + (mapValue2.getPcImpression() == null ? 0 : mapValue2.getPcImpression()));
+                mapValue1.setMobileClick((mapValue1.getMobileClick() == null ? 0 : mapValue1.getMobileClick()) + (mapValue2.getMobileClick() == null ? 0 : mapValue2.getMobileClick()));
+                mapValue1.setMobileConversion((mapValue1.getMobileConversion() == null ? 0 : mapValue1.getMobileConversion()) + (mapValue2.getMobileConversion() == null ? 0 : mapValue2.getMobileConversion()));
+                mapValue1.setMobileCost((mapValue1.getMobileCost() == null ? BigDecimal.valueOf(0) : mapValue1.getMobileCost()).add(mapValue2.getMobileCost() == null ? BigDecimal.valueOf(0) : mapValue2.getMobileCost()));
+                mapValue1.setMobileCtr(0d);
+                mapValue1.setMobileCtr(0d);
+                mapValue1.setMobileImpression((mapValue1.getMobileImpression() == null ? 0 : mapValue1.getMobileImpression()) + (mapValue2.getMobileImpression() == null ? 0 : mapValue2.getMobileImpression()));
+                mapValue1.setPcClick((mapValue1.getPcClick() == null ? 0 : mapValue1.getPcClick()) + (mapValue2.getPcClick() == null ? 0 : mapValue2.getPcClick()));
+                mapValue1.setPcConversion((mapValue1.getPcConversion() == null ? 0 : mapValue1.getPcConversion()) + (mapValue2.getPcConversion() == null ? 0 : mapValue2.getPcConversion()));
+                mapValue1.setPcCost((mapValue1.getPcCost() == null ? BigDecimal.valueOf(0) : mapValue1.getPcCost()).add(mapValue2.getPcCost() == null ? BigDecimal.valueOf(0) : mapValue2.getPcCost()));
+                mapValue1.setPcCtr(0d);
+                mapValue1.setPcCpc(BigDecimal.valueOf(0));
+                mapValue1.setPcImpression((mapValue1.getPcImpression() == null ? 0 : mapValue1.getPcImpression()) + (mapValue2.getPcImpression() == null ? 0 : mapValue2.getPcImpression()));
 
-                    dataMap.put("Statist", mapValue1);
+                dataMap.put("Statist", mapValue1);
 
-                    entry1.remove();
-                    entry2.remove();
-                    break;
+                entry1.remove();
+                entry2.remove();
+                break;
             }
         }
         dataMap.putAll(leftMap);
