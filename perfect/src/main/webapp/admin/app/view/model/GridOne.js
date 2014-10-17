@@ -4,13 +4,13 @@
 var comboboxSotre = Ext.create("Ext.data.Store", {
     fields: ["text", "id"],
     data: [
-        {'text': '拉取全部报告', 'id': -1},
-        {'text': '拉取账户报告', 'id': 0},
-        {'text': '拉取计划报告', 'id': 1},
-        {'text': '拉取单元报告', 'id': 2},
-        {'text': '拉取创意报告', 'id': 3},
-        {'text': '拉取关键词报告', 'id': 4},
-        {'text': '拉取地域报告', 'id': 5}
+        {'text': '拉取全部报告', 'id': 0},
+        {'text': '拉取账户报告', 'id': 1},
+        {'text': '拉取计划报告', 'id': 2},
+        {'text': '拉取单元报告', 'id': 3},
+        {'text': '拉取创意报告', 'id': 4},
+        {'text': '拉取关键词报告', 'id': 5},
+        {'text': '拉取地域报告', 'id': 6}
     ]
 });
 
@@ -32,7 +32,7 @@ Ext.define("Perfect.view.model.GridOne", {
         },
         {
             xtype: 'form',
-            url: 'save-form.php',
+            url: 'reportPull/getPullDatas',
             layout: 'anchor',
             bodyPadding: 5,
             border: true,
@@ -58,19 +58,13 @@ Ext.define("Perfect.view.model.GridOne", {
                             items: [
                                 {
                                     fieldLabel: '开始时间',
-                                    name: 'dateStar',
-                                    emptyText: '开始时间',
-                                    allowBlank: false,
-                                    afterLabelTextTpl: required,
+                                    name: 'startDate',
                                     anchor: '100%',
                                     format:'Y-m-d'
                                 },
                                 {
                                     fieldLabel: '结束时间',
-                                    name: 'dateEnd',
-                                    emptyText: '结束时间',
-                                    allowBlank: false,
-                                    afterLabelTextTpl: required,
+                                    name: 'endDate',
                                     anchor: '100%',
                                     format:'Y-m-d'
                                 }
@@ -89,6 +83,7 @@ Ext.define("Perfect.view.model.GridOne", {
                             fieldLabel: '选择拉取类型',
                             store: comboboxSotre,
                             queryMode: 'local',
+                            name:'pullObj',
                             displayField: 'text',
                             valueField: 'id',
                             emptyText: '拉取类型',
@@ -123,8 +118,8 @@ Ext.define("Perfect.view.model.GridOne", {
                     handler: function () {
                         var form = this.up("form").getForm();
                         if (form.isValid()) {
-
                             form.submit({
+                                waitMsg: '数据拉取中...',
                                 success: function (form, action) {
                                     Ext.Msg.alert("Success", "成功了！");
                                     form.reset();
