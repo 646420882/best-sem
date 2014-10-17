@@ -29,7 +29,7 @@ public class KeywordPopupController {
     }
 
     @RequestMapping(value = "/deletekeyword", method = RequestMethod.GET)
-    public ModelAndView todeleteKeywordIframePage() {
+    public ModelAndView toDeleteKeywordIframePage() {
         return new ModelAndView("popup/keyword/deletekeyword");
     }
 

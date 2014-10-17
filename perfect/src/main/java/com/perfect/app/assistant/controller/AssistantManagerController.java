@@ -1,4 +1,4 @@
-package com.perfect.app.assistantManager.controller;
+package com.perfect.app.assistant.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

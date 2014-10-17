@@ -1,4 +1,4 @@
-package com.perfect.app.assistantAdgroup.controller;
+package com.perfect.app.assistant.controller;
 
 import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;

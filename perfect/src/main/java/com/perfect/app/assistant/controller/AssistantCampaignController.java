@@ -1,4 +1,4 @@
-package com.perfect.app.assistantCampaign.controller;
+package com.perfect.app.assistant.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

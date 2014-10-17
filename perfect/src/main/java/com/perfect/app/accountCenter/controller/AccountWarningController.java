@@ -1,4 +1,4 @@
-package com.perfect.app.accountWarnings.controller;
+package com.perfect.app.accountCenter.controller;
 
 import com.perfect.core.AppContext;
 import com.perfect.dao.AccountWarningDAO;

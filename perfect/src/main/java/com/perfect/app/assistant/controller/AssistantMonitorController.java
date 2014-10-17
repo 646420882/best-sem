@@ -1,4 +1,4 @@
-package com.perfect.app.assistantMonitoring.controller;
+package com.perfect.app.assistant.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -30,7 +30,7 @@ import java.util.Map;
  */
 @RestController
 @Scope("prototype")
-public class MonitorController {
+public class AssistantMonitorController {
     @Resource
     private MonitoringService monitoringService;
     @Resource

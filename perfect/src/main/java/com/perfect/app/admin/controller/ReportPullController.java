@@ -1,4 +1,4 @@
-package com.perfect.app.reportPull.controller;
+package com.perfect.app.admin.controller;
 
 import com.google.gson.Gson;
 import com.perfect.core.AppContext;
@@ -23,7 +23,7 @@ import java.util.List;
  * Created by SubDong on 2014/10/8.
  */
 @RestController
-public class ReportPull {
+public class ReportPullController {
 
     @Resource
     private AsynchronousReportDAO asynchronousReportDAO;

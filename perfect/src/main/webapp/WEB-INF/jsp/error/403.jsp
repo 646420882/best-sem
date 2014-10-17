@@ -1,19 +1,17 @@
 <%--
   Created by IntelliJ IDEA.
   User: baizz
-  Date: 2014-6-27
-  Time: 10:13
+  Date: 2014-10-17
+  Time: 11:40
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!doctype html>
+<html>
 <head>
-    <title>500 error</title>
+    <title>403 error</title>
 </head>
 <body>
-
-<h3 align="center" style="color: #f00">500</h3>
-
+<h3 align="center" style="color: #f00">访问被禁止</h3>
 </body>
 </html>

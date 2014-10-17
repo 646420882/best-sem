@@ -1,4 +1,4 @@
-package com.perfect.app.assistantCreative.controller;
+package com.perfect.app.assistant.controller;
 
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ResHeader;

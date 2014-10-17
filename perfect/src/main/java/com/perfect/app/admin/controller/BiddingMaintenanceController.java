@@ -1,4 +1,4 @@
-package com.perfect.app.bidding.controller;
+package com.perfect.app.admin.controller;
 
 import com.perfect.entity.UrlEntity;
 import com.perfect.service.BiddingMaintenanceService;

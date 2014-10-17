@@ -1,4 +1,4 @@
-package com.perfect.app.keyword.controller;
+package com.perfect.app.admin.controller;
 
 import com.perfect.entity.LexiconEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
 
 /**
  * Created by baizz on 2014-10-9.
@@ -120,13 +121,43 @@ public class ImportLexiconExcelController {
         } else {
             query.addCriteria(Criteria.where("tr").is(trade));
         }
-//        mongoTemplate.remove(query, LexiconEntity.class);
+        mongoTemplate.remove(query, LexiconEntity.class);
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> result = new HashMap<String, Object>() {{
             put("status", true);
         }};
         jsonView.setAttributesMap(result);
         return new ModelAndView(jsonView);
+    }
+
+    class LexiconTask extends RecursiveAction {
+        private int first;
+        private int last;
+        private List<LexiconEntity> entityList;
+
+        LexiconTask(List<LexiconEntity> entityList, int first, int last) {
+            this.entityList = entityList;
+            this.first = first;
+            this.last = last;
+        }
+
+        @Override
+        protected void compute() {
+            if (last - first < 3_000) {
+                List<LexiconEntity> list = new ArrayList<>();
+                for (int i = first; i <= last; i++) {
+                    LexiconEntity entity = entityList.get(i);
+                    list.add(entity);
+                }
+                MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+                mongoTemplate.insertAll(list);
+            } else {
+                int middle = (last - first) / 2;
+                LexiconTask task1 = new LexiconTask(entityList, first, middle + first);
+                LexiconTask task2 = new LexiconTask(entityList, middle + first + 1, last);
+                invokeAll(task1, task2);
+            }
+        }
     }
 
 }

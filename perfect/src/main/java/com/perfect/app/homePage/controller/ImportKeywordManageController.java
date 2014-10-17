@@ -30,7 +30,7 @@ import java.util.*;
  * Created by XiaoWei on 2014/7/29.
  */
 @Controller
-public class ImportKeywordManager extends WebContextSupport {
+public class ImportKeywordManageController extends WebContextSupport {
 
     @Resource
     private KeywordReportService keywordReportService;
