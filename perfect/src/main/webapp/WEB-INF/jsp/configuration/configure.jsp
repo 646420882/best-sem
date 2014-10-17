@@ -39,6 +39,11 @@
         .help-block{
             width:150px;
         }
+        .col-lg-5{
+            width:150px;
+            height:34px;
+            padding:0px;
+        }
 
     </style>
 </head>

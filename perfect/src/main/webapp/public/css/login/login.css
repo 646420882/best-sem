@@ -90,7 +90,7 @@ ul, ol {
     display: block;
     position: absolute;
     right: 10px;
-    top: 4px;
+    top: 8px;
     *top:10px;
     z-index: 3;
 }
