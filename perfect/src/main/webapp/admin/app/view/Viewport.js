@@ -1,6 +1,9 @@
 /**
  * Created by XiaoWei on 2014/10/13.
  */
+Ext.onReady(function(){
+    Ext.require("Perfect.view.Navigation");
+});
 Ext.Date.patterns = {
     ISO8601Long:"Y-m-d H:i:s",
     ISO8601Short:"Y-m-d",
@@ -15,7 +18,6 @@ Ext.Date.patterns = {
     YearMonth: "F, Y"
 };
 var dt = new Date();
-
 var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
 var myData = [
     [1,23,'girl',"成都市天祥街","无标记"],
@@ -33,10 +35,6 @@ var store = Ext.create('Ext.data.ArrayStore', {
     ],
     data: myData
 });
-Ext.create("Perfect.view.Navigation");
-Ext.create("Perfect.view.model.GridOne");
-Ext.create("Perfect.view.model.JingJia");
-Ext.create("Perfect.view.model.CiKu");
 Ext.define("Perfect.view.Viewport", {
     extend: "Ext.container.Viewport",
     layout:'border',
@@ -48,7 +46,6 @@ Ext.define("Perfect.view.Viewport", {
     }, {
         region: 'west',
         xtype:"nav"
-        // could use a TreePanel or AccordionLayout for navigational items
     }, {
         xtype:"toolbar",
         region: 'south',
@@ -66,8 +63,8 @@ Ext.define("Perfect.view.Viewport", {
     }, {
         region: 'center',
         id:'tabs',
-        xtype: 'tabpanel', // TabPanel itself has no title
-        activeTab: 0     // First tab active by default
+        xtype: 'tabpanel',
+        activeTab: 0     // 默认选中第几个选项卡
     }]
 
 });

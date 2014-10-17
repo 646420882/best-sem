@@ -4,11 +4,10 @@
 Ext.define('Perfect.Application', {
     extend: 'Ext.app.Application',
     name: 'Perfect',
-    views: [
-//        'main.MainController','main.MainModel'
-//        'model.ViewModel'
-    ],
+    views: [],
     controllers: [],
     stores: [],
-    launch: function () {}
+    launch: function () {
+
+    }
 });
