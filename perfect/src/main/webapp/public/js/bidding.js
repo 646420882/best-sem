@@ -20,7 +20,7 @@ var _filter = null;
 
 //高级搜索功能
 var matchType = null;
-var keywordQuality = null;
+var keywordQuality = "";
 var keywordPrice = null;
 
 $(function () {
