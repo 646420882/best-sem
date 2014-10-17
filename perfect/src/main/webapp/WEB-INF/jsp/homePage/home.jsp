@@ -15,11 +15,10 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/zTreeStyle/Normalize.css">--%>
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
-    <link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico"/>
+    <%--<link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico"/>--%>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style>
         .page2 .ajc {
@@ -1096,8 +1095,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/keyword/keywordQuality.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/highcharts.js"></script>
@@ -1188,6 +1186,9 @@ $(function () {
         var _startDate = $('.range-start').datepicker('getDate');
         var _endDate = $('.range-end').datepicker('getDate');
         if (_startDate != null && _endDate != null) {
+            if (_startDate > _endDate) {
+                return false;
+            }
             statDate = 0;
             daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
             daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
