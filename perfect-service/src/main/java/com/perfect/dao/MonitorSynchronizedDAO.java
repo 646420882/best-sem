@@ -11,5 +11,6 @@ import java.util.List;
 public interface MonitorSynchronizedDAO {
 
     public int insterData(List<FolderEntity> forlderEntities);
+
     public int insterMoniterData(List<FolderMonitorEntity> folderMonitorEntities);
 }

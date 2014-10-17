@@ -19,12 +19,12 @@ public class ReportConstants {
     //返回数据json头 常量
     public final static String REPORT_CHART = "chart";
     //返回合计数据头  常量
-    public final static String REPORT_STATISTICS ="statist";
+    public final static String REPORT_STATISTICS = "statist";
 
 
-
-
-/**********饼状图数据排序常量************/
+    /**
+     * *******饼状图数据排序常量***********
+     */
 
     public final static String REPORT_FUYI = "-1";
 

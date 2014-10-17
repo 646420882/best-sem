@@ -1,6 +1,5 @@
 package com.perfect.mongodb.utils;
 
-import com.perfect.api.baidu.KeywordRealTimeData;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
 
 import java.util.HashMap;
@@ -72,11 +71,11 @@ public class Performance extends RecursiveTask<Map<Long, KeywordRealTimeDataVOEn
     public Map<Long, KeywordRealTimeDataVOEntity> merge(Map<Long, KeywordRealTimeDataVOEntity> leftMap, Map<Long, KeywordRealTimeDataVOEntity> rightMap) {
         Map<Long, KeywordRealTimeDataVOEntity> dataMap = new HashMap<>();
 
-        for (Iterator<Map.Entry<Long, KeywordRealTimeDataVOEntity>> entry1 = leftMap.entrySet().iterator();entry1.hasNext();) {
+        for (Iterator<Map.Entry<Long, KeywordRealTimeDataVOEntity>> entry1 = leftMap.entrySet().iterator(); entry1.hasNext(); ) {
 
             KeywordRealTimeDataVOEntity mapValue1 = entry1.next().getValue();
 
-            for (Iterator<Map.Entry<Long,KeywordRealTimeDataVOEntity>> entry2 = rightMap.entrySet().iterator();entry2.hasNext();) {
+            for (Iterator<Map.Entry<Long, KeywordRealTimeDataVOEntity>> entry2 = rightMap.entrySet().iterator(); entry2.hasNext(); ) {
 
                 KeywordRealTimeDataVOEntity mapValue2 = entry2.next().getValue();
 

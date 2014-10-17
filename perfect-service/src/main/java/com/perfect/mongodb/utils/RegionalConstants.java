@@ -22,8 +22,6 @@ public class RegionalConstants {
     public static final String FIDE_PROVINCENAME = "provinceName";
 
 
-
-
     //static  00000
     //JSON 头
     public static final String STRING_ROWS = "rows";

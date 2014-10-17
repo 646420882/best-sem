@@ -14,15 +14,15 @@ import java.util.ArrayList;
  * Created by SubDong on 2014/9/30.
  */
 @Service("accountRegisterService")
-public class AccountRegisterServiceImpl implements AccountRegisterService{
+public class AccountRegisterServiceImpl implements AccountRegisterService {
 
     @Resource
     private AccountRegisterDAO accountRegisterDAO;
 
     @Override
-    public int addAccount(String account, String pwd, String company,String email) {
+    public int addAccount(String account, String pwd, String company, String email) {
 
-        SystemUserEntity userEntity= new SystemUserEntity();
+        SystemUserEntity userEntity = new SystemUserEntity();
         MD5.Builder md5Builder = new MD5.Builder();
         MD5 md5 = md5Builder.password(pwd).salt(account).build();
 
@@ -35,10 +35,10 @@ public class AccountRegisterServiceImpl implements AccountRegisterService{
         userEntity.setState(0);
         int returnState;
         SystemUserEntity user = accountRegisterDAO.getAccount(account);
-        if(user == null){
+        if (user == null) {
             accountRegisterDAO.addAccount(userEntity);
             returnState = 1;
-        }else{
+        } else {
             returnState = -1;
         }
         return returnState;

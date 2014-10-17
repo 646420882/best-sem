@@ -1,10 +1,7 @@
 package com.perfect.utils.reportUtil;
 
-import com.perfect.core.AppContext;
 import com.perfect.entity.StructureReportEntity;
-import com.perfect.service.AccountManageService;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,7 +25,7 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
 
     private List<StructureReportEntity> objectList;
 
-    public BasisReportDefaultUtil(List<StructureReportEntity> objects, int begin, int endNumber, int report,String userName) {
+    public BasisReportDefaultUtil(List<StructureReportEntity> objects, int begin, int endNumber, int report, String userName) {
         this.objectList = objects;
         this.endNumber = endNumber;
         this.begin = begin;
@@ -148,8 +145,8 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
             return map;
         } else {
             int midpoint = (begin + endNumber) / 2;
-            BasisReportDefaultUtil left = new BasisReportDefaultUtil(objectList, begin, midpoint, report,userName);
-            BasisReportDefaultUtil right = new BasisReportDefaultUtil(objectList, midpoint, endNumber, report,userName);
+            BasisReportDefaultUtil left = new BasisReportDefaultUtil(objectList, begin, midpoint, report, userName);
+            BasisReportDefaultUtil right = new BasisReportDefaultUtil(objectList, midpoint, endNumber, report, userName);
             invokeAll(left, right);
             try {
                 Map<String, StructureReportEntity> leftMap = left.get();

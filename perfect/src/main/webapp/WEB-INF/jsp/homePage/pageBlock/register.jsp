@@ -50,15 +50,17 @@
 
                             <div class="form-group has-feedback fl">
                                 <div class="col-lg-5">
-                                    <input type="text" class="form-control" name="username" >
+                                    <input type="text" class="form-control" name="username">
                                 </div>
                             </div>
                         </li>
                         <li>
                             <span>注册邮箱：</span>
+
                             <div class="form-group has-feedback fl">
                                 <div class="col-lg-5">
-                                    <input type="text" class="form-control" name="email" />
+                                    <input type="text" class="form-control" name="email"/>
+                                </div>
                             </div>
                         </li>
                         <li>
@@ -251,8 +253,7 @@
     });
     if ($("#dataRe").val() == 1) {
         $("#tishi").append("注册成功！                ");
-    }else if($("#dataRe").val() == -1)
-    {
+    } else if ($("#dataRe").val() == -1) {
         $("#tishi").append("注册失败！用户名已存在！   ");
     }
 

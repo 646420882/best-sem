@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7"/>
     <title></title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
@@ -20,54 +20,65 @@
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/jquery.cxcalendar.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style type="text/css">
-        .example{
-            background:#FFF;
-            width:650px;
-            margin:20px auto;
-            padding:15px;
-            position:relative;
+        .example {
+            background: #FFF;
+            width: 650px;
+            margin: 20px auto;
+            padding: 15px;
+            position: relative;
             -moz-border-radius: 3px;
             -webkit-border-radius: 3px;
-            line-height:24px;}
-         h3 {
-             text-align:center
-         }
+            line-height: 24px;
+        }
+
+        h3 {
+            text-align: center
+        }
+
         .ui-progressbar-value {
-            display:block !important;
+            display: block !important;
             color: #F7B54A;
         }
+
         .pbar {
             overflow: hidden;
         }
+
         .percent {
-            position:relative;
+            position: relative;
             text-align: right;
         }
+
         .elapsed {
-            position:relative;
-            font-size:14px;
+            position: relative;
+            font-size: 14px;
             margin: 10px 0px 0px 0px;
-            color:#F7B54A;
-            font-weight:bold;
+            color: #F7B54A;
+            font-weight: bold;
         }
+
         .pbar .ui-widget-header {
             border: 1px solid #ddd;
             background: #F7B54A;
             color: #444;
             font-weight: bold;
         }
-        #percentNumber b{
-            line-height:2em;
-            margin:0px 5px 0 0 ;
+
+        #percentNumber b {
+            line-height: 2em;
+            margin: 0px 5px 0 0;
         }
-       #trTop .shijian_top{
-           width:180px;
-       }
-        #userStits,#shujuAll{
-            background:#D8E1E8;
+
+        #trTop .shijian_top {
+            width: 180px;
+        }
+
+        #userStits, #shujuAll {
+            background: #D8E1E8;
         }
 
         .tab_box {
@@ -87,8 +98,9 @@
             border: 1px solid #fab30b;
             color: #fff;
         }
-        .list3{
-            min-height:100px;
+
+        .list3 {
+            min-height: 100px;
         }
 
     </style>
@@ -101,14 +113,14 @@
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over ">
-    <div class="title_box">
-        <div class="on_title over">
-            <a href="#">
-                数据报告
-            </a>
-            &nbsp;&nbsp;>&nbsp;&nbsp;<span>基础报告</span>
-        </div>
+<div class="title_box">
+    <div class="on_title over">
+        <a href="#">
+            数据报告
+        </a>
+        &nbsp;&nbsp;>&nbsp;&nbsp;<span>基础报告</span>
     </div>
+</div>
 <div id="tab">
 <ul class="tab_menu">
     <li class="selected">账户报告</li>
@@ -127,67 +139,67 @@
                 <td>&nbsp;<span>时间</span> <b>
                     <p>
                         <input class="one" type="button"
-                               <%--onclick="javascript:fieldName = 'date';sort = 0;accountBasisReport();"--%>>
+                        <%--onclick="javascript:fieldName = 'date';sort = 0;accountBasisReport();"--%>>
                     </p>
 
                     <p>
                         <input class="two" type="button"
-                               <%--onclick="javascript:fieldName = 'date';sort = 1;accountBasisReport();"--%>>
+                        <%--onclick="javascript:fieldName = 'date';sort = 1;accountBasisReport();"--%>>
                     </p>
                 </b></td>
                 <td>&nbsp;<span>展现量</span><b>
                     <p>
                         <input class="one" type="button"
-                               <%--onclick="javascript:fieldName = 'pcImpression';sort = 0;accountBasisReport();"--%>>
+                        <%--onclick="javascript:fieldName = 'pcImpression';sort = 0;accountBasisReport();"--%>>
                     </p>
 
                     <p>
                         <input class="two" type="button"
-                               <%--onclick="javascript:fieldName = 'pcImpression';sort = 1;accountBasisReport();"--%>>
+                        <%--onclick="javascript:fieldName = 'pcImpression';sort = 1;accountBasisReport();"--%>>
                     </p>
                 </b><%--<a href="#" class="question"></a>--%></td>
                 <td>&nbsp;<span>点击量</span><b>
                     <p>
                         <input class="one" type="button"
-                               <%--onclick="javascript:fieldName = 'pcClick';sort = 0;accountBasisReport();"--%>>
+                        <%--onclick="javascript:fieldName = 'pcClick';sort = 0;accountBasisReport();"--%>>
                     </p>
 
                     <p>
                         <input class="two" type="button"
-                               <%--onclick="javascript:fieldName = 'pcClick';sort = 1;accountBasisReport();"--%>>
+                        <%--onclick="javascript:fieldName = 'pcClick';sort = 1;accountBasisReport();"--%>>
                     </p>
                 </b></td>
                 <td>&nbsp;<span>消费</span><b>
                     <p>
                         <input class="one" type="button"
-                               <%--onclick="javascript:fieldName = 'pcCost';sort = 0;accountBasisReport();"--%>>
+                        <%--onclick="javascript:fieldName = 'pcCost';sort = 0;accountBasisReport();"--%>>
                     </p>
 
                     <p>
                         <input class="two" type="button"
-                               <%--onclick="javascript:fieldName = 'pcCost';sort = 1;accountBasisReport();"--%>>
+                        <%--onclick="javascript:fieldName = 'pcCost';sort = 1;accountBasisReport();"--%>>
                     </p>
                 </b><%--<a href="#" class="question"></a>--%></td>
                 <td>&nbsp;<span>点击率</span><b>
                     <p>
                         <input class="one" type="button"
-                               <%--onclick="javascript:fieldName = 'pcCtr';sort = 0;accountBasisReport();"--%>>
+                        <%--onclick="javascript:fieldName = 'pcCtr';sort = 0;accountBasisReport();"--%>>
                     </p>
 
                     <p>
                         <input class="two" type="button"
-                               <%--onclick="javascript:fieldName = 'pcCtr';sort = 1;accountBasisReport();"--%>>
+                        <%--onclick="javascript:fieldName = 'pcCtr';sort = 1;accountBasisReport();"--%>>
                     </p>
                 </b><%--<a href="#" class="question"></a>--%></td>
                 <td>&nbsp;<span>平均点击价格</span><b>
                     <p>
                         <input class="one" type="button"
-                               <%--onclick="javascript:fieldName = 'pcCpc';sort = 0;accountBasisReport();"--%>>
+                        <%--onclick="javascript:fieldName = 'pcCpc';sort = 0;accountBasisReport();"--%>>
                     </p>
 
                     <p>
                         <input class="two" type="button"
-                               <%--onclick="javascript:fieldName = 'pcCpc';sort = 1;accountBasisReport();"--%>>
+                        <%--onclick="javascript:fieldName = 'pcCpc';sort = 1;accountBasisReport();"--%>>
                     </p>
                 </b><%--<a href="#" class="question"></a>--%></td>
                 <td>&nbsp;<span>转化(网页)</span><b>
@@ -234,13 +246,15 @@
     </div>
     <div class="shuju_detali over">
         <ul>
-            <li class="date">选择时间范围：<input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31" readonly>
+            <li class="date">选择时间范围：<input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31"
+                                           readonly>
                 <input name="reservation" type="image" cname="dateClick"
                        onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                        src="${pageContext.request.contextPath}/public/img/date.png">
                 <input type="checkbox" id="checkboxInput" style="margin:6px 3px 0px 5px; ">
                 比较范围
-                <input name="mydate" type="text" id="inputTow" cname="dateClick" readonly style=" display:none;  height:20px;width:150px;border:1px solid #dadada; padding:0 12px;background:#fff url('/public/img/date.png') right 0px no-repeat;">
+                <input name="mydate" type="text" id="inputTow" cname="dateClick" readonly
+                       style=" display:none;  height:20px;width:150px;border:1px solid #dadada; padding:0 12px;background:#fff url('/public/img/date.png') right 0px no-repeat;">
                 <label id="dataComputing"></label>
             </li>
             <li id="deviceUser">选择推广设备：
@@ -259,6 +273,7 @@
         <input type="hidden" id="dateLisUser" value="0">
         <input type="hidden" id="checkboxhidden" value="0">
         <a href="javascript:" id="userClick" class="become fl" style="margin-right:50px; "> 生成报告</a>
+
         <div id="downAccountReport">
 
         </div>
@@ -354,7 +369,11 @@
     </div>
     <!--<div class="page2 fl" id="pageVS"></div>-->
     <div id="pageNumberVSSelect " class="over">
-        <span class='fr'>每页显示<select id='importKeywordSelVS' onchange='selectChangeVs()'><option value='20'>20个</option><option value='50'>50个</option><option value='100'>100个</option></select> </span>
+        <span class='fr'>每页显示<select id='importKeywordSelVS' onchange='selectChangeVs()'>
+            <option value='20'>20个</option>
+            <option value='50'>50个</option>
+            <option value='100'>100个</option>
+        </select> </span>
     </div>
     <div id="pagination1" class="pagination over"></div>
 </div>
@@ -392,6 +411,7 @@
             </ul>
 
             <a href="javascript:" id="shengc" class="become fl" style="margin-right:50px; "> 生成报告</a>
+
             <div id="downReport">
 
             </div>
@@ -406,7 +426,7 @@
         <div class="list01_under3 over">
 
             <div class="list3 wd" style="overflow-x: auto; width: 100%;">
-                <table border="0" cellspacing="0" cellspacing="0" >
+                <table border="0" cellspacing="0" cellspacing="0">
                     <thead id="shujuthead">
 
                     </thead>
@@ -420,10 +440,15 @@
             </div>
             <!--<div class="page2 fl" id="pageDet"></div>-->
             <div id="pageNumberDetSelect" class="over">
-                <span class='fr'>每页显示<select id='importKeywordSelDet' onchange='selectChangeDet()'><option value='20'>20个</option><option value='50'>50个</option><option value='100'>100个</option></select> </span>
+                <span class='fr'>每页显示<select id='importKeywordSelDet' onchange='selectChangeDet()'>
+                    <option value='20'>20个</option>
+                    <option value='50'>50个</option>
+                    <option value='100'>100个</option>
+                </select> </span>
             </div>
             <div id="pagination2" class="pagination over"></div>
             <br/>
+
             <div class="tubiao2 over">
                 <div id="containerLegend"></div>
                 <div id="container" style="width:100%;height:400px;display: none"></div>
@@ -448,7 +473,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
@@ -456,7 +482,6 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/report/reportProgress.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/report/reportContext.js"></script>
-
 
 
 </html>

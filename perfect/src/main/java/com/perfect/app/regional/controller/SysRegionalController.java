@@ -23,7 +23,7 @@ public class SysRegionalController {
     @Resource
     private SysRegionalService sysRegionalService;
 
-    @RequestMapping(value = "/regional/getProvince", method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/regional/getProvince", method = {RequestMethod.GET, RequestMethod.POST})
     public void register(HttpServletResponse response) {
         Map<String, List<RedisRegionalDTO>> dtos = sysRegionalService.getProvince();
         String gson = new Gson().toJson(dtos);

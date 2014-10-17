@@ -41,13 +41,14 @@ public class BasisReportController {
 
     /**
      * 报告生成
+     *
      * @param response
-     * @param startDate 开始时间
-     * @param endDate 结束时间
+     * @param startDate  开始时间
+     * @param endDate    结束时间
      * @param reportType 报告类型
-     * @param start 报告显示开始数
-     * @param sort 排序方式
-     * @param limit 每页条数
+     * @param start      报告显示开始数
+     * @param sort       排序方式
+     * @param limit      每页条数
      */
     @RequestMapping(value = "/account/structureReport", method = RequestMethod.GET)
     public void getPerformance(HttpServletResponse response,
@@ -64,21 +65,21 @@ public class BasisReportController {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
         String yesterday = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-        if(startDate == null || startDate.equals("")){
+        if (startDate == null || startDate.equals("")) {
             startDate = yesterday;
             endDate = yesterday;
-        }else if(endDate == null || endDate.equals("")){
+        } else if (endDate == null || endDate.equals("")) {
             endDate = yesterday;
         }
         List<String> list = DateUtils.getPeriod(startDate, endDate);
         String[] newDate = list.toArray(new String[list.size()]);
-        Map<String, List<StructureReportEntity>> responseDate = basisReportService.getReportDate(newDate, devices, dateType, reportType,start,limit,sort, dataId, dateName);
+        Map<String, List<StructureReportEntity>> responseDate = basisReportService.getReportDate(newDate, devices, dateType, reportType, start, limit, sort, dataId, dateName);
 
-        int totalRows =0;
-        for(List<StructureReportEntity> entity : responseDate.values()){
-            totalRows = totalRows + ((entity==null)?0:entity.size());
+        int totalRows = 0;
+        for (List<StructureReportEntity> entity : responseDate.values()) {
+            totalRows = totalRows + ((entity == null) ? 0 : entity.size());
         }
-        String data=new Gson().toJson(responseDate);
+        String data = new Gson().toJson(responseDate);
         try {
             response.setContentType("text/html;charset=UTF-8");
             response.setHeader("Pragma", "No-cache");
@@ -93,20 +94,21 @@ public class BasisReportController {
 
     /**
      * 获取用户基础统计信息
+     *
      * @param response
-     * @param Sorted 排序方式
+     * @param Sorted    排序方式
      * @param fieldName 排序字段
      */
     @RequestMapping(value = "/account/accountReport", method = RequestMethod.GET)
     public void getAccountReport(HttpServletResponse response,
-                                 @RequestParam(value = "Sorted", required = false,defaultValue = "1") int Sorted,
-                                 @RequestParam(value = "fieldName", required = false,defaultValue = "date") String fieldName,
-                                 @RequestParam(value = "startJC", required = false,defaultValue = "0") int startJC,
-                                 @RequestParam(value = "limitJC", required = false,defaultValue = "9") int limitJC){
+                                 @RequestParam(value = "Sorted", required = false, defaultValue = "1") int Sorted,
+                                 @RequestParam(value = "fieldName", required = false, defaultValue = "date") String fieldName,
+                                 @RequestParam(value = "startJC", required = false, defaultValue = "0") int startJC,
+                                 @RequestParam(value = "limitJC", required = false, defaultValue = "9") int limitJC) {
 
-            Map<String, List<AccountReportDTO>> returnAccount = basisReportService.getAccountAll(Sorted, fieldName,startJC,limitJC);
+        Map<String, List<AccountReportDTO>> returnAccount = basisReportService.getAccountAll(Sorted, fieldName, startJC, limitJC);
 
-        String data=new Gson().toJson(returnAccount);
+        String data = new Gson().toJson(returnAccount);
 
         try {
             response.setContentType("text/html;charset=UTF-8");
@@ -122,6 +124,7 @@ public class BasisReportController {
 
     /**
      * 账户报告以及比较数据
+     *
      * @param response
      * @param date1
      * @param date2
@@ -141,46 +144,46 @@ public class BasisReportController {
                                  @RequestParam(value = "dateType", required = false) int dateType,
                                  @RequestParam(value = "devices", required = false) int devices,
                                  @RequestParam(value = "compare", required = false) int compare,
-                                 @RequestParam(value = "sortVS", required = false,defaultValue = "-1") String sortVS,
-                                 @RequestParam(value = "startVS", required = false,defaultValue = "0") int startVS,
-                                 @RequestParam(value = "limitVS", required = false,defaultValue = "9") int limitVS){
+                                 @RequestParam(value = "sortVS", required = false, defaultValue = "-1") String sortVS,
+                                 @RequestParam(value = "startVS", required = false, defaultValue = "0") int startVS,
+                                 @RequestParam(value = "limitVS", required = false, defaultValue = "9") int limitVS) {
 
         Map<String, List<Object>> returnAccount = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar YesterdayCal = Calendar.getInstance();
-        YesterdayCal.add(Calendar.DATE,   -1);
+        YesterdayCal.add(Calendar.DATE, -1);
         String Yesterday = dateFormat.format(YesterdayCal.getTime());
         Date endDate1;
         Date endDate2;
         Date endDate3;
         Date endDate4 = null;
         try {
-            if(date1 == null || date1.equals("")){
+            if (date1 == null || date1.equals("")) {
                 endDate1 = dateFormat.parse(Yesterday);
-            }else{
+            } else {
                 endDate1 = dateFormat.parse(date1);
             }
-            if(date2 == null || date2.equals("")){
+            if (date2 == null || date2.equals("")) {
                 endDate2 = dateFormat.parse(Yesterday);
-            }else{
+            } else {
                 endDate2 = dateFormat.parse(date2);
             }
 
-            if(date3 == null || date3.equals("")){
+            if (date3 == null || date3.equals("")) {
                 endDate3 = null;
-            }else{
+            } else {
                 endDate3 = dateFormat.parse(date3);
                 Calendar cal = Calendar.getInstance();
-                long kk = endDate3.getTime() + (endDate2.getTime()-endDate1.getTime());
+                long kk = endDate3.getTime() + (endDate2.getTime() - endDate1.getTime());
                 cal.setTimeInMillis(kk);
                 endDate4 = cal.getTime();
             }
-            returnAccount = basisReportService.getAccountDateVS(endDate1,endDate2,endDate3,endDate4,dateType,devices,compare,sortVS,startVS,limitVS);
+            returnAccount = basisReportService.getAccountDateVS(endDate1, endDate2, endDate3, endDate4, dateType, devices, compare, sortVS, startVS, limitVS);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        String data=new Gson().toJson(returnAccount);
+        String data = new Gson().toJson(returnAccount);
 
         try {
             response.setContentType("text/html;charset=UTF-8");
@@ -196,34 +199,35 @@ public class BasisReportController {
 
     /**
      * 下载报告
+     *
      * @param response
      * @return
      */
     @RequestMapping(value = "/report/downReportCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ModelAndView downReportCSV(HttpServletResponse response,
-                                       @RequestParam(value = "startDate", required = false) String startDate,
-                                       @RequestParam(value = "endDate", required = false) String endDate,
-                                       @RequestParam(value = "reportType", required = false, defaultValue = "1") int reportType,
-                                       @RequestParam(value = "devices", required = false, defaultValue = "0") int devices,
-                                       @RequestParam(value = "dateType", required = false, defaultValue = "0") int dateType,
-                                       @RequestParam(value = "dataId", required = false, defaultValue = "0") Long dataId) {
+                                      @RequestParam(value = "startDate", required = false) String startDate,
+                                      @RequestParam(value = "endDate", required = false) String endDate,
+                                      @RequestParam(value = "reportType", required = false, defaultValue = "1") int reportType,
+                                      @RequestParam(value = "devices", required = false, defaultValue = "0") int devices,
+                                      @RequestParam(value = "dateType", required = false, defaultValue = "0") int dateType,
+                                      @RequestParam(value = "dataId", required = false, defaultValue = "0") Long dataId) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
         String yesterday = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-        if(startDate == null || startDate.equals("") ||startDate.equals("null")){
+        if (startDate == null || startDate.equals("") || startDate.equals("null")) {
             startDate = yesterday;
             endDate = yesterday;
-        }else if(endDate == null || endDate.equals("") || startDate.equals("null")){
+        } else if (endDate == null || endDate.equals("") || startDate.equals("null")) {
             endDate = yesterday;
         }
-        String redisKey = (startDate + "|" + endDate + "|" + devices + "|" + dateType + "|" + reportType + "|" + AppContext.getAccountId()+"|"+dataId);
-        String dateHead = startDate + " 至 " +endDate;
+        String redisKey = (startDate + "|" + endDate + "|" + devices + "|" + dateType + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId);
+        String dateHead = startDate + " 至 " + endDate;
         String filename = DateUtils.getYesterdayStr() + "-ReportDetails.csv";
         OutputStream os = null;
         try {
             response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
             os = response.getOutputStream();
-            basisReportService.downReportCSV(os,redisKey,dateType,devices,reportType,dateHead);
+            basisReportService.downReportCSV(os, redisKey, dateType, devices, reportType, dateHead);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -242,6 +246,7 @@ public class BasisReportController {
 
     /**
      * 下载账户报告
+     *
      * @param response
      * @return
      */
@@ -252,36 +257,36 @@ public class BasisReportController {
                                             @RequestParam(value = "date3", required = false) String date3,
                                             @RequestParam(value = "dateType", required = false) int dateType,
                                             @RequestParam(value = "devices", required = false) int devices,
-                                            @RequestParam(value = "sortVS", required = false,defaultValue = "-1") String sortVS,
-                                            @RequestParam(value = "startVS", required = false,defaultValue = "0") int startVS,
-                                            @RequestParam(value = "limitVS", required = false,defaultValue = "9") int limitVS) {
+                                            @RequestParam(value = "sortVS", required = false, defaultValue = "-1") String sortVS,
+                                            @RequestParam(value = "startVS", required = false, defaultValue = "0") int startVS,
+                                            @RequestParam(value = "limitVS", required = false, defaultValue = "9") int limitVS) {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar YesterdayCal = Calendar.getInstance();
-        YesterdayCal.add(Calendar.DATE,   -1);
+        YesterdayCal.add(Calendar.DATE, -1);
         String Yesterday = dateFormat.format(YesterdayCal.getTime());
         Date endDate1 = null;
         Date endDate2 = null;
         Date endDate3 = null;
         Date endDate4 = null;
         try {
-            if(date1 == null || date1.equals("") || date1.equals("null")){
+            if (date1 == null || date1.equals("") || date1.equals("null")) {
                 endDate1 = dateFormat.parse(Yesterday);
-            }else{
+            } else {
                 endDate1 = dateFormat.parse(date1);
             }
-            if(date2 == null || date2.equals("") || date2.equals("null")){
+            if (date2 == null || date2.equals("") || date2.equals("null")) {
                 endDate2 = dateFormat.parse(Yesterday);
-            }else{
+            } else {
                 endDate2 = dateFormat.parse(date2);
             }
 
-            if(date3 == null || date3.equals("") || date3.equals("null")){
+            if (date3 == null || date3.equals("") || date3.equals("null")) {
                 endDate3 = null;
-            }else{
+            } else {
                 endDate3 = dateFormat.parse(date3);
                 Calendar cal1 = Calendar.getInstance();
-                long kk = endDate3.getTime() + (endDate2.getTime()-endDate1.getTime());
+                long kk = endDate3.getTime() + (endDate2.getTime() - endDate1.getTime());
                 cal1.setTimeInMillis(kk);
                 endDate4 = cal1.getTime();
             }
@@ -290,13 +295,12 @@ public class BasisReportController {
         }
 
 
-
         String filename = DateUtils.getYesterdayStr() + "-AccountReport.csv";
         OutputStream os = null;
         try {
             response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
             os = response.getOutputStream();
-            basisReportService.downAccountReportCSV(os, endDate1,endDate2,endDate3,endDate4,dateType,devices,sortVS,startVS,limitVS);
+            basisReportService.downAccountReportCSV(os, endDate1, endDate2, endDate3, endDate4, dateType, devices, sortVS, startVS, limitVS);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

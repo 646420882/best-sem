@@ -7,6 +7,7 @@ public interface MonitorSynchronizedService {
 
     /**
      * 同步百度监控数据到本地
+     *
      * @return
      */
     public int getSynchronized();
@@ -14,6 +15,7 @@ public interface MonitorSynchronizedService {
 
     /**
      * 本地数据上传更新到百度服务器
+     *
      * @return
      */
     public int updateMonitorData();

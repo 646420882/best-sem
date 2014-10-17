@@ -60,7 +60,7 @@ public class AccountAnalyzeDAOImpl extends AbstractUserBaseDAOImpl<KeywordRealTi
     @Override
     public List<AccountReportEntity> downAccountCSV() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())).with(new Sort("date")),AccountReportEntity.class,TBL_ACCOUNT_REPORT);
+        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())).with(new Sort("date")), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
         return list;
     }
 }

@@ -45,36 +45,36 @@ public abstract class AccountReportStatisticsUtil {
     public static List<AccountReportDTO> getAveragePro(List<AccountReportDTO> dtos) {
         List<AccountReportDTO> list = new ArrayList<>();
         DecimalFormat df = new DecimalFormat("#.0000");
-            for (AccountReportDTO response : dtos) {
-                if (response.getMobileImpression() == null || response.getMobileImpression() == 0) {
-                    response.setMobileCtr(0.00);
-                } else {
-                    BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(response.getMobileClick().doubleValue() / response.getMobileImpression().doubleValue())));
-                    BigDecimal big = new BigDecimal(100);
-                    double divide = ctrBig.multiply(big).doubleValue();
-                    response.setMobileCtr(divide);
-                }
-                if (response.getMobileClick() == null || response.getMobileClick() == 0) {
-                    response.setMobileCpc(BigDecimal.valueOf(0.00));
-                } else {
-                    response.setMobileCpc(response.getMobileCost().divide(BigDecimal.valueOf(response.getMobileClick()), 2, BigDecimal.ROUND_UP));
-                }
-
-                if (response.getPcImpression() == null || response.getPcImpression() == 0) {
-                    response.setPcCtr(0.00);
-                } else {
-                    double ctrBig = Double.parseDouble(df.format(response.getPcClick().doubleValue() / response.getPcImpression().doubleValue()));
-                    int i= (int) (ctrBig*10000);
-                    double big = i/100.00;
-                    response.setPcCtr(big);
-                }
-                if (response.getPcClick() == null || response.getPcClick() == 0) {
-                    response.setPcCpc(BigDecimal.valueOf(0.00));
-                } else {
-                    response.setPcCpc(response.getPcCost().divide(BigDecimal.valueOf(response.getPcClick()), 2, BigDecimal.ROUND_UP));
-                }
-                list.add(response);
+        for (AccountReportDTO response : dtos) {
+            if (response.getMobileImpression() == null || response.getMobileImpression() == 0) {
+                response.setMobileCtr(0.00);
+            } else {
+                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(response.getMobileClick().doubleValue() / response.getMobileImpression().doubleValue())));
+                BigDecimal big = new BigDecimal(100);
+                double divide = ctrBig.multiply(big).doubleValue();
+                response.setMobileCtr(divide);
             }
+            if (response.getMobileClick() == null || response.getMobileClick() == 0) {
+                response.setMobileCpc(BigDecimal.valueOf(0.00));
+            } else {
+                response.setMobileCpc(response.getMobileCost().divide(BigDecimal.valueOf(response.getMobileClick()), 2, BigDecimal.ROUND_UP));
+            }
+
+            if (response.getPcImpression() == null || response.getPcImpression() == 0) {
+                response.setPcCtr(0.00);
+            } else {
+                double ctrBig = Double.parseDouble(df.format(response.getPcClick().doubleValue() / response.getPcImpression().doubleValue()));
+                int i = (int) (ctrBig * 10000);
+                double big = i / 100.00;
+                response.setPcCtr(big);
+            }
+            if (response.getPcClick() == null || response.getPcClick() == 0) {
+                response.setPcCpc(BigDecimal.valueOf(0.00));
+            } else {
+                response.setPcCpc(response.getPcCost().divide(BigDecimal.valueOf(response.getPcClick()), 2, BigDecimal.ROUND_UP));
+            }
+            list.add(response);
+        }
         return list;
     }
 

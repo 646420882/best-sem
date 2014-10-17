@@ -8,11 +8,14 @@ import com.perfect.entity.SystemUserEntity;
 public interface AccountRegisterDAO {
     /**
      * 注册系统用户
+     *
      * @param systemUserEntity
      */
     public void addAccount(SystemUserEntity systemUserEntity);
+
     /**
      * 通过用户名查询用户
+     *
      * @param
      */
     public SystemUserEntity getAccount(String userName);
