@@ -1,7 +1,7 @@
 package com.perfect.app.homePage.controller;
 
-import com.perfect.commons.CustomUserDetailsService;
 import com.perfect.app.web.WebUtils;
+import com.perfect.commons.CustomUserDetailsService;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.MD5;
 import com.perfect.entity.SystemUserEntity;
@@ -11,7 +11,6 @@ import com.perfect.service.SystemUserService;
 import com.perfect.transmitter.sendMail.SendMail;
 import com.perfect.utils.web.WebContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -125,7 +124,8 @@ public class HomePageManageController {
     public ModelAndView registerData(ModelMap model, HttpServletResponse response, HttpServletRequest request,
                                      @RequestParam(value = "username", required = false) String account,
                                      @RequestParam(value = "password", required = false) String pwd,
-                                     @RequestParam(value = "companyname", required = false) String company) {
+                                     @RequestParam(value = "companyname", required = false) String company,
+                                     @RequestParam(value = "email", required = false) String email) {
         if (account == null || "".equals(account)) {
             model.addAttribute("state", -1);
             return new ModelAndView("homePage/pageBlock/register", model);
@@ -138,8 +138,12 @@ public class HomePageManageController {
             model.addAttribute("state", -1);
             return new ModelAndView("homePage/pageBlock/register", model);
         }
+        if (email == null || "".equals(email)) {
+            model.addAttribute("state", -1);
+            return new ModelAndView("homePage/pageBlock/register", model);
+        }
 
-        int flag = accountRegisterService.addAccount(account, pwd, company);
+        int flag = accountRegisterService.addAccount(account, pwd, company, email);
         model.addAttribute("state", flag);
         return new ModelAndView("homePage/pageBlock/register", model);
     }

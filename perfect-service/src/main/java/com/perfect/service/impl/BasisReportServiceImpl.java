@@ -6,7 +6,6 @@ import com.google.gson.reflect.TypeToken;
 import com.perfect.core.AppContext;
 import com.perfect.dao.BasisReportDAO;
 import com.perfect.dto.AccountReportDTO;
-import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.StructureReportEntity;
 import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.redis.JRedisUtils;
@@ -1093,7 +1092,10 @@ public class BasisReportServiceImpl implements BasisReportService {
                     return retrunMap1;
                 }
 
+                Map<String, List<AccountReportDTO>> responseMapDevicesOne1 = getPcPlusMobileDate(responseMapOne1);
+
                 List<Object> objectList1 = new ArrayList<>();
+                objectList1.add(responseMapDevicesOne1);
                 //比较数据
                 if (compare == 1) {
                     for (Object o : objectListDateTow1) {
