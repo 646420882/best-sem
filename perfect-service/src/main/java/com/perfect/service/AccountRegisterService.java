@@ -11,5 +11,5 @@ public interface AccountRegisterService {
      * @param company 公司名称
      * @return
      */
-    public int addAccount(String account, String pwd, String company);
+    public int addAccount(String account, String pwd, String company,String email);
 }

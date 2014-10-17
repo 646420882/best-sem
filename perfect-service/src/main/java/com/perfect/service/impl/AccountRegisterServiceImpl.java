@@ -20,7 +20,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService{
     private AccountRegisterDAO accountRegisterDAO;
 
     @Override
-    public int addAccount(String account, String pwd, String company) {
+    public int addAccount(String account, String pwd, String company,String email) {
 
         SystemUserEntity userEntity= new SystemUserEntity();
         MD5.Builder md5Builder = new MD5.Builder();
@@ -31,6 +31,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService{
         userEntity.setUserName(account);
         userEntity.setPassword(md5.getMD5());
         userEntity.setCompanyName(company);
+        userEntity.setEmail(email);
         userEntity.setState(0);
         int returnState;
         SystemUserEntity user = accountRegisterDAO.getAccount(account);
