@@ -530,8 +530,14 @@ public class BiddingController {
             keywordReportDTO.setAdgroupName(adgroupEntity.getAdgroupName());
 
             if (quality10TypeSize > 0) {
-                keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
-                keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
+                if (quality10TypeMap.get(kwid) != null) {
+                    keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
+                    keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
+                } else {
+                    keywordReportDTO.setPcQuality(0);
+                    keywordReportDTO.setmQuality(0);
+                }
+
             }
 
             if (entity.getStatus() != null) {
