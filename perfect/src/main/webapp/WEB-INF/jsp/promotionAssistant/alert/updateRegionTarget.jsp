@@ -2721,8 +2721,8 @@
             dataType:"json",
             success:function(data){
                 for(var i=0;i<data.length;i++){
-                    $("#ctrllabelacctRegionList").attr("title",data[i]);
-                    $("#ctrllabelacctRegionList").append(data[i]+"\t");
+                    $("#ctrllabelacctRegionList").attr("title",data[i].provinceName);
+                    $("#ctrllabelacctRegionList").append(data[i].provinceName+"\t");
                 }
             }
         });

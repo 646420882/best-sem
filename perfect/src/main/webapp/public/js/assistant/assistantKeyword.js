@@ -94,7 +94,7 @@ function getKwdList(nowPage) {
             pageIndex = data.pageNo;
             $("#pagination_keywordPage").pagination(records, getOptionsFromForm(pageIndex));
 
-            if (data.list.length == 0) {
+            if (data.list==null||data.list==undefined||data.list.length == 0) {
                 $("#tbodyClick").html("暂无数据!");
                 return;
             }

@@ -272,7 +272,12 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             } else {
                 campaignEntity = campaignDAO.findByObjectId(cid);
             }
+
+            if(campaignEntity==null){
+                return new PagerInfo();
+            }
         }
+
 
         Map<String, Object> map = null;
 

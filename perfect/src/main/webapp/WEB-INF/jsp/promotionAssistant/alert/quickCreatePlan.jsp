@@ -84,12 +84,13 @@
                  <div class="assembly_left">
                      <div class="keyword_left fl over">
                          <div class="k_l_top over">
-                             <span>已添加关键词（1/500）</span>   <a class="question" href="#"></a>
+                             <span id="keywordCount">已添加关键词（0/500）</span>   <a class="question" href="#"></a>
                          </div>
                          <div class="keyworld_text over">
 
                              <div class="keyworld_text2 fl">
-                                 <textarea style="width: 100%;height:100%;font-size:13px;" id="addedkwd"></textarea>
+                                 <textarea style="width: 100%;height:100%;font-size:13px;" id="addedkwd">
+                                 </textarea>
                              </div>
                          </div>
                         <%-- <div class="k_l_under over">
@@ -177,7 +178,6 @@
 
         $(".inputCreateInfo").addClass("hides");
         $(".chooseKwd").removeClass("hides");
-
     });
 
 
@@ -246,21 +246,31 @@
     //添加选中按钮的事件
     $("#addChooseKeyword").click(function () {
         var checkboxs = $("#tbody1>tr input[type=checkbox]");
+        var kwds = "";
         checkboxs.each(function () {
            if($(this)[0].checked==true){
                var value = $(this).parent().next().html();
-               $("#addedkwd").append(value+"\r");
+               kwds+=value+"\r";
            }
         });
+        setNewkeywordToTextArea(kwds);
     });
 
     //添加全部按钮的单击事件
     $("#addAllKeyword").click(function () {
         var checkedTds1 = $("input[name=baiduKeyword]:checkbox");
+        var kwds = "";
         for (var i = 0, l = checkedTds1.length; i < l; i++) {
-            $("#addedkwd").append($("#" + wordType + i).find("td").eq(1).text()+"\r");
+            kwds+=$("#" + wordType + i).find("td").eq(1).text()+"\r";
         }
+        setNewkeywordToTextArea(kwds);
     });
+
+    function setNewkeywordToTextArea(kwds) {
+        $("#addedkwd").empty();
+        $("#addedkwd").append(kwds);
+        $("#keywordCount").html("已添加关键词（"+ $("#addedkwd").val().split("\n").length+"/500）");
+    }
 
 
     //完成按钮的事件
@@ -268,7 +278,11 @@
         //获取所有选中的关键词
         var jsonArr = [];
             var kwds = $("#addedkwd").val().split("\n");
-            for (var i = 0,l = kwds.length; i < l; i++) {
+            if(kwds.length>500){
+                alert("添加的关键词数量不能超过500个");
+                return;
+            }
+            for (var i = 0 ;i< kwds.length;i++) {
                     var entity1 = {};
                     entity1["accountId"] = "${sessionScope._accountId}";
                     entity1["keyword"] = kwds[i];

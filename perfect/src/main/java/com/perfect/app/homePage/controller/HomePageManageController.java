@@ -162,38 +162,44 @@ public class HomePageManageController {
             String path = request.getContextPath();
             String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-            String key = UUID.randomUUID().toString();
             Jedis jedis = JRedisUtils.get();
-            jedis.set(key,"");
-            jedis.expire(userName, 60 * 30);//30分钟后失效
+            try {
+               String key = UUID.randomUUID().toString();
+               jedis.set(key,"");
+               jedis.expire(userName, 60 * 30);//30分钟后失效
 
-            basePath+="forgetPassword/findPasswordPage?userName="+userName+"&key="+key;
+               basePath+="forgetPassword/findPasswordPage?userName="+userName+"&key="+key;
 
-            String html = "<a href='"+basePath+"'>"+basePath+"</a>";
+               String html = "<a href='"+basePath+"'>"+basePath+"</a>";
 
-            String subject = "找回密码-普菲特安全中心";
+               String subject = "找回密码-普菲特安全中心";
 
-            String content = "亲爱的用户 '"+userName+"' , 您好！<br/>" +
-                    "<br/>" +
-                    "请点击这里，重置您的密码： <br/>" +
-                    ""+html+"<br/>" +
-                    "该邮件链接地址在成功重置密码后会失效，或者30分钟后失效<br/>"+
-                    "(如果链接无法点击，请将它拷贝到浏览器的地址栏中)<br/>" +
-                    "<br/>" +
-                    "好的密码，不但应该容易记住，还要尽量符合以下强度标准： <br/>" +
-                    "·包含大小写字母、数字和符号 <br/>" +
-                    "·不少于 10 位 <br/>" +
-                    "·不包含生日、手机号码等易被猜出的信息 <br/>" +
-                    "<br/>" +
-                    "<br/>" +
-                    "<br/>" +
-                    "<br/>" +
-                    "普菲特安全中心 敬启<br/>" +
-                    "<br/>" +
-                    "<br/>" +
-                    "此为自动发送邮件，请勿直接回复<br/>";
+               String content = "亲爱的用户 '"+userName+"' , 您好！<br/>" +
+                       "<br/>" +
+                       "请点击这里，重置您的密码： <br/>" +
+                       ""+html+"<br/>" +
+                       "该邮件链接地址在成功重置密码后会失效，或者30分钟后失效<br/>"+
+                       "(如果链接无法点击，请将它拷贝到浏览器的地址栏中)<br/>" +
+                       "<br/>" +
+                       "好的密码，不但应该容易记住，还要尽量符合以下强度标准： <br/>" +
+                       "·包含大小写字母、数字和符号 <br/>" +
+                       "·不少于 10 位 <br/>" +
+                       "·不包含生日、手机号码等易被猜出的信息 <br/>" +
+                       "<br/>" +
+                       "<br/>" +
+                       "<br/>" +
+                       "<br/>" +
+                       "普菲特安全中心 敬启<br/>" +
+                       "<br/>" +
+                       "<br/>" +
+                       "此为自动发送邮件，请勿直接回复<br/>";
 
-            sendMail.startSendHtmlMail(entity.getEmail(),subject,content);
+               sendMail.startSendHtmlMail(entity.getEmail(),subject,content);
+           }finally {
+               if(jedis!=null){
+                   JRedisUtils.returnJedis(jedis);
+               }
+           }
             webContext.writeJson("userName Exists!",response);
         }
     }
@@ -206,12 +212,18 @@ public class HomePageManageController {
     @RequestMapping(value = "/forgetPassword/findPasswordPage",method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView findPasswordPage(ModelMap model,String userName,String key) {
         Jedis jedis = JRedisUtils.get();
-        if (jedis.exists(key)) {
-            model.put("userName",userName);
-            model.put("key",key);
-            return new ModelAndView("homePage/pageBlock/findPassword", model);
-        }else{
-            return new ModelAndView("jsp/error/404.jsp",model);
+        try {
+            if (jedis.exists(key)) {
+                model.put("userName",userName);
+                model.put("key",key);
+                return new ModelAndView("homePage/pageBlock/findPassword", model);
+            }else{
+                return new ModelAndView("jsp/error/404.jsp",model);
+            }
+        }finally {
+            if(jedis!=null){
+                JRedisUtils.returnJedis(jedis);
+            }
         }
     }
 
@@ -226,37 +238,42 @@ public class HomePageManageController {
                                       @RequestParam(value = "password", required = false) String pwd
                                      ) {
         Jedis jedis = JRedisUtils.get();
-        if (jedis.exists(key)) {
-            SystemUserEntity sysUserEntity = systemUserService.getSystemUser(userName);
-            List<BaiduAccountInfoEntity> baiduAccountList = sysUserEntity.getBaiduAccountInfoEntities();
-            String baiduUserName = null;
-            for(BaiduAccountInfoEntity entity:baiduAccountList){
-                if(entity.getBaiduUserName().equals(baiduAccountName)){
-                    baiduUserName = entity.getBaiduUserName();
-                    break;
+        try {
+            if (jedis.exists(key)) {
+                SystemUserEntity sysUserEntity = systemUserService.getSystemUser(userName);
+                List<BaiduAccountInfoEntity> baiduAccountList = sysUserEntity.getBaiduAccountInfoEntities();
+                String baiduUserName = null;
+                for(BaiduAccountInfoEntity entity:baiduAccountList){
+                    if(entity.getBaiduUserName().equals(baiduAccountName)){
+                        baiduUserName = entity.getBaiduUserName();
+                        break;
+                    }
                 }
-            }
 
-            if(baiduUserName!=null){
-                //重置密码
-                MD5.Builder md5Builder = new MD5.Builder();
-                MD5 md5 = md5Builder.password(pwd).salt(userName).build();
-                boolean  isSuccess = systemUserService.updatePassword(userName,md5.getMD5());
-                if(isSuccess){
-                    jedis.expire(key, 0);
-                    webContext.writeJson("updateSuccess",response);
+                if(baiduUserName!=null){
+                    //重置密码
+                    MD5.Builder md5Builder = new MD5.Builder();
+                    MD5 md5 = md5Builder.password(pwd).salt(userName).build();
+                    boolean  isSuccess = systemUserService.updatePassword(userName,md5.getMD5());
+                    if(isSuccess){
+                        jedis.expire(key, 0);
+                        webContext.writeJson("updateSuccess",response);
+                    }else{
+                        webContext.writeJson("updateFail", response);
+                    }
                 }else{
-                    webContext.writeJson("updateFail", response);
+                    //返回结果，没有该子账户，不能重置密码
+                    webContext.writeJson("NoAccount", response);
                 }
             }else{
-                //返回结果，没有该子账户，不能重置密码
-                webContext.writeJson("NoAccount", response);
+                //找回密码的url失效
+                webContext.writeJson("urlInvali",response);
             }
-        }else{
-            //找回密码的url失效
-           webContext.writeJson("urlInvali",response);
+        }finally {
+            if(jedis!=null){
+                JRedisUtils.returnJedis(jedis);
+            }
         }
-
     }
 
 
