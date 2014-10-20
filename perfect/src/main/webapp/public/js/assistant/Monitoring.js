@@ -165,14 +165,7 @@ $(function () {
 
 
     /****读取数据方法****/
-    $.ajax({
-        url: "/monitoring/getTree",
-        type: "GET",
-        dataType: "json",
-        success: function (data) {
-            $.fn.zTree.init($("#zTree2"), setting1, data.tree);
-        }
-    });
+    getTreeM();
     /**********************数据同步*****************************/
     $("#downSync").click(function () {
         var verify = -1;
@@ -187,6 +180,7 @@ $(function () {
                     alert("同步已完成！请继续操作");
                     getFolder();
                     getMonitor();
+                    getTreeM();
                     verify = -1;
                 } else {
                     alert("同步过程中出现了意想不到的结果，请重新同步")
@@ -197,6 +191,7 @@ $(function () {
     /***************************************************/
     $("#jkwjj").click(function () {
         getFolder();
+        getTreeM();
     });
 
     $("body").on("click", "tr[cname=trName]", function () {
@@ -239,6 +234,7 @@ $(function () {
                         success: function (data) {
                             if(data){
                                 getFolder();
+                                getTreeM();
                             }
                         }
                     });
@@ -298,6 +294,7 @@ $(function () {
                     if(data){
                         getFolder();
                         getMonitor();
+                        getTreeM();
                         alert("删除成功");
                     }else{
                         alert("删除失败");
@@ -332,6 +329,7 @@ $(function () {
                     if(data){
                         getFolder();
                         getMonitor();
+                        getTreeM();
                         alert("删除成功");
                     }else{
                         alert("删除失败");
@@ -371,6 +369,8 @@ $(function () {
                     alert("添加失败");
                 }else if(data == -1){
                     alert("监控对象最多添加2000个！");
+                }else if(data == -2){
+                    alert("该文件夹下已有此监控对象！");
                 }
             }
         });
@@ -604,6 +604,22 @@ function getStr(number) {
     }
     return str;
 }
+
+/**
+ * 监控文件夹树
+ */
+function getTreeM(){
+    $.ajax({
+        url: "/monitoring/getTree",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            $("#zTree2").empty();
+            $.fn.zTree.init($("#zTree2"), setting1, data.tree);
+        }
+    });
+}
+
 
 /**
  * 添加监控文件夹弹出框

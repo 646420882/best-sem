@@ -218,8 +218,13 @@ public class MonitoringServiceImpl implements MonitoringService {
 
         List<FolderMonitorEntity> entityList = monitoringDao.getMonitor();
         int i = 0;
-
-            if(entityList.size() < 2000){
+        List<FolderMonitorEntity> monitorEntities = monitoringDao.getMonitorId(folderID);
+        for(FolderMonitorEntity entity:monitorEntities){
+            if(entity.getAclid().intValue() == acliId.intValue()){
+                i=-2;
+            }
+        }
+            if( i == 0 && entityList.size() < 2000){
                 FolderMonitorEntity monitorEntity = new FolderMonitorEntity();
                 //sid 当前时间的的毫秒数 加上一个一位的随机数   是字符串意义上的加法
                 String sid = String.valueOf(new Date().getTime())+String.valueOf((int)(Math.random()*10));
@@ -237,7 +242,7 @@ public class MonitoringServiceImpl implements MonitoringService {
                 }catch (Exception e){
                     i=0;
                 }
-            }else{
+            }else if(i==0){
                 i=-1;
             }
         return i;
