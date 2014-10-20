@@ -22,6 +22,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private static boolean usernameNotFound = false;
 
+    public static boolean verifyNotPass = false;
+
     private static int passwdBadCredentialsNum = 0;
 
     @Resource(name = "systemUserDAO")
@@ -32,6 +34,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserDetails user;
         SystemUserEntity systemUser = systemUserDAO.findByUserName(s);
         if (systemUser == null) {
+            throw new UsernameNotFoundException("Username not found");
+        }
+        if (systemUser.getState() == 0) {
+            verifyNotPass = true;
             throw new UsernameNotFoundException("Username not found");
         }
         userName = systemUser.getUserName();
@@ -57,6 +63,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return authList;
     }
 
+
     public static String getUserName() {
         return userName;
     }
@@ -67,6 +74,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public static void setUsernameNotFound(boolean usernameNotFound) {
         CustomUserDetailsService.usernameNotFound = usernameNotFound;
+    }
+
+    public static boolean isVerifyNotPass() {
+        return verifyNotPass;
+    }
+
+    public static void setVerifyNotPass(boolean verifyNotPass) {
+        CustomUserDetailsService.verifyNotPass = verifyNotPass;
     }
 
     public static int getPasswdBadCredentialsNum() {

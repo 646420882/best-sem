@@ -21,7 +21,8 @@ public class AdminPageController implements Controller {
     @Override
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return new ModelAndView("foundationReport/report");
+//        return new ModelAndView("foundationReport/report");
+        return new ModelAndView("homePage/pageBlock/index");
     }
 
     /**
@@ -59,8 +60,10 @@ public class AdminPageController implements Controller {
      *
      * @return
      */
-    @RequestMapping(value = "/newPage",method ={RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView getNewPage(){return new ModelAndView("homePage/pageBlock/index");}
+    @RequestMapping(value = "/newPage", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView getNewPage() {
+        return new ModelAndView("homePage/pageBlock/index");
+    }
 
 
 }

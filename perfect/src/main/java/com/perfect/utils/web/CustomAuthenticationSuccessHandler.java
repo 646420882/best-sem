@@ -63,6 +63,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         }
 
         CustomUserDetailsService.setUsernameNotFound(false);
+        CustomUserDetailsService.setVerifyNotPass(false);
 
         String targetUrl = determineTargetUrl(authentication);
 

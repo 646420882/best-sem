@@ -41,16 +41,19 @@ import java.util.concurrent.RecursiveAction;
 @RestController
 @Scope("prototype")
 @RequestMapping("/admin/lexicon")
-public class ImportLexiconExcelController extends WebContextSupport{
+public class ImportLexiconExcelController extends WebContextSupport {
 
-    static String trade;
+    private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
+    private static final String FILE_SEPARATOR = System.getProperty("file.separator");
+
+    private static String trade;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void importLexicon(HttpServletRequest request, HttpServletResponse response,
                               @RequestParam(value = "excelFile") MultipartFile[] files)
             throws Exception {
 
-        String tmpDirPath = System.getProperty("java.io.tmpdir") + "/";
+        String tmpDirPath = TMP_DIR + FILE_SEPARATOR;
 
         //上传临时文件
         String tmpFile = "";
@@ -105,11 +108,11 @@ public class ImportLexiconExcelController extends WebContextSupport{
         }
 
 //        response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
-        writeData(SUCCESS,response,fileName);
+        writeData(SUCCESS, response, fileName);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView deleteLexiconByTrade(HttpServletResponse response,@RequestParam(value = "trade") String trade,
+    public ModelAndView deleteLexiconByTrade(HttpServletResponse response, @RequestParam(value = "trade") String trade,
                                              @RequestParam(value = "category", required = false) String category)
             throws IOException {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
@@ -126,7 +129,7 @@ public class ImportLexiconExcelController extends WebContextSupport{
         }};
         jsonView.setAttributesMap(result);
 //        return new ModelAndView(jsonView);
-        writeData(SUCCESS,response,SUCCESS);
+        writeData(SUCCESS, response, SUCCESS);
         return null;
     }
 
