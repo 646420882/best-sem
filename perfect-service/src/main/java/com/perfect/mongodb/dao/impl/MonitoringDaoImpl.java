@@ -7,6 +7,7 @@ import com.perfect.dao.MonitoringDao;
 import com.perfect.entity.FolderEntity;
 import com.perfect.entity.FolderMonitorEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
+import com.perfect.mongodb.utils.EntityConstants;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -90,5 +91,11 @@ public class MonitoringDaoImpl implements MonitoringDao{
     public void addMonitor(FolderMonitorEntity folderMonitorEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.insert(folderMonitorEntity, TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
+    }
+
+    @Override
+    public Long getForlderCountByKwid(long kwid){
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        return mongoTemplate.count(new Query(Criteria.where(MONITOR_ACLID).is(kwid)),TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
     }
 }

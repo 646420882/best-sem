@@ -74,4 +74,10 @@ public interface MonitoringDao {
      * @return
      */
     public void addMonitor(FolderMonitorEntity folderMonitorEntity);
+
+    /**
+     * 根据关键词的long id得到该关键词所属监控文件夹数
+     * @return
+     */
+    Long getForlderCountByKwid(long kwid);
 }

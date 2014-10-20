@@ -202,7 +202,7 @@
             <ul>
                 <li>
                     <div class="t_list01 fl over">所属监控文件夹：</div>
-                    <div class="w_list02 fl over"><em>0个</em></div>
+                    <div class="w_list02 fl over"><em id="genusFolderCount">0个</em></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">匹配模式：</div>
@@ -972,12 +972,12 @@
                     <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b
                             id="removeMonitor">停止监控</b></a>
                     </li>
-                    <li><a href="#"><span class="zs_top"><img
+                    <li><a href="javascript:void(0);" onclick="searchword();"><span class="zs_top"><img
                             src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
                     <li><a href="#"><span class="zs_top"><img
                             src="../public/img/zs_function11.png"></span><b id="activate">激活</b></a>
                     </li>
-                    <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a>
+                    <li><a href="javascript:void(0);" onclick="showSearchWord();"><span class="zs_top"><img src="../public/img/zs_function5.png"></span><b>搜索</b></a>
                     </li>
                     <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function6.png"></span><b>分析</b></a>
                     </li>
@@ -1052,7 +1052,7 @@
                 <ul class="fl">
                     <li><a href="javascript:void(0)" onclick="folderDialog();"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
                     <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b id="removeFolder">删除</b></a></li>
-                    <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
+                    <li><a href="javascript:void(0);" onclick="searchword();"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
                     <li id="downSync"><a href="javascript:void(0)"><span class="zs_top"><img src="../public/img/zs_function18.png"></span><b>下载同步</b></a></li>
                     <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
                 </ul>

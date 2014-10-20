@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by john on 2014/9/2.
  */
-public class KeywordDTO implements Serializable{
+public class KeywordDTO implements Serializable {
 
     private String campaignName;
 
@@ -26,6 +26,16 @@ public class KeywordDTO implements Serializable{
     private Long folderId;
 
     private String folderName;
+
+    private Long folderCount;//该关键词所属监控文件夹数
+
+    public Long getFolderCount() {
+        return folderCount;
+    }
+
+    public void setFolderCount(Long folderCount) {
+        this.folderCount = folderCount;
+    }
 
     public String getCampaignName() {
         return campaignName;

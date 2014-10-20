@@ -44,6 +44,7 @@ public class EntityConstants {
     public static final String BAIDU_ID = "bid";
     public static final String FOLDER_ID = "fdId";
     public static final String MONITOR_ID = "mtId";
+    public static final String MONITOR_ACLID = "aclid";
 
     public static final String NAME = "name";
 }

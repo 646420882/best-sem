@@ -155,7 +155,7 @@ function keywordDataToHtml(obj, index) {
     }
 
     //kwid
-    html = html + "<input type='hidden' camp='"+obj.campaignId+"' adg='"+obj.object.adgroupId+"' value = " + obj.object.keywordId + " />";
+    html = html + "<input type='hidden' camp='"+obj.campaignId+"' adg='"+obj.object.adgroupId+"' dirCount='"+obj.folderCount+"' value = " + obj.object.keywordId + " />";
     html = html + "<td>" + obj.object.keyword + "</td>";
 
     switch (obj.object.status) {
@@ -333,6 +333,7 @@ function setKwdValue(obj, kwid) {
         $(".mourlSize_1").html("0/1017");
     }
 
+    $("#genusFolderCount").html(obj.find("input[type=hidden]").attr("dirCount")+"个");
     $(".matchModel_1").html($(obj).find("td:eq(6)").html());
     $(".status_1").html($(obj).find("td:eq(1)").html());
 
@@ -622,15 +623,8 @@ function reducKwd_del(id) {
  */
 var menu_keyword_add = {
         text: "添加关键词",
-        func: function () {
-            top.dialog({title: "关键词工具",
-                padding: "5px",
-                content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
-                onclose: function () {
-                    whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
-                }
-            }).showModal();
-            return false;
+        func: function(){
+            showSearchWord();
         }
     }, menu_keyword_del = {
         text: "删除关键词",
@@ -657,6 +651,17 @@ var menu_keyword_add = {
     func: function () {
         searchword();
     }
+}
+
+function showSearchWord() {
+    top.dialog({title: "关键词工具",
+        padding: "5px",
+        content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        onclose: function () {
+           /* whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());*/
+        }
+    }).showModal();
+    return false;
 }
 /**
  * 右键菜单显示的选项
