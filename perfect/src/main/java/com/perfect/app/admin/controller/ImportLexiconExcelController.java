@@ -4,6 +4,7 @@ import com.perfect.entity.LexiconEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.utils.excel.RowHandler;
 import com.perfect.utils.excel.XSSFUtils;
+import com.perfect.utils.web.WebContextSupport;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
@@ -40,7 +41,7 @@ import java.util.concurrent.RecursiveAction;
 @RestController
 @Scope("prototype")
 @RequestMapping("/admin/lexicon")
-public class ImportLexiconExcelController {
+public class ImportLexiconExcelController extends WebContextSupport{
 
     static String trade;
 
@@ -103,11 +104,12 @@ public class ImportLexiconExcelController {
             pool.shutdown();
         }
 
-        response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
+//        response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
+        writeData(SUCCESS,response,fileName);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView deleteLexiconByTrade(@RequestParam(value = "trade") String trade,
+    public ModelAndView deleteLexiconByTrade(HttpServletResponse response,@RequestParam(value = "trade") String trade,
                                              @RequestParam(value = "category", required = false) String category)
             throws IOException {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
@@ -123,7 +125,9 @@ public class ImportLexiconExcelController {
             put("status", true);
         }};
         jsonView.setAttributesMap(result);
-        return new ModelAndView(jsonView);
+//        return new ModelAndView(jsonView);
+        writeData(SUCCESS,response,SUCCESS);
+        return null;
     }
 
     class LexiconTask extends RecursiveAction {

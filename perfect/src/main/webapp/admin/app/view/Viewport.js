@@ -19,22 +19,6 @@ Ext.Date.patterns = {
 };
 var dt = new Date();
 var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
-var myData = [
-    [1,23,'girl',"成都市天祥街","无标记"],
-    [1,23,'girl',"成都市天祥街","无标记"],
-    [1,23,'girl',"成都市天祥街","无标记"],
-    [1,23,'girl',"成都市天祥街","无标记"]
-];
-var store = Ext.create('Ext.data.ArrayStore', {
-    fields: [
-        {name: 'id',type:'int'},
-        {name: 'age',      type: 'int'},
-        {name: 'sex',     type: 'string'},
-        {name: 'address',  type: 'string'},
-        {name: 'remark', type: 'string'}
-    ],
-    data: myData
-});
 Ext.define("Perfect.view.Viewport", {
     extend: "Ext.container.Viewport",
     layout:'border',

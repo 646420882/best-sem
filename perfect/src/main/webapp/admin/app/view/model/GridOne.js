@@ -121,11 +121,11 @@ Ext.define("Perfect.view.model.GridOne", {
                             form.submit({
                                 waitMsg: '数据拉取中...',
                                 success: function (form, action) {
-                                    Ext.Msg.alert("Success", "成功了！");
+                                    Ext.Msg.alert("Success", "拉取数据成功！");
                                     form.reset();
                                 },
                                 failure: function (form, action) {
-                                    Ext.Msg.alert("Failure", "失败了！");
+                                    Ext.Msg.alert("Failure", "失败！");
                                     form.reset();
                                 }
                             });

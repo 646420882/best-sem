@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Ext Demo</title>
+    <title>Perfect 后台管理系统</title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/ext/js/bootstrap.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/ext/js/ext-locale-zh_CN.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/ext/css/ext-theme-crisp-all.css">

@@ -4,13 +4,32 @@
 var comboboxSotre = Ext.create("Ext.data.Store", {
     fields: ["text", "id"],
     data: [
-        {'text': '电商', 'id': 0},
+        {'text': '电商', 'id': '0'},
         {'text': '房产', 'id': 1},
         {'text': '教育', 'id': 2},
         {'text': '金融', 'id': 3},
         {'text': '旅游', 'id': 4}
     ]
 });
+var Url = Ext.create('Url', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'category', type: 'string'},
+        {name: 'count', type: 'int'}
+    ]
+});
+Ext.create("Ext.data.Store", {
+    storeId: "hTypeStore",
+    model: 'Url',
+    proxy: {
+        type: 'ajax',
+        url: '../getKRWords/getCategories',
+        reader: {
+            type: 'json',
+            rootProperty: 'rows'
+        }
+    }
+})
 Ext.define("Perfect.view.model.CiKu", {
     extend: 'Ext.form.Panel',
     alias: 'widget.CK',
@@ -26,7 +45,7 @@ Ext.define("Perfect.view.model.CiKu", {
             items: [
                 {
                     xtype: 'filefield',
-                    name: 'document',
+                    name: 'excelFile',
                     fieldLabel: '请选择文件',
                     msgTarget: 'side',
                     allowBlank: false,
@@ -41,10 +60,10 @@ Ext.define("Perfect.view.model.CiKu", {
                         var form = this.up('form').getForm();
                         if (form.isValid()) {
                             form.submit({
-                                url: 'upload.action',
+                                url: 'lexicon/upload',
                                 waitMsg: '数据导入中...',
                                 success: function (fp, o) {
-                                    Ext.Msg.alert('成功', '你的文件 "' + o.result.file + '" 已经导入成功.');
+                                    Ext.Msg.alert('成功', '你的文件 "' + o.result.data + '" 已经导入成功.');
                                 },
                                 failure: function (form, action) {
                                     Ext.Msg.alert('失败', '未知错误');
@@ -69,22 +88,37 @@ Ext.define("Perfect.view.model.CiKu", {
                 {
                     xtype: 'combobox',
                     fieldLabel: '选择行业',
+                    id: "trade",
+                    name: "category",
                     allowBlank: false,
                     afterLabelTextTpl: required,
-                    store: comboboxSotre,
                     msgTarget: 'side',
                     displayField: 'text',
-                    valueField: 'id'
+                    valueField: 'text',
+                    store: comboboxSotre,
+                    listeners: {
+                        change: function () {
+                            var combox = Ext.getCmp("hType");
+                            combox.setStore(Ext.StoreManager.lookup("hTypeStore").load({
+                                params: {
+                                    trade: this.getValue()
+                                }
+                            }));
+
+                        }
+                    }
                 },
                 {
                     xtype: 'combobox',
-                    fieldLabel: '选择行业2',
+                    fieldLabel: '类别',
+                    id: "hType",
+                    name: 'trade',
                     allowBlank: false,
                     afterLabelTextTpl: required,
                     msgTarget: 'side',
-                    displayField: 'text',
-                    valueField: 'id'
-
+                    displayField: 'category',
+                    valueField: 'category',
+                    store: null
                 }
             ],
             buttons: [
@@ -93,7 +127,32 @@ Ext.define("Perfect.view.model.CiKu", {
                     handler:function(){
                         var form = this.up('form').getForm();
                         if (form.isValid()) {
-                            Ext.Msg.alert('提示!','可以删除了！');
+                            form.submit({
+                                url: "lexicon/delete",
+                                waitMsg: "删除中，请等待...",
+                                success: function (form, action) {
+                                    Ext.Msg.alert("提示", "删除成功!");
+                                },
+                                failure: function (form, action) {
+
+                                }
+                            });
+                        }
+                    }
+                }
+            ],
+            tools: [
+                {
+                    type: 'refresh',
+                    handler: function () {
+                        var box1 = Ext.getCmp("trade");
+                        var box2 = Ext.getCmp("hType");
+                        if (box1.isValid()) {
+                            box2.setStore(Ext.StoreManager.lookup("hTypeStore").load({
+                                params: {
+                                    trade: box1.getValue()
+                                }
+                            }));
                         }
                     }
                 }
