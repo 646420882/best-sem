@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,11 +48,8 @@ public class ImportLexiconExcelController {
     public void importLexicon(HttpServletRequest request, HttpServletResponse response,
                               @RequestParam(value = "excelFile") MultipartFile[] files)
             throws Exception {
-        URL url = Thread.currentThread().getContextClassLoader().getResource("/");
-        if (url == null) {
-            return;
-        }
-        final String rootPath = url.getPath();
+
+        String tmpDirPath = System.getProperty("java.io.tmpdir") + "/";
 
         //上传临时文件
         String tmpFile = "";
@@ -61,9 +57,9 @@ public class ImportLexiconExcelController {
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
                 fileName = file.getOriginalFilename();
-                File _file = new File(rootPath, fileName);
+                File _file = new File(tmpDirPath, fileName);
                 FileUtils.copyInputStreamToFile(file.getInputStream(), _file);
-                tmpFile = rootPath + fileName;
+                tmpFile = tmpDirPath + fileName;
             }
         }
         if (StringUtils.isEmpty(tmpFile)) {
