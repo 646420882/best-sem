@@ -3,6 +3,7 @@ package com.perfect.service;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,17 +13,34 @@ public interface AccountManageService {
 
     /**
      * 修改密码
+     *
      * @param password
      * @param newPwd
      * @return
      */
     public int updatePwd(String password, String newPwd);
+
     /**
      * 当前密码判断
+     *
      * @param password
      * @return
      */
     public int JudgePwd(String password);
+
+    /**
+     * 得到所有未审核的帐号
+     *
+     * @return
+     */
+    public List<SystemUserEntity> getAccount();
+
+    /**
+     * 得到所有未审核的帐号
+     *
+     * @return
+     */
+    public int auditAccount(String userNmae, String baiduAccount, String baiduPassword, String token);
 
     /**
      * 获取账户树

@@ -72,6 +72,23 @@ public class AccountManageServiceImpl implements AccountManageService {
         return i;
     }
 
+    @Override
+    public List<SystemUserEntity> getAccount() {
+        List<SystemUserEntity> entities = accountManageDAO.getAccount();
+        return entities;
+    }
+
+    @Override
+    public int auditAccount(String userNmae, String baiduAccount, String baiduPassword, String token) {
+
+        int flag = accountManageDAO.auditAccount(userNmae,baiduAccount,baiduPassword,token);
+        int flagStruts = 0;
+        if(flag == 1){
+            flagStruts = accountManageDAO.updateAccountStruts(userNmae);
+        }
+        return flagStruts;
+    }
+
     public Map<String, Object> getAccountTree() {
         ArrayNode treeNodes = accountManageDAO.getAccountTree();
         Map<String, Object> trees = new HashMap<>();

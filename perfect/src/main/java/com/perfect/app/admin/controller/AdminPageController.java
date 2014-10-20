@@ -56,6 +56,16 @@ public class AdminPageController implements Controller {
     }
 
     /**
+     * 审核账户后台页面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getAccountPage", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView getAccountPage() {
+        return new ModelAndView("foundationReport/auditAccount");
+    }
+
+    /**
      * Ext后台界面
      *
      * @return

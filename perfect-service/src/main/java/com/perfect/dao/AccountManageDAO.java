@@ -60,6 +60,27 @@ public interface AccountManageDAO<T> {
     public WriteResult updatePwd(String userName, String pwd);
 
     /**
+     * 得到所有未审核的帐号
+     * @return
+     */
+    public List<SystemUserEntity> getAccount();
+
+    /**
+     * 审核帐号
+     * @param baiduAccount
+     * @param baiduPassword
+     * @param token
+     * @return
+     */
+    public int auditAccount(String userNmae, String baiduAccount, String baiduPassword, String token);
+
+    /**
+     * 修改帐号状态
+     * @return
+     */
+    public int updateAccountStruts(String userName);
+
+    /**
      * 上传用户头像
      *
      * @param bytes

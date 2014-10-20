@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mongodb.WriteResult;
+import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
@@ -19,7 +20,11 @@ import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.DateUtils;
+import com.perfect.utils.BaiduServiceSupport;
 import com.perfect.utils.DBNameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -33,6 +38,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +51,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
  */
 @Repository(value = "accountManageDAO")
 public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEntity> {
+    protected static transient Logger log = LoggerFactory.getLogger(AccountManageDAOImpl.class);
     @Resource
     private SystemUserDAO systemUserDAO;
 
@@ -162,6 +169,68 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         update.set("password",pwd);
         WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(account)), update, "sys_user");
         return writeResult;
+    }
+
+    @Override
+    public List<SystemUserEntity> getAccount() {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        List<SystemUserEntity> entities = mongoTemplate.find(Query.query(Criteria.where("state").is(0)),SystemUserEntity.class);
+        return entities;
+    }
+
+    @Override
+    public int auditAccount(String userNmae, String baiduAccount, String baiduPassword, String token) {
+        int i;
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccount, baiduPassword, token);
+        BaiduApiService apiService = new BaiduApiService(commonService);
+        AccountInfoType accountInfoType = apiService.getAccountInfo();
+        if(accountInfoType == null){
+            i=-1;
+        }else{
+            Long accountId = accountInfoType.getUserid();
+            BaiduAccountInfoEntity entity = new BaiduAccountInfoEntity();
+
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+            BeanUtils.copyProperties(accountInfoType, entity);
+            entity.setId(accountId);
+            entity.setBaiduUserName(baiduAccount);
+            entity.setBaiduPassword(baiduPassword);
+            entity.setToken(token);
+            entity.setDfault(true);
+            if(accountId == null){
+                log.info(df.format(new Date())+":添加帐号时出错！！");
+            }
+
+            Update update = new Update();
+            update.addToSet("bdAccounts", entity);
+            WriteResult writeResult = mongoTemplate.updateFirst(
+                    Query.query(
+                            Criteria.where("userName").is(userNmae).and("state").is(0)),
+                    update, SystemUserEntity.class);
+
+            if (writeResult.isUpdateOfExisting()){
+                i=1;
+            }else{
+                i=0;
+            }
+        }
+
+        return i;
+    }
+
+    @Override
+    public int updateAccountStruts(String userName) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        Update update = new Update();
+        update.set("state", 1);
+        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(userName)), update, "sys_user");
+        int i = 0;
+        if(writeResult.isUpdateOfExisting()){
+            i=1;
+        }
+        return i;
     }
 
     @Override

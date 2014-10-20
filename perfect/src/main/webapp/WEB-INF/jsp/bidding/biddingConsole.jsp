@@ -52,7 +52,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
 <script type="application/javascript">
-
+    String.prototype.trims = function () {
+        return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    };
     $(function () {
         $.ajax({
             url: "/admin/biddingUrl/list",
@@ -72,7 +74,7 @@
 
     var submitUrl = function () {
         var url = $("#url").val();
-        if (url == null || url.trim().length == 0) {
+        if (url == null || url.trims().length == 0) {
             return false;
         }
         $.ajax({

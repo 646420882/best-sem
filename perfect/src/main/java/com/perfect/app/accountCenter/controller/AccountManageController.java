@@ -6,6 +6,7 @@ import com.perfect.app.web.WebUtils;
 import com.perfect.core.AppContext;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.CampaignEntity;
+import com.perfect.entity.SystemUserEntity;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.LogService;
@@ -79,6 +80,44 @@ public class AccountManageController {
 
         Map<String, Integer> map = new HashMap<>();
         map.put("sturts", flag);
+
+        webContext.writeJson(map, response);
+
+    }
+
+    /**
+     * 得到所有未审核的帐号
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getAccount", method = {RequestMethod.GET, RequestMethod.POST})
+    public void getAccount(HttpServletResponse response) {
+
+        List<SystemUserEntity> entities = accountManageService.getAccount();
+
+        Map<String, List<SystemUserEntity>> map = new HashMap<>();
+        map.put("rows", entities);
+
+        webContext.writeJson(map, response);
+
+    }
+
+    /**
+     * 审核帐号
+     *
+     * @return
+     */
+    @RequestMapping(value = "/auditAccount", method = {RequestMethod.GET, RequestMethod.POST})
+    public void auditAccount(HttpServletResponse response,
+                             @RequestParam(value = "userName", required = false) String userName,
+                             @RequestParam(value = "baiduAccount", required = false) String baiduAccount,
+                             @RequestParam(value = "baiduPassword", required = false) String baiduPassword,
+                             @RequestParam(value = "token", required = false) String token) {
+
+        int entities = accountManageService.auditAccount(userName,baiduAccount,baiduPassword,token);
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("struts", entities);
 
         webContext.writeJson(map, response);
 
