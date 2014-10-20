@@ -10,11 +10,12 @@ public class SendMail {
 
     /**
      * 开始发送文本格式邮件
+     *
      * @param address
      * @param subject
      * @param content
      */
-    public void startSendTextMail(String address,String subject,String content){
+    public void startSendTextMail(String address, String subject, String content) {
         SimpleMailSender sms = new SimpleMailSender();
         //这个类主要是设置邮件
         MailSenderInfo mailInfo = new MailSenderInfo();
@@ -31,11 +32,12 @@ public class SendMail {
 
     /**
      * 开始发送HTML格式邮件
+     *
      * @param address
      * @param subject
      * @param content
      */
-    public void startSendHtmlMail(String address,String subject,String content){
+    public void startSendHtmlMail(String address, String subject, String content) {
         SimpleMailSender sms = new SimpleMailSender();
         //这个类主要是设置邮件
         MailSenderInfo mailInfo = new MailSenderInfo();

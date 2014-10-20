@@ -34,7 +34,7 @@ public class AccountOverviewController {
      */
     @RequestMapping(value = "/account/getAccountOverviewData", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccountOverviewData(HttpServletResponse response, String startDate, String endDate) {
-        Map<String, Object> map = accountOverviewService.getKeyWordSum(startDate,endDate);
+        Map<String, Object> map = accountOverviewService.getKeyWordSum(startDate, endDate);
         webContext.writeJson(map, response);
     }
 }

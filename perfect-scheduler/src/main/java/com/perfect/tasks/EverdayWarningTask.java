@@ -22,7 +22,7 @@ import java.util.*;
  * Created by john on 2014/8/8.
  * 每天凌晨1点执行
  */
-public class EverdayWarningTask{
+public class EverdayWarningTask {
     protected static transient Logger log = LoggerFactory.getLogger(EverdayWarningTask.class);
 
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -37,10 +37,9 @@ public class EverdayWarningTask{
     private WarningInfoDAO warningInfoDAO;
 
 
-
     public boolean execute(List<Map<String, Object>> tasks) throws Exception {
 
-        for(Map<String, Object> task:tasks){
+        for (Map<String, Object> task : tasks) {
             warningInfoDAO.insert((String) task.get("userName"), (WarningInfoEntity) task.get("value"));
         }
         return true;
@@ -58,7 +57,7 @@ public class EverdayWarningTask{
 
         //若没有预警规则，无需预警
         if (warningRuleList.size() == 0) {
-           return warningInfoList;
+            return warningInfoList;
         }
 
         for (SystemUserEntity sue : systemUserEntityList) {
@@ -110,9 +109,10 @@ public class EverdayWarningTask{
 
     /**
      * 启动该任务
+     *
      * @throws JobExecutionException
      */
-    public void startTask()throws JobExecutionException {
+    public void startTask() throws JobExecutionException {
         try {
             List<Map<String, Object>> warningInfoList = selectTasks();
             execute(warningInfoList);

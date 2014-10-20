@@ -1,4 +1,4 @@
-$("tbody").delegate("tr","click", function (event) {
+$("tbody").delegate("tr", "click", function (event) {
     $(this).parent().find("tr").removeClass("list2_box3");
     $(this).addClass("list2_box3");
 });
@@ -26,7 +26,7 @@ function getNowChooseCampaignTreeData(treeNode) {
         jsonData.cn = null;
     }
     nowChoose = jsonData;
-    whenClickTreeLoadData(getCurrentTabName(),jsonData);
+    whenClickTreeLoadData(getCurrentTabName(), jsonData);
 }
 
 /**
@@ -55,9 +55,9 @@ function whenClickTreeLoadData(tabName, param) {
         } else {
             getCreativePlan(param.cid);
         }
-    } else if (tabName == "附加创意"){
+    } else if (tabName == "附加创意") {
 
-    }else if (tabName == "推广单元"){
+    } else if (tabName == "推广单元") {
         getAdgroupPlan(param.cid, param.cn);
     }
 

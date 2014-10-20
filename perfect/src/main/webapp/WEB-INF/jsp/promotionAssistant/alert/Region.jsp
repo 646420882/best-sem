@@ -6,18 +6,20 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<link rel="shortcut icon" type="image/ico" href="http://tuiguang-s1.bdstatic.com/nirvana/asset/resource/img/1d95fd9f0985feb4.ico">
+<link rel="shortcut icon" type="image/ico"
+      href="http://tuiguang-s1.bdstatic.com/nirvana/asset/resource/img/1d95fd9f0985feb4.ico">
 <script src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/public/css/style.css">
 
-<div id="ctrldialogplanRegionDialog" class="ui_dialog" control="planRegionDialog" style="width: 548px; left: 120px;z-index: 401; top: 0px;display: none;">
+<div id="ctrldialogplanRegionDialog" class="ui_dialog" control="planRegionDialog"
+     style="width: 548px; left: 120px;z-index: 401; top: 0px;display: none;">
 <input type="hidden" value="${cid}" id="campaignId">
 
 <div class="ui_dialog_body" id="ctrldialogplanRegionDialogbody">
 <div class="manage_dialog">
 
 <div id="planRegionset" style="display: block;">
-<div style="display: block;" ui="" id="ctrlregionregionBody" control="regionBody"   class="ui_region" >
+<div style="display: block;" ui="" id="ctrlregionregionBody" control="regionBody" class="ui_region">
 <div id="regionList" class="region-secondarea-select">
 <dl>
 <dt>
@@ -50,7 +52,7 @@
         <input type="checkbox" id="ctrlregionregionBody13" style="visibility: visible;">
         <label for="ctrlregionregionBody13">河北</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -103,7 +105,7 @@
         <div class="leaf">
             <div class="second-area-leaf">
                 <input type="checkbox">
-                <label >唐山</label>
+                <label>唐山</label>
             </div>
         </div>
         <div class="leaf">
@@ -122,10 +124,10 @@
 </div>
 <div class="leaf area-hover-event">
     <div class="first-area-container">
-        <input type="checkbox"  style="visibility: visible;">
+        <input type="checkbox" style="visibility: visible;">
         <label>内蒙古</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -206,7 +208,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>山西</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -223,7 +225,7 @@
         <div class="leaf">
             <div class="second-area-leaf">
                 <input type="checkbox">
-                <label >晋城</label>
+                <label>晋城</label>
             </div>
         </div>
         <div class="leaf">
@@ -258,7 +260,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>忻州</label>
             </div>
         </div>
@@ -291,7 +293,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>黑龙江</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -378,7 +380,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>吉林</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -406,7 +408,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>辽源</label>
             </div>
         </div>
@@ -438,10 +440,10 @@
 </div>
 <div class="leaf area-hover-event">
     <div class="first-area-container">
-        <input type="checkbox"style="visibility: visible;">
+        <input type="checkbox" style="visibility: visible;">
         <label>辽宁</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -452,7 +454,7 @@
         <div class="leaf">
             <div class="second-area-leaf">
                 <input type="checkbox">
-                <label >本溪</label>
+                <label>本溪</label>
             </div>
         </div>
         <div class="leaf">
@@ -550,7 +552,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>福建</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -566,7 +568,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>南平</label>
             </div>
         </div>
@@ -578,7 +580,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>莆田</label>
             </div>
         </div>
@@ -596,7 +598,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>厦门</label>
             </div>
         </div>
@@ -613,7 +615,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>安徽</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -665,31 +667,31 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>淮北</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
                 <input type="checkbox">
-                <label >淮南</label>
+                <label>淮南</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>黄山</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
                 <input type="checkbox">
-                <label >六安</label>
+                <label>六安</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>马鞍山</label>
             </div>
         </div>
@@ -701,8 +703,8 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
-                <label >铜陵</label>
+                <input type="checkbox">
+                <label>铜陵</label>
             </div>
         </div>
         <div class="leaf">
@@ -713,18 +715,18 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
-                <label >宣城</label>
+                <input type="checkbox">
+                <label>宣城</label>
             </div>
         </div>
     </div>
 </div>
 <div class="leaf area-hover-event">
     <div class="first-area-container">
-        <input type="checkbox"  style="visibility: visible;">
-        <label >江苏</label>
+        <input type="checkbox" style="visibility: visible;">
+        <label>江苏</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -735,7 +737,7 @@
         <div class="leaf">
             <div class="second-area-leaf">
                 <input type="checkbox">
-                <label >淮安</label>
+                <label>淮安</label>
             </div>
         </div>
         <div class="leaf">
@@ -752,7 +754,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>南通</label>
             </div>
         </div>
@@ -794,7 +796,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>扬州</label>
             </div>
         </div>
@@ -811,11 +813,11 @@
         <input type="checkbox" style="visibility: visible;">
         <label>江西</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>抚州</label>
             </div>
         </div>
@@ -851,7 +853,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>萍乡</label>
             </div>
         </div>
@@ -875,8 +877,8 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
-                <label >鹰潭</label>
+                <input type="checkbox">
+                <label>鹰潭</label>
             </div>
         </div>
     </div>
@@ -886,23 +888,23 @@
         <input type="checkbox" style="visibility: visible;">
         <label>山东</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>滨州</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>德州</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>东营</label>
             </div>
         </div>
@@ -914,43 +916,43 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
-                <label >济南</label>
+                <input type="checkbox">
+                <label>济南</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
-                <label >济宁</label>
+                <input type="checkbox">
+                <label>济宁</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
-                <label >莱芜</label>
+                <input type="checkbox">
+                <label>莱芜</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>聊城</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>临沂</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
                 <input type="checkbox">
-                <label >青岛</label>
+                <label>青岛</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>日照</label>
             </div>
         </div>
@@ -968,7 +970,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>威海</label>
             </div>
         </div>
@@ -980,7 +982,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>枣庄</label>
             </div>
         </div>
@@ -995,9 +997,9 @@
 <div class="leaf area-hover-event">
     <div class="first-area-container">
         <input type="checkbox" style="visibility: visible;">
-        <label >浙江</label>
+        <label>浙江</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -1020,7 +1022,7 @@
         <div class="leaf">
             <div class="second-area-leaf">
                 <input type="checkbox">
-                <label >金华</label>
+                <label>金华</label>
             </div>
         </div>
         <div class="leaf">
@@ -1037,8 +1039,8 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
-                <label >衢州</label>
+                <input type="checkbox">
+                <label>衢州</label>
             </div>
         </div>
         <div class="leaf">
@@ -1049,13 +1051,13 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>台州</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>温州</label>
             </div>
         </div>
@@ -1079,10 +1081,10 @@
 <div id="Middle_regionBody">
 <div class="leaf area-hover-event">
     <div class="first-area-container">
-        <input type="checkbox"  style="visibility: visible;">
+        <input type="checkbox" style="visibility: visible;">
         <label>河南</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -1092,7 +1094,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>鹤壁</label>
             </div>
         </div>
@@ -1199,7 +1201,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>湖北</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -1269,13 +1271,13 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>武汉</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>咸宁</label>
             </div>
         </div>
@@ -1288,7 +1290,7 @@
         <div class="leaf">
             <div class="second-area-leaf">
                 <input type="checkbox">
-                <label >襄阳</label>
+                <label>襄阳</label>
             </div>
         </div>
         <div class="leaf">
@@ -1310,7 +1312,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>湖南</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -1326,13 +1328,13 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>郴州</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>衡阳</label>
             </div>
         </div>
@@ -1350,13 +1352,13 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>邵阳</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>湘潭</label>
             </div>
         </div>
@@ -1386,7 +1388,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>张家界</label>
             </div>
         </div>
@@ -1413,7 +1415,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>广东</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -1501,7 +1503,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>深圳</label>
             </div>
         </div>
@@ -1548,7 +1550,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>海南</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -1582,7 +1584,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>定安县</label>
             </div>
         </div>
@@ -1594,13 +1596,13 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
-                <label >海口</label>
+                <input type="checkbox">
+                <label>海口</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>乐东黎族自治县</label>
             </div>
         </div>
@@ -1654,8 +1656,8 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
-                <label >五指山</label>
+                <input type="checkbox">
+                <label>五指山</label>
             </div>
         </div>
     </div>
@@ -1665,7 +1667,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>广西</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -1675,7 +1677,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>北海</label>
             </div>
         </div>
@@ -1747,8 +1749,8 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
-                <label >玉林</label>
+                <input type="checkbox">
+                <label>玉林</label>
             </div>
         </div>
     </div>
@@ -1768,7 +1770,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>贵州</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -1778,7 +1780,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>毕节</label>
             </div>
         </div>
@@ -1831,7 +1833,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>四川</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -1841,7 +1843,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>巴中</label>
             </div>
         </div>
@@ -1854,7 +1856,7 @@
         <div class="leaf">
             <div class="second-area-leaf">
                 <input type="checkbox">
-                <label >达州</label>
+                <label>达州</label>
             </div>
         </div>
         <div class="leaf">
@@ -1896,12 +1898,12 @@
         <div class="leaf">
             <div class="second-area-leaf">
                 <input type="checkbox">
-                <label >泸州</label>
+                <label>泸州</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>眉山</label>
             </div>
         </div>
@@ -1966,7 +1968,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>西藏</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -1982,7 +1984,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>拉萨</label>
             </div>
         </div>
@@ -2017,7 +2019,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>云南</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -2064,7 +2066,7 @@
         <div class="leaf">
             <div class="second-area-leaf">
                 <input type="checkbox">
-                <label >丽江</label>
+                <label>丽江</label>
             </div>
         </div>
         <div class="leaf">
@@ -2138,7 +2140,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>甘肃</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -2166,7 +2168,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>金昌</label>
             </div>
         </div>
@@ -2231,7 +2233,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>宁夏</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -2270,7 +2272,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>青海</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -2299,7 +2301,7 @@
         <div class="leaf">
             <div class="second-area-leaf">
                 <input type="checkbox">
-                <label >海西</label>
+                <label>海西</label>
             </div>
         </div>
         <div class="leaf">
@@ -2310,13 +2312,13 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>西宁</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>玉树</label>
             </div>
         </div>
@@ -2327,7 +2329,7 @@
         <input type="checkbox" style="visibility: visible;">
         <label>陕西</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
@@ -2355,7 +2357,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>铜川</label>
             </div>
         </div>
@@ -2367,25 +2369,25 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>西安</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>咸阳</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>延安</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>榆林</label>
             </div>
         </div>
@@ -2394,25 +2396,25 @@
 <div class="leaf area-hover-event">
     <div class="first-area-container">
         <input type="checkbox" style="visibility: visible;">
-        <label >新疆</label>
+        <label>新疆</label>
         <label class="checked-num-event"></label>
-        <span class="half-checked-icon hide"></span> </div>
+        <span class="half-checked-icon hide"></span></div>
     <div class="second-area-container hide">
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>阿克苏</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
-                <label >阿拉尔</label>
+                <input type="checkbox">
+                <label>阿拉尔</label>
             </div>
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>阿勒泰</label>
             </div>
         </div>
@@ -2496,7 +2498,7 @@
         </div>
         <div class="leaf">
             <div class="second-area-leaf">
-                <input type="checkbox" >
+                <input type="checkbox">
                 <label>乌鲁木齐</label>
             </div>
         </div>
@@ -2567,8 +2569,12 @@
 </div>
 </div>
 <div class="ui_dialog_foot">
-    <div  class="ui_button" logswitch="true" control="regionOk" id="regionOk" ui=""><a href="javascript:void(0)" id="ctrlbuttonregionOklabel" class="ui_button_label">确定</a></div>
-    <div class="ui_button" logswitch="true" control="regionCancel" id="ctrlbuttonregionCancel" ui=""><a href="javascript:void(0)" id="ctrlbuttonregionCancellabel" class="ui_button_label">取消</a></div>
+    <div class="ui_button" logswitch="true" control="regionOk" id="regionOk" ui=""><a href="javascript:void(0)"
+                                                                                      id="ctrlbuttonregionOklabel"
+                                                                                      class="ui_button_label">确定</a>
+    </div>
+    <div class="ui_button" logswitch="true" control="regionCancel" id="ctrlbuttonregionCancel" ui=""><a
+            href="javascript:void(0)" id="ctrlbuttonregionCancellabel" class="ui_button_label">取消</a></div>
     <span id="regionErrorTooltip"></span>
 </div>
 
@@ -2579,94 +2585,94 @@
 </div>
 
 <script type="text/javascript">
-    $('.ui_radiobox').click(function(){
-        if(this.id == 'ctrlradioboxpartRegion'){
+    $('.ui_radiobox').click(function () {
+        if (this.id == 'ctrlradioboxpartRegion') {
             $('#ctrlregionregionBody').show();
-        }else{
+        } else {
             $('#ctrlregionregionBody').hide();
         }
     });
-    $('.area-hover-event').mouseover(function(){
+    $('.area-hover-event').mouseover(function () {
         $(this).addClass('ie7-index');
         $(this).children('.first-area-container').addClass('first-area-container-hover');
         $(this).children('.second-area-container').removeClass('hide');
         changeNumber(this);
-    }).mouseout(function(){
+    }).mouseout(function () {
         $(this).removeClass('ie7-index');
         $(this).children('.first-area-container').removeClass('first-area-container-hover');
         $(this).children('.second-area-container').addClass('hide');
     });
-    $('.second-area-container').find(':checkbox').change(function(){
+    $('.second-area-container').find(':checkbox').change(function () {
         var parent = $(this).parents('.area-hover-event');
         changeNumber(parent);
     });
     //checked-num-event
-    function changeNumber(obj){
+    function changeNumber(obj) {
         var count = $(obj).children('.second-area-container').find(':checkbox').length;
         var cknum = $(obj).children('.second-area-container').find(':checkbox:checked').length;
-        if(cknum == count){
-            $(obj).children('.first-area-container').find(':checkbox').prop('checked',true);
-            $(obj).children('.first-area-container').find(':checkbox').attr('style','visibility:visible;');
+        if (cknum == count) {
+            $(obj).children('.first-area-container').find(':checkbox').prop('checked', true);
+            $(obj).children('.first-area-container').find(':checkbox').attr('style', 'visibility:visible;');
             $(obj).children('.first-area-container').find('.half-checked-icon').addClass('hide').removeClass('half-checked-icon-hover');
             $(obj).find('.checked-num-event').removeClass('checked-num').html('')
-        }else if(cknum == 0){
-            $(obj).children('.first-area-container').find(':checkbox').attr('style','visibility:visible;');
+        } else if (cknum == 0) {
+            $(obj).children('.first-area-container').find(':checkbox').attr('style', 'visibility:visible;');
             $(obj).children('.first-area-container').find('.half-checked-icon').addClass('hide').removeClass('half-checked-icon-hover');
-            $(obj).children('.first-area-container').find(':checkbox').prop('checked',false);
+            $(obj).children('.first-area-container').find(':checkbox').prop('checked', false);
             $(obj).find('.checked-num-event').removeClass('checked-num').html('')
-        }else{
+        } else {
             $(obj).find('.checked-num-event').addClass('checked-num').html(cknum + "/" + count);
-            $(obj).children('.first-area-container').find(':checkbox').attr('style','visibility:hidden;');
-            $(obj).children('.first-area-container').find(':checkbox').prop('checked',true);
+            $(obj).children('.first-area-container').find(':checkbox').attr('style', 'visibility:hidden;');
+            $(obj).children('.first-area-container').find(':checkbox').prop('checked', true);
             $(obj).children('.first-area-container').find('.half-checked-icon').removeClass('hide').addClass('half-checked-icon-hover');
         }
     }
-    $(function(){
+    $(function () {
         var ck = $('#ctrlradioboxpartRegion').prop('checked');
-        if(ck){
+        if (ck) {
             $('#ctrlregionregionBody').show();
         }
     });
     /*******input_checked*****/
 
-    $(function() {
-        $("dt input[type=checkbox]").click(function(){
-            if($(this).is(":checked") == true){
+    $(function () {
+        $("dt input[type=checkbox]").click(function () {
+            if ($(this).is(":checked") == true) {
                 $(this).parent("dt").next("dd").find("input[type=checkbox]").prop("checked", "true");
-            }else{
+            } else {
                 $(this).parent("dt").next("dd").find("input[type=checkbox]").removeAttr("checked");
             }
         });
     });
-    $(function() {
-        $(".first-area-container input[type=checkbox]").click(function(){
-            if($(this).is(":checked") == true){
+    $(function () {
+        $(".first-area-container input[type=checkbox]").click(function () {
+            if ($(this).is(":checked") == true) {
                 $(this).parent(".first-area-container").next(".second-area-container").find("input[type=checkbox]").prop("checked", "true");
-            }else{
+            } else {
                 $(this).parent(".first-area-container").next(".second-area-container").find("input[type=checkbox]").removeAttr("checked");
             }
         });
     });
-    $(function() {
-        $(".second-area-leaf input[type=checkbox]").click(function(){
-            if($(this).is(":checked") == true){
-                $(this).parent("dt").find("input[type=checkbox]").prop('checked',true);
-            }else{
+    $(function () {
+        $(".second-area-leaf input[type=checkbox]").click(function () {
+            if ($(this).is(":checked") == true) {
+                $(this).parent("dt").find("input[type=checkbox]").prop('checked', true);
+            } else {
                 $(this).parent("dt").find("input[type=checkbox]").removeAttr("checked");
 
             }
         });
     });
     /*******切换*****/
-    $(document).ready(function(){
-        $("#useAcctRegion").click(function(){
+    $(document).ready(function () {
+        $("#useAcctRegion").click(function () {
             $("#acctRegionList").show();
             $("#useAcctRegion").addClass("current_region");
             $("#planRegionset").hide();
             $("#usePlanRegion").removeClass("current_region");
 
         });
-        $("#usePlanRegion").click(function(){
+        $("#usePlanRegion").click(function () {
             $("#planRegionset").show();
             $("#usePlanRegion").addClass("current_region");
             $("#acctRegionList").hide();
@@ -2675,41 +2681,39 @@
         });
     })
     /*******关闭窗口*****/
-    $("#ctrldialogplanRegionDialogclose").click(function(){
-        $("#ctrldialogplanRegionDialog").css("display","none");
+    $("#ctrldialogplanRegionDialogclose").click(function () {
+        $("#ctrldialogplanRegionDialog").css("display", "none");
     });
-    $("#ctrlbuttonregionCancellabel").click(function(){
-        $("#ctrldialogplanRegionDialog").css("display","none");
+    $("#ctrlbuttonregionCancellabel").click(function () {
+        $("#ctrldialogplanRegionDialog").css("display", "none");
     });
 </script>
 
 <script type="text/javascript">
 
 
-
-
     //将该计划现已有的推广地域展示出来
     function setRegionTargetToChecked(regionsName) {
         var label = $("#regionList").find("div[class=leaf]").find("label");
-        for(var i=0;i<regionsName.length;i++){
-              label.each(function () {
-                  if(regionsName[i]==$(this).html()){
-                      if($(this).parent().parent().parent().attr("class")!="second-area-container hide"){
-                          $(this).parent().find("input[type=checkbox]")[0].checked=true;
-                      }else{
-                          var ico = $(this).parentsUntil(".area-hover-event").parent().find(".first-area-container>.half-checked-icon");
-                          ico.removeClass("hide");
-                          ico.addClass("half-checked-icon-hover");
-                          $(this).parent().find("input[type=checkbox]")[0].checked=true;
-                      }
-                  }
-              });
+        for (var i = 0; i < regionsName.length; i++) {
+            label.each(function () {
+                if (regionsName[i] == $(this).html()) {
+                    if ($(this).parent().parent().parent().attr("class") != "second-area-container hide") {
+                        $(this).parent().find("input[type=checkbox]")[0].checked = true;
+                    } else {
+                        var ico = $(this).parentsUntil(".area-hover-event").parent().find(".first-area-container>.half-checked-icon");
+                        ico.removeClass("hide");
+                        ico.addClass("half-checked-icon-hover");
+                        $(this).parent().find("input[type=checkbox]")[0].checked = true;
+                    }
+                }
+            });
         }
 
     }
 
     /**
-    *搜索词报告中的确定按钮事件
+     *搜索词报告中的确定按钮事件
      */
     $("#regionOk").click(function () {
         $("#ctrldialogplanRegionDialog").hide(0);

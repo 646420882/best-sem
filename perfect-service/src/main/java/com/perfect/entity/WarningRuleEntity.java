@@ -11,7 +11,7 @@ import java.util.Date;
  * Created by john on 2014/8/5.
  */
 @Document(collection = "sys_warning")
-public class WarningRuleEntity extends AccountIdEntity{
+public class WarningRuleEntity extends AccountIdEntity {
 
     @Id
     private String id;

@@ -25,7 +25,7 @@ public class AccountRealTimeReport {
     @Resource
     private AccountManageService accountManageService;
 
-    public  List<RealTimeResultType> getAccountRealTimeData(Long accountId,String _startDate, String _endDate) {
+    public List<RealTimeResultType> getAccountRealTimeData(Long accountId, String _startDate, String _endDate) {
         if (_startDate == null && _endDate != null) {
             Assert.notNull(_startDate, "_startDate must not be null!");
         }

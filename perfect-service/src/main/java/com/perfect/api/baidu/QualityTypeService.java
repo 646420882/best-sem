@@ -38,7 +38,7 @@ public class QualityTypeService {
 
             GetKeywordQualityResponse response = keywordService.getKeywordQuality(request);
 
-            if(response==null){
+            if (response == null) {
                 return list;
             }
             list = response.getQualities();

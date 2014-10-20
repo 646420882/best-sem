@@ -144,12 +144,12 @@ function campaignDataToHtml(obj, index) {
     //推广地域
     html = html + until.convert(obj.regionTarget == "" || obj.regionTarget == null, "<td>账户推广地域</td>" + ":" + "<td>计划推广地域</td>");
 
-    var fd = obj.negativeWords != null?obj.negativeWords.length:0;
-    var jqfd = obj.exactNegativeWords != null?obj.exactNegativeWords.length:0;
+    var fd = obj.negativeWords != null ? obj.negativeWords.length : 0;
+    var jqfd = obj.exactNegativeWords != null ? obj.exactNegativeWords.length : 0;
     html = html + until.convert(fd == 0 && jqfd == 0, "<td>未设置</td>:" + "<td>" + fd + ";" + jqfd + "</td>");
 
-    html = html + "<td>" + (obj.excludeIp != null?obj.excludeIp.length:0) + "</td>";
-    html = html + (obj.budgetOfflineTime != null?"<td>" + obj.budgetOfflineTime.length + "</td>":"<td>-</td>");
+    html = html + "<td>" + (obj.excludeIp != null ? obj.excludeIp.length : 0) + "</td>";
+    html = html + (obj.budgetOfflineTime != null ? "<td>" + obj.budgetOfflineTime.length + "</td>" : "<td>-</td>");
     html = html + "<input type='hidden' value=" + obj.priceRatio + " class='hidden'/>";
     if (obj.localStatus != null) {
         if (obj.localStatus == 3) {
@@ -195,12 +195,12 @@ function setCampaignValue(obj, campaignId) {
 
     $(".status_5").html(_tr.find("td:eq(1)").html());
 
-    if(_tr.find("td:eq(10)").html()=="-"){
+    if (_tr.find("td:eq(10)").html() == "-") {
         //达到预算下线
         $(".budgetOfflineTime_5").html("0次");
-    }else{
+    } else {
         //达到预算下线
-        $(".budgetOfflineTime_5").html(_tr.find("td:eq(10)").html()+"次");
+        $(".budgetOfflineTime_5").html(_tr.find("td:eq(10)").html() + "次");
     }
 
     //推广计划状态
@@ -418,8 +418,8 @@ $(".inputNegativeWords_add").click(function () {
  * @param data
  */
 function setNegativeWordsToTextArea(data) {
-    var negativeWords = data.negativeWords==undefined?new Array():data.negativeWords;
-    var exactNegativeWords = data.exactNegativeWords==undefined?new Array():data.exactNegativeWords;
+    var negativeWords = data.negativeWords == undefined ? new Array() : data.negativeWords;
+    var exactNegativeWords = data.exactNegativeWords == undefined ? new Array() : data.exactNegativeWords;
     var ntwcontent = "";
     var exntcontent = "";
 
@@ -456,7 +456,7 @@ $(".excluedIp_5").click(function () {
         dataType: "json",
         success: function (data) {
             var content = "";
-            var excludeIp = data.excludeIp==undefined?new Array():data.excludeIp;
+            var excludeIp = data.excludeIp == undefined ? new Array() : data.excludeIp;
             for (var i = 0; i < excludeIp.length; i++) {
                 if (i < excludeIp.length - 1) {
                     content = content + excludeIp[i] + "\r";
@@ -558,7 +558,6 @@ $(".scheduleOk").click(function () {
 });
 
 
-
 //得到用户选择的推广时段数据
 function getInputScheduleData() {
     var jsonArray = new Array();
@@ -623,20 +622,18 @@ function whenChooseLiToSetCheckBox(thisLi) {
 
 
 $(".hours").delegate("li", "mouseover", function () {
-    if(isPressDownCtrl==true){
+    if (isPressDownCtrl == true) {
         if ($(this).attr("class") == "changeGreen") {
             $(this).removeClass("changeGreen");
             $(this).addClass("changeGray");
-        } else{
+        } else {
             $(this).removeClass("changeGray");
             $(this).addClass("changeGreen");
         }
-        whenChooseLiToSetCheckBox( $(this));
+        whenChooseLiToSetCheckBox($(this));
     }
 
 });
-
-
 
 
 /**
@@ -690,7 +687,7 @@ function createChooseTimeUIByCampaignData(data) {
         }
 
         var changeGrayArray = new Array();
-        if(data.schedule!=null){
+        if (data.schedule != null) {
             for (var m = 0; m < data.schedule.length; m++) {
                 if (data.schedule[m].weekDay == (i + 1)) {
                     for (var n = 0; n < 24; n++) {
@@ -999,26 +996,18 @@ function closeSetNegtiveWord() {
 }
 
 
-
-
-
-
-
-
 //Ctrl键按下
 var isPressDownCtrl = false;
-$(window).on("keydown keyup",function (event) {
+$(window).on("keydown keyup", function (event) {
     var keyCode = event.keyCode;
-    if(keyCode==17){
-        if(event.type=="keydown"){
+    if (keyCode == 17) {
+        if (event.type == "keydown") {
             isPressDownCtrl = true;
-        }else{
+        } else {
             isPressDownCtrl = false;
         }
     }
 });
-
-
 
 
 /************************************************************关键词的右击菜单************************************************************/
@@ -1036,18 +1025,18 @@ var menu_campaign_add = {
     func: function () {
         showQuickAddPlanWindow();
     }
-},menu_campaign_del = {
-    text:"删除计划",
+}, menu_campaign_del = {
+    text: "删除计划",
     func: function () {
         deleteCampaign();
     }
-},menu_campaign_redu = {
-    text:"还原",
-        func: function () {
+}, menu_campaign_redu = {
+    text: "还原",
+    func: function () {
         showReductionCampaignWindow();
     }
-},menu_campaign_searchWord = {
-    text:"搜索词",
+}, menu_campaign_searchWord = {
+    text: "搜索词",
     func: function () {
         searchword();
     }
@@ -1057,7 +1046,7 @@ var menu_campaign_add = {
  * @type {*[]}
  */
 var campaignMenuData = [
-    [menu_campaign_add,menu_campaign_quickCreatePlan,menu_campaign_del,menu_campaign_redu,menu_campaign_searchWord]
+    [menu_campaign_add, menu_campaign_quickCreatePlan, menu_campaign_del, menu_campaign_redu, menu_campaign_searchWord]
 ];
 /**
  * 用户缓存右键点击的对象
@@ -1082,21 +1071,17 @@ $("#tbodyClick5").on("mousedown", "tr", function () {
 });
 
 
-
-
-
-
 //多行选中
 /*$("tbody").delegate("tr","click", function () {
-    if(isPressDownCtrl==true){
-        alert($(this).attr("class"));
-        if(/list2_box3/.test($(this).attr("class"))){
-            $(this).removeClass("list2_box3");
-        }else{
-            $(this).addClass("list2_box3");
-        }
-    }else{
-        $(this).parent().find("tr").removeClass("list2_box3");
-        $(this).addClass("list2_box3");
-    }
-});*/
+ if(isPressDownCtrl==true){
+ alert($(this).attr("class"));
+ if(/list2_box3/.test($(this).attr("class"))){
+ $(this).removeClass("list2_box3");
+ }else{
+ $(this).addClass("list2_box3");
+ }
+ }else{
+ $(this).parent().find("tr").removeClass("list2_box3");
+ $(this).addClass("list2_box3");
+ }
+ });*/

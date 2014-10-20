@@ -343,7 +343,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 dtoList.add(dto);
             } else {
                 KeywordDTO dto = new KeywordDTO();
-                dto.setFolderCount(monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));
+                dto.setFolderCount(kwd.getKeywordId()==null?0l:monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));
                 dto.setCampaignName(camp.getCampaignName());
                 dto.setObject(kwd);
                 dto.setCampaignId(camp.getCampaignId());

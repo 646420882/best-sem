@@ -12,7 +12,7 @@ import java.util.Map;
  * 发送邮件和发送短信的线程
  */
 
-public class Sender implements Runnable{
+public class Sender implements Runnable {
 
 
     @Resource
@@ -21,7 +21,7 @@ public class Sender implements Runnable{
     @Resource
     private SendMessage sendMessage;
 
-    private Map<String,Object> map;
+    private Map<String, Object> map;
 
 
     public Sender(Map<String, Object> map) {
@@ -29,14 +29,14 @@ public class Sender implements Runnable{
     }
 
     public void run() {
-        String[] mails = (String[])map.get("mails");
-        String[] tels = ((String)map.get("tels")).split(",");
-        if(mails.length>0){
+        String[] mails = (String[]) map.get("mails");
+        String[] tels = ((String) map.get("tels")).split(",");
+        if (mails.length > 0) {
             sendMail(mails);
         }
 
-        if(tels.length>0){
-            sendMessage((String)map.get("tels"));
+        if (tels.length > 0) {
+            sendMessage((String) map.get("tels"));
         }
     }
 
@@ -44,9 +44,9 @@ public class Sender implements Runnable{
     /**
      * 发送邮件
      */
-    public void sendMail(String[] mails){
-        for(String mail:mails){
-            sendMail.startSendTextMail(mail,"账户预警","超出了预算!");
+    public void sendMail(String[] mails) {
+        for (String mail : mails) {
+            sendMail.startSendTextMail(mail, "账户预警", "超出了预算!");
         }
     }
 
@@ -54,8 +54,8 @@ public class Sender implements Runnable{
     /**
      * 发送手机短信
      */
-    public void sendMessage(String tels){
-        sendMessage.startSendMes(tels,new String[]{});
+    public void sendMessage(String tels) {
+        sendMessage.startSendMes(tels, new String[]{});
     }
 
 }

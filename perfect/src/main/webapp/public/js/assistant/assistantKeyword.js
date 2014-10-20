@@ -30,7 +30,7 @@ var pageSelectCallback = function (page_index, jq) {
         getCampaignList(page_index);
     } else if (pageType == 3) {
         loadCreativeData(page_index);
-    }else if(pageType==4){
+    } else if (pageType == 4) {
         loadAdgroupData(page_index);
     }
     return false;
@@ -43,7 +43,7 @@ var getOptionsFromForm = function (current_page) {
     opt["current_page"] = current_page;
     opt["prev_text"] = "上一页";
     opt["next_text"] = "下一页";
-    opt["num_display_entries"]=4;
+    opt["num_display_entries"] = 4;
 
     //avoid html injections
     var htmlspecialchars = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"};
@@ -94,7 +94,7 @@ function getKwdList(nowPage) {
             pageIndex = data.pageNo;
             $("#pagination_keywordPage").pagination(records, getOptionsFromForm(pageIndex));
 
-            if (data.list==null||data.list==undefined||data.list.length == 0) {
+            if (data.list == null || data.list == undefined || data.list.length == 0) {
                 $("#tbodyClick").html("暂无数据!");
                 return;
             }
@@ -155,7 +155,7 @@ function keywordDataToHtml(obj, index) {
     }
 
     //kwid
-    html = html + "<input type='hidden' camp='"+obj.campaignId+"' adg='"+obj.object.adgroupId+"' dirCount='"+obj.folderCount+"' value = " + obj.object.keywordId + " />";
+    html = html + "<input type='hidden' camp='" + obj.campaignId + "' adg='" + obj.object.adgroupId + "' dirCount='" + obj.folderCount + "' value = " + obj.object.keywordId + " />";
     html = html + "<td>" + obj.object.keyword + "</td>";
 
     switch (obj.object.status) {
@@ -201,60 +201,72 @@ function keywordDataToHtml(obj, index) {
     //计算机质量度
     var quanlityHtml = "<span>";
     var quanlityText = "";
-    if(obj.quality>0){
-        switch(parseInt(obj.quality)){
+    if (obj.quality > 0) {
+        switch (parseInt(obj.quality)) {
             case 11:
             case 12:
             case 13:
-                quanlityHtml+="<img src='/public/img/star.png'>";
-                quanlityHtml+="<img src='/public/img/star3.png'>";
-                quanlityHtml+="<img src='/public/img/star3.png'>";
-                quanlityHtml+="<img src='/public/img/star3.png'>";
-                quanlityHtml+="<img src='/public/img/star3.png'>";
+                quanlityHtml += "<img src='/public/img/star.png'>";
+                quanlityHtml += "<img src='/public/img/star3.png'>";
+                quanlityHtml += "<img src='/public/img/star3.png'>";
+                quanlityHtml += "<img src='/public/img/star3.png'>";
+                quanlityHtml += "<img src='/public/img/star3.png'>";
                 break;
             case 21:
             case 22:
-                quanlityHtml+="<img src='/public/img/star.png'>";
-                quanlityHtml+="<img src='/public/img/star.png'>";
-                quanlityHtml+="<img src='/public/img/star3.png'>";
-                quanlityHtml+="<img src='/public/img/star3.png'>";
-                quanlityHtml+="<img src='/public/img/star3.png'>";
+                quanlityHtml += "<img src='/public/img/star.png'>";
+                quanlityHtml += "<img src='/public/img/star.png'>";
+                quanlityHtml += "<img src='/public/img/star3.png'>";
+                quanlityHtml += "<img src='/public/img/star3.png'>";
+                quanlityHtml += "<img src='/public/img/star3.png'>";
                 break;
             case 3:
-                quanlityHtml+="<img src='/public/img/star3.png'>";
-                quanlityHtml+="<img src='/public/img/star3.png'>";
-                quanlityHtml+="<img src='/public/img/star3.png'>";
-                quanlityHtml+="<img src='/public/img/star3.png'>";
-                quanlityHtml+="<img src='/public/img/star3.png'>";
+                quanlityHtml += "<img src='/public/img/star3.png'>";
+                quanlityHtml += "<img src='/public/img/star3.png'>";
+                quanlityHtml += "<img src='/public/img/star3.png'>";
+                quanlityHtml += "<img src='/public/img/star3.png'>";
+                quanlityHtml += "<img src='/public/img/star3.png'>";
         }
 
-        switch (parseInt(obj.quality)){
-            case 11:quanlityText = "一星较难优化";break;
-            case 12:quanlityText = "一星难度中等";break;
-            case 13:quanlityText = "一星较易优化";break;
-            case 21:quanlityText = "二星较难优化";break;
-            case 22:quanlityText = "二星较易优化";break;
-            case 3:quanlityText = "三星";break;
+        switch (parseInt(obj.quality)) {
+            case 11:
+                quanlityText = "一星较难优化";
+                break;
+            case 12:
+                quanlityText = "一星难度中等";
+                break;
+            case 13:
+                quanlityText = "一星较易优化";
+                break;
+            case 21:
+                quanlityText = "二星较难优化";
+                break;
+            case 22:
+                quanlityText = "二星较易优化";
+                break;
+            case 3:
+                quanlityText = "三星";
+                break;
         }
     }
-    quanlityHtml+="&nbsp;&nbsp;&nbsp;"+quanlityText+"</span>";
-    html = html + "<td cname="+obj.quality+">"+quanlityHtml+"</td>";
+    quanlityHtml += "&nbsp;&nbsp;&nbsp;" + quanlityText + "</span>";
+    html = html + "<td cname=" + obj.quality + ">" + quanlityHtml + "</td>";
 
 
     //移动质量度
     var mobileQuanlityHtml = "<span>";
-    if(parseInt(obj.mobileQuality)>0){
-        for(var i=1;i<=5;i++){
-            if(parseInt(obj.mobileQuality)>=i){
-                mobileQuanlityHtml+="<img src='/public/img/star.png'>";
-            }else{
-                mobileQuanlityHtml+="<img src='/public/img/star3.png'>";
+    if (parseInt(obj.mobileQuality) > 0) {
+        for (var i = 1; i <= 5; i++) {
+            if (parseInt(obj.mobileQuality) >= i) {
+                mobileQuanlityHtml += "<img src='/public/img/star.png'>";
+            } else {
+                mobileQuanlityHtml += "<img src='/public/img/star3.png'>";
             }
         }
-        mobileQuanlityHtml+="&nbsp;&nbsp;&nbsp;"+obj.mobileQuality;
+        mobileQuanlityHtml += "&nbsp;&nbsp;&nbsp;" + obj.mobileQuality;
     }
-    mobileQuanlityHtml+="</span>";
-    html = html + "<td cname="+obj.mobileQuality+">"+mobileQuanlityHtml+"</td>";
+    mobileQuanlityHtml += "</span>";
+    html = html + "<td cname=" + obj.mobileQuality + ">" + mobileQuanlityHtml + "</td>";
 
 
     //匹配模式
@@ -283,12 +295,12 @@ function keywordDataToHtml(obj, index) {
     html = html + "<td>" + matchType + "</td>";
 
 
-    html = html + "<td>" + (obj.object.pcDestinationUrl != null?"<a target='_blank' href='" + obj.object.pcDestinationUrl + "'>" + obj.object.pcDestinationUrl.substr(0, 20) + "</a>":"") + "</td>";
-    html = html + "<td>" + (obj.object.mobileDestinationUrl != null?"<a target='_blank' href='" + obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>":"") + "</td>";
-    html = html + "<td>"+obj.campaignName+"</td>";
+    html = html + "<td>" + (obj.object.pcDestinationUrl != null ? "<a target='_blank' href='" + obj.object.pcDestinationUrl + "'>" + obj.object.pcDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
+    html = html + "<td>" + (obj.object.mobileDestinationUrl != null ? "<a target='_blank' href='" + obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
+    html = html + "<td>" + obj.campaignName + "</td>";
 
     if (obj.object.localStatus != null) {
-        if (obj.object.localStatus == 3||obj.object.localStatus == 4) {
+        if (obj.object.localStatus == 3 || obj.object.localStatus == 4) {
             html = html + "<td><span class='error' step='" + obj.object.localStatus + "'></span></td>";
         } else {
             html = html + "<td><span class='pen' step='" + obj.object.localStatus + "'></span></td>";
@@ -333,7 +345,7 @@ function setKwdValue(obj, kwid) {
         $(".mourlSize_1").html("0/1017");
     }
 
-    $("#genusFolderCount").html(obj.find("input[type=hidden]").attr("dirCount")+"个");
+    $("#genusFolderCount").html(obj.find("input[type=hidden]").attr("dirCount") + "个");
     $(".matchModel_1").html($(obj).find("td:eq(6)").html());
     $(".status_1").html($(obj).find("td:eq(1)").html());
 
@@ -612,42 +624,38 @@ function reducKwd_del(id) {
 }
 
 
-
-
-
-
 /************************************************************关键词的右击菜单************************************************************/
 /**
  * 菜单名，方法
  * @type {{text: string, func: func}}
  */
 var menu_keyword_add = {
-        text: "添加关键词",
-        func: function(){
-            showSearchWord();
-        }
-    }, menu_keyword_del = {
-        text: "删除关键词",
-        func: function () {
-            deleteKwd();
-        }
-    }, menu_keyword_batchAddOrUpdate = {
-        text: "批量添加/更新",
-        func: function () {
-            batchAddOrUpdate();
-        }
-    },menu_keyword_batchDel={
-        text:"批量删除",
-        func: function () {
-            batchDelKeyword();
-        }
-    },menu_keyword_redu = {
-        text:"还原",
-        func: function () {
-            reductionKeyword();
-        }
-    },menu_keyword_searchWord = {
-    text:"搜索词",
+    text: "添加关键词",
+    func: function () {
+        showSearchWord();
+    }
+}, menu_keyword_del = {
+    text: "删除关键词",
+    func: function () {
+        deleteKwd();
+    }
+}, menu_keyword_batchAddOrUpdate = {
+    text: "批量添加/更新",
+    func: function () {
+        batchAddOrUpdate();
+    }
+}, menu_keyword_batchDel = {
+    text: "批量删除",
+    func: function () {
+        batchDelKeyword();
+    }
+}, menu_keyword_redu = {
+    text: "还原",
+    func: function () {
+        reductionKeyword();
+    }
+}, menu_keyword_searchWord = {
+    text: "搜索词",
     func: function () {
         searchword();
     }
@@ -658,7 +666,7 @@ function showSearchWord() {
         padding: "5px",
         content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         onclose: function () {
-           /* whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());*/
+            /* whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());*/
         }
     }).showModal();
     return false;
@@ -668,7 +676,7 @@ function showSearchWord() {
  * @type {*[]}
  */
 var keywordMenuData = [
-    [menu_keyword_add, menu_keyword_del, menu_keyword_batchAddOrUpdate,menu_keyword_batchDel,menu_keyword_redu,menu_keyword_searchWord]
+    [menu_keyword_add, menu_keyword_del, menu_keyword_batchAddOrUpdate, menu_keyword_batchDel, menu_keyword_redu, menu_keyword_searchWord]
 ];
 /**
  * 用户缓存右键点击的对象
