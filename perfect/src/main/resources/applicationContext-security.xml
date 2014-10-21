@@ -25,7 +25,6 @@
 
     <security:http auto-config="true">
         <security:intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>
-        <security:intercept-url pattern="/admin/*.js" access="ROLE_ADMIN"/>
         <security:intercept-url pattern="/**" access="ROLE_USER"/>
         <security:form-login login-page="/login"
                              authentication-success-handler-ref="customAuthenticationSuccessHandler"

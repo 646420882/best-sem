@@ -61,6 +61,10 @@ var updateExistsCampaign = function () {
         }
     });
 
+    if (campaignIds.length == 0) {
+        return;
+    }
+
     campaignIds = campaignIds.substring(0, campaignIds.length - 1);
 
     $.ajax({
@@ -83,6 +87,10 @@ var updateNewCampaign = function () {
             campaignIds.push(item.id);
         }
     });
+
+    if (campaignIds.length == 0) {
+        return;
+    }
 
     $.ajax({
         url: '/account/updateAccountData',

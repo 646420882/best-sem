@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private static boolean usernameNotFound = false;
 
-    public static boolean verifyNotPass = false;
+    private static boolean verifyNotPass = false;
 
     private static int passwdBadCredentialsNum = 0;
 
