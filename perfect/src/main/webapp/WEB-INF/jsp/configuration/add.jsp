@@ -13,33 +13,82 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
     <script type="text/javascript">
-        $(function () {
+        var judeit =0;
+       $(function () {
             var $ = function (ID) {
                         return document.getElementById(ID);
                     },
                     oTab = $("stepTable"),
                     oTd = oTab.getElementsByTagName("TD");
-            for (var i = 0; i < oTd.length; i++) {
+                for (var i = 0; i < oTd.length; i++) {
                 (function (i) {
                     oTd[i].onclick = function () {
-                        for (var j = 0; j < i; j++) {
-                            oTd[j].className = "clicked";
-                        }
                         for (var j = oTd.length - 1; j > i; j--) {
                             oTd[j].className = "";
                         }
-                        this.className = "current";
+                        if(document.getElementById("checkboxid").checked) {
+                        var dsf = this.getAttribute("cname");
+                            if(dsf == "step3"){
+                                if(judeit ==1){
+                                    for (var j = 0; j < i; j++) {
+                                        oTd[j].className = "clicked";
+                                    }
+                                    this.className = "current";
+                                    document.getElementById("step1").className = "hide";
+                                    document.getElementById("step2").className = "hide";
+                                    document.getElementById("step3").className = "hide";
+                                    document.getElementById(dsf).className = "";
+                                }
+                            }else {
+                                for (var j = 0; j < i; j++) {
+                                    oTd[j].className = "clicked";
+                                }
+                                this.className = "current";
+                                document.getElementById("step1").className = "hide";
+                                document.getElementById("step2").className = "hide";
+                                document.getElementById("step3").className = "hide";
+                                document.getElementById(dsf).className = "";
+                                judeit = 0;
+                            }
+                        }
                     }
                 })(i);
             }
-        });
+       });
+        function progress(number){
+            var source = document.getElementsByName("source");
+            for(var i=0;i<source.length;i++)
+            {
+                if(number==1){
+                    //判断那个单选按钮为选中状态
+                    if(source[i].checked)
+                    {
+                            document.getElementById("step1").className = "hide";
+                            document.getElementById("step3").className = "hide";
+                            document.getElementById("step2").className = "";
+                            document.getElementById("buzhou2").className = "current";
+                    }
+                }
+                if(number == 2){
+                    var userName = document.getElementById("username").value;
+                    var pwd = document.getElementById("pwd").value;
+                    var token = document.getElementById("token").value;
+                    if((userName != undefined && userName != "") && (pwd != undefined && pwd !="") && (token != undefined && token != "")){
+                        document.getElementById("step1").className = "hide";
+                        document.getElementById("step3").className = "";
+                        document.getElementById("step2").className = "hide";
+                        document.getElementById("buzhou3").className = "current";
+                        judeit =1;
+                    }
+                }
+            }
+        };
     </script>
     <style type="text/css">
         .tab_box {
             padding: 0px;
         }
     </style>
-
 </head>
 <body>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
@@ -48,16 +97,13 @@
     <div class="mid over">
         <div class="title_box">
             <div class="on_title over">
-                <a href="#">用户中心</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<span>添加推广帐号</span>
+                <a href="../configuration/">用户中心</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="../configuration/">关联账号</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<span>添加推广帐号</span>
             </div>
         </div>
         <div id="tab">
             <ul class="tab_menu">
                 <li class="selected">
-                    关联账户
-                </li>
-                <li>
-                    修改密码
+                    添加推广帐号
                 </li>
             </ul>
             <div class="tab_box">
@@ -71,15 +117,15 @@
                     <table id="stepTable" class="step_table" border="0" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
                         <tr>
-                            <td class="current">
+                            <td class="current" cname="step1">
                                 <div class="con"><span>1</span>选择搜索引擎</div>
                             </td>
-                            <td>
+                            <td  id="buzhou2" cname="step2">
                                 <div class="tri">
                                     <div class="con"><span>2</span>验证推广帐号绑定</div>
                                 </div>
                             </td>
-                            <td>
+                            <td id="buzhou3" cname="step3">
                                 <div class="tri">
                                     <div class="con"><span>3</span>完成绑定</div>
                                 </div>
@@ -88,37 +134,33 @@
                         </tbody>
                     </table>
                 </div>
-                <div id="step1">
-                    <input name="source" type="radio"/> <img
-                        src="${pageContext.request.contextPath}/public/images/bdlogo.png"/>
-
-                </div>
-
-                <div id="step2">
-                    <form name="frm" method="post" action="/configuration/save">
-                       <ul>
-                           <li><div class="add_list01 fl">百度用户名: </div><input type="text" name="username"></li>
-                           <li><div class="add_list01 fl">百度密码: </div><input type="password" name="password"></li>
-                           <li><div class="add_list01 fl">再次确认百度密码:</div><input type="password" name="password1"></li>
-                           <li><div class="add_list01 fl">  百度API Token: </div><input type="text" name="token"></li>
-                       </ul>
-                        <input id="submit" class="add_submit" type="submit"/>
-                    </form>
-
+                <div class="jindu over">
+                    <div id="step1">
+                        <input name="source" id="checkboxid" onclick="progress(1)" type="checkbox"/> <img
+                            src="${pageContext.request.contextPath}/public/images/bdlogo.png"/>
+                    </div>
+                    <div id="step2" class="hide">
+                        <form name="frm" method="post" action="/configuration/save">
+                            <ul>
+                                <li><div class="add_list01 fl">百度用户名: </div><input type="text" id="username" name="username"></li>
+                                <li><div class="add_list01 fl">百度密码: </div><input type="password" id="pwd" name="password"></li>
+                               <%-- <li><div class="add_list01 fl">再次确认百度密码:</div><input type="password" name="password1"></li>--%>
+                                <li><div class="add_list01 fl">  百度API Token: </div><input type="text" id="token" name="token"></li>
+                            </ul>
+                            <input id="submit" class="add_submit" onclick="progress(2)" type="submit"/>
+                        </form>
+                    </div>
+                    <div id="step3" class="hide">
+                    </div>
                 </div>
             </div>
                </div>
-                <div class="containers hides" >
-                    <jsp:include page="../configuration/changePwd.jsp"/>
-                </div>
             </div>
-
         </div>
         <jsp:include page="../homePage/pageBlock/footer.jsp"/>
     </div>
 </div>
 <script type="application/javascript">
-
     $(function () {
         $('#submit').click(function () {
             var p = $("input[name='password']").val();
@@ -138,14 +180,8 @@
                 $("form[name='frm']").submit();
             }
         })
-        var $tab_li = $('.tab_menu li');
-        $('.tab_menu li').click(function () {
-            $(this).addClass('selected').siblings().removeClass('selected');
-            var index = $tab_li.index(this);
-            $('div.tab_box > div').eq(index).show().siblings().hide();
-        });
-    });
 
+    });
 </script>
 </body>
 </html>
