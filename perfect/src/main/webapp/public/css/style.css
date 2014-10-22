@@ -14,6 +14,8 @@ a, applet, blockquote, body, button, caption, code, dd, div, dl, dt, fieldset, f
 	background: #fff;
 	border: 2px solid #394459;
 	font-size:12px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
 }
 .ui_dialog_head {
     background: none repeat scroll 0 0 #394459;
@@ -48,7 +50,8 @@ a, applet, blockquote, body, button, caption, code, dd, div, dl, dt, fieldset, f
     font-weight: 700;
 }
 .ui_dialog_body {
-    margin: 10px 8px;
+   /* margin: 10px 8px;*/
+    padding:10px;
 }
 #DenyAreaNotice {
     line-height: 23px;
@@ -122,7 +125,7 @@ input, select, textarea {
     height: 27px;
     position: relative;
     text-align: left;
-    width: 140px;
+    width: 120px;
 }
 
 .region-secondarea-select .graybg {
@@ -140,7 +143,7 @@ input, select, textarea {
 }
 .ui_dialog_foot {
     clear: both;
-    margin: 0 8px 10px;
+    margin: 10px 8px 10px;
 }
 
 .ui_dialog_foot .ui_button {
@@ -314,7 +317,7 @@ input, select, textarea {
 .region-secondarea-select .leaf .first-area-container {
 	position: absolute;
 	text-align: left;
-	width: 100px;
+	width: 88px;
 	top: 0;
 	height: 27px;
 	padding-left: 10px;
@@ -339,15 +342,17 @@ input, select, textarea {
 .region-secondarea-select .leaf .second-area-container {
 	position: absolute;
 	top: 0;
-	right: -404px;
-	right\0: -406px;
+	right: -424px;
+	right\0: -424px;
 	width: 420px;
 	padding: 0 10px;
 	border: 1px solid #999;
 	background-color: #fff;
 	z-index: 999;
 	zoom: 1
+
 }
+
 .region-secondarea-select .leaf .second-area-leaf {
 	position: absolute;
 	top: 0;
@@ -371,6 +376,7 @@ input, select, textarea {
 
 #Abroad_regionBody .second-area-leaf {
     padding-left: 0;
+    width:140px;
 }
 .region-secondarea-select .checked-num {
 	margin-left: 1px;

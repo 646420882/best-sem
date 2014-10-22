@@ -14,21 +14,36 @@
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/zTreeStyle/zTreeStyle.css">
     <style type="text/css">
+        .newkeyword_right_mid textarea {
+            height: 180px;
+        }
+        .ztree {
+            height: 300px;
 
+        }
         .list4 table {
             border: 1px solid #eaf0f3;
             overflow: auto;
             width: 100%;
         }
-
+        .table2 tr td{
+            text-align: center;
+        }
         .assembly_under {
             height: 440px;
-
         }
 
-        .newkeyword_right_mid textarea {
-            height: 200px;
+        .list02_top {
+            background: none repeat scroll 0 0 #edf0f1;
+            color: #333;
+            font-weight: bold;
+            height: 30px;
+            overflow: hidden;
         }
+        .list2 table .list2_top td, th {
+            color: #333;
+        }
+
 
     </style>
 </head>
@@ -134,8 +149,8 @@
                     <div class="newkeword_end">
                         <ul id="creativeMultivalidateDelKwdUl">
                         </ul>
-                        <div style="width:99%;height: 300px; border: 1px solid red; overflow: auto; font-size:12px;">
-                            <p><span style="font-weight: bold;">新增的单元：<span id="criSize">0</span></span></p>
+                        <div style="width:99%;height: 400px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
+                            <p><span style="font-weight: bold; line-height:30px;">新增的单元：<span id="criSize">0</span></span></p>
                             <table border="0" cellspacing="0" width="100%" id="createTable"
                                    class="table2 table-bordered" data-resizable-columns-id="demo-table">
                                 <thead>
