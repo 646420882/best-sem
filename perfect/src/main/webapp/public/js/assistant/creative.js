@@ -579,12 +579,6 @@ function initUpdateInputKeyUp() {
  */
 function toolBarInit() {
     $("#sDiv input[type='text']").val("");
-    var span_size = $("#sDiv span").length;
-    for (var i = 0; i < span_size; i++) {
-        if (i % 2 != 0) {
-            $("#sDiv span:eq(" + i + ")").text(0);
-        }
-    }
 }
 /**
  * 加载预览效果
@@ -667,7 +661,7 @@ function planUnit() {
         }
         sparams.cid = cid;
         sparams.aid = aid;
-        closeAlert();
+        closeAlertCreative();
         addCreative();
     }
 
@@ -676,7 +670,7 @@ function planUnit() {
 /**
  * 关闭弹窗
  */
-function closeAlert() {
+function closeAlertCreative() {
     $(".TB_overlayBG").css("display", "none");
     $("#jcAdd ").css("display", "none");
     $("#jcUpdate ").css("display", "none");
@@ -949,7 +943,7 @@ function updateOk() {
                 " <td >" + _edit + "</td>";
             $(tmp).html(_tbody);
             alert("修改完成");
-            closeAlert();
+            closeAlertCreative();
 
         }
     });

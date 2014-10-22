@@ -1325,7 +1325,7 @@
         <div class="w_list03">
             <ul>
                 <li onclick="planUnit()">确认</li>
-                <li onclick="closeAlert();">取消</li>
+                <li onclick="closeAlertCreative();">取消</li>
             </ul>
         </div>
     </div>
@@ -1388,7 +1388,7 @@
         <div class="w_list03">
             <ul>
                 <li class="current" onclick="updateOk();">确认</li>
-                <li onclick="closeAlert();">取消</li>
+                <li onclick="closeAlertCreative();">取消</li>
             </ul>
         </div>
     </div>
