@@ -375,7 +375,7 @@ $(".negativeWords_5").click(function () {
     $("#entwTextarea").val("");
 
     windowName = "negativeWords_5"
-    var cid = $("#hiddenCampaignId").val();
+    var cid = $("#hiddenCampaignId").val()
     $.ajax({
         url: "/assistantCampaign/getObject",
         type: "post",

@@ -320,9 +320,9 @@ public class AssistantCampaignController {
         }
 
         campaignEntity.setRegionTarget(regionTarget == null ? new ArrayList<Integer>() : Arrays.asList(regionTarget));
-        campaignEntity.setNegativeWords(negativeWords == null ? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
-        campaignEntity.setExactNegativeWords(exactNegativeWords == null ? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));
-        campaignEntity.setExcludeIp(excludeIp == null ? new ArrayList<String>() : Arrays.asList(excludeIp.split("\n")));
+        campaignEntity.setNegativeWords(negativeWords == null ||"".equals(negativeWords)? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
+        campaignEntity.setExactNegativeWords(exactNegativeWords == null ||"".equals(exactNegativeWords)? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));
+        campaignEntity.setExcludeIp(excludeIp == null || "".equals(excludeIp)? new ArrayList<String>() : Arrays.asList(excludeIp.split("\n")));
         campaignEntity.setBudgetOfflineTime(new ArrayList<OfflineTimeType>());
         campaignEntity.setAccountId(AppContext.getAccountId());
         campaignEntity.setStatus(-1);
