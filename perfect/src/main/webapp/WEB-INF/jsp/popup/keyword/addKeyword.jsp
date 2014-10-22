@@ -436,7 +436,7 @@ var saveKeyword = function () {
         async: false,
         contentType: "application/json; charset=UTF-8",
         success: function (data, textStatus, jqXHR) {
-            alert("success!");
+//            alert("success!");
         }
     });
 

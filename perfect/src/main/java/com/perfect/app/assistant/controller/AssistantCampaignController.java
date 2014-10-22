@@ -339,6 +339,7 @@ public class AssistantCampaignController {
         adgroupEntity.setStatus(-1);
         adgroupEntity.setLocalStatus(1);
         adgroupEntity.setPriceRatio(adgroupPriceRatio);
+        adgroupEntity.setAccountId(AppContext.getAccountId());
         adgroupDAO.insert(adgroupEntity);
 
     }
@@ -429,6 +430,7 @@ public class AssistantCampaignController {
         adgroupEntity.setPause(false);
         adgroupEntity.setStatus(-1);
         adgroupEntity.setLocalStatus(1);
+        adgroupEntity.setAccountId(AppContext.getAccountId());
 
         String adgroupObjectId = (String) adgroupDAO.insertOutId(adgroupEntity);
 

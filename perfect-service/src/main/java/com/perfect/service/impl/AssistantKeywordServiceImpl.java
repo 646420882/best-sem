@@ -291,7 +291,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 query.addCriteria(Criteria.where(EntityConstants.ADGROUP_ID).is(Long.parseLong(aid)));
                 page = keywordDAO.findByPageInfo(query, pageSize, nowPage);
             } else {
-                query.addCriteria(Criteria.where(EntityConstants.SYSTEM_ID).is(aid));
+                query.addCriteria(Criteria.where(EntityConstants.OBJ_ADGROUP_ID).is(aid));
                 page = keywordDAO.findByPageInfo(query, pageSize, nowPage);
             }
         } else if (cid != null && !"".equals(cid) && (aid == null || "".equals(aid))) {
