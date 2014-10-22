@@ -25,9 +25,32 @@ Ext.define("Perfect.view.Viewport", {
     layout:'border',
     items: [{
         region: 'north',
-        html: '<h1 class="x-panel-header">Perfect后台管理系统.</h1>',
         border: true,
-        margin: '0 0 5 0'
+        margin: '0 0 5 0',
+        xtype:'toolbar',
+        items:['<h1 class="x-panel-header">Perfect后台管理系统.</h1>','->',
+            {
+                text:'退出',
+                handler:function(){
+                    Ext.Msg.show({
+                        title:"提示？",
+                        message:'你确定要退出后台系统么？',
+                        buttons:Ext.Msg.YESNOCANCEL,
+                        icon:Ext.Msg.QUESTION,
+                        fn:function(btn){
+                            if(btn=="yes"){
+                                Ext.Ajax.request({
+                                   url:'logout',
+                                    success:function(response){
+                                        window.location='login'
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        ]
     }, {
         region: 'west',
         xtype:"nav"
