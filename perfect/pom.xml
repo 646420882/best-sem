@@ -316,7 +316,6 @@
             <artifactId>wicket-core</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
@@ -331,11 +330,13 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+
         <filters>
             <filter>src/main/resources/mongodb.properties</filter>
             <filter>src/main/resources/redis.properties</filter>
             <filter>src/main/resources/elasticsearch.properties</filter>
         </filters>
+
         <plugins>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -353,6 +354,7 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
@@ -366,6 +368,21 @@
                         </resource>
                     </webResources>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.zeroturnaround</groupId>
+                <artifactId>javarebel-maven-plugin</artifactId>
+                <version>1.0.5</version>
+                <executions>
+                    <execution>
+                        <id>generate-rebel-xml</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
