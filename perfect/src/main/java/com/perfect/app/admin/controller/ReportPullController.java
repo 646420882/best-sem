@@ -5,6 +5,7 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.AsynchronousReportDAO;
 import com.perfect.mongodb.utils.DateUtils;
 import com.perfect.service.AccountManageService;
+import com.perfect.utils.web.WebContextSupport;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +24,7 @@ import java.util.List;
  * Created by SubDong on 2014/10/8.
  */
 @RestController
-public class ReportPullController {
+public class ReportPullController  extends WebContextSupport{
 
     @Resource
     private AsynchronousReportDAO asynchronousReportDAO;
@@ -82,20 +83,24 @@ public class ReportPullController {
                 }
             }
             flag = 1;
+            writeData(SUCCESS,response,null);
         } catch (Exception e) {
+            writeData(EXCEPTION,response,null);
             flag = -1;
         }
-
-        try {
-            String s = gson.toJson(flag);
-            response.setContentType("text/html;charset=UTF-8");
-            response.setHeader("Pragma", "No-cache");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setDateHeader("Expires", 0);
-            response.getWriter().write(s);
-            response.getWriter().flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(flag==0){
+        writeData(FAIL,response,null);
         }
+//        try {
+//            String s = gson.toJson(flag);
+//            response.setContentType("text/html;charset=UTF-8");
+//            response.setHeader("Pragma", "No-cache");
+//            response.setHeader("Cache-Control", "no-cache");
+//            response.setDateHeader("Expires", 0);
+//            response.getWriter().write(s);
+//            response.getWriter().flush();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

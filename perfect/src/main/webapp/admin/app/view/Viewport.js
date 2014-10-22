@@ -3,6 +3,7 @@
  */
 Ext.onReady(function(){
     Ext.require("Perfect.view.Navigation");
+    Ext.require("Perfect.view.model.GridOne");
 });
 Ext.Date.patterns = {
     ISO8601Long:"Y-m-d H:i:s",
@@ -48,7 +49,14 @@ Ext.define("Perfect.view.Viewport", {
         region: 'center',
         id:'tabs',
         xtype: 'tabpanel',
-        activeTab: 0     // 默认选中第几个选项卡
+        activeTab: 0,     // 默认选中第几个选项卡
+        items:[
+            {
+                xtype:"suJu",
+                id:'tab1',
+                closable:true
+            }
+        ]
     }]
 
 });

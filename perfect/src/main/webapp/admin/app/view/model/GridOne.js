@@ -119,10 +119,17 @@ Ext.define("Perfect.view.model.GridOne", {
                         var form = this.up("form").getForm();
                         if (form.isValid()) {
                             form.submit({
+                                waitTitle: "提示",
                                 waitMsg: '数据拉取中...',
+                                timeout:'18000',
                                 success: function (form, action) {
-                                    Ext.Msg.alert("Success", "拉取数据成功！");
-                                    form.reset();
+                                    if (action.result.success == 1) {
+                                        Ext.Msg.alert("提示", "数据拉取成功!");
+                                    }else if (action.result.success == 0) {
+                                        Ext.Msg.alert("提示", "拉取失败");
+                                    }else {
+                                        Ext.Msg.alert("提示", "异常");
+                                    }
                                 },
                                 failure: function (form, action) {
                                     Ext.Msg.alert("Failure", "失败！");
