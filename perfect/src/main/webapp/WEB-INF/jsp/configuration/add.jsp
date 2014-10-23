@@ -70,13 +70,14 @@
                     }
                 }
                 if(number == 2){
+
                     var userName = document.getElementById("username").value;
                     var pwd = document.getElementById("pwd").value;
                     var token = document.getElementById("token").value;
-                    if((userName != undefined && userName != "") && (pwd != undefined && pwd !="") && (token != undefined && token != "")){
+                    if((userName != null && userName != undefined && userName != "") && (pwd != null && pwd != undefined && pwd !="") && (token != null && token != undefined && token != "")){
                         $.ajax({
                             url: "/configuration/save",
-                            type: "POST",
+                            type: "GET",
                             dataType: "json",
                             data: {
                                 username: userName,
@@ -89,13 +90,14 @@
                                     document.getElementById("step3").className = "";
                                     document.getElementById("step2").className = "hide";
                                     document.getElementById("buzhou3").className = "current";
+                                    setTimeout('location.href="/home"',3000)
                                     judeit =1;
                                 }else{
                                     alert("请确认你的信息是否填写正确后重新提交！");
                                 }
                             }
                         });
-                    }{
+                    }else{
                         if (pwd == null || pwd==undefined || pwd == "") {
                             alert("密码不能为空！");
                             return false;

@@ -1,5 +1,6 @@
 package com.perfect.app.conf.controller;
 
+import com.perfect.app.web.WebUtils;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ResHeader;
 import com.perfect.autosdk.core.ResHeaderUtil;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,8 +59,8 @@ public class ConfigurationController {
     }
 
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView save(String username, String password, String token, ModelMap modelMap) {
+    @RequestMapping(value = "/save", method = RequestMethod.GET)
+    public ModelAndView save(HttpServletRequest request,String username, String password, String token, ModelMap modelMap) {
         int flag = 0;
         try {
             CommonService commonService = ServiceFactory.getInstance(username, password, token, null);
@@ -78,7 +80,7 @@ public class ConfigurationController {
                 baiduAccountInfoEntity.setBaiduPassword(password);
                 baiduAccountInfoEntity.setToken(token);
 
-                systemUserService.addAccount(AppContext.getUser(), baiduAccountInfoEntity);
+                systemUserService.addAccount(WebUtils.getUserName(request), baiduAccountInfoEntity);
                 flag = 1;
             } else {
                 ResHeader resHeader = ResHeaderUtil.getJsonResHeader(false);
