@@ -159,7 +159,7 @@ public class HomePageManageController {
     public void validateUserNameIsExists(HttpServletResponse response, HttpServletRequest request, String userName) {
         SystemUserEntity entity = systemUserService.getSystemUser(userName);
         if (entity == null) {
-            webContext.writeJson("userName don't Exists!", response);
+            webContext.writeJson("userName no Exists!", response);
         } else {
 
             String path = request.getContextPath();
@@ -197,13 +197,17 @@ public class HomePageManageController {
                         "<br/>" +
                         "此为自动发送邮件，请勿直接回复<br/>";
 
-                sendMail.startSendHtmlMail(entity.getEmail(), subject, content);
+                if(entity.getEmail()!=null){
+                    sendMail.startSendHtmlMail(entity.getEmail(), subject, content);
+                    webContext.writeJson("userName Exists!", response);
+                }else{
+                    webContext.writeJson("NO EMAIL", response);
+                }
             } finally {
                 if (jedis != null) {
                     JRedisUtils.returnJedis(jedis);
                 }
             }
-            webContext.writeJson("userName Exists!", response);
         }
     }
 
@@ -283,8 +287,8 @@ public class HomePageManageController {
 
 
     @RequestMapping(value = "/forgetPassword/login", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView loginPage(ModelMap model) {
-        model.put("invalidUserName", "该用户名不存在");
+    public ModelAndView loginPage(ModelMap model,String mes) {
+        model.put("invalidUserName", mes);
         return new ModelAndView("homePage/login", model);
     }
 

@@ -363,6 +363,8 @@ function setKwdValue(obj, kwid) {
  */
 function editKwdInfo(jsonData) {
     jsonData["kwid"] = $("#hiddenkwid_1").val();
+    jsonData[""]
+
     $.ajax({
         url: "/assistantKeyword/edit",
         type: "post",
@@ -374,6 +376,8 @@ function editKwdInfo(jsonData) {
             jsonData["campaignName"] = $("#tbodyClick").find(".list2_box3 td:eq(9)").html();
             jsonData["quality"] = $("#tbodyClick").find(".list2_box3 td:eq(4)").attr("cname");
             jsonData["mobileQuality"] = $("#tbodyClick").find(".list2_box3 td:eq(5)").attr("cname");
+            jsonData["campaignId"] = $("#tbodyClick").find(".list2_box3 input[type=hidden]").attr("camp");
+            jsonData["folderCount"] = $("#tbodyClick").find(".list2_box3 input[type=hidden]").attr("dirCount");
 
             var html = keywordDataToHtml(jsonData, 0);
             var tr = $("#tbodyClick").find(".list2_box3");

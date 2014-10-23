@@ -37,14 +37,15 @@ $("#forgetPassword").click(function () {
                 var text = XMLHttpReq.responseText;
                 if(text=='"userName Exists!"'){
                     alert("找回密码的邮件已发送至您的邮箱,请注意查收");
-                }else{
+                }else if(text=='"userName no Exists!"'){
                     window.location = "/forgetPassword/login?mes=该用户名不存在";
+                }else{
+                    window.location = "/forgetPassword/login?mes=该账户邮箱地址不存在";
                 }
             }
         }
 
     }
-
     sendAjaxRequest("/validate/validateUserNameIsExists?userName="+userName);
 
 });
