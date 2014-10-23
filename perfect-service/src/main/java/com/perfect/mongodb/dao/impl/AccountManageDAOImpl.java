@@ -183,7 +183,9 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         int i;
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccount, baiduPassword, token);
+
         BaiduApiService apiService = new BaiduApiService(commonService);
+
         AccountInfoType accountInfoType = apiService.getAccountInfo();
         if(accountInfoType == null){
             i=-1;

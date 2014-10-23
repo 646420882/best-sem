@@ -33,7 +33,7 @@ Ext.define("Perfect.view.Viewport", {
                 text:'退出',
                 handler:function(){
                     Ext.Msg.show({
-                        title:"提示？",
+                        title:"提示!",
                         message:'你确定要退出后台系统么？',
                         buttons:Ext.Msg.YESNOCANCEL,
                         icon:Ext.Msg.QUESTION,
@@ -66,6 +66,7 @@ Ext.define("Perfect.view.Viewport", {
         region: 'east',
         title: '右边面板',
         collapsible: true,
+        collapsed: true,
         split: true,
         width: 150
     }, {

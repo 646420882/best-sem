@@ -127,16 +127,27 @@ Ext.define("Perfect.view.model.CiKu", {
                     handler:function(){
                         var form = this.up('form').getForm();
                         if (form.isValid()) {
-                            form.submit({
-                                url: "lexicon/delete",
-                                waitMsg: "删除中，请等待...",
-                                success: function (form, action) {
-                                    Ext.Msg.alert("提示", "删除成功!");
-                                },
-                                failure: function (form, action) {
+                            Ext.Msg.show({
+                                title:' ',
+                                message:'你确定要执行该删除操作?一旦删除将不能还原，请谨慎操作!',
+                                icon:Ext.Msg.WARNING,
+                                buttons:Ext.Msg.YESNO,
+                                fn:function(chioce){
+                                    if(chioce=="yes"){
+                                        form.submit({
+                                            url: "lexicon/delete",
+                                            waitMsg: "删除中，请等待...",
+                                            success: function (form, action) {
+                                                Ext.Msg.alert("提示", "删除成功!");
+                                            },
+                                            failure: function (form, action) {
 
+                                            }
+                                        });
+                                    }
                                 }
                             });
+
                         }
                     }
                 }
