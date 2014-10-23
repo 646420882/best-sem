@@ -219,7 +219,7 @@
                     <div class="w_list03">
                         <ul class="jiangjia_list">
                             <li class="current Screenings">筛选</li>
-                            <li  id="showbox_im">设置规则</li>
+                            <li id="showbox_im">设置规则</li>
                             <li id="showbox3_im">暂停竞价</li>
                             <li id="showbox2_im">修改出价</li>
                             <li id="showbox4_im">修改访问网址</li>
@@ -1222,6 +1222,11 @@ $(function () {
                 return true;
             }
 
+            var statusStr = $("#table1").jqGrid('getCell', rowId, "statusStr");
+            if (statusStr == "未同步") {
+                return false;
+            }
+
             var ruleFlag = $("#table1").jqGrid('getCell', rowId, "rule"); //true, 已经设置竞价规则
             var keywordId = $("#table1").jqGrid('getCell', rowId, "keywordId");
             if (iCol === 7) {//查看当前排名
@@ -1287,6 +1292,10 @@ $(function () {
                 var bidStatus = grid.jqGrid("getCell", rowId, "biddingStatus");//竞价状态
                 var matchType = grid.jqGrid("getCell", rowId, "matchType");//匹配模式
                 var phraseType = grid.jqGrid("getCell", rowId, "phraseType");//高级短语匹配模式
+                var statusStr = grid.jqGrid('getCell', rowId, "statusStr");//关键词状态
+                if (statusStr == "未同步") {
+                    $("#table1").setCell(rowId, 0, ' ');
+                }
                 if (rank == 0) {
                     $("#table1").setCell(rowId, "currentRank", "查看当前排名");
                 }
