@@ -169,7 +169,7 @@ public class HomePageManageController {
             try {
                 String key = UUID.randomUUID().toString();
                 jedis.set(key, "");
-                jedis.expire(userName, 60 * 30);//30分钟后失效
+                jedis.expire(key, 60 * 30);//30分钟后失效
 
                 basePath += "forgetPassword/findPasswordPage?userName=" + userName + "&key=" + key;
 
