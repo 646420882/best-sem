@@ -70,6 +70,11 @@ public class ContextInterceptor implements HandlerInterceptor {
             }
 
             if (entity.getAccess() == 2 && size == 0) {
+                if ("/configuration/add".equals(request.getServletPath())) {
+                    return true;
+                }
+                String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+                response.sendRedirect(basePath + "/configuration/add");
                 return false;
             }
 
@@ -106,6 +111,10 @@ public class ContextInterceptor implements HandlerInterceptor {
 
 
         Long accountId = WebUtils.getAccountId(request);
+        if (accountId == -1) {
+            return;
+        }
+
         Double datas[] = getBalanceAndBudget(accountId);
 
         ModelMap modelMap = modelAndView.getModelMap();

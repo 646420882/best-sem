@@ -1,4 +1,4 @@
-package com.perfect.utils.web;
+package com.perfect.commons;
 
 import com.perfect.commons.CustomUserDetailsService;
 import com.perfect.entity.MD5;
