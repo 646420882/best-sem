@@ -121,11 +121,11 @@
                             if(data == 1){
                                 $("#appendtext").append("<label class='mesLable'>数据拉取成功</label>");
                             }
-                            if(data == -1){
+                            if(data == 0){
                                 $("#appendtext").append("<label class='mesLable'>数据拉取失败</label>");
                             }
-                            if(data == -2){
-                                $("#appendtext").append("<label class='mesLable'>登陆帐号无拉取数据权限</label>");
+                            if(data == 3){
+                                $("#appendtext").append("<label class='mesLable'>拉取数据出现异常数据</label>");
                             }
                             number = 0;
                         }

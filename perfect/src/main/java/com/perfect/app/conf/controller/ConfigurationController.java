@@ -59,6 +59,7 @@ public class ConfigurationController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView save(String username, String password, String token, ModelMap modelMap) {
+        int flag = 0;
         try {
             CommonService commonService = ServiceFactory.getInstance(username, password, token, null);
 
@@ -72,21 +73,26 @@ public class ConfigurationController {
                 BaiduAccountInfoEntity baiduAccountInfoEntity = new BaiduAccountInfoEntity();
 
                 BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
-
+                baiduAccountInfoEntity.setId(accountInfoType.getUserid());
                 baiduAccountInfoEntity.setBaiduUserName(username);
                 baiduAccountInfoEntity.setBaiduPassword(password);
                 baiduAccountInfoEntity.setToken(token);
 
                 systemUserService.addAccount(AppContext.getUser(), baiduAccountInfoEntity);
+                flag = 1;
             } else {
                 ResHeader resHeader = ResHeaderUtil.getJsonResHeader(false);
                 modelMap.put("error", resHeader.getDesc());
             }
         } catch (ApiException e) {
             e.printStackTrace();
+            flag = -1;
         }
-
-        return new ModelAndView("../configuration/", modelMap);
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> statusMap = new HashMap<>();
+        statusMap.put("status", flag);
+        jsonView.setAttributesMap(statusMap);
+        return new ModelAndView(jsonView);
     }
 
     @RequestMapping(value = "/acc/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)

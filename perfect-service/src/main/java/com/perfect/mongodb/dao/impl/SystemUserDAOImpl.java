@@ -35,7 +35,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, 
             list1 = new ArrayList<>();
         }
         list1.addAll(list);
-        getMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName)), Update.update("baiduAccountInfos", list1), "SystemUser");
+        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName)), Update.update("baiduAccountInfos", list1), "SystemUser");
     }
 
     @Override
@@ -65,9 +65,9 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, 
         if (entity.getBaiduAccountInfoEntities().isEmpty()) {
             baiduAccountInfoEntity.setDfault(true);
         }
-        Update update = new Update();
-        update.addToSet("bdAccounts", baiduAccountInfoEntity);
-        getMongoTemplate().upsert(Query.query(Criteria.where("userName").is(user)), update, getEntityClass());
+            Update update = new Update();
+            update.addToSet("bdAccounts", baiduAccountInfoEntity);
+            getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(user)), update, getEntityClass());
     }
 
     @Override
@@ -76,7 +76,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, 
 
         update.unset("bdAccounts");
 
-        getMongoTemplate().updateFirst(Query.query(Criteria.where("bdAccounts._id").is(id)), update, getEntityClass());
+        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("bdAccounts._id").is(id)), update, getEntityClass());
     }
 
     @Override

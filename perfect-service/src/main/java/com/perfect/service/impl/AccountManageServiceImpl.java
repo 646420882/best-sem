@@ -79,13 +79,8 @@ public class AccountManageServiceImpl implements AccountManageService {
     }
 
     @Override
-    public int auditAccount(String userNmae, String baiduAccount, String baiduPassword, String token) {
-
-        int flag = accountManageDAO.auditAccount(userNmae,baiduAccount,baiduPassword,token);
-        int flagStruts = 0;
-        if(flag == 1){
-            flagStruts = accountManageDAO.updateAccountStruts(userNmae);
-        }
+    public int auditAccount(String userNmae) {
+        int flagStruts = accountManageDAO.updateAccountStruts(userNmae);
         return flagStruts;
     }
 
