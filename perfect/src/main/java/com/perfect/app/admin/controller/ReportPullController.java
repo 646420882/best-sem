@@ -79,6 +79,7 @@ public class ReportPullController  extends WebContextSupport{
                     asynchronousReportDAO.getKeywordReportData(dateStr);
                 }
                 if (pullObj == 6) {
+                    asynchronousReportDAO.getKeywordReportData(dateStr);
                     asynchronousReportDAO.getRegionReportData(dateStr);
                 }
             }

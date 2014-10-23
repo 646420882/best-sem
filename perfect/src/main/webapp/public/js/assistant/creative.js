@@ -235,6 +235,7 @@ function InitMenu() {
  * 加载创意数据
  * @param params
  */
+var recordsCreative=0;
 function loadCreativeData(page_index) {
     initRbackBtn();
     var _createTable = $("#createTable tbody");
@@ -242,6 +243,49 @@ function loadCreativeData(page_index) {
     sparams.nowPage=page_index;
     sparams.pageSize=items_per_page;
     pageType=3;
+//  var grid=  $("#createTable").jqGrid({
+//        datatype:'json',
+//        url:'/assistantCreative/getList',
+//        postData:sparams,
+//        mtype: "POST",
+//        jsonReader: {
+//            root: "list",
+//            records: "totalPage",
+//            repeatitems: false
+//        },
+//        forceFit: true,
+//        shrinkToFit: true,//此选项用于根据width计算每列宽度的算法,默认值true
+//        colModel: [
+//            {label: ' 用户编号', name: 'accountId', sortable: false, align: 'center', hidden: true},
+//            {label: ' 本身ID', name: 'id', sortable: false, align: 'center', hidden: true},
+//            {label: ' 创意ID', name: 'creativeId', sortable: false, align: 'center', hidden: true},
+//            {label: ' 单元ID', name: 'adgroupId', sortable: false, align: 'center', hidden: true},
+//            {label: ' 创意标题', name: 'title', sortable: false, align: 'center'},
+//            {label: ' 创意描述1', name: 'description1', sortable: false, align: 'center'},
+//            {label: ' 创意描述2', name: 'description2', sortable: false, align: 'center'},//pcDestinationUrl
+//            {label: ' 默认访问Url', name: 'pcDestinationUrl', sortable: false, align: 'center'},
+//            {label: ' 默认显示Url', name: 'pcDisplayUrl', sortable: false, align: 'center'},
+//            {label: ' 移动访问Url', name: 'mobileDestinationUrl', sortable: false, align: 'center'},
+//            {label: ' 移动显示Url', name: 'mobileDisplayUrl', sortable: false, align: 'center'}
+//        ],
+//        rowNum: 20,// 默认每页显示记录条数
+//        rownumbers: false,
+//        loadui: 'disable',
+//        pgbuttons: false,
+//        autowidth: true,
+//        altRows: true,
+//        altclass: 'list2_box2',
+//        resizable: true,
+//        scroll: false,
+//        multiselect: true,
+//        gridComplete:function(){
+//            recordsCreative = grid.getGridParam("records");
+//            if (recordsCreative== 0) {
+//                return false;
+//            }
+//            $("#creativePager").pagination(recordsCreative, getOptionsFromForm(0));
+//        }
+//    });
     $.post("/assistantCreative/getList", sparams, function (result) {
         var gson = $.parseJSON(result);
 

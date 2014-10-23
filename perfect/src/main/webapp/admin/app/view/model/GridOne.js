@@ -92,15 +92,6 @@ Ext.define("Perfect.view.model.GridOne", {
                             anchor: '100%'
                         }
                     ]
-//                    fieldLabel:'选择拉取类型',
-//                    xtype:'combobox',
-//                    store:comboboxSotre,
-//                    queryMode:'local',
-//                    displayField:'text',
-//                    valueField:'id',
-//                    emptyText:'拉取类型',
-//                    allowBlank:false,
-//                    afterLabelTextTpl: required
                 }
 
             ],
@@ -132,7 +123,7 @@ Ext.define("Perfect.view.model.GridOne", {
                                     }
                                 },
                                 failure: function (form, action) {
-                                    Ext.Msg.alert("Failure", "失败！");
+                                    Ext.Msg.alert("提示", "访问异常！");
                                     form.reset();
                                 }
                             });

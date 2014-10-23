@@ -83,6 +83,41 @@ Ext.define("Perfect.view.model.JingJia",{
                 {
                     type: 'refresh',
                     handler:function(){
+//                        new Ext.Window({
+//                            title: '新窗口',
+//                            width: 360,
+//                            modal: true,
+//                            bodyPadding: 10,
+//                            defaultType: 'textfield',
+//                            id:'box1',
+//                            items: [
+//                                {
+//                                    allowBlank: false,
+//                                    fieldLabel: 'User ID',
+//                                    labelWidth:120,
+//                                    name: 'user',
+//                                    emptyText: 'user id'
+//                                },
+//                                {
+//                                    allowBlank: false,
+//                                    fieldLabel: 'Password',
+//                                    labelWidth:120,
+//                                    name: 'pass',
+//                                    emptyText: 'password',
+//                                    inputType: 'password'
+//                                },
+//                                {
+//                                    xtype: 'checkbox',
+//                                    fieldLabel: 'Remember me',
+//                                    labelWidth:120,
+//                                    name: 'remember'
+//                                }
+//                            ],
+//                            buttons: [
+//                                { text: 'Register' },
+//                                { text: 'Login' }
+//                            ]
+//                        }).show();
                         var _grid=Ext.getCmp("urlGird");
                         _grid.getStore().load();
                     }
@@ -90,4 +125,4 @@ Ext.define("Perfect.view.model.JingJia",{
             ]
         }
     ]
-})
+});
