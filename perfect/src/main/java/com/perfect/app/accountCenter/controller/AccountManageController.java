@@ -114,9 +114,9 @@ public class AccountManageController {
         int entities = accountManageService.auditAccount(userName);
 
         Map<String, Integer> map = new HashMap<>();
-        map.put("struts", entities);
+        map.put("struts", 1);
 
-        webContext.writeJson(map, response);
+        webContext.writeJson(map,response);
 
     }
 
