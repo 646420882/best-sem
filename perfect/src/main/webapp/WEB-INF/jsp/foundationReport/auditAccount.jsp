@@ -45,14 +45,15 @@
 <%--添加监控对象弹出窗口--%>
 <div class="box" style="display:none" id="auditDiv">
     <h2 id="auditTUO">
-        <span class="fl">添加监控对象</span>
+        <span class="fl">审核帐号</span>
         <a href="javascript:closeAlert()" class="close">关闭</a></h2>
     <div class="mainlist">
-        <ul class="zs_set" id="admon">
+        <%--<ul class="zs_set" id="admon">
             <li>百度帐号：<input type="text" id="baiduAccount" value=""></li>
             <li>百度密码：<input type="text" id="baiduPassword" value=""></li>
             <li>&nbsp;&nbsp;&nbsp;Token：<input type="text" id="token" value=""></li>
-        </ul>
+        </ul>--%>
+        是否确认审核！！
     </div>
     <div class="main_bottom">
         <div class="w_list03">
@@ -73,22 +74,6 @@
     $(function () {
         showData();
         $("body").on("click","#auditAccount",function(){
-            var baiduAccount = $("#baiduAccount").val();
-            var baiduPassword = $("#baiduPassword").val();
-            var token = $("#token").val();
-
-            if (baiduAccount == null || baiduAccount.trims().length == 0) {
-                alert("请完整填写");
-                return false;
-            }
-            if (baiduPassword == null || baiduPassword.trims().length == 0) {
-                alert("请完整填写");
-                return false;
-            }
-            if (token == null || token.trims().length == 0) {
-                alert("请完整填写");
-                return false;
-            }
             if (username == null || username.trims().length == 0) {
                 return false;
             }
@@ -97,20 +82,13 @@
                 type: "POST",
                 dataType: "json",
                 data: {
-                    userName: username,
-                    baiduAccount: baiduAccount,
-                    baiduPassword: baiduPassword,
-                    token: token
+                    userName: username
                 },
                 success: function (data, textStatus, jqXHR) {
                     if(data.struts == 1){
                         showData();
                         closeAlert();
                         alert("审核成功！");
-                    }else if(data.struts == -1){
-                        alert("请输入正确的百度帐号和token！");
-                    }else{
-                        alert("审核失败！");
                     }
                 }
             });

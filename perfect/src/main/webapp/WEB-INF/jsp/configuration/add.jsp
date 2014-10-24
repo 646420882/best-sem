@@ -70,15 +70,44 @@
                     }
                 }
                 if(number == 2){
+
                     var userName = document.getElementById("username").value;
                     var pwd = document.getElementById("pwd").value;
                     var token = document.getElementById("token").value;
-                    if((userName != undefined && userName != "") && (pwd != undefined && pwd !="") && (token != undefined && token != "")){
-                        document.getElementById("step1").className = "hide";
-                        document.getElementById("step3").className = "";
-                        document.getElementById("step2").className = "hide";
-                        document.getElementById("buzhou3").className = "current";
-                        judeit =1;
+                    if((userName != null && userName != undefined && userName != "") && (pwd != null && pwd != undefined && pwd !="") && (token != null && token != undefined && token != "")){
+                        $.ajax({
+                            url: "/configuration/save",
+                            type: "GET",
+                            dataType: "json",
+                            data: {
+                                username: userName,
+                                password: pwd,
+                                token: token
+                            },
+                            success: function (data) {
+                                if(data.status == 1){
+                                    document.getElementById("step1").className = "hide";
+                                    document.getElementById("step3").className = "";
+                                    document.getElementById("step2").className = "hide";
+                                    document.getElementById("buzhou3").className = "current";
+                                    setTimeout('location.href="/home"',3000)
+                                    judeit =1;
+                                }else{
+                                    alert("请确认你的信息是否填写正确后重新提交！");
+                                }
+                            }
+                        });
+                    }else{
+                        if (pwd == null || pwd==undefined || pwd == "") {
+                            alert("密码不能为空！");
+                            return false;
+                        } else if (token == null || token==undefined || token == "") {
+                            alert("token不能为空!");
+                            return false;
+                        } else if (userName == null || userName==undefined || userName == "") {
+                            alert("用户名不能为空!");
+                            return false;
+                        }
                     }
                 }
             }
@@ -140,14 +169,14 @@
                             src="${pageContext.request.contextPath}/public/images/bdlogo.png"/>
                     </div>
                     <div id="step2" class="hide">
-                        <form name="frm" method="post" action="/configuration/save">
+                        <form name="frm" method="post" action="">
                             <ul>
                                 <li><div class="add_list01 fl">百度用户名: </div><input type="text" id="username" name="username"></li>
                                 <li><div class="add_list01 fl">百度密码: </div><input type="password" id="pwd" name="password"></li>
                                <%-- <li><div class="add_list01 fl">再次确认百度密码:</div><input type="password" name="password1"></li>--%>
                                 <li><div class="add_list01 fl">  百度API Token: </div><input type="text" id="token" name="token"></li>
                             </ul>
-                            <input id="submit" class="add_submit" onclick="progress(2)" type="submit"/>
+                            <input id="submit" class="add_submit" onclick="progress(2)" type="button" value="确认"/>
                         </form>
                     </div>
                     <div id="step3" class="hide">
@@ -164,20 +193,19 @@
     $(function () {
         $('#submit').click(function () {
             var p = $("input[name='password']").val();
-            var p1 = $("input[name='password1']").val();
+            /*var p1 = $("input[name='password1']").val();*/
             var n = $("input[name='username']").val();
             var t = $("input[name='token']").val();
-            if (p == null || p1 == null || p != p1) {
+            /*if (p == null || p1 == null || p != p1) {
                 alert("密码验证错误,请核对后重新输入");
                 return false;
-            } else if (t == null) {
+            } else*/
+            if (t == null) {
                 alert("token不能为空!");
                 return false;
             } else if (n == null) {
                 alert("用户名不能为空!");
                 return false;
-            } else {
-                $("form[name='frm']").submit();
             }
         })
 

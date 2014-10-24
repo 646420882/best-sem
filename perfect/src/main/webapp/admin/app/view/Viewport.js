@@ -7,6 +7,7 @@ Ext.onReady(function(){
     Ext.require("Perfect.view.model.JingJia");
     Ext.require("Perfect.view.model.CiKu");
     Ext.require("Perfect.view.alert.Box1");
+    Ext.require("Perfect.view.model.Shenhe");
 });
 Ext.Date.patterns = {
     ISO8601Long:"Y-m-d H:i:s",

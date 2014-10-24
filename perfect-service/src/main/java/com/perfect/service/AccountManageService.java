@@ -40,7 +40,7 @@ public interface AccountManageService {
      *
      * @return
      */
-    public int auditAccount(String userNmae, String baiduAccount, String baiduPassword, String token);
+    public int auditAccount(String userNmae);
 
     /**
      * 获取账户树

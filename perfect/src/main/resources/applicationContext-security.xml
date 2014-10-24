@@ -54,9 +54,9 @@
 
     <bean id="customUserDetailsService" class="com.perfect.commons.CustomUserDetailsService"/>
 
-    <bean id="customAuthenticationSuccessHandler" class="com.perfect.utils.web.CustomAuthenticationSuccessHandler"/>
+    <bean id="customAuthenticationSuccessHandler" class="com.perfect.commons.CustomAuthenticationSuccessHandler"/>
 
-    <bean id="customAuthenticationFailureHandler" class="com.perfect.utils.web.CustomAuthenticationFailureHandler">
+    <bean id="customAuthenticationFailureHandler" class="com.perfect.commons.CustomAuthenticationFailureHandler">
         <constructor-arg index="0" value="/login?error=true"/>
     </bean>
 

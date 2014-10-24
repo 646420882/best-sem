@@ -109,17 +109,14 @@ public class AccountManageController {
      */
     @RequestMapping(value = "/auditAccount", method = {RequestMethod.GET, RequestMethod.POST})
     public void auditAccount(HttpServletResponse response,
-                             @RequestParam(value = "userName", required = false) String userName,
-                             @RequestParam(value = "baiduAccount", required = false) String baiduAccount,
-                             @RequestParam(value = "baiduPassword", required = false) String baiduPassword,
-                             @RequestParam(value = "token", required = false) String token) {
+                             @RequestParam(value = "userName", required = false) String userName) {
 
-        int entities = accountManageService.auditAccount(userName,baiduAccount,baiduPassword,token);
+        int entities = accountManageService.auditAccount(userName);
 
         Map<String, Integer> map = new HashMap<>();
-        map.put("struts", entities);
+        map.put("struts", 1);
 
-        webContext.writeJson(map, response);
+        webContext.writeJson(map,response);
 
     }
 
