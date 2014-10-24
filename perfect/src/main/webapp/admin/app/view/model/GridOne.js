@@ -92,6 +92,16 @@ Ext.define("Perfect.view.model.GridOne", {
                             anchor: '100%'
                         }
                     ]
+                },
+              /*  {
+                    xtype:'',
+                    fieldLabel: ' <sapn style="color: #ff0000">注：如果不填写帐号拉取的是全账户的报告数据，填写后则是拉取填写帐号的报告数据</sapn>'
+                },*/
+                {
+                    xtype:'textfield',
+                    fieldLabel: '拉取帐号',
+                    name:'userName'
+
                 }
 
             ],
@@ -130,7 +140,13 @@ Ext.define("Perfect.view.model.GridOne", {
                         }
                     }
                 }
-            ]
+            ],
+            tabbar:{
+                items:[
+                    '<sapn style="color: #ff0000">注：如果不填写帐号拉取的是全账户的报告数据，填写后则是拉取填写帐号的报告数据</sapn>'
+                ]
+            }
+
         }
     ]
 });

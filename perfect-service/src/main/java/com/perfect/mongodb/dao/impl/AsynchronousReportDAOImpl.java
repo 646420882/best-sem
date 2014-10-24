@@ -1,5 +1,6 @@
 package com.perfect.mongodb.dao.impl;
 
+import com.google.common.collect.Lists;
 import com.perfect.api.baidu.AsynchronousReport;
 import com.perfect.dao.AsynchronousReportDAO;
 import com.perfect.dao.SystemUserDAO;
@@ -54,12 +55,25 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     private List<RegionReportEntity> rrmList;
 
-    public void getAccountReportData(String dateStr) {
+    public void getAccountReportData(String dateStr, String userName) {
         MongoTemplate mongoTemplate;
-        Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
-        for (SystemUserEntity systemUser : entities) {
+
+        List<SystemUserEntity> entityList = new ArrayList<>();
+        if(userName == null){
+            Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+            entityList = Lists.newArrayList(entities);
+        }else{
+            SystemUserEntity userEntity = systemUserDAO.findByUserName(userName);
+            entityList.add(userEntity);
+        }
+
+        for (SystemUserEntity systemUser : entityList) {
+            if(systemUser.getState() == 0 || systemUser.getBaiduAccountInfoEntities().size() <=0 || systemUser.getAccess() == 1){
+                continue;
+            }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
             for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
                 String pcFilePath = report.getAccountReportDataPC(null, dateStr, dateStr);
                 String mobileFilePath = report.getAccountReportDataMobile(null, dateStr, dateStr);
@@ -85,10 +99,22 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
         }
     }
 
-    public void getCampaignReportData(String dateStr) {
+    public void getCampaignReportData(String dateStr,String userName) {
         MongoTemplate mongoTemplate;
-        Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
-        for (SystemUserEntity systemUser : entities) {
+
+        List<SystemUserEntity> entityList = new ArrayList<>();
+        if(userName == null){
+            Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+            entityList = Lists.newArrayList(entities);
+        }else{
+            SystemUserEntity userEntity = systemUserDAO.findByUserName(userName);
+            entityList.add(userEntity);
+        }
+
+        for (SystemUserEntity systemUser : entityList) {
+            if(systemUser.getState() == 0 || systemUser.getBaiduAccountInfoEntities().size() <=0 || systemUser.getAccess() == 1){
+                continue;
+            }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
             for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
@@ -116,10 +142,22 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
         }
     }
 
-    public void getAdgroupReportData(String dateStr) {
+    public void getAdgroupReportData(String dateStr, String userName) {
         MongoTemplate mongoTemplate;
-        Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
-        for (SystemUserEntity systemUser : entities) {
+
+        List<SystemUserEntity> entityList = new ArrayList<>();
+        if(userName == null){
+            Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+            entityList = Lists.newArrayList(entities);
+        }else{
+            SystemUserEntity userEntity = systemUserDAO.findByUserName(userName);
+            entityList.add(userEntity);
+        }
+
+        for (SystemUserEntity systemUser : entityList) {
+            if(systemUser.getState() == 0 || systemUser.getBaiduAccountInfoEntities().size() <=0 || systemUser.getAccess() == 1){
+                continue;
+            }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
             for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
@@ -148,10 +186,22 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
         }
     }
 
-    public void getCreativeReportData(String dateStr) {
+    public void getCreativeReportData(String dateStr,String userName) {
         MongoTemplate mongoTemplate;
-        Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
-        for (SystemUserEntity systemUser : entities) {
+
+        List<SystemUserEntity> entityList = new ArrayList<>();
+        if(userName == null){
+            Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+            entityList = Lists.newArrayList(entities);
+        }else{
+            SystemUserEntity userEntity = systemUserDAO.findByUserName(userName);
+            entityList.add(userEntity);
+        }
+
+        for (SystemUserEntity systemUser : entityList) {
+            if(systemUser.getState() == 0 || systemUser.getBaiduAccountInfoEntities().size() <=0 || systemUser.getAccess() == 1){
+                continue;
+            }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
             for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
@@ -180,10 +230,21 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
         }
     }
 
-    public void getKeywordReportData(String dateStr) {
+    public void getKeywordReportData(String dateStr,String userName) {
         MongoTemplate mongoTemplate;
-        Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
-        for (SystemUserEntity systemUser : entities) {
+        List<SystemUserEntity> entityList = new ArrayList<>();
+        if(userName == null){
+            Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+            entityList = Lists.newArrayList(entities);
+        }else{
+            SystemUserEntity userEntity = systemUserDAO.findByUserName(userName);
+            entityList.add(userEntity);
+        }
+
+        for (SystemUserEntity systemUser : entityList) {
+            if(systemUser.getState() == 0 || systemUser.getBaiduAccountInfoEntities().size() <=0 || systemUser.getAccess() == 1){
+                continue;
+            }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
             for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
@@ -212,10 +273,21 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
         }
     }
 
-    public void getRegionReportData(String dateStr) {
+    public void getRegionReportData(String dateStr,String userName) {
         MongoTemplate mongoTemplate;
-        Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
-        for (SystemUserEntity systemUser : entities) {
+        List<SystemUserEntity> entityList = new ArrayList<>();
+        if(userName == null){
+            Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+            entityList = Lists.newArrayList(entities);
+        }else{
+            SystemUserEntity userEntity = systemUserDAO.findByUserName(userName);
+            entityList.add(userEntity);
+        }
+
+        for (SystemUserEntity systemUser : entityList) {
+            if(systemUser.getState() == 0 || systemUser.getBaiduAccountInfoEntities().size() <=0 || systemUser.getAccess() == 1){
+                continue;
+            }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
             for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
