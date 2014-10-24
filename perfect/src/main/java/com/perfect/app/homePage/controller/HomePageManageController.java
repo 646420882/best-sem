@@ -228,7 +228,9 @@ public class HomePageManageController {
             } else {
                 return new ModelAndView("jsp/error/404.jsp", model);
             }
-        } finally {
+        }catch (Exception ex){
+            return new ModelAndView("jsp/error/404.jsp", model);
+        }finally {
             if (jedis != null) {
                 JRedisUtils.returnJedis(jedis);
             }
