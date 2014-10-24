@@ -1,6 +1,7 @@
 /**
  * Created by XiaoWei on 2014/10/16.
  */
+
 Ext.define('Url', {
     extend:'Ext.data.Model',
     fields: [
@@ -79,48 +80,11 @@ Ext.define("Perfect.view.model.JingJia",{
                 { text: 'Url', dataIndex: 'request', flex: 1 },
                 { text: 'Status', dataIndex: 'idle',renderer:getFact }
             ],
-            tools: [
+            dockedItems: [
                 {
-                    type: 'refresh',
-                    handler:function(){
-//                        new Ext.Window({
-//                            title: '新窗口',
-//                            width: 360,
-//                            modal: true,
-//                            bodyPadding: 10,
-//                            defaultType: 'textfield',
-//                            id:'box1',
-//                            items: [
-//                                {
-//                                    allowBlank: false,
-//                                    fieldLabel: 'User ID',
-//                                    labelWidth:120,
-//                                    name: 'user',
-//                                    emptyText: 'user id'
-//                                },
-//                                {
-//                                    allowBlank: false,
-//                                    fieldLabel: 'Password',
-//                                    labelWidth:120,
-//                                    name: 'pass',
-//                                    emptyText: 'password',
-//                                    inputType: 'password'
-//                                },
-//                                {
-//                                    xtype: 'checkbox',
-//                                    fieldLabel: 'Remember me',
-//                                    labelWidth:120,
-//                                    name: 'remember'
-//                                }
-//                            ],
-//                            buttons: [
-//                                { text: 'Register' },
-//                                { text: 'Login' }
-//                            ]
-//                        }).show();
-                        var _grid=Ext.getCmp("urlGird");
-                        _grid.getStore().load();
-                    }
+                    xtype: 'pagingtoolbar',
+                    dock: 'bottom',
+                    store:Ext.data.StoreManager.lookup('urlStore')
                 }
             ]
         }

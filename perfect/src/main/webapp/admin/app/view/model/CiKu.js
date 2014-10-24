@@ -1,8 +1,9 @@
 /**
  * Created by XiaoWei on 2014/10/16.
  */
-var comboboxSotre = Ext.create("Ext.data.Store", {
+Ext.create("Ext.data.Store", {
     fields: ["text", "id"],
+    storeId:'typeStore',
     data: [
         {'text': '电商', 'id': '0'},
         {'text': '房产', 'id': 1},
@@ -29,7 +30,7 @@ Ext.create("Ext.data.Store", {
             rootProperty: 'rows'
         }
     }
-})
+});
 Ext.define("Perfect.view.model.CiKu", {
     extend: 'Ext.form.Panel',
     alias: 'widget.CK',
@@ -84,18 +85,21 @@ Ext.define("Perfect.view.model.CiKu", {
             defaults:{
                 anchor:'100%'
             },
+            referenceHolder: true,
+            viewModel:true,
             items: [
                 {
                     xtype: 'combobox',
                     fieldLabel: '选择行业',
                     id: "trade",
                     name: "category",
+                    reference: 'one',
                     allowBlank: false,
                     afterLabelTextTpl: required,
                     msgTarget: 'side',
                     displayField: 'text',
                     valueField: 'text',
-                    store: comboboxSotre,
+                    store:Ext.StoreManager.lookup("typeStore"),
                     listeners: {
                         change: function () {
                             var combox = Ext.getCmp("hType");
@@ -104,7 +108,7 @@ Ext.define("Perfect.view.model.CiKu", {
                                     trade: this.getValue()
                                 }
                             }));
-
+                            combox.setDisabled(false);
                         }
                     }
                 },
@@ -118,7 +122,8 @@ Ext.define("Perfect.view.model.CiKu", {
                     msgTarget: 'side',
                     displayField: 'category',
                     valueField: 'category',
-                    store: null
+                    disabled:true,
+                    store:null
                 }
             ],
             buttons: [

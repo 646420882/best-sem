@@ -1,11 +1,6 @@
 /**
  * Created by XiaoWei on 2014/10/13.
  */
-Ext.onReady(function(){
-    Ext.require("Perfect.view.model.GridOne");
-    Ext.require("Perfect.view.model.JingJia");
-    Ext.require("Perfect.view.model.CiKu");
-});
 Ext.define("Perfect.view.Navigation", {
     extend: "Ext.panel.Panel",
     alias: "widget.nav",
