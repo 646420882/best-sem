@@ -72,7 +72,7 @@ Ext.define("Perfect.view.model.JingJia",{
         },{
             xtype:'grid',
             title:'执行状态',
-            id:"urlGird",
+            id:"urlGirdOne",
             border:true,
             store:Ext.data.StoreManager.lookup('urlStore'),
             columns: [
