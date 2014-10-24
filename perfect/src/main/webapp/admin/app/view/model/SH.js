@@ -36,7 +36,7 @@ function operate(){
     return "<a>审核</a>"
 
 };
-Ext.define("Perfect.view.model.Shenhe", {
+Ext.define("Perfect.view.model.SH", {
     extend: 'Ext.form.Panel',
     alias: 'widget.ZH',
     bodyPadding: 10,

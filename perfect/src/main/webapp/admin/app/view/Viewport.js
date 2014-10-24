@@ -6,8 +6,8 @@ Ext.onReady(function(){
     Ext.require("Perfect.view.model.GridOne");
     Ext.require("Perfect.view.model.JingJia");
     Ext.require("Perfect.view.model.CiKu");
-    Ext.require("Perfect.view.alert.Box1");
-    Ext.require("Perfect.view.model.Shenhe");
+    Ext.require("Perfect.view.alert.B1");
+    Ext.require("Perfect.view.model.SH");
 });
 Ext.Date.patterns = {
     ISO8601Long:"Y-m-d H:i:s",
