@@ -5,6 +5,7 @@ Ext.onReady(function(){
     Ext.require("Perfect.view.model.GridOne");
     Ext.require("Perfect.view.model.JingJia");
     Ext.require("Perfect.view.model.CiKu");
+    Ext.require("Perfect.view.model.Shenhe");
 });
 Ext.define("Perfect.view.Navigation", {
     extend: "Ext.panel.Panel",
@@ -79,6 +80,22 @@ Ext.define("Perfect.view.Navigation", {
                             tabs.setActiveTab(_thisTabs);
                         }else{
                             tabs.setActiveTab(tabs.getComponent("tab3"));
+                        }
+                    }
+                },
+                {
+                    text: '账号审核',
+                    handler: function () {
+                        var tabs = Ext.getCmp("tabs");
+                        if (tabs.getComponent("tab4") == undefined) {
+                            var _thisTabs = tabs.add({
+                                id: "tab4",
+                                xtype: "ZH",
+                                closable: true
+                            });
+                            tabs.setActiveTab(_thisTabs);
+                        }else{
+                            tabs.setActiveTab(tabs.getComponent("tab4"));
                         }
                     }
                 }
