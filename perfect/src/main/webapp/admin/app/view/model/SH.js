@@ -47,7 +47,8 @@ Ext.define("Perfect.view.model.SH", {
             title:'执行状态',
             id:"urlGird",
             border:true,
-      store:Ext.data.StoreManager.lookup('ShenheStore'),
+            columnLines:true,
+            store: Ext.data.StoreManager.lookup('ShenheStore'),
             columns: [
                 { text: '帐号',  dataIndex: 'userName', flex: 1 },
                 { text: '审核状态', dataIndex: 'state',renderer: convert },
@@ -55,10 +56,19 @@ Ext.define("Perfect.view.model.SH", {
                     var value=record.get("userName");
                     return "<a href='javascript:void(0)' onclick='operate(\""+value+"\")'>操作</a>"
                 }}
+            ],
+            tools: [
+                {
+                    type: 'refresh',
+                    handler: function () {
+                       Ext.StoreManager.lookup("ShenheStore").load();
+                    }
+                }
             ]
         }
     ]
-}
+
+    }
 );
 function operate(userName){
     Ext.Msg.show({

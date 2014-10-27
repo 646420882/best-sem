@@ -74,6 +74,7 @@ Ext.define("Perfect.view.model.JingJia",{
             title:'执行状态',
             id:"urlGirdOne",
             border:true,
+            columnLines:true,
             store:Ext.data.StoreManager.lookup('urlStore'),
             columns: [
                 { text: 'Index',  dataIndex: 'id' },
