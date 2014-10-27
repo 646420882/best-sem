@@ -603,6 +603,9 @@ function reducKwd_update(id) {
             jsonData["quality"] = $("#tbodyClick").find(".list2_box3 td:eq(4)").attr("cname");
             jsonData["mobileQuality"] = $("#tbodyClick").find(".list2_box3 td:eq(5)").attr("cname");
 
+            var dirCount = $("#tbodyClick").find(".list2_box3 input[type=hidden]").attr("dirCount");
+            jsonData["folderCount"] = dirCount;
+
             var html = keywordDataToHtml(jsonData, 0);
             var tr = $("#tbodyClick").find(".list2_box3");
             tr.replaceWith(html);

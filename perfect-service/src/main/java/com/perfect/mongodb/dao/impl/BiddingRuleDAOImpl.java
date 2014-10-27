@@ -281,19 +281,17 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleEntit
             mongoQuery.addCriteria(Criteria.where(NAME).regex(prefix + reg + suffix));
         }
 
-//        Criteria criteria = Criteria.where(NAME).regex(prefix + reg + suffix);
-
-//        mongoQuery.addCriteria(criteria);
-
         return getMongoTemplate().find(param.withParam(mongoQuery), getEntityClass());
     }
 
     @Override
     public BiddingRuleEntity takeOne(String userName, Long id, long time) {
-        Query query = Query.query(Criteria.where("ebl").is(true).and("r").is(false).and("nxt").lte(time).not().and("ct")
-                .ne(0)
-                .and
-                        (ACCOUNT_ID).is(id));
+        Query query = Query.query(Criteria.where("ebl").is(true)
+                .and("r").is(false)
+                .and("nxt").lte(time).not()
+                .and("ct").ne(0)
+                .and(ACCOUNT_ID).is(id));
+        List<BiddingRuleEntity> ruleEntities = BaseMongoTemplate.getUserMongo(userName).find(query, getEntityClass());
         return BaseMongoTemplate.getUserMongo(userName).findAndModify(query, Update.update("r", true),
                 FindAndModifyOptions.options().returnNew(true), getEntityClass());
 

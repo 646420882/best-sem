@@ -130,7 +130,7 @@ public class BiddingSubTask implements Runnable {
                 // 已经达到排名
                 if (match) {
                     if (logger.isDebugEnabled()) {
-                        logger.debug("达到排名..." + region + " " + host + " " + keywordEntity.getKeyword());
+                        logger.debug("达到排名..." + region + " " + host + " " + keywordEntity.getKeyword() + "--当前出价: " + keywordEntity.getPrice().doubleValue());
                     }
                     break;
                 } else {
@@ -195,7 +195,7 @@ public class BiddingSubTask implements Runnable {
                         biddingLogService.save(biddingLogEntity);
 
                         if (logger.isDebugEnabled()) {
-                            logger.debug("未达到排名..." + host + "\n出价完成,1秒后进行下一次出价.");
+                            logger.debug("未达到排名..." + host + "\n出价完成,10秒后进行下一次出价.");
                         }
                     }
                 }
