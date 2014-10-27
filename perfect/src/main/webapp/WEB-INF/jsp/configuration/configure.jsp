@@ -126,6 +126,8 @@
     </div>
 </div>
 
+
+</div>
 <div class="TB_overlayBG"></div>
 <div class="box" id="new_riginality" style="display:none; width:552px;">
     <h2 id="new_riginality2">同步baidu推广帐号密码-如果您更改了推广帐号密码，请立即同步密码。<a href="#" class="close">关闭</a></h2>
@@ -163,7 +165,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 <script type="text/javascript">
     window.onload = function () {
