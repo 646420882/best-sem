@@ -20,10 +20,11 @@ function search() {
         type: "GET",
         success: function (datas) {
             if (datas.rows == undefined || datas.rows.total == 0) {
+                $("#creativeList").empty();
                 return;
+            } else {
+                $("#creativeList").empty();
             }
-
-            $("#creativeList").empty();
 
             $.each(datas.rows.list, function (i, item) {
                 var li = $("<li></li>");
@@ -139,13 +140,13 @@ function load() {
         dataType: "json",
         async: false,
         success: function (datas) {
-            if(datas.rows == undefined){
+            if (datas.rows == undefined) {
                 return;
             }
 
             $('#region').empty();
-            $.each(datas.rows,function(i, item){
-                var opt = $("<option></option>").attr("value",item.regionalId);
+            $.each(datas.rows, function (i, item) {
+                var opt = $("<option></option>").attr("value", item.regionalId);
                 opt.append(item.regionalName);
                 $('#region').append(opt);
             })

@@ -207,7 +207,7 @@ To change this template use File | Settings | File Templates.
                 <li>
                     <textarea id="txt1" name="" style="overflow:auto; resize: none"></textarea>
                 </li>
-                <li style="color: #f00"><%--<span class="fr" style="color: #f00">--%>1/20行<%--</span>--%></li>
+                <%--<li style="color: #f00">1/20行</li>--%>
             </ul>
         </div>
         <div class="originality_right fl">
@@ -216,7 +216,7 @@ To change this template use File | Settings | File Templates.
                 <li>
                     <textarea id="txt2" name="txt2" style="overflow:auto; resize: none"></textarea>
                 </li>
-                <li style="color: #f00"><%--<span class="fr" style="color: #f00">--%>1/20行<%--</span>--%></li>
+                <%--<li style="color: #f00">1/20行</li>--%>
             </ul>
         </div>
     </div>
@@ -679,15 +679,15 @@ $(function () {
         $("#textarea1").parent().next().text("可输入词根" + (100 - seedWords.length) + "/100");
     });
 
-    $("#txt1").on('keyup', function () {
-        var strs1 = $("#txt1").val().trims().split("\n");
-        $("#txt1").parent().next().text("可输入" + (20 - strs1.length) + "/20行");
-    });
-
-    $("#txt2").on('keyup', function () {
-        var strs1 = $("#txt2").val().trims().split("\n");
-        $("#txt2").parent().next().text("可输入" + (20 - strs1.length) + "/20行");
-    });
+//    $("#txt1").on('keyup', function () {
+//        var strs1 = $("#txt1").val().trims().split("\n");
+//        $("#txt1").parent().next().text("可输入" + (20 - strs1.length) + "/20行");
+//    });
+//
+//    $("#txt2").on('keyup', function () {
+//        var strs1 = $("#txt2").val().trims().split("\n");
+//        $("#txt2").parent().next().text("可输入" + (20 - strs1.length) + "/20行");
+//    });
 });
 var downloadCSV = function () {
     var _url;
