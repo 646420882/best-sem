@@ -26,6 +26,9 @@ public class JobBoostrap {
         Iterable<SystemUserEntity> userEntityList = systemUserService.getAllUser();
 
         for (SystemUserEntity userEntity : userEntityList) {
+            if (userEntity.getAccess() == 1 || userEntity.getBaiduAccountInfoEntities().size() == 0) {
+                continue;
+            }
             List<BaiduAccountInfoEntity> accountInfoEntityList = userEntity.getBaiduAccountInfoEntities();
             for (BaiduAccountInfoEntity baiduAccountInfoEntity : accountInfoEntityList) {
                 if (logger.isInfoEnabled()) {
@@ -33,7 +36,6 @@ public class JobBoostrap {
                 }
                 AccountWorker accountWorker = new AccountWorker(userEntity.getUserName(), baiduAccountInfoEntity);
                 accountThreadTaskExecutors.execute(accountWorker);
-
             }
         }
 
