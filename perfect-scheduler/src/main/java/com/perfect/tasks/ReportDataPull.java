@@ -29,27 +29,27 @@ public class ReportDataPull {
 
     public boolean execute(List<String> task) throws Exception {
         for (String dateStr:task){
-            asynchronousReportDAO.getAccountReportData(dateStr);
+            asynchronousReportDAO.getAccountReportData(dateStr,null);
 
             log.info(dateFormat.format(new Date())+":账户报告 pull success!!!");
 
-            asynchronousReportDAO.getCampaignReportData(dateStr);
+            asynchronousReportDAO.getCampaignReportData(dateStr,null);
 
             log.info(dateFormat.format(new Date())+":推广计划 pull success!!!");
 
-            asynchronousReportDAO.getAdgroupReportData(dateStr);
+            asynchronousReportDAO.getAdgroupReportData(dateStr,null);
 
             log.info(dateFormat.format(new Date())+":推广单元 pull success!!!");
 
-            asynchronousReportDAO.getCreativeReportData(dateStr);
+            asynchronousReportDAO.getCreativeReportData(dateStr,null);
 
             log.info(dateFormat.format(new Date())+":创意  pull success!!!");
 
-            asynchronousReportDAO.getKeywordReportData(dateStr);
+            asynchronousReportDAO.getKeywordReportData(dateStr,null);
 
             log.info(dateFormat.format(new Date())+":关键词  pull success!!!");
 
-            asynchronousReportDAO.getRegionReportData(dateStr);
+            asynchronousReportDAO.getRegionReportData(dateStr,null);
 
             log.info(dateFormat.format(new Date())+":推广地域 pull success!!!");
 
