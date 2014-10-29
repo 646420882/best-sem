@@ -179,6 +179,22 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
     }
 
     @Override
+    public WriteResult updateBaiDuAccount(String userName, Long baiduId, Long state) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        Update update = new Update();
+        update.set("bdAccounts.$.state",state);
+        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(userName).and("bdAccounts._id").is(baiduId)), update, "sys_user");
+        return writeResult;
+    }
+
+    @Override
+    public List<SystemUserEntity> getAccountAll() {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        List<SystemUserEntity> entities = mongoTemplate.find(new Query(),SystemUserEntity.class);
+        return entities;
+    }
+
+    @Override
     public int auditAccount(String userNmae, String baiduAccount, String baiduPassword, String token) {
         int i;
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
@@ -257,7 +273,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
         if (entity.getExcludeIp() != null) {
             update.set("bdAccounts.$.exIp", entity.getExcludeIp());
         }
-        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(currUser).and("bdAccounts.id").is(entity.getId())), update, SystemUserEntity.class);
+        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(currUser).and("bdAccounts._id").is(entity.getId())), update, SystemUserEntity.class);
     }
 
     /**

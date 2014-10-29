@@ -20,6 +20,7 @@
                 <li><a href="${pageContext.request.contextPath}/admin/biddingConsole">智能竞价</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/lexiconConsole">词库管理</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/getAccountPage">帐号审核</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/getAccountAllState">百度帐号启用/禁用</a></li>
             </ul>
         </div>
         <a href="${pageContext.request.contextPath}/logout" class="fr" style="color:#b4bcbf;">退出</a>

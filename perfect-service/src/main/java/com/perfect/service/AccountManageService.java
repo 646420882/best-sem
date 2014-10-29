@@ -43,6 +43,20 @@ public interface AccountManageService {
     public int auditAccount(String userNmae);
 
     /**
+     * 获得所有帐号信息
+     *
+     * @return
+     */
+    public List<SystemUserEntity> getAccountAll();
+
+    /**
+     * 修改百度帐号的启用状态
+     *
+     * @return
+     */
+    public int updateAccountAllState(String userName, Long baiduId, Long state);
+
+    /**
      * 获取账户树
      *
      * @return

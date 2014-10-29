@@ -66,6 +66,18 @@ public interface AccountManageDAO<T> {
     public List<SystemUserEntity> getAccount();
 
     /**
+     * 百度帐号启用/停用状态更改
+     * @return
+     */
+    public WriteResult updateBaiDuAccount(String userName, Long baiduId, Long state);
+
+    /**
+     * 查询所有未帐号信息
+     * @return
+     */
+    public List<SystemUserEntity> getAccountAll();
+
+    /**
      * 审核帐号
      * @param baiduAccount
      * @param baiduPassword

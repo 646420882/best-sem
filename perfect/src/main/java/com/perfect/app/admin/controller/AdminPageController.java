@@ -60,6 +60,16 @@ public class AdminPageController implements Controller {
      *
      * @return
      */
+    @RequestMapping(value = "/getAccountAllState", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView getAccountAllState() {
+        return new ModelAndView("foundationReport/baiduAccountEnable");
+    }
+
+    /**
+     * 审核账户后台页面
+     *
+     * @return
+     */
     @RequestMapping(value = "/getAccountPage", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getAccountPage() {
         return new ModelAndView("foundationReport/auditAccount");

@@ -67,6 +67,9 @@ public class BaiduAccountInfoEntity {
     @Field("o")
     private OptType opt;
 
+    //该账户下的百度帐号是否启用   启用：1  停用：0
+    private Long state;
+
     public Long getId() {
         return id;
     }
@@ -225,5 +228,13 @@ public class BaiduAccountInfoEntity {
 
     public void setDfault(boolean dfault) {
         this.dfault = dfault;
+    }
+
+    public Long getState() {
+        return state;
+    }
+
+    public void setState(Long state) {
+        this.state = state;
     }
 }

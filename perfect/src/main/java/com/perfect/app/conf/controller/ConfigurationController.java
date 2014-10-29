@@ -79,6 +79,7 @@ public class ConfigurationController {
                 baiduAccountInfoEntity.setBaiduUserName(username);
                 baiduAccountInfoEntity.setBaiduPassword(password);
                 baiduAccountInfoEntity.setToken(token);
+                baiduAccountInfoEntity.setState(1l);
 
                 systemUserService.addAccount(WebUtils.getUserName(request), baiduAccountInfoEntity);
                 flag = 1;

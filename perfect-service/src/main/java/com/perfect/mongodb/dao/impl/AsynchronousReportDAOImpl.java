@@ -74,6 +74,10 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
             for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
 
+                if(entity.getState() == 0){
+                    continue;
+                }
+
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
                 String pcFilePath = report.getAccountReportDataPC(null, dateStr, dateStr);
                 String mobileFilePath = report.getAccountReportDataMobile(null, dateStr, dateStr);
@@ -117,6 +121,11 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
             }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
             for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+
+                if(entity.getState() == 0){
+                    continue;
+                }
+
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
                 String pcFilePath = report.getCampaignReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getCampaignReportDataMobile(null, null, dateStr, dateStr);
@@ -160,6 +169,11 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
             }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
             for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+
+                if(entity.getState() == 0){
+                    continue;
+                }
+
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
 
                 String pcFilePath = report.getUnitReportDataPC(null, null, dateStr, dateStr);
@@ -204,6 +218,11 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
             }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
             for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+
+                if(entity.getState() == 0){
+                    continue;
+                }
+
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
 
                 String pcFilePath = report.getCreativeReportDataPC(null, null, dateStr, dateStr);
@@ -247,6 +266,11 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
             }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
             for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+
+                if(entity.getState() == 0){
+                    continue;
+                }
+
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
 
                 String pcFilePath = report.getKeyWordidReportDataPC(null, null, dateStr, dateStr);
@@ -290,6 +314,11 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
             }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
             for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+
+                if(entity.getState() == 0){
+                    continue;
+                }
+
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
 
                 String pcFilePath = report.getRegionalReportDataPC(null, null, dateStr, dateStr);

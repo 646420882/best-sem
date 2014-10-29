@@ -103,6 +103,44 @@ public class AccountManageController {
     }
 
     /**
+     * 获得所有帐号信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getAccountAll", method = {RequestMethod.GET, RequestMethod.POST})
+    public void getAccountAll(HttpServletResponse response) {
+
+        List<SystemUserEntity> entities = accountManageService.getAccountAll();
+
+        Map<String, List<SystemUserEntity>> map = new HashMap<>();
+        map.put("rows", entities);
+
+        webContext.writeJson(map, response);
+
+    }
+
+    /**
+     * 修改百度账户启用状态
+     *
+     * @return
+     */
+    @RequestMapping(value = "/updateAccountAllState", method = {RequestMethod.GET, RequestMethod.POST})
+    public void updateAccountAllState(HttpServletResponse response,
+                                      @RequestParam(value = "userName") String userName,
+                                      @RequestParam(value = "baiduId") Long baiduId,
+                                      @RequestParam(value = "state") Long state) {
+
+        int entities = accountManageService.updateAccountAllState(userName,baiduId,state);
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("rows", entities);
+
+        webContext.writeJson(map, response);
+
+    }
+
+
+    /**
      * 审核帐号
      *
      * @return
