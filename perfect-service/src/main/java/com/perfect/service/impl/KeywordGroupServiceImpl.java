@@ -454,6 +454,22 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
         return map;
     }
 
+    @Override
+    public Map<String, Object> findTr() {
+        return JSONUtils.getJsonMapData(keywordGroupDAO.findTr());
+    }
+
+    @Override
+    public void saveTrade(String tr, String cg, String gr, String kw, String url) {
+        LexiconEntity lexiconEntity=new LexiconEntity();
+        lexiconEntity.setTrade(tr);
+        lexiconEntity.setCategory(cg);
+        lexiconEntity.setGroup(gr);
+        lexiconEntity.setKeyword(kw);
+        lexiconEntity.setUrl(url);
+        keywordGroupDAO.saveTrade(lexiconEntity);
+    }
+
     public Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit, int sort, String fieldName) {
         KRService krService = getKRService();
         GetKRFileIdbySeedWordRequest getKRFileIdbySeedWordRequest = new GetKRFileIdbySeedWordRequest();

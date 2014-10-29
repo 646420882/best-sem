@@ -1,5 +1,7 @@
 package com.perfect.service;
 
+import com.perfect.entity.LexiconEntity;
+
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
@@ -93,4 +95,17 @@ public interface KeywordGroupService {
      * @return
      */
     Map<String, Object> getKRbySeedWord(String seedWord);
+
+    /**
+     * 查询所有行业名
+     * @return
+     */
+    Map<String,Object> findTr();
+
+    /**
+     * 添加数据
+     * @param
+     */
+    void saveTrade(String tr, String cg, String gr, String kw, String url);
+
 }

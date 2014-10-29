@@ -1,5 +1,7 @@
 package com.perfect.dao;
 
+import com.perfect.entity.LexiconEntity;
+
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +17,18 @@ public interface KeywordGroupDAO {
      * @return
      */
     List<? extends Object> findCategories(String trade);
+
+    /**
+     * 加载行业库
+     * @return
+     */
+    List<? extends Object> findTr();
+
+    /**
+     * 添加行业库数据
+     * @param lexiconEntity
+     */
+    void saveTrade(LexiconEntity lexiconEntity);
 
     /**
      * 获取当前结果集的长度

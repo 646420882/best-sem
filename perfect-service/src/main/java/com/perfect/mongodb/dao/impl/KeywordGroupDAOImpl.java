@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOptions;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -79,6 +80,24 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
         }
         return mongoTemplate.find(query, getEntityClass());
     }
+    public List<CategoryVO> findTr() {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+        Aggregation aggregation = Aggregation.newAggregation(
+                project("tr"),
+                group("tr"),
+                sort(Sort.Direction.ASC, "tr")
+        ).withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
+        AggregationResults<CategoryVO> aggregationResults = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, CategoryVO.class);
+
+        List<CategoryVO> list = Lists.newArrayList(aggregationResults.iterator());
+        return list;
+    }
+
+    @Override
+    public void saveTrade(LexiconEntity lexiconEntity) {
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
+        mongoTemplate.insert(lexiconEntity,SYS_KEYWORD);
+    }
 
     public List<CategoryVO> findCategories(String trade) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
@@ -111,8 +130,13 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
     }
 
     //行业词库下的类别VO实体
+    @Document(collection =SYS_KEYWORD)
     class CategoryVO {
         @Id
+        private String tr;
+
+
+
         private String category;
 
         private int count;
@@ -132,7 +156,13 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
         public void setCount(int count) {
             this.count = count;
         }
+        public String getTr() {
+            return tr;
+        }
 
+        public void setTr(String tr) {
+            this.tr = tr;
+        }
         @Override
         public String toString() {
             return "CategoryVO{" +

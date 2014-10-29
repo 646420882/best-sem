@@ -114,14 +114,27 @@ Ext.define("Perfect.view.Navigation", {
                     }
                 }
             ]
-        }
-//        {
-//            xtype: "panel",
-//            title: "树示例",
-//            items: [
-//                {
-//                    text: '树形表格'
-//                },
+        },
+        {
+            xtype: "panel",
+            title: "二期(人工片段库)",
+            items: [
+                {
+                    text: '行业库',
+                    handler:function(){
+                        var tabs = Ext.getCmp("tabs");
+                        if (tabs.getComponent("tab_hyk") == undefined) {
+                            var _thisTabs = tabs.add({
+                                id: "tab_hyk",
+                                xtype: "HYK",
+                                closable: true
+                            });
+                            tabs.setActiveTab(_thisTabs);
+                        }else{
+                            tabs.setActiveTab(tabs.getComponent("tab_hyk"));
+                        }
+                    }
+                }
 //                {
 //                    text: '能拖拽的树'
 //                },
@@ -131,8 +144,8 @@ Ext.define("Perfect.view.Navigation", {
 //                {
 //                    text: '组合树'
 //                }
-//            ]
-//        },
+            ]
+        }
 //        {
 //            xtype: "panel",
 //            title: "图表",

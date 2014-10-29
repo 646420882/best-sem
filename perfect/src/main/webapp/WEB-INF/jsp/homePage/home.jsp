@@ -1891,7 +1891,7 @@ var getImportKeywordDefault = function (obj, day) {
     }, function (result) {
         var gson = $.parseJSON(result);
         $("#importPager").pagination(gson.totaCount,getOptionsFromForm(gson.pageNo));
-        if (gson.list != "") {
+        if (gson.list != undefined) {
             _tr.empty();
             for (var i = 0; i < gson.list.length; i++) {
                 var calssStr = i % 2 != 0 ? "list2_box2" : "list2_box1";

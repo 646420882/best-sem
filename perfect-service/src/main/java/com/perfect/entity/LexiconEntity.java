@@ -34,6 +34,9 @@ public class LexiconEntity implements Serializable {
     @Field("kw")
     private String keyword;
 
+    @Field("url")
+    private String url;
+
     public String getId() {
         return id;
     }
@@ -74,6 +77,14 @@ public class LexiconEntity implements Serializable {
         this.keyword = keyword;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -108,6 +119,7 @@ public class LexiconEntity implements Serializable {
                 ", category='" + category + '\'' +
                 ", group='" + group + '\'' +
                 ", keyword='" + keyword + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }
