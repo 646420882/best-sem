@@ -101,7 +101,7 @@ public class AccountManageServiceImpl implements AccountManageService {
             if(userEntity.getBaiduAccountInfoEntities().size() > 0){
                 for(BaiduAccountInfoEntity entity :userEntity.getBaiduAccountInfoEntities()){
                     BaiduAccountAllState accountAllState = new BaiduAccountAllState();
-                    accountAllState.setId(entity.getId());
+                    accountAllState.setIdObj(entity.getId());
                     accountAllState.setUserName(userEntity.getUserName());
                     accountAllState.setUserState(userEntity.getState());
                     accountAllState.setBaiduUserName(entity.getBaiduUserName());
@@ -110,7 +110,7 @@ public class AccountManageServiceImpl implements AccountManageService {
                 }
             }else{
                 BaiduAccountAllState accountAllState = new BaiduAccountAllState();
-                accountAllState.setId(0l);
+                accountAllState.setIdObj(0l);
                 accountAllState.setUserName(userEntity.getUserName());
                 accountAllState.setUserState(userEntity.getState());
                 accountAllState.setBaiduUserName(" ");

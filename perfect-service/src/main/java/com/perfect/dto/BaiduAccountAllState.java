@@ -6,7 +6,7 @@ package com.perfect.dto;
 public class BaiduAccountAllState {
 
     //百度帐号ID
-    private Long id;
+    private Long idObj;
     //系统帐号
     private String userName;
     //系统帐号状态
@@ -16,13 +16,6 @@ public class BaiduAccountAllState {
     //百度帐号状态
     private Long baiduState;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUserName() {
         return userName;
@@ -54,5 +47,13 @@ public class BaiduAccountAllState {
 
     public void setBaiduState(Long baiduState) {
         this.baiduState = baiduState;
+    }
+
+    public Long getIdObj() {
+        return idObj;
+    }
+
+    public void setIdObj(Long idObj) {
+        this.idObj = idObj;
     }
 }

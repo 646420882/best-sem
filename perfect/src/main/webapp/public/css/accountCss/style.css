@@ -2967,6 +2967,9 @@ float:none;
 .mainlist form{
     margin:0px;
 }
+.list01_top2 .question{
+    margin:4px 0 0 4px
+}
 /*input[type=checkbox],
 input[type=radio]{
     -webkit-appearance: none;
