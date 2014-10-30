@@ -1,6 +1,7 @@
 package com.perfect.dao;
 
 import com.perfect.entity.LexiconEntity;
+import com.perfect.mongodb.utils.PagerInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -37,4 +38,13 @@ public interface KeywordGroupDAO {
      * @return
      */
     int getCurrentRowsSize(Map<String, Object> params);
+
+    /**
+     * 分页查询行业库
+     * @param  params 查询参数
+     * @param page
+     * @param limit
+     * @return
+     */
+    PagerInfo findByPager(Map<String,Object> params,int page, int limit);
 }

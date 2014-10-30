@@ -29,6 +29,7 @@ Ext.define("Perfect.view.Navigation", {
     items: [
         {
             xtype: "panel",
+            icon:'icons/application_xp_terminal.png',
             title: "系统功能",
             items: [
                 {
@@ -100,6 +101,7 @@ Ext.define("Perfect.view.Navigation", {
         {
             xtype: 'panel',
             title: '其他功能',
+            icon:'icons/arrow_branch.png',
             items: [
                 {
                     text: '数据结构',
@@ -118,6 +120,7 @@ Ext.define("Perfect.view.Navigation", {
         {
             xtype: "panel",
             title: "二期(人工片段库)",
+            icon:'icons/flag_red.png',
             items: [
                 {
                     text: '行业库',

@@ -111,9 +111,10 @@ public interface KeywordGroupService {
 
     /**
      * 分页查询
+     * @param params 查询参数
      * @param page 当前页码
      * @param limit 每页最大条数
      * @return
      */
-    PagerInfo findByPager(int page,int limit);
+    PagerInfo findByPager(Map<String,Object> params,int page,int limit);
 }

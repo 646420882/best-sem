@@ -472,8 +472,9 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
     }
 
     @Override
-    public PagerInfo findByPager(int page, int limit) {
-        return null;
+    public PagerInfo findByPager(Map<String,Object> params,int page, int limit) {
+
+        return keywordGroupDAO.findByPager(params,page,limit);
     }
 
     public Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit, int sort, String fieldName) {

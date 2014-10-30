@@ -6,6 +6,7 @@ import com.perfect.entity.LexiconEntity;
 import com.perfect.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.utils.DBNameUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -80,16 +82,16 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
         }
         return mongoTemplate.find(query, getEntityClass());
     }
-    public List<CategoryVO> findTr() {
+    public List<TradeVO> findTr() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
         Aggregation aggregation = Aggregation.newAggregation(
                 project("tr"),
                 group("tr"),
                 sort(Sort.Direction.ASC, "tr")
         ).withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
-        AggregationResults<CategoryVO> aggregationResults = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, CategoryVO.class);
+        AggregationResults<TradeVO> aggregationResults = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, TradeVO.class);
 
-        List<CategoryVO> list = Lists.newArrayList(aggregationResults.iterator());
+        List<TradeVO> list = Lists.newArrayList(aggregationResults.iterator());
         return list;
     }
 
@@ -137,13 +139,38 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
         return results.getMappedResults().size();
     }
 
+    @Override
+    public PagerInfo findByPager(Map<String,Object> params,int page, int limit) {
+        Query q=new Query();
+        Criteria c=new Criteria();
+        if(params.size()>0||params!=null){
+            for (Map.Entry<String,Object> cri:params.entrySet()){
+                c.and(cri.getKey()).is(cri.getValue());
+            }
+            q.addCriteria(c);
+        }
+        Integer totalCount= getTotalCount(q,LexiconEntity.class);
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
+        PagerInfo p = new PagerInfo(page,limit,totalCount);
+        q.skip(p.getFirstStation());
+        q.limit(p.getPageSize());
+        if (totalCount<1){
+            p.setList(new ArrayList());
+            return p;
+        }
+        List<LexiconEntity> creativeEntityList=mongoTemplate.find(q,LexiconEntity.class);
+        p.setList(creativeEntityList);
+        return p;
+    }
+    private int getTotalCount(Query q,Class<?> cls){
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
+        return (int) mongoTemplate.count(q,cls);
+    }
+
     //行业词库下的类别VO实体
     class CategoryVO {
         @Id
         private String category;
-
-        private String tr;
-
 
         private int count;
 
@@ -162,18 +189,29 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
         public void setCount(int count) {
             this.count = count;
         }
-        public String getTr() {
-            return tr;
-        }
-
-        public void setTr(String tr) {
-            this.tr = tr;
-        }
         @Override
         public String toString() {
             return "CategoryVO{" +
                     "category='" + category + '\'' +
                     ", count=" + count +
+                    '}';
+        }
+    }
+    class TradeVO{
+        @Id
+        private String trade;
+
+        public String getTrade() {
+            return trade;
+        }
+
+        public void setTrade(String trade) {
+            this.trade = trade;
+        }
+        @Override
+        public String toString() {
+            return "TradeVO{" +
+                    "trade='" + trade + '\'' +
                     '}';
         }
     }

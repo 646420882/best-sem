@@ -4,7 +4,7 @@
 var Le = Ext.define("Le", {
     extend: 'Ext.data.Model',
     fields: [
-        {name: 'category', type: 'string'}
+        {name: 'trade', type: 'string'}
     ]
 });
 Ext.create("Ext.data.Store", {
@@ -19,7 +19,86 @@ Ext.create("Ext.data.Store", {
         }
     }
 });
+var cateModel = Ext.define('cateModel', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'category', type: 'string'},
+        {name: 'count', type: 'int'}
+    ]
+});
+Ext.create("Ext.data.Store", {
+    storeId: "cateStore",
+    model: 'cateModel',
+    proxy: {
+        type: 'ajax',
+        url: '../getKRWords/getCategories',
+        reader: {
+            type: 'json',
+            rootProperty: 'rows'
+        }
+    }
+});
+var toolbar = Ext.widget('toolbar', {
+    bodyPadding: 10,
+    items: [
+        {
+            fieldLabel: '选择行业',
+            xtype: 'combobox',
+            query: 'remote',
+            name: 'trade',
+            id: 'tradeComboBox',
+            displayField: 'trade',
+            valueField: 'trade',
+            emptyText: '行业..',
+            allowBlank: false,
+            afterLabelTextTpl: required,
+            msgTarget: 'side',
+            editable: false,
+            store: Ext.StoreManager.lookup("storeTr"),
+            listeners: {
+                change: function () {
+                    var combox = Ext.getCmp("cateCombobox");
+                    combox.setStore(Ext.StoreManager.lookup("cateStore").load({
+                        params: {
+                            trade: this.getValue()
+                        }
+                    }));
+                    combox.setDisabled(false);
+                }
+            }
+        },{
+            xtype: 'combobox',
+            query: 'remote',
+            fieldLabel: '类别',
+            id: "cateCombobox",
+            name: 'trade',
+            emptyText: '类别..',
+            allowBlank: false,
+            afterLabelTextTpl: required,
+            msgTarget: 'side',
+            displayField: 'category',
+            valueField: 'category',
+            disabled:true,
+            editable: false,
+            store:null
+        },{
+            text:'查询',
+            handler:function(){
+                var _trade=Ext.getCmp("tradeComboBox");
+                var _category=Ext.getCmp("cateCombobox");
+                if(_trade.isValid()&&_category.isValid()){
+                    hykStore.load({
+                        params:{
+                            trade:_trade.getValue(),
+                            category:_category.getValue()
+                        }
+                    });
+                }
 
+            }
+        }
+    ]
+});
 var hykModel=Ext.define("hykModel",{
     extend:'Ext.data.Model',
     fields:[
@@ -31,18 +110,24 @@ var hykModel=Ext.define("hykModel",{
         {name:'url',type:'string'}
     ]
 });
-Ext.create("Ext.data.Store",{
-    storeId:'hykStore',
+var hykStore = Ext.create("Ext.data.Store", {
     model:'hykModel',
+    pageSize: 14,
+    autoLoad: true,
     proxy: {
-        pageSize:10,
         type: 'ajax',
-        url: '../person/getHyk',
+        url: '../person/findPager',
         reader: {
             type: 'json',
-            rootProperty: 'rows',
-            totalProperty:'count'
+            rootProperty: 'list',
+            totalProperty: 'totalCount'
         }
+    }
+});
+hykStore.load({
+    params:{
+        trade:Ext.getCmp("tradeComboBox").getValue(),
+        category:Ext.getCmp("cateCombobox").getValue()
     }
 });
 Ext.define("Perfect.view.model.HYK", {
@@ -50,60 +135,52 @@ Ext.define("Perfect.view.model.HYK", {
     alias: 'widget.HYK',
     bodyPadding: 10,
     title: '行业库',
+    layout: "accordion",
+    defaults: {
+        autoScroll: true,
+        layout: {
+            type: "vbox",
+            pack: "start",
+            align: "stretch"
+        }
+    },
     items: [
         {
             xtype: "form",
             title: '查询',
             bodyPadding:10,
+            icon: 'icons/zoom.png',
             border:true,
             items: [
                 {
-                    fieldLabel: '选择行业',
-                    xtype: 'combobox',
-                    query: 'remote',
-                    name: 'trade',
-                    id:'tradeComboBox',
-                    displayField: 'category',
-                    valueField: 'category',
-                    emptyText: '行业..',
-                    anchor:'100%',
-                    editable: false,
-                    store: Ext.StoreManager.lookup("storeTr")
-                },
-                {
                     xtype:'grid',
-                    border:true,
                     title:'行业库列表',
-                    height:330,
-                    minHeight:280,
-//                    store:hykStore,
+                    tbar: toolbar,
+                    loadMask:true,
+                    store: hykStore,
                     columns:[
-                        {text:'行业名'},
-                        {text:'类别'},
-                        {text:'分组'},
-                        {text:'关键字'},
-                        {text:'Url',flex:1}
+                        {text: '行业名', dataIndex: 'trade'},
+                        {text: '类别', dataIndex: 'category', flex: 1},
+                        {text: '分组', dataIndex: 'group', flex: 1},
+                        {text: '关键字', dataIndex: 'keyword', flex: 1},
+                        {text: 'Url', dataIndex: 'url', flex: 2}
                     ],
                     bbar: {
                         xtype: 'pagingtoolbar',
-                        pageSize: 10,
-                        store: Ext.StoreManager.lookup("storeTr"),
-                        displayInfo: true,
-                        plugins: new Ext.ux.ProgressBarPager()
-                    }
-                }
-            ],
-            tools:[
-                {
-                    type:'refresh',
-                    handler:function(){
-                        Ext.StoreManager.lookup("storeTr").load();
+                        store: hykStore,
+                        plugins: new Ext.ux.ProgressBarPager(),
+                        listeners:function(){
+                            click:{
+                                Ext.Msg.alert("提示","你要爪子嘛？");
+                            }
+                        }
                     }
                 }
             ]
         },
         {
             xtype: "form",
+            icon: 'icons/add.png',
             title: '添加行业库',
             url: '../person/saveTr',
             border: true,
@@ -116,7 +193,7 @@ Ext.define("Perfect.view.model.HYK", {
                     anchor:'100%',
                     name: 'tr',
                     allowBlank: false,
-                    blankText: '你准备连行业名都填么？你叶大爷的...'
+                    blankText: '你准备连行业名都不填么？你大爷的...'
                 },
                 {
                     xtype: 'textfield',

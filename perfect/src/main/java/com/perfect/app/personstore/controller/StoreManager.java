@@ -1,5 +1,6 @@
 package com.perfect.app.personstore.controller;
 
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.KeywordGroupService;
 import com.perfect.utils.web.WebContextSupport;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -51,6 +53,25 @@ public class StoreManager extends WebContextSupport {
             e.printStackTrace();
             writeData(EXCEPTION,response,null);
         }
+        return null;
+    }
+    @RequestMapping(value = "/findPager",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView findPager(HttpServletResponse response,
+                                  @RequestParam(value = "trade",required = false,defaultValue = "")String trad,
+                                  @RequestParam(value = "category",required = false,defaultValue = "")String category,
+                                    @RequestParam(value = "page",required = false,defaultValue = "0")int nowPage,
+                                   @RequestParam(value = "limit",required = false,defaultValue = "20")int pageSize){
+        PagerInfo pagerInfo=null;
+        if(!trad.equals("")&&!category.equals("")){
+            Map<String,Object> map=new HashMap<>();
+            map.put("tr",trad);
+            map.put("cg",category);
+            pagerInfo  =keywordGroupService.findByPager(map,nowPage,pageSize);
+        }else{
+            pagerInfo=keywordGroupService.findByPager(new HashMap<String, Object>(),nowPage,pageSize);
+        }
+
+        writeJson(pagerInfo, response);
         return null;
     }
 }
