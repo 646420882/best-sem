@@ -18,6 +18,9 @@
         .backstage_list ul li input ,.backstage_list ul li select{
             height:28px;
         }
+        .table tr td {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -37,9 +40,9 @@
                aria-describedby="DataTables_Table_0_info">
             <thead>
             <tr>
-                <td>index</td>
-                <td>URL</td>
-                <td>是否空闲</td>
+                <td>url总数</td>
+                <td>空闲数</td>
+                <td>非空闲数</td>
                 <%--<td>下次启动时间</td>--%>
             </tr>
             </thead>
@@ -63,10 +66,17 @@
                 $("#table1 tbody").empty();
                 var results = data.rows;
                 if (results != null && results.length > 0) {
+                    var idle = 0;
+                    var notIdle = 0;
                     $.each(results, function (i, item) {
-                        var tr = "<tr><td>" + (i + 1) + "</td><td>" + item.request + "</td><td>" + item.idle + "</td></tr>";
-                        $("#table1 tbody").append(tr);
+                        if(item.idle == true){
+                            idle ++;
+                        }else{
+                            notIdle ++;
+                        }
                     });
+                    var tr = "<tr><td>" + results.length + "</td><td>" + idle + "</td><td>" + notIdle + "</td></tr>";
+                    $("#table1 tbody").append(tr);
                 }
             }
         });

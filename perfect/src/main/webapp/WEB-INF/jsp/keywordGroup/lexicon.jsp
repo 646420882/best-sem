@@ -86,6 +86,12 @@
             if (excelFile == null || excelFile == "") {
                 return false;
             }
+            //取文件后戳名
+            var pos = "." + excelFile.replace(/.+\./, "");
+            if(pos != "xlsx"){
+                alert("请选择正确的  xlsx 文件！！");
+                return;
+            }
             $("#fileForm").submit();
             document.getElementById("background").style.display = "block";
             document.getElementById("progressBar").style.display = "block";

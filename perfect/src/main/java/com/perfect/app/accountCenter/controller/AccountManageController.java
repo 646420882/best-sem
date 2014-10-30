@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.perfect.app.web.WebUtils;
 import com.perfect.core.AppContext;
+import com.perfect.dto.BaiduAccountAllState;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.SystemUserEntity;
@@ -110,9 +111,10 @@ public class AccountManageController {
     @RequestMapping(value = "/getAccountAll", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccountAll(HttpServletResponse response) {
 
-        List<SystemUserEntity> entities = accountManageService.getAccountAll();
+        List<BaiduAccountAllState> entities = accountManageService.getAccountAll();
 
-        Map<String, List<SystemUserEntity>> map = new HashMap<>();
+
+        Map<String, List<BaiduAccountAllState>> map = new HashMap<>();
         map.put("rows", entities);
 
         webContext.writeJson(map, response);

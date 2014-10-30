@@ -1,5 +1,6 @@
 package com.perfect.service;
 
+import com.perfect.dto.BaiduAccountAllState;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 
@@ -47,7 +48,7 @@ public interface AccountManageService {
      *
      * @return
      */
-    public List<SystemUserEntity> getAccountAll();
+    public  List<BaiduAccountAllState> getAccountAll();
 
     /**
      * 修改百度帐号的启用状态

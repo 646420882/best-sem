@@ -22,6 +22,9 @@
         margin: 0px auto;
 
     }
+    .table tr td{
+        text-align: center;
+    }
 </style>
 <body>
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
@@ -48,12 +51,7 @@
         <span class="fl">审核帐号</span>
         <a href="javascript:closeAlert()" class="close">关闭</a></h2>
     <div class="mainlist">
-        <%--<ul class="zs_set" id="admon">
-            <li>百度帐号：<input type="text" id="baiduAccount" value=""></li>
-            <li>百度密码：<input type="text" id="baiduPassword" value=""></li>
-            <li>&nbsp;&nbsp;&nbsp;Token：<input type="text" id="token" value=""></li>
-        </ul>--%>
-        是否确认审核！！
+        是否确认审核通过，使此帐号在系统中使用！！
     </div>
     <div class="main_bottom">
         <div class="w_list03">
@@ -106,7 +104,7 @@
         });
         $("#auditDiv").css({
             left: ($("body").width() - $("#auditDiv").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $("#auditDiv").height()) / 2 + $(window).scrollTop() + "px",
+            top: ($(window).height() - $("#auditDiv").height()) / 4 + $(window).scrollTop() + "px",
             display: "block"
         });
     }
