@@ -40,8 +40,13 @@ public class StoreManager extends WebContextSupport {
                                ){
 
         try{
-//            keywordGroupService.saveTrade(tr,cg,gr,kw,url);
-            writeData(SUCCESS,response,null);
+           int count= keywordGroupService.saveTrade(tr,cg,gr,kw,url);
+            if(count==1){
+                writeData(SUCCESS,response,null);
+            }else if(count==3){
+                writeData(FAIL,response,null);
+            }
+
         }catch (Exception e){
             e.printStackTrace();
             writeData(EXCEPTION,response,null);

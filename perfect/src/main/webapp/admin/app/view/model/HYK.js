@@ -4,9 +4,8 @@
 var Le = Ext.define("Le", {
     extend: 'Ext.data.Model',
     fields: [
-        {name: 'tr', type: 'string'}
+        {name: 'category', type: 'string'}
     ]
-
 });
 Ext.create("Ext.data.Store", {
     storeId: 'storeTr',
@@ -19,7 +18,32 @@ Ext.create("Ext.data.Store", {
             rootProperty: 'rows'
         }
     }
+});
 
+var hykModel=Ext.define("hykModel",{
+    extend:'Ext.data.Model',
+    fields:[
+        {name:'id',type:"string"},
+        {name:'tr',type:'string'},
+        {name:'cg',type:'string'},
+        {name:'gr',type:'string'},
+        {name:'kw',type:'string'},
+        {name:'url',type:'string'}
+    ]
+});
+Ext.create("Ext.data.Store",{
+    storeId:'hykStore',
+    model:'hykModel',
+    proxy: {
+        pageSize:10,
+        type: 'ajax',
+        url: '../person/getHyk',
+        reader: {
+            type: 'json',
+            rootProperty: 'rows',
+            totalProperty:'count'
+        }
+    }
 });
 Ext.define("Perfect.view.model.HYK", {
     extend: 'Ext.form.Panel',
@@ -29,25 +53,58 @@ Ext.define("Perfect.view.model.HYK", {
     items: [
         {
             xtype: "form",
-            titel: '查询',
+            title: '查询',
+            bodyPadding:10,
+            border:true,
             items: [
                 {
                     fieldLabel: '选择行业',
                     xtype: 'combobox',
                     query: 'remote',
                     name: 'trade',
-                    displayField: 'tr',
-                    valueField: 'tr',
+                    id:'tradeComboBox',
+                    displayField: 'category',
+                    valueField: 'category',
                     emptyText: '行业..',
                     anchor:'100%',
                     editable: false,
                     store: Ext.StoreManager.lookup("storeTr")
+                },
+                {
+                    xtype:'grid',
+                    border:true,
+                    title:'行业库列表',
+                    height:330,
+                    minHeight:280,
+//                    store:hykStore,
+                    columns:[
+                        {text:'行业名'},
+                        {text:'类别'},
+                        {text:'分组'},
+                        {text:'关键字'},
+                        {text:'Url',flex:1}
+                    ],
+                    bbar: {
+                        xtype: 'pagingtoolbar',
+                        pageSize: 10,
+                        store: Ext.StoreManager.lookup("storeTr"),
+                        displayInfo: true,
+                        plugins: new Ext.ux.ProgressBarPager()
+                    }
+                }
+            ],
+            tools:[
+                {
+                    type:'refresh',
+                    handler:function(){
+                        Ext.StoreManager.lookup("storeTr").load();
+                    }
                 }
             ]
         },
         {
             xtype: "form",
-            title: '提交',
+            title: '添加行业库',
             url: '../person/saveTr',
             border: true,
             bodyPadding: 10,
@@ -105,7 +162,10 @@ Ext.define("Perfect.view.model.HYK", {
                                 success: function (form, action) {
                                     if (action.result.success == 1) {
                                         form.reset();
+                                        Ext.StoreManager.lookup("storeTr").load();
                                         Ext.Msg.alert("提示", "添加成功!");
+                                    }else if(action.result.success==0){
+                                        Ext.Msg.alert("提示", "已经存在该\"行业名\"和\"关键字\"!");
                                     }
                                 },
                                 failure: function (form, action) {

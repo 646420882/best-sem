@@ -94,9 +94,17 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
     }
 
     @Override
-    public void saveTrade(LexiconEntity lexiconEntity) {
+    public int saveTrade(LexiconEntity lexiconEntity) {
         MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
-        mongoTemplate.insert(lexiconEntity,SYS_KEYWORD);
+        Criteria c=new Criteria();
+        c.and("tr").is(lexiconEntity.getTrade()).and("kw").is(lexiconEntity.getKeyword());
+      LexiconEntity findLexiconEntity=  mongoTemplate.findOne(new Query(c),LexiconEntity.class,SYS_KEYWORD);
+        if(findLexiconEntity==null){
+            mongoTemplate.insert(lexiconEntity,SYS_KEYWORD);
+            return 1;
+        }else{
+            return 3;
+        }
     }
 
     public List<CategoryVO> findCategories(String trade) {
@@ -130,14 +138,12 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
     }
 
     //行业词库下的类别VO实体
-    @Document(collection =SYS_KEYWORD)
     class CategoryVO {
         @Id
+        private String category;
+
         private String tr;
 
-
-
-        private String category;
 
         private int count;
 

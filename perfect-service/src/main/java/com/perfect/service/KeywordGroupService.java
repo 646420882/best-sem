@@ -1,6 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.entity.LexiconEntity;
+import com.perfect.mongodb.utils.PagerInfo;
 
 import java.io.OutputStream;
 import java.util.List;
@@ -106,6 +107,13 @@ public interface KeywordGroupService {
      * 添加数据
      * @param
      */
-    void saveTrade(String tr, String cg, String gr, String kw, String url);
+    int saveTrade(String tr, String cg, String gr, String kw, String url);
 
+    /**
+     * 分页查询
+     * @param page 当前页码
+     * @param limit 每页最大条数
+     * @return
+     */
+    PagerInfo findByPager(int page,int limit);
 }

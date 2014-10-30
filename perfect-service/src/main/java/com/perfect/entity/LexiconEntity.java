@@ -97,7 +97,7 @@ public class LexiconEntity implements Serializable {
         if (id != null ? !id.equals(entity.id) : entity.id != null) return false;
         if (keyword != null ? !keyword.equals(entity.keyword) : entity.keyword != null) return false;
         if (trade != null ? !trade.equals(entity.trade) : entity.trade != null) return false;
-
+        if (url != null ? !url.equals(entity.url) : entity.url != null) return false;
         return true;
     }
 
@@ -108,6 +108,7 @@ public class LexiconEntity implements Serializable {
         result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (group != null ? group.hashCode() : 0);
         result = 31 * result + (keyword != null ? keyword.hashCode() : 0);
+        result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
     }
 

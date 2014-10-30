@@ -306,4 +306,5 @@ public class AdgroupEntity extends AccountIdEntity {
     public void setId(String id) {
         this.id = id;
     }
+
 }

@@ -14,6 +14,7 @@ import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.dao.impl.KeywordGroupDAOImpl;
 import com.perfect.mongodb.utils.Pager;
+import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.KeywordGroupService;
 import com.perfect.utils.*;
@@ -460,14 +461,19 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
     }
 
     @Override
-    public void saveTrade(String tr, String cg, String gr, String kw, String url) {
+    public int saveTrade(String tr, String cg, String gr, String kw, String url) {
         LexiconEntity lexiconEntity=new LexiconEntity();
         lexiconEntity.setTrade(tr);
         lexiconEntity.setCategory(cg);
         lexiconEntity.setGroup(gr);
         lexiconEntity.setKeyword(kw);
         lexiconEntity.setUrl(url);
-        keywordGroupDAO.saveTrade(lexiconEntity);
+      return  keywordGroupDAO.saveTrade(lexiconEntity);
+    }
+
+    @Override
+    public PagerInfo findByPager(int page, int limit) {
+        return null;
     }
 
     public Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit, int sort, String fieldName) {

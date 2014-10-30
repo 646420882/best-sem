@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/ext/css/ext-theme-crisp-all-debug.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/ext/js/ext-theme-crisp.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/ext/js/ext-theme-crisp-debug.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/ext/js/ProgressBarPager.js"></script>
 </head>
 <body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/ext/app.js"></script>

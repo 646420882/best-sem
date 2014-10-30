@@ -28,7 +28,7 @@ public interface KeywordGroupDAO {
      * 添加行业库数据
      * @param lexiconEntity
      */
-    void saveTrade(LexiconEntity lexiconEntity);
+    int saveTrade(LexiconEntity lexiconEntity);
 
     /**
      * 获取当前结果集的长度
