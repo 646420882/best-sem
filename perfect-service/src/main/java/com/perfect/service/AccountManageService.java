@@ -1,5 +1,6 @@
 package com.perfect.service;
 
+import com.perfect.dto.BaiduAccountAllState;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 
@@ -47,7 +48,7 @@ public interface AccountManageService {
      *
      * @return
      */
-    public List<SystemUserEntity> getAccountAll();
+    public  List<BaiduAccountAllState> getAccountAll();
 
     /**
      * 修改百度帐号的启用状态
@@ -122,4 +123,12 @@ public interface AccountManageService {
      * @return
      */
     Double getYesterdayCost(Long accountId);
+
+    /**
+     * 根据系统用户名和账户id得到百度账户
+     * @param systemUserName
+     * @param accountId
+     * @return
+     */
+    BaiduAccountInfoEntity getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId);
 }

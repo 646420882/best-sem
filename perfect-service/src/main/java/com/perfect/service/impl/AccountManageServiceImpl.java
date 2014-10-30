@@ -10,6 +10,8 @@ import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.AccountManageDAO;
+import com.perfect.dao.SystemUserDAO;
+import com.perfect.dto.BaiduAccountAllState;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.MD5;
@@ -32,6 +34,9 @@ public class AccountManageServiceImpl implements AccountManageService {
 
     @Resource
     private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
+
+    @Resource
+    private SystemUserDAO systemUserDAO;
 
     @Override
     public int updatePwd(String password, String newPwd) {
@@ -85,9 +90,36 @@ public class AccountManageServiceImpl implements AccountManageService {
     }
 
     @Override
-    public List<SystemUserEntity> getAccountAll() {
+    public  List<BaiduAccountAllState> getAccountAll() {
         List<SystemUserEntity> entities = accountManageDAO.getAccountAll();
-        return entities;
+        List<BaiduAccountAllState> allStates = new ArrayList<>();
+
+        for(SystemUserEntity userEntity :entities){
+            if(userEntity.getUserName().equals("administrator")){
+                continue;
+            }
+            if(userEntity.getBaiduAccountInfoEntities().size() > 0){
+                for(BaiduAccountInfoEntity entity :userEntity.getBaiduAccountInfoEntities()){
+                    BaiduAccountAllState accountAllState = new BaiduAccountAllState();
+                    accountAllState.setIdObj(entity.getId());
+                    accountAllState.setUserName(userEntity.getUserName());
+                    accountAllState.setUserState(userEntity.getState());
+                    accountAllState.setBaiduUserName(entity.getBaiduUserName());
+                    accountAllState.setBaiduState(entity.getState());
+                    allStates.add(accountAllState);
+                }
+            }else{
+                BaiduAccountAllState accountAllState = new BaiduAccountAllState();
+                accountAllState.setIdObj(0l);
+                accountAllState.setUserName(userEntity.getUserName());
+                accountAllState.setUserState(userEntity.getState());
+                accountAllState.setBaiduUserName(" ");
+                accountAllState.setBaiduState(0l);
+                allStates.add(accountAllState);
+            }
+
+        }
+        return allStates;
     }
 
     @Override
@@ -181,5 +213,22 @@ public class AccountManageServiceImpl implements AccountManageService {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+
+     public BaiduAccountInfoEntity getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId){
+         BaiduAccountInfoEntity  baiduUser = null;
+
+         SystemUserEntity systemUserEntity = systemUserDAO.findByUserName(systemUserName);
+         List<BaiduAccountInfoEntity> list = systemUserEntity.getBaiduAccountInfoEntities();
+         for(BaiduAccountInfoEntity baidu : list){
+            if(baidu.getId().longValue()==accountId.longValue()){
+                baiduUser = baidu;
+                break;
+            }
+         }
+
+         return baiduUser;
     }
 }

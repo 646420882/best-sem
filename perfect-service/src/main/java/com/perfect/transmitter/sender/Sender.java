@@ -14,29 +14,22 @@ import java.util.Map;
 
 public class Sender implements Runnable {
 
-
-    @Resource
-    private SendMail sendMail;
-
-    @Resource
-    private SendMessage sendMessage;
-
-    private Map<String, Object> map;
+    private Map<String, String> map;
 
 
-    public Sender(Map<String, Object> map) {
+    public Sender(Map<String, String> map) {
         this.map = map;
     }
 
     public void run() {
-        String[] mails = (String[]) map.get("mails");
-        String[] tels = ((String) map.get("tels")).split(",");
+        String[] mails =  map.get("mails").split(",");
+        String[] tels = map.get("tels").split(",");
         if (mails.length > 0) {
             sendMail(mails);
         }
 
         if (tels.length > 0) {
-            sendMessage((String) map.get("tels"));
+            sendMessage(map.get("tels"));
         }
     }
 
@@ -46,7 +39,7 @@ public class Sender implements Runnable {
      */
     public void sendMail(String[] mails) {
         for (String mail : mails) {
-            sendMail.startSendTextMail(mail, "账户预警", "超出了预算!");
+            SendMail.startSendTextMail(mail, "账户预警", "超出了预算!");
         }
     }
 
@@ -55,7 +48,7 @@ public class Sender implements Runnable {
      * 发送手机短信
      */
     public void sendMessage(String tels) {
-        sendMessage.startSendMes(tels, new String[]{});
+        SendMessage.startSendMes(tels, new String[]{});
     }
 
 }

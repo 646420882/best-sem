@@ -17,7 +17,7 @@
         <property name="cronExpression" value="0 30 0 */1 * ? "/>
     </bean>
 
-    <!--<bean id="everdayWarningJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <bean id="everdayWarningJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject">
             <bean class="com.perfect.tasks.EverdayWarningTask"/>
         </property>
@@ -29,9 +29,9 @@
     <bean id="everdayWarningTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="everdayWarningJobBean"/>
         <property name="cronExpression" value="0 0 0 * * ? "/>
-    </bean>-->
+    </bean>
 
-    <!--<bean id="senderWarningJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <bean id="senderWarningJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject">
             <bean class="com.perfect.tasks.SenderWarningTask"/>
         </property>
@@ -43,15 +43,15 @@
     <bean id="senderWarningTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="senderWarningJobBean"/>
         <property name="cronExpression" value="0 0 */2 * * ? "/>
-    </bean>-->
+    </bean>
 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="autoStartup" value="true"/>
         <property name="triggers">
             <list>
                 <ref bean="dataPullTrigger"/>
-                <!--<ref bean="everdayWarningTrigger"/>
-                <ref bean="senderWarningTrigger"/>-->
+                <ref bean="everdayWarningTrigger"/>
+                <ref bean="senderWarningTrigger"/>
             </list>
         </property>
     </bean>

@@ -70,6 +70,7 @@ public class AccountWarningController {
                                         @RequestParam(value = "isEnable",required = false)Integer isEnable){
 
         WarningRuleEntity warningRuleEntity = new WarningRuleEntity();
+        warningRuleEntity.setSystemUserName(AppContext.getUser());
         warningRuleEntity.setAccountId(accountId);
         warningRuleEntity.setBudget(budget);
         warningRuleEntity.setWarningPercent(warningPercent);
@@ -101,7 +102,7 @@ public class AccountWarningController {
      */
     @RequestMapping(value = "assistant/getAllWarningRule",method = {RequestMethod.GET,RequestMethod.POST})
     public void showAllWarningRule(HttpServletResponse response){
-       Iterable<WarningRuleEntity> list = accountWarningDAO.findAll();
+       Iterable<WarningRuleEntity> list = accountWarningDAO.findByUserName(AppContext.getUser());
         webContext.writeJson(list, response);
     }
 

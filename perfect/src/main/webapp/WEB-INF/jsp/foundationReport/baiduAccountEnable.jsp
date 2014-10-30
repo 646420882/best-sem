@@ -16,11 +16,15 @@
     <link rel="stylesheet" type="text/css" href="/public/css/accountCss/backstage.css">
 </head>
 <style>
-    .mid{
+    .mid {
         float: none;
         width: 1000px;
         margin: 0px auto;
 
+    }
+
+    .table tr td {
+        text-align: center;
     }
 </style>
 <body>
@@ -28,7 +32,9 @@
 <div class="backstage_concent mid over">
     <div id="bidding_box">
         <div>
-            <table id="table1" class="table table-striped table-bordered table-hover datatable dataTable" aria-describedby="DataTables_Table_0_info">
+            <div style="color: red;font-size: 16px;padding: 10px 0px 20px 20px">注：被停用的百度帐号将不再拉取报告数据等相关信息！请谨慎操作！！</div>
+            <table id="table1" class="table table-striped table-bordered table-hover datatable dataTable"
+                   aria-describedby="DataTables_Table_0_info">
                 <thead>
                 <tr>
                     <td>系统帐号</td>
@@ -49,6 +55,7 @@
     <h2 id="enableTUO">
         <span class="fl">提示框</span>
         <a href="javascript:closeAlert()" class="close">关闭</a></h2>
+
     <div class="mainlist">
         是否确认启用/禁用！！
     </div>
@@ -64,15 +71,15 @@
 <script type="text/javascript" src="/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
 <script type="application/javascript">
-    var _userName="";
-    var _baiduId="";
-    var _state="";
+    var _userName = "";
+    var _baiduId = "";
+    var _state = "";
     String.prototype.trims = function () {
         return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     };
     $(function () {
         showData();
-        $("body").on("click","#enableAccount",function(){
+        $("body").on("click", "#enableAccount", function () {
             if (_userName == null || _userName.trims().length == 0) {
                 return false;
             }
@@ -88,9 +95,8 @@
                 success: function (data, textStatus, jqXHR) {
                     showData();
                     closeAlert();
-                    if(data.rows == 1){
-                        alert("操作成功！");
-                    }else{
+                    if (data.rows == 1) {
+                    } else {
                         alert("操作失败！");
                     }
                 }
@@ -102,7 +108,7 @@
     /**
      * 添加监控对象弹出框显示
      */
-    function showDialogMon(thisAudit,state) {
+    function showDialogMon(thisAudit, state) {
         _userName = $(thisAudit).parent().parent().find("td").attr("cname");
         _baiduId = $(thisAudit).parent().parent().find("td").attr("cid");
         _state = state;
@@ -116,30 +122,32 @@
         });
     }
 
-    function showData(){
+    function showData() {
         $.ajax({
             url: "/account/getAccountAll",
             dataType: "json",
             success: function (data) {
                 $("#shuju").empty();
                 var html_account = "";
-                $.each(data.rows,function(i,item){
-                    if(item.baiduAccountInfoEntities != undefined && item.baiduAccountInfoEntities != null && item.baiduAccountInfoEntities != ""){
-                        $.each(item.baiduAccountInfoEntities,function(j,items){
-                            html_account = "<tr><td cname="+item.userName+" cid = "+items.id+">"+item.userName+"</td><td>"+((item.state == 0)?'未通过审核':'已通过审核')+"</td><td>"+items.baiduUserName+"</td><td>"+((items.state==1)?'已启用':'已禁用')+"</td><td style='text-align: center'>" +
-                                    "<a href='javascript:void(0)' onclick='showDialogMon(this,1)'>启用</a>&nbsp;&nbsp;&nbsp;&nbsp;" +
-                                    "<a href='javascript:void(0)' onclick='showDialogMon(this,0)'>禁用</a></td></tr>";
-                            $("#shuju").append(html_account);
-                        });
+                $.each(data.rows, function (i, item) {
+                        html_account = "<tr><td cname=" + item.userName + " cid = " + item.id + ">" + item.userName + "</td><td " + ((item.userState == 0) ? 'style=color:red' : '') + ">" +
+                                ((item.userState == 0) ? '未通过审核' : '已通过审核') + "</td><td>" + item.baiduUserName + "</td><td " + ((item.baiduState == 1) ? '' : 'style=color:red') + ">" +
+                                ((item.baiduState == 1) ? '已启用' : '已停用') + "</td><td>"
+                    if(item.id != 0){
+                        html_account = html_account +
+                        "<a href='javascript:void(0)' onclick='showDialogMon(this,1)'>启用</a>&nbsp;&nbsp;&nbsp;&nbsp;" +
+                        "<a href='javascript:void(0)' onclick='showDialogMon(this,0)'>停用</a></td></tr>";
                     }
+
+                $("#shuju").append(html_account);
                 });
             }
         });
     }
 
-/*    window.onload = function () {
-        rDrag.init(document.getElementById('auditTUO'));
-    };*/
+    /*    window.onload = function () {
+     rDrag.init(document.getElementById('auditTUO'));
+     };*/
 
     /**
      * 关闭弹窗

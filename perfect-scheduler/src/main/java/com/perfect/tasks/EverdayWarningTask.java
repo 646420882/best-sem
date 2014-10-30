@@ -62,16 +62,17 @@ public class EverdayWarningTask {
 
         for (SystemUserEntity sue : systemUserEntityList) {
             //昨天的日期
-            Date yesterDay = DateUtils.getYesterday();
+           /* Date yesterDay = DateUtils.getYesterday();*/
+            Date yesterDay = new SimpleDateFormat("yyyy-MM-dd").parse("2014-09-24");
+
             //得到昨天的账户数据
-            List<AccountReportEntity> accountYesTerdayDataList = getAccountReportDAO.getLocalAccountRealData(sue.getUserName(), yesterDay, yesterDay);
+            AccountReportEntity accountYesTerdayData = getAccountReportDAO.getLocalAccountRealData(sue.getUserName(), yesterDay,yesterDay);
 
             for (WarningRuleEntity wre : warningRuleList) {
-                for (AccountReportEntity art : accountYesTerdayDataList) {
-                    WarningInfoEntity warningInfo = new WarningInfoEntity();
-                    if (wre.getAccountId() == art.getAccountId().longValue()) {
+                    if (accountYesTerdayData!=null && wre.getAccountId() == accountYesTerdayData.getAccountId().longValue()) {
+                        WarningInfoEntity warningInfo = new WarningInfoEntity();
                         //算出日预算实现率
-                        double percent = (art.getPcCost().doubleValue() + art.getMobileCost().doubleValue()) / wre.getBudget() * 100;
+                        double percent = (accountYesTerdayData.getPcCost().doubleValue() + accountYesTerdayData.getMobileCost().doubleValue()) / wre.getBudget() * 100;
                         warningInfo.setAccountId(wre.getAccountId());
                         warningInfo.setPercent(percent);
                         warningInfo.setCreateTime(new Date());
@@ -100,7 +101,6 @@ public class EverdayWarningTask {
                         warningInfoList.add(map);
                         break;
                     }
-                }
             }
         }
         return warningInfoList;

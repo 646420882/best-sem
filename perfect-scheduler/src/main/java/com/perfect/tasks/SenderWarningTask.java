@@ -42,10 +42,9 @@ public class SenderWarningTask {
     public boolean execute(List<WarningRuleEntity> tasks) throws Exception {
 
         for (WarningRuleEntity task : tasks) {
-            Map<String, Object> map = new HashMap<>();
-            String[] mails = task.getMails().split(",");
+            Map<String, String> map = new HashMap<>();
             map.put("tels", task.getTels());
-            map.put("mails", mails);
+            map.put("mails", task.getMails());
             WorkPool.pushTask(new Sender(map));
             //将当天预警过得预警规则的状态修改为已预警过
             task.setIsWarninged(1);
@@ -73,7 +72,7 @@ public class SenderWarningTask {
 
         for (WarningRuleEntity wre : warningRuleList) {
             //得到当天的账户实时数据
-            List<RealTimeResultType> todayAccountRealDataList = getAccountReportDAO.getAccountRealTimeTypeByDate(wre.getAccountId(), df.format(new Date()), df.format(new Date()));
+            List<RealTimeResultType> todayAccountRealDataList = getAccountReportDAO.getAccountRealTimeTypeByDate(wre.getSystemUserName(),wre.getAccountId(), df.format(new Date()), df.format(new Date()));
             //根据不同的比例和预算金额算出当天消费的金额
             double cost = wre.getWarningPercent() / 100 * wre.getBudget();
             for (RealTimeResultType rtr : todayAccountRealDataList) {
@@ -84,6 +83,8 @@ public class SenderWarningTask {
                     break;
                 }
             }
+            executeList.add(wre);
+            break;
         }
         return executeList;
     }

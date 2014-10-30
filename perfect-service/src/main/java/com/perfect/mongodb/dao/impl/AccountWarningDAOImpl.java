@@ -4,6 +4,7 @@ import com.perfect.dao.AccountWarningDAO;
 import com.perfect.entity.WarningRuleEntity;
 import com.perfect.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.mongodb.utils.Pager;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -104,6 +105,11 @@ public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleEnt
      */
     public List<WarningRuleEntity> findWarningRule(int isEnable, int isWarninged){
         return getSysMongoTemplate().find(new Query(Criteria.where("isEnable").is(isEnable).and("isWarninged").is(isWarninged)),getEntityClass(),"sys_warning");
+    }
+
+    public Iterable<WarningRuleEntity> findByUserName(String user){
+        MongoTemplate mongoTemplate = getSysMongoTemplate();
+        return mongoTemplate.find(Query.query(Criteria.where("sysUserName").is(user)),getEntityClass(),"sys_warning");
     }
 
 

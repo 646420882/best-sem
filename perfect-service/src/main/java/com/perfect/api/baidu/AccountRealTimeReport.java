@@ -25,7 +25,7 @@ public class AccountRealTimeReport {
     @Resource
     private AccountManageService accountManageService;
 
-    public List<RealTimeResultType> getAccountRealTimeData(Long accountId, String _startDate, String _endDate) {
+    public List<RealTimeResultType> getAccountRealTimeData(String systemUserName,Long accountId, String _startDate, String _endDate) {
         if (_startDate == null && _endDate != null) {
             Assert.notNull(_startDate, "_startDate must not be null!");
         }
@@ -55,7 +55,7 @@ public class AccountRealTimeReport {
 
         ReportService reportService = null;
         try {
-            CommonService commonService = BaiduServiceSupport.getCommonService(accountManageService.getBaiduAccountInfoById(accountId));
+            CommonService commonService = BaiduServiceSupport.getCommonService(accountManageService.getBaiduAccountInfoBySystemUserNameAndAcId(systemUserName,accountId));
             reportService = commonService.getService(ReportService.class);
         } catch (ApiException e) {
             e.printStackTrace();

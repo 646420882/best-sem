@@ -95,6 +95,22 @@ Ext.define("Perfect.view.Navigation", {
                             tabs.setActiveTab(tabs.getComponent("tab4"));
                         }
                     }
+                },
+                {
+                    text: '百度帐号启用/禁用',
+                    handler: function () {
+                        var tabs = Ext.getCmp("tabs");
+                        if (tabs.getComponent("tab5") == undefined) {
+                            var _thisTabs = tabs.add({
+                                id: "tab5",
+                                xtype: "QY",
+                                closable: true
+                            });
+                            tabs.setActiveTab(_thisTabs);
+                        }else{
+                            tabs.setActiveTab(tabs.getComponent("tab5"));
+                        }
+                    }
                 }
             ]
         },

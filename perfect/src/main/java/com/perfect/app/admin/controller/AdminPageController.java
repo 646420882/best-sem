@@ -21,8 +21,8 @@ public class AdminPageController implements Controller {
     @Override
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        return new ModelAndView("foundationReport/report");
-        return new ModelAndView("homePage/pageBlock/index");
+        return new ModelAndView("foundationReport/report");
+//        return new ModelAndView("homePage/pageBlock/index");
     }
 
     /**

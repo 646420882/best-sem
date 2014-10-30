@@ -9,6 +9,7 @@ Ext.onReady(function(){
     Ext.require("Perfect.view.alert.B1");
     Ext.require("Perfect.view.model.SH");
     Ext.require("Perfect.view.model.HYK");
+    Ext.require("Perfect.view.model.QY");
 });
 Ext.Date.patterns = {
     ISO8601Long:"Y-m-d H:i:s",
