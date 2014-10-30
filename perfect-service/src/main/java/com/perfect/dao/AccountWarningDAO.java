@@ -10,12 +10,14 @@ import java.util.List;
 /**
  * Created by john on 2014/8/5.
  */
-public interface AccountWarningDAO extends CrudRepository<WarningRuleEntity,Long>{
-        List<WarningRuleEntity> findEnableIsOne();
+public interface AccountWarningDAO extends CrudRepository<WarningRuleEntity, Long> {
+    List<WarningRuleEntity> findEnableIsOne();
 
-        void update(WarningRuleEntity warningRuleEntity);
+    void update(WarningRuleEntity warningRuleEntity);
 
-        void updateMulti(Query query,Update update);
+    void updateMulti(Query query, Update update);
 
-        List<WarningRuleEntity> findWarningRule(int isEnable, int isWarninged);
+    List<WarningRuleEntity> findWarningRule(int isEnable, int isWarninged);
+
+    Iterable<WarningRuleEntity> findByUserName(String user);
 }

@@ -40,8 +40,11 @@ public class WarningRuleEntity extends AccountIdEntity {
     @Field("isEnable")
     private Integer isEnable;//是否启用
 
+    @Field("sysUserName")
+    private String systemUserName;//系统用户名
 
-    public WarningRuleEntity(String id, Integer budgetType, Double budget, Double warningPercent, String tels, String mails, Date startTime, Integer isWarninged, Integer isEnable) {
+
+    public WarningRuleEntity(String id, Integer budgetType, Double budget, Double warningPercent, String tels, String mails, Date startTime, Integer isWarninged, Integer isEnable, String systemUserName) {
         this.id = id;
         this.budgetType = budgetType;
         this.budget = budget;
@@ -51,6 +54,7 @@ public class WarningRuleEntity extends AccountIdEntity {
         this.startTime = startTime;
         this.isWarninged = isWarninged;
         this.isEnable = isEnable;
+        this.systemUserName = systemUserName;
     }
 
     public WarningRuleEntity() {
@@ -126,5 +130,13 @@ public class WarningRuleEntity extends AccountIdEntity {
 
     public void setIsEnable(Integer isEnable) {
         this.isEnable = isEnable;
+    }
+
+    public String getSystemUserName() {
+        return systemUserName;
+    }
+
+    public void setSystemUserName(String systemUserName) {
+        this.systemUserName = systemUserName;
     }
 }

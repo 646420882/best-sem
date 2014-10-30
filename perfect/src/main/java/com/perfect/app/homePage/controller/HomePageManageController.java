@@ -38,8 +38,6 @@ public class HomePageManageController {
     private AccountRegisterService accountRegisterService;
     @Resource
     private WebContext webContext;
-    @Resource
-    private SendMail sendMail;
 
     /**
      * 登陆页面
@@ -198,7 +196,7 @@ public class HomePageManageController {
                         "此为自动发送邮件，请勿直接回复<br/>";
 
                 if(entity.getEmail()!=null){
-                    sendMail.startSendHtmlMail(entity.getEmail(), subject, content);
+                    SendMail.startSendHtmlMail(entity.getEmail(), subject, content);
                     webContext.writeJson("userName Exists!", response);
                 }else{
                     webContext.writeJson("NO EMAIL", response);

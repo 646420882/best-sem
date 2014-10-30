@@ -21,7 +21,6 @@ public class SendTest {
 
     @Test
     public void message(){
-        SendMessage mes = new SendMessage();
-        mes.startSendMes("15923844052",new String[]{});
+        SendMessage.startSendMes("15923844052",new String[]{});
     }
 }
