@@ -3,6 +3,9 @@ package com.perfect.tasks;
 import com.perfect.autosdk.sms.v3.RealTimeResultType;
 import com.perfect.dao.AccountWarningDAO;
 import com.perfect.dao.GetAccountReportDAO;
+import com.perfect.dao.SystemUserDAO;
+import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.SystemUserEntity;
 import com.perfect.entity.WarningRuleEntity;
 import com.perfect.schedule.utils.WorkPool;
 import com.perfect.transmitter.sender.Sender;
@@ -30,6 +33,8 @@ public class SenderWarningTask {
     private AccountWarningDAO accountWarningDAO;
     @Resource
     private GetAccountReportDAO getAccountReportDAO;
+    @Resource
+    private SystemUserDAO systemUserDAO;
 
     {
         try {
@@ -71,8 +76,12 @@ public class SenderWarningTask {
         List<WarningRuleEntity> warningRuleList = accountWarningDAO.findWarningRule(1, 0);
 
         for (WarningRuleEntity wre : warningRuleList) {
+            if(validateBaiduAccountState(wre.getSystemUserName(),wre.getAccountId())==false){
+                continue;
+            }
+
             //得到当天的账户实时数据
-            List<RealTimeResultType> todayAccountRealDataList = getAccountReportDAO.getAccountRealTimeTypeByDate(wre.getSystemUserName(),wre.getAccountId(), df.format(new Date()), df.format(new Date()));
+            List<RealTimeResultType> todayAccountRealDataList = getAccountReportDAO.getAccountRealTimeTypeByDate(wre.getSystemUserName(), wre.getAccountId(), df.format(new Date()), df.format(new Date()));
             //根据不同的比例和预算金额算出当天消费的金额
             double cost = wre.getWarningPercent() / 100 * wre.getBudget();
             for (RealTimeResultType rtr : todayAccountRealDataList) {
@@ -87,6 +96,29 @@ public class SenderWarningTask {
             break;
         }
         return executeList;
+    }
+
+
+    /**
+     * 根据系统用户名百度账户id验证该百度账户是否可用
+     *
+     * @return
+     */
+    public boolean validateBaiduAccountState(String sysUserName, long accountId) {
+        SystemUserEntity sysUser = systemUserDAO.findByUserName(sysUserName);
+        if(sysUser==null){
+            return false;
+        }
+        for (BaiduAccountInfoEntity baiduUser : sysUser.getBaiduAccountInfoEntities()) {
+            if (baiduUser.getId().longValue()==accountId) {
+                if(baiduUser.getState().longValue()==0){
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 

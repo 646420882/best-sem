@@ -11,10 +11,7 @@ import org.springframework.util.Assert;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by john on 2014-7-30.
@@ -76,6 +73,9 @@ public class AccountRealTimeReport {
         GetRealTimeDataRequest getRealTimeDataRequest = new GetRealTimeDataRequest();
         getRealTimeDataRequest.setRealTimeRequestTypes(realTimeRequestType);
         GetRealTimeDataResponse response = reportService.getRealTimeData(getRealTimeDataRequest);
+        if(response==null){
+           return new ArrayList<>();
+        }
         List<RealTimeResultType> list = response.getRealTimeResultTypes();
         return list;
     }
