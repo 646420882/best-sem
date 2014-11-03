@@ -4,10 +4,7 @@ import com.perfect.dao.AccountWarningDAO;
 import com.perfect.dao.GetAccountReportDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.dao.WarningInfoDAO;
-import com.perfect.entity.AccountReportEntity;
-import com.perfect.entity.SystemUserEntity;
-import com.perfect.entity.WarningInfoEntity;
-import com.perfect.entity.WarningRuleEntity;
+import com.perfect.entity.*;
 import com.perfect.mongodb.utils.DateUtils;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -61,14 +58,29 @@ public class EverdayWarningTask {
         }
 
         for (SystemUserEntity sue : systemUserEntityList) {
+
+            if(sue.getState().longValue()==0){
+                continue;
+            }
+            if(sue.getBaiduAccountInfoEntities()==null || sue.getBaiduAccountInfoEntities().size()==0){
+                continue;
+            }
+            if("administrator".equals(sue.getUserName())){
+                continue;
+            }
+
             //昨天的日期
-           /* Date yesterDay = DateUtils.getYesterday();*/
-            Date yesterDay = new SimpleDateFormat("yyyy-MM-dd").parse("2014-09-24");
+            Date yesterDay = DateUtils.getYesterday();
+//            Date yesterDay = new SimpleDateFormat("yyyy-MM-dd").parse("2014-09-24");
 
             //得到昨天的账户数据
             AccountReportEntity accountYesTerdayData = getAccountReportDAO.getLocalAccountRealData(sue.getUserName(), yesterDay,yesterDay);
 
             for (WarningRuleEntity wre : warningRuleList) {
+                    if(validateBaiduUserState(sue.getBaiduAccountInfoEntities(),wre.getAccountId())==false){
+                        continue;
+                    }
+
                     if (accountYesTerdayData!=null && wre.getAccountId() == accountYesTerdayData.getAccountId().longValue()) {
                         WarningInfoEntity warningInfo = new WarningInfoEntity();
                         //算出日预算实现率
@@ -104,6 +116,28 @@ public class EverdayWarningTask {
             }
         }
         return warningInfoList;
+    }
+
+
+    /**
+     * 验证系统用户下的百度账户是否可用
+     * @return
+     */
+    private boolean validateBaiduUserState(List<BaiduAccountInfoEntity> list,long accountId){
+        if(list==null){
+            return false;
+        }
+
+        for(BaiduAccountInfoEntity baiduUser : list){
+               if(baiduUser.getId().longValue()==accountId){
+                    if(baiduUser.getState()==0){
+                        return false;
+                    }else{
+                        return true;
+                    }
+               }
+        }
+        return false;
     }
 
 
