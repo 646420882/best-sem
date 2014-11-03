@@ -10,6 +10,7 @@ Ext.onReady(function(){
     Ext.require("Perfect.view.model.SH");
     Ext.require("Perfect.view.model.HYK");
     Ext.require("Perfect.view.model.QY");
+    Ext.require("Perfect.view.tbar.HykToolbar");
 });
 Ext.Date.patterns = {
     ISO8601Long:"Y-m-d H:i:s",
@@ -74,7 +75,9 @@ Ext.define("Perfect.view.Viewport", {
         collapsible: true,
         collapsed: true,
         split: true,
-        width: 150
+        width: 250,
+        maxWidth:350,
+        minWidth:180
     }, {
         region: 'center',
         id:'tabs',

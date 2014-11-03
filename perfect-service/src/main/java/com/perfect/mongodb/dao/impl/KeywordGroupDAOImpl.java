@@ -1,12 +1,15 @@
 package com.perfect.mongodb.dao.impl;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.perfect.dao.KeywordGroupDAO;
 import com.perfect.entity.LexiconEntity;
 import com.perfect.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.Pager;
 import com.perfect.mongodb.utils.PagerInfo;
+import com.perfect.redis.JRedisUtils;
 import com.perfect.utils.DBNameUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +23,7 @@ import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +38,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
  */
 @Repository("keywordGroupDAO")
 public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, Long> implements KeywordGroupDAO {
+    private static final String TRADE_KEY="trade_key";
     @Override
     public Class<LexiconEntity> getEntityClass() {
         return LexiconEntity.class;
@@ -83,15 +88,27 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
         return mongoTemplate.find(query, getEntityClass());
     }
     public List<TradeVO> findTr() {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
-        Aggregation aggregation = Aggregation.newAggregation(
-                project("tr"),
-                group("tr"),
-                sort(Sort.Direction.ASC, "tr")
-        ).withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
-        AggregationResults<TradeVO> aggregationResults = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, TradeVO.class);
+        Jedis jc = JRedisUtils.get();
+        boolean jcKey=jc.exists(TRADE_KEY);
+        List<TradeVO> list=new ArrayList<>();
+        if(!jcKey){
+            MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+            Aggregation aggregation = Aggregation.newAggregation(
+                    project("tr"),
+                    group("tr"),
+                    sort(Sort.Direction.ASC, "tr")
+            ).withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
+            AggregationResults<TradeVO> aggregationResults = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, TradeVO.class);
+            list = Lists.newArrayList(aggregationResults.iterator());
+            jc.set(TRADE_KEY,new Gson().toJson(list));
+            jc.expire(TRADE_KEY,Integer.MAX_VALUE);
+        }else{
+          String data=  jc.get(TRADE_KEY);
+            Gson gson = new Gson();
+            list=gson.fromJson(data, new TypeToken<List<TradeVO>>() {
+            }.getType());
+        }
 
-        List<TradeVO> list = Lists.newArrayList(aggregationResults.iterator());
         return list;
     }
 

@@ -9,9 +9,9 @@ Ext.define("Perfect.view.Navigation", {
     collapsible: true,
     title: '导航栏',
     split: true,
-    width: 200,
-    minWidth: 150,
-    maxWidth: 250,
+    width: 250,
+    minWidth: 180,
+    maxWidth: 300,
     layout: "accordion",
     defaults: {
         autoScroll: true,

@@ -48,7 +48,6 @@ Ext.define("Perfect.view.model.QY", {
         {
             xtype:'grid',
             title:'执行状态',
-            id:"urlGird",
             border:true,
             columnLines:true,
             store: Ext.data.StoreManager.lookup('QYStore'),

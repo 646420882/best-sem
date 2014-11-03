@@ -457,6 +457,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
 
     @Override
     public Map<String, Object> findTr() {
+
         return JSONUtils.getJsonMapData(keywordGroupDAO.findTr());
     }
 

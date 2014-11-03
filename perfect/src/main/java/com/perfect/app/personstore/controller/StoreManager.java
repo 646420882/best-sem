@@ -1,8 +1,13 @@
 package com.perfect.app.personstore.controller;
 
+import com.perfect.entity.LexiconEntity;
+import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.PagerInfo;
 import com.perfect.service.KeywordGroupService;
 import com.perfect.utils.web.WebContextSupport;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,8 +75,23 @@ public class StoreManager extends WebContextSupport {
         }else{
             pagerInfo=keywordGroupService.findByPager(new HashMap<String, Object>(),nowPage,pageSize);
         }
-
         writeJson(pagerInfo, response);
+        return null;
+    }
+    @RequestMapping(value = "/deleteByParams",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView deleteByParams(HttpServletResponse response,
+                                       @RequestParam(value = "trade",defaultValue = "",required = true) String trade,
+                                       @RequestParam(value = "keyword",defaultValue = "",required = true)String keyword){
+        try{
+            MongoTemplate mongoTemplate= BaseMongoTemplate.getSysMongo();
+            Query q=new Query();
+            q.addCriteria(Criteria.where("tr").is(trade).and("kw").is(keyword));
+            mongoTemplate.remove(q, LexiconEntity.class);
+            writeData(SUCCESS, response, null);
+        }catch (Exception e){
+            e.printStackTrace();
+            writeData(EXCEPTION,response,null);
+        }
         return null;
     }
 }
