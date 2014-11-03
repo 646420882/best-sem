@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Perfect 后台管理系统</title>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/ext/js/ext-all-debug.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/ext/js/ext-all.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/ext/js/ext-locale-zh_CN.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/ext/css/ext-theme-crisp-all.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/ext/js/ext-theme-crisp.js"></script>
