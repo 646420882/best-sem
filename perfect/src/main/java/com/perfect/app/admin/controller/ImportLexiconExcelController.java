@@ -2,6 +2,7 @@ package com.perfect.app.admin.controller;
 
 import com.perfect.entity.LexiconEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
+import com.perfect.redis.JRedisUtils;
 import com.perfect.utils.excel.RowHandler;
 import com.perfect.utils.excel.XSSFUtils;
 import com.perfect.utils.web.WebContextSupport;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
+
+import static com.perfect.mongodb.utils.EntityConstants.TRADE_KEY;
 
 /**
  * Created by baizz on 2014-10-9.
@@ -106,9 +110,12 @@ public class ImportLexiconExcelController extends WebContextSupport {
         } finally {
             pool.shutdown();
         }
-
 //        response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
         writeData(SUCCESS, response, fileName);
+        Jedis jc= JRedisUtils.get();
+        if(jc.exists(TRADE_KEY)){
+            jc.del(TRADE_KEY);
+        }
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -130,6 +137,10 @@ public class ImportLexiconExcelController extends WebContextSupport {
         jsonView.setAttributesMap(result);
 //        return new ModelAndView(jsonView);
         writeData(SUCCESS, response, SUCCESS);
+        Jedis jc= JRedisUtils.get();
+        if(jc.exists(TRADE_KEY)){
+            jc.del(TRADE_KEY);
+        }
         return null;
     }
 

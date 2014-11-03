@@ -3,6 +3,7 @@ package com.perfect.app.personstore.controller;
 import com.perfect.entity.LexiconEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.PagerInfo;
+import com.perfect.redis.JRedisUtils;
 import com.perfect.service.KeywordGroupService;
 import com.perfect.utils.web.WebContextSupport;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import redis.clients.jedis.Jedis;
 
+import static com.perfect.mongodb.utils.EntityConstants.TRADE_KEY;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -50,6 +53,10 @@ public class StoreManager extends WebContextSupport {
            int count= keywordGroupService.saveTrade(tr,cg,gr,kw,url);
             if(count==1){
                 writeData(SUCCESS,response,null);
+                Jedis jc= JRedisUtils.get();
+                if(jc.exists(TRADE_KEY)){
+                    jc.del(TRADE_KEY);
+                }
             }else if(count==3){
                 writeData(FAIL,response,null);
             }
@@ -88,6 +95,10 @@ public class StoreManager extends WebContextSupport {
             q.addCriteria(Criteria.where("tr").is(trade).and("kw").is(keyword));
             mongoTemplate.remove(q, LexiconEntity.class);
             writeData(SUCCESS, response, null);
+            Jedis jc= JRedisUtils.get();
+            if(jc.exists(TRADE_KEY)){
+                jc.del(TRADE_KEY);
+            }
         }catch (Exception e){
             e.printStackTrace();
             writeData(EXCEPTION,response,null);

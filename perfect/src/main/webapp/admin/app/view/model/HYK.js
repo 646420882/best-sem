@@ -80,8 +80,6 @@ var hykStore = Ext.create("Ext.data.Store", {
             totalProperty: 'totalCount'
         }
     }
-
-
 });
 Ext.define("Perfect.view.model.HYK", {
     extend: 'Ext.form.Panel',
@@ -113,7 +111,7 @@ Ext.define("Perfect.view.model.HYK", {
                     anchor:'100%',
                     name: 'tr',
                     allowBlank: false,
-                    blankText: '你准备连行业名都不填么？你大爷的...'
+                    blankText: '请输入行业名称!'
                 },
                 {
                     xtype: 'textfield',
@@ -121,7 +119,8 @@ Ext.define("Perfect.view.model.HYK", {
                     name: 'cg',
                     anchor:'100%',
                     msgTarget: 'side',
-                    allowBlank: false
+                    allowBlank: false,
+                    blankText: '请输入行业类别!'
                 },
                 {
                     xtype: 'textfield',
@@ -129,7 +128,8 @@ Ext.define("Perfect.view.model.HYK", {
                     name: 'gr',
                     anchor:'100%',
                     msgTarget: 'side',
-                    allowBlank: false
+                    allowBlank: false,
+                    blankText: '请输入分组名!'
                 },
                 {
                     xtype: 'textfield',
@@ -137,7 +137,8 @@ Ext.define("Perfect.view.model.HYK", {
                     name: 'kw',
                     anchor:'100%',
                     msgTarget: 'side',
-                    allowBlank: false
+                    allowBlank: false,
+                    blankText: '请输入关键字!'
                 },
                 {
                     xtype: 'textfield',
@@ -145,7 +146,8 @@ Ext.define("Perfect.view.model.HYK", {
                     msgTarget: 'side',
                     anchor:'100%',
                     name: 'url',
-                    allowBlank: false
+                    allowBlank: false,
+                    blankText: '请输入Url地址!'
                 }
             ],
             buttons: [
@@ -166,6 +168,7 @@ Ext.define("Perfect.view.model.HYK", {
                                     if (action.result.success == 1) {
                                         form.reset();
                                         storeTr.load();
+                                        hykStore.load();
                                         Ext.Msg.alert("提示", "添加成功!");
                                     }else if(action.result.success==0){
                                         Ext.Msg.alert("提示", "已经存在该\"行业名\"和\"关键字\"!");
@@ -222,12 +225,10 @@ Ext.define("Perfect.view.model.HYK", {
         {
             xtype: 'grid',
             title: '行业库列表',
+            id:'editGrid',
             icon: 'icons/zoom.png',
             tbar: {
                 xtype: 'hyktbar'
-            },
-            loadMask: {
-                msg: '加载中...'
             },
             store: hykStore,
             columns: [
@@ -238,6 +239,7 @@ Ext.define("Perfect.view.model.HYK", {
                 {text: 'Url', dataIndex: 'url', flex: 2},
                 {
                     xtype: 'actioncolumn',
+                    align:'center',
                     text: '删除',
                     sortable: false,
                     menuDisabled: true,

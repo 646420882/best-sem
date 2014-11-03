@@ -31,6 +31,7 @@ import java.util.Map;
 
 import static com.perfect.mongodb.utils.EntityConstants.SYSTEM_ID;
 import static com.perfect.mongodb.utils.EntityConstants.SYS_KEYWORD;
+import static com.perfect.mongodb.utils.EntityConstants.TRADE_KEY;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
@@ -38,7 +39,6 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
  */
 @Repository("keywordGroupDAO")
 public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, Long> implements KeywordGroupDAO {
-    private static final String TRADE_KEY="trade_key";
     @Override
     public Class<LexiconEntity> getEntityClass() {
         return LexiconEntity.class;

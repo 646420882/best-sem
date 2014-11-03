@@ -8,6 +8,9 @@ public class EntityConstants {
     //SYS
     public static final String SYS_KEYWORD = "sys_keyword";
 
+    //Jedis static Key
+    public static final String TRADE_KEY="trade_key";
+
     // Tables
     public static final String TBL_CAMPAIGN = "campaign";
     public static final String TBL_ADGROUP = "adgroup";
