@@ -9,6 +9,7 @@ import com.perfect.utils.web.WebContextSupport;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +47,7 @@ public class StoreManager extends WebContextSupport {
                                @RequestParam(value = "cg")String cg,
                                @RequestParam(value = "gr")String gr,
                                @RequestParam(value = "kw")String kw,
-                               @RequestParam(value = "url")String url
+                               @RequestParam(value = "url",defaultValue = "")String url
                                ){
 
         try{
@@ -102,6 +103,31 @@ public class StoreManager extends WebContextSupport {
         }catch (Exception e){
             e.printStackTrace();
             writeData(EXCEPTION,response,null);
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/updateByParams",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    public  ModelAndView updateByParams(HttpServletResponse response,
+                                        @RequestParam(value = "id",required = true)String id,
+                                        @RequestParam(value = "trade",required = true)String trade,
+                                        @RequestParam(value = "category",required = false,defaultValue = "")String category,
+                                        @RequestParam(value = "group",required = false,defaultValue = "")String group,
+                                        @RequestParam(value = "keyword",required = true)String keyword,
+                                        @RequestParam(value = "url",required = true)String url){
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
+        Update up=new Update();
+        up.set("tr", trade);
+        up.set("cg", category);
+        up.set("gr",group);
+        up.set("kw",keyword);
+        up.set("url",url);
+        try{
+            mongoTemplate.updateFirst(new Query(Criteria.where("id").is(id)),up,LexiconEntity.class);
+            writeData(SUCCESS,response,null);
+        }catch (Exception e){
+            e.printStackTrace();
+            writeData(FAIL,response,null);
         }
         return null;
     }

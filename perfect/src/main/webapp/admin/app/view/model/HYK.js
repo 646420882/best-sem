@@ -1,6 +1,31 @@
 /**
  * Created by XiaoWei on 2014/10/28.
  */
+var testModel=Ext.define('testModel', {
+    extend:'Ext.data.Model',
+    fields:[
+        {name:'id',type:"string"},
+        {name:'tr',type:'string'},
+        {name:'cg',type:'string'},
+        {name:'gr',type:'string'},
+        {name:'kw',type:'string'},
+        {name:'url',type:'string'}
+    ]
+});
+var testStore=Ext.create("Ext.data.Store",{
+    model:'testModel',
+//    autoLoad: true,
+    pageSize:13,
+    proxy: {
+        type: 'ajax',
+        url: '../person/findPager',
+        reader: {
+            type: 'json',
+            rootProperty: 'list',
+            totalProperty: 'totalCount'
+        }
+    }
+});
 var Le = Ext.define("Le", {
     extend: 'Ext.data.Model',
     fields: [
@@ -60,10 +85,10 @@ var hykModel=Ext.define("hykModel",{
     extend:'Ext.data.Model',
     fields:[
         {name:'id',type:"string"},
-        {name:'tr',type:'string'},
-        {name:'cg',type:'string'},
-        {name:'gr',type:'string'},
-        {name:'kw',type:'string'},
+        {name:'trade',type:'string'},
+        {name:'category',type:'string'},
+        {name:'group',type:'string'},
+        {name:'keyword',type:'string'},
         {name:'url',type:'string'}
     ]
 });
@@ -80,6 +105,11 @@ var hykStore = Ext.create("Ext.data.Store", {
             totalProperty: 'totalCount'
         }
     }
+});
+var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+    clicksToMoveEditor: 1,
+    clicksToEditor:1,
+    autoCancel: false
 });
 Ext.define("Perfect.view.model.HYK", {
     extend: 'Ext.form.Panel',
@@ -146,7 +176,6 @@ Ext.define("Perfect.view.model.HYK", {
                     msgTarget: 'side',
                     anchor:'100%',
                     name: 'url',
-                    allowBlank: false,
                     blankText: '请输入Url地址!'
                 }
             ],
@@ -232,11 +261,50 @@ Ext.define("Perfect.view.model.HYK", {
             },
             store: hykStore,
             columns: [
-                {text: '行业名', dataIndex: 'trade'},
-                {text: '类别', dataIndex: 'category', flex: 1},
-                {text: '分组', dataIndex: 'group', flex: 1},
-                {text: '关键字', dataIndex: 'keyword', flex: 1},
-                {text: 'Url', dataIndex: 'url', flex: 2},
+                {text:'id',dataIndex:'id',hidden:true},
+                {text: '行业名', dataIndex: 'trade', editor: {
+                    xtype: 'combobox',
+                    id: 'EtradeComboBox',
+                    allowBlank: false,
+                    store: storeTr,
+                    displayField: 'trade',
+                    valueField: 'trade',
+                    msgTarget: 'side',
+                    editable: false,
+                    listeners: {
+                        change: function () {
+                            var combox = Ext.getCmp("EcateCombobox");
+                            combox.setStore(Ext.StoreManager.lookup("cateStore").load({
+                                params: {
+                                    trade: this.getValue()
+                                }
+                            }));
+                            combox.setDisabled(false);
+                        }
+                    }
+                }},
+                {text: '类别', dataIndex: 'category', flex: 1, editor: {
+                    xtype: 'combobox',
+                    query: 'remote',
+                    id: "EcateCombobox",
+                    allowBlank: false,
+                    afterLabelTextTpl: required,
+                    msgTarget: 'side',
+                    displayField: 'category',
+                    valueField: 'category',
+                    disabled: true,
+                    store: null
+
+                }},
+                {text: '分组', dataIndex: 'group', flex: 1, editor: {
+                    allowBlank: false
+
+                }},
+                {text: '关键字', dataIndex: 'keyword', flex: 1, editor: {
+                    allowBlank: false
+                }},
+                {text: 'Url', dataIndex: 'url', flex: 2, editor: {
+                }},
                 {
                     xtype: 'actioncolumn',
                     align:'center',
@@ -250,7 +318,12 @@ Ext.define("Perfect.view.model.HYK", {
                             scope: this,
                             handler: onRemoveClick
                         }
-                    ]
+                    ],
+                    editor: {
+                        xtype: 'checkbox',
+                        cls: 'x-grid-checkheader-editor',
+                        disabled: true
+                    }
                 }
             ],
             bbar: {
@@ -258,6 +331,45 @@ Ext.define("Perfect.view.model.HYK", {
                 store: hykStore,
                 displayInfo: true,
                 plugins: new Ext.ux.ProgressBarPager()
+            },
+            selType: 'rowmodel',
+            plugins:[rowEditing],
+            listeners:{
+//                beforeedit:function(i,o,u){
+//                    var _row= o.record;
+//                    alert(_row.get("trade"));
+//                },
+                edit:function(i,o,u){
+                    var _row= o.record;
+                    var _id=_row.get("id");
+                    var _trade=_row.get("trade");
+                    var _category=_row.get("category");
+                    var _group=_row.get("group");
+                    var _keyword=_row.get("keyword");
+                    var _url=_row.get("url");
+                    Ext.Ajax.request({
+                        url:"../person/updateByParams",
+                        params:{
+                            id:_id,
+                            trade:_trade,
+                            category:_category,
+                            group:_group,
+                            keyword:_keyword,
+                            url:_url
+                        },
+                        success:function(result){
+                            var json=JSON.parse(result.responseText);
+                            if(json.success==1){
+                              Ext.Msg.alert("提示!","修改成功");
+                            }else{
+                                Ext.Msg.alert("提示!","异常!");
+                            }
+                        },
+                        failure:function(result){
+                            rowEditing.initEditor();
+                        }
+                    });
+                }
             }
         },
         {
