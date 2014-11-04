@@ -27,7 +27,8 @@ public class TaobaoPageProcessor implements PageProcessor {
     //process是定制爬虫逻辑的核心接口, 在这里编写抽取逻辑
     public void process(Page page) {
         //2.定义如何抽取页面信息, 并保存下来
-        htmlHandler(page);
+        if (page.getRawText() != null)
+            htmlHandler(page);
     }
 
     @Override
@@ -52,6 +53,7 @@ public class TaobaoPageProcessor implements PageProcessor {
                 }
                 String creativeTitle = node.xpath("//*[@class='title']/a/text()").toString();
                 CreativeSourceEntity entity = new CreativeSourceEntity();
+                entity.setHost(site.getDomain());
                 entity.setKeyword(inputWord);
                 entity.setTitle(creativeTitle);
                 entity.setHtml(node.xpath("//*[@class='title']/a/html()").toString());
@@ -72,6 +74,7 @@ public class TaobaoPageProcessor implements PageProcessor {
                 }
                 String creativeTitle = node.$("div.title").$("a", "title").toString();
                 CreativeSourceEntity entity = new CreativeSourceEntity();
+                entity.setHost(site.getDomain());
                 entity.setKeyword(inputWord);
                 entity.setTitle(creativeTitle);
                 entity.setHtml(node.$("div.title").xpath("//a/html()").toString());

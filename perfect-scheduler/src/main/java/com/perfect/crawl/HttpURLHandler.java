@@ -1,6 +1,6 @@
 package com.perfect.crawl;
 
-import org.apache.commons.httpclient.HttpStatus;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Request;
@@ -19,7 +19,7 @@ import java.util.concurrent.RecursiveTask;
  * Created by baizz on 2014-10-28.
  *
  * @author baizz
- * @version 0.1.0
+ * @version 0.5.0
  */
 class HttpURLHandler {
 
