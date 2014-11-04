@@ -20,23 +20,57 @@ import java.lang.invoke.MethodHandles;
  * The PhantomDownloader is designed by PhantomJS
  *
  * @author baizz
- * @since 0.1.0
+ * @version 0.5.0
  */
 public class PhantomDownloader extends AbstractDownloader {
 
     private static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static String phantomJSPath;
 
+    private int retryNum;
     private int threadNum;
+
+    public PhantomDownloader() {
+        PhantomDownloader.phantomJSPath = MethodHandles.lookup().lookupClass().getClassLoader().getResource("").getPath() + "phantomJs/crawl.js ";
+    }
 
     @Override
     public Page download(Request request, Task task) {
-        try {
-            if (logger.isInfoEnabled()) {
-                logger.info("download: " + request.getUrl());
+        if (logger.isInfoEnabled()) {
+            logger.info("download: " + request.getUrl());
+        }
+        String content = getPage(request);
+        if (content.contains("HTTP request failed")) {
+            for (int i = 1; i <= getRetryNum(); i++) {
+                content = getPage(request);
+                if (!content.contains("HTTP request failed")) {
+                    break;
+                }
             }
+            if (content.contains("HTTP request failed")) {
+                //下载页面失败后的处理
+                return new Page();
+            }
+        }
+
+        Page page = new Page();
+        page.setRawText(content);
+        page.setUrl(new PlainText(request.getUrl()));
+        page.setRequest(request);
+        page.setStatusCode(HttpStatus.SC_OK);
+        return page;
+    }
+
+    @Override
+    public void setThread(int threadNum) {
+        this.threadNum = threadNum;
+    }
+
+    protected String getPage(Request request) {
+        try {
             String url = request.getUrl();
             Runtime runtime = Runtime.getRuntime();
-            Process process = runtime.exec("phantomjs /home/baizz/develop/phantomJS/crawl.js " + url);
+            Process process = runtime.exec("phantomjs " + phantomJSPath + url);
             InputStream is = process.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             StringBuffer stringBuffer = new StringBuffer();
@@ -44,21 +78,20 @@ public class PhantomDownloader extends AbstractDownloader {
             while ((line = br.readLine()) != null) {
                 stringBuffer.append(line).append("\n");
             }
-            String content = stringBuffer.toString();
-            Page page = new Page();
-            page.setRawText(content);
-            page.setUrl(new PlainText(request.getUrl()));
-            page.setRequest(request);
-            page.setStatusCode(HttpStatus.SC_OK);
-            return page;
+            return stringBuffer.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
-    @Override
-    public void setThread(int threadNum) {
-        this.threadNum = threadNum;
+    public int getRetryNum() {
+        return retryNum;
+    }
+
+    public PhantomDownloader setRetryNum(int retryNum) {
+        this.retryNum = retryNum;
+        return this;
     }
 }

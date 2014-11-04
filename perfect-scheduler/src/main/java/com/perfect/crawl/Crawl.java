@@ -23,10 +23,10 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-10-27.
  */
-public class Main {
+public class Crawl {
 
     public static void main(String[] args) throws Exception {
-        Path file = Paths.get("/home/baizz/文档/淘宝关键词.xlsx");
+        Path file = Paths.get("/home/baizz/文档/SEM/淘宝关键词.xlsx");
         final Map<Integer, List<String>> keywordMap = new LinkedHashMap<>();
         XSSFUtils.read(file, new RowHandler() {
             @Override
@@ -58,7 +58,7 @@ public class Main {
         //seleniumDownloader
         SeleniumDownloader seleniumDownloader = new SeleniumDownloader("/usr/bin/chromedriver");
         //PhantomDownloader
-        PhantomDownloader phantomDownloader = new PhantomDownloader();
+        PhantomDownloader phantomDownloader = new PhantomDownloader().setRetryNum(3);
 
         //pipeline
         CollectorPipeline<ResultItems> collectorPipeline = new ResultItemsCollectorPipeline();
@@ -77,9 +77,9 @@ public class Main {
             if (creativeSourceEntityList != null && !creativeSourceEntityList.isEmpty())
                 creativeList.addAll(creativeSourceEntityList);
 
-            for (CreativeSourceEntity entity : creativeSourceEntityList) {
-                System.out.println(entity.getKeyword() + ", " + entity.getTitle());
-            }
+//            for (CreativeSourceEntity entity : creativeSourceEntityList) {
+//                System.out.println(entity.getKeyword() + ", " + entity.getTitle());
+//            }
         }
 
 //        saveToElasticsearch(creativeList);

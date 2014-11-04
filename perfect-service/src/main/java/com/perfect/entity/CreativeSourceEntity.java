@@ -2,9 +2,6 @@ package com.perfect.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldIndex;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 
 /**
  * Created by vbzer_000 on 2014/9/16.
@@ -23,6 +20,8 @@ public class CreativeSourceEntity {
 
     private String keyword;
 
+    private String category;
+
     private String keywordAnalyzed;
 
     private String html;
@@ -35,6 +34,14 @@ public class CreativeSourceEntity {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getHost() {
