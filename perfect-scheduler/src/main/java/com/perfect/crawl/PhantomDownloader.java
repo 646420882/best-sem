@@ -49,7 +49,9 @@ public class PhantomDownloader extends AbstractDownloader {
             }
             if (content.contains("HTTP request failed")) {
                 //下载页面失败后的处理
-                return new Page();
+                Page page = new Page();
+                page.setRequest(request);
+                return page;
             }
         }
 
