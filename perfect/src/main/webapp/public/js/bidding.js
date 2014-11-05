@@ -263,15 +263,15 @@ $(function () {
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
-        $(".box6").css({
-            left: ($("body").width() - $(".box6").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $(".box6").height()) / 2 + $(window).scrollTop() + "px",
+        $("#custom_col").css({
+            left: ($("body").width() - $("#custom_col").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#custom_col").height()) / 2 + $(window).scrollTop() + "px",
             display: "block"
         });
     });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
-        $(".box6").css("display", "none");
+        $("#custom_col").css("display", "none");
         $("#paiming").css("display", "none");
     });
     //弹窗内部切换

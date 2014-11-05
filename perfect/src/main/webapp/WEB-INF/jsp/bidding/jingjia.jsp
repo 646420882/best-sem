@@ -4,6 +4,7 @@
 <head>
     <title>大数据智能营销</title>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
@@ -28,7 +29,7 @@
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-<div class="mid over">
+<div id="main" class="mid over">
 <div class="title_box">
     <div class="on_title over">
         <a href="#">
@@ -676,6 +677,23 @@ String.prototype.trims = function () {
     return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 };
 
+//jqGrid表格宽度自适应
+$(document).ready(function () {
+    var target = document.getElementById("navigator_tips");
+    if (!!window.ActiveXObject || "ActiveXObject" in window) {
+        target.attachEvent('onclick', function (event) {
+            $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
+            $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
+        });
+    } else {
+        target.addEventListener('click', function (event) {
+            $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
+            $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
+        }, false);
+    }
+
+});
+
 /******************zTree********************/
 
 var setting = {
@@ -988,7 +1006,7 @@ var changeGridCol1 = function () {
         else
             $("#table1").setGridParam().hideCol(item.value);
     });
-    $("#table1").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
+    $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
 //    $("#table1").closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
     $(".TB_overlayBG").css("display", "none");
     $("#custom_col").css("display", "none");
@@ -1001,7 +1019,7 @@ var changeGridCol = function () {
         else
             $("#table2").setGridParam().hideCol(item.value);
     });
-    $("#table2").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
+    $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
     $(".TB_overlayBG").css("display", "none");
     $(".box6").css("display", "none");
 };
