@@ -85,10 +85,17 @@
     $(function () {
         //取屏幕宽度
         var mid_width = $(document.body).width() - 180;
+        var max_width = $(document.body).width() - 8;
         $(".mid").css("width",mid_width);
         $(window).resize(function() {
             mid_width = $(document.body).width() - 180;
-            $(".mid").css("width",mid_width);
+            max_width = $(document.body).width() - 8;
+            if ($(".nav_left").css("display") == "none"){
+                $(".mid").css("width",max_width);
+            }
+            else{
+                $(".mid").css("width",mid_width);
+            };
         });
         var top_width = $(document.body).width();
         $(".top").css("width",top_width);
@@ -99,9 +106,10 @@
 
         $(".tips").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
-                $(".nav_left").slideDown(600);
+                $(".nav_left").show();
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
+                $(".nav").css("width", "180px");
                 $(".mid").css("width", mid_width);
                 $(".mid").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
@@ -109,6 +117,7 @@
             }
             else {
                 $(".nav_left").hide();
+                $(".nav").css("width", "8px");
                 $(".tips").css("position", "fixed");
                 $(".nav").css("z-index", "111");
                 $(".mid").css("width", " 99.6%");
@@ -120,7 +129,7 @@
         });
         $(".nav_input1").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
-                $(".nav_left").slideDown(600);
+                $(".nav_left").show();
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
                 $(".mid").css("width", mid_width);

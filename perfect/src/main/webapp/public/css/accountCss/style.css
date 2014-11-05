@@ -442,10 +442,12 @@
     max-width: 8px;
     position: relative;
     background: url(/public/img/tips_bg_03.png) repeat;
+    cursor: pointer;
     height:100%;
     z-index: 120;
     left: 0px;
     top: 0px;
+
 }
 .tips input {
     margin-top: 200px;
