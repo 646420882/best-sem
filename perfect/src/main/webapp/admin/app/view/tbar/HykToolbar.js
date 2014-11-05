@@ -53,15 +53,26 @@ Ext.define('Perfect.view.tbar.HykToolbar', {
                     hykStore.proxy.setUrl(newUrl);
                 }
             }
-        },{
+        },
+        "-"
+        ,
+        {
             text:'查询',
             handler:function(){
                 var _trade=Ext.getCmp("tradeComboBox");
-                var _category=Ext.getCmp("cateCombobox");
-                if(_trade.isValid()){
+                if (_trade.isValid()) {
                     hykStore.load();
                 }
 
+            }
+        },
+        {
+            text: '重置',
+            handler: function () {
+                var _trade = Ext.getCmp("tradeComboBox");
+                var _category=Ext.getCmp("cateCombobox");
+                _trade.reset();
+                _category.reset();
             }
         }
     ]
