@@ -103,6 +103,14 @@
             top_width = $(document.body).width();
             $(".top").css("width", top_width);
         });
+        $(".nav_under>ul>li>a").each(function () {
+            if ($($(this))[0].href == String(window.location)) {
+                $(".nav_under>ul>li").removeClass("current")
+                $(this).parent().addClass('current');
+                $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
+                $(this).addClass('current').append("<span class='nav_input1'></span>");
+            }
+        });
 
         $(".tips").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
@@ -127,6 +135,8 @@
             }
         });
         $(".nav_input1").click(function () {
+             $(this).parent().removeAttr('href');
+             $(".nav_input1").attr('title', "点击隐藏导航");
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").show();
                 $(".tips").css("position", "relative");
@@ -144,6 +154,8 @@
                 $(".mid").css("margin-left", "8px");
                 $(".nav_input").css("display", "block");
                 $(".tips").attr("title", "点击显示导航");
+                $(".nav ul li a").attr('href');
+
 
             }
         });
@@ -179,14 +191,7 @@
                 $("#switchAccount").hide();
             }
         });
-        $(".nav_under>ul>li>a").each(function () {
-            if ($($(this))[0].href == String(window.location)) {
-                $(".nav_under>ul>li").removeClass("current")
-                $(this).parent().addClass('current');
-                $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
-                $(this).addClass('current').append("<span class='nav_input1'></span>");
-            }
-        });
+
         $(document).ajaxComplete(function (event, req, settings) {
             if (req.getResponseHeader("sessionStatus") == "timeout") {
                 window.location = "/login";

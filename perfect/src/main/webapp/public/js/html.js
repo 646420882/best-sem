@@ -260,5 +260,12 @@ $(function () {
     });
 
     $(".pinned").pin()
+    $("#jingjia_adds").click(function(){
+        $("#jiangjia_add").show();
+    });
+    $("#jiangjia_chongfu").click(function(){
+        $("#jiangjia_add").hide();
+
+    })
 
 });

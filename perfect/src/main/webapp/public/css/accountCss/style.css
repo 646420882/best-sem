@@ -1489,7 +1489,14 @@ h2 .close {
     font-weight: 400;
 }
 .right_stes {
-    margin-top: 10px;
+
+}
+.mainlist li .right_stes span{
+    margin:0px;
+
+}
+.jiangjia_main ul li b{
+    margin-right:10px;
 }
 .define {
     width: 100px;
@@ -1513,7 +1520,7 @@ h2 .close {
     -moz-opacity: 0.5;
 }
 .time_select, .time_select01 {
-    margin: 10px 0 0 60px;
+    margin: 10px 0 0 62px;
 }
 .time_select01 ul li select {
     width: 90px;

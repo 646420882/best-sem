@@ -19,7 +19,8 @@
         .ui-jqgrid tr.jqgrow td {
             /* jqGrid cell content wrap  */
             white-space: normal !important;
-            height: auto;
+            height: 30px;
+            line-height:inherit;
         }
     </style>
 </head>
@@ -304,17 +305,15 @@
         </div>
     </div>
 </div>
-
-
+/****设置规则****/
 <div class="box" id="seetingRules" style="display:none">
     <h2 id="box1"><span class="fl">设置规则</span><a href="#" class="close">关闭</a></h2>
-
-    <div class="mainlist">
+    <div class="mainlist jiangjia_main">
         <ul>
             <li>
                 <div>
                     <form name="biddingfrm" action="">
-                        时段竞价：
+                        <b>时段竞价:</b>
                         <input type="radio" checked="checked" name="times" class="time_sl" value="1">&nbsp;单时段竞价 &nbsp;
                         <input type="radio" name="times" class="time_sl1" value="2"> &nbsp;多时段竞价 &nbsp;
                     </form>
@@ -354,7 +353,7 @@
                 </div>
             </li>
             <li>
-                <form>竞价模式：<input type="radio" checked="checked" name="mode" value="102">&nbsp;经济 &nbsp;<input
+                <form><b>竞价模式:</b><input type="radio" checked="checked" name="mode" value="102">&nbsp;经济 &nbsp;<input
                         type="radio"
                         name="mode" value="101"> &nbsp;快速
                     &nbsp;</form>
@@ -366,45 +365,41 @@
             <%--</select>--%>
             <%--</form>--%>
             <%--</li>--%>
-            <li>
-                <ul>
                     <li>
-                        竞价位置：
+                        <b>竞价位置:</b>
                         <select id="pos">
                             <option class="right_define1" value="1">左侧:1位</option>
                             <option class="right_define1" value="2">左侧:2-3位</option>
                             <option class="right_define1" value="3">右侧:1-3位</option>
                             <option class="right_define" value="4">右侧自定义</option>
                         </select>
-
-                        <div class="right_stes over">
+                    </li>
+                    <li>
+                        <b class="fl">出价规则:</b>
+                        <div class="right_stes fl over">
                             <span class="right_sets1 hides over">右侧：<input name="rightpos" type="text" class="price2"> 位 </span>
-                            <span>最高出价（最低区间0.01）<input type="text" id="max" class="price2" value="0.01"></span>
+                            <span>最高出价（最低区间0.01）<input type="text" id="max" class="price2" value="0.01"></span><br>
                             <span>最低出价（最低区间0.01）<input type="text" id="min" class="price2" value="0.01"></span>
                         </div>
                     </li>
-                </ul>
-                </form>
-            </li>
-            <li>
-                <span class="fl">当出价达不到排名时  </span>
-
-                <form class="fl" style=" margin-left:5px;">
-                    <input name="failed" type="radio" checked="checked" value="11"> &nbsp;自动匹配最佳排名
-                    &nbsp;<input type="radio" name="failed" value="12"> &nbsp;恢复账户设置 &nbsp;
-                </form>
-            </li>
-            <li>
-                <p>自动竞价模式：</p>
-                <ul>
                     <li>
-                        <p><input type="radio" name="auto" checked="checked" value="1"><span>单次竞价</span></p>
-                        <input type="radio" name="sbid" value="everyday"><span>每天执行</span>
-                        <input type="radio" name="sbid" value="bytime"> <span>竞价次数:</span><input class="times"
-                                                                                                 type="text"
-                                                                                                 name="bytimes">
+                        <b class="fl">出价未达到排名:</b>
+                        <form class="fl" style=" margin-left:5px;">
+                            <input name="failed" type="radio" checked="checked" value="11"> &nbsp;自动匹配最佳排名
+                            &nbsp;<input type="radio" name="failed" value="12"> &nbsp;恢复账户设置 &nbsp;
+                        </form>
                     </li>
-                    <li><input type="radio" name="auto" value="2"><span>重复竞价速度 每隔
+            <li>
+                <ul>
+                    <li> <b>自动竞价模式:</b></li>
+                    <li>
+                        <p><input type="radio" name="auto" value="1" id="jingjia_adds"><span>单次竞价</span></p>
+                    </li>
+                    <li class="hides" id="jiangjia_add">
+                        <input type="radio" name="sbid" value="everyday"><span>每天执行</span>
+                        <input type="radio" name="sbid" value="bytime"> <span>竞价次数:</span><input class="times" type="text" name="bytimes">
+                    </li>
+                    <li><input type="radio" name="auto" value="2" checked="checked" id="jiangjia_chongfu"><span>重复竞价速度 每隔
                         <select id="interval">
                             <option value="20">20分钟</option>
                             <option value="30">半小时</option>
