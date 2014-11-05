@@ -14,6 +14,12 @@
         .tab_box {
             padding: 10px 0 80px 0;
         }
+
+        .ui-jqgrid tr.jqgrow td {
+            /* jqGrid cell content wrap  */
+            white-space: normal !important;
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -547,7 +553,7 @@
 </div>
 
 <!---------自定义列----------->
-<div class="box6" style="display:none; *width:280px;">
+<div id="custom_col" class="box6" style="display:none; *width:280px;">
     <h2 id="box6"><span class="fl">自定义列</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
@@ -980,12 +986,12 @@ var changeGridCol1 = function () {
         if (item.checked)
             $("#table1").setGridParam().showCol(item.value);
         else
-            $("#table1").setGridParam().showCol(item.value);
+            $("#table1").setGridParam().hideCol(item.value);
     });
     $("#table1").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
 //    $("#table1").closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
     $(".TB_overlayBG").css("display", "none");
-    $(".box6").css("display", "none");
+    $("#custom_col").css("display", "none");
 };
 var changeGridCol = function () {
     var cbs = $("#customColList").find("input[type=checkbox]");
@@ -993,7 +999,7 @@ var changeGridCol = function () {
         if (item.checked)
             $("#table2").setGridParam().showCol(item.value);
         else
-            $("#table2").setGridParam().showCol(item.value);
+            $("#table2").setGridParam().hideCol(item.value);
     });
     $("#table2").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
     $(".TB_overlayBG").css("display", "none");
@@ -1178,24 +1184,24 @@ $(function () {
             // {label: '<input type=\"checkbox\" name=\"check_all\" onclick=\"checkAll();\" id=\"check_all\" >', name: 'checkall', width: 30,
             //sortable: false, align: 'center', formatter:function(v,x,r){ return "<input type='checkbox'/>"; }},
             {label: ' 关键词ID', name: 'keywordId', sortable: false, align: 'center', hidden: true},
-            {label: ' 关键词', name: 'keyword', sortable: false, align: 'center'},
+            {label: ' 关键词', name: 'keyword', sortable: false, width: 200, align: 'center'},
             {label: ' 推广计划', name: 'campaignName', sortable: false, align: 'center', hidden: true},
             {label: ' 推广单元', name: 'adgroupName', sortable: false, align: 'center', hidden: true},
             {label: ' 匹配模式', name: 'matchType', sortable: false, align: 'center', hidden: true},
             {label: ' 高级短语匹配模式', name: 'phraseType', sortable: false, align: 'center', hidden: true},
             {label: ' 当前排名', name: 'currentRank', sortable: false, align: 'center'},
-            {label: ' 消费', name: 'cost', sortable: false, align: 'center'},
-            {label: ' 展现量', name: 'impression', sortable: false, align: 'center'},
-            {label: ' 点击量', name: 'click', sortable: false, align: 'center', hidden: true},
-            {label: ' 点击率', name: 'ctr', sortable: false, align: 'center'},
-            {label: ' 出价', name: 'price', sortable: false, align: 'center'},
+            {label: ' 消费', name: 'cost', sortable: false, width: 80, align: 'center'},
+            {label: ' 展现量', name: 'impression', sortable: false, width: 80, align: 'center'},
+            {label: ' 点击量', name: 'click', sortable: false, width: 80, align: 'center', hidden: true},
+            {label: ' 点击率', name: 'ctr', sortable: false, width: 80, align: 'center'},
+            {label: ' 出价', name: 'price', sortable: false, width: 80, align: 'center'},
             {label: ' 平均点击价格', name: 'cpc', sortable: false, align: 'center', hidden: true},
             {label: ' 千次展现消费', name: 'cpm', sortable: false, align: 'center', hidden: true},
-            {label: ' 质量度', name: 'pcQuality', sortable: false, align: 'center'},
+            {label: ' 质量度', name: 'pcQuality', sortable: false, width: 80, align: 'center'},
             {label: ' 移动端质量度', name: 'mQuality', sortable: false, align: 'center'},
             {label: ' 状态', name: 'statusStr', sortable: false, align: 'center'},
-            {label: ' 竞价规则', name: 'ruleDesc', sortable: false, align: 'center'},
-            {label: ' Pc URL', name: 'pcDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
+            {label: ' 竞价规则', name: 'ruleDesc', sortable: false, width: 200, align: 'center'},
+            {label: ' Pc URL', name: 'pcDestinationUrl', sortable: false, width: 200, align: 'center', formatter: 'link'},
             {label: ' Mobile URL', name: 'mobileDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
             {label: ' 竞价状态', name: 'biddingStatus', sortable: false, align: 'center'},
             {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true},
