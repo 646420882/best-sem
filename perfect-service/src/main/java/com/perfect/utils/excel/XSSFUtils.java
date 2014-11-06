@@ -1,6 +1,7 @@
 package com.perfect.utils.excel;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xssf.eventusermodel.ReadOnlySharedStringsTable;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -18,25 +19,36 @@ import java.util.Iterator;
  */
 public class XSSFUtils {
 
+    /**
+     * SheetContentsHandler
+     *
+     * @param file
+     * @return
+     * @throws Exception
+     * @see com.perfect.utils.excel.XSSFUtils#read(java.nio.file.Path, XSSFSheetHandler)
+     * @deprecated
+     */
     public static SheetContentsHandler read(Path file) throws Exception {
         SheetContentsHandler sheetHandler = new SheetContentsHandler((int) (Files.size(file) / 50));
         read(file, sheetHandler);
         return sheetHandler;
     }
 
-    public static void read(Path file, RowHandler handler) throws Exception {
+    public static void read(Path file, XSSFSheetHandler handler) throws Exception {
         final long size = Files.size(file);
         try (InputStream is = new BufferedInputStream(new FileInputStream(file.toFile()), size > Integer.MAX_VALUE ? 1024 * 1024 * 10 : (int) size)) {
             process(is, handler);
         }
     }
 
-    static void process(InputStream is, RowHandler handler) throws Exception {
-        XSSFReader reader = new XSSFReader(OPCPackage.open(is));
+    private static void process(InputStream is, XSSFSheetHandler handler) throws Exception {
+        OPCPackage pkg = OPCPackage.open(is);
+        XSSFReader reader = new XSSFReader(pkg);
+        ReadOnlySharedStringsTable readOnlySharedStringsTable = new ReadOnlySharedStringsTable(pkg);
 //        XMLReader parser = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
         XMLReader parser = XMLReaderFactory.createXMLReader();
 
-        handler.setSharedStringsTable(reader.getSharedStringsTable());
+        handler.setReadOnlySharedStringsTable(readOnlySharedStringsTable);
         parser.setContentHandler(handler);
 
         for (Iterator<InputStream> iterator = reader.getSheetsData(); iterator.hasNext(); ) {

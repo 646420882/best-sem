@@ -1,4 +1,4 @@
-package com.perfect.crawl;
+package com.perfect.crawl.pageprocessor;
 
 import com.perfect.entity.CreativeSourceEntity;
 import org.slf4j.Logger;
@@ -84,10 +84,14 @@ public class AmazonPageProcessor implements PageProcessor {
                 }
 
                 String creativeTitle = node.xpath("//h3").$("a", "href").toString();
-                System.out.println(creativeTitle);
-                creativeTitle = creativeTitle.substring(21, creativeTitle.indexOf("/dp/"));
                 try {
-                    creativeTitle = java.net.URLDecoder.decode(creativeTitle, "UTF-8");
+                    int index = creativeTitle.indexOf("/dp/");
+                    if (index > 21) {
+                        creativeTitle = creativeTitle.substring(21, index);
+                        creativeTitle = java.net.URLDecoder.decode(creativeTitle, "UTF-8");
+                    } else {
+                        creativeTitle = node.xpath("//h3/a/span/text()").toString();
+                    }
                     CreativeSourceEntity entity = new CreativeSourceEntity();
                     entity.setHost(site.getDomain());
                     entity.setKeyword(inputWord);

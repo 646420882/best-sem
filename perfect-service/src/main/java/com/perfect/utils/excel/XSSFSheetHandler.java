@@ -1,7 +1,7 @@
 package com.perfect.utils.excel;
 
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.xssf.model.SharedStringsTable;
+import org.apache.poi.xssf.eventusermodel.ReadOnlySharedStringsTable;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -15,9 +15,9 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-10-10.
  */
-public abstract class RowHandler extends DefaultHandler {
+public abstract class XSSFSheetHandler extends DefaultHandler {
 
-    private SharedStringsTable sst;
+    private ReadOnlySharedStringsTable rosst;
     private Map<Integer, String> strMap;
     private int sheetIndex = -1, rowIndex = -1;
     private List<Object> row;
@@ -26,7 +26,7 @@ public abstract class RowHandler extends DefaultHandler {
     private boolean valueFlag;
     private StringBuilder value;
 
-    protected abstract void mapRow(int sheetIndex, int rowIndex, List<Object> row);
+    protected abstract void rowMap(int sheetIndex, int rowIndex, List<Object> row);
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -58,7 +58,7 @@ public abstract class RowHandler extends DefaultHandler {
                 clearSheet();
                 break;
             case "row":
-                mapRow(sheetIndex, rowIndex, row);
+                rowMap(sheetIndex, rowIndex, row);
                 break;
             case "v":
                 row.add(convertCellValue());
@@ -75,19 +75,19 @@ public abstract class RowHandler extends DefaultHandler {
             value.append(ch, start, length);
     }
 
-    public void setSharedStringsTable(SharedStringsTable sst) {
-        this.sst = sst;
-        strMap = new HashMap<>(sst.getCount());
+    public void setReadOnlySharedStringsTable(ReadOnlySharedStringsTable rosst) {
+        this.rosst = rosst;
+        strMap = new HashMap<>(rosst.getCount());
     }
 
     private void clearSheet() {
-        sst = null;
-        strMap = null;
+//        rosst = null;
+//        strMap = null;
         row = null;
         cells = null;
         cellType = null;
         value = null;
-        rowIndex = 0;
+        rowIndex = -1;
     }
 
     private Object convertCellValue() {
@@ -98,7 +98,7 @@ public abstract class RowHandler extends DefaultHandler {
             Integer key = Integer.parseInt(tmp);
             result = strMap.get(key);
             if (result == null)
-                strMap.put(key, (String) (result = new XSSFRichTextString(sst.getEntryAt(key)).toString()));
+                strMap.put(key, (String) (result = new XSSFRichTextString(rosst.getEntryAt(key)).toString()));
         } else if ("n".equals(cellType)) {
             if ("2".equals(cells)) {    //date
                 result = HSSFDateUtil.getJavaDate(Double.valueOf(tmp));

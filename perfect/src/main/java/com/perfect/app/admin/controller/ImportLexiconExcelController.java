@@ -3,7 +3,7 @@ package com.perfect.app.admin.controller;
 import com.perfect.entity.LexiconEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.redis.JRedisUtils;
-import com.perfect.utils.excel.RowHandler;
+import com.perfect.utils.excel.XSSFSheetHandler;
 import com.perfect.utils.excel.XSSFUtils;
 import com.perfect.utils.web.WebContextSupport;
 import org.apache.commons.io.FileUtils;
@@ -82,9 +82,9 @@ public class ImportLexiconExcelController extends WebContextSupport {
         trade = fileName.substring(0, 2);
         Path file = Paths.get(tmpFile);
         final Map<String, LexiconEntity> map = new HashMap<>(1 << 16);
-        XSSFUtils.read(file, new RowHandler() {
+        XSSFUtils.read(file, new XSSFSheetHandler() {
             @Override
-            protected void mapRow(int sheetIndex, int rowIndex, List<Object> row) {
+            protected void rowMap(int sheetIndex, int rowIndex, List<Object> row) {
                 LexiconEntity lexiconEntity = new LexiconEntity();
                 lexiconEntity.setTrade(trade);
                 if (!row.isEmpty() && row.size() == 3) {
@@ -112,14 +112,15 @@ public class ImportLexiconExcelController extends WebContextSupport {
         }
 //        response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
         writeData(SUCCESS, response, fileName);
-        Jedis jc= JRedisUtils.get();
-        if(jc.exists(TRADE_KEY)){
+        Jedis jc = JRedisUtils.get();
+        if (jc.exists(TRADE_KEY)) {
             jc.del(TRADE_KEY);
         }
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView deleteLexiconByTrade(HttpServletResponse response, @RequestParam(value = "trade") String trade,
+    public ModelAndView deleteLexiconByTrade(HttpServletResponse response,
+                                             @RequestParam(value = "trade") String trade,
                                              @RequestParam(value = "category", required = false) String category)
             throws IOException {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
@@ -137,8 +138,8 @@ public class ImportLexiconExcelController extends WebContextSupport {
         jsonView.setAttributesMap(result);
 //        return new ModelAndView(jsonView);
         writeData(SUCCESS, response, SUCCESS);
-        Jedis jc= JRedisUtils.get();
-        if(jc.exists(TRADE_KEY)){
+        Jedis jc = JRedisUtils.get();
+        if (jc.exists(TRADE_KEY)) {
             jc.del(TRADE_KEY);
         }
         return null;

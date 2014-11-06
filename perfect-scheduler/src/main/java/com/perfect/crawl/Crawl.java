@@ -1,24 +1,21 @@
 package com.perfect.crawl;
 
+import com.perfect.crawl.pageprocessor.TaobaoPageProcessor;
 import com.perfect.entity.CreativeSourceEntity;
 import com.perfect.entity.MD5;
 import com.perfect.service.CreativeSourceService;
-import com.perfect.utils.excel.RowHandler;
+import com.perfect.utils.excel.XSSFSheetHandler;
 import com.perfect.utils.excel.XSSFUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.downloader.selenium.SeleniumDownloader;
 import us.codecraft.webmagic.pipeline.CollectorPipeline;
 import us.codecraft.webmagic.pipeline.ResultItemsCollectorPipeline;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by baizz on 2014-10-27.
@@ -28,10 +25,10 @@ public class Crawl {
     public static void main(String[] args) throws Exception {
         Path file = Paths.get("/home/baizz/文档/SEM/淘宝关键词.xlsx");
         final Map<Integer, List<String>> keywordMap = new LinkedHashMap<>();
-        XSSFUtils.read(file, new RowHandler() {
+        XSSFUtils.read(file, new XSSFSheetHandler() {
             @Override
-            protected void mapRow(int sheetIndex, int rowIndex, List<Object> row) {
-                if (!row.isEmpty() && row.size() > 2 && rowIndex < 4) {
+            protected void rowMap(int sheetIndex, int rowIndex, List<Object> row) {
+                if (!row.isEmpty() && row.size() > 2 && rowIndex < 5) {
                     List<String> keywordList = new ArrayList<>();
                     for (int i = 1; i < row.size(); i++) {
                         String keyword = row.get(i).toString();
@@ -44,9 +41,15 @@ public class Crawl {
 
 
         RequestDelayedTask requestTask = new RequestDelayedTask();
+
+        //以后作为参数传入
+        int siteCode = WebSiteConstant.TAOBAO.getCode();
         //add task
         for (Map.Entry<Integer, List<String>> entry : keywordMap.entrySet()) {
-            requestTask.addTask(new RequestDelayedTask.DelayedTask(entry.getKey() << 1, entry.getValue()));
+            Map<String, Object> tmpKeywordMap = new HashMap<>();
+            tmpKeywordMap.put(HttpURLHandler.siteCode, siteCode);
+            tmpKeywordMap.put(HttpURLHandler.keyword, entry.getValue());
+            requestTask.addTask(new RequestDelayedTask.DelayedTask(entry.getKey() << 1, tmpKeywordMap));
         }
         requestTask.run();
 
@@ -55,8 +58,9 @@ public class Crawl {
     }
 
     protected static void runCrawl(List<Request> requestList) {
-        //seleniumDownloader
-        SeleniumDownloader seleniumDownloader = new SeleniumDownloader("/usr/bin/chromedriver");
+//        //seleniumDownloader
+//        SeleniumDownloader seleniumDownloader = new SeleniumDownloader("/usr/bin/chromedriver");
+
         //PhantomDownloader
         PhantomDownloader phantomDownloader = new PhantomDownloader().setRetryNum(3);
 
