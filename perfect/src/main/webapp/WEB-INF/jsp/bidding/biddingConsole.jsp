@@ -15,9 +15,10 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
     <style type="text/css">
-        .backstage_list ul li input ,.backstage_list ul li select{
-            height:28px;
+        .backstage_list ul li input, .backstage_list ul li select {
+            height: 28px;
         }
+
         .table tr td {
             text-align: center;
         }
@@ -26,31 +27,34 @@
 <body>
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
 <div class="backstage_concent mid over">
-<div id="bidding_box">
-    <div class="backstage_list over">
-        <ul>
-            <li><span>请输入URL请求地址:</span>  <input type="text" class="form-control fl" id="url">
-                <button class="btn sure btn-lg" type="button" style="width:80px; margin-left:10px;"  onclick=submitUrl()>提交 </button>
-            </li>
-        </ul>
-     </div>
-    <div>
-        <table id="table1"
-               class="table table-striped table-bordered table-hover datatable dataTable"
-               aria-describedby="DataTables_Table_0_info">
-            <thead>
-            <tr>
-                <td>url总数</td>
-                <td>空闲数</td>
-                <td>非空闲数</td>
-                <%--<td>下次启动时间</td>--%>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+    <div id="bidding_box">
+        <div class="backstage_list over">
+            <ul>
+                <li><span>请输入URL请求地址:</span> <input type="text" class="form-control fl" id="url">
+                    <button class="btn sure btn-lg" type="button" style="width:80px; margin-left:10px;"
+                            onclick=submitUrl()>提交
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <table id="table1"
+                   class="table table-striped table-bordered table-hover datatable dataTable"
+                   aria-describedby="DataTables_Table_0_info">
+                <thead>
+                <tr>
+                    <td>url总数</td>
+                    <td>空闲数</td>
+                    <td>非空闲数</td>
+                    <%--<td>下次启动时间</td>--%>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+    <div><a href="http://www2.baidu.com" target="_blank"><h3>百度推广登陆页面</h3></a></div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
@@ -69,10 +73,10 @@
                     var idle = 0;
                     var notIdle = 0;
                     $.each(results, function (i, item) {
-                        if(item.idle == true){
-                            idle ++;
-                        }else{
-                            notIdle ++;
+                        if (item.idle == true) {
+                            idle++;
+                        } else {
+                            notIdle++;
                         }
                     });
                     var tr = "<tr><td>" + results.length + "</td><td>" + idle + "</td><td>" + notIdle + "</td></tr>";
