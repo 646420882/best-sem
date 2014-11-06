@@ -5,8 +5,12 @@ import java.util.List;
 
 /**
  * Created by baizz on 2014-10-10.
+ *
+ * @author baizz
+ * @see com.perfect.utils.excel.XSSFSheetHandler
+ * @deprecated
  */
-public class SheetContentsHandler extends RowHandler {
+public class SheetContentsHandler extends XSSFSheetHandler {
 
     private int bufRowSize, curSheetIndex = -1;
     private List<List<List<Object>>> sheetsData = new ArrayList<>();
@@ -25,7 +29,7 @@ public class SheetContentsHandler extends RowHandler {
     }
 
     @Override
-    protected void mapRow(int sheetIndex, int rowIndex, List<Object> row) {
+    protected void rowMap(int sheetIndex, int rowIndex, List<Object> row) {
         if (curSheetIndex != sheetIndex) {
             sheetData = new ArrayList<>(sheetIndex == 0 ? bufRowSize : sheetData.size() / 2);
             sheetsData.add(sheetData);

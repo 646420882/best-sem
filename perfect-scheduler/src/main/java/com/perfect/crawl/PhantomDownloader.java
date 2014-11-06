@@ -17,7 +17,6 @@ import java.lang.invoke.MethodHandles;
 
 /**
  * Created by baizz on 2014-10-31.
- * The PhantomDownloader is designed by PhantomJS
  *
  * @author baizz
  * @version 0.5.0
