@@ -82,6 +82,14 @@
                     }
                 });
     };
+    $(".nav_under>ul>li>a").each(function () {
+        if ($($(this))[0].href == String(window.location)) {
+            $(".nav_under>ul>li").removeClass("current")
+            $(this).parent().addClass('current');
+            $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
+            $(this).addClass('current').append("<span class='nav_input1'></span>");
+        }
+    });
     $(function () {
         //取屏幕宽度
         var mid_width = $(document.body).width() - 180;
@@ -103,15 +111,6 @@
             top_width = $(document.body).width();
             $(".top").css("width", top_width);
         });
-        $(".nav_under>ul>li>a").each(function () {
-            if ($($(this))[0].href == String(window.location)) {
-                $(".nav_under>ul>li").removeClass("current")
-                $(this).parent().addClass('current');
-                $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
-                $(this).addClass('current').append("<span class='nav_input1'></span>");
-            }
-        });
-
         $(".tips").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").show();
@@ -150,6 +149,7 @@
                 $(".nav_left").hide();
                 $(".tips").css("position", "fixed");
                 $(".nav").css("z-index", "111");
+                $(".nav").css("width", "8px");
                 $(".mid").css("width", "99.6%");
                 $(".mid").css("margin-left", "8px");
                 $(".nav_input").css("display", "block");
