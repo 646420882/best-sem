@@ -2,35 +2,35 @@
  * Created by XiaoWei on 2014/10/16.
  */
 
-Ext.define('Url', {
-    extend:'Ext.data.Model',
-    fields: [
-        {name: 'id', type: 'string'},
-        {name: 'request',  type: 'string'},
-        {name: 'idle', type: 'boolean'},
-        {name:'finishTime',type:'int'}
-    ]
-});
-Ext.create("Ext.data.Store",{
-    storeId:"urlStore",
-    autoLoad: true,
-    model:'Url',
-    proxy: {
-        type: 'ajax',
-        url:'biddingUrl/list',
-        reader: {
-            type: 'json',
-            rootProperty: 'rows'
-        }
-    }
-})
-function getFact(sr){
-    if(sr){
-        return "<span style='color: green;'>空闲</span>";
-    }else{
-        return "<span style='color: red;'>不空闲</span>";
-    }
-}
+//Ext.define('Url', {
+//    extend:'Ext.data.Model',
+//    fields: [
+//        {name: 'id', type: 'string'},
+//        {name: 'request',  type: 'string'},
+//        {name: 'idle', type: 'boolean'},
+//        {name:'finishTime',type:'int'}
+//    ]
+//});
+//Ext.create("Ext.data.Store",{
+//    storeId:"urlStore",
+//    autoLoad: true,
+//    model:'Url',
+//    proxy: {
+//        type: 'ajax',
+//        url:'biddingUrl/list',
+//        reader: {
+//            type: 'json',
+//            rootProperty: 'rows'
+//        }
+//    }
+//})
+//function getFact(sr){
+//    if(sr){
+//        return "<span style='color: green;'>空闲</span>";
+//    }else{
+//        return "<span style='color: red;'>不空闲</span>";
+//    }
+//}
 Ext.define("Perfect.view.model.JingJia",{
     extend:'Ext.panel.Panel',
     alias:"widget.JJ",
@@ -66,28 +66,80 @@ Ext.define("Perfect.view.model.JingJia",{
                            }
                        });
                     }
-
                 }
-            }]
-        },{
-            xtype:'grid',
-            title:'执行状态',
-            id:"urlGirdOne",
-            border:true,
-            columnLines:true,
-            store:Ext.data.StoreManager.lookup('urlStore'),
-            columns: [
-                { text: 'Index',  dataIndex: 'id' },
-                { text: 'Url', dataIndex: 'request', flex: 1 },
-                { text: 'Status', dataIndex: 'idle',renderer:getFact }
-            ],
-            dockedItems: [
-                {
-                    xtype: 'pagingtoolbar',
-                    dock: 'bottom',
-                    store:Ext.data.StoreManager.lookup('urlStore')
+            },"-",{
+                text:'刷新',
+                handler:function(){
+                    Ext.Ajax.request({
+                        url:'biddingUrl/list',
+                        success:function(response){
+                            var json=JSON.parse(response.responseText);
+                            var results=json.rows;
+                            var idle = 0;
+                            var notIdle = 0;
+                            Ext.each(results, function (item) {
+                                if(item.idle == true){
+                                    idle ++;
+                                }else{
+                                    notIdle ++;
+                                }
+                            });
+                            Ext.getCmp('urlTotal').setValue(json.rows.length);
+                            Ext.getCmp('urlFree').setValue(idle);
+                            Ext.getCmp('unurlFree').setValue(notIdle);
+                        },
+                        failure:function(response){}
+                    });
                 }
+            }
             ]
+        },{
+            xtype:'form',
+            bodyPadding:10,
+            border:true,
+           items:[
+               {
+                   xtype:'displayfield',
+                   fieldLabel:'Url总数',
+                   id:'urlTotal',
+                   value:0
+               },{
+                   xtype:'displayfield',
+                   fieldLabel:'空闲数',
+                   id:'urlFree',
+                   value:0
+               },{
+                   xtype:'displayfield',
+                   fieldLabel:'非空闲数',
+                   id:'unurlFree',
+                   value:0
+               }
+           ],
+            listeners:{
+                afterrender:function(i,o){
+                    Ext.Ajax.request({
+                        url:'biddingUrl/list',
+                        success:function(response){
+                            var json=JSON.parse(response.responseText);
+                            var results=json.rows;
+                            var idle = 0;
+                            var notIdle = 0;
+                            Ext.each(results, function (item) {
+                                if(item.idle == true){
+                                    idle ++;
+                                }else{
+                                    notIdle ++;
+                                }
+                            });
+                            Ext.getCmp('urlTotal').setValue(json.rows.length);
+                            Ext.getCmp('urlFree').setValue(idle);
+                            Ext.getCmp('unurlFree').setValue(notIdle);
+                        },
+                        failure:function(response){}
+                    });
+                }
+            }
+
         }
     ]
 });

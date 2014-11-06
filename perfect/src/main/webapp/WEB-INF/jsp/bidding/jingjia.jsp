@@ -4,6 +4,7 @@
 <head>
     <title>大数据智能营销</title>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
@@ -14,6 +15,13 @@
         .tab_box {
             padding: 10px 0 80px 0;
         }
+
+        .ui-jqgrid tr.jqgrow td {
+            /* jqGrid cell content wrap  */
+            white-space: normal !important;
+            height: 30px;
+            line-height:inherit;
+        }
     </style>
 </head>
 <body>
@@ -22,7 +30,7 @@
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-<div class="mid over">
+<div id="main" class="mid over">
 <div class="title_box">
     <div class="on_title over">
         <a href="#">
@@ -297,60 +305,56 @@
         </div>
     </div>
 </div>
-
-
+<!-------设置规则-------->
 <div class="box" id="seetingRules" style="display:none">
     <h2 id="box1"><span class="fl">设置规则</span><a href="#" class="close">关闭</a></h2>
-
-    <div class="mainlist">
+    <div class="mainlist jiangjia_main">
         <ul>
             <li>
-                <div>
-                    <form name="biddingfrm" action="">
-                        时段竞价：
-                        <input type="radio" checked="checked" name="times" class="time_sl" value="1">&nbsp;单时段竞价 &nbsp;
-                        <input type="radio" name="times" class="time_sl1" value="2"> &nbsp;多时段竞价 &nbsp;
-                    </form>
-                </div>
-                <div class="time_select">
-                    <select id="start">
-                        <option>0点</option>
-                    </select>&nbsp;至&nbsp;
-                    <select id="end">
-                        <option>24点</option>
-                    </select>
-
-                </div>
-                <div class="time_select01 hides">
-                    <ul>
-                        <li><input name="mtimes" type="checkbox" data-id="1">
-                            <select id="start1">
-                                <option>0点</option>
-                            </select>&nbsp;至&nbsp;<select id="end1">
-                                <option>12点</option>
-                            </select>&nbsp;上午
-                        </li>
-                        <li><input name="mtimes" type="checkbox" data-id="2"><select id="start2">
-                            <option>12点</option>
-                        </select>&nbsp;至&nbsp;<select id="end2">
-                            <option>14点</option>
-                        </select>&nbsp;中午
-                        </li>
-                        <li><input name="mtimes" type="checkbox" data-id="3"><select id="start3">
-                            <option>14点</option>
-                        </select>&nbsp;至&nbsp;<select id="end3">
-                            <option>24点</option>
-                        </select>&nbsp;下午
-                        </li>
-                    </ul>
-
-                </div>
+                <b>时段竞价:</b>
+                <ul>
+                    <li class="jingjia_select">
+                        <form name="biddingfrm" action="">
+                            <input type="radio" checked="checked" name="times" class="time_sl" value="1">&nbsp;单时段竞价 &nbsp;
+                            <input type="radio" name="times" class="time_sl1" value="2"> &nbsp;多时段竞价 &nbsp;
+                        </form>
+                        <div class="time_select">
+                            <select id="start"><option>0点</option></select><span>至</span>
+                            <select id="end"><option>24点</option></select>
+                        </div>
+                        <div class="time_select01 hides">
+                            <ul>
+                                <li><input name="mtimes" type="checkbox" data-id="1"><select id="start1"><option>0点</option></select><span>至</span>
+                                    <select id="end1"><option>12点</option></select>&nbsp;上午
+                                </li>
+                                <li><input name="mtimes" type="checkbox" data-id="2"><select id="start2">
+                                    <option>12点</option>
+                                </select> <span>至</span><select id="end2">
+                                    <option>14点</option>
+                                </select>
+                                    &nbsp;中午
+                                </li>
+                                <li><input name="mtimes" type="checkbox" data-id="3"><select id="start3">
+                                    <option>14点</option>
+                                </select><span>至</span><select id="end3">
+                                    <option>24点</option>
+                                </select>&nbsp;下午
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
             </li>
             <li>
-                <form>竞价模式：<input type="radio" checked="checked" name="mode" value="102">&nbsp;经济 &nbsp;<input
-                        type="radio"
-                        name="mode" value="101"> &nbsp;快速
-                    &nbsp;</form>
+                <b>竞价模式:</b>
+                <ul class="fl">
+                    <li>
+                        <form><input type="radio" checked="checked" name="mode" value="102">&nbsp;经济 &nbsp;<input
+                                type="radio"
+                                name="mode" value="101"> &nbsp;快速
+                            &nbsp;</form>
+                    </li>
+                </ul>
             </li>
             <%--<li>--%>
             <%--<form>竞价规则：--%>
@@ -359,45 +363,51 @@
             <%--</select>--%>
             <%--</form>--%>
             <%--</li>--%>
-            <li>
-                <ul>
                     <li>
-                        竞价位置：
-                        <select id="pos">
-                            <option class="right_define1" value="1">左侧:1位</option>
-                            <option class="right_define1" value="2">左侧:2-3位</option>
-                            <option class="right_define1" value="3">右侧:1-3位</option>
-                            <option class="right_define" value="4">右侧自定义</option>
-                        </select>
-
-                        <div class="right_stes over">
-                            <span class="right_sets1 hides over">右侧：<input name="rightpos" type="text" class="price2"> 位 </span>
-                            <span>最高出价（最低区间0.01）<input type="text" id="max" class="price2" value="0.01"></span>
-                            <span>最低出价（最低区间0.01）<input type="text" id="min" class="price2" value="0.01"></span>
-                        </div>
+                        <b>竞价位置:</b>
+                        <ul class="fl">
+                            <li>
+                                <select id="pos">
+                                    <option class="right_define1" value="1">左侧:1位</option>
+                                    <option class="right_define1" value="2">左侧:2-3位</option>
+                                    <option class="right_define1" value="3">右侧:1-3位</option>
+                                    <option class="right_define" value="4">右侧自定义</option>
+                                </select>
+                            </li>
+                        </ul>
                     </li>
-                </ul>
-                </form>
-            </li>
-            <li>
-                <span class="fl">当出价达不到排名时  </span>
-
-                <form class="fl" style=" margin-left:5px;">
-                    <input name="failed" type="radio" checked="checked" value="11"> &nbsp;自动匹配最佳排名
-                    &nbsp;<input type="radio" name="failed" value="12"> &nbsp;恢复账户设置 &nbsp;
-                </form>
-            </li>
-            <li>
-                <p>自动竞价模式：</p>
-                <ul>
                     <li>
-                        <p><input type="radio" name="auto" checked="checked" value="1"><span>单次竞价</span></p>
+                        <b>出价规则:</b>
+                        <ul class="fl">
+                          <%--  <li class="right_stes over">
+                                <span class="right_sets1 hides over">右侧：<input name="rightpos" type="text" class="price2"> 位 </span>
+                            </li>--%>
+                           <li>最高出价（最低区间0.01）<input type="text" id="max" class="price2" value="0.01"></li>
+                           <li>最低出价（最低区间0.01）<input type="text" id="min" class="price2" value="0.01"></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <b class="fl">出价未达到排名:</b>
+                        <ul class="fl">
+                            <li>
+                                <form >
+                                    <input name="failed" type="radio" checked="checked" value="11"> &nbsp;自动匹配最佳排名
+                                    &nbsp;<input type="radio" name="failed" value="12"> &nbsp;恢复账户设置 &nbsp;
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+            <li>
+                <b class="fl">自动竞价模式:</b>
+                <ul class="fl">
+                    <li>
+                        <p><input type="radio" name="auto" value="1" id="jingjia_adds"><span>单次竞价</span></p>
+                    </li>
+                    <li class="hides" id="jiangjia_add">
                         <input type="radio" name="sbid" value="everyday"><span>每天执行</span>
-                        <input type="radio" name="sbid" value="bytime"> <span>竞价次数:</span><input class="times"
-                                                                                                 type="text"
-                                                                                                 name="bytimes">
+                        <input type="radio" name="sbid" value="bytime"> <span>竞价次数:</span><input class="times" type="text" name="bytimes">
                     </li>
-                    <li><input type="radio" name="auto" value="2"><span>重复竞价速度 每隔
+                    <li><input type="radio" name="auto" value="2" checked="checked" id="jiangjia_chongfu"><span>重复竞价速度 每隔
                         <select id="interval">
                             <option value="20">20分钟</option>
                             <option value="30">半小时</option>
@@ -547,7 +557,7 @@
 </div>
 
 <!---------自定义列----------->
-<div class="box6" style="display:none; *width:280px;">
+<div id="custom_col" class="box6" style="display:none; *width:280px;">
     <h2 id="box6"><span class="fl">自定义列</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
@@ -669,6 +679,23 @@
 String.prototype.trims = function () {
     return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 };
+
+//jqGrid表格宽度自适应
+$(document).ready(function () {
+    var target = document.getElementById("navigator_tips");
+    if (!!window.ActiveXObject || "ActiveXObject" in window) {
+        target.attachEvent('onclick', function (event) {
+            $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
+            $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
+        });
+    } else {
+        target.addEventListener('click', function (event) {
+            $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
+            $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
+        }, false);
+    }
+
+});
 
 /******************zTree********************/
 
@@ -980,12 +1007,12 @@ var changeGridCol1 = function () {
         if (item.checked)
             $("#table1").setGridParam().showCol(item.value);
         else
-            $("#table1").setGridParam().showCol(item.value);
+            $("#table1").setGridParam().hideCol(item.value);
     });
-    $("#table1").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
+    $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
 //    $("#table1").closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
     $(".TB_overlayBG").css("display", "none");
-    $(".box6").css("display", "none");
+    $("#custom_col").css("display", "none");
 };
 var changeGridCol = function () {
     var cbs = $("#customColList").find("input[type=checkbox]");
@@ -993,9 +1020,9 @@ var changeGridCol = function () {
         if (item.checked)
             $("#table2").setGridParam().showCol(item.value);
         else
-            $("#table2").setGridParam().showCol(item.value);
+            $("#table2").setGridParam().hideCol(item.value);
     });
-    $("#table2").jqGrid("setGridWidth", document.body.clientWidth * 0.7, true);
+    $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
     $(".TB_overlayBG").css("display", "none");
     $(".box6").css("display", "none");
 };
@@ -1178,24 +1205,24 @@ $(function () {
             // {label: '<input type=\"checkbox\" name=\"check_all\" onclick=\"checkAll();\" id=\"check_all\" >', name: 'checkall', width: 30,
             //sortable: false, align: 'center', formatter:function(v,x,r){ return "<input type='checkbox'/>"; }},
             {label: ' 关键词ID', name: 'keywordId', sortable: false, align: 'center', hidden: true},
-            {label: ' 关键词', name: 'keyword', sortable: false, align: 'center'},
+            {label: ' 关键词', name: 'keyword', sortable: false, width: 200, align: 'center'},
             {label: ' 推广计划', name: 'campaignName', sortable: false, align: 'center', hidden: true},
             {label: ' 推广单元', name: 'adgroupName', sortable: false, align: 'center', hidden: true},
             {label: ' 匹配模式', name: 'matchType', sortable: false, align: 'center', hidden: true},
             {label: ' 高级短语匹配模式', name: 'phraseType', sortable: false, align: 'center', hidden: true},
             {label: ' 当前排名', name: 'currentRank', sortable: false, align: 'center'},
-            {label: ' 消费', name: 'cost', sortable: false, align: 'center'},
-            {label: ' 展现量', name: 'impression', sortable: false, align: 'center'},
-            {label: ' 点击量', name: 'click', sortable: false, align: 'center', hidden: true},
-            {label: ' 点击率', name: 'ctr', sortable: false, align: 'center'},
-            {label: ' 出价', name: 'price', sortable: false, align: 'center'},
+            {label: ' 消费', name: 'cost', sortable: false, width: 80, align: 'center'},
+            {label: ' 展现量', name: 'impression', sortable: false, width: 80, align: 'center'},
+            {label: ' 点击量', name: 'click', sortable: false, width: 80, align: 'center', hidden: true},
+            {label: ' 点击率', name: 'ctr', sortable: false, width: 80, align: 'center'},
+            {label: ' 出价', name: 'price', sortable: false, width: 80, align: 'center'},
             {label: ' 平均点击价格', name: 'cpc', sortable: false, align: 'center', hidden: true},
             {label: ' 千次展现消费', name: 'cpm', sortable: false, align: 'center', hidden: true},
-            {label: ' 质量度', name: 'pcQuality', sortable: false, align: 'center'},
+            {label: ' 质量度', name: 'pcQuality', sortable: false, width: 80, align: 'center'},
             {label: ' 移动端质量度', name: 'mQuality', sortable: false, align: 'center'},
             {label: ' 状态', name: 'statusStr', sortable: false, align: 'center'},
-            {label: ' 竞价规则', name: 'ruleDesc', sortable: false, align: 'center'},
-            {label: ' Pc URL', name: 'pcDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
+            {label: ' 竞价规则', name: 'ruleDesc', sortable: false, width: 200, align: 'center'},
+            {label: ' Pc URL', name: 'pcDestinationUrl', sortable: false, width: 200, align: 'center', formatter: 'link'},
             {label: ' Mobile URL', name: 'mobileDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
             {label: ' 竞价状态', name: 'biddingStatus', sortable: false, align: 'center'},
             {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true},

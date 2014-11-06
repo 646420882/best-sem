@@ -21,6 +21,8 @@ Ext.define('Perfect.view.tbar.HykToolbar', {
             store: storeTr,
             listeners: {
                 change: function () {
+                    var newUrl = '../person/findPager?trade='+this.getValue()+'';
+                    hykStore.proxy.setUrl(newUrl);
                     var combox = Ext.getCmp("cateCombobox");
                     combox.setStore(Ext.StoreManager.lookup("cateStore").load({
                         params: {
@@ -43,21 +45,34 @@ Ext.define('Perfect.view.tbar.HykToolbar', {
             valueField: 'category',
             disabled:true,
             editable: false,
-            store:null
-        },{
+            store:null,
+            listeners:{
+                change:function(){
+                    var _trade=Ext.getCmp("tradeComboBox").getValue();
+                    var newUrl = '../person/findPager?trade='+_trade+'&&category='+this.getValue()+'';
+                    hykStore.proxy.setUrl(newUrl);
+                }
+            }
+        },
+        "-"
+        ,
+        {
             text:'查询',
             handler:function(){
                 var _trade=Ext.getCmp("tradeComboBox");
-                var _category=Ext.getCmp("cateCombobox");
-                if(_trade.isValid()&&_category.isValid()){
-                    hykStore.load({
-                        params:{
-                            trade:_trade.getValue(),
-                            category:_category.getValue()
-                        }
-                    });
+                if (_trade.isValid()) {
+                    hykStore.load();
                 }
 
+            }
+        },
+        {
+            text: '重置',
+            handler: function () {
+                var _trade = Ext.getCmp("tradeComboBox");
+                var _category=Ext.getCmp("cateCombobox");
+                _trade.reset();
+                _category.reset();
             }
         }
     ]

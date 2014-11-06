@@ -239,6 +239,7 @@ Ext.define("Perfect.view.model.HYK", {
                             form.submit({
                                 url: 'lexicon/upload',
                                 waitMsg: '数据导入中...',
+                                timeout:'18000',
                                 success: function (fp, o) {
                                     Ext.Msg.alert('成功', '你的文件 "' + o.result.data + '" 已经导入成功.');
                                 },
@@ -414,8 +415,6 @@ Ext.define("Perfect.view.model.HYK", {
                     fieldLabel: '类别',
                     id: "hType",
                     name: 'category',
-                    allowBlank: false,
-                    afterLabelTextTpl: required,
                     msgTarget: 'side',
                     displayField: 'category',
                     valueField: 'category',
@@ -460,6 +459,7 @@ Ext.define("Perfect.view.model.HYK", {
                 {
                     type: 'refresh',
                     handler: function () {
+                        storeTr.load();
                         var box1 = Ext.getCmp("trade");
                         var box2 = Ext.getCmp("hType");
                         if (box1.isValid()) {

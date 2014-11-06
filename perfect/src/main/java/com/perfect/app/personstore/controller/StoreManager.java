@@ -75,10 +75,13 @@ public class StoreManager extends WebContextSupport {
                                     @RequestParam(value = "page",required = false,defaultValue = "0")int nowPage,
                                    @RequestParam(value = "limit",required = false,defaultValue = "20")int pageSize){
         PagerInfo pagerInfo=null;
+        Map<String,Object> map=new HashMap<>();
         if(!trad.equals("")&&!category.equals("")){
-            Map<String,Object> map=new HashMap<>();
             map.put("tr",trad);
             map.put("cg",category);
+            pagerInfo  =keywordGroupService.findByPager(map,nowPage,pageSize);
+        }else if(!trad.equals("")&&category.equals("")){
+            map.put("tr",trad);
             pagerInfo  =keywordGroupService.findByPager(map,nowPage,pageSize);
         }else{
             pagerInfo=keywordGroupService.findByPager(new HashMap<String, Object>(),nowPage,pageSize);

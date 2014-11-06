@@ -25,6 +25,8 @@ Ext.Date.patterns = {
     UniversalSortableDateTime: "Y-m-d H:i:sO",
     YearMonth: "F, Y"
 };
+var finalTrade="";
+var finalCategory="";
 var dt = new Date();
 var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
 Ext.define("Perfect.view.Viewport", {

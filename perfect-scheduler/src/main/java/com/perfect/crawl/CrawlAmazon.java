@@ -1,12 +1,9 @@
 package com.perfect.crawl;
 
-import com.perfect.crawl.pageprocessor.TaobaoPageProcessor;
+import com.perfect.crawl.pageprocessor.AmazonPageProcessor;
 import com.perfect.entity.CreativeSourceEntity;
-import com.perfect.entity.MD5;
-import com.perfect.service.CreativeSourceService;
 import com.perfect.utils.excel.XSSFSheetHandler;
 import com.perfect.utils.excel.XSSFUtils;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Spider;
@@ -18,56 +15,63 @@ import java.nio.file.Paths;
 import java.util.*;
 
 /**
- * Created by baizz on 2014-10-27.
+ * Created by baizz on 2014-11-5.
  */
-public class Crawl {
+public class CrawlAmazon {
+
+    private static String amazonTemplate = "http://www.amazon.cn/s/ref=sr_st_popularity-rank?keywords=%s&sort=popularity-rank";
 
     public static void main(String[] args) throws Exception {
-        Path file = Paths.get("/home/baizz/文档/SEM/淘宝关键词.xlsx");
+
+        Path file = Paths.get("/home/baizz/文档/SEM/创意片段采集关键词&网址/创意片段采集-关键词.xlsx");
         final Map<Integer, List<String>> keywordMap = new LinkedHashMap<>();
         XSSFUtils.read(file, new XSSFSheetHandler() {
             @Override
             protected void rowMap(int sheetIndex, int rowIndex, List<Object> row) {
-                if (!row.isEmpty() && row.size() > 2 && rowIndex < 5) {
-                    List<String> keywordList = new ArrayList<>();
-                    for (int i = 1; i < row.size(); i++) {
-                        String keyword = row.get(i).toString();
-                        keywordList.add(keyword);
+                //只读取amazon的关键词
+                if (sheetIndex == 6) {
+                    if (!row.isEmpty() && rowIndex > 0) {
+                        List<String> keywordList = new ArrayList<>();
+                        for (int i = 1; i < row.size(); i++) {
+                            String keyword = (String) row.get(i);
+                            keywordList.add(keyword);
+                        }
+                        keywordMap.put(keywordMap.size() + 1, keywordList);
                     }
-                    keywordMap.put(keywordMap.size() + 1, keywordList);
                 }
             }
         });
 
-
         RequestDelayedTask requestTask = new RequestDelayedTask();
 
-        //以后作为参数传入
-        int siteCode = WebSiteConstant.TAOBAO.getCode();
+        int siteCode = WebSiteConstant.AMAZON.getCode();
         //add task
         for (Map.Entry<Integer, List<String>> entry : keywordMap.entrySet()) {
+            //
+            if (requestTask.getTaskQuantity() == 5) {
+                break;
+            }
+            //
             Map<String, Object> tmpKeywordMap = new HashMap<>();
             tmpKeywordMap.put(HttpURLHandler.siteCode, siteCode);
             tmpKeywordMap.put(HttpURLHandler.keyword, entry.getValue());
-            requestTask.addTask(new RequestDelayedTask.DelayedTask(entry.getKey() << 1, tmpKeywordMap));
+            requestTask.addTask(new RequestDelayedTask.DelayedTask(/*entry.getKey() << */1, tmpKeywordMap));
         }
         requestTask.run();
 
         List<Request> requestList = requestTask.getRequestList();
+
         runCrawl(requestList);
     }
 
     protected static void runCrawl(List<Request> requestList) {
-//        //seleniumDownloader
-//        SeleniumDownloader seleniumDownloader = new SeleniumDownloader("/usr/bin/chromedriver");
-
         //PhantomDownloader
         PhantomDownloader phantomDownloader = new PhantomDownloader().setRetryNum(3);
 
         //pipeline
         CollectorPipeline<ResultItems> collectorPipeline = new ResultItemsCollectorPipeline();
 
-        Spider.create(new TaobaoPageProcessor())
+        Spider.create(new AmazonPageProcessor())
                 .startRequest(requestList)
                 .setDownloader(phantomDownloader)
                 .addPipeline(collectorPipeline)
@@ -81,38 +85,9 @@ public class Crawl {
             if (creativeSourceEntityList != null && !creativeSourceEntityList.isEmpty())
                 creativeList.addAll(creativeSourceEntityList);
 
-//            for (CreativeSourceEntity entity : creativeSourceEntityList) {
-//                System.out.println(entity.getKeyword() + ", " + entity.getTitle());
-//            }
-        }
-
-//        saveToElasticsearch(creativeList);
-    }
-
-    protected static void saveToElasticsearch(List<CreativeSourceEntity> list) {
-//        CreativeSourceService creativeSourceService = (CreativeSourceService) ApplicationContextHelper.getBeanByName("creativeSourceService");
-
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
-        CreativeSourceService creativeSourceService = (CreativeSourceService) applicationContext.getBean("creativeSourceService");
-
-        for (CreativeSourceEntity entity : list) {
-            String source = entity.getTitle() + entity.getHtml();
-
-            MD5.Builder md5 = new MD5.Builder();
-            md5.password(source);
-            md5.salt("hello,salt");
-
-            String code = md5.build().getMD5();
-
-            boolean exists = creativeSourceService.exits(code);
-            if (!exists) {
-                entity.setId(code);
+            for (CreativeSourceEntity entity : creativeSourceEntityList) {
+                System.out.println(entity.getKeyword() + ", " + entity.getTitle() + ", " + entity.getHtml());
             }
         }
-
-        if (list.isEmpty())
-            return;
-        creativeSourceService.save(list);
     }
-
 }

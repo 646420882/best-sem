@@ -17,7 +17,6 @@ import java.lang.invoke.MethodHandles;
 
 /**
  * Created by baizz on 2014-10-31.
- * The PhantomDownloader is designed by PhantomJS
  *
  * @author baizz
  * @version 0.5.0
@@ -49,7 +48,9 @@ public class PhantomDownloader extends AbstractDownloader {
             }
             if (content.contains("HTTP request failed")) {
                 //下载页面失败后的处理
-                return new Page();
+                Page page = new Page();
+                page.setRequest(request);
+                return page;
             }
         }
 

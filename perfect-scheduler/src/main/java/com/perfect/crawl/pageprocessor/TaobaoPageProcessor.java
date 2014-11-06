@@ -1,4 +1,4 @@
-package com.perfect.crawl;
+package com.perfect.crawl.pageprocessor;
 
 import com.perfect.entity.CreativeSourceEntity;
 import us.codecraft.webmagic.Page;

@@ -7,6 +7,7 @@ import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.utils.HttpConstant;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.invoke.MethodHandles;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -23,8 +24,14 @@ import java.util.concurrent.RecursiveTask;
  */
 class HttpURLHandler {
 
+    public static final String keyword = "KEYWORD";
+    public static final String siteCode = "SITENAME";
+    public static final String keywordCategory = "CATEGORY";
+
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
     private static String taobaoUrlTemplate = "http://s.taobao.com/search?q=%s";
+    private static String amazonTemplate = "http://www.amazon.cn/s/ref=sr_st_popularity-rank?keywords=%s&sort=popularity-rank";
 
     /**
      * A method to get taobao's url
@@ -67,23 +74,51 @@ class HttpURLHandler {
         return null;
     }
 
-    public static List<Request> getURLRequests(List<String> keywordList) {
+    public static List<Request> getAmazonURLRequests(List<String> keywordList) {
         List<Request> requestList = new ArrayList<>();
-        for (String keyword : keywordList) {
-            String url = HttpURLHandler.getTaobaoURL(keyword);
-            if (url == null) {
-                continue;
+        try {
+            for (String keyword : keywordList) {
+                String inputWord = java.net.URLEncoder.encode(keyword, "UTF-8");
+                String url = String.format(amazonTemplate, inputWord);
+                Request request = new Request();
+                request.setUrl(url);
+                request.setMethod(HttpConstant.Method.GET);
+                requestList.add(request);
             }
-            Request request = new Request();
-            request.setUrl(url);
-            request.setMethod(HttpConstant.Method.GET);
-            requestList.add(request);
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
+
+        return requestList;
+    }
+
+    public static List<Request> getURLRequests(List<String> keywordList, int siteCode) {
+        List<Request> requestList = new ArrayList<>();
+        switch (siteCode) {
+            case 101:
+                for (String keyword : keywordList) {
+                    String url = HttpURLHandler.getTaobaoURL(keyword);
+                    if (url == null) {
+                        continue;
+                    }
+                    Request request = new Request();
+                    request.setUrl(url);
+                    request.setMethod(HttpConstant.Method.GET);
+                    requestList.add(request);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case 102:
+                requestList = getAmazonURLRequests(keywordList);
+                break;
+            default:
+                break;
+        }
+
 //        ForkJoinPool forkJoinPool = new ForkJoinPool(Runtime.getRuntime().availableProcessors() + 1);
 //        try {
 //            HttpURLTask task = new HttpURLTask(keywordList, 0, keywordList.size() - 1);
@@ -98,10 +133,9 @@ class HttpURLHandler {
     }
 
     /**
-     * @see com.perfect.crawl.HttpURLHandler#getURLRequests(java.util.List)
+     * @see com.perfect.crawl.HttpURLHandler#getURLRequests(java.util.List, int)
      * @deprecated
      */
-    @Deprecated
     protected static class HttpURLTask extends RecursiveTask<List<Request>> {
 
         private int first;

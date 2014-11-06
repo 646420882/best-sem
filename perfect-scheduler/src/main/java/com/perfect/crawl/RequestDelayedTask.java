@@ -1,11 +1,11 @@
 package com.perfect.crawl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Request;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.lang.invoke.MethodHandles;
+import java.util.*;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
@@ -16,9 +16,12 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * Created by baizz on 2014-10-29.
  */
+@SuppressWarnings("unchecked")
 public class RequestDelayedTask implements Runnable {
 
-    private DelayQueue<DelayedTask> queue = new DelayQueue<DelayedTask>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
+    private DelayQueue<DelayedTask> queue = new DelayQueue<>();
 
     private List<Request> requestList = new ArrayList<>();
 
@@ -50,10 +53,13 @@ public class RequestDelayedTask implements Runnable {
     public void run() {
         while (!queue.isEmpty()) {
             try {
-                List<String> keywordList = queue.take().keywordList;    //此处会阻塞, 没有过期时不会取出
-                List<Request> tmpList = HttpURLHandler.getURLRequests(keywordList);
+                Map<String, Object> keywordMap = queue.take().keywordMap;    //此处会阻塞, 没有过期时不会取出
+                List<String> keywordList = (List<String>) keywordMap.get(HttpURLHandler.keyword);
+                List<Request> tmpList = HttpURLHandler.getURLRequests(keywordList, (int) (keywordMap.get(HttpURLHandler.siteCode)));
                 requestList.addAll(tmpList);
-                System.out.println("剩余任务数: " + getTaskQuantity());
+                if (LOGGER.isInfoEnabled()) {
+                    LOGGER.info("剩余任务数: " + getTaskQuantity());
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -64,16 +70,16 @@ public class RequestDelayedTask implements Runnable {
 
         private int delay;      //second
         private long expireTime;     //nanoseconds
-        private List<String> keywordList;
+        private Map<String, Object> keywordMap;
 
         /**
-         * @param delay       second
-         * @param keywordList
+         * @param delay      second
+         * @param keywordMap
          */
-        public DelayedTask(int delay, List<String> keywordList) {
+        public DelayedTask(int delay, Map<String, Object> keywordMap) {
             this.delay = delay;
             this.expireTime = System.nanoTime() + NANOSECONDS.convert(delay, SECONDS);   //convert to nanoseconds
-            this.keywordList = keywordList;
+            this.keywordMap = keywordMap;
         }
 
         @Override

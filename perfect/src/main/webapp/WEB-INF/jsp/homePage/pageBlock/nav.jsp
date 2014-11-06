@@ -13,7 +13,7 @@
         accountId = WebUtils.getAccountId(request);
     }
 %>
-<div class="nav fl">
+<div id="navigator" class="nav fl">
     <div class="nav_left fl over ">
         <div class="nav_bg">
             <img src="${pageContext.request.contextPath}/public/img/nav_bg.jpg" width="100%" height="100%">
@@ -22,7 +22,7 @@
             <div class="nav_under over">
                 <ul>
                     <li class="current">
-                        <a href="/home">
+                        <a href="${pageContext.request.contextPath}/home">
                             <span class="list_1"></span>
 
                             <h3>帐户全景</h3>
@@ -35,17 +35,17 @@
                         </a>
                     </li>--%>
                     <li>
-                        <a href="/keyword_group"><span class="list_3"></span>
+                        <a href="${pageContext.request.contextPath}/keyword_group"><span class="list_3"></span>
 
                             <h3>智能结构</h3></a>
                     </li>
                     <li>
-                        <a href="/bidding/index"><span class="list_4"></span>
+                        <a href="${pageContext.request.contextPath}/bidding/index"><span class="list_4"></span>
 
                             <h3>智能竞价</h3></a>
                     </li>
                     <li>
-                        <a href="/reportIndex"><span class="list_5"></span>
+                        <a href="${pageContext.request.contextPath}/reportIndex"><span class="list_5"></span>
 
                             <h3>数据报告</h3></a>
                     </li>
@@ -53,7 +53,7 @@
             </div>
         </div>
     </div>
-    <div class="tips fl" title="点击隐藏导航">
+    <div id="navigator_tips" class="tips fl" title="点击隐藏导航">
         <span class="nav_input hides"></span>
     </div>
 </div>
@@ -82,60 +82,76 @@
                     }
                 });
     };
+    $(".nav_under>ul>li>a").each(function () {
+        if ($($(this))[0].href == String(window.location)) {
+            $(".nav_under>ul>li").removeClass("current")
+            $(this).parent().addClass('current');
+            $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
+            $(this).addClass('current').append("<span class='nav_input1'></span>");
+        }
+    });
     $(function () {
         //取屏幕宽度
         var mid_width = $(document.body).width() - 180;
-        $(".mid").css("width",mid_width);
-        $(window).resize(function() {
+        var max_width = $(document.body).width() - 8;
+        $(".mid").css("width", mid_width);
+        $(window).resize(function () {
             mid_width = $(document.body).width() - 180;
-            $(".mid").css("width",mid_width);
+            max_width = $(document.body).width() - 8;
+            if ($(".nav_left").css("display") == "none") {
+                $(".mid").css("width", max_width);
+            }
+            else {
+                $(".mid").css("width", mid_width);
+            }
         });
         var top_width = $(document.body).width();
-        $(".top").css("width",top_width);
-        $(window).resize(function() {
+        $(".top").css("width", top_width);
+        $(window).resize(function () {
             top_width = $(document.body).width();
-            $(".top").css("width",top_width);
+            $(".top").css("width", top_width);
         });
-
         $(".tips").click(function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
-                $(".nav_left").slideDown(600);
+                $(".nav_left").show();
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
+                $(".nav").css("width", "180px");
                 $(".mid").css("width", mid_width);
-                $(".mid").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
-                $(".tips").attr('title',"点击隐藏导航");
+                $(".tips").attr('title', "点击隐藏导航");
             }
             else {
                 $(".nav_left").hide();
+                $(".nav").css("width", "8px");
                 $(".tips").css("position", "fixed");
                 $(".nav").css("z-index", "111");
                 $(".mid").css("width", " 99.6%");
-                $(".mid").css("margin-left", "8px");
                 $(".nav_input").css("display", "block");
-                $(".tips").attr("title","点击显示导航");
-
+                $(".tips").attr("title", "点击显示导航");
             }
         });
         $(".nav_input1").click(function () {
+             $(this).parent().removeAttr('href');
+             $(".nav_input1").attr('title', "点击隐藏导航");
             if ($(".nav_left").css("display") == "none") {//隐藏
-                $(".nav_left").slideDown(600);
+                $(".nav_left").show();
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
                 $(".mid").css("width", mid_width);
-                $(".mid").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
-                $(".tips").attr('title',"点击隐藏导航");
+                $(".tips").attr('title', "点击隐藏导航");
             }
             else {
                 $(".nav_left").hide();
                 $(".tips").css("position", "fixed");
                 $(".nav").css("z-index", "111");
+                $(".nav").css("width", "8px");
                 $(".mid").css("width", "99.6%");
-                $(".mid").css("margin-left", "8px");
                 $(".nav_input").css("display", "block");
-                $(".tips").attr("title","点击显示导航");
+                $(".tips").attr("title", "点击显示导航");
+                $(".nav ul li a").attr('href');
+
 
             }
         });
@@ -171,14 +187,7 @@
                 $("#switchAccount").hide();
             }
         });
-        $(".nav_under>ul>li>a").each(function(){
-            if($($(this))[0].href==String(window.location)){
-                $(".nav_under>ul>li").removeClass("current")
-                $(this).parent().addClass('current');
-                $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
-                $(this).addClass('current').append("<span class='nav_input1'></span>");
-            }
-        });
+
         $(document).ajaxComplete(function (event, req, settings) {
             if (req.getResponseHeader("sessionStatus") == "timeout") {
                 window.location = "/login";
@@ -186,8 +195,8 @@
         });
 
     });
-/*    $(document).ready(function () {
-        $(".on_title").pin();
-    });*/
+    /*    $(document).ready(function () {
+     $(".on_title").pin();
+     });*/
 
 </script>
