@@ -1,5 +1,8 @@
 package com.perfect.bidding.heartbeat;
 
+import com.groot.webmagic.BaiduKeywordScheduler;
+import com.groot.webmagic.Constant;
+import com.groot.webmagic.Container;
 import com.perfect.api.baidu.PostMethodFactory;
 import com.perfect.dao.FarmDAO;
 import com.perfect.entity.UrlEntity;
@@ -13,19 +16,21 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipException;
 
 /**
  * Created by vbzer_000 on 2014/9/25.
  */
-public class HeartBeatJob {
+public class HeartBeatJob implements Constant {
 
     private Logger logger = LoggerFactory.getLogger(HeartBeatJob.class);
     @Resource
     private FarmDAO farmDAO;
 
-    public HeartBeatJob(){
+    public HeartBeatJob() {
         System.out.println("Started!");
     }
 
@@ -39,32 +44,27 @@ public class HeartBeatJob {
 
         HttpClient client = new HttpClient();
         for (UrlEntity urlEntity : urlEntityList) {
-            PostMethod method = PostMethodFactory.getMethod(urlEntity.getRequest(), "test", 1, 1, 0);
+
+            String uuid = UUID.randomUUID().toString();
+            BaiduKeywordScheduler.getInstance().push(uuid, urlEntity.getRequest(), null, 1);
+
             try {
-                int code = client.executeMethod(method);
-                if (code == HttpStatus.SC_OK) {
-                    Thread.sleep(1000);
-                    InputStream is = null;
-                    try {
-                        is = new GZIPInputStream(method.getResponseBodyAsStream());
-                    } catch (ZipException ze) {
-                        if (logger.isWarnEnabled()) {
-                            logger.warn(urlEntity.getId() + " 需要重新登录.");
-                        }
+                Object map = Container.get(uuid);
+                if (map != null) {
+                    Map<String, Object> cmap = (Map<String, Object>) map;
+                    if (cmap.containsKey(PAGE_TIMEOUT)) {
                         farmDAO.delete(urlEntity.getId());
                         continue;
-                    } finally {
-                        if (is != null) {
-                            is.close();
-                        }
                     }
-                    farmDAO.returnOne(urlEntity);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+
+                urlEntity.setFinishTime(System.currentTimeMillis() + 5000);
+                farmDAO.returnOne(urlEntity);
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            continue;
         }
 
         if (logger.isDebugEnabled()) {

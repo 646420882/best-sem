@@ -123,6 +123,13 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.groot.baidu</groupId>
+            <artifactId>baidu-webmagic</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <build>

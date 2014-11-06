@@ -691,19 +691,14 @@ public class BiddingController {
             KeywordEntity keywordEntity = sysKeywordService.findById(kwid);
             keywordEntityMap.put(keywordEntity.getKeyword(), keywordEntity);
 
-            BiddingRuleEntity ruleEntity = biddingRuleService.findByKeywordId(kwid);
 
-            if (ruleEntity == null || ruleEntity.getStrategyEntity().getRegionTarget() == null) {
-                CampaignEntity campaignEntity = sysCampaignService.findByKeywordId(kwid);
-                List<Integer> targetList = campaignEntity.getRegionTarget();
-                // 设置计划区域或者账户区域
-                if (targetList != null && !targetList.isEmpty()) {
-                    searchMap.put(keywordEntity, targetList);
-                } else {
-                    searchMap.put(keywordEntity, accountRegionList);
-                }
+            CampaignEntity campaignEntity = sysCampaignService.findByKeywordId(kwid);
+            List<Integer> targetList = campaignEntity.getRegionTarget();
+            // 设置计划区域或者账户区域
+            if (targetList != null && !targetList.isEmpty()) {
+                searchMap.put(keywordEntity, targetList);
             } else {
-                searchMap.put(keywordEntity, Arrays.asList(ruleEntity.getStrategyEntity().getRegionTarget()));
+                searchMap.put(keywordEntity, accountRegionList);
             }
 
         }

@@ -1,13 +1,18 @@
 package com.perfect.bidding.core;
 
+import com.groot.webmagic.BaiduKeywordScheduler;
+import com.groot.webmagic.Constant;
+import com.groot.webmagic.Container;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduSpiderHelper;
 import com.perfect.autosdk.sms.v3.KeywordType;
 import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.constants.BiddingStrategyConstants;
 import com.perfect.core.AppContext;
+import com.perfect.dao.FarmDAO;
 import com.perfect.dto.CreativeDTO;
 import com.perfect.entity.KeywordEntity;
+import com.perfect.entity.UrlEntity;
 import com.perfect.entity.bidding.BiddingLogEntity;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.entity.bidding.StrategyEntity;
@@ -17,14 +22,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
+import java.net.URLEncoder;
+import java.util.*;
 
 /**
  * Created by vbzer_000 on 2014/9/24.
  */
-public class BiddingSubTask implements Runnable {
+public class BiddingSubTask implements Runnable ,Constant{
 
     private Logger logger = LoggerFactory.getLogger(BiddingSubTask.class);
 
@@ -63,6 +67,8 @@ public class BiddingSubTask implements Runnable {
         BiddingLogService biddingLogService = (BiddingLogService) ApplicationContextHelper.getBeanByName
                 ("biddingLogService");
 
+        FarmDAO farmDAO = (FarmDAO) ApplicationContextHelper.getBeanByName("farmDAO");
+
         for (Integer region : regionList) {
             BigDecimal currentPrice = biddingRuleEntity.getStrategyEntity().getMinPrice();
             if (currentPrice == null) {
@@ -70,46 +76,62 @@ public class BiddingSubTask implements Runnable {
             }
             while (true) {
 
-                List<BaiduSpiderHelper.PreviewData> datas = BaiduSpiderHelper.crawl(keyword, region);
 
-                if (datas.isEmpty()) {
-                    sleep(1000);
+                UrlEntity urlEntity = farmDAO.takeOne();
+                if(urlEntity == null){
+                    sleep(100);
                     continue;
                 }
+                String uuid = UUID.randomUUID().toString();
+                BaiduKeywordScheduler.getInstance().push(uuid,urlEntity.getRequest(),keyword, region);
 
-                BaiduSpiderHelper.PreviewData previewData = datas.get(0);
+                Map<String,Object> pageResult = null;
+                try {
+                    Object val = Container.get(uuid);
 
-                if ((previewData.getLeft() == null || previewData.getLeft().isEmpty()) && (previewData.getRight() == null || previewData.getRight().isEmpty())) {
-                    sleep(1000);
-                    continue;
+                    if(val != null){
+                        pageResult = (Map<String, Object>) val;
+
+                        // session超时
+                        if(pageResult.containsKey(PAGE_TIMEOUT)){
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("暂未获取到任何排名信息");
+                            }
+                            farmDAO.delete(urlEntity);
+                            continue;
+                        }
+                    }else {
+                        // 页面为空
+                        urlEntity.setFinishTime(System.currentTimeMillis() + 5000);
+                        farmDAO.returnOne(urlEntity);
+                        continue;
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+
 
                 StrategyEntity strategyEntity = biddingRuleEntity.getStrategyEntity();
 
                 int pos = strategyEntity.getExpPosition();
-                List<CreativeDTO> leftList = previewData.getLeft();
-                List<CreativeDTO> rightList = previewData.getRight();
-                if (leftList.isEmpty() && rightList.isEmpty()) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("暂未获取到任何排名信息");
-                    }
-                    continue;
-                } else {
-                    //保存到ES数据库
 
-                }
+                    //TODO 保存到ES数据库
+
 
                 int rank = 0;
-                for (CreativeDTO leftDTO : leftList) {
-                    if (("." + leftDTO.getUrl()).contains(host)) {
+                LinkedList<Map<String,Object>> leftList = (LinkedList<Map<String, Object>>) pageResult.get(PAGE_LEFT);
+                for (Map<String,Object> leftDTO : leftList) {
+                    if (("." + leftDTO.get(CREATIVE_URL)).contains(host)) {
                         rank = leftList.indexOf(leftDTO) + 1;
                         break;
                     }
                 }
 
+
                 if (rank == 0) {
-                    for (CreativeDTO rightDTO : rightList) {
-                        if (("." + rightDTO.getUrl()).contains(host)) {
+                    LinkedList<Map<String,Object>> rightList = (LinkedList<Map<String, Object>>) pageResult.get(PAGE_LEFT);
+                    for (Map<String, Object> rightDTO : rightList) {
+                        if (("." + rightDTO.get(CREATIVE_URL)).contains(host)) {
                             rank = -1 * rightList.indexOf(rightDTO) - 1;
                             break;
                         }
