@@ -65,22 +65,6 @@ Ext.define("Perfect.view.Navigation", {
                     }
                 },
                 {
-                    text: '词库管理',
-                    handler: function () {
-                        var tabs = Ext.getCmp("tabs");
-                        if (tabs.getComponent("tab3") == undefined) {
-                            var _thisTabs = tabs.add({
-                                id: "tab3",
-                                xtype: "CK",
-                                closable: true
-                            });
-                            tabs.setActiveTab(_thisTabs);
-                        }else{
-                            tabs.setActiveTab(tabs.getComponent("tab3"));
-                        }
-                    }
-                },
-                {
                     text: '账号审核',
                     handler: function () {
                         var tabs = Ext.getCmp("tabs");
