@@ -118,7 +118,6 @@
                 $(".nav").css("z-index", "200");
                 $(".nav").css("width", "180px");
                 $(".mid").css("width", mid_width);
-                $(".mid").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
                 $(".tips").attr('title', "点击隐藏导航");
             }
@@ -128,7 +127,6 @@
                 $(".tips").css("position", "fixed");
                 $(".nav").css("z-index", "111");
                 $(".mid").css("width", " 99.6%");
-                $(".mid").css("margin-left", "8px");
                 $(".nav_input").css("display", "block");
                 $(".tips").attr("title", "点击显示导航");
             }
@@ -141,7 +139,6 @@
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
                 $(".mid").css("width", mid_width);
-                $(".mid").css("margin-left", "180px");
                 $(".nav_input").css("display", "none");
                 $(".tips").attr('title', "点击隐藏导航");
             }
@@ -151,7 +148,6 @@
                 $(".nav").css("z-index", "111");
                 $(".nav").css("width", "8px");
                 $(".mid").css("width", "99.6%");
-                $(".mid").css("margin-left", "8px");
                 $(".nav_input").css("display", "block");
                 $(".tips").attr("title", "点击显示导航");
                 $(".nav ul li a").attr('href');
