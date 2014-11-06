@@ -305,58 +305,56 @@
         </div>
     </div>
 </div>
-/****设置规则****/
+<!-------设置规则-------->
 <div class="box" id="seetingRules" style="display:none">
     <h2 id="box1"><span class="fl">设置规则</span><a href="#" class="close">关闭</a></h2>
     <div class="mainlist jiangjia_main">
         <ul>
             <li>
-                <div>
-                    <form name="biddingfrm" action="">
-                        <b>时段竞价:</b>
-                        <input type="radio" checked="checked" name="times" class="time_sl" value="1">&nbsp;单时段竞价 &nbsp;
-                        <input type="radio" name="times" class="time_sl1" value="2"> &nbsp;多时段竞价 &nbsp;
-                    </form>
-                </div>
-                <div class="time_select">
-                    <select id="start">
-                        <option>0点</option>
-                    </select>&nbsp;至&nbsp;
-                    <select id="end">
-                        <option>24点</option>
-                    </select>
-
-                </div>
-                <div class="time_select01 hides">
-                    <ul>
-                        <li><input name="mtimes" type="checkbox" data-id="1">
-                            <select id="start1">
-                                <option>0点</option>
-                            </select>&nbsp;至&nbsp;<select id="end1">
-                                <option>12点</option>
-                            </select>&nbsp;上午
-                        </li>
-                        <li><input name="mtimes" type="checkbox" data-id="2"><select id="start2">
-                            <option>12点</option>
-                        </select>&nbsp;至&nbsp;<select id="end2">
-                            <option>14点</option>
-                        </select>&nbsp;中午
-                        </li>
-                        <li><input name="mtimes" type="checkbox" data-id="3"><select id="start3">
-                            <option>14点</option>
-                        </select>&nbsp;至&nbsp;<select id="end3">
-                            <option>24点</option>
-                        </select>&nbsp;下午
-                        </li>
-                    </ul>
-
-                </div>
+                <b>时段竞价:</b>
+                <ul>
+                    <li class="jingjia_select">
+                        <form name="biddingfrm" action="">
+                            <input type="radio" checked="checked" name="times" class="time_sl" value="1">&nbsp;单时段竞价 &nbsp;
+                            <input type="radio" name="times" class="time_sl1" value="2"> &nbsp;多时段竞价 &nbsp;
+                        </form>
+                        <div class="time_select">
+                            <select id="start"><option>0点</option></select><span>至</span>
+                            <select id="end"><option>24点</option></select>
+                        </div>
+                        <div class="time_select01 hides">
+                            <ul>
+                                <li><input name="mtimes" type="checkbox" data-id="1"><select id="start1"><option>0点</option></select><span>至</span>
+                                    <select id="end1"><option>12点</option></select>&nbsp;上午
+                                </li>
+                                <li><input name="mtimes" type="checkbox" data-id="2"><select id="start2">
+                                    <option>12点</option>
+                                </select> <span>至</span><select id="end2">
+                                    <option>14点</option>
+                                </select>
+                                    &nbsp;中午
+                                </li>
+                                <li><input name="mtimes" type="checkbox" data-id="3"><select id="start3">
+                                    <option>14点</option>
+                                </select><span>至</span><select id="end3">
+                                    <option>24点</option>
+                                </select>&nbsp;下午
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
             </li>
             <li>
-                <form><b>竞价模式:</b><input type="radio" checked="checked" name="mode" value="102">&nbsp;经济 &nbsp;<input
-                        type="radio"
-                        name="mode" value="101"> &nbsp;快速
-                    &nbsp;</form>
+                <b>竞价模式:</b>
+                <ul class="fl">
+                    <li>
+                        <form><input type="radio" checked="checked" name="mode" value="102">&nbsp;经济 &nbsp;<input
+                                type="radio"
+                                name="mode" value="101"> &nbsp;快速
+                            &nbsp;</form>
+                    </li>
+                </ul>
             </li>
             <%--<li>--%>
             <%--<form>竞价规则：--%>
@@ -367,31 +365,41 @@
             <%--</li>--%>
                     <li>
                         <b>竞价位置:</b>
-                        <select id="pos">
-                            <option class="right_define1" value="1">左侧:1位</option>
-                            <option class="right_define1" value="2">左侧:2-3位</option>
-                            <option class="right_define1" value="3">右侧:1-3位</option>
-                            <option class="right_define" value="4">右侧自定义</option>
-                        </select>
+                        <ul class="fl">
+                            <li>
+                                <select id="pos">
+                                    <option class="right_define1" value="1">左侧:1位</option>
+                                    <option class="right_define1" value="2">左侧:2-3位</option>
+                                    <option class="right_define1" value="3">右侧:1-3位</option>
+                                    <option class="right_define" value="4">右侧自定义</option>
+                                </select>
+                            </li>
+                        </ul>
                     </li>
                     <li>
-                        <b class="fl">出价规则:</b>
-                        <div class="right_stes fl over">
-                            <span class="right_sets1 hides over">右侧：<input name="rightpos" type="text" class="price2"> 位 </span>
-                            <span>最高出价（最低区间0.01）<input type="text" id="max" class="price2" value="0.01"></span><br>
-                            <span>最低出价（最低区间0.01）<input type="text" id="min" class="price2" value="0.01"></span>
-                        </div>
+                        <b>出价规则:</b>
+                        <ul class="fl">
+                          <%--  <li class="right_stes over">
+                                <span class="right_sets1 hides over">右侧：<input name="rightpos" type="text" class="price2"> 位 </span>
+                            </li>--%>
+                           <li>最高出价（最低区间0.01）<input type="text" id="max" class="price2" value="0.01"></li>
+                           <li>最低出价（最低区间0.01）<input type="text" id="min" class="price2" value="0.01"></li>
+                        </ul>
                     </li>
                     <li>
                         <b class="fl">出价未达到排名:</b>
-                        <form class="fl" style=" margin-left:5px;">
-                            <input name="failed" type="radio" checked="checked" value="11"> &nbsp;自动匹配最佳排名
-                            &nbsp;<input type="radio" name="failed" value="12"> &nbsp;恢复账户设置 &nbsp;
-                        </form>
+                        <ul class="fl">
+                            <li>
+                                <form >
+                                    <input name="failed" type="radio" checked="checked" value="11"> &nbsp;自动匹配最佳排名
+                                    &nbsp;<input type="radio" name="failed" value="12"> &nbsp;恢复账户设置 &nbsp;
+                                </form>
+                            </li>
+                        </ul>
                     </li>
             <li>
-                <ul>
-                    <li> <b>自动竞价模式:</b></li>
+                <b class="fl">自动竞价模式:</b>
+                <ul class="fl">
                     <li>
                         <p><input type="radio" name="auto" value="1" id="jingjia_adds"><span>单次竞价</span></p>
                     </li>
