@@ -1,7 +1,5 @@
 package com.perfect.app.perfectStatistics.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 
 /**
  * Created by SubDong on 2014/11/6.
@@ -19,9 +17,6 @@ import java.io.UnsupportedEncodingException;
 @Scope("prototype")
 @RequestMapping("/pftstis")
 public class PerfectStatistics {
-    protected static final Logger log = LoggerFactory.getLogger(PerfectStatistics.class);
-
-
     /**
      * test
      *
@@ -60,14 +55,17 @@ public class PerfectStatistics {
     @RequestMapping(value = "/statistics", method = {RequestMethod.GET, RequestMethod.POST})
     public void gettests(HttpServletRequest request, HttpServletResponse response,
                          String[] osAnBrowser) throws UnsupportedEncodingException {
-
-        for (int i = 0;i<osAnBrowser.length; i++){
-            log.info(Parameters(i)+osAnBrowser[i]);
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("/data/contlog/statistics.log"), true));
+            for (int i = 0;i<osAnBrowser.length; i++){
+                writer.write(Parameters(i)+osAnBrowser[i]+"\r\n");
+            }
+            String Url = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getServletPath();
+            writer.write(Url+"\r\n\r\n");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //目标地址
-        String Url = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getServletPath();
-        log.info("客户端网页目标地址："+Url);
-        log.info("");
     }
     private String Parameters(int a){
         switch (a){
