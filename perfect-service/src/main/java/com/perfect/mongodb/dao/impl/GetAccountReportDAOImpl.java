@@ -4,7 +4,10 @@ import com.perfect.api.baidu.AccountRealTimeReport;
 import com.perfect.autosdk.sms.v3.RealTimeResultType;
 import com.perfect.core.AppContext;
 import com.perfect.dao.GetAccountReportDAO;
+import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.AccountReportEntity;
+import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.SystemUserEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.utils.DBNameUtils;
@@ -33,14 +36,17 @@ public class GetAccountReportDAOImpl implements GetAccountReportDAO {
     @Resource
     private AccountRealTimeReport accountRealTimeReport;
 
+    @Resource
+    private SystemUserDAO systemUserDAO;
+
     /**
      * 得到本地的数据报告（数据来自本地）
      * @param startDate
      * @return
      */
-    public AccountReportEntity getLocalAccountRealData(String userName,Date startDate,Date endDate){
+    public AccountReportEntity getLocalAccountRealData(String userName,long accountId,Date startDate,Date endDate){
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(userName));
-        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.ASC, "date")), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
+        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where(EntityConstants.ACCOUNT_ID).is(accountId).and("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.DESC, "date")), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
         return list.size()==0?null:list.get(0);
 
 
@@ -56,4 +62,5 @@ public class GetAccountReportDAOImpl implements GetAccountReportDAO {
         List<RealTimeResultType> realTimeDataList = accountRealTimeReport.getAccountRealTimeData(systemUserName,accountId,startDate, endDate);
         return realTimeDataList;
     }
+
 }

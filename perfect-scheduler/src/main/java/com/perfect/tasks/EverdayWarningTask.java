@@ -23,6 +23,7 @@ public class EverdayWarningTask {
     protected static transient Logger log = LoggerFactory.getLogger(EverdayWarningTask.class);
 
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    DateFormat logDf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Resource
     private SystemUserDAO systemUserDAO;
@@ -44,6 +45,7 @@ public class EverdayWarningTask {
 
 
     public List<Map<String, Object>> selectTasks() throws Exception {
+        log.info(logDf.format(new Date())+"EverdayWarningTask  start!!!");
 
         //得到所有已经启用的的预警
         List<WarningRuleEntity> warningRuleList = accountWarningDAO.findEnableIsOne();
@@ -62,10 +64,10 @@ public class EverdayWarningTask {
             if(sue.getState().longValue()==0){
                 continue;
             }
-            if(sue.getBaiduAccountInfoEntities()==null || sue.getBaiduAccountInfoEntities().size()==0){
+            if("administrator".equals(sue.getUserName())){
                 continue;
             }
-            if("administrator".equals(sue.getUserName())){
+            if(sue.getBaiduAccountInfoEntities()==null || sue.getBaiduAccountInfoEntities().size()==0){
                 continue;
             }
 
@@ -73,11 +75,12 @@ public class EverdayWarningTask {
             Date yesterDay = DateUtils.getYesterday();
 //            Date yesterDay = new SimpleDateFormat("yyyy-MM-dd").parse("2014-09-24");
 
-            //得到昨天的账户数据
-            AccountReportEntity accountYesTerdayData = getAccountReportDAO.getLocalAccountRealData(sue.getUserName(), yesterDay,yesterDay);
 
             for (WarningRuleEntity wre : warningRuleList) {
-                    if(validateBaiduUserState(sue.getBaiduAccountInfoEntities(),wre.getAccountId())==false){
+                //得到昨天的账户数据
+                AccountReportEntity accountYesTerdayData = getAccountReportDAO.getLocalAccountRealData(sue.getUserName(),wre.getAccountId(), yesterDay,yesterDay);
+
+                if(validateBaiduUserState(sue.getBaiduAccountInfoEntities(),wre.getAccountId())==false){
                         continue;
                     }
 
@@ -111,6 +114,7 @@ public class EverdayWarningTask {
                         map.put("userName", sue.getUserName());
                         map.put("value", warningInfo);
                         warningInfoList.add(map);
+                        log.info(logDf.format(new Date())+"EverdayWarningTask  "+warningInfo.toString());
                         break;
                     }
             }
