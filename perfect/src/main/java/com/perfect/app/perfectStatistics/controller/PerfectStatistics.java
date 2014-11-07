@@ -56,11 +56,11 @@ public class PerfectStatistics {
     public void gettests(HttpServletRequest request, HttpServletResponse response,
                          String[] osAnBrowser) throws UnsupportedEncodingException {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("/data/contlog/statistics.log"), true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("F://statistics.log"), true));
             for (int i = 0;i<osAnBrowser.length; i++){
                 writer.write(Parameters(i)+osAnBrowser[i]+"\r\n");
             }
-            String Url = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getServletPath();
+            String Url = request.getHeader("referer");
             writer.write(Url+"\r\n\r\n");
             writer.close();
         } catch (IOException e) {
