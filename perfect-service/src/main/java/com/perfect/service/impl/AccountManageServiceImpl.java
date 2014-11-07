@@ -215,20 +215,4 @@ public class AccountManageServiceImpl implements AccountManageService {
         return null;
     }
 
-
-
-     public BaiduAccountInfoEntity getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId){
-         BaiduAccountInfoEntity  baiduUser = null;
-
-         SystemUserEntity systemUserEntity = systemUserDAO.findByUserName(systemUserName);
-         List<BaiduAccountInfoEntity> list = systemUserEntity.getBaiduAccountInfoEntities();
-         for(BaiduAccountInfoEntity baidu : list){
-            if(baidu.getId().longValue()==accountId.longValue()){
-                baiduUser = baidu;
-                break;
-            }
-         }
-
-         return baiduUser;
-    }
 }

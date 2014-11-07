@@ -4,6 +4,7 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.service.AccountManageService;
+import com.perfect.service.BaiduAccountService;
 import com.perfect.utils.BaiduServiceSupport;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -20,7 +21,7 @@ import java.util.*;
 public class AccountRealTimeReport {
 
     @Resource
-    private AccountManageService accountManageService;
+    private BaiduAccountService baiduAccountService;
 
     public List<RealTimeResultType> getAccountRealTimeData(String systemUserName,Long accountId, String _startDate, String _endDate) {
         if (_startDate == null && _endDate != null) {
@@ -52,7 +53,7 @@ public class AccountRealTimeReport {
 
         ReportService reportService = null;
         try {
-            CommonService commonService = BaiduServiceSupport.getCommonService(accountManageService.getBaiduAccountInfoBySystemUserNameAndAcId(systemUserName,accountId));
+            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(systemUserName,accountId));
             reportService = commonService.getService(ReportService.class);
         } catch (ApiException e) {
             e.printStackTrace();

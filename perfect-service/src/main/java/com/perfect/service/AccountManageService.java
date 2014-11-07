@@ -124,11 +124,4 @@ public interface AccountManageService {
      */
     Double getYesterdayCost(Long accountId);
 
-    /**
-     * 根据系统用户名和账户id得到百度账户
-     * @param systemUserName
-     * @param accountId
-     * @return
-     */
-    BaiduAccountInfoEntity getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId);
 }
