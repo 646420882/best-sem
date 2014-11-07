@@ -1,15 +1,11 @@
 package com.groot.webmagic;
 
-import com.google.common.io.Files;
-import com.sun.tools.internal.jxc.ap.Const;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.downloader.Downloader;
 
 import java.io.*;
-import java.net.URLEncoder;
-import java.util.UUID;
 
 /**
  * Created by yousheng on 14/11/5.
