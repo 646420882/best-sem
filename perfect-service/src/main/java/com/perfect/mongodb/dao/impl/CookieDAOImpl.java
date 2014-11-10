@@ -1,7 +1,7 @@
 package com.perfect.mongodb.dao.impl;
 
-import com.perfect.dao.FarmDAO;
-import com.perfect.entity.UrlEntity;
+import com.perfect.dao.CookieDAO;
+import com.perfect.entity.CookieEntity;
 import com.perfect.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.mongodb.utils.Pager;
 import org.springframework.data.domain.Sort;
@@ -9,28 +9,27 @@ import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
- * Created by vbzer_000 on 2014/9/24.
+ * Created by baizz on 2014-11-10.
  */
-@Component("farmDAO")
-public class FarmDAOImpl extends AbstractSysBaseDAOImpl<UrlEntity, String> implements FarmDAO {
+@Repository("cookieDAO")
+public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieEntity, String> implements CookieDAO {
+
+    public static final Set<String> set = new HashSet<String>() {{
+        addAll(Arrays.asList("CASSSID", "GBIZSSID", "GIMGSSID", "LOGINAID", "LOGINUID", "__cas__id__", "__cas__st__", "bdsfuid"));
+    }};
+
     @Override
-    public Class<UrlEntity> getEntityClass() {
-        return UrlEntity.class;
+    public Class<CookieEntity> getEntityClass() {
+        return CookieEntity.class;
     }
 
     @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
-
-    @Override
-    public UrlEntity takeOne() {
+    public CookieEntity takeOne() {
         return getSysMongoTemplate().findAndModify(
                 Query.query(
                         Criteria.where("i").is(true)
@@ -41,19 +40,23 @@ public class FarmDAOImpl extends AbstractSysBaseDAOImpl<UrlEntity, String> imple
     }
 
     @Override
-    public void returnOne(UrlEntity urlEntity) {
-        urlEntity.setIdle(true);
-        getSysMongoTemplate().save(urlEntity);
+    public void returnOne(CookieEntity cookieEntity) {
+        cookieEntity.setIdle(true);
+        getMongoTemplate().save(cookieEntity);
     }
 
     @Override
-    /*
-     查询最后执行时间在5分钟之前的账号
+    /**
+     * 查询最后执行时间在5分钟之前的账号
      */
-    public List<UrlEntity> allUnused() {
+    public List<CookieEntity> allUnused() {
         return getSysMongoTemplate()
                 .find(Query.query(Criteria.where("f").lte(System.currentTimeMillis() - 5 * 60 * 1000))
                         .with(new Sort(Sort.Direction.ASC, "f")), getEntityClass());
     }
 
+    @Override
+    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
+        return null;
+    }
 }

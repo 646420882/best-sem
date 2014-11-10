@@ -13,7 +13,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
     <style type="text/css">
         .backstage_list ul li input, .backstage_list ul li select {
             height: 28px;
@@ -30,9 +31,18 @@
     <div id="bidding_box">
         <div class="backstage_list over">
             <ul>
-                <li><span>请输入URL请求地址:</span> <input type="text" class="form-control fl" id="url">
+                <li><span>请输入URL请求地址:</span>
+                    <input type="text" class="form-control fl" id="url">
                     <button class="btn sure btn-lg" type="button" style="width:80px; margin-left:10px;"
                             onclick=submitUrl()>提交
+                    </button>
+                </li>
+                <li><span>请输入验证码:</span>
+                    <input id="imageCode" type="text" class="form-control fl">
+                    <img id="img" src="${pageContext.request.contextPath}/admin/bdLogin/getCaptcha"
+                         onclick=refreshImg()>
+                    <button class="btn sure btn-lg" type="button" style="width:80px; margin-left:10px;"
+                            onclick=validateImageCode()>提交
                     </button>
                 </li>
             </ul>
@@ -46,7 +56,6 @@
                     <td>url总数</td>
                     <td>空闲数</td>
                     <td>非空闲数</td>
-                    <%--<td>下次启动时间</td>--%>
                 </tr>
                 </thead>
                 <tbody>
@@ -58,11 +67,13 @@
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
-<script type="application/javascript">
+<script type="text/javascript">
     String.prototype.trims = function () {
         return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     };
+
     $(function () {
+
         $.ajax({
             url: "/admin/biddingUrl/list",
             dataType: "json",
@@ -103,6 +114,31 @@
             }
         });
 
+    };
+
+    var refreshImg = function () {
+        var img = document.getElementById("img");
+        img.setAttribute("src", "${pageContext.request.contextPath}/admin/bdLogin/getCaptcha?" + Math.random());
+    };
+
+    var validateImageCode = function () {
+        var imageCode = $("#imageCode").val();
+        if (imageCode == null || imageCode.trims().length == 0) {
+            return false;
+        }
+
+        $.ajax({
+            url: "/admin/bdLogin/checkImageCode?code=" + imageCode,
+            dataType: "json",
+            success: function (data, textStatus, jqXHR) {
+                if (data.status == "fail") {
+                    refreshImg();
+                    alert("验证码错误!");
+                } else if (data.status == "success") {
+                    alert("success!");
+                }
+            }
+        });
     };
 
 
