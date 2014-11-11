@@ -53,6 +53,7 @@ public class PerfectStatistics {
      * 11 用户所在地区
      * 12 用户浏览网站使用设备(0 PC端浏览  1 移动端浏览)
      * Url：客户端网页目标地址
+     * ip: java获取客户端IP地址
      * @return
      */
     @RequestMapping(value = "/statistics", method = {RequestMethod.GET, RequestMethod.POST})
@@ -63,13 +64,37 @@ public class PerfectStatistics {
             for (int i = 0;i<osAnBrowser.length; i++){
                 writer.write(Parameters(i,osAnBrowser)+osAnBrowser[i]+"\r\n");
             }
+
             String Url = request.getHeader("referer");
+            //获取用户IP地址
+            String ip = getIpAddr(request);
+            System.out.println(ip);
             writer.write(Url+"\r\n\r\n");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 获取用户IP地址
+     * @param request
+     * @return
+     */
+    public String getIpAddr(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
+    }
+    //
     private String Parameters(int a,String[] osAnBrowser){
         switch (a){
             case 0:

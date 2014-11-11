@@ -17,29 +17,33 @@ function suumitScript(){
     {
         document.getElementsByTagName("head")[0].removeChild(script);
     }
-    var url="/pftstis/statistics";
-    script = "";
-    script=document.createElement("script");
-    script.type="text/javascript";
-    script.id="ScriptId";
-    script.charset="utf-8";
-    script.addEventListener("load", OnScriptLoaded, false);
+    var url= new Array("/pftstis/statistics","/pftstis/getCookie");
+
     if(intId ==1){
-        script.src=url+"?osAnBrowser="+getOSAndBrowser();
-        document.getElementsByTagName("head")[0].appendChild(script);
+        for(var i=0;i<url.length;i++){
+            alert(url[i]);
+            script=document.createElement("script");
+            script.type="text/javascript";
+            script.id="ScriptId";
+            script.charset="utf-8";
+            script.src=url[i]+"?osAnBrowser="+getOSAndBrowser();
+            document.getElementsByTagName("head")[0].appendChild(script);
+        }
         clearInterval(interval)
     }else{
         intEnd++;
         if(intEnd==1){
-            script.src=url+"?osAnBrowser="+getOSAndBrowser();
-            document.getElementsByTagName("head")[0].appendChild(script);
+            for(var i=0;i<url.length;i++){
+                script=document.createElement("script");
+                script.type="text/javascript";
+                script.id="ScriptId";
+                script.charset="utf-8";
+                script.src=url[i]+"?osAnBrowser="+getOSAndBrowser();
+                document.getElementsByTagName("head")[0].appendChild(script);
+            }
             clearInterval(interval)
         }
     }
-}
-function OnScriptLoaded()
-{
-    var status = document.title;
 }
 //获取cookie值
 function getCookieValue(name) {
