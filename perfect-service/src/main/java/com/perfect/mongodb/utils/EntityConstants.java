@@ -7,6 +7,7 @@ public class EntityConstants {
 
     //SYS
     public static final String SYS_KEYWORD = "sys_keyword";
+    public static final String SYS_CENSUS="sys_census";
 
     //Jedis static Key
     public static final String TRADE_KEY="trade_key";

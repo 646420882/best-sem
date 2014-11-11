@@ -1,11 +1,15 @@
 package com.perfect.app.perfectStatistics.controller;
 
+import com.perfect.service.CensusService;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -17,6 +21,8 @@ import java.io.*;
 @Scope("prototype")
 @RequestMapping("/pftstis")
 public class PerfectStatistics {
+    @Resource
+    private CensusService censusService;
     /**
      * test
      *
@@ -28,6 +34,14 @@ public class PerfectStatistics {
     }
 
     /**
+     * test-XiaoWei
+     * @return
+     */
+    @RequestMapping(value = "/getPager")
+    public ModelAndView getPager() {
+        return new ModelAndView("homePage/aaa");
+    }
+    /**
      * cookie
      *
      * @return
@@ -36,6 +50,7 @@ public class PerfectStatistics {
     public ModelAndView getCookie() {
         return new ModelAndView("avatar/cookie");
     }
+
 
     /**
      * osAnBrowser数组参数说明：
@@ -134,5 +149,16 @@ public class PerfectStatistics {
                 }
         }
         return "未知";
+    }
+
+    @RequestMapping(value = "/saveParams", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getAvg(HttpServletResponse response,
+                               @RequestParam(value = "osAnBrowser", required = true) String[] osAnBrowser) {
+        String sid = censusService.saveParams(osAnBrowser);
+        if(sid!=null)
+        {
+            System.out.println("success!");
+        }
+        return null;
     }
 }

@@ -9,7 +9,7 @@
 <html>
 <head>
     <title></title>
-    <script src="/public/js/demo/perfect-xw.js/js/perfect-xw.js"></script>
+    <script src="/public/js/demo/perfect.js"></script>
 </head>
 <body>
 adsfas

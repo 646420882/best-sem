@@ -17,11 +17,10 @@ function suumitScript(){
     {
         document.getElementsByTagName("head")[0].removeChild(script);
     }
-    var url= new Array("/pftstis/statistics","/pftstis/getCookie");
+    var url= new Array("/pftstis/statistics","/pftstis/saveParams");
 
     if(intId ==1){
         for(var i=0;i<url.length;i++){
-            alert(url[i]);
             script=document.createElement("script");
             script.type="text/javascript";
             script.id="ScriptId";
