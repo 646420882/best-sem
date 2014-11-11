@@ -1,5 +1,17 @@
-var sysArrayp = new Array();
+var sysArrayp = new Array(),iptest,regions,intId= 0,intEnd = 0,interval;
 ;(function () {
+    loadScript("http://pv.sohu.com/cityjson?ie=utf-8",function () {
+        if(typeof(returnCitySN) == "undefined"){
+            returnCitySN = new Array();
+        }
+        regions = ((returnCitySN["cname"] == undefined)?"":returnCitySN["cname"]);
+        iptest = ((returnCitySN["cip"] == undefined)?"":returnCitySN["cip"]);
+        intId=1;
+    });
+    interval = setInterval('suumitScript()',1000);
+}());
+//提交操作
+function suumitScript(){
     var script=document.getElementById('ScriptId');
     if (script)
     {
@@ -12,10 +24,19 @@ var sysArrayp = new Array();
     script.id="ScriptId";
     script.charset="utf-8";
     script.addEventListener("load", OnScriptLoaded, false);
-    script.src=url+"?osAnBrowser="+getOSAndBrowser();
-    document.getElementsByTagName("head")[0].appendChild(script);
-
-}());
+    if(intId ==1){
+        script.src=url+"?osAnBrowser="+getOSAndBrowser();
+        document.getElementsByTagName("head")[0].appendChild(script);
+        clearInterval(interval)
+    }else{
+        intEnd++;
+        if(intEnd==1){
+            script.src=url+"?osAnBrowser="+getOSAndBrowser();
+            document.getElementsByTagName("head")[0].appendChild(script);
+            clearInterval(interval)
+        }
+    }
+}
 function OnScriptLoaded()
 {
     var status = document.title;
@@ -37,7 +58,19 @@ function getCookieValue(name) {
 }
 
 function getOSAndBrowser(){
-//0 UUID 1 电脑系统  2 浏览器版本 3 屏幕分辨率 4 是否支持cookie 5 是否支持java  6 屏幕颜色  7 flash版本 注：很多浏览器查询不出
+    // 0 UUID
+    // 1 电脑系统
+    // 2 浏览器版本
+    // 3 屏幕分辨率
+    // 4 是否支持cookie
+    // 5 是否支持java
+    // 6 屏幕颜色
+    // 7 flash版本
+    // 8 客户端访问目标地址时间
+    // 9 客户端网页的访问来源
+    // 10 用户IP地址
+    // 11 用户所在地区
+    // 12 移动或PC访问（1 移动端访问网页  0 PC端访问网页）
     var os = navigator.platform;
     var userAgent = navigator.userAgent;
     var tempArray  = "";
@@ -104,10 +137,49 @@ function getOSAndBrowser(){
     sysArrayp[6] = window.screen.colorDepth+"-bit";
     sysArrayp[7] = ((v_flash == undefined || v_flash == "")?"":v_flash);
     sysArrayp[8] = new Date();
-    sysArrayp[8] = document.referrer;
+    sysArrayp[9] = document.referrer;
+    sysArrayp[10] = iptest;
+    sysArrayp[11] = regions;
+    sysArrayp[12] = getPcOrMobile();
     return sysArrayp;
 };
-
+function getPcOrMobile(){
+    if(/AppleWebKit.*Mobile/i.test(navigator.userAgent)
+        || /Android/i.test(navigator.userAgent)
+        || /BlackBerry/i.test(navigator.userAgent)
+        || /IEMobile/i.test(navigator.userAgent)
+        || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))){
+        if(/iPad/i.test(navigator.userAgent)){
+            return 1;
+        }else{
+            return 1;
+        }
+    }else{
+        return 0;
+    }
+}
+//加载 读取IP script
+function loadScript(url, callback) {
+    var cnameOrIp;
+    cnameOrIp=document.createElement("script");
+    cnameOrIp.type="text/javascript";
+    cnameOrIp.charset="utf-8";
+    // IE
+    if (cnameOrIp.readyState) {
+        cnameOrIp.onreadystatechange = function () {
+            if (cnameOrIp.readyState == "loaded" || cnameOrIp.readyState == "complete") {
+                cnameOrIp.onreadystatechange = null;
+                callback();
+            }
+        };
+    } else { // others
+        cnameOrIp.onload = function () {
+            callback();
+        }
+    }
+    cnameOrIp.src=url;
+    document.getElementsByTagName("head")[0].appendChild(cnameOrIp);
+}
 //UUID生成
 function toString() {
     return this.id;

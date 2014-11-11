@@ -49,6 +49,9 @@ public class PerfectStatistics {
      * 7 客户端flash版本
      * 8 客户端访问目标地址时间
      * 9 客户端网页的访问来源（如果此参数为空则表明访问来远为：“直接访问”）
+     * 10 用户IP地址
+     * 11 用户所在地区
+     * 12 用户浏览网站使用设备(0 PC端浏览  1 移动端浏览)
      * Url：客户端网页目标地址
      * @return
      */
@@ -58,7 +61,7 @@ public class PerfectStatistics {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(new File("F://statistics.log"), true));
             for (int i = 0;i<osAnBrowser.length; i++){
-                writer.write(Parameters(i)+osAnBrowser[i]+"\r\n");
+                writer.write(Parameters(i,osAnBrowser)+osAnBrowser[i]+"\r\n");
             }
             String Url = request.getHeader("referer");
             writer.write(Url+"\r\n\r\n");
@@ -67,7 +70,7 @@ public class PerfectStatistics {
             e.printStackTrace();
         }
     }
-    private String Parameters(int a){
+    private String Parameters(int a,String[] osAnBrowser){
         switch (a){
             case 0:
                 return "Cookie中的UUID：";
@@ -89,6 +92,21 @@ public class PerfectStatistics {
                 return "访问目标地址时间：";
             case 9:
                 return "网页的访问来源：";
+            case 10:
+                return "IP：";
+            case 11:
+                if(osAnBrowser[11] == null || osAnBrowser[11] == ""){
+                    return "地区：未知区域";
+                }
+                return "地区：";
+            case 12:
+                if(osAnBrowser[12].equals("0")){
+                    return "使用设备：PC端->";
+                }else if(osAnBrowser[12].equals("1")){
+                    return "使用设备：移动端->";
+                }else{
+                    return "使用设备：其他";
+                }
         }
         return "未知";
     }
