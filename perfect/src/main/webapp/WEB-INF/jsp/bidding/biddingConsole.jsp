@@ -13,8 +13,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
     <style type="text/css">
         .backstage_list ul li input, .backstage_list ul li select {
             height: 28px;
@@ -95,6 +94,7 @@
                 }
             }
         });
+
     });
 
     var submitUrl = function () {
@@ -128,8 +128,12 @@
         }
 
         $.ajax({
-            url: "/admin/bdLogin/checkImageCode?code=" + imageCode,
+            url: "/admin/bdLogin/checkImageCode",
+            type: "POST",
             dataType: "json",
+            data: {
+                "code": imageCode
+            },
             success: function (data, textStatus, jqXHR) {
                 if (data.status == "fail") {
                     refreshImg();

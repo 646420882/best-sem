@@ -8,4 +8,6 @@ import com.perfect.entity.CookieEntity;
 public interface CookieService {
 
     void saveCookie(CookieEntity cookieEntity);
+
+    boolean simulateLogin(String username, String password, String imageCode, String cookies);
 }

@@ -35,25 +35,28 @@ public class BaiduHttpLoginController implements Controller {
     private CookieService cookieService;
 
     @Override
-    @RequestMapping(value = "/bdLogin/checkImageCode", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/bdLogin/checkImageCode", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
         String imageCode = request.getParameter("code");
+
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, String> map = new HashMap<>();
 
         String sessionId = ServletContextUtils.getSession().getId();
         String cookies = ServletContextUtils.getSession().getAttribute(sessionId + "bdLogin").toString();
-        boolean isSuccess = BaiduHttpLogin.execute("baidu-bjtthunbohui2134115", "Bjhunbohui7", imageCode, cookies);
+        boolean isSuccess = cookieService.simulateLogin("baidu-bjtthunbohui2134115", "Bjhunbohui7", imageCode, cookies);
         if (isSuccess) {
             map.put("status", "success");
 
-            ServletContextUtils.getSession().removeAttribute(sessionId + "bdLogin");
             CookieStore cookieStore = BaiduHttpLogin.getSSLCookies();
             CookieEntity cookieEntity = new CookieEntity();
             cookieEntity.setCookie(cookieStore);
             cookieEntity.setIdle(true);
-
             cookieService.saveCookie(cookieEntity);
+
+            ServletContextUtils.getSession().removeAttribute(sessionId + "bdLogin");
         } else {
             map.put("status", "fail");
         }
