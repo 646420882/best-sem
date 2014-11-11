@@ -2,7 +2,6 @@ package com.perfect.app.bdlogin.core;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -10,7 +9,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -47,15 +45,15 @@ public class CaptchaHandler {
         HttpResponse httpResponse;
 
         httpResponse = sslHttpClient.execute(captchaRequest);
-        if (httpResponse.getHeaders(CRedirectStrategy.COOKIE) != null) {
-            String tmpStr = httpResponse.getHeaders(CRedirectStrategy.COOKIE)[0].getValue();
+        if (httpResponse.getHeaders("Set-Cookie") != null) {
+            String tmpStr = httpResponse.getHeaders("Set-Cookie")[0].getValue();
             tmpStr = tmpStr.substring(0, tmpStr.indexOf(";"));
             cookies += "; " + tmpStr;
         }
         HttpEntity entity = httpResponse.getEntity();
         InputStream content = entity.getContent();
         captchaBytes = IOUtils.toByteArray(content);
-        FileUtils.writeByteArrayToFile(new File("/home/baizz/captcha.jpeg"), captchaBytes);
+//        FileUtils.writeByteArrayToFile(new File("/home/baizz/captcha.jpeg"), captchaBytes);
         EntityUtils.consume(entity);
         sslHttpClient.close();
     }

@@ -41,12 +41,13 @@ public class BaiduHttpLoginController implements Controller {
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, String> map = new HashMap<>();
 
-        String cookies = ServletContextUtils.getSession().getAttribute("bdLoginCookie").toString();
+        String sessionId = ServletContextUtils.getSession().getId();
+        String cookies = ServletContextUtils.getSession().getAttribute(sessionId + "bdLogin").toString();
         boolean isSuccess = BaiduHttpLogin.execute("baidu-bjtthunbohui2134115", "Bjhunbohui7", imageCode, cookies);
         if (isSuccess) {
             map.put("status", "success");
 
-            ServletContextUtils.getSession().removeAttribute("bdLoginCookie");
+            ServletContextUtils.getSession().removeAttribute(sessionId + "bdLogin");
             CookieStore cookieStore = BaiduHttpLogin.getSSLCookies();
             CookieEntity cookieEntity = new CookieEntity();
             cookieEntity.setCookie(cookieStore);
@@ -66,7 +67,8 @@ public class BaiduHttpLoginController implements Controller {
         CaptchaHandler.handle(BaiduHttpLogin.phantomJSPath);
         byte[] captchaBytes = CaptchaHandler.getCaptchaBytes();
         String cookies = CaptchaHandler.getCookies();
-        ServletContextUtils.getSession().setAttribute("bdLoginCookie", cookies);
+        String sessionId = ServletContextUtils.getSession().getId();
+        ServletContextUtils.getSession().setAttribute(sessionId + "bdLogin", cookies);
         if (captchaBytes != null) {
             response.getOutputStream().write(captchaBytes);
         }
