@@ -161,4 +161,9 @@ public class PerfectStatistics {
         }
         return null;
     }
+    @RequestMapping(value = "/getTodayConstants",method = RequestMethod.GET)
+    public  ModelAndView getTodayConstants(HttpServletResponse response){
+        censusService.getTodayTotal();
+        return null;
+    }
 }

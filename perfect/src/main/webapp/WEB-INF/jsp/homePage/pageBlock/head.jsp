@@ -47,8 +47,8 @@
                 </div>
                 <div class="user_detali fl over">
                     <ul>
-                        <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<a href="/ext/demo"
-                                                                               style="color: white"></a></li>
+                        <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<a href="/pftstis//getTodayConstant"
+                                                                               style="color: white">.</a></li>
                         <li><span>余额预计可消费：${remainderDays}天</span><span>日预算：${accountBudget}元</span></li>
                     </ul>
                 </div>

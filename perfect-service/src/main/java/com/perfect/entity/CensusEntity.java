@@ -5,6 +5,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Date;
+
 /**
  * Created by XiaoWei on 2014/11/11.
  */
@@ -28,6 +30,8 @@ public class CensusEntity {
     private String bit;
     @Field(value = "fl")
     private String flash;
+    @Field(value = "dat")
+    private Date date;
     @Field(value = "ti")
     private String time;
     @Field(value = "lp")
@@ -149,5 +153,13 @@ public class CensusEntity {
 
     public void setOperate(Integer operate) {
         this.operate = operate;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

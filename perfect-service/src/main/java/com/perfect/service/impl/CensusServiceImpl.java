@@ -2,6 +2,7 @@ package com.perfect.service.impl;
 
 import com.perfect.dao.CensusDAO;
 import com.perfect.dao.MongoCrudRepository;
+import com.perfect.dto.ConstantsDTO;
 import com.perfect.entity.CensusEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.utils.Pager;
@@ -9,7 +10,12 @@ import com.perfect.service.CensusService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Created by XiaoWei on 2014/11/11.
@@ -17,6 +23,10 @@ import java.util.Map;
 @Service("censusService")
 public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusEntity,Long> implements CensusService {
     @Resource private CensusDAO censusDAO;
+    private SimpleDateFormat allFormat=new SimpleDateFormat("EEE MMM dd yyyy hh:mm:ss z", Locale.ENGLISH);
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);
+
     @Override
     public Class<CensusEntity> getEntityClass() {
         return null;
@@ -37,7 +47,12 @@ public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusEntity,Long
         boolean supportJava= Boolean.parseBoolean(osAnBrowser[5]);
         String bit=osAnBrowser[6];
         String flash=osAnBrowser[7];
-        String time=osAnBrowser[8];
+        Date d=null;
+        try {
+            d=allFormat.parse(osAnBrowser[8]);
+        } catch (ParseException e1) {
+            e1.printStackTrace();
+        }
         String lastPage=osAnBrowser[9];
         String ip=osAnBrowser[10];
         String area=osAnBrowser[11];
@@ -51,7 +66,9 @@ public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusEntity,Long
         censusEntity.setSupportJava(supportJava);
         censusEntity.setBit(bit);
         censusEntity.setFlash(flash);
-        censusEntity.setTime(time);
+        censusEntity.setDate(d);
+        timeFormat.setTimeZone(TimeZone.getTimeZone("UTC+08:00"));
+        censusEntity.setTime(timeFormat.format(d));
         censusEntity.setLastPage(lastPage);
         censusEntity.setIp(ip);
         censusEntity.setArea(area);
@@ -59,4 +76,10 @@ public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusEntity,Long
         censusDAO.saveParams(censusEntity);
         return censusEntity.getId();
     }
+
+    @Override
+    public ConstantsDTO getTodayTotal() {
+        return censusDAO.getTodayTotal();
+    }
+
 }
