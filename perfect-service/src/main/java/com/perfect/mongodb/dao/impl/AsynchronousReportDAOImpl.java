@@ -81,7 +81,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
                 String pcFilePath = report.getAccountReportDataPC(null, dateStr, dateStr);
                 String mobileFilePath = report.getAccountReportDataMobile(null, dateStr, dateStr);
-                if (pcFilePath == null || mobileFilePath == null) {
+                if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
                 List<AccountReportEntity> pcList = httpFileHandler.getAccountReport(pcFilePath, 1);
@@ -129,7 +129,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
                 String pcFilePath = report.getCampaignReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getCampaignReportDataMobile(null, null, dateStr, dateStr);
-                if (pcFilePath == null || mobileFilePath == null) {
+                if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
                 List<CampaignReportEntity> pcList = httpFileHandler.getCampaignReport(pcFilePath, 1);
@@ -178,7 +178,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
                 String pcFilePath = report.getUnitReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getUnitReportDataMobile(null, null, dateStr, dateStr);
-                if (pcFilePath == null || mobileFilePath == null) {
+                if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
                 List<AdgroupReportEntity> pcList = httpFileHandler.getAdgroupReport(pcFilePath, 1);
@@ -227,7 +227,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
                 String pcFilePath = report.getCreativeReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getCreativeReportDataMobile(null, null, dateStr, dateStr);
-                if (pcFilePath == null || mobileFilePath == null) {
+                if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
                 List<CreativeReportEntity> pcList = httpFileHandler.getCreativeReport(pcFilePath, 1);
@@ -275,7 +275,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
                 String pcFilePath = report.getKeyWordidReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getKeyWordidReportDataMobile(null, null, dateStr, dateStr);
-                if (pcFilePath == null || mobileFilePath == null) {
+                if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
                 List<KeywordReportEntity> pcList = httpFileHandler.getKeywordReport(pcFilePath, 1);
