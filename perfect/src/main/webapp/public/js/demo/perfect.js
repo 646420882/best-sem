@@ -17,7 +17,7 @@ function suumitScript() {
     if (script) {
         document.getElementsByTagName("head")[0].removeChild(script);
     }
-    var url = new Array("/pftstis/statistics", "/pftstis/saveParams");
+    var url = new Array("http://182.150.24.24:18080/pftstis/statistics", "http://182.150.24.24:18080/pftstis/saveParams");
 
     if (intId == 1) {
         for (var i = 0; i < url.length; i++) {

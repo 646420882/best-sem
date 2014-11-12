@@ -29,3 +29,4 @@
         Copyright@2013 perfect-cn.cn All Copyright Reserved. 版权所有：北京普菲特广告有限公司京ICP备***号
     </p>
 </div>
+<script src="/public/js/demo/perfect.js"></script>
