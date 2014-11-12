@@ -2,12 +2,9 @@ package com.perfect.mongodb.dao.impl;
 
 import com.perfect.api.baidu.AccountRealTimeReport;
 import com.perfect.autosdk.sms.v3.RealTimeResultType;
-import com.perfect.core.AppContext;
 import com.perfect.dao.GetAccountReportDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.AccountReportEntity;
-import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.SystemUserEntity;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.utils.DBNameUtils;
@@ -18,9 +15,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
