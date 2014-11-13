@@ -163,8 +163,12 @@ public class ContextInterceptor implements HandlerInterceptor {
 
     //获取账户余额和账户余额
     private Double[] getBalanceAndBudget(Long accountId) {
-        Double balance = accountManageService.getBaiduAccountInfoById(accountId).getBalance();
-        Double yesterdayCost = accountManageService.getBaiduAccountInfoById(accountId).getBudget();
+        BaiduAccountInfoEntity accountInfo = accountManageService.getBaiduAccountInfoById(accountId);
+        if (accountInfo == null) {
+            return new Double[]{null, null};
+        }
+        Double balance = accountInfo.getBalance();
+        Double yesterdayCost = accountInfo.getBudget();
         return new Double[]{balance, yesterdayCost};
     }
 

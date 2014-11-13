@@ -23,15 +23,15 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <redis.host>182.92.188.177</redis.host>
+                <redis.host>182.150.24.24</redis.host>
                 <redis.port>6379</redis.port>
                 <redis.password>3edcvfr4</redis.password>
 
-                <mongo.host>182.92.188.177:23135</mongo.host>
+                <mongo.host>182.150.24.24:23135</mongo.host>
                 <mongo.username>perfect</mongo.username>
                 <mongo.password>perfect</mongo.password>
 
-                <es.host>182.92.188.177:19300</es.host>
+                <es.host>182.150.24.24:19300</es.host>
                 <es.cluster>es-cluster</es.cluster>
             </properties>
         </profile>
@@ -163,13 +163,6 @@
                 <artifactId>wicket-core</artifactId>
                 <version>6.17.0</version>
                 <scope>runtime</scope>
-            </dependency>
-
-
-            <dependency>
-                <groupId>org.ow2.asm</groupId>
-                <artifactId>asm</artifactId>
-                <version>4.2</version>
             </dependency>
 
             <dependency>
