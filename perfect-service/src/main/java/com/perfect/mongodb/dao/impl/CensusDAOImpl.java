@@ -2,20 +2,20 @@ package com.perfect.mongodb.dao.impl;
 
 import com.perfect.dao.CensusDAO;
 import com.perfect.dto.ConstantsDTO;
+import com.perfect.dto.ConstantsDTO.CensusStatus;
 import com.perfect.entity.CensusEntity;
 import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
 import com.perfect.mongodb.utils.EntityConstants;
 import com.perfect.mongodb.utils.Pager;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationOptions;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
@@ -40,31 +40,105 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusEntity, Long> i
     @Override
     public CensusEntity saveParams(CensusEntity censusEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        if(mongoTemplate.exists(new Query(Criteria.where("uid").is(censusEntity.getUuid())),CensusEntity.class)){
+            censusEntity.setUserType(0);
+        }else{
+            censusEntity.setUserType(1);
+        }
         mongoTemplate.save(censusEntity, EntityConstants.SYS_CENSUS);
         return censusEntity;
     }
 
     @Override
-    public ConstantsDTO getTodayTotal() {
+    public ConstantsDTO getTodayTotal(String url) {
+        return getTotalConstants(CensusStatus.TO_DAY, url);
+    }
+
+    @Override
+    public ConstantsDTO getLastDayTotal(String url) {
+        return getTotalConstants(CensusStatus.LAST_DAY, url);
+    }
+
+    @Override
+    public ConstantsDTO getLastWeekTotal(String url) {
+        return getTotalConstants(CensusStatus.LAST_WEEK, url);
+    }
+
+    @Override
+    public ConstantsDTO getLastMonthTotal(String url) {
+        return getTotalConstants(CensusStatus.LAST_MONTH, url);
+    }
+
+    private ConstantsDTO getTotalConstants(CensusStatus status, String url) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        System.out.println(getTodayStartDate().toString() + ":" + getTodayEndDate().toString());
-        Aggregation agg = Aggregation.newAggregation(
-                match(Criteria.where("dat").gte(getTodayStartDate()).lte(getTodayEndDate())),
+        Query q = new Query();
+        Criteria c = getStaticCriteria(status, url);
+        q.addCriteria(c);
+        Aggregation ipCountAgg = Aggregation.newAggregation(
+                match(c),
                 project("ip"),
-                group("ip").count().as("ipCount")
+                group("ip").count().as("count")
         );
-        AggregationResults<ConstantsDTO> aggregationResults = mongoTemplate.aggregate(agg, EntityConstants.SYS_CENSUS, ConstantsDTO.class);
-        List<ConstantsDTO> list = new ArrayList<>(aggregationResults.getMappedResults());
-        for (ConstantsDTO li : list) {
-            System.out.println(li.getIpCount());
-        }
+        AggregationResults<CensusIpVO> ipCountResult = mongoTemplate.aggregate(ipCountAgg, EntityConstants.SYS_CENSUS, CensusIpVO.class);
+        List<CensusIpVO> ipCountList = new ArrayList<>(ipCountResult.getMappedResults());
+
+        Aggregation uidCountAgg = Aggregation.newAggregation(
+                match(c),
+                project("uid"),
+                group("uid").count().as("count")
+        );
+        AggregationResults<CensusUidVO> uidCountResult = mongoTemplate.aggregate(uidCountAgg, EntityConstants.SYS_CENSUS, CensusUidVO.class);
+        List<CensusUidVO> uidCountList = new ArrayList<>(uidCountResult.getMappedResults());
+
+        int totalPv = (int) mongoTemplate.count(q, EntityConstants.SYS_CENSUS);
+        int totalUv = uidCountList.size();
+        int totalIp = ipCountList.size();
         ConstantsDTO constantsDTO = new ConstantsDTO();
-//        constantsDTO.setTotalPv((int) mongoTemplate.count(null, CensusEntity.class));
-//        constantsDTO.setIpCount();
+        constantsDTO.setCensusUrl(url);
+        constantsDTO.setTotalCount(totalPv);
+        constantsDTO.setTotalPv(totalPv);
+        constantsDTO.setTotalUv(totalUv);
+        constantsDTO.setTotalIp(totalIp);
+
         return constantsDTO;
     }
 
-    public static Date getTodayStartDate() {
+    private Criteria getStaticCriteria(CensusStatus status, String url) {
+        Criteria c = null;
+        switch (status) {
+            case TO_DAY:
+                if (url == null) {
+                    c = new Criteria("dat").gte(getTodayStartDate()).lte(getTodayEndDate());
+                } else {
+                    c = new Criteria("dat").gte(getTodayStartDate()).lte(getTodayEndDate()).and("lp").is(url);
+                }
+                break;
+            case LAST_DAY:
+                if (url == null) {
+                    c = new Criteria("dat").gte(getLastDayStartDate()).lte(getLastDayEndDate());
+                } else {
+                    c = new Criteria("dat").gte(getLastDayStartDate()).lte(getLastDayEndDate()).and("lp").is(url);
+                }
+                break;
+            case LAST_WEEK:
+                if (url == null) {
+                    c = new Criteria("dat").gte(getLastWeekDate()).lte(getTodayEndDate());
+                } else {
+                    c = new Criteria("dat").gte(getLastWeekDate()).lte(getTodayEndDate()).and("lp").is(url);
+                }
+                break;
+            case LAST_MONTH:
+                if (url == null) {
+                    c = new Criteria("dat").gte(getLastMonthDate()).lte(getTodayEndDate());
+                } else {
+                    c = new Criteria("dat").gte(getLastMonthDate()).lte(getTodayEndDate()).and("lp").is(url);
+                }
+                break;
+        }
+        return c;
+    }
+
+    private  Date getTodayStartDate() {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
@@ -72,7 +146,7 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusEntity, Long> i
         return c.getTime();
     }
 
-    public static Date getTodayEndDate() {
+    private  Date getTodayEndDate() {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, 23);
         c.set(Calendar.MINUTE, 59);
@@ -80,7 +154,7 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusEntity, Long> i
         return c.getTime();
     }
 
-    public static Date getLastDayDate(){
+    private  Date getLastDayStartDate(){
         Calendar c=Calendar.getInstance();
         c.add(Calendar.DATE,-1);
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -88,7 +162,16 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusEntity, Long> i
         c.set(Calendar.SECOND, 0);
         return c.getTime();
     }
-    public static Date getLastWeekDate(){
+    private Date getLastDayEndDate(){
+        Calendar c=Calendar.getInstance();
+        c.add(Calendar.DATE,-1);
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
+        return c.getTime();
+    }
+
+    private  Date getLastWeekDate(){
         Calendar c=Calendar.getInstance();
         c.add(Calendar.DAY_OF_WEEK_IN_MONTH,-1);
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -96,7 +179,7 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusEntity, Long> i
         c.set(Calendar.SECOND, 0);
         return c.getTime();
     }
-    public static Date getLastMonthDate(){
+    private  Date getLastMonthDate(){
         Calendar c=Calendar.getInstance();
         c.add(Calendar.MONTH,-1);
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -104,8 +187,65 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusEntity, Long> i
         c.set(Calendar.SECOND, 0);
         return c.getTime();
     }
-    public static void main(String[] agrs){
-        System.out.println(getLastWeekDate().toLocaleString() + ":" + getTodayEndDate().toLocaleString());
+
+    public class CensusIpVO {
+        @Id
+        private String ip;
+        private int count;
+
+        public String getIp() {
+            return ip;
+        }
+
+        public void setIp(String ip) {
+            this.ip = ip;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+
+        @Override
+        public String toString() {
+            return "CensusIpVO{" +
+                    "ip='" + ip + '\'' +
+                    ", count=" + count +
+                    '}';
+        }
+    }
+
+    public class CensusUidVO {
+        @Id
+        private String uid;
+        private int count;
+
+        public String getUuid() {
+            return uid;
+        }
+
+        public void setUuid(String uid) {
+            this.uid = uid;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+
+        @Override
+        public String toString() {
+            return "CensusUidVO{" +
+                    "uid='" + uid + '\'' +
+                    ", count=" + count +
+                    '}';
+        }
     }
 
 }

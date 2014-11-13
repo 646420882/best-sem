@@ -17,31 +17,36 @@ public class CensusEntity {
     @Field(value = "uid")
     private String uuid;
     @Field(value = "sys")
-    private String system;
+    private String system;//操作系统
     @Field(value = "brw")
-    private String browser;
+    private String browser;//浏览器
     @Field(value = "res")
-    private String resolution;
+    private String resolution;//分辨率
     @Field(value = "sc")
-    private boolean supportCookie;
+    private boolean supportCookie;//是否支持cookie
     @Field(value = "sj")
-    private boolean supportJava;
+    private boolean supportJava;//是否支持java
     @Field(value = "bit")
-    private String bit;
+    private String bit;//位操作数
     @Field(value = "fl")
-    private String flash;
+    private String flash;//flash版本
     @Field(value = "dat")
-    private Date date;
+    private Date date;//访问日期
     @Field(value = "ti")
-    private String time;
+    private String time;//访问时间
+    @Field(value = "tp")
+    private String intoPage;//目标页面
     @Field(value = "lp")
-    private String  lastPage;
+    private String  lastPage;//停留页面
     @Field(value = "ip")
-    private String ip;
+    private String ip;//ip地址
     @Field(value = "are")
-    private String area;
+    private String area;//地区
     @Field(value = "ope")
-    private Integer operate;
+    private Integer operate;//使用设备
+    @Field(value = "up")
+    private Integer userType;//新老客户标识
+
 
     public String getBrowser() {
         return browser;
@@ -161,5 +166,44 @@ public class CensusEntity {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getIntoPage() {
+        return intoPage;
+    }
+
+    public void setIntoPage(String intoPage) {
+        this.intoPage = intoPage;
+    }
+
+    public Integer getUserType() {
+        return userType;
+    }
+
+    public void setUserType(Integer userType) {
+        this.userType = userType;
+    }
+
+    @Override
+    public String toString() {
+        return "CensusEntity{" +
+                "id='" + id + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", system='" + system + '\'' +
+                ", browser='" + browser + '\'' +
+                ", resolution='" + resolution + '\'' +
+                ", supportCookie=" + supportCookie +
+                ", supportJava=" + supportJava +
+                ", bit='" + bit + '\'' +
+                ", flash='" + flash + '\'' +
+                ", date=" + date +
+                ", time='" + time + '\'' +
+                ", intoPage='" + intoPage + '\'' +
+                ", lastPage='" + lastPage + '\'' +
+                ", ip='" + ip + '\'' +
+                ", area='" + area + '\'' +
+                ", operate=" + operate +
+                ", userType=" + userType +
+                '}';
     }
 }

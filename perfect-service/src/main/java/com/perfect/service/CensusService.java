@@ -18,8 +18,30 @@ public interface CensusService extends MongoCrudRepository<CensusEntity,Long> {
     String saveParams(String[] osAnBrowser);
 
     /**
-     * 查询今日数据
+     * 根据某个url地址获取今日统计数据
      * @return
      */
-    public ConstantsDTO getTodayTotal();
+    public ConstantsDTO getTodayTotal(String url);
+
+    /**
+     * 根据某个url地址获取昨日统计数据
+     * @param url
+     * @return
+     */
+    public ConstantsDTO getLastDayTotal(String url);
+
+    /**
+     * 根据某个url地址获取上周统计数据
+     * @param url
+     * @return
+     */
+    public ConstantsDTO getLastWeekTotal(String url);
+
+    /**
+     * 根据某个url地址获取上个月统计数据
+     * @param url
+     * @return
+     */
+    public ConstantsDTO getLastMonthTotal(String url);
+
 }

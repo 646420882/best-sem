@@ -15,8 +15,29 @@ public interface CensusDAO extends  MongoCrudRepository<CensusEntity,Long> {
     CensusEntity saveParams(CensusEntity censusEntity);
 
     /**
-     * 根据今日访问数据
+     *根据某个url地址获取今日统计数据
      * @return
      */
-    ConstantsDTO getTodayTotal();
+    public ConstantsDTO getTodayTotal(String url);
+
+    /**
+     * 根据某个url地址获取昨日统计数据
+     * @param url
+     * @return
+     */
+    public ConstantsDTO getLastDayTotal(String url);
+
+    /**
+     * 根据某个url地址获取上周统计数据
+     * @param url
+     * @return
+     */
+    public ConstantsDTO getLastWeekTotal(String url);
+
+    /**
+     * 根据某个url地址获取上个月统计数据
+     * @param url
+     * @return
+     */
+    public ConstantsDTO getLastMonthTotal(String url);
 }

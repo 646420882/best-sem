@@ -46,17 +46,18 @@ public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusEntity,Long
         boolean supportCookie= Boolean.parseBoolean(osAnBrowser[4]);
         boolean supportJava= Boolean.parseBoolean(osAnBrowser[5]);
         String bit=osAnBrowser[6];
-        String flash=osAnBrowser[7];
+        String flash=((osAnBrowser[7].equals(""))?"deny":((osAnBrowser[7]==null?"deny":osAnBrowser[7])));
         Date d=null;
         try {
             d=allFormat.parse(osAnBrowser[8]);
         } catch (ParseException e1) {
             e1.printStackTrace();
         }
-        String lastPage=osAnBrowser[9];
+        String intoPage=((osAnBrowser[9].equals(""))?"direct":((osAnBrowser[9]==null?"":osAnBrowser[9])));
         String ip=osAnBrowser[10];
         String area=osAnBrowser[11];
         Integer operate= Integer.valueOf(osAnBrowser[12]);
+        String lastPage=osAnBrowser[13];
         CensusEntity censusEntity=new CensusEntity();
         censusEntity.setUuid(uuid);
         censusEntity.setSystem(system);
@@ -69,6 +70,7 @@ public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusEntity,Long
         censusEntity.setDate(d);
         timeFormat.setTimeZone(TimeZone.getTimeZone("UTC+08:00"));
         censusEntity.setTime(timeFormat.format(d));
+        censusEntity.setIntoPage(intoPage);
         censusEntity.setLastPage(lastPage);
         censusEntity.setIp(ip);
         censusEntity.setArea(area);
@@ -78,8 +80,23 @@ public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusEntity,Long
     }
 
     @Override
-    public ConstantsDTO getTodayTotal() {
-        return censusDAO.getTodayTotal();
+    public ConstantsDTO getTodayTotal(String url) {
+        return censusDAO.getTodayTotal(url);
+    }
+
+    @Override
+    public ConstantsDTO getLastDayTotal(String url) {
+        return censusDAO.getLastDayTotal(url);
+    }
+
+    @Override
+    public ConstantsDTO getLastWeekTotal(String url) {
+        return censusDAO.getLastWeekTotal(url);
+    }
+
+    @Override
+    public ConstantsDTO getLastMonthTotal(String url) {
+        return censusDAO.getLastMonthTotal(url);
     }
 
 }

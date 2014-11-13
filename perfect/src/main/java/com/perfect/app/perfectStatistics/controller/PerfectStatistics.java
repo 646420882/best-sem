@@ -1,6 +1,8 @@
 package com.perfect.app.perfectStatistics.controller;
 
+import com.perfect.dto.ConstantsDTO;
 import com.perfect.service.CensusService;
+import com.perfect.utils.web.WebContextSupport;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by SubDong on 2014/11/6.
@@ -20,7 +24,7 @@ import java.io.*;
 @RestController
 @Scope("prototype")
 @RequestMapping("/pftstis")
-public class PerfectStatistics {
+public class PerfectStatistics extends WebContextSupport {
     @Resource
     private CensusService censusService;
     /**
@@ -152,9 +156,16 @@ public class PerfectStatistics {
     }
 
     @RequestMapping(value = "/saveParams", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getAvg(HttpServletResponse response,
+    public ModelAndView getAvg(HttpServletResponse response,HttpServletRequest request,
                                @RequestParam(value = "osAnBrowser", required = true) String[] osAnBrowser) {
-        String sid = censusService.saveParams(osAnBrowser);
+        int osA=osAnBrowser.length;
+        List<String> list=new ArrayList<>();
+        for (int i = 0; i <osAnBrowser.length ; i++) {
+            list.add(osAnBrowser[i]);
+        }
+        list.add(request.getHeader("referer"));
+        String[] newStr=list.toArray(new String[1]);
+        String sid = censusService.saveParams(newStr);
         if(sid!=null)
         {
             System.out.println("success!");
@@ -163,7 +174,27 @@ public class PerfectStatistics {
     }
     @RequestMapping(value = "/getTodayConstants",method = RequestMethod.GET)
     public  ModelAndView getTodayConstants(HttpServletResponse response){
-        censusService.getTodayTotal();
+       ConstantsDTO constantsDTO= censusService.getTodayTotal("direct");
+        writeJson(constantsDTO,response);
         return null;
     }
+    @RequestMapping(value = "/getLastDayConstants",method = RequestMethod.GET)
+    public  ModelAndView getLastDayConstants(HttpServletResponse response){
+        ConstantsDTO constantsDTO= censusService.getLastDayTotal("direct");
+        writeJson(constantsDTO,response);
+        return null;
+    }
+    @RequestMapping(value = "/getLastWeekConstants",method = RequestMethod.GET)
+    public  ModelAndView getLastWeekConstants(HttpServletResponse response){
+        ConstantsDTO constantsDTO= censusService.getLastWeekTotal("direct");
+        writeJson(constantsDTO,response);
+        return null;
+    }
+    @RequestMapping(value = "/getLastMonthConstants",method = RequestMethod.GET)
+    public  ModelAndView getLastMonthConstants(HttpServletResponse response){
+        ConstantsDTO constantsDTO= censusService.getLastMonthTotal("direct");
+        writeJson(constantsDTO,response);
+        return null;
+    }
+
 }
