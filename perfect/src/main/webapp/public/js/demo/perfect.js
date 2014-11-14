@@ -159,7 +159,7 @@ function getOSAndBrowser() {
     sysArrayp[6] = window.screen.colorDepth + "-bit";
     sysArrayp[7] = ((v_flash == undefined || v_flash == "") ? "" : v_flash);
     sysArrayp[8] = new Date();
-    sysArrayp[9] = document.referrer == null;
+    sysArrayp[9] = document.referrer;
     sysArrayp[10] = iptest;
     sysArrayp[11] = regions;
     sysArrayp[12] = getPcOrMobile();
