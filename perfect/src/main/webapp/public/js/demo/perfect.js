@@ -75,6 +75,7 @@ function getOSAndBrowser() {
     // 11 用户所在地区
     // 12 移动或PC访问（1 移动端访问网页  0 PC端访问网页）
     var os = navigator.platform;
+
     var userAgent = navigator.userAgent;
     var tempArray = "";
 
@@ -106,7 +107,13 @@ function getOSAndBrowser() {
         sysArrayp[1] = "Unix";
     } else if (os.indexOf("Linux") > -1) {
         sysArrayp[1] = "Linux";
-    } else {
+    } else if (os.indexOf('Android') > -1 || os.indexOf('Linux') > -1) {
+        sysArrayp[1] = "Android";
+    } else if (os.indexOf('iPhone') > -1) {
+        sysArrayp[1] = "iPhone";
+    } else if (os.indexOf('Windows Phone') > -1) {
+        sysArrayp[1] = "Windows Phone";
+    }else {
         sysArrayp[1] = "Other";
     }
     if (/[Ff]irefox(\/\d+\.\d+)/.test(userAgent)) {
@@ -124,6 +131,18 @@ function getOSAndBrowser() {
     } else if (/[Oo]pera.+[Vv]ersion\/\d+\.\d+/.test(userAgent)) {
         tempArray = /([Oo]pera).+[Vv]ersion\/(\d+)\.\d+/.exec(userAgent);
         sysArrayp[2] = tempArray[1] + tempArray[2];
+    } else if (/[Tt]rident\/\d+\.\d+/.test(userAgent)) {
+        tempArray = /[Tt]rident\/(\d+)\.\d+/.exec(userAgent);
+        sysArrayp[2] = tempArray[1] + tempArray[2];
+    } else if (/[Aa]ppleWebKit\/\d+\.\d+/.test(userAgent)) {
+        tempArray = /[Aa]ppleWebKit\/(\d+)\.\d+/.exec(userAgent);
+        sysArrayp[2] = tempArray[1] + tempArray[2];
+    } else if (/[Gg]ecko\/\d+\.\d+/.test(userAgent)) {
+        tempArray = /[Gg]ecko\/(\d+)\.\d+/.exec(userAgent);
+        sysArrayp[2] = tempArray[1] + tempArray[2];
+    } else if (/[Kk]HTML\/\d+\.\d+/.test(userAgent)) {
+        tempArray = /[Kk]HTML\/(\d+)\.\d+/.exec(userAgent);
+        sysArrayp[2] = tempArray[1] + tempArray[2];
     } else {
         sysArrayp[2] = "Other";
     }
@@ -140,7 +159,7 @@ function getOSAndBrowser() {
     sysArrayp[6] = window.screen.colorDepth + "-bit";
     sysArrayp[7] = ((v_flash == undefined || v_flash == "") ? "" : v_flash);
     sysArrayp[8] = new Date();
-    sysArrayp[9] = document.referrer;
+    sysArrayp[9] = document.referrer == null;
     sysArrayp[10] = iptest;
     sysArrayp[11] = regions;
     sysArrayp[12] = getPcOrMobile();

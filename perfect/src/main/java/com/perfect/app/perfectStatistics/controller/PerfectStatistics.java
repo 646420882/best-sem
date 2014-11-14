@@ -65,9 +65,9 @@ public class PerfectStatistics extends WebContextSupport {
      * 4 客户端是否支持cookie（true为支持）
      * 5 客户端是否支持java（true为支持）
      * 6 客户端屏幕颜色渲染bit
-     * 7 客户端flash版本
+     * 7 客户端flash版本 （如果此参数为空则表明不支持flash插件,数据库标识为  Deny）
      * 8 客户端访问目标地址时间
-     * 9 客户端网页的访问来源（如果此参数为空则表明访问来远为：“直接访问”）
+     * 9 客户端网页的访问来源（如果此参数为空则表明访问来远为：“直接访问”,数据库标识为  direct）
      * 10 用户IP地址
      * 11 用户所在地区
      * 12 用户浏览网站使用设备(0 PC端浏览  1 移动端浏览)
@@ -175,7 +175,7 @@ public class PerfectStatistics extends WebContextSupport {
     @RequestMapping(value = "/getTodayConstants",method = RequestMethod.GET)
     public  ModelAndView getTodayConstants(HttpServletResponse response){
        ConstantsDTO constantsDTO= censusService.getTodayTotal("direct");
-        writeJson(constantsDTO,response);
+        writeJson(constantsDTO, response);
         return null;
     }
     @RequestMapping(value = "/getLastDayConstants",method = RequestMethod.GET)
