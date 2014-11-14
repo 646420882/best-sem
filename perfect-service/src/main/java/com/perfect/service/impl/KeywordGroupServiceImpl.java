@@ -69,7 +69,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
     private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
 
     public Map<String, Object> getKeywordFromBaidu(List<String> seedWordList, int skip, int limit, String krFileId, int sort, String fieldName) {
-        if (krFileId == null) {
+        if (krFileId == null || "".equals(krFileId)) {
             Map<String, Object> map = getKRResult(seedWordList, skip, limit, sort, fieldName);
             map.put("krFileId", _krFileId);
             map.put("total", resultSize);
@@ -463,19 +463,19 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
 
     @Override
     public int saveTrade(String tr, String cg, String gr, String kw, String url) {
-        LexiconEntity lexiconEntity=new LexiconEntity();
+        LexiconEntity lexiconEntity = new LexiconEntity();
         lexiconEntity.setTrade(tr);
         lexiconEntity.setCategory(cg);
         lexiconEntity.setGroup(gr);
         lexiconEntity.setKeyword(kw);
         lexiconEntity.setUrl(url);
-      return  keywordGroupDAO.saveTrade(lexiconEntity);
+        return keywordGroupDAO.saveTrade(lexiconEntity);
     }
 
     @Override
-    public PagerInfo findByPager(Map<String,Object> params,int page, int limit) {
+    public PagerInfo findByPager(Map<String, Object> params, int page, int limit) {
 
-        return keywordGroupDAO.findByPager(params,page,limit);
+        return keywordGroupDAO.findByPager(params, page, limit);
     }
 
     public Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit, int sort, String fieldName) {
