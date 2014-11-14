@@ -10,7 +10,6 @@ import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.AccountManageDAO;
-import com.perfect.dao.SystemUserDAO;
 import com.perfect.dto.BaiduAccountAllState;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.BaiduAccountInfoEntity;
@@ -34,9 +33,6 @@ public class AccountManageServiceImpl implements AccountManageService {
 
     @Resource
     private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
-
-    @Resource
-    private SystemUserDAO systemUserDAO;
 
     @Override
     public int updatePwd(String password, String newPwd) {

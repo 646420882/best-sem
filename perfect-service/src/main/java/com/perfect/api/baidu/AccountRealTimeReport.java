@@ -1,10 +1,11 @@
 package com.perfect.api.baidu;
 
 import com.perfect.autosdk.core.CommonService;
+import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.service.BaiduAccountService;
-import com.perfect.utils.BaiduServiceSupport;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -50,9 +51,13 @@ public class AccountRealTimeReport {
             }
         }
 
+
         ReportService reportService = null;
         try {
-            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(systemUserName,accountId));
+            CommonService commonService = getCommonService(baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(systemUserName,accountId));
+            if(commonService==null){
+                return new ArrayList<>();
+            }
             reportService = commonService.getService(ReportService.class);
         } catch (ApiException e) {
             e.printStackTrace();
@@ -78,5 +83,21 @@ public class AccountRealTimeReport {
         }
         List<RealTimeResultType> list = response.getRealTimeResultTypes();
         return list;
+    }
+
+
+
+    private CommonService getCommonService(BaiduAccountInfoEntity baiduAccountInfoEntity) {
+
+        if (baiduAccountInfoEntity == null) {
+            return null;
+        }
+
+        try {
+            return ServiceFactory.getInstance(baiduAccountInfoEntity.getBaiduUserName(), baiduAccountInfoEntity.getBaiduPassword(), baiduAccountInfoEntity.getToken(), null);
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
