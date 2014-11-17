@@ -7,18 +7,18 @@
     <groupId>com.groot.baidu</groupId>
     <artifactId>baidu-webmagic</artifactId>
     <version>0.1-SNAPSHOT</version>
-
+    <packaging>pom</packaging>
 
     <dependencies>
         <dependency>
             <groupId>us.codecraft</groupId>
             <artifactId>webmagic-core</artifactId>
-            <version>0.4.2</version>
+            <version>0.5.1</version>
         </dependency>
         <dependency>
             <groupId>us.codecraft</groupId>
             <artifactId>webmagic-extension</artifactId>
-            <version>0.4.2</version>
+            <version>0.5.1</version>
         </dependency>
     </dependencies>
 
