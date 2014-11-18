@@ -18,6 +18,7 @@
     <!--<import resource="bidding.xml"/>-->
     <import resource="spring-mongodb.xml"/>
     <import resource="task-datapull.xml"/>
+    <import resource="task-totalCensus.xml"/>
 
     <!-- ============================================= -->
 </beans>
