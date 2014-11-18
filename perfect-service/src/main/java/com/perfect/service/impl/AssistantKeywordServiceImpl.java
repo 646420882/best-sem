@@ -22,6 +22,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -32,7 +33,7 @@ import static com.perfect.mongodb.utils.EntityConstants.*;
 /**
  * Created by john on 2014/8/19.
  */
-@Repository("assistantKeywordService")
+@Service("assistantKeywordService")
 public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     @Resource
