@@ -7,6 +7,7 @@ import org.quartz.JobExecutionException;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.Calendar;
 
 /**
  * Created by john on 2014/11/17.
@@ -32,6 +33,7 @@ public class TotalEverdayCensusReportTask {
 
     public List<CensusEveryDayReportEntity> selectTask(){
         Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DATE,-1);
 //        cal.set(2014,10,13);
         List<ViewsDTO> lastPagelist = censusEveryDayReportDao.getGroupLastPageByDate(cal.getTime());
 
