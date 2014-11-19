@@ -17,8 +17,12 @@
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="/public/js/census/webSurvey.js"></script>
 </head>
 <body>
-<p class="control-label">网站概况</p>
+<div style="width:200px;">
+    <jsp:include page="left/left-nav.jsp"/>
+</div>
+
 </body>
 </html>
