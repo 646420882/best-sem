@@ -11,8 +11,18 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/pftstis")
 public class Websurvey {
 
+    /**
+     * 调转到网站概况页面
+     *
+     * @return
+     */
     @RequestMapping("/getIndex")
     public ModelAndView convertIndex(){
         return new ModelAndView("census/index");
+    }
+
+    @RequestMapping("/getVisitPage")
+    public ModelAndView convertVisit() {
+        return new ModelAndView("census/visitPage");
     }
 }
