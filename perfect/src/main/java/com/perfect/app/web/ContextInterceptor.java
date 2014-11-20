@@ -15,6 +15,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.regex.Pattern;
 
 /**
  * Created by vbzer_000 on 2014/8/27.
@@ -31,6 +32,10 @@ public class ContextInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        if (Pattern.compile("^/pftstis/.*").matcher(request.getServletPath()).matches()) {
+            return true;
+        }
 
         /**
          * 在经过Spring Security认证之后, Security会把一个SecurityContextImpl对象存储到session中, 这个对象中存有当前用户的信息
@@ -79,6 +84,7 @@ public class ContextInterceptor implements HandlerInterceptor {
                 if ("/configuration/save".equals(request.getServletPath())) {
                     return true;
                 }
+
 
                 String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
                 response.sendRedirect(basePath + "/configuration/add");
