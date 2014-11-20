@@ -19,7 +19,7 @@
     <context:annotation-config/>
     <context:component-scan base-package="com.perfect"/>
 
-    <import resource="../../../../perfect/src/main/resources/spring-mongodb.xml"/>
+    <import resource="spring-mongodb.xml"/>
 
     <import resource="spring-es.xml"/>
 </beans>
