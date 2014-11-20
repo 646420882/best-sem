@@ -22,5 +22,5 @@ $(function(){
 });
 
 function Test() {
-    $("#alert").toggle();
+    $("div[class^='alert']").toggle();
 }
