@@ -5,6 +5,7 @@ import com.perfect.service.CensusService;
 import com.perfect.utils.web.WebContextSupport;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,15 @@ import java.util.List;
 public class PerfectStatistics extends WebContextSupport {
     @Resource
     private CensusService censusService;
+    /**
+     * 统计页面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
+    public ModelAndView Count(ModelMap model) {
+        return new ModelAndView("count/count", model);
+    }
     /**
      * test
      *
