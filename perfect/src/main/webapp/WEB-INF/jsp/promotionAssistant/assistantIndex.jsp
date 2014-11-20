@@ -1331,7 +1331,6 @@
     </div>
 </div>
 <%--推广计划设置否定关键词窗口--%>
-<div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setNegtiveWord">
     <h2 id="setFdKeywordDiv">
         <span class="fl">否定关键词设置</span>
@@ -1394,7 +1393,6 @@
     </div>
 </div>
 <%--推广计划设置IP排除窗口--%>
-<div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setExcludeIp">
     <h2 id="setExcludeIpDiv">
         <span class="fl">IP排除列表</span>
@@ -1422,7 +1420,6 @@
     </div>
 </div>
 <%--推广计划设置推广时段窗口--%>
-<div class="TB_overlayBG"></div>
 <div class="box" style="display:none;" id="setExtension">
     <h2 id="setExtensionDiv">
         <span class="fl">推广时段管理</span>

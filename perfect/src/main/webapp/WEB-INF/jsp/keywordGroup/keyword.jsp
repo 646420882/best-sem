@@ -9,7 +9,7 @@ To change this template use File | Settings | File Templates.
 <!doctype html>
 <html>
 <head>
-    <title></title>
+    <title>大数据智能营销</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
