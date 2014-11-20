@@ -40,4 +40,5 @@ public interface CensusDAO extends  MongoCrudRepository<CensusEntity,Long> {
      * @return
      */
     public ConstantsDTO getLastMonthTotal(String url);
+
 }

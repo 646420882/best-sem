@@ -2,6 +2,7 @@ package com.perfect.mongodb.dao.impl;
 
 import com.perfect.dao.CensusEveryDayReportDao;
 import com.perfect.dto.ViewsDTO;
+import com.perfect.entity.CensusEntity;
 import com.perfect.entity.CensusEveryDayReportEntity;
 import com.perfect.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.mongodb.base.BaseMongoTemplate;
@@ -88,6 +89,12 @@ public class CensusEveryDayReportDaoImpl extends AbstractSysBaseDAOImpl implemen
     public void insertList(List<CensusEveryDayReportEntity> list){
         MongoTemplate mongoTemplate = getSysMongoTemplate();
         mongoTemplate.insertAll(list);
+    }
+
+
+    public List<CensusEntity> getCensus(){
+        MongoTemplate mongoTemplate = getSysMongoTemplate();
+        return mongoTemplate.find(new Query(Criteria.where("sys").is("Windows 7")),CensusEntity.class,EntityConstants.SYS_CENSUS);
     }
 
 

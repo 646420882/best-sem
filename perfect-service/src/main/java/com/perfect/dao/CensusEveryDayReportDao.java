@@ -1,6 +1,7 @@
 package com.perfect.dao;
 
 import com.perfect.dto.ViewsDTO;
+import com.perfect.entity.CensusEntity;
 import com.perfect.entity.CensusEveryDayReportEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.WarningRuleEntity;
@@ -36,4 +37,11 @@ public interface CensusEveryDayReportDao{
      * @param list
      */
     public void insertList(List<CensusEveryDayReportEntity> list);
+
+
+    /**
+     * Demo
+     * @return
+     */
+    public List<CensusEntity> getCensus();
 }
