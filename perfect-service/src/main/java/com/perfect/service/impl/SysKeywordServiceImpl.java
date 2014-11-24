@@ -3,7 +3,7 @@ package com.perfect.service.impl;
 
 import com.perfect.dao.KeywordDAO;
 import com.perfect.entity.KeywordEntity;
-import com.perfect.mongodb.utils.PaginationParam;
+import com.perfect.dao.mongodb.utils.PaginationParam;
 import com.perfect.service.SysKeywordService;
 import org.springframework.stereotype.Component;
 

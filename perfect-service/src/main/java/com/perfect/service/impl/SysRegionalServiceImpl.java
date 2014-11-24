@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.*;
 
-import static com.perfect.mongodb.utils.RegionalConstants.*;
+import static com.perfect.commons.constants.RegionalConstants.*;
 
 /**
  * Created by SubDong on 2014/9/29.

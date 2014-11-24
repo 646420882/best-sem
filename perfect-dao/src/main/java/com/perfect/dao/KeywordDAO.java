@@ -1,0 +1,95 @@
+package com.perfect.dao;
+
+import com.perfect.dao.mongodb.utils.PagerInfo;
+import com.perfect.dao.mongodb.utils.PaginationParam;
+import com.perfect.entity.AdgroupEntity;
+import com.perfect.entity.KeywordEntity;
+import com.perfect.entity.backup.KeyWordBackUpEntity;
+import org.springframework.data.mongodb.core.query.Query;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by baizz on 2014-7-7.
+ */
+public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
+    /**
+     * 按条件批量更新
+     * <br>------------------------------<br>
+     *
+     * @param field
+     * @param seedWord
+     * @param value
+     */
+    void updateMulti(String field, String seedWord, Object value);
+
+    void updateMultiKeyword(Long[] ids, BigDecimal price, String pcUrl);
+
+    AdgroupEntity findByKeywordId(Long keywordId);
+
+    List<Long> getKeywordIdByAdgroupId(Long adgroupId);
+
+    List<KeywordEntity> getKeywordByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
+
+    List<KeywordEntity> getKeywordByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
+
+    List<KeywordEntity> findByAgroupId(Long oid);
+
+    // TODO service 层不能出现servlet
+//    Pager getKeywordByPager(HttpServletRequest request, Map<String, Object> params, int orderBy);
+
+    List<KeywordEntity> getKeywordInfo();
+
+    Long keywordCount(List<Long> adgroupIds);
+
+    /**
+     * 安全添加
+     *
+     * @param keywordEntity
+     */
+    void insertAndQuery(List<KeywordEntity> keywordEntity);
+
+    KeywordEntity findByName(String name, Long accountId);
+
+    void remove(Query query);
+
+    List<KeywordEntity> findByQuery(Query query);
+
+    List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param, Map<String, Object> queryParams);
+
+    List<KeywordEntity> findByAdgroupId(String adgroupId, PaginationParam param);
+
+    List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param, Map<String, Object> queryParams);
+
+    KeywordEntity findByObjectId(String oid);
+
+    PagerInfo findByPageInfo(Query q, int pageSize, int pageNo);
+
+    void updateAdgroupIdByOid(String id, Long adgroupId);
+
+    void deleteById(String id);
+
+    void updateByMongoId(KeywordEntity keywordEntity);
+
+    List<KeywordEntity> getKeywordByIds(List<Long> ids);
+
+    List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
+
+    List<KeywordEntity> findByIds(List<Long> ids, PaginationParam... param);
+
+    void update(KeywordEntity keywordEntity, KeyWordBackUpEntity keyWordBackUpEntity);
+
+    void softDelete(Long id);
+
+    void updateLocalstatu(long cid);
+
+    void deleteByObjectAdgroupIds(List<String> agids);
+
+    void softDeleteByLongAdgroupIds(List<Long> longSet);
+
+    List<KeywordEntity> findByObjectIds(List<String> strIds);
+
+    List<KeywordEntity> findKeywordByIds(List<Long> ids);
+}

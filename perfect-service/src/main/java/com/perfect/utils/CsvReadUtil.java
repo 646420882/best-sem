@@ -2,8 +2,6 @@ package com.perfect.utils;
 
 
 import com.perfect.entity.KeywordEntity;
-import com.perfect.utils.vo.CSVTotalEntity;
-import com.perfect.utils.vo.CSVUrlEntity;
 import org.apache.log4j.Logger;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;

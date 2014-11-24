@@ -1,9 +1,9 @@
 package com.perfect.utils.forkjoin.task;
 
 import com.perfect.utils.vo.CSVUrlEntity;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -21,27 +21,33 @@ public class ExcelCheckUrlTask extends RecursiveTask<List<CSVUrlEntity>> {
     private List<CSVUrlEntity> urlList;
     private List<CSVUrlEntity> finalList;
 
+    private CloseableHttpClient httpClient;
+
     public ExcelCheckUrlTask(int start, int last, List<CSVUrlEntity> urlList) {
         this.start = start;
         this.last = last;
         this.urlList = urlList;
+
+        httpClient = HttpClients.createDefault();
     }
 
     @Override
     protected List<CSVUrlEntity> compute() {
         List<CSVUrlEntity> fatcList = new LinkedList<>();
         if ((last - last) < thread) {
+
             for (int i = start; i < last; i++) {
-                MultiThreadedHttpConnectionManager connectionManager = new MultiThreadedHttpConnectionManager();
-                HttpClient client = new HttpClient(connectionManager);
-                GetMethod get = new GetMethod(urlList.get(i).getKeywordURL());
+
+
+                HttpGet get = new HttpGet(urlList.get(i).getKeywordURL());
                 try {
-                    client.executeMethod(get);
+                    httpClient.execute(get);
+
                     String factURL = get.getURI().toString();
                     if (factURL.indexOf("&tourl=") > -1) {
                         factURL = factURL.split("&tourl=")[1];
                     }
-                    CSVUrlEntity csvUrlEntity=urlList.get(i);
+                    CSVUrlEntity csvUrlEntity = urlList.get(i);
                     csvUrlEntity.setFactURL(factURL);
                     fatcList.add(csvUrlEntity);
                 } catch (IOException e) {
@@ -51,10 +57,10 @@ public class ExcelCheckUrlTask extends RecursiveTask<List<CSVUrlEntity>> {
                 }
             }
             return fatcList;
-        }else{
-            int middel=(last+start)/2;
-            ExcelCheckUrlTask left=new ExcelCheckUrlTask(start,middel,urlList);
-            ExcelCheckUrlTask right=new ExcelCheckUrlTask(middel,last,urlList);
+        } else {
+            int middel = (last + start) / 2;
+            ExcelCheckUrlTask left = new ExcelCheckUrlTask(start, middel, urlList);
+            ExcelCheckUrlTask right = new ExcelCheckUrlTask(middel, last, urlList);
             left.fork();
             right.fork();
             fatcList.addAll(left.join());

@@ -1,7 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.entity.LexiconEntity;
-import com.perfect.mongodb.utils.PagerInfo;
+import com.perfect.dao.mongodb.utils.PagerInfo;
 
 import java.io.OutputStream;
 import java.util.List;

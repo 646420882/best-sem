@@ -7,6 +7,7 @@ import java.util.concurrent.RecursiveAction;
 /**
  * Created by vbzer_000 on 14-7-22.
  */
+@Deprecated
 public class Task extends RecursiveAction {
     private final Map<String, String> keyGroupMap;
     private final Map<String, Set<String>> matchKeySet;

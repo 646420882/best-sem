@@ -2,12 +2,10 @@ package com.perfect.service.impl;
 
 import com.perfect.dao.AdgroupBackUpDAO;
 import com.perfect.dao.AdgroupDAO;
-import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
-import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.mongodb.utils.Pager;
+import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.dao.mongodb.utils.Pager;
 import com.perfect.service.AdgroupBackUpService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

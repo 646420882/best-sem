@@ -1,7 +1,7 @@
 package com.perfect.utils;
 
-import com.perfect.utils.vo.CSVUrlEntity;
 import com.perfect.utils.forkjoin.task.ExcelCheckUrlTask;
+import com.perfect.utils.vo.CSVUrlEntity;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;

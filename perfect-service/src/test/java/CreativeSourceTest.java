@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;
 import org.unitils.spring.annotation.SpringBeanByType;
-import sun.misc.BASE64Encoder;
 
 import java.util.ArrayList;
 import java.util.List;

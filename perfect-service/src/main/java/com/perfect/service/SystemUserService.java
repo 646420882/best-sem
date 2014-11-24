@@ -3,8 +3,6 @@ package com.perfect.service;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 
-import java.util.List;
-
 /**
  * Created by yousheng on 2014/8/12.
  *

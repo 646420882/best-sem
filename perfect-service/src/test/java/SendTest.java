@@ -1,6 +1,6 @@
-import com.perfect.transmitter.sendMail.MailSenderInfo;
-import com.perfect.transmitter.sendMail.SimpleMailSender;
-import com.perfect.transmitter.sendMes.SendMessage;
+import com.perfect.commons.message.mail.MailSenderInfo;
+import com.perfect.commons.message.mail.SimpleMailSender;
+import com.perfect.commons.message.sms.SendMessage;
 import org.junit.Test;
 
 public class SendTest {

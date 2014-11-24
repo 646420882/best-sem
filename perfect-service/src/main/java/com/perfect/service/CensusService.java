@@ -3,8 +3,6 @@ package com.perfect.service;
 import com.perfect.dao.MongoCrudRepository;
 import com.perfect.dto.ConstantsDTO;
 import com.perfect.entity.CensusEntity;
-import com.perfect.mongodb.base.BaseMongoTemplate;
-import com.perfect.service.impl.CensusServiceImpl;
 
 /**
  * Created by XiaoWei on 2014/11/11.

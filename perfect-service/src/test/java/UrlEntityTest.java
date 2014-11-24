@@ -8,8 +8,6 @@ import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;
 import org.unitils.spring.annotation.SpringBeanByType;
 
-import java.util.List;
-
 /**
  * Created by vbzer_000 on 2014/9/24.
  */
@@ -71,7 +69,7 @@ public class UrlEntityTest extends UnitilsJUnit4 {
         @Override
         public void run() {
             for (int i = 0; i < Integer.MAX_VALUE; i++) {
-                List<BaiduSpiderHelper.PreviewData> dataList = BaiduSpiderHelper.crawl(keyword, 1);
+//                List<BaiduSpiderHelper.PreviewData> dataList = BaiduSpiderHelper.crawl(keyword, 1);
             }
         }
     }

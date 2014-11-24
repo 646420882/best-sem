@@ -5,7 +5,7 @@ import com.google.common.primitives.Bytes;
 import com.perfect.dao.AccountAnalyzeDAO;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.KeywordRealTimeDataVOEntity;
-import com.perfect.mongodb.utils.Performance;
+import com.perfect.dao.mongodb.utils.Performance;
 import com.perfect.service.PerformanceService;
 import org.springframework.stereotype.Repository;
 

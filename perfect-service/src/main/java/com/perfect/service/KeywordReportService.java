@@ -2,7 +2,7 @@ package com.perfect.service;
 
 import com.perfect.dao.MongoCrudRepository;
 import com.perfect.entity.KeywordReportEntity;
-import com.perfect.mongodb.utils.PagerInfo;
+import com.perfect.dao.mongodb.utils.PagerInfo;
 
 import java.io.OutputStream;
 import java.util.List;

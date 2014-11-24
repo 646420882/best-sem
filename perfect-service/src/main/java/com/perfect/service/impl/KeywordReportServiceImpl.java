@@ -1,13 +1,11 @@
 package com.perfect.service.impl;
 
 import com.google.common.primitives.Bytes;
-import com.perfect.autosdk.sms.v3.KeywordService;
 import com.perfect.dao.KeywordReportDAO;
-import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.KeywordReportEntity;
-import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.mongodb.utils.Pager;
-import com.perfect.mongodb.utils.PagerInfo;
+import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.dao.mongodb.utils.Pager;
+import com.perfect.dao.mongodb.utils.PagerInfo;
 import com.perfect.service.KeywordReportService;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +13,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

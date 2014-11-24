@@ -14,21 +14,20 @@ import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.backup.KeyWordBackUpEntity;
-import com.perfect.mongodb.utils.EntityConstants;
-import com.perfect.mongodb.utils.PagerInfo;
+import com.perfect.dao.mongodb.utils.EntityConstants;
+import com.perfect.dao.mongodb.utils.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.service.KeyWordBackUpService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static com.perfect.mongodb.utils.EntityConstants.*;
+import static com.perfect.dao.mongodb.utils.EntityConstants.*;
 
 /**
  * Created by john on 2014/8/19.

@@ -1,15 +1,15 @@
 package com.perfect.service.impl;
 
+import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ResHeaderUtil;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.entity.*;
-import com.perfect.mongodb.base.BaseMongoTemplate;
-import com.perfect.mongodb.dao.impl.CampaignDAOImpl;
+import com.perfect.dao.mongodb.base.BaseMongoTemplate;
+import com.perfect.dao.mongodb.impl.CampaignDAOImpl;
 import com.perfect.service.AccountDataService;
-import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.service.SystemUserService;
-import com.perfect.utils.BaiduServiceSupport;
+import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.utils.DBNameUtils;
 import com.perfect.utils.EntityConvertUtils;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ import javax.annotation.Resource;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
 
-import static com.perfect.mongodb.utils.EntityConstants.*;
+import static com.perfect.dao.mongodb.utils.EntityConstants.*;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**

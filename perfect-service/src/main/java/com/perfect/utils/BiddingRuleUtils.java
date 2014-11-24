@@ -1,6 +1,6 @@
 package com.perfect.utils;
 
-import com.perfect.constants.BiddingStrategyConstants;
+import com.perfect.commons.constants.BiddingStrategyConstants;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.entity.bidding.StrategyEntity;
 import org.quartz.CronExpression;

@@ -1,4 +1,4 @@
-import com.perfect.elasticsearch.service.impl.ElasticSearchServiceImpl;
+import com.perfect.db.elasticsearch.service.impl.ElasticSearchServiceImpl;
 import com.perfect.entity.CreativeSourceEntity;
 import org.junit.Test;
 import org.slf4j.Logger;

@@ -2,8 +2,8 @@ package com.perfect.service.impl;
 
 import com.perfect.dao.KeywordImDAO;
 import com.perfect.entity.KeywordImEntity;
-import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.mongodb.utils.Pager;
+import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.dao.mongodb.utils.Pager;
 import com.perfect.service.KeywordImService;
 import org.springframework.stereotype.Service;
 

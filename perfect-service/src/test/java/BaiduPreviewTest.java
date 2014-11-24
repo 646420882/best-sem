@@ -1,5 +1,5 @@
-import com.perfect.api.baidu.BaiduSpiderHelper;
 import com.perfect.api.baidu.BaiduPreviewHelperFactory;
+import com.perfect.api.baidu.BaiduSpiderHelper;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.dto.CreativeDTO;
@@ -35,7 +35,7 @@ public class BaiduPreviewTest extends UnitilsJUnit4 {
                     @Override
                     public void run() {
                         for (int i = 0; i < 100; i++) {
-                            List<BaiduSpiderHelper.PreviewData> map = htmlService.getPageData(new String[]{key}, 28000);
+//                            List<BaiduSpiderHelper.PreviewData> map = htmlService.getPageData(new String[]{key}, 28000);
                             print(map);
                         }
                     }

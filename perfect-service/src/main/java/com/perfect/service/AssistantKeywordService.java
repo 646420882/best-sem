@@ -5,7 +5,7 @@ import com.perfect.dto.KeywordDTO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.KeywordEntity;
-import com.perfect.mongodb.utils.PagerInfo;
+import com.perfect.dao.mongodb.utils.PagerInfo;
 
 import java.util.List;
 import java.util.Map;

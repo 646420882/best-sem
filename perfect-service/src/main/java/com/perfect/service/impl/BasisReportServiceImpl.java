@@ -7,11 +7,11 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.BasisReportDAO;
 import com.perfect.dto.AccountReportDTO;
 import com.perfect.entity.StructureReportEntity;
-import com.perfect.mongodb.utils.DateUtils;
+import com.perfect.dao.mongodb.utils.DateUtils;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.BasisReportService;
-import com.perfect.utils.reportUtil.*;
+import com.perfect.utils.report.*;
 import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
 
@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 
-import static com.perfect.utils.reportUtil.ReportConstants.*;
+import static com.perfect.utils.report.ReportConstants.*;
 
 /**
  * Created by SubDong on 2014/8/6.

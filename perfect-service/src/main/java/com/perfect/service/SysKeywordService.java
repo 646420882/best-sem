@@ -1,7 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.entity.KeywordEntity;
-import com.perfect.mongodb.utils.PaginationParam;
+import com.perfect.dao.mongodb.utils.PaginationParam;
 
 import java.util.List;
 import java.util.Map;

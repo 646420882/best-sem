@@ -1,12 +1,7 @@
 package com.perfect.service;
 
-import com.mongodb.WriteResult;
-import com.perfect.autosdk.sms.v3.Folder;
-import com.perfect.autosdk.sms.v3.FolderMonitor;
-import com.perfect.autosdk.sms.v3.Monitor;
 import com.perfect.dto.KeywordDTO;
 import com.perfect.entity.FolderEntity;
-import com.perfect.entity.FolderMonitorEntity;
 
 import java.util.List;
 

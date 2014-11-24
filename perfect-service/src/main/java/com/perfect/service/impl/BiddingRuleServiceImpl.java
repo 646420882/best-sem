@@ -2,7 +2,7 @@ package com.perfect.service.impl;
 
 import com.perfect.dao.BiddingRuleDAO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
-import com.perfect.mongodb.utils.PaginationParam;
+import com.perfect.dao.mongodb.utils.PaginationParam;
 import com.perfect.service.BiddingRuleService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;

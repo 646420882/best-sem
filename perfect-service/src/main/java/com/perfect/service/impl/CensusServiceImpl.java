@@ -1,11 +1,10 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.CensusDAO;
-import com.perfect.dao.MongoCrudRepository;
 import com.perfect.dto.ConstantsDTO;
 import com.perfect.entity.CensusEntity;
-import com.perfect.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.mongodb.utils.Pager;
+import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.dao.mongodb.utils.Pager;
 import com.perfect.service.CensusService;
 import org.springframework.stereotype.Service;
 

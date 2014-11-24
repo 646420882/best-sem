@@ -1,7 +1,5 @@
 package com.perfect.utils.vo;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
 /**
  * Created by XiaoWei on 2014/8/11.
  */
