@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.dto.BaiduAccountAllState;
+import com.perfect.dto.BaiduAccountAllStateDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 
@@ -9,6 +9,7 @@ import java.util.Map;
 
 /**
  * Created by baizz on 2014-8-21.
+ * 2014-11-24 refactor
  */
 public interface AccountManageService {
 
@@ -48,7 +49,7 @@ public interface AccountManageService {
      *
      * @return
      */
-    public  List<BaiduAccountAllState> getAccountAll();
+    public  List<BaiduAccountAllStateDTO> getAccountAll();
 
     /**
      * 修改百度帐号的启用状态

@@ -1,6 +1,6 @@
 package com.perfect.utils.report;
 
-import com.perfect.entity.StructureReportEntity;
+import com.perfect.dto.StructureReportDTO;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -12,20 +12,20 @@ import java.util.concurrent.RecursiveTask;
 
 /**
  * Created by SubDong on 2014/8/8.
+ * 2014-11-24 refactor
  */
-public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureReportEntity>> {
+public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureReportDTO>> {
 
     private final int threshold = 100;
 
     private int endNumber;
     private int begin;
-    private int terminal;
     private int report;
     private String userName;
 
-    private List<StructureReportEntity> objectList;
+    private List<StructureReportDTO> objectList;
 
-    public BasisReportDefaultUtil(List<StructureReportEntity> objects, int begin, int endNumber, int report, String userName) {
+    public BasisReportDefaultUtil(List<StructureReportDTO> objects, int begin, int endNumber, int report, String userName) {
         this.objectList = objects;
         this.endNumber = endNumber;
         this.begin = begin;
@@ -34,8 +34,8 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
     }
 
     @Override
-    protected Map<String, StructureReportEntity> compute() {
-        Map<String, StructureReportEntity> map = new HashMap<>();
+    protected Map<String, StructureReportDTO> compute() {
+        Map<String, StructureReportDTO> map = new HashMap<>();
         if ((endNumber - begin) < threshold) {
             for (int i = begin; i < endNumber; i++) {
                 boolean repotr = false;
@@ -71,7 +71,7 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
                         break;
                 }
                 if (repotr) {
-                    StructureReportEntity voEntity = map.get(adgroupName);
+                    StructureReportDTO voEntity = map.get(adgroupName);
                     voEntity.setMobileClick(((voEntity.getMobileClick() == null) ? 0 : voEntity.getMobileClick()) + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()));
                     voEntity.setMobileConversion((voEntity.getMobileConversion() == null ? 0 : voEntity.getMobileConversion()) + ((objectList.get(i).getMobileConversion() == null) ? 0 : objectList.get(i).getMobileClick()));
                     voEntity.setMobileCost((voEntity.getMobileCost() == null ? BigDecimal.ZERO : voEntity.getMobileCost()).add((objectList.get(i).getMobileCost() == null) ? BigDecimal.ZERO : objectList.get(i).getMobileCost()));
@@ -149,8 +149,8 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
             BasisReportDefaultUtil right = new BasisReportDefaultUtil(objectList, midpoint, endNumber, report, userName);
             invokeAll(left, right);
             try {
-                Map<String, StructureReportEntity> leftMap = left.get();
-                Map<String, StructureReportEntity> rightMap = right.get();
+                Map<String, StructureReportDTO> leftMap = left.get();
+                Map<String, StructureReportDTO> rightMap = right.get();
                 map.putAll(merge(leftMap, rightMap, report));
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -162,17 +162,17 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
     }
 
 
-    public Map<String, StructureReportEntity> merge(Map<String, StructureReportEntity> leftMap, Map<String, StructureReportEntity> rightMap, int reportType) {
-        Map<String, StructureReportEntity> dataMap = new HashMap<>();
+    public Map<String, StructureReportDTO> merge(Map<String, StructureReportDTO> leftMap, Map<String, StructureReportDTO> rightMap, int reportType) {
+        Map<String, StructureReportDTO> dataMap = new HashMap<>();
 
 
-        for (Iterator<Map.Entry<String, StructureReportEntity>> entry1 = leftMap.entrySet().iterator(); entry1.hasNext(); ) {
+        for (Iterator<Map.Entry<String, StructureReportDTO>> entry1 = leftMap.entrySet().iterator(); entry1.hasNext(); ) {
 
-            StructureReportEntity mapValue1 = entry1.next().getValue();
+            StructureReportDTO mapValue1 = entry1.next().getValue();
 
-            for (Iterator<Map.Entry<String, StructureReportEntity>> entry2 = rightMap.entrySet().iterator(); entry2.hasNext(); ) {
+            for (Iterator<Map.Entry<String, StructureReportDTO>> entry2 = rightMap.entrySet().iterator(); entry2.hasNext(); ) {
 
-                StructureReportEntity mapValue2 = entry2.next().getValue();
+                StructureReportDTO mapValue2 = entry2.next().getValue();
                 boolean repotr = false;
                 switch (report) {
                     case 1:

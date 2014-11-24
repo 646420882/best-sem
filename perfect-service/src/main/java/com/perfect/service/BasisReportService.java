@@ -1,7 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dto.AccountReportDTO;
-import com.perfect.entity.StructureReportEntity;
+import com.perfect.dto.StructureReportDTO;
 
 import java.io.OutputStream;
 import java.util.Date;
@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  * Created by SubDong on 2014/8/8.
+ * 2014-11-24 refactor
  */
 public interface BasisReportService {
     /**
@@ -23,7 +24,7 @@ public interface BasisReportService {
      * @param start      开始数
      * @return
      */
-    public Map<String, List<StructureReportEntity>> getReportDate(String[] date, int devices, int dateType, int reportType, int start, int limit, String sort, Long dataId, String dateName);
+    public Map<String, List<StructureReportDTO>> getReportDate(String[] date, int devices, int dateType, int reportType, int start, int limit, String sort, Long dataId, String dateName);
 
     /**
      * 获取用户所有数据
@@ -80,5 +81,5 @@ public interface BasisReportService {
      *                  PC  及getPc  Mobile 及 getMobile
      * @return
      */
-    public Map<String, List<StructureReportEntity>> getKeywordReport(Long[] id, String startDate, String endDate, int devices);
+    public Map<String, List<StructureReportDTO>> getKeywordReport(Long[] id, String startDate, String endDate, int devices);
 }

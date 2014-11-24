@@ -10,7 +10,7 @@ import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.AccountManageDAO;
-import com.perfect.dto.BaiduAccountAllState;
+import com.perfect.dto.BaiduAccountAllStateDTO;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.MD5;
@@ -27,6 +27,7 @@ import java.util.*;
 
 /**
  * Created by baizz on 2014-8-21.
+ * 2014-11-24 refactor
  */
 @Service("accountManageService")
 public class AccountManageServiceImpl implements AccountManageService {
@@ -86,9 +87,9 @@ public class AccountManageServiceImpl implements AccountManageService {
     }
 
     @Override
-    public  List<BaiduAccountAllState> getAccountAll() {
+    public  List<BaiduAccountAllStateDTO> getAccountAll() {
         List<SystemUserEntity> entities = accountManageDAO.getAccountAll();
-        List<BaiduAccountAllState> allStates = new ArrayList<>();
+        List<BaiduAccountAllStateDTO> allStates = new ArrayList<>();
 
         for(SystemUserEntity userEntity :entities){
             if(userEntity.getUserName().equals("administrator")){
@@ -96,7 +97,7 @@ public class AccountManageServiceImpl implements AccountManageService {
             }
             if(userEntity.getBaiduAccountInfoEntities().size() > 0){
                 for(BaiduAccountInfoEntity entity :userEntity.getBaiduAccountInfoEntities()){
-                    BaiduAccountAllState accountAllState = new BaiduAccountAllState();
+                    BaiduAccountAllStateDTO accountAllState = new BaiduAccountAllStateDTO();
                     accountAllState.setIdObj(entity.getId());
                     accountAllState.setUserName(userEntity.getUserName());
                     accountAllState.setUserState(userEntity.getState());
@@ -105,7 +106,7 @@ public class AccountManageServiceImpl implements AccountManageService {
                     allStates.add(accountAllState);
                 }
             }else{
-                BaiduAccountAllState accountAllState = new BaiduAccountAllState();
+                BaiduAccountAllStateDTO accountAllState = new BaiduAccountAllStateDTO();
                 accountAllState.setIdObj(0l);
                 accountAllState.setUserName(userEntity.getUserName());
                 accountAllState.setUserState(userEntity.getState());

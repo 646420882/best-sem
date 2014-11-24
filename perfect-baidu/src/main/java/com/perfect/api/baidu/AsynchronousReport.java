@@ -17,10 +17,10 @@ import java.util.List;
  */
 public class AsynchronousReport {
 
-    //得到百度aip
-    private CommonService service = null;
+    //得到百度api
+    private CommonService service;
 
-    private ReportService reportService = null;
+    private ReportService reportService;
 
 
     public AsynchronousReport(String userName, String password, String token) {
