@@ -158,7 +158,8 @@ public class AssistantAdgroupController extends WebContextSupport {
                               @RequestParam(value = "status") Integer s,
                               @RequestParam(value = "mib") Double mib) {
         try {
-            AdgroupEntity adgroupEntity = new AdgroupEntity();
+            ////2014-11-24 refactor
+            AdgroupDTO adgroupEntity = new AdgroupDTO();
             adgroupEntity.setAccountId(AppContext.getAccountId());
             if (cid.length() > OBJ_SIZE) {
                 adgroupEntity.setCampaignObjId(cid);

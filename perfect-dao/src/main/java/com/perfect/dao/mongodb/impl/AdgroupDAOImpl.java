@@ -10,6 +10,7 @@ import com.perfect.dao.mongodb.base.BaseMongoTemplate;
 import com.perfect.dao.mongodb.utils.Pager;
 import com.perfect.dao.mongodb.utils.PagerInfo;
 import com.perfect.dao.utils.LogUtils;
+import com.perfect.dto.AdgroupDTO;
 import com.perfect.entity.*;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
 import org.springframework.beans.BeanUtils;
@@ -207,11 +208,13 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
     }
 
     @Override
-    public Object insertOutId(com.perfect.entity.AdgroupEntity adgroupEntity) {
+    public Object insertOutId(AdgroupDTO adgroupEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.insert(adgroupEntity, MongoEntityConstants.TBL_ADGROUP);
+        AdgroupEntity adgroupEntityInsert=new AdgroupEntity();
+        BeanUtils.copyProperties(adgroupEntity,adgroupEntityInsert);
+        mongoTemplate.insert(adgroupEntityInsert, MongoEntityConstants.TBL_ADGROUP);
         logDAO.insertLog(adgroupEntity.getId(), LogStatusConstant.ENTITY_ADGROUP);
-        return adgroupEntity.getId();
+        return adgroupEntityInsert.getId();
     }
 
     /**
@@ -248,7 +251,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<com.perfect.entity.A
 
     @Override
 
-    public void updateByObjId(AdgroupEntity adgroupEntity) {
+    public void updateByObjId(AdgroupDTO adgroupEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Update up = new Update();
         up.set("name", adgroupEntity.getAdgroupName());

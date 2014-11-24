@@ -2,6 +2,7 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 package com.perfect.dao;
 
+import com.perfect.dto.AdgroupDTO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.dao.mongodb.utils.PagerInfo;
 import org.springframework.data.mongodb.core.query.Query;
@@ -31,7 +32,8 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
 
     AdgroupEntity fndEntity(Map<String, Object> params);
 
-    Object insertOutId(AdgroupEntity adgroupEntity);
+    //2014-11-24 refactor
+    Object insertOutId(AdgroupDTO adgroupEntity);
 
     void deleteByObjId(String oid);
 
