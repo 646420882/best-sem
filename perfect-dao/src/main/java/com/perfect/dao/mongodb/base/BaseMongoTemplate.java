@@ -3,7 +3,6 @@ package com.perfect.dao.mongodb.base;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
-import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.core.AppContext;
 import com.perfect.utils.DBNameUtils;
 import org.springframework.data.mongodb.MongoDbFactory;
@@ -22,6 +21,7 @@ import java.util.Properties;
 
 /**
  * Created by baizz on 2014-07-23.
+ * 2014-11-24 refactor
  */
 public class BaseMongoTemplate {
 
@@ -69,10 +69,10 @@ public class BaseMongoTemplate {
     }
 
     public static MongoTemplate getSysMongo() {
-        Object mongoObj = ApplicationContextHelper.getCurrentApplicationContext().getBean("mongoSysTemplate");
-        if (mongoObj != null) {
-            return (MongoTemplate) mongoObj;
-        }
+//        Object mongoObj = ApplicationContextHelper.getCurrentApplicationContext().getBean("mongoSysTemplate");
+//        if (mongoObj != null) {
+//            return (MongoTemplate) mongoObj;
+//        }
         return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
     }
 

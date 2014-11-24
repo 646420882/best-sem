@@ -4,7 +4,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * Created by baizz on 2014-7-2.
+ * 2014-11-24 refactor
  */
+@Deprecated
 public class DataAttributeInfoEntity {
 
     @Field("name")

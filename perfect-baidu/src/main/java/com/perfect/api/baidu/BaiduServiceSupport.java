@@ -7,10 +7,9 @@ import com.perfect.autosdk.exception.ApiException;
 
 /**
  * Created by baizz on 2014-6-12.
+ * 2014-11-24 refactor
  */
 public class BaiduServiceSupport {
-
-    private static CommonService commonService;
 
     private BaiduServiceSupport() {
     }

@@ -4,9 +4,6 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.service.BaiduAccountService;
-import org.springframework.util.Assert;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,15 +11,16 @@ import java.util.*;
 
 /**
  * Created by john on 2014-7-30.
+ * 2014-11-24 refactor
  */
 public class AccountRealTimeReport {
 
     public List<RealTimeResultType> getAccountRealTimeData(String systemUserName, String passwd, String token, String _startDate, String _endDate) {
         if (_startDate == null && _endDate != null) {
-            Assert.notNull(_startDate, "_startDate must not be null!");
+            Objects.requireNonNull(_startDate);
         }
         if (_endDate == null && _startDate != null) {
-            Assert.notNull(_endDate, "_endDate must not be null!");
+            Objects.requireNonNull(_endDate);
         }
 
         Date startDate = null, endDate = null;

@@ -1,10 +1,13 @@
 package com.perfect.dao.mongodb.impl;
 
+import com.perfect.api.baidu.BaiduService;
+import com.perfect.autosdk.core.ServiceFactory;
+import com.perfect.autosdk.exception.ApiException;
 import com.perfect.dao.SystemUserDAO;
-import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.SystemUserEntity;
 import com.perfect.dao.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dao.mongodb.utils.Pager;
+import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.SystemUserEntity;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -17,6 +20,7 @@ import java.util.Map;
 
 /**
  * Created by vbzer_000 on 2014-6-19.
+ * 2014-11-24 refactor
  */
 @Repository("systemUserDAO")
 public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, String> implements SystemUserDAO {
@@ -62,9 +66,9 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, 
         if (entity.getBaiduAccountInfoEntities().isEmpty()) {
             baiduAccountInfoEntity.setDfault(true);
         }
-            Update update = new Update();
-            update.addToSet("bdAccounts", baiduAccountInfoEntity);
-            getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(user)), update, getEntityClass());
+        Update update = new Update();
+        update.addToSet("bdAccounts", baiduAccountInfoEntity);
+        getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(user)), update, getEntityClass());
     }
 
     @Override

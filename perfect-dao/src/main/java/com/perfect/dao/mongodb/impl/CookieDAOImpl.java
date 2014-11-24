@@ -1,9 +1,9 @@
 package com.perfect.dao.mongodb.impl;
 
 import com.perfect.dao.CookieDAO;
-import com.perfect.entity.CookieEntity;
 import com.perfect.dao.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dao.mongodb.utils.Pager;
+import com.perfect.entity.CookieEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -11,17 +11,19 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by baizz on 2014-11-10.
+ * 2014-11-24 refactor
  */
 @Repository("cookieDAO")
 public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieEntity, String> implements CookieDAO {
 
-    public static final Set<String> set = new HashSet<String>() {{
-        addAll(Arrays.asList("CASSSID", "GBIZSSID", "GIMGSSID", "LOGINAID", "LOGINUID", "__cas__id__", "__cas__st__", "bdsfuid"));
-    }};
+//    public static final Set<String> set = new HashSet<String>() {{
+//        addAll(Arrays.asList("CASSSID", "GBIZSSID", "GIMGSSID", "LOGINAID", "LOGINUID", "__cas__id__", "__cas__st__", "bdsfuid"));
+//    }};
 
     @Override
     public Class<CookieEntity> getEntityClass() {

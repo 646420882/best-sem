@@ -6,7 +6,9 @@ import java.util.List;
 
 /**
  * Created by baizz on 2014-08-18.
+ * 2014-11-24 refactor
  */
+@Deprecated
 public interface HTMLAnalyseService {
     /**
      * 关键词模糊匹配
@@ -20,7 +22,8 @@ public interface HTMLAnalyseService {
     /**
      * 从页面抓取推广数据
      *
-     * @param getPreviewRequest
+     * @param keyword
+     * @param region
      * @return
      */
     List<BaiduSpiderHelper.PreviewData> getPageData(String[] keyword, Integer region);

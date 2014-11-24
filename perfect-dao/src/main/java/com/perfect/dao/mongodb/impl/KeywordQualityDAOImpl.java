@@ -2,9 +2,9 @@ package com.perfect.dao.mongodb.impl;
 
 import com.perfect.core.AppContext;
 import com.perfect.dao.KeywordQualityDAO;
-import com.perfect.entity.KeywordReportEntity;
 import com.perfect.dao.mongodb.base.BaseMongoTemplate;
 import com.perfect.dao.mongodb.utils.DateUtils;
+import com.perfect.entity.KeywordReportEntity;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
@@ -16,13 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
-import static com.perfect.commons.constants.MongoEntityConstants.*;
+import static com.perfect.commons.constants.MongoEntityConstants.KEYWORD_ID;
+import static com.perfect.commons.constants.MongoEntityConstants.SYSTEM_ID;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by baizz on 2014-07-24.
+ * 2014-11-24 refactor
  */
-@Repository("KeywordQualityDAO")
+@Repository("keywordQualityDAO")
 public class KeywordQualityDAOImpl implements KeywordQualityDAO {
 
     @Override

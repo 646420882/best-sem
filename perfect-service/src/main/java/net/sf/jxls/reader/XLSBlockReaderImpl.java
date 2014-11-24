@@ -18,6 +18,8 @@ import java.util.concurrent.RecursiveTask;
 
 /**
  * @author Leonid Vysochyn
+ * 2014-11-24 refactor
+ * @deprecated
  */
 public class XLSBlockReaderImpl extends BaseBlockReader implements XLSLoopBlockReader {
     protected final Log log = LogFactory.getLog(MethodHandles.lookup().lookupClass());

@@ -1,10 +1,11 @@
 package com.perfect.dao.mongodb.impl;
 
+import com.perfect.api.baidu.AccountRealTimeReport;
 import com.perfect.autosdk.sms.v3.RealTimeResultType;
 import com.perfect.dao.GetAccountReportDAO;
 import com.perfect.dao.SystemUserDAO;
-import com.perfect.entity.AccountReportEntity;
 import com.perfect.dao.mongodb.base.BaseMongoTemplate;
+import com.perfect.entity.AccountReportEntity;
 import com.perfect.utils.DBNameUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -16,10 +17,12 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
-import static com.perfect.commons.constants.MongoEntityConstants.*;
+import static com.perfect.commons.constants.MongoEntityConstants.ACCOUNT_ID;
+import static com.perfect.commons.constants.MongoEntityConstants.TBL_ACCOUNT_REPORT;
 
 /**
  * Created by john on 2014/8/8.
+ * 2014-11-24 refactor
  */
 @Component("getAccountReportDAO")
 public class GetAccountReportDAOImpl implements GetAccountReportDAO {

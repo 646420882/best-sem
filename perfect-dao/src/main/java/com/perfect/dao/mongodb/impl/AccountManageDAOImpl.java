@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mongodb.WriteResult;
+import com.perfect.api.baidu.BaiduApiService;
+import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
@@ -46,6 +48,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by baizz on 2014-6-25.
+ * 2014-11-24 refactor
  */
 @Repository(value = "accountManageDAO")
 public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEntity> {

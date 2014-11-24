@@ -1,13 +1,12 @@
 package com.perfect.dao.mongodb.utils;
 
-import org.springframework.util.Assert;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Created by baizz on 2014-8-1.
+ * 2014-11-24 refactor
  */
 public class DateUtils {
 
@@ -16,13 +15,8 @@ public class DateUtils {
     public static final String KEY_DATE = "_date";
 
     public static List<String> getPeriod(String _startDate, String _endDate) {
-        if (_startDate == null) {
-            Assert.notNull(_startDate, "_startDate must not be null!");
-        }
-
-        if (_endDate == null) {
-            Assert.notNull(_endDate, "_endDate must not be null!");
-        }
+        Objects.requireNonNull(_startDate);
+        Objects.requireNonNull(_endDate);
 
         List<String> dateStrList = new ArrayList<>();
         Date startDate = null, endDate = null;

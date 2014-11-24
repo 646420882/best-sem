@@ -7,9 +7,11 @@ import java.util.Date;
 
 /**
  * Created by baizz on 2014-07-30.
+ * 2014-11-24 refactor
  */
+@Deprecated
 @Document(collection = "accountRealTimeData")
-public class AccountRealTimeDataVOEntity extends AccountIdEntity{
+public class AccountRealTimeDataVOEntity extends AccountIdEntity {
 
     @Field(value = "name")
     private String accountName;

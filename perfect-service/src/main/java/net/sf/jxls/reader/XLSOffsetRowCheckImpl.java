@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * @author Leonid Vysochyn
+ * 2014-11-24 refactor
+ * @deprecated
  */
 public class XLSOffsetRowCheckImpl implements OffsetRowCheck {
     List cellChecks = new ArrayList();

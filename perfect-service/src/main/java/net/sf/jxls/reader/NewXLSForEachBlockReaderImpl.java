@@ -15,6 +15,8 @@ import java.util.Map;
 
 /**
  * @author Leonid Vysochyn
+ * 2014-11-24 refactor
+ * @deprecated
  */
 public class NewXLSForEachBlockReaderImpl extends BaseBlockReader implements XLSLoopBlockReader {
     protected final Log log = LogFactory.getLog(MethodHandles.lookup().lookupClass());

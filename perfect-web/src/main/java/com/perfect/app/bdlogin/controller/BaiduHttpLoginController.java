@@ -25,6 +25,7 @@ import java.util.Map;
 
 /**
  * Created by baizz on 2014-11-10.
+ * 2014-11-24 refactor
  */
 @RestController
 @Scope("prototype")
@@ -46,13 +47,14 @@ public class BaiduHttpLoginController implements Controller {
 
         String sessionId = ServletContextUtils.getSession().getId();
         String cookies = ServletContextUtils.getSession().getAttribute(sessionId + "bdLogin").toString();
-        boolean isSuccess = cookieService.simulateLogin("baidu-bjtthunbohui2134115", "Bjhunbohui7", imageCode, cookies);
+        boolean isSuccess = BaiduHttpLogin.execute("baidu-bjtthunbohui2134115", "Bjhunbohui7", imageCode, cookies);
+//        boolean isSuccess = BaiduHttpLogin.execute(username, password, imageCode, cookies);
         if (isSuccess) {
             map.put("status", "success");
 
             CookieStore cookieStore = BaiduHttpLogin.getSSLCookies();
             CookieEntity cookieEntity = new CookieEntity();
-            cookieEntity.setCookie(cookieStore);
+            cookieEntity.setCookie(JSONUtils.getJsonString(cookieStore));
             cookieEntity.setIdle(true);
             cookieService.saveCookie(cookieEntity);
 

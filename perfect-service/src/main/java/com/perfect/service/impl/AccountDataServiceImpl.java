@@ -1,15 +1,15 @@
 package com.perfect.service.impl;
 
 import com.perfect.api.baidu.BaiduApiService;
+import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ResHeaderUtil;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.entity.*;
 import com.perfect.dao.mongodb.base.BaseMongoTemplate;
 import com.perfect.dao.mongodb.impl.CampaignDAOImpl;
+import com.perfect.entity.*;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.SystemUserService;
-import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.utils.DBNameUtils;
 import com.perfect.utils.EntityConvertUtils;
 import org.slf4j.Logger;
@@ -27,13 +27,14 @@ import javax.annotation.Resource;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
 
-import static com.perfect.dao.mongodb.utils.EntityConstants.*;
+import static com.perfect.commons.constants.MongoEntityConstants.*;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * 获取账户完整数据的方法
  * 更新账户数据逻辑的方法
  * Created by yousheng on 2014/8/12.
+ * 2014-11-24 refactor
  *
  * @author yousheng
  */
@@ -74,7 +75,7 @@ public class AccountDataServiceImpl implements AccountDataService {
             Long aid = baiduAccountInfoEntity.getId();
             if (aid != accountId)
                 continue;
-            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
+            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity.getBaiduUserName(), baiduAccountInfoEntity.getBaiduPassword(), baiduAccountInfoEntity.getToken());
             BaiduApiService apiService = new BaiduApiService(commonService);
 
             logger.info("查询账户信息...");
@@ -167,7 +168,7 @@ public class AccountDataServiceImpl implements AccountDataService {
                 continue;
             _entity = baiduAccountInfoEntity;
 
-            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
+            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity.getBaiduUserName(), baiduAccountInfoEntity.getBaiduPassword(), baiduAccountInfoEntity.getToken());
             BaiduApiService apiService = new BaiduApiService(commonService);
 
             // 初始化账户数据
@@ -285,7 +286,7 @@ public class AccountDataServiceImpl implements AccountDataService {
 
         Long acid = baiduAccountInfoEntity.getId();
 
-        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
+        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity.getBaiduUserName(), baiduAccountInfoEntity.getBaiduPassword(), baiduAccountInfoEntity.getToken());
         BaiduApiService apiService = new BaiduApiService(commonService);
 
         //获取账户总数据
@@ -416,7 +417,7 @@ public class AccountDataServiceImpl implements AccountDataService {
 
         Long acid = baiduAccountInfoEntity.getId();
 
-        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
+        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity.getBaiduUserName(), baiduAccountInfoEntity.getBaiduPassword(), baiduAccountInfoEntity.getToken());
         BaiduApiService apiService = new BaiduApiService(commonService);
 
         //本地的推广单元

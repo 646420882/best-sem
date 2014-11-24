@@ -15,11 +15,12 @@ import java.util.List;
 
 /**
  * Created by baizz on 2014-11-10.
+ * 2014-11-24 refactor
  */
 public class PreviewHandler {
 
     @Resource
-    private CookieDAO cookieDAO;
+    private CookieService cookieService;
 
     public static HttpPost getPostRequest(String keyword, int area) {
         StringBuilder _cookies = new StringBuilder("");
@@ -58,7 +59,7 @@ public class PreviewHandler {
 
     protected static CookieStore getCookies() {
         PreviewHandler previewHandler = new PreviewHandler();
-        CookieStore sslCookies = previewHandler.cookieDAO.takeOne().getCookie();
+        CookieStore sslCookies = JSONUtils.getObjectByJson(previewHandler.cookieService.takeOne().getCookie(), CookieEntity.class);
         return sslCookies;
     }
 }

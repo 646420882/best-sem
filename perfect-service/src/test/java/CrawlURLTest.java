@@ -5,6 +5,6 @@ import com.perfect.utils.crawl.CrawlURLHandler;
  */
 public class CrawlURLTest {
     public static void main(String[] args) {
-        CrawlURLHandler.build().run();
+        CrawlURLHandler.build().setSites("taobao", "amazon").run();
     }
 }

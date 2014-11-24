@@ -1,11 +1,14 @@
-package com.perfect.api.baidu;
+package com.perfect.service.impl;
 
+import com.perfect.api.baidu.BaiduPreviewHelperFactory;
+import com.perfect.api.baidu.BaiduServiceSupport;
+import com.perfect.api.baidu.BaiduSpiderHelper;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.core.AppContext;
 import com.perfect.dto.CreativeDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.service.AccountManageService;
-import com.perfect.utils.BaiduServiceSupport;
+import com.perfect.service.KeywordBiddingRankService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -15,9 +18,10 @@ import java.util.List;
 
 /**
  * Created by baizz on 2014-9-18.
+ * 2014-11-24 refactor
  */
 @Component("keywordBiddingRankService")
-public class KeywordBiddingRankService {
+public class KeywordBiddingRankServiceImpl implements KeywordBiddingRankService {
 
     @Resource
     private BaiduPreviewHelperFactory baiduPreviewHelperFactory;
@@ -25,13 +29,14 @@ public class KeywordBiddingRankService {
     @Resource
     private AccountManageService accountManageService;
 
+    @Override
     public Integer getKeywordBiddingRank(String keyword, Integer region) {
 
-        BaiduAccountInfoEntity entity = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        BaiduAccountInfoEntity baiduAccount = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
 
-        String host = entity.getRegDomain();
+        String host = baiduAccount.getRegDomain();
 
-        CommonService service = BaiduServiceSupport.getCommonService(entity);
+        CommonService service = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
 
         BaiduSpiderHelper baiduSpiderHelper = baiduPreviewHelperFactory.createInstance(service);
 
@@ -54,7 +59,6 @@ public class KeywordBiddingRankService {
                     if (url.sameFile(new URL("http", leftDTO.getUrl(), ""))) {
                         rank = leftList.indexOf(leftDTO) + 1;
                         return rank;
-//                        break;
                     }
                 }
 
@@ -63,7 +67,6 @@ public class KeywordBiddingRankService {
                         if (url.sameFile(new URL("http", rightDTO.getUrl(), ""))) {
                             rank = -1 * rightList.indexOf(rightDTO) - 1;
                             return rank;
-//                            break;
                         }
                     }
                 }

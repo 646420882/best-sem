@@ -8,17 +8,20 @@ import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AccountManageDAO;
-import com.perfect.dto.BaiduKeywordDTO;
-import com.perfect.dto.KRResultDTO;
-import com.perfect.entity.*;
 import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dao.mongodb.base.BaseMongoTemplate;
 import com.perfect.dao.mongodb.impl.KeywordGroupDAOImpl;
 import com.perfect.dao.mongodb.utils.Pager;
 import com.perfect.dao.mongodb.utils.PagerInfo;
+import com.perfect.dto.BaiduKeywordDTO;
+import com.perfect.dto.KRResultDTO;
+import com.perfect.entity.*;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.KeywordGroupService;
-import com.perfect.utils.*;
+import com.perfect.utils.DBNameUtils;
+import com.perfect.utils.JSONUtils;
+import com.perfect.utils.SerializeUtils;
+import com.perfect.utils.TopN;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -43,11 +46,12 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import static com.perfect.dao.mongodb.utils.EntityConstants.*;
+import static com.perfect.commons.constants.MongoEntityConstants.*;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by baizz on 2014-08-09.
+ * 2014-11-24 refactor
  */
 @Service("keywordGroupService")
 public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements KeywordGroupService {
@@ -518,8 +522,8 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
     }
 
     private KRService getKRService() {
-        BaiduAccountInfoEntity accountInfo = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
-        CommonService service = BaiduServiceSupport.getCommonService(accountInfo);
+        BaiduAccountInfoEntity baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService service = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
         KRService krService = null;
         try {
             krService = service.getService(KRService.class);

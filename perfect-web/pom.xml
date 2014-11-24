@@ -290,6 +290,11 @@
             <artifactId>perfect-service</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.perfect</groupId>
+            <artifactId>perfect-entity</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>com.perfect</groupId>-->
             <!--<artifactId>scheduler</artifactId>-->

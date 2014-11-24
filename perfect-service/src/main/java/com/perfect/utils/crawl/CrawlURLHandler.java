@@ -1,7 +1,7 @@
 package com.perfect.utils.crawl;
 
-import com.perfect.entity.CrawlWordEntity;
 import com.perfect.dao.mongodb.impl.CrawlWordDAOImpl;
+import com.perfect.entity.CrawlWordEntity;
 import com.perfect.utils.JSONUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpStatus;
@@ -17,16 +17,30 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Created by baizz on 2014-11-17.
+ * Created by baizz on 2014-11-20.
+ * <p>
+ * use ConcurrentHashMap to build local cache
+ * 2014-11-24 refactor
  */
 public class CrawlURLHandler implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final String crawler_queue = "crawler_queue";
+
+    //本地缓存
+    private Map<String, List<CrawlWordEntity>> cacheMap = new ConcurrentHashMap<>();
+
+    //阻塞队列
+    private BlockingQueue<CrawlWordEntity> queue = new LinkedBlockingQueue<>();
+
+    //需要爬取的站点
+    private List<String> sites = new ArrayList<>();
 
     private JedisPool pool;
 
@@ -35,7 +49,12 @@ public class CrawlURLHandler implements Runnable {
 
     private CrawlURLHandler() {
         CrawlURLHandler.JedisPools.init("182.150.24.24");
-        pool = CrawlURLHandler.JedisPools.getPool();
+        this.pool = CrawlURLHandler.JedisPools.getPool();
+    }
+
+    public CrawlURLHandler setSites(String... sites) {
+        this.sites.addAll(Arrays.asList(sites));
+        return this;
     }
 
     @Override
@@ -43,100 +62,107 @@ public class CrawlURLHandler implements Runnable {
         if (logger.isInfoEnabled()) {
             logger.info("starting reading data...");
         }
-        Jedis jedis = pool.getResource();
-        List<CrawlWordEntity> results;
-        int index = 0;
-        //===
+
+        //===后改为页面方式操作
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
         CrawlWordDAOImpl crawlWordDAO = (CrawlWordDAOImpl) applicationContext.getBean("crawlWordDAO");
         //===
+
+        //从本地缓存中取值放于阻塞队列中
+        sites.forEach(site -> cacheMap.computeIfAbsent(site, (key) -> crawlWordDAO.findBySite(site)));
+        cacheMap.get(sites.get(0)).forEach(queue::offer);
+        cacheMap.remove(sites.get(0));
+        sites.remove(0);
+
         while (true) {
-            //
-            System.out.println("Redis 键值个数: " + jedis.dbSize());
-            //
-            if (jedis.dbSize() > 100) {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                results = crawlWordDAO.find(null, index, 10, null, null);
+            Jedis jedis = pool.getResource();
 
-                if (results.size() == 0)
-                    break;
-
-                for (CrawlWordEntity entity : results) {
+            try {
+                if (jedis.llen(crawler_queue) >= 500) {
                     try {
-                        Map<String, Object> conf = new HashMap<>();
-                        String site = entity.getSite();
-                        conf.put("k", entity.getKeyword());
-                        conf.put("p", site);
-                        //
-                        if ("lefeng&vip".equals(site)) {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    //从阻塞队列中取值
+                    CrawlWordEntity entity;
+                    if ((entity = queue.poll()) == null) {
+                        if (sites.size() > 0) {
+                            cacheMap.get(sites.get(0)).forEach(queue::offer);
+                            cacheMap.remove(sites.get(0));
+                            sites.remove(0);
                             continue;
+                        } else {
+                            break;
                         }
-                        if ("yhd".equals(site)) {
-                            continue;
-                        }
-                        if ("xiu".equals(site)) {
-                            continue;
-                        }
-                        if ("gome".equals(site)) {
-                            continue;
-                        }
-                        if ("suning".equals(site)) {
-                            continue;
-                        }
-                        if ("dangdang".equals(site)) {
-                            continue;
-                        }
-//                        if ("taobao".equals(site)) {
-//                            continue;
-//                        }
-                        //
-                        switch (site) {
-                            case "lefeng&vip":
-                                break;
-                            case "yhd":
-                                break;
-                            case "xiu":
-                                break;
-                            case "gome":
-                                conf.put("q", WebSiteConstant.gomeUrlTemplate);
-                                break;
-                            case "suning":
-                                break;
-                            case "dangdang":
-                                conf.put("q", WebSiteConstant.dangdangUrlTemplate);
-                                break;
-                            case "amazon":
-                                conf.put("q", WebSiteConstant.amazonUrlTemplate);
-                                conf.put("d", "default");
-                                break;
-                            case "taobao":
-                                conf.put("q", getTaobaoURL(entity.getKeyword(), WebSiteConstant.taobaoUrlTemplate));
-                                conf.put("d", "phantomjs");
-                                break;
-                            default:
-                                break;
-                        }
+                    }
 
-                        String confStr = JSONUtils.getJsonString(conf);
-                        String md5 = DigestUtils.md5Hex(confStr);
+                    Map<String, Object> conf = new HashMap<>();
+                    String _site = entity.getSite();
+                    conf.put("k", entity.getKeyword());
+                    conf.put("p", _site);
 
+                    switch (_site) {
+                        case "lefeng&vip":
+                            conf.put("q", WebSiteConstant.lefengUrlTemplate);
+                            conf.put("d", "default");
+                            break;
+                        case "yhd":
+                            conf.put("q", WebSiteConstant.yhdUrlTemplate);
+                            conf.put("d", "default");
+                            break;
+                        case "xiu":
+                            conf.put("q", WebSiteConstant.xiuUrlTemplate);
+                            conf.put("d", "default");
+                            break;
+                        case "gome":
+                            conf.put("q", WebSiteConstant.gomeUrlTemplate);
+                            conf.put("d", "default");
+                            break;
+                        case "suning":
+                            conf.put("q", WebSiteConstant.suningUrlTemplate);
+                            conf.put("d", "default");
+                            break;
+                        case "dangdang":
+                            conf.put("q", WebSiteConstant.dangdangUrlTemplate);
+                            conf.put("d", "default");
+                            break;
+                        case "amazon":
+                            conf.put("q", WebSiteConstant.amazonUrlTemplate);
+                            conf.put("d", "default");
+                            break;
+                        case "taobao":
+                            conf.put("q", getTaobaoURL(entity.getKeyword(), WebSiteConstant.taobaoUrlTemplate));
+                            conf.put("d", "phantomjs");
+                            break;
+                        default:
+                            break;
+                    }
+
+                    String confStr = JSONUtils.getJsonString(conf);
+                    String md5 = DigestUtils.md5Hex(confStr);
+
+                    jedis.rpush("crawler_queue", md5);
+                    jedis.set("extras_" + md5, confStr);
+
+                    if ("lefeng&vip".equals(_site)) {
+                        conf.put("q", WebSiteConstant.vipTempUrllate);
+                        confStr = JSONUtils.getJsonString(conf);
+                        md5 = DigestUtils.md5Hex(confStr);
 
                         jedis.rpush("crawler_queue", md5);
                         jedis.set("extras_" + md5, confStr);
-                    } finally {
-                        index++;
-//                        pool.returnResource(jedis);
                     }
                 }
+
+                if (logger.isInfoEnabled()) {
+                    logger.info("Redis 当前键值个数: " + jedis.llen(crawler_queue));
+                }
+            } finally {
+                pool.returnResource(jedis);
             }
         }
-
-        pool.destroy();
 
         if (logger.isInfoEnabled()) {
             logger.info("read end...");

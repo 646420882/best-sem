@@ -4,7 +4,9 @@ import java.util.List;
 
 /**
  * Created by baizz on 2014-9-3.
+ * 2014-11-24 refactor
  */
+@Deprecated
 public class KeywordQualityReportDTO {
 
     private Integer grade;

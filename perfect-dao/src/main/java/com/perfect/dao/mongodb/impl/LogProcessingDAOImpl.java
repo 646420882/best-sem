@@ -1,10 +1,10 @@
 package com.perfect.dao.mongodb.impl;
 
 import com.perfect.dao.LogProcessingDAO;
-import com.perfect.entity.DataOperationLogEntity;
 import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dao.mongodb.base.BaseMongoTemplate;
 import com.perfect.dao.mongodb.utils.Pager;
+import com.perfect.entity.DataOperationLogEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -15,11 +15,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.commons.constants.MongoEntityConstants.*;
+import static com.perfect.commons.constants.MongoEntityConstants.TBL_LOG;
 
 /**
  * Created by baizz on 2014-07-04.
+ * 2014-11-24 refactor
  */
+@Deprecated
 @Repository("logProcessingDAO")
 public class LogProcessingDAOImpl extends AbstractUserBaseDAOImpl<DataOperationLogEntity, Long> implements LogProcessingDAO {
 

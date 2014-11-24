@@ -8,6 +8,8 @@ import java.io.*;
 
 /**
  * @author Leonid Vysochyn
+ * 2014-11-24 refactor
+ * @deprecated
  */
 public class ReaderBuilder {
 

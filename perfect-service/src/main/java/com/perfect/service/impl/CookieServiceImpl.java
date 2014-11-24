@@ -1,16 +1,16 @@
-package com.perfect.app.bdlogin.service;
+package com.perfect.service.impl;
 
-import com.perfect.app.bdlogin.core.BaiduHttpLogin;
 import com.perfect.dao.CookieDAO;
 import com.perfect.entity.CookieEntity;
 import com.perfect.service.CookieService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by baizz on 2014-11-10.
+ * 2014-11-24 refactor
  */
 @Service("cookieService")
 public class CookieServiceImpl implements CookieService {
@@ -24,13 +24,18 @@ public class CookieServiceImpl implements CookieService {
     }
 
     @Override
-    public boolean simulateLogin(String username, String password, String imageCode, String cookies) {
-        try {
-            boolean isSuccess = BaiduHttpLogin.execute(username, password, imageCode, cookies);
-            return isSuccess;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public CookieEntity takeOne() {
+        return cookieDAO.takeOne();
     }
+
+    @Override
+    public void returnOne(CookieEntity cookieEntity) {
+        cookieDAO.returnOne(cookieEntity);
+    }
+
+    @Override
+    public List<CookieEntity> allUnused() {
+        return cookieDAO.allUnused();
+    }
+
 }

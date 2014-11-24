@@ -1,6 +1,7 @@
 package com.perfect.service.impl;
 
 import com.google.common.primitives.Bytes;
+import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.GetKeyword10QualityRequest;
@@ -10,14 +11,12 @@ import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AccountManageDAO;
 import com.perfect.dao.KeywordQualityDAO;
-import com.perfect.dto.KeywordQualityReportDTO;
+import com.perfect.dao.mongodb.utils.DateUtils;
 import com.perfect.dto.QualityDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.KeywordReportEntity;
-import com.perfect.dao.mongodb.utils.DateUtils;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.KeywordQualityService;
-import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.utils.JSONUtils;
 import com.perfect.utils.SerializeUtils;
 import com.perfect.utils.TopN;
@@ -37,6 +36,7 @@ import java.util.concurrent.RecursiveTask;
 
 /**
  * Created by baizz on 2014-08-16.
+ * 2014-11-24 refactor
  */
 @Service("keywordQualityService")
 public class KeywordQualityServiceImpl implements KeywordQualityService {
@@ -120,7 +120,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
 
         Map<String, Object> results = new HashMap<>();
         List<QualityDTO> qualityList = new ArrayList<>();
-        List<KeywordQualityReportDTO> reportList = new ArrayList<>();
+        List<KeywordQualityReportVO> reportList = new ArrayList<>();
 
         for (int i = 0; i <= 10; i++) {
             List<KeywordReportEntity> tempList = tempMap.get(i);
@@ -185,11 +185,11 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                     for (int j = skip * n; j < topNData.length; j++) {
                         data.add(topNData[j]);
                     }
-                    reportList.add(new KeywordQualityReportDTO(i, data));
+                    reportList.add(new KeywordQualityReportVO(i, data));
                 } else {
                     KeywordReportEntity arrData[] = new KeywordReportEntity[n];
                     System.arraycopy(topNData, skip * n, arrData, 0, n);
-                    reportList.add(new KeywordQualityReportDTO(i, Arrays.asList(arrData)));
+                    reportList.add(new KeywordQualityReportVO(i, Arrays.asList(arrData)));
                 }
             }
 
@@ -205,7 +205,8 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
     @Override
     @SuppressWarnings("unchecked")
     public List<Quality10Type> getKeyword10Quality(List<Long> keywordIds) {
-        CommonService commonService = BaiduServiceSupport.getCommonService(accountManageDAO.findByBaiduUserId(AppContext.getAccountId()));
+        BaiduAccountInfoEntity baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
         try {
             KeywordService keywordService = commonService.getService(KeywordService.class);
             GetKeyword10QualityRequest request = new GetKeyword10QualityRequest();
@@ -272,7 +273,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         }
 
         Map<Integer, QualityDTO> qualityDTOMap = new HashMap<>();
-        List<KeywordQualityReportDTO> reportList = new ArrayList<>();
+        List<KeywordQualityReportVO> reportList = new ArrayList<>();
 
         for (int i = 0; i <= 10; i++) {
             List<KeywordReportEntity> tempList = tempMap.get(i);
@@ -331,7 +332,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
 
                 //每个质量度下具体的关键词信息
                 KeywordReportEntity topNData[] = TopN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), tempList.size(), "pcImpression", -1);
-                reportList.add(new KeywordQualityReportDTO(i, Arrays.asList(topNData)));
+                reportList.add(new KeywordQualityReportVO(i, Arrays.asList(topNData)));
             }
 
         }
@@ -348,7 +349,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                     DEFAULT_DELIMITER + "平均点击价格" +
                     DEFAULT_DELIMITER + "转化" +
                     DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-            for (KeywordQualityReportDTO reportDTO : reportList) {
+            for (KeywordQualityReportVO reportDTO : reportList) {
                 Integer grade = reportDTO.getGrade();
                 QualityDTO qualityDTO = qualityDTOMap.get(grade);
                 String bytes = (grade + DEFAULT_DELIMITER +
@@ -572,5 +573,32 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             return _map;
         }
 
+    }
+
+    static class KeywordQualityReportVO {
+        private Integer grade;
+
+        private List<KeywordReportEntity> reportList;
+
+        public KeywordQualityReportVO(Integer grade, List<KeywordReportEntity> reportList) {
+            this.grade = grade;
+            this.reportList = reportList;
+        }
+
+        public Integer getGrade() {
+            return grade;
+        }
+
+        public void setGrade(Integer grade) {
+            this.grade = grade;
+        }
+
+        public List<KeywordReportEntity> getReportList() {
+            return reportList;
+        }
+
+        public void setReportList(List<KeywordReportEntity> reportList) {
+            this.reportList = reportList;
+        }
     }
 }

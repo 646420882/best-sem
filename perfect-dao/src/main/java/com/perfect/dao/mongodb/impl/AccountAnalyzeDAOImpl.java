@@ -2,11 +2,11 @@ package com.perfect.dao.mongodb.impl;
 
 import com.perfect.core.AppContext;
 import com.perfect.dao.AccountAnalyzeDAO;
-import com.perfect.entity.AccountReportEntity;
-import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dao.mongodb.base.BaseMongoTemplate;
 import com.perfect.dao.mongodb.utils.Pager;
+import com.perfect.entity.AccountReportEntity;
+import com.perfect.entity.KeywordRealTimeDataVOEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -17,11 +17,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.commons.constants.MongoEntityConstants.*;
+import static com.perfect.commons.constants.MongoEntityConstants.ACCOUNT_ID;
+import static com.perfect.commons.constants.MongoEntityConstants.TBL_ACCOUNT_REPORT;
 
 /**
- * Created by baizz on 14-7-25.
+ * Created by baizz on 2014-7-25.
+ * 2014-11-24 refactor
  */
+@Deprecated
 @Repository("accountAnalyzeDAO")
 public class AccountAnalyzeDAOImpl extends AbstractUserBaseDAOImpl<KeywordRealTimeDataVOEntity, Long> implements AccountAnalyzeDAO {
 
