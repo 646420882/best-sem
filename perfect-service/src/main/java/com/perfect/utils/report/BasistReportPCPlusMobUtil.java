@@ -1,8 +1,6 @@
 package com.perfect.utils.report;
 
-
-
-import com.perfect.dto.StructureReportDTO;
+import com.perfect.entity.StructureReportEntity;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -13,7 +11,7 @@ import java.util.concurrent.RecursiveTask;
 /**
  * Created by SubDong on 2014/8/13.
  */
-public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureReportDTO>> {
+public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureReportEntity>> {
 
     private final int threshold = 100;
 
@@ -22,9 +20,9 @@ public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureRepor
     private int terminal;
     private String userName;
 
-    private List<StructureReportDTO> objectList;
+    private List<StructureReportEntity> objectList;
 
-    public BasistReportPCPlusMobUtil(List<StructureReportDTO> objects, int begin, int endNumber, String userName) {
+    public BasistReportPCPlusMobUtil(List<StructureReportEntity> objects, int begin, int endNumber, String userName) {
         this.objectList = objects;
         this.endNumber = endNumber;
         this.begin = begin;
@@ -32,8 +30,8 @@ public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureRepor
     }
 
     @Override
-    protected List<StructureReportDTO> compute() {
-        List<StructureReportDTO> list = new ArrayList<>();
+    protected List<StructureReportEntity> compute() {
+        List<StructureReportEntity> list = new ArrayList<>();
         if ((endNumber - begin) < threshold) {
             DecimalFormat df = new DecimalFormat("#.0000");
             for (int i = begin; i < endNumber; i++) {

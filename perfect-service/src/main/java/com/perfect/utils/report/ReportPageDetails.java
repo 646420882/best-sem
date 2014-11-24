@@ -1,6 +1,6 @@
 package com.perfect.utils.report;
 
-import com.perfect.dto.StructureReportDTO;
+import com.perfect.entity.StructureReportEntity;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -12,16 +12,15 @@ import java.util.Map;
 
 /**
  * Created by SubDong on 2014/9/1.
- * 2014-11-24 refactor
  */
 public class ReportPageDetails {
-    public List<StructureReportDTO> getReportDetailsPage(Map<String, List<StructureReportDTO>> pageData, int devices, String sortVS, int startVS, int limitVS, int dateType) {
-        List<StructureReportDTO> accountReports = new ArrayList<>();
+    public List<StructureReportEntity> getReportDetailsPage(Map<String, List<StructureReportEntity>> pageData, int devices, String sortVS, int startVS, int limitVS, int dateType) {
+        List<StructureReportEntity> accountReports = new ArrayList<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         int count = 0;
-        for (Map.Entry<String, List<StructureReportDTO>> voEntity : pageData.entrySet()) {
-            List<StructureReportDTO> StructureReportEntitys = voEntity.getValue();
-            for (StructureReportDTO entity : StructureReportEntitys) {
+        for (Map.Entry<String, List<StructureReportEntity>> voEntity : pageData.entrySet()) {
+            List<StructureReportEntity> StructureReportEntitys = voEntity.getValue();
+            for (StructureReportEntity entity : StructureReportEntitys) {
                 entity.setOrderBy(sortVS);
                 entity.setTerminal(devices);
                 if (entity.getDate() == null) {
@@ -108,7 +107,7 @@ public class ReportPageDetails {
 
         }
         Collections.sort(accountReports);
-        List<StructureReportDTO> finalList = new ArrayList<>();
+        List<StructureReportEntity> finalList = new ArrayList<>();
 
         for (int i = startVS; i < limitVS; i++) {
             if (i < accountReports.size()) {
@@ -119,11 +118,11 @@ public class ReportPageDetails {
         return finalList;
     }
 
-    public List<StructureReportDTO> getReportDetailsPageObj(List<StructureReportDTO> pageData, int devices, String sortVS, int startVS, int limitVS, String data) {
-        List<StructureReportDTO> accountReports = new ArrayList<>();
+    public List<StructureReportEntity> getReportDetailsPageObj(List<StructureReportEntity> pageData, int devices, String sortVS, int startVS, int limitVS, String data) {
+        List<StructureReportEntity> accountReports = new ArrayList<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 
-        for (StructureReportDTO entity : pageData) {
+        for (StructureReportEntity entity : pageData) {
             entity.setOrderBy(sortVS);
             entity.setTerminal(devices);
 
@@ -176,7 +175,7 @@ public class ReportPageDetails {
         }
 
         Collections.sort(accountReports);
-        List<StructureReportDTO> finalList = new ArrayList<>();
+        List<StructureReportEntity> finalList = new ArrayList<>();
         for (int i = startVS; i <= limitVS; i++) {
             if (i < accountReports.size()) {
                 finalList.add(accountReports.get(i));

@@ -1,6 +1,6 @@
 package com.perfect.utils.report;
 
-import com.perfect.dto.StructureReportDTO;
+import com.perfect.entity.StructureReportEntity;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -12,26 +12,25 @@ import java.util.concurrent.RecursiveTask;
 
 /**
  * Created by SubDong on 2014/9/22.
- * 2014-11-24 refactor
  */
-public class ReportStatisticsUtil extends RecursiveTask<Map<String, StructureReportDTO>> {
+public class ReportStatisticsUtil extends RecursiveTask<Map<String, StructureReportEntity>> {
     private final int threshold = 100;
 
     private int endNumber;
     private int begin;
 
-    private List<StructureReportDTO> objectList;
+    private List<StructureReportEntity> objectList;
 
-    public ReportStatisticsUtil(List<StructureReportDTO> objects, int begin, int endNumber) {
+    public ReportStatisticsUtil(List<StructureReportEntity> objects, int begin, int endNumber) {
         this.objectList = objects;
         this.endNumber = endNumber;
         this.begin = begin;
     }
 
     @Override
-    protected Map<String, StructureReportDTO> compute() {
-        Map<String, StructureReportDTO> map = new HashMap<>();
-        StructureReportDTO voEntity = new StructureReportDTO();
+    protected Map<String, StructureReportEntity> compute() {
+        Map<String, StructureReportEntity> map = new HashMap<>();
+        StructureReportEntity voEntity = new StructureReportEntity();
         if ((endNumber - begin) < threshold) {
             for (int i = begin; i < endNumber; i++) {
                 voEntity.setMobileClick(((voEntity.getMobileClick() == null) ? 0 : voEntity.getMobileClick()) + ((objectList.get(i).getMobileClick() == null) ? 0 : objectList.get(i).getMobileClick()));
@@ -55,8 +54,8 @@ public class ReportStatisticsUtil extends RecursiveTask<Map<String, StructureRep
             ReportStatisticsUtil right = new ReportStatisticsUtil(objectList, midpoint, endNumber);
             invokeAll(left, right);
             try {
-                Map<String, StructureReportDTO> leftMap = left.get();
-                Map<String, StructureReportDTO> rightMap = right.get();
+                Map<String, StructureReportEntity> leftMap = left.get();
+                Map<String, StructureReportEntity> rightMap = right.get();
                 map.putAll(merge(leftMap, rightMap));
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -68,17 +67,17 @@ public class ReportStatisticsUtil extends RecursiveTask<Map<String, StructureRep
     }
 
 
-    public Map<String, StructureReportDTO> merge(Map<String, StructureReportDTO> leftMap, Map<String, StructureReportDTO> rightMap) {
-        Map<String, StructureReportDTO> dataMap = new HashMap<>();
+    public Map<String, StructureReportEntity> merge(Map<String, StructureReportEntity> leftMap, Map<String, StructureReportEntity> rightMap) {
+        Map<String, StructureReportEntity> dataMap = new HashMap<>();
 
 
-        for (Iterator<Map.Entry<String, StructureReportDTO>> entry1 = leftMap.entrySet().iterator(); entry1.hasNext(); ) {
+        for (Iterator<Map.Entry<String, StructureReportEntity>> entry1 = leftMap.entrySet().iterator(); entry1.hasNext(); ) {
 
-            StructureReportDTO mapValue1 = entry1.next().getValue();
+            StructureReportEntity mapValue1 = entry1.next().getValue();
 
-            for (Iterator<Map.Entry<String, StructureReportDTO>> entry2 = rightMap.entrySet().iterator(); entry2.hasNext(); ) {
+            for (Iterator<Map.Entry<String, StructureReportEntity>> entry2 = rightMap.entrySet().iterator(); entry2.hasNext(); ) {
 
-                StructureReportDTO mapValue2 = entry2.next().getValue();
+                StructureReportEntity mapValue2 = entry2.next().getValue();
                 mapValue1.setMobileClick((mapValue1.getMobileClick() == null ? 0 : mapValue1.getMobileClick()) + (mapValue2.getMobileClick() == null ? 0 : mapValue2.getMobileClick()));
                 mapValue1.setMobileConversion((mapValue1.getMobileConversion() == null ? 0 : mapValue1.getMobileConversion()) + (mapValue2.getMobileConversion() == null ? 0 : mapValue2.getMobileConversion()));
                 mapValue1.setMobileCost((mapValue1.getMobileCost() == null ? BigDecimal.valueOf(0) : mapValue1.getMobileCost()).add(mapValue2.getMobileCost() == null ? BigDecimal.valueOf(0) : mapValue2.getMobileCost()));

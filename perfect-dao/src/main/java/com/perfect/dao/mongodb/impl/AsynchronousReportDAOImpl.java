@@ -1,6 +1,7 @@
 package com.perfect.dao.mongodb.impl;
 
 import com.google.common.collect.Lists;
+import com.perfect.api.baidu.AsynchronousReport;
 import com.perfect.dao.AsynchronousReportDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.dao.mongodb.base.BaseMongoTemplate;
@@ -33,6 +34,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.TBL_ACCOUNT_REP
 
 /**
  * Created by baizz on 2014-08-07.
+ * 2014-11-24 refactor
  */
 @Repository("asynchronousReportDAO")
 public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
@@ -77,7 +79,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     continue;
                 }
 
-                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
                 String pcFilePath = report.getAccountReportDataPC(null, dateStr, dateStr);
                 String mobileFilePath = report.getAccountReportDataMobile(null, dateStr, dateStr);
                 if (pcFilePath == null && mobileFilePath == null) {
@@ -124,8 +126,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 if (entity.getState() == 0) {
                     continue;
                 }
-
-                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
                 String pcFilePath = report.getCampaignReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getCampaignReportDataMobile(null, null, dateStr, dateStr);
                 if (pcFilePath == null && mobileFilePath == null) {
@@ -173,7 +174,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     continue;
                 }
 
-                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
 
                 String pcFilePath = report.getUnitReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getUnitReportDataMobile(null, null, dateStr, dateStr);
@@ -222,7 +223,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     continue;
                 }
 
-                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
 
                 String pcFilePath = report.getCreativeReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getCreativeReportDataMobile(null, null, dateStr, dateStr);
@@ -270,7 +271,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     continue;
                 }
 
-                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
 
                 String pcFilePath = report.getKeyWordidReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getKeyWordidReportDataMobile(null, null, dateStr, dateStr);
@@ -318,7 +319,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     continue;
                 }
 
-                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
 
                 String pcFilePath = report.getRegionalReportDataPC(null, null, dateStr, dateStr);
                 /*String mobileFilePath = report.getRegionalReportDataMobile(null, null, dateStr, dateStr); */

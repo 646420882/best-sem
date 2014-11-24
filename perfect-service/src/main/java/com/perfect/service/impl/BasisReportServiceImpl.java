@@ -6,8 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.perfect.core.AppContext;
 import com.perfect.dao.BasisReportDAO;
 import com.perfect.dto.AccountReportDTO;
-import com.perfect.dto.StructureReportDTO;
-import com.perfect.entity.StructureReportDTO;
+import com.perfect.entity.StructureReportEntity;
 import com.perfect.dao.mongodb.utils.DateUtils;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.AccountManageService;
@@ -57,7 +56,7 @@ public class BasisReportServiceImpl implements BasisReportService {
      * @param start        开始数
      * @return
      */
-    public Map<String, List<StructureReportDTO>> getReportDate(String[] date, int terminal, int categoryTime, int reportType, int start, int limit, String sort, Long dataId, String dateName) {
+    public Map<String, List<StructureReportEntity>> getReportDate(String[] date, int terminal, int categoryTime, int reportType, int start, int limit, String sort, Long dataId, String dateName) {
         String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getBaiduUserName();
         switch (categoryTime) {
             //默认时间生成报告
@@ -66,17 +65,17 @@ public class BasisReportServiceImpl implements BasisReportService {
 
                 Long jedisKey = jc.ttl(date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId);
                 if (jedisKey == -1) {
-                    List<StructureReportDTO> dateMap0 = new ArrayList<>();
-                    StructureReportDTO dateObject0 = new StructureReportDTO();
+                    List<StructureReportEntity> dateMap0 = new ArrayList<>();
+                    StructureReportEntity dateObject0 = new StructureReportEntity();
                     //初始化容器
-                    Map<String, StructureReportDTO> map = new HashMap<>();
-                    Map<String, StructureReportDTO> mapAll = new HashMap<>();
-                    List<StructureReportDTO> returnList = new ArrayList<>();
-                    Map<String, List<StructureReportDTO>> listMap = new HashMap<>();
-                    List<StructureReportDTO> objectsList = new ArrayList<>();
+                    Map<String, StructureReportEntity> map = new HashMap<>();
+                    Map<String, StructureReportEntity> mapAll = new HashMap<>();
+                    List<StructureReportEntity> returnList = new ArrayList<>();
+                    Map<String, List<StructureReportEntity>> listMap = new HashMap<>();
+                    List<StructureReportEntity> objectsList = new ArrayList<>();
                     //获取需要的数据
                     for (int i = 0; i < date.length; i++) {
-                        List<StructureReportDTO> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
+                        List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
                         if (object.size() != 0) {
                             objectsList.addAll(object);
                         }
@@ -84,16 +83,16 @@ public class BasisReportServiceImpl implements BasisReportService {
                     ForkJoinPool joinPool = new ForkJoinPool();
 
                     //计算合计数据
-                    List<StructureReportDTO> returnListAll = dataALL(objectsList);
+                    List<StructureReportEntity> returnListAll = dataALL(objectsList);
 
                     dateObject0.setDate(date[0] + " 至 " + date[date.length - 1]);
                     dateMap0.add(dateObject0);
                     //创建一个并行计算框架
 
-                    Map<String, StructureReportDTO> map1 = null;
+                    Map<String, StructureReportEntity> map1 = null;
                     try {
                         //开始对数据处理
-                        Future<Map<String, StructureReportDTO>> joinTask = joinPool.submit(new BasisReportDefaultUtil(objectsList, 0, objectsList.size(), reportType, userName));
+                        Future<Map<String, StructureReportEntity>> joinTask = joinPool.submit(new BasisReportDefaultUtil(objectsList, 0, objectsList.size(), reportType, userName));
                         //得到处理结果
                         map = joinTask.get();
                         //计算百分比
@@ -105,14 +104,14 @@ public class BasisReportServiceImpl implements BasisReportService {
                     }
                     //关闭并行计算框架
                     joinPool.shutdown();
-                    List<StructureReportDTO> list = new ArrayList<>(map1.values());
+                    List<StructureReportEntity> list = new ArrayList<>(map1.values());
 
                     //选择全部内容
                     if (terminal == 0) {
                         //创建一个并行计算框架
                         ForkJoinPool joinPoolTow = new ForkJoinPool();
                         //对第一次处理后的数据进行第二次处理
-                        Future<List<StructureReportDTO>> joinTaskTow = joinPoolTow.submit(new BasistReportPCPlusMobUtil(list, 0, list.size(), userName));
+                        Future<List<StructureReportEntity>> joinTaskTow = joinPoolTow.submit(new BasistReportPCPlusMobUtil(list, 0, list.size(), userName));
                         try {
                             //得到第二次处理后的数据
                             returnList = joinTaskTow.get();
@@ -128,13 +127,13 @@ public class BasisReportServiceImpl implements BasisReportService {
                         }
                         if (reportType == 4) {
                             //计算饼状图 展现数据
-                            List<StructureReportDTO> pieIpmr = getPieData(returnList, terminal, REPORT_IMPR, REPORT_FUYI);
+                            List<StructureReportEntity> pieIpmr = getPieData(returnList, terminal, REPORT_IMPR, REPORT_FUYI);
                             //计算饼状图 点击数据
-                            List<StructureReportDTO> pieClick = getPieData(returnList, terminal, REPORT_CLICK, REPORT_FUER);
+                            List<StructureReportEntity> pieClick = getPieData(returnList, terminal, REPORT_CLICK, REPORT_FUER);
                             //计算饼状图 消费数据
-                            List<StructureReportDTO> pieCost = getPieData(returnList, terminal, REPORT_COST, REPORT_FUSAN);
+                            List<StructureReportEntity> pieCost = getPieData(returnList, terminal, REPORT_COST, REPORT_FUSAN);
                             //计算饼状图 转化数据
-                            List<StructureReportDTO> pieConv = getPieData(returnList, terminal, REPORT_CONV, REPORT_FULIU);
+                            List<StructureReportEntity> pieConv = getPieData(returnList, terminal, REPORT_CONV, REPORT_FULIU);
 
                             listMap.put(REPORT_IMPR, pieIpmr);
                             listMap.put(REPORT_CLICK, pieClick);
@@ -148,8 +147,8 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), StatistAll);
                         jc.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
                         ReportPageDetails pageDetails = new ReportPageDetails();
-                        List<StructureReportDTO> pageReport = pageDetails.getReportDetailsPageObj(returnList, terminal, sort, start, limit, date[0] + " 至 " + date[date.length - 1]);
-                        List<StructureReportDTO> entityList1 = getCountStructure(listMap);
+                        List<StructureReportEntity> pageReport = pageDetails.getReportDetailsPageObj(returnList, terminal, sort, start, limit, date[0] + " 至 " + date[date.length - 1]);
+                        List<StructureReportEntity> entityList1 = getCountStructure(listMap);
                         listMap.put(REPORT_STATISTICS, returnListAll);
                         listMap.put(REPORT_COUNTDATA, entityList1);
                         listMap.put(REPORT_ROWS, pageReport);
@@ -157,13 +156,13 @@ public class BasisReportServiceImpl implements BasisReportService {
                     } else {
                         if (reportType == 4) {
                             //计算饼状图 展现数据
-                            List<StructureReportDTO> pieIpmr = getPieData(list, terminal, REPORT_IMPR, REPORT_FUYI);
+                            List<StructureReportEntity> pieIpmr = getPieData(list, terminal, REPORT_IMPR, REPORT_FUYI);
                             //计算饼状图 点击数据
-                            List<StructureReportDTO> pieClick = getPieData(list, terminal, REPORT_CLICK, REPORT_FUER);
+                            List<StructureReportEntity> pieClick = getPieData(list, terminal, REPORT_CLICK, REPORT_FUER);
                             //计算饼状图 消费数据
-                            List<StructureReportDTO> pieCost = getPieData(list, terminal, REPORT_COST, REPORT_FUSAN);
+                            List<StructureReportEntity> pieCost = getPieData(list, terminal, REPORT_COST, REPORT_FUSAN);
                             //计算饼状图 转化数据
-                            List<StructureReportDTO> pieConv = getPieData(list, terminal, REPORT_CONV, REPORT_FULIU);
+                            List<StructureReportEntity> pieConv = getPieData(list, terminal, REPORT_CONV, REPORT_FULIU);
 
                             listMap.put(REPORT_IMPR, pieIpmr);
                             listMap.put(REPORT_CLICK, pieClick);
@@ -177,8 +176,8 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId), REDISKEYTIME);
                         jc.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
                         ReportPageDetails pageDetails = new ReportPageDetails();
-                        List<StructureReportDTO> pageReport = pageDetails.getReportDetailsPageObj(list, terminal, sort, start, limit, date[0] + " 至 " + date[date.length - 1]);
-                        List<StructureReportDTO> entityList1 = getCountStructure(listMap);
+                        List<StructureReportEntity> pageReport = pageDetails.getReportDetailsPageObj(list, terminal, sort, start, limit, date[0] + " 至 " + date[date.length - 1]);
+                        List<StructureReportEntity> entityList1 = getCountStructure(listMap);
                         listMap.put(REPORT_STATISTICS, returnListAll);
                         listMap.put(REPORT_COUNTDATA, entityList1);
                         listMap.put(REPORT_ROWS, pageReport);
@@ -189,22 +188,22 @@ public class BasisReportServiceImpl implements BasisReportService {
                     String dataAll = jc.get((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"));
 
                     Gson gson = new Gson();
-                    List<StructureReportDTO> list = gson.fromJson(data, new TypeToken<List<StructureReportDTO>>() {
+                    List<StructureReportEntity> list = gson.fromJson(data, new TypeToken<List<StructureReportEntity>>() {
                     }.getType());
-                    List<StructureReportDTO> listAll = gson.fromJson(dataAll, new TypeToken<List<StructureReportDTO>>() {
+                    List<StructureReportEntity> listAll = gson.fromJson(dataAll, new TypeToken<List<StructureReportEntity>>() {
                     }.getType());
 
 
-                    Map<String, List<StructureReportDTO>> listMap = new HashMap<>();
+                    Map<String, List<StructureReportEntity>> listMap = new HashMap<>();
                     if (reportType == 4) {
                         //计算饼状图 展现数据
-                        List<StructureReportDTO> pieIpmr = getPieData(list, terminal, REPORT_IMPR, REPORT_FUYI);
+                        List<StructureReportEntity> pieIpmr = getPieData(list, terminal, REPORT_IMPR, REPORT_FUYI);
                         //计算饼状图 点击数据
-                        List<StructureReportDTO> pieClick = getPieData(list, terminal, REPORT_CLICK, REPORT_FUER);
+                        List<StructureReportEntity> pieClick = getPieData(list, terminal, REPORT_CLICK, REPORT_FUER);
                         //计算饼状图 消费数据
-                        List<StructureReportDTO> pieCost = getPieData(list, terminal, REPORT_COST, REPORT_FUSAN);
+                        List<StructureReportEntity> pieCost = getPieData(list, terminal, REPORT_COST, REPORT_FUSAN);
                         //计算饼状图 转化数据
-                        List<StructureReportDTO> pieConv = getPieData(list, terminal, REPORT_CONV, REPORT_FULIU);
+                        List<StructureReportEntity> pieConv = getPieData(list, terminal, REPORT_CONV, REPORT_FULIU);
 
                         listMap.put(REPORT_IMPR, pieIpmr);
                         listMap.put(REPORT_CLICK, pieClick);
@@ -215,8 +214,8 @@ public class BasisReportServiceImpl implements BasisReportService {
                     if ("-11".equals(sort) || "11".equals(sort)) {
                         sort = REPORT_FUYI;
                     }
-                    List<StructureReportDTO> pageReport = pageDetails.getReportDetailsPageObj(list, terminal, sort, start, limit, date[0] + " 至 " + date[date.length - 1]);
-                    List<StructureReportDTO> entityList1 = getCountStructure(listMap);
+                    List<StructureReportEntity> pageReport = pageDetails.getReportDetailsPageObj(list, terminal, sort, start, limit, date[0] + " 至 " + date[date.length - 1]);
+                    List<StructureReportEntity> entityList1 = getCountStructure(listMap);
                     listMap.put(REPORT_STATISTICS, listAll);
                     listMap.put(REPORT_COUNTDATA, entityList1);
                     listMap.put(REPORT_ROWS, pageReport);
@@ -228,16 +227,16 @@ public class BasisReportServiceImpl implements BasisReportService {
 
                 Long jedisKey1 = jc1.ttl(date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId);
                 if (jedisKey1 == -1) {
-                    List<StructureReportDTO> dateMap = new ArrayList<>();
+                    List<StructureReportEntity> dateMap = new ArrayList<>();
 
                     //初始化容器
-                    Map<String, List<StructureReportDTO>> mapDay = new HashMap<>();
+                    Map<String, List<StructureReportEntity>> mapDay = new HashMap<>();
                     //获得需要的数据
                     for (int i = 0; i < date.length; i++) {
-                        StructureReportDTO dateObject = new StructureReportDTO();
-                        List<StructureReportDTO> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
+                        StructureReportEntity dateObject = new StructureReportEntity();
+                        List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
                         if (object.size() == 0) {
-                            StructureReportDTO entity = new StructureReportDTO();
+                            StructureReportEntity entity = new StructureReportEntity();
                             entity.setKeywordId(0l);
                             entity.setKeywordName("-");
                             entity.setRegionId(0l);
@@ -270,18 +269,18 @@ public class BasisReportServiceImpl implements BasisReportService {
                     }
 
 
-                    List<StructureReportDTO> entityListAll = new ArrayList<>();
-                    for (Iterator<Map.Entry<String, List<StructureReportDTO>>> entry1 = mapDay.entrySet().iterator(); entry1.hasNext(); ) {
+                    List<StructureReportEntity> entityListAll = new ArrayList<>();
+                    for (Iterator<Map.Entry<String, List<StructureReportEntity>>> entry1 = mapDay.entrySet().iterator(); entry1.hasNext(); ) {
                         entityListAll.addAll(entry1.next().getValue());
                     }
 
                     //计算合计数据
-                    List<StructureReportDTO> returnListAll = dataALL(entityListAll);
+                    List<StructureReportEntity> returnListAll = dataALL(entityListAll);
 
 
-                    Map<String, List<StructureReportDTO>> mapDay1 = null;
+                    Map<String, List<StructureReportEntity>> mapDay1 = null;
                     if (terminal == 0) {
-                        Map<String, List<StructureReportDTO>> listMap1 = terminalAll(mapDay, reportType);
+                        Map<String, List<StructureReportEntity>> listMap1 = terminalAll(mapDay, reportType);
 
                         //数据放入redis中
                         String lists = new Gson().toJson(listMap1);
@@ -292,11 +291,11 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc1.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
 
-                        List<StructureReportDTO> entityList1 = getCountStructure(listMap1);
+                        List<StructureReportEntity> entityList1 = getCountStructure(listMap1);
                         //曲线图数据计算
-                        List<StructureReportDTO> lineChart = getLineChart(listMap1, terminal);
+                        List<StructureReportEntity> lineChart = getLineChart(listMap1, terminal);
                         ReportPageDetails pageDetails = new ReportPageDetails();
-                        List<StructureReportDTO> pageReport = pageDetails.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
+                        List<StructureReportEntity> pageReport = pageDetails.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
                         listMap1.put(REPORT_STATISTICS, returnListAll);
                         listMap1.put(REPORT_COUNTDATA, entityList1);
                         listMap1.put(REPORT_CHART, lineChart);
@@ -314,12 +313,12 @@ public class BasisReportServiceImpl implements BasisReportService {
                     jc1.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsALL);
                     jc1.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                    List<StructureReportDTO> entityList1 = getCountStructure(mapDay1);
+                    List<StructureReportEntity> entityList1 = getCountStructure(mapDay1);
 
                     //曲线图数据计算
-                    List<StructureReportDTO> lineChart = getLineChart(mapDay1, terminal);
+                    List<StructureReportEntity> lineChart = getLineChart(mapDay1, terminal);
                     ReportPageDetails pageDetails = new ReportPageDetails();
-                    List<StructureReportDTO> pageReport = pageDetails.getReportDetailsPage(mapDay1, terminal, sort, start, limit, categoryTime);
+                    List<StructureReportEntity> pageReport = pageDetails.getReportDetailsPage(mapDay1, terminal, sort, start, limit, categoryTime);
                     mapDay.put(REPORT_STATISTICS, returnListAll);
                     mapDay.put(REPORT_CHART, lineChart);
                     mapDay.put(REPORT_COUNTDATA, entityList1);
@@ -330,18 +329,18 @@ public class BasisReportServiceImpl implements BasisReportService {
                     String dataAll = jc1.get((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"));
                     Gson gson = new Gson();
 
-                    Map<String, List<StructureReportDTO>> list = gson.fromJson(data, new TypeToken<Map<String, List<StructureReportDTO>>>() {
+                    Map<String, List<StructureReportEntity>> list = gson.fromJson(data, new TypeToken<Map<String, List<StructureReportEntity>>>() {
                     }.getType());
-                    List<StructureReportDTO> listAll = gson.fromJson(dataAll, new TypeToken<List<StructureReportDTO>>() {
+                    List<StructureReportEntity> listAll = gson.fromJson(dataAll, new TypeToken<List<StructureReportEntity>>() {
                     }.getType());
 
-                    Map<String, List<StructureReportDTO>> listMap1 = new HashMap<>();
+                    Map<String, List<StructureReportEntity>> listMap1 = new HashMap<>();
 
-                    List<StructureReportDTO> entityList1 = getCountStructure(list);
+                    List<StructureReportEntity> entityList1 = getCountStructure(list);
                     //曲线图数据计算
-                    List<StructureReportDTO> lineChart = getLineChart(list, terminal);
+                    List<StructureReportEntity> lineChart = getLineChart(list, terminal);
                     ReportPageDetails pageDetails = new ReportPageDetails();
-                    List<StructureReportDTO> pageReport = pageDetails.getReportDetailsPage(list, terminal, sort, start, limit, categoryTime);
+                    List<StructureReportEntity> pageReport = pageDetails.getReportDetailsPage(list, terminal, sort, start, limit, categoryTime);
                     listMap1.put(REPORT_STATISTICS, listAll);
                     listMap1.put(REPORT_COUNTDATA, entityList1);
                     listMap1.put(REPORT_CHART, lineChart);
@@ -355,25 +354,25 @@ public class BasisReportServiceImpl implements BasisReportService {
 
                 Long jedisKey2 = jc2.ttl(date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId);
                 if (jedisKey2 == -1) {
-                    List<StructureReportDTO> dateMap2 = new ArrayList<>();
+                    List<StructureReportEntity> dateMap2 = new ArrayList<>();
 
-                    Map<String, StructureReportDTO> reportEntities = new HashMap<>();
-                    Map<String, List<StructureReportDTO>> stringListMap = new HashMap<>();
-                    Map<String, List<StructureReportDTO>> endListMap = new HashMap<>();
+                    Map<String, StructureReportEntity> reportEntities = new HashMap<>();
+                    Map<String, List<StructureReportEntity>> stringListMap = new HashMap<>();
+                    Map<String, List<StructureReportEntity>> endListMap = new HashMap<>();
                     //如果用户选择的时间范围大于7天
                     if (date.length > 7) {
                         int i = 0;
                         int endNumber = 0;
                         int endStep = endStep = date.length < 7 ? 1 : date.length % 7 == 0 ? date.length : (date.length / 7) + 1;
                         for (int x = 0; x < endStep; x++) {
-                            StructureReportDTO dateObject2 = new StructureReportDTO();
-                            List<StructureReportDTO> objectsList1 = new ArrayList<>();
+                            StructureReportEntity dateObject2 = new StructureReportEntity();
+                            List<StructureReportEntity> objectsList1 = new ArrayList<>();
                             String[] strings = new String[2];
                             for (i = endNumber; i < ((i == 0) ? endNumber + 6 : endNumber + 7); i++) {
                                 if (i >= date.length) {
                                     continue;
                                 }
-                                List<StructureReportDTO> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
+                                List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
                                 if (object.size() != 0) {
                                     objectsList1.addAll(object);
                                 }
@@ -387,7 +386,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                                 }
                             }
                             if (objectsList1.size() == 0) {
-                                StructureReportDTO entity = new StructureReportDTO();
+                                StructureReportEntity entity = new StructureReportEntity();
                                 entity.setKeywordId(0l);
                                 entity.setKeywordName("-");
                                 entity.setRegionId(0l);
@@ -417,21 +416,21 @@ public class BasisReportServiceImpl implements BasisReportService {
                             endNumber = i;
                         }
 
-                        List<StructureReportDTO> entityListAll = new ArrayList<>();
-                        for (Iterator<Map.Entry<String, List<StructureReportDTO>>> entry1 = stringListMap.entrySet().iterator(); entry1.hasNext(); ) {
+                        List<StructureReportEntity> entityListAll = new ArrayList<>();
+                        for (Iterator<Map.Entry<String, List<StructureReportEntity>>> entry1 = stringListMap.entrySet().iterator(); entry1.hasNext(); ) {
                             entityListAll.addAll(entry1.next().getValue());
                         }
 
                         //计算合计数据
-                        List<StructureReportDTO> returnListAll = dataALL(entityListAll);
+                        List<StructureReportEntity> returnListAll = dataALL(entityListAll);
 
-                        for (Map.Entry<String, List<StructureReportDTO>> entry1 : stringListMap.entrySet()) {
+                        for (Map.Entry<String, List<StructureReportEntity>> entry1 : stringListMap.entrySet()) {
                             //创建一个并行计算框架
                             ForkJoinPool joinPoolTow = new ForkJoinPool();
                             //获取map中的value
-                            List<StructureReportDTO> list1 = entry1.getValue();
+                            List<StructureReportEntity> list1 = entry1.getValue();
                             //开始对数据进行处理
-                            Future<Map<String, StructureReportDTO>> joinTask = joinPoolTow.submit(new BasisReportDefaultUtil(list1, 0, list1.size(), reportType, userName));
+                            Future<Map<String, StructureReportEntity>> joinTask = joinPoolTow.submit(new BasisReportDefaultUtil(list1, 0, list1.size(), reportType, userName));
                             //接收处理好的数据
                             try {
                                 reportEntities = joinTask.get();
@@ -442,15 +441,15 @@ public class BasisReportServiceImpl implements BasisReportService {
                             }
 
                             //对相应的数据进行计算百分比
-                            Map<String, StructureReportDTO> reportEntities1 = percentage(reportEntities);
+                            Map<String, StructureReportEntity> reportEntities1 = percentage(reportEntities);
 
                             //关闭并行计算框架
                             joinPoolTow.shutdown();
-                            List<StructureReportDTO> arrayList = new ArrayList<>(reportEntities1.values());
+                            List<StructureReportEntity> arrayList = new ArrayList<>(reportEntities1.values());
                             endListMap.put(entry1.getKey(), arrayList);
                         }
                         if (terminal == 0) {
-                            Map<String, List<StructureReportDTO>> listMap1 = terminalAll(endListMap, reportType);
+                            Map<String, List<StructureReportEntity>> listMap1 = terminalAll(endListMap, reportType);
 
                             //数据放入redis中
                             String lists = new Gson().toJson(listMap1);
@@ -460,11 +459,11 @@ public class BasisReportServiceImpl implements BasisReportService {
                             jc2.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsALL);
                             jc2.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                            List<StructureReportDTO> entityList2 = getCountStructure(listMap1);
+                            List<StructureReportEntity> entityList2 = getCountStructure(listMap1);
                             //曲线图数据计算
-                            List<StructureReportDTO> lineChart1 = getLineChart(listMap1, terminal);
+                            List<StructureReportEntity> lineChart1 = getLineChart(listMap1, terminal);
                             ReportPageDetails pageDetails1 = new ReportPageDetails();
-                            List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
+                            List<StructureReportEntity> pageReport1 = pageDetails1.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
                             listMap1.put(REPORT_STATISTICS, returnListAll);
                             listMap1.put(REPORT_CHART, lineChart1);
                             listMap1.put(REPORT_COUNTDATA, entityList2);
@@ -480,37 +479,37 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc2.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsALL);
                         jc2.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                        List<StructureReportDTO> entityList2 = getCountStructure(endListMap);
+                        List<StructureReportEntity> entityList2 = getCountStructure(endListMap);
                         //曲线图数据计算
-                        List<StructureReportDTO> lineChart1 = getLineChart(endListMap, terminal);
+                        List<StructureReportEntity> lineChart1 = getLineChart(endListMap, terminal);
                         ReportPageDetails pageDetails1 = new ReportPageDetails();
-                        List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(endListMap, terminal, sort, start, limit, categoryTime);
+                        List<StructureReportEntity> pageReport1 = pageDetails1.getReportDetailsPage(endListMap, terminal, sort, start, limit, categoryTime);
                         endListMap.put(REPORT_STATISTICS, returnListAll);
                         endListMap.put(REPORT_CHART, lineChart1);
                         endListMap.put(REPORT_COUNTDATA, entityList2);
                         endListMap.put(REPORT_ROWS, pageReport1);
                         return endListMap;
                     } else {
-                        List<StructureReportDTO> dateMap2else = new ArrayList<>();
-                        StructureReportDTO dateObject2else = new StructureReportDTO();
-                        List<StructureReportDTO> objectsList = new ArrayList<>();
+                        List<StructureReportEntity> dateMap2else = new ArrayList<>();
+                        StructureReportEntity dateObject2else = new StructureReportEntity();
+                        List<StructureReportEntity> objectsList = new ArrayList<>();
                         //如果用户选择的时间范围小于或者等于7天
                         for (int i = 0; i < date.length; i++) {
-                            List<StructureReportDTO> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
+                            List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
                             if (object.size() != 0) {
                                 objectsList.addAll(object);
                             }
                         }
 
                         //计算合计数据
-                        List<StructureReportDTO> returnListAll = dataALL(objectsList);
+                        List<StructureReportEntity> returnListAll = dataALL(objectsList);
 
                         dateObject2else.setDate(date[0] + " 至 " + date[date.length - 1]);
                         dateMap2else.add(dateObject2else);
                         //创建一个并行计算框架
                         ForkJoinPool joinPoolTow = new ForkJoinPool();
                         //开始对数据进行处理
-                        Future<Map<String, StructureReportDTO>> joinTask = joinPoolTow.submit(new BasisReportDefaultUtil(objectsList, 0, objectsList.size(), reportType, userName));
+                        Future<Map<String, StructureReportEntity>> joinTask = joinPoolTow.submit(new BasisReportDefaultUtil(objectsList, 0, objectsList.size(), reportType, userName));
                         try {
                             //得到处理好的数据
                             reportEntities = joinTask.get();
@@ -520,14 +519,14 @@ public class BasisReportServiceImpl implements BasisReportService {
                             e.printStackTrace();
                         }
                         //对相应的数据进行计算百分比
-                        Map<String, StructureReportDTO> reportEntities1 = percentage(reportEntities);
+                        Map<String, StructureReportEntity> reportEntities1 = percentage(reportEntities);
 
                         //关闭并行计算框架
                         joinPoolTow.shutdown();
-                        List<StructureReportDTO> entityList = new ArrayList<>(reportEntities1.values());
+                        List<StructureReportEntity> entityList = new ArrayList<>(reportEntities1.values());
                         endListMap.put(date[0] + " 至 " + date[date.length - 1], entityList);
                         if (terminal == 0) {
-                            Map<String, List<StructureReportDTO>> listMap1 = terminalAll(endListMap, reportType);
+                            Map<String, List<StructureReportEntity>> listMap1 = terminalAll(endListMap, reportType);
                             //数据放入redis中
                             String lists = new Gson().toJson(listMap1);
                             String listsALL = new Gson().toJson(returnListAll);
@@ -536,11 +535,11 @@ public class BasisReportServiceImpl implements BasisReportService {
                             jc2.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsALL);
                             jc2.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                            List<StructureReportDTO> entityList2 = getCountStructure(endListMap);
+                            List<StructureReportEntity> entityList2 = getCountStructure(endListMap);
                             //曲线图数据计算
-                            List<StructureReportDTO> lineChart1 = getLineChart(listMap1, terminal);
+                            List<StructureReportEntity> lineChart1 = getLineChart(listMap1, terminal);
                             ReportPageDetails pageDetails1 = new ReportPageDetails();
-                            List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
+                            List<StructureReportEntity> pageReport1 = pageDetails1.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
                             listMap1.put(REPORT_STATISTICS, returnListAll);
                             listMap1.put(REPORT_CHART, lineChart1);
                             listMap1.put(REPORT_COUNTDATA, entityList2);
@@ -556,11 +555,11 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc2.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsALL);
                         jc2.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                        List<StructureReportDTO> entityList2 = getCountStructure(endListMap);
+                        List<StructureReportEntity> entityList2 = getCountStructure(endListMap);
                         //曲线图数据计算
-                        List<StructureReportDTO> lineChart1 = getLineChart(endListMap, terminal);
+                        List<StructureReportEntity> lineChart1 = getLineChart(endListMap, terminal);
                         ReportPageDetails pageDetails1 = new ReportPageDetails();
-                        List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(endListMap, terminal, sort, start, limit, categoryTime);
+                        List<StructureReportEntity> pageReport1 = pageDetails1.getReportDetailsPage(endListMap, terminal, sort, start, limit, categoryTime);
                         endListMap.put(REPORT_STATISTICS, returnListAll);
                         endListMap.put(REPORT_CHART, lineChart1);
                         endListMap.put(REPORT_COUNTDATA, entityList2);
@@ -571,18 +570,18 @@ public class BasisReportServiceImpl implements BasisReportService {
                     String data = jc2.get((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId));
                     String dataAll = jc2.get((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"));
                     Gson gson = new Gson();
-                    Map<String, List<StructureReportDTO>> list = gson.fromJson(data, new TypeToken<Map<String, List<StructureReportDTO>>>() {
+                    Map<String, List<StructureReportEntity>> list = gson.fromJson(data, new TypeToken<Map<String, List<StructureReportEntity>>>() {
                     }.getType());
-                    List<StructureReportDTO> listAll = gson.fromJson(dataAll, new TypeToken<List<StructureReportDTO>>() {
+                    List<StructureReportEntity> listAll = gson.fromJson(dataAll, new TypeToken<List<StructureReportEntity>>() {
                     }.getType());
 
-                    Map<String, List<StructureReportDTO>> endListMap = new HashMap<>();
+                    Map<String, List<StructureReportEntity>> endListMap = new HashMap<>();
 
-                    List<StructureReportDTO> entityList2 = getCountStructure(list);
+                    List<StructureReportEntity> entityList2 = getCountStructure(list);
                     //曲线图数据计算
-                    List<StructureReportDTO> lineChart1 = getLineChart(list, terminal);
+                    List<StructureReportEntity> lineChart1 = getLineChart(list, terminal);
                     ReportPageDetails pageDetails1 = new ReportPageDetails();
-                    List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(list, terminal, sort, start, limit, categoryTime);
+                    List<StructureReportEntity> pageReport1 = pageDetails1.getReportDetailsPage(list, terminal, sort, start, limit, categoryTime);
                     endListMap.put(REPORT_STATISTICS, listAll);
                     endListMap.put(REPORT_CHART, lineChart1);
                     endListMap.put(REPORT_COUNTDATA, entityList2);
@@ -596,12 +595,12 @@ public class BasisReportServiceImpl implements BasisReportService {
 
                 Long jedisKey3 = jc3.ttl(date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId);
                 if (jedisKey3 == -1) {
-                    List<StructureReportDTO> dateMap3 = new ArrayList<>();
+                    List<StructureReportEntity> dateMap3 = new ArrayList<>();
 
-                    Map<String, StructureReportDTO> reportEntities1 = new HashMap<>();
-                    Map<String, List<StructureReportDTO>> stringListMap1 = new HashMap<>();
-                    Map<String, List<StructureReportDTO>> endListMap1 = new HashMap<>();
-                    List<StructureReportDTO> objectsList = new ArrayList<>();
+                    Map<String, StructureReportEntity> reportEntities1 = new HashMap<>();
+                    Map<String, List<StructureReportEntity>> stringListMap1 = new HashMap<>();
+                    Map<String, List<StructureReportEntity>> endListMap1 = new HashMap<>();
+                    List<StructureReportEntity> objectsList = new ArrayList<>();
                     //如果用户选择的时间范围大于30天
                     if (date.length > 30) {
                         Calendar calendar = Calendar.getInstance();
@@ -621,9 +620,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                                 index++;
                                 int s = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
                                 if (index == calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-                                    StructureReportDTO dateObject3 = new StructureReportDTO();
+                                    StructureReportEntity dateObject3 = new StructureReportEntity();
                                     if (objectsList.size() == 0) {
-                                        StructureReportDTO entity = new StructureReportDTO();
+                                        StructureReportEntity entity = new StructureReportEntity();
                                         entity.setKeywordId(0l);
                                         entity.setKeywordName("-");
                                         entity.setRegionId(0l);
@@ -664,7 +663,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                                     index = 0;
                                 }
 
-                                List<StructureReportDTO> object = basisReportDAO.getUnitReportDate(date[j] + getTableType(reportType), dataId, dateName);
+                                List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[j] + getTableType(reportType), dataId, dateName);
                                 if (object.size() != 0) {
                                     objectsList.addAll(object);
                                 }
@@ -672,9 +671,9 @@ public class BasisReportServiceImpl implements BasisReportService {
 
                             }
                             if (index > 0) {
-                                StructureReportDTO dateObject3 = new StructureReportDTO();
+                                StructureReportEntity dateObject3 = new StructureReportEntity();
                                 if (objectsList.size() == 0) {
-                                    StructureReportDTO entity = new StructureReportDTO();
+                                    StructureReportEntity entity = new StructureReportEntity();
                                     entity.setKeywordId(0l);
                                     entity.setKeywordName("-");
                                     entity.setRegionId(0l);
@@ -707,22 +706,22 @@ public class BasisReportServiceImpl implements BasisReportService {
                         }
 
 
-                        List<StructureReportDTO> entityListAll = new ArrayList<>();
-                        for (Iterator<Map.Entry<String, List<StructureReportDTO>>> entry1 = stringListMap1.entrySet().iterator(); entry1.hasNext(); ) {
+                        List<StructureReportEntity> entityListAll = new ArrayList<>();
+                        for (Iterator<Map.Entry<String, List<StructureReportEntity>>> entry1 = stringListMap1.entrySet().iterator(); entry1.hasNext(); ) {
                             entityListAll.addAll(entry1.next().getValue());
                         }
 
                         //计算合计数据
-                        List<StructureReportDTO> returnListAll = dataALL(entityListAll);
+                        List<StructureReportEntity> returnListAll = dataALL(entityListAll);
 
 
-                        for (Map.Entry<String, List<StructureReportDTO>> entry1 : stringListMap1.entrySet()) {
+                        for (Map.Entry<String, List<StructureReportEntity>> entry1 : stringListMap1.entrySet()) {
                             //创建一个并行计算框架
                             ForkJoinPool joinPoolTow = new ForkJoinPool();
                             //获取map中的value
-                            List<StructureReportDTO> list1 = entry1.getValue();
+                            List<StructureReportEntity> list1 = entry1.getValue();
                             //开始对数据进行处理
-                            Future<Map<String, StructureReportDTO>> joinTask = joinPoolTow.submit(new BasisReportDefaultUtil(list1, 0, list1.size(), reportType, userName));
+                            Future<Map<String, StructureReportEntity>> joinTask = joinPoolTow.submit(new BasisReportDefaultUtil(list1, 0, list1.size(), reportType, userName));
                             //接收处理好的数据
                             try {
                                 reportEntities1 = joinTask.get();
@@ -732,15 +731,15 @@ public class BasisReportServiceImpl implements BasisReportService {
                                 e.printStackTrace();
                             }
                             //对相应的数据进行计算百分比
-                            Map<String, StructureReportDTO> reportEntities2 = percentage(reportEntities1);
+                            Map<String, StructureReportEntity> reportEntities2 = percentage(reportEntities1);
 
                             //关闭并行计算框架
                             joinPoolTow.shutdown();
-                            List<StructureReportDTO> entityList = new ArrayList<>(reportEntities2.values());
+                            List<StructureReportEntity> entityList = new ArrayList<>(reportEntities2.values());
                             endListMap1.put(entry1.getKey(), entityList);
                         }
                         if (terminal == 0) {
-                            Map<String, List<StructureReportDTO>> listMap1 = terminalAll(endListMap1, reportType);
+                            Map<String, List<StructureReportEntity>> listMap1 = terminalAll(endListMap1, reportType);
 
                             //数据放入redis中
                             String lists = new Gson().toJson(listMap1);
@@ -750,11 +749,11 @@ public class BasisReportServiceImpl implements BasisReportService {
                             jc3.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsAll);
                             jc3.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                            List<StructureReportDTO> entityList3 = getCountStructure(listMap1);
+                            List<StructureReportEntity> entityList3 = getCountStructure(listMap1);
                             //曲线图数据计算
-                            List<StructureReportDTO> lineChart1 = getLineChart(listMap1, terminal);
+                            List<StructureReportEntity> lineChart1 = getLineChart(listMap1, terminal);
                             ReportPageDetails pageDetails1 = new ReportPageDetails();
-                            List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
+                            List<StructureReportEntity> pageReport1 = pageDetails1.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
                             listMap1.put(REPORT_STATISTICS, returnListAll);
                             listMap1.put(REPORT_CHART, lineChart1);
                             listMap1.put(REPORT_COUNTDATA, entityList3);
@@ -769,35 +768,35 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc3.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsAll);
                         jc3.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                        List<StructureReportDTO> entityList3 = getCountStructure(endListMap1);
+                        List<StructureReportEntity> entityList3 = getCountStructure(endListMap1);
                         //曲线图数据计算
-                        List<StructureReportDTO> lineChart1 = getLineChart(endListMap1, terminal);
+                        List<StructureReportEntity> lineChart1 = getLineChart(endListMap1, terminal);
                         ReportPageDetails pageDetails1 = new ReportPageDetails();
-                        List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(endListMap1, terminal, sort, start, limit, categoryTime);
+                        List<StructureReportEntity> pageReport1 = pageDetails1.getReportDetailsPage(endListMap1, terminal, sort, start, limit, categoryTime);
                         endListMap1.put(REPORT_STATISTICS, returnListAll);
                         endListMap1.put(REPORT_CHART, lineChart1);
                         endListMap1.put(REPORT_COUNTDATA, entityList3);
                         endListMap1.put(REPORT_ROWS, pageReport1);
                         return endListMap1;
                     } else {
-                        List<StructureReportDTO> dateMap3else = new ArrayList<>();
-                        StructureReportDTO dateObject3else = new StructureReportDTO();
+                        List<StructureReportEntity> dateMap3else = new ArrayList<>();
+                        StructureReportEntity dateObject3else = new StructureReportEntity();
                         //如果用户选择的时间范围小于或者等于30天
                         for (int i = 0; i < date.length; i++) {
-                            List<StructureReportDTO> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
+                            List<StructureReportEntity> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
                             if (object.size() != 0) {
                                 objectsList.addAll(object);
                             }
                         }
                         //计算合计数据
-                        List<StructureReportDTO> returnListAll = dataALL(objectsList);
+                        List<StructureReportEntity> returnListAll = dataALL(objectsList);
 
                         dateObject3else.setDate(date[0] + " 至 " + date[date.length - 1]);
                         dateMap3else.add(dateObject3else);
                         //创建一个并行计算框架
                         ForkJoinPool joinPoolTow = new ForkJoinPool();
                         //开始对数据进行处理
-                        Future<Map<String, StructureReportDTO>> joinTask = joinPoolTow.submit(new BasisReportDefaultUtil(objectsList, 0, objectsList.size(), reportType, userName));
+                        Future<Map<String, StructureReportEntity>> joinTask = joinPoolTow.submit(new BasisReportDefaultUtil(objectsList, 0, objectsList.size(), reportType, userName));
                         try {
                             //得到处理好的数据
                             reportEntities1 = joinTask.get();
@@ -808,14 +807,14 @@ public class BasisReportServiceImpl implements BasisReportService {
                         }
                         DecimalFormat df = new DecimalFormat("#.00");
                         //对相应的数据进行计算百分比
-                        Map<String, StructureReportDTO> reportEntities2 = percentage(reportEntities1);
+                        Map<String, StructureReportEntity> reportEntities2 = percentage(reportEntities1);
 
                         //关闭并行计算框架
                         joinPoolTow.shutdown();
-                        List<StructureReportDTO> entityList = new ArrayList<>(reportEntities2.values());
+                        List<StructureReportEntity> entityList = new ArrayList<>(reportEntities2.values());
                         endListMap1.put(date[0] + " 至 " + date[date.length - 1], entityList);
                         if (terminal == 0) {
-                            Map<String, List<StructureReportDTO>> listMap1 = terminalAll(endListMap1, reportType);
+                            Map<String, List<StructureReportEntity>> listMap1 = terminalAll(endListMap1, reportType);
                             //数据放入redis中
                             String lists = new Gson().toJson(listMap1);
                             String listsAll = new Gson().toJson(returnListAll);
@@ -824,11 +823,11 @@ public class BasisReportServiceImpl implements BasisReportService {
                             jc3.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsAll);
                             jc3.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                            List<StructureReportDTO> entityList3 = getCountStructure(listMap1);
+                            List<StructureReportEntity> entityList3 = getCountStructure(listMap1);
                             //曲线图数据计算
-                            List<StructureReportDTO> lineChart1 = getLineChart(listMap1, terminal);
+                            List<StructureReportEntity> lineChart1 = getLineChart(listMap1, terminal);
                             ReportPageDetails pageDetails1 = new ReportPageDetails();
-                            List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
+                            List<StructureReportEntity> pageReport1 = pageDetails1.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
                             listMap1.put(REPORT_STATISTICS, returnListAll);
                             listMap1.put(REPORT_CHART, lineChart1);
                             listMap1.put(REPORT_COUNTDATA, entityList3);
@@ -843,11 +842,11 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc3.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsAll);
                         jc3.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                        List<StructureReportDTO> entityList3 = getCountStructure(endListMap1);
+                        List<StructureReportEntity> entityList3 = getCountStructure(endListMap1);
                         //曲线图数据计算
-                        List<StructureReportDTO> lineChart1 = getLineChart(endListMap1, terminal);
+                        List<StructureReportEntity> lineChart1 = getLineChart(endListMap1, terminal);
                         ReportPageDetails pageDetails1 = new ReportPageDetails();
-                        List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(endListMap1, terminal, sort, start, limit, categoryTime);
+                        List<StructureReportEntity> pageReport1 = pageDetails1.getReportDetailsPage(endListMap1, terminal, sort, start, limit, categoryTime);
                         endListMap1.put(REPORT_STATISTICS, returnListAll);
                         endListMap1.put(REPORT_CHART, lineChart1);
                         endListMap1.put(REPORT_COUNTDATA, entityList3);
@@ -858,18 +857,18 @@ public class BasisReportServiceImpl implements BasisReportService {
                     String data = jc3.get((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId));
                     String dataAll = jc3.get((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"));
                     Gson gson = new Gson();
-                    Map<String, List<StructureReportDTO>> list = gson.fromJson(data, new TypeToken<Map<String, List<StructureReportDTO>>>() {
+                    Map<String, List<StructureReportEntity>> list = gson.fromJson(data, new TypeToken<Map<String, List<StructureReportEntity>>>() {
                     }.getType());
 
-                    List<StructureReportDTO> listAll = gson.fromJson(dataAll, new TypeToken<List<StructureReportDTO>>() {
+                    List<StructureReportEntity> listAll = gson.fromJson(dataAll, new TypeToken<List<StructureReportEntity>>() {
                     }.getType());
 
-                    Map<String, List<StructureReportDTO>> endListMap1 = new HashMap<>();
-                    List<StructureReportDTO> entityList3 = getCountStructure(list);
+                    Map<String, List<StructureReportEntity>> endListMap1 = new HashMap<>();
+                    List<StructureReportEntity> entityList3 = getCountStructure(list);
                     //曲线图数据计算
-                    List<StructureReportDTO> lineChart1 = getLineChart(list, terminal);
+                    List<StructureReportEntity> lineChart1 = getLineChart(list, terminal);
                     ReportPageDetails pageDetails1 = new ReportPageDetails();
-                    List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(list, terminal, sort, start, limit, categoryTime);
+                    List<StructureReportEntity> pageReport1 = pageDetails1.getReportDetailsPage(list, terminal, sort, start, limit, categoryTime);
                     endListMap1.put(REPORT_STATISTICS, listAll);
                     endListMap1.put(REPORT_CHART, lineChart1);
                     endListMap1.put(REPORT_COUNTDATA, entityList3);
@@ -1635,13 +1634,13 @@ public class BasisReportServiceImpl implements BasisReportService {
         DecimalFormat df = new DecimalFormat("#.0000");
         String head = ReportDownUtil.getHead(reportType);
         if (dateType < 1) {
-            List<StructureReportDTO> list = gson.fromJson(data, new TypeToken<List<StructureReportDTO>>() {
+            List<StructureReportEntity> list = gson.fromJson(data, new TypeToken<List<StructureReportEntity>>() {
             }.getType());
             try {
 
                 os.write(Bytes.concat(commonCSVHead, (head).getBytes(StandardCharsets.UTF_8)));
                 if (terminal != 2) {
-                    for (StructureReportDTO entity : list) {
+                    for (StructureReportEntity entity : list) {
                         os.write(Bytes.concat(commonCSVHead, (dateHead +
                                 ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
                                 ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
@@ -1658,7 +1657,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                                 DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
                     }
                 } else {
-                    for (StructureReportDTO entity : list) {
+                    for (StructureReportEntity entity : list) {
                         os.write(Bytes.concat(commonCSVHead, (dateHead +
                                 ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
                                 ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
@@ -1680,15 +1679,15 @@ public class BasisReportServiceImpl implements BasisReportService {
                 e.printStackTrace();
             }
         } else {
-            Map<String, List<StructureReportDTO>> responseMap = gson.fromJson(data, new TypeToken<Map<String, List<StructureReportDTO>>>() {
+            Map<String, List<StructureReportEntity>> responseMap = gson.fromJson(data, new TypeToken<Map<String, List<StructureReportEntity>>>() {
             }.getType());
 
             try {
 
                 os.write(Bytes.concat(commonCSVHead, (head).getBytes(StandardCharsets.UTF_8)));
                 if (terminal != 2) {
-                    for (Map.Entry<String, List<StructureReportDTO>> voEntity : responseMap.entrySet()) {
-                        for (StructureReportDTO entity : voEntity.getValue()) {
+                    for (Map.Entry<String, List<StructureReportEntity>> voEntity : responseMap.entrySet()) {
+                        for (StructureReportEntity entity : voEntity.getValue()) {
                             os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
                                     ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
                                     ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
@@ -1706,8 +1705,8 @@ public class BasisReportServiceImpl implements BasisReportService {
                         }
                     }
                 } else {
-                    for (Map.Entry<String, List<StructureReportDTO>> voEntity : responseMap.entrySet()) {
-                        for (StructureReportDTO entity : voEntity.getValue()) {
+                    for (Map.Entry<String, List<StructureReportEntity>> voEntity : responseMap.entrySet()) {
+                        for (StructureReportEntity entity : voEntity.getValue()) {
                             os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
                                     ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
                                     ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
@@ -2351,17 +2350,17 @@ public class BasisReportServiceImpl implements BasisReportService {
      * ****************API****************************
      */
     @Override
-    public Map<String, List<StructureReportDTO>> getKeywordReport(Long[] id, String startDate, String endDate, int devices) {
+    public Map<String, List<StructureReportEntity>> getKeywordReport(Long[] id, String startDate, String endDate, int devices) {
         String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getBaiduUserName();
         List<String> newDate = DateUtils.getPeriod(startDate, endDate);
-        Map<String, List<StructureReportDTO>> listMap = new HashMap<>();
+        Map<String, List<StructureReportEntity>> listMap = new HashMap<>();
         if (newDate.size() > 0) {
             for (int i = 0; i < newDate.size(); i++) {
-                List<StructureReportDTO> returnStructure = basisReportDAO.getKeywordReport(id, newDate.get(i) + "-keyword");
+                List<StructureReportEntity> returnStructure = basisReportDAO.getKeywordReport(id, newDate.get(i) + "-keyword");
                 if (devices == 0) {
                     ForkJoinPool joinPoolTow = new ForkJoinPool();
                     //开始对数据进行处理
-                    Future<List<StructureReportDTO>> joinTask = joinPoolTow.submit(new BasistReportPCPlusMobUtil(returnStructure, 0, returnStructure.size(), userName));
+                    Future<List<StructureReportEntity>> joinTask = joinPoolTow.submit(new BasistReportPCPlusMobUtil(returnStructure, 0, returnStructure.size(), userName));
                     try {
                         listMap.put(newDate.get(i), joinTask.get());
                     } catch (InterruptedException e) {
@@ -2535,21 +2534,21 @@ public class BasisReportServiceImpl implements BasisReportService {
      * @param entitiesMap
      * @return
      */
-    private Map<String, List<StructureReportDTO>> terminalAll(Map<String, List<StructureReportDTO>> entitiesMap, int reportType) {
+    private Map<String, List<StructureReportEntity>> terminalAll(Map<String, List<StructureReportEntity>> entitiesMap, int reportType) {
         String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getBaiduUserName();
-        List<StructureReportDTO> entities = new ArrayList<>();
-        Map<String, List<StructureReportDTO>> listMapDay = new HashMap<>();
-        for (Iterator<Map.Entry<String, List<StructureReportDTO>>> entry1 = entitiesMap.entrySet().iterator(); entry1.hasNext(); ) {
+        List<StructureReportEntity> entities = new ArrayList<>();
+        Map<String, List<StructureReportEntity>> listMapDay = new HashMap<>();
+        for (Iterator<Map.Entry<String, List<StructureReportEntity>>> entry1 = entitiesMap.entrySet().iterator(); entry1.hasNext(); ) {
             //创建一个并行计算框架
             ForkJoinPool joinPoolTow = new ForkJoinPool();
-            Map.Entry<String, List<StructureReportDTO>> mapData = entry1.next();
+            Map.Entry<String, List<StructureReportEntity>> mapData = entry1.next();
 
             //获取map中的value
-            List<StructureReportDTO> list1 = mapData.getValue();
+            List<StructureReportEntity> list1 = mapData.getValue();
             //获取map中的key
             String mapKey = mapData.getKey();
             //开始对数据进行处理
-            Future<List<StructureReportDTO>> joinTask = joinPoolTow.submit(new BasistReportPCPlusMobUtil(list1, 0, list1.size(), userName));
+            Future<List<StructureReportEntity>> joinTask = joinPoolTow.submit(new BasistReportPCPlusMobUtil(list1, 0, list1.size(), userName));
             try {
                 //得到处理后的数据
                 entities = joinTask.get();
@@ -2559,10 +2558,10 @@ public class BasisReportServiceImpl implements BasisReportService {
                 e.printStackTrace();
             }
 
-            Map<String, StructureReportDTO> objects = new HashMap<>();
+            Map<String, StructureReportEntity> objects = new HashMap<>();
 
             //开始对数据进行处理
-            Future<Map<String, StructureReportDTO>> joinTasks = joinPoolTow.submit(new BasisReportPCus(entities, 0, entities.size(), reportType));
+            Future<Map<String, StructureReportEntity>> joinTasks = joinPoolTow.submit(new BasisReportPCus(entities, 0, entities.size(), reportType));
             try {
                 //得到处理后的数据
                 objects = joinTasks.get();
@@ -2572,8 +2571,8 @@ public class BasisReportServiceImpl implements BasisReportService {
                 e.printStackTrace();
             }
 
-            List<StructureReportDTO> entities1 = new ArrayList<>();
-            for (Iterator<Map.Entry<String, StructureReportDTO>> entry2 = objects.entrySet().iterator(); entry2.hasNext(); ) {
+            List<StructureReportEntity> entities1 = new ArrayList<>();
+            for (Iterator<Map.Entry<String, StructureReportEntity>> entry2 = objects.entrySet().iterator(); entry2.hasNext(); ) {
                 entities1.add(entry2.next().getValue());
             }
             //关闭并行计算框架
@@ -2630,9 +2629,9 @@ public class BasisReportServiceImpl implements BasisReportService {
     }
 
     //对单个的数据进行计算百分比
-    private Map<String, StructureReportDTO> percentage(Map<String, StructureReportDTO> map) {
+    private Map<String, StructureReportEntity> percentage(Map<String, StructureReportEntity> map) {
         DecimalFormat df = new DecimalFormat("#.00");
-        for (Map.Entry<String, StructureReportDTO> voEntity : map.entrySet()) {
+        for (Map.Entry<String, StructureReportEntity> voEntity : map.entrySet()) {
             if (voEntity.getValue().getMobileImpression() == null || voEntity.getValue().getMobileImpression() == 0) {
                 voEntity.getValue().setMobileCtr(0.00);
             } else {
@@ -2664,11 +2663,11 @@ public class BasisReportServiceImpl implements BasisReportService {
     }
 
     //对一个集合中的数据进行计算百分比
-    private Map<String, List<StructureReportDTO>> percentageList(Map<String, List<StructureReportDTO>> mapDay, String userName, int reportType) {
+    private Map<String, List<StructureReportEntity>> percentageList(Map<String, List<StructureReportEntity>> mapDay, String userName, int reportType) {
         DecimalFormat df = new DecimalFormat("#.0000");
-        Map<String, List<StructureReportDTO>> stringListMap = new HashMap<>();
-        for (Map.Entry<String, List<StructureReportDTO>> voEntity : mapDay.entrySet()) {
-            for (StructureReportDTO entity : voEntity.getValue()) {
+        Map<String, List<StructureReportEntity>> stringListMap = new HashMap<>();
+        for (Map.Entry<String, List<StructureReportEntity>> voEntity : mapDay.entrySet()) {
+            for (StructureReportEntity entity : voEntity.getValue()) {
                 entity.setAccount(userName);
                 if (entity.getMobileImpression() == null || entity.getMobileImpression() == 0) {
                     entity.setMobileCtr(0.00);
@@ -2700,11 +2699,11 @@ public class BasisReportServiceImpl implements BasisReportService {
             }
 
         }
-        for (Map.Entry<String, List<StructureReportDTO>> voEntity : mapDay.entrySet()) {
-            Map<String, StructureReportDTO> objects = new HashMap<>();
+        for (Map.Entry<String, List<StructureReportEntity>> voEntity : mapDay.entrySet()) {
+            Map<String, StructureReportEntity> objects = new HashMap<>();
             ForkJoinPool joinPoolTow = new ForkJoinPool();
             //开始对数据进行处理
-            Future<Map<String, StructureReportDTO>> joinTasks = joinPoolTow.submit(new BasisReportPCus(voEntity.getValue(), 0, voEntity.getValue().size(), reportType));
+            Future<Map<String, StructureReportEntity>> joinTasks = joinPoolTow.submit(new BasisReportPCus(voEntity.getValue(), 0, voEntity.getValue().size(), reportType));
             try {
                 //得到处理后的数据
                 objects = joinTasks.get();
@@ -2714,8 +2713,8 @@ public class BasisReportServiceImpl implements BasisReportService {
                 e.printStackTrace();
             }
 
-            List<StructureReportDTO> entities1 = new ArrayList<>();
-            for (Iterator<Map.Entry<String, StructureReportDTO>> entry2 = objects.entrySet().iterator(); entry2.hasNext(); ) {
+            List<StructureReportEntity> entities1 = new ArrayList<>();
+            for (Iterator<Map.Entry<String, StructureReportEntity>> entry2 = objects.entrySet().iterator(); entry2.hasNext(); ) {
                 entities1.add(entry2.next().getValue());
             }
             stringListMap.put(voEntity.getKey(), entities1);
@@ -2726,10 +2725,10 @@ public class BasisReportServiceImpl implements BasisReportService {
     }
 
     //统计当前查出数据的总和（分标示）
-    private List<StructureReportDTO> getCountStructure(Map<String, List<StructureReportDTO>> dateMap) {
-        StructureReportDTO objEntity = new StructureReportDTO();
-        for (Map.Entry<String, List<StructureReportDTO>> voEntity : dateMap.entrySet()) {
-            for (StructureReportDTO entity : voEntity.getValue()) {
+    private List<StructureReportEntity> getCountStructure(Map<String, List<StructureReportEntity>> dateMap) {
+        StructureReportEntity objEntity = new StructureReportEntity();
+        for (Map.Entry<String, List<StructureReportEntity>> voEntity : dateMap.entrySet()) {
+            for (StructureReportEntity entity : voEntity.getValue()) {
                 objEntity.setMobileImpression(((objEntity.getMobileImpression() == null) ? 0 : objEntity.getMobileImpression()) + ((entity.getMobileImpression() == null) ? 0 : entity.getMobileImpression()));
                 objEntity.setMobileClick(((objEntity.getMobileClick() == null) ? 0 : objEntity.getMobileClick()) + ((entity.getMobileClick() == null) ? 0 : entity.getMobileClick()));
                 objEntity.setMobileCost(((objEntity.getMobileCost() == null) ? BigDecimal.valueOf(0) : objEntity.getMobileCost()).add((entity.getMobileCost() == null) ? BigDecimal.valueOf(0) : entity.getMobileCost()));
@@ -2741,23 +2740,23 @@ public class BasisReportServiceImpl implements BasisReportService {
                 objEntity.setPcConversion(((objEntity.getPcConversion() == null) ? 0 : objEntity.getPcConversion()) + ((entity.getPcConversion() == null) ? 0 : entity.getPcConversion()));
             }
         }
-        List<StructureReportDTO> entityList = new ArrayList<>();
+        List<StructureReportEntity> entityList = new ArrayList<>();
         entityList.add(objEntity);
         return entityList;
     }
 
     //获取饼状图需要数据
-    private List<StructureReportDTO> getPieData(List<StructureReportDTO> returnList, int terminal, String sortField, String sort) {
-        for (StructureReportDTO entity : returnList) {
+    private List<StructureReportEntity> getPieData(List<StructureReportEntity> returnList, int terminal, String sortField, String sort) {
+        for (StructureReportEntity entity : returnList) {
             entity.setOrderBy(sort);
             entity.setTerminal(terminal);
         }
         Collections.sort(returnList);
         int i = 0;
-        List<StructureReportDTO> entityList = new ArrayList<>();
-        StructureReportDTO entity = new StructureReportDTO();
-        for (StructureReportDTO entityReport : returnList) {
-            StructureReportDTO entity1 = new StructureReportDTO();
+        List<StructureReportEntity> entityList = new ArrayList<>();
+        StructureReportEntity entity = new StructureReportEntity();
+        for (StructureReportEntity entityReport : returnList) {
+            StructureReportEntity entity1 = new StructureReportEntity();
             if (i < 10) {
                 i++;
                 switch (sortField) {
@@ -2847,12 +2846,12 @@ public class BasisReportServiceImpl implements BasisReportService {
     }
 
     //数据排序
-    private List<StructureReportDTO> dataSort(List<StructureReportDTO> returnList, String sort, int terminal, int start, int limit) {
-        for (StructureReportDTO entity : returnList) {
+    private List<StructureReportEntity> dataSort(List<StructureReportEntity> returnList, String sort, int terminal, int start, int limit) {
+        for (StructureReportEntity entity : returnList) {
             entity.setOrderBy(sort);
             entity.setTerminal(terminal);
         }
-        List<StructureReportDTO> finalList = new ArrayList<>();
+        List<StructureReportEntity> finalList = new ArrayList<>();
 
         if (returnList.size() > limit) {
             for (int i = start; i < limit; i++) {
@@ -2867,14 +2866,14 @@ public class BasisReportServiceImpl implements BasisReportService {
     }
 
     //曲线图数据计算
-    private List<StructureReportDTO> getLineChart(Map<String, List<StructureReportDTO>> listMap, int dive) {
-        List<StructureReportDTO> entityList = new ArrayList<>();
+    private List<StructureReportEntity> getLineChart(Map<String, List<StructureReportEntity>> listMap, int dive) {
+        List<StructureReportEntity> entityList = new ArrayList<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        for (Map.Entry<String, List<StructureReportDTO>> voEntity : listMap.entrySet()) {
-            StructureReportDTO e = new StructureReportDTO();
-            List<StructureReportDTO> entity = voEntity.getValue();
+        for (Map.Entry<String, List<StructureReportEntity>> voEntity : listMap.entrySet()) {
+            StructureReportEntity e = new StructureReportEntity();
+            List<StructureReportEntity> entity = voEntity.getValue();
 
-            for (StructureReportDTO entity1 : entity) {
+            for (StructureReportEntity entity1 : entity) {
                 e.setPcImpression(((e.getPcImpression() == null) ? 0 : e.getPcImpression()) + ((entity1.getPcImpression() == null) ? 0 : entity1.getPcImpression()));
                 e.setPcClick(((e.getPcClick() == null) ? 0 : e.getPcClick()) + ((entity1.getPcClick() == null) ? 0 : entity1.getPcClick()));
                 e.setPcCost(((e.getPcCost() == null) ? BigDecimal.valueOf(0) : e.getPcCost()).add((entity1.getPcCost() == null) ? BigDecimal.valueOf(0) : entity1.getPcCost()));
@@ -2929,12 +2928,12 @@ public class BasisReportServiceImpl implements BasisReportService {
      * @param list
      * @return
      */
-    private List<StructureReportDTO> dataALL(List<StructureReportDTO> list) {
+    private List<StructureReportEntity> dataALL(List<StructureReportEntity> list) {
         ForkJoinPool joinPool = new ForkJoinPool();
-        Map<String, StructureReportDTO> mapAll = new HashMap<>();
+        Map<String, StructureReportEntity> mapAll = new HashMap<>();
         try {
 
-            Future<Map<String, StructureReportDTO>> joinTaskAll = joinPool.submit(new ReportStatisticsUtil(list, 0, list.size()));
+            Future<Map<String, StructureReportEntity>> joinTaskAll = joinPool.submit(new ReportStatisticsUtil(list, 0, list.size()));
 
             mapAll = percentage(joinTaskAll.get());
 
@@ -2943,7 +2942,7 @@ public class BasisReportServiceImpl implements BasisReportService {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        List<StructureReportDTO> returnListAll = new ArrayList<>(mapAll.values());
+        List<StructureReportEntity> returnListAll = new ArrayList<>(mapAll.values());
         return returnListAll;
     }
 
