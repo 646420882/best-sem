@@ -29,6 +29,16 @@
             <artifactId>perfect-dao</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.perfect</groupId>
+            <artifactId>perfect-utils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.perfect</groupId>
+            <artifactId>perfect-commons</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework</groupId>

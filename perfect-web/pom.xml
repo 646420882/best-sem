@@ -31,6 +31,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.perfect</groupId>
+            <artifactId>perfect-utils</artifactId>
+        </dependency>
+
+
+        <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
         </dependency>
