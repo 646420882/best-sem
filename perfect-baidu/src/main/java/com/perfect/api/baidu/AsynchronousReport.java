@@ -25,10 +25,6 @@ public class AsynchronousReport {
 
     public AsynchronousReport(String userName, String password, String token) {
         service = BaiduServiceSupport.getCommonService(userName, password, token);
-        init();
-    }
-
-    public void init() {
         try {
             reportService = service.getService(ReportService.class);
         } catch (ApiException e) {

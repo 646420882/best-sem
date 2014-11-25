@@ -3,6 +3,7 @@ package com.perfect.service.impl;
 import com.perfect.dao.BiddingRuleDAO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.dao.mongodb.utils.PaginationParam;
+import com.perfect.param.BiddingRuleParam;
 import com.perfect.service.BiddingRuleService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
@@ -24,8 +25,11 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     BiddingRuleDAO biddingRuleDAO;
 
     @Override
-    public void createBiddingRule(BiddingRuleEntity biddingRuleEntity) {
-        biddingRuleDAO.createBidding(biddingRuleEntity);
+    public void createBiddingRule(BiddingRuleParam biddingRuleParam) {
+
+
+
+        biddingRuleDAO.createBidding(biddingRuleParam);
     }
 
     @Override
@@ -54,7 +58,7 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public void updateRule(BiddingRuleEntity entity) {
+    public void updateRule(BiddingRuleParam entity) {
         biddingRuleDAO.save(entity);
     }
 

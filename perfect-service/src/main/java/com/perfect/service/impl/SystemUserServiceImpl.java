@@ -1,6 +1,6 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.AccountManageDAO;
+import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;

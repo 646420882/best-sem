@@ -6,7 +6,7 @@ import com.perfect.api.baidu.QualityTypeService;
 import com.perfect.autosdk.sms.v3.Folder;
 import com.perfect.autosdk.sms.v3.QualityType;
 import com.perfect.core.AppContext;
-import com.perfect.dao.AccountManageDAO;
+import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.MonitoringDao;
 import com.perfect.dto.KeywordDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;

@@ -7,7 +7,7 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.core.AppContext;
-import com.perfect.dao.AccountManageDAO;
+import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dao.mongodb.base.BaseMongoTemplate;
 import com.perfect.dao.mongodb.impl.KeywordGroupDAOImpl;

@@ -27,8 +27,6 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static com.perfect.dao.mongodb.utils.EntityConstants.*;
-
 /**
  * Created by john on 2014/8/19.
  */

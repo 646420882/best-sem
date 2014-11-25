@@ -5,7 +5,7 @@ import com.perfect.autosdk.sms.v3.Folder;
 import com.perfect.autosdk.sms.v3.FolderMonitor;
 import com.perfect.autosdk.sms.v3.Monitor;
 import com.perfect.core.AppContext;
-import com.perfect.dao.AccountManageDAO;
+import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.MonitorSynchronizedDAO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.FolderEntity;

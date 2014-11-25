@@ -32,8 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
-import static com.perfect.dao.mongodb.utils.EntityConstants.*;
-
 /**
  * Created by XiaoWei on 2014/8/21.
  */

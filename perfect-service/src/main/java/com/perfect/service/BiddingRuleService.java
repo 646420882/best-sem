@@ -2,6 +2,7 @@ package com.perfect.service;
 
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.dao.mongodb.utils.PaginationParam;
+import com.perfect.param.BiddingRuleParam;
 import org.springframework.data.domain.Sort;
 
 import java.util.Collection;
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 public interface BiddingRuleService {
 
-    public void createBiddingRule(BiddingRuleEntity biddingRuleEntity);
+    public void createBiddingRule(BiddingRuleParam biddingRuleEntity);
 
     public BiddingRuleEntity findByKeywordId(Long keywordId);
 
@@ -27,7 +28,7 @@ public interface BiddingRuleService {
 
     public void enableRule(String id);
 
-    public void updateRule(BiddingRuleEntity entity);
+    public void updateRule(BiddingRuleParam param);
 
     public List<BiddingRuleEntity> getReadyRule();
 

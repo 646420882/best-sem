@@ -9,7 +9,7 @@ import com.perfect.autosdk.sms.v3.GetKeyword10QualityResponse;
 import com.perfect.autosdk.sms.v3.KeywordService;
 import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.core.AppContext;
-import com.perfect.dao.AccountManageDAO;
+import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.KeywordQualityDAO;
 import com.perfect.dao.mongodb.utils.DateUtils;
 import com.perfect.dto.QualityDTO;

@@ -1,7 +1,7 @@
 package com.perfect.dao;
 
-import com.perfect.entity.CreativeEntity;
-import com.perfect.dao.mongodb.utils.PagerInfo;
+import com.perfect.dao.utils.PagerInfo;
+import com.perfect.dto.CreativeDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -9,27 +9,46 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-7-10.
  */
-public interface CreativeDAO extends MongoCrudRepository<CreativeEntity, Long> {
+public interface CreativeDAO extends MongoCrudRepository<CreativeDTO, Long> {
 
     List<Long> getCreativeIdByAdgroupId(Long adgroupId);
-    List<CreativeEntity> findByAgroupId(Long adgroupId);
-    List<CreativeEntity> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
-    List<CreativeEntity> getCreativeByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
-    List<CreativeEntity> getAllsByAdgroupIds(List<Long> l);
-    List<CreativeEntity> getAllsByAdgroupIdsForString(List<String> l);
+
+    List<CreativeDTO> findByAgroupId(Long adgroupId);
+
+    List<CreativeDTO> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
+
+    List<CreativeDTO> getCreativeByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
+
+    List<CreativeDTO> getAllsByAdgroupIds(List<Long> l);
+
+    List<CreativeDTO> getAllsByAdgroupIdsForString(List<String> l);
+
     void deleteByCacheId(Long cacheCreativeId);
+
     void deleteByCacheId(String cacheCreativeId);
-    String insertOutId(CreativeEntity creativeEntity);
-    void insertByReBack(CreativeEntity oldcreativeEntity);
-    CreativeEntity findByObjId(String obj);
-    CreativeEntity getAllsBySomeParams(Map<String,Object> params);
-    void updateByObjId(CreativeEntity creativeEntity);
-    void update(CreativeEntity newCreativeEntity,CreativeEntity creativeBackUpEntity);
+
+    String insertOutId(CreativeDTO creativeEntity);
+
+    void insertByReBack(CreativeDTO oldcreativeEntity);
+
+    CreativeDTO findByObjId(String obj);
+
+    CreativeDTO getAllsBySomeParams(Map<String, Object> params);
+
+    void updateByObjId(CreativeDTO creativeEntity);
+
+    void update(CreativeDTO newCreativeEntity, CreativeDTO creativeBackUpEntity);
+
     void updateAdgroupIdByOid(String id, Long adgroupId);
+
     void delBack(Long oid);
-    PagerInfo findByPagerInfo(Map<String,Object> params,Integer nowPage,Integer pageSize);
+
+    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize);
+
     PagerInfo findByPagerInfoForString(List<String> l, Integer nowPage, Integer pageSize);
-    PagerInfo findByPagerInfoForLong(List<Long> l,Integer nowPage,Integer pageSize);
-    PagerInfo findByPagerInfo(Long l,Integer nowPage,Integer pageSize);
+
+    PagerInfo findByPagerInfoForLong(List<Long> l, Integer nowPage, Integer pageSize);
+
+    PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize);
 
 }

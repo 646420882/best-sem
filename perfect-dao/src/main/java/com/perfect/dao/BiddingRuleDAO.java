@@ -2,6 +2,7 @@ package com.perfect.dao;
 
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.dao.mongodb.utils.PaginationParam;
+import com.perfect.param.BiddingRuleParam;
 import org.springframework.data.domain.Sort;
 
 import java.util.Collection;
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, Long> {
 
-    public void createBidding(BiddingRuleEntity biddingRuleEntity);
+    public void createBidding(BiddingRuleParam biddingRuleEntity);
 
     public List<BiddingRuleEntity> findByCampagainId(long cid, int skip, int limit, String field, Sort.Direction direction);
 
@@ -38,9 +39,6 @@ public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, L
     void removeByKeywordIds(List<Long> ids);
 
     boolean existsByKeywordId(Long keywordId);
-
-    @Deprecated
-    void updateRank(Collection<BiddingRuleEntity> values);
 
     boolean setEnable(Long[] ids, boolean ebl);
 
