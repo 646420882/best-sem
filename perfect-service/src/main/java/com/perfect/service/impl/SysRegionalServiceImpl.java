@@ -1,8 +1,8 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.RegionalCodeDAO;
-import com.perfect.dto.RedisRegionalDTO;
-import com.perfect.dto.RegionalCodeDTO;
+import com.perfect.dto.regional.RedisRegionalDTO;
+import com.perfect.dto.regional.RegionalCodeDTO;
 import com.perfect.service.SysRegionalService;
 import org.springframework.stereotype.Component;
 

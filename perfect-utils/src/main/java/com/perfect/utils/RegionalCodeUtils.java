@@ -2,7 +2,7 @@ package com.perfect.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.perfect.dto.RegionalCodeDTO;
+import com.perfect.dto.regional.RegionalCodeDTO;
 import com.perfect.redis.JRedisUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisException;

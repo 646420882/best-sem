@@ -5,7 +5,7 @@ import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.api.baidu.BaiduSpiderHelper;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.core.AppContext;
-import com.perfect.dto.CreativeDTO;
+import com.perfect.dto.creative.CreativeInfoDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.KeywordBiddingRankService;
@@ -49,13 +49,13 @@ public class KeywordBiddingRankServiceImpl implements KeywordBiddingRankService 
                 continue;
             }
 
-            List<CreativeDTO> leftList = previewData.getLeft();
-            List<CreativeDTO> rightList = previewData.getRight();
+            List<CreativeInfoDTO> leftList = previewData.getLeft();
+            List<CreativeInfoDTO> rightList = previewData.getRight();
 
             int rank = 0;
             try {
                 URL url = new URL("http", host, "");
-                for (CreativeDTO leftDTO : leftList) {
+                for (CreativeInfoDTO leftDTO : leftList) {
                     if (url.sameFile(new URL("http", leftDTO.getUrl(), ""))) {
                         rank = leftList.indexOf(leftDTO) + 1;
                         return rank;
@@ -63,7 +63,7 @@ public class KeywordBiddingRankServiceImpl implements KeywordBiddingRankService 
                 }
 
                 if (rank == 0) {
-                    for (CreativeDTO rightDTO : rightList) {
+                    for (CreativeInfoDTO rightDTO : rightList) {
                         if (url.sameFile(new URL("http", rightDTO.getUrl(), ""))) {
                             rank = -1 * rightList.indexOf(rightDTO) - 1;
                             return rank;

@@ -8,7 +8,7 @@ import com.perfect.autosdk.sms.v3.QualityType;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.MonitoringDao;
-import com.perfect.dto.KeywordDTO;
+import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.FolderEntity;
 import com.perfect.entity.FolderMonitorEntity;
@@ -117,9 +117,9 @@ public class MonitoringServiceImpl implements MonitoringService {
     }
 
     @Override
-    public List<KeywordDTO> getMonitor() {
+    public List<KeywordInfoDTO> getMonitor() {
         List<FolderEntity> folderEntities = monitoringDao.getForlder();
-        List<KeywordDTO> returnkeywordDTO = new ArrayList<>();
+        List<KeywordInfoDTO> returnkeywordInfoDTO = new ArrayList<>();
         for (FolderEntity folderEntity : folderEntities) {
 
             List<Long> longs = new ArrayList<>();
@@ -130,10 +130,10 @@ public class MonitoringServiceImpl implements MonitoringService {
                 longs.add(monitorEntity.getAclid());
             }
 
-            List<KeywordDTO> keywordDTOs = assistantKeywordService.getKeywordListByIds(longs);
+            List<KeywordInfoDTO> keywordInfoDTOs = assistantKeywordService.getKeywordListByIds(longs);
             List<QualityType> qualityType = qualityTypeService.getQualityType(longs);
             for (FolderMonitorEntity aLong:monitor){
-                for(KeywordDTO dto: keywordDTOs){
+                for(KeywordInfoDTO dto: keywordInfoDTOs){
                     //设置监控文件夹信息
                     if(aLong.getAclid().intValue() == dto.getObject().getKeywordId().intValue()){
                         dto.setMonitorId(aLong.getMonitorId());
@@ -154,15 +154,15 @@ public class MonitoringServiceImpl implements MonitoringService {
                 }
 
             }
-            returnkeywordDTO.addAll(keywordDTOs);
+            returnkeywordInfoDTO.addAll(keywordInfoDTOs);
         }
-        return returnkeywordDTO;
+        return returnkeywordInfoDTO;
     }
 
     @Override
-    public List<KeywordDTO> getMonitorId(Long folderId) {
+    public List<KeywordInfoDTO> getMonitorId(Long folderId) {
         List<FolderEntity> folderEntities = monitoringDao.getForlderId(folderId);
-        List<KeywordDTO> keywordDTOs = new ArrayList<>();
+        List<KeywordInfoDTO> keywordInfoDTOs = new ArrayList<>();
         for (FolderEntity folderEntity : folderEntities) {
 
             List<Long> longs = new ArrayList<>();
@@ -173,10 +173,10 @@ public class MonitoringServiceImpl implements MonitoringService {
                 longs.add(monitorEntity.getAclid());
             }
 
-            keywordDTOs = assistantKeywordService.getKeywordListByIds(longs);
+            keywordInfoDTOs = assistantKeywordService.getKeywordListByIds(longs);
             List<QualityType> qualityType = qualityTypeService.getQualityType(longs);
             for (FolderMonitorEntity aLong:monitor){
-                for(KeywordDTO dto: keywordDTOs){
+                for(KeywordInfoDTO dto: keywordInfoDTOs){
                     //设置监控文件夹信息
                     if(aLong.getAclid().intValue() == dto.getObject().getKeywordId().intValue()){
                         dto.setMonitorId(aLong.getMonitorId());
@@ -198,7 +198,7 @@ public class MonitoringServiceImpl implements MonitoringService {
 
             }
         }
-        return keywordDTOs;
+        return keywordInfoDTOs;
     }
 
     @Override

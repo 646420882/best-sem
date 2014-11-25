@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.dto.BaiduAccountAllStateDTO;
+import com.perfect.dto.baidu.BaiduAccountAllStateDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
 

@@ -12,7 +12,7 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.KeywordQualityDAO;
 import com.perfect.dao.mongodb.utils.DateUtils;
-import com.perfect.dto.QualityDTO;
+import com.perfect.dto.keyword.QualityDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.KeywordReportEntity;
 import com.perfect.redis.JRedisUtils;

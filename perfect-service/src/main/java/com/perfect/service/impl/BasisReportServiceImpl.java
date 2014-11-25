@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.perfect.core.AppContext;
 import com.perfect.dao.BasisReportDAO;
-import com.perfect.dto.AccountReportDTO;
+import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.entity.StructureReportEntity;
 import com.perfect.dao.mongodb.utils.DateUtils;
 import com.perfect.redis.JRedisUtils;

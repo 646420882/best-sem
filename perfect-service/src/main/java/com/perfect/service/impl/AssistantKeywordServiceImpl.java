@@ -7,9 +7,9 @@ import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.dao.MonitoringDao;
-import com.perfect.dto.AssistantKeywordIgnoreDTO;
-import com.perfect.dto.CampaignTreeDTO;
-import com.perfect.dto.KeywordDTO;
+import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
+import com.perfect.dto.campaign.CampaignTreeDTO;
+import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.KeywordEntity;
@@ -77,9 +77,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * @param ids
      * @return
      */
-    public List<KeywordDTO> getKeywordListByIds(List<Long> ids) {
+    public List<KeywordInfoDTO> getKeywordListByIds(List<Long> ids) {
         List<KeywordEntity> list = keywordDAO.findKeywordByIds(ids);
-        List<KeywordDTO> dtoList = new ArrayList<>();
+        List<KeywordInfoDTO> dtoList = new ArrayList<>();
         Map<String, Map<String, Object>> map = new HashMap<>();
         Map<String, Object> getMap;
         CampaignEntity cam;
@@ -96,7 +96,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             getMap = map.get(kwd.getAdgroupId() == null ? kwd.getAdgroupObjId() : kwd.getAdgroupId() + "");
 
             kwd.setPrice(kwd.getPrice() == null ? BigDecimal.ZERO : kwd.getPrice());
-            KeywordDTO dto = new KeywordDTO();
+            KeywordInfoDTO dto = new KeywordInfoDTO();
             dto.setCampaignName(((CampaignEntity) getMap.get("campaign")).getCampaignName());
             dto.setAdgroupName(((AdgroupEntity) getMap.get("adgroup")).getAdgroupName());
             dto.setCampaignId(((CampaignEntity) getMap.get("campaign")).getCampaignId());
@@ -135,17 +135,17 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * @param updateDtos
      * @param isReplace
      */
-    public void batchAddUpdateKeyword(List<KeywordDTO> insertDtos, List<KeywordDTO> updateDtos, Boolean isReplace) {
+    public void batchAddUpdateKeyword(List<KeywordInfoDTO> insertDtos, List<KeywordInfoDTO> updateDtos, Boolean isReplace) {
 
         List<KeywordEntity> list = new ArrayList<>();
-        for (KeywordDTO dto : insertDtos) {
+        for (KeywordInfoDTO dto : insertDtos) {
             list.add(dto.getObject());
         }
         //若isReplace值为true 就将替换该单元下的所有关键词,为false就只添加或者更新
         if (isReplace == false) {
             keywordDAO.insertAll(list);
 
-            for (KeywordDTO dto : updateDtos) {
+            for (KeywordInfoDTO dto : updateDtos) {
                 KeywordEntity keywordEntity = dto.getObject();
                 KeyWordBackUpEntity backUpEntity = new KeyWordBackUpEntity();
                 KeywordEntity sourceKeywordEntity = keywordDAO.findByObjectId(keywordEntity.getId());
@@ -179,17 +179,17 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * @param updateList
      * @return
      */
-    private Map<String, Object> getNoRepeatAdgroupId(List<KeywordDTO> insertList, List<KeywordDTO> updateList) {
+    private Map<String, Object> getNoRepeatAdgroupId(List<KeywordInfoDTO> insertList, List<KeywordInfoDTO> updateList) {
         Set<String> strSet = new HashSet<>();
         Set<Long> longSet = new HashSet<>();
-        for (KeywordDTO insertDTO : insertList) {
+        for (KeywordInfoDTO insertDTO : insertList) {
             if (insertDTO.getObject().getAdgroupId() == null) {
                 strSet.add(insertDTO.getObject().getAdgroupObjId());
             } else {
                 longSet.add(insertDTO.getObject().getAdgroupId());
             }
         }
-        for (KeywordDTO updateDTO : updateList) {
+        for (KeywordInfoDTO updateDTO : updateList) {
             if (updateDTO.getObject().getAdgroupId() == null) {
                 strSet.add(updateDTO.getObject().getAdgroupObjId());
             } else {
@@ -204,9 +204,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     }
 
 
-    private List<KeywordEntity> getKwdListByDTO(List<KeywordDTO> updateDtos) {
+    private List<KeywordEntity> getKwdListByDTO(List<KeywordInfoDTO> updateDtos) {
         List<KeywordEntity> list = new ArrayList<>();
-        for (KeywordDTO dto : updateDtos) {
+        for (KeywordInfoDTO dto : updateDtos) {
             list.add(dto.getObject());
         }
         return list;
@@ -314,8 +314,8 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     }
 
 
-    private List<KeywordDTO> setCampaignNameByKeywordEntitys(List<KeywordEntity> list, CampaignEntity camp) {
-        List<KeywordDTO> dtoList = new ArrayList<>();
+    private List<KeywordInfoDTO> setCampaignNameByKeywordEntitys(List<KeywordEntity> list, CampaignEntity camp) {
+        List<KeywordInfoDTO> dtoList = new ArrayList<>();
         List<Long> keywordIds = new ArrayList<>();
 
         Map<String, CampaignEntity> map = new HashMap<>();
@@ -333,14 +333,14 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 }
 
                 cam = map.get(kwd.getAdgroupId() == null ? kwd.getAdgroupObjId() : kwd.getAdgroupId() + "");
-                KeywordDTO dto = new KeywordDTO();
+                KeywordInfoDTO dto = new KeywordInfoDTO();
                 dto.setFolderCount(0l);
                 dto.setCampaignName(cam.getCampaignName());
                 dto.setObject(kwd);
                 dto.setCampaignId(cam.getCampaignId());
                 dtoList.add(dto);
             } else {
-                KeywordDTO dto = new KeywordDTO();
+                KeywordInfoDTO dto = new KeywordInfoDTO();
                 dto.setFolderCount(kwd.getKeywordId()==null?0l:monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));
                 dto.setCampaignName(camp.getCampaignName());
                 dto.setObject(kwd);
@@ -352,7 +352,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         //在百度上得到关键词的质量度
         List<QualityType> qualityList = qualityTypeService.getQualityType(keywordIds);
         for (QualityType qualityType : qualityList) {
-            for (KeywordDTO dto : dtoList) {
+            for (KeywordInfoDTO dto : dtoList) {
                 if (dto.getObject().getKeywordId() != null && qualityType.getId().longValue() == dto.getObject().getKeywordId().longValue()) {
                     dto.setQuality(qualityType.getQuality());
                     dto.setMobileQuality(qualityType.getMobileQuality());
@@ -480,7 +480,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         List<AssistantKeywordIgnoreDTO> ignoreList = new ArrayList<>();
 
         //可删除的关键词集合
-        List<KeywordDTO> deleteKwd = new ArrayList<>();
+        List<KeywordInfoDTO> deleteKwd = new ArrayList<>();
 
         for (String row : everyChoose) {
             String[] fileds = row.split(",");//fileds[0]推广计划id，fileds[1]推广单元id
@@ -507,11 +507,11 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
                 if (list.size() != 0) {
                     for (KeywordEntity entity : list) {
-                        KeywordDTO keywordDTO = new KeywordDTO();
-                        keywordDTO.setCampaignName(campaignMap.get(fileds[0]).getCampaignName());
-                        keywordDTO.setAdgroupName(adgroupMap.get(fileds[1]).getAdgroupName());
-                        keywordDTO.setObject(entity);
-                        deleteKwd.add(keywordDTO);
+                        KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
+                        keywordInfoDTO.setCampaignName(campaignMap.get(fileds[0]).getCampaignName());
+                        keywordInfoDTO.setAdgroupName(adgroupMap.get(fileds[1]).getAdgroupName());
+                        keywordInfoDTO.setObject(entity);
+                        deleteKwd.add(keywordInfoDTO);
                     }
                 } else {
                     AssistantKeywordIgnoreDTO assistantKeywordIgnoreDTO = new AssistantKeywordIgnoreDTO();
@@ -545,7 +545,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         List<AssistantKeywordIgnoreDTO> ignoreList = new ArrayList<>();
 
         //可删除的关键词集合
-        List<KeywordDTO> deleteKwd = new ArrayList<>();
+        List<KeywordInfoDTO> deleteKwd = new ArrayList<>();
 
         String[] everyDeleInfo = deleteInfos.split("\n");
 
@@ -578,11 +578,11 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     }
                     if (keywordList.size() != 0) {
                         for (KeywordEntity entity : keywordList) {
-                            KeywordDTO keywordDTO = new KeywordDTO();
-                            keywordDTO.setCampaignName(fields[0]);
-                            keywordDTO.setAdgroupName(fields[1]);
-                            keywordDTO.setObject(entity);
-                            deleteKwd.add(keywordDTO);
+                            KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
+                            keywordInfoDTO.setCampaignName(fields[0]);
+                            keywordInfoDTO.setAdgroupName(fields[1]);
+                            keywordInfoDTO.setObject(entity);
+                            deleteKwd.add(keywordInfoDTO);
                         }
                     } else {
                         ignoreList.add(setFiledIgnore(fields));
@@ -626,10 +626,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         String regex = "^\\d+$";
 
         //可被添加的关键词list
-        List<KeywordDTO> insertList = new ArrayList<>();
+        List<KeywordInfoDTO> insertList = new ArrayList<>();
 
         //可被修改的关键词list
-        List<KeywordDTO> updateList = new ArrayList<>();
+        List<KeywordInfoDTO> updateList = new ArrayList<>();
 
         //可被忽略的关键词list
         List<AssistantKeywordIgnoreDTO> igoneList = new ArrayList<>();
@@ -688,9 +688,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     }
 
 
-    private KeywordDTO setFieldToDTO(String[] fieds, KeywordEntity updateKeywordEntity, KeywordEntity beforeKeywordEntity) {
+    private KeywordInfoDTO setFieldToDTO(String[] fieds, KeywordEntity updateKeywordEntity, KeywordEntity beforeKeywordEntity) {
         String regex = "^\\d+$";
-        KeywordDTO keywordDTO = new KeywordDTO();
+        KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
 
         if (!(new ArrayList<>(campaignMap.keySet()).contains(fieds[0]))) {
             CampaignEntity campaign = fieds[0].matches(regex) ? campaignDAO.findOne(Long.parseLong(fieds[0])) : campaignDAO.findByObjectId(fieds[0]);
@@ -702,8 +702,8 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             adgroupMap.put(fieds[1], adgroupName);
         }
 
-        keywordDTO.setCampaignName(campaignMap.get(fieds[0]).getCampaignName());
-        keywordDTO.setAdgroupName(adgroupMap.get(fieds[1]).getAdgroupName());
+        keywordInfoDTO.setCampaignName(campaignMap.get(fieds[0]).getCampaignName());
+        keywordInfoDTO.setAdgroupName(adgroupMap.get(fieds[1]).getAdgroupName());
 
 
         if (beforeKeywordEntity == null) {
@@ -715,7 +715,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             } else {
                 updateKeywordEntity.setAdgroupId(adgroupMap.get(fieds[1]).getAdgroupId());
             }
-            keywordDTO.setObject(updateKeywordEntity);
+            keywordInfoDTO.setObject(updateKeywordEntity);
         } else {
             beforeKeywordEntity.setPause(updateKeywordEntity.getPause());
 
@@ -741,10 +741,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 beforeKeywordEntity.setLocalStatus(2);
             }
 
-            keywordDTO.setObject(beforeKeywordEntity);
+            keywordInfoDTO.setObject(beforeKeywordEntity);
         }
 
-        return keywordDTO;
+        return keywordInfoDTO;
     }
 
 

@@ -3,9 +3,9 @@ package com.perfect.api.baidu;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.dto.CreativeDTO;
-import com.perfect.dto.KeywordDTO;
-import com.perfect.dto.KeywordRankDTO;
+import com.perfect.dto.creative.CreativeInfoDTO;
+import com.perfect.dto.keyword.KeywordInfoDTO;
+import com.perfect.dto.keyword.KeywordRankDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -320,33 +320,33 @@ public class BaiduApiService {
 
 
     @SuppressWarnings("unchecked")
-    public Map<String, KeywordRankDTO> getKeywordRank(Map<KeywordDTO, List<Integer>> keys, String host) {
+    public Map<String, KeywordRankDTO> getKeywordRank(Map<KeywordInfoDTO, List<Integer>> keys, String host) {
         if (keys == null || keys.isEmpty()) {
             return Collections.EMPTY_MAP;
         }
 
-        Map<Integer, List<KeywordDTO>> regionDataMap = new HashMap<>();
-        Map<String, KeywordDTO> keywordEntityMap = new HashMap<>();
+        Map<Integer, List<KeywordInfoDTO>> regionDataMap = new HashMap<>();
+        Map<String, KeywordInfoDTO> keywordEntityMap = new HashMap<>();
 
         initIdMap(keys.keySet(), keywordEntityMap);
         convertMap(keys, regionDataMap);
         BaiduSpiderHelper baiduSpiderHelper = baiduPreviewHelperFactory.createInstance(commonService);
 
         List<BaiduSpiderHelper.PreviewData> resultDataList = new ArrayList<>();
-        for (Map.Entry<Integer, List<KeywordDTO>> entry : regionDataMap.entrySet()) {
+        for (Map.Entry<Integer, List<KeywordInfoDTO>> entry : regionDataMap.entrySet()) {
             Integer region = entry.getKey();
 
-            List<KeywordDTO> keyEntityList = entry.getValue();
+            List<KeywordInfoDTO> keyEntityList = entry.getValue();
 
             if (keyEntityList.size() <= 5) {
                 List<String> keyList = new ArrayList<>();
-                for (KeywordDTO keywordEntity : keyEntityList) {
+                for (KeywordInfoDTO keywordEntity : keyEntityList) {
                     keyList.add(keywordEntity.getKeyword());
                 }
                 resultDataList.addAll(getPreviewData(region, keyList, baiduSpiderHelper));
             } else {
                 List<String> temp = new ArrayList<>();
-                for (KeywordDTO key : keyEntityList) {
+                for (KeywordInfoDTO key : keyEntityList) {
                     temp.add(key.getKeyword());
 
                     if (temp.size() == 5) {
@@ -373,7 +373,7 @@ public class BaiduApiService {
                 int region = previewData.getRegion();
                 int device = previewData.getDevice();
 
-                KeywordDTO kwid = keywordEntityMap.get(keyword);
+                KeywordInfoDTO kwid = keywordEntityMap.get(keyword);
 
                 KeywordRankDTO entity = null;
                 if (keywordRankEntityMap.containsKey(keyword)) {
@@ -396,7 +396,7 @@ public class BaiduApiService {
 
                 int rank = 0;
                 boolean found = false;
-                for (CreativeDTO leftEntity : previewData.getLeft()) {
+                for (CreativeInfoDTO leftEntity : previewData.getLeft()) {
                     rank++;
                     String url = leftEntity.getUrl();
                     if (url.contains(host)) {
@@ -410,7 +410,7 @@ public class BaiduApiService {
                     continue;
                 }
                 rank = 0;
-                for (CreativeDTO rightEntity : previewData.getRight()) {
+                for (CreativeInfoDTO rightEntity : previewData.getRight()) {
                     rank--;
                     String url = rightEntity.getUrl();
                     if (url.contains(host)) {
@@ -425,26 +425,26 @@ public class BaiduApiService {
         return keywordRankEntityMap;
     }
 
-    private void initIdMap(Set<KeywordDTO> keywordEntities, Map<String, KeywordDTO> keywordIdMap) {
-        for (KeywordDTO keywordEntity : keywordEntities) {
+    private void initIdMap(Set<KeywordInfoDTO> keywordEntities, Map<String, KeywordInfoDTO> keywordIdMap) {
+        for (KeywordInfoDTO keywordEntity : keywordEntities) {
             keywordIdMap.put(keywordEntity.getKeyword(), keywordEntity);
         }
     }
 
-    private void convertMap(Map<KeywordDTO, List<Integer>> keys, Map<Integer, List<KeywordDTO>> regionDataMap) {
+    private void convertMap(Map<KeywordInfoDTO, List<Integer>> keys, Map<Integer, List<KeywordInfoDTO>> regionDataMap) {
         if (keys.isEmpty())
             return;
 
-        for (Map.Entry<KeywordDTO, List<Integer>> entry : keys.entrySet()) {
+        for (Map.Entry<KeywordInfoDTO, List<Integer>> entry : keys.entrySet()) {
             List<Integer> regionList = entry.getValue();
 
-            KeywordDTO keyword = entry.getKey();
+            KeywordInfoDTO keyword = entry.getKey();
 
             for (Integer integer : regionList) {
                 if (regionDataMap.containsKey(integer)) {
                     regionDataMap.get(integer).add(keyword);
                 } else {
-                    List<KeywordDTO> keyList = new ArrayList<>();
+                    List<KeywordInfoDTO> keyList = new ArrayList<>();
                     keyList.add(keyword);
                     regionDataMap.put(integer, keyList);
                 }

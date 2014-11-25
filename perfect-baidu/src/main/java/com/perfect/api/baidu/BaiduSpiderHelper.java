@@ -2,8 +2,8 @@ package com.perfect.api.baidu;
 
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.GetPreviewRequest;
-import com.perfect.dto.CreativeDTO;
-import com.perfect.dto.SublinkInfoDTO;
+import com.perfect.dto.creative.CreativeInfoDTO;
+import com.perfect.dto.creative.SublinkInfoDTO;
 import org.apache.commons.codec.binary.Base64;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -52,8 +52,8 @@ public class BaiduSpiderHelper {
         getPreviewRequest.setKeyWords(Arrays.asList(keyword));
         getPreviewRequest.setDevice(0);
 
-        List<CreativeDTO> leftCreativeVOList = new LinkedList<>();
-        List<CreativeDTO> rightCreativeVOList = new LinkedList<>();
+        List<CreativeInfoDTO> leftCreativeVOList = new LinkedList<>();
+        List<CreativeInfoDTO> rightCreativeVOList = new LinkedList<>();
 
         Map<String, String> htmls = getHTML(getPreviewRequest, serviceFactory);
 
@@ -81,7 +81,7 @@ public class BaiduSpiderHelper {
         return previewDatas;
     }
 
-    private static void handleRight(Document doc, final List<CreativeDTO> rightCreativeVOList) {
+    private static void handleRight(Document doc, final List<CreativeInfoDTO> rightCreativeVOList) {
         Elements div_right = null;
         boolean _temp2 = (doc.getElementById("ec_im_container") != null) && (doc.getElementById("ec_im_container").children().size() > 0);
 
@@ -100,14 +100,14 @@ public class BaiduSpiderHelper {
 
         //获取右侧推广数据
         if (_temp2 && div_right.size() > 0) {
-            CreativeDTO creativeVO = null;
+            CreativeInfoDTO creativeVO = null;
             for (Element e : div_right) {
                 String _title = e.select("a").first().text();
                 String _description = e.select("a").get(1).text();
                 String _url = e.select("a").get(1).select("font").last().text();
                 _description.replace(_url, "");
 
-                creativeVO = new CreativeDTO();
+                creativeVO = new CreativeInfoDTO();
                 creativeVO.setDescSource(e.html());
                 creativeVO.setTitle(_title);
                 creativeVO.setDescription(_description);
@@ -117,8 +117,8 @@ public class BaiduSpiderHelper {
         }
     }
 
-    private static void handleLeft(Document doc, final List<CreativeDTO> leftCreativeVOList) {
-        LinkedList<CreativeDTO> creativeDTOList = new LinkedList<>();
+    private static void handleLeft(Document doc, final List<CreativeInfoDTO> leftCreativeVOList) {
+        LinkedList<CreativeInfoDTO> creativeInfoDTOList = new LinkedList<>();
 
         //获取左侧推广数据
         if (doc.select("#content_left > table").isEmpty()) {
@@ -129,15 +129,15 @@ public class BaiduSpiderHelper {
                 if (element.attr("id").startsWith("5"))
                     continue;
 
-                CreativeDTO creativeDTO = new CreativeDTO();
-                creativeDTO.setDescSource(element.html());
-                creativeDTO.setTitle(element.select(".ec_title").text());
+                CreativeInfoDTO creativeInfoDTO = new CreativeInfoDTO();
+                creativeInfoDTO.setDescSource(element.html());
+                creativeInfoDTO.setTitle(element.select(".ec_title").text());
 
-                creativeDTO.setTitle(element.select(".ec_title").text());
+                creativeInfoDTO.setTitle(element.select(".ec_title").text());
                 if (element.select(".ec_desc .EC_pap_big_desc").size() > 0) {
-                    creativeDTO.setDescription(element.select(".ec_desc .EC_pap_big_desc").text());
-                    creativeDTO.setUrl(element.select(".ec_desc .ec_meta .ec_url").text());
-                    creativeDTO.setTime(element.select(".ec_desc .ec_meta .ec_date").text());
+                    creativeInfoDTO.setDescription(element.select(".ec_desc .EC_pap_big_desc").text());
+                    creativeInfoDTO.setUrl(element.select(".ec_desc .ec_meta .ec_url").text());
+                    creativeInfoDTO.setTime(element.select(".ec_desc .ec_meta .ec_date").text());
                     Elements children = element.select(".ec_desc .EC_pap_big_paxj a");
                     if (children != null) {
                         List<SublinkInfoDTO> sublinkInfos = new ArrayList<>();
@@ -147,14 +147,14 @@ public class BaiduSpiderHelper {
                             sublinkInfo.setDescription(iterator.next().text());
                             sublinkInfos.add(sublinkInfo);
                         }
-                        creativeDTO.setSublinkInfoDTOs(sublinkInfos);
+                        creativeInfoDTO.setSublinkInfoDTOs(sublinkInfos);
                     }
                 } else {
-                    creativeDTO.setDescription(element.select(".ec_desc").text());
-                    creativeDTO.setUrl(element.select(".ec_meta .ec_url").text());
-                    creativeDTO.setTime(element.select(".ec_meta .ec_date").text());
+                    creativeInfoDTO.setDescription(element.select(".ec_desc").text());
+                    creativeInfoDTO.setUrl(element.select(".ec_meta .ec_url").text());
+                    creativeInfoDTO.setTime(element.select(".ec_meta .ec_date").text());
                 }
-                creativeDTOList.addLast(creativeDTO);
+                creativeInfoDTOList.addLast(creativeInfoDTO);
 
             }
 
@@ -164,18 +164,18 @@ public class BaiduSpiderHelper {
                 if (!table.className().startsWith(" ")) {
                     continue;
                 }
-                CreativeDTO creativeDTO = new CreativeDTO();
-                creativeDTO.setDescSource(table.html());
-                creativeDTO.setTitle(table.select(".EC_title").text());
+                CreativeInfoDTO creativeInfoDTO = new CreativeInfoDTO();
+                creativeInfoDTO.setDescSource(table.html());
+                creativeInfoDTO.setTitle(table.select(".EC_title").text());
 
                 Elements descs = table.select(".EC_body");
                 if (descs.isEmpty()) {
-                    creativeDTO.setDescription(table.select(".EC_pap_big_zpdes").text());
+                    creativeInfoDTO.setDescription(table.select(".EC_pap_big_zpdes").text());
 
                     // 处理XJ
 //                    Elements xjs = table.select(".EC_pap_big_xj");
                 } else {
-                    creativeDTO.setDescription(descs.text());
+                    creativeInfoDTO.setDescription(descs.text());
                 }
 
                 Elements sublinks = table.select(".EC_xj_underline a");
@@ -187,15 +187,15 @@ public class BaiduSpiderHelper {
                         sublinkInfo.setDescription(children.next().text());
                         sublinkInfos.add(sublinkInfo);
                     }
-                    creativeDTO.setSublinkInfoDTOs(sublinkInfos);
+                    creativeInfoDTO.setSublinkInfoDTOs(sublinkInfos);
                 }
 
-                creativeDTO.setUrl(table.select(".EC_url").text());
+                creativeInfoDTO.setUrl(table.select(".EC_url").text());
 
-                creativeDTOList.addLast(creativeDTO);
+                creativeInfoDTOList.addLast(creativeInfoDTO);
             }
         }
-        leftCreativeVOList.addAll(creativeDTOList);
+        leftCreativeVOList.addAll(creativeInfoDTOList);
     }
 
     private Map<String, String> getHTML(GetPreviewRequest getPreviewRequest, CommonService commonService) {
@@ -322,24 +322,24 @@ public class BaiduSpiderHelper {
 
         private int region;
 
-        private List<CreativeDTO> left;
+        private List<CreativeInfoDTO> left;
 
-        private List<CreativeDTO> right;
+        private List<CreativeInfoDTO> right;
         private Integer device;
 
-        public List<CreativeDTO> getLeft() {
+        public List<CreativeInfoDTO> getLeft() {
             return left;
         }
 
-        public void setLeft(List<CreativeDTO> left) {
+        public void setLeft(List<CreativeInfoDTO> left) {
             this.left = left;
         }
 
-        public List<CreativeDTO> getRight() {
+        public List<CreativeInfoDTO> getRight() {
             return right;
         }
 
-        public void setRight(List<CreativeDTO> right) {
+        public void setRight(List<CreativeInfoDTO> right) {
             this.right = right;
         }
 

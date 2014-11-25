@@ -2,7 +2,7 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 package com.perfect.dao;
 
-import com.perfect.dto.AdgroupDTO;
+import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.dao.mongodb.utils.PagerInfo;
 import org.springframework.data.mongodb.core.query.Query;

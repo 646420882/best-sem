@@ -1,7 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.CensusDAO;
-import com.perfect.dto.ConstantsDTO;
+import com.perfect.commons.constants.ConstantsDTO;
 import com.perfect.entity.CensusEntity;
 import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dao.mongodb.utils.Pager;

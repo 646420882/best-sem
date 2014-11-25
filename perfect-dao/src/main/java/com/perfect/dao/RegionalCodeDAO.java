@@ -1,6 +1,6 @@
 package com.perfect.dao;
 
-import com.perfect.dto.RegionalCodeDTO;
+import com.perfect.dto.regional.RegionalCodeDTO;
 
 import java.util.List;
 

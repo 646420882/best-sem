@@ -6,7 +6,7 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.db.mongodb.utils.DateUtils;
 import com.perfect.dao.utils.Pager;
-import com.perfect.dto.AccountReportDTO;
+import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.entity.StructureReportEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;

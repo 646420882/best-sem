@@ -1,7 +1,7 @@
 package com.perfect.service;
 
-import com.perfect.dto.CampaignTreeDTO;
-import com.perfect.dto.KeywordDTO;
+import com.perfect.dto.campaign.CampaignTreeDTO;
+import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.KeywordEntity;
@@ -28,7 +28,7 @@ public interface AssistantKeywordService {
 
     Map<String,Object> batchAddOrUpdateKeywordByChoose(Long accountId, Boolean isReplace, String chooseInfos, String keywordInfos);
 
-    void batchAddUpdateKeyword(List<KeywordDTO> insertDtos, List<KeywordDTO> updateDtos, Boolean isReplace);
+    void batchAddUpdateKeyword(List<KeywordInfoDTO> insertDtos, List<KeywordInfoDTO> updateDtos, Boolean isReplace);
 
     Iterable<CampaignEntity> getCampaignByAccountId();
 
@@ -38,5 +38,5 @@ public interface AssistantKeywordService {
 
     void setNeigWord(String agid, String keywords, Integer neigType);
 
-    List<KeywordDTO> getKeywordListByIds(List<Long> ids);
+    List<KeywordInfoDTO> getKeywordListByIds(List<Long> ids);
 }

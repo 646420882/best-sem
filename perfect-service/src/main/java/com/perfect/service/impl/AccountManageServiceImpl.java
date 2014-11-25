@@ -10,7 +10,7 @@ import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.account.AccountManageDAO;
-import com.perfect.dto.BaiduAccountAllStateDTO;
+import com.perfect.dto.baidu.BaiduAccountAllStateDTO;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.MD5;

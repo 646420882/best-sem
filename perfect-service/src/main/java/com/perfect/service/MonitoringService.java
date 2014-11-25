@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.dto.KeywordDTO;
+import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.entity.FolderEntity;
 
 import java.util.List;
@@ -38,13 +38,13 @@ public interface MonitoringService {
      * 获取监控文件夹下的所有内容
      * @return
      */
-    public List<KeywordDTO> getMonitor();
+    public List<KeywordInfoDTO> getMonitor();
 
     /**
      * 通过监控文件夹ID获取所有监控对象内容
      * @return
      */
-    public List<KeywordDTO> getMonitorId(Long folderId);
+    public List<KeywordInfoDTO> getMonitorId(Long folderId);
 
     /**
      * 删除监控对象

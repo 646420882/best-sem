@@ -12,7 +12,7 @@ import com.perfect.dao.utils.PagerInfo;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.db.utils.ObjectUtils;
-import com.perfect.dto.CreativeDTO;
+import com.perfect.dto.creative.CreativeInfoDTO;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.DataAttributeInfoEntity;
 import com.perfect.entity.DataOperationLogEntity;
@@ -41,7 +41,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.*;
  * Created by baizz on 2014-07-10.
  */
 @Repository("creativeDAO")
-public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> implements CreativeDAO {
+public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeInfoDTO, Long> implements CreativeDAO {
 
     @Resource
     private LogProcessingDAO logProcessingDAO;
@@ -62,15 +62,15 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     @Override
-    public List<CreativeDTO> findByAgroupId(Long adgroupId) {
+    public List<CreativeInfoDTO> findByAgroupId(Long adgroupId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<CreativeEntity> creativeEntityList = mongoTemplate.find(new Query(Criteria.where(ADGROUP_ID).is(adgroupId)), CreativeEntity.class, TBL_CREATIVE);
 
-        List<CreativeDTO> returnList = ObjectUtils.convert(creativeEntityList, CreativeDTO.class);
+        List<CreativeInfoDTO> returnList = ObjectUtils.convert(creativeEntityList, CreativeInfoDTO.class);
         return returnList;
     }
 
-    public List<CreativeDTO> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {
+    public List<CreativeInfoDTO> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
         Criteria criteria = Criteria.where(ADGROUP_ID).is(adgroupId);
@@ -86,7 +86,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     @Override
-    public List<CreativeDTO> getCreativeByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit) {
+    public List<CreativeInfoDTO> getCreativeByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
         Criteria criteria = Criteria.where(OBJ_ADGROUP_ID).is(adgroupId);
@@ -101,17 +101,17 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     @Override
-    public List<CreativeDTO> getAllsByAdgroupIds(List<Long> l) {
+    public List<CreativeInfoDTO> getAllsByAdgroupIds(List<Long> l) {
         return BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where(ADGROUP_ID).in(l)), CreativeEntity.class, TBL_CREATIVE);
     }
 
     @Override
-    public List<CreativeDTO> getAllsByAdgroupIdsForString(List<String> l) {
+    public List<CreativeInfoDTO> getAllsByAdgroupIdsForString(List<String> l) {
         return BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where(OBJ_ADGROUP_ID).in(l)), CreativeEntity.class, TBL_CREATIVE);
     }
 
     @Override
-    public CreativeDTO getAllsBySomeParams(Map<String, Object> params) {
+    public CreativeInfoDTO getAllsBySomeParams(Map<String, Object> params) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query q = new Query();
         Criteria c = new Criteria();
@@ -161,7 +161,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     @Override
-    public CreativeDTO findByObjId(String obj) {
+    public CreativeInfoDTO findByObjId(String obj) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         CreativeEntity entity = mongoTemplate.findOne(
                 new Query(Criteria.where(getId()).is(obj)), CreativeEntity.class, TBL_CREATIVE);
@@ -441,12 +441,12 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
 
-    private List<CreativeDTO> wrapperList(List<CreativeEntity> list) {
-        return ObjectUtils.convert(list, CreativeDTO.class);
+    private List<CreativeInfoDTO> wrapperList(List<CreativeEntity> list) {
+        return ObjectUtils.convert(list, CreativeInfoDTO.class);
     }
 
-    private CreativeDTO wrapperObject(CreativeEntity entity) {
-        CreativeDTO dto = new CreativeDTO();
+    private CreativeInfoDTO wrapperObject(CreativeEntity entity) {
+        CreativeInfoDTO dto = new CreativeInfoDTO();
 
         BeanUtils.copyProperties(entity, dto);
         return dto;

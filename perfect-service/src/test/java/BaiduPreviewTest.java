@@ -2,7 +2,7 @@ import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.api.baidu.BaiduSpiderHelper;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
-import com.perfect.dto.CreativeDTO;
+import com.perfect.dto.creative.CreativeInfoDTO;
 import org.junit.Test;
 import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;
@@ -54,11 +54,11 @@ public class BaiduPreviewTest extends UnitilsJUnit4 {
     private void print(List<BaiduSpiderHelper.PreviewData> map) {
         for (BaiduSpiderHelper.PreviewData data : map) {
 
-            for (CreativeDTO dto : data.getLeft()) {
+            for (CreativeInfoDTO dto : data.getLeft()) {
                 System.out.println(dto);
             }
 
-            for (CreativeDTO dto : data.getRight()) {
+            for (CreativeInfoDTO dto : data.getRight()) {
                 System.out.println(dto);
             }
         }

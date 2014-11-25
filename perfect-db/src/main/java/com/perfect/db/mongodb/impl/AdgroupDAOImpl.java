@@ -10,7 +10,7 @@ import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dao.utils.Pager;
 import com.perfect.dao.utils.PagerInfo;
 import com.perfect.dao.utils.LogUtils;
-import com.perfect.dto.AdgroupDTO;
+import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.entity.*;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
 import org.springframework.beans.BeanUtils;

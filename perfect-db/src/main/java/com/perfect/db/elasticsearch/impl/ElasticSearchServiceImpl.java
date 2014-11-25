@@ -2,7 +2,7 @@ package com.perfect.db.elasticsearch.impl;
 
 import com.perfect.db.elasticsearch.repo.BaseElasticSearchRepository;
 import com.perfect.db.elasticsearch.service.EsService;
-import com.perfect.dto.EsSearchResultDTO;
+import com.perfect.dto.creative.EsSearchResultDTO;
 import com.perfect.entity.CreativeSourceEntity;
 import org.springframework.stereotype.Repository;
 

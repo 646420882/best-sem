@@ -1,7 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dao.MongoCrudRepository;
-import com.perfect.dto.ConstantsDTO;
+import com.perfect.commons.constants.ConstantsDTO;
 import com.perfect.entity.CensusEntity;
 
 /**

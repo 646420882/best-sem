@@ -1,6 +1,6 @@
 package com.perfect.dao;
 
-import com.perfect.dto.AccountReportDTO;
+import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.entity.StructureReportEntity;
 
 import java.util.Date;

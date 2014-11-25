@@ -2,7 +2,7 @@ package com.perfect.db.mongodb.impl;
 
 import com.perfect.dao.RegionalCodeDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
-import com.perfect.dto.RegionalCodeDTO;
+import com.perfect.dto.regional.RegionalCodeDTO;
 import com.perfect.dao.utils.Pager;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;

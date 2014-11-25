@@ -2,8 +2,8 @@ package com.perfect.db.elasticsearch.impl;
 
 import com.perfect.dao.SysRegionalDAO;
 import com.perfect.db.elasticsearch.service.EsService;
-import com.perfect.dto.CreativeSourceDTO;
-import com.perfect.dto.EsSearchResultDTO;
+import com.perfect.dto.creative.CreativeSourceDTO;
+import com.perfect.dto.creative.EsSearchResultDTO;
 import com.perfect.utils.RegionalCodeUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.search.SearchResponse;
