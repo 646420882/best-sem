@@ -9,7 +9,7 @@ import com.perfect.redis.JRedisUtils;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemUserService;
 import com.perfect.commons.message.mail.SendMail;
-import com.perfect.utils.web.WebContext;
+import com.perfect.commons.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

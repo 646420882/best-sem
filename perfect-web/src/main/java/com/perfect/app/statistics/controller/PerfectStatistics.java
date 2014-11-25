@@ -2,7 +2,7 @@ package com.perfect.app.statistics.controller;
 
 import com.perfect.dto.ConstantsDTO;
 import com.perfect.service.CensusService;
-import com.perfect.utils.web.WebContextSupport;
+import com.perfect.commons.web.WebContextSupport;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;

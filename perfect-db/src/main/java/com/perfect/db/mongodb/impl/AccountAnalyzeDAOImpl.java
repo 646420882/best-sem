@@ -24,7 +24,6 @@ import static com.perfect.commons.constants.MongoEntityConstants.TBL_ACCOUNT_REP
  * Created by baizz on 2014-7-25.
  * 2014-11-24 refactor
  */
-@Deprecated
 @Repository("accountAnalyzeDAO")
 public class AccountAnalyzeDAOImpl extends AbstractUserBaseDAOImpl<KeywordRealTimeDataVOEntity, Long> implements AccountAnalyzeDAO {
 

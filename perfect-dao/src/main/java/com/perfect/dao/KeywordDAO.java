@@ -2,6 +2,9 @@ package com.perfect.dao;
 
 import com.perfect.dao.mongodb.utils.PagerInfo;
 import com.perfect.dao.mongodb.utils.PaginationParam;
+import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.keyword.KeyWordBackUpDTO;
+import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.backup.KeyWordBackUpEntity;
@@ -14,7 +17,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-7-7.
  */
-public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
+public interface KeywordDAO extends MongoCrudRepository<KeywordDTO, Long> {
     /**
      * 按条件批量更新
      * <br>------------------------------<br>
@@ -27,43 +30,43 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
     void updateMultiKeyword(Long[] ids, BigDecimal price, String pcUrl);
 
-    AdgroupEntity findByKeywordId(Long keywordId);
+    AdgroupDTO findByKeywordId(Long keywordId);
 
     List<Long> getKeywordIdByAdgroupId(Long adgroupId);
 
-    List<KeywordEntity> getKeywordByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
+    List<KeywordDTO> getKeywordByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
 
-    List<KeywordEntity> getKeywordByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
+    List<KeywordDTO> getKeywordByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
 
-    List<KeywordEntity> findByAgroupId(Long oid);
+    List<KeywordDTO> findByAgroupId(Long oid);
 
     // TODO service 层不能出现servlet
 //    Pager getKeywordByPager(HttpServletRequest request, Map<String, Object> params, int orderBy);
 
-    List<KeywordEntity> getKeywordInfo();
+    List<KeywordDTO> getKeywordInfo();
 
     Long keywordCount(List<Long> adgroupIds);
 
     /**
      * 安全添加
      *
-     * @param keywordEntity
+     * @param keywordDTOList
      */
-    void insertAndQuery(List<KeywordEntity> keywordEntity);
+    void insertAndQuery(List<KeywordDTO> keywordDTOList);
 
-    KeywordEntity findByName(String name, Long accountId);
+    KeywordDTO findByName(String name, Long accountId);
 
     void remove(Query query);
 
-    List<KeywordEntity> findByQuery(Query query);
+    List<KeywordDTO> findByQuery(Query query);
 
-    List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param, Map<String, Object> queryParams);
+    List<KeywordDTO> findByAdgroupId(Long adgroupId, PaginationParam param, Map<String, Object> queryParams);
 
-    List<KeywordEntity> findByAdgroupId(String adgroupId, PaginationParam param);
+    List<KeywordDTO> findByAdgroupId(String adgroupId, PaginationParam param);
 
-    List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param, Map<String, Object> queryParams);
+    List<KeywordDTO> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param, Map<String, Object> queryParams);
 
-    KeywordEntity findByObjectId(String oid);
+    KeywordDTO findByObjectId(String oid);
 
     PagerInfo findByPageInfo(Query q, int pageSize, int pageNo);
 
@@ -71,15 +74,15 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
     void deleteById(String id);
 
-    void updateByMongoId(KeywordEntity keywordEntity);
+    void updateByMongoId(KeywordDTO keywordDTO);
 
-    List<KeywordEntity> getKeywordByIds(List<Long> ids);
+    List<KeywordDTO> getKeywordByIds(List<Long> ids);
 
-    List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
+    List<KeywordDTO> findByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
 
-    List<KeywordEntity> findByIds(List<Long> ids, PaginationParam... param);
+    List<KeywordDTO> findByIds(List<Long> ids, PaginationParam... param);
 
-    void update(KeywordEntity keywordEntity, KeyWordBackUpEntity keyWordBackUpEntity);
+    void update(KeywordDTO keywordDTO, KeyWordBackUpDTO keyWordBackUpDTO);
 
     void softDelete(Long id);
 
@@ -89,7 +92,7 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordEntity, Long> {
 
     void softDeleteByLongAdgroupIds(List<Long> longSet);
 
-    List<KeywordEntity> findByObjectIds(List<String> strIds);
+    List<KeywordDTO> findByObjectIds(List<String> strIds);
 
-    List<KeywordEntity> findKeywordByIds(List<Long> ids);
+    List<KeywordDTO> findKeywordByIds(List<Long> ids);
 }

@@ -4,7 +4,7 @@ import com.perfect.app.bdlogin.core.BaiduHttpLogin;
 import com.perfect.app.bdlogin.core.CaptchaHandler;
 import com.perfect.entity.CookieEntity;
 import com.perfect.service.CookieService;
-import com.perfect.utils.web.ServletContextUtils;
+import com.perfect.commons.web.ServletContextUtils;
 import org.apache.http.client.CookieStore;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
