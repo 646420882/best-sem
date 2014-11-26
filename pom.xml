@@ -63,6 +63,7 @@
         <springframework-version>4.0.7.RELEASE</springframework-version>
         <cglib-version>3.1</cglib-version>
         <spring-data-mongo-version>1.6.0.RELEASE</spring-data-mongo-version>
+        <spring-security>3.2.4.RELEASE</spring-security>
     </properties>
 
     <repositories>

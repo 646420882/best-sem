@@ -1,13 +1,14 @@
 package com.perfect.db.mongodb.impl;
 
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.dao.AdgroupBackUpDAO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.dao.mongodb.utils.EntityConstants;
 import com.perfect.utils.Pager;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
@@ -43,16 +44,22 @@ public class AdgroupBackUpDAOImpl extends AbstractUserBaseDAOImpl<AdgroupBackupD
 
     @Override
     public AdgroupBackupDTO findOne(String oid) {
-        return BaseMongoTemplate.getUserMongo().findOne(new Query(Criteria.where(getId()).is(oid)),AdgroupBackUpEntity.class, EntityConstants.BAK_ADGROUP);
+        AdgroupBackUpEntity adgroupBackUpEntity= BaseMongoTemplate.getUserMongo().findOne(new Query(Criteria.where(getId()).is(oid)),AdgroupBackUpEntity.class, MongoEntityConstants.BAK_ADGROUP);
+        AdgroupBackupDTO adgroupBackupDTO=new AdgroupBackupDTO();
+        BeanUtils.copyProperties(adgroupBackUpEntity,adgroupBackupDTO);
+        return adgroupBackupDTO;
     }
 
     @Override
     public AdgroupBackupDTO findByLongId(Long oid) {
-        return BaseMongoTemplate.getUserMongo().findOne(new Query(Criteria.where(EntityConstants.ADGROUP_ID).is(oid)),AdgroupBackUpEntity.class, EntityConstants.BAK_ADGROUP);
-    }
+        AdgroupBackUpEntity adgroupBackUpEntity= BaseMongoTemplate.getUserMongo().findOne(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(oid)),AdgroupBackUpEntity.class, MongoEntityConstants.BAK_ADGROUP);
+        AdgroupBackupDTO adgroupBackupDTO=new AdgroupBackupDTO();
+        BeanUtils.copyProperties(adgroupBackUpEntity,adgroupBackupDTO);
+        return adgroupBackupDTO;
+   }
 
     @Override
     public void deleteByLongId(Long id) {
-        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(EntityConstants.ADGROUP_ID).is(id)), AdgroupEntity.class,EntityConstants.BAK_ADGROUP);
+        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(id)), AdgroupEntity.class,MongoEntityConstants.BAK_ADGROUP);
     }
 }

@@ -1,7 +1,8 @@
 package com.perfect.dao;
 
-import com.perfect.dao.utils.PagerInfo;
-import com.perfect.dto.creative.CreativeInfoDTO;
+import com.perfect.dto.backup.CreativeBackUpDTO;
+import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.utils.PagerInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -9,35 +10,35 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-7-10.
  */
-public interface CreativeDAO extends MongoCrudRepository<CreativeInfoDTO, Long> {
+public interface CreativeDAO  {
 
     List<Long> getCreativeIdByAdgroupId(Long adgroupId);
 
-    List<CreativeInfoDTO> findByAgroupId(Long adgroupId);
+    List<CreativeDTO> findByAgroupId(Long adgroupId);
 
-    List<CreativeInfoDTO> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
+    List<CreativeDTO> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
 
-    List<CreativeInfoDTO> getCreativeByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
+    List<CreativeDTO> getCreativeByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
 
-    List<CreativeInfoDTO> getAllsByAdgroupIds(List<Long> l);
+    List<CreativeDTO> getAllsByAdgroupIds(List<Long> l);
 
-    List<CreativeInfoDTO> getAllsByAdgroupIdsForString(List<String> l);
+    List<CreativeDTO> getAllsByAdgroupIdsForString(List<String> l);
 
     void deleteByCacheId(Long cacheCreativeId);
 
     void deleteByCacheId(String cacheCreativeId);
 
-    String insertOutId(CreativeInfoDTO creativeEntity);
+    String insertOutId(CreativeDTO creativeEntity);
 
-    void insertByReBack(CreativeInfoDTO oldcreativeEntity);
+    void insertByReBack(CreativeDTO oldcreativeEntity);
 
-    CreativeInfoDTO findByObjId(String obj);
+    CreativeDTO findByObjId(String obj);
 
-    CreativeInfoDTO getAllsBySomeParams(Map<String, Object> params);
+    CreativeDTO getAllsBySomeParams(Map<String, Object> params);
 
-    void updateByObjId(CreativeInfoDTO creativeEntity);
+    void updateByObjId(CreativeDTO creativeEntity);
 
-    void update(CreativeInfoDTO newCreativeEntity, CreativeInfoDTO creativeBackUpEntity);
+    void update(CreativeDTO newCreativeEntity, CreativeDTO creativeBackUpEntity);
 
     void updateAdgroupIdByOid(String id, Long adgroupId);
 

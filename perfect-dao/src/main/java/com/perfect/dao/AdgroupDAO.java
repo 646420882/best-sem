@@ -3,14 +3,13 @@
 package com.perfect.dao;
 
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.entity.AdgroupEntity;
-import com.perfect.dao.mongodb.utils.PagerInfo;
+import com.perfect.utils.PagerInfo;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 import java.util.Map;
 
-public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
+public interface AdgroupDAO  {
 
     List<Long> getAllAdgroupId();
 
@@ -18,19 +17,19 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
 
     List<String> getAdgroupIdByCampaignId(String campaignId);
 
-    List<AdgroupEntity> getAdgroupByCampaignId(Long campaignId, Map<String, Object> params, int skip, int limit);
+    List<AdgroupDTO> getAdgroupByCampaignId(Long campaignId, Map<String, Object> params, int skip, int limit);
 
-    List<AdgroupEntity> getAdgroupByCampaignObjId(String campaignObjId);
+    List<AdgroupDTO> getAdgroupByCampaignObjId(String campaignObjId);
 
-    List<AdgroupEntity> findByQuery(Query query);
+    List<AdgroupDTO> findByQuery(Query query);
 
-    List<AdgroupEntity> findByCampaignId(Long cid);
+    List<AdgroupDTO> findByCampaignId(Long cid);
 
-    List<AdgroupEntity> findIdByCampaignId(Long cid);
+    List<AdgroupDTO> findIdByCampaignId(Long cid);
 
-    AdgroupEntity findByObjId(String oid);
+    AdgroupDTO findByObjId(String oid);
 
-    AdgroupEntity fndEntity(Map<String, Object> params);
+    AdgroupDTO fndEntity(Map<String, Object> params);
 
     //2014-11-24 refactor
     Object insertOutId(AdgroupDTO adgroupEntity);
@@ -41,19 +40,19 @@ public interface AdgroupDAO extends MongoCrudRepository<AdgroupEntity, Long> {
 
     void updateCampaignIdByOid(String oid, Long campaignId);
 
-    void updateByObjId(AdgroupEntity adgroupEntity);
+    void updateByObjId(AdgroupDTO adgroupEntity);
 
-    void update(AdgroupEntity adgroupEntity, AdgroupEntity bakAdgroupEntity);
+    void update(AdgroupDTO adgroupEntity, AdgroupDTO bakAdgroupEntity);
 
-    void insertReBack(AdgroupEntity adgroupEntity);
+    void insertReBack(AdgroupDTO adgroupEntity);
 
     void delBack(Long oid);
 
     PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize);
 
-    AdgroupEntity getByCampaignIdAndName(Long campaignId, String name);
+    AdgroupDTO getByCampaignIdAndName(Long campaignId, String name);
 
-    List<AdgroupEntity> findByCampaignOId(String id);
+    List<AdgroupDTO> findByCampaignOId(String id);
 
     List<String> getObjAdgroupIdByCampaignId(List<String> cids);
 
