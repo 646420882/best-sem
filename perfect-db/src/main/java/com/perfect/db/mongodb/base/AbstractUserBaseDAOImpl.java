@@ -1,6 +1,7 @@
 package com.perfect.db.mongodb.base;
 
 import com.perfect.dao.MongoCrudRepository;
+import com.perfect.utils.Pager;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -11,7 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.dao.mongodb.utils.EntityConstants.SYSTEM_ID;
+import static com.perfect.commons.constants.MongoEntityConstants.SYSTEM_ID;
 
 /**
  * Created by vbzer_000 on 2014/6/18.
@@ -60,6 +61,16 @@ public abstract class AbstractUserBaseDAOImpl<T, ID extends Serializable> implem
     }
 
     @Override
+    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
+        return null;
+    }
+
+    @Override
+    public List<T> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, boolean asc) {
+        return null;
+    }
+
+    @Override
     public void deleteAll() {
         getMongoTemplate().dropCollection(getEntityClass());
     }
@@ -88,7 +99,6 @@ public abstract class AbstractUserBaseDAOImpl<T, ID extends Serializable> implem
         getMongoTemplate().insertAll(entities);
     }
 
-    @Override
     public List<T> find(Map<String, Object> params, int skip, int limit, String sort, Sort.Direction direction) {
         Query query = new Query();
         Criteria criteria = null;
@@ -155,7 +165,6 @@ public abstract class AbstractUserBaseDAOImpl<T, ID extends Serializable> implem
      * @return
      */
 
-    @Override
     public List<T> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, Sort.Direction direction) {
 
         Query query = new Query();
@@ -181,6 +190,11 @@ public abstract class AbstractUserBaseDAOImpl<T, ID extends Serializable> implem
 
         return getMongoTemplate().find(query, getEntityClass());
 
+    }
+
+    @Override
+    public List<T> find(Map<String, Object> params, int skip, int limit, String sort, boolean asc) {
+        return null;
     }
 
     public List<T> find(Map<String, Object> params, int skip, int limit) {

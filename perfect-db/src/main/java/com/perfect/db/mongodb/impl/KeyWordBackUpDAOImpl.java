@@ -1,11 +1,13 @@
 package com.perfect.db.mongodb.impl;
 
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.dao.KeyWordBackUpDAO;
+import com.perfect.dto.backup.KeyWordBackUpDTO;
 import com.perfect.entity.backup.KeyWordBackUpEntity;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.dao.mongodb.utils.EntityConstants;
-import com.perfect.dao.utils.Pager;
+import com.perfect.commons.constants.MongoMongoEntityConstants;
+import com.perfect.utils.Pager;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -18,11 +20,11 @@ import java.util.Map;
  * Created by XiaoWei on 2014/9/9.
  */
 @Component
-public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpEntity,Long> implements KeyWordBackUpDAO {
+public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpDTO,Long> implements KeyWordBackUpDAO {
 
     @Override
-    public Class<KeyWordBackUpEntity> getEntityClass() {
-        return KeyWordBackUpEntity.class;
+    public Class<KeyWordBackUpDTO> getEntityClass() {
+        return KeyWordBackUpDTO.class;
     }
 
     @Override
@@ -36,9 +38,9 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpE
      * @param id
      * @return
      */
-    public KeyWordBackUpEntity findByObjectId(String id){
+    public KeyWordBackUpDTO findByObjectId(String id){
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        return mongoTemplate.findOne(new Query(Criteria.where(EntityConstants.SYSTEM_ID).is(id)),getEntityClass(), EntityConstants.BAK_KEYWORD);
+        return mongoTemplate.findOne(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)),getEntityClass(), MongoEntityConstants.BAK_KEYWORD);
     }
 
     /**
@@ -48,7 +50,7 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpE
      */
     public boolean existsByObjectId(String id){
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        return mongoTemplate.exists(new Query(),getEntityClass(),EntityConstants.BAK_KEYWORD);
+        return mongoTemplate.exists(new Query(),getEntityClass(),MongoEntityConstants.BAK_KEYWORD);
     }
 
 
@@ -60,17 +62,17 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpE
      */
     public void deleteByObjectId(String id){
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.SYSTEM_ID).is(id)),getEntityClass(),EntityConstants.BAK_KEYWORD);
+        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)),getEntityClass(),MongoEntityConstants.BAK_KEYWORD);
     }
 
     public KeyWordBackUpEntity findById(long id){
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-       List<KeyWordBackUpEntity> list = mongoTemplate.find(new Query(Criteria.where(EntityConstants.KEYWORD_ID).is(id)),getEntityClass(),EntityConstants.BAK_KEYWORD);
+       List<KeyWordBackUpEntity> list = mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(id)),getEntityClass(),MongoEntityConstants.BAK_KEYWORD);
        return list.size()==0?null:list.get(0);
     }
 
     public  void deleteByKwid(long kwid){
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(EntityConstants.KEYWORD_ID).is(kwid)),getEntityClass(),EntityConstants.BAK_KEYWORD);
+        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(kwid)),getEntityClass(),MongoEntityConstants.BAK_KEYWORD);
     }
 }

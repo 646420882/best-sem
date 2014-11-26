@@ -1,18 +1,18 @@
 package com.perfect.dao;
 
-import com.perfect.entity.backup.KeyWordBackUpEntity;
+import com.perfect.dto.backup.KeyWordBackUpDTO;
 
 /**
  * Created by XiaoWei on 2014/9/9.
  */
-public interface KeyWordBackUpDAO extends MongoCrudRepository<KeyWordBackUpEntity,Long>  {
+public interface KeyWordBackUpDAO {
 
 
-    KeyWordBackUpEntity findByObjectId(String id);
+    KeyWordBackUpDTO findByObjectId(String id);
 
     void deleteByObjectId(String id);
 
-    KeyWordBackUpEntity findById(long id);
+    KeyWordBackUpDTO findById(long id);
 
     void deleteByKwid(long kwid);
 

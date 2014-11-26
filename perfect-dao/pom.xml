@@ -24,10 +24,6 @@
             <artifactId>perfect-utils</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.perfect</groupId>
-            <artifactId>perfect-commons</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

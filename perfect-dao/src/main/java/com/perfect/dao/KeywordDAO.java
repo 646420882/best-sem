@@ -1,13 +1,10 @@
 package com.perfect.dao;
 
-import com.perfect.dao.mongodb.utils.PagerInfo;
-import com.perfect.dao.mongodb.utils.PaginationParam;
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.keyword.KeyWordBackUpDTO;
+import com.perfect.dto.backup.KeyWordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.entity.AdgroupEntity;
-import com.perfect.entity.KeywordEntity;
-import com.perfect.entity.backup.KeyWordBackUpEntity;
+import com.perfect.utils.PagerInfo;
+import com.perfect.utils.PaginationParam;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.math.BigDecimal;
@@ -17,7 +14,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-7-7.
  */
-public interface KeywordDAO extends MongoCrudRepository<KeywordDTO, Long> {
+public interface KeywordDAO {
     /**
      * 按条件批量更新
      * <br>------------------------------<br>
@@ -39,9 +36,6 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordDTO, Long> {
     List<KeywordDTO> getKeywordByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
 
     List<KeywordDTO> findByAgroupId(Long oid);
-
-    // TODO service 层不能出现servlet
-//    Pager getKeywordByPager(HttpServletRequest request, Map<String, Object> params, int orderBy);
 
     List<KeywordDTO> getKeywordInfo();
 

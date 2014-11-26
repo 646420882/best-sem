@@ -1,6 +1,7 @@
-package com.perfect.dto.keyword;
+package com.perfect.dto.backup;
 
 import com.perfect.dto.account.AccountIdDTO;
+import com.perfect.dto.keyword.KeywordDTO;
 
 import java.math.BigDecimal;
 
