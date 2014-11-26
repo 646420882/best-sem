@@ -1,18 +1,19 @@
 package com.perfect.dao;
 
-import com.perfect.entity.CookieEntity;
+
+import com.perfect.dto.CookieDTO;
 
 import java.util.List;
 
 /**
  * Created by baizz on 2014-11-10.
  */
-public interface CookieDAO extends MongoCrudRepository<CookieEntity, String> {
+public interface CookieDAO {
 
-    CookieEntity takeOne();
+    CookieDTO takeOne();
 
-    void returnOne(CookieEntity cookieEntity);
+    void returnOne(CookieDTO cookieDTO);
 
-    List<CookieEntity> allUnused();
+    List<CookieDTO> allUnused();
 
 }

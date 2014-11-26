@@ -1,7 +1,7 @@
 package com.perfect.dao;
 
-import com.perfect.entity.LexiconEntity;
-import com.perfect.dao.mongodb.utils.PagerInfo;
+import com.perfect.dto.keyword.LexiconDTO;
+import com.perfect.utils.PagerInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -21,15 +21,17 @@ public interface KeywordGroupDAO {
 
     /**
      * 加载行业库
+     *
      * @return
      */
     List<? extends Object> findTr();
 
     /**
      * 添加行业库数据
-     * @param lexiconEntity
+     *
+     * @param lexiconDTO
      */
-    int saveTrade(LexiconEntity lexiconEntity);
+    int saveTrade(LexiconDTO lexiconDTO);
 
     /**
      * 获取当前结果集的长度
@@ -41,10 +43,11 @@ public interface KeywordGroupDAO {
 
     /**
      * 分页查询行业库
-     * @param  params 查询参数
+     *
+     * @param params 查询参数
      * @param page
      * @param limit
      * @return
      */
-    PagerInfo findByPager(Map<String,Object> params,int page, int limit);
+    PagerInfo findByPager(Map<String, Object> params, int page, int limit);
 }

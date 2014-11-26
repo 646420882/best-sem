@@ -2,8 +2,8 @@ package com.perfect.dao.account;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.mongodb.WriteResult;
-import com.perfect.entity.AccountReportEntity;
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.account.AccountReportDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -50,10 +50,11 @@ public interface AccountManageDAO<T> {
      *
      * @return
      */
-    SystemUserEntity getCurrUserInfo();
+    SystemUserDTO getCurrUserInfo();
 
     /**
      * 修改密码
+     *
      * @param pwd
      * @return
      */
@@ -61,24 +62,28 @@ public interface AccountManageDAO<T> {
 
     /**
      * 得到所有未审核的帐号
+     *
      * @return
      */
-    public List<SystemUserEntity> getAccount();
+    public List<SystemUserDTO> getAccount();
 
     /**
      * 百度帐号启用/停用状态更改
+     *
      * @return
      */
     public WriteResult updateBaiDuAccount(String userName, Long baiduId, Long state);
 
     /**
      * 查询所有未帐号信息
+     *
      * @return
      */
-    public List<SystemUserEntity> getAccountAll();
+    public List<SystemUserDTO> getAccountAll();
 
     /**
      * 审核帐号
+     *
      * @param baiduAccount
      * @param baiduPassword
      * @param token
@@ -88,6 +93,7 @@ public interface AccountManageDAO<T> {
 
     /**
      * 修改帐号状态
+     *
      * @return
      */
     public int updateAccountStruts(String userName);
@@ -112,7 +118,7 @@ public interface AccountManageDAO<T> {
      * @param dates
      * @return
      */
-    List<AccountReportEntity> getAccountReports(List<Date> dates);
+    List<AccountReportDTO> getAccountReports(List<Date> dates);
 
     /**
      * 获取账户昨日消费

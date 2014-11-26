@@ -5,11 +5,14 @@ import com.google.gson.reflect.TypeToken;
 import com.perfect.dao.KeywordGroupDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.dao.utils.Pager;
-import com.perfect.dao.utils.PagerInfo;
+import com.perfect.dto.keyword.LexiconDTO;
 import com.perfect.entity.LexiconEntity;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.utils.DBNameUtils;
+import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.Pager;
+import com.perfect.utils.PagerInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -34,9 +37,13 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
  * Created by baizz on 2014-08-20.
  */
 @Repository("keywordGroupDAO")
-public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, Long> implements KeywordGroupDAO {
+public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long> implements KeywordGroupDAO {
     @Override
-    public Class<LexiconEntity> getEntityClass() {
+    public Class<LexiconDTO> getEntityClass() {
+        return LexiconDTO.class;
+    }
+
+    private Class<LexiconEntity> getLexiconEntityClass() {
         return LexiconEntity.class;
     }
 
@@ -46,8 +53,8 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
     }
 
     @Override
-    public List<LexiconEntity> find(Map<String, Object> params, int skip, int limit) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+    public List<LexiconDTO> find(Map<String, Object> params, int skip, int limit) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         boolean status = !(skip == -1 && limit == -1);
         Query query = null;
         int s = params.size();
@@ -81,7 +88,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
         if (status) {
             query.with(new PageRequest(skip, limit));
         }
-        return mongoTemplate.find(query, getEntityClass());
+        return ObjectUtils.convert(mongoTemplate.find(query, getLexiconEntityClass()), getEntityClass());
     }
 
     public List<TradeVO> findTr() {
@@ -110,13 +117,15 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
     }
 
     @Override
-    public int saveTrade(LexiconEntity lexiconEntity) {
+    public int saveTrade(LexiconDTO lexiconDTO) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Criteria c = new Criteria();
-        c.and("tr").is(lexiconEntity.getTrade()).and("kw").is(lexiconEntity.getKeyword());
+        c.and("tr").is(lexiconDTO.getTrade()).and("kw").is(lexiconDTO.getKeyword());
         LexiconEntity findLexiconEntity = mongoTemplate.findOne(new Query(c), LexiconEntity.class, SYS_KEYWORD);
         if (findLexiconEntity == null) {
-            mongoTemplate.insert(lexiconEntity, SYS_KEYWORD);
+            findLexiconEntity = new LexiconEntity();
+            BeanUtils.copyProperties(lexiconDTO, findLexiconEntity);
+            mongoTemplate.insert(findLexiconEntity, SYS_KEYWORD);
             return 1;
         } else {
             return 3;
@@ -124,7 +133,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
     }
 
     public List<CategoryVO> findCategories(String trade) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Aggregation aggregation = Aggregation.newAggregation(
                 match(Criteria.where("tr").is(trade)),
                 project("cg"),
@@ -138,7 +147,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
     }
 
     public int getCurrentRowsSize(Map<String, Object> params) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
 
         Criteria criteria = Criteria.where(SYSTEM_ID).ne(null);
         for (Map.Entry<String, Object> entry : params.entrySet()) {
@@ -173,7 +182,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconEntity, L
             return p;
         }
         List<LexiconEntity> creativeEntityList = mongoTemplate.find(q, LexiconEntity.class);
-        p.setList(creativeEntityList);
+        p.setList(ObjectUtils.convert(creativeEntityList, LexiconDTO.class));
         return p;
     }
 

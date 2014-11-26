@@ -14,14 +14,17 @@ import com.perfect.autosdk.sms.v3.AccountService;
 import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
 import com.perfect.core.AppContext;
-import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.SystemUserDAO;
+import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.db.mongodb.utils.DateUtils;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.account.AccountReportDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.AccountReportEntity;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
-import com.perfect.utils.DBNameUtils;
+import com.perfect.utils.DateUtils;
+import com.perfect.utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -48,10 +51,10 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by baizz on 2014-6-25.
- * 2014-11-24 refactor
+ * 2014-11-26 refactor
  */
 @Repository(value = "accountManageDAO")
-public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEntity> {
+public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoDTO> {
     protected static transient Logger log = LoggerFactory.getLogger(AccountManageDAOImpl.class);
     @Resource
     private SystemUserDAO systemUserDAO;
@@ -128,11 +131,8 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
      * @return
      */
     @Override
-    public List<BaiduAccountInfoEntity> getBaiduAccountItems(String currUserName) {
-        List<BaiduAccountInfoEntity> list = systemUserDAO
-                .findByUserName(currUserName)
-                .getBaiduAccountInfoEntities();
-        return list;
+    public List<BaiduAccountInfoDTO> getBaiduAccountItems(String currUserName) {
+        return systemUserDAO.findByUserName(currUserName).getBaiduAccountInfoDTOs();
     }
 
     /**
@@ -142,14 +142,14 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
      * @return
      */
     @Override
-    public BaiduAccountInfoEntity findByBaiduUserId(Long baiduUserId) {
+    public BaiduAccountInfoDTO findByBaiduUserId(Long baiduUserId) {
         String currUser = AppContext.getUser();
-        List<BaiduAccountInfoEntity> list = getBaiduAccountItems(currUser);
+        List<BaiduAccountInfoDTO> list = getBaiduAccountItems(currUser);
 
-        BaiduAccountInfoEntity baiduAccount = null;
-        for (BaiduAccountInfoEntity entity : list) {
-            if (baiduUserId.equals(entity.getId())) {
-                baiduAccount = entity;
+        BaiduAccountInfoDTO baiduAccount = null;
+        for (BaiduAccountInfoDTO dto : list) {
+            if (baiduUserId.equals(dto.getId())) {
+                baiduAccount = dto;
                 break;
             }
         }
@@ -158,25 +158,24 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
     }
 
     @Override
-    public SystemUserEntity getCurrUserInfo() {
+    public SystemUserDTO getCurrUserInfo() {
+        SystemUserDTO systemUserDTO = new SystemUserDTO();
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        return mongoTemplate.findOne(Query.query(Criteria.where("userName").is(AppContext.getUser())), SystemUserEntity.class);
+        BeanUtils.copyProperties(mongoTemplate.findOne(Query.query(Criteria.where("userName").is(AppContext.getUser())), getSystemUserEntityClass()), systemUserDTO);
+        return systemUserDTO;
     }
 
     @Override
     public WriteResult updatePwd(String account, String pwd) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        Update update = new Update();
-        update.set("password", pwd);
-        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(account)), update, "sys_user");
+        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(account)), Update.update("password", pwd), "sys_user");
         return writeResult;
     }
 
     @Override
-    public List<SystemUserEntity> getAccount() {
+    public List<SystemUserDTO> getAccount() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        List<SystemUserEntity> entities = mongoTemplate.find(Query.query(Criteria.where("state").is(0)), SystemUserEntity.class);
-        return entities;
+        return ObjectUtils.convert(mongoTemplate.find(Query.query(Criteria.where("state").is(0)), getSystemUserEntityClass()), getSystemUserDTOClass());
     }
 
     @Override
@@ -189,10 +188,9 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
     }
 
     @Override
-    public List<SystemUserEntity> getAccountAll() {
+    public List<SystemUserDTO> getAccountAll() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        List<SystemUserEntity> entities = mongoTemplate.find(new Query(), SystemUserEntity.class);
-        return entities;
+        return ObjectUtils.convert(mongoTemplate.find(new Query(), getSystemUserEntityClass()), getSystemUserDTOClass());
     }
 
     @Override
@@ -227,7 +225,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
             WriteResult writeResult = mongoTemplate.updateFirst(
                     Query.query(
                             Criteria.where("userName").is(userNmae).and("state").is(0)),
-                    update, SystemUserEntity.class);
+                    update, getSystemUserEntityClass());
 
             if (writeResult.isUpdateOfExisting()) {
                 i = 1;
@@ -242,39 +240,35 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
     @Override
     public int updateAccountStruts(String userName) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        Update update = new Update();
-        update.set("state", 1);
-        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(userName)), update, "sys_user");
+        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(userName)), Update.update("state", 1), "sys_user");
         int i = 0;
-        if (writeResult.isUpdateOfExisting()) {
+        if (writeResult.isUpdateOfExisting())
             i = 1;
-        }
+
         return i;
     }
 
     @Override
     public void uploadImg(byte[] bytes) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        Update update = new Update();
-        update.set("img", bytes);
-        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(AppContext.getUser())), update, SystemUserEntity.class);
+        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(AppContext.getUser())), Update.update("img", bytes), getSystemUserEntityClass());
     }
 
     @Override
-    public void updateBaiduAccountInfo(BaiduAccountInfoEntity entity) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+    public void updateBaiduAccountInfo(BaiduAccountInfoDTO dto) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         String currUser = AppContext.getUser();
         Update update = new Update();
-        if (entity.getBudget() != null) {
-            update.set("bdAccounts.$.bgt", entity.getBudget());
+        if (dto.getBudget() != null) {
+            update.set("bdAccounts.$.bgt", dto.getBudget());
         }
-        if (entity.getIsDynamicCreative() != null) {
-            update.set("bdAccounts.$.dc", entity.getIsDynamicCreative());
+        if (dto.getIsDynamicCreative() != null) {
+            update.set("bdAccounts.$.dc", dto.getIsDynamicCreative());
         }
-        if (entity.getExcludeIp() != null) {
-            update.set("bdAccounts.$.exIp", entity.getExcludeIp());
+        if (dto.getExcludeIp() != null) {
+            update.set("bdAccounts.$.exIp", dto.getExcludeIp());
         }
-        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(currUser).and("bdAccounts._id").is(entity.getId())), update, SystemUserEntity.class);
+        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(currUser).and("bdAccounts._id").is(dto.getId())), update, getSystemUserEntityClass());
     }
 
     /**
@@ -282,12 +276,14 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
      * @return
      */
     @Override
-    public List<AccountReportEntity> getAccountReports(List<Date> dates) {
+    public List<AccountReportDTO> getAccountReports(List<Date> dates) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
         Long baiduAccountId = AppContext.getAccountId();
-        List<AccountReportEntity> reportEntities = mongoTemplate.
-                find(Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and("date").in(dates)), AccountReportEntity.class);
-        return reportEntities;
+        return ObjectUtils.convert(
+                mongoTemplate.find(
+                        Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and("date").in(dates)),
+                        AccountReportEntity.class),
+                AccountReportDTO.class);
     }
 
     @Override
@@ -338,16 +334,24 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoEn
      * @return
      */
     @Override
-    public List<BaiduAccountInfoEntity> getBaiduAccountInfos(String username, String password, String token) {
-        List<BaiduAccountInfoEntity> list = new ArrayList<>();
+    public List<BaiduAccountInfoDTO> getBaiduAccountInfos(String username, String password, String token) {
+        List<BaiduAccountInfoDTO> list = new ArrayList<>();
         Long id = getBaiduAccountId(username, password, token);
-        BaiduAccountInfoEntity entity = new BaiduAccountInfoEntity();
-        entity.setId(id);
-        entity.setBaiduUserName(username);
-        entity.setBaiduPassword(password);
-        entity.setToken(token);
-        list.add(entity);
+        BaiduAccountInfoDTO dto = new BaiduAccountInfoDTO();
+        dto.setId(id);
+        dto.setBaiduUserName(username);
+        dto.setBaiduPassword(password);
+        dto.setToken(token);
+        list.add(dto);
         return list;
+    }
+
+    private Class<SystemUserEntity> getSystemUserEntityClass() {
+        return SystemUserEntity.class;
+    }
+
+    private Class<SystemUserDTO> getSystemUserDTOClass() {
+        return SystemUserDTO.class;
     }
 
     /**

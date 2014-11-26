@@ -1,6 +1,6 @@
 package com.perfect.dao;
 
-import com.perfect.entity.KeywordReportEntity;
+import com.perfect.dto.keyword.KeywordReportDTO;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import java.util.List;
  */
 public interface KeywordQualityDAO {
 
-    List<KeywordReportEntity> findYesterdayKeywordReport();
+    List<KeywordReportDTO> findYesterdayKeywordReport();
 
-    @Deprecated
-    List<Long> findYesterdayAllKeywordId();
+//    @Deprecated
+//    List<Long> findYesterdayAllKeywordId();
 }
