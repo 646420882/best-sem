@@ -1,5 +1,6 @@
 package com.perfect.dto.adgroup;
 
+import com.perfect.dto.account.AccountIdDTO;
 import com.perfect.dto.baidu.OptTypeDTO;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * Created by yousheng on 14/11/20.
  */
-public class AdgroupDTO {
+public class AdgroupDTO extends AccountIdDTO {
     private String id;
     private Long adgroupId;
     private Long campaignId;

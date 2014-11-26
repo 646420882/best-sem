@@ -1,8 +1,6 @@
 package com.perfect.utils.report;
 
 
-import com.perfect.dto.StructureReportDTO;
-
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;

@@ -4,18 +4,25 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.perfect.autosdk.sms.v3.OfflineTimeType;
 import com.perfect.autosdk.sms.v3.ScheduleType;
+import com.perfect.commons.web.WebContext;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.KeywordDAO;
 import com.perfect.dao.SystemUserDAO;
-import com.perfect.dto.RegionalCodeDTO;
-import com.perfect.entity.*;
-import com.perfect.dao.mongodb.utils.PagerInfo;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.dto.regional.RegionalCodeDTO;
+import com.perfect.entity.AdgroupEntity;
+import com.perfect.entity.CampaignEntity;
+import com.perfect.entity.KeywordEntity;
 import com.perfect.service.CampaignBackUpService;
 import com.perfect.service.SysRegionalService;
-import com.perfect.utils.RegionalCodeUtils;
-import com.perfect.commons.web.WebContext;
+import com.perfect.utils.PagerInfo;
+import com.perfect.utils.report.RegionalCodeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -33,7 +40,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.perfect.dao.mongodb.utils.EntityConstants.ACCOUNT_ID;
+import static com.perfect.commons.constants.MongoEntityConstants.ACCOUNT_ID;
 
 /**
  * Created by john on 2014/8/15.
@@ -89,7 +96,7 @@ public class AssistantCampaignController {
     @RequestMapping(value = "assistantCampaign/getObject", method = {RequestMethod.GET, RequestMethod.POST})
     public void getCampaignByCid(HttpServletResponse response, String cid) {
         String regex = "^\\d+$";
-        CampaignEntity campaignEntity = null;
+        CampaignDTO campaignEntity = null;
 
         if (cid.matches(regex) == true) {
             campaignEntity = campaignDAO.findOne(Long.parseLong(cid));
@@ -110,14 +117,13 @@ public class AssistantCampaignController {
     public void getCampaign(HttpServletResponse response, String cid) {
         String regex = "^\\d+$";
         Map<String, Object> map = new HashMap<>();
-        CampaignEntity campaignEntity = null;
+        CampaignDTO campaignEntity = null;
 
         if (cid.matches(regex) == true) {
             campaignEntity = campaignDAO.findOne(Long.parseLong(cid));
         } else {
             campaignEntity = campaignDAO.findByObjectId(cid);
         }
-//        Map<Integer, String> regionMap = RegionalCodeUtils.regionalCode(campaignEntity.getRegionTarget() == null ? new ArrayList<Integer>() : campaignEntity.getRegionTarget());
         List<RegionalCodeDTO> regionList = sysRegionalService.getRegionalId(campaignEntity.getRegionTarget() == null ? new ArrayList<Integer>() : campaignEntity.getRegionTarget());
 
         map.put("campObj", campaignEntity);
@@ -154,14 +160,14 @@ public class AssistantCampaignController {
      */
     @RequestMapping(value = "assistantCampaign/getRegionByAcid", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccountRegion(HttpServletResponse response) {
-        SystemUserEntity currentUser = systemUserDAO.findByAid(AppContext.getAccountId());
+        SystemUserDTO currentUser = systemUserDAO.findByAid(AppContext.getAccountId());
 
-        List<BaiduAccountInfoEntity> accounts = currentUser.getBaiduAccountInfoEntities();
-        BaiduAccountInfoEntity baiduEntity = null;
+        List<BaiduAccountInfoDTO> accounts = currentUser.getBaiduAccountInfoDTOs();
+        BaiduAccountInfoDTO baiduEntity = null;
 
-        for (BaiduAccountInfoEntity accountInfoEntity : accounts) {
-            if (accountInfoEntity.getId().longValue() == AppContext.getAccountId().longValue()) {
-                baiduEntity = accountInfoEntity;
+        for (BaiduAccountInfoDTO accountInfoDTO : accounts) {
+            if (accountInfoDTO.getId().longValue() == AppContext.getAccountId().longValue()) {
+                baiduEntity = accountInfoDTO;
                 break;
             }
         }
@@ -180,9 +186,9 @@ public class AssistantCampaignController {
     @RequestMapping(value = "assistantCampaign/useAccoutRegion", method = {RequestMethod.GET, RequestMethod.POST})
     public void useAccoutRegion(HttpServletResponse response, String cid) {
         String regex = "^\\d+$";
-        CampaignEntity campaignEntity = cid.matches(regex) ? campaignDAO.findOne(Long.parseLong(cid)) : campaignDAO.findByObjectId(cid);
-        campaignEntity.setRegionTarget(null);
-        campaignDAO.save(campaignEntity);
+        CampaignDTO campaignDTO = cid.matches(regex) ? campaignDAO.findOne(Long.parseLong(cid)) : campaignDAO.findByObjectId(cid);
+        campaignDTO.setRegionTarget(null);
+        campaignDAO.save(campaignDTO);
         webContext.writeJson(RES_SUCCESS, response);
     }
 
@@ -195,10 +201,10 @@ public class AssistantCampaignController {
     @RequestMapping(value = "assistantCampaign/usePlanRegion", method = {RequestMethod.GET, RequestMethod.POST})
     public void usePlanRegion(HttpServletResponse response, String regions, String cid) {
         String regex = "^\\d+$";
-        CampaignEntity newCampaignEntity = cid.matches(regex) ? campaignDAO.findOne(Long.parseLong(cid)) : campaignDAO.findByObjectId(cid);
+        CampaignDTO newCampaignDTO = cid.matches(regex) ? campaignDAO.findOne(Long.parseLong(cid)) : campaignDAO.findByObjectId(cid);
 
-        CampaignEntity oldCampaignEntity = new CampaignEntity();
-        BeanUtils.copyProperties(newCampaignEntity, oldCampaignEntity);
+        CampaignDTO oldCampaignEntity = new CampaignDTO();
+        BeanUtils.copyProperties(newCampaignDTO, oldCampaignEntity);
 
         String[] regeionArray = "".equals(regions) ? new String[]{} : regions.split(",");
 
@@ -221,14 +227,14 @@ public class AssistantCampaignController {
             }
         }
 
-        newCampaignEntity.setRegionTarget(regionId);
+        newCampaignDTO.setRegionTarget(regionId);
 
-        if (newCampaignEntity.getCampaignId() == null) {
-            newCampaignEntity.setLocalStatus(1);
+        if (newCampaignDTO.getCampaignId() == null) {
+            newCampaignDTO.setLocalStatus(1);
         } else {
-            newCampaignEntity.setLocalStatus(2);
+            newCampaignDTO.setLocalStatus(2);
         }
-        campaignDAO.updateByMongoId(newCampaignEntity, oldCampaignEntity);
+        campaignDAO.updateByMongoId(newCampaignDTO, oldCampaignEntity);
 
         webContext.writeJson(RES_SUCCESS, response);
     }
@@ -256,13 +262,13 @@ public class AssistantCampaignController {
 
         String regex = "^\\d+$";
 
-        CampaignEntity newCampaign = null;
+        CampaignDTO newCampaign = null;
         if (cid.matches(regex) == true) {
             newCampaign = campaignDAO.findOne(Long.parseLong(cid));
         } else {
             newCampaign = campaignDAO.findByObjectId(cid);
         }
-        CampaignEntity campaignEntity = new CampaignEntity();
+        CampaignDTO campaignEntity = new CampaignDTO();
         BeanUtils.copyProperties(newCampaign, campaignEntity);
 
         newCampaign.setCampaignName(campaignName == null ? newCampaign.getCampaignName() : campaignName);
@@ -305,42 +311,42 @@ public class AssistantCampaignController {
     ) {
 
         //推广计划
-        CampaignEntity campaignEntity = new CampaignEntity();
-        campaignEntity.setCampaignName(campaignName);
-        campaignEntity.setBudget(budget);
-        campaignEntity.setPriceRatio(priceRatio);
-        campaignEntity.setPause(pause);
-        campaignEntity.setShowProb(showProb);
+        CampaignDTO campaignDTO = new CampaignDTO();
+        campaignDTO.setCampaignName(campaignName);
+        campaignDTO.setBudget(budget);
+        campaignDTO.setPriceRatio(priceRatio);
+        campaignDTO.setPause(pause);
+        campaignDTO.setShowProb(showProb);
 
         if (schedule != null) {
             Gson gson = new Gson();
             List<ScheduleType> scheduleTypes = gson.fromJson(schedule, new TypeToken<List<ScheduleType>>() {
             }.getType());
-            campaignEntity.setSchedule(scheduleTypes == null ? new ArrayList<ScheduleType>() : scheduleTypes);
+            campaignDTO.setSchedule(scheduleTypes == null ? new ArrayList<ScheduleType>() : scheduleTypes);
         }
 
-        campaignEntity.setRegionTarget(regionTarget == null ? new ArrayList<Integer>() : Arrays.asList(regionTarget));
-        campaignEntity.setNegativeWords(negativeWords == null ||"".equals(negativeWords)? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
-        campaignEntity.setExactNegativeWords(exactNegativeWords == null ||"".equals(exactNegativeWords)? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));
-        campaignEntity.setExcludeIp(excludeIp == null || "".equals(excludeIp)? new ArrayList<String>() : Arrays.asList(excludeIp.split("\n")));
-        campaignEntity.setBudgetOfflineTime(new ArrayList<OfflineTimeType>());
-        campaignEntity.setAccountId(AppContext.getAccountId());
-        campaignEntity.setStatus(-1);
-        campaignEntity.setLocalStatus(1);
+        campaignDTO.setRegionTarget(regionTarget == null ? new ArrayList<Integer>() : Arrays.asList(regionTarget));
+        campaignDTO.setNegativeWords(negativeWords == null || "".equals(negativeWords) ? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
+        campaignDTO.setExactNegativeWords(exactNegativeWords == null || "".equals(exactNegativeWords) ? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));
+        campaignDTO.setExcludeIp(excludeIp == null || "".equals(excludeIp) ? new ArrayList<String>() : Arrays.asList(excludeIp.split("\n")));
+        campaignDTO.setBudgetOfflineTime(new ArrayList<OfflineTimeType>());
+        campaignDTO.setAccountId(AppContext.getAccountId());
+        campaignDTO.setStatus(-1);
+        campaignDTO.setLocalStatus(1);
 
         //开始添加
-        String id = campaignDAO.insertReturnId(campaignEntity);
+        String id = campaignDAO.insertReturnId(campaignDTO);
 
-        AdgroupEntity adgroupEntity = new AdgroupEntity();
-        adgroupEntity.setCampaignObjId(id);
-        adgroupEntity.setAdgroupName(adgroupName);
-        adgroupEntity.setMaxPrice(maxPrice);
-        adgroupEntity.setPause(adgroupPause);
-        adgroupEntity.setStatus(-1);
-        adgroupEntity.setLocalStatus(1);
-        adgroupEntity.setPriceRatio(adgroupPriceRatio);
-        adgroupEntity.setAccountId(AppContext.getAccountId());
-        adgroupDAO.insert(adgroupEntity);
+        AdgroupDTO adgroupDTO = new AdgroupDTO();
+        adgroupDTO.setCampaignObjId(id);
+        adgroupDTO.setAdgroupName(adgroupName);
+        adgroupDTO.setMaxPrice(maxPrice);
+        adgroupDTO.setPause(adgroupPause);
+        adgroupDTO.setStatus(-1);
+        adgroupDTO.setLocalStatus(1);
+        adgroupDTO.setPriceRatio(adgroupPriceRatio);
+        adgroupDTO.setAccountId(AppContext.getAccountId());
+        adgroupDAO.insert(adgroupDTO);
 
     }
 
@@ -352,7 +358,7 @@ public class AssistantCampaignController {
      */
     @RequestMapping(value = "assistantCampaign/reducUpdate", method = {RequestMethod.GET, RequestMethod.POST})
     public void reducUpdate(HttpServletResponse response, String id) {
-        CampaignEntity campaignEntity = campaignBackUpService.reducUpdate(id);
+        CampaignDTO campaignEntity = campaignBackUpService.reducUpdate(id);
         webContext.writeJson(campaignEntity, response);
     }
 
@@ -395,7 +401,7 @@ public class AssistantCampaignController {
      * @return
      */
     @RequestMapping(value = "/assistantCampaign/quickCreateCampaign", method = RequestMethod.POST, produces = "application/json")
-    public void quickCreateCampaign(@RequestBody List<KeywordEntity> list, String name, String regions, HttpServletResponse response) {
+    public void quickCreateCampaign(@RequestBody List<KeywordDTO> list, String name, String regions, HttpServletResponse response) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         list.remove(list.size() - 1);
@@ -423,7 +429,7 @@ public class AssistantCampaignController {
         String campaignObjectId = campaignDAO.insertReturnId(campaignEntity);
 
 
-        AdgroupEntity adgroupEntity = new AdgroupEntity();
+        AdgroupDTO adgroupEntity = new AdgroupDTO();
         adgroupEntity.setCampaignObjId(campaignObjectId);
         adgroupEntity.setAdgroupName(name);
         adgroupEntity.setMaxPrice(0d);
@@ -434,7 +440,7 @@ public class AssistantCampaignController {
 
         String adgroupObjectId = (String) adgroupDAO.insertOutId(adgroupEntity);
 
-        for (KeywordEntity kwd : list) {
+        for (KeywordDTO kwd : list) {
             kwd.setAdgroupObjId(adgroupObjectId);
             kwd.setAccountId(AppContext.getAccountId());
         }

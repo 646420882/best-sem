@@ -2,10 +2,10 @@ package com.perfect.app.index.controller;
 
 import com.google.gson.Gson;
 import com.perfect.commons.web.WebUtils;
-import com.perfect.entity.AccountReportEntity;
-import com.perfect.entity.KeywordRealTimeDataVOEntity;
-import com.perfect.dao.mongodb.utils.DateUtils;
+import com.perfect.dto.account.AccountReportDTO;
+import com.perfect.dto.keyword.KeywordRealDTO;
 import com.perfect.service.PerformanceService;
+import com.perfect.utils.DateUtils;
 import com.perfect.utils.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -46,7 +46,7 @@ public class PerformanceController {
     @RequestMapping(value = "/account/performance", method = RequestMethod.GET)
     public void getPerformance(HttpServletRequest request, HttpServletResponse response) {
         String[] date = {"2014-01-25", "2014-01-26"};
-        List<KeywordRealTimeDataVOEntity> jsonMapList = performanceService.performance(WebUtils.getUserName(request), date);
+        List<KeywordRealDTO> jsonMapList = performanceService.performance(WebUtils.getUserName(request), date);
         Gson gson = new Gson();
         String ddd = gson.toJson(jsonMapList);
 
@@ -97,7 +97,7 @@ public class PerformanceController {
             e.printStackTrace();
         }
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<AccountReportEntity> jsonMapList = performanceService.performanceUser(startDates, endDates, Sorted, limit, startPer, date);
+        List<AccountReportDTO> jsonMapList = performanceService.performanceUser(startDates, endDates, Sorted, limit, startPer, date);
 
         Map<String, Object> attributes = null;
         if (jsonMapList != null)
@@ -131,7 +131,7 @@ public class PerformanceController {
             e.printStackTrace();
         }
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<AccountReportEntity> jsonMapList = performanceService.performanceCurve(startDates, endDates, date);
+        List<AccountReportDTO> jsonMapList = performanceService.performanceCurve(startDates, endDates, date);
 
         Map<String, Object> attributes = null;
         if (jsonMapList != null)

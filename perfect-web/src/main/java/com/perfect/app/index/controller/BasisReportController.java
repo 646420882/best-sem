@@ -2,10 +2,10 @@ package com.perfect.app.index.controller;
 
 import com.google.gson.Gson;
 import com.perfect.core.AppContext;
-import com.perfect.dto.AccountReportDTO;
-import com.perfect.entity.StructureReportEntity;
-import com.perfect.dao.mongodb.utils.DateUtils;
+import com.perfect.dto.StructureReportDTO;
+import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.service.BasisReportService;
+import com.perfect.utils.DateUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,10 +73,10 @@ public class BasisReportController {
         }
         List<String> list = DateUtils.getPeriod(startDate, endDate);
         String[] newDate = list.toArray(new String[list.size()]);
-        Map<String, List<StructureReportEntity>> responseDate = basisReportService.getReportDate(newDate, devices, dateType, reportType, start, limit, sort, dataId, dateName);
+        Map<String, List<StructureReportDTO>> responseDate = basisReportService.getReportDate(newDate, devices, dateType, reportType, start, limit, sort, dataId, dateName);
 
         int totalRows = 0;
-        for (List<StructureReportEntity> entity : responseDate.values()) {
+        for (List<StructureReportDTO> entity : responseDate.values()) {
             totalRows = totalRows + ((entity == null) ? 0 : entity.size());
         }
         String data = new Gson().toJson(responseDate);

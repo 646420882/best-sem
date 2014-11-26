@@ -1,5 +1,6 @@
 package com.perfect.dto.campaign;
 
+import com.perfect.dto.account.AccountIdDTO;
 import com.perfect.dto.baidu.OfflineTimeDTO;
 import com.perfect.dto.SchedulerDTO;
 
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * Created by yousheng on 14/11/20.
  */
-public class CampaignDTO {
+public class CampaignDTO extends AccountIdDTO{
     private String id;
 
     private Long campaignId;
