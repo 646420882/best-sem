@@ -1,20 +1,20 @@
 package com.perfect.service;
 
-import com.perfect.entity.CookieEntity;
+import com.perfect.dto.CookieDTO;
 
 import java.util.List;
 
 /**
  * Created by baizz on 2014-11-10.
- * 2014-11-24 refactor
+ * 2014-11-26 refactor
  */
 public interface CookieService {
 
-    void saveCookie(CookieEntity cookieEntity);
+    void saveCookie(CookieDTO cookieDTO);
 
-    CookieEntity takeOne();
+    CookieDTO takeOne();
 
-    void returnOne(CookieEntity cookieEntity);
+    void returnOne(CookieDTO cookieDTO);
 
-    List<CookieEntity> allUnused();
+    List<CookieDTO> allUnused();
 }

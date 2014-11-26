@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.entity.CampaignEntity;
+import com.perfect.dto.campaign.CampaignDTO;
 
 import java.util.List;
 
@@ -17,6 +17,6 @@ public interface AccountDataService {
 
     public void updateAccountData(String userName, long accountId, List<Long> camIds);
 
-    public List<CampaignEntity> getCampaign(String userName, long accountId);
+    public List<CampaignDTO> getCampaign(String userName, long accountId);
 
 }

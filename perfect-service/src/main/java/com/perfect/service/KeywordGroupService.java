@@ -1,6 +1,7 @@
 package com.perfect.service;
 
-import com.perfect.dao.mongodb.utils.PagerInfo;
+
+import com.perfect.utils.PagerInfo;
 
 import java.io.OutputStream;
 import java.util.List;
@@ -98,22 +99,25 @@ public interface KeywordGroupService {
 
     /**
      * 查询所有行业名
+     *
      * @return
      */
-    Map<String,Object> findTr();
+    Map<String, Object> findTr();
 
     /**
      * 添加数据
+     *
      * @param
      */
     int saveTrade(String tr, String cg, String gr, String kw, String url);
 
     /**
      * 分页查询
+     *
      * @param params 查询参数
-     * @param page 当前页码
-     * @param limit 每页最大条数
+     * @param page   当前页码
+     * @param limit  每页最大条数
      * @return
      */
-    PagerInfo findByPager(Map<String,Object> params,int page,int limit);
+    PagerInfo findByPager(Map<String, Object> params, int page, int limit);
 }

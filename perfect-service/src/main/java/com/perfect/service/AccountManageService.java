@@ -1,15 +1,15 @@
 package com.perfect.service;
 
+import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountAllStateDTO;
-import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by baizz on 2014-8-21.
- * 2014-11-24 refactor
+ * 2014-11-26 refactor
  */
 public interface AccountManageService {
 
@@ -35,7 +35,7 @@ public interface AccountManageService {
      *
      * @return
      */
-    public List<SystemUserEntity> getAccount();
+    public List<SystemUserDTO> getAccount();
 
     /**
      * 得到所有未审核的帐号
@@ -49,7 +49,7 @@ public interface AccountManageService {
      *
      * @return
      */
-    public  List<BaiduAccountAllStateDTO> getAccountAll();
+    public List<BaiduAccountAllStateDTO> getAccountAll();
 
     /**
      * 修改百度帐号的启用状态
@@ -70,7 +70,7 @@ public interface AccountManageService {
      *
      * @return
      */
-    SystemUserEntity getCurrUserInfo();
+    SystemUserDTO getCurrUserInfo();
 
     /**
      * 上传用户头像
@@ -100,14 +100,14 @@ public interface AccountManageService {
      * @param baiduUserId
      * @return
      */
-    BaiduAccountInfoEntity getBaiduAccountInfoById(Long baiduUserId);
+    BaiduAccountInfoDTO getBaiduAccountInfoById(Long baiduUserId);
 
     /**
      * 更新百度账户数据
      *
      * @param t
      */
-    void updateBaiduAccount(BaiduAccountInfoEntity t);
+    void updateBaiduAccount(BaiduAccountInfoDTO t);
 
     /**
      * 获取百度账户数据报告

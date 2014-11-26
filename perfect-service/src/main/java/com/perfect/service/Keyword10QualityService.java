@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by baizz on 2014-11-24.
- * 2014-11-24 refactor
+ * Created by baizz on 2014-11-26.
+ * 2014-11-26 refactor
  */
 public interface Keyword10QualityService {
 
