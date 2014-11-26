@@ -1,10 +1,10 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.AccountRegisterDAO;
-import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.MD5;
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountRegisterService;
+import com.perfect.utils.MD5Utils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,19 +22,19 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
     @Override
     public int addAccount(String account, String pwd, String company, String email) {
 
-        SystemUserEntity userEntity = new SystemUserEntity();
-        MD5.Builder md5Builder = new MD5.Builder();
-        MD5 md5 = md5Builder.password(pwd).salt(account).build();
+        SystemUserDTO userEntity = new SystemUserDTO();
+        MD5Utils.Builder md5Builder = new MD5Utils.Builder();
+        MD5Utils md5 = md5Builder.password(pwd).salt(account).build();
 
         userEntity.setAccess(2);
-        userEntity.setBaiduAccountInfoEntities(new ArrayList<BaiduAccountInfoEntity>());
+        userEntity.setBaiduAccountInfoDTOs(new ArrayList<BaiduAccountInfoDTO>());
         userEntity.setUserName(account);
         userEntity.setPassword(md5.getMD5());
         userEntity.setCompanyName(company);
         userEntity.setEmail(email);
         userEntity.setState(0);
         int returnState;
-        SystemUserEntity user = accountRegisterDAO.getAccount(account);
+        SystemUserDTO user = accountRegisterDAO.getAccount(account);
         if (user == null) {
             accountRegisterDAO.addAccount(userEntity);
             returnState = 1;

@@ -14,9 +14,9 @@ import java.util.List;
 public class PromotionMonitoring {
 
     //得到百度aip
-    private CommonService service = null;
+    private CommonService service;
 
-    private FolderService folderService = null;
+    private FolderService folderService;
 
     public PromotionMonitoring(String username, String passwd, String token) {
         service = BaiduServiceSupport.getCommonService(username,passwd,token);

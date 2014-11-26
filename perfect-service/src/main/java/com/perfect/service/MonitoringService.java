@@ -1,7 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dto.keyword.KeywordInfoDTO;
-import com.perfect.entity.FolderEntity;
+import com.perfect.dto.monitor.FolderDTO;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface MonitoringService {
      * 获取监控文件夹
      * @return
      */
-    public List<FolderEntity> getFolder();
+    public List<FolderDTO> getFolder();
 
     /**
      * 修改监控文件夹名称

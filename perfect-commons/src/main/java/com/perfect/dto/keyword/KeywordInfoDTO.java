@@ -13,7 +13,7 @@ public class KeywordInfoDTO implements Serializable {
 
     private String adgroupName;
 
-//    private KeywordEntity object;
+    private KeywordDTO object;
 
     private long quality;//计算机质量度
 
@@ -62,13 +62,13 @@ public class KeywordInfoDTO implements Serializable {
         this.adgroupName = adgroupName;
     }
 
-//    public KeywordEntity getObject() {
-//        return object;
-//    }
-//
-//    public void setObject(KeywordEntity object) {
-//        this.object = object;
-//    }
+    public KeywordDTO getObject() {
+        return object;
+    }
+
+    public void setObject(KeywordDTO object) {
+        this.object = object;
+    }
 
     public long getQuality() {
         return quality;

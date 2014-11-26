@@ -1,11 +1,11 @@
 package com.perfect.service;
 
+import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
+import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
-import com.perfect.entity.AdgroupEntity;
-import com.perfect.entity.CampaignEntity;
-import com.perfect.entity.KeywordEntity;
-import com.perfect.dao.mongodb.utils.PagerInfo;
+import com.perfect.utils.PagerInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +18,7 @@ public interface AssistantKeywordService {
 
     void deleteByKwIds(List<String> kwids);
 
-    KeywordEntity updateKeyword( KeywordEntity keywordEntity);
+    KeywordDTO updateKeyword( KeywordDTO keywordDTO);
 
     Map<String,Object> validateDeleteByInput(Long accountId,String deleteInfos);
 
@@ -30,11 +30,11 @@ public interface AssistantKeywordService {
 
     void batchAddUpdateKeyword(List<KeywordInfoDTO> insertDtos, List<KeywordInfoDTO> updateDtos, Boolean isReplace);
 
-    Iterable<CampaignEntity> getCampaignByAccountId();
+    Iterable<CampaignDTO> getCampaignByAccountId();
 
-    Iterable<AdgroupEntity> getAdgroupByCid(String cid);
+    Iterable<AdgroupDTO> getAdgroupByCid(String cid);
 
-    void saveSearchwordKeyword(List<KeywordEntity> list);
+    void saveSearchwordKeyword(List<KeywordDTO> list);
 
     void setNeigWord(String agid, String keywords, Integer neigType);
 

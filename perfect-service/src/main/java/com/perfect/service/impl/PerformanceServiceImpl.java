@@ -3,10 +3,10 @@ package com.perfect.service.impl;
 
 import com.google.common.primitives.Bytes;
 import com.perfect.dao.AccountAnalyzeDAO;
-import com.perfect.entity.AccountReportEntity;
-import com.perfect.entity.KeywordRealTimeDataVOEntity;
-import com.perfect.dao.mongodb.utils.Performance;
+import com.perfect.dto.account.AccountReportDTO;
+import com.perfect.dto.keyword.KeywordRealDTO;
 import com.perfect.service.PerformanceService;
+import com.perfect.utils.report.Performance;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -44,16 +44,16 @@ public class PerformanceServiceImpl implements PerformanceService {
      * @return
      */
     @Override
-    public List<KeywordRealTimeDataVOEntity> performance(String userTable, String[] date) {
+    public List<KeywordRealDTO> performance(String userTable, String[] date) {
 
         //首字母替换成大写
         String first = userTable.substring(0, 1).toUpperCase();
         String rest = userTable.substring(1, userTable.length());
         String newStr = new StringBuffer(first).append(rest).toString();
 
-        Map<Long, KeywordRealTimeDataVOEntity> map = new HashMap<>();
-        List<KeywordRealTimeDataVOEntity> analyzeEntities;
-        List<KeywordRealTimeDataVOEntity> entities = new ArrayList<>();
+        Map<Long, KeywordRealDTO> map = new HashMap<>();
+        List<KeywordRealDTO> analyzeEntities;
+        List<KeywordRealDTO> entities = new ArrayList<>();
         for (int i = 0; i < date.length; i++) {
             analyzeEntities = accountAnalyzeDAO.performance(newStr + "-KeywordRealTimeData-log-" + date[i]);
             entities.addAll(analyzeEntities);
@@ -61,10 +61,10 @@ public class PerformanceServiceImpl implements PerformanceService {
         if (entities.size() != 0) {
             ForkJoinPool joinPool = new ForkJoinPool();
             try {
-                Future<Map<Long, KeywordRealTimeDataVOEntity>> joinTask = joinPool.submit(new Performance(entities, 0, entities.size()));
+                Future<Map<Long, KeywordRealDTO>> joinTask = joinPool.submit(new Performance(entities, 0, entities.size()));
                 map = joinTask.get();
                 DecimalFormat df = new DecimalFormat("#.00");
-                for (Map.Entry<Long, KeywordRealTimeDataVOEntity> entry : map.entrySet()) {
+                for (Map.Entry<Long, KeywordRealDTO> entry : map.entrySet()) {
                     if (entry.getValue().getImpression() == 0) {
                         entry.getValue().setCtr(0.00);
                     } else {
@@ -85,7 +85,7 @@ public class PerformanceServiceImpl implements PerformanceService {
             }
             joinPool.shutdown();
         }
-        List<KeywordRealTimeDataVOEntity> list = new ArrayList<>(map.values());
+        List<KeywordRealDTO> list = new ArrayList<>(map.values());
         return list;
     }
 
@@ -95,12 +95,12 @@ public class PerformanceServiceImpl implements PerformanceService {
      * @return
      */
     @Override
-    public List<AccountReportEntity> performanceUser(Date startDate, Date endDate, String sorted, int limit, int startPer, List<String> date) {
+    public List<AccountReportDTO> performanceUser(Date startDate, Date endDate, String sorted, int limit, int startPer, List<String> date) {
 
-        List<AccountReportEntity> listUser = accountAnalyzeDAO.performaneUser(startDate, endDate);
+        List<AccountReportDTO> listUser = accountAnalyzeDAO.performaneUser(startDate, endDate);
         DecimalFormat df = new DecimalFormat("#.0000");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        for (AccountReportEntity list : listUser) {
+        for (AccountReportDTO list : listUser) {
             list.setPcImpression(list.getPcImpression() + ((list.getMobileImpression() == null) ? 0 : list.getMobileImpression()));
             list.setPcConversion(list.getPcConversion() + ((list.getMobileConversion() == null) ? 0 : list.getMobileConversion()));
             list.setPcClick(list.getPcClick() + ((list.getMobileClick() == null) ? 0 : list.getMobileClick()));
@@ -130,8 +130,8 @@ public class PerformanceServiceImpl implements PerformanceService {
         }
         int jueds = -1;
         for (String s : date) {
-            for (AccountReportEntity accountReportEntity : listUser) {
-                String d = dateFormat.format(accountReportEntity.getDate());
+            for (AccountReportDTO accountReportDTO : listUser) {
+                String d = dateFormat.format(accountReportDTO.getDate());
                 if (s.equals(d)) {
                     jueds = 1;
                     break;
@@ -140,7 +140,7 @@ public class PerformanceServiceImpl implements PerformanceService {
                 }
             }
             if (jueds == -1) {
-                AccountReportEntity entity = new AccountReportEntity();
+                AccountReportDTO entity = new AccountReportDTO();
                 try {
                     entity.setDate(dateFormat.parse(s));
                 } catch (ParseException e) {
@@ -156,12 +156,12 @@ public class PerformanceServiceImpl implements PerformanceService {
                 listUser.add(entity);
             }
         }
-        for (AccountReportEntity accountReport : listUser) {
+        for (AccountReportDTO accountReport : listUser) {
             accountReport.setOrderBy(sorted);
             accountReport.setCount(date.size());
         }
         Collections.sort(listUser);
-        List<AccountReportEntity> entities = new ArrayList<>();
+        List<AccountReportDTO> entities = new ArrayList<>();
         for (int i = startPer; i < limit; i++) {
             if (i >= listUser.size()) break;
             entities.add(listUser.get(i));
@@ -175,12 +175,12 @@ public class PerformanceServiceImpl implements PerformanceService {
      * @return
      */
     @Override
-    public List<AccountReportEntity> performanceCurve(Date startDate, Date endDate, List<String> date) {
+    public List<AccountReportDTO> performanceCurve(Date startDate, Date endDate, List<String> date) {
 
-        List<AccountReportEntity> listUser = accountAnalyzeDAO.performaneCurve(startDate, endDate);
+        List<AccountReportDTO> listUser = accountAnalyzeDAO.performaneCurve(startDate, endDate);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         DecimalFormat df = new DecimalFormat("#.0000");
-        for (AccountReportEntity list : listUser) {
+        for (AccountReportDTO list : listUser) {
             list.setPcImpression(list.getPcImpression() + ((list.getMobileImpression() == null) ? 0 : list.getMobileImpression()));
             list.setPcConversion(list.getPcConversion() + ((list.getMobileConversion() == null) ? 0 : list.getMobileConversion()));
             list.setPcClick(list.getPcClick() + ((list.getMobileClick() == null) ? 0 : list.getMobileClick()));
@@ -212,7 +212,7 @@ public class PerformanceServiceImpl implements PerformanceService {
         }
         int jueds = -1;
         for (String s : date) {
-            for (AccountReportEntity accountReportEntity : listUser) {
+            for (AccountReportDTO accountReportEntity : listUser) {
                 String d = dateFormat.format(accountReportEntity.getDate());
                 if (s.equals(d)) {
                     jueds = 1;
@@ -222,7 +222,7 @@ public class PerformanceServiceImpl implements PerformanceService {
                 }
             }
             if (jueds == -1) {
-                AccountReportEntity entity = new AccountReportEntity();
+                AccountReportDTO entity = new AccountReportDTO();
                 try {
                     entity.setDate(dateFormat.parse(s));
                 } catch (ParseException e) {
@@ -238,7 +238,7 @@ public class PerformanceServiceImpl implements PerformanceService {
                 listUser.add(entity);
             }
         }
-        for (AccountReportEntity accountReport : listUser) {
+        for (AccountReportDTO accountReport : listUser) {
             accountReport.setOrderBy("1");
             accountReport.setCount(date.size());
         }
@@ -249,11 +249,11 @@ public class PerformanceServiceImpl implements PerformanceService {
     @Override
     public void downAccountCSV(OutputStream os) {
 
-        List<AccountReportEntity> listUser = accountAnalyzeDAO.downAccountCSV();
+        List<AccountReportDTO> listUser = accountAnalyzeDAO.downAccountCSV();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         DecimalFormat df = new DecimalFormat("#.0000");
         List<Date> date = new ArrayList<>();
-        for (AccountReportEntity list : listUser) {
+        for (AccountReportDTO list : listUser) {
             list.setPcImpression(list.getPcImpression() + ((list.getMobileImpression() == null) ? 0 : list.getMobileImpression()));
             list.setPcConversion(list.getPcConversion() + ((list.getMobileConversion() == null) ? 0 : list.getMobileConversion()));
             list.setPcClick(list.getPcClick() + ((list.getMobileClick() == null) ? 0 : list.getMobileClick()));
@@ -306,7 +306,7 @@ public class PerformanceServiceImpl implements PerformanceService {
         }
         int jueds = -1;
         for (String s : dateNow) {
-            for (AccountReportEntity accountReportEntity : listUser) {
+            for (AccountReportDTO accountReportEntity : listUser) {
                 String d = dateFormat.format(accountReportEntity.getDate());
                 if (s.equals(d)) {
                     jueds = 1;
@@ -316,7 +316,7 @@ public class PerformanceServiceImpl implements PerformanceService {
                 }
             }
             if (jueds == -1) {
-                AccountReportEntity entity = new AccountReportEntity();
+                AccountReportDTO entity = new AccountReportDTO();
                 try {
                     entity.setDate(dateFormat.parse(s));
                 } catch (ParseException e) {
@@ -332,7 +332,7 @@ public class PerformanceServiceImpl implements PerformanceService {
                 listUser.add(entity);
             }
         }
-        for (AccountReportEntity reportEntity : listUser) {
+        for (AccountReportDTO reportEntity : listUser) {
             reportEntity.setOrderBy("1");
         }
         Collections.sort(listUser);
@@ -345,7 +345,7 @@ public class PerformanceServiceImpl implements PerformanceService {
                     DEFAULT_DELIMITER + "平均点击价格" +
                     DEFAULT_DELIMITER + "转化(页面)" +
                     DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-            for (AccountReportEntity entity : listUser) {
+            for (AccountReportDTO entity : listUser) {
                 os.write(Bytes.concat(commonCSVHead, (dateFormat.format(entity.getDate()) +
                         DEFAULT_DELIMITER + entity.getPcImpression() +
                         DEFAULT_DELIMITER + entity.getPcClick() +

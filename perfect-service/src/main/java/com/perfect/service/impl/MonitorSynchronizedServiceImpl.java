@@ -5,11 +5,11 @@ import com.perfect.autosdk.sms.v3.Folder;
 import com.perfect.autosdk.sms.v3.FolderMonitor;
 import com.perfect.autosdk.sms.v3.Monitor;
 import com.perfect.core.AppContext;
-import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.MonitorSynchronizedDAO;
+import com.perfect.dao.account.AccountManageDAO;
+import com.perfect.dto.monitor.FolderDTO;
+import com.perfect.dto.monitor.FolderMonitorDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.FolderEntity;
-import com.perfect.entity.FolderMonitorEntity;
 import com.perfect.service.MonitorSynchronizedService;
 import org.springframework.stereotype.Repository;
 
@@ -37,12 +37,12 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
         List<Folder> folders = Monitoring.getFolder();
         List<FolderMonitor> folderMonitors = Monitoring.getMonitorWordByFolderIdAll();
 
-        List<FolderEntity> forlderEntities = new ArrayList<>();
-        List<FolderMonitorEntity> monitorEntities = new ArrayList<>();
+        List<FolderDTO> forlderEntities = new ArrayList<>();
+        List<FolderMonitorDTO> monitorEntities = new ArrayList<>();
 
         //监控文件夹数据
         for (Folder folder : folders) {
-            FolderEntity forlderEntity = new FolderEntity();
+            FolderDTO forlderEntity = new FolderDTO();
             forlderEntity.setFolderId(folder.getFolderId());
             forlderEntity.setFolderName(folder.getFolderName());
             forlderEntity.setAccountId(AppContext.getAccountId());
@@ -51,7 +51,7 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
         //监控对象数据
         for (FolderMonitor folder : folderMonitors) {
             for (Monitor monitor : folder.getMonitors()) {
-                FolderMonitorEntity folderMonitorEntity = new FolderMonitorEntity();
+                FolderMonitorDTO folderMonitorEntity = new FolderMonitorDTO();
                 folderMonitorEntity.setFolderId(monitor.getFolderId());
                 folderMonitorEntity.setAdgroupId(monitor.getAdgroupId());
                 folderMonitorEntity.setCampaignId(monitor.getCampaignId());
@@ -86,7 +86,7 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
     public PromotionMonitoring getUserInfo() {
         Long accid = AppContext.getAccountId();
         BaiduAccountInfoEntity entity = accountManageDAO.findByBaiduUserId(accid);
-        PromotionMonitoring Monitoring = new PromotionMonitoring(entity);
+        PromotionMonitoring Monitoring = new PromotionMonitoring(entity.getBaiduUserName(),entity.getBaiduPassword(),entity.getToken());;
         return Monitoring;
     }
 }

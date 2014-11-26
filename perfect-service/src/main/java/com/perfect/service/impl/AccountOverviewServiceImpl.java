@@ -1,7 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.AccountAnalyzeDAO;
-import com.perfect.entity.AccountReportEntity;
+import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.service.AccountOverviewService;
 import org.springframework.stereotype.Service;
 
@@ -39,14 +39,14 @@ public class AccountOverviewServiceImpl implements AccountOverviewService {
         double conversionCount = 0.0;
 
         //开始获取数据汇总
-        List<AccountReportEntity> list = null;
+        List<AccountReportDTO> list = null;
         try {
             list = accountAnalyzeDAO.performaneCurve(df.parse(startDate), df.parse(endDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        for (AccountReportEntity are : list) {
+        for (AccountReportDTO are : list) {
             if (are.getPcImpression() != null) {
                 impressionCount += are.getPcImpression();
             }

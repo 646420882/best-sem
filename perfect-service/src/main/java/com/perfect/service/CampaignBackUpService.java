@@ -1,12 +1,12 @@
 package com.perfect.service;
 
-import com.perfect.entity.CampaignEntity;
+import com.perfect.dto.campaign.CampaignDTO;
 
 /**
  * Created by john on 2014/9/16.
  */
 public interface CampaignBackUpService {
-    CampaignEntity reducUpdate(String id);
+    CampaignDTO reducUpdate(String id);
 
     void reducDel(String id);
 }

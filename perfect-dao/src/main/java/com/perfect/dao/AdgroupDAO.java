@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import java.util.List;
 import java.util.Map;
 
-public interface AdgroupDAO  {
+public interface AdgroupDAO  extends MongoCrudRepository<AdgroupDTO, Long>{
 
     List<Long> getAllAdgroupId();
 

@@ -68,7 +68,7 @@ public class ImportKeywordManageController extends WebContextSupport {
     public PromotionMonitoring getUserInfo() {
         Long accid = AppContext.getAccountId();
         BaiduAccountInfoEntity entity = accountManageDAO.findByBaiduUserId(accid);
-        PromotionMonitoring Monitoring = new PromotionMonitoring(entity);
+        PromotionMonitoring Monitoring = new PromotionMonitoring(entity.getBaiduUserName(),entity.getBaiduPassword(),entity.getToken());;
         return Monitoring;
     }
 
