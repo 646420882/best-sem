@@ -2,9 +2,9 @@ package com.perfect.service.impl;
 
 
 import com.perfect.dao.KeywordDAO;
-import com.perfect.entity.KeywordEntity;
-import com.perfect.dao.mongodb.utils.PaginationParam;
+import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.service.SysKeywordService;
+import com.perfect.utils.PaginationParam;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -21,12 +21,12 @@ public class SysKeywordServiceImpl implements SysKeywordService {
     KeywordDAO keywordDAO;
 
     @Override
-    public List<KeywordEntity> findByAdgroupId(Long adgroupId, PaginationParam param, Map<String, Object> queryParams) {
+    public List<KeywordDTO> findByAdgroupId(Long adgroupId, PaginationParam param, Map<String, Object> queryParams) {
         return keywordDAO.findByAdgroupId(adgroupId, param, queryParams);
     }
 
     @Override
-    public List<KeywordEntity> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param, Map<String, Object> queryParams) {
+    public List<KeywordDTO> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param, Map<String, Object> queryParams) {
         return keywordDAO.findByAdgroupIds(adgroupIds, param, queryParams);
     }
 
@@ -36,17 +36,17 @@ public class SysKeywordServiceImpl implements SysKeywordService {
     }
 
     @Override
-    public KeywordEntity findById(Long kwid) {
+    public KeywordDTO findById(Long kwid) {
         return keywordDAO.findOne(kwid);
     }
 
     @Override
-    public KeywordEntity findByName(String keyword, Long accountId) {
+    public KeywordDTO findByName(String keyword, Long accountId) {
         return keywordDAO.findByName(keyword, accountId);
     }
 
     @Override
-    public List<KeywordEntity> findByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
+    public List<KeywordDTO> findByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
 
         return keywordDAO.findByNames(query, fullMatch, param, queryParams);
     }
@@ -57,7 +57,7 @@ public class SysKeywordServiceImpl implements SysKeywordService {
     }
 
     @Override
-    public List<KeywordEntity> findByIds(List<Long> ids, PaginationParam... param) {
+    public List<KeywordDTO> findByIds(List<Long> ids, PaginationParam... param) {
         return keywordDAO.findByIds(ids, param);
     }
 }
