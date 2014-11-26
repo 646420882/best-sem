@@ -2,33 +2,33 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 package com.perfect.dao;
 
-import com.perfect.entity.CampaignEntity;
-import com.perfect.dao.mongodb.utils.PagerInfo;
+import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.utils.PagerInfo;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 
-public interface CampaignDAO extends MongoCrudRepository<CampaignEntity, Long> {
+public interface CampaignDAO extends MongoCrudRepository<CampaignDTO, Long> {
 
     List<Long> getAllCampaignId();
 
-    List<CampaignEntity> find(Query query);
+    List<CampaignDTO> find(Query query);
 
-    List<CampaignEntity> findAllDownloadCampaign();
+    List<CampaignDTO> findAllDownloadCampaign();
 
-    CampaignEntity findByObjectId(String oid);
+    CampaignDTO findByObjectId(String oid);
 
     void deleteByMongoId(String id);
 
-    void updateByMongoId(CampaignEntity newCampaign,CampaignEntity campaignEntity);
+    void updateByMongoId(CampaignDTO newCampaign,CampaignDTO campaignEntity);
 
     PagerInfo findByPageInfo(Query q,int pageSize, int pageNo);
 
-    CampaignEntity findCampaignByName(String name);
+    CampaignDTO findCampaignByName(String name);
 
     void updateLocalstatu(long cid);
 
-    String insertReturnId(CampaignEntity campaignEntity);
+    String insertReturnId(CampaignDTO campaignEntity);
 
     void softDel(long id);
 }

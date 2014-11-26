@@ -1,15 +1,16 @@
 package com.perfect.dao;
 
-import com.perfect.entity.backup.CampaignBackUpEntity;
 
-public interface CampaignBackUpDAO extends MongoCrudRepository<CampaignBackUpEntity,Long>  {
+import com.perfect.dto.backup.CampaignBackUpDTO;
+
+public interface CampaignBackUpDAO extends MongoCrudRepository<CampaignBackUpDTO,Long>  {
 
 
-    CampaignBackUpEntity findByObjectId(String id);
+    CampaignBackUpDTO findByObjectId(String id);
 
     void deleteByObjectId(String id);
 
     void deleteByCid(long cid);
 
-    CampaignBackUpEntity findOne(long cid);
+    CampaignBackUpDTO findOne(long cid);
 }
