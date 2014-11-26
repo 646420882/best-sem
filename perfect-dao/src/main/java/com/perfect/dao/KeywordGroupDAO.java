@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-8-21.
  */
-public interface KeywordGroupDAO {
+public interface KeywordGroupDAO extends MongoCrudRepository<LexiconDTO, Long> {
 
     /**
      * 查询行业词库下的类别

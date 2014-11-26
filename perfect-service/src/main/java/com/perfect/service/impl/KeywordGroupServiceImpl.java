@@ -7,33 +7,21 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.core.AppContext;
+import com.perfect.dao.KeywordGroupDAO;
 import com.perfect.dao.account.AccountManageDAO;
-import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.dao.mongodb.base.BaseMongoTemplate;
-import com.perfect.dao.mongodb.impl.KeywordGroupDAOImpl;
-import com.perfect.dao.mongodb.utils.Pager;
-import com.perfect.dao.mongodb.utils.PagerInfo;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.baidu.BaiduKeywordDTO;
 import com.perfect.dto.baidu.KRResultDTO;
-import com.perfect.entity.*;
+import com.perfect.dto.keyword.LexiconDTO;
+import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.KeywordGroupService;
-import com.perfect.utils.DBNameUtils;
-import com.perfect.utils.JSONUtils;
-import com.perfect.utils.SerializeUtils;
-import com.perfect.utils.TopN;
+import com.perfect.utils.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
@@ -42,19 +30,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import static com.perfect.commons.constants.MongoEntityConstants.*;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
-
 /**
  * Created by baizz on 2014-08-09.
- * 2014-11-24 refactor
+ * 2014-11-26 refactor
  */
 @Service("keywordGroupService")
-public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements KeywordGroupService {
+public class KeywordGroupServiceImpl implements KeywordGroupService {
 
     // CSV's default delimiter is ','
     private static final String DEFAULT_DELIMITER = ",";
@@ -68,7 +52,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
     private int resultSize;
 
     @Resource
-    private KeywordGroupDAOImpl keywordGroupDAO;
+    private KeywordGroupDAO keywordGroupDAO;
 
     @Resource
     private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
@@ -119,7 +103,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
             params.put("cg", category);
         }
 
-        List<LexiconEntity> list = keywordGroupDAO.find(params, skip, limit);
+        List<LexiconDTO> list = keywordGroupDAO.find(params, skip, limit);
         Map<String, Object> values = Maps.newHashMap(JSONUtils.getJsonMapData(list));
         Integer total = keywordGroupDAO.getCurrentRowsSize(params);
         values.put("total", total);
@@ -165,218 +149,218 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
         return values;
     }
 
-    public void saveKeywordFromBaidu(List<String> seedWordList, String krFileId, String newCampaignName) {
-        if (krFileId == null) {
-            List<BaiduKeywordDTO> list = getKRResult(seedWordList);
-            genericSave(list, newCampaignName);
-        } else {
-            List<BaiduKeywordDTO> list1 = new ArrayList<>();
-            Jedis jedis = null;
-            try {
-                jedis = JRedisUtils.get();
-                if (jedis.ttl(SerializeUtils.serialize(krFileId)) == -1) {
-                    List<BaiduKeywordDTO> list = getKRResult(seedWordList);
-                    genericSave(list, newCampaignName);
-                    return;
-                }
-                list1 = SerializeUtils.deSerializeList(jedis.get(SerializeUtils.serialize(krFileId)), BaiduKeywordDTO.class);
-            } catch (final Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (jedis != null) {
-                    JRedisUtils.returnJedis(jedis);
-                }
-            }
-            genericSave(list1, newCampaignName);
-        }
-    }
+//    public void saveKeywordFromBaidu(List<String> seedWordList, String krFileId, String newCampaignName) {
+//        if (krFileId == null) {
+//            List<BaiduKeywordDTO> list = getKRResult(seedWordList);
+//            genericSave(list, newCampaignName);
+//        } else {
+//            List<BaiduKeywordDTO> list1 = new ArrayList<>();
+//            Jedis jedis = null;
+//            try {
+//                jedis = JRedisUtils.get();
+//                if (jedis.ttl(SerializeUtils.serialize(krFileId)) == -1) {
+//                    List<BaiduKeywordDTO> list = getKRResult(seedWordList);
+//                    genericSave(list, newCampaignName);
+//                    return;
+//                }
+//                list1 = SerializeUtils.deSerializeList(jedis.get(SerializeUtils.serialize(krFileId)), BaiduKeywordDTO.class);
+//            } catch (final Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (jedis != null) {
+//                    JRedisUtils.returnJedis(jedis);
+//                }
+//            }
+//            genericSave(list1, newCampaignName);
+//        }
+//    }
 
-    private void genericSave(List<BaiduKeywordDTO> list, String newCampaignName) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        Long accountId = AppContext.getAccountId();
+//    private void genericSave(List<BaiduKeywordDTO> list, String newCampaignName) {
+//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+//        Long accountId = AppContext.getAccountId();
+//
+//        if (mongoTemplate.findOne(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and(NAME).is(newCampaignName)), CampaignEntity.class) != null) {
+//            throw new DuplicateKeyException("\"" + newCampaignName + "\"" + " already exists");
+//        }
+//
+//        //save a new campaign
+//        CampaignEntity campaignEntity = new CampaignEntity();
+//        campaignEntity.setAccountId(accountId);
+//        campaignEntity.setCampaignName(newCampaignName);
+//        campaignEntity.setNegativeWords(new ArrayList<String>());
+//        campaignEntity.setExactNegativeWords(new ArrayList<String>());
+//        campaignEntity.setPause(false);
+//        campaignEntity.setShowProb(1);
+//        campaignEntity.setDevice(0);
+//        campaignEntity.setIsDynamicCreative(true);
+//        CampaignEntity campaign = (CampaignEntity) save(campaignEntity);
+//        String campaignObjectId = campaign.getId();
+//
+//        for (BaiduKeywordDTO dto : list) {
+//            String adgroupName = dto.getGroupName();
+//            String keyword = dto.getKeywordName();
+//            String adgroupObjectId;
+//
+//            Aggregation aggregation = newAggregation(
+//                    match(Criteria.where(ACCOUNT_ID).is(accountId).and(OBJ_CAMPAIGN_ID).is(campaignObjectId).and(NAME).is(adgroupName)),
+//                    project(ACCOUNT_ID, OBJ_CAMPAIGN_ID, NAME)
+//            );
+//
+//            AdgroupEntity _adgroup = mongoTemplate.aggregate(aggregation, TBL_ADGROUP, AdgroupEntity.class).getUniqueMappedResult();
+//            if (_adgroup != null) {
+//                //当前分组在数据库中已经存在, 直接新增关键词即可
+//                KeywordEntity keywordEntity = new KeywordEntity();
+//                keywordEntity.setAccountId(accountId);
+//                keywordEntity.setAdgroupObjId(_adgroup.getId());
+//                keywordEntity.setKeyword(keyword);
+//                keywordEntity.setPrice(BigDecimal.ONE);
+//                keywordEntity.setMatchType(1);
+//                keywordEntity.setPause(false);
+//                keywordEntity.setStatus(-1);
+//                keywordEntity.setPhraseType(1);
+//
+//                save(keywordEntity);
+//            } else {
+//                //新增一个分组
+//                AdgroupEntity adgroupEntity = new AdgroupEntity();
+//                adgroupEntity.setAccountId(accountId);
+//                adgroupEntity.setCampaignObjId(campaignObjectId);
+//                adgroupEntity.setAdgroupName(adgroupName);
+//                adgroupEntity.setMaxPrice(1.0);
+//                adgroupEntity.setNegativeWords(new ArrayList<String>());
+//                adgroupEntity.setExactNegativeWords(new ArrayList<String>());
+//                adgroupEntity.setPause(false);
+//                adgroupEntity.setStatus(-1);
+//                adgroupEntity.setMib(0.0);
+//                adgroupObjectId = ((AdgroupEntity) save(adgroupEntity)).getId();
+//
+//                KeywordEntity keywordEntity = new KeywordEntity();
+//                keywordEntity.setAccountId(accountId);
+//                keywordEntity.setAdgroupObjId(adgroupObjectId);
+//                keywordEntity.setKeyword(keyword);
+//                keywordEntity.setPrice(BigDecimal.ONE);
+//                keywordEntity.setMatchType(1);
+//                keywordEntity.setPause(false);
+//                keywordEntity.setStatus(-1);
+//                keywordEntity.setPhraseType(1);
+//
+//                save(keywordEntity);
+//            }
+//        }
+//
+//    }
 
-        if (mongoTemplate.findOne(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and(NAME).is(newCampaignName)), CampaignEntity.class) != null) {
-            throw new DuplicateKeyException("\"" + newCampaignName + "\"" + " already exists");
-        }
-
-        //save a new campaign
-        CampaignEntity campaignEntity = new CampaignEntity();
-        campaignEntity.setAccountId(accountId);
-        campaignEntity.setCampaignName(newCampaignName);
-        campaignEntity.setNegativeWords(new ArrayList<String>());
-        campaignEntity.setExactNegativeWords(new ArrayList<String>());
-        campaignEntity.setPause(false);
-        campaignEntity.setShowProb(1);
-        campaignEntity.setDevice(0);
-        campaignEntity.setIsDynamicCreative(true);
-        CampaignEntity campaign = (CampaignEntity) save(campaignEntity);
-        String campaignObjectId = campaign.getId();
-
-        for (BaiduKeywordDTO dto : list) {
-            String adgroupName = dto.getGroupName();
-            String keyword = dto.getKeywordName();
-            String adgroupObjectId;
-
-            Aggregation aggregation = newAggregation(
-                    match(Criteria.where(ACCOUNT_ID).is(accountId).and(OBJ_CAMPAIGN_ID).is(campaignObjectId).and(NAME).is(adgroupName)),
-                    project(ACCOUNT_ID, OBJ_CAMPAIGN_ID, NAME)
-            );
-
-            AdgroupEntity _adgroup = mongoTemplate.aggregate(aggregation, TBL_ADGROUP, AdgroupEntity.class).getUniqueMappedResult();
-            if (_adgroup != null) {
-                //当前分组在数据库中已经存在, 直接新增关键词即可
-                KeywordEntity keywordEntity = new KeywordEntity();
-                keywordEntity.setAccountId(accountId);
-                keywordEntity.setAdgroupObjId(_adgroup.getId());
-                keywordEntity.setKeyword(keyword);
-                keywordEntity.setPrice(BigDecimal.ONE);
-                keywordEntity.setMatchType(1);
-                keywordEntity.setPause(false);
-                keywordEntity.setStatus(-1);
-                keywordEntity.setPhraseType(1);
-
-                save(keywordEntity);
-            } else {
-                //新增一个分组
-                AdgroupEntity adgroupEntity = new AdgroupEntity();
-                adgroupEntity.setAccountId(accountId);
-                adgroupEntity.setCampaignObjId(campaignObjectId);
-                adgroupEntity.setAdgroupName(adgroupName);
-                adgroupEntity.setMaxPrice(1.0);
-                adgroupEntity.setNegativeWords(new ArrayList<String>());
-                adgroupEntity.setExactNegativeWords(new ArrayList<String>());
-                adgroupEntity.setPause(false);
-                adgroupEntity.setStatus(-1);
-                adgroupEntity.setMib(0.0);
-                adgroupObjectId = ((AdgroupEntity) save(adgroupEntity)).getId();
-
-                KeywordEntity keywordEntity = new KeywordEntity();
-                keywordEntity.setAccountId(accountId);
-                keywordEntity.setAdgroupObjId(adgroupObjectId);
-                keywordEntity.setKeyword(keyword);
-                keywordEntity.setPrice(BigDecimal.ONE);
-                keywordEntity.setMatchType(1);
-                keywordEntity.setPause(false);
-                keywordEntity.setStatus(-1);
-                keywordEntity.setPhraseType(1);
-
-                save(keywordEntity);
-            }
-        }
-
-    }
-
-    public void saveKeywordFromSystem(String trade, String category, String newCampaignName) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        Long accountId = AppContext.getAccountId();
-
-        if (mongoTemplate.findOne(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and(NAME).is(newCampaignName)), CampaignEntity.class) != null) {
-            throw new DuplicateKeyException("\"" + newCampaignName + "\"" + " already exists");
-        }
-
-        CampaignEntity campaignEntity = new CampaignEntity();
-        campaignEntity.setAccountId(accountId);
-        campaignEntity.setCampaignName(newCampaignName);
-        campaignEntity.setNegativeWords(new ArrayList<String>());
-        campaignEntity.setExactNegativeWords(new ArrayList<String>());
-        campaignEntity.setPause(false);
-        campaignEntity.setShowProb(1);
-        campaignEntity.setDevice(0);
-        campaignEntity.setIsDynamicCreative(true);
-        CampaignEntity campaign = (CampaignEntity) save(campaignEntity);
-        String campaignObjectId = campaign.getId();
-
-        Aggregation aggregation = newAggregation(
-                match(Criteria.where("tr").is(trade).and("cg").is(category)),
-                project("gr", "kw").andExclude(SYSTEM_ID),
-//                project("tr", "cg", "gr", "kw").andExclude(SYSTEM_ID),
-//                group("gr", "kw"),
-                sort(Sort.Direction.ASC, "gr")
-        );
-
-        AggregationResults<LexiconEntity> results = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName())
-                .aggregate(aggregation, SYS_KEYWORD, LexiconEntity.class);
-
-        Iterator<LexiconEntity> iterator = results.iterator();
-        List<KeywordEntity> keywordEntities = new ArrayList<>();
-        String group = null;
-        String adgroupObjectId = null;
-        while (iterator.hasNext()) {
-            LexiconEntity entity = iterator.next();
-
-            if (group == null) {
-                group = entity.getGroup();
-
-                AdgroupEntity adgroup = new AdgroupEntity();
-                adgroup.setAccountId(accountId);
-                adgroup.setCampaignObjId(campaignObjectId);
-                adgroup.setAdgroupName(group);
-                adgroup.setMaxPrice(1.0);
-                adgroup.setNegativeWords(new ArrayList<String>());
-                adgroup.setExactNegativeWords(new ArrayList<String>());
-                adgroup.setPause(false);
-                adgroup.setStatus(-1);
-                adgroup.setMib(0.0);
-                adgroupObjectId = ((AdgroupEntity) save(adgroup)).getId();
-
-                KeywordEntity keyword = new KeywordEntity();
-                keyword.setAdgroupObjId(adgroupObjectId);
-                keyword.setKeyword(entity.getKeyword());
-                keyword.setAccountId(accountId);
-                keyword.setPrice(BigDecimal.ONE);
-                keyword.setMatchType(1);
-                keyword.setPause(false);
-                keyword.setStatus(-1);
-                keyword.setPhraseType(1);
-                keywordEntities.add(keyword);
-                continue;
-            }
-            if (group.equals(entity.getGroup())) {
-                KeywordEntity keyword = new KeywordEntity();
-                keyword.setAdgroupObjId(adgroupObjectId);
-                keyword.setKeyword(entity.getKeyword());
-                keyword.setAccountId(accountId);
-                keyword.setPrice(BigDecimal.ONE);
-                keyword.setMatchType(1);
-                keyword.setPause(false);
-                keyword.setStatus(-1);
-                keyword.setPhraseType(1);
-                keywordEntities.add(keyword);
-            } else {
-                save(keywordEntities);
-                keywordEntities.clear();
-
-                group = entity.getGroup();
-                AdgroupEntity adgroup = new AdgroupEntity();
-                adgroup.setAccountId(accountId);
-                adgroup.setCampaignObjId(campaignObjectId);
-                adgroup.setAdgroupName(group);
-                adgroup.setMaxPrice(1.0);
-                adgroup.setNegativeWords(new ArrayList<String>());
-                adgroup.setExactNegativeWords(new ArrayList<String>());
-                adgroup.setPause(false);
-                adgroup.setStatus(-1);
-                adgroup.setMib(0.0);
-                adgroupObjectId = ((AdgroupEntity) save(adgroup)).getId();
-
-                KeywordEntity keyword = new KeywordEntity();
-                keyword.setAdgroupObjId(adgroupObjectId);
-                keyword.setKeyword(entity.getKeyword());
-                keyword.setAccountId(accountId);
-                keyword.setPrice(BigDecimal.ONE);
-                keyword.setMatchType(1);
-                keyword.setPause(false);
-                keyword.setStatus(-1);
-                keyword.setPhraseType(1);
-                keywordEntities.add(keyword);
-            }
-        }
-
-        if (!keywordEntities.isEmpty()) {
-            save(keywordEntities);
-            keywordEntities.clear();
-        }
-    }
+//    public void saveKeywordFromSystem(String trade, String category, String newCampaignName) {
+//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+//        Long accountId = AppContext.getAccountId();
+//
+//        if (mongoTemplate.findOne(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and(NAME).is(newCampaignName)), CampaignEntity.class) != null) {
+//            throw new DuplicateKeyException("\"" + newCampaignName + "\"" + " already exists");
+//        }
+//
+//        CampaignEntity campaignEntity = new CampaignEntity();
+//        campaignEntity.setAccountId(accountId);
+//        campaignEntity.setCampaignName(newCampaignName);
+//        campaignEntity.setNegativeWords(new ArrayList<String>());
+//        campaignEntity.setExactNegativeWords(new ArrayList<String>());
+//        campaignEntity.setPause(false);
+//        campaignEntity.setShowProb(1);
+//        campaignEntity.setDevice(0);
+//        campaignEntity.setIsDynamicCreative(true);
+//        CampaignEntity campaign = (CampaignEntity) save(campaignEntity);
+//        String campaignObjectId = campaign.getId();
+//
+//        Aggregation aggregation = newAggregation(
+//                match(Criteria.where("tr").is(trade).and("cg").is(category)),
+//                project("gr", "kw").andExclude(SYSTEM_ID),
+////                project("tr", "cg", "gr", "kw").andExclude(SYSTEM_ID),
+////                group("gr", "kw"),
+//                sort(Sort.Direction.ASC, "gr")
+//        );
+//
+//        AggregationResults<LexiconEntity> results = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName())
+//                .aggregate(aggregation, SYS_KEYWORD, LexiconEntity.class);
+//
+//        Iterator<LexiconEntity> iterator = results.iterator();
+//        List<KeywordEntity> keywordEntities = new ArrayList<>();
+//        String group = null;
+//        String adgroupObjectId = null;
+//        while (iterator.hasNext()) {
+//            LexiconEntity entity = iterator.next();
+//
+//            if (group == null) {
+//                group = entity.getGroup();
+//
+//                AdgroupEntity adgroup = new AdgroupEntity();
+//                adgroup.setAccountId(accountId);
+//                adgroup.setCampaignObjId(campaignObjectId);
+//                adgroup.setAdgroupName(group);
+//                adgroup.setMaxPrice(1.0);
+//                adgroup.setNegativeWords(new ArrayList<String>());
+//                adgroup.setExactNegativeWords(new ArrayList<String>());
+//                adgroup.setPause(false);
+//                adgroup.setStatus(-1);
+//                adgroup.setMib(0.0);
+//                adgroupObjectId = ((AdgroupEntity) save(adgroup)).getId();
+//
+//                KeywordEntity keyword = new KeywordEntity();
+//                keyword.setAdgroupObjId(adgroupObjectId);
+//                keyword.setKeyword(entity.getKeyword());
+//                keyword.setAccountId(accountId);
+//                keyword.setPrice(BigDecimal.ONE);
+//                keyword.setMatchType(1);
+//                keyword.setPause(false);
+//                keyword.setStatus(-1);
+//                keyword.setPhraseType(1);
+//                keywordEntities.add(keyword);
+//                continue;
+//            }
+//            if (group.equals(entity.getGroup())) {
+//                KeywordEntity keyword = new KeywordEntity();
+//                keyword.setAdgroupObjId(adgroupObjectId);
+//                keyword.setKeyword(entity.getKeyword());
+//                keyword.setAccountId(accountId);
+//                keyword.setPrice(BigDecimal.ONE);
+//                keyword.setMatchType(1);
+//                keyword.setPause(false);
+//                keyword.setStatus(-1);
+//                keyword.setPhraseType(1);
+//                keywordEntities.add(keyword);
+//            } else {
+//                save(keywordEntities);
+//                keywordEntities.clear();
+//
+//                group = entity.getGroup();
+//                AdgroupEntity adgroup = new AdgroupEntity();
+//                adgroup.setAccountId(accountId);
+//                adgroup.setCampaignObjId(campaignObjectId);
+//                adgroup.setAdgroupName(group);
+//                adgroup.setMaxPrice(1.0);
+//                adgroup.setNegativeWords(new ArrayList<String>());
+//                adgroup.setExactNegativeWords(new ArrayList<String>());
+//                adgroup.setPause(false);
+//                adgroup.setStatus(-1);
+//                adgroup.setMib(0.0);
+//                adgroupObjectId = ((AdgroupEntity) save(adgroup)).getId();
+//
+//                KeywordEntity keyword = new KeywordEntity();
+//                keyword.setAdgroupObjId(adgroupObjectId);
+//                keyword.setKeyword(entity.getKeyword());
+//                keyword.setAccountId(accountId);
+//                keyword.setPrice(BigDecimal.ONE);
+//                keyword.setMatchType(1);
+//                keyword.setPause(false);
+//                keyword.setStatus(-1);
+//                keyword.setPhraseType(1);
+//                keywordEntities.add(keyword);
+//            }
+//        }
+//
+//        if (!keywordEntities.isEmpty()) {
+//            save(keywordEntities);
+//            keywordEntities.clear();
+//        }
+//    }
 
     public void downloadCSV(String trade, String category, OutputStream os) {
         //查询参数
@@ -388,12 +372,12 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
             params.put("cg", category);
         }
 
-        List<LexiconEntity> list = keywordGroupDAO.find(params, -1, -1);
+        List<LexiconDTO> list = keywordGroupDAO.find(params, -1, -1);
 
         //CSV文件写入
         try {
             os.write(Bytes.concat(commonCSVHead, ("行业" + DEFAULT_DELIMITER + "计划" + DEFAULT_DELIMITER + "单元" + DEFAULT_DELIMITER + "关键词" + DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-            for (LexiconEntity entity : list) {
+            for (LexiconDTO entity : list) {
                 String bytes = (entity.getTrade() + DEFAULT_DELIMITER + entity.getCategory() + DEFAULT_DELIMITER + entity.getGroup() + DEFAULT_DELIMITER + entity.getKeyword() + DEFAULT_END);
                 os.write(Bytes.concat(commonCSVHead, bytes.getBytes(StandardCharsets.UTF_8)));
             }
@@ -468,13 +452,13 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
 
     @Override
     public int saveTrade(String tr, String cg, String gr, String kw, String url) {
-        LexiconEntity lexiconEntity = new LexiconEntity();
-        lexiconEntity.setTrade(tr);
-        lexiconEntity.setCategory(cg);
-        lexiconEntity.setGroup(gr);
-        lexiconEntity.setKeyword(kw);
-        lexiconEntity.setUrl(url);
-        return keywordGroupDAO.saveTrade(lexiconEntity);
+        LexiconDTO lexiconDTO = new LexiconDTO();
+        lexiconDTO.setTrade(tr);
+        lexiconDTO.setCategory(cg);
+        lexiconDTO.setGroup(gr);
+        lexiconDTO.setKeyword(kw);
+        lexiconDTO.setUrl(url);
+        return keywordGroupDAO.saveTrade(lexiconDTO);
     }
 
     @Override
@@ -522,7 +506,7 @@ public class KeywordGroupServiceImpl extends AbstractUserBaseDAOImpl implements 
     }
 
     private KRService getKRService() {
-        BaiduAccountInfoEntity baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService service = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
         KRService krService = null;
         try {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.mongodb.WriteResult;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -43,7 +44,7 @@ public interface AccountManageDAO<T> {
      * @param baiduUserId
      * @return
      */
-    T findByBaiduUserId(Long baiduUserId);
+    BaiduAccountInfoDTO findByBaiduUserId(Long baiduUserId);
 
     /**
      * 获取当前登陆的系统用户信息
@@ -110,7 +111,7 @@ public interface AccountManageDAO<T> {
      *
      * @param t
      */
-    void updateBaiduAccountInfo(T t);
+    void updateBaiduAccountInfo(BaiduAccountInfoDTO t);
 
     /**
      * 根据当前登录的系统用户下指定的百度账号获取账户报告

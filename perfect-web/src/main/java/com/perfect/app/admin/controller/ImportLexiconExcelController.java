@@ -1,11 +1,11 @@
 package com.perfect.app.admin.controller;
 
+import com.perfect.commons.web.WebContextSupport;
+import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.entity.LexiconEntity;
-import com.perfect.dao.mongodb.base.BaseMongoTemplate;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.utils.excel.XSSFSheetHandler;
 import com.perfect.utils.excel.XSSFUtils;
-import com.perfect.commons.web.WebContextSupport;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
@@ -37,10 +37,11 @@ import java.util.Map;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
-import static com.perfect.dao.mongodb.utils.EntityConstants.TRADE_KEY;
+import static com.perfect.commons.constants.MongoEntityConstants.TRADE_KEY;
 
 /**
  * Created by baizz on 2014-10-9.
+ * 2014-11-26 refactor
  */
 @RestController
 @Scope("prototype")

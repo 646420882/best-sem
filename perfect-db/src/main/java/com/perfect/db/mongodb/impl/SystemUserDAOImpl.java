@@ -110,4 +110,13 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     private Class<SystemUserEntity> getSystemUserEntityClass() {
         return SystemUserEntity.class;
     }
+
+    @Override
+    public <S extends SystemUserDTO> S save(S entity) {
+        SystemUserEntity systemUserEntity = new SystemUserEntity();
+        BeanUtils.copyProperties(entity, systemUserEntity);
+        getSysMongoTemplate().save(systemUserEntity);
+        BeanUtils.copyProperties(systemUserEntity, entity);
+        return entity;
+    }
 }

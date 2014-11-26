@@ -1,6 +1,7 @@
 package com.perfect.app.bdlogin.core;
 
-import com.perfect.dao.CookieDAO;
+import com.perfect.service.CookieService;
+import com.perfect.utils.JSONUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -15,7 +16,7 @@ import java.util.List;
 
 /**
  * Created by baizz on 2014-11-10.
- * 2014-11-24 refactor
+ * 2014-11-26 refactor
  */
 public class PreviewHandler {
 
@@ -59,7 +60,7 @@ public class PreviewHandler {
 
     protected static CookieStore getCookies() {
         PreviewHandler previewHandler = new PreviewHandler();
-        CookieStore sslCookies = JSONUtils.getObjectByJson(previewHandler.cookieService.takeOne().getCookie(), CookieEntity.class);
+        CookieStore sslCookies = JSONUtils.getObjectByJson(previewHandler.cookieService.takeOne().getCookie(), CookieStore.class);
         return sslCookies;
     }
 }

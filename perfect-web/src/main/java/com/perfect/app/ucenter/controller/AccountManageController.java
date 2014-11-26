@@ -2,17 +2,17 @@ package com.perfect.app.ucenter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.perfect.commons.web.WebContext;
 import com.perfect.commons.web.WebUtils;
 import com.perfect.core.AppContext;
 import com.perfect.dto.BaiduAccountAllState;
-import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.CampaignEntity;
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.LogService;
 import com.perfect.utils.JSONUtils;
-import com.perfect.commons.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
@@ -94,9 +94,9 @@ public class AccountManageController {
     @RequestMapping(value = "/getAccount", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccount(HttpServletResponse response) {
 
-        List<SystemUserEntity> entities = accountManageService.getAccount();
+        List<SystemUserDTO> entities = accountManageService.getAccount();
 
-        Map<String, List<SystemUserEntity>> map = new HashMap<>();
+        Map<String, List<SystemUserDTO>> map = new HashMap<>();
         map.put("rows", entities);
 
         webContext.writeJson(map, response);
@@ -132,7 +132,7 @@ public class AccountManageController {
                                       @RequestParam(value = "baiduId") Long baiduId,
                                       @RequestParam(value = "state") Long state) {
 
-        int entities = accountManageService.updateAccountAllState(userName,baiduId,state);
+        int entities = accountManageService.updateAccountAllState(userName, baiduId, state);
 
         Map<String, Integer> map = new HashMap<>();
         map.put("rows", entities);
@@ -156,7 +156,7 @@ public class AccountManageController {
         Map<String, Integer> map = new HashMap<>();
         map.put("struts", 1);
 
-        webContext.writeJson(map,response);
+        webContext.writeJson(map, response);
 
     }
 
@@ -268,12 +268,12 @@ public class AccountManageController {
     /**
      * 更新百度账户信息
      *
-     * @param entity
+     * @param dto
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String updateBaiduAccount(@RequestBody BaiduAccountInfoEntity entity) {
-        accountManageService.updateBaiduAccount(entity);
+    public String updateBaiduAccount(@RequestBody BaiduAccountInfoDTO dto) {
+        accountManageService.updateBaiduAccount(dto);
         ObjectNode json_string = new ObjectMapper().createObjectNode();
         json_string.put("status", true);
         return json_string.toString();
@@ -313,7 +313,7 @@ public class AccountManageController {
     @RequestMapping(value = "/getNewCampaign", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getNewCampaign() {
         AbstractView jsonView = new MappingJackson2JsonView();
-        List<CampaignEntity> list = accountDataService.getCampaign(AppContext.getUser(), AppContext.getAccountId());
+        List<CampaignDTO> list = accountDataService.getCampaign(AppContext.getUser(), AppContext.getAccountId());
         Map<String, Object> values = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(values);
         return new ModelAndView(jsonView);

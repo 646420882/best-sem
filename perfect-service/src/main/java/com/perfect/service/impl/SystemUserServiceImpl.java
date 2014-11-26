@@ -1,9 +1,9 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.SystemUserDAO;
-import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.dao.account.AccountManageDAO;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.SystemUserService;
 import org.springframework.stereotype.Component;
 
@@ -23,23 +23,23 @@ public class SystemUserServiceImpl implements SystemUserService {
     private AccountManageDAO accountManageDAO;
 
     @Override
-    public SystemUserEntity getSystemUser(String userName) {
+    public SystemUserDTO getSystemUser(String userName) {
         return systemUserDAO.findByUserName(userName);
     }
 
     @Override
-    public SystemUserEntity getSystemUser(long aid) {
+    public SystemUserDTO getSystemUser(long aid) {
         return systemUserDAO.findByAid(aid);
     }
 
     @Override
-    public Iterable<SystemUserEntity> getAllUser() {
+    public Iterable<SystemUserDTO> getAllUser() {
         return systemUserDAO.findAll();
     }
 
     @Override
-    public void save(SystemUserEntity systemUserEntity) {
-        systemUserDAO.save(systemUserEntity);
+    public void save(SystemUserDTO systemUserDTO) {
+        systemUserDAO.save(systemUserDTO);
     }
 
     @Override
@@ -49,12 +49,12 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
-    public void addAccount(String user, BaiduAccountInfoEntity baiduAccountInfoEntity) {
-        systemUserDAO.insertAccountInfo(user, baiduAccountInfoEntity);
+    public void addAccount(String user, BaiduAccountInfoDTO baiduAccountInfoDTO) {
+        systemUserDAO.insertAccountInfo(user, baiduAccountInfoDTO);
     }
 
     @Override
-    public boolean updatePassword(String userName, String pwd){
-        return accountManageDAO.updatePwd(userName,pwd).isUpdateOfExisting();
+    public boolean updatePassword(String userName, String pwd) {
+        return accountManageDAO.updatePwd(userName, pwd).isUpdateOfExisting();
     }
 }

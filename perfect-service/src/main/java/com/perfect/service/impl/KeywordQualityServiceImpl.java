@@ -9,17 +9,19 @@ import com.perfect.autosdk.sms.v3.GetKeyword10QualityResponse;
 import com.perfect.autosdk.sms.v3.KeywordService;
 import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.core.AppContext;
-import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.KeywordQualityDAO;
-import com.perfect.dao.mongodb.utils.DateUtils;
+import com.perfect.dao.account.AccountManageDAO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.dto.keyword.QualityDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.KeywordReportEntity;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.KeywordQualityService;
+import com.perfect.utils.DateUtils;
 import com.perfect.utils.JSONUtils;
 import com.perfect.utils.SerializeUtils;
 import com.perfect.utils.TopN;
+import com.perfect.vo.KeywordQualityReportVO;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
@@ -36,7 +38,7 @@ import java.util.concurrent.RecursiveTask;
 
 /**
  * Created by baizz on 2014-08-16.
- * 2014-11-24 refactor
+ * 2014-11-26 refactor
  */
 @Service("keywordQualityService")
 public class KeywordQualityServiceImpl implements KeywordQualityService {
@@ -56,7 +58,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
     @Override
     public Map<String, Object> find(String redisKey, String fieldName, int n, int skip, int sort) {
         fieldName = "pc" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-        List<KeywordReportEntity> list = keywordQualityDAO.findYesterdayKeywordReport();
+        List<KeywordReportDTO> list = keywordQualityDAO.findYesterdayKeywordReport();
         if (list.size() == 0)
             return null;
 
@@ -73,11 +75,11 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             forkJoinPool1.shutdown();
         }
 
-        Map<String, KeywordReportEntity> map = new LinkedHashMap<>();
+        Map<String, KeywordReportDTO> map = new LinkedHashMap<>();
         ForkJoinPool forkJoinPool2 = new ForkJoinPool();
         try {
             CalculateTask task = new CalculateTask(list, 0, list.size());
-            Future<Map<String, KeywordReportEntity>> result = forkJoinPool2.submit(task);
+            Future<Map<String, KeywordReportDTO>> result = forkJoinPool2.submit(task);
             map = result.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -86,8 +88,8 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         }
 
 //        //计算点击率和平均点击价格
-//        for (Map.Entry<String, KeywordReportEntity> entry : map.entrySet()) {
-//            KeywordReportEntity vo = entry.getValue();
+//        for (Map.Entry<String, KeywordReportDTO> entry : map.entrySet()) {
+//            KeywordReportDTO vo = entry.getValue();
 //            Double cost = vo.getPcCost();
 //            Double ctr = (vo.getPcClick() + .0) / vo.getPcImpression();
 //            Double cpc = .0;
@@ -109,9 +111,9 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
 //        List<Quality10Type> quality10Types = getKeyword10Quality(keywordIds);
         List<Quality10Type> quality10Types = getQuality10Type(redisKey, keywordIds);
 
-        Map<Integer, List<KeywordReportEntity>> tempMap = new HashMap<>();
+        Map<Integer, List<KeywordReportDTO>> tempMap = new HashMap<>();
         for (int i = 0; i <= 10; i++) {
-            tempMap.put(i, new ArrayList<KeywordReportEntity>());
+            tempMap.put(i, new ArrayList<KeywordReportDTO>());
         }
 
         for (Quality10Type quality10Type : quality10Types) {
@@ -123,7 +125,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         List<KeywordQualityReportVO> reportList = new ArrayList<>();
 
         for (int i = 0; i <= 10; i++) {
-            List<KeywordReportEntity> tempList = tempMap.get(i);
+            List<KeywordReportDTO> tempList = tempMap.get(i);
             if (!tempList.isEmpty()) {
 
                 //质量度级别信息计算
@@ -178,16 +180,16 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                 qualityList.add(qualityDTO);
 
                 //每个质量度下具体的关键词信息
-                KeywordReportEntity topNData[] = TopN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), n, fieldName, sort);
+                KeywordReportDTO topNData[] = TopN.getTopN(tempList.toArray(new KeywordReportDTO[tempList.size()]), n, fieldName, sort);
 
                 if ((skip + 1) * n > topNData.length) {
-                    List<KeywordReportEntity> data = new ArrayList<>();
+                    List<KeywordReportDTO> data = new ArrayList<>();
                     for (int j = skip * n; j < topNData.length; j++) {
                         data.add(topNData[j]);
                     }
                     reportList.add(new KeywordQualityReportVO(i, data));
                 } else {
-                    KeywordReportEntity arrData[] = new KeywordReportEntity[n];
+                    KeywordReportDTO arrData[] = new KeywordReportDTO[n];
                     System.arraycopy(topNData, skip * n, arrData, 0, n);
                     reportList.add(new KeywordQualityReportVO(i, Arrays.asList(arrData)));
                 }
@@ -205,7 +207,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
     @Override
     @SuppressWarnings("unchecked")
     public List<Quality10Type> getKeyword10Quality(List<Long> keywordIds) {
-        BaiduAccountInfoEntity baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
         try {
             KeywordService keywordService = commonService.getService(KeywordService.class);
@@ -229,7 +231,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
 
     @Override
     public void downloadQualityCSV(String redisKey, OutputStream os) {
-        List<KeywordReportEntity> list = keywordQualityDAO.findYesterdayKeywordReport();
+        List<KeywordReportDTO> list = keywordQualityDAO.findYesterdayKeywordReport();
         if (list.size() == 0)
             return;
 
@@ -245,11 +247,11 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             forkJoinPool1.shutdown();
         }
 
-        Map<String, KeywordReportEntity> map = new LinkedHashMap<>();
+        Map<String, KeywordReportDTO> map = new LinkedHashMap<>();
         ForkJoinPool forkJoinPool2 = new ForkJoinPool();
         try {
             CalculateTask task = new CalculateTask(list, 0, list.size());
-            Future<Map<String, KeywordReportEntity>> result = forkJoinPool2.submit(task);
+            Future<Map<String, KeywordReportDTO>> result = forkJoinPool2.submit(task);
             map = result.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -263,9 +265,9 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         //获取关键词质量度
         List<Quality10Type> quality10Types = getQuality10Type(redisKey, keywordIds);
 
-        Map<Integer, List<KeywordReportEntity>> tempMap = new HashMap<>();
+        Map<Integer, List<KeywordReportDTO>> tempMap = new HashMap<>();
         for (int i = 0; i <= 10; i++) {
-            tempMap.put(i, new ArrayList<KeywordReportEntity>());
+            tempMap.put(i, new ArrayList<KeywordReportDTO>());
         }
 
         for (Quality10Type quality10Type : quality10Types) {
@@ -276,7 +278,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         List<KeywordQualityReportVO> reportList = new ArrayList<>();
 
         for (int i = 0; i <= 10; i++) {
-            List<KeywordReportEntity> tempList = tempMap.get(i);
+            List<KeywordReportDTO> tempList = tempMap.get(i);
             if (!tempList.isEmpty()) {
 
                 //质量度级别信息计算
@@ -331,7 +333,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                 qualityDTOMap.put(i, qualityDTO);
 
                 //每个质量度下具体的关键词信息
-                KeywordReportEntity topNData[] = TopN.getTopN(tempList.toArray(new KeywordReportEntity[tempList.size()]), tempList.size(), "pcImpression", -1);
+                KeywordReportDTO topNData[] = TopN.getTopN(tempList.toArray(new KeywordReportDTO[tempList.size()]), tempList.size(), "pcImpression", -1);
                 reportList.add(new KeywordQualityReportVO(i, Arrays.asList(topNData)));
             }
 
@@ -371,7 +373,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                         DEFAULT_DELIMITER + "" +
                         DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
 
-                for (KeywordReportEntity entity : reportDTO.getReportList()) {
+                for (KeywordReportDTO entity : reportDTO.getReportList()) {
                     bytes = (grade + DEFAULT_DELIMITER +
                             entity.getKeywordName() + DEFAULT_DELIMITER +
                             entity.getPcImpression() + DEFAULT_DELIMITER +
@@ -421,9 +423,9 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         return quality10Types;
     }
 
-    private QualityDTO getQualityData(List<KeywordReportEntity> list) {
+    private QualityDTO getQualityData(List<KeywordReportDTO> list) {
         QualityDTO qualityDTO = new QualityDTO(list.size(), .0, 0, .0, 0, .0, .0, .0, .0, .0, .0, .0);
-        for (KeywordReportEntity entity : list) {
+        for (KeywordReportDTO entity : list) {
             qualityDTO.setImpression(qualityDTO.getImpression() + entity.getPcImpression());
             qualityDTO.setClick(qualityDTO.getClick() + entity.getPcClick());
             BigDecimal bigDecimal = new BigDecimal(qualityDTO.getCost());
@@ -454,9 +456,9 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
 
         private int start;
         private int end;
-        private List<KeywordReportEntity> list;
+        private List<KeywordReportDTO> list;
 
-        KeywordIdTask(List<KeywordReportEntity> list, int start, int end) {
+        KeywordIdTask(List<KeywordReportDTO> list, int start, int end) {
             this.start = start;
             this.end = end;
             this.list = list;
@@ -484,29 +486,29 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         }
     }
 
-    class CalculateTask extends RecursiveTask<Map<String, KeywordReportEntity>> {
+    class CalculateTask extends RecursiveTask<Map<String, KeywordReportDTO>> {
 
         private static final int threshold = 1_000;
 
         private int start;
         private int end;
-        private List<KeywordReportEntity> list;
+        private List<KeywordReportDTO> list;
 
-        CalculateTask(List<KeywordReportEntity> list, int start, int end) {
+        CalculateTask(List<KeywordReportDTO> list, int start, int end) {
             this.start = start;
             this.end = end;
             this.list = list;
         }
 
         @Override
-        protected Map<String, KeywordReportEntity> compute() {
-            Map<String, KeywordReportEntity> map = new HashMap<>();
+        protected Map<String, KeywordReportDTO> compute() {
+            Map<String, KeywordReportDTO> map = new HashMap<>();
             if (end - start < threshold) {
                 for (int i = start; i < end; i++) {
-                    KeywordReportEntity vo = list.get(i);
+                    KeywordReportDTO vo = list.get(i);
                     map.put(vo.getKeywordId().toString(), vo);
 //                    String keywordId = vo.getKeywordId().toString();
-//                    KeywordReportEntity _vo = map.get(keywordId);
+//                    KeywordReportDTO _vo = map.get(keywordId);
 //                    if (_vo != null) {
 //                        _vo.setPcImpression(_vo.getPcImpression() + vo.getPcImpression());
 //                        _vo.setPcClick(_vo.getPcClick() + vo.getPcClick());
@@ -537,12 +539,12 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         }
 
         @Deprecated
-        private Map<String, KeywordReportEntity> merge(Map<String, KeywordReportEntity> map1, Map<String, KeywordReportEntity> map2) {
-            Map<String, KeywordReportEntity> _map = new HashMap<>();
-            for (Iterator<Map.Entry<String, KeywordReportEntity>> iterator1 = map1.entrySet().iterator(); iterator1.hasNext(); ) {
-                KeywordReportEntity vo = iterator1.next().getValue();
-                for (Iterator<Map.Entry<String, KeywordReportEntity>> iterator2 = map2.entrySet().iterator(); iterator2.hasNext(); ) {
-                    KeywordReportEntity _vo = iterator2.next().getValue();
+        private Map<String, KeywordReportDTO> merge(Map<String, KeywordReportDTO> map1, Map<String, KeywordReportDTO> map2) {
+            Map<String, KeywordReportDTO> _map = new HashMap<>();
+            for (Iterator<Map.Entry<String, KeywordReportDTO>> iterator1 = map1.entrySet().iterator(); iterator1.hasNext(); ) {
+                KeywordReportDTO vo = iterator1.next().getValue();
+                for (Iterator<Map.Entry<String, KeywordReportDTO>> iterator2 = map2.entrySet().iterator(); iterator2.hasNext(); ) {
+                    KeywordReportDTO _vo = iterator2.next().getValue();
                     if (_vo.getKeywordId().compareTo(vo.getKeywordId()) == 0) {
                         _vo.setPcImpression(_vo.getPcImpression() + vo.getPcImpression());
                         _vo.setPcClick(_vo.getPcClick() + vo.getPcClick());
@@ -560,13 +562,13 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                 }
             }
 
-            for (Map.Entry<String, KeywordReportEntity> entry : map1.entrySet()) {
-                KeywordReportEntity vo = entry.getValue();
+            for (Map.Entry<String, KeywordReportDTO> entry : map1.entrySet()) {
+                KeywordReportDTO vo = entry.getValue();
                 _map.put(vo.getKeywordId().toString(), vo);
             }
 
-            for (Map.Entry<String, KeywordReportEntity> entry : map2.entrySet()) {
-                KeywordReportEntity vo = entry.getValue();
+            for (Map.Entry<String, KeywordReportDTO> entry : map2.entrySet()) {
+                KeywordReportDTO vo = entry.getValue();
                 _map.put(vo.getKeywordId().toString(), vo);
             }
 
@@ -575,30 +577,4 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
 
     }
 
-    static class KeywordQualityReportVO {
-        private Integer grade;
-
-        private List<KeywordReportEntity> reportList;
-
-        public KeywordQualityReportVO(Integer grade, List<KeywordReportEntity> reportList) {
-            this.grade = grade;
-            this.reportList = reportList;
-        }
-
-        public Integer getGrade() {
-            return grade;
-        }
-
-        public void setGrade(Integer grade) {
-            this.grade = grade;
-        }
-
-        public List<KeywordReportEntity> getReportList() {
-            return reportList;
-        }
-
-        public void setReportList(List<KeywordReportEntity> reportList) {
-            this.reportList = reportList;
-        }
-    }
 }

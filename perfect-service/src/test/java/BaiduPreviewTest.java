@@ -1,5 +1,5 @@
 import com.perfect.api.baidu.BaiduPreviewHelperFactory;
-import com.perfect.api.baidu.BaiduSpiderHelper;
+import com.perfect.api.baidu.BaiduPreviewHelper;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.dto.creative.CreativeInfoDTO;
@@ -29,7 +29,7 @@ public class BaiduPreviewTest extends UnitilsJUnit4 {
         try {
             ServiceFactory service = ServiceFactory.getInstance("baidu-上品折扣2103914", "SHANGpin8952", "f35d9f818141591cc4fd43ac8e8056b8", null);
 
-            final BaiduSpiderHelper htmlService = factory.createInstance(service);
+            final BaiduPreviewHelper htmlService = factory.createInstance(service);
             for (final String key : new String[]{"车贷", "婚纱照", "手机", "机票", "二手房"}) {
                 new Thread(new Runnable() {
                     @Override
@@ -51,8 +51,8 @@ public class BaiduPreviewTest extends UnitilsJUnit4 {
         }
     }
 
-    private void print(List<BaiduSpiderHelper.PreviewData> map) {
-        for (BaiduSpiderHelper.PreviewData data : map) {
+    private void print(List<BaiduPreviewHelper.PreviewData> map) {
+        for (BaiduPreviewHelper.PreviewData data : map) {
 
             for (CreativeInfoDTO dto : data.getLeft()) {
                 System.out.println(dto);

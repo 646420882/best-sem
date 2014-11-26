@@ -307,13 +307,13 @@ public class BaiduApiService {
         return response.getKeywordTypes();
     }
 
-    public List<BaiduSpiderHelper.PreviewData> getPreviewData(int region, List<String> keyList, BaiduSpiderHelper helper) {
+    public List<BaiduPreviewHelper.PreviewData> getPreviewData(int region, List<String> keyList, BaiduPreviewHelper helper) {
         GetPreviewRequest request = new GetPreviewRequest();
         request.setKeyWords(keyList);
         request.setRegion(region);
         request.setDevice(0);
         request.setPage(0);
-        List<BaiduSpiderHelper.PreviewData> previewDatas = helper.getPageData(keyList.toArray(new
+        List<BaiduPreviewHelper.PreviewData> previewDatas = helper.getPageData(keyList.toArray(new
                 String[]{}), region);
         return previewDatas;
     }
@@ -330,9 +330,9 @@ public class BaiduApiService {
 
         initIdMap(keys.keySet(), keywordEntityMap);
         convertMap(keys, regionDataMap);
-        BaiduSpiderHelper baiduSpiderHelper = baiduPreviewHelperFactory.createInstance(commonService);
+        BaiduPreviewHelper baiduPreviewHelper = baiduPreviewHelperFactory.createInstance(commonService);
 
-        List<BaiduSpiderHelper.PreviewData> resultDataList = new ArrayList<>();
+        List<BaiduPreviewHelper.PreviewData> resultDataList = new ArrayList<>();
         for (Map.Entry<Integer, List<KeywordInfoDTO>> entry : regionDataMap.entrySet()) {
             Integer region = entry.getKey();
 
@@ -343,20 +343,20 @@ public class BaiduApiService {
                 for (KeywordInfoDTO keywordEntity : keyEntityList) {
                     keyList.add(keywordEntity.getKeyword());
                 }
-                resultDataList.addAll(getPreviewData(region, keyList, baiduSpiderHelper));
+                resultDataList.addAll(getPreviewData(region, keyList, baiduPreviewHelper));
             } else {
                 List<String> temp = new ArrayList<>();
                 for (KeywordInfoDTO key : keyEntityList) {
                     temp.add(key.getKeyword());
 
                     if (temp.size() == 5) {
-                        resultDataList.addAll(getPreviewData(region, temp, baiduSpiderHelper));
+                        resultDataList.addAll(getPreviewData(region, temp, baiduPreviewHelper));
                         temp.clear();
                     }
                 }
 
                 if (!temp.isEmpty()) {
-                    resultDataList.addAll(getPreviewData(region, temp, baiduSpiderHelper));
+                    resultDataList.addAll(getPreviewData(region, temp, baiduPreviewHelper));
                 }
             }
         }
@@ -364,7 +364,7 @@ public class BaiduApiService {
         Map<String, KeywordRankDTO> keywordRankEntityMap = new HashMap<>();
 
         if (resultDataList != null && !resultDataList.isEmpty()) {
-            for (BaiduSpiderHelper.PreviewData previewData : resultDataList) {
+            for (BaiduPreviewHelper.PreviewData previewData : resultDataList) {
                 if ((previewData.getLeft() == null || previewData.getLeft().isEmpty()) && (previewData.getRight() == null || previewData.getRight().isEmpty())) {
                     continue;
                 }

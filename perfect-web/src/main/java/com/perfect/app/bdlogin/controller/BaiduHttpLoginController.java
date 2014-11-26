@@ -2,9 +2,10 @@ package com.perfect.app.bdlogin.controller;
 
 import com.perfect.app.bdlogin.core.BaiduHttpLogin;
 import com.perfect.app.bdlogin.core.CaptchaHandler;
-import com.perfect.entity.CookieEntity;
-import com.perfect.service.CookieService;
 import com.perfect.commons.web.ServletContextUtils;
+import com.perfect.dto.CookieDTO;
+import com.perfect.service.CookieService;
+import com.perfect.utils.JSONUtils;
 import org.apache.http.client.CookieStore;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -53,10 +54,10 @@ public class BaiduHttpLoginController implements Controller {
             map.put("status", "success");
 
             CookieStore cookieStore = BaiduHttpLogin.getSSLCookies();
-            CookieEntity cookieEntity = new CookieEntity();
-            cookieEntity.setCookie(JSONUtils.getJsonString(cookieStore));
-            cookieEntity.setIdle(true);
-            cookieService.saveCookie(cookieEntity);
+            CookieDTO cookieDTO = new CookieDTO();
+            cookieDTO.setCookie(JSONUtils.getJsonString(cookieStore));
+            cookieDTO.setIdle(true);
+            cookieService.saveCookie(cookieDTO);
 
             ServletContextUtils.getSession().removeAttribute(sessionId + "bdLogin");
         } else {

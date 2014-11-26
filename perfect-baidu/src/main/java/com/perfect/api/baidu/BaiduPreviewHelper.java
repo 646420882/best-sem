@@ -23,13 +23,13 @@ import java.util.zip.GZIPInputStream;
 /**
  * Created by baizz on 2014-7-15.
  */
-public class BaiduSpiderHelper {
+public class BaiduPreviewHelper {
 
-    private static Logger logger = LoggerFactory.getLogger(BaiduSpiderHelper.class);
+    private static Logger logger = LoggerFactory.getLogger(BaiduPreviewHelper.class);
 
     private final CommonService serviceFactory;
 
-    public BaiduSpiderHelper(CommonService serviceFactory) {
+    public BaiduPreviewHelper(CommonService serviceFactory) {
         this.serviceFactory = serviceFactory;
     }
 
@@ -206,9 +206,7 @@ public class BaiduSpiderHelper {
 
         try {
             htmls.put(getPreviewRequest.getKeyWord(0), response.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
@@ -368,9 +366,4 @@ public class BaiduSpiderHelper {
         }
     }
 
-
-    public static void main(String[] args) {
-
-
-    }
 }

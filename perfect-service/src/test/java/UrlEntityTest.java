@@ -1,5 +1,5 @@
 import com.perfect.api.baidu.BaiduPreviewHelperFactory;
-import com.perfect.api.baidu.BaiduSpiderHelper;
+import com.perfect.api.baidu.BaiduPreviewHelper;
 import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.dao.FarmDAO;
 import com.perfect.entity.UrlEntity;
@@ -36,7 +36,7 @@ public class UrlEntityTest extends UnitilsJUnit4 {
 
         BaiduPreviewHelperFactory factory = (BaiduPreviewHelperFactory) applicationContextHelper.getBeanByClass(BaiduPreviewHelperFactory.class);
 
-        BaiduSpiderHelper helper = factory.createInstance(null);
+        BaiduPreviewHelper helper = factory.createInstance(null);
 
 
         for (String key : new String[]{"房地产", "二手房", "婚博会","女装","服饰","哪里的婚纱照便宜"}) {

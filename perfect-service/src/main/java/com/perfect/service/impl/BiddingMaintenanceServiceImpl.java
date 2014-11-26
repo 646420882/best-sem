@@ -1,7 +1,8 @@
 package com.perfect.service.impl;
 
+import com.google.common.collect.Lists;
 import com.perfect.dao.BiddingMaintenanceDAO;
-import com.perfect.entity.UrlEntity;
+import com.perfect.dto.UrlDTO;
 import com.perfect.service.BiddingMaintenanceService;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by baizz on 2014-9-26.
+ * 2014-11-26 refactor
  */
 @Service("biddingMaintenanceService")
 public class BiddingMaintenanceServiceImpl implements BiddingMaintenanceService {
@@ -18,12 +20,12 @@ public class BiddingMaintenanceServiceImpl implements BiddingMaintenanceService 
     private BiddingMaintenanceDAO biddingMaintenanceDAO;
 
     @Override
-    public List<UrlEntity> findAll() {
-        return biddingMaintenanceDAO.findAll();
+    public List<UrlDTO> findAll() {
+        return Lists.newArrayList(biddingMaintenanceDAO.findAll());
     }
 
     @Override
-    public void saveUrlEntity(UrlEntity urlEntity) {
-        biddingMaintenanceDAO.save(urlEntity);
+    public void saveUrlEntity(UrlDTO urlDTO) {
+        biddingMaintenanceDAO.save(urlDTO);
     }
 }

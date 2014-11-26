@@ -81,7 +81,7 @@ public interface KeywordGroupService {
      * @param seedWordList
      * @param krFileId
      */
-    void saveKeywordFromBaidu(List<String> seedWordList, String krFileId, String newCampaignName);
+//    void saveKeywordFromBaidu(List<String> seedWordList, String krFileId, String newCampaignName);
 
     /**
      * save
@@ -89,7 +89,7 @@ public interface KeywordGroupService {
      * @param trade
      * @param category
      */
-    void saveKeywordFromSystem(String trade, String category, String newCampaignName);
+//    void saveKeywordFromSystem(String trade, String category, String newCampaignName);
 
     /**
      * @param seedWord

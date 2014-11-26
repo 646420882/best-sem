@@ -5,13 +5,17 @@ import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ResHeaderUtil;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.dao.mongodb.base.BaseMongoTemplate;
-import com.perfect.dao.mongodb.impl.CampaignDAOImpl;
+import com.perfect.db.mongodb.base.BaseMongoTemplate;
+import com.perfect.db.mongodb.impl.CampaignDAOImpl;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.entity.*;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.DBNameUtils;
 import com.perfect.utils.EntityConvertUtils;
+import com.perfect.utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -52,15 +56,15 @@ public class AccountDataServiceImpl implements AccountDataService {
     @Override
     public void initAccountData(String userName, long accountId) {
         logger.info("开始导入数据: 用户名=" + userName + ", 账号= " + accountId);
-        SystemUserEntity systemUserEntity = systemUserService.getSystemUser(userName);
-        if (systemUserEntity == null) {
+        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+        if (systemUserDTO == null) {
             logger.warn("没有此账号: " + userName);
             return;
         }
 
-        List<BaiduAccountInfoEntity> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccountInfoEntities();
+        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccountInfoDTOs();
 
-        if (baiduAccountInfoEntityList == null || baiduAccountInfoEntityList.isEmpty()) {
+        if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
             logger.warn("账号未绑定百度推广账户");
             return;
         }
@@ -70,12 +74,12 @@ public class AccountDataServiceImpl implements AccountDataService {
         clearCollectionData(mongoTemplate, accountId);
         logger.info("清理数据完成!");
 
-        for (BaiduAccountInfoEntity baiduAccountInfoEntity : baiduAccountInfoEntityList) {
+        for (BaiduAccountInfoDTO baiduAccountInfoDTO : baiduAccountInfoDTOList) {
 
-            Long aid = baiduAccountInfoEntity.getId();
+            Long aid = baiduAccountInfoDTO.getId();
             if (aid != accountId)
                 continue;
-            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity.getBaiduUserName(), baiduAccountInfoEntity.getBaiduPassword(), baiduAccountInfoEntity.getToken());
+            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
             BaiduApiService apiService = new BaiduApiService(commonService);
 
             logger.info("查询账户信息...");
@@ -85,7 +89,7 @@ public class AccountDataServiceImpl implements AccountDataService {
                 logger.error("获取账户信息错误: " + ResHeaderUtil.getJsonResHeader(false).toString());
                 continue;
             }
-            BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
+            BeanUtils.copyProperties(accountInfoType, baiduAccountInfoDTO);
 
             logger.info("查询账户推广计划...");
             List<CampaignType> campaignTypes = apiService.getAllCampaign();
@@ -140,19 +144,19 @@ public class AccountDataServiceImpl implements AccountDataService {
             mongoTemplate.insertAll(keywordEntities);
             mongoTemplate.insertAll(creativeEntityList);
         }
-        systemUserService.save(systemUserEntity);
+        systemUserService.save(systemUserDTO);
     }
 
     @Override
     public void updateAccountData(String userName, long accountId) {
-        SystemUserEntity systemUserEntity = systemUserService.getSystemUser(userName);
-        if (systemUserEntity == null) {
+        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+        if (systemUserDTO == null) {
             return;
         }
 
-        List<BaiduAccountInfoEntity> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccountInfoEntities();
+        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccountInfoDTOs();
 
-        if (baiduAccountInfoEntityList == null || baiduAccountInfoEntityList.isEmpty()) {
+        if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
             return;
         }
 
@@ -160,25 +164,25 @@ public class AccountDataServiceImpl implements AccountDataService {
         //清除当前账户所有数据
         clearCollectionData(mongoTemplate, accountId);
 
-        BaiduAccountInfoEntity _entity = null;
-        for (BaiduAccountInfoEntity baiduAccountInfoEntity : baiduAccountInfoEntityList) {
+        BaiduAccountInfoDTO _dto = null;
+        for (BaiduAccountInfoDTO baiduAccountInfoDTO : baiduAccountInfoDTOList) {
 
-            Long aid = baiduAccountInfoEntity.getId();
+            Long aid = baiduAccountInfoDTO.getId();
             if (aid != accountId)
                 continue;
-            _entity = baiduAccountInfoEntity;
+            _dto = baiduAccountInfoDTO;
 
-            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity.getBaiduUserName(), baiduAccountInfoEntity.getBaiduPassword(), baiduAccountInfoEntity.getToken());
+            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
             BaiduApiService apiService = new BaiduApiService(commonService);
 
             // 初始化账户数据
             AccountInfoType accountInfoType = apiService.getAccountInfo();
-            BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
+            BeanUtils.copyProperties(accountInfoType, baiduAccountInfoDTO);
 
             //更新账户数据
             MongoTemplate mongoTemplate1 = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
             Update update = new Update();
-            update.set("bdAccounts.$", _entity);
+            update.set("bdAccounts.$", _dto);
             mongoTemplate1.updateFirst(
                     Query.query(
                             Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
@@ -263,40 +267,39 @@ public class AccountDataServiceImpl implements AccountDataService {
 
     @Override
     public void updateAccountData(String userName, long accountId, List<Long> camIds) {
-        SystemUserEntity systemUserEntity = systemUserService.getSystemUser(userName);
+        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
 
-        if (systemUserEntity == null) {
+        if (systemUserDTO == null) {
             return;
         }
 
-        List<BaiduAccountInfoEntity> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccountInfoEntities();
-
-        if (baiduAccountInfoEntityList == null || baiduAccountInfoEntityList.isEmpty()) {
+        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccountInfoDTOs();
+        if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
             return;
         }
 
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(userName);
-        BaiduAccountInfoEntity baiduAccountInfoEntity = null;
-        for (BaiduAccountInfoEntity entity : baiduAccountInfoEntityList) {
-            if (accountId == entity.getId()) {
-                baiduAccountInfoEntity = entity;
+        BaiduAccountInfoDTO baiduAccountInfoDTO = null;
+        for (BaiduAccountInfoDTO dto : baiduAccountInfoDTOList) {
+            if (accountId == dto.getId()) {
+                baiduAccountInfoDTO = dto;
                 break;
             }
         }
 
-        Long acid = baiduAccountInfoEntity.getId();
+        Long acid = baiduAccountInfoDTO.getId();
 
-        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity.getBaiduUserName(), baiduAccountInfoEntity.getBaiduPassword(), baiduAccountInfoEntity.getToken());
+        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
         BaiduApiService apiService = new BaiduApiService(commonService);
 
         //获取账户总数据
         AccountInfoType accountInfoType = apiService.getAccountInfo();
-        BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
+        BeanUtils.copyProperties(accountInfoType, baiduAccountInfoDTO);
 
         //update account data
         MongoTemplate mongoTemplate1 = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
         Update update = new Update();
-        update.set("bdAccounts.$", baiduAccountInfoEntity);
+        update.set("bdAccounts.$", baiduAccountInfoDTO);
         mongoTemplate1.updateFirst(
                 Query.query(
                         Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
@@ -394,34 +397,34 @@ public class AccountDataServiceImpl implements AccountDataService {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<CampaignEntity> getCampaign(String userName, long accountId) {
-        SystemUserEntity systemUserEntity = systemUserService.getSystemUser(userName);
+    public List<CampaignDTO> getCampaign(String userName, long accountId) {
+        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
 
-        if (systemUserEntity == null) {
+        if (systemUserDTO == null) {
             return Collections.EMPTY_LIST;
         }
 
-        List<BaiduAccountInfoEntity> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccountInfoEntities();
+        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccountInfoDTOs();
 
-        if (baiduAccountInfoEntityList == null || baiduAccountInfoEntityList.isEmpty()) {
+        if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
             return Collections.EMPTY_LIST;
         }
 
-        BaiduAccountInfoEntity baiduAccountInfoEntity = null;
-        for (BaiduAccountInfoEntity entity : baiduAccountInfoEntityList) {
-            if (Long.valueOf(accountId).compareTo(entity.getId()) == 0) {
-                baiduAccountInfoEntity = entity;
+        BaiduAccountInfoDTO baiduAccountInfoDTO = null;
+        for (BaiduAccountInfoDTO dto : baiduAccountInfoDTOList) {
+            if (Long.valueOf(accountId).compareTo(dto.getId()) == 0) {
+                baiduAccountInfoDTO = dto;
                 break;
             }
         }
 
-        Long acid = baiduAccountInfoEntity.getId();
+        Long acid = baiduAccountInfoDTO.getId();
 
-        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoEntity.getBaiduUserName(), baiduAccountInfoEntity.getBaiduPassword(), baiduAccountInfoEntity.getToken());
+        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
         BaiduApiService apiService = new BaiduApiService(commonService);
 
         //本地的推广单元
-        List<CampaignEntity> campaignEntityList = campaignDAO.findAll();
+        List<CampaignEntity> campaignEntityList = ObjectUtils.convert(campaignDAO.findAll(), CampaignEntity.class);
 
         List<CampaignType> campaignTypes = apiService.getAllCampaign();
         List<CampaignEntity> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
@@ -447,7 +450,13 @@ public class AccountDataServiceImpl implements AccountDataService {
         if (campaignEntityMap.size() == 0) {
             return Collections.EMPTY_LIST;
         } else {
-            return new ArrayList<>(campaignEntityMap.values());
+            List<CampaignDTO> campaignDTOList = new ArrayList<>();
+            campaignEntityMap.values().forEach(e -> {
+                CampaignDTO campaignDTO = new CampaignDTO();
+                BeanUtils.copyProperties(e, campaignDTO);
+                campaignDTOList.add(campaignDTO);
+            });
+            return new ArrayList<>(campaignDTOList);
         }
     }
 

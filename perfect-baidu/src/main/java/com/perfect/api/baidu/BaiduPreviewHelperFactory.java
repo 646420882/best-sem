@@ -16,10 +16,10 @@ public class BaiduPreviewHelperFactory {
     private ApplicationContextHelper applicationContextHelper;
 
 
-    public BaiduSpiderHelper createInstance(CommonService commonService){
-        BaiduSpiderHelper baiduSpiderHelper = new BaiduSpiderHelper(commonService);
+    public BaiduPreviewHelper createInstance(CommonService commonService){
+        BaiduPreviewHelper baiduPreviewHelper = new BaiduPreviewHelper(commonService);
 
-        baiduSpiderHelper.setContext(applicationContextHelper);
-        return baiduSpiderHelper;
+        baiduPreviewHelper.setContext(applicationContextHelper);
+        return baiduPreviewHelper;
     }
 }

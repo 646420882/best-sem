@@ -1,7 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.CookieDAO;
-import com.perfect.entity.CookieEntity;
+import com.perfect.dto.CookieDTO;
 import com.perfect.service.CookieService;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Created by baizz on 2014-11-10.
- * 2014-11-24 refactor
+ * 2014-11-26 refactor
  */
 @Service("cookieService")
 public class CookieServiceImpl implements CookieService {
@@ -19,22 +19,22 @@ public class CookieServiceImpl implements CookieService {
     private CookieDAO cookieDAO;
 
     @Override
-    public void saveCookie(CookieEntity cookieEntity) {
-        cookieDAO.save(cookieEntity);
+    public void saveCookie(CookieDTO cookieDTO) {
+        cookieDAO.save(cookieDTO);
     }
 
     @Override
-    public CookieEntity takeOne() {
+    public CookieDTO takeOne() {
         return cookieDAO.takeOne();
     }
 
     @Override
-    public void returnOne(CookieEntity cookieEntity) {
-        cookieDAO.returnOne(cookieEntity);
+    public void returnOne(CookieDTO cookieDTO) {
+        cookieDAO.returnOne(cookieDTO);
     }
 
     @Override
-    public List<CookieEntity> allUnused() {
+    public List<CookieDTO> allUnused() {
         return cookieDAO.allUnused();
     }
 

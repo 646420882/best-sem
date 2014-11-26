@@ -16,7 +16,10 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by baizz on 2014-08-08.
@@ -139,45 +142,45 @@ public class KeywordGroupController {
         return null;
     }
 
-    /**
-     * 保存来自百度的关键词
-     *
-     * @param seedWords
-     * @param krFileId
-     * @param newCampaignName
-     * @return
-     */
-    @RequestMapping(value = "/save1", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView saveKeywordFromBaidu(@RequestParam(value = "seedWords", required = false) String seedWords,
-                                             @RequestParam(value = "krFileId", required = false) String krFileId,
-                                             @RequestParam(value = "newCampaignName", required = false, defaultValue = "新建计划") String newCampaignName) {
-        List<String> seedWordList = new ArrayList<>(Arrays.asList(seedWords.split(",")));
-        keywordGroupService.saveKeywordFromBaidu(seedWordList, krFileId, newCampaignName);
-        AbstractView jsonView = new MappingJackson2JsonView();
-        jsonView.setAttributesMap(new HashMap<String, Object>() {{
-            put("status", true);
-        }});
-        return new ModelAndView(jsonView);
-    }
+//    /**
+//     * 保存来自百度的关键词
+//     *
+//     * @param seedWords
+//     * @param krFileId
+//     * @param newCampaignName
+//     * @return
+//     */
+//    @RequestMapping(value = "/save1", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ModelAndView saveKeywordFromBaidu(@RequestParam(value = "seedWords", required = false) String seedWords,
+//                                             @RequestParam(value = "krFileId", required = false) String krFileId,
+//                                             @RequestParam(value = "newCampaignName", required = false, defaultValue = "新建计划") String newCampaignName) {
+//        List<String> seedWordList = new ArrayList<>(Arrays.asList(seedWords.split(",")));
+////        keywordGroupService.saveKeywordFromBaidu(seedWordList, krFileId, newCampaignName);
+//        AbstractView jsonView = new MappingJackson2JsonView();
+//        jsonView.setAttributesMap(new HashMap<String, Object>() {{
+//            put("status", true);
+//        }});
+//        return new ModelAndView(jsonView);
+//    }
 
-    /**
-     * 保存来自System的关键词
-     *
-     * @param trade
-     * @param category
-     * @param newCampaignName
-     * @return
-     */
-    @RequestMapping(value = "/save2", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView saveKeywordFromSystem(@RequestParam(value = "trade", required = false) final String trade,
-                                              @RequestParam(value = "category", required = false) String category,
-                                              @RequestParam(value = "newCampaignName", required = false) String newCampaignName) {
-        keywordGroupService.saveKeywordFromSystem(trade, category, newCampaignName);
-        AbstractView jsonView = new MappingJackson2JsonView();
-        jsonView.setAttributesMap(new HashMap<String, Object>() {{
-            put("status", true);
-        }});
-        return new ModelAndView(jsonView);
-    }
+//    /**
+//     * 保存来自System的关键词
+//     *
+//     * @param trade
+//     * @param category
+//     * @param newCampaignName
+//     * @return
+//     */
+//    @RequestMapping(value = "/save2", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ModelAndView saveKeywordFromSystem(@RequestParam(value = "trade", required = false) final String trade,
+//                                              @RequestParam(value = "category", required = false) String category,
+//                                              @RequestParam(value = "newCampaignName", required = false) String newCampaignName) {
+////        keywordGroupService.saveKeywordFromSystem(trade, category, newCampaignName);
+//        AbstractView jsonView = new MappingJackson2JsonView();
+//        jsonView.setAttributesMap(new HashMap<String, Object>() {{
+//            put("status", true);
+//        }});
+//        return new ModelAndView(jsonView);
+//    }
 
 }

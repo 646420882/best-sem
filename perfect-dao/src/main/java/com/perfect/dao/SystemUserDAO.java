@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by vbzer_000 on 2014/6/18.
  */
-public interface SystemUserDAO {
+public interface SystemUserDAO extends MongoCrudRepository<SystemUserDTO, String> {
 
     /**
      * 根据用户名查询

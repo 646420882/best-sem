@@ -1,7 +1,7 @@
 package com.perfect.service;
 
-import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 
 /**
  * Created by yousheng on 2014/8/12.
@@ -10,17 +10,17 @@ import com.perfect.entity.SystemUserEntity;
  */
 public interface SystemUserService {
 
-    public SystemUserEntity getSystemUser(String userName);
+    public SystemUserDTO getSystemUser(String userName);
 
-    public SystemUserEntity getSystemUser(long aid);
+    public SystemUserDTO getSystemUser(long aid);
 
-    Iterable<SystemUserEntity> getAllUser();
+    Iterable<SystemUserDTO> getAllUser();
 
-    public void save(SystemUserEntity systemUserEntity);
+    public void save(SystemUserDTO systemUserDTO);
 
     boolean removeAccount(Long id);
 
-    void addAccount(String user, BaiduAccountInfoEntity baiduAccountInfoEntity);
+    void addAccount(String user, BaiduAccountInfoDTO baiduAccountInfoDTO);
 
     boolean updatePassword(String userName, String pwd);
 }

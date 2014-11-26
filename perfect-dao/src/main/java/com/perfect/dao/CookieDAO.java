@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by baizz on 2014-11-10.
  */
-public interface CookieDAO {
+public interface CookieDAO extends MongoCrudRepository<CookieDTO, String> {
 
     CookieDTO takeOne();
 

@@ -1,6 +1,6 @@
 package com.perfect.app.admin.controller;
 
-import com.perfect.entity.UrlEntity;
+import com.perfect.dto.UrlDTO;
 import com.perfect.service.BiddingMaintenanceService;
 import com.perfect.utils.JSONUtils;
 import org.springframework.context.annotation.Scope;
@@ -15,7 +15,6 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -34,7 +33,7 @@ public class BiddingMaintenanceController {
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView listRequestUrl() {
         AbstractView jsonView = new MappingJackson2JsonView();
-        List<UrlEntity> list = biddingMaintenanceService.findAll();
+        List<UrlDTO> list = biddingMaintenanceService.findAll();
         Map<String, Object> values = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(values);
         return new ModelAndView(jsonView);
@@ -47,11 +46,11 @@ public class BiddingMaintenanceController {
             return null;
 
         requestUrl = java.net.URLDecoder.decode(requestUrl, "UTF-8");
-        UrlEntity urlEntity = new UrlEntity();
-        urlEntity.setRequest(requestUrl);
-        urlEntity.setIdle(true);
-        urlEntity.setFinishTime(0l);
-        biddingMaintenanceService.saveUrlEntity(urlEntity);
+        UrlDTO urlDTO = new UrlDTO();
+        urlDTO.setRequest(requestUrl);
+        urlDTO.setIdle(true);
+        urlDTO.setFinishTime(0l);
+        biddingMaintenanceService.saveUrlEntity(urlDTO);
         AbstractView jsonView = new MappingJackson2JsonView();
         jsonView.setAttributesMap(new TreeMap<String, Object>() {{
             put("status", "success");

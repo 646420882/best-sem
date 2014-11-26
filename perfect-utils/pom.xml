@@ -16,11 +16,6 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>com.perfect</groupId>
-            <artifactId>perfect-commons</artifactId>
-        </dependency>
-
         <!-- Redis -->
         <dependency>
             <groupId>redis.clients</groupId>
@@ -31,11 +26,6 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <!-- JSON -->

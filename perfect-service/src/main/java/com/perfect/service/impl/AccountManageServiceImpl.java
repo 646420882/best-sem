@@ -10,14 +10,15 @@ import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.account.AccountManageDAO;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountAllStateDTO;
-import com.perfect.entity.AccountReportEntity;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.MD5;
-import com.perfect.entity.SystemUserEntity;
-import com.perfect.dao.mongodb.utils.DateUtils;
 import com.perfect.service.AccountManageService;
+import com.perfect.utils.DateUtils;
 import com.perfect.utils.JSONUtils;
+import com.perfect.utils.MD5Utils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,7 +28,7 @@ import java.util.*;
 
 /**
  * Created by baizz on 2014-8-21.
- * 2014-11-24 refactor
+ * 2014-11-26 refactor
  */
 @Service("accountManageService")
 public class AccountManageServiceImpl implements AccountManageService {
@@ -37,46 +38,46 @@ public class AccountManageServiceImpl implements AccountManageService {
 
     @Override
     public int updatePwd(String password, String newPwd) {
-        SystemUserEntity currUserInfo = getCurrUserInfo();
+        SystemUserDTO currUserInfo = getCurrUserInfo();
 
-        MD5.Builder builder = new MD5.Builder();
-        MD5 md5 = builder.password(password).salt(currUserInfo.getUserName()).build();
+        MD5Utils.Builder builder = new MD5Utils.Builder();
+        MD5Utils md5 = builder.password(password).salt(currUserInfo.getUserName()).build();
 
-        MD5 md5NewPwd = builder.password(newPwd).salt(currUserInfo.getUserName()).build();
+        MD5Utils md5NewPwd = builder.password(newPwd).salt(currUserInfo.getUserName()).build();
 
         int i;
-        if(md5.getMD5().equals(currUserInfo.getPassword())){
+        if (md5.getMD5().equals(currUserInfo.getPassword())) {
             WriteResult writeResult = accountManageDAO.updatePwd(currUserInfo.getUserName(), md5NewPwd.getMD5());
-            if(writeResult.isUpdateOfExisting()){
-                i=1;
-            }else{
-                i=0;
+            if (writeResult.isUpdateOfExisting()) {
+                i = 1;
+            } else {
+                i = 0;
             }
-        }else{
-            i=-1;
+        } else {
+            i = -1;
         }
         return i;
     }
 
     @Override
     public int JudgePwd(String password) {
-        SystemUserEntity currUserInfo = getCurrUserInfo();
+        SystemUserDTO currUserInfo = getCurrUserInfo();
 
-        MD5.Builder builder = new MD5.Builder();
-        MD5 md5 = builder.password(password).salt(currUserInfo.getUserName()).build();
+        MD5Utils.Builder builder = new MD5Utils.Builder();
+        MD5Utils md5 = builder.password(password).salt(currUserInfo.getUserName()).build();
         int i;
-        if(md5.getMD5().equals(currUserInfo.getPassword())){
-            i=1;
-        }else{
-            i=-1;
+        if (md5.getMD5().equals(currUserInfo.getPassword())) {
+            i = 1;
+        } else {
+            i = -1;
         }
 
         return i;
     }
 
     @Override
-    public List<SystemUserEntity> getAccount() {
-        List<SystemUserEntity> entities = accountManageDAO.getAccount();
+    public List<SystemUserDTO> getAccount() {
+        List<SystemUserDTO> entities = accountManageDAO.getAccount();
         return entities;
     }
 
@@ -87,29 +88,29 @@ public class AccountManageServiceImpl implements AccountManageService {
     }
 
     @Override
-    public  List<BaiduAccountAllStateDTO> getAccountAll() {
-        List<SystemUserEntity> entities = accountManageDAO.getAccountAll();
+    public List<BaiduAccountAllStateDTO> getAccountAll() {
+        List<SystemUserDTO> systemUserDTOList = accountManageDAO.getAccountAll();
         List<BaiduAccountAllStateDTO> allStates = new ArrayList<>();
 
-        for(SystemUserEntity userEntity :entities){
-            if(userEntity.getUserName().equals("administrator")){
+        for (SystemUserDTO systemUserDTO : systemUserDTOList) {
+            if (systemUserDTO.getUserName().equals("administrator")) {
                 continue;
             }
-            if(userEntity.getBaiduAccountInfoEntities().size() > 0){
-                for(BaiduAccountInfoEntity entity :userEntity.getBaiduAccountInfoEntities()){
+            if (systemUserDTO.getBaiduAccountInfoDTOs().size() > 0) {
+                for (BaiduAccountInfoDTO dto : systemUserDTO.getBaiduAccountInfoDTOs()) {
                     BaiduAccountAllStateDTO accountAllState = new BaiduAccountAllStateDTO();
-                    accountAllState.setIdObj(entity.getId());
-                    accountAllState.setUserName(userEntity.getUserName());
-                    accountAllState.setUserState(userEntity.getState());
-                    accountAllState.setBaiduUserName(entity.getBaiduUserName());
-                    accountAllState.setBaiduState(entity.getState());
+                    accountAllState.setIdObj(dto.getId());
+                    accountAllState.setUserName(systemUserDTO.getUserName());
+                    accountAllState.setUserState(systemUserDTO.getState());
+                    accountAllState.setBaiduUserName(dto.getBaiduUserName());
+                    accountAllState.setBaiduState(dto.getState());
                     allStates.add(accountAllState);
                 }
-            }else{
+            } else {
                 BaiduAccountAllStateDTO accountAllState = new BaiduAccountAllStateDTO();
                 accountAllState.setIdObj(0l);
-                accountAllState.setUserName(userEntity.getUserName());
-                accountAllState.setUserState(userEntity.getState());
+                accountAllState.setUserName(systemUserDTO.getUserName());
+                accountAllState.setUserState(systemUserDTO.getState());
                 accountAllState.setBaiduUserName(" ");
                 accountAllState.setBaiduState(0l);
                 allStates.add(accountAllState);
@@ -123,8 +124,8 @@ public class AccountManageServiceImpl implements AccountManageService {
     public int updateAccountAllState(String userName, Long baiduId, Long state) {
         int i = 0;
         WriteResult writeResult = accountManageDAO.updateBaiDuAccount(userName, baiduId, state);
-        if(writeResult.isUpdateOfExisting()){
-            i=1;
+        if (writeResult.isUpdateOfExisting()) {
+            i = 1;
         }
         return i;
     }
@@ -137,7 +138,7 @@ public class AccountManageServiceImpl implements AccountManageService {
     }
 
     @Override
-    public SystemUserEntity getCurrUserInfo() {
+    public SystemUserDTO getCurrUserInfo() {
         return accountManageDAO.getCurrUserInfo();
     }
 
@@ -153,13 +154,13 @@ public class AccountManageServiceImpl implements AccountManageService {
     }
 
     public Map<String, Object> getBaiduAccountInfoByUserId(Long baiduUserId) {
-        BaiduAccountInfoEntity entity = accountManageDAO.findByBaiduUserId(baiduUserId);
-        Map<String, Object> results = JSONUtils.getJsonMapData(entity);
+        BaiduAccountInfoDTO dto = accountManageDAO.findByBaiduUserId(baiduUserId);
+        Map<String, Object> results = JSONUtils.getJsonMapData(dto);
         results.put("cost", getYesterdayCost(baiduUserId));
         results.put("costRate", accountManageDAO.getCostRate());
         //从凤巢获取budgetOfflineTime
         try {
-            CommonService service = ServiceFactory.getInstance(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
+            CommonService service = ServiceFactory.getInstance(dto.getBaiduUserName(), dto.getBaiduPassword(), dto.getToken(), null);
             AccountService accountService = service.getService(AccountService.class);
             GetAccountInfoRequest request = new GetAccountInfoRequest();
             GetAccountInfoResponse response = accountService.getAccountInfo(request);
@@ -176,18 +177,18 @@ public class AccountManageServiceImpl implements AccountManageService {
         return results;
     }
 
-    public BaiduAccountInfoEntity getBaiduAccountInfoById(Long baiduUserId) {
+    public BaiduAccountInfoDTO getBaiduAccountInfoById(Long baiduUserId) {
         return accountManageDAO.findByBaiduUserId(baiduUserId);
     }
 
-    public void updateBaiduAccount(BaiduAccountInfoEntity entity) {
-        accountManageDAO.updateBaiduAccountInfo(entity);
+    public void updateBaiduAccount(BaiduAccountInfoDTO baiduAccountInfoDTO) {
+        accountManageDAO.updateBaiduAccountInfo(baiduAccountInfoDTO);
     }
 
     @SuppressWarnings("unchecked")
     public Map<String, Object> getAccountReports(int number) {
         List<Date> dates = (List<Date>) DateUtils.getsLatestAnyDays("MM-dd", number).get(DateUtils.KEY_DATE);
-        List<AccountReportEntity> list = accountManageDAO.getAccountReports(dates);
+        List<AccountReportDTO> list = accountManageDAO.getAccountReports(dates);
         Map<String, Object> values = JSONUtils.getJsonMapData(list);
         values.put("dates", JSONUtils.getJsonObjectArray(DateUtils.getsLatestAnyDays("MM-dd", 7).get(DateUtils.KEY_STRING)));
         return values;

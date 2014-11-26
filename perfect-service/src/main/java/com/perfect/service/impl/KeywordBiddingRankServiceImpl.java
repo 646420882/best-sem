@@ -1,12 +1,12 @@
 package com.perfect.service.impl;
 
+import com.perfect.api.baidu.BaiduPreviewHelper;
 import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.api.baidu.BaiduServiceSupport;
-import com.perfect.api.baidu.BaiduSpiderHelper;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.core.AppContext;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.creative.CreativeInfoDTO;
-import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.KeywordBiddingRankService;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Created by baizz on 2014-9-18.
- * 2014-11-24 refactor
+ * 2014-11-26 refactor
  */
 @Component("keywordBiddingRankService")
 public class KeywordBiddingRankServiceImpl implements KeywordBiddingRankService {
@@ -32,19 +32,18 @@ public class KeywordBiddingRankServiceImpl implements KeywordBiddingRankService 
     @Override
     public Integer getKeywordBiddingRank(String keyword, Integer region) {
 
-        BaiduAccountInfoEntity baiduAccount = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        BaiduAccountInfoDTO baiduAccount = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
 
         String host = baiduAccount.getRegDomain();
 
         CommonService service = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
 
-        BaiduSpiderHelper baiduSpiderHelper = baiduPreviewHelperFactory.createInstance(service);
+        BaiduPreviewHelper baiduPreviewHelper = baiduPreviewHelperFactory.createInstance(service);
 
-        // TODO remove BaiduSpiderHelper
         String[] keywords = {keyword};
-        List<BaiduSpiderHelper.PreviewData> previewDatas = baiduSpiderHelper.getPageData(keywords, region);
+        List<BaiduPreviewHelper.PreviewData> previewDatas = baiduPreviewHelper.getPageData(keywords, region);
 
-        for (BaiduSpiderHelper.PreviewData previewData : previewDatas) {
+        for (BaiduPreviewHelper.PreviewData previewData : previewDatas) {
             if ((previewData.getLeft() == null || previewData.getLeft().isEmpty()) && (previewData.getRight() == null || previewData.getRight().isEmpty())) {
                 continue;
             }

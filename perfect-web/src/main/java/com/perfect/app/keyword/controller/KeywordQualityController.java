@@ -1,7 +1,7 @@
 package com.perfect.app.keyword.controller;
 
-import com.perfect.dao.mongodb.utils.DateUtils;
 import com.perfect.service.KeywordQualityService;
+import com.perfect.utils.DateUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
