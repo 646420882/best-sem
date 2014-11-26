@@ -1,10 +1,10 @@
-package com.perfect.commons.constants;
+package com.perfect.vo;
 
 
 /**
  * Created by XiaoWei on 2014/11/12.
  */
-public class ConstantsDTO {
+public class CensusVO {
     private String censusUrl;//统计访问量的Url地址
     private int totalCount;//总访问量(这个是不以独立ip，独立cookie为标准，访问一次，则该数据记录一次)
     private int totalPv;//等价于totalCount
@@ -14,7 +14,7 @@ public class ConstantsDTO {
     private double alert;//跳出率
     private int convert;//转化
 
-    public ConstantsDTO(String censusUrl, int totalCount, int totalPv, int totalUv, int totalIp, double avgTime, double alert, int convert) {
+    public CensusVO(String censusUrl, int totalCount, int totalPv, int totalUv, int totalIp, double avgTime, double alert, int convert) {
         this.censusUrl = censusUrl;
         this.totalCount = totalCount;
         this.totalPv = totalPv;
@@ -25,7 +25,7 @@ public class ConstantsDTO {
         this.convert = convert;
     }
 
-    public ConstantsDTO() {
+    public CensusVO() {
     }
 
     public int getTotalCount() {

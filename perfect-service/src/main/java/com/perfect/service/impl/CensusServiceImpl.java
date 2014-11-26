@@ -1,7 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.CensusDAO;
-import com.perfect.commons.constants.ConstantsDTO;
+import com.perfect.vo.CensusVO;
 import com.perfect.entity.CensusEntity;
 import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dao.mongodb.utils.Pager;
@@ -79,22 +79,22 @@ public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusEntity,Long
     }
 
     @Override
-    public ConstantsDTO getTodayTotal(String url) {
+    public CensusVO getTodayTotal(String url) {
         return censusDAO.getTodayTotal(url);
     }
 
     @Override
-    public ConstantsDTO getLastDayTotal(String url) {
+    public CensusVO getLastDayTotal(String url) {
         return censusDAO.getLastDayTotal(url);
     }
 
     @Override
-    public ConstantsDTO getLastWeekTotal(String url) {
+    public CensusVO getLastWeekTotal(String url) {
         return censusDAO.getLastWeekTotal(url);
     }
 
     @Override
-    public ConstantsDTO getLastMonthTotal(String url) {
+    public CensusVO getLastMonthTotal(String url) {
         return censusDAO.getLastMonthTotal(url);
     }
 

@@ -2,11 +2,13 @@ package com.perfect.db.mongodb.impl;
 
 import com.perfect.dao.CensusDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.commons.constants.ConstantsDTO;
-import com.perfect.commons.constants.ConstantsDTO.CensusStatus;
+import com.perfect.dto.count.CensusDTO;
+import com.perfect.utils.Pager;
+import com.perfect.vo.CensusVO;
+import com.perfect.vo.CensusVO.CensusStatus;
 import com.perfect.entity.CensusEntity;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.dao.utils.Pager;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -36,38 +38,40 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusEntity, Long> i
     }
 
     @Override
-    public CensusEntity saveParams(CensusEntity censusEntity) {
+    public CensusDTO saveParams(CensusDTO censusDTO) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        if (mongoTemplate.exists(new Query(Criteria.where("uid").is(censusEntity.getUuid())), CensusEntity.class)) {
-            censusEntity.setUserType(0);
+        if (mongoTemplate.exists(new Query(Criteria.where("uid").is(censusDTO.getUuid())), CensusEntity.class)) {
+            censusDTO.setUserType(0);
         } else {
-            censusEntity.setUserType(1);
+            censusDTO.setUserType(1);
         }
-        mongoTemplate.save(censusEntity, SYS_CENSUS);
-        return censusEntity;
+        CensusEntity censusEntity=new CensusEntity();
+        BeanUtils.copyProperties(censusDTO,censusEntity);
+        getMongoTemplate().save(censusEntity, SYS_CENSUS);
+        return censusDTO;
     }
 
     @Override
-    public ConstantsDTO getTodayTotal(String url) {
+    public CensusVO getTodayTotal(String url) {
         return getTotalConstants(CensusStatus.TO_DAY, url);
     }
 
     @Override
-    public ConstantsDTO getLastDayTotal(String url) {
+    public CensusVO getLastDayTotal(String url) {
         return getTotalConstants(CensusStatus.LAST_DAY, url);
     }
 
     @Override
-    public ConstantsDTO getLastWeekTotal(String url) {
+    public CensusVO getLastWeekTotal(String url) {
         return getTotalConstants(CensusStatus.LAST_WEEK, url);
     }
 
     @Override
-    public ConstantsDTO getLastMonthTotal(String url) {
+    public CensusVO getLastMonthTotal(String url) {
         return getTotalConstants(CensusStatus.LAST_MONTH, url);
     }
 
-    private ConstantsDTO getTotalConstants(CensusStatus status, String url) {
+    private CensusVO getTotalConstants(CensusStatus status, String url) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Query q = new Query();
         Criteria c = getStaticCriteria(status, url);
@@ -91,14 +95,14 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusEntity, Long> i
         int totalPv = (int) mongoTemplate.count(q, SYS_CENSUS);
         int totalUv = uidCountList.size();
         int totalIp = ipCountList.size();
-        ConstantsDTO constantsDTO = new ConstantsDTO();
-        constantsDTO.setCensusUrl(url);
-        constantsDTO.setTotalCount(totalPv);
-        constantsDTO.setTotalPv(totalPv);
-        constantsDTO.setTotalUv(totalUv);
-        constantsDTO.setTotalIp(totalIp);
+        CensusVO censusVO = new CensusVO();
+        censusVO.setCensusUrl(url);
+        censusVO.setTotalCount(totalPv);
+        censusVO.setTotalPv(totalPv);
+        censusVO.setTotalUv(totalUv);
+        censusVO.setTotalIp(totalIp);
 
-        return constantsDTO;
+        return censusVO;
     }
 
     private Criteria getStaticCriteria(CensusStatus status, String url) {

@@ -1,7 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dao.MongoCrudRepository;
-import com.perfect.commons.constants.ConstantsDTO;
+import com.perfect.vo.CensusVO;
 import com.perfect.entity.CensusEntity;
 
 /**
@@ -19,27 +19,27 @@ public interface CensusService extends MongoCrudRepository<CensusEntity,Long> {
      * 根据某个url地址获取今日统计数据
      * @return
      */
-    public ConstantsDTO getTodayTotal(String url);
+    public CensusVO getTodayTotal(String url);
 
     /**
      * 根据某个url地址获取昨日统计数据
      * @param url
      * @return
      */
-    public ConstantsDTO getLastDayTotal(String url);
+    public CensusVO getLastDayTotal(String url);
 
     /**
      * 根据某个url地址获取上周统计数据
      * @param url
      * @return
      */
-    public ConstantsDTO getLastWeekTotal(String url);
+    public CensusVO getLastWeekTotal(String url);
 
     /**
      * 根据某个url地址获取上个月统计数据
      * @param url
      * @return
      */
-    public ConstantsDTO getLastMonthTotal(String url);
+    public CensusVO getLastMonthTotal(String url);
 
 }

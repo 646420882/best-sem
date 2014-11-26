@@ -1,8 +1,8 @@
 package com.perfect.dao;
 
 import com.perfect.dto.ViewsDTO;
-import com.perfect.entity.CensusEntity;
-import com.perfect.entity.CensusEveryDayReportEntity;
+import com.perfect.dto.count.CensusDTO;
+import com.perfect.dto.count.CensusEveryDayReportDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -32,12 +32,12 @@ public interface CensusEveryDayReportDao{
      * 添加
      * @param list
      */
-    public void insertList(List<CensusEveryDayReportEntity> list);
+    public void insertList(List<CensusEveryDayReportDTO> list);
 
 
     /**
      * Demo
      * @return
      */
-    public List<CensusEntity> getCensus();
+    public List<CensusDTO> getCensus();
 }

@@ -3,11 +3,13 @@ package com.perfect.db.mongodb.impl;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.dao.CensusEveryDayReportDao;
 import com.perfect.dto.ViewsDTO;
+import com.perfect.dto.count.CensusDTO;
+import com.perfect.dto.count.CensusEveryDayReportDTO;
 import com.perfect.entity.CensusEntity;
 import com.perfect.entity.CensusEveryDayReportEntity;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
-import com.perfect.dao.mongodb.utils.EntityConstants;
-import com.perfect.dao.utils.Pager;
+import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.Pager;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
@@ -83,15 +85,17 @@ public class CensusEveryDayReportDaoImpl extends AbstractSysBaseDAOImpl implemen
 
 
 
-    public void insertList(List<CensusEveryDayReportEntity> list){
+    public void insertList(List<CensusEveryDayReportDTO> list){
         MongoTemplate mongoTemplate = getSysMongoTemplate();
-        mongoTemplate.insertAll(list);
+        List<CensusEveryDayReportEntity> insertList=ObjectUtils.convert(list,CensusEveryDayReportEntity.class);
+        mongoTemplate.insertAll(insertList);
     }
 
 
-    public List<CensusEntity> getCensus(){
+    public List<CensusDTO> getCensus(){
         MongoTemplate mongoTemplate = getSysMongoTemplate();
-        return mongoTemplate.find(new Query(Criteria.where("sys").is("Windows 7")),CensusEntity.class,MongoEntityConstants.SYS_CENSUS);
+        List<CensusEntity> list= mongoTemplate.find(new Query(Criteria.where("sys").is("Windows 7")),CensusEntity.class,MongoEntityConstants.SYS_CENSUS);
+        return wrapperList(list);
     }
 
 
@@ -134,5 +138,8 @@ public class CensusEveryDayReportDaoImpl extends AbstractSysBaseDAOImpl implemen
         return null;
     }
 
+    private List<CensusDTO> wrapperList(List<CensusEntity> censusEntityList){
+       return ObjectUtils.convert(censusEntityList, CensusDTO.class);
+    }
 
 }
