@@ -1,9 +1,11 @@
 package com.perfect.dto.creative;
 
+import com.perfect.dto.account.AccountIdDTO;
+
 /**
  * Created by SubDong on 2014/11/25.
  */
-public class CreativeDTO {
+public class CreativeDTO extends AccountIdDTO {
     private String id;
 
     private Long creativeId;

@@ -1,10 +1,11 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.CensusDAO;
+import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.dto.count.CensusDTO;
+import com.perfect.utils.Pager;
 import com.perfect.vo.CensusVO;
 import com.perfect.entity.CensusEntity;
-import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.dao.mongodb.utils.Pager;
 import com.perfect.service.CensusService;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,7 @@ public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusEntity,Long
         String area=osAnBrowser[11];
         Integer operate= Integer.valueOf(osAnBrowser[12]);
         String lastPage=osAnBrowser[13];
-        CensusEntity censusEntity=new CensusEntity();
+        CensusDTO censusEntity=new CensusDTO();
         censusEntity.setUuid(uuid);
         censusEntity.setSystem(system);
         censusEntity.setBrowser(browser);

@@ -1,11 +1,12 @@
 package com.perfect.app.personstore.controller;
 
+import com.perfect.commons.constants.MongoEntityConstants;
+import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.entity.LexiconEntity;
-import com.perfect.dao.mongodb.base.BaseMongoTemplate;
-import com.perfect.dao.mongodb.utils.PagerInfo;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.KeywordGroupService;
 import com.perfect.commons.web.WebContextSupport;
+import com.perfect.utils.PagerInfo;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -19,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import redis.clients.jedis.Jedis;
 
-import static com.perfect.dao.mongodb.utils.EntityConstants.TRADE_KEY;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -27,6 +27,7 @@ import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/10/28.
+ * 2014-11-26 refactor
  */
 @Controller
 @RequestMapping("/person")
@@ -55,8 +56,8 @@ public class StoreManager extends WebContextSupport {
             if(count==1){
                 writeData(SUCCESS,response,null);
                 Jedis jc= JRedisUtils.get();
-                if(jc.exists(TRADE_KEY)){
-                    jc.del(TRADE_KEY);
+                if(jc.exists(MongoEntityConstants.TRADE_KEY)){
+                    jc.del(MongoEntityConstants.TRADE_KEY);
                 }
             }else if(count==3){
                 writeData(FAIL,response,null);
@@ -100,8 +101,8 @@ public class StoreManager extends WebContextSupport {
             mongoTemplate.remove(q, LexiconEntity.class);
             writeData(SUCCESS, response, null);
             Jedis jc= JRedisUtils.get();
-            if(jc.exists(TRADE_KEY)){
-                jc.del(TRADE_KEY);
+            if(jc.exists(MongoEntityConstants.TRADE_KEY)){
+                jc.del(MongoEntityConstants.TRADE_KEY);
             }
         }catch (Exception e){
             e.printStackTrace();

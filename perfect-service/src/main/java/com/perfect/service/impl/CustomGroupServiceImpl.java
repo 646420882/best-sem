@@ -2,10 +2,11 @@ package com.perfect.service.impl;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.perfect.dao.CustomGroupDAO;
+import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.dto.CustomGroupDTO;
 import com.perfect.entity.CustomGroupEntity;
-import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.dao.mongodb.utils.Pager;
 import com.perfect.service.CustomGroupService;
+import com.perfect.utils.Pager;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,13 +18,13 @@ import java.util.Map;
  * Created by XiaoWei on 2014/9/19.
  */
 @Service
-public class CustomGroupServiceImpl extends AbstractUserBaseDAOImpl<CustomGroupEntity,Long> implements CustomGroupService {
+public class CustomGroupServiceImpl extends AbstractUserBaseDAOImpl<CustomGroupDTO,Long> implements CustomGroupService {
     private static final String ZTREE="trees";
 
     @Resource
     private CustomGroupDAO customGroupDAO;
     @Override
-    public Class<CustomGroupEntity> getEntityClass() {
+    public Class<CustomGroupDTO> getEntityClass() {
         return null;
     }
 
@@ -33,7 +34,7 @@ public class CustomGroupServiceImpl extends AbstractUserBaseDAOImpl<CustomGroupE
     }
 
     @Override
-    public List<CustomGroupEntity> findAll(Long acId) {
+    public List<CustomGroupDTO> findAll(Long acId) {
         return customGroupDAO.findAll(acId);
     }
 
@@ -46,7 +47,12 @@ public class CustomGroupServiceImpl extends AbstractUserBaseDAOImpl<CustomGroupE
     }
 
     @Override
-    public CustomGroupEntity findByCustomName(String customName) {
+    public CustomGroupDTO findByCustomName(String customName) {
         return customGroupDAO.findByCustomName(customName);
+    }
+
+    @Override
+    public void myInsert(CustomGroupDTO customGroupDTO) {
+        customGroupDAO.myInsert(customGroupDTO);
     }
 }

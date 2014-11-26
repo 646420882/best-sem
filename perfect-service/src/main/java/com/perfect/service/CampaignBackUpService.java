@@ -7,6 +7,5 @@ import com.perfect.dto.campaign.CampaignDTO;
  */
 public interface CampaignBackUpService {
     CampaignDTO reducUpdate(String id);
-
     void reducDel(String id);
 }

@@ -5,13 +5,15 @@ import com.perfect.api.baidu.PromotionMonitoring;
 import com.perfect.autosdk.sms.v3.FolderMonitor;
 import com.perfect.autosdk.sms.v3.Monitor;
 import com.perfect.core.AppContext;
-import com.perfect.dao.AccountManageDAO;
+import com.perfect.dao.account.AccountManageDAO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.KeywordReportEntity;
-import com.perfect.dao.mongodb.utils.DateUtils;
-import com.perfect.dao.mongodb.utils.PagerInfo;
 import com.perfect.service.KeywordReportService;
 import com.perfect.commons.web.WebContextSupport;
+import com.perfect.utils.DateUtils;
+import com.perfect.utils.PagerInfo;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,7 @@ import java.util.*;
 
 /**
  * Created by XiaoWei on 2014/7/29.
+ * 2014-11-26 refactor
  */
 @Controller
 public class ImportKeywordManageController extends WebContextSupport {
@@ -67,7 +70,7 @@ public class ImportKeywordManageController extends WebContextSupport {
      */
     public PromotionMonitoring getUserInfo() {
         Long accid = AppContext.getAccountId();
-        BaiduAccountInfoEntity entity = accountManageDAO.findByBaiduUserId(accid);
+        BaiduAccountInfoDTO entity = accountManageDAO.findByBaiduUserId(accid);
         PromotionMonitoring Monitoring = new PromotionMonitoring(entity.getBaiduUserName(),entity.getBaiduPassword(),entity.getToken());;
         return Monitoring;
     }
@@ -78,7 +81,7 @@ public class ImportKeywordManageController extends WebContextSupport {
      * @return
      */
     private List<Long> getMonitorIds() {
-        List<Long> kwdIds = new ArrayList<>();
+        List<Long> kwdIds = new ArrayList<Long>();
         PromotionMonitoring monitoring = getUserInfo();
         List<FolderMonitor> monitors = monitoring.getMonitorWordByFolderIdAll();
         if (monitors.size() > 0) {
@@ -99,7 +102,7 @@ public class ImportKeywordManageController extends WebContextSupport {
         params.put("startDate", startDate);
         params.put("endDate", endDate);
         params.put("kwdIds", getMonitorIds());
-        List<KeywordReportEntity> keywordReportEntityList = keywordReportService.getAll(params);
+        List<KeywordReportDTO> keywordReportEntityList = keywordReportService.getAll(params);
         String filename = DateUtils.getYesterdayStr() + "-ImportKeyword.csv";
         OutputStream os = null;
         try {

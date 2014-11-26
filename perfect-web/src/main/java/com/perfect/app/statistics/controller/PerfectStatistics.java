@@ -2,6 +2,7 @@ package com.perfect.app.statistics.controller;
 
 import com.perfect.service.CensusService;
 import com.perfect.commons.web.WebContextSupport;
+import com.perfect.vo.CensusVO;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
@@ -183,26 +184,26 @@ public class PerfectStatistics extends WebContextSupport {
     }
     @RequestMapping(value = "/getTodayConstants",method = RequestMethod.GET)
     public  ModelAndView getTodayConstants(HttpServletResponse response,@RequestParam(value = "url",required = true)String url){
-       ConstantsDTO constantsDTO= censusService.getTodayTotal(url);
-        writeJson(constantsDTO,response);
+        CensusVO censusVO= censusService.getTodayTotal(url);
+        writeJson(censusVO,response);
         return null;
     }
     @RequestMapping(value = "/getLastDayConstants",method = RequestMethod.GET)
     public  ModelAndView getLastDayConstants(HttpServletResponse response,@RequestParam(value = "url",required = true)String url){
-        ConstantsDTO constantsDTO= censusService.getLastDayTotal(url);
-        writeJson(constantsDTO,response);
+        CensusVO censusVO= censusService.getLastDayTotal(url);
+        writeJson(censusVO,response);
         return null;
     }
     @RequestMapping(value = "/getLastWeekConstants",method = RequestMethod.GET)
     public  ModelAndView getLastWeekConstants(HttpServletResponse response,@RequestParam(value = "url",required = true)String url){
-        ConstantsDTO constantsDTO= censusService.getLastWeekTotal(url);
-        writeJson(constantsDTO,response);
+        CensusVO censusVO= censusService.getLastWeekTotal(url);
+        writeJson(censusVO,response);
         return null;
     }
     @RequestMapping(value = "/getLastMonthConstants",method = RequestMethod.GET)
     public  ModelAndView getLastMonthConstants(HttpServletResponse response,@RequestParam(value = "url",required = true)String url){
-        ConstantsDTO constantsDTO= censusService.getLastMonthTotal(url);
-        writeJson(constantsDTO,response);
+        CensusVO censusVO= censusService.getLastMonthTotal(url);
+        writeJson(censusVO,response);
         return null;
     }
 

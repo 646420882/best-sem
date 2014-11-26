@@ -1,8 +1,8 @@
 package com.perfect.service;
 
 import com.perfect.entity.bidding.BiddingRuleEntity;
-import com.perfect.dao.mongodb.utils.PaginationParam;
 import com.perfect.param.BiddingRuleParam;
+import com.perfect.utils.PaginationParam;
 import org.springframework.data.domain.Sort;
 
 import java.util.Collection;

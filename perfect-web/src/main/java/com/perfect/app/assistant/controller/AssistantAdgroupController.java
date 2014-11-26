@@ -1,15 +1,18 @@
 package com.perfect.app.assistant.controller;
 
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
+import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.backup.AdgroupBackupDTO;
+import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
-import com.perfect.dao.mongodb.utils.EntityConstants;
-import com.perfect.dao.mongodb.utils.PagerInfo;
 import com.perfect.service.AdgroupBackUpService;
 import com.perfect.commons.web.WebContextSupport;
+import com.perfect.utils.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +30,7 @@ import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/8/21.
+ * 2014-11-26 refactor
  */
 @Controller
 @RequestMapping(value = "/assistantAdgroup")
@@ -49,14 +53,14 @@ public class AssistantAdgroupController extends WebContextSupport {
      */
     @RequestMapping(value = "/getAdgroupList")
     public ModelAndView getList(HttpServletRequest request, HttpServletResponse response,
-                                @RequestParam(value = "cid", required = false)String cid,
-                                @RequestParam(value = "nowPage",required = false,defaultValue = "0")int nowPage,
-                                @RequestParam(value = "pageSize",required = false,defaultValue = "20")int pageSize) {
-        PagerInfo pagerInfo=null;
+                                @RequestParam(value = "cid", required = false) String cid,
+                                @RequestParam(value = "nowPage", required = false, defaultValue = "0") int nowPage,
+                                @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize) {
+        PagerInfo pagerInfo = null;
         Map<String, Object> parms = new HashMap<>();
         if (cid.length() > OBJ_SIZE) {
             if (cid != "" || !cid.equals("")) {
-                parms.put(EntityConstants.OBJ_CAMPAIGN_ID, cid);
+                parms.put(MongoEntityConstants.OBJ_CAMPAIGN_ID, cid);
                 pagerInfo = adgroupDAO.findByPagerInfo(parms, nowPage, pageSize);
             } else {
                 pagerInfo = adgroupDAO.findByPagerInfo(parms, nowPage, pageSize);
@@ -64,7 +68,7 @@ public class AssistantAdgroupController extends WebContextSupport {
             setCampaignNameByStringObjId((List<AdgroupEntity>) pagerInfo.getList());
         } else {
             if (cid != "" || !cid.equals("")) {
-                parms.put(EntityConstants.CAMPAIGN_ID, Long.parseLong(cid));
+                parms.put(MongoEntityConstants.CAMPAIGN_ID, Long.parseLong(cid));
                 pagerInfo = adgroupDAO.findByPagerInfo(parms, nowPage, pageSize);
             } else {
                 pagerInfo = adgroupDAO.findByPagerInfo(parms, nowPage, pageSize);
@@ -82,7 +86,7 @@ public class AssistantAdgroupController extends WebContextSupport {
      */
     private void setCampaignNameByLongId(List<AdgroupEntity> list) {
         if (list.size() > 0) {
-            List<CampaignEntity> campaignEntity = (List<CampaignEntity>) campaignDAO.findAll();
+            List<CampaignDTO> campaignEntity = (List<CampaignDTO>) campaignDAO.findAll();
             for (int i = 0; i < campaignEntity.size(); i++) {
                 for (AdgroupEntity a : list) {
                     if (a.getCampaignId() != null) {
@@ -107,7 +111,7 @@ public class AssistantAdgroupController extends WebContextSupport {
      */
     private void setCampaignNameByStringObjId(List<AdgroupEntity> list) {
         if (list.size() > 0) {
-            List<CampaignEntity> campaignEntity = (List<CampaignEntity>) campaignDAO.findAll();
+            List<CampaignDTO> campaignEntity = (List<CampaignDTO>) campaignDAO.findAll();
             for (int i = 0; i < campaignEntity.size(); i++) {
                 for (AdgroupEntity a : list) {
                     if (a.getCampaignObjId().equals(campaignEntity.get(i).getId())) {
@@ -127,7 +131,7 @@ public class AssistantAdgroupController extends WebContextSupport {
      */
     @RequestMapping(value = "/getPlans", method = RequestMethod.GET)
     public ModelAndView getPlans(HttpServletRequest request, HttpServletResponse response) {
-        List<CampaignEntity> campaignEntities = (List<CampaignEntity>) campaignDAO.findAll();
+        List<CampaignDTO> campaignEntities = (List<CampaignDTO>) campaignDAO.findAll();
         writeJson(campaignEntities, response);
         return null;
     }
@@ -231,7 +235,7 @@ public class AssistantAdgroupController extends WebContextSupport {
                                @RequestParam(value = "exactNegativeWords") List<String> ne,
                                @RequestParam(value = "pause") Boolean p,
                                @RequestParam(value = "mib") Double mib) {
-        AdgroupEntity adgroupEntityFind = null;
+        AdgroupDTO adgroupEntityFind = null;
         try {
             if (agid.length() > OBJ_SIZE) {
                 adgroupEntityFind = adgroupDAO.findByObjId(agid);
@@ -245,7 +249,7 @@ public class AssistantAdgroupController extends WebContextSupport {
                 writeHtml(SUCCESS, response);
             } else {
                 adgroupEntityFind = adgroupDAO.findOne(Long.valueOf(agid));
-                AdgroupEntity adgroupEntity = new AdgroupEntity();
+                AdgroupDTO adgroupEntity = new AdgroupDTO();
                 adgroupEntityFind.setLocalStatus(2);
                 BeanUtils.copyProperties(adgroupEntityFind, adgroupEntity);
                 adgroupEntityFind.setAdgroupName(name);
@@ -278,16 +282,16 @@ public class AssistantAdgroupController extends WebContextSupport {
     public ModelAndView updateByChange(HttpServletResponse response, @RequestParam(value = "oid", required = true) String oid,
                                        @RequestParam(value = "pause", required = true) Boolean pause) {
         try {
-            AdgroupEntity adgroupEntity = null;
+            AdgroupDTO adgroupDTO = null;
             if (oid.length() > OBJ_SIZE) {
-                adgroupEntity = adgroupDAO.findByObjId(oid);
-                adgroupEntity.setPause(pause);
-                adgroupDAO.updateByObjId(adgroupEntity);
+                adgroupDTO = adgroupDAO.findByObjId(oid);
+                adgroupDTO.setPause(pause);
+                adgroupDAO.updateByObjId(adgroupDTO);
                 writeHtml(SUCCESS, response);
             } else {
-                adgroupEntity = adgroupDAO.findOne(Long.valueOf(oid));
-                adgroupEntity.setPause(pause);
-                adgroupDAO.update(adgroupEntity);
+                adgroupDTO = adgroupDAO.findOne(Long.valueOf(oid));
+                adgroupDTO.setPause(pause);
+                adgroupDAO.update(adgroupDTO);
                 writeHtml(SUCCESS, response);
             }
         } catch (Exception e) {
@@ -306,8 +310,8 @@ public class AssistantAdgroupController extends WebContextSupport {
     @RequestMapping(value = "/agReBack", method = RequestMethod.GET)
     public ModelAndView agReBack(HttpServletResponse response, @RequestParam(value = "oid", required = true) Long oid) {
         try {
-            AdgroupBackUpEntity backUpEntity = adgroupBackUpService.agReBack(oid);
-            writeData(SUCCESS, response, backUpEntity);
+            AdgroupBackupDTO adgroupBackupDTO = adgroupBackUpService.agReBack(oid);
+            writeData(SUCCESS, response, adgroupBackupDTO);
         } catch (Exception e) {
             e.printStackTrace();
             writeData(EXCEPTION, response, null);
@@ -365,33 +369,33 @@ public class AssistantAdgroupController extends WebContextSupport {
             Map<String, Object> params = new HashMap<>();
             params.put("name", name);
             if (cid.length() > OBJ_SIZE) {
-                params.put(EntityConstants.SYSTEM_ID, cid);
+                params.put(MongoEntityConstants.SYSTEM_ID, cid);
             } else {
-                params.put(EntityConstants.CAMPAIGN_ID, Long.valueOf(cid));
+                params.put(MongoEntityConstants.CAMPAIGN_ID, Long.valueOf(cid));
             }
-            AdgroupEntity adgroupEntity = adgroupDAO.fndEntity(params);
-            if (adgroupEntity != null) {
-                AdgroupEntity adgroupEntityFind = null;
-                if (adgroupEntity.getAdgroupId() == null) {
-                    adgroupEntityFind = adgroupDAO.findByObjId(adgroupEntity.getId());
-                    adgroupEntityFind.setAdgroupName(name);
-                    adgroupEntityFind.setMaxPrice(maxPrice);
-                    adgroupEntityFind.setPause(p);
-                    adgroupDAO.updateByObjId(adgroupEntityFind);
+            AdgroupDTO adgroupDTO = adgroupDAO.fndEntity(params);
+            if (adgroupDTO != null) {
+                AdgroupDTO adgroupDTOFind = null;
+                if (adgroupDTO.getAdgroupId() == null) {
+                    adgroupDTOFind = adgroupDAO.findByObjId(adgroupDTO.getId());
+                    adgroupDTOFind.setAdgroupName(name);
+                    adgroupDTOFind.setMaxPrice(maxPrice);
+                    adgroupDTOFind.setPause(p);
+                    adgroupDAO.updateByObjId(adgroupDTOFind);
                     writeHtml(SUCCESS, response);
                 } else {
-                    adgroupEntityFind = adgroupDAO.findOne(adgroupEntity.getAdgroupId());
-                    AdgroupEntity adgroupEntityBackUp = new AdgroupEntity();
-                    adgroupEntityFind.setLocalStatus(2);
-                    BeanUtils.copyProperties(adgroupEntityFind, adgroupEntityBackUp);
-                    adgroupEntityFind.setAdgroupName(name);
-                    adgroupEntityFind.setMaxPrice(maxPrice);
-                    adgroupEntityFind.setPause(p);
-                    adgroupDAO.update(adgroupEntityFind, adgroupEntityBackUp);
+                    adgroupDTOFind = adgroupDAO.findOne(adgroupDTO.getAdgroupId());
+                    AdgroupDTO adgroupEntityBackUp = new AdgroupDTO();
+                    adgroupDTOFind.setLocalStatus(2);
+                    BeanUtils.copyProperties(adgroupDTOFind, adgroupEntityBackUp);
+                    adgroupDTOFind.setAdgroupName(name);
+                    adgroupDTOFind.setMaxPrice(maxPrice);
+                    adgroupDTOFind.setPause(p);
+                    adgroupDAO.update(adgroupDTOFind, adgroupEntityBackUp);
                     writeHtml(SUCCESS, response);
                 }
             } else {
-                AdgroupEntity adgroupEntityInsert = new AdgroupEntity();
+                AdgroupDTO adgroupEntityInsert = new AdgroupDTO();
                 adgroupEntityInsert.setAccountId(AppContext.getAccountId());
                 if (cid.length() > OBJ_SIZE) {
                     adgroupEntityInsert.setCampaignObjId(cid);

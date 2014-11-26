@@ -5,7 +5,7 @@ import com.perfect.dto.backup.KeyWordBackUpDTO;
 /**
  * Created by XiaoWei on 2014/9/9.
  */
-public interface KeyWordBackUpDAO {
+public interface KeyWordBackUpDAO extends MongoCrudRepository<KeyWordBackUpDTO,Long>{
 
 
     KeyWordBackUpDTO findByObjectId(String id);

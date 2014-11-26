@@ -1,15 +1,16 @@
 package com.perfect.service;
 
 import com.perfect.dao.MongoCrudRepository;
+import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.backup.KeyWordBackUpEntity;
 
 /**
  * Created by XiaoWei on 2014/9/9.
  */
-public interface KeyWordBackUpService extends MongoCrudRepository<KeyWordBackUpEntity,Long> {
+public interface KeyWordBackUpService {
 
-    KeywordEntity reducUpdate(String id);
+    KeywordDTO reducUpdate(String id);
 
     void reducDel(String id);
 }

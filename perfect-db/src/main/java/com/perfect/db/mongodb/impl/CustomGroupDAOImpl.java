@@ -3,12 +3,16 @@ package com.perfect.db.mongodb.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.CustomGroupDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.dao.utils.Pager;
+import com.perfect.dto.CustomGroupDTO;
 import com.perfect.entity.CustomGroupEntity;
+import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.Pager;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -35,10 +39,10 @@ public class CustomGroupDAOImpl extends AbstractUserBaseDAOImpl<CustomGroupEntit
     }
 
     @Override
-    public List<CustomGroupEntity> findAll(Long acId) {
+    public List<CustomGroupDTO> findAll(Long acId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<CustomGroupEntity> findList = mongoTemplate.find(new Query(Criteria.where(ACCOUNT_ID).is(acId)), CustomGroupEntity.class);
-        return findList;
+        return ObjectUtils.convert(findList,CustomGroupDTO.class);
     }
 
     @Override
@@ -58,8 +62,18 @@ public class CustomGroupDAOImpl extends AbstractUserBaseDAOImpl<CustomGroupEntit
     }
 
     @Override
-    public CustomGroupEntity findByCustomName(String customName) {
+    public CustomGroupDTO findByCustomName(String customName) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        return mongoTemplate.findOne(new Query(Criteria.where("gname").is(customName)), CustomGroupEntity.class);
+        CustomGroupEntity customGroupEntity= mongoTemplate.findOne(new Query(Criteria.where("gname").is(customName)), CustomGroupEntity.class);
+        CustomGroupDTO customGroupDTO=new CustomGroupDTO();
+        BeanUtils.copyProperties(customGroupEntity,customGroupDTO);
+        return customGroupDTO;
+    }
+
+    @Override
+    public void myInsert(CustomGroupDTO customGroupDTO) {
+        CustomGroupEntity customGroupEntity=new CustomGroupEntity();
+        BeanUtils.copyProperties(customGroupDTO,customGroupEntity);
+        getMongoTemplate().insert(customGroupEntity, MongoEntityConstants.TBL_CUSTOMGROUP);
     }
 }

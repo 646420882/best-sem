@@ -1,17 +1,21 @@
 package com.perfect.app.bidding.controller;
 
-import com.perfect.api.baidu.Keyword10QualityService;
 import com.perfect.app.bidding.dto.KeywordReportDTO;
 import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.commons.constants.KeywordStatusEnum;
 import com.perfect.core.AppContext;
+import com.perfect.dto.CustomGroupDTO;
+import com.perfect.dto.StructureReportDTO;
+import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.dto.keyword.KeywordImportDTO;
 import com.perfect.entity.*;
-import com.perfect.dao.mongodb.utils.DateUtils;
-import com.perfect.dao.mongodb.utils.PaginationParam;
 import com.perfect.service.*;
+import com.perfect.utils.DateUtils;
 import com.perfect.utils.JSONUtils;
 import com.perfect.utils.NumberUtils;
 import com.perfect.commons.web.WebContextSupport;
+import com.perfect.utils.PaginationParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +34,7 @@ import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/9/19.
+ * 2014-11-16 refactor
  */
 @Controller
 @RequestMapping("/importBid")
@@ -39,7 +44,7 @@ public class ImportKeywordBiddingController extends WebContextSupport {
     private CustomGroupService customGroupSerivice;
 
     @Resource
-    private KeywordImService keywordImService;
+    private KeywordImportService keywordImportService;
 
     @Resource
     private SysKeywordService sysKeywordService;
@@ -58,12 +63,12 @@ public class ImportKeywordBiddingController extends WebContextSupport {
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public ModelAndView insertCustomGroup(@RequestParam(value = "gname") String groupName, HttpServletResponse response) {
-        CustomGroupEntity customGroupEntityFind = customGroupSerivice.findByCustomName(groupName);
+        CustomGroupDTO customGroupEntityFind = customGroupSerivice.findByCustomName(groupName);
         if (customGroupEntityFind == null) {
-            CustomGroupEntity customGroupEntity = new CustomGroupEntity();
+            CustomGroupDTO customGroupEntity = new CustomGroupDTO();
             customGroupEntity.setAccountId(AppContext.getAccountId());
             customGroupEntity.setGroupName(groupName);
-            customGroupSerivice.insert(customGroupEntity);
+            customGroupSerivice.myInsert(customGroupEntity);
             String oid = customGroupEntity.getId();
             writeData(SUCCESS, response, oid);
         } else {
@@ -74,7 +79,7 @@ public class ImportKeywordBiddingController extends WebContextSupport {
 
     @RequestMapping(value = "/getList", method = RequestMethod.GET)
     public ModelAndView findCustomGroupAll(HttpServletResponse response) {
-        List<CustomGroupEntity> list = customGroupSerivice.findAll(AppContext.getAccountId());
+        List<CustomGroupDTO> list = customGroupSerivice.findAll(AppContext.getAccountId());
         writeJson(list, response);
         return null;
     }
@@ -107,49 +112,49 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                                    @RequestParam(value = "imbiddingStatus") String[] imbiddingStatus,
                                    @RequestParam(value = "imrule") String[] imrule,
                                    @RequestParam(value = "imadgroupId") String[] imadgroupId) {
-        List<KeywordImEntity> keywordImEntities = new ArrayList<>();
+        List<KeywordImportDTO> keywordImEntities = new ArrayList<KeywordImportDTO>();
         //判断是否选择的关键词不止一个，如果不止一个，就进行循环添加
         if (imap.length > 1) {
             for (int i = 0; i < imap.length; i++) {
-                KeywordImEntity keywordImEntityFind = keywordImService.findByKwdId(Long.valueOf(imId[i]));
-                if (keywordImEntityFind == null) {
-                    KeywordImEntity keywordImEntity = new KeywordImEntity();
-                    keywordImEntity.setAccountId(AppContext.getAccountId());
-                    keywordImEntity.setCustomGroupId(cgroupId);
-                    keywordImEntity.setKeywordId(Long.valueOf(imId[i]));
-                    keywordImEntity.setKeywordName(imap[i]);
-                    keywordImEntity.setBiddingStatus(imbiddingStatus[i]);
-                    keywordImEntity.setRule(Boolean.parseBoolean(imrule[i]));
-                    keywordImEntity.setAdgroupId(Long.valueOf(imadgroupId[i]));
-                    keywordImEntities.add(keywordImEntity);
+                KeywordImportDTO keywordImportEntityFind = keywordImportService.findByKwdId(Long.valueOf(imId[i]));
+                if (keywordImportEntityFind == null) {
+                    KeywordImportDTO keywordImportEntity = new KeywordImportDTO();
+                    keywordImportEntity.setAccountId(AppContext.getAccountId());
+                    keywordImportEntity.setCustomGroupId(cgroupId);
+                    keywordImportEntity.setKeywordId(Long.valueOf(imId[i]));
+                    keywordImportEntity.setKeywordName(imap[i]);
+                    keywordImportEntity.setBiddingStatus(imbiddingStatus[i]);
+                    keywordImportEntity.setRule(Boolean.parseBoolean(imrule[i]));
+                    keywordImportEntity.setAdgroupId(Long.valueOf(imadgroupId[i]));
+                    keywordImEntities.add(keywordImportEntity);
                 } else {
-                    if (!keywordImEntityFind.getCustomGroupId().equals(cgroupId)) {
-                        keywordImEntityFind.setCustomGroupId(cgroupId);
-                        keywordImService.update(keywordImEntityFind);
+                    if (!keywordImportEntityFind.getCustomGroupId().equals(cgroupId)) {
+                        keywordImportEntityFind.setCustomGroupId(cgroupId);
+                        keywordImportService.update(keywordImportEntityFind);
                     }
                 }
             }
             if (keywordImEntities.size() > 0) {
-                keywordImService.insertAll(keywordImEntities);
+                keywordImportService.myInsertAll(keywordImEntities);
             }
             //如果不是则只进行一次添加
         } else {
-            KeywordImEntity keywordImEntityFind = keywordImService.findByKwdId(Long.valueOf(imId[0]));
-            if (keywordImEntityFind == null) {
-                KeywordImEntity keywordImEntity = new KeywordImEntity();
-                keywordImEntity.setAccountId(AppContext.getAccountId());
-                keywordImEntity.setCustomGroupId(cgroupId);
-                keywordImEntity.setKeywordId(Long.valueOf(imId[0]));
-                keywordImEntity.setKeywordName(imap[0]);
-                keywordImEntity.setBiddingStatus(imbiddingStatus[0]);
-                keywordImEntity.setRule(Boolean.parseBoolean(imrule[0]));
-                keywordImEntity.setAdgroupId(Long.valueOf(imadgroupId[0]));
-                keywordImEntities.add(keywordImEntity);
-                keywordImService.insert(keywordImEntity);
+            KeywordImportDTO keywordImportEntityFind = keywordImportService.findByKwdId(Long.valueOf(imId[0]));
+            if (keywordImportEntityFind == null) {
+                KeywordImportDTO keywordImportEntity = new KeywordImportDTO();
+                keywordImportEntity.setAccountId(AppContext.getAccountId());
+                keywordImportEntity.setCustomGroupId(cgroupId);
+                keywordImportEntity.setKeywordId(Long.valueOf(imId[0]));
+                keywordImportEntity.setKeywordName(imap[0]);
+                keywordImportEntity.setBiddingStatus(imbiddingStatus[0]);
+                keywordImportEntity.setRule(Boolean.parseBoolean(imrule[0]));
+                keywordImportEntity.setAdgroupId(Long.valueOf(imadgroupId[0]));
+                keywordImEntities.add(keywordImportEntity);
+                keywordImportService.myInsert(keywordImportEntity);
             } else {
-                if (!keywordImEntityFind.getCustomGroupId().equals(cgroupId)) {
-                    keywordImEntityFind.setCustomGroupId(cgroupId);
-                    keywordImService.update(keywordImEntityFind);
+                if (!keywordImportEntityFind.getCustomGroupId().equals(cgroupId)) {
+                    keywordImportEntityFind.setCustomGroupId(cgroupId);
+                    keywordImportService.update(keywordImportEntityFind);
                 }
             }
         }
@@ -169,9 +174,9 @@ public class ImportKeywordBiddingController extends WebContextSupport {
             @RequestParam(value = "o", required = false, defaultValue = "true") boolean asc
     ) {
         AbstractView jsonView = new MappingJackson2JsonView();
-        List<KeywordEntity> entities = null;
+        List<KeywordDTO> entities = null;
         Integer total = 0;
-        List<KeywordImEntity> keywordImEntities = null;
+        List<KeywordImportDTO> keywordImEntities = null;
         PaginationParam param = new PaginationParam();
         if (campaignId != null || adgroupId == null || keywordName != null) {
             param.setOrderBy(sort);
@@ -184,9 +189,9 @@ public class ImportKeywordBiddingController extends WebContextSupport {
         }
 
         if (cgId != null) {
-            keywordImEntities = keywordImService.findByCgId(cgId);
+            keywordImEntities = keywordImportService.findByCgId(cgId);
             List<Long> keywordIds = new ArrayList<>(keywordImEntities.size());
-            for (KeywordImEntity kwd : keywordImEntities) {
+            for (KeywordImportDTO kwd : keywordImEntities) {
                 keywordIds.add(kwd.getKeywordId());
             }
             entities = sysKeywordService.findByIds(keywordIds, param);
@@ -200,13 +205,13 @@ public class ImportKeywordBiddingController extends WebContextSupport {
             for (AdgroupEntity adgroupEntity : adgroupEntityList) {
                 adGroupIds.add(adgroupEntity.getAdgroupId());
             }
-            entities = sysKeywordService.findByIds(keywordImService.findByAdgroupIds(adGroupIds));
+            entities = sysKeywordService.findByIds(keywordImportService.findByAdgroupIds(adGroupIds));
             total = entities.size();
         } else if (campaignId != null && adgroupId != null) {
-            entities = sysKeywordService.findByIds(keywordImService.findByAdgroupId(adgroupId));
+            entities = sysKeywordService.findByIds(keywordImportService.findByAdgroupId(adgroupId));
             total = entities.size();
         } else if (keywordName != null) {
-            entities = sysKeywordService.findByIds(keywordImService.findByKeywordName(keywordName));
+            entities = sysKeywordService.findByIds(keywordImportService.findByKeywordName(keywordName));
             total = entities.size();
         }
 
@@ -221,13 +226,13 @@ public class ImportKeywordBiddingController extends WebContextSupport {
             List<KeywordReportDTO> resultList = new ArrayList<>();
 
             List<Long> tmpKeywordIdList = new ArrayList<>();
-            for (KeywordEntity entity : entities) {
+            for (KeywordDTO entity : entities) {
                 tmpKeywordIdList.add(entity.getKeywordId());
             }
             Map<Long, Quality10Type> quality10TypeMap = keyword10QualityService.getKeyword10Quality(tmpKeywordIdList);
 
             Integer index = 0;
-            for (KeywordEntity entity : entities) {
+            for (KeywordDTO entity : entities) {
                 KeywordReportDTO keywordReportDTO = new KeywordReportDTO();
                 BeanUtils.copyProperties(entity, keywordReportDTO);
 
@@ -235,7 +240,7 @@ public class ImportKeywordBiddingController extends WebContextSupport {
 
                 index++;
                 AdgroupEntity adgroupEntity = sysAdgroupService.findByAdgroupId(entity.getAdgroupId());
-                CampaignEntity campaignEntity = sysCampaignService.findById(adgroupEntity.getCampaignId());
+                CampaignDTO campaignEntity = sysCampaignService.findById(adgroupEntity.getCampaignId());
                 keywordReportDTO.setCampaignName(campaignEntity.getCampaignName());
                 keywordReportDTO.setAdgroupName(adgroupEntity.getAdgroupName());
 
@@ -254,9 +259,9 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                 resultList.add(keywordReportDTO);
             }
             String yesterday = DateUtils.getYesterdayStr();
-            Map<String, List<StructureReportEntity>> reports = basisReportService.getKeywordReport(tmpKeywordIdList.toArray(new Long[tmpKeywordIdList.size()]), yesterday, yesterday, 0);
-            List<StructureReportEntity> list = reports.get(yesterday);
-            for (StructureReportEntity entity : list) {
+            Map<String, List<StructureReportDTO>> reports = basisReportService.getKeywordReport(tmpKeywordIdList.toArray(new Long[tmpKeywordIdList.size()]), yesterday, yesterday, 0);
+            List<StructureReportDTO> list = reports.get(yesterday);
+            for (StructureReportDTO entity : list) {
                 long kwid = entity.getKeywordId();
                 KeywordReportDTO dto = keywordReportDTOHashMap.get(kwid);
                 dto.setClick(NumberUtils.getInteger(entity.getPcClick()));
@@ -296,7 +301,7 @@ public class ImportKeywordBiddingController extends WebContextSupport {
     public ModelAndView deleteByCGId(HttpServletResponse response, @RequestParam(value = "cgid", required = true, defaultValue = "") String cgid) {
         try {
             if (!cgid.equals("")) {
-                keywordImService.deleteByObjId(cgid);
+                keywordImportService.deleteByObjId(cgid);
             }
             writeHtml(SUCCESS, response);
         } catch (Exception e) {

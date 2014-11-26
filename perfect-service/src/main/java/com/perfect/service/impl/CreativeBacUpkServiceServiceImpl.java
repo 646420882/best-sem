@@ -2,11 +2,13 @@ package com.perfect.service.impl;
 
 import com.perfect.dao.CreativeBackUpDAO;
 import com.perfect.dao.CreativeDAO;
+import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.dto.backup.CreativeBackUpDTO;
+import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.backup.CreativeBackUpEntity;
-import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.dao.mongodb.utils.Pager;
 import com.perfect.service.CreativeBackUpService;
+import com.perfect.utils.Pager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +19,14 @@ import java.util.Map;
  * Created by XiaoWei on 2014/9/4.
  */
 @Service("creativeBackUpService")
-public class CreativeBacUpkServiceServiceImpl extends AbstractUserBaseDAOImpl<CreativeBackUpEntity, Long> implements CreativeBackUpService {
+public class CreativeBacUpkServiceServiceImpl extends AbstractUserBaseDAOImpl<CreativeBackUpDTO, Long> implements CreativeBackUpService {
     @Resource
     private CreativeBackUpDAO creativeBackUpDAO;
     @Resource
     private CreativeDAO creativeDAO;
 
     @Override
-    public Class<CreativeBackUpEntity> getEntityClass() {
+    public Class<CreativeBackUpDTO> getEntityClass() {
         return null;
     }
 
@@ -34,12 +36,12 @@ public class CreativeBacUpkServiceServiceImpl extends AbstractUserBaseDAOImpl<Cr
     }
 
     @Override
-    public CreativeBackUpEntity findByStringId(String id) {
+    public CreativeBackUpDTO findByStringId(String id) {
         return creativeBackUpDAO.findByStringId(id);
     }
 
     @Override
-    public CreativeBackUpEntity findByLongId(Long crid) {
+    public CreativeBackUpDTO findByLongId(Long crid) {
         return creativeBackUpDAO.findByLongId(crid);
     }
 
@@ -49,15 +51,15 @@ public class CreativeBacUpkServiceServiceImpl extends AbstractUserBaseDAOImpl<Cr
     }
 
     @Override
-    public CreativeBackUpEntity reBack(Long crid) {
-        CreativeBackUpEntity creativeBackUpEntityFind = creativeBackUpDAO.findByLongId(crid);
-        if (creativeBackUpEntityFind != null) {
-            creativeBackUpEntityFind.setLocalStatus(null);
-            CreativeEntity creativeEntity = new CreativeEntity();
-            BeanUtils.copyProperties(creativeBackUpEntityFind, creativeEntity);
-            creativeDAO.insertByReBack(creativeEntity);
+    public CreativeBackUpDTO reBack(Long crid) {
+        CreativeBackUpDTO creativeBackUpDTOFind = creativeBackUpDAO.findByLongId(crid);
+        if (creativeBackUpDTOFind != null) {
+            creativeBackUpDTOFind.setLocalStatus(null);
+            CreativeDTO creativeDTO = new CreativeDTO();
+            BeanUtils.copyProperties(creativeBackUpDTOFind, creativeDTO);
+            creativeDAO.insertByReBack(creativeDTO);
             creativeBackUpDAO.deleteByLongId(crid);
         }
-        return creativeBackUpEntityFind;
+        return creativeBackUpDTOFind;
     }
 }

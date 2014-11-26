@@ -6,8 +6,8 @@ import com.perfect.dto.backup.KeyWordBackUpDTO;
 import com.perfect.entity.backup.KeyWordBackUpEntity;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.commons.constants.MongoMongoEntityConstants;
 import com.perfect.utils.Pager;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -65,10 +65,13 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpD
         mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)),getEntityClass(),MongoEntityConstants.BAK_KEYWORD);
     }
 
-    public KeyWordBackUpEntity findById(long id){
+    public KeyWordBackUpDTO findById(long id){
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-       List<KeyWordBackUpEntity> list = mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(id)),getEntityClass(),MongoEntityConstants.BAK_KEYWORD);
-       return list.size()==0?null:list.get(0);
+       List<KeyWordBackUpEntity> list = mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(id)),KeyWordBackUpEntity.class,MongoEntityConstants.BAK_KEYWORD);
+        KeyWordBackUpEntity keyWordBackUpEntity= list.size()==0?null:list.get(0);
+        KeyWordBackUpDTO keyWordBackUpDTO=new KeyWordBackUpDTO();
+        BeanUtils.copyProperties(keyWordBackUpEntity,keyWordBackUpDTO);
+        return keyWordBackUpDTO;
     }
 
     public  void deleteByKwid(long kwid){

@@ -2,11 +2,12 @@ package com.perfect.service.impl;
 
 import com.google.common.primitives.Bytes;
 import com.perfect.dao.KeywordReportDAO;
+import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.entity.KeywordReportEntity;
-import com.perfect.dao.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.dao.mongodb.utils.Pager;
-import com.perfect.dao.mongodb.utils.PagerInfo;
 import com.perfect.service.KeywordReportService;
+import com.perfect.utils.Pager;
+import com.perfect.utils.PagerInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,7 +44,7 @@ public class KeywordReportServiceImpl extends AbstractUserBaseDAOImpl<KeywordRep
     }
 
     @Override
-    public void downAccountCSV(OutputStream os,List<KeywordReportEntity> list) {
+    public void downAccountCSV(OutputStream os,List<KeywordReportDTO> list) {
         try {
             os.write(Bytes.concat(commonCSVHead, ("关键词" +
                     DEFAULT_DELIMITER + "展现" +
@@ -56,7 +57,7 @@ public class KeywordReportServiceImpl extends AbstractUserBaseDAOImpl<KeywordRep
                     DEFAULT_DELIMITER + "转化(页面)" +
                     DEFAULT_DELIMITER + "匹配" +
                     DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-            for (KeywordReportEntity entity : list) {
+            for (KeywordReportDTO entity : list) {
                 os.write(Bytes.concat(commonCSVHead, (entity.getKeywordName() +
                                 DEFAULT_DELIMITER + entity.getPcImpression() +
                                 DEFAULT_DELIMITER + entity.getPcClick() +
@@ -86,7 +87,7 @@ public class KeywordReportServiceImpl extends AbstractUserBaseDAOImpl<KeywordRep
         }
     }
     @Override
-    public List<KeywordReportEntity> getAll(Map<String,Object> params) {
+    public List<KeywordReportDTO> getAll(Map<String,Object> params) {
         return keywordReportDAO.getAll(params);
     }
 }

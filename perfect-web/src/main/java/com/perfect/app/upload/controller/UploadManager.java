@@ -2,11 +2,12 @@ package com.perfect.app.upload.controller;
 
 import com.google.common.io.Files;
 import com.perfect.dao.KeywordDAO;
+import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.utils.CsvReadUtil;
-import com.perfect.utils.ExcelReadUtil;
-import com.perfect.utils.UploadHelper;
 import com.perfect.commons.web.WebContextSupport;
+import com.perfect.utils.csv.ExcelReadUtil;
+import com.perfect.utils.csv.UploadHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ import java.util.List;
 
 /**
  * Created by XiaoWei on 2014/8/4.
+ * 2014-11-26 refactor
  */
 @Controller
 @RequestMapping("/upload")
@@ -221,7 +223,7 @@ public class UploadManager extends WebContextSupport {
         if (bol) {
             String fileName = file.getOriginalFilename();
             CsvReadUtil csvReadUtil = new CsvReadUtil(new UploadHelper().getDefaultTempPath() + "/" + fileName, CsvReadUtil.ENCODING_GBK);
-            List<KeywordEntity> keywordEntityList = csvReadUtil.getList();
+            List<KeywordDTO> keywordEntityList = csvReadUtil.getList();
 //            keywordDAO.insertAndQuery(keywordEntityList);
         } else {
             writeHtml(EXCEPTION, response);

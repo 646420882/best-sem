@@ -4,11 +4,14 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.KeywordReportDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.db.mongodb.utils.DateUtils;
-import com.perfect.dao.utils.Pager;
-import com.perfect.dao.utils.PagerInfo;
+import com.perfect.dto.keyword.KeywordImportDTO;
+import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.entity.KeywordEntity;
 import com.perfect.entity.KeywordReportEntity;
+import com.perfect.utils.DateUtils;
+import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.Pager;
+import com.perfect.utils.PagerInfo;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -156,7 +159,7 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
     }
 
     @Override
-    public List<KeywordReportEntity> getAll(Map<String, Object> params) {
+    public List<KeywordReportDTO> getAll(Map<String, Object> params) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
         MongoTemplate mongoTemplateNormal = BaseMongoTemplate.getUserMongo();
         List<KeywordReportEntity> findlList = new ArrayList<>();
@@ -253,7 +256,7 @@ public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportE
                 kwd.setQuality((int) (kwd.getPcPosition() / d));
             }
         }
-        return importList;
+        return ObjectUtils.convert(importList, KeywordReportDTO.class);
     }
 
     private List<String> getCurrDate(Map<String, Object> params) {

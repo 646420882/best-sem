@@ -7,7 +7,7 @@ import com.perfect.entity.CensusEntity;
 /**
  * Created by XiaoWei on 2014/11/11.
  */
-public interface CensusService extends MongoCrudRepository<CensusEntity,Long> {
+public interface CensusService  {
     /**
      * 参数组，添加方法
      * @param osAnBrowser

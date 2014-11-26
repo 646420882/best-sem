@@ -1,23 +1,28 @@
 package com.perfect.app.assistant.controller;
 
+import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AdgroupDAO;
 import com.perfect.dao.CampaignDAO;
 import com.perfect.dao.CreativeDAO;
+import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.backup.CreativeBackUpDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.entity.AdgroupEntity;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.CampaignEntity;
 import com.perfect.entity.CreativeEntity;
 import com.perfect.entity.backup.CreativeBackUpEntity;
-import com.perfect.dao.mongodb.utils.EntityConstants;
-import com.perfect.dao.mongodb.utils.PagerInfo;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.CreativeBackUpService;
-import com.perfect.utils.BaiduServiceSupport;
 import com.perfect.commons.web.WebContextSupport;
+import com.perfect.utils.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -34,6 +39,7 @@ import java.util.*;
 
 /**
  * Created by XiaoWei on 2014/8/21.
+ * 2014-11-26 refactor
  */
 @Controller
 @RequestMapping(value = "/assistantCreative")
@@ -63,7 +69,7 @@ public class AssistantCreativeController extends WebContextSupport {
         Map<String,Object> map=new HashMap<>();
         if (aid.length() > OBJ_SIZE || cid.length() > OBJ_SIZE) {
             if (aid != "" || !aid.equals("")) {
-                map.put(EntityConstants.ADGROUP_ID,aid);
+                map.put(MongoEntityConstants.ADGROUP_ID,aid);
                 pagerInfo = creativeDAO.findByPagerInfo(map,nowPage,pageSize);
             } else if (!cid.equals("") && aid.equals("")) {
                 List<String> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
@@ -94,7 +100,7 @@ public class AssistantCreativeController extends WebContextSupport {
      */
     @RequestMapping(value = "/getPlans")
     public ModelAndView getPlans(HttpServletResponse response) {
-        List<CampaignEntity> list = (List<CampaignEntity>) campaignDAO.findAll();
+        List<CampaignDTO> list = (List<CampaignDTO>) campaignDAO.findAll();
         writeJson(list, response);
         return null;
     }
@@ -107,11 +113,11 @@ public class AssistantCreativeController extends WebContextSupport {
      */
     @RequestMapping(value = "/getUnitsByPlanId")
     public ModelAndView getUnitsByPlanId(HttpServletResponse response, @RequestParam(value = "planId", required = true) String planId) {
-        List<AdgroupEntity> adgroupEntities = new ArrayList<>();
+        List<AdgroupDTO> adgroupEntities = new ArrayList<>();
         if (planId.length() > OBJ_SIZE) {
-            adgroupEntities = adgroupDAO.findByQuery(new Query(Criteria.where(OBJ_CAMPAIGN_ID).is(planId)));
+            adgroupEntities = adgroupDAO.findByQuery(new Query(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(planId)));
         } else {
-            adgroupEntities = adgroupDAO.findByQuery(new Query(Criteria.where(CAMPAIGN_ID).is(Long.parseLong(planId))));
+            adgroupEntities = adgroupDAO.findByQuery(new Query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(Long.parseLong(planId))));
         }
         writeJson(adgroupEntities, response);
         return null;
@@ -149,7 +155,7 @@ public class AssistantCreativeController extends WebContextSupport {
                                        @RequestParam(value = "status") Integer s,
                                        @RequestParam(value = "d", required = false, defaultValue = "0") Integer d) {
         try {
-            CreativeEntity creativeEntity = new CreativeEntity();
+            CreativeDTO creativeEntity = new CreativeDTO();
             creativeEntity.setAccountId(AppContext.getAccountId());
             creativeEntity.setTitle(title);
 
@@ -219,7 +225,7 @@ public class AssistantCreativeController extends WebContextSupport {
                                @RequestParam(value = "mobileDestinationUrl", required = false) String mib,
                                @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
                                @RequestParam(value = "pause") Boolean bol) {
-        CreativeEntity creativeEntityFind = null;
+        CreativeDTO creativeEntityFind = null;
         if (oid.length() > OBJ_SIZE) {
             creativeEntityFind = creativeDAO.findByObjId(oid);
             creativeEntityFind.setTitle(title);
@@ -235,7 +241,7 @@ public class AssistantCreativeController extends WebContextSupport {
             writeHtml(SUCCESS, response);
         } else {
             creativeEntityFind = creativeDAO.findOne(Long.valueOf(oid));
-            CreativeEntity creativeEntity = new CreativeEntity();
+            CreativeDTO creativeEntity = new CreativeDTO();
             creativeEntityFind.setLocalStatus(2);
             BeanUtils.copyProperties(creativeEntityFind, creativeEntity);
             creativeEntityFind.setTitle(title);
@@ -265,7 +271,7 @@ public class AssistantCreativeController extends WebContextSupport {
     @RequestMapping(value = "/reBack", method = RequestMethod.GET)
     public ModelAndView reBack(HttpServletResponse response, @RequestParam(value = "oid") Long oid) {
         try {
-            CreativeBackUpEntity creativeBackUpEntity = creativeBackUpService.reBack(oid);
+            CreativeBackUpDTO creativeBackUpEntity = creativeBackUpService.reBack(oid);
             writeData(SUCCESS, response, creativeBackUpEntity);
         } catch (Exception e) {
             e.printStackTrace();
@@ -338,15 +344,15 @@ public class AssistantCreativeController extends WebContextSupport {
             params.put("t",title);
             params.put("desc1",de1);
             if(aid.length()>OBJ_SIZE){
-                params.put(EntityConstants.SYSTEM_ID,aid);
+                params.put(MongoEntityConstants.SYSTEM_ID,aid);
             }else{
-                params.put(EntityConstants.ADGROUP_ID,Long.valueOf(aid));
+                params.put(MongoEntityConstants.ADGROUP_ID,Long.valueOf(aid));
             }
             //如果查询到结果
-            CreativeEntity creativeEntity = creativeDAO.getAllsBySomeParams(params);
+            CreativeDTO creativeEntity = creativeDAO.getAllsBySomeParams(params);
             //如果能查到匹配的数据，则执行修改操作
             if(creativeEntity!=null){
-                CreativeEntity creativeEntityFind = null;
+                CreativeDTO creativeEntityFind = null;
                 //判断如果该条数据不为已经同步的数据，则视为本地数据，本地数据库数据修改则不需要备份操作
                 if (creativeEntity.getCreativeId()==null) {
                     creativeEntityFind = creativeDAO.findByObjId(creativeEntity.getId());
@@ -363,7 +369,7 @@ public class AssistantCreativeController extends WebContextSupport {
                 //如果已经是同步到本地的数据，则要执行备份操作，将这条数据备份到备份数据库中
                 } else {
                     creativeEntityFind = creativeDAO.findOne(creativeEntity.getCreativeId());
-                    CreativeEntity creativeEntityBackUp = new CreativeEntity();
+                    CreativeDTO creativeEntityBackUp = new CreativeDTO();
                     creativeEntityFind.setLocalStatus(2);
                     BeanUtils.copyProperties(creativeEntityFind, creativeEntity);
                     creativeEntityFind.setTitle(title);
@@ -378,7 +384,7 @@ public class AssistantCreativeController extends WebContextSupport {
                 }
             //如果没有查到匹配的数据，则执行添加操作
             }else{
-                CreativeEntity creativeEntityInsert = new CreativeEntity();
+                CreativeDTO creativeEntityInsert = new CreativeDTO();
                 creativeEntityInsert.setAccountId(AppContext.getAccountId());
                 creativeEntityInsert.setTitle(title);
                 creativeEntityInsert.setDescription1(de1);
@@ -418,7 +424,7 @@ public class AssistantCreativeController extends WebContextSupport {
                                        @RequestParam(value = "pcUrl",defaultValue = "") String pcUrl,
                                        @RequestParam(value = "pcsUrl",defaultValue = "") String pcsUrl){
 //        System.out.println("cid:"+cid+"aid"+aid+"title:"+title+"desc1"+desc1+"desc2"+desc2+"pcUrl"+pcUrl+"pcsUrl"+pcsUrl);
-        BaiduAccountInfoEntity baiduAccountInfoEntity=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        BaiduAccountInfoDTO bad=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
         CreativeType creativeTypes=new CreativeType();
         creativeTypes.setTitle(title);
         creativeTypes.setDescription1(desc1);
@@ -427,7 +433,7 @@ public class AssistantCreativeController extends WebContextSupport {
         creativeTypes.setPcDestinationUrl(pcsUrl);
         creativeTypes.setAdgroupId(aid);
         creativeTypes.setDevicePreference(1);
-        CommonService commonService= BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
+        CommonService commonService= BaiduServiceSupport.getCommonService(bad.getBaiduUserName(),bad.getBaiduPassword(),bad.getToken());
         try {
            CreativeService service= commonService.getService(CreativeService.class);
 
@@ -448,7 +454,7 @@ public class AssistantCreativeController extends WebContextSupport {
     }
     @RequestMapping(value = "/getDomain",method = RequestMethod.GET)
     public ModelAndView getDomain(HttpServletResponse response){
-        BaiduAccountInfoEntity baiduAccountInfoEntity=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        BaiduAccountInfoDTO baiduAccountInfoEntity=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
         if(baiduAccountInfoEntity!=null){
         writeHtml(baiduAccountInfoEntity.getRegDomain(),response);
         }else{
@@ -471,8 +477,8 @@ public class AssistantCreativeController extends WebContextSupport {
             sublinkInfos.add(sublinkInfo);
         }
         sublinkType.setSublinkInfos(sublinkInfos);
-        BaiduAccountInfoEntity baiduAccountInfoEntity=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
-        CommonService commonService= BaiduServiceSupport.getCommonService(baiduAccountInfoEntity);
+        BaiduAccountInfoDTO bad=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        CommonService commonService= BaiduServiceSupport.getCommonService(bad.getBaiduUserName(),bad.getBaiduPassword(),bad.getToken());
         try {
             NewCreativeService newCreativeService=commonService.getService(NewCreativeService.class);
             AddSublinkRequest addSublinkRequest=new AddSublinkRequest();
