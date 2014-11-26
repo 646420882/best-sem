@@ -1,14 +1,14 @@
 package com.perfect.dao;
 
-import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 
 import java.util.List;
 
 /**
  * Created by vbzer_000 on 2014/6/18.
  */
-public interface SystemUserDAO extends MongoCrudRepository<SystemUserEntity, String> {
+public interface SystemUserDAO {
 
     /**
      * 根据用户名查询
@@ -17,7 +17,7 @@ public interface SystemUserDAO extends MongoCrudRepository<SystemUserEntity, Str
      * @param userName
      * @return
      */
-    SystemUserEntity findByUserName(String userName);
+    SystemUserDTO findByUserName(String userName);
 
     /**
      * 添加百度账户
@@ -25,13 +25,13 @@ public interface SystemUserDAO extends MongoCrudRepository<SystemUserEntity, Str
      * @param list
      * @param currSystemUserName
      */
-    void addBaiduAccount(List<BaiduAccountInfoEntity> list, String currSystemUserName);
+    void addBaiduAccount(List<BaiduAccountInfoDTO> list, String currSystemUserName);
 
     void updateAccount(String userName);
 
-    SystemUserEntity findByAid(long aid);
+    SystemUserDTO findByAid(long aid);
 
-    void insertAccountInfo(String user, BaiduAccountInfoEntity baiduAccountInfoEntity);
+    void insertAccountInfo(String user, BaiduAccountInfoDTO baiduAccountInfoDTO);
 
     void removeAccountInfo(Long id);
 }

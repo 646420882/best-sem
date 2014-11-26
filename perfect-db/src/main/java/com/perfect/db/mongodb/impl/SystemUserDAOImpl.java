@@ -5,9 +5,12 @@ import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
-import com.perfect.dao.utils.Pager;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.SystemUserEntity;
+import com.perfect.utils.Pager;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -23,29 +26,29 @@ import java.util.Map;
  * 2014-11-24 refactor
  */
 @Repository("systemUserDAO")
-public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, String> implements SystemUserDAO {
+public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, String> implements SystemUserDAO {
 
     @Resource
     private BaiduService baiduService;
 
     @Override
-    public void addBaiduAccount(List<BaiduAccountInfoEntity> list, String currSystemUserName) {
-        SystemUserEntity currSystemUserEntity = findByUserName(currSystemUserName);
-        List<BaiduAccountInfoEntity> list1 = currSystemUserEntity.getBaiduAccountInfoEntities();
-        if (list1 == null) {
-            list1 = new ArrayList<>();
+    public void addBaiduAccount(List<BaiduAccountInfoDTO> list, String currSystemUserName) {
+        SystemUserDTO currSystemUserDTO = findByUserName(currSystemUserName);
+        List<BaiduAccountInfoDTO> _list = currSystemUserDTO.getBaiduAccountInfoDTOs();
+        if (_list == null) {
+            _list = new ArrayList<>();
         }
-        list1.addAll(list);
-        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName)), Update.update("baiduAccountInfos", list1), "SystemUser");
+        _list.addAll(list);
+        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName)), Update.update("baiduAccountInfos", _list), "sys_user");
     }
 
     @Override
     public void updateAccount(String userName) {
-        SystemUserEntity systemUserEntity = findByUserName(userName);
-        List<BaiduAccountInfoEntity> list = systemUserEntity.getBaiduAccountInfoEntities();
+        SystemUserDTO systemUserDTO = findByUserName(userName);
+        List<BaiduAccountInfoDTO> list = systemUserDTO.getBaiduAccountInfoDTOs();
         try {
-            for (BaiduAccountInfoEntity entity : list) {
-                ServiceFactory sf = ServiceFactory.getInstance(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken(), null);
+            for (BaiduAccountInfoDTO dto : list) {
+                ServiceFactory sf = ServiceFactory.getInstance(dto.getBaiduUserName(), dto.getBaiduPassword(), dto.getToken(), null);
                 baiduService.init(sf);
             }
         } catch (ApiException e) {
@@ -54,36 +57,43 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, 
     }
 
     @Override
-    public SystemUserEntity findByAid(long aid) {
+    public SystemUserDTO findByAid(long aid) {
         Query query = Query.query(Criteria.where("bdAccounts._id").is(aid));
-        return getSysMongoTemplate().findOne(query, SystemUserEntity.class);
+        SystemUserDTO systemUserDTO = new SystemUserDTO();
+        BeanUtils.copyProperties(getSysMongoTemplate().findOne(query, getSystemUserEntityClass()), systemUserDTO);
+        return systemUserDTO;
     }
 
     @Override
-    public void insertAccountInfo(String user, BaiduAccountInfoEntity baiduAccountInfoEntity) {
+    public void insertAccountInfo(String user, BaiduAccountInfoDTO baiduAccountInfoDTO) {
 
-        SystemUserEntity entity = findByUserName(user);
-        if (entity.getBaiduAccountInfoEntities().isEmpty()) {
-            baiduAccountInfoEntity.setDfault(true);
-        }
+        SystemUserDTO systemUserDTO = findByUserName(user);
+        if (systemUserDTO.getBaiduAccountInfoDTOs().isEmpty())
+            baiduAccountInfoDTO.setDfault(true);
+
+        BaiduAccountInfoEntity baiduAccountInfoEntity = new BaiduAccountInfoEntity();
+        BeanUtils.copyProperties(baiduAccountInfoDTO, baiduAccountInfoEntity);
         Update update = new Update();
         update.addToSet("bdAccounts", baiduAccountInfoEntity);
-        getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(user)), update, getEntityClass());
+        getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(user)), update, getSystemUserEntityClass());
     }
 
     @Override
     public void removeAccountInfo(Long id) {
         Update update = new Update();
-
         update.unset("bdAccounts");
-
-        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("bdAccounts._id").is(id)), update, getEntityClass());
+        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("bdAccounts._id").is(id)), update, getSystemUserEntityClass());
     }
 
     @Override
-    public SystemUserEntity findByUserName(String userName) {
-        SystemUserEntity user = getSysMongoTemplate().
-                findOne(Query.query(Criteria.where("userName").is(userName)), SystemUserEntity.class, "sys_user");
+    public SystemUserDTO findByUserName(String userName) {
+        SystemUserDTO user = new SystemUserDTO();
+        BeanUtils.copyProperties(
+                getSysMongoTemplate().findOne(
+                        Query.query(Criteria.where("userName").is(userName)),
+                        getSystemUserEntityClass(),
+                        "sys_user"),
+                user);
         return user;
     }
 
@@ -93,7 +103,11 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, 
     }
 
     @Override
-    public Class<SystemUserEntity> getEntityClass() {
+    public Class<SystemUserDTO> getEntityClass() {
+        return SystemUserDTO.class;
+    }
+
+    private Class<SystemUserEntity> getSystemUserEntityClass() {
         return SystemUserEntity.class;
     }
 }
