@@ -7,55 +7,39 @@ import java.util.Date;
  * Created by SubDong on 2014/8/21.
  */
 public class AccountReportDTO extends AccountIdDTO implements Comparable<AccountReportDTO>{
-//    @Id
+
     private String id;
 
-//    @Field(value = "acna")
     private String accountName;
 
-//    @Field(value = "date")
     private Date date;
 
-//    @Field(value = "pcis")
     private Integer pcImpression;     //PC展现次数
 
-//    @Field(value = "pccli")
     private Integer pcClick;      //PC点击次数
 
-//    @Field(value = "pcctr")
     private Double pcCtr;     //PC点击率=点击次数/展现次数
 
-//    @Field(value = "pccost")
     private BigDecimal pcCost;        //PC消费
 
-//    @Field(value = "pccpc")
     private BigDecimal pcCpc;     //PC平均点击价格=消费/点击次数
 
-//    @Field(value = "pccpm")
     private BigDecimal pcCpm;       //PC千次展现消费
 
-//    @Field(value = "pccs")
     private Double pcConversion;      //PC转化
 
-//    @Field(value = "mis")
     private Integer mobileImpression;
 
-//    @Field(value = "mcli")
     private Integer mobileClick;
 
-//    @Field(value = "mctr")
     private Double mobileCtr;
 
-//    @Field(value = "mcost")
     private BigDecimal mobileCost;
 
-//    @Field(value = "mcpc")
     private BigDecimal mobileCpc;
 
-//    @Field(value = "mcpm")
     private BigDecimal mobileCpm;
 
-//    @Field(value = "mcs")
     private Double mobileConversion;
 
     private long count;

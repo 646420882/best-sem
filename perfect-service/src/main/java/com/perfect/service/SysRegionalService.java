@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.dto.regional.RedisRegionalDTO;
+import com.perfect.dto.regional.RegionalReturnDataDTO;
 import com.perfect.dto.regional.RegionalCodeDTO;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public interface SysRegionalService {
      * @param listId
      * @return
      */
-    public Map<String, List<RedisRegionalDTO>> regionalProvinceId(List<Integer> listId);
+    public Map<String, List<RegionalReturnDataDTO>> regionalProvinceId(List<Integer> listId);
 
     /**
      * 通过省域名称查询对应的所有区域
@@ -27,14 +27,14 @@ public interface SysRegionalService {
      * @param listId
      * @return
      */
-    public Map<String, List<RedisRegionalDTO>> regionalProvinceName(List<String> listId);
+    public Map<String, List<RegionalReturnDataDTO>> regionalProvinceName(List<String> listId);
 
     /**
      * 获取所有省份
      *
      * @return
      */
-    public Map<String, List<RedisRegionalDTO>> getProvince();
+    public Map<String, List<RegionalReturnDataDTO>> getProvince();
 
     public String getProvinceNameById(Integer provinceId);
 

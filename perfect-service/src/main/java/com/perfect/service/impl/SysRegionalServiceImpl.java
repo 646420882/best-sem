@@ -1,7 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.RegionalCodeDAO;
-import com.perfect.dto.regional.RedisRegionalDTO;
+import com.perfect.dto.regional.RegionalReturnDataDTO;
 import com.perfect.dto.regional.RegionalCodeDTO;
 import com.perfect.service.SysRegionalService;
 import org.springframework.stereotype.Component;
@@ -21,23 +21,23 @@ public class SysRegionalServiceImpl implements SysRegionalService {
     private RegionalCodeDAO regionalCodeDAO;
 
     @Override
-    public Map<String, List<RedisRegionalDTO>> regionalProvinceId(List<Integer> listId) {
+    public Map<String, List<RegionalReturnDataDTO>> regionalProvinceId(List<Integer> listId) {
         String fideName = FIDE_PROVINCEID;
-        Map<String, List<RedisRegionalDTO>> listMap = new HashMap<>();
+        Map<String, List<RegionalReturnDataDTO>> listMap = new HashMap<>();
         for (Integer integer : listId) {
             if (integer >= 1000) {
                 String peroId = String.valueOf(integer / 1000);
                 List<RegionalCodeDTO> regionals = regionalCodeDAO.getRegional(fideName, peroId);
-                List<RedisRegionalDTO> dtos = new ArrayList<>();
+                List<RegionalReturnDataDTO> dtos = new ArrayList<>();
                 if (regionals.size() == 0) {
-                    RedisRegionalDTO regionalDTO = new RedisRegionalDTO();
+                    RegionalReturnDataDTO regionalDTO = new RegionalReturnDataDTO();
                     regionalDTO.setRegionalId("-1");
                     regionalDTO.setRegionalName(String.valueOf(integer));
                     dtos.add(regionalDTO);
                 } else {
                     for (RegionalCodeDTO codeDTO : regionals) {
                         if (!String.valueOf(integer).equals(codeDTO.getProvinceId() + codeDTO.getRegionId())) {
-                            RedisRegionalDTO regionalDTO = new RedisRegionalDTO();
+                            RegionalReturnDataDTO regionalDTO = new RegionalReturnDataDTO();
                             regionalDTO.setRegionalId(codeDTO.getProvinceId() + codeDTO.getRegionId());
                             regionalDTO.setRegionalName(codeDTO.getRegionName());
                             dtos.add(regionalDTO);
@@ -48,16 +48,16 @@ public class SysRegionalServiceImpl implements SysRegionalService {
                 listMap.put(String.valueOf(integer), dtos);
             } else {
                 List<RegionalCodeDTO> regionals = regionalCodeDAO.getRegional(fideName, String.valueOf(integer));
-                List<RedisRegionalDTO> dtos = new ArrayList<>();
+                List<RegionalReturnDataDTO> dtos = new ArrayList<>();
                 if (regionals.size() == 0) {
-                    RedisRegionalDTO regionalDTO = new RedisRegionalDTO();
+                    RegionalReturnDataDTO regionalDTO = new RegionalReturnDataDTO();
                     regionalDTO.setRegionalId("-1");
                     regionalDTO.setRegionalName(String.valueOf(integer));
                     dtos.add(regionalDTO);
                 } else {
                     for (RegionalCodeDTO codeDTO : regionals) {
                         if (!String.valueOf(integer * 1000).equals(codeDTO.getProvinceId() + codeDTO.getRegionId())) {
-                            RedisRegionalDTO regionalDTO = new RedisRegionalDTO();
+                            RegionalReturnDataDTO regionalDTO = new RegionalReturnDataDTO();
                             regionalDTO.setRegionalId(codeDTO.getProvinceId() + codeDTO.getRegionId());
                             regionalDTO.setRegionalName(codeDTO.getRegionName());
                             dtos.add(regionalDTO);
@@ -71,21 +71,21 @@ public class SysRegionalServiceImpl implements SysRegionalService {
     }
 
     @Override
-    public Map<String, List<RedisRegionalDTO>> regionalProvinceName(List<String> listId) {
+    public Map<String, List<RegionalReturnDataDTO>> regionalProvinceName(List<String> listId) {
         String fideName = FIDE_PROVINCENAME;
-        Map<String, List<RedisRegionalDTO>> listMap = new HashMap<>();
+        Map<String, List<RegionalReturnDataDTO>> listMap = new HashMap<>();
         for (String integer : listId) {
             List<RegionalCodeDTO> regionals = regionalCodeDAO.getRegional(fideName, integer);
-            List<RedisRegionalDTO> dtos = new ArrayList<>();
+            List<RegionalReturnDataDTO> dtos = new ArrayList<>();
             if (regionals.size() == 0) {
-                RedisRegionalDTO regionalDTO = new RedisRegionalDTO();
+                RegionalReturnDataDTO regionalDTO = new RegionalReturnDataDTO();
                 regionalDTO.setRegionalId("-1");
                 regionalDTO.setRegionalName(String.valueOf(integer));
                 dtos.add(regionalDTO);
             } else {
                 for (RegionalCodeDTO codeDTO : regionals) {
                     if (!String.valueOf(integer).equals(codeDTO.getProvinceId() + codeDTO.getRegionId())) {
-                        RedisRegionalDTO regionalDTO = new RedisRegionalDTO();
+                        RegionalReturnDataDTO regionalDTO = new RegionalReturnDataDTO();
                         regionalDTO.setRegionalId(codeDTO.getProvinceId() + codeDTO.getRegionId());
                         if ("".equals(codeDTO.getRegionName())) {
                             regionalDTO.setRegionalName(integer);
@@ -103,15 +103,15 @@ public class SysRegionalServiceImpl implements SysRegionalService {
     }
 
     @Override
-    public Map<String, List<RedisRegionalDTO>> getProvince() {
+    public Map<String, List<RegionalReturnDataDTO>> getProvince() {
         String fideName = FIDE_REGIONID;
         String id = STRING_NUMBER_ZERO;
         List<RegionalCodeDTO> regionals = regionalCodeDAO.getRegional(fideName, id);
-        Map<String, List<RedisRegionalDTO>> returnMap = new HashMap<>();
-        List<RedisRegionalDTO> dtos = new ArrayList<>();
+        Map<String, List<RegionalReturnDataDTO>> returnMap = new HashMap<>();
+        List<RegionalReturnDataDTO> dtos = new ArrayList<>();
         for (RegionalCodeDTO codeDTO : regionals) {
             if (!"00".equals(codeDTO.getProvinceId())) {
-                RedisRegionalDTO regionalDTO = new RedisRegionalDTO();
+                RegionalReturnDataDTO regionalDTO = new RegionalReturnDataDTO();
                 regionalDTO.setRegionalId(codeDTO.getProvinceId());
                 regionalDTO.setRegionalName(codeDTO.getProvinceName());
                 regionalDTO.setShots(Integer.valueOf(codeDTO.getProvinceId()));

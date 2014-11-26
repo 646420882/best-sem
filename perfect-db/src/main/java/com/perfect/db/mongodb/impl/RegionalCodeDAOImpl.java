@@ -3,7 +3,9 @@ package com.perfect.db.mongodb.impl;
 import com.perfect.dao.RegionalCodeDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.regional.RegionalCodeDTO;
-import com.perfect.dao.utils.Pager;
+import com.perfect.entity.RegionalCodeEntity;
+import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.Pager;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -21,19 +23,24 @@ import static com.perfect.commons.constants.RegionalConstants.TBL_SYS_REGIONAL;
 public class RegionalCodeDAOImpl extends AbstractSysBaseDAOImpl<RegionalCodeDTO, Long> implements RegionalCodeDAO {
     @Override
     public void insertRegionalCode(List<RegionalCodeDTO> redisList) {
-        getSysMongoTemplate().insert(redisList, TBL_SYS_REGIONAL);
+        List<RegionalCodeEntity> regionalCodeEntities = ObjectUtils.convert(redisList, RegionalCodeEntity.class);
+        getSysMongoTemplate().insert(regionalCodeEntities, TBL_SYS_REGIONAL);
     }
 
     @Override
     public List<RegionalCodeDTO> getRegional(String fieldName, String id) {
-        List<RegionalCodeDTO> list = getSysMongoTemplate().find(Query.query(Criteria.where(fieldName).is(id)), RegionalCodeDTO.class, TBL_SYS_REGIONAL);
-        return list;
+        List<RegionalCodeEntity> list = getSysMongoTemplate().find(Query.query(Criteria.where(fieldName).is(id)), RegionalCodeEntity.class, TBL_SYS_REGIONAL);
+        List<RegionalCodeDTO> regionalCodeDTOs = ObjectUtils.convert(list, getEntityClass());
+        return regionalCodeDTOs;
     }
 
     @Override
     public RegionalCodeDTO getRegionalByRegionId(String feidName, String id) {
-        List<RegionalCodeDTO> dtos = getSysMongoTemplate().find(new Query(Criteria.where(feidName).is(id).and(FIDE_REGIONNAME).is("")), getEntityClass(), TBL_SYS_REGIONAL);
-        return dtos.size() == 0 ? null : dtos.get(0);
+        List<RegionalCodeEntity> dtos = getSysMongoTemplate().find(new Query(Criteria.where(feidName).is(id).and(FIDE_REGIONNAME).is("")), RegionalCodeEntity.class, TBL_SYS_REGIONAL);
+
+        List<RegionalCodeDTO> codeDTOs = ObjectUtils.convert(dtos,getEntityClass());
+
+        return codeDTOs.size() == 0 ? null : codeDTOs.get(0);
     }
 
 

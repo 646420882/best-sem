@@ -3,12 +3,13 @@ package com.perfect.db.mongodb.impl;
 import com.perfect.core.AppContext;
 import com.perfect.dao.AccountAnalyzeDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.dao.utils.Pager;
+import com.perfect.dto.account.AccountReportDTO;
+import com.perfect.dto.keyword.KeywordRealDTO;
 import com.perfect.entity.AccountReportEntity;
-import com.perfect.entity.KeywordRealTimeDataVOEntity;
+import com.perfect.entity.KeywordRealEntity;
+import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.Pager;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -25,11 +26,15 @@ import static com.perfect.commons.constants.MongoEntityConstants.TBL_ACCOUNT_REP
  * 2014-11-24 refactor
  */
 @Repository("accountAnalyzeDAO")
-public class AccountAnalyzeDAOImpl extends AbstractUserBaseDAOImpl<KeywordRealTimeDataVOEntity, Long> implements AccountAnalyzeDAO {
+public class AccountAnalyzeDAOImpl extends AbstractUserBaseDAOImpl<KeywordRealDTO, Long> implements AccountAnalyzeDAO {
 
     @Override
-    public Class<KeywordRealTimeDataVOEntity> getEntityClass() {
-        return KeywordRealTimeDataVOEntity.class;
+    public Class<KeywordRealDTO> getEntityClass() {
+        return KeywordRealDTO.class;
+    }
+
+    public Class<KeywordRealEntity> getKeywordRealEntityClass() {
+        return KeywordRealEntity.class;
     }
 
     public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
@@ -37,31 +42,33 @@ public class AccountAnalyzeDAOImpl extends AbstractUserBaseDAOImpl<KeywordRealTi
     }
 
     @Override
-    public List<KeywordRealTimeDataVOEntity> performance(String userTable) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        List<KeywordRealTimeDataVOEntity> list = mongoTemplate.findAll(KeywordRealTimeDataVOEntity.class, userTable);
-        return list;
+    public List<KeywordRealDTO> performance(String userTable) {
+        List<KeywordRealEntity> list = getMongoTemplate().findAll(getKeywordRealEntityClass(), userTable);
+
+        List<KeywordRealDTO> keywordRealDTOs = ObjectUtils.convert(list,getEntityClass());
+        return keywordRealDTOs;
     }
 
     @Override
-    public List<AccountReportEntity> performaneUser(Date startDate, Date endDate) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-
-        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
-        return list;
+    public List<AccountReportDTO> performaneUser(Date startDate, Date endDate) {
+        List<AccountReportEntity> list = getMongoTemplate().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
+        List<AccountReportDTO> accountReportDTOs = ObjectUtils.convert(list,AccountReportDTO.class);
+        return accountReportDTOs;
     }
 
     @Override
-    public List<AccountReportEntity> performaneCurve(Date startDate, Date endDate) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())).with(new Sort(Sort.Direction.ASC, "date")), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
-        return list;
+    public List<AccountReportDTO> performaneCurve(Date startDate, Date endDate) {
+        List<AccountReportEntity> list = getMongoTemplate().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())).with(new Sort(Sort.Direction.ASC, "date")), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
+
+        List<AccountReportDTO> accountReportDTOs = ObjectUtils.convert(list,AccountReportDTO.class);
+        return accountReportDTOs;
     }
 
     @Override
-    public List<AccountReportEntity> downAccountCSV() {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())).with(new Sort("date")), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
-        return list;
+    public List<AccountReportDTO> downAccountCSV() {
+        List<AccountReportEntity> list = getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())).with(new Sort("date")), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
+
+        List<AccountReportDTO> accountReportDTOs = ObjectUtils.convert(list,AccountReportDTO.class);
+        return accountReportDTOs;
     }
 }

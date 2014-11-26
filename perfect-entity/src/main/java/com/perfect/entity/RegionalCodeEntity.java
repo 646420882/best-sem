@@ -1,24 +1,32 @@
-package com.perfect.dto.regional;
+package com.perfect.entity;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
- * Created by SubDong on 2014/9/28.
- * 存放数据库直接读出的数据。未处理过
+ * Created by SubDong on 2014/11/26.
  */
-// TODO 跟RegionCodeDTO 的区别是啥子
-public class RegionalCodeDTO {
+public class RegionalCodeEntity {
 
+    @Id
     private String id;
     //国家id
+    @Field(value = "stateId")
     private String stateId;
     //国家名称
+    @Field(value = "stateName")
     private String stateName;
     //省级ID
+    @Field(value = "provinceId")
     private String provinceId;
     //省级名称
+    @Field(value = "provinceName")
     private String provinceName;
     //地区ID
+    @Field(value = "regionId")
     private String regionId;
     //地区名称
+    @Field(value = "regionName")
     private String regionName;
 
     public String getId() {

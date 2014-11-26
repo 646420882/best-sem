@@ -1,8 +1,8 @@
 package com.perfect.dao;
 
 import com.mongodb.WriteResult;
-import com.perfect.entity.FolderEntity;
-import com.perfect.entity.FolderMonitorEntity;
+import com.perfect.dto.monitor.FolderDTO;
+import com.perfect.dto.monitor.FolderMonitorDTO;
 
 import java.util.List;
 
@@ -15,13 +15,13 @@ public interface MonitoringDao {
      * 获取所有监控文件夹信息
      * @return
      */
-    public List<FolderEntity> getForlder();
+    public List<FolderDTO> getForlder();
 
     /**
      * 通过id获取监控文件夹
      * @return
      */
-    public List<FolderEntity> getForlderId(Long folderId);
+    public List<FolderDTO> getForlderId(Long folderId);
 
     /**
      * 通过id获取监控文件夹
@@ -31,9 +31,9 @@ public interface MonitoringDao {
 
     /**
      * 添加监控文件夹
-     * @param folderEntity
+     * @param folderDTO
      */
-    public void addFolder(FolderEntity folderEntity);
+    public void addFolder(FolderDTO folderDTO);
 
     /**
      * 通过监控文件夹删除对应的文件夹
@@ -53,13 +53,13 @@ public interface MonitoringDao {
      * 获取所有监控对象
      * @return
      */
-    public List<FolderMonitorEntity> getMonitor();
+    public List<FolderMonitorDTO> getMonitor();
 
     /**
      * 通过监控文件夹ID 获取对应的监控对象
      * @return
      */
-    public List<FolderMonitorEntity> getMonitorId(Long folderId);
+    public List<FolderMonitorDTO> getMonitorId(Long folderId);
 
     /**
      * 通过监控对象ID 删除监控对象
@@ -70,10 +70,10 @@ public interface MonitoringDao {
 
     /**
      * 添加监控对象
-     * @param folderMonitorEntity
+     * @param folderMonitorDTO
      * @return
      */
-    public void addMonitor(FolderMonitorEntity folderMonitorEntity);
+    public void addMonitor(FolderMonitorDTO folderMonitorDTO);
 
     /**
      * 根据关键词的long id得到该关键词所属监控文件夹数

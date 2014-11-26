@@ -8,6 +8,7 @@ import com.perfect.autosdk.sms.v3.QualityType;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.MonitoringDao;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.entity.BaiduAccountInfoEntity;
 import com.perfect.entity.FolderEntity;
@@ -35,7 +36,7 @@ public class MonitoringServiceImpl implements MonitoringService {
     @Resource
     private QualityTypeService qualityTypeService;
     @Resource
-    private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
+    private AccountManageDAO<BaiduAccountInfoDTO> accountManageDAO;
 
     @Override
     public List<FolderEntity> getFolder() {

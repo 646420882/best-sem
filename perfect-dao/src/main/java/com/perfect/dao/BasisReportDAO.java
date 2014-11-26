@@ -1,7 +1,7 @@
 package com.perfect.dao;
 
+import com.perfect.dto.StructureReportDTO;
 import com.perfect.dto.account.AccountReportDTO;
-import com.perfect.entity.StructureReportEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -16,7 +16,7 @@ public interface BasisReportDAO {
      * @param userTable 数据表名
      * @return
      */
-    public List<StructureReportEntity> getUnitReportDate(String userTable, Long dataId, String dataName);
+    public List<StructureReportDTO> getUnitReportDate(String userTable, Long dataId, String dataName);
 
     /**
      * 获取账户所有数据
@@ -50,6 +50,6 @@ public interface BasisReportDAO {
      * @param table
      * @return
      */
-    public List<StructureReportEntity> getKeywordReport(Long[] id, String table);
+    public List<StructureReportDTO> getKeywordReport(Long[] id, String table);
 
 }

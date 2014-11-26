@@ -1,9 +1,11 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.dao.AccountRegisterDAO;
-import com.perfect.entity.SystemUserEntity;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
-import com.perfect.dao.utils.Pager;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.entity.SystemUserEntity;
+import com.perfect.utils.Pager;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -14,22 +16,30 @@ import java.util.Map;
  * Created by SubDong on 2014/9/30.
  */
 @Repository("accountRegisterDao")
-public class AccountRegisterDaoImpl extends AbstractSysBaseDAOImpl<SystemUserEntity, Long> implements AccountRegisterDAO {
+public class AccountRegisterDaoImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Long> implements AccountRegisterDAO {
     @Override
-    public void addAccount(SystemUserEntity systemUserEntity) {
-        getSysMongoTemplate().insert(systemUserEntity, "sys_user");
+    public void addAccount(SystemUserDTO systemUserDTO) {
+
+        SystemUserEntity sys_user= new SystemUserEntity();
+        BeanUtils.copyProperties(systemUserDTO,sys_user);
+
+        getSysMongoTemplate().insert(sys_user, "sys_user");
     }
 
     @Override
-    public SystemUserEntity getAccount(String userName) {
+    public SystemUserDTO getAccount(String userName) {
         SystemUserEntity user = getSysMongoTemplate().findOne(Query.query(Criteria.where("userName").is(userName)), SystemUserEntity.class, "sys_user");
-        return user;
+
+        SystemUserDTO systemUserDTO =  new SystemUserDTO();
+        BeanUtils.copyProperties(user,systemUserDTO);
+
+        return systemUserDTO;
     }
 
 
     @Override
-    public Class<SystemUserEntity> getEntityClass() {
-        return SystemUserEntity.class;
+    public Class<SystemUserDTO> getEntityClass() {
+        return SystemUserDTO.class;
     }
 
     @Override

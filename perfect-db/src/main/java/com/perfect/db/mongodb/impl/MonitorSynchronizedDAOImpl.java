@@ -2,15 +2,16 @@ package com.perfect.db.mongodb.impl;
 
 import com.perfect.core.AppContext;
 import com.perfect.dao.MonitorSynchronizedDAO;
-import com.perfect.entity.FolderEntity;
-import com.perfect.entity.FolderMonitorEntity;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
+import com.perfect.dto.monitor.FolderDTO;
+import com.perfect.dto.monitor.FolderMonitorDTO;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.perfect.commons.constants.MongoEntityConstants.*;
+import static com.perfect.commons.constants.MongoEntityConstants.TBL_MONITORING_FOLDERS;
+import static com.perfect.commons.constants.MongoEntityConstants.TBL_MONITORING_TARGETS;
 
 /**
  * Created by SubDong on 2014/9/12.
@@ -19,7 +20,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.*;
 public class MonitorSynchronizedDAOImpl implements MonitorSynchronizedDAO {
 
     @Override
-    public int insterData(List<FolderEntity> forlderEntities) {
+    public int insterData(List<FolderDTO> forlderEntities) {
 
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         int i = -1;
@@ -39,7 +40,7 @@ public class MonitorSynchronizedDAOImpl implements MonitorSynchronizedDAO {
     }
 
     @Override
-    public int insterMoniterData(List<FolderMonitorEntity> folderMonitorEntities) {
+    public int insterMoniterData(List<FolderMonitorDTO> folderMonitorEntities) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         int i = -1;
         boolean verify = mongoTemplate.getDb().collectionExists(TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());

@@ -1,6 +1,6 @@
 package com.perfect.dao;
 
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.dto.SystemUserDTO;
 
 /**
  * Created by SubDong on 2014/9/30.
@@ -11,12 +11,12 @@ public interface AccountRegisterDAO {
      *
      * @param systemUserEntity
      */
-    public void addAccount(SystemUserEntity systemUserEntity);
+    public void addAccount(SystemUserDTO systemUserEntity);
 
     /**
      * 通过用户名查询用户
      *
      * @param
      */
-    public SystemUserEntity getAccount(String userName);
+    public SystemUserDTO getAccount(String userName);
 }
