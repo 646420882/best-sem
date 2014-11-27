@@ -5,6 +5,10 @@ import com.perfect.api.baidu.AsynchronousReport;
 import com.perfect.dao.AsynchronousReportDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.account.AccountReportDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.entity.*;
 import com.perfect.utils.DBNameUtils;
 import org.apache.http.HttpEntity;
@@ -34,7 +38,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.TBL_ACCOUNT_REP
 
 /**
  * Created by baizz on 2014-08-07.
- * 2014-11-24 refactor
+ * 2014-11-26 refactor
  */
 @Repository("asynchronousReportDAO")
 public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
@@ -44,36 +48,36 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     @Resource
     private SystemUserDAO systemUserDAO;
 
-    private List<AccountReportEntity> acrmList;
+    private List<AccountReportDTO> acrmList;
 
-    private List<CampaignReportEntity> cprmList;
+    private List<CampaignReportDTO> cprmList;
 
-    private List<AdgroupReportEntity> armList;
+    private List<AdgroupReportDTO> armList;
 
-    private List<CreativeReportEntity> crmList;
+    private List<CreativeReportDTO> crmList;
 
-    private List<KeywordReportEntity> krmList;
+    private List<KeywordReportDTO> krmList;
 
-    private List<RegionReportEntity> rrmList;
+    private List<RegionReportDTO> rrmList;
 
     public void getAccountReportData(String dateStr, String userName) {
         MongoTemplate mongoTemplate;
 
-        List<SystemUserEntity> entityList = new ArrayList<>();
+        List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
-            Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+            Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
             entityList = Lists.newArrayList(entities);
         } else {
-            SystemUserEntity userEntity = systemUserDAO.findByUserName(userName);
+            SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
 
-        for (SystemUserEntity systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoEntities().size() <= 0 || systemUser.getAccess() == 1) {
+        for (SystemUserDTO systemUser : entityList) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoDTOs().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
-            for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccountInfoDTOs()) {
 
                 if (entity.getState() == 0) {
                     continue;
@@ -85,13 +89,13 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<AccountReportEntity> pcList = httpFileHandler.getAccountReport(pcFilePath, 1);
+                List<AccountReportDTO> pcList = httpFileHandler.getAccountReport(pcFilePath, 1);
                 acrmList = httpFileHandler.getAccountReport(mobileFilePath, 2);
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 AccountReportHandler task = new AccountReportHandler(pcList, 0, pcList.size());
-                Future<List<AccountReportEntity>> voResult = forkJoinPool.submit(task);
-                List<AccountReportEntity> list;
+                Future<List<AccountReportDTO>> voResult = forkJoinPool.submit(task);
+                List<AccountReportDTO> list;
                 try {
                     list = voResult.get();
                     mongoTemplate.insert(list, TBL_ACCOUNT_REPORT);
@@ -107,21 +111,21 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     public void getCampaignReportData(String dateStr, String userName) {
         MongoTemplate mongoTemplate;
 
-        List<SystemUserEntity> entityList = new ArrayList<>();
+        List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
-            Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+            Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
             entityList = Lists.newArrayList(entities);
         } else {
-            SystemUserEntity userEntity = systemUserDAO.findByUserName(userName);
+            SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
 
-        for (SystemUserEntity systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoEntities().size() <= 0 || systemUser.getAccess() == 1) {
+        for (SystemUserDTO systemUser : entityList) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoDTOs().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
-            for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccountInfoDTOs()) {
 
                 if (entity.getState() == 0) {
                     continue;
@@ -132,13 +136,13 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<CampaignReportEntity> pcList = httpFileHandler.getCampaignReport(pcFilePath, 1);
+                List<CampaignReportDTO> pcList = httpFileHandler.getCampaignReport(pcFilePath, 1);
                 cprmList = httpFileHandler.getCampaignReport(mobileFilePath, 2);
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 CampaignReportHandler task = new CampaignReportHandler(pcList, 0, pcList.size());
-                Future<List<CampaignReportEntity>> voResult = forkJoinPool.submit(task);
-                List<CampaignReportEntity> list;
+                Future<List<CampaignReportDTO>> voResult = forkJoinPool.submit(task);
+                List<CampaignReportDTO> list;
                 try {
                     list = voResult.get();
                     mongoTemplate.insert(list, dateStr + "-campaign");
@@ -154,21 +158,21 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     public void getAdgroupReportData(String dateStr, String userName) {
         MongoTemplate mongoTemplate;
 
-        List<SystemUserEntity> entityList = new ArrayList<>();
+        List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
-            Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+            Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
             entityList = Lists.newArrayList(entities);
         } else {
-            SystemUserEntity userEntity = systemUserDAO.findByUserName(userName);
+            SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
 
-        for (SystemUserEntity systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoEntities().size() <= 0 || systemUser.getAccess() == 1) {
+        for (SystemUserDTO systemUser : entityList) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoDTOs().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
-            for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccountInfoDTOs()) {
 
                 if (entity.getState() == 0) {
                     continue;
@@ -181,13 +185,13 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<AdgroupReportEntity> pcList = httpFileHandler.getAdgroupReport(pcFilePath, 1);
+                List<AdgroupReportDTO> pcList = httpFileHandler.getAdgroupReport(pcFilePath, 1);
                 armList = httpFileHandler.getAdgroupReport(mobileFilePath, 2);
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 AdgroupReportHandler task = new AdgroupReportHandler(pcList, 0, pcList.size());
-                Future<List<AdgroupReportEntity>> voResult = forkJoinPool.submit(task);
-                List<AdgroupReportEntity> list;
+                Future<List<AdgroupReportDTO>> voResult = forkJoinPool.submit(task);
+                List<AdgroupReportDTO> list;
                 try {
                     list = voResult.get();
                     mongoTemplate.insert(list, dateStr + "-adgroup");
@@ -203,21 +207,21 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     public void getCreativeReportData(String dateStr, String userName) {
         MongoTemplate mongoTemplate;
 
-        List<SystemUserEntity> entityList = new ArrayList<>();
+        List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
-            Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+            Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
             entityList = Lists.newArrayList(entities);
         } else {
-            SystemUserEntity userEntity = systemUserDAO.findByUserName(userName);
+            SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
 
-        for (SystemUserEntity systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoEntities().size() <= 0 || systemUser.getAccess() == 1) {
+        for (SystemUserDTO systemUser : entityList) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoDTOs().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
-            for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccountInfoDTOs()) {
 
                 if (entity.getState() == 0) {
                     continue;
@@ -230,13 +234,13 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<CreativeReportEntity> pcList = httpFileHandler.getCreativeReport(pcFilePath, 1);
+                List<CreativeReportDTO> pcList = httpFileHandler.getCreativeReport(pcFilePath, 1);
                 crmList = httpFileHandler.getCreativeReport(mobileFilePath, 2);
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 CreativeReportHandler task = new CreativeReportHandler(pcList, 0, pcList.size());
-                Future<List<CreativeReportEntity>> voResult = forkJoinPool.submit(task);
-                List<CreativeReportEntity> list;
+                Future<List<CreativeReportDTO>> voResult = forkJoinPool.submit(task);
+                List<CreativeReportDTO> list;
                 try {
                     list = voResult.get();
                     mongoTemplate.insert(list, dateStr + "-creative");
@@ -251,21 +255,21 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     public void getKeywordReportData(String dateStr, String userName) {
         MongoTemplate mongoTemplate;
-        List<SystemUserEntity> entityList = new ArrayList<>();
+        List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
-            Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+            Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
             entityList = Lists.newArrayList(entities);
         } else {
-            SystemUserEntity userEntity = systemUserDAO.findByUserName(userName);
+            SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
 
-        for (SystemUserEntity systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoEntities().size() <= 0 || systemUser.getAccess() == 1) {
+        for (SystemUserDTO systemUser : entityList) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoDTOs().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
-            for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccountInfoDTOs()) {
 
                 if (entity.getState() == 0) {
                     continue;
@@ -278,13 +282,13 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<KeywordReportEntity> pcList = httpFileHandler.getKeywordReport(pcFilePath, 1);
+                List<KeywordReportDTO> pcList = httpFileHandler.getKeywordReport(pcFilePath, 1);
                 krmList = httpFileHandler.getKeywordReport(mobileFilePath, 2);
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 KeywordReportHandler task = new KeywordReportHandler(pcList, 0, pcList.size());
-                Future<List<KeywordReportEntity>> voResult = forkJoinPool.submit(task);
-                List<KeywordReportEntity> list;
+                Future<List<KeywordReportDTO>> voResult = forkJoinPool.submit(task);
+                List<KeywordReportDTO> list;
                 try {
                     list = voResult.get();
                     mongoTemplate.insert(list, dateStr + "-keyword");
@@ -299,21 +303,21 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     public void getRegionReportData(String dateStr, String userName) {
         MongoTemplate mongoTemplate;
-        List<SystemUserEntity> entityList = new ArrayList<>();
+        List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
-            Iterable<SystemUserEntity> entities = systemUserDAO.findAll();
+            Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
             entityList = Lists.newArrayList(entities);
         } else {
-            SystemUserEntity userEntity = systemUserDAO.findByUserName(userName);
+            SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
 
-        for (SystemUserEntity systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoEntities().size() <= 0 || systemUser.getAccess() == 1) {
+        for (SystemUserDTO systemUser : entityList) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoDTOs().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
-            for (BaiduAccountInfoEntity entity : systemUser.getBaiduAccountInfoEntities()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccountInfoDTOs()) {
 
                 if (entity.getState() == 0) {
                     continue;
@@ -327,13 +331,13 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     continue;
                 }
 
-                List<RegionReportEntity> pcList = httpFileHandler.getRegionReport(pcFilePath, 1);
+                List<RegionReportDTO> pcList = httpFileHandler.getRegionReport(pcFilePath, 1);
                 /*rrmList = httpFileHandler.getRegionReport(mobileFilePath, 2);*/
                 rrmList = new ArrayList<>();
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 RegionReportHandler task = new RegionReportHandler(pcList, 0, pcList.size());
-                Future<List<RegionReportEntity>> voResult = forkJoinPool.submit(task);
-                List<RegionReportEntity> list;
+                Future<List<RegionReportDTO>> voResult = forkJoinPool.submit(task);
+                List<RegionReportDTO> list;
                 try {
                     list = voResult.get();
                     mongoTemplate.insert(list, dateStr + "-region");
@@ -348,8 +352,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
     class HttpFileHandler {
 
-        public List<AccountReportEntity> getAccountReport(String filePath, int type) {
-            List<AccountReportEntity> list = new ArrayList<>();
+        public List<AccountReportDTO> getAccountReport(String filePath, int type) {
+            List<AccountReportDTO> list = new ArrayList<>();
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(filePath);
             try {
@@ -364,7 +368,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         continue;
                     }
                     String[] arr = str.split("\\t");
-                    AccountReportEntity entity1 = new AccountReportEntity();
+                    AccountReportDTO entity1 = new AccountReportDTO();
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     Date date = format.parse(arr[0]);
                     entity1.setDate(date);
@@ -403,8 +407,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
         }
 
 
-        public List<CampaignReportEntity> getCampaignReport(String filePath, int type) {
-            List<CampaignReportEntity> list = new ArrayList<>();
+        public List<CampaignReportDTO> getCampaignReport(String filePath, int type) {
+            List<CampaignReportDTO> list = new ArrayList<>();
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(filePath);
             try {
@@ -419,7 +423,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         continue;
                     }
                     String[] arr = str.split("\\t");
-                    CampaignReportEntity entity1 = new CampaignReportEntity();
+                    CampaignReportDTO entity1 = new CampaignReportDTO();
                     entity1.setAccountId(Long.valueOf(arr[1]));
                     entity1.setCampaignId(Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
@@ -455,8 +459,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
             return list;
         }
 
-        public List<AdgroupReportEntity> getAdgroupReport(String filePath, int type) {
-            List<AdgroupReportEntity> list = new ArrayList<>();
+        public List<AdgroupReportDTO> getAdgroupReport(String filePath, int type) {
+            List<AdgroupReportDTO> list = new ArrayList<>();
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(filePath);
             try {
@@ -471,7 +475,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         continue;
                     }
                     String[] arr = str.split("\\t");
-                    AdgroupReportEntity entity1 = new AdgroupReportEntity();
+                    AdgroupReportDTO entity1 = new AdgroupReportDTO();
                     entity1.setAccountId(Long.valueOf(arr[1]));
                     entity1.setCampaignId(Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
@@ -509,8 +513,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
             return list;
         }
 
-        public List<CreativeReportEntity> getCreativeReport(String filePath, int type) {
-            List<CreativeReportEntity> list = new ArrayList<>();
+        public List<CreativeReportDTO> getCreativeReport(String filePath, int type) {
+            List<CreativeReportDTO> list = new ArrayList<>();
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(filePath);
             try {
@@ -525,7 +529,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         continue;
                     }
                     String[] arr = str.split("\\t");
-                    CreativeReportEntity entity1 = new CreativeReportEntity();
+                    CreativeReportDTO entity1 = new CreativeReportDTO();
                     entity1.setCreativeId(Long.valueOf(arr[7]));
                     entity1.setCreativeTitle(arr[8]);
                     entity1.setDescription1(arr[9]);
@@ -568,8 +572,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
             return list;
         }
 
-        public List<KeywordReportEntity> getKeywordReport(String filePath, int type) {
-            List<KeywordReportEntity> list = new ArrayList<>();
+        public List<KeywordReportDTO> getKeywordReport(String filePath, int type) {
+            List<KeywordReportDTO> list = new ArrayList<>();
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(filePath);
             try {
@@ -584,7 +588,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         continue;
                     }
                     String[] arr = str.split("\\t");
-                    KeywordReportEntity entity1 = new KeywordReportEntity();
+                    KeywordReportDTO entity1 = new KeywordReportDTO();
 
                     entity1.setKeywordId(Long.valueOf(arr[7]));
                     entity1.setKeywordName(arr[9]);
@@ -627,8 +631,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
             return list;
         }
 
-        public List<RegionReportEntity> getRegionReport(String filePath, int type) {
-            List<RegionReportEntity> list = new ArrayList<>();
+        public List<RegionReportDTO> getRegionReport(String filePath, int type) {
+            List<RegionReportDTO> list = new ArrayList<>();
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(filePath);
             try {
@@ -643,7 +647,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         continue;
                     }
                     String[] arr = str.split("\\t");
-                    RegionReportEntity entity1 = new RegionReportEntity();
+                    RegionReportDTO entity1 = new RegionReportDTO();
                     entity1.setAccountId(Long.valueOf(arr[1]));
                     entity1.setCampaignId(Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
@@ -691,31 +695,31 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
         }
     }
 
-    class AccountReportHandler extends RecursiveTask<List<AccountReportEntity>> {
+    class AccountReportHandler extends RecursiveTask<List<AccountReportDTO>> {
 
         private static final int threshold = 100;
 
         private int first;
         private int last;
-        private List<AccountReportEntity> pcList;
+        private List<AccountReportDTO> pcList;
 
-        AccountReportHandler(List<AccountReportEntity> pcList, int first, int last) {
+        AccountReportHandler(List<AccountReportDTO> pcList, int first, int last) {
             this.first = first;
             this.last = last;
             this.pcList = pcList;
         }
 
         @Override
-        protected List<AccountReportEntity> compute() {
-            List<AccountReportEntity> list = new ArrayList<>();
+        protected List<AccountReportDTO> compute() {
+            List<AccountReportDTO> list = new ArrayList<>();
             boolean status = (last - first) < threshold;
             if (status) {
                 for (int i = first; i < last; i++) {
-                    AccountReportEntity entity = pcList.get(i);
+                    AccountReportDTO entity = pcList.get(i);
                     boolean temp = true;
-                    for (AccountReportEntity type : acrmList) {
+                    for (AccountReportDTO type : acrmList) {
                         if (entity.getAccountId().compareTo(type.getAccountId()) == 0) {
-                            AccountReportEntity _entity = new AccountReportEntity();
+                            AccountReportDTO _entity = new AccountReportDTO();
                             _entity.setDate(entity.getDate());
                             _entity.setAccountId(entity.getAccountId());
                             _entity.setAccountName(entity.getAccountName());
@@ -739,7 +743,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         }
                     }
                     if (temp) {
-                        AccountReportEntity _entity = new AccountReportEntity();
+                        AccountReportDTO _entity = new AccountReportDTO();
                         _entity.setDate(entity.getDate());
                         _entity.setAccountId(entity.getAccountId());
                         _entity.setAccountName(entity.getAccountName());
@@ -767,31 +771,31 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
         }
     }
 
-    class CampaignReportHandler extends RecursiveTask<List<CampaignReportEntity>> {
+    class CampaignReportHandler extends RecursiveTask<List<CampaignReportDTO>> {
 
         private static final int threshold = 100;
 
         private int first;
         private int last;
-        private List<CampaignReportEntity> pcList;
+        private List<CampaignReportDTO> pcList;
 
-        CampaignReportHandler(List<CampaignReportEntity> pcList, int first, int last) {
+        CampaignReportHandler(List<CampaignReportDTO> pcList, int first, int last) {
             this.first = first;
             this.last = last;
             this.pcList = pcList;
         }
 
         @Override
-        protected List<CampaignReportEntity> compute() {
-            List<CampaignReportEntity> list = new ArrayList<>();
+        protected List<CampaignReportDTO> compute() {
+            List<CampaignReportDTO> list = new ArrayList<>();
             boolean status = (last - first) < threshold;
             if (status) {
                 for (int i = first; i < last; i++) {
-                    CampaignReportEntity entity = pcList.get(i);
+                    CampaignReportDTO entity = pcList.get(i);
                     boolean temp = true;
-                    for (CampaignReportEntity type : cprmList) {
+                    for (CampaignReportDTO type : cprmList) {
                         if (entity.getCampaignId().compareTo(type.getCampaignId()) == 0) {
-                            CampaignReportEntity _entity = new CampaignReportEntity();
+                            CampaignReportDTO _entity = new CampaignReportDTO();
                             _entity.setAccountId(entity.getAccountId());
                             _entity.setCampaignId(entity.getCampaignId());
                             _entity.setCampaignName(entity.getCampaignName());
@@ -815,7 +819,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         }
                     }
                     if (temp) {
-                        CampaignReportEntity _entity = new CampaignReportEntity();
+                        CampaignReportDTO _entity = new CampaignReportDTO();
                         _entity.setAccountId(entity.getAccountId());
                         _entity.setCampaignId(entity.getCampaignId());
                         _entity.setCampaignName(entity.getCampaignName());
@@ -843,31 +847,31 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
         }
     }
 
-    class AdgroupReportHandler extends RecursiveTask<List<AdgroupReportEntity>> {
+    class AdgroupReportHandler extends RecursiveTask<List<AdgroupReportDTO>> {
 
         private static final int threshold = 100;
 
         private int first;
         private int last;
-        private List<AdgroupReportEntity> pcList;
+        private List<AdgroupReportDTO> pcList;
 
-        AdgroupReportHandler(List<AdgroupReportEntity> pcList, int first, int last) {
+        AdgroupReportHandler(List<AdgroupReportDTO> pcList, int first, int last) {
             this.first = first;
             this.last = last;
             this.pcList = pcList;
         }
 
         @Override
-        protected List<AdgroupReportEntity> compute() {
-            List<AdgroupReportEntity> list = new ArrayList<>();
+        protected List<AdgroupReportDTO> compute() {
+            List<AdgroupReportDTO> list = new ArrayList<>();
             boolean status = (last - first) < threshold;
             if (status) {
                 for (int i = first; i < last; i++) {
-                    AdgroupReportEntity entity = pcList.get(i);
+                    AdgroupReportDTO entity = pcList.get(i);
                     boolean temp = true;
-                    for (AdgroupReportEntity type : armList) {
+                    for (AdgroupReportDTO type : armList) {
                         if (entity.getAdgroupId().compareTo(type.getAdgroupId()) == 0) {
-                            AdgroupReportEntity _entity = new AdgroupReportEntity();
+                            AdgroupReportDTO _entity = new AdgroupReportDTO();
                             _entity.setAdgroupId(entity.getAdgroupId());
                             _entity.setAdgroupName(entity.getAdgroupName());
                             _entity.setAccountId(entity.getAccountId());
@@ -893,7 +897,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         }
                     }
                     if (temp) {
-                        AdgroupReportEntity _entity = new AdgroupReportEntity();
+                        AdgroupReportDTO _entity = new AdgroupReportDTO();
                         _entity.setAdgroupId(entity.getAdgroupId());
                         _entity.setAdgroupName(entity.getAdgroupName());
                         _entity.setAccountId(entity.getAccountId());
@@ -925,31 +929,31 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
     }
 
 
-    class CreativeReportHandler extends RecursiveTask<List<CreativeReportEntity>> {
+    class CreativeReportHandler extends RecursiveTask<List<CreativeReportDTO>> {
 
         private static final int threshold = 100;
 
         private int first;
         private int last;
-        private List<CreativeReportEntity> pcList;
+        private List<CreativeReportDTO> pcList;
 
-        CreativeReportHandler(List<CreativeReportEntity> pcList, int first, int last) {
+        CreativeReportHandler(List<CreativeReportDTO> pcList, int first, int last) {
             this.first = first;
             this.last = last;
             this.pcList = pcList;
         }
 
         @Override
-        protected List<CreativeReportEntity> compute() {
-            List<CreativeReportEntity> list = new ArrayList<>();
+        protected List<CreativeReportDTO> compute() {
+            List<CreativeReportDTO> list = new ArrayList<>();
             boolean status = (last - first) < threshold;
             if (status) {
                 for (int i = first; i < last; i++) {
-                    CreativeReportEntity entity = pcList.get(i);
+                    CreativeReportDTO entity = pcList.get(i);
                     boolean temp = true;
-                    for (CreativeReportEntity type : crmList) {
+                    for (CreativeReportDTO type : crmList) {
                         if (entity.getCreativeId().compareTo(type.getCreativeId()) == 0) {
-                            CreativeReportEntity _entity = new CreativeReportEntity();
+                            CreativeReportDTO _entity = new CreativeReportDTO();
                             _entity.setCreativeId(entity.getCreativeId());
                             _entity.setCreativeTitle(entity.getCreativeTitle());
                             _entity.setDescription1(entity.getDescription1());
@@ -980,7 +984,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         }
                     }
                     if (temp) {
-                        CreativeReportEntity _entity = new CreativeReportEntity();
+                        CreativeReportDTO _entity = new CreativeReportDTO();
                         _entity.setCreativeId(entity.getCreativeId());
                         _entity.setCreativeTitle(entity.getCreativeTitle());
                         _entity.setDescription1(entity.getDescription1());
@@ -1015,31 +1019,31 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
         }
     }
 
-    class KeywordReportHandler extends RecursiveTask<List<KeywordReportEntity>> {
+    class KeywordReportHandler extends RecursiveTask<List<KeywordReportDTO>> {
 
         private static final int threshold = 100;
 
         private int first;
         private int last;
-        private List<KeywordReportEntity> pcList;
+        private List<KeywordReportDTO> pcList;
 
-        KeywordReportHandler(List<KeywordReportEntity> pcList, int first, int last) {
+        KeywordReportHandler(List<KeywordReportDTO> pcList, int first, int last) {
             this.first = first;
             this.last = last;
             this.pcList = pcList;
         }
 
         @Override
-        protected List<KeywordReportEntity> compute() {
-            List<KeywordReportEntity> list = new ArrayList<>();
+        protected List<KeywordReportDTO> compute() {
+            List<KeywordReportDTO> list = new ArrayList<>();
             boolean status = (last - first) < threshold;
             if (status) {
                 for (int i = first; i < last; i++) {
-                    KeywordReportEntity entity = pcList.get(i);
+                    KeywordReportDTO entity = pcList.get(i);
                     boolean temp = true;
-                    for (KeywordReportEntity type : krmList) {
+                    for (KeywordReportDTO type : krmList) {
                         if (entity.getKeywordId().compareTo(type.getKeywordId()) == 0) {
-                            KeywordReportEntity _entity = new KeywordReportEntity();
+                            KeywordReportDTO _entity = new KeywordReportDTO();
                             _entity.setKeywordId(entity.getKeywordId());
                             _entity.setKeywordName(entity.getKeywordName());
                             _entity.setAdgroupId(entity.getAdgroupId());
@@ -1069,7 +1073,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         }
                     }
                     if (temp) {
-                        KeywordReportEntity _entity = new KeywordReportEntity();
+                        KeywordReportDTO _entity = new KeywordReportDTO();
                         _entity.setKeywordId(entity.getKeywordId());
                         _entity.setKeywordName(entity.getKeywordName());
                         _entity.setAdgroupId(entity.getAdgroupId());
@@ -1102,31 +1106,31 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
         }
     }
 
-    class RegionReportHandler extends RecursiveTask<List<RegionReportEntity>> {
+    class RegionReportHandler extends RecursiveTask<List<RegionReportDTO>> {
 
         private static final int threshold = 100;
 
         private int first;
         private int last;
-        private List<RegionReportEntity> pcList;
+        private List<RegionReportDTO> pcList;
 
-        RegionReportHandler(List<RegionReportEntity> pcList, int first, int last) {
+        RegionReportHandler(List<RegionReportDTO> pcList, int first, int last) {
             this.first = first;
             this.last = last;
             this.pcList = pcList;
         }
 
         @Override
-        protected List<RegionReportEntity> compute() {
-            List<RegionReportEntity> list = new ArrayList<>();
+        protected List<RegionReportDTO> compute() {
+            List<RegionReportDTO> list = new ArrayList<>();
             boolean status = (last - first) < threshold;
             if (status) {
                 for (int i = first; i < last; i++) {
-                    RegionReportEntity entity = pcList.get(i);
+                    RegionReportDTO entity = pcList.get(i);
                     boolean temp = true;
-                    for (RegionReportEntity type : rrmList) {
+                    for (RegionReportDTO type : rrmList) {
                         if (entity.getRegionId().compareTo(type.getRegionId()) == 0) {
-                            RegionReportEntity _entity = new RegionReportEntity();
+                            RegionReportDTO _entity = new RegionReportDTO();
                             _entity.setRegionId(entity.getRegionId());
                             _entity.setRegionName(entity.getRegionName());
                             _entity.setAdgroupId(entity.getAdgroupId());
@@ -1156,7 +1160,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                         }
                     }
                     if (temp) {
-                        RegionReportEntity _entity = new RegionReportEntity();
+                        RegionReportDTO _entity = new RegionReportDTO();
                         _entity.setRegionId(entity.getRegionId());
                         _entity.setRegionName(entity.getRegionName());
                         _entity.setAdgroupId(entity.getAdgroupId());
