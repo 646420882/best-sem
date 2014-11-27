@@ -6,11 +6,12 @@ import com.perfect.dao.AsynchronousReportDAO;
 import com.perfect.dao.SystemUserDAO;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.SystemUserDTO;
-import com.perfect.dto.account.AccountReportDTO;
+import com.perfect.dto.account.*;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.entity.*;
 import com.perfect.utils.DBNameUtils;
+import com.perfect.utils.ObjectUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -98,7 +99,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 List<AccountReportDTO> list;
                 try {
                     list = voResult.get();
-                    mongoTemplate.insert(list, TBL_ACCOUNT_REPORT);
+                    List<AccountReportEntity> reportDTOs = ObjectUtils.convert(list, AccountReportEntity.class);
+                    mongoTemplate.insert(reportDTOs, TBL_ACCOUNT_REPORT);
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {
@@ -145,7 +147,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 List<CampaignReportDTO> list;
                 try {
                     list = voResult.get();
-                    mongoTemplate.insert(list, dateStr + "-campaign");
+                    List<CampaignReportEntity> reportDTOs = ObjectUtils.convert(list, CampaignReportEntity.class);
+                    mongoTemplate.insert(reportDTOs, dateStr + "-campaign");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {
@@ -194,7 +197,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 List<AdgroupReportDTO> list;
                 try {
                     list = voResult.get();
-                    mongoTemplate.insert(list, dateStr + "-adgroup");
+                    List<AdgroupReportEntity> reportDTOs = ObjectUtils.convert(list, AdgroupReportEntity.class);
+                    mongoTemplate.insert(reportDTOs, dateStr + "-adgroup");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {
@@ -243,7 +247,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 List<CreativeReportDTO> list;
                 try {
                     list = voResult.get();
-                    mongoTemplate.insert(list, dateStr + "-creative");
+                    List<CreativeReportEntity> reportDTOs = ObjectUtils.convert(list, CreativeReportEntity.class);
+                    mongoTemplate.insert(reportDTOs, dateStr + "-creative");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {
@@ -291,7 +296,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 List<KeywordReportDTO> list;
                 try {
                     list = voResult.get();
-                    mongoTemplate.insert(list, dateStr + "-keyword");
+                    List<KeywordReportEntity> reportDTOs = ObjectUtils.convert(list, KeywordReportEntity.class);
+                    mongoTemplate.insert(reportDTOs, dateStr + "-keyword");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {
@@ -340,7 +346,8 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                 List<RegionReportDTO> list;
                 try {
                     list = voResult.get();
-                    mongoTemplate.insert(list, dateStr + "-region");
+                    List<RegionReportEntity> reportDTOs = ObjectUtils.convert(list, RegionReportEntity.class);
+                    mongoTemplate.insert(reportDTOs, dateStr + "-region");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {
@@ -718,7 +725,7 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
                     AccountReportDTO entity = pcList.get(i);
                     boolean temp = true;
                     for (AccountReportDTO type : acrmList) {
-                        if (entity.getAccountId().compareTo(type.getAccountId()) == 0) {
+                        if (Long.valueOf(entity.getAccountId()).compareTo(type.getAccountId()) == 0) {
                             AccountReportDTO _entity = new AccountReportDTO();
                             _entity.setDate(entity.getDate());
                             _entity.setAccountId(entity.getAccountId());
