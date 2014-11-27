@@ -14,6 +14,7 @@ import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/9/4.
+ * 2014-11-26 refactor
  */
 @Service("adgroupBackUpService")
 public class AdgroupBackUpServiceImpl extends AbstractUserBaseDAOImpl<AdgroupBackupDTO,Long> implements AdgroupBackUpService {

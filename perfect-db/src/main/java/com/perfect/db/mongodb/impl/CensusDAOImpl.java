@@ -24,6 +24,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by XiaoWei on 2014/11/11.
+ * 2014-11-26 refactor
  */
 @Component
 public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusEntity, Long> implements CensusDAO {

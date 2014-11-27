@@ -24,6 +24,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.*;
 
 /**
  * Created by XiaoWei on 2014/9/17.
+ * 2014-11-26 refactor
  */
 @Repository("keywordReportDAO")
 public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportEntity, Long> implements KeywordReportDAO {

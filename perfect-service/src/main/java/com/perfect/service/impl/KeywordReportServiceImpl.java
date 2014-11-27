@@ -19,6 +19,7 @@ import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/9/17.
+ * 2014-11-26 refactor
  */
 @Service
 public class KeywordReportServiceImpl extends AbstractUserBaseDAOImpl<KeywordReportEntity,Long> implements KeywordReportService {

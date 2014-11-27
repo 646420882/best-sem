@@ -17,6 +17,7 @@ import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/9/4.
+ * 2014-11-26 refactor
  */
 @Component
 public class CreativeBackUpDAOImpl extends AbstractUserBaseDAOImpl<CreativeBackUpEntity, Long> implements CreativeBackUpDAO {

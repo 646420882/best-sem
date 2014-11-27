@@ -25,6 +25,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.ACCOUNT_ID;
 
 /**
  * Created by XiaoWei on 2014/9/19.
+ * 2014-11-26 refactor
  */
 @Repository("customGroupDAO")
 public class CustomGroupDAOImpl extends AbstractUserBaseDAOImpl<CustomGroupEntity, Long> implements CustomGroupDAO {

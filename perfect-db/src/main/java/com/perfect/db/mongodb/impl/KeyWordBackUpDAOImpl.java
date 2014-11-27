@@ -18,6 +18,7 @@ import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/9/9.
+ * 2014-11-26 refactor
  */
 @Component
 public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpDTO,Long> implements KeyWordBackUpDAO {

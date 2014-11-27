@@ -25,6 +25,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.*;
 
 /**
  * Created by XiaoWei on 2014/9/22.
+ * 2014-11-26 refactor
  */
 @Repository("keywordImportDAO")
 public class KeywordImportDAOImpl extends AbstractUserBaseDAOImpl<KeywordImportEntity, Long> implements KeywordImportDAO {

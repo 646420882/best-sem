@@ -16,6 +16,7 @@ import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/9/19.
+ * 2014-11-26 refactor
  */
 @Service
 public class CustomGroupServiceImpl extends AbstractUserBaseDAOImpl<CustomGroupDTO,Long> implements CustomGroupService {

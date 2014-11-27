@@ -19,6 +19,7 @@ import java.util.TimeZone;
 
 /**
  * Created by XiaoWei on 2014/11/11.
+ * 2014-11-26 refactor
  */
 @Service("censusService")
 public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusEntity,Long> implements CensusService {
