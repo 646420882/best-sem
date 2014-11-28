@@ -1,18 +1,18 @@
 package com.perfect.crawl;
 
-import com.perfect.dao.mongodb.impl.CrawlWordDAOImpl;
-import com.perfect.entity.sys.CrawlWordEntity;
+import com.perfect.dao.sys.CrawlWordDAO;
+import com.perfect.dto.CrawlWordDTO;
 import com.perfect.json.JSONUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Protocol;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.HttpURLConnection;
@@ -26,7 +26,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by baizz on 2014-11-20.
  * <p>
  * use ConcurrentHashMap to build local cache
- * 2014-11-24 refactor
+ * 2014-11-28 refactor
  */
 public class CrawlURLHandler implements Runnable {
 
@@ -34,18 +34,18 @@ public class CrawlURLHandler implements Runnable {
     private static final String crawler_queue = "crawler_queue";
 
     //本地缓存
-    private Map<String, List<CrawlWordEntity>> cacheMap = new ConcurrentHashMap<>();
+    private Map<String, List<CrawlWordDTO>> cacheMap = new ConcurrentHashMap<>();
 
     //阻塞队列
-    private BlockingQueue<CrawlWordEntity> queue = new LinkedBlockingQueue<>();
+    private BlockingQueue<CrawlWordDTO> queue = new LinkedBlockingQueue<>();
 
     //需要爬取的站点
     private List<String> sites = new ArrayList<>();
 
     private JedisPool pool;
 
-//    @Resource
-//    private CrawlWordDAOImpl crawlWordDAO;
+    @Resource
+    private CrawlWordDAO crawlWordDAO;
 
     private CrawlURLHandler() {
         CrawlURLHandler.JedisPools.init("182.150.24.24");
@@ -63,10 +63,10 @@ public class CrawlURLHandler implements Runnable {
             logger.info("starting reading data...");
         }
 
-        //===后改为页面方式操作
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
-        CrawlWordDAOImpl crawlWordDAO = (CrawlWordDAOImpl) applicationContext.getBean("crawlWordDAO");
-        //===
+//        //===后改为页面方式操作
+//        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
+//        CrawlWordDAO crawlWordDAO = (CrawlWordDAOImpl) applicationContext.getBean("crawlWordDAO");
+//        //===
 
         //从本地缓存中取值放于阻塞队列中
         sites.forEach(site -> cacheMap.computeIfAbsent(site, (key) -> crawlWordDAO.findBySite(site)));
@@ -86,8 +86,8 @@ public class CrawlURLHandler implements Runnable {
                     }
                 } else {
                     //从阻塞队列中取值
-                    CrawlWordEntity entity;
-                    if ((entity = queue.poll()) == null) {
+                    CrawlWordDTO dto;
+                    if ((dto = queue.poll()) == null) {
                         if (sites.size() > 0) {
                             cacheMap.get(sites.get(0)).forEach(queue::offer);
                             cacheMap.remove(sites.get(0));
@@ -99,8 +99,8 @@ public class CrawlURLHandler implements Runnable {
                     }
 
                     Map<String, Object> conf = new HashMap<>();
-                    String _site = entity.getSite();
-                    conf.put("k", entity.getKeyword());
+                    String _site = dto.getSite();
+                    conf.put("k", dto.getKeyword());
                     conf.put("p", _site);
 
                     switch (_site) {
@@ -133,7 +133,7 @@ public class CrawlURLHandler implements Runnable {
                             conf.put("d", "default");
                             break;
                         case "taobao":
-                            conf.put("q", getTaobaoURL(entity.getKeyword(), WebSiteConstant.taobaoUrlTemplate));
+                            conf.put("q", getTaobaoURL(dto.getKeyword(), WebSiteConstant.taobaoUrlTemplate));
                             conf.put("d", "phantomjs");
                             break;
                         default:
@@ -173,6 +173,7 @@ public class CrawlURLHandler implements Runnable {
      * A method to get taobao's url
      *
      * @param inputWord
+     * @param taobaoUrlTemplate
      * @return
      */
     private String getTaobaoURL(String inputWord, String taobaoUrlTemplate) {
@@ -219,11 +220,8 @@ public class CrawlURLHandler implements Runnable {
         public static void init(String host) {
             if (init)
                 return;
-
             jedisPool = new JedisPool(new JedisPoolConfig(), host, Protocol.DEFAULT_PORT, Protocol.DEFAULT_TIMEOUT, "3edcvfr4");
-
-            if (jedisPool != null)
-                init = true;
+            init = true;
         }
 
         public static JedisPool getPool() {
