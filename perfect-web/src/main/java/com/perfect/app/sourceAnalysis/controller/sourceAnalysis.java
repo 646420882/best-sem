@@ -25,8 +25,10 @@ public class sourceAnalysis {
 
     @Resource
     private CensusService censusService;
+
     /**
      * 全部来源
+     *
      * @return
      */
     @RequestMapping(value = "/getAllSourcePage", method = {RequestMethod.GET, RequestMethod.POST})
@@ -37,18 +39,19 @@ public class sourceAnalysis {
 
     /**
      * 全部来源
+     *
      * @return
      */
     @RequestMapping(value = "/getAllSource", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAllSource(HttpServletResponse response) {
-        Map<String,Map<String,String>> mainMap = new HashMap<>();
-        Map<String,String> map = new HashMap<>();
-        map.put("llbl","99.99%");
-        map.put("fwcs","854");
-        map.put("xfks","442");
-        map.put("xfkbl","78%");
-        map.put("ddzhl","50.99%");
-        mainMap.put("head",map);
-        webContext.writeJson("",response);
+        Map<String, Map<String, String>> mainMap = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
+        map.put("llbl", "99.99%");
+        map.put("fwcs", "854");
+        map.put("xfks", "442");
+        map.put("xfkbl", "78%");
+        map.put("ddzhl", "50.99%");
+        mainMap.put("head", map);
+        webContext.writeJson("", response);
     }
 }

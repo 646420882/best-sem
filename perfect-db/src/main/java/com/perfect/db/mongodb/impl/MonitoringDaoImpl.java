@@ -2,7 +2,7 @@ package com.perfect.db.mongodb.impl;
 
 import com.mongodb.WriteResult;
 import com.perfect.core.AppContext;
-import com.perfect.dao.MonitoringDao;
+import com.perfect.dao.monitoring.MonitoringDao;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.dto.monitor.FolderMonitorDTO;
@@ -23,12 +23,12 @@ import static com.perfect.commons.constants.MongoEntityConstants.*;
  * Created by SubDong on 2014/9/15.
  */
 @Repository("monitoringDao")
-public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO,Long> implements MonitoringDao {
+public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> implements MonitoringDao {
     @Override
     public List<FolderDTO> getForlder() {
         List<FolderEntity> forlderEntities = getMongoTemplate().find(new Query(), FolderEntity.class, TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
 
-        List<FolderDTO> folderDTOs = ObjectUtils.convert(forlderEntities,FolderDTO.class);
+        List<FolderDTO> folderDTOs = ObjectUtils.convert(forlderEntities, FolderDTO.class);
 
         return folderDTOs;
     }
@@ -37,14 +37,14 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO,Long> im
     public List<FolderDTO> getForlderId(Long folderId) {
         List<FolderEntity> forlderEntities = getMongoTemplate().find(Query.query(Criteria.where(FOLDER_ID).is(folderId)), FolderEntity.class, TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
 
-        List<FolderDTO> folderDTOs = ObjectUtils.convert(forlderEntities,FolderDTO.class);
+        List<FolderDTO> folderDTOs = ObjectUtils.convert(forlderEntities, FolderDTO.class);
 
         return folderDTOs;
     }
 
     @Override
     public boolean updataForlderId(Long folderId, String folderName) {
-        WriteResult writeResult = getMongoTemplate().updateFirst(Query.query(Criteria.where(FOLDER_ID).is(folderId)), Update.update("fdna",folderName), TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
+        WriteResult writeResult = getMongoTemplate().updateFirst(Query.query(Criteria.where(FOLDER_ID).is(folderId)), Update.update("fdna", folderName), TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
         boolean b = writeResult.isUpdateOfExisting();
         return b;
     }
@@ -52,7 +52,7 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO,Long> im
     @Override
     public void addFolder(FolderDTO folderDTO) {
         FolderEntity folderEntity = new FolderEntity();
-        BeanUtils.copyProperties(folderDTO,folderEntity);
+        BeanUtils.copyProperties(folderDTO, folderEntity);
 
         getMongoTemplate().insert(folderEntity, TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
     }
@@ -73,7 +73,7 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO,Long> im
     public List<FolderMonitorDTO> getMonitor() {
         List<FolderMonitorEntity> entities = getMongoTemplate().find(new Query(), FolderMonitorEntity.class, TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
 
-        List<FolderMonitorDTO> folderMonitorDTOs = ObjectUtils.convert(entities,FolderMonitorDTO.class);
+        List<FolderMonitorDTO> folderMonitorDTOs = ObjectUtils.convert(entities, FolderMonitorDTO.class);
 
         return folderMonitorDTOs;
     }
@@ -82,7 +82,7 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO,Long> im
     public List<FolderMonitorDTO> getMonitorId(Long folderId) {
         List<FolderMonitorEntity> entities = getMongoTemplate().find(Query.query(Criteria.where(FOLDER_ID).is(folderId)), FolderMonitorEntity.class, TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
 
-        List<FolderMonitorDTO> folderMonitorDTOs = ObjectUtils.convert(entities,FolderMonitorDTO.class);
+        List<FolderMonitorDTO> folderMonitorDTOs = ObjectUtils.convert(entities, FolderMonitorDTO.class);
 
         return folderMonitorDTOs;
     }
@@ -96,7 +96,7 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO,Long> im
     @Override
     public void addMonitor(FolderMonitorDTO folderMonitorDTO) {
         FolderMonitorEntity folderMonitorEntity = new FolderMonitorEntity();
-        BeanUtils.copyProperties(folderMonitorDTO,folderMonitorEntity);
+        BeanUtils.copyProperties(folderMonitorDTO, folderMonitorEntity);
 
         getMongoTemplate().insert(folderMonitorEntity, TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
     }

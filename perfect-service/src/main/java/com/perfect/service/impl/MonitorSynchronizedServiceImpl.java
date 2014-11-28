@@ -5,8 +5,9 @@ import com.perfect.autosdk.sms.v3.Folder;
 import com.perfect.autosdk.sms.v3.FolderMonitor;
 import com.perfect.autosdk.sms.v3.Monitor;
 import com.perfect.core.AppContext;
-import com.perfect.dao.MonitorSynchronizedDAO;
+import com.perfect.dao.monitoring.MonitorSynchronizedDAO;
 import com.perfect.dao.account.AccountManageDAO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.dto.monitor.FolderMonitorDTO;
 import com.perfect.entity.sys.BaiduAccountInfoEntity;
@@ -85,8 +86,8 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
      */
     public PromotionMonitoring getUserInfo() {
         Long accid = AppContext.getAccountId();
-        BaiduAccountInfoEntity entity = accountManageDAO.findByBaiduUserId(accid);
-        PromotionMonitoring Monitoring = new PromotionMonitoring(entity.getBaiduUserName(),entity.getBaiduPassword(),entity.getToken());;
+        BaiduAccountInfoDTO entity = accountManageDAO.findByBaiduUserId(accid);
+        PromotionMonitoring Monitoring = new PromotionMonitoring(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
         return Monitoring;
     }
 }

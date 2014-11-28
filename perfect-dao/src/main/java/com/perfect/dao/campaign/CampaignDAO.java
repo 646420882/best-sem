@@ -21,9 +21,9 @@ public interface CampaignDAO extends MongoCrudRepository<CampaignDTO, Long> {
 
     void deleteByMongoId(String id);
 
-    void updateByMongoId(CampaignDTO newCampaign,CampaignDTO campaignEntity);
+    void updateByMongoId(CampaignDTO newCampaign, CampaignDTO campaignEntity);
 
-    PagerInfo findByPageInfo(Query q,int pageSize, int pageNo);
+    PagerInfo findByPageInfo(Query q, int pageSize, int pageNo);
 
     CampaignDTO findCampaignByName(String name);
 

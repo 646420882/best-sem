@@ -20,7 +20,7 @@ import java.util.List;
  * Created by SubDong on 2014/10/8.
  */
 @RestController
-public class ReportPullController  extends WebContextSupport{
+public class ReportPullController extends WebContextSupport {
 
     @Resource
     private AsynchronousReportDAO asynchronousReportDAO;
@@ -49,48 +49,48 @@ public class ReportPullController  extends WebContextSupport{
         } else {
             list = DateUtils.getPeriod(startDate, endDate);
         }
-        if("".equals(userName)){
+        if ("".equals(userName)) {
             userName = null;
         }
         int flag = 0;
         try {
             for (String dateStr : list) {
                 if (pullObj == 0) {
-                    asynchronousReportDAO.getAccountReportData(dateStr,userName);
-                    asynchronousReportDAO.getCampaignReportData(dateStr,userName);
-                    asynchronousReportDAO.getAdgroupReportData(dateStr,userName);
-                    asynchronousReportDAO.getCreativeReportData(dateStr,userName);
-                    asynchronousReportDAO.getKeywordReportData(dateStr,userName);
-                    asynchronousReportDAO.getRegionReportData(dateStr,userName);
+                    asynchronousReportDAO.getAccountReportData(dateStr, userName);
+                    asynchronousReportDAO.getCampaignReportData(dateStr, userName);
+                    asynchronousReportDAO.getAdgroupReportData(dateStr, userName);
+                    asynchronousReportDAO.getCreativeReportData(dateStr, userName);
+                    asynchronousReportDAO.getKeywordReportData(dateStr, userName);
+                    asynchronousReportDAO.getRegionReportData(dateStr, userName);
                 }
                 if (pullObj == 1) {
-                    asynchronousReportDAO.getAccountReportData(dateStr,userName);
+                    asynchronousReportDAO.getAccountReportData(dateStr, userName);
                 }
                 if (pullObj == 2) {
-                    asynchronousReportDAO.getCampaignReportData(dateStr,userName);
+                    asynchronousReportDAO.getCampaignReportData(dateStr, userName);
                 }
                 if (pullObj == 3) {
-                    asynchronousReportDAO.getAdgroupReportData(dateStr,userName);
+                    asynchronousReportDAO.getAdgroupReportData(dateStr, userName);
                 }
                 if (pullObj == 4) {
-                    asynchronousReportDAO.getCreativeReportData(dateStr,userName);
+                    asynchronousReportDAO.getCreativeReportData(dateStr, userName);
                 }
                 if (pullObj == 5) {
-                    asynchronousReportDAO.getKeywordReportData(dateStr,userName);
+                    asynchronousReportDAO.getKeywordReportData(dateStr, userName);
                 }
                 if (pullObj == 6) {
-                    asynchronousReportDAO.getKeywordReportData(dateStr,userName);
-                    asynchronousReportDAO.getRegionReportData(dateStr,userName);
+                    asynchronousReportDAO.getKeywordReportData(dateStr, userName);
+                    asynchronousReportDAO.getRegionReportData(dateStr, userName);
                 }
             }
             flag = 1;
-            writeData(SUCCESS,response,null);
+            writeData(SUCCESS, response, null);
         } catch (Exception e) {
-            writeData(EXCEPTION,response,null);
+            writeData(EXCEPTION, response, null);
             flag = -1;
         }
-        if(flag==0){
-        writeData(FAIL,response,null);
+        if (flag == 0) {
+            writeData(FAIL, response, null);
         }
 //        try {
 //            String s = gson.toJson(flag);
