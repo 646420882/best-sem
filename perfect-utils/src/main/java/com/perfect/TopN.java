@@ -3,6 +3,9 @@ package com.perfect;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Objects;
 
 /**
  * TopN algorithm, include QuickSort and TimSort
@@ -30,10 +33,8 @@ public class TopN {
      * @return
      */
     public static <T> T[] getTopN(T[] ts, int n, String fieldName, int sort) {
-        if (ts == null || ts.length == 0)
-            return null;
-
-        if (sort * sort != 1)
+        Objects.requireNonNull(ts);
+        if (ts.length == 0 || sort * sort != 1)
             return null;
 
         TopN.sort = sort;
@@ -130,16 +131,14 @@ public class TopN {
      * @return
      */
     public static <T> T[] getTopNByTimSort(T[] ts, int n, String fieldName, int sort) {
-        if (ts == null || ts.length == 0)
-            return null;
-
-        if (sort * sort != 1)
+        Objects.requireNonNull(ts);
+        if (ts.length == 0 || sort * sort != 1)
             return null;
 
         try {
             String fieldGetterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
             Method method = ts[0].getClass().getDeclaredMethod(fieldGetterName);
-            java.util.Arrays.sort(ts, Comparators.getComparator(method, sort));
+            Arrays.sort(ts, Comparators.getComparator(method, sort));
 
             T topNData[];
             int l = ts.length;
@@ -155,8 +154,8 @@ public class TopN {
         return (T[]) Array.newInstance(ts.getClass().getComponentType(), 0);
     }
 
-    static class Comparators {
-        public static <T> java.util.Comparator<T> getComparator(final Method _method, final int sort) {
+    protected static class Comparators {
+        public static <T> Comparator<T> getComparator(Method _method, int sort) {
             return (t1, t2) -> {
                 try {
                     int compareResult = ((Comparable) _method.invoke(t1)).compareTo(_method.invoke(t2));

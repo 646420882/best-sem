@@ -1,8 +1,10 @@
 package com.perfect.service.impl;
 
 import com.mongodb.WriteResult;
+import com.perfect.api.baidu.BaiduApiService;
+import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.api.baidu.PromotionMonitoring;
-import com.perfect.api.baidu.QualityTypeService;
+import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.Folder;
 import com.perfect.autosdk.sms.v3.QualityType;
 import com.perfect.core.AppContext;
@@ -30,10 +32,10 @@ public class MonitoringServiceImpl implements MonitoringService {
 
     @Resource
     private MonitoringDao monitoringDao;
+
     @Resource
     private AssistantKeywordService assistantKeywordService;
-    @Resource
-    private QualityTypeService qualityTypeService;
+
     @Resource
     private AccountManageDAO<BaiduAccountInfoDTO> accountManageDAO;
 
@@ -56,24 +58,24 @@ public class MonitoringServiceImpl implements MonitoringService {
     @Override
     public int addFolder(String folderName) {
         List<FolderDTO> list = monitoringDao.getForlder();
-        if(list.size() < 20){
+        if (list.size() < 20) {
             PromotionMonitoring monitoring = getUserInfo();
             Folder folder = new Folder();
             List<Folder> strings = new ArrayList<>();
             folder.setFolderName(folderName);
             strings.add(folder);
 
-            int  Judge = 0;
+            int Judge = 0;
             List<Folder> folderList = new ArrayList<>();
 
-            try{
+            try {
                 folderList = monitoring.addFolder(strings);
                 Judge = 1;
-            } catch (Exception e){
+            } catch (Exception e) {
                 Judge = 0;
             }
-            if(Judge == 1){
-                for(Folder folder1 : folderList){
+            if (Judge == 1) {
+                for (Folder folder1 : folderList) {
                     FolderDTO folderEntity = new FolderDTO();
                     folderEntity.setAccountId(AppContext.getAccountId());
                     folderEntity.setFolderName(folder1.getFolderName());
@@ -81,10 +83,10 @@ public class MonitoringServiceImpl implements MonitoringService {
                     monitoringDao.addFolder(folderEntity);
                 }
                 return 1;
-            }else {
+            } else {
                 return 0;
             }
-        }else{
+        } else {
             return -1;
         }
     }
@@ -93,23 +95,23 @@ public class MonitoringServiceImpl implements MonitoringService {
     public boolean deleteFolder(Long folderId) {
 
         List<FolderMonitorDTO> monitorEntities = monitoringDao.getMonitorId(folderId);
-        boolean returnFolder = false;
+        boolean returnFolder;
         int i;
-        if(monitorEntities.size()>0){
+        if (monitorEntities.size() > 0) {
             WriteResult remove = monitoringDao.deleteMonitor(folderId);
-            if(remove.getN() > 0){
+            if (remove.getN() > 0) {
                 WriteResult folderRemove = monitoringDao.deleteFoder(folderId);
                 i = folderRemove.getN();
-            }else{
+            } else {
                 i = 0;
             }
-        }else{
+        } else {
             WriteResult folderRemove = monitoringDao.deleteFoder(folderId);
             i = folderRemove.getN();
         }
-        if(i > 0){
+        if (i > 0) {
             returnFolder = true;
-        }else{
+        } else {
             returnFolder = false;
         }
 
@@ -131,22 +133,25 @@ public class MonitoringServiceImpl implements MonitoringService {
             }
 
             List<KeywordInfoDTO> keywordInfoDTOs = assistantKeywordService.getKeywordListByIds(longs);
-            List<QualityType> qualityType = qualityTypeService.getQualityType(longs);
-            for (FolderMonitorDTO aLong:monitor){
-                for(KeywordInfoDTO dto: keywordInfoDTOs){
+            BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
+            BaiduApiService apiService = new BaiduApiService(commonService);
+            List<QualityType> qualityType = apiService.getKeywordQuality(longs);
+            for (FolderMonitorDTO aLong : monitor) {
+                for (KeywordInfoDTO dto : keywordInfoDTOs) {
                     //设置监控文件夹信息
-                    if(aLong.getAclid().intValue() == dto.getObject().getKeywordId().intValue()){
+                    if (aLong.getAclid().intValue() == dto.getObject().getKeywordId().intValue()) {
                         dto.setMonitorId(aLong.getMonitorId());
                         dto.setFolderId(aLong.getFolderId());
-                        for(FolderDTO folderEntity1:folderEntities){
-                            if(folderEntity1.getFolderId().intValue() == aLong.getFolderId().intValue()){
+                        for (FolderDTO folderEntity1 : folderEntities) {
+                            if (folderEntity1.getFolderId().intValue() == aLong.getFolderId().intValue()) {
                                 dto.setFolderName(folderEntity1.getFolderName());
                             }
                         }
                     }
                     //设置质量度信息
-                    for (QualityType qualityType1 :qualityType){
-                        if(qualityType1.getId().intValue() == dto.getObject().getKeywordId().intValue()){
+                    for (QualityType qualityType1 : qualityType) {
+                        if (qualityType1.getId().intValue() == dto.getObject().getKeywordId().intValue()) {
                             dto.setQuality(qualityType1.getQuality());
                             dto.setMobileQuality(qualityType1.getMobileQuality());
                         }
@@ -174,22 +179,25 @@ public class MonitoringServiceImpl implements MonitoringService {
             }
 
             keywordInfoDTOs = assistantKeywordService.getKeywordListByIds(longs);
-            List<QualityType> qualityType = qualityTypeService.getQualityType(longs);
-            for (FolderMonitorDTO aLong:monitor){
-                for(KeywordInfoDTO dto: keywordInfoDTOs){
+            BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
+            BaiduApiService apiService = new BaiduApiService(commonService);
+            List<QualityType> qualityType = apiService.getKeywordQuality(longs);
+            for (FolderMonitorDTO aLong : monitor) {
+                for (KeywordInfoDTO dto : keywordInfoDTOs) {
                     //设置监控文件夹信息
-                    if(aLong.getAclid().intValue() == dto.getObject().getKeywordId().intValue()){
+                    if (aLong.getAclid().intValue() == dto.getObject().getKeywordId().intValue()) {
                         dto.setMonitorId(aLong.getMonitorId());
                         dto.setFolderId(aLong.getFolderId());
-                        for(FolderDTO folderEntity1:folderEntities){
-                            if(folderEntity1.getFolderId().intValue() == aLong.getFolderId().intValue()){
+                        for (FolderDTO folderEntity1 : folderEntities) {
+                            if (folderEntity1.getFolderId().intValue() == aLong.getFolderId().intValue()) {
                                 dto.setFolderName(folderEntity1.getFolderName());
                             }
                         }
                     }
                     //设置质量度信息
-                    for (QualityType qualityType1 :qualityType){
-                        if(qualityType1.getId().intValue() == dto.getObject().getKeywordId().intValue()){
+                    for (QualityType qualityType1 : qualityType) {
+                        if (qualityType1.getId().intValue() == dto.getObject().getKeywordId().intValue()) {
                             dto.setQuality(qualityType1.getQuality());
                             dto.setMobileQuality(qualityType1.getMobileQuality());
                         }
@@ -205,9 +213,9 @@ public class MonitoringServiceImpl implements MonitoringService {
     public boolean deleteMonitorId(Long MonitorId) {
         boolean returnFolder = false;
         WriteResult folderRemove = monitoringDao.deleteMonitorId(MonitorId);
-        if(folderRemove.getN() > 0){
+        if (folderRemove.getN() > 0) {
             returnFolder = true;
-        }else{
+        } else {
             returnFolder = false;
         }
         return returnFolder;
@@ -219,32 +227,32 @@ public class MonitoringServiceImpl implements MonitoringService {
         List<FolderMonitorDTO> entityList = monitoringDao.getMonitor();
         int i = 0;
         List<FolderMonitorDTO> monitorEntities = monitoringDao.getMonitorId(folderID);
-        for(FolderMonitorDTO entity:monitorEntities){
-            if(entity.getAclid().intValue() == acliId.intValue()){
-                i=-2;
+        for (FolderMonitorDTO entity : monitorEntities) {
+            if (entity.getAclid().intValue() == acliId.intValue()) {
+                i = -2;
             }
         }
-            if( i == 0 && entityList.size() < 2000){
-                FolderMonitorDTO monitorEntity = new FolderMonitorDTO();
-                //sid 当前时间的的毫秒数 加上一个一位的随机数   是字符串意义上的加法
-                String sid = String.valueOf(new Date().getTime())+String.valueOf((int)(Math.random()*10));
-                monitorEntity.setMonitorId(Long.parseLong(sid));
-                monitorEntity.setFolderId(folderID);
-                monitorEntity.setCampaignId(campaignId);
-                monitorEntity.setAdgroupId(adgroupId);
-                monitorEntity.setAclid(acliId);
-                monitorEntity.setAccountId(AppContext.getAccountId());
-                monitorEntity.setType(11);
+        if (i == 0 && entityList.size() < 2000) {
+            FolderMonitorDTO monitorEntity = new FolderMonitorDTO();
+            //sid 当前时间的的毫秒数 加上一个一位的随机数   是字符串意义上的加法
+            String sid = String.valueOf(new Date().getTime()) + String.valueOf((int) (Math.random() * 10));
+            monitorEntity.setMonitorId(Long.parseLong(sid));
+            monitorEntity.setFolderId(folderID);
+            monitorEntity.setCampaignId(campaignId);
+            monitorEntity.setAdgroupId(adgroupId);
+            monitorEntity.setAclid(acliId);
+            monitorEntity.setAccountId(AppContext.getAccountId());
+            monitorEntity.setType(11);
 
-                try{
-                    monitoringDao.addMonitor(monitorEntity);
-                    i=1;
-                }catch (Exception e){
-                    i=0;
-                }
-            }else if(i==0){
-                i=-1;
+            try {
+                monitoringDao.addMonitor(monitorEntity);
+                i = 1;
+            } catch (Exception e) {
+                i = 0;
             }
+        } else if (i == 0) {
+            i = -1;
+        }
         return i;
     }
 
@@ -258,13 +266,13 @@ public class MonitoringServiceImpl implements MonitoringService {
         Long accid = AppContext.getAccountId();
         BaiduAccountInfoDTO entity = accountManageDAO.findByBaiduUserId(accid);
 
-        PromotionMonitoring Monitoring = new PromotionMonitoring(entity.getBaiduUserName(),entity.getBaiduPassword(),entity.getToken());
+        PromotionMonitoring Monitoring = new PromotionMonitoring(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
         return Monitoring;
     }
 
     public static void main(String[] args) {
         SimpleDateFormat df = new SimpleDateFormat("yyyMMddHHmmssSSS");
         while (true)
-            System.out.println(String.valueOf(new Date().getTime())+String.valueOf((int)(Math.random()*10)));
+            System.out.println(String.valueOf(new Date().getTime()) + String.valueOf((int) (Math.random() * 10)));
     }
 }

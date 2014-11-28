@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by baizz on 14-11-25.
+ * Created by baizz on 2014-11-25.
  */
 public class DateUtils {
 
@@ -32,6 +32,8 @@ public class DateUtils {
             dateStrList.add(_startDate);
         } else {
             //某一个时间段
+            Objects.requireNonNull(startDate);
+            Objects.requireNonNull(endDate);
             Calendar cal1 = Calendar.getInstance();
             cal1.setTime(startDate);
             while (cal1.getTime().getTime() <= endDate.getTime()) {

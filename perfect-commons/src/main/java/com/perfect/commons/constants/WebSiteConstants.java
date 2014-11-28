@@ -1,9 +1,9 @@
-package com.perfect.crawl;
+package com.perfect.commons.constants;
 
 /**
- * Created by baizz on 2014-11-5.
+ * Created by baizz on 2014-11-28.
  */
-class WebSiteConstant {
+public class WebSiteConstants {
 
     public static String taobaoUrlTemplate = "http://s.taobao.com/search?q=%s";
 
