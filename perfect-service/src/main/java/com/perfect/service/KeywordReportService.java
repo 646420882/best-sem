@@ -9,6 +9,7 @@ import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014-9-17.
+ * 2014-11-26 refactor
  */
 public interface KeywordReportService  {
     PagerInfo findByPagerInfo(Map<String, Object> params);

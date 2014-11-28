@@ -10,9 +10,11 @@ import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dao.sys.SystemUserDAO;
+import com.perfect.dto.SchedulerDTO;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.baidu.OfflineTimeDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.regional.RegionalCodeDTO;
@@ -42,6 +44,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.ACCOUNT_ID;
 
 /**
  * Created by john on 2014/8/15.
+ * 2014-11-28 refactor XiaoWei
  */
 @RestController
 @Scope("prototype")
@@ -282,9 +285,9 @@ public class AssistantCampaignController {
 
         if (schedule != null) {
             Gson gson = new Gson();
-            List<ScheduleType> scheduleTypes = gson.fromJson(schedule, new TypeToken<List<ScheduleType>>() {
+            List<SchedulerDTO> scheduleTypes = gson.fromJson(schedule, new TypeToken<List<ScheduleType>>() {
             }.getType());
-            newCampaign.setSchedule(scheduleTypes == null ? new ArrayList<ScheduleType>() : scheduleTypes);
+            newCampaign.setSchedule(scheduleTypes == null ? new ArrayList<SchedulerDTO>() : scheduleTypes);
         }
 
         if (newCampaign.getCampaignId() == null) {
@@ -318,16 +321,16 @@ public class AssistantCampaignController {
 
         if (schedule != null) {
             Gson gson = new Gson();
-            List<ScheduleType> scheduleTypes = gson.fromJson(schedule, new TypeToken<List<ScheduleType>>() {
+            List<SchedulerDTO> scheduleTypes = gson.fromJson(schedule, new TypeToken<List<ScheduleType>>() {
             }.getType());
-            campaignDTO.setSchedule(scheduleTypes == null ? new ArrayList<ScheduleType>() : scheduleTypes);
+            campaignDTO.setSchedule(scheduleTypes == null ? new ArrayList<SchedulerDTO>() : scheduleTypes);
         }
 
         campaignDTO.setRegionTarget(regionTarget == null ? new ArrayList<Integer>() : Arrays.asList(regionTarget));
         campaignDTO.setNegativeWords(negativeWords == null || "".equals(negativeWords) ? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
         campaignDTO.setExactNegativeWords(exactNegativeWords == null || "".equals(exactNegativeWords) ? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));
         campaignDTO.setExcludeIp(excludeIp == null || "".equals(excludeIp) ? new ArrayList<String>() : Arrays.asList(excludeIp.split("\n")));
-        campaignDTO.setBudgetOfflineTime(new ArrayList<OfflineTimeType>());
+        campaignDTO.setBudgetOfflineTime(new ArrayList<OfflineTimeDTO>());
         campaignDTO.setAccountId(AppContext.getAccountId());
         campaignDTO.setStatus(-1);
         campaignDTO.setLocalStatus(1);
@@ -408,23 +411,23 @@ public class AssistantCampaignController {
         Map<Integer, String> regionMap = RegionalCodeUtils.regionalCodeName(regionsStr == null ? new ArrayList<String>() : regionsStr);
 
         //推广计划
-        CampaignEntity campaignEntity = new CampaignEntity();
-        campaignEntity.setCampaignName("新建计划" + df.format(new Date()));
-        campaignEntity.setShowProb(1);
-        campaignEntity.setPause(false);
-        campaignEntity.setStatus(-1);
-        campaignEntity.setPriceRatio(1.0);
-        campaignEntity.setIsDynamicCreative(true);
-        campaignEntity.setRegionTarget(new ArrayList<Integer>(regionMap.keySet()));
-        campaignEntity.setExcludeIp(new ArrayList<String>());
-        campaignEntity.setNegativeWords(new ArrayList<String>());
-        campaignEntity.setExactNegativeWords(new ArrayList<String>());
-        campaignEntity.setSchedule(new ArrayList<ScheduleType>());
-        campaignEntity.setBudgetOfflineTime(new ArrayList<OfflineTimeType>());
-        campaignEntity.setAccountId(AppContext.getAccountId());
-        campaignEntity.setLocalStatus(1);
+        CampaignDTO campaignDTO = new CampaignDTO();
+        campaignDTO.setCampaignName("新建计划" + df.format(new Date()));
+        campaignDTO.setShowProb(1);
+        campaignDTO.setPause(false);
+        campaignDTO.setStatus(-1);
+        campaignDTO.setPriceRatio(1.0);
+        campaignDTO.setIsDynamicCreative(true);
+        campaignDTO.setRegionTarget(new ArrayList<Integer>(regionMap.keySet()));
+        campaignDTO.setExcludeIp(new ArrayList<String>());
+        campaignDTO.setNegativeWords(new ArrayList<String>());
+        campaignDTO.setExactNegativeWords(new ArrayList<String>());
+        campaignDTO.setSchedule(new ArrayList<SchedulerDTO>());
+        campaignDTO.setBudgetOfflineTime(new ArrayList<OfflineTimeDTO>());
+        campaignDTO.setAccountId(AppContext.getAccountId());
+        campaignDTO.setLocalStatus(1);
 
-        String campaignObjectId = campaignDAO.insertReturnId(campaignEntity);
+        String campaignObjectId = campaignDAO.insertReturnId(campaignDTO);
 
 
         AdgroupDTO adgroupEntity = new AdgroupDTO();

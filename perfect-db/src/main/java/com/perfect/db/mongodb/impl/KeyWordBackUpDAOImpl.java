@@ -1,5 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
+import com.perfect.ObjectUtils;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.dao.keyword.KeyWordBackUpDAO;
 import com.perfect.dto.backup.KeyWordBackUpDTO;
@@ -54,7 +55,11 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpD
         return mongoTemplate.exists(new Query(),getEntityClass(),MongoEntityConstants.BAK_KEYWORD);
     }
 
-
+    @Override
+    public void myInsertAll(List<KeyWordBackUpDTO> list) {
+        List<KeyWordBackUpEntity> keyWordBackUpEntityList= ObjectUtils.convert(list,KeyWordBackUpEntity.class);
+        getMongoTemplate().insertAll(keyWordBackUpEntityList);
+    }
 
 
     /**

@@ -1,7 +1,7 @@
 package com.perfect.dao.report;
 
-import com.perfect.autosdk.sms.v3.RealTimeResultType;
-import com.perfect.entity.AccountReportEntity;
+import com.perfect.dto.RealTimeResultDTO;
+import com.perfect.dto.account.AccountReportDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -16,7 +16,7 @@ public interface GetAccountReportDAO {
      * @param startDate
      * @return
      */
-   AccountReportEntity getLocalAccountRealData(String userName,long accountId, Date startDate,Date endDate);
+   AccountReportDTO getLocalAccountRealData(String userName,long accountId, Date startDate,Date endDate);
 
     /**
      * 在百度上实时获取数据报告(数据来自百度)
@@ -24,6 +24,6 @@ public interface GetAccountReportDAO {
      * @param endDate
      * @return
      */
-    List<RealTimeResultType> getAccountRealTimeTypeByDate(String systemUserName,Long accountId, String startDate, String endDate);
+    List<RealTimeResultDTO> getAccountRealTimeTypeByDate(String systemUserName,Long accountId, String startDate, String endDate);
 
 }

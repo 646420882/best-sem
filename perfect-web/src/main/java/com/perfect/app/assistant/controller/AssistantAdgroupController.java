@@ -161,22 +161,22 @@ public class AssistantAdgroupController extends WebContextSupport {
                               @RequestParam(value = "mib") Double mib) {
         try {
             ////2014-11-24 refactor
-            AdgroupDTO adgroupEntity = new AdgroupDTO();
-            adgroupEntity.setAccountId(AppContext.getAccountId());
+            AdgroupDTO adgroupDTO = new AdgroupDTO();
+            adgroupDTO.setAccountId(AppContext.getAccountId());
             if (cid.length() > OBJ_SIZE) {
-                adgroupEntity.setCampaignObjId(cid);
+                adgroupDTO.setCampaignObjId(cid);
             } else {
-                adgroupEntity.setCampaignId(Long.parseLong(cid));
+                adgroupDTO.setCampaignId(Long.parseLong(cid));
             }
-            adgroupEntity.setAdgroupName(name);
-            adgroupEntity.setMaxPrice(maxPrice);
-            adgroupEntity.setNegativeWords(nn);
-            adgroupEntity.setExactNegativeWords(ne);
-            adgroupEntity.setPause(p);
-            adgroupEntity.setStatus(s);
-            adgroupEntity.setMib(mib);
-            adgroupEntity.setLocalStatus(1);
-            Object oid = adgroupDAO.insertOutId(adgroupEntity);
+            adgroupDTO.setAdgroupName(name);
+            adgroupDTO.setMaxPrice(maxPrice);
+            adgroupDTO.setNegativeWords(nn);
+            adgroupDTO.setExactNegativeWords(ne);
+            adgroupDTO.setPause(p);
+            adgroupDTO.setStatus(s);
+            adgroupDTO.setMib(mib);
+            adgroupDTO.setLocalStatus(1);
+            Object oid = adgroupDAO.insertOutId(adgroupDTO);
             writeData(SUCCESS, response, oid);
         } catch (Exception e) {
             e.printStackTrace();
@@ -233,30 +233,30 @@ public class AssistantAdgroupController extends WebContextSupport {
                                @RequestParam(value = "exactNegativeWords") List<String> ne,
                                @RequestParam(value = "pause") Boolean p,
                                @RequestParam(value = "mib") Double mib) {
-        AdgroupDTO adgroupEntityFind = null;
+        AdgroupDTO adgroupDTOFind = null;
         try {
             if (agid.length() > OBJ_SIZE) {
-                adgroupEntityFind = adgroupDAO.findByObjId(agid);
-                adgroupEntityFind.setAdgroupName(name);
-                adgroupEntityFind.setMaxPrice(maxPrice);
-                adgroupEntityFind.setMib(mib);
-                adgroupEntityFind.setNegativeWords(nn);
-                adgroupEntityFind.setExactNegativeWords(ne);
-                adgroupEntityFind.setMib(mib);
-                adgroupDAO.updateByObjId(adgroupEntityFind);
+                adgroupDTOFind = adgroupDAO.findByObjId(agid);
+                adgroupDTOFind.setAdgroupName(name);
+                adgroupDTOFind.setMaxPrice(maxPrice);
+                adgroupDTOFind.setMib(mib);
+                adgroupDTOFind.setNegativeWords(nn);
+                adgroupDTOFind.setExactNegativeWords(ne);
+                adgroupDTOFind.setMib(mib);
+                adgroupDAO.updateByObjId(adgroupDTOFind);
                 writeHtml(SUCCESS, response);
             } else {
-                adgroupEntityFind = adgroupDAO.findOne(Long.valueOf(agid));
-                AdgroupDTO adgroupEntity = new AdgroupDTO();
-                adgroupEntityFind.setLocalStatus(2);
-                BeanUtils.copyProperties(adgroupEntityFind, adgroupEntity);
-                adgroupEntityFind.setAdgroupName(name);
-                adgroupEntityFind.setMaxPrice(maxPrice);
-                adgroupEntityFind.setMib(mib);
-                adgroupEntityFind.setNegativeWords(nn);
-                adgroupEntityFind.setExactNegativeWords(ne);
-                adgroupEntityFind.setMib(mib);
-                adgroupDAO.update(adgroupEntityFind, adgroupEntity);
+                adgroupDTOFind = adgroupDAO.findOne(Long.valueOf(agid));
+                AdgroupDTO adgroupDTO = new AdgroupDTO();
+                adgroupDTOFind.setLocalStatus(2);
+                BeanUtils.copyProperties(adgroupDTOFind, adgroupDTO);
+                adgroupDTOFind.setAdgroupName(name);
+                adgroupDTOFind.setMaxPrice(maxPrice);
+                adgroupDTOFind.setMib(mib);
+                adgroupDTOFind.setNegativeWords(nn);
+                adgroupDTOFind.setExactNegativeWords(ne);
+                adgroupDTOFind.setMib(mib);
+                adgroupDAO.update(adgroupDTOFind, adgroupDTO);
                 writeHtml(SUCCESS, response);
             }
 
@@ -393,22 +393,22 @@ public class AssistantAdgroupController extends WebContextSupport {
                     writeHtml(SUCCESS, response);
                 }
             } else {
-                AdgroupDTO adgroupEntityInsert = new AdgroupDTO();
-                adgroupEntityInsert.setAccountId(AppContext.getAccountId());
+                AdgroupDTO adgroupDTOInsert = new AdgroupDTO();
+                adgroupDTOInsert.setAccountId(AppContext.getAccountId());
                 if (cid.length() > OBJ_SIZE) {
-                    adgroupEntityInsert.setCampaignObjId(cid);
+                    adgroupDTOInsert.setCampaignObjId(cid);
                 } else {
-                    adgroupEntityInsert.setCampaignId(Long.parseLong(cid));
+                    adgroupDTOInsert.setCampaignId(Long.parseLong(cid));
                 }
-                adgroupEntityInsert.setAdgroupName(name);
-                adgroupEntityInsert.setMaxPrice(maxPrice);
-                adgroupEntityInsert.setNegativeWords(new ArrayList<String>(0));
-                adgroupEntityInsert.setExactNegativeWords(new ArrayList<String>(0));
-                adgroupEntityInsert.setPause(p);
-                adgroupEntityInsert.setStatus(s);
-                adgroupEntityInsert.setMib(0.0);
-                adgroupEntityInsert.setLocalStatus(1);
-                adgroupDAO.insertOutId(adgroupEntityInsert);
+                adgroupDTOInsert.setAdgroupName(name);
+                adgroupDTOInsert.setMaxPrice(maxPrice);
+                adgroupDTOInsert.setNegativeWords(new ArrayList<String>(0));
+                adgroupDTOInsert.setExactNegativeWords(new ArrayList<String>(0));
+                adgroupDTOInsert.setPause(p);
+                adgroupDTOInsert.setStatus(s);
+                adgroupDTOInsert.setMib(0.0);
+                adgroupDTOInsert.setLocalStatus(1);
+                adgroupDAO.insertOutId(adgroupDTOInsert);
             }
             writeHtml(SUCCESS, response);
         } catch (Exception e) {

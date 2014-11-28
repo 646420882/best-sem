@@ -1,9 +1,11 @@
 package com.perfect.service;
 
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.sys.BaiduAccountInfoEntity;
 
 /**
  * Created by john on 2014/11/7.
+ * 2014-11-28 refactor
  */
 public interface BaiduAccountService {
 
@@ -14,5 +16,5 @@ public interface BaiduAccountService {
      * @return
      */
 
-    BaiduAccountInfoEntity getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId);
+    BaiduAccountInfoDTO getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId);
 }

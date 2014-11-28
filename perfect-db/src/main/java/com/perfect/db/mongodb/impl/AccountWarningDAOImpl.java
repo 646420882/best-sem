@@ -1,9 +1,13 @@
 package com.perfect.db.mongodb.impl;
 
+import com.perfect.ObjectUtils;
+import com.perfect.dao.WarningInfoDAO;
 import com.perfect.dao.account.AccountWarningDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
+import com.perfect.dto.WarningRuleDTO;
 import com.perfect.entity.WarningRuleEntity;
-import com.perfect.dao.utils.Pager;
+import com.perfect.paging.Pager;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -17,52 +21,55 @@ import java.util.Map;
 
 /**
  * Created by john on 2014/8/5.
+ * 2014-11-28 refactor XiaoWei
  */
 @Repository("accountWarningDAO")
-public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleEntity, Long> implements AccountWarningDAO {
+public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleDTO, Long> implements AccountWarningDAO {
 
     @Override
-    public WarningRuleEntity findOne(Long aLong) {
+    public WarningRuleDTO findOne(Long aLong) {
         return null;
     }
 
     @Override
-    public List<WarningRuleEntity> findAll() {
-        return getSysMongoTemplate().findAll(WarningRuleEntity.class, "sys_warning");
+    public List<WarningRuleDTO> findAll() {
+        List<WarningRuleEntity> warningRuleEntities= getSysMongoTemplate().findAll(WarningRuleEntity.class, "sys_warning");
+        return ObjectUtils.convert(warningRuleEntities, WarningRuleDTO.class);
     }
 
     @Override
-    public List<WarningRuleEntity> find(Map<String, Object> params, int skip, int limit) {
+    public List<WarningRuleDTO> find(Map<String, Object> params, int skip, int limit) {
         return null;
     }
 
-    public List<WarningRuleEntity> findEnableIsOne() {
-        return getSysMongoTemplate().find(new Query(Criteria.where("isEnable").is(1)), getEntityClass(), "sys_warning");
+    public List<WarningRuleDTO> findEnableIsOne() {
+        List<WarningRuleEntity> warningRuleEntityList= getSysMongoTemplate().find(new Query(Criteria.where("isEnable").is(1)), WarningRuleEntity.class, "sys_warning");
+        return ObjectUtils.convert(warningRuleEntityList,WarningRuleDTO.class);
     }
 
     @Override
-    public Class<WarningRuleEntity> getEntityClass() {
-        return WarningRuleEntity.class;
+    public Class<WarningRuleDTO> getEntityClass() {
+        return WarningRuleDTO.class;
     }
 
     @Override
-    public void insert(WarningRuleEntity warningRuleEntity) {
+    public void insert(WarningRuleDTO warningRuleEntity) {
         getSysMongoTemplate().insert(warningRuleEntity, "sys_warning");
     }
 
     @Override
-    public void insertAll(List<WarningRuleEntity> entities) {
+    public void insertAll(List<WarningRuleDTO> entities) {
 
     }
 
     @Override
-    public void update(WarningRuleEntity warningRuleEntity) {
+    public void update(WarningRuleDTO warningRuleEntity) {
         if (warningRuleEntity == null) {
             return;
         }
            Query query = new Query();
             query.addCriteria(Criteria.where("id").is(warningRuleEntity.getId()));
-            Class entityClass = warningRuleEntity.getClass();
+            Class entityClass = WarningRuleEntity.class;
             Field[] fields = entityClass.getDeclaredFields();
 
             Update update = new Update();
@@ -103,15 +110,23 @@ public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleEnt
      * @param isWarninged
      * @return
      */
-    public List<WarningRuleEntity> findWarningRule(int isEnable, int isWarninged){
-        return getSysMongoTemplate().find(new Query(Criteria.where("isEnable").is(isEnable).and("isWarninged").is(isWarninged)),getEntityClass(),"sys_warning");
+    public List<WarningRuleDTO> findWarningRule(int isEnable, int isWarninged){
+        List<WarningRuleEntity> warningRuleEntityList= getSysMongoTemplate().find(new Query(Criteria.where("isEnable").is(isEnable).and("isWarninged").is(isWarninged)),WarningRuleEntity.class,"sys_warning");
+        return ObjectUtils.convert(warningRuleEntityList,WarningRuleDTO.class);
     }
 
-    public Iterable<WarningRuleEntity> findByUserName(String user){
+    public Iterable<WarningRuleDTO> findByUserName(String user){
         MongoTemplate mongoTemplate = getSysMongoTemplate();
-        return mongoTemplate.find(Query.query(Criteria.where("sysUserName").is(user)),getEntityClass(),"sys_warning");
+        List<WarningRuleEntity> warningRuleEntityList= mongoTemplate.find(Query.query(Criteria.where("sysUserName").is(user)),WarningRuleEntity.class,"sys_warning");
+        return ObjectUtils.convert(warningRuleEntityList,WarningRuleDTO.class);
     }
 
+    @Override
+    public void mySave(WarningRuleDTO warningRuleDTO) {
+        WarningRuleEntity warningRuleEntity=new WarningRuleEntity();
+        BeanUtils.copyProperties(warningRuleDTO,warningRuleEntity);
+        getMongoTemplate().save(warningRuleEntity,"sys_warning");
+    }
 
 
     @Override

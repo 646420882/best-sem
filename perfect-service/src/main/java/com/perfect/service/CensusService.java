@@ -6,6 +6,7 @@ import com.perfect.entity.CensusEntity;
 
 /**
  * Created by XiaoWei on 2014/11/11.
+ * 2014-11-26 refactor
  */
 public interface CensusService  {
     /**

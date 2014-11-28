@@ -1,17 +1,16 @@
 package com.perfect.commons.web;
 
 
+import com.perfect.dto.web.MessageResultDTO;
 import com.perfect.json.JSONUtils;
-import com.perfect.utils.web.dto.MessageResult;
-import org.springframework.stereotype.Repository;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
  * Created by XiaoWei on 2014/7/28.
+ * 2014-11-28 refactor
  */
-@Repository(value = "webContext")
 public class WebContextSupport implements WebContext {
     public static final String SUCCESS = "1";//成功
     public static final String FAIL = "0";//失败
@@ -46,6 +45,6 @@ public class WebContextSupport implements WebContext {
 
     @Override
     public void writeData(Object message, HttpServletResponse response, Object data) {
-        writeJson(new MessageResult(message, data), response);
+        writeJson(new MessageResultDTO(message, data), response);
     }
 }

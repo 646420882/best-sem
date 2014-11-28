@@ -6,17 +6,20 @@ import com.perfect.api.baidu.SearchTermsReport;
 import com.perfect.autosdk.sms.v3.AttributeType;
 import com.perfect.autosdk.sms.v3.RealTimeQueryResultType;
 import com.perfect.core.AppContext;
-import com.perfect.dto.CampaignTreeDTO;
-import com.perfect.dto.KeywordDTO;
-import com.perfect.dto.SearchwordReportDTO;
+import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.dto.campaign.CampaignTreeDTO;
+import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.dto.keyword.KeywordInfoDTO;
+import com.perfect.dto.keyword.SearchwordReportDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.entity.keyword.KeywordEntity;
-import com.perfect.dao.mongodb.utils.PagerInfo;
+import com.perfect.paging.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.service.KeyWordBackUpService;
-import com.perfect.utils.RegionalCodeUtils;
 import com.perfect.commons.web.WebContext;
+import com.perfect.utils.report.RegionalCodeUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +39,7 @@ import java.util.Map;
 
 /**
  * Created by john on 2014/8/14.
+ * 2014-11-28 refactor XiaoWeii
  */
 @RestController
 @Scope("prototype")
@@ -61,12 +65,12 @@ public class AssistantKeywordController {
     @RequestMapping(value = "assistantKeyword/batchAddOrUpdate", method = RequestMethod.POST)
     public void batchAddkeyword(String insertList, String updateList, Boolean isReplace, HttpServletResponse response) {
         Gson gson = new Gson();
-        List<KeywordDTO> insertDtos = gson.fromJson(insertList, new TypeToken<List<KeywordDTO>>() {
+        List<KeywordInfoDTO> insertDtos = gson.fromJson(insertList, new TypeToken<List<KeywordInfoDTO>>() {
         }.getType());
-        List<KeywordDTO> updateDtos = gson.fromJson(updateList, new TypeToken<List<KeywordDTO>>() {
+        List<KeywordInfoDTO> updateDtos = gson.fromJson(updateList, new TypeToken<List<KeywordInfoDTO>>() {
         }.getType());
-        insertDtos = insertDtos == null ? new ArrayList<KeywordDTO>() : insertDtos;
-        updateDtos = updateDtos == null ? new ArrayList<KeywordDTO>() : updateDtos;
+        insertDtos = insertDtos == null ? new ArrayList<KeywordInfoDTO>() : insertDtos;
+        updateDtos = updateDtos == null ? new ArrayList<KeywordInfoDTO>() : updateDtos;
         assistantKeywordService.batchAddUpdateKeyword(insertDtos, updateDtos, isReplace);
         webContext.writeJson(RES_SUCCESS, response);
     }
@@ -113,7 +117,7 @@ public class AssistantKeywordController {
     public void updateKeywordName(HttpServletResponse response, String kwid, Double price, String pcDestinationUrl, String mobileDestinationUrl, Integer matchType, Integer phraseType, Boolean pause) {
         String regex = "^\\d+$";
 
-        KeywordEntity keywordEntity = new KeywordEntity();
+        KeywordDTO keywordEntity = new KeywordDTO();
 
         if (kwid.matches(regex) == true) {
             keywordEntity.setKeywordId(Long.parseLong(kwid));
@@ -126,8 +130,8 @@ public class AssistantKeywordController {
         keywordEntity.setMatchType(matchType);
         keywordEntity.setPhraseType(phraseType);
         keywordEntity.setPause(pause);
-        KeywordEntity keywordEntityRs = assistantKeywordService.updateKeyword(keywordEntity);
-        webContext.writeJson(keywordEntityRs, response);
+        KeywordDTO keywordDTO = assistantKeywordService.updateKeyword(keywordEntity);
+        webContext.writeJson(keywordDTO, response);
     }
 
 
@@ -240,8 +244,8 @@ public class AssistantKeywordController {
      */
     @RequestMapping(value = "assistantKeyword/reducUpdate", method = {RequestMethod.GET, RequestMethod.POST})
     public void reducUpdate(HttpServletResponse response, String id) {
-        KeywordEntity keywordEntity = keyWordBackUpService.reducUpdate(id);
-        webContext.writeJson(keywordEntity, response);
+        KeywordDTO keywordDTO = keyWordBackUpService.reducUpdate(id);
+        webContext.writeJson(keywordDTO, response);
     }
 
     /**
@@ -262,7 +266,7 @@ public class AssistantKeywordController {
      */
     @RequestMapping(value = "assistantKeyword/getCampaignByAccountId", method = {RequestMethod.GET, RequestMethod.POST})
     public void getCampaignByAccountId(HttpServletResponse response) {
-        Iterable<CampaignEntity> list = assistantKeywordService.getCampaignByAccountId();
+        Iterable<CampaignDTO> list = assistantKeywordService.getCampaignByAccountId();
         webContext.writeJson(list, response);
     }
 
@@ -271,7 +275,7 @@ public class AssistantKeywordController {
      */
     @RequestMapping(value = "assistantKeyword/getAdgroupByCid", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAdgroupByCid(HttpServletResponse response, String cid) {
-        Iterable<AdgroupEntity> list = assistantKeywordService.getAdgroupByCid(cid);
+        Iterable<AdgroupDTO> list = assistantKeywordService.getAdgroupByCid(cid);
         webContext.writeJson(list, response);
     }
 
@@ -331,9 +335,9 @@ public class AssistantKeywordController {
     public void addSearchwordKeyword(HttpServletResponse response, String agid, String keywords, String matchType) {
         String[] keywordArray = keywords.split("\n");
 
-        List<KeywordEntity> list = new ArrayList<>();
+        List<KeywordDTO> list = new ArrayList<KeywordDTO>();
         for (String kwd : keywordArray) {
-            KeywordEntity keywordEntity = new KeywordEntity();
+            KeywordDTO keywordEntity = new KeywordDTO();
             keywordEntity.setKeyword(kwd);
             if (agid.matches("^\\d+$")) {
                 keywordEntity.setAdgroupId(Long.parseLong(agid));

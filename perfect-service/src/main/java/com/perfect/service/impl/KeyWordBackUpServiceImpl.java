@@ -86,4 +86,9 @@ public class KeyWordBackUpServiceImpl extends AbstractUserBaseDAOImpl<KeyWordBac
         }
     }
 
+    @Override
+    public void myInsertAll(List<KeyWordBackUpDTO> list) {
+        keyWordBackUpDAO.myInsertAll(list);
+    }
+
 }

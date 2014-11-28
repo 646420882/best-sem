@@ -170,7 +170,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
             //开始备份需要备份的关键词
             List<KeyWordBackUpDTO> keyWordBackUpEntities = copyKeywordEntityToKeywordBack(keywordBackups);
-            keyWordBackUpService.insertAll(keyWordBackUpEntities);
+            keyWordBackUpService.myInsertAll(keyWordBackUpEntities);
             keywordDAO.save(getKwdListByDTO(updateDtos));
         }
     }

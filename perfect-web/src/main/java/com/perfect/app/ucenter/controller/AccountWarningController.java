@@ -3,6 +3,8 @@ package com.perfect.app.ucenter.controller;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountWarningDAO;
 import com.perfect.dao.sys.SystemUserDAO;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.WarningRuleDTO;
 import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.entity.WarningRuleEntity;
 import com.perfect.commons.web.WebContext;
@@ -22,6 +24,7 @@ import java.util.Date;
 
 /**
  * Created by john on 2014/8/4.
+ * 2014-11-28 refactor XiaoWei
  */
 
 @RestController
@@ -45,8 +48,8 @@ public class AccountWarningController {
      */
     @RequestMapping(value = "assistant/accountWarning" , method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView setWarningPage(ModelMap model){
-        SystemUserEntity systemUserEntity = systemUserDAO.findByUserName(AppContext.getUser());
-        model.addAttribute("list",systemUserEntity.getBaiduAccountInfoEntities());
+        SystemUserDTO systemUserEntity = systemUserDAO.findByUserName(AppContext.getUser());
+        model.addAttribute("list",systemUserEntity.getBaiduAccountInfoDTOs());
         return new ModelAndView("promotionAssistant/setWarning");
     }
 
@@ -69,7 +72,7 @@ public class AccountWarningController {
                                         @RequestParam(value = "tels",required = false) String tels,
                                         @RequestParam(value = "isEnable",required = false)Integer isEnable){
 
-        WarningRuleEntity warningRuleEntity = new WarningRuleEntity();
+        WarningRuleDTO warningRuleEntity = new WarningRuleDTO();
         warningRuleEntity.setSystemUserName(AppContext.getUser());
         warningRuleEntity.setAccountId(accountId);
         warningRuleEntity.setBudget(budget);
@@ -81,7 +84,7 @@ public class AccountWarningController {
         warningRuleEntity.setTels(tels);
         warningRuleEntity.setStartTime(new Date());
 
-        accountWarningDAO.save(warningRuleEntity);
+        accountWarningDAO.mySave(warningRuleEntity);
 
         return new ModelAndView("redirect:/assistant/showWarningRulePage");
     }
@@ -102,7 +105,7 @@ public class AccountWarningController {
      */
     @RequestMapping(value = "assistant/getAllWarningRule",method = {RequestMethod.GET,RequestMethod.POST})
     public void showAllWarningRule(HttpServletResponse response){
-       Iterable<WarningRuleEntity> list = accountWarningDAO.findByUserName(AppContext.getUser());
+       Iterable<WarningRuleDTO> list = accountWarningDAO.findByUserName(AppContext.getUser());
         webContext.writeJson(list, response);
     }
 
@@ -116,7 +119,7 @@ public class AccountWarningController {
     @RequestMapping(value = "assistant/updateWarningRuleOfIsEnbled",method = {RequestMethod.GET,RequestMethod.POST})
     public void updateWarningRuleOfIsEnbled(@RequestParam(value = "id",required = false)String id,
                                                     @RequestParam(value = "isEnbled",required = false)Integer isEnbled){
-        WarningRuleEntity warningRuleEntity = new WarningRuleEntity();
+        WarningRuleDTO warningRuleEntity = new WarningRuleDTO();
         warningRuleEntity.setId(id);
         warningRuleEntity.setIsEnable(isEnbled);
         accountWarningDAO.update(warningRuleEntity);

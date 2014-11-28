@@ -7,6 +7,7 @@ import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/9/19.
+ * 2014-11-27 refactor
  */
 public interface CustomGroupService {
     List<CustomGroupDTO> findAll(Long acId);

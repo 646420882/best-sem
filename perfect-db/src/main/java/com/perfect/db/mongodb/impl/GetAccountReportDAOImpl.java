@@ -1,12 +1,19 @@
 package com.perfect.db.mongodb.impl;
 
+import com.perfect.ObjectUtils;
 import com.perfect.api.baidu.AccountRealTimeReport;
 import com.perfect.autosdk.sms.v3.RealTimeResultType;
 import com.perfect.dao.report.GetAccountReportDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
+import com.perfect.dto.RealTimeResultDTO;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.account.AccountReportDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.account.AccountReportEntity;
+import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.mongodb.DBNameUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -39,10 +46,13 @@ public class GetAccountReportDAOImpl implements GetAccountReportDAO {
      * @param startDate
      * @return
      */
-    public AccountReportEntity getLocalAccountRealData(String userName, long accountId, Date startDate, Date endDate) {
+    public AccountReportDTO getLocalAccountRealData(String userName, long accountId, Date startDate, Date endDate) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(userName));
         List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.DESC, "date")), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
-        return list.size() == 0 ? null : list.get(0);
+        AccountReportEntity accountReportEntity= list.size() == 0 ? null : list.get(0);
+        AccountReportDTO accountReportDTO=new AccountReportDTO();
+        BeanUtils.copyProperties(accountReportEntity,accountReportDTO);
+        return accountReportDTO;
     }
 
 
@@ -51,9 +61,12 @@ public class GetAccountReportDAOImpl implements GetAccountReportDAO {
      *
      * @return
      */
-    public List<RealTimeResultType> getAccountRealTimeTypeByDate(String systemUserName, Long accountId, String startDate, String endDate) {
-        List<RealTimeResultType> realTimeDataList = accountRealTimeReport.getAccountRealTimeData(systemUserName, accountId, startDate, endDate);
-        return realTimeDataList;
+    public List<RealTimeResultDTO> getAccountRealTimeTypeByDate(String systemUserName, Long accountId, String startDate, String endDate) {
+        SystemUserDTO systemUserDTO=systemUserDAO.findByAid(accountId);
+        List<BaiduAccountInfoDTO> baiduAccountInfoDTO=systemUserDTO.getBaiduAccountInfoDTOs();
+        BaiduAccountInfoDTO accountInfoDTO=baiduAccountInfoDTO.get(0);
+        List<RealTimeResultType> realTimeDataList = accountRealTimeReport.getAccountRealTimeData(systemUserName,accountInfoDTO.getBaiduPassword(),accountInfoDTO.getToken(), startDate, endDate);
+        return ObjectUtils.convert(realTimeDataList,RealTimeResultDTO.class);
     }
 
 }
