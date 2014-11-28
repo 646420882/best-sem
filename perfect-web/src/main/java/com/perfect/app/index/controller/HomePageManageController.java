@@ -1,15 +1,15 @@
 package com.perfect.app.index.controller;
 
-import com.perfect.commons.web.WebUtils;
+import com.perfect.MD5Utils;
 import com.perfect.commons.CustomUserDetailsService;
-import com.perfect.entity.sys.BaiduAccountInfoEntity;
-import com.perfect.entity.MD5;
-import com.perfect.entity.sys.SystemUserEntity;
+import com.perfect.commons.message.mail.SendMail;
+import com.perfect.commons.web.WebContext;
+import com.perfect.commons.web.WebUtils;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemUserService;
-import com.perfect.commons.message.mail.SendMail;
-import com.perfect.commons.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,13 +86,13 @@ public class HomePageManageController {
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getHomePage(HttpServletRequest request, ModelMap modelMap) {
         String userName = WebUtils.getUserName(request);
-        SystemUserEntity entity = systemUserService.getSystemUser(userName);
-        if (entity == null) {
+        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+        if (systemUserDTO == null) {
             return new ModelAndView("redirect:/logout");
         }
 
         modelMap.put("currSystemUserName", userName);
-        modelMap.put("accountList", entity.getBaiduAccountInfoEntities());
+        modelMap.put("accountList", systemUserDTO.getBaiduAccountInfoDTOs());
         return new ModelAndView("homePage/home");
     }
 
@@ -155,8 +155,8 @@ public class HomePageManageController {
      */
     @RequestMapping(value = "/validate/validateUserNameIsExists", method = {RequestMethod.GET, RequestMethod.POST})
     public void validateUserNameIsExists(HttpServletResponse response, HttpServletRequest request, String userName) {
-        SystemUserEntity entity = systemUserService.getSystemUser(userName);
-        if (entity == null) {
+        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+        if (systemUserDTO == null) {
             webContext.writeJson("userName no Exists!", response);
         } else {
 
@@ -195,10 +195,10 @@ public class HomePageManageController {
                         "<br/>" +
                         "此为自动发送邮件，请勿直接回复<br/>";
 
-                if(entity.getEmail()!=null){
-                    SendMail.startSendHtmlMail(entity.getEmail(), subject, content);
+                if (systemUserDTO.getEmail() != null) {
+                    SendMail.startSendHtmlMail(systemUserDTO.getEmail(), subject, content);
                     webContext.writeJson("userName Exists!", response);
-                }else{
+                } else {
                     webContext.writeJson("NO EMAIL", response);
                 }
             } finally {
@@ -226,9 +226,9 @@ public class HomePageManageController {
             } else {
                 return new ModelAndView("jsp/error/404.jsp", model);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return new ModelAndView("jsp/error/404.jsp", model);
-        }finally {
+        } finally {
             if (jedis != null) {
                 JRedisUtils.returnJedis(jedis);
             }
@@ -249,20 +249,20 @@ public class HomePageManageController {
         Jedis jedis = JRedisUtils.get();
         try {
             if (jedis.exists(key)) {
-                SystemUserEntity sysUserEntity = systemUserService.getSystemUser(userName);
-                List<BaiduAccountInfoEntity> baiduAccountList = sysUserEntity.getBaiduAccountInfoEntities();
+                SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+                List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccountInfoDTOs();
                 String baiduUserName = null;
-                for (BaiduAccountInfoEntity entity : baiduAccountList) {
-                    if (entity.getBaiduUserName().equals(baiduAccountName)) {
-                        baiduUserName = entity.getBaiduUserName();
+                for (BaiduAccountInfoDTO dto : baiduAccountInfoDTOList) {
+                    if (dto.getBaiduUserName().equals(baiduAccountName)) {
+                        baiduUserName = dto.getBaiduUserName();
                         break;
                     }
                 }
 
                 if (baiduUserName != null) {
                     //重置密码
-                    MD5.Builder md5Builder = new MD5.Builder();
-                    MD5 md5 = md5Builder.password(pwd).salt(userName).build();
+                    MD5Utils.Builder md5Builder = new MD5Utils.Builder();
+                    MD5Utils md5 = md5Builder.password(pwd).salt(userName).build();
                     boolean isSuccess = systemUserService.updatePassword(userName, md5.getMD5());
                     if (isSuccess) {
                         jedis.expire(key, 0);
@@ -287,7 +287,7 @@ public class HomePageManageController {
 
 
     @RequestMapping(value = "/forgetPassword/login", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView loginPage(ModelMap model,String mes) {
+    public ModelAndView loginPage(ModelMap model, String mes) {
         model.put("invalidUserName", mes);
         return new ModelAndView("homePage/login", model);
     }
