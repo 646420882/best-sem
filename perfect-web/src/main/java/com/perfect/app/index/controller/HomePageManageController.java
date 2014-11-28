@@ -27,6 +27,7 @@ import java.util.UUID;
 
 /**
  * Created by baizz on 2014-6-23.
+ * 2014-11-28 refactor
  */
 @RestController
 @Scope("prototype")

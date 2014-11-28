@@ -1,9 +1,9 @@
 package com.perfect.app.keyword.controller;
 
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.json.JSONUtils;
 import com.perfect.service.KeywordService;
 import com.perfect.service.SysKeywordService;
-import com.perfect.json.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +46,7 @@ public class KeywordController {
     }
 
     @RequestMapping(value = "/all/{adgroupId}", method = RequestMethod.GET, produces = "application/json")
-    public ModelAndView getAllKeywordsByAdgroupdId(@PathVariable Long adgroupId
-    ) {
+    public ModelAndView getAllKeywordsByAdgroupdId(@PathVariable Long adgroupId) {
         AbstractView jsonView = new MappingJackson2JsonView();
         List<KeywordDTO> list = sysKeywordService.findByAdgroupId(adgroupId, null, null);
         Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
