@@ -1,4 +1,4 @@
-import com.perfect.crawl.CrawlURLHandler;
+import com.perfect.commons.crawl.CrawlURLHandler;
 
 /**
  * Created by baizz on 14-11-18.

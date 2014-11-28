@@ -1,4 +1,4 @@
-package com.perfect.dao;
+package com.perfect.dao.monitoring;
 
 import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.dto.monitor.FolderMonitorDTO;

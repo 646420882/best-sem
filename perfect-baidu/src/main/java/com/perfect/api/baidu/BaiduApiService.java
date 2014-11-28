@@ -16,11 +16,13 @@ import java.util.*;
  *
  * @author yousheng
  */
+@SuppressWarnings("unchecked")
 public class BaiduApiService {
 
     private static Logger log = LoggerFactory.getLogger(BaiduApiService.class);
 
     private final CommonService commonService;
+
     private BaiduPreviewHelperFactory baiduPreviewHelperFactory;
 
     public BaiduApiService(CommonService commonService) {
@@ -36,8 +38,7 @@ public class BaiduApiService {
             if (response == null) {
                 return null;
             }
-            AccountInfoType infoType = response.getAccountInfoType();
-            return infoType;
+            return response.getAccountInfoType();
         } catch (ApiException e) {
             log.error("ERROR", e);
         }
@@ -45,7 +46,6 @@ public class BaiduApiService {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     public List<CampaignType> getAllCampaign() {
         try {
             CampaignService campaignService = commonService.getService(CampaignService.class);
@@ -62,7 +62,6 @@ public class BaiduApiService {
         return Collections.EMPTY_LIST;
     }
 
-    @SuppressWarnings("unchecked")
     public List<CampaignType> getCampaignById(List<Long> camIds) {
         try {
             CampaignService campaignService = commonService.getService(CampaignService.class);
@@ -79,7 +78,6 @@ public class BaiduApiService {
         return Collections.EMPTY_LIST;
     }
 
-    @SuppressWarnings("unchecked")
     public List<Long> getAllCampaignId() {
         try {
             CampaignService campaignService = commonService.getService(CampaignService.class);
@@ -89,9 +87,9 @@ public class BaiduApiService {
 
 
             return response.getCampaignIds();
-        } catch (Exception e) {
+        } catch (final Exception e) {
+            return Collections.EMPTY_LIST;
         }
-        return Collections.EMPTY_LIST;
     }
 
 
@@ -101,7 +99,6 @@ public class BaiduApiService {
      * @param campaignIds
      * @return
      */
-    @SuppressWarnings("unchecked")
     public List<AdgroupType> getAllAdGroup(List<Long> campaignIds) {
         try {
             AdgroupService adgroupService = commonService.getService(AdgroupService.class);
@@ -161,7 +158,6 @@ public class BaiduApiService {
         return Collections.EMPTY_LIST;
     }
 
-    @SuppressWarnings("unchecked")
     public List<KeywordType> getAllKeyword(List<Long> adgroupIds) {
         try {
             if (log.isDebugEnabled()) {
@@ -266,7 +262,25 @@ public class BaiduApiService {
         return creativeTypes;
     }
 
-    @SuppressWarnings("unchecked")
+    public List<QualityType> getKeywordQuality(List<Long> keywordIds) {
+        try {
+            KeywordService keywordService = commonService.getService(KeywordService.class);
+            GetKeywordQualityRequest request = new GetKeywordQualityRequest();
+            request.setIds(keywordIds);
+            request.setType(11);//3: 表示指定id数组为计划id 5:表示指定id数组为单元id 11:表示指定id为关键词id
+
+            GetKeywordQualityResponse response = keywordService.getKeywordQuality(request);
+
+            if (response == null) {
+                return Collections.EMPTY_LIST;
+            }
+            return response.getQualities();
+        } catch (ApiException e) {
+            e.printStackTrace();
+            return Collections.EMPTY_LIST;
+        }
+    }
+
     public List<KeywordType> setKeywordPrice(List<KeywordType> list) throws ApiException {
         if (list == null || list.size() == 0) {
             return Collections.EMPTY_LIST;
@@ -291,7 +305,6 @@ public class BaiduApiService {
         return keywordTypes.get(0);
     }
 
-    @SuppressWarnings("unchecked")
     public List<KeywordType> updateKeyword(List<KeywordType> list) throws ApiException {
         if (list == null || list.size() == 0) {
             return Collections.EMPTY_LIST;
@@ -319,7 +332,6 @@ public class BaiduApiService {
     }
 
 
-    @SuppressWarnings("unchecked")
     public Map<String, KeywordRankDTO> getKeywordRank(Map<KeywordInfoDTO, List<Integer>> keys, String host) {
         if (keys == null || keys.isEmpty()) {
             return Collections.EMPTY_MAP;

@@ -1,7 +1,7 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.core.AppContext;
-import com.perfect.dao.MonitorSynchronizedDAO;
+import com.perfect.dao.monitoring.MonitorSynchronizedDAO;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.dto.monitor.FolderMonitorDTO;

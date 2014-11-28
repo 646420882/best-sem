@@ -1,9 +1,9 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.dao.RankDAO;
-import com.perfect.entity.RankEntity;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.dao.utils.Pager;
+import com.perfect.dto.keyword.RankDTO;
+import com.perfect.paging.Pager;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -14,12 +14,12 @@ import java.util.Map;
  * @author yousheng
  */
 @Component
-public class RankDAOImpl extends AbstractUserBaseDAOImpl<RankEntity, String> implements RankDAO {
+public class RankDAOImpl extends AbstractUserBaseDAOImpl<RankDTO, String> implements RankDAO {
 
 
     @Override
-    public Class<RankEntity> getEntityClass() {
-        return RankEntity.class;
+    public Class<RankDTO> getEntityClass() {
+        return RankDTO.class;
     }
 
     @Override

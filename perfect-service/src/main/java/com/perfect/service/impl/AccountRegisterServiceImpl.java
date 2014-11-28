@@ -22,21 +22,21 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
     @Override
     public int addAccount(String account, String pwd, String company, String email) {
 
-        SystemUserDTO userEntity = new SystemUserDTO();
+        SystemUserDTO systemUserDTO = new SystemUserDTO();
         MD5Utils.Builder md5Builder = new MD5Utils.Builder();
         MD5Utils md5 = md5Builder.password(pwd).salt(account).build();
 
-        userEntity.setAccess(2);
-        userEntity.setBaiduAccountInfoDTOs(new ArrayList<BaiduAccountInfoDTO>());
-        userEntity.setUserName(account);
-        userEntity.setPassword(md5.getMD5());
-        userEntity.setCompanyName(company);
-        userEntity.setEmail(email);
-        userEntity.setState(0);
+        systemUserDTO.setAccess(2);
+        systemUserDTO.setBaiduAccountInfoDTOs(new ArrayList<BaiduAccountInfoDTO>());
+        systemUserDTO.setUserName(account);
+        systemUserDTO.setPassword(md5.getMD5());
+        systemUserDTO.setCompanyName(company);
+        systemUserDTO.setEmail(email);
+        systemUserDTO.setState(0);
         int returnState;
         SystemUserDTO user = accountRegisterDAO.getAccount(account);
         if (user == null) {
-            accountRegisterDAO.addAccount(userEntity);
+            accountRegisterDAO.addAccount(systemUserDTO);
             returnState = 1;
         } else {
             returnState = -1;

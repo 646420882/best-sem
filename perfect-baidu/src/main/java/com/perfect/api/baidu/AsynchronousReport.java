@@ -1,6 +1,7 @@
 package com.perfect.api.baidu;
 
 
+import com.perfect.DateUtils;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
@@ -8,7 +9,6 @@ import com.perfect.autosdk.sms.v3.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -40,20 +40,8 @@ public class AsynchronousReport {
      */
     private Date[] processingTime(String _startDate, String _endDate) {
         Date[] date = null;
-        if (_startDate == null) {
-//            Assert.notNull(_startDate, "_startDate must not be null!");
-        }
-        if (_endDate == null) {
-//            Assert.notNull(_endDate, "_endDate must not be null!");
-        }
         if (_startDate == null && _endDate == null) {
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            cal.set(Calendar.MILLISECOND, 0);
-            cal.add(Calendar.DATE, -1);
-            date = new Date[]{cal.getTime(), cal.getTime()};
+            date = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         } else {
             SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             try {
@@ -73,9 +61,9 @@ public class AsynchronousReport {
             requestType.setPerformanceData(Arrays.asList(PerformanceData));
         } else {
             if (format == 0) {
-                requestType.setPerformanceData(Arrays.asList(new String[]{"cost", "cpc", "click", "impression", "ctr", "cpm", "conversion"}));
+                requestType.setPerformanceData(Arrays.asList("cost", "cpc", "click", "impression", "ctr", "cpm", "conversion"));
             } else {
-                requestType.setPerformanceData(Arrays.asList(new String[]{"cost", "cpc", "click", "impression", "ctr", "cpm", "position", "conversion"}));
+                requestType.setPerformanceData(Arrays.asList("cost", "cpc", "click", "impression", "ctr", "cpm", "position", "conversion"));
             }
         }
         //关键词统计范围下的id集合

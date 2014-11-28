@@ -1,15 +1,19 @@
 package com.perfect.service.impl;
 
-import com.perfect.api.baidu.QualityTypeService;
+import com.perfect.api.baidu.BaiduApiService;
+import com.perfect.api.baidu.BaiduServiceSupport;
+import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.QualityType;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
+import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.keyword.KeywordDAO;
-import com.perfect.dao.MonitoringDao;
+import com.perfect.dao.monitoring.MonitoringDao;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeyWordBackUpDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
@@ -17,9 +21,9 @@ import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.campaign.CampaignEntity;
+import com.perfect.paging.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.service.KeyWordBackUpService;
-import com.perfect.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -38,6 +42,9 @@ import static com.perfect.commons.constants.MongoEntityConstants.*;
 public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     @Resource
+    private AccountManageDAO<BaiduAccountInfoDTO> accountManageDAO;
+
+    @Resource
     private CampaignDAO campaignDAO;
 
     @Resource
@@ -48,9 +55,6 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     @Resource
     private KeyWordBackUpService keyWordBackUpService;
-
-    @Resource
-    private QualityTypeService qualityTypeService;
 
     @Resource
     private MonitoringDao monitoringDao;
@@ -273,7 +277,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
         CampaignDTO campaignDTO = null;
         if (cid != null && !"".equals(cid)) {
-            if (cid.matches(regex) == true) {
+            if (cid.matches(regex)) {
                 campaignDTO = campaignDAO.findOne(Long.parseLong(cid));
             } else {
                 campaignDTO = campaignDAO.findByObjectId(cid);
@@ -289,7 +293,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
         //若cid和aid都不为空，就是查询某单元下的关键词,在aid为空的时候就查询该计划下的关键词
         if (cid != null && !"".equals(cid) && aid != null && !"".equals(aid)) {
-            if (aid.matches(regex) == true) {
+            if (aid.matches(regex)) {
                 query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.parseLong(aid)));
                 page = keywordDAO.findByPageInfo(query, pageSize, nowPage);
             } else {
@@ -345,7 +349,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 dtoList.add(dto);
             } else {
                 KeywordInfoDTO dto = new KeywordInfoDTO();
-                dto.setFolderCount(kwd.getKeywordId()==null?0l:monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));
+                dto.setFolderCount(kwd.getKeywordId() == null ? 0l : monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));
                 dto.setCampaignName(camp.getCampaignName());
                 dto.setObject(kwd);
                 dto.setCampaignId(camp.getCampaignId());
@@ -354,7 +358,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
         }
         //在百度上得到关键词的质量度
-        List<QualityType> qualityList = qualityTypeService.getQualityType(keywordIds);
+        BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
+        BaiduApiService apiService = new BaiduApiService(commonService);
+        List<QualityType> qualityList = apiService.getKeywordQuality(keywordIds);
         for (QualityType qualityType : qualityList) {
             for (KeywordInfoDTO dto : dtoList) {
                 if (dto.getObject().getKeywordId() != null && qualityType.getId().longValue() == dto.getObject().getKeywordId().longValue()) {
@@ -378,7 +385,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     public void deleteByKwIds(List<String> kwids) {
         String regex = "^\\d+$";
         for (String id : kwids) {
-            if (id.matches(regex) == true) {
+            if (id.matches(regex)) {
                 keywordDAO.softDelete(Long.parseLong(id));
             } else {
                 keywordDAO.deleteById(id);
@@ -491,7 +498,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             adgroupMap.clear();
             for (String name : names) {
                 List<KeywordDTO> list;
-                if (fileds[1].matches(regex) == true) {
+                if (fileds[1].matches(regex)) {
                     list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ADGROUP_ID).is(Long.parseLong(fileds[1])).and("name").is(name)));
                 } else {
                     list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(OBJ_ADGROUP_ID).is(fileds[1]).and("name").is(name)));
@@ -499,12 +506,12 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
 
                 if (!(new ArrayList<>(campaignMap.keySet()).contains(fileds[0]))) {
-                    CampaignDTO camName = fileds[0].matches(regex) == true ? campaignDAO.findOne(Long.parseLong(fileds[0])) : campaignDAO.findByObjectId(fileds[0]);
+                    CampaignDTO camName = fileds[0].matches(regex) ? campaignDAO.findOne(Long.parseLong(fileds[0])) : campaignDAO.findByObjectId(fileds[0]);
                     campaignMap.put(fileds[0], camName);
                 }
 
                 if (!(new ArrayList<>(adgroupMap.keySet()).contains(fileds[1]))) {
-                    AdgroupDTO adgName = fileds[1].matches(regex) == true ? adgroupDAO.findOne(Long.parseLong(fileds[1])) : adgroupDAO.findByObjId(fileds[0]);
+                    AdgroupDTO adgName = fileds[1].matches(regex) ? adgroupDAO.findOne(Long.parseLong(fileds[1])) : adgroupDAO.findByObjId(fileds[0]);
                     adgroupMap.put(fileds[1], adgName);
                 }
 
@@ -648,7 +655,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 String[] kwInfo = info.split(",|，|\t");
                 KeywordDTO keywordDTO = validateKewword(kwInfo);
                 List<KeywordDTO> list;
-                if (fieds[1].matches(regex) == true) {
+                if (fieds[1].matches(regex)) {
                     list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.parseLong(fieds[1])).and("name").is(keywordDTO.getKeyword())));
                 } else {
                     list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).is(fieds[1]).and("name").is(keywordDTO.getKeyword())));
@@ -657,13 +664,13 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 if (list.size() > 0 && kwInfo.length == 1) {
                     AssistantKeywordIgnoreDTO dto = new AssistantKeywordIgnoreDTO();
 
-                    if (fieds[0].matches(regex) == true) {
+                    if (fieds[0].matches(regex)) {
                         dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
                     } else {
                         dto.setCampaignName(campaignDAO.findByObjectId(fieds[0]).getCampaignName());
                     }
 
-                    if (fieds[1].matches(regex) == true) {
+                    if (fieds[1].matches(regex)) {
                         dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
                     } else {
                         dto.setAdgroupName(adgroupDAO.findByObjId(fieds[1]).getAdgroupName());
@@ -779,7 +786,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     keywordDTO.setMatchType(1);
                 }
             } else if (i == 2) {
-                if (kwInfo[i].matches("^[1-9]\\d*\\.\\d*|0\\.\\d*[1-9]\\d*$") == true) {
+                if (kwInfo[i].matches("^[1-9]\\d*\\.\\d*|0\\.\\d*[1-9]\\d*$")) {
                     keywordDTO.setPrice(BigDecimal.valueOf(Double.parseDouble(kwInfo[i])));
                 } else {
                     keywordDTO.setPrice(null);

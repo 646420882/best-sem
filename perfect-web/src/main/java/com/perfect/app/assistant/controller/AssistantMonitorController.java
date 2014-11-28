@@ -3,11 +3,11 @@ package com.perfect.app.assistant.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.perfect.dto.KeywordDTO;
-import com.perfect.entity.FolderEntity;
+import com.perfect.commons.web.WebContext;
+import com.perfect.dto.keyword.KeywordInfoDTO;
+import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.service.MonitorSynchronizedService;
 import com.perfect.service.MonitoringService;
-import com.perfect.commons.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,12 +52,12 @@ public class AssistantMonitorController {
      */
     @RequestMapping(value = "/monitoring/getTree", method = {RequestMethod.GET, RequestMethod.POST})
     public void getTree(HttpServletResponse response) {
-        List<FolderEntity> folder = monitoringService.getFolder();
+        List<FolderDTO> folder = monitoringService.getFolder();
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
         ObjectNode jsonNodes = null;
         if (folder.size() > 0) {
-            for (FolderEntity entity : folder) {
+            for (FolderDTO entity : folder) {
                 jsonNodes = mapper.createObjectNode();
                 jsonNodes.put("id", entity.getFolderId());
                 jsonNodes.put("pid", 0);
@@ -77,9 +77,9 @@ public class AssistantMonitorController {
      */
     @RequestMapping(value = "/monitoring/getFolder", method = {RequestMethod.GET, RequestMethod.POST})
     public void getFolder(HttpServletResponse response) {
-        List<FolderEntity> folder = monitoringService.getFolder();
+        List<FolderDTO> folder = monitoringService.getFolder();
 
-        Map<String, List<FolderEntity>> listMap = new HashMap<>();
+        Map<String, List<FolderDTO>> listMap = new HashMap<>();
         listMap.put("rows", folder);
         webContext.writeJson(listMap, response);
     }
@@ -91,9 +91,9 @@ public class AssistantMonitorController {
      */
     @RequestMapping(value = "/monitoring/getMonitor", method = {RequestMethod.GET, RequestMethod.POST})
     public void getMonitor(HttpServletResponse response) {
-        List<KeywordDTO> keywordDTOs = monitoringService.getMonitor();
+        List<KeywordInfoDTO> keywordDTOs = monitoringService.getMonitor();
 
-        Map<String, List<KeywordDTO>> listMap = new HashMap<>();
+        Map<String, List<KeywordInfoDTO>> listMap = new HashMap<>();
         listMap.put("rows", keywordDTOs);
         webContext.writeJson(listMap, response);
     }
@@ -106,9 +106,9 @@ public class AssistantMonitorController {
     @RequestMapping(value = "/monitoring/getMonitorId", method = {RequestMethod.GET, RequestMethod.POST})
     public void getMonitorId(HttpServletResponse response,
                              @RequestParam(value = "forlder", required = false) Long forlder) {
-        List<KeywordDTO> keywordDTOs = monitoringService.getMonitorId(forlder);
+        List<KeywordInfoDTO> keywordDTOs = monitoringService.getMonitorId(forlder);
 
-        Map<String, List<KeywordDTO>> listMap = new HashMap<>();
+        Map<String, List<KeywordInfoDTO>> listMap = new HashMap<>();
         listMap.put("rows", keywordDTOs);
         webContext.writeJson(listMap, response);
     }

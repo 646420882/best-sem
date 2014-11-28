@@ -1,12 +1,9 @@
 package com.perfect.app.index.controller;
 
-import com.google.gson.Gson;
-import com.perfect.commons.web.WebUtils;
-import com.perfect.dto.account.AccountReportDTO;
-import com.perfect.dto.keyword.KeywordRealDTO;
-import com.perfect.service.PerformanceService;
 import com.perfect.DateUtils;
+import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.json.JSONUtils;
+import com.perfect.service.PerformanceService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -43,7 +39,7 @@ public class PerformanceController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/account/performance", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/account/performance", method = RequestMethod.GET)
     public void getPerformance(HttpServletRequest request, HttpServletResponse response) {
         String[] date = {"2014-01-25", "2014-01-26"};
         List<KeywordRealDTO> jsonMapList = performanceService.performance(WebUtils.getUserName(request), date);
@@ -59,7 +55,7 @@ public class PerformanceController {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     /**
      * 账户表现

@@ -1,4 +1,4 @@
-package com.perfect.dao;
+package com.perfect.dao.monitoring;
 
 import com.mongodb.WriteResult;
 import com.perfect.dto.monitor.FolderDTO;
@@ -13,30 +13,35 @@ public interface MonitoringDao {
 
     /**
      * 获取所有监控文件夹信息
+     *
      * @return
      */
     public List<FolderDTO> getForlder();
 
     /**
      * 通过id获取监控文件夹
+     *
      * @return
      */
     public List<FolderDTO> getForlderId(Long folderId);
 
     /**
      * 通过id获取监控文件夹
+     *
      * @return
      */
     public boolean updataForlderId(Long folderId, String folderName);
 
     /**
      * 添加监控文件夹
+     *
      * @param folderDTO
      */
     public void addFolder(FolderDTO folderDTO);
 
     /**
      * 通过监控文件夹删除对应的文件夹
+     *
      * @param folderId
      * @return
      */
@@ -44,6 +49,7 @@ public interface MonitoringDao {
 
     /**
      * 通过监控文件夹ID删除对应的监控对象
+     *
      * @param folderId
      * @return
      */
@@ -51,18 +57,21 @@ public interface MonitoringDao {
 
     /**
      * 获取所有监控对象
+     *
      * @return
      */
     public List<FolderMonitorDTO> getMonitor();
 
     /**
      * 通过监控文件夹ID 获取对应的监控对象
+     *
      * @return
      */
     public List<FolderMonitorDTO> getMonitorId(Long folderId);
 
     /**
      * 通过监控对象ID 删除监控对象
+     *
      * @param MonitorId
      * @return
      */
@@ -70,6 +79,7 @@ public interface MonitoringDao {
 
     /**
      * 添加监控对象
+     *
      * @param folderMonitorDTO
      * @return
      */
@@ -77,6 +87,7 @@ public interface MonitoringDao {
 
     /**
      * 根据关键词的long id得到该关键词所属监控文件夹数
+     *
      * @return
      */
     Long getForlderCountByKwid(long kwid);

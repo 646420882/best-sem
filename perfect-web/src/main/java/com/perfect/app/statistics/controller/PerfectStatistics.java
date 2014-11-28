@@ -28,6 +28,7 @@ import java.util.List;
 public class PerfectStatistics extends WebContextSupport {
     @Resource
     private CensusService censusService;
+
     /**
      * 统计页面
      *
@@ -37,6 +38,7 @@ public class PerfectStatistics extends WebContextSupport {
     public ModelAndView Count(ModelMap model) {
         return new ModelAndView("count/count", model);
     }
+
     /**
      * test
      *
@@ -49,12 +51,14 @@ public class PerfectStatistics extends WebContextSupport {
 
     /**
      * test-XiaoWei
+     *
      * @return
      */
     @RequestMapping(value = "/getPager")
     public ModelAndView getPager() {
         return new ModelAndView("homePage/aaa");
     }
+
     /**
      * cookie
      *
@@ -83,6 +87,7 @@ public class PerfectStatistics extends WebContextSupport {
      * 12 用户浏览网站使用设备(0 PC端浏览  1 移动端浏览)
      * Url：客户端网页目标地址
      * ip: java获取客户端IP地址
+     *
      * @return
      */
     @RequestMapping(value = "/statistics", method = {RequestMethod.GET, RequestMethod.POST})
@@ -90,15 +95,15 @@ public class PerfectStatistics extends WebContextSupport {
                          String[] osAnBrowser) throws UnsupportedEncodingException {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(new File("F://statistics.log"), true));
-            for (int i = 0;i<osAnBrowser.length; i++){
-                writer.write(Parameters(i,osAnBrowser)+osAnBrowser[i]+"\r\n");
+            for (int i = 0; i < osAnBrowser.length; i++) {
+                writer.write(Parameters(i, osAnBrowser) + osAnBrowser[i] + "\r\n");
             }
 
             String Url = request.getHeader("referer");
             //获取用户IP地址
             String ip = getIpAddr(request);
             System.out.println(ip);
-            writer.write(Url+"\r\n\r\n");
+            writer.write(Url + "\r\n\r\n");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,25 +112,27 @@ public class PerfectStatistics extends WebContextSupport {
 
     /**
      * 获取用户IP地址
+     *
      * @param request
      * @return
      */
     public String getIpAddr(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
         return ip;
     }
+
     //
-    private String Parameters(int a,String[] osAnBrowser){
-        switch (a){
+    private String Parameters(int a, String[] osAnBrowser) {
+        switch (a) {
             case 0:
                 return "Cookie中的UUID：";
             case 1:
@@ -149,16 +156,16 @@ public class PerfectStatistics extends WebContextSupport {
             case 10:
                 return "IP：";
             case 11:
-                if(osAnBrowser[11] == null || osAnBrowser[11] == ""){
+                if (osAnBrowser[11] == null || osAnBrowser[11] == "") {
                     return "地区：未知区域";
                 }
                 return "地区：";
             case 12:
-                if(osAnBrowser[12].equals("0")){
+                if (osAnBrowser[12].equals("0")) {
                     return "使用设备：PC端->";
-                }else if(osAnBrowser[12].equals("1")){
+                } else if (osAnBrowser[12].equals("1")) {
                     return "使用设备：移动端->";
-                }else{
+                } else {
                     return "使用设备：其他";
                 }
         }
@@ -166,44 +173,47 @@ public class PerfectStatistics extends WebContextSupport {
     }
 
     @RequestMapping(value = "/saveParams", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getAvg(HttpServletResponse response,HttpServletRequest request,
+    public ModelAndView getAvg(HttpServletResponse response, HttpServletRequest request,
                                @RequestParam(value = "osAnBrowser", required = true) String[] osAnBrowser) {
-        int osA=osAnBrowser.length;
-        List<String> list=new ArrayList<>();
-        for (int i = 0; i <osAnBrowser.length ; i++) {
+        int osA = osAnBrowser.length;
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < osAnBrowser.length; i++) {
             list.add(osAnBrowser[i]);
         }
         list.add(request.getHeader("referer"));
-        String[] newStr=list.toArray(new String[1]);
+        String[] newStr = list.toArray(new String[1]);
         String sid = censusService.saveParams(newStr);
-        if(sid!=null)
-        {
+        if (sid != null) {
             System.out.println("success!");
         }
         return null;
     }
-    @RequestMapping(value = "/getTodayConstants",method = RequestMethod.GET)
-    public  ModelAndView getTodayConstants(HttpServletResponse response,@RequestParam(value = "url",required = true)String url){
-        CensusVO censusVO= censusService.getTodayTotal(url);
-        writeJson(censusVO,response);
+
+    @RequestMapping(value = "/getTodayConstants", method = RequestMethod.GET)
+    public ModelAndView getTodayConstants(HttpServletResponse response, @RequestParam(value = "url", required = true) String url) {
+        CensusVO censusVO = censusService.getTodayTotal(url);
+        writeJson(censusVO, response);
         return null;
     }
-    @RequestMapping(value = "/getLastDayConstants",method = RequestMethod.GET)
-    public  ModelAndView getLastDayConstants(HttpServletResponse response,@RequestParam(value = "url",required = true)String url){
-        CensusVO censusVO= censusService.getLastDayTotal(url);
-        writeJson(censusVO,response);
+
+    @RequestMapping(value = "/getLastDayConstants", method = RequestMethod.GET)
+    public ModelAndView getLastDayConstants(HttpServletResponse response, @RequestParam(value = "url", required = true) String url) {
+        CensusVO censusVO = censusService.getLastDayTotal(url);
+        writeJson(censusVO, response);
         return null;
     }
-    @RequestMapping(value = "/getLastWeekConstants",method = RequestMethod.GET)
-    public  ModelAndView getLastWeekConstants(HttpServletResponse response,@RequestParam(value = "url",required = true)String url){
-        CensusVO censusVO= censusService.getLastWeekTotal(url);
-        writeJson(censusVO,response);
+
+    @RequestMapping(value = "/getLastWeekConstants", method = RequestMethod.GET)
+    public ModelAndView getLastWeekConstants(HttpServletResponse response, @RequestParam(value = "url", required = true) String url) {
+        CensusVO censusVO = censusService.getLastWeekTotal(url);
+        writeJson(censusVO, response);
         return null;
     }
-    @RequestMapping(value = "/getLastMonthConstants",method = RequestMethod.GET)
-    public  ModelAndView getLastMonthConstants(HttpServletResponse response,@RequestParam(value = "url",required = true)String url){
-        CensusVO censusVO= censusService.getLastMonthTotal(url);
-        writeJson(censusVO,response);
+
+    @RequestMapping(value = "/getLastMonthConstants", method = RequestMethod.GET)
+    public ModelAndView getLastMonthConstants(HttpServletResponse response, @RequestParam(value = "url", required = true) String url) {
+        CensusVO censusVO = censusService.getLastMonthTotal(url);
+        writeJson(censusVO, response);
         return null;
     }
 

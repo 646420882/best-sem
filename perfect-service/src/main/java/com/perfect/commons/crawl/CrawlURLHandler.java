@@ -1,5 +1,6 @@
-package com.perfect.crawl;
+package com.perfect.commons.crawl;
 
+import com.perfect.commons.constants.WebSiteConstants;
 import com.perfect.dao.sys.CrawlWordDAO;
 import com.perfect.dto.CrawlWordDTO;
 import com.perfect.json.JSONUtils;
@@ -63,11 +64,6 @@ public class CrawlURLHandler implements Runnable {
             logger.info("starting reading data...");
         }
 
-//        //===后改为页面方式操作
-//        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
-//        CrawlWordDAO crawlWordDAO = (CrawlWordDAOImpl) applicationContext.getBean("crawlWordDAO");
-//        //===
-
         //从本地缓存中取值放于阻塞队列中
         sites.forEach(site -> cacheMap.computeIfAbsent(site, (key) -> crawlWordDAO.findBySite(site)));
         cacheMap.get(sites.get(0)).forEach(queue::offer);
@@ -105,35 +101,35 @@ public class CrawlURLHandler implements Runnable {
 
                     switch (_site) {
                         case "lefeng&vip":
-                            conf.put("q", WebSiteConstant.lefengUrlTemplate);
+                            conf.put("q", WebSiteConstants.lefengUrlTemplate);
                             conf.put("d", "default");
                             break;
                         case "yhd":
-                            conf.put("q", WebSiteConstant.yhdUrlTemplate);
+                            conf.put("q", WebSiteConstants.yhdUrlTemplate);
                             conf.put("d", "default");
                             break;
                         case "xiu":
-                            conf.put("q", WebSiteConstant.xiuUrlTemplate);
+                            conf.put("q", WebSiteConstants.xiuUrlTemplate);
                             conf.put("d", "default");
                             break;
                         case "gome":
-                            conf.put("q", WebSiteConstant.gomeUrlTemplate);
+                            conf.put("q", WebSiteConstants.gomeUrlTemplate);
                             conf.put("d", "default");
                             break;
                         case "suning":
-                            conf.put("q", WebSiteConstant.suningUrlTemplate);
+                            conf.put("q", WebSiteConstants.suningUrlTemplate);
                             conf.put("d", "default");
                             break;
                         case "dangdang":
-                            conf.put("q", WebSiteConstant.dangdangUrlTemplate);
+                            conf.put("q", WebSiteConstants.dangdangUrlTemplate);
                             conf.put("d", "default");
                             break;
                         case "amazon":
-                            conf.put("q", WebSiteConstant.amazonUrlTemplate);
+                            conf.put("q", WebSiteConstants.amazonUrlTemplate);
                             conf.put("d", "default");
                             break;
                         case "taobao":
-                            conf.put("q", getTaobaoURL(dto.getKeyword(), WebSiteConstant.taobaoUrlTemplate));
+                            conf.put("q", getTaobaoURL(dto.getKeyword(), WebSiteConstants.taobaoUrlTemplate));
                             conf.put("d", "phantomjs");
                             break;
                         default:
@@ -147,7 +143,7 @@ public class CrawlURLHandler implements Runnable {
                     jedis.set("extras_" + md5, confStr);
 
                     if ("lefeng&vip".equals(_site)) {
-                        conf.put("q", WebSiteConstant.vipTempUrllate);
+                        conf.put("q", WebSiteConstants.vipTempUrllate);
                         confStr = JSONUtils.getJsonString(conf);
                         md5 = DigestUtils.md5Hex(confStr);
 

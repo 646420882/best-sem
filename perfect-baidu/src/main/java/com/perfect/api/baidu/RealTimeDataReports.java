@@ -1,5 +1,6 @@
 package com.perfect.api.baidu;
 
+import com.perfect.DateUtils;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
@@ -7,7 +8,6 @@ import com.perfect.autosdk.sms.v3.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -16,17 +16,13 @@ import java.util.List;
  */
 public class RealTimeDataReports {
 
-    //得到百度aip
-    private CommonService service = null;
+    //得到百度api
+    private CommonService service;
 
-    private ReportService reportService = null;
+    private ReportService reportService;
 
     public RealTimeDataReports(String userName, String password, String token) {
         service = BaiduServiceSupport.getCommonService(userName, password, token);
-        init();
-    }
-
-    public void init() {
         try {
             reportService = service.getService(ReportService.class);
         } catch (ApiException e) {
@@ -42,20 +38,8 @@ public class RealTimeDataReports {
      */
     private Date[] processingTime(String _startDate, String _endDate) {
         Date[] date = null;
-        if (_startDate == null) {
-//            Assert.notNull(_startDate, "_startDate must not be null!");
-        }
-        if (_endDate == null) {
-//            Assert.notNull(_endDate, "_endDate must not be null!");
-        }
         if (_startDate == null && _endDate == null) {
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            cal.set(Calendar.MILLISECOND, 0);
-            cal.add(Calendar.DATE, -1);
-            date = new Date[]{cal.getTime(), cal.getTime()};
+            date = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         } else {
             SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             try {
