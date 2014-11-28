@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * Created by baizz on 2014-7-8.
- * 2014-11-26 refactor
+ * 2014-11-28 refactor
  */
 @RestController
 @Scope("prototype")
@@ -38,61 +38,46 @@ public class KeywordController {
     public ModelAndView getKeywordByAdgroupId(@PathVariable Long adgroupId,
                                               @RequestParam(value = "skip", required = false, defaultValue = "0") int skip,
                                               @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
-        AbstractView jsonView = new MappingJackson2JsonView();
         List<KeywordDTO> list = keywordService.getKeywordByAdgroupId(adgroupId, null, skip, limit);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
-        jsonView.setAttributesMap(attributes);
-        return new ModelAndView(jsonView);
+        return new ModelAndView(getJsonView(JSONUtils.getJsonMapData(list)));
     }
 
     @RequestMapping(value = "/all/{adgroupId}", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView getAllKeywordsByAdgroupdId(@PathVariable Long adgroupId) {
-        AbstractView jsonView = new MappingJackson2JsonView();
         List<KeywordDTO> list = sysKeywordService.findByAdgroupId(adgroupId, null, null);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
-        jsonView.setAttributesMap(attributes);
-        return new ModelAndView(jsonView);
+        return new ModelAndView(getJsonView(JSONUtils.getJsonMapData(list)));
     }
 
     @RequestMapping(value = "/getKeywordIdByAdgroupId/{adgroupId}", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView getKeywordIdByAdgroupId(@PathVariable Long adgroupId) {
-        AbstractView jsonView = new MappingJackson2JsonView();
         List<Long> list = keywordService.getKeywordIdByAdgroupId(adgroupId);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
-        jsonView.setAttributesMap(attributes);
-        return new ModelAndView(jsonView);
+        return new ModelAndView(getJsonView(JSONUtils.getJsonMapData(list)));
     }
 
     @RequestMapping(value = "/showAll", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView findByPage(@RequestParam(value = "skip", required = false, defaultValue = "0") int skip,
                                    @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
-        AbstractView jsonView = new MappingJackson2JsonView();
         List<KeywordDTO> list = keywordService.find(null, skip, limit);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
-        jsonView.setAttributesMap(attributes);
-        return new ModelAndView(jsonView);
+        return new ModelAndView(getJsonView(JSONUtils.getJsonMapData(list)));
     }
 
     @RequestMapping(value = "/getKeywordByKeywordId/{keywordId}", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView getKeywordByKeywordId(@PathVariable Long keywordId) {
-        AbstractView jsonView = new MappingJackson2JsonView();
         KeywordDTO keywordDTO = keywordService.findOne(keywordId);
-        Map<String, Object> attributes = JSONUtils.getJsonMapData(new KeywordDTO[]{keywordDTO});
-        jsonView.setAttributesMap(attributes);
-        return new ModelAndView(jsonView);
+        return new ModelAndView(getJsonView(JSONUtils.getJsonMapData(new KeywordDTO[]{keywordDTO})));
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView add(@RequestBody List<KeywordDTO> list) {
         keywordService.insertAll(list);
-        return new ModelAndView(getJsonView());
+        return new ModelAndView(getJsonView(null));
     }
 
     @RequestMapping(value = "/{keywordId}/update", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView update(@PathVariable Long keywordId, @RequestParam(value = "keywordEntity") String keywordStr) {
-        KeywordDTO keywordDTO = (KeywordDTO) JSONUtils.getObjectByJson(keywordStr, KeywordDTO.class);
+        KeywordDTO keywordDTO = JSONUtils.getObjectByJson(keywordStr, KeywordDTO.class);
         keywordService.save(keywordDTO);
-        return new ModelAndView(getJsonView());
+        return new ModelAndView(getJsonView(null));
     }
 
     @RequestMapping(value = "/update/{field}/{value}", method = RequestMethod.POST, produces = "application/json")
@@ -100,7 +85,7 @@ public class KeywordController {
                                     @PathVariable Object value,
                                     @RequestParam(value = "seedWord") String seedWord) {
         keywordService.updateMulti(field, seedWord, value);
-        return new ModelAndView(getJsonView());
+        return new ModelAndView(getJsonView(null));
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -114,26 +99,31 @@ public class KeywordController {
         if (pcUrl != null) {
             keywordService.updateMultiKeyword(ids, null, pcUrl);
         }
-        return new ModelAndView(getJsonView());
+        return new ModelAndView(getJsonView(null));
     }
 
     @RequestMapping(value = "/{keywordId}/del", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView deleteById(@PathVariable Long keywordId) {
         keywordService.delete(keywordId);
-        return new ModelAndView(getJsonView());
+        return new ModelAndView(getJsonView(null));
     }
 
     @RequestMapping(value = "/deleteMulti", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView deleteByIds(@RequestBody List<Long> keywordIds) {
         keywordService.deleteByIds(keywordIds);
-        return new ModelAndView(getJsonView());
+        return new ModelAndView(getJsonView(null));
     }
 
-    private View getJsonView() {
+    private View getJsonView(Map<String, Object> attributes) {
         AbstractView jsonView = new MappingJackson2JsonView();
-        jsonView.setAttributesMap(new HashMap<String, Object>(1) {{
-            put("stat", true);
-        }});
+        if (attributes == null) {
+            jsonView.setAttributesMap(new HashMap<String, Object>(1) {{
+                put("stat", true);
+            }});
+            return jsonView;
+        }
+
+        jsonView.setAttributesMap(attributes);
         return jsonView;
     }
 }

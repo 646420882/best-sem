@@ -10,10 +10,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by baizz on 2014-08-05.
@@ -43,9 +40,7 @@ public class JSONUtils {
      * @return
      */
     public static String getJsonString(Object o) {
-        if (o == null) {
-            return null;
-        }
+        Objects.requireNonNull(o);
 
         try {
             return mapper.writeValueAsString(o);

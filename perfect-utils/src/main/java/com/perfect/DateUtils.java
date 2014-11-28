@@ -10,7 +10,6 @@ import java.util.*;
 public class DateUtils {
 
     public static final String KEY_STRING = "_string";
-
     public static final String KEY_DATE = "_date";
 
     public static List<String> getPeriod(String _startDate, String _endDate) {
@@ -45,10 +44,6 @@ public class DateUtils {
         }
 
         return dateStrList;
-    }
-
-    public static Map<String, List> getsLatestSevenDays() {
-        return getsLatestAnyDays("MM-dd", 7);
     }
 
     public static Map<String, List> getsLatestAnyDays(String format, int num) {

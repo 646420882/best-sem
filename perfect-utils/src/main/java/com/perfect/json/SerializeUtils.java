@@ -8,10 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by baizz on 2014-9-5.
@@ -35,6 +32,7 @@ public class SerializeUtils {
      * @return
      */
     public static byte[] serialize(Object o) {
+        Objects.requireNonNull(o);
         try {
             return mapper.writeValueAsBytes(o);
         } catch (JsonProcessingException e) {
