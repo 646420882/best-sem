@@ -1,6 +1,6 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.CookieDAO;
+import com.perfect.dao.sys.CookieDAO;
 import com.perfect.dto.CookieDTO;
 import com.perfect.service.CookieService;
 import org.springframework.stereotype.Service;

@@ -3,7 +3,7 @@ package com.perfect.app.keyword.controller;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.service.KeywordService;
 import com.perfect.service.SysKeywordService;
-import com.perfect.utils.JSONUtils;
+import com.perfect.json.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

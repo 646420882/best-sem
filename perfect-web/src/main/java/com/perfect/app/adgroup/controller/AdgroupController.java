@@ -2,7 +2,7 @@ package com.perfect.app.adgroup.controller;
 
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.service.AdgroupService;
-import com.perfect.utils.JSONUtils;
+import com.perfect.json.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

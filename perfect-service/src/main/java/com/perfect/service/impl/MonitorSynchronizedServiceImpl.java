@@ -9,7 +9,7 @@ import com.perfect.dao.MonitorSynchronizedDAO;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.dto.monitor.FolderMonitorDTO;
-import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.service.MonitorSynchronizedService;
 import org.springframework.stereotype.Repository;
 

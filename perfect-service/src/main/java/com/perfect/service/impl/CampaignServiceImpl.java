@@ -1,6 +1,6 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.CampaignDAO;
+import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.service.CampaignService;
 import org.springframework.stereotype.Repository;

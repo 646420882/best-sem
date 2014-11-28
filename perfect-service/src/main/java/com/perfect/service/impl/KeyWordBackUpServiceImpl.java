@@ -1,15 +1,14 @@
 package com.perfect.service.impl;
 
 import com.perfect.commons.constants.MongoEntityConstants;
-import com.perfect.dao.KeyWordBackUpDAO;
-import com.perfect.dao.KeywordDAO;
+import com.perfect.dao.keyword.KeyWordBackUpDAO;
+import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.backup.KeyWordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.entity.KeywordEntity;
-import com.perfect.entity.backup.KeyWordBackUpEntity;
+import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.service.KeyWordBackUpService;
-import com.perfect.utils.Pager;
+import com.perfect.paging.Pager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 

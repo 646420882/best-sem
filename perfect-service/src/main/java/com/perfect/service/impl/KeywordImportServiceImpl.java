@@ -1,11 +1,11 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.KeywordImportDAO;
+import com.perfect.dao.keyword.KeywordImportDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.keyword.KeywordImportDTO;
-import com.perfect.entity.KeywordImportEntity;
+import com.perfect.entity.keyword.KeywordImportEntity;
 import com.perfect.service.KeywordImportService;
-import com.perfect.utils.Pager;
+import com.perfect.paging.Pager;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

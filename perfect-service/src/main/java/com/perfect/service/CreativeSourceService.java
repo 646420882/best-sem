@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.entity.CreativeSourceEntity;
+import com.perfect.entity.creative.CreativeSourceEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

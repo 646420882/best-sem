@@ -1,10 +1,10 @@
 package com.perfect.service.impl;
 
 
-import com.perfect.dao.KeywordDAO;
+import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.service.SysKeywordService;
-import com.perfect.utils.PaginationParam;
+import com.perfect.paging.PaginationParam;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

@@ -1,6 +1,6 @@
 package com.perfect.app.statistics.controller;
 
-import com.perfect.dao.CensusEveryDayReportDao;
+import com.perfect.dao.report.CensusEveryDayReportDao;
 import com.perfect.commons.web.WebContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

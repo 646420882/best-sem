@@ -1,10 +1,10 @@
 package com.perfect.db.mongodb.impl;
 
-import com.perfect.dao.BiddingMaintenanceDAO;
+import com.perfect.dao.bidding.BiddingMaintenanceDAO;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.UrlDTO;
-import com.perfect.entity.UrlEntity;
-import com.perfect.utils.ObjectUtils;
+import com.perfect.entity.sys.UrlEntity;
+import com.perfect.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;

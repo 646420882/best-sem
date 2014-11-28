@@ -1,7 +1,7 @@
 package com.perfect.app.bdlogin.core;
 
 import com.perfect.service.CookieService;
-import com.perfect.utils.JSONUtils;
+import com.perfect.json.JSONUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;

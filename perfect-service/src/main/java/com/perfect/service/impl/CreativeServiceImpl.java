@@ -1,6 +1,6 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.CreativeDAO;
+import com.perfect.dao.creative.CreativeDAO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.service.CreativeService;
 import org.springframework.beans.factory.annotation.Autowired;

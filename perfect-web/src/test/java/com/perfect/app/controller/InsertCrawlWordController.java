@@ -1,10 +1,10 @@
 package com.perfect.app.controller;
 
-import com.perfect.entity.CrawlWordEntity;
+import com.perfect.entity.sys.CrawlWordEntity;
 import com.perfect.dao.mongodb.base.BaseMongoTemplate;
-import com.perfect.utils.DBNameUtils;
-import com.perfect.utils.excel.XSSFSheetHandler;
-import com.perfect.utils.excel.XSSFReadUtils;
+import com.perfect.mongodb.DBNameUtils;
+import com.perfect.excel.XSSFSheetHandler;
+import com.perfect.excel.XSSFReadUtils;
 import org.junit.Test;
 import org.springframework.data.mongodb.core.MongoTemplate;
 

@@ -1,6 +1,6 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.AdgroupDAO;
+import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.service.AdgroupService;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.db.elasticsearch.repo.CreativeSourceRepository;
-import com.perfect.entity.CreativeSourceEntity;
+import com.perfect.entity.creative.CreativeSourceEntity;
 import com.perfect.service.CreativeSourceService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

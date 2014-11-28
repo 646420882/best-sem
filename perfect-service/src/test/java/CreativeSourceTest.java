@@ -1,4 +1,4 @@
-import com.perfect.entity.CreativeSourceEntity;
+import com.perfect.entity.creative.CreativeSourceEntity;
 import com.perfect.service.CreativeSourceService;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Test;

@@ -1,5 +1,5 @@
 import com.perfect.db.elasticsearch.service.impl.ElasticSearchServiceImpl;
-import com.perfect.entity.CreativeSourceEntity;
+import com.perfect.entity.creative.CreativeSourceEntity;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

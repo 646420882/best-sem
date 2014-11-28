@@ -1,7 +1,7 @@
 package com.perfect.commons.web;
 
 
-import com.perfect.utils.JSONUtils;
+import com.perfect.json.JSONUtils;
 import com.perfect.utils.web.dto.MessageResult;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.dao.FarmDAO;
-import com.perfect.entity.UrlEntity;
+import com.perfect.entity.sys.UrlEntity;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dao.utils.Pager;
 import org.springframework.data.domain.Sort;

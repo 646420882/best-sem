@@ -1,6 +1,6 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.BiddingRuleDAO;
+import com.perfect.dao.bidding.BiddingRuleDAO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.dao.mongodb.utils.PaginationParam;
 import com.perfect.param.BiddingRuleParam;

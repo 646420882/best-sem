@@ -5,7 +5,7 @@ import com.perfect.app.bdlogin.core.CaptchaHandler;
 import com.perfect.commons.web.ServletContextUtils;
 import com.perfect.dto.CookieDTO;
 import com.perfect.service.CookieService;
-import com.perfect.utils.JSONUtils;
+import com.perfect.json.JSONUtils;
 import org.apache.http.client.CookieStore;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;

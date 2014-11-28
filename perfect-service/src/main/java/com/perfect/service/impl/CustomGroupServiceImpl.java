@@ -1,12 +1,11 @@
 package com.perfect.service.impl;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.perfect.dao.CustomGroupDAO;
+import com.perfect.dao.adgroup.CustomGroupDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.CustomGroupDTO;
-import com.perfect.entity.CustomGroupEntity;
 import com.perfect.service.CustomGroupService;
-import com.perfect.utils.Pager;
+import com.perfect.paging.Pager;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

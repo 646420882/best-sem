@@ -1,8 +1,8 @@
 package com.perfect.commons.web;
 
 import com.perfect.core.AppContext;
-import com.perfect.entity.BaiduAccountInfoEntity;
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.entity.sys.BaiduAccountInfoEntity;
+import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.SystemUserService;
 import org.springframework.security.core.Authentication;

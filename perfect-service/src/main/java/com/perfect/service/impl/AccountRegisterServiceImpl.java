@@ -1,10 +1,10 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.AccountRegisterDAO;
+import com.perfect.dao.account.AccountRegisterDAO;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountRegisterService;
-import com.perfect.utils.MD5Utils;
+import com.perfect.MD5Utils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

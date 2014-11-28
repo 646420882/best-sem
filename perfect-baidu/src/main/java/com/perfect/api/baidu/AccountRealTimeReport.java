@@ -11,18 +11,11 @@ import java.util.*;
 
 /**
  * Created by john on 2014-7-30.
- * 2014-11-24 refactor
+ * 2014-11-26 refactor
  */
 public class AccountRealTimeReport {
 
     public List<RealTimeResultType> getAccountRealTimeData(String systemUserName, String passwd, String token, String _startDate, String _endDate) {
-        if (_startDate == null && _endDate != null) {
-            Objects.requireNonNull(_startDate);
-        }
-        if (_endDate == null && _startDate != null) {
-            Objects.requireNonNull(_endDate);
-        }
-
         Date startDate = null, endDate = null;
         if (_startDate == null && _endDate == null) {
             Calendar cal = Calendar.getInstance();

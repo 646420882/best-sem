@@ -1,6 +1,6 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.AccountAnalyzeDAO;
+import com.perfect.dao.account.AccountAnalyzeDAO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.service.AccountOverviewService;
 import org.springframework.stereotype.Service;

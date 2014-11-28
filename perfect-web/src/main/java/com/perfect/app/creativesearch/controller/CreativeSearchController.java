@@ -2,7 +2,7 @@ package com.perfect.app.creativesearch.controller;
 
 import com.perfect.dto.EsSearchResultDTO;
 import com.perfect.db.elasticsearch.service.EsService;
-import com.perfect.utils.JSONUtils;
+import com.perfect.json.JSONUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;

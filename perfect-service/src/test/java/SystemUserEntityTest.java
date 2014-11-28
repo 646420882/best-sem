@@ -1,7 +1,7 @@
-import com.perfect.dao.SystemUserDAO;
-import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.dao.sys.SystemUserDAO;
+import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.MD5;
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.entity.sys.SystemUserEntity;
 import org.junit.Test;
 import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;

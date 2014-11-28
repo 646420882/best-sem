@@ -4,10 +4,10 @@ import com.google.common.primitives.Bytes;
 import com.perfect.dao.KeywordReportDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.keyword.KeywordReportDTO;
-import com.perfect.entity.KeywordReportEntity;
+import com.perfect.entity.report.KeywordReportEntity;
 import com.perfect.service.KeywordReportService;
-import com.perfect.utils.Pager;
-import com.perfect.utils.PagerInfo;
+import com.perfect.paging.Pager;
+import com.perfect.paging.PagerInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

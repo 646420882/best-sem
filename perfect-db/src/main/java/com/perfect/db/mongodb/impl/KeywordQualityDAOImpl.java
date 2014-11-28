@@ -1,11 +1,11 @@
 package com.perfect.db.mongodb.impl;
 
-import com.perfect.dao.KeywordQualityDAO;
+import com.perfect.dao.keyword.KeywordQualityDAO;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.keyword.KeywordReportDTO;
-import com.perfect.entity.KeywordReportEntity;
-import com.perfect.utils.DateUtils;
-import com.perfect.utils.ObjectUtils;
+import com.perfect.entity.report.KeywordReportEntity;
+import com.perfect.DateUtils;
+import com.perfect.ObjectUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 

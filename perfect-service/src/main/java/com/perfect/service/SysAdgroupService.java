@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.entity.AdgroupEntity;
+import com.perfect.entity.adgroup.AdgroupEntity;
 
 import java.util.List;
 

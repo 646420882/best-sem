@@ -2,7 +2,7 @@ package com.perfect.app.admin.controller;
 
 import com.perfect.dto.UrlDTO;
 import com.perfect.service.BiddingMaintenanceService;
-import com.perfect.utils.JSONUtils;
+import com.perfect.json.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;

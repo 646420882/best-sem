@@ -2,7 +2,7 @@ package com.perfect.service;
 
 
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.utils.PaginationParam;
+import com.perfect.paging.PaginationParam;
 
 import java.util.List;
 import java.util.Map;

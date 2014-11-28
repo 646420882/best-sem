@@ -1,6 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
-import com.perfect.dao.KeywordRankDAO;
+import com.perfect.dao.keyword.KeywordRankDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dao.utils.Pager;
 import com.perfect.entity.bidding.KeywordRankEntity;

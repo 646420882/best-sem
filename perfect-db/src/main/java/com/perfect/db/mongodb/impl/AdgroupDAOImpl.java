@@ -4,16 +4,20 @@ import com.mongodb.WriteResult;
 import com.perfect.commons.constants.LogStatusConstant;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
-import com.perfect.dao.*;
+import com.perfect.dao.adgroup.AdgroupBackUpDAO;
+import com.perfect.dao.adgroup.AdgroupDAO;
+import com.perfect.dao.sys.LogDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
-import com.perfect.entity.*;
+import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
-import com.perfect.utils.ObjectUtils;
-import com.perfect.utils.Pager;
-import com.perfect.utils.PagerInfo;
+import com.perfect.ObjectUtils;
+import com.perfect.entity.creative.CreativeEntity;
+import com.perfect.entity.keyword.KeywordEntity;
+import com.perfect.paging.Pager;
+import com.perfect.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -51,9 +55,9 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     public List<Long> getAllAdgroupId() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new BasicQuery("{}", "{" + MongoEntityConstants.ADGROUP_ID + " : 1}");
-        List<com.perfect.entity.AdgroupEntity> list = mongoTemplate.find(query, com.perfect.entity.AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         List<Long> adgroupIds = new ArrayList<>(list.size());
-        for (com.perfect.entity.AdgroupEntity type : list)
+        for (AdgroupEntity type : list)
             adgroupIds.add(type.getAdgroupId());
         return adgroupIds;
     }
@@ -62,9 +66,9 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new BasicQuery("{}", "{" + MongoEntityConstants.ADGROUP_ID + " : 1}");
         query.addCriteria(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(campaignId));
-        List<com.perfect.entity.AdgroupEntity> list = mongoTemplate.find(query, com.perfect.entity.AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         List<Long> adgroupIds = new ArrayList<>(list.size());
-        for (com.perfect.entity.AdgroupEntity type : list)
+        for (AdgroupEntity type : list)
             adgroupIds.add(type.getAdgroupId());
         return adgroupIds;
     }
@@ -83,9 +87,9 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new BasicQuery("{}", "{_id : 1}");
         query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(campaignId));
-        List<com.perfect.entity.AdgroupEntity> list = mongoTemplate.find(query, com.perfect.entity.AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         List<String> adgroupIds = new ArrayList<>(list.size());
-        for (com.perfect.entity.AdgroupEntity type : list)
+        for (AdgroupEntity type : list)
             adgroupIds.add(type.getId());
         return adgroupIds;
     }
@@ -118,7 +122,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         }
         query.addCriteria(criteria);
         query.with(new PageRequest(skip, limit));
-        List<AdgroupEntity> _list = mongoTemplate.find(query, com.perfect.entity.AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> _list = mongoTemplate.find(query, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         return wrapperList(_list);
     }
 
@@ -130,8 +134,8 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     public AdgroupDTO findOne(Long adgroupId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        com.perfect.entity.AdgroupEntity _adgroupEntity = mongoTemplate.findOne(
-                new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), com.perfect.entity.AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        AdgroupEntity _adgroupEntity = mongoTemplate.findOne(
+                new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         return wrapperObject(_adgroupEntity);
     }
 
@@ -237,7 +241,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Update update = new Update();
         update.set("ls", "");
-        mongoTemplate.updateFirst(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), update, com.perfect.entity.AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        mongoTemplate.updateFirst(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), update, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         deleteLinked(adgroupId);
         //以前是直接删除拉取到本地的数据，是硬删除，现在改为软删除，以便以后还原操作
 //        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)),AdgroupEntity.class,MongoEntityConstants.TBL_ADGROUP);
@@ -292,7 +296,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        mongoTemplate.updateFirst(query, update, com.perfect.entity.AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        mongoTemplate.updateFirst(query, update, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         AdgroupBackupDTO adgroupBackupDTOFind = adgroupBackUpDAO.findOne(adgroupDTO.getId());
         if (adgroupBackupDTOFind == null) {
             AdgroupBackUpEntity adgroupBakcUpEntity = new AdgroupBackUpEntity();
@@ -381,7 +385,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        mongoTemplate.updateFirst(query, update, com.perfect.entity.AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        mongoTemplate.updateFirst(query, update, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
     }
 
     public void update(List<AdgroupDTO> adgroupDTOs) {
@@ -391,7 +395,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     public void deleteById(final Long adgroupId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), com.perfect.entity.AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         deleteSub(new ArrayList<Long>(1) {{
             add(adgroupId);
         }});
@@ -399,7 +403,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     public void deleteByIds(List<Long> adgroupIds) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)), com.perfect.entity.AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         deleteSub(adgroupIds);
     }
 
@@ -414,7 +418,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     public void deleteAll() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.dropCollection(com.perfect.entity.AdgroupEntity.class);
+        mongoTemplate.dropCollection(AdgroupEntity.class);
         deleteSub(getAllAdgroupId());
     }
 

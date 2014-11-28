@@ -5,7 +5,7 @@ package com.perfect.entity;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "ScheduleType")
+@Document(collection = "scheduleType")
 public class ScheduleEntity {
     private Long weekDay;
 

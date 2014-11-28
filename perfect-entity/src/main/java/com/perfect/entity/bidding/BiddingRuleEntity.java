@@ -1,7 +1,7 @@
 package com.perfect.entity.bidding;
 
 import com.perfect.commons.constants.MongoEntityConstants;
-import com.perfect.entity.AccountIdEntity;
+import com.perfect.entity.account.AccountIdEntity;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;

@@ -2,9 +2,9 @@ package com.perfect.app.index.controller;
 
 import com.perfect.commons.web.WebUtils;
 import com.perfect.commons.CustomUserDetailsService;
-import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.MD5;
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.redis.JRedisUtils;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemUserService;

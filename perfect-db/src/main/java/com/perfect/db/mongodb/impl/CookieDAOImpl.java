@@ -1,11 +1,11 @@
 package com.perfect.db.mongodb.impl;
 
-import com.perfect.dao.CookieDAO;
+import com.perfect.dao.sys.CookieDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.CookieDTO;
-import com.perfect.entity.CookieEntity;
-import com.perfect.utils.ObjectUtils;
-import com.perfect.utils.Pager;
+import com.perfect.entity.sys.CookieEntity;
+import com.perfect.ObjectUtils;
+import com.perfect.paging.Pager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;

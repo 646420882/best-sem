@@ -1,7 +1,7 @@
 package com.perfect.commons.web;
 
 import com.perfect.core.AppContext;
-import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 

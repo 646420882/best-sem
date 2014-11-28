@@ -2,7 +2,7 @@ package com.perfect.service.impl;
 
 
 import com.google.common.primitives.Bytes;
-import com.perfect.dao.AccountAnalyzeDAO;
+import com.perfect.dao.account.AccountAnalyzeDAO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.keyword.KeywordRealDTO;
 import com.perfect.service.PerformanceService;

@@ -1,6 +1,6 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.KeywordRankDAO;
+import com.perfect.dao.keyword.KeywordRankDAO;
 import com.perfect.entity.bidding.KeywordRankEntity;
 import com.perfect.service.KeywordRankService;
 import org.springframework.beans.BeanUtils;

@@ -2,7 +2,7 @@ package com.perfect.dao;
 
 
 import com.perfect.dto.keyword.KeywordReportDTO;
-import com.perfect.utils.PagerInfo;
+import com.perfect.paging.PagerInfo;
 
 import java.util.List;
 import java.util.Map;

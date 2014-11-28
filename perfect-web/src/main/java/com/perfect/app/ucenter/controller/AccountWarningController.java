@@ -1,9 +1,9 @@
 package com.perfect.app.ucenter.controller;
 
 import com.perfect.core.AppContext;
-import com.perfect.dao.AccountWarningDAO;
-import com.perfect.dao.SystemUserDAO;
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.dao.account.AccountWarningDAO;
+import com.perfect.dao.sys.SystemUserDAO;
+import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.entity.WarningRuleEntity;
 import com.perfect.commons.web.WebContext;
 import org.springframework.context.annotation.Scope;

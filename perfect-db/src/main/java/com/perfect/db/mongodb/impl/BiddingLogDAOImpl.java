@@ -1,6 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
-import com.perfect.dao.BiddingLogDAO;
+import com.perfect.dao.bidding.BiddingLogDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.entity.bidding.BiddingLogEntity;
 import com.perfect.dao.utils.Pager;

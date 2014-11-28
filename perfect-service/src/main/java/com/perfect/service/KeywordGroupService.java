@@ -1,7 +1,7 @@
 package com.perfect.service;
 
 
-import com.perfect.utils.PagerInfo;
+import com.perfect.paging.PagerInfo;
 
 import java.io.OutputStream;
 import java.util.List;

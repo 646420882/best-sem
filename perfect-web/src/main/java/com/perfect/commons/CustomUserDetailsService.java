@@ -1,7 +1,7 @@
 package com.perfect.commons;
 
-import com.perfect.dao.SystemUserDAO;
-import com.perfect.entity.SystemUserEntity;
+import com.perfect.dao.sys.SystemUserDAO;
+import com.perfect.entity.sys.SystemUserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

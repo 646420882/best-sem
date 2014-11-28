@@ -1,6 +1,6 @@
 package com.perfect.app.bidding.dto;
 
-import com.perfect.entity.KeywordEntity;
+import com.perfect.entity.keyword.KeywordEntity;
 
 import java.math.BigDecimal;
 

@@ -1,8 +1,8 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.commons.constants.LogStatusConstant;
-import com.perfect.dao.LogDAO;
-import com.perfect.entity.LogEntity;
+import com.perfect.dao.sys.LogDAO;
+import com.perfect.entity.sys.LogEntity;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dao.utils.Pager;
 import org.springframework.data.mongodb.core.query.Criteria;

@@ -1,8 +1,8 @@
 package com.perfect.crawl;
 
 import com.perfect.dao.mongodb.impl.CrawlWordDAOImpl;
-import com.perfect.entity.CrawlWordEntity;
-import com.perfect.utils.JSONUtils;
+import com.perfect.entity.sys.CrawlWordEntity;
+import com.perfect.json.JSONUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;

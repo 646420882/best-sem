@@ -1,7 +1,7 @@
 package com.perfect.entity.backup;
 
 import com.perfect.commons.constants.MongoEntityConstants;
-import com.perfect.entity.KeywordEntity;
+import com.perfect.entity.keyword.KeywordEntity;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**

@@ -2,7 +2,7 @@ import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.api.baidu.BaiduPreviewHelper;
 import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.dao.FarmDAO;
-import com.perfect.entity.UrlEntity;
+import com.perfect.entity.sys.UrlEntity;
 import org.junit.Test;
 import org.unitils.UnitilsJUnit4;
 import org.unitils.spring.annotation.SpringApplicationContext;

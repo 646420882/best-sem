@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.sys.BaiduAccountInfoEntity;
 
 /**
  * Created by john on 2014/11/7.

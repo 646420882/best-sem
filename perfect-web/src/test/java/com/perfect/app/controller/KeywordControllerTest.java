@@ -1,6 +1,6 @@
 package com.perfect.app.controller;
 
-import com.perfect.dao.KeywordDAO;
+import com.perfect.dao.keyword.KeywordDAO;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

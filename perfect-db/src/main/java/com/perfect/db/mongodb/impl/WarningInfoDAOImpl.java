@@ -3,7 +3,7 @@ package com.perfect.db.mongodb.impl;
 import com.perfect.dao.WarningInfoDAO;
 import com.perfect.entity.WarningInfoEntity;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.utils.DBNameUtils;
+import com.perfect.mongodb.DBNameUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 

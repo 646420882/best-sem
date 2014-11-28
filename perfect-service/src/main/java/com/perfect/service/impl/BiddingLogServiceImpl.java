@@ -1,6 +1,6 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.BiddingLogDAO;
+import com.perfect.dao.bidding.BiddingLogDAO;
 import com.perfect.entity.bidding.BiddingLogEntity;
 import com.perfect.service.BiddingLogService;
 import org.springframework.stereotype.Component;

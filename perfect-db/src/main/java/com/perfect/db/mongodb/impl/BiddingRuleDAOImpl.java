@@ -1,8 +1,8 @@
 package com.perfect.db.mongodb.impl;
 
 import com.mongodb.WriteResult;
-import com.perfect.dao.BiddingRuleDAO;
-import com.perfect.dao.SystemUserDAO;
+import com.perfect.dao.bidding.BiddingRuleDAO;
+import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.utils.PaginationParam;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;

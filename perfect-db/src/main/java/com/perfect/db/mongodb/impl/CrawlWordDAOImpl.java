@@ -1,11 +1,11 @@
 package com.perfect.db.mongodb.impl;
 
-import com.perfect.dao.CrawlWordDAO;
+import com.perfect.dao.sys.CrawlWordDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.CrawlWordDTO;
-import com.perfect.entity.CrawlWordEntity;
-import com.perfect.utils.ObjectUtils;
-import com.perfect.utils.Pager;
+import com.perfect.entity.sys.CrawlWordEntity;
+import com.perfect.ObjectUtils;
+import com.perfect.paging.Pager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;

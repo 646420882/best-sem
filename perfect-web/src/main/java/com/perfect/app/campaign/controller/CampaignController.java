@@ -2,7 +2,7 @@ package com.perfect.app.campaign.controller;
 
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.service.CampaignService;
-import com.perfect.utils.JSONUtils;
+import com.perfect.json.JSONUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;

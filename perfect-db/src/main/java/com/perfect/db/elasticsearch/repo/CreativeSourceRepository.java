@@ -1,6 +1,6 @@
 package com.perfect.db.elasticsearch.repo;
 
-import com.perfect.entity.CreativeSourceEntity;
+import com.perfect.entity.creative.CreativeSourceEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchCrudRepository;

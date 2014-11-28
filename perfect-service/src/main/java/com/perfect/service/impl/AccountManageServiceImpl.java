@@ -14,11 +14,11 @@ import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountAllStateDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
-import com.perfect.entity.BaiduAccountInfoEntity;
+import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.service.AccountManageService;
-import com.perfect.utils.DateUtils;
-import com.perfect.utils.JSONUtils;
-import com.perfect.utils.MD5Utils;
+import com.perfect.DateUtils;
+import com.perfect.json.JSONUtils;
+import com.perfect.MD5Utils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

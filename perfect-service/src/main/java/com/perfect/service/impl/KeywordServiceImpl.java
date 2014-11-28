@@ -1,6 +1,6 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.KeywordDAO;
+import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.service.KeywordService;
 import org.springframework.stereotype.Service;
