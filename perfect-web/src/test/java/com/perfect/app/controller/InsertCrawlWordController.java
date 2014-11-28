@@ -4,7 +4,7 @@ import com.perfect.entity.CrawlWordEntity;
 import com.perfect.dao.mongodb.base.BaseMongoTemplate;
 import com.perfect.utils.DBNameUtils;
 import com.perfect.utils.excel.XSSFSheetHandler;
-import com.perfect.utils.excel.XSSFUtils;
+import com.perfect.utils.excel.XSSFReadUtils;
 import org.junit.Test;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -40,7 +40,7 @@ public class InsertCrawlWordController extends JUnitBaseController {
         Path file = Paths.get("/home/baizz/文档/SEM/创意片段采集关键词&网址/创意片段采集-关键词.xlsx");
 
         try {
-            XSSFUtils.read(file, new XSSFSheetHandler() {
+            XSSFReadUtils.read(file, new XSSFSheetHandler() {
                 @Override
                 protected void rowMap(int sheetIndex, int rowIndex, List<Object> row) {
 
@@ -85,7 +85,7 @@ public class InsertCrawlWordController extends JUnitBaseController {
     public void insertTaobaoCrawlWord() {
         Path file = Paths.get("/home/baizz/文档/SEM/淘宝关键词.xlsx");
         try {
-            XSSFUtils.read(file, new XSSFSheetHandler() {
+            XSSFReadUtils.read(file, new XSSFSheetHandler() {
                 @Override
                 protected void rowMap(int sheetIndex, int rowIndex, List<Object> row) {
                     if (!row.isEmpty() && row.size() > 2) {
