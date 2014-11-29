@@ -4,8 +4,10 @@ import com.perfect.app.bdlogin.core.BaiduHttpLogin;
 import com.perfect.app.bdlogin.core.CaptchaHandler;
 import com.perfect.commons.web.ServletContextUtils;
 import com.perfect.dto.CookieDTO;
-import com.perfect.service.CookieService;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.json.JSONUtils;
+import com.perfect.service.AccountManageService;
+import com.perfect.service.CookieService;
 import org.apache.http.client.CookieStore;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -18,15 +20,18 @@ import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by baizz on 2014-11-10.
- * 2014-11-24 refactor
+ * 2014-11-29 refactor
  */
 @RestController
 @Scope("prototype")
@@ -34,34 +39,58 @@ import java.util.Map;
 public class BaiduHttpLoginController implements Controller {
 
     @Resource
+    private AccountManageService accountManageService;
+
+    @Resource
     private CookieService cookieService;
 
     @Override
     @RequestMapping(value = "/bdLogin/checkImageCode", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        Integer number = Integer.valueOf(request.getParameter("number"));
         String imageCode = request.getParameter("code");
 
         AbstractView jsonView = new MappingJackson2JsonView();
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
+        if (number > 0) {
+            ServletContext application = ServletContextUtils.getServletContext();
+            HttpSession session = ServletContextUtils.getSession();
+            BaiduAccountInfoDTO dto;
+            if (application.getAttribute(application.getServletContextName() + "-baiduAccountInfo") == null) {
+                List<BaiduAccountInfoDTO> list = accountManageService.getAllBaiduAccount();
+                int index = list.size() - 1;
+                dto = list.get(index);
+                list.remove(index);
+                application.setAttribute(application.getServletContextName() + "-baiduAccountInfo", list);
+            } else {
+                List<BaiduAccountInfoDTO> list = (List<BaiduAccountInfoDTO>) application.getAttribute(application.getServletContextName() + "-baiduAccountInfo");
+                int index = list.size() - 1;
+                dto = list.get(index);
+                list.remove(index);
+                application.setAttribute(application.getServletContextName() + "-baiduAccountInfo", list);
+            }
 
-        String sessionId = ServletContextUtils.getSession().getId();
-        String cookies = ServletContextUtils.getSession().getAttribute(sessionId + "bdLogin").toString();
-        boolean isSuccess = BaiduHttpLogin.execute("baidu-bjtthunbohui2134115", "Bjhunbohui7", imageCode, cookies);
-//        boolean isSuccess = BaiduHttpLogin.execute(username, password, imageCode, cookies);
-        if (isSuccess) {
-            map.put("status", "success");
+            String cookies = session.getAttribute(session.getId() + "bdLogin").toString();
+            boolean isSuccess = BaiduHttpLogin.execute(dto.getBaiduUserName(), dto.getBaiduPassword(), imageCode, cookies);
+            if (isSuccess) {
+                number--;
+                session.setAttribute(session.getId() + "-number", number);
+                map.put("status", "success");
+                map.put("number", number);
 
-            CookieStore cookieStore = BaiduHttpLogin.getSSLCookies();
-            CookieDTO cookieDTO = new CookieDTO();
-            cookieDTO.setCookie(JSONUtils.getJsonString(cookieStore));
-            cookieDTO.setIdle(true);
-            cookieService.saveCookie(cookieDTO);
+                CookieStore cookieStore = BaiduHttpLogin.getSSLCookies();
+                CookieDTO cookieDTO = new CookieDTO();
+                cookieDTO.setCookie(JSONUtils.getJsonString(cookieStore));
+                cookieDTO.setIdle(true);
+                cookieService.saveCookie(cookieDTO);
 
-            ServletContextUtils.getSession().removeAttribute(sessionId + "bdLogin");
-        } else {
-            map.put("status", "fail");
+                session.removeAttribute(session.getId() + "bdLogin");
+            } else {
+                List<BaiduAccountInfoDTO> list = (List<BaiduAccountInfoDTO>) application.getAttribute(application.getServletContextName() + "-baiduAccountInfo");
+                list.add(dto);
+                application.setAttribute(application.getServletContextName() + "-baiduAccountInfo", list);
+                map.put("status", "fail");
+            }
         }
 
         jsonView.setAttributesMap(map);

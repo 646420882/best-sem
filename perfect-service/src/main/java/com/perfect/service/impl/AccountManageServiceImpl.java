@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.mongodb.WriteResult;
+import com.perfect.DateUtils;
+import com.perfect.MD5Utils;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
@@ -14,11 +16,8 @@ import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountAllStateDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
-import com.perfect.entity.sys.BaiduAccountInfoEntity;
-import com.perfect.service.AccountManageService;
-import com.perfect.DateUtils;
 import com.perfect.json.JSONUtils;
-import com.perfect.MD5Utils;
+import com.perfect.service.AccountManageService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,13 +27,13 @@ import java.util.*;
 
 /**
  * Created by baizz on 2014-8-21.
- * 2014-11-26 refactor
+ * 2014-11-29 refactor
  */
 @Service("accountManageService")
 public class AccountManageServiceImpl implements AccountManageService {
 
     @Resource
-    private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
+    private AccountManageDAO<SystemUserDTO> accountManageDAO;
 
     @Override
     public int updatePwd(String password, String newPwd) {
@@ -149,8 +148,18 @@ public class AccountManageServiceImpl implements AccountManageService {
 
     @Override
     public Map<String, Object> getAllBaiduAccount(String currSystemUserName) {
-        List<BaiduAccountInfoEntity> list = accountManageDAO.getBaiduAccountItems(currSystemUserName);
+        List<BaiduAccountInfoDTO> list = accountManageDAO.getBaiduAccountItems(currSystemUserName);
         return JSONUtils.getJsonMapData(list);
+    }
+
+    @Override
+    public List<BaiduAccountInfoDTO> getAllBaiduAccount() {
+        List<BaiduAccountInfoDTO> baiduAccountList = new ArrayList<>();
+        accountManageDAO.getAllSysUserAccount().stream().forEach(e -> {
+            if (e.getBaiduAccountInfoDTOs().size() > 0)
+                baiduAccountList.addAll(e.getBaiduAccountInfoDTOs());
+        });
+        return baiduAccountList;
     }
 
     public Map<String, Object> getBaiduAccountInfoByUserId(Long baiduUserId) {

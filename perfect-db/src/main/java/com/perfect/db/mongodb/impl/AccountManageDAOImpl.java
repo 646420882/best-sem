@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mongodb.WriteResult;
+import com.perfect.DateUtils;
+import com.perfect.ObjectUtils;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
@@ -14,8 +16,8 @@ import com.perfect.autosdk.sms.v3.AccountService;
 import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
 import com.perfect.core.AppContext;
-import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dao.account.AccountManageDAO;
+import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
@@ -23,8 +25,6 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.account.AccountReportEntity;
 import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
-import com.perfect.DateUtils;
-import com.perfect.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -51,11 +51,13 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by baizz on 2014-6-25.
- * 2014-11-26 refactor
+ * 2014-11-29 refactor
  */
+@SuppressWarnings("unchecked")
 @Repository(value = "accountManageDAO")
-public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoDTO> {
+public class AccountManageDAOImpl implements AccountManageDAO<SystemUserDTO> {
     protected static transient Logger log = LoggerFactory.getLogger(AccountManageDAOImpl.class);
+
     @Resource
     private SystemUserDAO systemUserDAO;
 
@@ -133,6 +135,12 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoDT
     @Override
     public List<BaiduAccountInfoDTO> getBaiduAccountItems(String currUserName) {
         return systemUserDAO.findByUserName(currUserName).getBaiduAccountInfoDTOs();
+    }
+
+    @Override
+    public List<SystemUserDTO> getAllSysUserAccount() {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        return ObjectUtils.convert(mongoTemplate.find(Query.query(Criteria.where("access").is(2)), SystemUserEntity.class), SystemUserDTO.class);
     }
 
     /**
@@ -244,7 +252,6 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoDT
         int i = 0;
         if (writeResult.isUpdateOfExisting())
             i = 1;
-
         return i;
     }
 
@@ -287,7 +294,6 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoDT
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Double getYesterdayCost(Long accountId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
         Date date = DateUtils.getYesterday();
@@ -307,7 +313,6 @@ public class AccountManageDAOImpl implements AccountManageDAO<BaiduAccountInfoDT
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Double getCostRate() {
         Long accountId = AppContext.getAccountId();
         Double cost1 = getYesterdayCost(accountId);

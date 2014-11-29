@@ -29,14 +29,21 @@ public interface AccountManageDAO<T> {
      * @param token
      * @return
      */
-    List<T> getBaiduAccountInfos(String username, String password, String token);
+    List<BaiduAccountInfoDTO> getBaiduAccountInfos(String username, String password, String token);
 
     /**
      * 获取百度账户列表
      *
      * @return
      */
-    List<T> getBaiduAccountItems(String currUserName);
+    List<BaiduAccountInfoDTO> getBaiduAccountItems(String currUserName);
+
+    /**
+     * 获取所有系统用户
+     *
+     * @return
+     */
+    List<SystemUserDTO> getAllSysUserAccount();
 
     /**
      * 根据百度账户ID获取用户信息

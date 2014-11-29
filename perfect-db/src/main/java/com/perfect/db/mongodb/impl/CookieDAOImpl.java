@@ -1,10 +1,10 @@
 package com.perfect.db.mongodb.impl;
 
+import com.perfect.ObjectUtils;
 import com.perfect.dao.sys.CookieDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.CookieDTO;
 import com.perfect.entity.sys.CookieEntity;
-import com.perfect.ObjectUtils;
 import com.perfect.paging.Pager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * Created by baizz on 2014-11-10.
- * 2014-11-26 refactor
+ * 2014-11-29 refactor
  */
 @Repository("cookieDAO")
 public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> implements CookieDAO {
@@ -70,7 +70,13 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
     }
 
     @Override
+    public Iterable<CookieDTO> findAll() {
+        return ObjectUtils.convert(getSysMongoTemplate().findAll(getCookieEntityClass()), getEntityClass());
+    }
+
+    @Override
     public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
         return null;
     }
+
 }

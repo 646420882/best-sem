@@ -1,61 +1,43 @@
 package com.perfect.app.admin.controller;
 
-import com.perfect.dto.UrlDTO;
-import com.perfect.service.BiddingMaintenanceService;
+import com.perfect.dto.CookieDTO;
 import com.perfect.json.JSONUtils;
+import com.perfect.service.CookieService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
-import java.io.UnsupportedEncodingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by baizz on 2014-9-26.
+ * 2014-11-29 refactor
  */
 @RestController
 @Scope("prototype")
 @RequestMapping("/admin/biddingUrl")
-public class BiddingMaintenanceController {
+public class BiddingMaintenanceController implements Controller {
 
     @Resource
-    private BiddingMaintenanceService biddingMaintenanceService;
+    private CookieService cookieService;
 
+    @Override
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView listRequestUrl() {
+    public ModelAndView handleRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
         AbstractView jsonView = new MappingJackson2JsonView();
-        List<UrlDTO> list = biddingMaintenanceService.findAll();
+        List<CookieDTO> list = cookieService.findAll();
         Map<String, Object> values = JSONUtils.getJsonMapData(list);
         jsonView.setAttributesMap(values);
         return new ModelAndView(jsonView);
     }
-
-    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView addRequestUrl(@RequestParam(value = "url", required = true) String requestUrl)
-            throws UnsupportedEncodingException {
-        if (requestUrl == null)
-            return null;
-
-        requestUrl = java.net.URLDecoder.decode(requestUrl, "UTF-8");
-        UrlDTO urlDTO = new UrlDTO();
-        urlDTO.setRequest(requestUrl);
-        urlDTO.setIdle(true);
-        urlDTO.setFinishTime(0l);
-        biddingMaintenanceService.saveUrlEntity(urlDTO);
-        AbstractView jsonView = new MappingJackson2JsonView();
-        jsonView.setAttributesMap(new TreeMap<String, Object>() {{
-            put("status", "success");
-        }});
-        return new ModelAndView(jsonView);
-    }
-
 }

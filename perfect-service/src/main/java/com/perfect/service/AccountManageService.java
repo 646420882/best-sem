@@ -87,6 +87,13 @@ public interface AccountManageService {
     Map<String, Object> getAllBaiduAccount(String currSystemUserName);
 
     /**
+     * 获取所有系统用户的百度账号信息
+     *
+     * @return
+     */
+    List<BaiduAccountInfoDTO> getAllBaiduAccount();
+
+    /**
      * 根据百度账户id获取其账户信息
      *
      * @param baiduUserId
