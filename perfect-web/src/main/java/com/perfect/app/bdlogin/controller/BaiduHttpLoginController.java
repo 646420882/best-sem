@@ -20,7 +20,6 @@ import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,6 +27,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.perfect.app.bdlogin.core.BaiduHttpLogin.phantomJSPath;
 
 /**
  * Created by baizz on 2014-11-10.
@@ -53,24 +54,23 @@ public class BaiduHttpLoginController implements Controller {
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> map = new HashMap<>();
         if (number > 0) {
-            ServletContext application = ServletContextUtils.getServletContext();
             HttpSession session = ServletContextUtils.getSession();
             BaiduAccountInfoDTO dto;
-            if (application.getAttribute(application.getServletContextName() + "-baiduAccountInfo") == null) {
+            if (session.getAttribute(session.getId() + "-baiduAccountInfo") == null) {
                 List<BaiduAccountInfoDTO> list = accountManageService.getAllBaiduAccount();
                 int index = list.size() - 1;
                 dto = list.get(index);
                 list.remove(index);
-                application.setAttribute(application.getServletContextName() + "-baiduAccountInfo", list);
+                session.setAttribute(session.getId() + "-baiduAccountInfo", list);
             } else {
-                List<BaiduAccountInfoDTO> list = (List<BaiduAccountInfoDTO>) application.getAttribute(application.getServletContextName() + "-baiduAccountInfo");
+                List<BaiduAccountInfoDTO> list = (List<BaiduAccountInfoDTO>) session.getAttribute(session.getId() + "-baiduAccountInfo");
                 int index = list.size() - 1;
                 dto = list.get(index);
                 list.remove(index);
-                application.setAttribute(application.getServletContextName() + "-baiduAccountInfo", list);
+                session.setAttribute(session.getId() + "-baiduAccountInfo", list);
             }
 
-            String cookies = session.getAttribute(session.getId() + "bdLogin").toString();
+            String cookies = session.getAttribute(session.getId() + "-bdLogin").toString();
             boolean isSuccess = BaiduHttpLogin.execute(dto.getBaiduUserName(), dto.getBaiduPassword(), imageCode, cookies);
             if (isSuccess) {
                 number--;
@@ -84,11 +84,11 @@ public class BaiduHttpLoginController implements Controller {
                 cookieDTO.setIdle(true);
                 cookieService.saveCookie(cookieDTO);
 
-                session.removeAttribute(session.getId() + "bdLogin");
+                session.removeAttribute(session.getId() + "-bdLogin");
             } else {
-                List<BaiduAccountInfoDTO> list = (List<BaiduAccountInfoDTO>) application.getAttribute(application.getServletContextName() + "-baiduAccountInfo");
+                List<BaiduAccountInfoDTO> list = (List<BaiduAccountInfoDTO>) session.getAttribute(session.getId() + "-baiduAccountInfo");
                 list.add(dto);
-                application.setAttribute(application.getServletContextName() + "-baiduAccountInfo", list);
+                session.setAttribute(session.getId() + "-baiduAccountInfo", list);
                 map.put("status", "fail");
             }
         }
@@ -99,11 +99,11 @@ public class BaiduHttpLoginController implements Controller {
 
     @RequestMapping(value = "/bdLogin/getCaptcha", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void getCaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        CaptchaHandler.handle(BaiduHttpLogin.phantomJSPath);
+        CaptchaHandler.handle(phantomJSPath);
         byte[] captchaBytes = CaptchaHandler.getCaptchaBytes();
         String cookies = CaptchaHandler.getCookies();
-        String sessionId = ServletContextUtils.getSession().getId();
-        ServletContextUtils.getSession().setAttribute(sessionId + "bdLogin", cookies);
+        HttpSession session = ServletContextUtils.getSession();
+        session.setAttribute(session.getId() + "-bdLogin", cookies);
         if (captchaBytes != null) {
             response.getOutputStream().write(captchaBytes);
         }

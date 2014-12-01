@@ -8,7 +8,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContextBuilder;
-import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -19,21 +18,21 @@ import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 
 import javax.net.ssl.SSLContext;
+import java.io.File;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.*;
 
 /**
  * Created by baizz on 2014-11-5.
  */
 public class BaiduHttpLogin {
-    public static final String phantomJSPath = MethodHandles.lookup().lookupClass().getClassLoader().getResource("").getPath() + "phantomJs/baiduLogin.js ";
+    public static final String phantomJSPath =
+            new File(BaiduHttpLogin.class.getResource("/").getPath()).getPath() + System.getProperty("file.separator") + "phantomJs" + System.getProperty("file.separator") + "baiduLogin.js ";
+
     public static final Set<String> set = new HashSet<String>() {{
         addAll(Arrays.asList("CASSSID", "GBIZSSID", "GIMGSSID", "LOGINAID", "LOGINUID", "__cas__id__", "__cas__st__", "bdsfuid"));
     }};
@@ -50,12 +49,7 @@ public class BaiduHttpLogin {
         if (isSSL) {
             SSLContext sslContext = null;
             try {
-                sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
-                    //trust all
-                    public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-                        return true;
-                    }
-                }).build();
+                sslContext = new SSLContextBuilder().loadTrustMaterial(null, (chain, authType) -> true).build();
             } catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
                 e.printStackTrace();
             }
