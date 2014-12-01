@@ -6,7 +6,6 @@ import java.math.BigDecimal;
  * Created by SubDong on 2014/11/27.
  */
 public class CampaignReportDTO extends AccountIdDTO{
-    private String id;
 
     private Long campaignId;
 
@@ -39,14 +38,6 @@ public class CampaignReportDTO extends AccountIdDTO{
     private BigDecimal mobileCpm;
 
     private Double mobileConversion;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Long getCampaignId() {
         return campaignId;
@@ -179,7 +170,6 @@ public class CampaignReportDTO extends AccountIdDTO{
     @Override
     public String toString() {
         return "CampaignReportEntity{" +
-                "id='" + id + '\'' +
                 ", campaignId=" + campaignId +
                 ", campaignName='" + campaignName + '\'' +
                 ", pcImpression=" + pcImpression +

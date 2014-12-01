@@ -9,7 +9,6 @@ import java.util.Date;
  * 2014-11-28 refactor XiaoWei code by john
  */
 public class WarningInfoDTO extends AccountIdDTO {
-    private String id;
     private Double percent;//百分率
     private String warningState;//预警状态（有：警示状态，预警边缘， 发展状态良好， 警示状态）
     private Date createTime;//创建时间
@@ -17,8 +16,7 @@ public class WarningInfoDTO extends AccountIdDTO {
     private String suggest;//建议
     private Double Budget;
 
-    public WarningInfoDTO(String id, Double percent, String warningState, Date createTime, String warningSign, String suggest, Double budget) {
-        this.id = id;
+    public WarningInfoDTO( Double percent, String warningState, Date createTime, String warningSign, String suggest, Double budget) {
         this.percent = percent;
         this.warningState = warningState;
         this.createTime = createTime;
@@ -30,13 +28,6 @@ public class WarningInfoDTO extends AccountIdDTO {
     public WarningInfoDTO() {
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Double getPercent() {
         return percent;

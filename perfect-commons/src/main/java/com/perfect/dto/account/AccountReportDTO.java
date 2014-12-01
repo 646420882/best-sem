@@ -8,7 +8,6 @@ import java.util.Date;
  */
 public class AccountReportDTO extends AccountIdDTO implements Comparable<AccountReportDTO>{
 
-    private String id;
 
     private String accountName;
 
@@ -50,13 +49,6 @@ public class AccountReportDTO extends AccountIdDTO implements Comparable<Account
 
     private int devices;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getAccountName() {
         return accountName;

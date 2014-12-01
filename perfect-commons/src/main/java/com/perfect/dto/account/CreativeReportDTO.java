@@ -7,7 +7,6 @@ import java.math.BigDecimal;
  */
 public class CreativeReportDTO extends AccountIdDTO{
 
-    private String id;
 
     private Long creativeId;
 
@@ -56,14 +55,6 @@ public class CreativeReportDTO extends AccountIdDTO{
     private BigDecimal mobileCpm;
 
     private Double mobileConversion;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Long getCreativeId() {
         return creativeId;
@@ -260,7 +251,6 @@ public class CreativeReportDTO extends AccountIdDTO{
     @Override
     public String toString() {
         return "CreativeReportEntity{" +
-                "id='" + id + '\'' +
                 ", creativeId=" + creativeId +
                 ", creativeTitle='" + creativeTitle + '\'' +
                 ", description1='" + description1 + '\'' +

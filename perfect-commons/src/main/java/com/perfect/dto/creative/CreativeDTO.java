@@ -6,7 +6,6 @@ import com.perfect.dto.account.AccountIdDTO;
  * Created by SubDong on 2014/11/25.
  */
 public class CreativeDTO extends AccountIdDTO {
-    private String id;
 
     private Long creativeId;
 
@@ -36,13 +35,6 @@ public class CreativeDTO extends AccountIdDTO {
 
     private Integer localStatus;//本地状态1为新增,2为修改,3为删除,4为级联删除标识
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Long getCreativeId() {
         return creativeId;
@@ -159,7 +151,6 @@ public class CreativeDTO extends AccountIdDTO {
     @Override
     public String toString() {
         return "CreativeDTOs{" +
-                "id='" + id + '\'' +
                 ", creativeId=" + creativeId +
                 ", adgroupId=" + adgroupId +
                 ", adgroupObjId='" + adgroupObjId + '\'' +
