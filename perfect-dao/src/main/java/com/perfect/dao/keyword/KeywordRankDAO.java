@@ -1,12 +1,12 @@
 package com.perfect.dao.keyword;
 
 import com.perfect.dao.MongoCrudRepository;
-import com.perfect.entity.bidding.KeywordRankEntity;
+import com.perfect.dto.keyword.KeywordRankDTO;
 
 /**
  * Created by vbzer_000 on 2014/8/31.
  */
-public interface KeywordRankDAO extends MongoCrudRepository<KeywordRankEntity, String> {
+public interface KeywordRankDAO extends MongoCrudRepository<KeywordRankDTO, String> {
 
-    KeywordRankEntity findByKeywordId(String id);
+    KeywordRankDTO findByKeywordId(String id);
 }

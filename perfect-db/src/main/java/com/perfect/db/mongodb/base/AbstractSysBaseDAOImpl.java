@@ -1,5 +1,7 @@
 package com.perfect.db.mongodb.base;
 
+import com.perfect.dto.BaseDTO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -13,7 +15,7 @@ import java.util.Map;
  *
  * @author yousheng
  */
-public abstract class AbstractSysBaseDAOImpl<T, ID extends Serializable> extends AbstractUserBaseDAOImpl<T, ID> {
+public abstract class AbstractSysBaseDAOImpl<T extends BaseDTO, ID extends Serializable> extends AbstractUserBaseDAOImpl<T, ID> {
 
     @Override
     public void delete(T t) {
@@ -21,15 +23,18 @@ public abstract class AbstractSysBaseDAOImpl<T, ID extends Serializable> extends
     }
 
     @Override
-    public void delete(Iterable<? extends T> entities) {
+    public int delete(Iterable<? extends T> entities) {
+
+        int count = 0;
         for (T t : entities) {
-            getSysMongoTemplate().remove(t);
+            count += getSysMongoTemplate().remove(t).getN();
         }
+        return count;
     }
 
     @Override
-    public void delete(ID id) {
-        getSysMongoTemplate().remove(Query.query(Criteria.where("id").is(id)), getEntityClass());
+    public boolean delete(ID id) {
+        return getSysMongoTemplate().remove(Query.query(Criteria.where("id").is(id)), getEntityClass()).getN() > 0;
     }
 
     @Override
@@ -37,51 +42,44 @@ public abstract class AbstractSysBaseDAOImpl<T, ID extends Serializable> extends
         getSysMongoTemplate().dropCollection(getEntityClass());
     }
 
-    @Override
-    public <S extends T> Iterable<S> save(Iterable<S> entities) {
-        for (S s : entities) {
-            getSysMongoTemplate().save(s);
-        }
-        return entities;
-    }
 
     @Override
-    public <S extends T> S save(S entity) {
-        getSysMongoTemplate().save(entity);
-        return entity;
-    }
+    public T save(T dto) {
 
-    @Override
-    public void insert(T t) {
-        getSysMongoTemplate().insert(t);
-    }
-
-    @Override
-    public void insertAll(List<T> entities) {
-        getSysMongoTemplate().insertAll(entities);
-    }
-
-    @Override
-    public List<T> find(Map<String, Object> params, int skip, int limit, String order, Sort.Direction direction) {
-        Query query = new Query();
-        Criteria criteria = null;
-        for (Map.Entry<String, Object> param : params.entrySet()) {
-            if (criteria == null) {
-                criteria = new Criteria(param.getKey());
-                criteria.is(param.getValue());
-                continue;
-            }
-
-            criteria.and(param.getKey()).is(param.getValue());
+        try {
+            Object entity = getEntityClass().newInstance();
+            BeanUtils.copyProperties(entity, dto);
+            getSysMongoTemplate().save(entity);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
 
-        query.addCriteria(criteria).skip(skip).limit(limit);
-
-        if (order != null) {
-            query.with(new Sort(direction, order));
-        }
-        return getSysMongoTemplate().find(query, getEntityClass());
+        return dto;
     }
+
+//    @Override
+//    public List<T> find(Map<String, Object> params, int skip, int limit, String order, Sort.Direction direction) {
+//        Query query = new Query();
+//        Criteria criteria = null;
+//        for (Map.Entry<String, Object> param : params.entrySet()) {
+//            if (criteria == null) {
+//                criteria = new Criteria(param.getKey());
+//                criteria.is(param.getValue());
+//                continue;
+//            }
+//
+//            criteria.and(param.getKey()).is(param.getValue());
+//        }
+//
+//        query.addCriteria(criteria).skip(skip).limit(limit);
+//
+//        if (order != null) {
+//            query.with(new Sort(direction, order));
+//        }
+//        return getSysMongoTemplate().find(query, getEntityClass());
+//    }
 
     @Override
     public T findOne(ID id) {
@@ -109,8 +107,4 @@ public abstract class AbstractSysBaseDAOImpl<T, ID extends Serializable> extends
         return getSysMongoTemplate().count(null, getEntityClass());
     }
 
-    @Override
-    public void update(T t) {
-        getSysMongoTemplate().save(t);
-    }
 }

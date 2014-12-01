@@ -3,23 +3,14 @@ package com.perfect.dto;
 /**
  * Created by baizz on 2014-11-26.
  */
-public class CookieDTO {
+public class CookieDTO extends BaseDTO {
 
-    private String id;
 
     private String cookie;
 
     private boolean idle;
 
     private long finishTime;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getCookie() {
         return cookie;

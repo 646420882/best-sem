@@ -10,9 +10,7 @@ import java.util.List;
 /**
  * Created by baizz on 2014-11-26.
  */
-public class SystemUserDTO implements Serializable {
-
-    private String id;
+public class SystemUserDTO extends BaseDTO implements Serializable {
 
     private String userName;
 
@@ -38,14 +36,6 @@ public class SystemUserDTO implements Serializable {
         this.userName = userName;
         this.password = password;
         this.baiduAccountInfoDTOs = baiduAccountInfoDTOs;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUserName() {

@@ -1,13 +1,22 @@
 package com.perfect.dao.base;
 
 
+import com.perfect.commons.constants.MongoEntityConstants;
+import com.perfect.dto.BaseDTO;
+
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yousheng on 14/11/25.
  */
-public interface HeyCrudRepository<T, ID extends Serializable> {
+public interface HeyCrudRepository<T extends BaseDTO, ID extends Serializable> extends MongoEntityConstants {
 
+    public <E> Class<E> getEntityClass();
+
+
+    public Class<T> getDTOClass();
     /**
      * Interface for generic CRUD operations on a repository for a specific type.
      *
@@ -19,10 +28,10 @@ public interface HeyCrudRepository<T, ID extends Serializable> {
      * Saves a given entity. Use the returned instance for further operations as the save operation might have changed the
      * entity instance completely.
      *
-     * @param entity
+     * @param dto
      * @return the saved entity
      */
-    <S extends T> S save(S entity);
+    T save(T dto);
 
     /**
      * Saves all given entities.
@@ -31,7 +40,7 @@ public interface HeyCrudRepository<T, ID extends Serializable> {
      * @return the saved entities
      * @throws IllegalArgumentException in case the given entity is (@literal null}.
      */
-    <S extends T> Iterable<S> save(Iterable<S> entities);
+    Iterable<T> save(Iterable<T> entities);
 
     /**
      * Retrieves an entity by its id.
@@ -79,7 +88,7 @@ public interface HeyCrudRepository<T, ID extends Serializable> {
      * @param id must not be {@literal null}.
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
      */
-    void delete(ID id);
+    boolean delete(ID id);
 
     /**
      * Deletes a given entity.
@@ -95,10 +104,16 @@ public interface HeyCrudRepository<T, ID extends Serializable> {
      * @param entities
      * @throws IllegalArgumentException in case the given {@link Iterable} is (@literal null}.
      */
-    void delete(Iterable<? extends T> entities);
+    int delete(Iterable<? extends T> entities);
 
     /**
      * Deletes all entities managed by the repository.
      */
     void deleteAll();
+
+
+    public int deleteByIds(List<ID> ids);
+
+
+    public List<T> find(Map<String, Object> params, int skip, int limit);
 }

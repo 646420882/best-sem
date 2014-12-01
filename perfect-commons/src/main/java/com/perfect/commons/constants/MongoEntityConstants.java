@@ -3,7 +3,7 @@ package com.perfect.commons.constants;
 /**
  * Created by vbzer_000 on 2014/8/27.
  */
-public class MongoEntityConstants {
+public interface MongoEntityConstants {
 
     //SYS
     public static final String SYS_KEYWORD = "sys_keyword";

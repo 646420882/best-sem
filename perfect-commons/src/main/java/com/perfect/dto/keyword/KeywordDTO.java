@@ -9,8 +9,6 @@ import java.math.BigDecimal;
  */
 public class KeywordDTO extends AccountIdDTO implements Comparable<KeywordDTO> {
 
-    private String id;
-
     //KeywordDTO Attributes
     private Long keywordId;
 
@@ -37,14 +35,6 @@ public class KeywordDTO extends AccountIdDTO implements Comparable<KeywordDTO> {
     private Integer localStatus;//关键词本地状态，1为新增，2为修改，3为删除（软删除），4为级联删除标识
 
     private Integer orderBy;//排序而已
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getAdgroupObjId() {
         return adgroupObjId;

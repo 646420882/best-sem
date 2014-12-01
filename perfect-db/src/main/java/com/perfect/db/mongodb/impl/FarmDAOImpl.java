@@ -1,9 +1,9 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.dao.FarmDAO;
-import com.perfect.entity.sys.UrlEntity;
+import com.perfect.dto.UrlDTO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
-import com.perfect.dao.utils.Pager;
+import com.perfect.paging.Pager;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -18,10 +18,10 @@ import java.util.Map;
  * Created by vbzer_000 on 2014/9/24.
  */
 @Component("farmDAO")
-public class FarmDAOImpl extends AbstractSysBaseDAOImpl<UrlEntity, String> implements FarmDAO {
+public class FarmDAOImpl extends AbstractSysBaseDAOImpl<UrlDTO, String> implements FarmDAO {
     @Override
-    public Class<UrlEntity> getEntityClass() {
-        return UrlEntity.class;
+    public Class<UrlDTO> getEntityClass() {
+        return UrlDTO.class;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class FarmDAOImpl extends AbstractSysBaseDAOImpl<UrlEntity, String> imple
     }
 
     @Override
-    public UrlEntity takeOne() {
+    public UrlDTO takeOne() {
         return getSysMongoTemplate().findAndModify(
                 Query.query(
                         Criteria.where("i").is(true)
@@ -41,7 +41,7 @@ public class FarmDAOImpl extends AbstractSysBaseDAOImpl<UrlEntity, String> imple
     }
 
     @Override
-    public void returnOne(UrlEntity urlEntity) {
+    public void returnOne(UrlDTO urlEntity) {
         urlEntity.setIdle(true);
         getSysMongoTemplate().save(urlEntity);
     }
@@ -50,7 +50,7 @@ public class FarmDAOImpl extends AbstractSysBaseDAOImpl<UrlEntity, String> imple
     /*
      查询最后执行时间在5分钟之前的账号
      */
-    public List<UrlEntity> allUnused() {
+    public List<UrlDTO> allUnused() {
         return getSysMongoTemplate()
                 .find(Query.query(Criteria.where("f").lte(System.currentTimeMillis() - 5 * 60 * 1000))
                         .with(new Sort(Sort.Direction.ASC, "f")), getEntityClass());

@@ -1,6 +1,7 @@
 package com.perfect.dao;
 
 import com.perfect.dao.base.HeyCrudRepository;
+import com.perfect.dto.BaseDTO;
 import com.perfect.paging.Pager;
 
 import java.io.Serializable;
@@ -10,7 +11,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-7-4.
  */
-public interface MongoCrudRepository<T, ID extends Serializable> extends HeyCrudRepository<T, ID> {
+public interface MongoCrudRepository<T extends BaseDTO, ID extends Serializable> extends HeyCrudRepository<T, ID> {
 
     public final String START = "start";
     public final String PAGESIZE = "pageSize";
@@ -29,30 +30,31 @@ public interface MongoCrudRepository<T, ID extends Serializable> extends HeyCrud
 
 
     List<T> find(Map<String, Object> params, int skip, int limit);
-    /**
-     * 新增
-     * <br>------------------------------<br>
-     *
-     * @param t
-     */
-    void insert(T t);
 
-    /**
-     * 批量新增
-     * <br>------------------------------<br>
-     *
-     * @param entities
-     */
-    void insertAll(List<T> entities);
+//    /**
+//     * 新增
+//     * <br>------------------------------<br>
+//     *
+//     * @param t
+//     */
+//    void insert(T t);
+//
+//    /**
+//     * 批量新增
+//     * <br>------------------------------<br>
+//     *
+//     * @param entities
+//     */
+//    void insertAll(List<T> entities);
 
 
-    /**
-     * 更新
-     * <br>------------------------------<br>
-     *
-     * @param t
-     */
-    void update(T t);
+//    /**
+//     * 更新
+//     * <br>------------------------------<br>
+//     *
+//     * @param t
+//     */
+//    void update(T t);
 //
 //    /**
 //     * 批量更新
@@ -71,13 +73,13 @@ public interface MongoCrudRepository<T, ID extends Serializable> extends HeyCrud
 //    void deleteById(ID id);
 //
 
-    /**
-     * 批量删除
-     * <br>------------------------------<br>
-     *
-     * @param ids
-     */
-    void deleteByIds(List<ID> ids);
+//    /**
+//     * 批量删除
+//     * <br>------------------------------<br>
+//     *
+//     * @param ids
+//     */
+//    int deleteByIds(List<ID> ids);
 
     /**
      * @param start    开始页数

@@ -1,7 +1,5 @@
 package com.perfect.dao.sys;
 
-import com.perfect.dao.MongoCrudRepository;
-import com.perfect.entity.LogEntity;
 
 import java.util.List;
 

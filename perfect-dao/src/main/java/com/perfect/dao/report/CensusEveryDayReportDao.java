@@ -10,11 +10,12 @@ import java.util.List;
 /**
  * Created by john on 2014/11/17.
  */
-public interface CensusEveryDayReportDao{
+public interface CensusEveryDayReportDao {
 
 
     /**
      * 根据日期得到分组过后的停留页面List
+     *
      * @param date
      * @return
      */
@@ -26,10 +27,11 @@ public interface CensusEveryDayReportDao{
      * @param date
      * @return
      */
-    public long getCensusCount(Date date,String lastPage,String database_Field);
+    public long getCensusCount(Date date, String lastPage, String database_Field);
 
     /**
      * 添加
+     *
      * @param list
      */
     public void insertList(List<CensusEveryDayReportDTO> list);
@@ -37,6 +39,7 @@ public interface CensusEveryDayReportDao{
 
     /**
      * Demo
+     *
      * @return
      */
     public List<CensusDTO> getCensus();

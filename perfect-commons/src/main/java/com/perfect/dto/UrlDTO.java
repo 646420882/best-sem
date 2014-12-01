@@ -3,9 +3,7 @@ package com.perfect.dto;
 /**
  * Created by baizz on 2014-11-26.
  */
-public class UrlDTO {
-
-    private String id;
+public class UrlDTO extends BaseDTO {
 
     private String request;
 
@@ -37,11 +35,4 @@ public class UrlDTO {
         this.request = request;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }

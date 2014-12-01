@@ -142,4 +142,13 @@ public class CensusEveryDayReportDaoImpl extends AbstractSysBaseDAOImpl implemen
        return ObjectUtils.convert(censusEntityList, CensusDTO.class);
     }
 
+    @Override
+    public Class getDTOClass() {
+        return null;
+    }
+
+    @Override
+    public List find(Map params, int skip, int limit) {
+        return null;
+    }
 }

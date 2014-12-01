@@ -1,12 +1,12 @@
 package com.perfect.dao.bidding;
 
 import com.perfect.dao.MongoCrudRepository;
-import com.perfect.entity.bidding.BiddingRuleEntity;
-import com.perfect.dao.mongodb.utils.PaginationParam;
+import com.perfect.dao.base.HeyCrudRepository;
+import com.perfect.dto.bidding.BiddingRuleDTO;
+import com.perfect.paging.PaginationParam;
 import com.perfect.param.BiddingRuleParam;
 import org.springframework.data.domain.Sort;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -15,25 +15,25 @@ import java.util.Map;
  *
  * @author yousheng
  */
-public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, Long> {
+public interface BiddingRuleDAO extends HeyCrudRepository<BiddingRuleDTO, Long> {
 
     public void createBidding(BiddingRuleParam biddingRuleEntity);
 
-    public List<BiddingRuleEntity> findByCampagainId(long cid, int skip, int limit, String field, Sort.Direction direction);
+    public List<BiddingRuleDTO> findByCampagainId(long cid, int skip, int limit, String field, Sort.Direction direction);
 
-    public BiddingRuleEntity getBiddingRuleByKeywordId(Long keywordId);
+    public BiddingRuleDTO getBiddingRuleByKeywordId(Long keywordId);
 
-    public List<BiddingRuleEntity> getReadyRule();
+    public List<BiddingRuleDTO> getReadyRule();
 
     public boolean disableRule(String id);
 
-    public List<BiddingRuleEntity> getTaskByAccoundId(String userName, Long id, long hour);
+    public List<BiddingRuleDTO> getTaskByAccoundId(String userName, Long id, long hour);
 
-    void updateToNextRunTime(List<BiddingRuleEntity> tasks);
+    void updateToNextRunTime(List<BiddingRuleDTO> tasks);
 
     void enableRule(String id);
 
-    List<BiddingRuleEntity> findByKeywordIds(List<Long> ids);
+    List<BiddingRuleDTO> findByKeywordIds(List<Long> ids);
 
     void removeByKeywordId(Long id);
 
@@ -43,7 +43,7 @@ public interface BiddingRuleDAO extends MongoCrudRepository<BiddingRuleEntity, L
 
     boolean setEnable(Long[] ids, boolean ebl);
 
-    List<BiddingRuleEntity> findByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
+    List<BiddingRuleDTO> findByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
 
-    BiddingRuleEntity takeOne(String userName, Long id, long hour);
+    BiddingRuleDTO takeOne(String userName, Long id, long hour);
 }
