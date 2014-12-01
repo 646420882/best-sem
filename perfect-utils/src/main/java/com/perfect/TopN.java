@@ -10,6 +10,7 @@ import java.util.Objects;
 /**
  * TopN algorithm, include QuickSort and TimSort
  * Date: 2014-08-16
+ * 2014-12-01 refactor
  *
  * @author baizz
  */
@@ -138,7 +139,7 @@ public class TopN {
         try {
             String fieldGetterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
             Method method = ts[0].getClass().getDeclaredMethod(fieldGetterName);
-            Arrays.sort(ts, Comparators.getComparator(method, sort));
+            Arrays.parallelSort(ts, Comparators.getComparator(method, sort));
 
             T topNData[];
             int l = ts.length;
