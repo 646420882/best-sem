@@ -11,80 +11,52 @@ public class MonitorDTO extends BaseDTO {
     private Integer type;
     private OptTypeDTO opt;
 
-    public void setMonitorId(Long aMonitorId) {
-
-        monitorId = aMonitorId;
-
-
-    }
-
-    public void setFolderId(Long aFolderId) {
-
-        folderId = aFolderId;
-
-
-    }
-
-    public void setId(Long aId) {
-
-        id = aId;
-
-
-    }
-
-    public void setAdgroupId(Long aAdgroupId) {
-
-        adgroupId = aAdgroupId;
-
-
-    }
-
-    public void setCampaignId(Long aCampaignId) {
-
-        campaignId = aCampaignId;
-
-
-    }
-
-    public void setType(Integer aType) {
-
-        type = aType;
-
-
-    }
-
-    public void setOpt(OptTypeDTO aOpt) {
-
-        opt = aOpt;
-
-
-    }
-
     public Long getMonitorId() {
         return monitorId;
+    }
+
+    public void setMonitorId(Long monitorId) {
+        this.monitorId = monitorId;
     }
 
     public Long getFolderId() {
         return folderId;
     }
 
+    public void setFolderId(Long folderId) {
+        this.folderId = folderId;
+    }
+
     public Long getAdgroupId() {
         return adgroupId;
+    }
+
+    public void setAdgroupId(Long adgroupId) {
+        this.adgroupId = adgroupId;
     }
 
     public Long getCampaignId() {
         return campaignId;
     }
 
+    public void setCampaignId(Long campaignId) {
+        this.campaignId = campaignId;
+    }
+
     public Integer getType() {
         return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public OptTypeDTO getOpt() {
         return opt;
     }
 
-    public void delete() {
+    public void setOpt(OptTypeDTO opt) {
+        this.opt = opt;
     }
 
 
