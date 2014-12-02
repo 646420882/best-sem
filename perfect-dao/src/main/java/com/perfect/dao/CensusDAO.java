@@ -1,12 +1,13 @@
 package com.perfect.dao;
 
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.vo.CensusVO;
 import com.perfect.dto.count.CensusDTO;
 
 /**
  * Created by XiaoWei on 2014/11/11.
  */
-public interface CensusDAO {
+public interface CensusDAO extends HeyCrudRepository<CensusDTO,Long> {
     /**
      * 添加数据源
      * @param censusEntity

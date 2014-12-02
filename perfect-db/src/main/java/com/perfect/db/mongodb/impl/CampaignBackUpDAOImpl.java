@@ -40,10 +40,6 @@ public class CampaignBackUpDAOImpl extends AbstractUserBaseDAOImpl<CampaignBackU
 
     }
 
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
 
     public  void deleteByCid(long cid){
         MongoTemplate mongoTemplate = getMongoTemplate();
@@ -57,5 +53,10 @@ public class CampaignBackUpDAOImpl extends AbstractUserBaseDAOImpl<CampaignBackU
         List<CampaignBackUpDTO> campaignBackUpDTOs = ObjectUtils.convert(list,CampaignBackUpDTO.class);
 
         return campaignBackUpDTOs.size()==0?null:campaignBackUpDTOs.get(0);
+    }
+
+    @Override
+    public Class<CampaignBackUpDTO> getDTOClass() {
+        return CampaignBackUpDTO.class;
     }
 }

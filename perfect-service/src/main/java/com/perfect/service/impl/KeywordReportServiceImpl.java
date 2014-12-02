@@ -2,9 +2,7 @@ package com.perfect.service.impl;
 
 import com.google.common.primitives.Bytes;
 import com.perfect.dao.KeywordReportDAO;
-import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.keyword.KeywordReportDTO;
-import com.perfect.entity.report.KeywordReportEntity;
 import com.perfect.service.KeywordReportService;
 import com.perfect.utils.paging.Pager;
 import com.perfect.utils.paging.PagerInfo;
@@ -22,22 +20,12 @@ import java.util.Map;
  * 2014-11-26 refactor
  */
 @Service
-public class KeywordReportServiceImpl extends AbstractUserBaseDAOImpl<KeywordReportEntity,Long> implements KeywordReportService {
+public class KeywordReportServiceImpl  implements KeywordReportService {
     private static final String DEFAULT_DELIMITER = ",";
     private static final String DEFAULT_END = "\r\n";
     private static final byte commonCSVHead[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
     @Resource
     private KeywordReportDAO keywordReportDAO;
-
-    @Override
-    public Class<KeywordReportEntity> getEntityClass() {
-        return null;
-    }
-
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
 
     @Override
     public PagerInfo findByPagerInfo(Map<String, Object> params) {

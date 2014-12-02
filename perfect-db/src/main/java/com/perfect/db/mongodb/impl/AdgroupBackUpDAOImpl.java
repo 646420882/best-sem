@@ -24,6 +24,11 @@ public class AdgroupBackUpDAOImpl extends AbstractUserBaseDAOImpl<AdgroupBackupD
 
     @Override
     public Class<AdgroupBackupDTO> getEntityClass() {
+        return AdgroupBackupDTO.class;
+    }
+
+    @Override
+    public Class<AdgroupBackupDTO> getDTOClass() {
         return null;
     }
 
@@ -32,15 +37,6 @@ public class AdgroupBackUpDAOImpl extends AbstractUserBaseDAOImpl<AdgroupBackupD
         return null;
     }
 
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
-
-    @Override
-    public List<AdgroupBackupDTO> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, boolean asc) {
-        return null;
-    }
 
     @Override
     public AdgroupBackupDTO findOne(String oid) {

@@ -1,9 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.CensusDAO;
-import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.count.CensusDTO;
-import com.perfect.entity.CensusEntity;
 import com.perfect.service.CensusService;
 import com.perfect.vo.CensusVO;
 import com.perfect.utils.paging.Pager;
@@ -19,16 +17,11 @@ import java.util.*;
  * 2014-11-26 refactor
  */
 @Service("censusService")
-public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusDTO,Long> implements CensusService {
+public class CensusServiceImpl  implements CensusService {
     @Resource private CensusDAO censusDAO;
     private SimpleDateFormat allFormat=new SimpleDateFormat("EEE MMM dd yyyy hh:mm:ss z", Locale.ENGLISH);
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);
-
-    @Override
-    public Class<CensusEntity> getEntityClass() {
-        return null;
-    }
 
     @Override
     public String saveParams(String[] osAnBrowser) {
@@ -92,13 +85,4 @@ public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusDTO,Long> i
         return censusDAO.getLastMonthTotal(url);
     }
 
-    @Override
-    public Class<CensusDTO> getDTOClass() {
-        return CensusDTO.class;
-    }
-
-    @Override
-    public List<CensusDTO> find(Map<String, Object> params, int skip, int limit) {
-        return null;
-    }
 }

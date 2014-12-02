@@ -20,16 +20,12 @@ import java.util.Map;
  * 2014-11-26 refactor
  */
 @Component
-public class CreativeBackUpDAOImpl extends AbstractUserBaseDAOImpl<CreativeBackUpEntity, Long> implements CreativeBackUpDAO {
+public class CreativeBackUpDAOImpl extends AbstractUserBaseDAOImpl<CreativeBackUpDTO, Long> implements CreativeBackUpDAO {
     @Override
     public Class<CreativeBackUpEntity> getEntityClass() {
         return null;
     }
 
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
 
     @Override
     public CreativeBackUpDTO findByStringId(String id) {
@@ -53,5 +49,27 @@ public class CreativeBackUpDAOImpl extends AbstractUserBaseDAOImpl<CreativeBackU
     public void deleteByLongId(Long crid) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.CREATIVE_ID).is(crid)), CreativeBackUpEntity.class, MongoEntityConstants.BAK_CREATIVE);
+    }
+
+
+    @Override
+    public Class<CreativeBackUpDTO> getDTOClass() {
+        return CreativeBackUpDTO.class;
+    }
+
+    @Override
+    public CreativeBackUpDTO save(CreativeBackUpDTO dto) {
+        return null;
+    }
+
+
+    @Override
+    public void delete(CreativeBackUpDTO entity) {
+
+    }
+
+    @Override
+    public int delete(Iterable<? extends CreativeBackUpDTO> entities) {
+        return 0;
     }
 }

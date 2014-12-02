@@ -26,16 +26,12 @@ import java.util.Map;
  * 2014-11-26 refactor
  */
 @Repository("customGroupDAO")
-public class CustomGroupDAOImpl extends AbstractUserBaseDAOImpl<CustomGroupEntity, Long> implements CustomGroupDAO {
+public class CustomGroupDAOImpl extends AbstractUserBaseDAOImpl<CustomGroupDTO, Long> implements CustomGroupDAO {
     @Override
     public Class<CustomGroupEntity> getEntityClass() {
         return null;
     }
 
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
 
     @Override
     public List<CustomGroupDTO> findAll(Long acId) {
@@ -74,5 +70,10 @@ public class CustomGroupDAOImpl extends AbstractUserBaseDAOImpl<CustomGroupEntit
         CustomGroupEntity customGroupEntity=new CustomGroupEntity();
         BeanUtils.copyProperties(customGroupDTO,customGroupEntity);
         getMongoTemplate().insert(customGroupEntity, MongoEntityConstants.TBL_CUSTOMGROUP);
+    }
+
+    @Override
+    public Class<CustomGroupDTO> getDTOClass() {
+        return CustomGroupDTO.class;
     }
 }

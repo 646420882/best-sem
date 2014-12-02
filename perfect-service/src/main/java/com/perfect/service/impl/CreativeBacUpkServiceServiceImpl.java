@@ -2,7 +2,6 @@ package com.perfect.service.impl;
 
 import com.perfect.dao.creative.CreativeBackUpDAO;
 import com.perfect.dao.creative.CreativeDAO;
-import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.service.CreativeBackUpService;
@@ -18,21 +17,12 @@ import java.util.Map;
  * 2014-11-26 refactor
  */
 @Service("creativeBackUpService")
-public class CreativeBacUpkServiceServiceImpl extends AbstractUserBaseDAOImpl<CreativeBackUpDTO, Long> implements CreativeBackUpService {
+public class CreativeBacUpkServiceServiceImpl implements CreativeBackUpService {
     @Resource
     private CreativeBackUpDAO creativeBackUpDAO;
     @Resource
     private CreativeDAO creativeDAO;
 
-    @Override
-    public Class<CreativeBackUpDTO> getEntityClass() {
-        return null;
-    }
-
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
 
     @Override
     public CreativeBackUpDTO findByStringId(String id) {

@@ -29,10 +29,6 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpD
         return KeyWordBackUpDTO.class;
     }
 
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
 
 
     /**
@@ -83,5 +79,10 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpD
     public  void deleteByKwid(long kwid){
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(kwid)),getEntityClass(),MongoEntityConstants.BAK_KEYWORD);
+    }
+
+    @Override
+    public Class<KeyWordBackUpDTO> getDTOClass() {
+        return KeyWordBackUpDTO.class;
     }
 }

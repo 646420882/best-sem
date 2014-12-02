@@ -3,10 +3,8 @@ package com.perfect.service.impl;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.dao.keyword.KeyWordBackUpDAO;
 import com.perfect.dao.keyword.KeywordDAO;
-import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.backup.KeyWordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.service.KeyWordBackUpService;
 import com.perfect.utils.paging.Pager;
 import org.springframework.beans.BeanUtils;
@@ -21,7 +19,7 @@ import java.util.Map;
  * 2014-11-26 refactor
  */
 @Service
-public class KeyWordBackUpServiceImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpDTO,Long> implements KeyWordBackUpService {
+public class KeyWordBackUpServiceImpl implements KeyWordBackUpService {
 
     @Resource
      private KeyWordBackUpDAO keyWordBackUpDAO;
@@ -30,23 +28,13 @@ public class KeyWordBackUpServiceImpl extends AbstractUserBaseDAOImpl<KeyWordBac
     private KeywordDAO keywordDAO;
 
 
-    @Override
-    public Class<KeyWordBackUpDTO> getEntityClass() {
-        return KeyWordBackUpDTO.class;
-    }
-
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
 
 
-    @Override
     public void insertAll(List<KeyWordBackUpDTO> entities) {
         for(KeyWordBackUpDTO tempKwdBack:entities){
             boolean exists = keyWordBackUpDAO.existsByObjectId(tempKwdBack.getId());
             if (exists == false) {
-                getMongoTemplate().insert(tempKwdBack, MongoEntityConstants.BAK_KEYWORD);
+                keyWordBackUpDAO.save(tempKwdBack);
             }
         }
     }
@@ -58,11 +46,11 @@ public class KeyWordBackUpServiceImpl extends AbstractUserBaseDAOImpl<KeyWordBac
     public KeywordDTO reducUpdate(String id){
 
         if(id.matches("^\\d+$")==true){
-            KeywordEntity keywordEntity = new KeywordEntity();
+            KeywordDTO keywordEntity = new KeywordDTO();
             KeyWordBackUpDTO keyWordBackUpDTOFind = keyWordBackUpDAO.findById(Long.parseLong(id));
             BeanUtils.copyProperties(keyWordBackUpDTOFind, keywordEntity);
             keywordEntity.setLocalStatus(null);
-            getMongoTemplate().save(keywordEntity,MongoEntityConstants.TBL_KEYWORD);
+            keywordDAO.save(keywordEntity);
             keyWordBackUpDAO.deleteByKwid(Long.parseLong(id));
             KeywordDTO keywordDTO=new KeywordDTO();
             BeanUtils.copyProperties(keywordEntity,keywordDTO);
