@@ -1,6 +1,8 @@
 package com.perfect.service.impl;
 
 import com.google.common.primitives.Bytes;
+import com.perfect.DateUtils;
+import com.perfect.TopN;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
@@ -9,18 +11,15 @@ import com.perfect.autosdk.sms.v3.GetKeyword10QualityResponse;
 import com.perfect.autosdk.sms.v3.KeywordService;
 import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.core.AppContext;
-import com.perfect.dao.keyword.KeywordQualityDAO;
 import com.perfect.dao.account.AccountManageDAO;
+import com.perfect.dao.keyword.KeywordQualityDAO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.dto.keyword.QualityDTO;
-import com.perfect.entity.sys.BaiduAccountInfoEntity;
-import com.perfect.redis.JRedisUtils;
-import com.perfect.service.KeywordQualityService;
-import com.perfect.DateUtils;
 import com.perfect.json.JSONUtils;
 import com.perfect.json.SerializeUtils;
-import com.perfect.TopN;
+import com.perfect.redis.JRedisUtils;
+import com.perfect.service.KeywordQualityService;
 import com.perfect.vo.KeywordQualityReportVO;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -38,7 +37,7 @@ import java.util.concurrent.RecursiveTask;
 
 /**
  * Created by baizz on 2014-08-16.
- * 2014-11-26 refactor
+ * 2014-12-2 refactor
  */
 @Service("keywordQualityService")
 public class KeywordQualityServiceImpl implements KeywordQualityService {
@@ -50,7 +49,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
     private static String key = "";
 
     @Resource
-    private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
+    private AccountManageDAO accountManageDAO;
 
     @Resource
     private KeywordQualityDAO keywordQualityDAO;

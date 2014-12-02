@@ -2,16 +2,15 @@ package com.perfect.db.mongodb.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.perfect.ObjectUtils;
 import com.perfect.dao.keyword.KeywordGroupDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.keyword.LexiconDTO;
 import com.perfect.entity.keyword.LexiconEntity;
-import com.perfect.redis.JRedisUtils;
 import com.perfect.mongodb.DBNameUtils;
-import com.perfect.ObjectUtils;
-import com.perfect.paging.Pager;
 import com.perfect.paging.PagerInfo;
+import com.perfect.redis.JRedisUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.PageRequest;
@@ -30,26 +29,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.commons.constants.MongoEntityConstants.*;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by baizz on 2014-08-20.
+ * 2014-12-2 refactor
  */
 @Repository("keywordGroupDAO")
-public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long> implements KeywordGroupDAO {
+public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, String> implements KeywordGroupDAO {
+
     @Override
-    public Class<LexiconDTO> getEntityClass() {
+    public Class<LexiconDTO> getDTOClass() {
         return LexiconDTO.class;
     }
 
-    private Class<LexiconEntity> getLexiconEntityClass() {
-        return LexiconEntity.class;
-    }
-
     @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
+    @SuppressWarnings("unchecked")
+    public Class<LexiconEntity> getEntityClass() {
+        return LexiconEntity.class;
     }
 
     @Override
@@ -88,13 +85,14 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long
         if (status) {
             query.with(new PageRequest(skip, limit));
         }
-        return ObjectUtils.convert(mongoTemplate.find(query, getLexiconEntityClass()), getEntityClass());
+        return ObjectUtils.convert(mongoTemplate.find(query, getEntityClass()), getDTOClass());
     }
 
+    @Override
     public List<TradeVO> findTr() {
         Jedis jc = JRedisUtils.get();
         boolean jcKey = jc.exists(TRADE_KEY);
-        List<TradeVO> list = null;
+        List<TradeVO> list;
         if (!jcKey) {
             MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
             Aggregation aggregation = Aggregation.newAggregation(
@@ -132,6 +130,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long
         }
     }
 
+    @Override
     public List<CategoryVO> findCategories(String trade) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Aggregation aggregation = Aggregation.newAggregation(
@@ -146,6 +145,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long
         return list;
     }
 
+    @Override
     public int getCurrentRowsSize(Map<String, Object> params) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
 

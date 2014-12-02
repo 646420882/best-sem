@@ -1,11 +1,12 @@
 package com.perfect.dto.keyword;
 
+import com.perfect.dto.BaseDTO;
+
 /**
  * Created by baizz on 2014-11-26.
+ * 2014-12-2 refactor
  */
-public class LexiconDTO {
-
-    private String id;
+public class LexiconDTO extends BaseDTO {
 
     private String trade;   //行业
 
@@ -16,14 +17,6 @@ public class LexiconDTO {
     private String keyword;
 
     private String url;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getTrade() {
         return trade;
@@ -68,7 +61,6 @@ public class LexiconDTO {
     @Override
     public String toString() {
         return "LexiconEntity{" +
-                "id='" + id + '\'' +
                 ", trade='" + trade + '\'' +
                 ", category='" + category + '\'' +
                 ", group='" + group + '\'' +

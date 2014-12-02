@@ -2,7 +2,7 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 package com.perfect.dao.adgroup;
 
-import com.perfect.dao.MongoCrudRepository;
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.paging.PagerInfo;
 import org.springframework.data.mongodb.core.query.Query;
@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import java.util.List;
 import java.util.Map;
 
-public interface AdgroupDAO  extends MongoCrudRepository<AdgroupDTO, Long> {
+public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
 
     List<Long> getAllAdgroupId();
 

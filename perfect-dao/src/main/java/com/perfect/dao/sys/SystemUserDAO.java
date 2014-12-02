@@ -1,6 +1,6 @@
 package com.perfect.dao.sys;
 
-import com.perfect.dao.MongoCrudRepository;
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by vbzer_000 on 2014/6/18.
  */
-public interface SystemUserDAO extends MongoCrudRepository<SystemUserDTO, String> {
+public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> {
 
     /**
      * 根据用户名查询

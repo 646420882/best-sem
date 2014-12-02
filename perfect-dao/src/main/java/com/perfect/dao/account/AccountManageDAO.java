@@ -2,6 +2,7 @@ package com.perfect.dao.account;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.mongodb.WriteResult;
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
@@ -11,8 +12,9 @@ import java.util.List;
 
 /**
  * Created by baizz on 2014-6-25.
+ * 2014-12-2 refactor
  */
-public interface AccountManageDAO<T> {
+public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, String> {
 
     /**
      * 获取账户树

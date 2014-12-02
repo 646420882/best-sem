@@ -1,6 +1,7 @@
 package com.perfect.dao.account;
 
 
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.keyword.KeywordRealDTO;
 
@@ -9,9 +10,10 @@ import java.util.List;
 
 
 /**
- * Created by baizz on 14-7-25.
+ * Created by baizz on 2014-7-25.
+ * 2014-12-2 refactor
  */
-public interface AccountAnalyzeDAO{
+public interface AccountAnalyzeDAO extends HeyCrudRepository<AccountReportDTO, Long> {
     public List<KeywordRealDTO> performance(String userTable);
 
     /**

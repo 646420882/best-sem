@@ -42,7 +42,7 @@ public class KeywordServiceImpl implements KeywordService {
 
     @Override
     public void insertAll(List<KeywordDTO> keywordDTOList) {
-        keywordDAO.insertAll(keywordDTOList);
+        keywordDAO.save(keywordDTOList);
     }
 
     @Override

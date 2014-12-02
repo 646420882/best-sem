@@ -1,6 +1,6 @@
 package com.perfect.dao.keyword;
 
-import com.perfect.dao.MongoCrudRepository;
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.keyword.LexiconDTO;
 import com.perfect.paging.PagerInfo;
 
@@ -9,8 +9,9 @@ import java.util.Map;
 
 /**
  * Created by baizz on 2014-8-21.
+ * 2014-12-2 refactor
  */
-public interface KeywordGroupDAO extends MongoCrudRepository<LexiconDTO, Long> {
+public interface KeywordGroupDAO extends HeyCrudRepository<LexiconDTO, String> {
 
     /**
      * 查询行业词库下的类别

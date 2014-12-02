@@ -27,13 +27,13 @@ import java.util.*;
 
 /**
  * Created by baizz on 2014-8-21.
- * 2014-11-29 refactor
+ * 2014-12-2 refactor
  */
 @Service("accountManageService")
 public class AccountManageServiceImpl implements AccountManageService {
 
     @Resource
-    private AccountManageDAO<SystemUserDTO> accountManageDAO;
+    private AccountManageDAO accountManageDAO;
 
     @Override
     public int updatePwd(String password, String newPwd) {

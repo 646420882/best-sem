@@ -1,5 +1,6 @@
 package com.perfect.dao;
 
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.keyword.RankDTO;
 
 /**
@@ -7,5 +8,5 @@ import com.perfect.dto.keyword.RankDTO;
  *
  * @author yousheng
  */
-public interface RankDAO extends MongoCrudRepository<RankDTO, String> {
+public interface RankDAO extends HeyCrudRepository<RankDTO, String> {
 }

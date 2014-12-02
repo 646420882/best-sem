@@ -1,6 +1,6 @@
 package com.perfect.dao.keyword;
 
-import com.perfect.dao.MongoCrudRepository;
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeyWordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
@@ -14,8 +14,9 @@ import java.util.Map;
 
 /**
  * Created by baizz on 2014-7-7.
+ * 2014-12-2 refactor
  */
-public interface KeywordDAO extends MongoCrudRepository<KeywordDTO, Long> {
+public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
     /**
      * 按条件批量更新
      * <br>------------------------------<br>
@@ -66,6 +67,8 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordDTO, Long> {
     PagerInfo findByPageInfo(Query q, int pageSize, int pageNo);
 
     void updateAdgroupIdByOid(String id, Long adgroupId);
+
+    List<KeywordDTO> find(Map<String, Object> params, int skip, int limit, String order);
 
     void deleteById(String id);
 

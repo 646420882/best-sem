@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.entity.adgroup.AdgroupEntity;
+import com.perfect.dto.adgroup.AdgroupDTO;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ import java.util.List;
  */
 public interface SysAdgroupService {
 
-    public List<AdgroupEntity> findByCampaignId(Long cid);
+    public List<AdgroupDTO> findByCampaignId(Long cid);
 
-    public List<AdgroupEntity> findIdByCampaignId(Long cid);
+    public List<AdgroupDTO> findIdByCampaignId(Long cid);
 
-    public AdgroupEntity findByAdgroupId(Long agid);
+    public AdgroupDTO findByAdgroupId(Long agid);
 }
