@@ -6,6 +6,8 @@ import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -22,6 +24,10 @@ import java.util.Map;
  */
 @Repository("systemUserDAO")
 public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, String> implements SystemUserDAO {
+
+
+    private Logger logger = LoggerFactory.getLogger(SystemUserDAOImpl.class);
+
 
     @Override
     @SuppressWarnings("unchecked")
@@ -72,6 +78,20 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
         Update update = new Update();
         update.unset("bdAccounts");
         getSysMongoTemplate().updateFirst(Query.query(Criteria.where("bdAccounts._id").is(id)), update, getEntityClass());
+    }
+
+    @Override
+    public void initAccount(SystemUserDTO systemUserDTO) {
+        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccountInfoDTOs();
+
+        if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
+            logger.warn("账号未绑定百度推广账户");
+            return;
+        }
+
+        String userName = systemUserDTO.getUserName();
+
+
     }
 
     @Override
