@@ -3,8 +3,6 @@ package com.perfect.service.impl;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
-import com.perfect.entity.sys.BaiduAccountInfoEntity;
-import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.service.BaiduAccountService;
 import org.springframework.stereotype.Repository;
 

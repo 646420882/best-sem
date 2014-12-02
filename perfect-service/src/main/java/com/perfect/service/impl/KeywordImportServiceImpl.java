@@ -5,7 +5,7 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.keyword.KeywordImportDTO;
 import com.perfect.entity.keyword.KeywordImportEntity;
 import com.perfect.service.KeywordImportService;
-import com.perfect.paging.Pager;
+import com.perfect.utils.paging.Pager;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

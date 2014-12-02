@@ -7,11 +7,10 @@ import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.keyword.LexiconDTO;
 import com.perfect.entity.keyword.LexiconEntity;
-import com.perfect.redis.JRedisUtils;
-import com.perfect.mongodb.DBNameUtils;
-import com.perfect.ObjectUtils;
-import com.perfect.paging.Pager;
-import com.perfect.paging.PagerInfo;
+import com.perfect.utils.redis.JRedisUtils;
+import com.perfect.utils.mongodb.DBNameUtils;
+import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.PageRequest;
@@ -30,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.commons.constants.MongoEntityConstants.*;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
@@ -45,11 +43,6 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long
 
     private Class<LexiconEntity> getLexiconEntityClass() {
         return LexiconEntity.class;
-    }
-
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
     }
 
     @Override
@@ -189,6 +182,11 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long
     private int getTotalCount(Query q, Class<?> cls) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         return (int) mongoTemplate.count(q, cls);
+    }
+
+    @Override
+    public Class<LexiconDTO> getDTOClass() {
+        return LexiconDTO.class;
     }
 
     //行业词库下的类别VO实体

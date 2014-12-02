@@ -1,4 +1,4 @@
-package com.perfect.mongodb;
+package com.perfect.utils.mongodb;
 
 /**
  * Created by baizz on 2014-08-07.

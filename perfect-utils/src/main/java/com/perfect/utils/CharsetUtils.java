@@ -1,4 +1,4 @@
-package com.perfect;
+package com.perfect.utils;
 
 import java.io.UnsupportedEncodingException;
 

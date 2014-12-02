@@ -1,13 +1,13 @@
 package com.perfect.app.index.controller;
 
-import com.perfect.MD5Utils;
+import com.perfect.utils.MD5Utils;
 import com.perfect.commons.CustomUserDetailsService;
 import com.perfect.commons.message.mail.SendMail;
 import com.perfect.commons.web.WebContext;
 import com.perfect.commons.web.WebUtils;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
-import com.perfect.redis.JRedisUtils;
+import com.perfect.utils.redis.JRedisUtils;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemUserService;
 import org.springframework.context.annotation.Scope;

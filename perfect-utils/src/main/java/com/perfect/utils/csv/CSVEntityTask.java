@@ -1,4 +1,4 @@
-package com.perfect.csv;
+package com.perfect.utils.csv;
 
 
 import java.io.Serializable;
@@ -25,24 +25,25 @@ public class CSVEntityTask extends RecursiveTask<List<CSVEntityTask.CSVEntity>> 
 
     @Override
     protected List<CSVEntity> compute() {
-        List<CSVEntity> csvEntity=new LinkedList<>();
-        List<CSVEntity> _newCsvEntity=new LinkedList<>();
-        if((last - first) < threshold){
-               HashSet h=new HashSet(collectionNameList);
+        List<CSVEntity> csvEntity = new LinkedList<>();
+        List<CSVEntity> _newCsvEntity = new LinkedList<>();
+        if ((last - first) < threshold) {
+            HashSet h = new HashSet(collectionNameList);
             collectionNameList.clear();
             collectionNameList.addAll(h);
-            csvEntity=collectionNameList;
-        }else{
-            int middle=(last+first)/2;
-            CSVEntityTask csvEntityTask =new CSVEntityTask(first,middle,collectionNameList);
-            CSVEntityTask csvEntityTask2 =new CSVEntityTask(middle,last,collectionNameList);
+            csvEntity = collectionNameList;
+        } else {
+            int middle = (last + first) / 2;
+            CSVEntityTask csvEntityTask = new CSVEntityTask(first, middle, collectionNameList);
+            CSVEntityTask csvEntityTask2 = new CSVEntityTask(middle, last, collectionNameList);
             invokeAll(csvEntityTask, csvEntityTask2);
             _newCsvEntity.clear();
-            _newCsvEntity=mergeMap(csvEntityTask.join(), csvEntityTask2.join());
+            _newCsvEntity = mergeMap(csvEntityTask.join(), csvEntityTask2.join());
         }
         return _newCsvEntity;
     }
-    private List<CSVEntity> mergeMap(List<CSVEntity> list1,List<CSVEntity> list2){
+
+    private List<CSVEntity> mergeMap(List<CSVEntity> list1, List<CSVEntity> list2) {
         list1.removeAll(list2);
         list1.addAll(list2);
         return list1;

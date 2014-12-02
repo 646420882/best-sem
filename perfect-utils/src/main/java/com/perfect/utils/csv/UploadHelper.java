@@ -1,8 +1,7 @@
-package com.perfect.csv;
+package com.perfect.utils.csv;
 
 
 import com.google.common.io.Files;
-import org.springframework.util.FileCopyUtils;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -43,10 +42,9 @@ public class UploadHelper {
      */
     public boolean defaultUpload(byte[] bytes, String fileName) {
         try {
-            File dirPath = new File(default_tempPath);
             File uploadedFile = new File(default_tempPath + File.separator + fileName);
 
-            FileCopyUtils.copy(bytes, uploadedFile);
+            Files.write(bytes, uploadedFile);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,9 +61,8 @@ public class UploadHelper {
      */
     public boolean totalUpload(byte[] bytes, String fileName) {
         try {
-            File dirPath = new File(total_tempPath);
             File uploadedFile = new File(total_tempPath + File.separator + fileName);
-            FileCopyUtils.copy(bytes, uploadedFile);
+            Files.write(bytes, uploadedFile);
             return true;
         } catch (IOException e) {
             e.printStackTrace();

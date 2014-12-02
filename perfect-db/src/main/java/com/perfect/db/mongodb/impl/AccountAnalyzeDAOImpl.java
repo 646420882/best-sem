@@ -7,8 +7,8 @@ import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.keyword.KeywordRealDTO;
 import com.perfect.entity.account.AccountReportEntity;
 import com.perfect.entity.keyword.KeywordRealEntity;
-import com.perfect.ObjectUtils;
-import com.perfect.paging.Pager;
+import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.paging.Pager;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -17,9 +17,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import static com.perfect.commons.constants.MongoEntityConstants.ACCOUNT_ID;
-import static com.perfect.commons.constants.MongoEntityConstants.TBL_ACCOUNT_REPORT;
 
 /**
  * Created by baizz on 2014-7-25.

@@ -1,6 +1,5 @@
 package com.perfect.service;
 
-import com.perfect.dao.MongoCrudRepository;
 import com.perfect.dto.keyword.KeywordImportDTO;
 
 import java.util.List;

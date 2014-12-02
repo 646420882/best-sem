@@ -1,7 +1,7 @@
 package com.perfect.app.keyword.controller;
 
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.json.JSONUtils;
+import com.perfect.utils.json.JSONUtils;
 import com.perfect.service.KeywordService;
 import com.perfect.service.SysKeywordService;
 import org.springframework.context.annotation.Scope;

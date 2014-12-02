@@ -1,12 +1,10 @@
 package com.perfect.dao.keyword;
 
-import com.perfect.dao.MongoCrudRepository;
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeyWordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.paging.PagerInfo;
-import com.perfect.paging.PaginationParam;
-import org.springframework.data.mongodb.core.query.Query;
+import com.perfect.utils.paging.PaginationParam;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,7 +13,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-7-7.
  */
-public interface KeywordDAO extends MongoCrudRepository<KeywordDTO, Long> {
+public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
     /**
      * 按条件批量更新
      * <br>------------------------------<br>
@@ -51,9 +49,9 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordDTO, Long> {
 
     KeywordDTO findByName(String name, Long accountId);
 
-    void remove(Query query);
-
-    List<KeywordDTO> findByQuery(Query query);
+//    void remove(Query query);
+//
+//    List<KeywordDTO> findByQuery(Query query);
 
     List<KeywordDTO> findByAdgroupId(Long adgroupId, PaginationParam param, Map<String, Object> queryParams);
 
@@ -63,7 +61,7 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordDTO, Long> {
 
     KeywordDTO findByObjectId(String oid);
 
-    PagerInfo findByPageInfo(Query q, int pageSize, int pageNo);
+//    PagerInfo findByPageInfo(Query q, int pageSize, int pageNo);
 
     void updateAdgroupIdByOid(String id, Long adgroupId);
 

@@ -1,11 +1,10 @@
 package com.perfect.app.bidding.dto;
 
-import com.perfect.entity.bidding.BiddingRuleEntity;
-
 /**
  * Created by vbzer_000 on 2014/8/25.
  */
-public class BiddingRuleDTO extends BiddingRuleEntity {
+@Deprecated
+public class BiddingRuleDTO {
 
     private Integer impression;     //PC展现次数
 

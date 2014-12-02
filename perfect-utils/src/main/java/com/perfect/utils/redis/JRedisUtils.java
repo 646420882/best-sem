@@ -1,4 +1,4 @@
-package com.perfect.redis;
+package com.perfect.utils.redis;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;

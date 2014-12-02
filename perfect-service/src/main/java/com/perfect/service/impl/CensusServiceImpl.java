@@ -3,10 +3,10 @@ package com.perfect.service.impl;
 import com.perfect.dao.CensusDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.count.CensusDTO;
-import com.perfect.paging.Pager;
-import com.perfect.vo.CensusVO;
 import com.perfect.entity.CensusEntity;
 import com.perfect.service.CensusService;
+import com.perfect.vo.CensusVO;
+import com.perfect.utils.paging.Pager;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

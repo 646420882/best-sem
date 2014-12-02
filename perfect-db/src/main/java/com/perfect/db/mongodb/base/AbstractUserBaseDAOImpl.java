@@ -4,6 +4,7 @@ import com.mongodb.WriteResult;
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.BaseDTO;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -12,8 +13,7 @@ import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.perfect.commons.constants.MongoEntityConstants.SYSTEM_ID;
+import java.util.Map;
 
 /**
  * Created by vbzer_000 on 2014/6/18.
@@ -146,28 +146,27 @@ public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Seri
     }
 
 
-    //    public List<T> find(Map<String, Object> params, int skip, int limit, String sort, Sort.Direction direction) {
-//        Query query = new Query();
-//        Criteria criteria = null;
-//        for (Map.Entry<String, Object> param : params.entrySet()) {
-//            if (criteria == null) {
-//                criteria = new Criteria(param.getKey());
-//                criteria.is(param.getValue());
-//                continue;
-//            }
-//
-//            criteria.and(param.getKey()).is(param.getValue());
-//        }
-//
-//        query.addCriteria(criteria).skip(skip).limit(limit);
-//        if (sort != null) {
-//            query.with(new Sort(Sort.Direction.ASC, sort));
-//        }
-//
-//        E entity = getMongoTemplate().find(query, getEntityClass());
-//
-//        return null;
-//    }
+    @Override
+    public List<T> find(Map<String, Object> params, int skip, int limit, String sort, boolean asc) {
+        Query query = new Query();
+        Criteria criteria = null;
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            if (criteria == null) {
+                criteria = new Criteria(param.getKey());
+                criteria.is(param.getValue());
+                continue;
+            }
+
+            criteria.and(param.getKey()).is(param.getValue());
+        }
+
+        query.addCriteria(criteria).skip(skip).limit(limit);
+        if (sort != null) {
+            query.with(new Sort((asc) ? Sort.Direction.ASC : Sort.Direction.DESC, sort));
+        }
+
+        return convertToDTOs(getMongoTemplate().find(query, getEntityClass()));
+    }
 
 //    @Override
 //    public T findOne(ID id) {
@@ -196,50 +195,51 @@ public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Seri
     }
 
 
-//    public List<T> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, Sort.Direction direction) {
-//
-//        Query query = new Query();
-//        Criteria criteria = null;
-//        for (Map.Entry<String, Object> param : params.entrySet()) {
-//            if (criteria == null) {
-//                criteria = new Criteria(param.getKey());
-//                criteria.is(param.getValue());
-//                continue;
-//            }
-//
-//            criteria.and(param.getKey()).is(param.getValue());
-//        }
-//
-//        if (fieldName != null && q != null) {
-//            criteria.and(fieldName).regex(".*(" + q.replaceAll(" ", "|") + ").*");
-//        }
-//
-//        query.addCriteria(criteria).skip(skip).limit(limit);
-//        if (sort != null) {
-//            query.with(new Sort(Sort.Direction.ASC, sort));
-//        }
-//
-//        return getMongoTemplate().find(query, getEntityClass());
-//
-//    }
-//
-//    public List<T> find(Map<String, Object> params, int skip, int limit) {
-//        Query query = new Query();
-//        Criteria criteria = null;
-//        for (Map.Entry<String, Object> param : params.entrySet()) {
-//            if (criteria == null) {
-//                criteria = new Criteria(param.getKey());
-//                criteria.is(param.getValue());
-//                continue;
-//            }
-//
-//            criteria.and(param.getKey()).is(param.getValue());
-//        }
-//
-//        query.addCriteria(criteria).skip(skip).limit(limit);
-//
-//        return getMongoTemplate().find(query, getEntityClass());
-//    }
+    public List<T> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, Sort.Direction direction) {
+
+        Query query = new Query();
+        Criteria criteria = null;
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            if (criteria == null) {
+                criteria = new Criteria(param.getKey());
+                criteria.is(param.getValue());
+                continue;
+            }
+
+            criteria.and(param.getKey()).is(param.getValue());
+        }
+
+        if (fieldName != null && q != null) {
+            criteria.and(fieldName).regex(".*(" + q.replaceAll(" ", "|") + ").*");
+        }
+
+        query.addCriteria(criteria).skip(skip).limit(limit);
+        if (sort != null) {
+            query.with(new Sort(Sort.Direction.ASC, sort));
+        }
+
+        return getMongoTemplate().find(query, getEntityClass());
+
+    }
+
+    //
+    public List<T> find(Map<String, Object> params, int skip, int limit) {
+        Query query = new Query();
+        Criteria criteria = null;
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            if (criteria == null) {
+                criteria = new Criteria(param.getKey());
+                criteria.is(param.getValue());
+                continue;
+            }
+
+            criteria.and(param.getKey()).is(param.getValue());
+        }
+
+        query.addCriteria(criteria).skip(skip).limit(limit);
+
+        return getMongoTemplate().find(query, getEntityClass());
+    }
 
     String getMatchReg(String query) {
         return ".*(" + query.replaceAll(" ", "|") + ").*";

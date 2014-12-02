@@ -4,8 +4,6 @@ package com.perfect.dao.campaign;
 
 import com.perfect.dao.MongoCrudRepository;
 import com.perfect.dto.campaign.CampaignDTO;
-import com.perfect.paging.PagerInfo;
-import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 
@@ -13,7 +11,7 @@ public interface CampaignDAO extends MongoCrudRepository<CampaignDTO, Long> {
 
     List<Long> getAllCampaignId();
 
-    List<CampaignDTO> find(Query query);
+//    List<CampaignDTO> find(Query query);
 
     List<CampaignDTO> findAllDownloadCampaign();
 
@@ -23,7 +21,7 @@ public interface CampaignDAO extends MongoCrudRepository<CampaignDTO, Long> {
 
     void updateByMongoId(CampaignDTO newCampaign, CampaignDTO campaignEntity);
 
-    PagerInfo findByPageInfo(Query q, int pageSize, int pageNo);
+//    PagerInfo findByPageInfo(Query q, int pageSize, int pageNo);
 
     CampaignDTO findCampaignByName(String name);
 

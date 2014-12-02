@@ -1,9 +1,11 @@
 package com.perfect.dto.keyword;
 
+import com.perfect.dto.BaseDTO;
+
 /**
  * Created by baizz on 2014-11-28.
  */
-public class RankDTO {
+public class RankDTO extends BaseDTO {
     private String keyword;
 
     private String host;

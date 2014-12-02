@@ -1,16 +1,19 @@
 package com.perfect.dto.keyword;
 
+import com.perfect.dto.BaseDTO;
+
 import java.util.HashMap;
 
 /**
  * Created by yousheng on 14/11/24.
  */
-public class KeywordRankDTO {
+public class KeywordRankDTO extends BaseDTO {
     private String kwid;
     private String name;
     private HashMap<Integer, Integer> targetRank;
     private int device;
     private long time;
+    private Long accountId;
 
     public void setKwid(String kwid) {
         this.kwid = kwid;
@@ -50,5 +53,13 @@ public class KeywordRankDTO {
 
     public long getTime() {
         return time;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
+
+    public Long getAccountId() {
+        return accountId;
     }
 }

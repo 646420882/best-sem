@@ -1,4 +1,4 @@
-package com.perfect;
+package com.perfect.utils;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;

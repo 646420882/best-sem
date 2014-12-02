@@ -1,4 +1,4 @@
-package com.perfect.paging;
+package com.perfect.utils.paging;
 
 import java.io.Serializable;
 import java.util.List;

@@ -3,7 +3,7 @@ package com.perfect.commons.crawl;
 import com.perfect.commons.constants.WebSiteConstants;
 import com.perfect.dao.sys.CrawlWordDAO;
 import com.perfect.dto.CrawlWordDTO;
-import com.perfect.json.JSONUtils;
+import com.perfect.utils.json.JSONUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;

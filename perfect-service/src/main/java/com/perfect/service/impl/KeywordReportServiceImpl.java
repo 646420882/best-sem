@@ -6,8 +6,8 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.entity.report.KeywordReportEntity;
 import com.perfect.service.KeywordReportService;
-import com.perfect.paging.Pager;
-import com.perfect.paging.PagerInfo;
+import com.perfect.utils.paging.Pager;
+import com.perfect.utils.paging.PagerInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

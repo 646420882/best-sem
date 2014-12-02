@@ -1,7 +1,7 @@
 import com.google.gson.Gson;
 import com.perfect.dao.RegionalCodeDAO;
 import com.perfect.dto.regional.RegionalCodeDTO;
-import com.perfect.redis.JRedisUtils;
+import com.perfect.utils.redis.JRedisUtils;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;

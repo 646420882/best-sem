@@ -1,7 +1,7 @@
 package com.perfect.commons;
 
 import com.perfect.entity.MD5;
-import com.perfect.redis.JRedisUtils;
+import com.perfect.utils.redis.JRedisUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;

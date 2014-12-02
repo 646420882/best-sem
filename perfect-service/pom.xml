@@ -29,11 +29,10 @@
             <artifactId>perfect-dao</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.perfect</groupId>
-            <artifactId>perfect-db</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.perfect</groupId>-->
+            <!--<artifactId>perfect-db</artifactId>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>com.perfect</groupId>

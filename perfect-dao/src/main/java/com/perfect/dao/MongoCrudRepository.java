@@ -2,7 +2,7 @@ package com.perfect.dao;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.BaseDTO;
-import com.perfect.paging.Pager;
+import com.perfect.utils.paging.Pager;
 
 import java.io.Serializable;
 import java.util.List;

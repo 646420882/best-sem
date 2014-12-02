@@ -1,13 +1,11 @@
-package com.perfect.app.bidding.dto;
-
-import com.perfect.entity.keyword.KeywordEntity;
+package com.perfect.dto.bidding;
 
 import java.math.BigDecimal;
 
 /**
  * Created by vbzer_000 on 2014/8/25.
  */
-public class KeywordReportDTO extends KeywordEntity {
+public class KeywordReportDTO {
 
     private String campaignName;
 
@@ -40,6 +38,7 @@ public class KeywordReportDTO extends KeywordEntity {
     private String ruleDesc;
 
     private String statusStr;
+    private Long adgroupId;
 
     public Integer getImpression() {
         return impression;
@@ -167,5 +166,13 @@ public class KeywordReportDTO extends KeywordEntity {
 
     public void setAdgroupName(String adgroupName) {
         this.adgroupName = adgroupName;
+    }
+
+    public void setAdgroupId(Long adgroupId) {
+        this.adgroupId = adgroupId;
+    }
+
+    public Long getAdgroupId() {
+        return adgroupId;
     }
 }

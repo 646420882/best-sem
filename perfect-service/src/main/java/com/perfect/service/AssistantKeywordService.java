@@ -5,7 +5,7 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
-import com.perfect.paging.PagerInfo;
+import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
 import java.util.Map;

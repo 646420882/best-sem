@@ -1,4 +1,4 @@
-package com.perfect.json;
+package com.perfect.utils.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;

@@ -3,7 +3,7 @@ package com.perfect.db.mongodb.impl;
 import com.perfect.dao.FarmDAO;
 import com.perfect.dto.UrlDTO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
-import com.perfect.paging.Pager;
+import com.perfect.utils.paging.Pager;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.query.Criteria;

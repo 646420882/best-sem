@@ -1,7 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.keyword.KeywordRankDAO;
-import com.perfect.entity.bidding.KeywordRankEntity;
+import com.perfect.dto.keyword.KeywordRankDTO;
 import com.perfect.service.KeywordRankService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
@@ -22,18 +22,18 @@ public class KeywordRankServiceImpl implements KeywordRankService {
     private KeywordRankDAO keywordRankDAO;
 
     @Override
-    public KeywordRankEntity findRankByKeywordId(String id) {
+    public KeywordRankDTO findRankByKeywordId(String id) {
         return keywordRankDAO.findByKeywordId(id);
     }
 
     @Override
-    public void updateRanks(Collection<KeywordRankEntity> values) {
-        List<KeywordRankEntity> newList = new ArrayList<>(values);
+    public void updateRanks(Collection<KeywordRankDTO> values) {
+        List<KeywordRankDTO> newList = new ArrayList<>(values);
 
-        Iterator<KeywordRankEntity> iterator = newList.iterator();
+        Iterator<KeywordRankDTO> iterator = newList.iterator();
         while (iterator.hasNext()) {
-            KeywordRankEntity entity = iterator.next();
-            KeywordRankEntity keywordRankEntity = keywordRankDAO.findByKeywordId(entity.getKwid());
+            KeywordRankDTO entity = iterator.next();
+            KeywordRankDTO keywordRankEntity = keywordRankDAO.findByKeywordId(entity.getKwid());
 
             if (keywordRankEntity != null) {
                 String id = keywordRankEntity.getId();
@@ -46,7 +46,7 @@ public class KeywordRankServiceImpl implements KeywordRankService {
         }
 
         if (!newList.isEmpty()) {
-            keywordRankDAO.insertAll(newList);
+            keywordRankDAO.save(newList);
         }
     }
 }

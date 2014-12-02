@@ -1,7 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dto.keyword.KeywordReportDTO;
-import com.perfect.paging.PagerInfo;
+import com.perfect.utils.paging.PagerInfo;
 
 import java.io.OutputStream;
 import java.util.List;

@@ -1,11 +1,8 @@
 package com.perfect.dao.bidding;
 
-import com.perfect.dao.MongoCrudRepository;
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.bidding.BiddingRuleDTO;
-import com.perfect.paging.PaginationParam;
-import com.perfect.param.BiddingRuleParam;
-import org.springframework.data.domain.Sort;
+import com.perfect.utils.paging.PaginationParam;
 
 import java.util.List;
 import java.util.Map;
@@ -17,9 +14,9 @@ import java.util.Map;
  */
 public interface BiddingRuleDAO extends HeyCrudRepository<BiddingRuleDTO, Long> {
 
-    public void createBidding(BiddingRuleParam biddingRuleEntity);
+    public void createBidding(BiddingRuleDTO biddingRuleDTO);
 
-    public List<BiddingRuleDTO> findByCampagainId(long cid, int skip, int limit, String field, Sort.Direction direction);
+//    public List<BiddingRuleDTO> findByCampagainId(long cid, int skip, int limit, String field, boolean asc);
 
     public BiddingRuleDTO getBiddingRuleByKeywordId(Long keywordId);
 

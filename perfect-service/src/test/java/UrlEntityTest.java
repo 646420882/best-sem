@@ -1,5 +1,5 @@
-import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.api.baidu.BaiduPreviewHelper;
+import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.dao.FarmDAO;
 import com.perfect.entity.sys.UrlEntity;

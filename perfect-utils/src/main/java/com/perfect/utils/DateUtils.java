@@ -1,4 +1,4 @@
-package com.perfect;
+package com.perfect.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

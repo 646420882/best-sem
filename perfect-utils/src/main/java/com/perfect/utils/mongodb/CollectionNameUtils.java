@@ -1,4 +1,4 @@
-package com.perfect.mongodb;
+package com.perfect.utils.mongodb;
 
 import java.util.Calendar;
 

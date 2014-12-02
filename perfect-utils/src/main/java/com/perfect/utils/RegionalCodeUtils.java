@@ -1,9 +1,8 @@
-package com.perfect.utils.report;
+package com.perfect.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.perfect.dto.regional.RegionalCodeDTO;
-import com.perfect.redis.JRedisUtils;
+import com.perfect.utils.redis.JRedisUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisException;
 
@@ -85,54 +84,4 @@ public class RegionalCodeUtils {
         return null;
     }
 
-    /**
-     * 通过省域ID查询对应此省下的说有 地域以及id
-     * @param id
-     * @return
-     */
-    /**
-     * 通过地域id查询地域名称
-     *
-     * @param id
-     * @return
-     */
-    public static Map<Integer, List<RegionalCodeDTO>> provinceCode(List<Integer> id) {
-        Jedis jc = null;
-        try {
-            jc = JRedisUtils.get();
-            String data = jc.get("RegionalCodeRedis");
-            Gson gson = new Gson();
-            Map<Integer, String> mapKey = gson.fromJson(data, new TypeToken<Map<Integer, String>>() {
-            }.getType());
-
-            Map<Integer, List<RegionalCodeDTO>> map = new HashMap<>();
-
-            for (Integer integer : id) {
-
-                List<RegionalCodeDTO> redisRegionalList = new ArrayList<>();
-
-                for (Map.Entry<Integer, String> voEntity : mapKey.entrySet()) {
-
-                    RegionalCodeDTO redisRegional = new RegionalCodeDTO();
-                    int regional = voEntity.getKey() / 1000;
-                    int proCode = integer / 1000;
-                    if (regional == proCode) {
-                        if (voEntity.getKey().intValue() != integer.intValue()) {
-                      /*  redisRegional.setRegionalId(voEntity.getKey());
-                        redisRegional.setRegionalName(voEntity.getValue());*/
-                            redisRegionalList.add(redisRegional);
-                        }
-                    }
-                }
-                map.put(integer, redisRegionalList);
-            }
-            JRedisUtils.returnJedis(jc);
-            return map;
-        } catch (JedisException e) {
-            if (jc != null) {
-                JRedisUtils.returnBrokenJedis(jc);
-            }
-        }
-        return null;
-    }
 }
