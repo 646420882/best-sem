@@ -4,10 +4,10 @@ import com.perfect.autosdk.sms.v3.AdgroupType;
 import com.perfect.autosdk.sms.v3.CampaignType;
 import com.perfect.autosdk.sms.v3.CreativeType;
 import com.perfect.autosdk.sms.v3.KeywordType;
-import com.perfect.entity.adgroup.AdgroupEntity;
-import com.perfect.entity.campaign.CampaignEntity;
-import com.perfect.entity.creative.CreativeEntity;
-import com.perfect.entity.keyword.KeywordEntity;
+import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.dto.keyword.KeywordDTO;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
@@ -22,8 +22,8 @@ import java.util.List;
 public class EntityConvertUtils {
 
 
-    public static List<CampaignEntity> convertToCamEntity(List<CampaignType> list) {
-        List<CampaignEntity> entities = new ArrayList<>(list.size());
+    public static List<CampaignDTO> convertToCamEntity(List<CampaignType> list) {
+        List<CampaignDTO> entities = new ArrayList<>(list.size());
 
         for (CampaignType campaignType : list) {
             entities.add(convertToEntity(campaignType));
@@ -33,8 +33,8 @@ public class EntityConvertUtils {
     }
 
 
-    public static CampaignEntity convertToEntity(CampaignType type) {
-        CampaignEntity campaignEntity = new CampaignEntity();
+    public static CampaignDTO convertToEntity(CampaignType type) {
+        CampaignDTO campaignEntity = new CampaignDTO();
 
         BeanUtils.copyProperties(type, campaignEntity);
 
@@ -42,8 +42,8 @@ public class EntityConvertUtils {
     }
 
 
-    public static List<AdgroupEntity> convertToAdEntity(List<AdgroupType> list) {
-        List<AdgroupEntity> entities = new ArrayList<>(list.size());
+    public static List<AdgroupDTO> convertToAdEntity(List<AdgroupType> list) {
+        List<AdgroupDTO> entities = new ArrayList<>(list.size());
 
         for (AdgroupType adgroupType : list) {
             entities.add(convertToEntity(adgroupType));
@@ -53,16 +53,16 @@ public class EntityConvertUtils {
     }
 
 
-    public static AdgroupEntity convertToEntity(AdgroupType type) {
-        AdgroupEntity adgroupEntity = new AdgroupEntity();
+    public static AdgroupDTO convertToEntity(AdgroupType type) {
+        AdgroupDTO adgroupEntity = new AdgroupDTO();
 
         BeanUtils.copyProperties(type, adgroupEntity);
 
         return adgroupEntity;
     }
 
-    public static List<KeywordEntity> convertToKwEntity(List<KeywordType> list) {
-        List<KeywordEntity> entities = new ArrayList<>(list.size());
+    public static List<KeywordDTO> convertToKwEntity(List<KeywordType> list) {
+        List<KeywordDTO> entities = new ArrayList<>(list.size());
 
         for (KeywordType adgroupType : list) {
             entities.add(convertToEntity(adgroupType));
@@ -71,8 +71,8 @@ public class EntityConvertUtils {
         return entities;
     }
 
-    public static List<CreativeEntity> convertToCrEntity(List<CreativeType> list) {
-        List<CreativeEntity> entities = new ArrayList<>(list.size());
+    public static List<CreativeDTO> convertToCrEntity(List<CreativeType> list) {
+        List<CreativeDTO> entities = new ArrayList<>(list.size());
 
         for (CreativeType creativeType : list) {
             entities.add(convertToEntity(creativeType));
@@ -81,8 +81,8 @@ public class EntityConvertUtils {
         return entities;
     }
 
-    private static CreativeEntity convertToEntity(CreativeType creativeType) {
-        CreativeEntity creativeEntity = new CreativeEntity();
+    private static CreativeDTO convertToEntity(CreativeType creativeType) {
+        CreativeDTO creativeEntity = new CreativeDTO();
 
         BeanUtils.copyProperties(creativeType, creativeEntity);
 
@@ -90,8 +90,8 @@ public class EntityConvertUtils {
     }
 
 
-    public static KeywordEntity convertToEntity(KeywordType type) {
-        KeywordEntity keywordEntity = new KeywordEntity();
+    public static KeywordDTO convertToEntity(KeywordType type) {
+        KeywordDTO keywordEntity = new KeywordDTO();
 
         BeanUtils.copyProperties(type, keywordEntity);
 
