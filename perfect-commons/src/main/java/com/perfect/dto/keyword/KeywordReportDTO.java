@@ -9,8 +9,6 @@ import java.math.BigDecimal;
  */
 public class KeywordReportDTO extends AccountIdDTO implements Comparable<KeywordReportDTO> {
 
-    private String id;
-
     private Long keywordId;
 
     private String keywordName;
@@ -83,14 +81,6 @@ public class KeywordReportDTO extends AccountIdDTO implements Comparable<Keyword
 
     public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public Long getKeywordId() {
@@ -272,7 +262,6 @@ public class KeywordReportDTO extends AccountIdDTO implements Comparable<Keyword
     @Override
     public String toString() {
         return "KeywordReportEntity{" +
-                "id='" + id + '\'' +
                 ", keywordId=" + keywordId +
                 ", keywordName='" + keywordName + '\'' +
                 ", adgroupId=" + adgroupId +
