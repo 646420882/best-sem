@@ -1,11 +1,13 @@
 package com.perfect.dto.keyword;
 
+import com.perfect.dto.BaseDTO;
+
 import java.util.HashMap;
 
 /**
  * Created by yousheng on 14/11/24.
  */
-public class KeywordRankDTO {
+public class KeywordRankDTO extends BaseDTO{
     private String kwid;
     private String name;
     private HashMap<Integer, Integer> targetRank;

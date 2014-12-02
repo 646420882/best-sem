@@ -200,6 +200,11 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         return list.get(0);
     }
 
+    @Override
+    public Class<KeywordDTO> getDTOClass() {
+        return KeywordDTO.class;
+    }
+
     public KeywordDTO findOne(Long keywordId) {
         KeywordDTO keywordDTO = new KeywordDTO();
         BeanUtils.copyProperties(getMongoTemplate().findOne(new Query(Criteria.where(getId()).is(keywordId)), getKeywordEntityClass(), MongoEntityConstants.TBL_KEYWORD), keywordDTO);
@@ -603,11 +608,17 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
 
 
     @Override
-    public void deleteByIds(List<Long> ids) {
-        MongoTemplate mongoTemplate = getMongoTemplate();
-        for (Long id : ids) {
-            mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(id)), getKeywordEntityClass(), MongoEntityConstants.TBL_KEYWORD);
-        }
+    public int deleteByIds(List<Long> ids) {
+//        MongoTemplate mongoTemplate = getMongoTemplate();
+//        for (Long id : ids) {
+//            mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(id)), getKeywordEntityClass(), MongoEntityConstants.TBL_KEYWORD);
+//        }
+        return super.deleteByIds(ids);
+    }
+
+    @Override
+    public List<KeywordDTO> find(Map<String, Object> params, int skip, int limit) {
+        return null;
     }
 
     @Override
@@ -629,6 +640,11 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
+    public List<KeywordDTO> find(Map<String, Object> params, int skip, int limit, String sort, boolean asc) {
+        return null;
+    }
+
+    @Override
     public Pager findByPager(int start, int pageSize, Map<String, Object> params, int orderBy) {
         Query q = new Query();
         List<KeywordEntity> list;
@@ -647,6 +663,11 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         p.setRows(list);
 
         return p;
+    }
+
+    @Override
+    public List<KeywordDTO> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, boolean asc) {
+        return null;
     }
 
 

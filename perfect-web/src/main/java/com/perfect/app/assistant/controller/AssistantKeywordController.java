@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.perfect.api.baidu.SearchTermsReport;
 import com.perfect.autosdk.sms.v3.AttributeType;
 import com.perfect.autosdk.sms.v3.RealTimeQueryResultType;
+import com.perfect.commons.web.WebContextSupport;
 import com.perfect.core.AppContext;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.campaign.CampaignDTO;
@@ -43,7 +44,7 @@ import java.util.Map;
  */
 @RestController
 @Scope("prototype")
-public class AssistantKeywordController {
+public class AssistantKeywordController extends WebContextSupport{
     private static final String RES_SUCCESS = "success";
 
     @Resource
@@ -55,8 +56,6 @@ public class AssistantKeywordController {
     @Resource
     private SearchTermsReport searchTermsReport;
 
-    @Resource
-    private WebContext webContext;
 
 
     /**
@@ -72,7 +71,7 @@ public class AssistantKeywordController {
         insertDtos = insertDtos == null ? new ArrayList<KeywordInfoDTO>() : insertDtos;
         updateDtos = updateDtos == null ? new ArrayList<KeywordInfoDTO>() : updateDtos;
         assistantKeywordService.batchAddUpdateKeyword(insertDtos, updateDtos, isReplace);
-        webContext.writeJson(RES_SUCCESS, response);
+        writeJson(RES_SUCCESS, response);
     }
 
 
@@ -84,7 +83,7 @@ public class AssistantKeywordController {
     @RequestMapping(value = "assistantKeyword/list", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAllKeywordList(HttpServletResponse response, String cid, String aid, Integer nowPage, Integer pageSize) {
         PagerInfo page = assistantKeywordService.getKeyWords(cid, aid, nowPage, pageSize);
-        webContext.writeJson(page, response);
+        writeJson(page, response);
     }
 
     /**
@@ -97,7 +96,7 @@ public class AssistantKeywordController {
     public void deleteKeywordById(HttpServletResponse response, String kwids) {
         String[] ids = kwids.split(",");
         assistantKeywordService.deleteByKwIds(Arrays.asList(ids));
-        webContext.writeJson(RES_SUCCESS, response);
+        writeJson(RES_SUCCESS, response);
     }
 
 
@@ -131,7 +130,7 @@ public class AssistantKeywordController {
         keywordEntity.setPhraseType(phraseType);
         keywordEntity.setPause(pause);
         KeywordDTO keywordDTO = assistantKeywordService.updateKeyword(keywordEntity);
-        webContext.writeJson(keywordDTO, response);
+        writeJson(keywordDTO, response);
     }
 
 
@@ -143,7 +142,7 @@ public class AssistantKeywordController {
     @RequestMapping(value = "assistantKeyword/campaignTree", method = {RequestMethod.GET, RequestMethod.POST})
     public void getCampaignTree(HttpServletResponse response) {
         List<CampaignTreeDTO> treeList = assistantKeywordService.getCampaignTree(AppContext.getAccountId());
-        webContext.writeJson(treeList, response);
+        writeJson(treeList, response);
     }
 
     /**
@@ -157,7 +156,7 @@ public class AssistantKeywordController {
     @RequestMapping(value = "assistantKeyword/deleteByNameChoose", method = {RequestMethod.GET, RequestMethod.POST})
     public void deleteKeywordByNamesChoose(HttpServletResponse response, String chooseInfos, String keywordNames, Integer nowPage, Integer pageSize) {
         Map<String, Object> map = assistantKeywordService.validateDeleteKeywordByChoose(AppContext.getAccountId(), chooseInfos, keywordNames, nowPage, pageSize);
-        webContext.writeJson(map, response);
+        writeJson(map, response);
     }
 
 
@@ -171,7 +170,7 @@ public class AssistantKeywordController {
     @RequestMapping(value = "assistantKeyword/validateDeleteByInput", method = {RequestMethod.GET, RequestMethod.POST})
     public void validateDeleteByInput(HttpServletResponse response, String deleteInfos) {
         Map<String, Object> map = assistantKeywordService.validateDeleteByInput(AppContext.getAccountId(), deleteInfos);
-        webContext.writeJson(map, response);
+        writeJson(map, response);
     }
 
 
@@ -187,7 +186,7 @@ public class AssistantKeywordController {
     @RequestMapping(value = "assistantKeyword/addOrUpdateKeywordByChoose", method = {RequestMethod.GET, RequestMethod.POST})
     public void batchAddOrUpdateKeywordByChoose(HttpServletResponse response, Boolean isReplace, String chooseInfos, String keywordInfos) {
         Map<String, Object> map = assistantKeywordService.batchAddOrUpdateKeywordByChoose(AppContext.getAccountId(), isReplace, chooseInfos, keywordInfos);
-        webContext.writeJson(map, response);
+        writeJson(map, response);
     }
 
     /**
@@ -232,7 +231,7 @@ public class AssistantKeywordController {
     @RequestMapping(value = "assistantKeyword/reducAdd", method = {RequestMethod.GET, RequestMethod.POST})
     public void reducAdd(HttpServletResponse response, String id) {
         assistantKeywordService.deleteByKwIds(Arrays.asList(new String[]{id}));
-        webContext.writeJson(RES_SUCCESS, response);
+        writeJson(RES_SUCCESS, response);
     }
 
 
@@ -245,7 +244,7 @@ public class AssistantKeywordController {
     @RequestMapping(value = "assistantKeyword/reducUpdate", method = {RequestMethod.GET, RequestMethod.POST})
     public void reducUpdate(HttpServletResponse response, String id) {
         KeywordDTO keywordDTO = keyWordBackUpService.reducUpdate(id);
-        webContext.writeJson(keywordDTO, response);
+        writeJson(keywordDTO, response);
     }
 
     /**
@@ -257,7 +256,7 @@ public class AssistantKeywordController {
     @RequestMapping(value = "assistantKeyword/reducDel", method = {RequestMethod.GET, RequestMethod.POST})
     public void reducDel(HttpServletResponse response, String id) {
         keyWordBackUpService.reducDel(id);
-        webContext.writeJson(RES_SUCCESS, response);
+        writeJson(RES_SUCCESS, response);
     }
 
 
@@ -267,7 +266,7 @@ public class AssistantKeywordController {
     @RequestMapping(value = "assistantKeyword/getCampaignByAccountId", method = {RequestMethod.GET, RequestMethod.POST})
     public void getCampaignByAccountId(HttpServletResponse response) {
         Iterable<CampaignDTO> list = assistantKeywordService.getCampaignByAccountId();
-        webContext.writeJson(list, response);
+        writeJson(list, response);
     }
 
     /**
@@ -276,7 +275,7 @@ public class AssistantKeywordController {
     @RequestMapping(value = "assistantKeyword/getAdgroupByCid", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAdgroupByCid(HttpServletResponse response, String cid) {
         Iterable<AdgroupDTO> list = assistantKeywordService.getAdgroupByCid(cid);
-        webContext.writeJson(list, response);
+        writeJson(list, response);
     }
 
 
@@ -324,7 +323,7 @@ public class AssistantKeywordController {
         }
 
 
-        webContext.writeJson(dtoList, response);
+        writeJson(dtoList, response);
     }
 
 
@@ -358,7 +357,7 @@ public class AssistantKeywordController {
             list.add(keywordEntity);
         }
         assistantKeywordService.saveSearchwordKeyword(list);
-        webContext.writeJson(RES_SUCCESS, response);
+        writeJson(RES_SUCCESS, response);
     }
 
     /**
@@ -367,7 +366,7 @@ public class AssistantKeywordController {
     @RequestMapping(value = "assistantKeyword/setNeigWord", method = {RequestMethod.GET, RequestMethod.POST})
     public void setNeigWord(HttpServletResponse response, String agid, String keywords, Integer neigType) {
         assistantKeywordService.setNeigWord(agid, keywords, neigType);
-        webContext.writeJson(RES_SUCCESS, response);
+        writeJson(RES_SUCCESS, response);
     }
 
 

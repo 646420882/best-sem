@@ -37,7 +37,7 @@ public class ImportKeywordManageController extends WebContextSupport {
     private KeywordReportService keywordReportService;
 
     @Resource
-    private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
+    private AccountManageDAO<BaiduAccountInfoDTO> accountManageDAO;
 
     @RequestMapping(value = "/import/getImportKeywordList")
     public void getImportKeywordList(HttpServletResponse response,

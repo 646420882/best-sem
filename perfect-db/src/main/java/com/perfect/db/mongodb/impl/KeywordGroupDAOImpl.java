@@ -23,6 +23,7 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
 
@@ -50,6 +51,21 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long
     @Override
     public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
         return null;
+    }
+
+    @Override
+    public List<LexiconDTO> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, boolean asc) {
+        return null;
+    }
+
+    @Override
+    public List<LexiconDTO> find(Map<String, Object> params, int skip, int limit, String sort, boolean asc) {
+        return null;
+    }
+
+    @Override
+    public Class<LexiconDTO> getDTOClass() {
+        return LexiconDTO.class;
     }
 
     @Override
@@ -184,6 +200,26 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long
         List<LexiconEntity> creativeEntityList = mongoTemplate.find(q, LexiconEntity.class);
         p.setList(ObjectUtils.convert(creativeEntityList, LexiconDTO.class));
         return p;
+    }
+
+    @Override
+    public void deleteByParams(String trade, String keyword) {
+        MongoTemplate mongoTemplate= BaseMongoTemplate.getSysMongo();
+        Query q=new Query();
+        q.addCriteria(Criteria.where("tr").is(trade).and("kw").is(keyword));
+        mongoTemplate.remove(q, LexiconEntity.class);
+    }
+
+    @Override
+    public void updateByParams(Map<String, Object> mapParams) {
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
+        Update up=new Update();
+        up.set("tr", mapParams.get("tr"));
+        up.set("cg", mapParams.get("cg"));
+        up.set("gr",mapParams.get("gr"));
+        up.set("kw",mapParams.get("kw"));
+        up.set("url",mapParams.get("url"));
+        mongoTemplate.updateFirst(new Query(Criteria.where("id").is(mapParams.get("id"))),up,LexiconEntity.class);
     }
 
     private int getTotalCount(Query q, Class<?> cls) {

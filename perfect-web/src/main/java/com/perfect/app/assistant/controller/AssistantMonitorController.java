@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.perfect.commons.web.WebContext;
+import com.perfect.commons.web.WebContextSupport;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.service.MonitorSynchronizedService;
@@ -26,13 +27,11 @@ import java.util.Map;
  */
 @RestController
 @Scope("prototype")
-public class AssistantMonitorController {
+public class AssistantMonitorController extends WebContextSupport{
     @Resource
     private MonitoringService monitoringService;
     @Resource
     private MonitorSynchronizedService synchronizedService;
-    @Resource
-    private WebContext webContext;
 
     /**
      * 同步当前用户下的所有监控信息
@@ -42,7 +41,7 @@ public class AssistantMonitorController {
     @RequestMapping(value = "/monitoring/synchronous", method = {RequestMethod.GET, RequestMethod.POST})
     public void synchronous(HttpServletResponse response) {
         int i = synchronizedService.getSynchronized();
-        webContext.writeJson(i, response);
+        writeJson(i, response);
     }
 
     /**
@@ -67,7 +66,7 @@ public class AssistantMonitorController {
         }
         Map<String, Object> listMap = new HashMap<>();
         listMap.put("tree", arrayNode);
-        webContext.writeJson(listMap, response);
+        writeJson(listMap, response);
     }
 
     /**
@@ -81,7 +80,7 @@ public class AssistantMonitorController {
 
         Map<String, List<FolderDTO>> listMap = new HashMap<>();
         listMap.put("rows", folder);
-        webContext.writeJson(listMap, response);
+        writeJson(listMap, response);
     }
 
     /**
@@ -95,7 +94,7 @@ public class AssistantMonitorController {
 
         Map<String, List<KeywordInfoDTO>> listMap = new HashMap<>();
         listMap.put("rows", keywordDTOs);
-        webContext.writeJson(listMap, response);
+        writeJson(listMap, response);
     }
 
     /**
@@ -110,7 +109,7 @@ public class AssistantMonitorController {
 
         Map<String, List<KeywordInfoDTO>> listMap = new HashMap<>();
         listMap.put("rows", keywordDTOs);
-        webContext.writeJson(listMap, response);
+        writeJson(listMap, response);
     }
 
     /**

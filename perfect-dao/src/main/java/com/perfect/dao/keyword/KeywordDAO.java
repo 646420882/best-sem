@@ -90,4 +90,6 @@ public interface KeywordDAO extends MongoCrudRepository<KeywordDTO, Long> {
     List<KeywordDTO> findByObjectIds(List<String> strIds);
 
     List<KeywordDTO> findKeywordByIds(List<Long> ids);
+
+    void insertAll(List<KeywordDTO> dtos);
 }

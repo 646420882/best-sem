@@ -3,6 +3,7 @@ package com.perfect.app.ucenter.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.perfect.commons.web.WebContext;
+import com.perfect.commons.web.WebContextSupport;
 import com.perfect.commons.web.WebUtils;
 import com.perfect.core.AppContext;
 import com.perfect.dto.SystemUserDTO;
@@ -37,7 +38,7 @@ import java.util.Map;
 @RestController
 @Scope("prototype")
 @RequestMapping(value = "/account")
-public class AccountManageController {
+public class AccountManageController extends WebContextSupport {
 
     @Resource
     private AccountManageService accountManageService;
@@ -45,8 +46,6 @@ public class AccountManageController {
     @Resource
     private AccountDataService accountDataService;
 
-    @Resource
-    private WebContext webContext;
 
     @Resource
     private LogService logService;
@@ -82,7 +81,7 @@ public class AccountManageController {
         Map<String, Integer> map = new HashMap<>();
         map.put("sturts", flag);
 
-        webContext.writeJson(map, response);
+        writeJson(map, response);
 
     }
 
@@ -99,7 +98,7 @@ public class AccountManageController {
         Map<String, List<SystemUserDTO>> map = new HashMap<>();
         map.put("rows", entities);
 
-        webContext.writeJson(map, response);
+        writeJson(map, response);
 
     }
 
@@ -117,7 +116,7 @@ public class AccountManageController {
         Map<String, List<BaiduAccountAllStateDTO>> map = new HashMap<>();
         map.put("rows", entities);
 
-        webContext.writeJson(map, response);
+        writeJson(map, response);
 
     }
 
@@ -137,7 +136,7 @@ public class AccountManageController {
         Map<String, Integer> map = new HashMap<>();
         map.put("rows", entities);
 
-        webContext.writeJson(map, response);
+        writeJson(map, response);
 
     }
 
@@ -156,7 +155,7 @@ public class AccountManageController {
         Map<String, Integer> map = new HashMap<>();
         map.put("struts", 1);
 
-        webContext.writeJson(map, response);
+        writeJson(map, response);
 
     }
 

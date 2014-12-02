@@ -1,5 +1,6 @@
 package com.perfect.app.ucenter.controller;
 
+import com.perfect.commons.web.WebContextSupport;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountWarningDAO;
 import com.perfect.dao.sys.SystemUserDAO;
@@ -29,7 +30,7 @@ import java.util.Date;
 
 @RestController
 @Scope("prototype")
-public class AccountWarningController {
+public class AccountWarningController extends WebContextSupport {
 
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -38,9 +39,6 @@ public class AccountWarningController {
 
     @Resource
     private SystemUserDAO systemUserDAO;
-
-    @Resource
-    private WebContext webContext;
 
     /**
      * 设置提醒页面
@@ -106,7 +104,7 @@ public class AccountWarningController {
     @RequestMapping(value = "assistant/getAllWarningRule",method = {RequestMethod.GET,RequestMethod.POST})
     public void showAllWarningRule(HttpServletResponse response){
        Iterable<WarningRuleDTO> list = accountWarningDAO.findByUserName(AppContext.getUser());
-        webContext.writeJson(list, response);
+        writeJson(list, response);
     }
 
 

@@ -66,6 +66,11 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         return campaignIds;
     }
 
+    @Override
+    public Class<CampaignDTO> getDTOClass() {
+        return null;
+    }
+
     public CampaignDTO findOne(Long campaignId) {
         CampaignEntity campaignEntity = getMongoTemplate().findOne(
                 new Query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(campaignId)),
@@ -94,6 +99,11 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
         List<CampaignDTO> campaignDTOs = ObjectUtils.convert(list, CampaignDTO.class);
         return campaignDTOs;
+    }
+
+    @Override
+    public List<CampaignDTO> find(Map<String, Object> params, int skip, int limit, String sort, boolean asc) {
+        return null;
     }
 
     public List<CampaignDTO> find(Map<String, Object> params, int skip, int limit) {
@@ -170,7 +180,6 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
 
     public void insertAll(List<CampaignDTO> entities) {
-
         List<CampaignEntity> campaignEntities = ObjectUtils.convert(entities, CampaignEntity.class);
         getMongoTemplate().insertAll(campaignEntities);
     }
@@ -303,10 +312,13 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     }
 
 
-    public void deleteByIds(List<Long> campaignIds) {
-        getMongoTemplate().remove(
-                new Query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).in(campaignIds)), CampaignEntity.class, MongoEntityConstants.TBL_CAMPAIGN);
+    public int deleteByIds(List<Long> campaignIds) {
+//        getMongoTemplate().remove(
+//                new Query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).in(campaignIds)), CampaignEntity.class, MongoEntityConstants.TBL_CAMPAIGN);
+//
         deleteSub(campaignIds);
+        return super.deleteByIds(campaignIds);
+
     }
 
     @Override
@@ -334,6 +346,11 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
     @Override
     public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
+        return null;
+    }
+
+    @Override
+    public List<CampaignDTO> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, boolean asc) {
         return null;
     }
 

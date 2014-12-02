@@ -471,6 +471,16 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         return keywordGroupDAO.findByPager(params, page, limit);
     }
 
+    @Override
+    public void deleteByParams(String trade, String keyword) {
+        keywordGroupDAO.deleteByParams(trade,keyword);
+    }
+
+    @Override
+    public void updateByParams(Map<String, Object> mapParams) {
+        keywordGroupDAO.updateByParams(mapParams);
+    }
+
     public Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit, int sort, String fieldName) {
         KRService krService = getKRService();
         GetKRFileIdbySeedWordRequest getKRFileIdbySeedWordRequest = new GetKRFileIdbySeedWordRequest();

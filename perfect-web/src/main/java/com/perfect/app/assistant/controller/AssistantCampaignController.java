@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.perfect.autosdk.sms.v3.OfflineTimeType;
 import com.perfect.autosdk.sms.v3.ScheduleType;
 import com.perfect.commons.web.WebContext;
+import com.perfect.commons.web.WebContextSupport;
 import com.perfect.core.AppContext;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignDAO;
@@ -48,7 +49,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.ACCOUNT_ID;
  */
 @RestController
 @Scope("prototype")
-public class AssistantCampaignController {
+public class AssistantCampaignController extends WebContextSupport {
 
     private static final String RES_SUCCESS = "success";
     @Resource
@@ -69,8 +70,6 @@ public class AssistantCampaignController {
     @Resource
     private SysRegionalService sysRegionalService;
 
-    @Resource
-    private WebContext webContext;
 
 
     /**
@@ -85,7 +84,7 @@ public class AssistantCampaignController {
         }
         Query query = new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()));
         PagerInfo page = campaignDAO.findByPageInfo(query, pageSize, nowPage);
-        webContext.writeJson(page, response);
+        writeJson(page, response);
     }
 
 
@@ -104,7 +103,7 @@ public class AssistantCampaignController {
         } else {
             campaignEntity = campaignDAO.findByObjectId(cid);
         }
-        webContext.writeJson(campaignEntity, response);
+        writeJson(campaignEntity, response);
     }
 
 
@@ -129,7 +128,7 @@ public class AssistantCampaignController {
 
         map.put("campObj", campaignEntity);
         map.put("regions", regionList);
-        webContext.writeJson(map, response);
+        writeJson(map, response);
     }
 
 
@@ -150,7 +149,7 @@ public class AssistantCampaignController {
                 campaignDAO.deleteByMongoId(id);
             }
         }
-        webContext.writeJson(RES_SUCCESS, response);
+        writeJson(RES_SUCCESS, response);
     }
 
 
@@ -175,7 +174,7 @@ public class AssistantCampaignController {
 
         List<RegionalCodeDTO> regionalCodeDTOs = sysRegionalService.getProvinceIdByRegionalId(baiduEntity.getRegionTarget());
 
-        webContext.writeJson(regionalCodeDTOs, response);
+        writeJson(regionalCodeDTOs, response);
     }
 
 
@@ -190,7 +189,7 @@ public class AssistantCampaignController {
         CampaignDTO campaignDTO = cid.matches(regex) ? campaignDAO.findOne(Long.parseLong(cid)) : campaignDAO.findByObjectId(cid);
         campaignDTO.setRegionTarget(null);
         campaignDAO.save(campaignDTO);
-        webContext.writeJson(RES_SUCCESS, response);
+        writeJson(RES_SUCCESS, response);
     }
 
 
@@ -237,7 +236,7 @@ public class AssistantCampaignController {
         }
         campaignDAO.updateByMongoId(newCampaignDTO, oldCampaignEntity);
 
-        webContext.writeJson(RES_SUCCESS, response);
+        writeJson(RES_SUCCESS, response);
     }
 
 
@@ -296,7 +295,7 @@ public class AssistantCampaignController {
             newCampaign.setLocalStatus(2);
         }
         campaignDAO.updateByMongoId(newCampaign, campaignEntity);
-        webContext.writeJson(newCampaign, response);
+        writeJson(newCampaign, response);
     }
 
 
@@ -360,7 +359,7 @@ public class AssistantCampaignController {
     @RequestMapping(value = "assistantCampaign/reducUpdate", method = {RequestMethod.GET, RequestMethod.POST})
     public void reducUpdate(HttpServletResponse response, String id) {
         CampaignDTO campaignEntity = campaignBackUpService.reducUpdate(id);
-        webContext.writeJson(campaignEntity, response);
+        writeJson(campaignEntity, response);
     }
 
 
@@ -373,7 +372,7 @@ public class AssistantCampaignController {
     @RequestMapping(value = "assistantCampaign/reducDel", method = {RequestMethod.GET, RequestMethod.POST})
     public void reducDel(HttpServletResponse response, String id) {
         campaignBackUpService.reducDel(id);
-        webContext.writeJson(RES_SUCCESS, response);
+        writeJson(RES_SUCCESS, response);
     }
 
 
@@ -447,7 +446,7 @@ public class AssistantCampaignController {
         }
 
         keywordDAO.insertAll(list);
-        webContext.writeJson(RES_SUCCESS, response);
+        writeJson(RES_SUCCESS, response);
     }
 
 }

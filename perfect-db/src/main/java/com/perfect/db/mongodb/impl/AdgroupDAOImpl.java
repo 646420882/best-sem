@@ -132,6 +132,11 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         return mongoTemplate.find(Query.query(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(campaignObjId)), getEntityClass(), MongoEntityConstants.TBL_ADGROUP);
     }
 
+    @Override
+    public Class<AdgroupDTO> getDTOClass() {
+        return AdgroupDTO.class;
+    }
+
     public AdgroupDTO findOne(Long adgroupId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         AdgroupEntity _adgroupEntity = mongoTemplate.findOne(
@@ -143,6 +148,11 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<AdgroupEntity> adgroupEntities = mongoTemplate.find(Query.query(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId())), AdgroupEntity.class);
         return wrapperList(adgroupEntities);
+    }
+
+    @Override
+    public List<AdgroupDTO> find(Map<String, Object> params, int skip, int limit, String sort, boolean asc) {
+        return null;
     }
 
     /**
@@ -359,7 +369,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         List<AdgroupEntity> insertList=ObjectUtils.convert(adgroupDTOs,AdgroupEntity.class);
         mongoTemplate.insertAll(insertList);
     }
-    @SuppressWarnings("unchecked")
+
     public void update(AdgroupDTO adgroupDTO) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Long id = adgroupDTO.getAdgroupId();
@@ -401,10 +411,12 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         }});
     }
 
-    public void deleteByIds(List<Long> adgroupIds) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+    public int deleteByIds(List<Long> adgroupIds) {
+//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+//        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+//
         deleteSub(adgroupIds);
+        return super.deleteByIds(adgroupIds);
     }
 
     @Override
@@ -424,6 +436,11 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     @Override
     public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
+        return null;
+    }
+
+    @Override
+    public List<AdgroupDTO> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, boolean asc) {
         return null;
     }
 

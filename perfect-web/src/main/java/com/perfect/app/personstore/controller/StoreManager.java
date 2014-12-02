@@ -95,10 +95,7 @@ public class StoreManager extends WebContextSupport {
                                        @RequestParam(value = "trade",defaultValue = "",required = true) String trade,
                                        @RequestParam(value = "keyword",defaultValue = "",required = true)String keyword){
         try{
-            MongoTemplate mongoTemplate= BaseMongoTemplate.getSysMongo();
-            Query q=new Query();
-            q.addCriteria(Criteria.where("tr").is(trade).and("kw").is(keyword));
-            mongoTemplate.remove(q, LexiconEntity.class);
+            keywordGroupService.deleteByParams(trade,keyword);
             writeData(SUCCESS, response, null);
             Jedis jc= JRedisUtils.get();
             if(jc.exists(MongoEntityConstants.TRADE_KEY)){
@@ -119,15 +116,15 @@ public class StoreManager extends WebContextSupport {
                                         @RequestParam(value = "group",required = false,defaultValue = "")String group,
                                         @RequestParam(value = "keyword",required = true)String keyword,
                                         @RequestParam(value = "url",required = true)String url){
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
-        Update up=new Update();
-        up.set("tr", trade);
-        up.set("cg", category);
-        up.set("gr",group);
-        up.set("kw",keyword);
-        up.set("url",url);
+        Map<String,Object> mapParams=new HashMap<String,Object>();
+        mapParams.put("id",id);
+        mapParams.put("tr", trade);
+        mapParams.put("cg", category);
+        mapParams.put("gr",group);
+        mapParams.put("kw",keyword);
+        mapParams.put("url",url);
         try{
-            mongoTemplate.updateFirst(new Query(Criteria.where("id").is(id)),up,LexiconEntity.class);
+            keywordGroupService.updateByParams(mapParams);
             writeData(SUCCESS,response,null);
         }catch (Exception e){
             e.printStackTrace();

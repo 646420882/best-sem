@@ -51,4 +51,19 @@ public interface KeywordGroupDAO extends MongoCrudRepository<LexiconDTO, Long> {
      * @return
      */
     PagerInfo findByPager(Map<String, Object> params, int page, int limit);
+
+    /**
+     * 根据行业，关键词删除一条数据
+     *
+     * @param trade
+     * @param keyword
+     */
+    void deleteByParams(String trade, String keyword);
+
+    /**
+     * 根据一些参数修改
+     *
+     * @param mapParams
+     */
+    void updateByParams(Map<String, Object> mapParams);
 }

@@ -1,6 +1,7 @@
 package com.perfect.dao.creative;
 
 import com.perfect.dao.MongoCrudRepository;
+import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.paging.PagerInfo;
 
@@ -32,6 +33,8 @@ public interface CreativeDAO extends MongoCrudRepository<CreativeDTO, Long> {
 
     void insertByReBack(CreativeDTO oldcreativeEntity);
 
+    void insertAll(List<CreativeDTO> list);
+
     CreativeDTO findByObjId(String obj);
 
     CreativeDTO getAllsBySomeParams(Map<String, Object> params);
@@ -41,6 +44,8 @@ public interface CreativeDAO extends MongoCrudRepository<CreativeDTO, Long> {
     void update(CreativeDTO newCreativeEntity, CreativeDTO creativeBackUpEntity);
 
     void updateAdgroupIdByOid(String id, Long adgroupId);
+
+    void update(CreativeDTO creativeDTO);
 
     void delBack(Long oid);
 

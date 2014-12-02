@@ -8,6 +8,7 @@ import com.perfect.dao.creative.CreativeDAO;
 import com.perfect.dao.sys.LogDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
+import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.entity.creative.CreativeEntity;
@@ -227,6 +228,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         getMongoTemplate().updateMulti(Query.query(Criteria.where(OBJ_ADGROUP_ID).is(id)), Update.update(ADGROUP_ID, adgroupId).set(OBJ_ADGROUP_ID, null), getEntityClass());
     }
 
+
     @Override
     public void delBack(Long oid) {
         Update update = new Update();
@@ -310,6 +312,11 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         return (int) mongoTemplate.count(q, cls);
     }
 
+    @Override
+    public Class<CreativeDTO> getDTOClass() {
+        return CreativeDTO.class;
+    }
+
     public CreativeDTO findOne(Long creativeId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         CreativeEntity entity = mongoTemplate.findOne(new Query(Criteria.where(CREATIVE_ID).is(creativeId)), CreativeEntity.class, TBL_CREATIVE);
@@ -320,6 +327,11 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<CreativeEntity> entityList = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())), CreativeEntity.class);
         return wrapperList(entityList);
+    }
+
+    @Override
+    public List<CreativeDTO> find(Map<String, Object> params, int skip, int limit, String sort, boolean asc) {
+        return null;
     }
 
     public List<CreativeDTO> find(Map<String, Object> params, int skip, int limit) {
@@ -394,6 +406,11 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
 
     @Override
     public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
+        return null;
+    }
+
+    @Override
+    public List<CreativeDTO> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, boolean asc) {
         return null;
     }
 
