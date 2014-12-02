@@ -26,16 +26,12 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
  * 2014-11-26 refactor
  */
 @Component
-public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusEntity, Long> implements CensusDAO {
+public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> implements CensusDAO {
     @Override
     public Class<CensusEntity> getEntityClass() {
         return CensusEntity.class;
     }
 
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
 
     @Override
     public CensusDTO saveParams(CensusDTO censusDTO) {
@@ -190,6 +186,16 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusEntity, Long> i
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         return c.getTime();
+    }
+
+    @Override
+    public Class<CensusDTO> getDTOClass() {
+        return CensusDTO.class;
+    }
+
+    @Override
+    public List<CensusDTO> find(Map<String, Object> params, int skip, int limit) {
+        return null;
     }
 
     public class CensusIpVO {

@@ -12,17 +12,14 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Created by XiaoWei on 2014/11/11.
  * 2014-11-26 refactor
  */
 @Service("censusService")
-public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusEntity,Long> implements CensusService {
+public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusDTO,Long> implements CensusService {
     @Resource private CensusDAO censusDAO;
     private SimpleDateFormat allFormat=new SimpleDateFormat("EEE MMM dd yyyy hh:mm:ss z", Locale.ENGLISH);
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -30,11 +27,6 @@ public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusEntity,Long
 
     @Override
     public Class<CensusEntity> getEntityClass() {
-        return null;
-    }
-
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
         return null;
     }
 
@@ -100,4 +92,13 @@ public class CensusServiceImpl extends AbstractUserBaseDAOImpl<CensusEntity,Long
         return censusDAO.getLastMonthTotal(url);
     }
 
+    @Override
+    public Class<CensusDTO> getDTOClass() {
+        return CensusDTO.class;
+    }
+
+    @Override
+    public List<CensusDTO> find(Map<String, Object> params, int skip, int limit) {
+        return null;
+    }
 }

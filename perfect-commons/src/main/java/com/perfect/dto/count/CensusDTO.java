@@ -1,11 +1,13 @@
 package com.perfect.dto.count;
 
+import com.perfect.dto.BaseDTO;
+
 import java.util.Date;
 
 /**
  * Created by XiaoWei on 2014/11/26.
  */
-public class CensusDTO {
+public class CensusDTO extends BaseDTO {
     private String id;
     private String uuid;
     private String system;//操作系统

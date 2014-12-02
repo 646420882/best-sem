@@ -10,7 +10,6 @@ import java.util.List;
  * Created by yousheng on 14/11/20.
  */
 public class CampaignDTO extends AccountIdDTO{
-    private String id;
 
     private Long campaignId;
 
@@ -417,12 +416,4 @@ public class CampaignDTO extends AccountIdDTO{
                 + outputString;
     }
 
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }

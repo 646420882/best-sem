@@ -1,10 +1,11 @@
 package com.perfect.dto.keyword;
 
+import com.perfect.dto.BaseDTO;
+
 /**
  * Created by XiaoWei on 2014/11/26.
  */
-public class KeywordImportDTO {
-    private String id;
+public class KeywordImportDTO  extends BaseDTO{
     private String customGroupId;
     private Long keywordId;
     private String keywordName;
@@ -13,13 +14,6 @@ public class KeywordImportDTO {
     private Boolean rule;
     private Long adgroupId;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getCustomGroupId() {
         return customGroupId;
@@ -80,7 +74,6 @@ public class KeywordImportDTO {
     @Override
     public String toString() {
         return "KeywordImportDTO{" +
-                "id='" + id + '\'' +
                 ", customGroupId='" + customGroupId + '\'' +
                 ", keywordId=" + keywordId +
                 ", keywordName='" + keywordName + '\'' +

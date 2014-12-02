@@ -1,19 +1,19 @@
 package com.perfect.dto.count;
 
+import com.perfect.dto.BaseDTO;
+
 import java.util.Date;
 
 /**
  * Created by XiaoWei on 2014/11/26.
  */
-public class CensusEveryDayReportDTO {
-    private String id;
+public class CensusEveryDayReportDTO  extends BaseDTO{
     private String lp;//停留页面
     private Long pvCount;//总浏览量
     private Long uvCount;//总访问客数
     private Long ipCount;//总的IP数
     private Date totalDate;//统计的日期
-    public CensusEveryDayReportDTO(String id, String lp, Long pvCount, Long uvCount, Long ipCount, Date totalDate) {
-        this.id = id;
+    public CensusEveryDayReportDTO( String lp, Long pvCount, Long uvCount, Long ipCount, Date totalDate) {
         this.lp = lp;
         this.pvCount = pvCount;
         this.uvCount = uvCount;
@@ -24,13 +24,6 @@ public class CensusEveryDayReportDTO {
     public CensusEveryDayReportDTO() {
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getLp() {
         return lp;

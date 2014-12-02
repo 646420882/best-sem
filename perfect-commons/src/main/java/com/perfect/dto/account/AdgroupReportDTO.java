@@ -7,7 +7,6 @@ import java.math.BigDecimal;
  */
 public class AdgroupReportDTO extends AccountIdDTO{
 
-    private String id;
 
     private Long adgroupId;
 
@@ -45,13 +44,6 @@ public class AdgroupReportDTO extends AccountIdDTO{
 
     private Double mobileConversion;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Long getAdgroupId() {
         return adgroupId;
@@ -201,7 +193,6 @@ public class AdgroupReportDTO extends AccountIdDTO{
     @Override
     public String toString() {
         return "AdgroupReportEntity{" +
-                "id='" + id + '\'' +
                 ", adgroupId=" + adgroupId +
                 ", adgroupName='" + adgroupName + '\'' +
                 ", campaignId=" + campaignId +

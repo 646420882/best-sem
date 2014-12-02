@@ -9,7 +9,6 @@ import java.util.Date;
  * 2014-11-28 refactor XiaoWei code by john
  */
 public class WarningRuleDTO extends AccountIdDTO {
-    private String id;
     private Integer budgetType;//预算类型
     private Double budget;//预算金额
     private Double warningPercent;//预警百分率
@@ -20,13 +19,6 @@ public class WarningRuleDTO extends AccountIdDTO {
     private Integer isEnable;//是否启用
     private String systemUserName;//系统用户名
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Integer getBudgetType() {
         return budgetType;
@@ -103,8 +95,7 @@ public class WarningRuleDTO extends AccountIdDTO {
     public WarningRuleDTO() {
     }
 
-    public WarningRuleDTO(String id, Integer budgetType, Double budget, Double warningPercent, String tels, String mails, Date startTime, Integer isWarninged, Integer isEnable, String systemUserName) {
-        this.id = id;
+    public WarningRuleDTO(Integer budgetType, Double budget, Double warningPercent, String tels, String mails, Date startTime, Integer isWarninged, Integer isEnable, String systemUserName) {
         this.budgetType = budgetType;
         this.budget = budget;
         this.warningPercent = warningPercent;

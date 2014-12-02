@@ -9,7 +9,6 @@ import java.util.List;
  * Created by yousheng on 14/11/20.
  */
 public class AdgroupDTO extends AccountIdDTO {
-    private String id;
     private Long adgroupId;
     private Long campaignId;
     private String campaignObjId;
@@ -24,14 +23,6 @@ public class AdgroupDTO extends AccountIdDTO {
     private Double mib;
     private Double priceRatio;
     private Integer localStatus;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Long getAdgroupId() {
         return adgroupId;
