@@ -1,9 +1,11 @@
 package com.perfect.dto.monitor;
 
+import com.perfect.dto.BaseDTO;
+
 /**
  * Created by SubDong on 2014/11/26.
  */
-public class FolderDTO {
+public class FolderDTO extends BaseDTO {
     //监控文件夹ID
     private Long folderId;
     //监控文件夹名称

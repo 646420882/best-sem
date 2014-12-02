@@ -20,7 +20,6 @@ public class BasisReportPCus extends RecursiveTask<Map<String, StructureReportDT
 
     private int endNumber;
     private int begin;
-    private int terminal;
     private int report;
 
     private List<StructureReportDTO> objectList;

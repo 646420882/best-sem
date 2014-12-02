@@ -6,7 +6,6 @@ import com.perfect.dto.BaseDTO;
  * Created by SubDong on 2014/9/28.
  * 存放数据库直接读出的数据。未处理过
  */
-// TODO 跟RegionCodeDTO 的区别是啥子
 public class RegionalCodeDTO extends BaseDTO {
 
     //国家id

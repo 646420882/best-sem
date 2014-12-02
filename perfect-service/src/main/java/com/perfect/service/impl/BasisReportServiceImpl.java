@@ -9,10 +9,10 @@ import com.perfect.dto.StructureReportDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.BasisReportService;
-import com.perfect.utils.report.*;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.redis.JRedisUtils;
-import org.springframework.stereotype.Repository;
+import com.perfect.utils.report.*;
+import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
@@ -33,7 +33,7 @@ import static com.perfect.commons.constants.ReportConstants.*;
 /**
  * Created by SubDong on 2014/8/6.
  */
-@Repository("basisReportService")
+@Service("basisReportService")
 public class BasisReportServiceImpl implements BasisReportService {
     @Resource
     private BasisReportDAO basisReportDAO;

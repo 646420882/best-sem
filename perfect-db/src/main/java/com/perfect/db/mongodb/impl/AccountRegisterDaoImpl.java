@@ -4,13 +4,10 @@ import com.perfect.dao.account.AccountRegisterDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.entity.sys.SystemUserEntity;
-import com.perfect.utils.paging.Pager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-
-import java.util.Map;
 
 /**
  * Created by SubDong on 2014/9/30.
@@ -28,7 +25,7 @@ public class AccountRegisterDaoImpl extends AbstractSysBaseDAOImpl<SystemUserDTO
 
     @Override
     public SystemUserDTO getAccount(String userName) {
-        SystemUserEntity user = getSysMongoTemplate().findOne(Query.query(Criteria.where("userName").is(userName)), SystemUserEntity.class, "sys_user");
+        SystemUserEntity user = getSysMongoTemplate().findOne(Query.query(Criteria.where("userName").is(userName)), getEntityClass(), "sys_user");
 
         SystemUserDTO systemUserDTO = new SystemUserDTO();
         BeanUtils.copyProperties(user, systemUserDTO);
@@ -38,12 +35,12 @@ public class AccountRegisterDaoImpl extends AbstractSysBaseDAOImpl<SystemUserDTO
 
 
     @Override
-    public Class<SystemUserDTO> getEntityClass() {
-        return SystemUserDTO.class;
+    public Class<SystemUserEntity> getEntityClass() {
+        return SystemUserEntity.class;
     }
 
     @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
+    public Class<SystemUserDTO> getDTOClass() {
+        return SystemUserDTO.class;
     }
 }

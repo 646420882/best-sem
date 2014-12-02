@@ -1,6 +1,5 @@
 package com.perfect.service.impl;
 
-import com.mongodb.WriteResult;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.api.baidu.PromotionMonitoring;
@@ -98,16 +97,16 @@ public class MonitoringServiceImpl implements MonitoringService {
         boolean returnFolder;
         int i;
         if (monitorEntities.size() > 0) {
-            WriteResult remove = monitoringDao.deleteMonitor(folderId);
-            if (remove.getN() > 0) {
-                WriteResult folderRemove = monitoringDao.deleteFoder(folderId);
-                i = folderRemove.getN();
+            int remove = monitoringDao.deleteMonitor(folderId);
+            if (remove > 0) {
+                int folderRemove = monitoringDao.deleteFoder(folderId);
+                i = folderRemove;
             } else {
                 i = 0;
             }
         } else {
-            WriteResult folderRemove = monitoringDao.deleteFoder(folderId);
-            i = folderRemove.getN();
+            int folderRemove = monitoringDao.deleteFoder(folderId);
+            i = folderRemove;
         }
         if (i > 0) {
             returnFolder = true;
@@ -212,8 +211,8 @@ public class MonitoringServiceImpl implements MonitoringService {
     @Override
     public boolean deleteMonitorId(Long MonitorId) {
         boolean returnFolder = false;
-        WriteResult folderRemove = monitoringDao.deleteMonitorId(MonitorId);
-        if (folderRemove.getN() > 0) {
+        int folderRemove = monitoringDao.deleteMonitorId(MonitorId);
+        if (folderRemove > 0) {
             returnFolder = true;
         } else {
             returnFolder = false;

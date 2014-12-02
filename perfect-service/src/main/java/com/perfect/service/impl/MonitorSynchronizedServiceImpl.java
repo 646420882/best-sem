@@ -10,9 +10,9 @@ import com.perfect.dao.monitoring.MonitorSynchronizedDAO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.dto.monitor.FolderMonitorDTO;
-import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.service.MonitorSynchronizedService;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -21,14 +21,14 @@ import java.util.List;
 /**
  * Created by SubDong on 2014/9/12.
  */
-@Repository("synchronizedService")
+@Service("synchronizedService")
 public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedService {
 
     @Resource
     private MonitorSynchronizedDAO monitorSynchronizedDAO;
 
     @Resource
-    private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
+    private AccountManageDAO<BaiduAccountInfoDTO> accountManageDAO;
 
     @Override
     public int getSynchronized() {
@@ -38,34 +38,34 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
         List<Folder> folders = Monitoring.getFolder();
         List<FolderMonitor> folderMonitors = Monitoring.getMonitorWordByFolderIdAll();
 
-        List<FolderDTO> forlderEntities = new ArrayList<>();
-        List<FolderMonitorDTO> monitorEntities = new ArrayList<>();
+        List<FolderDTO> folderDTOs = new ArrayList<>();
+        List<FolderMonitorDTO> monitorDTOs = new ArrayList<>();
 
         //监控文件夹数据
         for (Folder folder : folders) {
-            FolderDTO forlderEntity = new FolderDTO();
-            forlderEntity.setFolderId(folder.getFolderId());
-            forlderEntity.setFolderName(folder.getFolderName());
-            forlderEntity.setAccountId(AppContext.getAccountId());
-            forlderEntities.add(forlderEntity);
+            FolderDTO folderDTO = new FolderDTO();
+            folderDTO.setFolderId(folder.getFolderId());
+            folderDTO.setFolderName(folder.getFolderName());
+            folderDTO.setAccountId(AppContext.getAccountId());
+            folderDTOs.add(folderDTO);
         }
         //监控对象数据
         for (FolderMonitor folder : folderMonitors) {
             for (Monitor monitor : folder.getMonitors()) {
-                FolderMonitorDTO folderMonitorEntity = new FolderMonitorDTO();
-                folderMonitorEntity.setFolderId(monitor.getFolderId());
-                folderMonitorEntity.setAdgroupId(monitor.getAdgroupId());
-                folderMonitorEntity.setCampaignId(monitor.getCampaignId());
-                folderMonitorEntity.setMonitorId(monitor.getMonitorId());
-                folderMonitorEntity.setAclid(monitor.getId());
-                folderMonitorEntity.setType(monitor.getType());
-                folderMonitorEntity.setAccountId(AppContext.getAccountId());
-                monitorEntities.add(folderMonitorEntity);
+                FolderMonitorDTO folderMonitorDTO = new FolderMonitorDTO();
+                folderMonitorDTO.setFolderId(monitor.getFolderId());
+                folderMonitorDTO.setAdgroupId(monitor.getAdgroupId());
+                folderMonitorDTO.setCampaignId(monitor.getCampaignId());
+                folderMonitorDTO.setMonitorId(monitor.getMonitorId());
+                folderMonitorDTO.setAclid(monitor.getId());
+                folderMonitorDTO.setType(monitor.getType());
+                folderMonitorDTO.setAccountId(AppContext.getAccountId());
+                monitorDTOs.add(folderMonitorDTO);
             }
         }
 
-        int JudgeFD = monitorSynchronizedDAO.insterData(forlderEntities);
-        int JudgeMT = monitorSynchronizedDAO.insterMoniterData(monitorEntities);
+        int JudgeFD = monitorSynchronizedDAO.insterData(folderDTOs);
+        int JudgeMT = monitorSynchronizedDAO.insterMoniterData(monitorDTOs);
 
         if (JudgeFD == 1 && JudgeMT == 1) {
             return 1;

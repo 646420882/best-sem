@@ -67,7 +67,7 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
      * @param pwd
      * @return
      */
-    public WriteResult updatePwd(String userName, String pwd);
+    public boolean updatePwd(String userName, String pwd);
 
     /**
      * 得到所有未审核的帐号
@@ -81,7 +81,7 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
      *
      * @return
      */
-    public WriteResult updateBaiDuAccount(String userName, Long baiduId, Long state);
+    public boolean updateBaiDuAccount(String userName, Long baiduId, Long state);
 
     /**
      * 查询所有未帐号信息
@@ -98,7 +98,7 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
      * @param token
      * @return
      */
-    public int auditAccount(String userNmae, String baiduAccount, String baiduPassword, String token);
+    /*public int auditAccount(String userNmae, String baiduAccount, String baiduPassword, String token);*/
 
     /**
      * 修改帐号状态

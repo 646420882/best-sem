@@ -16,6 +16,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by SubDong on 2014/9/15.
@@ -56,15 +57,20 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
     }
 
     @Override
-    public WriteResult deleteFoder(Long folderId) {
+    public int deleteFoder(Long folderId) {
         WriteResult remove = getMongoTemplate().remove(Query.query(Criteria.where(FOLDER_ID).is(folderId)), TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
-        return remove;
+
+        int i = remove.getN();
+        return i;
     }
 
     @Override
-    public WriteResult deleteMonitor(Long folderId) {
+    public int deleteMonitor(Long folderId) {
         WriteResult remove = getMongoTemplate().remove(Query.query(Criteria.where(FOLDER_ID).is(folderId)), TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
-        return remove;
+
+        int i = remove.getN();
+
+        return i;
     }
 
     @Override
@@ -86,9 +92,10 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
     }
 
     @Override
-    public WriteResult deleteMonitorId(Long MonitorId) {
+    public int deleteMonitorId(Long MonitorId) {
         WriteResult remove = getMongoTemplate().remove(Query.query(Criteria.where(MONITOR_ID).is(MonitorId)), TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
-        return remove;
+        int i = remove.getN();
+        return i;
     }
 
     @Override
@@ -105,7 +112,17 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
     }
 
     @Override
-    public Class<FolderDTO> getEntityClass() {
+    public Class<FolderEntity> getEntityClass() {
+        return FolderEntity.class;
+    }
+
+    @Override
+    public Class<FolderDTO> getDTOClass() {
         return FolderDTO.class;
+    }
+
+    @Override
+    public List<FolderDTO> find(Map<String, Object> params, int skip, int limit) {
+        return null;
     }
 }

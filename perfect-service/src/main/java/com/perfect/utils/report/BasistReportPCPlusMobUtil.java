@@ -18,7 +18,6 @@ public class BasistReportPCPlusMobUtil extends RecursiveTask<List<StructureRepor
 
     private int endNumber;
     private int begin;
-    private int terminal;
     private String userName;
 
     private List<StructureReportDTO> objectList;

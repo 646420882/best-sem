@@ -6,15 +6,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mongodb.WriteResult;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.ObjectUtils;
-import com.perfect.api.baidu.BaiduApiService;
-import com.perfect.api.baidu.BaiduServiceSupport;
-import com.perfect.autosdk.core.CommonService;
-import com.perfect.autosdk.core.ServiceFactory;
-import com.perfect.autosdk.exception.ApiException;
-import com.perfect.autosdk.sms.v3.AccountInfoType;
-import com.perfect.autosdk.sms.v3.AccountService;
-import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
-import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.sys.SystemUserDAO;
@@ -190,10 +181,10 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     }
 
     @Override
-    public WriteResult updatePwd(String account, String pwd) {
+    public boolean updatePwd(String account, String pwd) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(account)), Update.update("password", pwd), "sys_user");
-        return writeResult;
+        return writeResult.isUpdateOfExisting();
     }
 
     @Override
@@ -203,12 +194,12 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     }
 
     @Override
-    public WriteResult updateBaiDuAccount(String userName, Long baiduId, Long state) {
+    public boolean updateBaiDuAccount(String userName, Long baiduId, Long state) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Update update = new Update();
         update.set("bdAccounts.$.state", state);
         WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(userName).and("bdAccounts._id").is(baiduId)), update, "sys_user");
-        return writeResult;
+        return writeResult.isUpdateOfExisting();
     }
 
     @Override
@@ -217,7 +208,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         return ObjectUtils.convert(mongoTemplate.find(new Query(), getEntityClass()), getDTOClass());
     }
 
-    @Override
+    /*@Override
     public int auditAccount(String userNmae, String baiduAccount, String baiduPassword, String token) {
         int i;
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
@@ -259,7 +250,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         }
 
         return i;
-    }
+    }*/
 
     @Override
     public int updateAccountStruts(String userName) {

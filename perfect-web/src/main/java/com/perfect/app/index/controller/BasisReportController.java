@@ -32,7 +32,7 @@ import java.util.Map;
 @Scope("prototype")
 public class BasisReportController {
     @Resource
-    BasisReportService basisReportService;
+    private BasisReportService basisReportService;
 
     @RequestMapping(value = "/reportIndex")
     public ModelAndView getbasisReportPage() {

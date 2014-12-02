@@ -92,16 +92,5 @@ public class ReportPullController extends WebContextSupport {
         if (flag == 0) {
             writeData(FAIL, response, null);
         }
-//        try {
-//            String s = gson.toJson(flag);
-//            response.setContentType("text/html;charset=UTF-8");
-//            response.setHeader("Pragma", "No-cache");
-//            response.setHeader("Cache-Control", "no-cache");
-//            response.setDateHeader("Expires", 0);
-//            response.getWriter().write(s);
-//            response.getWriter().flush();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 }

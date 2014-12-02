@@ -44,7 +44,7 @@ public interface MonitoringDao {
      * @param folderId
      * @return
      */
-    public WriteResult deleteFoder(Long folderId);
+    public int deleteFoder(Long folderId);
 
     /**
      * 通过监控文件夹ID删除对应的监控对象
@@ -52,7 +52,7 @@ public interface MonitoringDao {
      * @param folderId
      * @return
      */
-    public WriteResult deleteMonitor(Long folderId);
+    public int deleteMonitor(Long folderId);
 
     /**
      * 获取所有监控对象
@@ -74,7 +74,7 @@ public interface MonitoringDao {
      * @param MonitorId
      * @return
      */
-    public WriteResult deleteMonitorId(Long MonitorId);
+    public int deleteMonitorId(Long MonitorId);
 
     /**
      * 添加监控对象

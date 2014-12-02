@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.mongodb.WriteResult;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
@@ -46,8 +45,8 @@ public class AccountManageServiceImpl implements AccountManageService {
 
         int i;
         if (md5.getMD5().equals(currUserInfo.getPassword())) {
-            WriteResult writeResult = accountManageDAO.updatePwd(currUserInfo.getUserName(), md5NewPwd.getMD5());
-            if (writeResult.isUpdateOfExisting()) {
+            boolean writeResult = accountManageDAO.updatePwd(currUserInfo.getUserName(), md5NewPwd.getMD5());
+            if (writeResult) {
                 i = 1;
             } else {
                 i = 0;
@@ -122,8 +121,8 @@ public class AccountManageServiceImpl implements AccountManageService {
     @Override
     public int updateAccountAllState(String userName, Long baiduId, Long state) {
         int i = 0;
-        WriteResult writeResult = accountManageDAO.updateBaiDuAccount(userName, baiduId, state);
-        if (writeResult.isUpdateOfExisting()) {
+        boolean writeResult = accountManageDAO.updateBaiDuAccount(userName, baiduId, state);
+        if (writeResult) {
             i = 1;
         }
         return i;
