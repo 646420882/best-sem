@@ -1,7 +1,7 @@
 package com.perfect.app.sourceAnalysis.controller;
 
+import com.perfect.commons.web.WebContextSupport;
 import com.perfect.service.CensusService;
-import com.perfect.commons.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,9 +19,7 @@ import java.util.Map;
 @RestController
 @Scope("prototype")
 @RequestMapping("/pftstis")
-public class sourceAnalysis {
-    @Resource
-    private WebContext webContext;
+public class sourceAnalysis extends WebContextSupport {
 
     @Resource
     private CensusService censusService;
@@ -52,6 +50,6 @@ public class sourceAnalysis {
         map.put("xfkbl", "78%");
         map.put("ddzhl", "50.99%");
         mainMap.put("head", map);
-        webContext.writeJson("", response);
+        writeJson("", response);
     }
 }

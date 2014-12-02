@@ -1,7 +1,7 @@
 package com.perfect.app.index.controller;
 
+import com.perfect.commons.web.WebContextSupport;
 import com.perfect.service.AccountOverviewService;
-import com.perfect.commons.web.WebContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,13 +16,11 @@ import java.util.Map;
  */
 @RestController
 @Scope("prototype")
-public class AccountOverviewController {
+public class AccountOverviewController extends WebContextSupport{
 
     @Resource
     private AccountOverviewService accountOverviewService;
 
-    @Resource
-    private WebContext webContext;
 
     /**
      * 账户概览(获取汇总数据)
@@ -34,6 +32,6 @@ public class AccountOverviewController {
     @RequestMapping(value = "/account/getAccountOverviewData", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccountOverviewData(HttpServletResponse response, String startDate, String endDate) {
         Map<String, Object> map = accountOverviewService.getKeyWordSum(startDate, endDate);
-        webContext.writeJson(map, response);
+        writeJson(map, response);
     }
 }

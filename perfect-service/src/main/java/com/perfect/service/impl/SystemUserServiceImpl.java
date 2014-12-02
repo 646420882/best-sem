@@ -58,4 +58,9 @@ public class SystemUserServiceImpl implements SystemUserService {
     public boolean updatePassword(String userName, String pwd) {
         return accountManageDAO.updatePwd(userName, pwd).isUpdateOfExisting();
     }
+
+    @Override
+    public SystemUserDTO findByAid(long aid) {
+        return systemUserDAO.findByAid(aid);
+    }
 }

@@ -1,6 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -30,5 +31,23 @@ public interface AdgroupService {
 
     void deleteByIds(List<Long> ids);
 
+    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize);
 
+    Object insertOutId(AdgroupDTO adgroupEntity);
+
+    void deleteByObjId(String oid);
+
+    void deleteByObjId(Long adgroupId);
+
+    AdgroupDTO findByObjId(String oid);
+
+    void updateByObjId(AdgroupDTO adgroupEntity);
+
+    void update(AdgroupDTO adgroupEntity, AdgroupDTO bakAdgroupEntity);
+
+    void delBack(Long oid);
+
+    AdgroupDTO fndEntity(Map<String, Object> params);
+
+    void save(AdgroupDTO adgroupDTO);
 }

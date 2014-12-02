@@ -7,9 +7,6 @@ import com.perfect.autosdk.sms.v3.*;
 import com.perfect.autosdk.sms.v3.CreativeService;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
-import com.perfect.dao.adgroup.AdgroupDAO;
-import com.perfect.dao.campaign.CampaignDAO;
-import com.perfect.dao.creative.CreativeDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
@@ -18,6 +15,7 @@ import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.service.*;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.service.AdgroupService;
+import com.perfect.service.CampaignService;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
@@ -46,7 +44,7 @@ public class AssistantCreativeController extends WebContextSupport {
     @Resource
     AdgroupService adgroupService;
     @Resource
-    CampaignDAO campaignDAO;
+    CampaignService campaignService;
     @Resource
     CreativeBackUpService creativeBackUpService;
     @Resource
@@ -93,7 +91,7 @@ public class AssistantCreativeController extends WebContextSupport {
      */
     @RequestMapping(value = "/getPlans")
     public ModelAndView getPlans(HttpServletResponse response) {
-        List<CampaignDTO> list = (List<CampaignDTO>) campaignDAO.findAll();
+        List<CampaignDTO> list = (List<CampaignDTO>) campaignService.findAll();
         writeJson(list, response);
         return null;
     }

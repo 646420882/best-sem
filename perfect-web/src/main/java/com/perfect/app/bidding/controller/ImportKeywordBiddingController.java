@@ -1,5 +1,6 @@
 package com.perfect.app.bidding.controller;
 
+import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.bidding.KeywordReportDTO;
 import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.commons.constants.KeywordStatusEnum;
@@ -9,7 +10,6 @@ import com.perfect.dto.StructureReportDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordImportDTO;
-import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.service.*;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.json.JSONUtils;
@@ -199,10 +199,10 @@ public class ImportKeywordBiddingController extends WebContextSupport {
         //判定，如果只传入计划编号
         if (campaignId != null && adgroupId == null) {
             //查询单元列表
-            List<AdgroupEntity> adgroupEntityList = sysAdgroupService.findIdByCampaignId(campaignId);
+            List<AdgroupDTO> adgroupEntityList = sysAdgroupService.findIdByCampaignId(campaignId);
             //定义单元编号列表
             List<Long> adGroupIds = new ArrayList<>(adgroupEntityList.size());
-            for (AdgroupEntity adgroupEntity : adgroupEntityList) {
+            for (AdgroupDTO adgroupEntity : adgroupEntityList) {
                 adGroupIds.add(adgroupEntity.getAdgroupId());
             }
             entities = sysKeywordService.findByIds(keywordImportService.findByAdgroupIds(adGroupIds));
@@ -239,7 +239,7 @@ public class ImportKeywordBiddingController extends WebContextSupport {
                 Long kwid = entity.getKeywordId();
 
                 index++;
-                AdgroupEntity adgroupEntity = sysAdgroupService.findByAdgroupId(entity.getAdgroupId());
+                AdgroupDTO adgroupEntity = sysAdgroupService.findByAdgroupId(entity.getAdgroupId());
                 CampaignDTO campaignEntity = sysCampaignService.findById(adgroupEntity.getCampaignId());
                 keywordReportDTO.setCampaignName(campaignEntity.getCampaignName());
                 keywordReportDTO.setAdgroupName(adgroupEntity.getAdgroupName());

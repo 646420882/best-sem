@@ -4,6 +4,7 @@ import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
 import com.perfect.service.AdgroupService;
+import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -71,5 +72,55 @@ public class AdgroupServiceImpl implements AdgroupService {
     @Override
     public void deleteByIds(List<Long> ids) {
         adgroupDAO.deleteByIds(ids);
+    }
+
+    @Override
+    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize) {
+        return adgroupDAO.findByPagerInfo(params,nowPage,pageSize);
+    }
+
+    @Override
+    public Object insertOutId(AdgroupDTO adgroupEntity) {
+        return adgroupDAO.insertOutId(adgroupEntity);
+    }
+
+    @Override
+    public void deleteByObjId(String oid) {
+        adgroupDAO.deleteByObjId(oid);
+    }
+
+    @Override
+    public void deleteByObjId(Long adgroupId) {
+        adgroupDAO.deleteByObjId(adgroupId);
+    }
+
+    @Override
+    public AdgroupDTO findByObjId(String oid) {
+        return adgroupDAO.findByObjId(oid);
+    }
+
+    @Override
+    public void updateByObjId(AdgroupDTO adgroupEntity) {
+        adgroupDAO.updateByObjId(adgroupEntity);
+    }
+
+    @Override
+    public void update(AdgroupDTO adgroupEntity, AdgroupDTO bakAdgroupEntity) {
+        adgroupDAO.update(adgroupEntity,bakAdgroupEntity);
+    }
+
+    @Override
+    public void delBack(Long oid) {
+        adgroupDAO.delBack(oid);
+    }
+
+    @Override
+    public AdgroupDTO fndEntity(Map<String, Object> params) {
+        return adgroupDAO.fndEntity(params);
+    }
+
+    @Override
+    public void save(AdgroupDTO adgroupDTO) {
+        adgroupDAO.save(adgroupDTO);
     }
 }

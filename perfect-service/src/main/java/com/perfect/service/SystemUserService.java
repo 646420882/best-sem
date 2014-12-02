@@ -23,4 +23,6 @@ public interface SystemUserService {
     void addAccount(String user, BaiduAccountInfoDTO baiduAccountInfoDTO);
 
     boolean updatePassword(String userName, String pwd);
+
+    SystemUserDTO findByAid(long aid);
 }

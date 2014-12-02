@@ -1,16 +1,10 @@
 package com.perfect.app.personstore.controller;
 
 import com.perfect.commons.constants.MongoEntityConstants;
-import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.entity.keyword.LexiconEntity;
 import com.perfect.utils.redis.JRedisUtils;
 import com.perfect.service.KeywordGroupService;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.utils.paging.PagerInfo;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

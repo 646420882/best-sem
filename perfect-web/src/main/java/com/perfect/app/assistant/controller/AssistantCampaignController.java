@@ -3,7 +3,6 @@ package com.perfect.app.assistant.controller;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.perfect.autosdk.sms.v3.ScheduleType;
-import com.perfect.commons.web.WebContext;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.core.AppContext;
 import com.perfect.dao.adgroup.AdgroupDAO;
@@ -18,15 +17,11 @@ import com.perfect.dto.baidu.OfflineTimeDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.regional.RegionalCodeDTO;
-import com.perfect.entity.campaign.CampaignEntity;
-import com.perfect.service.CampaignBackUpService;
-import com.perfect.service.SysRegionalService;
+import com.perfect.service.*;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.RegionalCodeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,19 +47,19 @@ public class AssistantCampaignController extends WebContextSupport {
 
     private static final String RES_SUCCESS = "success";
     @Resource
-    private CampaignDAO campaignDAO;
+    private CampaignService campaignService;
 
     @Resource
     private CampaignBackUpService campaignBackUpService;
 
     @Resource
-    private AdgroupDAO adgroupDAO;
+    private AdgroupService adgroupService;
 
     @Resource
-    private SystemUserDAO systemUserDAO;
+    private SystemUserService systemUserService;
 
     @Resource
-    private KeywordDAO keywordDAO;
+    private KeywordService keywordService;
 
     @Resource
     private SysRegionalService sysRegionalService;
@@ -81,8 +76,9 @@ public class AssistantCampaignController extends WebContextSupport {
         if (nowPage == null) {
             nowPage = 0;
         }
-        Query query = new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()));
-        PagerInfo page = campaignDAO.findByPageInfo(query, pageSize, nowPage);
+        long acctountId=AppContext.getAccountId();
+
+        PagerInfo page = campaignService.findByPageInfo(acctountId, pageSize, nowPage);
         writeJson(page, response);
     }
 
@@ -98,9 +94,9 @@ public class AssistantCampaignController extends WebContextSupport {
         CampaignDTO campaignEntity = null;
 
         if (cid.matches(regex) == true) {
-            campaignEntity = campaignDAO.findOne(Long.parseLong(cid));
+            campaignEntity = campaignService.findOne(Long.parseLong(cid));
         } else {
-            campaignEntity = campaignDAO.findByObjectId(cid);
+            campaignEntity = campaignService.findByObjectId(cid);
         }
         writeJson(campaignEntity, response);
     }
@@ -119,9 +115,9 @@ public class AssistantCampaignController extends WebContextSupport {
         CampaignDTO campaignEntity = null;
 
         if (cid.matches(regex) == true) {
-            campaignEntity = campaignDAO.findOne(Long.parseLong(cid));
+            campaignEntity = campaignService.findOne(Long.parseLong(cid));
         } else {
-            campaignEntity = campaignDAO.findByObjectId(cid);
+            campaignEntity = campaignService.findByObjectId(cid);
         }
         List<RegionalCodeDTO> regionList = sysRegionalService.getRegionalId(campaignEntity.getRegionTarget() == null ? new ArrayList<Integer>() : campaignEntity.getRegionTarget());
 
@@ -143,9 +139,9 @@ public class AssistantCampaignController extends WebContextSupport {
         String[] cids = cid.split(",");
         for (String id : cids) {
             if (id.matches(regex) == true) {
-                campaignDAO.softDel(Long.parseLong(id));
+                campaignService.softDel(Long.parseLong(id));
             } else {
-                campaignDAO.deleteByMongoId(id);
+                campaignService.deleteByMongoId(id);
             }
         }
         writeJson(RES_SUCCESS, response);
@@ -159,7 +155,7 @@ public class AssistantCampaignController extends WebContextSupport {
      */
     @RequestMapping(value = "assistantCampaign/getRegionByAcid", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccountRegion(HttpServletResponse response) {
-        SystemUserDTO currentUser = systemUserDAO.findByAid(AppContext.getAccountId());
+        SystemUserDTO currentUser = systemUserService.findByAid(AppContext.getAccountId());
 
         List<BaiduAccountInfoDTO> accounts = currentUser.getBaiduAccountInfoDTOs();
         BaiduAccountInfoDTO baiduEntity = null;
@@ -185,9 +181,9 @@ public class AssistantCampaignController extends WebContextSupport {
     @RequestMapping(value = "assistantCampaign/useAccoutRegion", method = {RequestMethod.GET, RequestMethod.POST})
     public void useAccoutRegion(HttpServletResponse response, String cid) {
         String regex = "^\\d+$";
-        CampaignDTO campaignDTO = cid.matches(regex) ? campaignDAO.findOne(Long.parseLong(cid)) : campaignDAO.findByObjectId(cid);
+        CampaignDTO campaignDTO = cid.matches(regex) ? campaignService.findOne(Long.parseLong(cid)) : campaignService.findByObjectId(cid);
         campaignDTO.setRegionTarget(null);
-        campaignDAO.save(campaignDTO);
+        campaignService.save(campaignDTO);
         writeJson(RES_SUCCESS, response);
     }
 
@@ -200,7 +196,7 @@ public class AssistantCampaignController extends WebContextSupport {
     @RequestMapping(value = "assistantCampaign/usePlanRegion", method = {RequestMethod.GET, RequestMethod.POST})
     public void usePlanRegion(HttpServletResponse response, String regions, String cid) {
         String regex = "^\\d+$";
-        CampaignDTO newCampaignDTO = cid.matches(regex) ? campaignDAO.findOne(Long.parseLong(cid)) : campaignDAO.findByObjectId(cid);
+        CampaignDTO newCampaignDTO = cid.matches(regex) ? campaignService.findOne(Long.parseLong(cid)) : campaignService.findByObjectId(cid);
 
         CampaignDTO oldCampaignEntity = new CampaignDTO();
         BeanUtils.copyProperties(newCampaignDTO, oldCampaignEntity);
@@ -233,7 +229,7 @@ public class AssistantCampaignController extends WebContextSupport {
         } else {
             newCampaignDTO.setLocalStatus(2);
         }
-        campaignDAO.updateByMongoId(newCampaignDTO, oldCampaignEntity);
+        campaignService.updateByMongoId(newCampaignDTO, oldCampaignEntity);
 
         writeJson(RES_SUCCESS, response);
     }
@@ -263,9 +259,9 @@ public class AssistantCampaignController extends WebContextSupport {
 
         CampaignDTO newCampaign = null;
         if (cid.matches(regex) == true) {
-            newCampaign = campaignDAO.findOne(Long.parseLong(cid));
+            newCampaign = campaignService.findOne(Long.parseLong(cid));
         } else {
-            newCampaign = campaignDAO.findByObjectId(cid);
+            newCampaign = campaignService.findByObjectId(cid);
         }
         CampaignDTO campaignEntity = new CampaignDTO();
         BeanUtils.copyProperties(newCampaign, campaignEntity);
@@ -293,7 +289,7 @@ public class AssistantCampaignController extends WebContextSupport {
         } else {
             newCampaign.setLocalStatus(2);
         }
-        campaignDAO.updateByMongoId(newCampaign, campaignEntity);
+        campaignService.updateByMongoId(newCampaign, campaignEntity);
         writeJson(newCampaign, response);
     }
 
@@ -334,7 +330,7 @@ public class AssistantCampaignController extends WebContextSupport {
         campaignDTO.setLocalStatus(1);
 
         //开始添加
-        String id = campaignDAO.insertReturnId(campaignDTO);
+        String id = campaignService.insertReturnId(campaignDTO);
 
         AdgroupDTO adgroupDTO = new AdgroupDTO();
         adgroupDTO.setCampaignObjId(id);
@@ -345,7 +341,7 @@ public class AssistantCampaignController extends WebContextSupport {
         adgroupDTO.setLocalStatus(1);
         adgroupDTO.setPriceRatio(adgroupPriceRatio);
         adgroupDTO.setAccountId(AppContext.getAccountId());
-        adgroupDAO.insert(adgroupDTO);
+        adgroupService.save(adgroupDTO);
 
     }
 
@@ -425,7 +421,7 @@ public class AssistantCampaignController extends WebContextSupport {
         campaignDTO.setAccountId(AppContext.getAccountId());
         campaignDTO.setLocalStatus(1);
 
-        String campaignObjectId = campaignDAO.insertReturnId(campaignDTO);
+        String campaignObjectId = campaignService.insertReturnId(campaignDTO);
 
 
         AdgroupDTO adgroupEntity = new AdgroupDTO();
@@ -437,14 +433,14 @@ public class AssistantCampaignController extends WebContextSupport {
         adgroupEntity.setLocalStatus(1);
         adgroupEntity.setAccountId(AppContext.getAccountId());
 
-        String adgroupObjectId = (String) adgroupDAO.insertOutId(adgroupEntity);
+        String adgroupObjectId = (String) adgroupService.insertOutId(adgroupEntity);
 
         for (KeywordDTO kwd : list) {
             kwd.setAdgroupObjId(adgroupObjectId);
             kwd.setAccountId(AppContext.getAccountId());
         }
 
-        keywordDAO.insertAll(list);
+        keywordService.insertAll(list);
         writeJson(RES_SUCCESS, response);
     }
 

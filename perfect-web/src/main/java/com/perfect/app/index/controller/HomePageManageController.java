@@ -1,9 +1,9 @@
 package com.perfect.app.index.controller;
 
+import com.perfect.commons.web.WebContextSupport;
 import com.perfect.utils.MD5Utils;
 import com.perfect.commons.CustomUserDetailsService;
 import com.perfect.commons.message.mail.SendMail;
-import com.perfect.commons.web.WebContext;
 import com.perfect.commons.web.WebUtils;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
@@ -31,14 +31,12 @@ import java.util.UUID;
  */
 @RestController
 @Scope("prototype")
-public class HomePageManageController {
+public class HomePageManageController  extends WebContextSupport{
 
     @Resource
     private SystemUserService systemUserService;
     @Resource
     private AccountRegisterService accountRegisterService;
-    @Resource
-    private WebContext webContext;
 
     /**
      * 登陆页面
@@ -158,7 +156,7 @@ public class HomePageManageController {
     public void validateUserNameIsExists(HttpServletResponse response, HttpServletRequest request, String userName) {
         SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
         if (systemUserDTO == null) {
-            webContext.writeJson("userName no Exists!", response);
+            writeJson("userName no Exists!", response);
         } else {
 
             String path = request.getContextPath();
@@ -198,9 +196,9 @@ public class HomePageManageController {
 
                 if (systemUserDTO.getEmail() != null) {
                     SendMail.startSendHtmlMail(systemUserDTO.getEmail(), subject, content);
-                    webContext.writeJson("userName Exists!", response);
+                    writeJson("userName Exists!", response);
                 } else {
-                    webContext.writeJson("NO EMAIL", response);
+                    writeJson("NO EMAIL", response);
                 }
             } finally {
                 if (jedis != null) {
@@ -267,17 +265,17 @@ public class HomePageManageController {
                     boolean isSuccess = systemUserService.updatePassword(userName, md5.getMD5());
                     if (isSuccess) {
                         jedis.expire(key, 0);
-                        webContext.writeJson("updateSuccess", response);
+                        writeJson("updateSuccess", response);
                     } else {
-                        webContext.writeJson("updateFail", response);
+                        writeJson("updateFail", response);
                     }
                 } else {
                     //返回结果，没有该子账户，不能重置密码
-                    webContext.writeJson("NoAccount", response);
+                    writeJson("NoAccount", response);
                 }
             } else {
                 //找回密码的url失效
-                webContext.writeJson("urlInvali", response);
+                writeJson("urlInvali", response);
             }
         } finally {
             if (jedis != null) {

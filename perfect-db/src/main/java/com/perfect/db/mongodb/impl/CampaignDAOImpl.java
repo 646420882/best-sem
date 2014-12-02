@@ -18,8 +18,10 @@ import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.Pager;
+import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -265,6 +267,24 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         logDAO.insertLog(id, LogStatusConstant.ENTITY_CAMPAIGN, LogStatusConstant.OPT_UPDATE);
     }
 
+    @Override
+    public PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo) {
+        Query q = new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId));
+            int totalCount = getListTotalCount(q);
+
+            PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
+            q.skip(p.getFirstStation());
+            q.limit(p.getPageSize());
+            q.with(new Sort("name"));
+            if (totalCount < 1) {
+                p.setList(new ArrayList());
+                return p;
+            }
+            List list = getMongoTemplate().find(q, getEntityClass());
+            p.setList(list);
+            return p;
+    }
+
 
     public void update(List<CampaignDTO> entities) {
         for (CampaignDTO entity : entities)
@@ -341,15 +361,6 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         deleteSub(getAllCampaignId());
     }
 
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
-
-    @Override
-    public List<CampaignDTO> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, boolean asc) {
-        return null;
-    }
 
     //xj
     public int getListTotalCount(Query q) {
