@@ -1,8 +1,8 @@
 package com.perfect.commons.web;
 
 import com.perfect.core.AppContext;
-import com.perfect.entity.sys.BaiduAccountInfoEntity;
-import com.perfect.entity.sys.SystemUserEntity;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.SystemUserService;
 import org.springframework.security.core.Authentication;
@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by vbzer_000 on 2014/8/27.
+ * 2014-12-2 refactor
  */
 public class ContextInterceptor implements HandlerInterceptor {
 
@@ -64,19 +65,19 @@ public class ContextInterceptor implements HandlerInterceptor {
             AppContext.setUser(userName, accoundId);
             return true;
         } else {
-            SystemUserEntity entity = systemUserService.getSystemUser(userName);
-            if (entity == null) {
+            SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+            if (systemUserDTO == null) {
                 return false;
             }
-            int size = entity.getBaiduAccountInfoEntities().size();
-            if (entity.getAccess() == 1) {
+            int size = systemUserDTO.getBaiduAccountInfoDTOs().size();
+            if (systemUserDTO.getAccess() == 1) {
                 adminFlag = true;
                 return true;
             } else {
                 adminFlag = false;
             }
 
-            if (entity.getAccess() == 2 && size == 0) {
+            if (systemUserDTO.getAccess() == 2 && size == 0) {
                 if ("/configuration/add".equals(request.getServletPath())) {
                     return true;
                 }
@@ -91,17 +92,17 @@ public class ContextInterceptor implements HandlerInterceptor {
                 return false;
             }
 
-            if (entity.getBaiduAccountInfoEntities().size() == 1) {
-                BaiduAccountInfoEntity infoEntity = entity.getBaiduAccountInfoEntities().get(0);
-                WebUtils.setAccountId(request, infoEntity.getId());
-                AppContext.setUser(userName, infoEntity.getId());
+            if (systemUserDTO.getBaiduAccountInfoDTOs().size() == 1) {
+                BaiduAccountInfoDTO infoDTO = systemUserDTO.getBaiduAccountInfoDTOs().get(0);
+                WebUtils.setAccountId(request, infoDTO.getId());
+                AppContext.setUser(userName, infoDTO.getId());
                 return true;
             }
 
-            for (BaiduAccountInfoEntity infoEntity : entity.getBaiduAccountInfoEntities()) {
-                if (infoEntity.isDfault()) {
-                    WebUtils.setAccountId(request, infoEntity.getId());
-                    AppContext.setUser(userName, infoEntity.getId());
+            for (BaiduAccountInfoDTO infoDTO : systemUserDTO.getBaiduAccountInfoDTOs()) {
+                if (infoDTO.isDfault()) {
+                    WebUtils.setAccountId(request, infoDTO.getId());
+                    AppContext.setUser(userName, infoDTO.getId());
                     break;
                 }
             }
@@ -169,7 +170,7 @@ public class ContextInterceptor implements HandlerInterceptor {
 
     //获取账户余额和账户余额
     private Double[] getBalanceAndBudget(Long accountId) {
-        BaiduAccountInfoEntity accountInfo = accountManageService.getBaiduAccountInfoById(accountId);
+        BaiduAccountInfoDTO accountInfo = accountManageService.getBaiduAccountInfoById(accountId);
         if (accountInfo == null) {
             return new Double[]{null, null};
         }
