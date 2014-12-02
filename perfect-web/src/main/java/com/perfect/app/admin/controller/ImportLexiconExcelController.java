@@ -1,19 +1,14 @@
 package com.perfect.app.admin.controller;
 
 import com.perfect.commons.web.WebContextSupport;
-import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.keyword.LexiconDTO;
-import com.perfect.entity.keyword.LexiconEntity;
-import com.perfect.utils.redis.JRedisUtils;
-import com.perfect.utils.ObjectUtils;
+import com.perfect.service.LexiconService;
 import com.perfect.utils.excel.XSSFReadUtils;
 import com.perfect.utils.excel.XSSFSheetHandler;
+import com.perfect.utils.redis.JRedisUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +20,7 @@ import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import redis.clients.jedis.Jedis;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -43,7 +39,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.TRADE_KEY;
 
 /**
  * Created by baizz on 2014-10-9.
- * 2014-11-26 refactor
+ * 2014-12-2 refactor
  */
 @RestController
 @Scope("prototype")
@@ -54,6 +50,9 @@ public class ImportLexiconExcelController extends WebContextSupport {
     private static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
     private static String trade;
+
+    @Resource
+    private LexiconService lexiconService;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void importLexicon(HttpServletRequest request, HttpServletResponse response,
@@ -126,14 +125,7 @@ public class ImportLexiconExcelController extends WebContextSupport {
                                              @RequestParam(value = "trade") String trade,
                                              @RequestParam(value = "category", required = false) String category)
             throws IOException {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        Query query = new Query();
-        if (category != null && category.length() > 0) {
-            query.addCriteria(Criteria.where("tr").is(trade).and("cg").is(category));
-        } else {
-            query.addCriteria(Criteria.where("tr").is(trade));
-        }
-        mongoTemplate.remove(query, LexiconEntity.class);
+        lexiconService.deleteLexiconByTrade(trade, category);
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> result = new HashMap<String, Object>() {{
             put("status", true);
@@ -167,8 +159,7 @@ public class ImportLexiconExcelController extends WebContextSupport {
                     LexiconDTO dto = entityList.get(i);
                     list.add(dto);
                 }
-                MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-                mongoTemplate.insertAll(ObjectUtils.convert(list, LexiconEntity.class));
+                lexiconService.save(list);
             } else {
                 int middle = (last - first) / 2;
                 LexiconTask task1 = new LexiconTask(entityList, first, middle + first);
