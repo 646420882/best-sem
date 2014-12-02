@@ -26,6 +26,11 @@ import java.util.Map;
 public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleDTO, Long> implements AccountWarningDAO {
 
     @Override
+    public Class<WarningRuleDTO> getDTOClass() {
+        return WarningRuleDTO.class;
+    }
+
+    @Override
     public WarningRuleDTO findOne(Long aLong) {
         return null;
     }
@@ -51,15 +56,6 @@ public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleDTO
         return WarningRuleDTO.class;
     }
 
-    @Override
-    public void insert(WarningRuleDTO warningRuleEntity) {
-        getSysMongoTemplate().insert(warningRuleEntity, "sys_warning");
-    }
-
-    @Override
-    public void insertAll(List<WarningRuleDTO> entities) {
-
-    }
 
     @Override
     public void update(WarningRuleDTO warningRuleEntity) {
@@ -97,7 +93,6 @@ public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleDTO
 
 
 
-    @Override
     public  void updateMulti(Query query,Update update){
         getSysMongoTemplate().updateMulti(query,update,WarningRuleEntity.class,"sys_warning");
     }
@@ -127,10 +122,5 @@ public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleDTO
         getMongoTemplate().save(warningRuleEntity,"sys_warning");
     }
 
-
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
 }
 

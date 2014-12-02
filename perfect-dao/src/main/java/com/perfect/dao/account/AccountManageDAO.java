@@ -23,16 +23,6 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
     ArrayNode getAccountTree();
 
     /**
-     * 获取新增的百度账户信息
-     *
-     * @param username
-     * @param password
-     * @param token
-     * @return
-     */
-    List<BaiduAccountInfoDTO> getBaiduAccountInfos(String username, String password, String token);
-
-    /**
      * 获取百度账户列表
      *
      * @return

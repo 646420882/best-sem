@@ -1,9 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.keyword.KeywordImportDAO;
-import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.keyword.KeywordImportDTO;
-import com.perfect.entity.keyword.KeywordImportEntity;
 import com.perfect.service.KeywordImportService;
 import com.perfect.utils.paging.Pager;
 import org.springframework.stereotype.Service;
@@ -17,18 +15,10 @@ import java.util.Map;
  * 2014-11-26 refactor
  */
 @Service
-public class KeywordImportServiceImpl extends AbstractUserBaseDAOImpl<KeywordImportEntity,Long> implements KeywordImportService {
+public class KeywordImportServiceImpl  implements KeywordImportService {
     @Resource
     private KeywordImportDAO keywordImportDAO;
-    @Override
-    public Class<KeywordImportEntity> getEntityClass() {
-        return null;
-    }
 
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
 
     @Override
     public KeywordImportDTO findByKwdId(Long kwdId) {

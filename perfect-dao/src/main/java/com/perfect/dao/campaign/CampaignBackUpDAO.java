@@ -2,9 +2,10 @@ package com.perfect.dao.campaign;
 
 
 import com.perfect.dao.MongoCrudRepository;
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.backup.CampaignBackUpDTO;
 
-public interface CampaignBackUpDAO extends MongoCrudRepository<CampaignBackUpDTO, Long> {
+public interface CampaignBackUpDAO extends HeyCrudRepository<CampaignBackUpDTO, Long> {
 
 
     CampaignBackUpDTO findByObjectId(String id);

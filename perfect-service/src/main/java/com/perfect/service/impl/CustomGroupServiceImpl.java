@@ -2,7 +2,6 @@ package com.perfect.service.impl;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.perfect.dao.adgroup.CustomGroupDAO;
-import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.CustomGroupDTO;
 import com.perfect.service.CustomGroupService;
 import com.perfect.utils.paging.Pager;
@@ -18,20 +17,11 @@ import java.util.Map;
  * 2014-11-26 refactor
  */
 @Service
-public class CustomGroupServiceImpl extends AbstractUserBaseDAOImpl<CustomGroupDTO,Long> implements CustomGroupService {
+public class CustomGroupServiceImpl implements CustomGroupService {
     private static final String ZTREE="trees";
 
     @Resource
     private CustomGroupDAO customGroupDAO;
-    @Override
-    public Class<CustomGroupDTO> getEntityClass() {
-        return null;
-    }
-
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
 
     @Override
     public List<CustomGroupDTO> findAll(Long acId) {

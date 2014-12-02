@@ -55,13 +55,4 @@ public class CampaignBackUpDAOImpl extends AbstractUserBaseDAOImpl<CampaignBackU
         return CampaignBackUpEntity.class;
     }
 
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
-
-    @Override
-    public List<CampaignBackUpDTO> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, boolean asc) {
-        return null;
-    }
 }

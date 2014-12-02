@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mongodb.WriteResult;
-import com.perfect.utils.DateUtils;
-import com.perfect.utils.ObjectUtils;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.sys.SystemUserDAO;
@@ -15,8 +13,9 @@ import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.account.AccountReportEntity;
-import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
+import com.perfect.utils.DateUtils;
+import com.perfect.utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -33,8 +32,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +45,6 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 @SuppressWarnings("unchecked")
 @Repository(value = "accountManageDAO")
 public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO, String> implements AccountManageDAO {
-    protected static transient Logger log = LoggerFactory.getLogger(AccountManageDAOImpl.class);
 
     @Resource
     private SystemUserDAO systemUserDAO;
@@ -337,50 +333,6 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         costRate = (cost1 - cost2) / cost2;
         costRate = new BigDecimal(costRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         return costRate;
-    }
-
-    /**
-     * @param username
-     * @param password
-     * @param token
-     * @return
-     */
-    @Override
-    public List<BaiduAccountInfoDTO> getBaiduAccountInfos(String username, String password, String token) {
-        List<BaiduAccountInfoDTO> list = new ArrayList<>();
-        Long id = getBaiduAccountId(username, password, token);
-        BaiduAccountInfoDTO dto = new BaiduAccountInfoDTO();
-        dto.setId(id);
-        dto.setBaiduUserName(username);
-        dto.setBaiduPassword(password);
-        dto.setToken(token);
-        list.add(dto);
-        return list;
-    }
-
-    /**
-     * 获取百度用户id
-     *
-     * @param username
-     * @param password
-     * @param token
-     * @return
-     */
-    private Long getBaiduAccountId(String username, String password, String token) {
-        CommonService service;
-        Long baiduAccountId = null;
-        try {
-            service = ServiceFactory.getInstance(username, password, token, null);
-            AccountService accountService = service.getService(AccountService.class);
-            GetAccountInfoRequest request = new GetAccountInfoRequest();
-            GetAccountInfoResponse response = accountService.getAccountInfo(request);
-            AccountInfoType accountInfoType = response.getAccountInfoType();
-            baiduAccountId = accountInfoType.getUserid();
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-
-        return baiduAccountId;
     }
 
     class CampaignVO {

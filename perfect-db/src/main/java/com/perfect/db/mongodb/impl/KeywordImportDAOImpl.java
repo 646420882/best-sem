@@ -25,16 +25,12 @@ import java.util.regex.Pattern;
  * 2014-11-26 refactor
  */
 @Repository("keywordImportDAO")
-public class KeywordImportDAOImpl extends AbstractUserBaseDAOImpl<KeywordImportEntity, Long> implements KeywordImportDAO {
+public class KeywordImportDAOImpl extends AbstractUserBaseDAOImpl<KeywordImportDTO, Long> implements KeywordImportDAO {
     @Override
     public Class<KeywordImportEntity> getEntityClass() {
         return null;
     }
 
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
 
     @Override
     public KeywordImportDTO findByKwdId(Long kwdId) {
@@ -125,4 +121,21 @@ public class KeywordImportDAOImpl extends AbstractUserBaseDAOImpl<KeywordImportE
     private void deleteBySubData(String cgid) {
         BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where("cgid").in(cgid)), KeywordImportEntity.class);
     }
+
+    @Override
+    public Class<KeywordImportDTO> getDTOClass() {
+        return KeywordImportDTO.class;
+    }
+
+    @Override
+    public KeywordImportDTO save(KeywordImportDTO dto) {
+        return null;
+    }
+
+
+    @Override
+    public void delete(KeywordImportDTO entity) {
+
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.perfect.dao.keyword;
 
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.CustomGroupDTO;
 import com.perfect.dto.keyword.KeywordImportDTO;
 
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * Created by XiaoWei on 2014/9/22.
  */
-public interface KeywordImportDAO {
+public interface KeywordImportDAO extends HeyCrudRepository<KeywordImportDTO,Long> {
     public KeywordImportDTO findByKwdId(Long kwdId);
 
     public List<KeywordImportDTO> findByCgId(String cgId);
