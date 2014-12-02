@@ -9,7 +9,7 @@ import com.perfect.utils.paging.PagerInfo;
 import java.util.List;
 import java.util.Map;
 
-public interface AdgroupDAO  extends HeyCrudRepository<AdgroupDTO, Long> {
+public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
 
     List<Long> getAllAdgroupId();
 

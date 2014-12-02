@@ -18,6 +18,7 @@ import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.sys.SystemUserDAO;
+import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
@@ -45,21 +46,36 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import static com.perfect.commons.constants.MongoEntityConstants.*;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by baizz on 2014-6-25.
- * 2014-11-29 refactor
+ * 2014-12-2 refactor
  */
 @SuppressWarnings("unchecked")
 @Repository(value = "accountManageDAO")
-public class AccountManageDAOImpl implements AccountManageDAO<SystemUserDTO> {
+public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO, String> implements AccountManageDAO {
     protected static transient Logger log = LoggerFactory.getLogger(AccountManageDAOImpl.class);
 
     @Resource
     private SystemUserDAO systemUserDAO;
+
+    @Override
+    public <E> Class<E> getEntityClass() {
+        return (Class<E>) SystemUserEntity.class;
+    }
+
+    @Override
+    public Class<SystemUserDTO> getDTOClass() {
+        return SystemUserDTO.class;
+    }
+
+    @Override
+    public List<SystemUserDTO> find(Map<String, Object> params, int skip, int limit) {
+        return null;
+    }
 
     /**
      * 百度账户树
@@ -140,7 +156,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<SystemUserDTO> {
     @Override
     public List<SystemUserDTO> getAllSysUserAccount() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        return ObjectUtils.convert(mongoTemplate.find(Query.query(Criteria.where("access").is(2)), SystemUserEntity.class), SystemUserDTO.class);
+        return ObjectUtils.convert(mongoTemplate.find(Query.query(Criteria.where("access").is(2)), getEntityClass()), getDTOClass());
     }
 
     /**
@@ -169,7 +185,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<SystemUserDTO> {
     public SystemUserDTO getCurrUserInfo() {
         SystemUserDTO systemUserDTO = new SystemUserDTO();
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        BeanUtils.copyProperties(mongoTemplate.findOne(Query.query(Criteria.where("userName").is(AppContext.getUser())), getSystemUserEntityClass()), systemUserDTO);
+        BeanUtils.copyProperties(mongoTemplate.findOne(Query.query(Criteria.where("userName").is(AppContext.getUser())), getEntityClass()), systemUserDTO);
         return systemUserDTO;
     }
 
@@ -183,7 +199,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<SystemUserDTO> {
     @Override
     public List<SystemUserDTO> getAccount() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        return ObjectUtils.convert(mongoTemplate.find(Query.query(Criteria.where("state").is(0)), getSystemUserEntityClass()), getSystemUserDTOClass());
+        return ObjectUtils.convert(mongoTemplate.find(Query.query(Criteria.where("state").is(0)), getEntityClass()), getDTOClass());
     }
 
     @Override
@@ -198,7 +214,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<SystemUserDTO> {
     @Override
     public List<SystemUserDTO> getAccountAll() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        return ObjectUtils.convert(mongoTemplate.find(new Query(), getSystemUserEntityClass()), getSystemUserDTOClass());
+        return ObjectUtils.convert(mongoTemplate.find(new Query(), getEntityClass()), getDTOClass());
     }
 
     @Override
@@ -233,7 +249,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<SystemUserDTO> {
             WriteResult writeResult = mongoTemplate.updateFirst(
                     Query.query(
                             Criteria.where("userName").is(userNmae).and("state").is(0)),
-                    update, getSystemUserEntityClass());
+                    update, getEntityClass());
 
             if (writeResult.isUpdateOfExisting()) {
                 i = 1;
@@ -258,7 +274,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<SystemUserDTO> {
     @Override
     public void uploadImg(byte[] bytes) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(AppContext.getUser())), Update.update("img", bytes), getSystemUserEntityClass());
+        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(AppContext.getUser())), Update.update("img", bytes), getEntityClass());
     }
 
     @Override
@@ -275,7 +291,7 @@ public class AccountManageDAOImpl implements AccountManageDAO<SystemUserDTO> {
         if (dto.getExcludeIp() != null) {
             update.set("bdAccounts.$.exIp", dto.getExcludeIp());
         }
-        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(currUser).and("bdAccounts._id").is(dto.getId())), update, getSystemUserEntityClass());
+        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(currUser).and("bdAccounts._id").is(dto.getId())), update, getEntityClass());
     }
 
     /**
@@ -349,14 +365,6 @@ public class AccountManageDAOImpl implements AccountManageDAO<SystemUserDTO> {
         dto.setToken(token);
         list.add(dto);
         return list;
-    }
-
-    private Class<SystemUserEntity> getSystemUserEntityClass() {
-        return SystemUserEntity.class;
-    }
-
-    private Class<SystemUserDTO> getSystemUserDTOClass() {
-        return SystemUserDTO.class;
     }
 
     /**

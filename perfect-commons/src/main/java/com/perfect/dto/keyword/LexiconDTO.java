@@ -4,6 +4,7 @@ import com.perfect.dto.BaseDTO;
 
 /**
  * Created by baizz on 2014-11-26.
+ * 2014-12-2 refactor
  */
 public class LexiconDTO extends BaseDTO {
 

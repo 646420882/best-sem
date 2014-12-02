@@ -5,7 +5,6 @@ package com.perfect.dto;
  */
 public class CookieDTO extends BaseDTO {
 
-
     private String cookie;
 
     private boolean idle;

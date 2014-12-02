@@ -9,8 +9,9 @@ import java.util.Map;
 
 /**
  * Created by baizz on 2014-8-21.
+ * 2014-12-2 refactor
  */
-public interface KeywordGroupDAO extends HeyCrudRepository<LexiconDTO, Long> {
+public interface KeywordGroupDAO extends HeyCrudRepository<LexiconDTO, String> {
 
     /**
      * 查询行业词库下的类别

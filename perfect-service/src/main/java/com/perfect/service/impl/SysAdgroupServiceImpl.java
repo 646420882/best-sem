@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Created by vbzer_000 on 2014/8/27.
+ * 2014-12-2 refactor
  */
 @Component("sysAdgroupService")
 public class SysAdgroupServiceImpl implements SysAdgroupService {

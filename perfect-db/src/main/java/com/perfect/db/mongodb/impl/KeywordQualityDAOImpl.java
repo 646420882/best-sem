@@ -1,6 +1,7 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.dao.keyword.KeywordQualityDAO;
+import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.entity.report.KeywordReportEntity;
@@ -10,13 +11,25 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by baizz on 2014-07-24.
- * 2014-11-26 refactor
+ * 2014-12-2 refactor
  */
 @Repository("keywordQualityDAO")
-public class KeywordQualityDAOImpl implements KeywordQualityDAO {
+public class KeywordQualityDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportDTO, Long> implements KeywordQualityDAO {
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <E> Class<E> getEntityClass() {
+        return (Class<E>) KeywordReportEntity.class;
+    }
+
+    @Override
+    public Class<KeywordReportDTO> getDTOClass() {
+        return KeywordReportDTO.class;
+    }
 
     @Override
     public List<KeywordReportDTO> findYesterdayKeywordReport() {
@@ -77,7 +90,7 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
 //        }
 
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        List<KeywordReportEntity> list = mongoTemplate.findAll(KeywordReportEntity.class, collectionName);
+        List<KeywordReportEntity> list = mongoTemplate.findAll(getEntityClass(), collectionName);
 
 //        //查询
 //        ForkJoinPool forkJoinPool = new ForkJoinPool();
@@ -91,11 +104,15 @@ public class KeywordQualityDAOImpl implements KeywordQualityDAO {
 //        } finally {
 //            forkJoinPool.shutdown();
 //        }
-        return ObjectUtils.convert(list, KeywordReportDTO.class);
+        return ObjectUtils.convert(list, getDTOClass());
+    }
+
+    @Override
+    public List<KeywordReportDTO> find(Map<String, Object> params, int skip, int limit) {
+        return null;
     }
 
 //    @Override
-//    @Deprecated
 //    public List<Long> findYesterdayAllKeywordId() {
 //        String collectionName = DateUtils.getYesterdayStr() + "-keyword";
 //        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();

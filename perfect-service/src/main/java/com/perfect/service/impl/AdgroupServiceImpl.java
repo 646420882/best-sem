@@ -2,7 +2,9 @@ package com.perfect.service.impl;
 
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.backup.AdgroupBackupDTO;
 import com.perfect.service.AdgroupService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -11,7 +13,7 @@ import java.util.Map;
 
 /**
  * Created by baizz on 2014-11-26.
- * 2014-11-26 refactor
+ * 2014-12-2 refactor
  */
 @Service("adgroupService")
 public class AdgroupServiceImpl implements AdgroupService {
@@ -46,12 +48,14 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public void insertAll(List<AdgroupDTO> entities) {
-        adgroupDAO.insertAll(entities);
+        adgroupDAO.save(entities);
     }
 
     @Override
     public void update(AdgroupDTO adgroupDTO) {
-        adgroupDAO.update(adgroupDTO);
+        AdgroupBackupDTO adgroupBackupDTO = new AdgroupBackupDTO();
+        BeanUtils.copyProperties(adgroupDTO, adgroupBackupDTO);
+        adgroupDAO.update(adgroupDTO, adgroupBackupDTO);
     }
 
     @Override

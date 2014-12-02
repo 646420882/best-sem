@@ -13,7 +13,6 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.baidu.BaiduKeywordDTO;
 import com.perfect.dto.baidu.KRResultDTO;
 import com.perfect.dto.keyword.LexiconDTO;
-import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.service.KeywordGroupService;
 import com.perfect.utils.TopN;
 import com.perfect.utils.json.JSONUtils;
@@ -39,7 +38,7 @@ import java.util.*;
 
 /**
  * Created by baizz on 2014-08-09.
- * 2014-11-26 refactor
+ * 2014-12-2 refactor
  */
 @Service("keywordGroupService")
 public class KeywordGroupServiceImpl implements KeywordGroupService {
@@ -59,7 +58,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
     private KeywordGroupDAO keywordGroupDAO;
 
     @Resource
-    private AccountManageDAO<BaiduAccountInfoEntity> accountManageDAO;
+    private AccountManageDAO accountManageDAO;
 
     public Map<String, Object> getKeywordFromBaidu(List<String> seedWordList, int skip, int limit, String krFileId, int sort, String fieldName) {
         if (krFileId == null || "".equals(krFileId)) {
@@ -473,7 +472,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
 
     @Override
     public void deleteByParams(String trade, String keyword) {
-        keywordGroupDAO.deleteByParams(trade,keyword);
+        keywordGroupDAO.deleteByParams(trade, keyword);
     }
 
     @Override

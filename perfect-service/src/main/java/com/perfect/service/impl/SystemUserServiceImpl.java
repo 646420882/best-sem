@@ -19,6 +19,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Resource
     private SystemUserDAO systemUserDAO;
+
     @Resource
     private AccountManageDAO accountManageDAO;
 

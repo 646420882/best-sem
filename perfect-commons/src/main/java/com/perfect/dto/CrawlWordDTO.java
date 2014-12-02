@@ -3,9 +3,7 @@ package com.perfect.dto;
 /**
  * Created by baizz on 2014-11-26.
  */
-public class CrawlWordDTO {
-
-    private String id;
+public class CrawlWordDTO extends BaseDTO {
 
     private String site;
 
@@ -14,14 +12,6 @@ public class CrawlWordDTO {
     private String keyword;
 
     private Integer status = 0;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getSite() {
         return site;

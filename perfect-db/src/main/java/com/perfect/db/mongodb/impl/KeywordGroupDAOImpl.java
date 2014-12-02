@@ -7,10 +7,10 @@ import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.keyword.LexiconDTO;
 import com.perfect.entity.keyword.LexiconEntity;
-import com.perfect.utils.redis.JRedisUtils;
-import com.perfect.utils.mongodb.DBNameUtils;
 import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.mongodb.DBNameUtils;
 import com.perfect.utils.paging.PagerInfo;
+import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.PageRequest;
@@ -34,25 +34,21 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by baizz on 2014-08-20.
+ * 2014-12-2 refactor
  */
 @Repository("keywordGroupDAO")
-public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long> implements KeywordGroupDAO {
-    @Override
-    public Class<LexiconDTO> getEntityClass() {
-        return LexiconDTO.class;
-    }
+public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, String> implements KeywordGroupDAO {
 
-    private Class<LexiconEntity> getLexiconEntityClass() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public Class<LexiconEntity> getEntityClass() {
         return LexiconEntity.class;
     }
 
-
-
     @Override
-    public List<LexiconDTO> find(Map<String, Object> params, int skip, int limit, String sort, boolean asc) {
-        return null;
+    public Class<LexiconDTO> getDTOClass() {
+        return LexiconDTO.class;
     }
-
 
     @Override
     public List<LexiconDTO> find(Map<String, Object> params, int skip, int limit) {
@@ -90,13 +86,14 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long
         if (status) {
             query.with(new PageRequest(skip, limit));
         }
-        return ObjectUtils.convert(mongoTemplate.find(query, getLexiconEntityClass()), getEntityClass());
+        return ObjectUtils.convert(mongoTemplate.find(query, getEntityClass()), getDTOClass());
     }
 
+    @Override
     public List<TradeVO> findTr() {
         Jedis jc = JRedisUtils.get();
         boolean jcKey = jc.exists(TRADE_KEY);
-        List<TradeVO> list = null;
+        List<TradeVO> list;
         if (!jcKey) {
             MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
             Aggregation aggregation = Aggregation.newAggregation(
@@ -134,6 +131,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long
         }
     }
 
+    @Override
     public List<CategoryVO> findCategories(String trade) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Aggregation aggregation = Aggregation.newAggregation(
@@ -148,6 +146,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long
         return list;
     }
 
+    @Override
     public int getCurrentRowsSize(Map<String, Object> params) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
 
@@ -190,20 +189,20 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long
 
     @Override
     public void deleteByParams(String trade, String keyword) {
-        MongoTemplate mongoTemplate= BaseMongoTemplate.getSysMongo();
-        Query q=new Query();
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        Query q = new Query();
         q.addCriteria(Criteria.where("tr").is(trade).and("kw").is(keyword));
         mongoTemplate.remove(q, LexiconEntity.class);
     }
 
     @Override
     public void updateByParams(Map<String, Object> mapParams) {
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
-        Update up=new Update();
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        Update up = new Update();
         up.set("tr", mapParams.get("tr"));
         up.set("cg", mapParams.get("cg"));
-        up.set("gr",mapParams.get("gr"));
-        up.set("kw",mapParams.get("kw"));
+        up.set("gr", mapParams.get("gr"));
+        up.set("kw", mapParams.get("kw"));
         up.set("url", mapParams.get("url"));
         mongoTemplate.updateFirst(new Query(Criteria.where("id").is(mapParams.get("id"))), up, LexiconEntity.class);
     }
@@ -211,11 +210,6 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Long
     private int getTotalCount(Query q, Class<?> cls) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         return (int) mongoTemplate.count(q, cls);
-    }
-
-    @Override
-    public Class<LexiconDTO> getDTOClass() {
-        return LexiconDTO.class;
     }
 
     //行业词库下的类别VO实体

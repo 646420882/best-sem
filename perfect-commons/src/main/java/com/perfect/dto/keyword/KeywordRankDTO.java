@@ -6,13 +6,19 @@ import java.util.HashMap;
 
 /**
  * Created by yousheng on 14/11/24.
+ * 2014-12-2 refactor
  */
-public class KeywordRankDTO extends BaseDTO{
+public class KeywordRankDTO extends BaseDTO {
     private String kwid;
+
     private String name;
+
     private HashMap<Integer, Integer> targetRank;
+
     private int device;
+
     private long time;
+
     private Long accountId;
 
     public void setKwid(String kwid) {

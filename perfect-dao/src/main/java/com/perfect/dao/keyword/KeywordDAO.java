@@ -12,6 +12,7 @@ import java.util.Map;
 
 /**
  * Created by baizz on 2014-7-7.
+ * 2014-12-2 refactor
  */
 public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
     /**
@@ -64,6 +65,8 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 //    PagerInfo findByPageInfo(Query q, int pageSize, int pageNo);
 
     void updateAdgroupIdByOid(String id, Long adgroupId);
+
+    List<KeywordDTO> find(Map<String, Object> params, int skip, int limit, String order);
 
     void deleteById(String id);
 
