@@ -16,8 +16,6 @@ import com.perfect.entity.account.AccountReportEntity;
 import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.ObjectUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Sort;
@@ -279,6 +277,15 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
             update.set("bdAccounts.$.exIp", dto.getExcludeIp());
         }
         mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(currUser).and("bdAccounts._id").is(dto.getId())), update, getEntityClass());
+    }
+
+    @Override
+    public void updateBaiduAccountInfo(String userName, Long accountId, BaiduAccountInfoDTO dto) {
+        getSysMongoTemplate().updateFirst(
+                Query.query(
+                        Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
+                Update.update("bdAccounts.$", dto),
+                getEntityClass());
     }
 
     /**

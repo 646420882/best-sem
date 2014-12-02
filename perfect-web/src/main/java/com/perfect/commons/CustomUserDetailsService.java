@@ -1,7 +1,7 @@
 package com.perfect.commons;
 
 import com.perfect.dao.sys.SystemUserDAO;
-import com.perfect.entity.sys.SystemUserEntity;
+import com.perfect.dto.SystemUserDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserDetails user;
-        SystemUserEntity systemUser = systemUserDAO.findByUserName(s);
+        SystemUserDTO systemUser = systemUserDAO.findByUserName(s);
         if (systemUser == null) {
             throw new UsernameNotFoundException("Username not found");
         }

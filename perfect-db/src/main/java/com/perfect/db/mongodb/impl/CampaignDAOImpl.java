@@ -17,7 +17,6 @@ import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.utils.ObjectUtils;
-import com.perfect.utils.paging.Pager;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
@@ -84,7 +83,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
     //xj
     public CampaignDTO findCampaignByName(String name) {
-        List<CampaignEntity> campaignEntityList = getMongoTemplate().find(new Query(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and("name").is(name)), getCampaignEntityClass(), MongoEntityConstants.TBL_CAMPAIGN);
+        List<CampaignEntity> campaignEntityList = getMongoTemplate().find(new Query(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and("name").is(name)), getEntityClass(), MongoEntityConstants.TBL_CAMPAIGN);
 
         CampaignEntity campaignEntity = campaignEntityList.size() == 0 ? null : campaignEntityList.get(0);
 
@@ -94,7 +93,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     }
 
     public List<CampaignDTO> findAll() {
-        List<CampaignEntity> list = getMongoTemplate().find(Query.query(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId())), getCampaignEntityClass());
+        List<CampaignEntity> list = getMongoTemplate().find(Query.query(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
 
         List<CampaignDTO> campaignDTOs = ObjectUtils.convert(list, CampaignDTO.class);
         return campaignDTOs;
@@ -140,7 +139,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
                 match(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).ne(null)),
                 project(MongoEntityConstants.ACCOUNT_ID, CAMPAIGN_ID, NAME).andExclude(SYSTEM_ID)
         );
-        AggregationResults<CampaignEntity> results = getMongoTemplate().aggregate(aggregation, MongoEntityConstants.TBL_CAMPAIGN, getCampaignEntityClass());
+        AggregationResults<CampaignEntity> results = getMongoTemplate().aggregate(aggregation, MongoEntityConstants.TBL_CAMPAIGN, getEntityClass());
 
         List<CampaignDTO> campaignDTOs = ObjectUtils.convert(results.getMappedResults(), CampaignDTO.class);
         return campaignDTOs;
@@ -148,7 +147,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
     @Override
     public CampaignDTO findByObjectId(String oid) {
-        CampaignEntity campaignEntity = getMongoTemplate().findOne(Query.query(Criteria.where(SYSTEM_ID).is(oid)), getCampaignEntityClass());
+        CampaignEntity campaignEntity = getMongoTemplate().findOne(Query.query(Criteria.where(SYSTEM_ID).is(oid)), getEntityClass());
         CampaignDTO campaignDTO = new CampaignDTO();
         BeanUtils.copyProperties(campaignEntity, campaignDTO);
         return campaignDTO;
@@ -223,7 +222,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        getMongoTemplate().updateFirst(query, update, getCampaignEntityClass(), MongoEntityConstants.TBL_CAMPAIGN);
+        getMongoTemplate().updateFirst(query, update, getEntityClass(), MongoEntityConstants.TBL_CAMPAIGN);
     }
 
 
@@ -270,19 +269,19 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     @Override
     public PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo) {
         Query q = new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId));
-            int totalCount = getListTotalCount(q);
+        int totalCount = getListTotalCount(q);
 
-            PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
-            q.skip(p.getFirstStation());
-            q.limit(p.getPageSize());
-            q.with(new Sort("name"));
-            if (totalCount < 1) {
-                p.setList(new ArrayList());
-                return p;
-            }
-            List list = getMongoTemplate().find(q, getEntityClass());
-            p.setList(list);
+        PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
+        q.skip(p.getFirstStation());
+        q.limit(p.getPageSize());
+        q.with(new Sort("name"));
+        if (totalCount < 1) {
+            p.setList(new ArrayList());
             return p;
+        }
+        List list = getMongoTemplate().find(q, getEntityClass());
+        p.setList(list);
+        return p;
     }
 
 
@@ -339,11 +338,8 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     }
 
     @Override
-    public Class<CampaignDTO> getEntityClass() {
-        return CampaignDTO.class;
-    }
-
-    public Class<CampaignEntity> getCampaignEntityClass() {
+    @SuppressWarnings("unchecked")
+    public Class<CampaignEntity> getEntityClass() {
         return CampaignEntity.class;
     }
 

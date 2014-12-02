@@ -1,7 +1,6 @@
 package com.perfect.dao.creative;
 
-import com.perfect.dao.MongoCrudRepository;
-import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.utils.paging.PagerInfo;
 
@@ -11,7 +10,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-7-10.
  */
-public interface CreativeDAO extends MongoCrudRepository<CreativeDTO, Long> {
+public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
 
     List<Long> getCreativeIdByAdgroupId(Long adgroupId);
 
