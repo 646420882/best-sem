@@ -11,12 +11,12 @@ import java.util.List;
  */
 public interface AccountDataService {
 
-    public void initAccountData(String userName, long accountId);
+    public void initAccountData(String userName, Long accountId);
 
-    public void updateAccountData(String userName, long accountId);
+    public void updateAccountData(String userName, Long accountId);
 
-    public void updateAccountData(String userName, long accountId, List<Long> camIds);
+    public void updateAccountData(String userName, Long accountId, List<Long> camIds);
 
-    public List<CampaignDTO> getCampaign(String userName, long accountId);
+    public List<CampaignDTO> getCampaign(String userName, Long accountId);
 
 }

@@ -4,11 +4,18 @@ import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.entity.adgroup.AdgroupEntity;
+import com.perfect.entity.campaign.CampaignEntity;
+import com.perfect.entity.creative.CreativeEntity;
+import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -17,6 +24,8 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by vbzer_000 on 2014-6-19.
@@ -81,17 +90,87 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     }
 
     @Override
-    public void initAccount(SystemUserDTO systemUserDTO) {
-        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccountInfoDTOs();
+    public void clearAccountData(Long accountId) {
+        MongoTemplate mongoTemplate = getSysMongoTemplate();
+        if (mongoTemplate.collectionExists(CampaignEntity.class))
+            mongoTemplate.remove(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), CampaignEntity.class);
 
-        if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
-            logger.warn("账号未绑定百度推广账户");
-            return;
-        }
+        if (mongoTemplate.collectionExists(AdgroupEntity.class))
+            mongoTemplate.remove(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), AdgroupEntity.class);
 
-        String userName = systemUserDTO.getUserName();
+        if (mongoTemplate.collectionExists(KeywordEntity.class))
+            mongoTemplate.remove(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), KeywordEntity.class);
 
+        if (mongoTemplate.collectionExists(CreativeEntity.class))
+            mongoTemplate.remove(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), CreativeEntity.class);
+    }
 
+    @Override
+    public void clearCampaignData(Long accountId, List<Long> campaignIds) {
+        MongoTemplate mongoTemplate = getSysMongoTemplate();
+        Query query = new Query(Criteria.where(ACCOUNT_ID).is(accountId).and(CAMPAIGN_ID).in(campaignIds));
+        if (mongoTemplate.collectionExists(CampaignEntity.class))
+            mongoTemplate.remove(query, TBL_CAMPAIGN);
+    }
+
+    @Override
+    public void clearAdgroupData(Long accountId, List<Long> adgroupIds) {
+        MongoTemplate mongoTemplate = getSysMongoTemplate();
+        Query query = new Query(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).in(adgroupIds));
+        if (mongoTemplate.collectionExists(AdgroupEntity.class))
+            mongoTemplate.remove(query, TBL_ADGROUP);
+    }
+
+    @Override
+    public void clearKeywordData(Long accountId, List<Long> keywordIds) {
+        MongoTemplate mongoTemplate = getSysMongoTemplate();
+        Query query = new Query(Criteria.where(ACCOUNT_ID).is(accountId).and(KEYWORD_ID).in(keywordIds));
+        if (mongoTemplate.collectionExists(KeywordEntity.class))
+            mongoTemplate.remove(query, TBL_KEYWORD);
+    }
+
+    @Override
+    public void clearCreativeData(Long accountId, List<Long> creativeIds) {
+        MongoTemplate mongoTemplate = getSysMongoTemplate();
+        Query query = new Query(Criteria.where(ACCOUNT_ID).is(accountId).and(CREATIVE_ID).in(creativeIds));
+        if (mongoTemplate.collectionExists(CreativeEntity.class))
+            mongoTemplate.remove(query, TBL_CREATIVE);
+    }
+
+    @Override
+    public List<Long> getLocalAdgroupIds(Long accountId, List<Long> campaignIds) {
+        Aggregation aggregation = newAggregation(
+                match(Criteria.where(ACCOUNT_ID).is(accountId).and(CAMPAIGN_ID).in(campaignIds)),
+                project(ADGROUP_ID).andExclude(SYSTEM_ID)
+        );
+        AggregationResults<AdgroupEntity> results = getSysMongoTemplate().aggregate(aggregation, TBL_ADGROUP, AdgroupEntity.class);
+        List<Long> ids = new ArrayList<>();
+        results.getMappedResults().parallelStream().forEach(e -> ids.add(e.getAdgroupId()));
+        return ids;
+    }
+
+    @Override
+    public List<Long> getLocalKeywordIds(Long accountId, List<Long> adgroupIds) {
+        Aggregation aggregation = newAggregation(
+                match(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).in(adgroupIds)),
+                project(KEYWORD_ID).andExclude(SYSTEM_ID)
+        );
+        AggregationResults<KeywordEntity> results = getSysMongoTemplate().aggregate(aggregation, TBL_KEYWORD, KeywordEntity.class);
+        List<Long> ids = new ArrayList<>();
+        results.getMappedResults().parallelStream().forEach(e -> ids.add(e.getKeywordId()));
+        return ids;
+    }
+
+    @Override
+    public List<Long> getLocalCreativeIds(Long accountId, List<Long> adgroupIds) {
+        Aggregation aggregation = newAggregation(
+                match(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).in(adgroupIds)),
+                project(CREATIVE_ID).andExclude(SYSTEM_ID)
+        );
+        AggregationResults<CreativeEntity> results = getSysMongoTemplate().aggregate(aggregation, TBL_CREATIVE, CreativeEntity.class);
+        List<Long> ids = new ArrayList<>();
+        results.getMappedResults().parallelStream().forEach(e -> ids.add(e.getCreativeId()));
+        return ids;
     }
 
     @Override

@@ -34,5 +34,19 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
 
     void removeAccountInfo(Long id);
 
-    public void initAccount();
+    void clearAccountData(Long accountId);
+
+    void clearCampaignData(Long accountId, List<Long> campaignIds);
+
+    void clearAdgroupData(Long accountId, List<Long> adgroupIds);
+
+    void clearKeywordData(Long accountId, List<Long> keywordIds);
+
+    void clearCreativeData(Long accountId, List<Long> creativeIds);
+
+    List<Long> getLocalAdgroupIds(Long accountId, List<Long> campaignIds);
+
+    List<Long> getLocalKeywordIds(Long accountId, List<Long> adgroupIds);
+
+    List<Long> getLocalCreativeIds(Long accountId, List<Long> adgroupIds);
 }
