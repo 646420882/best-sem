@@ -4,6 +4,7 @@ package com.perfect.dao.adgroup;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -63,5 +64,7 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
     void deleteLinkedByAgid(List<Long> agid);
 
     void insert(AdgroupDTO adgroupDTO);
+
+    List<AdgroupDTO> findByTwoParams(Long cid,Long accountId);
 
 }

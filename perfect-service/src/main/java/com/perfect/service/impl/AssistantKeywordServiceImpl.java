@@ -37,12 +37,13 @@ import static com.perfect.commons.constants.MongoEntityConstants.*;
 
 /**
  * Created by john on 2014/8/19.
+ * 2014-12-2 refactor XiaoWei
  */
 @Service("assistantKeywordService")
 public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     @Resource
-    private AccountManageDAO<BaiduAccountInfoDTO> accountManageDAO;
+    private AccountManageDAO accountManageDAO;
 
     @Resource
     private CampaignDAO campaignDAO;
@@ -105,9 +106,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
             kwd.setPrice(kwd.getPrice() == null ? BigDecimal.ZERO : kwd.getPrice());
             KeywordInfoDTO dto = new KeywordInfoDTO();
-            dto.setCampaignName(((CampaignEntity) getMap.get("campaign")).getCampaignName());
-            dto.setAdgroupName(((AdgroupEntity) getMap.get("adgroup")).getAdgroupName());
-            dto.setCampaignId(((CampaignEntity) getMap.get("campaign")).getCampaignId());
+            dto.setCampaignName(((CampaignDTO) getMap.get("campaign")).getCampaignName());
+            dto.setAdgroupName(((AdgroupDTO) getMap.get("adgroup")).getAdgroupName());
+            dto.setCampaignId(((CampaignDTO) getMap.get("campaign")).getCampaignId());
             dto.setObject(kwd);
             dtoList.add(dto);
         }
@@ -272,8 +273,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             nowPage = 0;
         }
         PagerInfo page = null;
-        Query query = new Query();
-        query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
+        long accountId=AppContext.getAccountId();
+//        Query query = new Query();
+//        query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
 
         CampaignDTO campaignDTO = null;
         if (cid != null && !"".equals(cid)) {
@@ -294,26 +296,27 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         //若cid和aid都不为空，就是查询某单元下的关键词,在aid为空的时候就查询该计划下的关键词
         if (cid != null && !"".equals(cid) && aid != null && !"".equals(aid)) {
             if (aid.matches(regex)) {
-                query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.parseLong(aid)));
-                page = keywordDAO.findByPageInfo(query, pageSize, nowPage);
+//                query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.parseLong(aid)));
+                page = keywordDAO.findByPageInfoForLongId(Long.parseLong(aid), pageSize, nowPage);
             } else {
-                query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).is(aid));
-                page = keywordDAO.findByPageInfo(query, pageSize, nowPage);
+//                query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).is(aid));
+                page = keywordDAO.findByPageInfoForStringId(aid, pageSize, nowPage);
             }
         } else if (cid != null && !"".equals(cid) && (aid == null || "".equals(aid))) {
-            Query adQuery = new Query();
+//            Query adQuery = new Query();
             if (campaignDTO.getCampaignId() != null) {
                 List<Long> longIds = new ArrayList<>();
                 longIds.addAll(adgroupDAO.getAdgroupIdByCampaignId(campaignDTO.getCampaignId()));
-                adQuery.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(longIds));
+//                adQuery.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(longIds));
+                page = keywordDAO.findByPageInfoForLongIds(longIds, pageSize, nowPage);
             } else {
                 List<String> objIds = new ArrayList<>();
                 objIds.addAll(adgroupDAO.getAdgroupIdByCampaignId(campaignDTO.getId()));
-                adQuery.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(objIds));
+//                adQuery.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(objIds));
+                page = keywordDAO.findByPageInfoForStringIds(objIds, pageSize, nowPage);
             }
-            page = keywordDAO.findByPageInfo(adQuery, pageSize, nowPage);
         } else {
-            page = keywordDAO.findByPageInfo(query, pageSize, nowPage);
+            page = keywordDAO.findByPageInfoForAcctounId(pageSize, nowPage);
         }
 
         page.setList(setCampaignNameByKeywordEntitys((List<KeywordDTO>) page.getList(), campaignDTO));
@@ -447,9 +450,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * @param query
      * @return
      */
-    public List<CampaignDTO> findByQuery(Query query) {
-        return campaignDAO.find(query);
-    }
+//    public List<CampaignDTO> findByQuery(Query query) {
+//        return campaignDAO.find(query);
+//    }
 
 
     /**
@@ -464,7 +467,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         Iterable<CampaignDTO> campaignList = campaignDAO.findAll();
 
         for (CampaignDTO campaignDTO : campaignList) {
-            List<AdgroupDTO> adgroupList = adgroupDAO.findByQuery(new Query().addCriteria(Criteria.where(CAMPAIGN_ID).is(campaignDTO.getCampaignId()).and(ACCOUNT_ID).is(accountId)));
+            List<AdgroupDTO> adgroupList = adgroupDAO.findByTwoParams(campaignDTO.getCampaignId(),AppContext.getAccountId());
             CampaignTreeDTO campaignTree = new CampaignTreeDTO();
             campaignTree.setRootNode(campaignDTO);//设置根节点
             campaignTree.setChildNode(adgroupList);//设置子节点

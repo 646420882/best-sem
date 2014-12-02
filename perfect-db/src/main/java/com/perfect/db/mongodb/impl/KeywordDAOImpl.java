@@ -18,6 +18,7 @@ import com.perfect.entity.backup.KeyWordBackUpEntity;
 import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.Pager;
+import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.paging.PaginationParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
@@ -297,6 +298,88 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         KeywordDTO keywordDTO = new KeywordDTO();
         BeanUtils.copyProperties(getMongoTemplate().findOne(Query.query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(oid)), getEntityClass()), keywordDTO);
         return keywordDTO;
+    }
+
+    @Override
+    public PagerInfo findByPageInfoForAcctounId( int pageSize, int pageNo) {
+        Query query=new Query();
+        query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
+        int totalCount=getListTotalCount(query);
+        PagerInfo p=new PagerInfo(pageNo,pageSize,totalCount);
+        query.skip(p.getFirstStation());
+        query.limit(p.getPageSize());
+        if(totalCount<1){p.setList(new ArrayList());return p;}
+        List list=getMongoTemplate().find(query,getEntityClass());
+        p.setList(list);
+        return p;
+    }
+
+    //    //xj
+//    public PagerInfo findByPageInfo(Query q, int pageSize, int pageNo) {
+//        int totalCount = getListTotalCount(q);
+//        PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
+//        q.skip(p.getFirstStation());
+//        q.limit(p.getPageSize());
+//        if (totalCount < 1) {
+//            p.setList(new ArrayList());
+//            return p;
+//        }
+//        List list = getMongoTemplate().find(q, getEntityClass());
+//        p.setList(list);
+//        return p;
+//    }
+
+    private int getListTotalCount(Query q) {
+        return (int) getMongoTemplate().count(q, MongoEntityConstants.TBL_KEYWORD);
+    }
+    @Override
+    public PagerInfo findByPageInfoForLongId(Long aid, int pageSize, int pageNo) {
+        Query query=new Query();
+        query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
+        query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(aid));
+        int totalCount=getListTotalCount(query);
+        PagerInfo p=new PagerInfo(pageNo,pageSize,totalCount);
+        query.skip(p.getFirstStation());
+        query.limit(p.getPageSize());
+        if(totalCount<1){p.setList(new ArrayList());return p;}
+        List list=getMongoTemplate().find(query,getEntityClass());
+        p.setList(list);
+        return p;
+    }
+
+    @Override
+    public PagerInfo findByPageInfoForStringId(String aid, int pageSize, int pageNo) {
+        return findByPageInfoForLongId(Long.parseLong(aid), pageSize, pageNo);
+    }
+
+    @Override
+    public PagerInfo findByPageInfoForLongIds(List<Long> longIds, int pageSize, int pageNo) {
+        Query query=new Query();
+        query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
+        query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(longIds));
+        int totalCount=getListTotalCount(query);
+        PagerInfo p=new PagerInfo(pageNo,pageSize,totalCount);
+        query.skip(p.getFirstStation());
+        query.limit(p.getPageSize());
+        if(totalCount<1){p.setList(new ArrayList());return p;}
+        List list=getMongoTemplate().find(query,getEntityClass());
+        p.setList(list);
+        return p;
+    }
+
+    @Override
+    public PagerInfo findByPageInfoForStringIds(List<String> stringIds, int pageSize, int pageNo) {
+        Query query=new Query();
+        query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
+        query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(stringIds));
+        int totalCount=getListTotalCount(query);
+        PagerInfo p=new PagerInfo(pageNo,pageSize,totalCount);
+        query.skip(p.getFirstStation());
+        query.limit(p.getPageSize());
+        if(totalCount<1){p.setList(new ArrayList());return p;}
+        List list=getMongoTemplate().find(query,getEntityClass());
+        p.setList(list);
+        return p;
     }
 
     @Override
@@ -667,25 +750,9 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
 
-//    //xj
-//    public PagerInfo findByPageInfo(Query q, int pageSize, int pageNo) {
-//        int totalCount = getListTotalCount(q);
-//        PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
-//        q.skip(p.getFirstStation());
-//        q.limit(p.getPageSize());
-//        if (totalCount < 1) {
-//            p.setList(new ArrayList());
-//            return p;
-//        }
-//        List list = getMongoTemplate().find(q, getEntityClass());
-//        p.setList(list);
-//        return p;
-//    }
 
-//    //xj
-//    public int getListTotalCount(Query q) {
-//        return (int) getMongoTemplate().count(q, MongoEntityConstants.TBL_KEYWORD);
-//    }
+
+
 
 
 //    private int getCount(Map<String, Object> params, String collections, String nell) {

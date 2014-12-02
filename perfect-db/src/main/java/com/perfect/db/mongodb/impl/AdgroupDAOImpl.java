@@ -11,6 +11,7 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
+import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
 import com.perfect.utils.ObjectUtils;
@@ -369,6 +370,13 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         AdgroupEntity adgroupEntit = new AdgroupEntity();
         BeanUtils.copyProperties(adgroupDTO, adgroupEntit);
         getMongoTemplate().insert(adgroupEntit, MongoEntityConstants.TBL_ADGROUP);
+    }
+
+    @Override
+    public List<AdgroupDTO> findByTwoParams(Long cid, Long accountId) {
+        Query query=new Query();
+        query.addCriteria(Criteria.where(CAMPAIGN_ID).is(cid).and(ACCOUNT_ID).is(accountId));
+        return null;
     }
 
     public void insertAll(List<AdgroupDTO> adgroupDTOs) {
