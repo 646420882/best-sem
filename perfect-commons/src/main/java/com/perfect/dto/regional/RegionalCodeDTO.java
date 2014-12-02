@@ -1,13 +1,14 @@
 package com.perfect.dto.regional;
 
+import com.perfect.dto.BaseDTO;
+
 /**
  * Created by SubDong on 2014/9/28.
  * 存放数据库直接读出的数据。未处理过
  */
 // TODO 跟RegionCodeDTO 的区别是啥子
-public class RegionalCodeDTO {
+public class RegionalCodeDTO extends BaseDTO {
 
-    private String id;
     //国家id
     private String stateId;
     //国家名称
@@ -20,14 +21,6 @@ public class RegionalCodeDTO {
     private String regionId;
     //地区名称
     private String regionName;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getStateId() {
         return stateId;
@@ -80,7 +73,6 @@ public class RegionalCodeDTO {
     @Override
     public String toString() {
         return "RedisRegional{" +
-                "id='" + id + '\'' +
                 ", stateId='" + stateId + '\'' +
                 ", stateName='" + stateName + '\'' +
                 ", provinceId='" + provinceId + '\'' +

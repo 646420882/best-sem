@@ -1,11 +1,11 @@
 package com.perfect.dto.creative;
 
+import com.perfect.dto.BaseDTO;
+
 /**
  * Created by vbzer_000 on 2014/9/23.
  */
-public class CreativeSourceDTO {
-    private String id;
-
+public class CreativeSourceDTO extends BaseDTO{
     private String body;
 
     private String title;
@@ -50,14 +50,6 @@ public class CreativeSourceDTO {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getHtml() {

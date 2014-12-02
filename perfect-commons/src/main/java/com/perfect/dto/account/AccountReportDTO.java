@@ -6,9 +6,7 @@ import java.util.Date;
 /**
  * Created by SubDong on 2014/8/21.
  */
-public class AccountReportDTO extends AccountIdDTO implements Comparable<AccountReportDTO>{
-
-
+public class AccountReportDTO extends AccountIdDTO implements Comparable<AccountReportDTO> {
     private String accountName;
 
     private Date date;
@@ -212,79 +210,79 @@ public class AccountReportDTO extends AccountIdDTO implements Comparable<Account
 
     @Override
     public int compareTo(AccountReportDTO o) {
-        switch (o.getOrderBy()){
+        switch (o.getOrderBy()) {
             case "1":
                 return this.getDate().compareTo(o.getDate());
             case "2":
-                if(o.getDevices() == 2){
+                if (o.getDevices() == 2) {
                     return this.getMobileImpression().compareTo(o.getMobileImpression());
-                }else{
+                } else {
                     return this.getPcImpression().compareTo(o.getPcImpression());
                 }
             case "-2":
-                if(o.getDevices() == 2){
+                if (o.getDevices() == 2) {
                     return o.getMobileImpression().compareTo(this.getMobileImpression());
-                }else{
+                } else {
                     return o.getPcImpression().compareTo(this.getPcImpression());
                 }
             case "3":
-                if(o.getDevices() == 2){
+                if (o.getDevices() == 2) {
                     return this.getMobileClick().compareTo(o.getMobileClick());
-                }else{
+                } else {
                     return this.getPcClick().compareTo(o.getPcClick());
                 }
             case "-3":
-                if(o.getDevices() == 2){
+                if (o.getDevices() == 2) {
                     return o.getMobileClick().compareTo(this.getMobileClick());
-                }else{
+                } else {
                     return o.getPcClick().compareTo(this.getPcClick());
                 }
             case "4":
-                if(o.getDevices() == 2){
+                if (o.getDevices() == 2) {
                     return this.getMobileCost().compareTo(o.getMobileCost());
-                }else{
+                } else {
                     return this.getPcCost().compareTo(o.getPcCost());
                 }
             case "-4":
-                if(o.getDevices() == 2){
+                if (o.getDevices() == 2) {
                     return o.getMobileCost().compareTo(this.getMobileCost());
-                }else{
+                } else {
                     return o.getPcCost().compareTo(this.getPcCost());
                 }
             case "5":
-                if(o.getDevices() == 2){
+                if (o.getDevices() == 2) {
                     return this.getMobileCpc().compareTo(o.getMobileCpc());
-                }else{
+                } else {
                     return this.getPcCpc().compareTo(o.getPcCpc());
                 }
             case "-5":
-                if(o.getDevices() == 2){
+                if (o.getDevices() == 2) {
                     return o.getMobileCpc().compareTo(this.getMobileCpc());
-                }else{
+                } else {
                     return o.getPcCpc().compareTo(this.getPcCpc());
                 }
             case "6":
-                if(o.getDevices() == 2){
+                if (o.getDevices() == 2) {
                     return this.getMobileCtr().compareTo(o.getMobileCtr());
-                }else{
+                } else {
                     return this.getPcCtr().compareTo(o.getPcCtr());
                 }
             case "-6":
-                if(o.getDevices() == 2){
+                if (o.getDevices() == 2) {
                     return o.getMobileCtr().compareTo(this.getMobileCtr());
-                }else{
+                } else {
                     return o.getPcCtr().compareTo(this.getPcCtr());
                 }
             case "7":
-                if(o.getDevices() == 2){
+                if (o.getDevices() == 2) {
                     return this.getMobileConversion().compareTo(o.getMobileConversion());
-                }else{
+                } else {
                     return this.getPcConversion().compareTo(o.getPcConversion());
                 }
             case "-7":
-                if(o.getDevices() == 2){
+                if (o.getDevices() == 2) {
                     return o.getMobileConversion().compareTo(this.getMobileConversion());
-                }else{
+                } else {
                     return o.getPcConversion().compareTo(this.getPcConversion());
                 }
             default:

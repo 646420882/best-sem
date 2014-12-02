@@ -7,8 +7,6 @@ import java.math.BigDecimal;
  */
 public class RegionReportDTO extends AccountIdDTO {
 
-    private String id;
-
     private Long regionId;
 
     private String regionName;
@@ -52,14 +50,6 @@ public class RegionReportDTO extends AccountIdDTO {
     private Double mobileConversion;
 
     private Double mobilePosition;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Long getRegionId() {
         return regionId;
@@ -240,7 +230,6 @@ public class RegionReportDTO extends AccountIdDTO {
     @Override
     public String toString() {
         return "RegionReportEntity{" +
-                "id='" + id + '\'' +
                 ", regionId=" + regionId +
                 ", regionName='" + regionName + '\'' +
                 ", adgroupId=" + adgroupId +

@@ -7,18 +7,6 @@ public final class MessageResultDTO {
     private Object success;
     private Object data;
 
-
-    /**
-     * 构造器
-     *
-     * @param success 是否成功
-     * @param message 文字信息
-     */
-    public MessageResultDTO(Object success, String message) {
-        this.success = success;
-
-    }
-
     /**
      * 构造器
      *

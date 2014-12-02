@@ -60,7 +60,8 @@ public class CreativeInfoDTO implements Serializable {
         CreativeInfoDTO that = (CreativeInfoDTO) o;
 
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (sublinkInfoDTOs != null ? !sublinkInfoDTOs.equals(that.sublinkInfoDTOs) : that.sublinkInfoDTOs != null) return false;
+        if (sublinkInfoDTOs != null ? !sublinkInfoDTOs.equals(that.sublinkInfoDTOs) : that.sublinkInfoDTOs != null)
+            return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
         if (url != null ? !url.equals(that.url) : that.url != null) return false;
 

@@ -1,61 +1,40 @@
 package com.perfect.dto.monitor;
 
+import com.perfect.dto.BaseDTO;
+import com.perfect.dto.account.AccountIdDTO;
+
 import java.math.BigDecimal;
 
 /**
  * Created by SubDong on 2014/9/12.
  */
-public class MonitorDataDTO {
-    //------------------------
-    // MEMBER VARIABLES
-    //------------------------
+public class MonitorDataDTO extends AccountIdDTO {
 
-//    @Id
-    private String id;
-
-    //KeywordType Attributes
-//    @Indexed(sparse = true)
-//    @Field(KEYWORD_ID)
     private Long keywordId;
 
-//    @Field(ADGROUP_ID)
     private Long adgroupId;
 
-//    @Field(OBJ_ADGROUP_ID)
     private String adgroupObjId;
 
-//    @Field("name")
     private String keyword;
 
     private BigDecimal price;
 
-//    @Field("pc")
     private String pcDestinationUrl;
 
-//    @Field("mobile")
     private String mobileDestinationUrl;
 
-//    @Field("mt")
     private Integer matchType;
 
-//    @Field("p")
     private Boolean pause;
 
-//    @Field("s")
     private Integer status;
 
-//    @Field("pt")
     private Integer phraseType;
 
-//    @Field("ls")
     private Integer localStatus;//关键词本地状态，1为新增，2为修改，3为删除（软删除），4为级联删除标识
 
     private Long monitorId;
-
-    //------------------------
-    // INTERFACE
-    //------------------------
-
 
     public String getAdgroupObjId() {
         return adgroupObjId;
@@ -73,74 +52,44 @@ public class MonitorDataDTO {
         this.localStatus = localStatus;
     }
 
-    public boolean setKeywordId(Long aKeywordId) {
-        boolean wasSet = false;
+    public void setKeywordId(Long aKeywordId) {
         keywordId = aKeywordId;
-        wasSet = true;
-        return wasSet;
     }
 
-    public boolean setAdgroupId(Long aAdgroupId) {
-        boolean wasSet = false;
+    public void setAdgroupId(Long aAdgroupId) {
         adgroupId = aAdgroupId;
-        wasSet = true;
-        return wasSet;
     }
 
-    public boolean setKeyword(String aKeyword) {
-        boolean wasSet = false;
+    public void setKeyword(String aKeyword) {
         keyword = aKeyword;
-        wasSet = true;
-        return wasSet;
     }
 
-    public boolean setPrice(BigDecimal aPrice) {
-        boolean wasSet = false;
+    public void setPrice(BigDecimal aPrice) {
         price = aPrice;
-        wasSet = true;
-        return wasSet;
     }
 
-    public boolean setPcDestinationUrl(String aPcDestinationUrl) {
-        boolean wasSet = false;
+    public void setPcDestinationUrl(String aPcDestinationUrl) {
         pcDestinationUrl = aPcDestinationUrl;
-        wasSet = true;
-        return wasSet;
     }
 
-    public boolean setMobileDestinationUrl(String aMobileDestinationUrl) {
-        boolean wasSet = false;
+    public void setMobileDestinationUrl(String aMobileDestinationUrl) {
         mobileDestinationUrl = aMobileDestinationUrl;
-        wasSet = true;
-        return wasSet;
     }
 
-    public boolean setMatchType(Integer aMatchType) {
-        boolean wasSet = false;
+    public void setMatchType(Integer aMatchType) {
         matchType = aMatchType;
-        wasSet = true;
-        return wasSet;
     }
 
-    public boolean setPause(Boolean aPause) {
-        boolean wasSet = false;
+    public void setPause(Boolean aPause) {
         pause = aPause;
-        wasSet = true;
-        return wasSet;
     }
 
-    public boolean setStatus(Integer aStatus) {
-        boolean wasSet = false;
+    public void setStatus(Integer aStatus) {
         status = aStatus;
-        wasSet = true;
-        return wasSet;
     }
 
-    public boolean setPhraseType(Integer aPhraseType) {
-        boolean wasSet = false;
+    public void setPhraseType(Integer aPhraseType) {
         phraseType = aPhraseType;
-        wasSet = true;
-        return wasSet;
     }
 
     public Long getKeywordId() {
@@ -204,11 +153,4 @@ public class MonitorDataDTO {
                 + outputString;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }

@@ -7,7 +7,6 @@ import java.math.BigDecimal;
  */
 public class AdgroupReportDTO extends AccountIdDTO{
 
-
     private Long adgroupId;
 
     private String adgroupName;

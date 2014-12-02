@@ -5,7 +5,6 @@ package com.perfect.dto.regional;
  * 存放拼装好的返回数据，处理过
  */
 public class RegionalReturnDataDTO implements Comparable<RegionalReturnDataDTO>{
-
     //地域id
     private String regionalId;
     //地域名称
