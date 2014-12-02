@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-7-4.
  */
+@Deprecated
 public interface MongoCrudRepository<T extends BaseDTO, ID extends Serializable> extends HeyCrudRepository<T, ID> {
 
     public final String START = "start";

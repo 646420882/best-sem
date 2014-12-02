@@ -1,7 +1,7 @@
 package com.perfect.db.elasticsearch.impl;
 
 import com.perfect.dao.SysRegionalDAO;
-import com.perfect.db.elasticsearch.service.EsService;
+import com.perfect.dao.creative.CreativeSourceDAO;
 import com.perfect.dto.creative.CreativeSourceDTO;
 import com.perfect.dto.creative.EsSearchResultDTO;
 import com.perfect.utils.RegionalCodeUtils;
@@ -17,7 +17,6 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -29,10 +28,7 @@ import java.util.*;
  * Created by vbzer_000 on 2014/9/19.
  */
 @Component
-public class EsServiceImpl implements EsService {
-
-    @Resource
-    private ElasticsearchTemplate elasticsearchTemplate;
+public class CreativeSourceDAOImpl implements CreativeSourceDAO {
 
     @Resource
     private SysRegionalDAO sysRegionalDAO;

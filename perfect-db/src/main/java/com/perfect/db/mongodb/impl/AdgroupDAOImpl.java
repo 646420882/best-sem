@@ -132,6 +132,11 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         return mongoTemplate.find(Query.query(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(campaignObjId)), getEntityClass(), MongoEntityConstants.TBL_ADGROUP);
     }
 
+    @Override
+    public Class<AdgroupDTO> getDTOClass() {
+        return AdgroupDTO.class;
+    }
+
     public AdgroupDTO findOne(Long adgroupId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         AdgroupEntity _adgroupEntity = mongoTemplate.findOne(
@@ -187,13 +192,13 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     @Override
     public List<AdgroupDTO> findIdByCampaignId(Long cid) {
         Query query = new BasicQuery("{}", "{ " + MongoEntityConstants.ADGROUP_ID + " : 1 }");
-        List<AdgroupEntity> list = getMongoTemplate().find(query.addCriteria(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(cid)),AdgroupEntity.class);
+        List<AdgroupEntity> list = getMongoTemplate().find(query.addCriteria(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(cid)), AdgroupEntity.class);
         return wrapperList(list);
     }
 
     @Override
     public AdgroupDTO findByObjId(String oid) {
-        AdgroupEntity adgroupEntity= getMongoTemplate().findOne(Query.query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(oid)), AdgroupEntity.class);
+        AdgroupEntity adgroupEntity = getMongoTemplate().findOne(Query.query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(oid)), AdgroupEntity.class);
         return wrapperObject(adgroupEntity);
     }
 
@@ -215,8 +220,8 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     @Override
     public Object insertOutId(AdgroupDTO adgroupEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        AdgroupEntity adgroupEntityInsert=new AdgroupEntity();
-        BeanUtils.copyProperties(adgroupEntity,adgroupEntityInsert);
+        AdgroupEntity adgroupEntityInsert = new AdgroupEntity();
+        BeanUtils.copyProperties(adgroupEntity, adgroupEntityInsert);
         mongoTemplate.insert(adgroupEntityInsert, MongoEntityConstants.TBL_ADGROUP);
         logDAO.insertLog(adgroupEntity.getId(), LogStatusConstant.ENTITY_ADGROUP);
         return adgroupEntityInsert.getId();
@@ -310,8 +315,8 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     public void insertReBack(AdgroupDTO adgroupDTO) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.remove(new Query(Criteria.where(get_id()).is(adgroupDTO.getId())), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
-        AdgroupEntity adgroupEntity=new AdgroupEntity();
-        BeanUtils.copyProperties(adgroupDTO,adgroupEntity);
+        AdgroupEntity adgroupEntity = new AdgroupEntity();
+        BeanUtils.copyProperties(adgroupDTO, adgroupEntity);
         getMongoTemplate().insert(adgroupEntity, MongoEntityConstants.TBL_ADGROUP);
     }
 
@@ -349,16 +354,17 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     }
 
     public void insert(AdgroupDTO adgroupDTO) {
-        AdgroupEntity adgroupEntit=new AdgroupEntity();
-        BeanUtils.copyProperties(adgroupDTO,adgroupEntit);
+        AdgroupEntity adgroupEntit = new AdgroupEntity();
+        BeanUtils.copyProperties(adgroupDTO, adgroupEntit);
         getMongoTemplate().insert(adgroupEntit, MongoEntityConstants.TBL_ADGROUP);
     }
 
     public void insertAll(List<AdgroupDTO> adgroupDTOs) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        List<AdgroupEntity> insertList=ObjectUtils.convert(adgroupDTOs,AdgroupEntity.class);
+        List<AdgroupEntity> insertList = ObjectUtils.convert(adgroupDTOs, AdgroupEntity.class);
         mongoTemplate.insertAll(insertList);
     }
+
     @SuppressWarnings("unchecked")
     public void update(AdgroupDTO adgroupDTO) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
@@ -401,10 +407,12 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         }});
     }
 
-    public void deleteByIds(List<Long> adgroupIds) {
+    public int deleteByIds(List<Long> adgroupIds) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        WriteResult writeResult = mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         deleteSub(adgroupIds);
+
+        return writeResult.getN();
     }
 
     @Override
@@ -421,46 +429,6 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         mongoTemplate.dropCollection(AdgroupEntity.class);
         deleteSub(getAllAdgroupId());
     }
-
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
-
-//    private Update getUpdate(AdgroupEntity adgroupEntity) {
-//        Update update = new Update();
-//
-//        if (adgroupEntity.getAdgroupName() != null) {
-//            update = update.addToSet(ADGROUP_NAME, adgroupEntity.getAdgroupName());
-//        }
-//
-//        if (adgroupEntity.getCampaignId() != null) {
-//            update = update.addToSet(CAMPAIGN_ID, adgroupEntity.getCampaignId());
-//        }
-//
-//        if (adgroupEntity.getPause() != null) {
-//            update = update.addToSet(PAUSE, adgroupEntity.getPause());
-//        }
-//
-//        if (adgroupEntity.getExactNegativeWords() != null) {
-//            update = update.addToSet(EXA_NEG_WORDS, adgroupEntity.getExactNegativeWords());
-//        }
-//
-//        if (adgroupEntity.getNegativeWords() != null) {
-//            update = update.addToSet(NEG_WORDS, adgroupEntity.getNegativeWords());
-//        }
-//
-//        if (adgroupEntity.getReserved() != null) {
-//            update = update.addToSet(RESERVED, adgroupEntity.getReserved());
-//        }
-//
-//        if (adgroupEntity.getMaxPrice() != null) {
-//            update = update.addToSet(MAX_PRICE, adgroupEntity.getMaxPrice());
-//        }
-//
-//        return update;
-//    }
-
 
     /**
      * 根据计划id级联软删除
