@@ -23,9 +23,6 @@ public class CampaignBackUpServiceImpl implements CampaignBackUpService{
     @Resource
     private CampaignDAO campaignDAO;
 
-    @Resource
-    private AdgroupDAO adgroupDAO;
-
     public CampaignDTO reducUpdate(String id){
         if(id.matches("^\\d+$")==true){
             CampaignDTO campaignEntity = new CampaignDTO();

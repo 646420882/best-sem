@@ -5,6 +5,7 @@ import com.perfect.dto.regional.RegionalCodeDTO;
 import com.perfect.dto.regional.RegionalReturnDataDTO;
 import com.perfect.service.SysRegionalService;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -14,7 +15,7 @@ import static com.perfect.commons.constants.RegionalConstants.*;
 /**
  * Created by SubDong on 2014/9/29.
  */
-@Component("sysRegionalService")
+@Service("sysRegionalService")
 public class SysRegionalServiceImpl implements SysRegionalService {
 
     @Resource

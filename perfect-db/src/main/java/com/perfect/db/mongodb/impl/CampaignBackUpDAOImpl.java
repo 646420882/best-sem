@@ -20,26 +20,17 @@ import java.util.Map;
  */
 @Service
 public class CampaignBackUpDAOImpl extends AbstractUserBaseDAOImpl<CampaignBackUpDTO,Long> implements CampaignBackUpDAO{
-    @Override
-    public Class<CampaignBackUpDTO> getEntityClass() {
-        return CampaignBackUpDTO.class;
-    }
-
-    public Class<CampaignBackUpEntity> getCampaignBackUpEntityClass() {
-        return CampaignBackUpEntity.class;
-    }
 
     @Override
     public CampaignBackUpDTO findByObjectId(String id) {
         MongoTemplate mongoTemplate = getMongoTemplate();
-        return mongoTemplate.findOne(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)),getEntityClass(), MongoEntityConstants.BAK_CAMPAIGN);
+        return mongoTemplate.findOne(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)),getDTOClass(), MongoEntityConstants.BAK_CAMPAIGN);
     }
 
     @Override
     public void deleteByObjectId(String id) {
 
     }
-
 
     public  void deleteByCid(long cid){
         MongoTemplate mongoTemplate = getMongoTemplate();
@@ -48,7 +39,7 @@ public class CampaignBackUpDAOImpl extends AbstractUserBaseDAOImpl<CampaignBackU
 
     public  CampaignBackUpDTO findOne(long cid){
         MongoTemplate mongoTemplate = getMongoTemplate();
-        List<CampaignBackUpEntity> list= mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(cid)), getCampaignBackUpEntityClass(), MongoEntityConstants.BAK_CAMPAIGN);
+        List<CampaignBackUpEntity> list= mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(cid)), getEntityClass(), MongoEntityConstants.BAK_CAMPAIGN);
 
         List<CampaignBackUpDTO> campaignBackUpDTOs = ObjectUtils.convert(list,CampaignBackUpDTO.class);
 
@@ -59,4 +50,9 @@ public class CampaignBackUpDAOImpl extends AbstractUserBaseDAOImpl<CampaignBackU
     public Class<CampaignBackUpDTO> getDTOClass() {
         return CampaignBackUpDTO.class;
     }
+    @Override
+    public Class<CampaignBackUpEntity> getEntityClass() {
+        return CampaignBackUpEntity.class;
+    }
+
 }

@@ -9,33 +9,31 @@ import com.perfect.entity.account.AccountReportEntity;
 import com.perfect.entity.report.StructureReportEntity;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.ObjectUtils;
-import com.perfect.utils.paging.Pager;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import static com.perfect.utils.DateUtils.KEY_DATE;
 
 /**
  * Created by SubDong on 2014/8/6.
  */
-@Repository("basisReportDAO")
-
+//@Repository("basisReportDAO")
+@Component
 public class BasisReportDAOImpl extends AbstractUserBaseDAOImpl<StructureReportDTO, Long> implements BasisReportDAO {
     @Override
     public List<StructureReportDTO> getUnitReportDate(String userTable, Long dataId, String dataName) {
         if (dataId.intValue() != 0 && !dataName.equals("0")) {
-            List<StructureReportEntity> objectList = getMongoTemplate().find(Query.query(Criteria.where(dataName).is(dataId).and(ACCOUNT_ID).is(AppContext.getAccountId())), StructureReportEntity.class, userTable);
-            List<StructureReportDTO> structureReportDTOs = ObjectUtils.convert(objectList, getEntityClass());
+            List<StructureReportEntity> objectList = getMongoTemplate().find(Query.query(Criteria.where(dataName).is(dataId).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass(), userTable);
+            List<StructureReportDTO> structureReportDTOs = ObjectUtils.convert(objectList, getDTOClass());
             return structureReportDTOs;
         }
-        List<StructureReportEntity> objectList = getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())), StructureReportEntity.class, userTable);
-        List<StructureReportDTO> structureReportDTOs = ObjectUtils.convert(objectList, getEntityClass());
+        List<StructureReportEntity> objectList = getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass(), userTable);
+        List<StructureReportDTO> structureReportDTOs = ObjectUtils.convert(objectList, getDTOClass());
         return structureReportDTOs;
     }
 
@@ -61,7 +59,6 @@ public class BasisReportDAOImpl extends AbstractUserBaseDAOImpl<StructureReportD
         return account_report;
     }
 
-    @Override
     public List<AccountReportDTO> getAccountReport(Date startDate, Date endDate) {
         List<AccountReportEntity> reportResponses = getMongoTemplate().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
 
@@ -71,18 +68,19 @@ public class BasisReportDAOImpl extends AbstractUserBaseDAOImpl<StructureReportD
 
     @Override
     public List<StructureReportDTO> getKeywordReport(Long[] id, String table) {
-        List<StructureReportEntity> entityList = getMongoTemplate().find(new Query(Criteria.where(KEYWORD_ID).in(id).and(ACCOUNT_ID).is(AppContext.getAccountId())), StructureReportEntity.class, table);
-        List<StructureReportDTO> structureReportDTOs = ObjectUtils.convert(entityList, getEntityClass());
+        List<StructureReportEntity> entityList = getMongoTemplate().find(new Query(Criteria.where(KEYWORD_ID).in(id).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass(), table);
+        List<StructureReportDTO> structureReportDTOs = ObjectUtils.convert(entityList, getDTOClass());
         return structureReportDTOs;
     }
 
+
     @Override
-    public Class<StructureReportDTO> getEntityClass() {
-        return StructureReportDTO.class;
+    public Class<StructureReportEntity> getEntityClass() {
+        return null;
     }
 
     @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
+    public Class<StructureReportDTO> getDTOClass() {
+        return StructureReportDTO.class;
     }
 }

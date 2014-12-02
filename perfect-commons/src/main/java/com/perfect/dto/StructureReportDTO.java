@@ -7,8 +7,7 @@ import java.util.Date;
  * Created by SubDong on 2014/11/24.
  * 2014-11-24 refactor
  */
-public class StructureReportDTO implements Comparable<StructureReportDTO>{
-    private String id;
+public class StructureReportDTO extends BaseDTO implements Comparable<StructureReportDTO>{
 
     private String date; //时间
 
@@ -73,14 +72,6 @@ public class StructureReportDTO implements Comparable<StructureReportDTO>{
     private int terminal;
 
     private String account;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getDate() {
         return date;

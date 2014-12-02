@@ -34,31 +34,6 @@ public class PerformanceController {
 
     /**
      * 账户表现
-     * （暂未使用）
-     *
-     * @param response
-     * @return
-     */
-    /*@RequestMapping(value = "/account/performance", method = RequestMethod.GET)
-    public void getPerformance(HttpServletRequest request, HttpServletResponse response) {
-        String[] date = {"2014-01-25", "2014-01-26"};
-        List<KeywordRealDTO> jsonMapList = performanceService.performance(WebUtils.getUserName(request), date);
-        Gson gson = new Gson();
-        String ddd = gson.toJson(jsonMapList);
-
-        try {
-            response.setContentType("text/json; charset=UTF-8");
-            response.getWriter().print(ddd);
-            response.getWriter().flush();
-            response.getWriter().close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }*/
-
-    /**
-     * 账户表现
      *
      * @param response
      * @param startDate 开始时间

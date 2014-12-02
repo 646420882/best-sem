@@ -20,7 +20,6 @@ public class BasisReportDefaultUtil extends RecursiveTask<Map<String, StructureR
 
     private int endNumber;
     private int begin;
-    private int terminal;
     private int report;
     private String userName;
 

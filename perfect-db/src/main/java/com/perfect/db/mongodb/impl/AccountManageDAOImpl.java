@@ -4,17 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mongodb.WriteResult;
-import com.perfect.utils.DateUtils;
-import com.perfect.utils.ObjectUtils;
-import com.perfect.api.baidu.BaiduApiService;
-import com.perfect.api.baidu.BaiduServiceSupport;
-import com.perfect.autosdk.core.CommonService;
-import com.perfect.autosdk.core.ServiceFactory;
-import com.perfect.autosdk.exception.ApiException;
-import com.perfect.autosdk.sms.v3.AccountInfoType;
-import com.perfect.autosdk.sms.v3.AccountService;
-import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
-import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.sys.SystemUserDAO;
@@ -24,8 +13,9 @@ import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.account.AccountReportEntity;
-import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
+import com.perfect.utils.DateUtils;
+import com.perfect.utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -42,8 +32,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +45,6 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 @SuppressWarnings("unchecked")
 @Repository(value = "accountManageDAO")
 public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO, String> implements AccountManageDAO {
-    protected static transient Logger log = LoggerFactory.getLogger(AccountManageDAOImpl.class);
 
     @Resource
     private SystemUserDAO systemUserDAO;
@@ -190,10 +177,10 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     }
 
     @Override
-    public WriteResult updatePwd(String account, String pwd) {
+    public boolean updatePwd(String account, String pwd) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(account)), Update.update("password", pwd), "sys_user");
-        return writeResult;
+        return writeResult.isUpdateOfExisting();
     }
 
     @Override
@@ -203,12 +190,12 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     }
 
     @Override
-    public WriteResult updateBaiDuAccount(String userName, Long baiduId, Long state) {
+    public boolean updateBaiDuAccount(String userName, Long baiduId, Long state) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Update update = new Update();
         update.set("bdAccounts.$.state", state);
         WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(userName).and("bdAccounts._id").is(baiduId)), update, "sys_user");
-        return writeResult;
+        return writeResult.isUpdateOfExisting();
     }
 
     @Override
@@ -217,7 +204,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         return ObjectUtils.convert(mongoTemplate.find(new Query(), getEntityClass()), getDTOClass());
     }
 
-    @Override
+    /*@Override
     public int auditAccount(String userNmae, String baiduAccount, String baiduPassword, String token) {
         int i;
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
@@ -259,7 +246,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         }
 
         return i;
-    }
+    }*/
 
     @Override
     public int updateAccountStruts(String userName) {
@@ -346,50 +333,6 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         costRate = (cost1 - cost2) / cost2;
         costRate = new BigDecimal(costRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         return costRate;
-    }
-
-    /**
-     * @param username
-     * @param password
-     * @param token
-     * @return
-     */
-    @Override
-    public List<BaiduAccountInfoDTO> getBaiduAccountInfos(String username, String password, String token) {
-        List<BaiduAccountInfoDTO> list = new ArrayList<>();
-        Long id = getBaiduAccountId(username, password, token);
-        BaiduAccountInfoDTO dto = new BaiduAccountInfoDTO();
-        dto.setId(id);
-        dto.setBaiduUserName(username);
-        dto.setBaiduPassword(password);
-        dto.setToken(token);
-        list.add(dto);
-        return list;
-    }
-
-    /**
-     * 获取百度用户id
-     *
-     * @param username
-     * @param password
-     * @param token
-     * @return
-     */
-    private Long getBaiduAccountId(String username, String password, String token) {
-        CommonService service;
-        Long baiduAccountId = null;
-        try {
-            service = ServiceFactory.getInstance(username, password, token, null);
-            AccountService accountService = service.getService(AccountService.class);
-            GetAccountInfoRequest request = new GetAccountInfoRequest();
-            GetAccountInfoResponse response = accountService.getAccountInfo(request);
-            AccountInfoType accountInfoType = response.getAccountInfoType();
-            baiduAccountId = accountInfoType.getUserid();
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-
-        return baiduAccountId;
     }
 
     class CampaignVO {

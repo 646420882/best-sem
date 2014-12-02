@@ -6,7 +6,6 @@ import com.perfect.utils.redis.JRedisUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,5 +82,4 @@ public class RegionalCodeUtils {
         }
         return null;
     }
-
 }

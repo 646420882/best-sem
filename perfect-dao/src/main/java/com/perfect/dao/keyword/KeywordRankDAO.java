@@ -1,6 +1,5 @@
 package com.perfect.dao.keyword;
 
-import com.perfect.dao.MongoCrudRepository;
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.keyword.KeywordRankDTO;
 

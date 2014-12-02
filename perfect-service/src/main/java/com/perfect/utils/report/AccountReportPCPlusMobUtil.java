@@ -19,7 +19,6 @@ public class AccountReportPCPlusMobUtil extends RecursiveTask<List<AccountReport
 
     private int endNumber;
     private int begin;
-    private int terminal;
 
     private List<AccountReportDTO> objectList;
 
