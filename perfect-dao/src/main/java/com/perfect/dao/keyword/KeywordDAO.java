@@ -4,6 +4,7 @@ import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeyWordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.paging.PaginationParam;
 
 import java.math.BigDecimal;
@@ -62,7 +63,15 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     KeywordDTO findByObjectId(String oid);
 
-//    PagerInfo findByPageInfo(Query q, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForAcctounId( int pageSize, int pageNo);
+
+    PagerInfo findByPageInfoForLongId(Long  aid, int pageSize, int pageNo);
+
+    PagerInfo findByPageInfoForStringId(String  aid, int pageSize, int pageNo);
+
+    PagerInfo findByPageInfoForLongIds(List<Long>  longIds, int pageSize, int pageNo);
+
+    PagerInfo findByPageInfoForStringIds(List<String>  stringIds, int pageSize, int pageNo);
 
     void updateAdgroupIdByOid(String id, Long adgroupId);
 
@@ -93,4 +102,6 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
     List<KeywordDTO> findKeywordByIds(List<Long> ids);
 
     void insertAll(List<KeywordDTO> dtos);
+
+
 }
