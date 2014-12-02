@@ -133,6 +133,13 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     }
 
     @Override
+    public List<AdgroupDTO> getAdgroupByCampaignId(Long campaignId) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+        List<AdgroupEntity> adgroupDTOList= mongoTemplate.find(Query.query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(campaignId)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        return wrapperList(adgroupDTOList);
+    }
+
+    @Override
     public Class<AdgroupDTO> getDTOClass() {
         return AdgroupDTO.class;
     }
