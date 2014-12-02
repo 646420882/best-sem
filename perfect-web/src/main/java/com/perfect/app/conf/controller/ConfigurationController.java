@@ -11,6 +11,8 @@ import com.perfect.autosdk.sms.v3.AccountService;
 import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
 import com.perfect.core.AppContext;
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.service.SystemUserService;
@@ -44,9 +46,9 @@ public class ConfigurationController {
     @RequestMapping(value = "/")
     public ModelAndView index(ModelMap modelMap) {
         String userName = AppContext.getUser();
-        SystemUserEntity systemUserEntity = systemUserService.getSystemUser(userName);
+        SystemUserDTO systemUserEntity = systemUserService.getSystemUser(userName);
 
-        List<BaiduAccountInfoEntity> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccountInfoEntities();
+        List<BaiduAccountInfoDTO> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccountInfoDTOs();
 
         modelMap.addAttribute("accountList", baiduAccountInfoEntityList);
         return new ModelAndView("configuration/configure", modelMap);
@@ -60,7 +62,7 @@ public class ConfigurationController {
 
 
     @RequestMapping(value = "/save", method = RequestMethod.GET)
-    public ModelAndView save(HttpServletRequest request,String username, String password, String token, ModelMap modelMap) {
+    public ModelAndView save(HttpServletRequest request, String username, String password, String token, ModelMap modelMap) {
         int flag = 0;
         try {
             CommonService commonService = ServiceFactory.getInstance(username, password, token, null);
@@ -72,7 +74,7 @@ public class ConfigurationController {
             if (response != null) {
                 AccountInfoType accountInfoType = response.getAccountInfoType();
 
-                BaiduAccountInfoEntity baiduAccountInfoEntity = new BaiduAccountInfoEntity();
+                BaiduAccountInfoDTO baiduAccountInfoEntity = new BaiduAccountInfoDTO();
 
                 BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
                 baiduAccountInfoEntity.setId(accountInfoType.getUserid());

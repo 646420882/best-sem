@@ -4,7 +4,7 @@ import com.perfect.dao.WarningInfoDAO;
 import com.perfect.dto.WarningInfoDTO;
 import com.perfect.entity.WarningInfoEntity;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.mongodb.DBNameUtils;
+import com.perfect.utils.mongodb.DBNameUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;

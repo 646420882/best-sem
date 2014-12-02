@@ -5,7 +5,7 @@ import com.perfect.app.bdlogin.core.CaptchaHandler;
 import com.perfect.commons.web.ServletContextUtils;
 import com.perfect.dto.CookieDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
-import com.perfect.json.JSONUtils;
+import com.perfect.utils.json.JSONUtils;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.CookieService;
 import org.apache.http.client.CookieStore;

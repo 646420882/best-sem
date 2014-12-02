@@ -1,8 +1,8 @@
 package com.perfect.utils;
 
 import com.perfect.commons.constants.BiddingStrategyConstants;
-import com.perfect.entity.bidding.BiddingRuleEntity;
-import com.perfect.entity.bidding.StrategyEntity;
+import com.perfect.dto.bidding.BiddingRuleDTO;
+import com.perfect.dto.bidding.StrategyDTO;
 import org.quartz.CronExpression;
 
 import java.text.ParseException;
@@ -13,10 +13,10 @@ import java.util.*;
  */
 public class BiddingRuleUtils {
 
-    public static String getRule(BiddingRuleEntity biddingRuleEntity) {
+    public static String getRule(BiddingRuleDTO biddingRuleEntity) {
         StringBuilder sb = new StringBuilder();
 
-        StrategyEntity entity = biddingRuleEntity.getStrategyEntity();
+        StrategyDTO entity = biddingRuleEntity.getStrategyEntity();
 
         int positionStrategy = entity.getExpPosition();
         if (positionStrategy == BiddingStrategyConstants.POS_LEFT_1.value()) {

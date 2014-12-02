@@ -7,11 +7,11 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.report.BasisReportDAO;
 import com.perfect.dto.StructureReportDTO;
 import com.perfect.dto.account.AccountReportDTO;
-import com.perfect.redis.JRedisUtils;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.BasisReportService;
-import com.perfect.DateUtils;
 import com.perfect.utils.report.*;
+import com.perfect.utils.DateUtils;
+import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
 

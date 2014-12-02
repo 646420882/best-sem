@@ -2,7 +2,7 @@ package com.perfect.dao;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.BaseDTO;
-import com.perfect.paging.Pager;
+import com.perfect.utils.paging.Pager;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-7-4.
  */
+@Deprecated
 public interface MongoCrudRepository<T extends BaseDTO, ID extends Serializable> extends HeyCrudRepository<T, ID> {
 
     public final String START = "start";

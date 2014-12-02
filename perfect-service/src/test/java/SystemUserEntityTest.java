@@ -1,6 +1,6 @@
 import com.perfect.dao.sys.SystemUserDAO;
-import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.MD5;
+import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
 import org.junit.Test;
 import org.unitils.UnitilsJUnit4;

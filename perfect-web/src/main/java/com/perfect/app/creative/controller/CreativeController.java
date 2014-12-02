@@ -2,7 +2,7 @@ package com.perfect.app.creative.controller;
 
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.service.CreativeService;
-import com.perfect.json.JSONUtils;
+import com.perfect.utils.json.JSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;

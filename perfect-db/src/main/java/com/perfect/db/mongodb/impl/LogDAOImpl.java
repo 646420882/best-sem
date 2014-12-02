@@ -2,36 +2,27 @@ package com.perfect.db.mongodb.impl;
 
 import com.perfect.commons.constants.LogStatusConstant;
 import com.perfect.dao.sys.LogDAO;
-import com.perfect.entity.sys.LogEntity;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.dao.utils.Pager;
+import com.perfect.dto.LogDTO;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
-
-import static com.perfect.commons.constants.MongoEntityConstants.*;
 
 /**
  * Created by vbzer_000 on 2014/9/2.
  */
 @Component
-public class LogDAOImpl extends AbstractUserBaseDAOImpl<LogEntity, String> implements LogDAO {
+public class LogDAOImpl extends AbstractUserBaseDAOImpl<LogDTO, String> implements LogDAO {
     @Override
-    public Class<LogEntity> getEntityClass() {
-        return LogEntity.class;
+    public Class<LogDTO> getEntityClass() {
+        return LogDTO.class;
     }
 
     @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
-
-    @Override
-    public Iterable<LogEntity> findAll(Long accountId) {
-        return getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), getEntityClass());
+    public Iterable<LogDTO> findAll(Long accountId) {
+        return convertToDTOs(getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), getEntityClass()));
     }
 
     @Override
@@ -54,7 +45,7 @@ public class LogDAOImpl extends AbstractUserBaseDAOImpl<LogEntity, String> imple
         if (existsByOid(oid)) {
             return;
         }
-        LogEntity logEntity = new LogEntity();
+        LogDTO logEntity = new LogDTO();
         logEntity.setOid(oid);
         logEntity.setType(entity.toLowerCase().replaceAll("entity", ""));
 
@@ -64,16 +55,21 @@ public class LogDAOImpl extends AbstractUserBaseDAOImpl<LogEntity, String> imple
     @Override
     public void insertLog(Long bid, String entity, int opt) {
         if (existsByBid(bid)) {
-            LogEntity logEntity = getMongoTemplate().findOne(Query.query(Criteria.where(BAIDU_ID).is(bid)), getEntityClass());
+            LogDTO logEntity = getMongoTemplate().findOne(Query.query(Criteria.where(BAIDU_ID).is(bid)), getEntityClass());
 
             if (logEntity.getOpt() == LogStatusConstant.OPT_DELETE)
                 return;
         }
-        LogEntity logEntity = new LogEntity();
+        LogDTO logEntity = new LogDTO();
         logEntity.setBid(bid);
         logEntity.setType(entity.toLowerCase().replaceAll("entity", ""));
         logEntity.setOpt(opt);
 
         getMongoTemplate().insert(logEntity);
+    }
+
+    @Override
+    public Class<LogDTO> getDTOClass() {
+        return LogDTO.class;
     }
 }

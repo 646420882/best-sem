@@ -1,8 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.dao.MongoCrudRepository;
 import com.perfect.vo.CensusVO;
-import com.perfect.entity.CensusEntity;
 
 /**
  * Created by XiaoWei on 2014/11/11.

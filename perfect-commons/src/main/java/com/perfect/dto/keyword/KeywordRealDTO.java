@@ -3,7 +3,7 @@ package com.perfect.dto.keyword;
 /**
  * Created by SubDong on 2014/11/26.
  */
-public class KeywordRealDTO implements Comparable<KeywordRealDTO>{
+public class KeywordRealDTO implements Comparable<KeywordRealDTO> {
 
     private Long keywordId;
 
@@ -146,15 +146,17 @@ public class KeywordRealDTO implements Comparable<KeywordRealDTO>{
                 '}';
     }
 
-    public void setOrderBy(String orderBy){
-        this.orderBy=orderBy;
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
     }
-    public String getOrderBy(){
+
+    public String getOrderBy() {
         return orderBy;
     }
+
     @Override
     public int compareTo(KeywordRealDTO o) {
-        switch (o.getOrderBy()){
+        switch (o.getOrderBy()) {
             case "1":
                 return this.getImpression().compareTo(o.getImpression());
             case "2":

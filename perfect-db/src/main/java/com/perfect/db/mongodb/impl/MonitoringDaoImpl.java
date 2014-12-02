@@ -8,7 +8,7 @@ import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.dto.monitor.FolderMonitorDTO;
 import com.perfect.entity.FolderEntity;
 import com.perfect.entity.FolderMonitorEntity;
-import com.perfect.ObjectUtils;
+import com.perfect.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -16,8 +16,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
-import static com.perfect.commons.constants.MongoEntityConstants.*;
 
 /**
  * Created by SubDong on 2014/9/15.

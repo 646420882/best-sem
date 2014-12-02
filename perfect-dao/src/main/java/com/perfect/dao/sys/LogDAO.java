@@ -1,13 +1,16 @@
 package com.perfect.dao.sys;
 
 
+import com.perfect.dao.base.HeyCrudRepository;
+import com.perfect.dto.LogDTO;
+
 import java.util.List;
 
 /**
  * Created by vbzer_000 on 2014/9/2.
  */
-public interface LogDAO extends MongoCrudRepository<LogEntity, String> {
-    Iterable<LogEntity> findAll(Long accountId);
+public interface LogDAO extends HeyCrudRepository<LogDTO, String> {
+    Iterable<LogDTO> findAll(Long accountId);
 
     void deleteByBids(List<Long> ids);
 

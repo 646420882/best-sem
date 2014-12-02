@@ -7,7 +7,6 @@ import com.perfect.dto.BaseDTO;
  */
 public class LexiconDTO extends BaseDTO {
 
-
     private String trade;   //行业
 
     private String category;
@@ -17,7 +16,6 @@ public class LexiconDTO extends BaseDTO {
     private String keyword;
 
     private String url;
-
 
     public String getTrade() {
         return trade;

@@ -1,7 +1,6 @@
 package com.perfect.dao.account;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.mongodb.WriteResult;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;

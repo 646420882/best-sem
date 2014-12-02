@@ -8,7 +8,6 @@ import java.util.Date;
  * Created by XiaoWei on 2014/11/26.
  */
 public class CensusDTO extends BaseDTO {
-    private String id;
     private String uuid;
     private String system;//操作系统
     private String browser;//浏览器
@@ -20,19 +19,11 @@ public class CensusDTO extends BaseDTO {
     private Date date;//访问日期
     private String time;//访问时间
     private String intoPage;//目标页面
-    private String  lastPage;//停留页面
+    private String lastPage;//停留页面
     private String ip;//ip地址
     private String area;//地区
     private Integer operate;//使用设备
     private Integer userType;//新老客户标识
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getUuid() {
         return uuid;
@@ -165,7 +156,6 @@ public class CensusDTO extends BaseDTO {
     @Override
     public String toString() {
         return "CensusDTO{" +
-                "id='" + id + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", system='" + system + '\'' +
                 ", browser='" + browser + '\'' +

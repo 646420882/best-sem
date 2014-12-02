@@ -7,7 +7,6 @@ import java.math.BigDecimal;
  */
 public class CreativeReportDTO extends AccountIdDTO{
 
-
     private Long creativeId;
 
     private String creativeTitle;

@@ -1,5 +1,5 @@
-import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.api.baidu.BaiduPreviewHelper;
+import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.dto.creative.CreativeInfoDTO;

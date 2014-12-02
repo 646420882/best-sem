@@ -1,62 +1,35 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
-
 package com.perfect.dto.creative;
 
-// line 48 "../../../../../../../SDKDemo.ump"
-public class SublinkInfoDTO
-{
-  @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-  public @interface umplesourcefile{int[] line();String[] file();int[] javaline();int[] length();}
+public class SublinkInfoDTO {
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
+    private String description;
+    private String destinationUrl;
 
-  //SublinkInfo Attributes
-  private String description;
-  private String destinationUrl;
+    public void setDescription(String aDescription) {
+        description = aDescription;
+    }
 
-  //------------------------
-  // INTERFACE
-  //------------------------
+    public void setDestinationUrl(String aDestinationUrl) {
+        destinationUrl = aDestinationUrl;
+    }
 
-  public boolean setDescription(String aDescription)
-  {
-    boolean wasSet = false;
-    description = aDescription;
-    wasSet = true;
-    return wasSet;
-  }
+    public String getDescription() {
+        return description;
+    }
 
-  public boolean setDestinationUrl(String aDestinationUrl)
-  {
-    boolean wasSet = false;
-    destinationUrl = aDestinationUrl;
-    wasSet = true;
-    return wasSet;
-  }
+    public String getDestinationUrl() {
+        return destinationUrl;
+    }
 
-  public String getDescription()
-  {
-    return description;
-  }
-
-  public String getDestinationUrl()
-  {
-    return destinationUrl;
-  }
-
-  public void delete()
-  {}
+    public void delete() {
+    }
 
 
-  public String toString()
-  {
-	  String outputString = "";
-    return super.toString() + "["+
-            "description" + ":" + getDescription()+ "," +
-            "destinationUrl" + ":" + getDestinationUrl()+ "]"
-     + outputString;
-  }
+    public String toString() {
+        String outputString = "";
+        return super.toString() + "[" +
+                "description" + ":" + getDescription() + "," +
+                "destinationUrl" + ":" + getDestinationUrl() + "]"
+                + outputString;
+    }
 }

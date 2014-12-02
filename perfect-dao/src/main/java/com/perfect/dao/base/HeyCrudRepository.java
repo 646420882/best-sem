@@ -116,4 +116,7 @@ public interface HeyCrudRepository<T extends BaseDTO, ID extends Serializable> e
 
 
     public List<T> find(Map<String, Object> params, int skip, int limit);
+
+    public List<T> find(Map<String, Object> params, int skip, int limit, String sort, boolean asc);
+
 }

@@ -1,6 +1,6 @@
 package com.perfect.app.bidding.controller;
 
-import com.perfect.app.bidding.dto.KeywordReportDTO;
+import com.perfect.dto.bidding.KeywordReportDTO;
 import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.commons.constants.KeywordStatusEnum;
 import com.perfect.core.AppContext;
@@ -11,11 +11,11 @@ import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordImportDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.service.*;
-import com.perfect.DateUtils;
-import com.perfect.json.JSONUtils;
-import com.perfect.NumberUtils;
+import com.perfect.utils.DateUtils;
+import com.perfect.utils.json.JSONUtils;
+import com.perfect.utils.NumberUtils;
 import com.perfect.commons.web.WebContextSupport;
-import com.perfect.paging.PaginationParam;
+import com.perfect.utils.paging.PaginationParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

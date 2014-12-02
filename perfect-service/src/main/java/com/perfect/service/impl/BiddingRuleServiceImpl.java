@@ -1,15 +1,15 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.bidding.BiddingRuleDAO;
-import com.perfect.entity.bidding.BiddingRuleEntity;
-import com.perfect.dao.mongodb.utils.PaginationParam;
+import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.param.BiddingRuleParam;
 import com.perfect.service.BiddingRuleService;
-import org.springframework.data.domain.Sort;
+import com.perfect.utils.paging.PaginationParam;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -25,25 +25,24 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     BiddingRuleDAO biddingRuleDAO;
 
     @Override
-    public void createBiddingRule(BiddingRuleParam biddingRuleParam) {
+    public void createBiddingRule(BiddingRuleDTO biddingRuleDTO) {
 
 
-
-        biddingRuleDAO.createBidding(biddingRuleParam);
+        biddingRuleDAO.createBidding(biddingRuleDTO);
     }
 
     @Override
-    public BiddingRuleEntity findByKeywordId(Long keywordId) {
+    public BiddingRuleDTO findByKeywordId(Long keywordId) {
         return biddingRuleDAO.getBiddingRuleByKeywordId(keywordId);
     }
 
     @Override
-    public void updateToNextTime(BiddingRuleEntity biddingRuleEntity, int time) {
+    public void updateToNextTime(BiddingRuleDTO biddingRuleEntity, int time) {
         biddingRuleDAO.save(biddingRuleEntity);
     }
 
     @Override
-    public void createRule(BiddingRuleEntity entity) {
+    public void createRule(BiddingRuleDTO entity) {
         biddingRuleDAO.save(entity);
     }
 
@@ -59,41 +58,35 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
 
     @Override
     public void updateRule(BiddingRuleParam entity) {
-        biddingRuleDAO.save(entity);
     }
 
     @Override
-    public List<BiddingRuleEntity> getReadyRule() {
+    public List<BiddingRuleDTO> getReadyRule() {
         return biddingRuleDAO.getReadyRule();
     }
 
     @Override
-    public List<BiddingRuleEntity> getTaskByAccountId(String userName, Long id, long hour) {
+    public List<BiddingRuleDTO> getTaskByAccountId(String userName, Long id, long hour) {
         return biddingRuleDAO.getTaskByAccoundId(userName, id, hour);
     }
 
     @Override
-    public void updateRule(List<BiddingRuleEntity> tasks) {
+    public void updateRule(List<BiddingRuleDTO> tasks) {
         biddingRuleDAO.updateToNextRunTime(tasks);
     }
 
     @Override
-    public List<BiddingRuleEntity> findRules(Map<String, Object> q, int skip, int limit, String sort, Sort.Direction direction) {
-
-        if (q.containsKey("cp")) {
-
-        }
-
-        return biddingRuleDAO.find(q, skip, limit, sort, direction);
+    public List<BiddingRuleDTO> findRules(Map<String, Object> q, int skip, int limit, String sort, boolean asc) {
+        return biddingRuleDAO.find(q, skip, limit, sort, asc);
     }
 
     @Override
-    public List<BiddingRuleEntity> findRules(Map<String, Object> q, String kw, String query, int skip, int limit, String sort, Sort.Direction direction) {
-        return biddingRuleDAO.find(q, kw, query, skip, limit, sort, direction);
+    public List<BiddingRuleDTO> findRules(Map<String, Object> q, String kw, String query, int skip, int limit, String sort, boolean asc) {
+        return Collections.emptyList();
     }
 
     @Override
-    public List<BiddingRuleEntity> findByKeywordIds(List<Long> ids) {
+    public List<BiddingRuleDTO> findByKeywordIds(List<Long> ids) {
         return biddingRuleDAO.findByKeywordIds(ids);
     }
 
@@ -118,8 +111,7 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public void updateRank(Collection<BiddingRuleEntity> values) {
-        biddingRuleDAO.updateRank(values);
+    public void updateRank(Collection<BiddingRuleDTO> values) {
     }
 
     @Override
@@ -128,17 +120,17 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public List<BiddingRuleEntity> findByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
+    public List<BiddingRuleDTO> findByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
         return biddingRuleDAO.findByNames(split, fullMatch, param, queryParams);
     }
 
     @Override
-    public Integer countBiddingRuleEntityfindByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
+    public Integer countBiddingRuleDTOfindByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
         return biddingRuleDAO.findByNames(split, fullMatch, param, queryParams).size();
     }
 
     @Override
-    public BiddingRuleEntity takeOne(String userName, Long id, long hour) {
+    public BiddingRuleDTO takeOne(String userName, Long id, long hour) {
         return biddingRuleDAO.takeOne(userName, id, hour);
     }
 

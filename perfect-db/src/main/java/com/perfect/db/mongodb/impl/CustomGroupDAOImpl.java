@@ -10,8 +10,8 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.CustomGroupDTO;
 import com.perfect.entity.adgroup.CustomGroupEntity;
-import com.perfect.ObjectUtils;
-import com.perfect.paging.Pager;
+import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.paging.Pager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -20,8 +20,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
-
-import static com.perfect.commons.constants.MongoEntityConstants.ACCOUNT_ID;
 
 /**
  * Created by XiaoWei on 2014/9/19.

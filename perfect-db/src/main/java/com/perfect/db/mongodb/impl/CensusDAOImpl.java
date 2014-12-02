@@ -3,7 +3,7 @@ package com.perfect.db.mongodb.impl;
 import com.perfect.dao.CensusDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.count.CensusDTO;
-import com.perfect.paging.Pager;
+import com.perfect.utils.paging.Pager;
 import com.perfect.vo.CensusVO;
 import com.perfect.vo.CensusVO.CensusStatus;
 import com.perfect.entity.CensusEntity;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-import static com.perfect.commons.constants.MongoEntityConstants.*;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
@@ -30,7 +29,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> implements CensusDAO {
     @Override
     public Class<CensusEntity> getEntityClass() {
-        return null;
+        return CensusEntity.class;
     }
 
 
@@ -44,7 +43,7 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
         }
         CensusEntity censusEntity=new CensusEntity();
         BeanUtils.copyProperties(censusDTO,censusEntity);
-        getMongoTemplate().save(censusEntity, SYS_CENSUS);
+        getMongoTemplate().save(censusEntity);
         return censusDTO;
     }
 

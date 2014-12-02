@@ -7,10 +7,10 @@ import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.entity.report.KeywordReportEntity;
-import com.perfect.DateUtils;
-import com.perfect.ObjectUtils;
-import com.perfect.paging.Pager;
-import com.perfect.paging.PagerInfo;
+import com.perfect.utils.DateUtils;
+import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.paging.Pager;
+import com.perfect.utils.paging.PagerInfo;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -18,8 +18,6 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.*;
-
-import static com.perfect.commons.constants.MongoEntityConstants.*;
 
 /**
  * Created by XiaoWei on 2014/9/17.

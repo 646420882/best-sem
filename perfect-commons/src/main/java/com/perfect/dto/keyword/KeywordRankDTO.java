@@ -13,6 +13,7 @@ public class KeywordRankDTO extends BaseDTO{
     private HashMap<Integer, Integer> targetRank;
     private int device;
     private long time;
+    private Long accountId;
 
     public void setKwid(String kwid) {
         this.kwid = kwid;
@@ -52,5 +53,13 @@ public class KeywordRankDTO extends BaseDTO{
 
     public long getTime() {
         return time;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
+
+    public Long getAccountId() {
+        return accountId;
     }
 }

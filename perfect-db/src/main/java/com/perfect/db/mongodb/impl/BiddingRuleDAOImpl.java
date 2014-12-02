@@ -7,8 +7,7 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
-import com.perfect.paging.PaginationParam;
-import com.perfect.param.BiddingRuleParam;
+import com.perfect.utils.paging.PaginationParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -163,11 +162,8 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
     }
 
     @Override
-    public void createBidding(BiddingRuleParam biddingRuleParam) {
-//        BiddingRuleDTO biddingRuleEntity = new BiddingRuleDTO();
-//        biddingRuleEntity.setKeyword(biddingRuleParam.get);
-//
-//        save(biddingRuleEntity);
+    public void createBidding(BiddingRuleDTO biddingRuleDTO) {
+        save(biddingRuleDTO);
     }
 
     @Override

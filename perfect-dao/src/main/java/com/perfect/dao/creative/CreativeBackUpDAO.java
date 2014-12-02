@@ -8,6 +8,8 @@ import com.perfect.dto.backup.CreativeBackUpDTO;
 
 public interface CreativeBackUpDAO {
     CreativeBackUpDTO findByStringId(String id);
+
     CreativeBackUpDTO findByLongId(Long crid);
+
     void deleteByLongId(Long crid);
 }

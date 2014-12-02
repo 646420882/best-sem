@@ -14,17 +14,6 @@ public class CensusVO {
     private double alert;//跳出率
     private int convert;//转化
 
-    public CensusVO(String censusUrl, int totalCount, int totalPv, int totalUv, int totalIp, double avgTime, double alert, int convert) {
-        this.censusUrl = censusUrl;
-        this.totalCount = totalCount;
-        this.totalPv = totalPv;
-        this.totalUv = totalUv;
-        this.totalIp = totalIp;
-        this.avgTime = avgTime;
-        this.alert = alert;
-        this.convert = convert;
-    }
-
     public CensusVO() {
     }
 
@@ -105,7 +94,8 @@ public class CensusVO {
                 ", convert=" + convert +
                 '}';
     }
-    public enum CensusStatus{
-        TO_DAY, LAST_DAY, LAST_WEEK,LAST_MONTH;
+
+    public enum CensusStatus {
+        TO_DAY, LAST_DAY, LAST_WEEK, LAST_MONTH;
     }
 }

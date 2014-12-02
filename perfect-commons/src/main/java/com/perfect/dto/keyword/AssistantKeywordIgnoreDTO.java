@@ -13,16 +13,6 @@ public class AssistantKeywordIgnoreDTO {
 
     private String matchModel = "精确";
 
-    public AssistantKeywordIgnoreDTO(String campaignName, String adgroupName, String keywordName, String matchModel) {
-        this.campaignName = campaignName;
-        this.adgroupName = adgroupName;
-        this.keywordName = keywordName;
-        this.matchModel = matchModel;
-    }
-
-    public AssistantKeywordIgnoreDTO() {
-    }
-
     public String getCampaignName() {
         return campaignName;
     }

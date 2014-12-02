@@ -1,15 +1,20 @@
 package com.perfect.app.bdlogin.core;
 
 import com.perfect.service.CookieService;
-import com.perfect.json.JSONUtils;
+import com.perfect.utils.json.JSONUtils;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
 import javax.annotation.Resource;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +28,7 @@ public class PreviewHandler {
     @Resource
     private CookieService cookieService;
 
-    public static HttpPost getPostRequest(String keyword, int area) {
+    public static String getPostRequest(String keyword, int area) {
         StringBuilder _cookies = new StringBuilder("");
         String userid = "";
         String token = "";
@@ -55,7 +60,18 @@ public class PreviewHandler {
         httpPost.setEntity(new UrlEncodedFormEntity(postData, StandardCharsets.UTF_8));
         BaiduHttpLogin.headerWrap(httpPost);
 
-        return httpPost;
+        HttpClient client = HttpClients.createDefault();
+        try {
+            HttpResponse ht = client.execute(httpPost);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ht.getEntity().writeTo(outputStream);
+
+            return new String(outputStream.toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     protected static CookieStore getCookies() {

@@ -4,8 +4,8 @@ import com.perfect.dao.keyword.KeywordQualityDAO;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.entity.report.KeywordReportEntity;
-import com.perfect.DateUtils;
-import com.perfect.ObjectUtils;
+import com.perfect.utils.DateUtils;
+import com.perfect.utils.ObjectUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 

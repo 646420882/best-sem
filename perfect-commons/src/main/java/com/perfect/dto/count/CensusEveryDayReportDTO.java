@@ -7,23 +7,12 @@ import java.util.Date;
 /**
  * Created by XiaoWei on 2014/11/26.
  */
-public class CensusEveryDayReportDTO  extends BaseDTO{
+public class CensusEveryDayReportDTO extends BaseDTO {
     private String lp;//停留页面
     private Long pvCount;//总浏览量
     private Long uvCount;//总访问客数
     private Long ipCount;//总的IP数
     private Date totalDate;//统计的日期
-    public CensusEveryDayReportDTO( String lp, Long pvCount, Long uvCount, Long ipCount, Date totalDate) {
-        this.lp = lp;
-        this.pvCount = pvCount;
-        this.uvCount = uvCount;
-        this.ipCount = ipCount;
-        this.totalDate = totalDate;
-    }
-
-    public CensusEveryDayReportDTO() {
-    }
-
 
     public String getLp() {
         return lp;

@@ -1,7 +1,7 @@
 package com.perfect.commons;
 
 import com.perfect.entity.MD5;
-import com.perfect.redis.JRedisUtils;
+import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import redis.clients.jedis.Jedis;

@@ -2,25 +2,24 @@ package com.perfect.app.assistant.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.api.baidu.SearchTermsReport;
-import com.perfect.autosdk.sms.v3.AttributeType;
-import com.perfect.autosdk.sms.v3.RealTimeQueryResultType;
+import com.perfect.autosdk.core.CommonService;
+import com.perfect.autosdk.exception.ApiException;
+import com.perfect.autosdk.sms.v3.*;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.core.AppContext;
 import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.keyword.SearchwordReportDTO;
-import com.perfect.entity.adgroup.AdgroupEntity;
-import com.perfect.entity.campaign.CampaignEntity;
-import com.perfect.entity.keyword.KeywordEntity;
-import com.perfect.paging.PagerInfo;
+import com.perfect.utils.paging.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.service.KeyWordBackUpService;
-import com.perfect.commons.web.WebContext;
-import com.perfect.utils.report.RegionalCodeUtils;
+import com.perfect.utils.RegionalCodeUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,10 +32,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by john on 2014/8/14.
@@ -299,7 +295,8 @@ public class AssistantKeywordController extends WebContextSupport{
 
         List<RealTimeQueryResultType> resultList = null;
         try {
-            resultList = searchTermsReport.getSearchTermsReprot(levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
+            //TODO 谢教的代码，下面这个代码少了一个参数
+            resultList = getSearchTermsReprot(levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -369,5 +366,78 @@ public class AssistantKeywordController extends WebContextSupport{
         writeJson(RES_SUCCESS, response);
     }
 
+
+    public List<RealTimeQueryResultType> getSearchTermsReprot(BaiduAccountInfoDTO accountInfoDTO, Integer levelOfDetails, Date startDate, Date endDate, List<AttributeType> attributes, Integer device, Integer searchType) {
+        DateFormat df = new SimpleDateFormat("hh:mm:ss");
+        try {
+            Date baseDate = df.parse("11:51:00");
+            Calendar beforeYesterDay = Calendar.getInstance();
+            beforeYesterDay.add(Calendar.DAY_OF_YEAR, -2);//前天的日期
+            Calendar yesterDay = Calendar.getInstance();
+            yesterDay.add(Calendar.DAY_OF_YEAR, -1);//昨天的日期
+
+            //若小于baseDate，则是11:51之前的,否则是11:51之后的,     请求时间在当天中午11:51前，startDate范围可取：[前天，前天-30] 请求时间在当天中午11:51后，startDate范围可取：[昨天，昨天-30]
+            if (df.parse(df.format(startDate)).getTime() < baseDate.getTime()) {
+                //若开始日期大于了前天，就将开始日期置为前天
+                if (startDate.getTime() > beforeYesterDay.getTime().getTime()) {
+                    startDate = beforeYesterDay.getTime();
+                }
+            } else {
+                if (startDate.getTime() > yesterDay.getTime().getTime()) {
+                    startDate = yesterDay.getTime();
+                }
+            }
+
+
+            if (df.parse(df.format(endDate)).getTime() < baseDate.getTime()) {
+                //若开始日期大于了前天，就将开始日期置为前天
+                if (endDate.getTime() > beforeYesterDay.getTime().getTime()) {
+                    endDate = beforeYesterDay.getTime();
+                }
+            } else {
+                if (endDate.getTime() > yesterDay.getTime().getTime()) {
+                    endDate = yesterDay.getTime();
+                }
+            }
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        CommonService commonService = BaiduServiceSupport.getCommonService(accountInfoDTO.getBaiduUserName(), accountInfoDTO.getBaiduPassword(), accountInfoDTO.getToken());
+        ReportService reportService = null;
+        try {
+            reportService = commonService.getService(ReportService.class);
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+
+        //设置请求参数
+        RealTimeQueryRequestType realTimeQueryRequestType = new RealTimeQueryRequestType();
+        String[] returnFileds = new String[]{"click", "impression"};
+        realTimeQueryRequestType.setPerformanceData(Arrays.asList(returnFileds));
+        realTimeQueryRequestType.setLevelOfDetails(levelOfDetails);
+        realTimeQueryRequestType.setStartDate(startDate);
+        realTimeQueryRequestType.setEndDate(endDate);
+        realTimeQueryRequestType.setAttributes(attributes);
+        realTimeQueryRequestType.setDevice(device);
+        realTimeQueryRequestType.setReportType(6);//报告类型
+        realTimeQueryRequestType.setNumber(20);//获取数据的条数
+
+
+        //创建请求
+        GetRealTimeQueryDataRequest getRealTimeQueryDataRequest = new GetRealTimeQueryDataRequest();
+        getRealTimeQueryDataRequest.setRealTimeQueryRequestTypes(realTimeQueryRequestType);
+        GetRealTimeQueryDataResponse response1 = reportService.getRealTimeQueryData(getRealTimeQueryDataRequest);
+
+        if (response1 == null) {
+            return new ArrayList<>();
+        } else {
+            List<RealTimeQueryResultType> resList = response1.getRealTimeQueryResultTypes();
+            return resList;
+        }
+    }
 
 }

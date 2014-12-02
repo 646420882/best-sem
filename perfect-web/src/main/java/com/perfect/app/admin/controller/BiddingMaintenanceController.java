@@ -1,7 +1,7 @@
 package com.perfect.app.admin.controller;
 
 import com.perfect.dto.CookieDTO;
-import com.perfect.json.JSONUtils;
+import com.perfect.utils.json.JSONUtils;
 import com.perfect.service.CookieService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;

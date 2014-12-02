@@ -1,11 +1,13 @@
 package com.perfect.dto.keyword;
 
+import com.perfect.dto.BaseDTO;
+
 import java.io.Serializable;
 
 /**
  * Created by john on 2014/9/2.
  */
-public class KeywordInfoDTO implements Serializable {
+public class KeywordInfoDTO extends BaseDTO implements Serializable {
 
     private String campaignName;
 
@@ -28,7 +30,6 @@ public class KeywordInfoDTO implements Serializable {
     private Long folderCount;//该关键词所属监控文件夹数
     private String keyword;
     private String keywordId;
-    private String id;
 
     public Long getFolderCount() {
         return folderCount;
@@ -126,11 +127,4 @@ public class KeywordInfoDTO implements Serializable {
         this.keywordId = keywordId;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }

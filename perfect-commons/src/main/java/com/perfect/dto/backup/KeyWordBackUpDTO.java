@@ -10,6 +10,4 @@ import java.math.BigDecimal;
  */
 public class KeyWordBackUpDTO extends KeywordDTO {
 
-
-
 }

@@ -5,7 +5,7 @@ import com.perfect.dto.BaseDTO;
 /**
  * Created by XiaoWei on 2014/11/26.
  */
-public class KeywordImportDTO  extends BaseDTO{
+public class KeywordImportDTO extends BaseDTO {
     private String customGroupId;
     private Long keywordId;
     private String keywordName;
