@@ -1,9 +1,8 @@
 package com.perfect.app.admin.controller;
 
-import com.google.gson.Gson;
 import com.perfect.commons.web.WebContextSupport;
-import com.perfect.dao.report.AsynchronousReportDAO;
 import com.perfect.service.AccountManageService;
+import com.perfect.service.AsynchronousReportService;
 import com.perfect.utils.DateUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +22,7 @@ import java.util.List;
 public class ReportPullController extends WebContextSupport {
 
     @Resource
-    private AsynchronousReportDAO asynchronousReportDAO;
+    private AsynchronousReportService asynchronousReportService;
 
     @Resource
     private AccountManageService accountManageService;
@@ -39,7 +38,6 @@ public class ReportPullController extends WebContextSupport {
                             @RequestParam(value = "startDate", required = false) String startDate,
                             @RequestParam(value = "endDate", required = false) String endDate,
                             @RequestParam(value = "userName", required = false) String userName) {
-        Gson gson = new Gson();
         List<String> list = null;
         if (startDate == null || endDate == null || startDate.equals("") || startDate.equals("")) {
             Calendar cal = Calendar.getInstance();
@@ -56,31 +54,31 @@ public class ReportPullController extends WebContextSupport {
         try {
             for (String dateStr : list) {
                 if (pullObj == 0) {
-                    asynchronousReportDAO.getAccountReportData(dateStr, userName);
-                    asynchronousReportDAO.getCampaignReportData(dateStr, userName);
-                    asynchronousReportDAO.getAdgroupReportData(dateStr, userName);
-                    asynchronousReportDAO.getCreativeReportData(dateStr, userName);
-                    asynchronousReportDAO.getKeywordReportData(dateStr, userName);
-                    asynchronousReportDAO.getRegionReportData(dateStr, userName);
+                    asynchronousReportService.getAccountReportData(dateStr, userName);
+                    asynchronousReportService.getCampaignReportData(dateStr, userName);
+                    asynchronousReportService.getAdgroupReportData(dateStr, userName);
+                    asynchronousReportService.getCreativeReportData(dateStr, userName);
+                    asynchronousReportService.getKeywordReportData(dateStr, userName);
+                    asynchronousReportService.getRegionReportData(dateStr, userName);
                 }
                 if (pullObj == 1) {
-                    asynchronousReportDAO.getAccountReportData(dateStr, userName);
+                    asynchronousReportService.getAccountReportData(dateStr, userName);
                 }
                 if (pullObj == 2) {
-                    asynchronousReportDAO.getCampaignReportData(dateStr, userName);
+                    asynchronousReportService.getCampaignReportData(dateStr, userName);
                 }
                 if (pullObj == 3) {
-                    asynchronousReportDAO.getAdgroupReportData(dateStr, userName);
+                    asynchronousReportService.getAdgroupReportData(dateStr, userName);
                 }
                 if (pullObj == 4) {
-                    asynchronousReportDAO.getCreativeReportData(dateStr, userName);
+                    asynchronousReportService.getCreativeReportData(dateStr, userName);
                 }
                 if (pullObj == 5) {
-                    asynchronousReportDAO.getKeywordReportData(dateStr, userName);
+                    asynchronousReportService.getKeywordReportData(dateStr, userName);
                 }
                 if (pullObj == 6) {
-                    asynchronousReportDAO.getKeywordReportData(dateStr, userName);
-                    asynchronousReportDAO.getRegionReportData(dateStr, userName);
+                    asynchronousReportService.getKeywordReportData(dateStr, userName);
+                    asynchronousReportService.getRegionReportData(dateStr, userName);
                 }
             }
             flag = 1;

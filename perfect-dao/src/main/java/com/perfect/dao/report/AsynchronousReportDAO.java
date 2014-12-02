@@ -1,19 +1,25 @@
 package com.perfect.dao.report;
 
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.account.*;
+import com.perfect.dto.keyword.KeywordReportDTO;
+
+import java.util.List;
+
 /**
  * Created by baizz on 2014-08-07.
  */
 public interface AsynchronousReportDAO {
 
-    void getAccountReportData(String dateStr, String userName);
+    void getAccountReportData(List<AccountReportDTO> accountReportDTOs, SystemUserDTO systemUser, String dateStr);
 
-    void getCampaignReportData(String dateStr, String userName);
+    void getCampaignReportData(List<CampaignReportDTO> campaignReportDTOs, SystemUserDTO systemUser, String dateStr);
 
-    void getAdgroupReportData(String dateStr, String userName);
+    void getAdgroupReportData(List<AdgroupReportDTO> adgroupReportDTOs, SystemUserDTO systemUser, String dateStr);
 
-    void getCreativeReportData(String dateStr, String userName);
+    void getCreativeReportData(List<CreativeReportDTO> creativeReportDTOs, SystemUserDTO systemUser, String dateStr);
 
-    void getKeywordReportData(String dateStr, String userName);
+    void getKeywordReportData(List<KeywordReportDTO> keywordReportDTOs, SystemUserDTO systemUser, String dateStr);
 
-    void getRegionReportData(String dateStr, String userName);
+    void getRegionReportData(List<RegionReportDTO> regionReportDTOs, SystemUserDTO systemUser, String dateStr);
 }
