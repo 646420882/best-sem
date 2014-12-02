@@ -32,6 +32,11 @@ public class AdgroupServiceImpl implements AdgroupService {
     }
 
     @Override
+    public List<AdgroupDTO> getAdgroupByCampaignId(Long campaignObjId) {
+        return adgroupDAO.getAdgroupByCampaignId(campaignObjId);
+    }
+
+    @Override
     public List<Long> getAdgroupIdByCampaignId(Long campaignId) {
         return adgroupDAO.getAdgroupIdByCampaignId(campaignId);
     }

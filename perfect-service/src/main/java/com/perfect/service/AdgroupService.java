@@ -14,6 +14,8 @@ public interface AdgroupService {
 
     List<AdgroupDTO> getAdgroupByCampaignObjId(String campaignObjId);
 
+    List<AdgroupDTO> getAdgroupByCampaignId(Long campaignObjId);
+
     List<Long> getAdgroupIdByCampaignId(Long campaignId);
 
     AdgroupDTO findOne(Long id);
@@ -27,5 +29,6 @@ public interface AdgroupService {
     void delete(Long id);
 
     void deleteByIds(List<Long> ids);
+
 
 }

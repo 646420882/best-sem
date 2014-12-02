@@ -21,6 +21,8 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
 
     List<AdgroupDTO> getAdgroupByCampaignObjId(String campaignObjId);
 
+    List<AdgroupDTO> getAdgroupByCampaignId(Long campaignId);
+
 //    List<AdgroupDTO> findByQuery(Query query);
 
     List<AdgroupDTO> findByCampaignId(Long cid);

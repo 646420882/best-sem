@@ -3,6 +3,7 @@ package com.perfect.service.impl;
 import com.perfect.dao.creative.CreativeDAO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.service.CreativeService;
+import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 /**
  * Created by SubDong on 2014/11/26.
  */
-@Repository("creativeService")
+@Service("creativeService")
 public class CreativeServiceImpl implements CreativeService {
 
     @Autowired
@@ -56,5 +57,61 @@ public class CreativeServiceImpl implements CreativeService {
     @Override
     public void deleteByIds(List<Long> creativeIds) {
         creativeDAO.deleteByIds(creativeIds);
+    }
+
+    @Override
+    public PagerInfo findByPagerInfo(Map<String, Object> map, int nowPage, int pageSize) {
+        return creativeDAO.findByPagerInfo(map,nowPage,pageSize);
+    }
+
+    @Override
+    public PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize) {
+        return creativeDAO.findByPagerInfo(l,nowPage,pageSize);
+    }
+
+
+    @Override
+    public PagerInfo findByPagerInfoForLong(List<Long> longs, int nowpage, int pageSize) {
+        return creativeDAO.findByPagerInfoForLong(longs,nowpage,pageSize);
+    }
+
+    @Override
+    public String insertOutId(CreativeDTO creativeEntity) {
+        return creativeDAO.insertOutId(creativeEntity);
+    }
+
+    @Override
+    public void deleteByCacheId(Long cacheCreativeId) {
+        creativeDAO.deleteByCacheId(cacheCreativeId);
+}
+
+    @Override
+    public void deleteByCacheId(String cacheCreativeId) {
+        creativeDAO.deleteByCacheId(cacheCreativeId);
+    }
+
+    @Override
+    public CreativeDTO findByObjId(String obj) {
+        return creativeDAO.findByObjId(obj);
+    }
+
+    @Override
+    public void updateByObjId(CreativeDTO creativeEntity) {
+        creativeDAO.updateByObjId(creativeEntity);
+    }
+
+    @Override
+    public void update(CreativeDTO newCreativeEntity, CreativeDTO creativeBackUpEntity) {
+        creativeDAO.update(newCreativeEntity,creativeBackUpEntity);
+    }
+
+    @Override
+    public void delBack(Long oid) {
+        creativeDAO.delBack(oid);
+    }
+
+    @Override
+    public CreativeDTO getAllsBySomeParams(Map<String, Object> params) {
+        return creativeDAO.getAllsBySomeParams(params);
     }
 }

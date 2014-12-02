@@ -23,6 +23,7 @@ public class AdgroupDTO extends AccountIdDTO {
     private Double mib;
     private Double priceRatio;
     private Integer localStatus;
+    private String campaignName;
 
     public Long getAdgroupId() {
         return adgroupId;
@@ -134,5 +135,13 @@ public class AdgroupDTO extends AccountIdDTO {
 
     public void setOpt(OptTypeDTO opt) {
         this.opt = opt;
+    }
+
+    public String getCampaignName() {
+        return campaignName;
+    }
+
+    public void setCampaignName(String campaignName) {
+        this.campaignName = campaignName;
     }
 }

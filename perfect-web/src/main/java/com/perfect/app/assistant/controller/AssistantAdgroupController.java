@@ -7,7 +7,6 @@ import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
 import com.perfect.dto.campaign.CampaignDTO;
-import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.service.AdgroupBackUpService;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.utils.paging.PagerInfo;
@@ -63,7 +62,7 @@ public class AssistantAdgroupController extends WebContextSupport {
             } else {
                 pagerInfo = adgroupDAO.findByPagerInfo(parms, nowPage, pageSize);
             }
-            setCampaignNameByStringObjId((List<AdgroupEntity>) pagerInfo.getList());
+            setCampaignNameByStringObjId((List<AdgroupDTO>) pagerInfo.getList());
         } else {
             if (cid != "" || !cid.equals("")) {
                 parms.put(MongoEntityConstants.CAMPAIGN_ID, Long.parseLong(cid));
@@ -71,7 +70,7 @@ public class AssistantAdgroupController extends WebContextSupport {
             } else {
                 pagerInfo = adgroupDAO.findByPagerInfo(parms, nowPage, pageSize);
             }
-            setCampaignNameByLongId((List<AdgroupEntity>) pagerInfo.getList());
+            setCampaignNameByLongId((List<AdgroupDTO>) pagerInfo.getList());
         }
         writeJson(pagerInfo, response);
         return null;
@@ -82,11 +81,11 @@ public class AssistantAdgroupController extends WebContextSupport {
      *
      * @param list
      */
-    private void setCampaignNameByLongId(List<AdgroupEntity> list) {
+    private void setCampaignNameByLongId(List<AdgroupDTO> list) {
         if (list.size() > 0) {
             List<CampaignDTO> campaignEntity = (List<CampaignDTO>) campaignDAO.findAll();
             for (int i = 0; i < campaignEntity.size(); i++) {
-                for (AdgroupEntity a : list) {
+                for (AdgroupDTO a : list) {
                     if (a.getCampaignId() != null) {
                         if (a.getCampaignId().equals(campaignEntity.get(i).getCampaignId())) {
                             a.setCampaignName(campaignEntity.get(i).getCampaignName());
@@ -107,11 +106,11 @@ public class AssistantAdgroupController extends WebContextSupport {
      *
      * @param list
      */
-    private void setCampaignNameByStringObjId(List<AdgroupEntity> list) {
+    private void setCampaignNameByStringObjId(List<AdgroupDTO> list) {
         if (list.size() > 0) {
             List<CampaignDTO> campaignEntity = (List<CampaignDTO>) campaignDAO.findAll();
             for (int i = 0; i < campaignEntity.size(); i++) {
-                for (AdgroupEntity a : list) {
+                for (AdgroupDTO a : list) {
                     if (a.getCampaignObjId().equals(campaignEntity.get(i).getId())) {
                         a.setCampaignName(campaignEntity.get(i).getCampaignName());
                     }
