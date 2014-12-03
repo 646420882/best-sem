@@ -5,6 +5,7 @@ import com.perfect.dao.bidding.BiddingRuleDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
+import com.perfect.db.mongodb.utils.PageParamUtils;
 import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.utils.paging.PaginationParam;
@@ -167,11 +168,6 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
     }
 
     @Override
-    public List<BiddingRuleDTO> findByCampagainId(long cid, int skip, int limit, String field, Sort.Direction direction) {
-        return null;
-    }
-
-    @Override
     public BiddingRuleDTO getBiddingRuleByKeywordId(Long keywordId) {
         BiddingRuleEntity entity = getMongoTemplate().findOne(Query.query(Criteria.where(KEYWORD_ID).is(keywordId)), getEntityClass());
         BiddingRuleDTO returnObj = new BiddingRuleDTO();
@@ -279,7 +275,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
             mongoQuery.addCriteria(Criteria.where(NAME).regex(prefix + reg + suffix));
         }
 
-        return convertToDTOs(getMongoTemplate().find(param.withParam(mongoQuery), getEntityClass()));
+        return convertToDTOs(getMongoTemplate().find(PageParamUtils.withParam(param,mongoQuery), getEntityClass()));
     }
 
     @Override

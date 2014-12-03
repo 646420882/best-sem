@@ -8,13 +8,11 @@ import com.perfect.dao.creative.CreativeDAO;
 import com.perfect.dao.sys.LogDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.creative.CreativeDTO;
-import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.backup.CreativeBackUpEntity;
+import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.utils.ObjectUtils;
-import com.perfect.utils.paging.Pager;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
@@ -400,18 +398,6 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     public void delete(CreativeDTO creativeDTO) {
         deleteById(creativeDTO.getCreativeId());
     }
-
-
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
-
-    @Override
-    public List<CreativeDTO> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, boolean asc) {
-        return null;
-    }
-
 
     private List<CreativeDTO> wrapperList(List<CreativeEntity> list) {
         return ObjectUtils.convert(list, CreativeDTO.class);

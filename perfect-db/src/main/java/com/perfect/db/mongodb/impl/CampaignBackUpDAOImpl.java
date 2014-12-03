@@ -27,10 +27,10 @@ public class CampaignBackUpDAOImpl extends AbstractUserBaseDAOImpl<CampaignBackU
         return mongoTemplate.findOne(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)),getDTOClass(), MongoEntityConstants.BAK_CAMPAIGN);
     }
 
-    @Override
-    public void deleteByObjectId(String id) {
-
-    }
+//    @Override
+//    public void deleteByObjectId(String id) {
+//
+//    }
 
     public  void deleteByCid(long cid){
         MongoTemplate mongoTemplate = getMongoTemplate();

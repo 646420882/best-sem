@@ -29,8 +29,6 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpD
         return KeyWordBackUpDTO.class;
     }
 
-
-
     /**
      * 根据mongoId得到备份的关键词
      * @param id
@@ -58,14 +56,14 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpD
     }
 
 
-    /**
-     * 根据mongogdbID删除备份的关键词
-     * @param id
-     */
-    public void deleteByObjectId(String id){
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)),getEntityClass(),MongoEntityConstants.BAK_KEYWORD);
-    }
+//    /**
+//     * 根据mongogdbID删除备份的关键词
+//     * @param id
+//     */
+//    public void deleteByObjectId(String id){
+//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+//        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)),getEntityClass(),MongoEntityConstants.BAK_KEYWORD);
+//    }
 
     public KeyWordBackUpDTO findById(long id){
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();

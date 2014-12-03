@@ -3,6 +3,7 @@ package com.perfect.dto.keyword;
 import com.perfect.dto.BaseDTO;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by yousheng on 14/11/24.
@@ -13,7 +14,7 @@ public class KeywordRankDTO extends BaseDTO {
 
     private String name;
 
-    private HashMap<Integer, Integer> targetRank;
+    private Map<Integer, Integer> targetRank;
 
     private int device;
 
@@ -37,11 +38,11 @@ public class KeywordRankDTO extends BaseDTO {
         return name;
     }
 
-    public void setTargetRank(HashMap<Integer, Integer> targetRank) {
+    public void setTargetRank(Map<Integer, Integer> targetRank) {
         this.targetRank = targetRank;
     }
 
-    public HashMap<Integer, Integer> getTargetRank() {
+    public Map<Integer, Integer> getTargetRank() {
         return targetRank;
     }
 

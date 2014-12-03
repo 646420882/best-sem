@@ -3,13 +3,13 @@ package com.perfect.api.baidu;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.dto.creative.CreativeInfoDTO;
-import com.perfect.dto.keyword.KeywordInfoDTO;
-import com.perfect.dto.keyword.KeywordRankDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by yousheng on 2014/8/12.
@@ -329,136 +329,4 @@ public class BaiduApiService {
         return previewDatas;
     }
 
-
-    public Map<String, KeywordRankDTO> getKeywordRank(Map<KeywordInfoDTO, List<Integer>> keys, String host) {
-        if (keys == null || keys.isEmpty()) {
-            return Collections.EMPTY_MAP;
-        }
-
-        Map<Integer, List<KeywordInfoDTO>> regionDataMap = new HashMap<>();
-        Map<String, KeywordInfoDTO> keywordEntityMap = new HashMap<>();
-
-        initIdMap(keys.keySet(), keywordEntityMap);
-        convertMap(keys, regionDataMap);
-        BaiduPreviewHelper baiduPreviewHelper = new BaiduPreviewHelper(commonService);
-
-        List<BaiduPreviewHelper.PreviewData> resultDataList = new ArrayList<>();
-        for (Map.Entry<Integer, List<KeywordInfoDTO>> entry : regionDataMap.entrySet()) {
-            Integer region = entry.getKey();
-
-            List<KeywordInfoDTO> keyEntityList = entry.getValue();
-
-            if (keyEntityList.size() <= 5) {
-                List<String> keyList = new ArrayList<>();
-                for (KeywordInfoDTO keywordEntity : keyEntityList) {
-                    keyList.add(keywordEntity.getKeyword());
-                }
-                resultDataList.addAll(getPreviewData(region, keyList, baiduPreviewHelper));
-            } else {
-                List<String> temp = new ArrayList<>();
-                for (KeywordInfoDTO key : keyEntityList) {
-                    temp.add(key.getKeyword());
-
-                    if (temp.size() == 5) {
-                        resultDataList.addAll(getPreviewData(region, temp, baiduPreviewHelper));
-                        temp.clear();
-                    }
-                }
-
-                if (!temp.isEmpty()) {
-                    resultDataList.addAll(getPreviewData(region, temp, baiduPreviewHelper));
-                }
-            }
-        }
-
-        Map<String, KeywordRankDTO> keywordRankEntityMap = new HashMap<>();
-
-        if (resultDataList != null && !resultDataList.isEmpty()) {
-            for (BaiduPreviewHelper.PreviewData previewData : resultDataList) {
-                if ((previewData.getLeft() == null || previewData.getLeft().isEmpty()) && (previewData.getRight() == null || previewData.getRight().isEmpty())) {
-                    continue;
-                }
-
-                String keyword = previewData.getKeyword();
-                int region = previewData.getRegion();
-                int device = previewData.getDevice();
-
-                KeywordInfoDTO kwid = keywordEntityMap.get(keyword);
-
-                KeywordRankDTO entity = null;
-                if (keywordRankEntityMap.containsKey(keyword)) {
-                    entity = keywordRankEntityMap.get(keyword);
-                } else {
-                    entity = new KeywordRankDTO();
-                    if (kwid.getKeywordId() == null) {
-                        entity.setKwid(kwid.getId());
-                    } else {
-                        entity.setKwid(kwid.getKeywordId().toString());
-                    }
-                    entity.setName(keyword);
-                    entity.setTargetRank(new HashMap<Integer, Integer>());
-                    entity.setDevice(device);
-                    entity.setTime(System.currentTimeMillis());
-
-                    keywordRankEntityMap.put(keyword, entity);
-                }
-
-
-                int rank = 0;
-                boolean found = false;
-                for (CreativeInfoDTO leftEntity : previewData.getLeft()) {
-                    rank++;
-                    String url = leftEntity.getUrl();
-                    if (url.contains(host)) {
-                        entity.getTargetRank().put(region, rank);
-                        found = true;
-                        break;
-                    }
-
-                }
-                if (found) {
-                    continue;
-                }
-                rank = 0;
-                for (CreativeInfoDTO rightEntity : previewData.getRight()) {
-                    rank--;
-                    String url = rightEntity.getUrl();
-                    if (url.contains(host)) {
-                        entity.getTargetRank().put(region, rank);
-                        break;
-                    }
-                }
-            }
-        }
-
-
-        return keywordRankEntityMap;
-    }
-
-    private void initIdMap(Set<KeywordInfoDTO> keywordEntities, Map<String, KeywordInfoDTO> keywordIdMap) {
-        for (KeywordInfoDTO keywordEntity : keywordEntities) {
-            keywordIdMap.put(keywordEntity.getKeyword(), keywordEntity);
-        }
-    }
-
-    private void convertMap(Map<KeywordInfoDTO, List<Integer>> keys, Map<Integer, List<KeywordInfoDTO>> regionDataMap) {
-        if (keys.isEmpty())
-            return;
-
-        for (Map.Entry<KeywordInfoDTO, List<Integer>> entry : keys.entrySet()) {
-            List<Integer> regionList = entry.getValue();
-
-            KeywordInfoDTO keyword = entry.getKey();
-
-            for (Integer integer : regionList) {
-                if (regionDataMap.containsKey(integer)) {
-                    regionDataMap.get(integer).add(keyword);
-                } else {
-                    List<KeywordInfoDTO> keyList = new ArrayList<>();
-                    keyList.add(keyword);
-                    regionDataMap.put(integer, keyList);
-                }
-            }
-        }
-    }
 }

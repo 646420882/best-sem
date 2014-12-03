@@ -9,7 +9,7 @@ public interface CampaignBackUpDAO extends HeyCrudRepository<CampaignBackUpDTO, 
 
     CampaignBackUpDTO findByObjectId(String id);
 
-    void deleteByObjectId(String id);
+//    void deleteByObjectId(String id);
 
     void deleteByCid(long cid);
 

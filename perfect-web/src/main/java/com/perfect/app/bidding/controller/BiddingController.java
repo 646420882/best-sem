@@ -1,7 +1,8 @@
 package com.perfect.app.bidding.controller;
 
 import com.google.common.collect.Lists;
-import com.perfect.app.bdlogin.core.PreviewHandler;
+import com.perfect.app.bdlogin.core.BaiduSearchPageUtils;
+import com.perfect.dto.CookieDTO;
 import com.perfect.dto.bidding.KeywordReportDTO;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
@@ -27,7 +28,9 @@ import com.perfect.utils.NumberUtils;
 import com.perfect.utils.RegionalCodeUtils;
 import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.paging.PaginationParam;
+import com.perfect.utils.web.RankUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.CookieStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -81,6 +84,9 @@ public class BiddingController {
 
     @Resource
     private Keyword10QualityService keyword10QualityService;
+
+    @Resource
+    private CookieService cookieService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -297,16 +303,25 @@ public class BiddingController {
         return new ModelAndView("bidding/jingjia");
     }
 
-    @RequestMapping(value = "/getKeywordBiddingRank", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getKeywordBiddingRank(@RequestParam(value = "keyword", required = false) String keyword,
-                                              @RequestParam(value = "region", required = false) Integer region) {
-        Integer rank = keywordBiddingRankService.getKeywordBiddingRank(keyword, 1000);
-        AbstractView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> value = new HashMap<>();
-        value.put("rank", rank);
-        jsonView.setAttributesMap(value);
-        return new ModelAndView(jsonView);
-    }
+//    @RequestMapping(value = "/getKeywordBiddingRank", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ModelAndView getKeywordBiddingRank(@RequestParam(value = "keyword", required = false) String keyword,
+//                                              @RequestParam(value = "region", required = false) Integer region) {
+//
+//
+//        CookieStore cookieStore = JSONUtils.getObjectByJson(cookieService.takeOne().getCookie(), CookieStore.class);
+//
+//        String page = BaiduSearchPageUtils.getBaiduSearchPage(cookieStore, keyword, region);
+//
+//
+//
+//
+//        Integer rank = BaiduSearchPageUtils.where(page,)
+//        AbstractView jsonView = new MappingJackson2JsonView();
+//        Map<String, Object> value = new HashMap<>();
+//        value.put("rank", rank);
+//        jsonView.setAttributesMap(value);
+//        return new ModelAndView(jsonView);
+//    }
 
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json")
     public ModelAndView list(HttpServletRequest request,
@@ -655,6 +670,7 @@ public class BiddingController {
         String userName = AppContext.getUser();
 
         Long accid = AppContext.getAccountId();
+
         SystemUserDTO systemUserEntity = systemUserService.getSystemUser(userName);
         if (systemUserEntity == null) {
             return new ModelAndView(jsonView);
@@ -684,6 +700,9 @@ public class BiddingController {
 
         Map<String, KeywordDTO> keywordEntityMap = new HashMap<>();
 
+        Map<String, KeywordRankDTO> rankMap = new HashMap<>();
+
+
         for (Long kwid : ids) {
 
             KeywordDTO keywordEntity = sysKeywordService.findById(kwid);
@@ -700,22 +719,49 @@ public class BiddingController {
             keywordRankDTO.setAccountId(AppContext.getAccountId());
 
 
+            Map<Integer, Integer> regionRankMap = new HashMap<>();
             if (targetList != null && !targetList.isEmpty()) {
-                Map<Integer, Integer> rankMap = new HashMap<>();
-
-
                 for (Integer region : targetList) {
-                    String previewHTML = PreviewHandler.getPostRequest(keywordEntity.getKeyword(), region);
+                    CookieDTO cookieDTO = cookieService.takeOne();
+                    if (cookieDTO == null) {
+                        continue;
+                    }
 
+
+                    CookieStore cookieStore = JSONUtils.getObjectByJson(cookieDTO.getCookie(), CookieStore.class);
+
+
+                    String previewHTML = BaiduSearchPageUtils.getBaiduSearchPage(cookieStore, keywordEntity.getKeyword(), region);
+
+                    int rank = BaiduSearchPageUtils.where(previewHTML, host);
+
+                    regionRankMap.put(region, rank);
                 }
             } else {
-//                PreviewHandler.getPostRequest()
+
+                for (Integer region : accountRegionList) {
+                    CookieDTO cookieDTO = cookieService.takeOne();
+                    if (cookieDTO == null) {
+                        continue;
+                    }
+
+                    CookieStore cookieStore = JSONUtils.getObjectByJson(cookieDTO.getCookie(), CookieStore.class);
+
+                    String previewHTML = BaiduSearchPageUtils.getBaiduSearchPage(cookieStore, keywordEntity.getKeyword(), region);
+
+                    int rank = BaiduSearchPageUtils.where(previewHTML, host);
+
+                    regionRankMap.put(region, rank);
+                }
+
             }
+
+            keywordRankDTO.setTargetRank(regionRankMap);
+
+            rankMap.put(keywordEntity.getKeyword(), keywordRankDTO);
 
         }
 
-
-        Map<String, KeywordRankDTO> rankMap = baiduApiService.getKeywordRank(searchMap, host);
 
         Long accountId = AppContext.getAccountId();
 

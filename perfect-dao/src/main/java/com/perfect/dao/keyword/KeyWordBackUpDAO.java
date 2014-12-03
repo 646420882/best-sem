@@ -13,8 +13,6 @@ public interface KeyWordBackUpDAO extends HeyCrudRepository<KeyWordBackUpDTO, Lo
 
     KeyWordBackUpDTO findByObjectId(String id);
 
-    void deleteByObjectId(String id);
-
     KeyWordBackUpDTO findById(long id);
 
     void deleteByKwid(long kwid);
