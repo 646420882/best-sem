@@ -1,6 +1,7 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.dao.report.AsynchronousReportDAO;
+import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.*;
@@ -14,14 +15,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.perfect.commons.constants.MongoEntityConstants.TBL_ACCOUNT_REPORT;
-
 /**
  * Created by baizz on 2014-08-07.
  * 2014-11-26 refactor
  */
 @Repository("asynchronousReportDAO")
-public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
+public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountReportDTO,Long> implements AsynchronousReportDAO {
 
     @Override
     public void getAccountReportData(List<AccountReportDTO> accountReportDTOs, SystemUserDTO systemUser, String dateStr) {
@@ -75,5 +74,15 @@ public class AsynchronousReportDAOImpl implements AsynchronousReportDAO {
 
         List<RegionReportEntity> reportDTOs = ObjectUtils.convert(regionReportDTOs, RegionReportEntity.class);
         mongoTemplate.insert(reportDTOs, dateStr + "-region");
+    }
+
+    @Override
+    public Class<AccountReportEntity> getEntityClass() {
+        return AccountReportEntity.class;
+    }
+
+    @Override
+    public Class<AccountReportDTO> getDTOClass() {
+        return AccountReportDTO.class;
     }
 }

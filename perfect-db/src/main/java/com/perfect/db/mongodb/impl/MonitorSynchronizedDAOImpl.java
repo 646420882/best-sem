@@ -2,22 +2,21 @@ package com.perfect.db.mongodb.impl;
 
 import com.perfect.core.AppContext;
 import com.perfect.dao.monitoring.MonitorSynchronizedDAO;
+import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.dto.monitor.FolderMonitorDTO;
+import com.perfect.entity.FolderEntity;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.perfect.commons.constants.MongoEntityConstants.TBL_MONITORING_FOLDERS;
-import static com.perfect.commons.constants.MongoEntityConstants.TBL_MONITORING_TARGETS;
-
 /**
  * Created by SubDong on 2014/9/12.
  */
 @Repository("monitorSynchronizedDAO")
-public class MonitorSynchronizedDAOImpl implements MonitorSynchronizedDAO {
+public class MonitorSynchronizedDAOImpl extends AbstractUserBaseDAOImpl<FolderDTO,Long> implements MonitorSynchronizedDAO {
 
     @Override
     public int insterData(List<FolderDTO> forlderEntities) {
@@ -56,5 +55,15 @@ public class MonitorSynchronizedDAOImpl implements MonitorSynchronizedDAO {
 
 
         return i;
+    }
+
+    @Override
+    public Class<FolderEntity> getEntityClass() {
+        return FolderEntity.class;
+    }
+
+    @Override
+    public Class<FolderDTO> getDTOClass() {
+        return FolderDTO.class;
     }
 }

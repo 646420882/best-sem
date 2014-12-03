@@ -1,5 +1,6 @@
 package com.perfect.dao.report;
 
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.*;
 import com.perfect.dto.keyword.KeywordReportDTO;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Created by baizz on 2014-08-07.
  */
-public interface AsynchronousReportDAO {
+public interface AsynchronousReportDAO extends HeyCrudRepository<AccountReportDTO,Long> {
 
     void getAccountReportData(List<AccountReportDTO> accountReportDTOs, SystemUserDTO systemUser, String dateStr);
 

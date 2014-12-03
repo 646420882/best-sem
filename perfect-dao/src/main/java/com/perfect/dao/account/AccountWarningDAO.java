@@ -14,11 +14,10 @@ public interface AccountWarningDAO extends HeyCrudRepository<WarningRuleDTO,Long
 
     void update(WarningRuleDTO warningRuleEntity);
 
-//    void updateMulti(Query query, Update update);
-
     List<WarningRuleDTO> findWarningRule(int isEnable, int isWarninged);
 
     Iterable<WarningRuleDTO> findByUserName(String user);
 
     void mySave(WarningRuleDTO warningRuleDTO);
+
 }

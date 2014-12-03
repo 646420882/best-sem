@@ -2,6 +2,7 @@ package com.perfect.dao.report;
 
 import com.perfect.dto.RealTimeResultDTO;
 import com.perfect.dto.account.AccountReportDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,6 @@ public interface GetAccountReportDAO {
      * @param endDate
      * @return
      */
-    List<RealTimeResultDTO> getAccountRealTimeTypeByDate(String systemUserName,Long accountId, String startDate, String endDate);
+    BaiduAccountInfoDTO getAccountRealTimeTypeByDate(String systemUserName,Long accountId, String startDate, String endDate);
 
 }

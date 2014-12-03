@@ -1,5 +1,6 @@
 package com.perfect.dao.report;
 
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.StructureReportDTO;
 import com.perfect.dto.account.AccountReportDTO;
 
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Created by SubDong on 2014/8/6.
  */
-public interface BasisReportDAO {
+public interface BasisReportDAO extends HeyCrudRepository<StructureReportDTO,Long> {
     /**
      * 报告
      *

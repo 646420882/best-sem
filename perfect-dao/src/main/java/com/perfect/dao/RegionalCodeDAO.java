@@ -1,5 +1,6 @@
 package com.perfect.dao;
 
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.regional.RegionalCodeDTO;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * Created by SubDong on 2014/9/29.
  */
-public interface RegionalCodeDAO {
+public interface RegionalCodeDAO extends HeyCrudRepository<RegionalCodeDTO,Long> {
     /**
      * 添加地域代码
      *

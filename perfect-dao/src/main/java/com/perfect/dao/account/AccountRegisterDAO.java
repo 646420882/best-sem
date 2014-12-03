@@ -1,11 +1,12 @@
 package com.perfect.dao.account;
 
+import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.SystemUserDTO;
 
 /**
  * Created by SubDong on 2014/9/30.
  */
-public interface AccountRegisterDAO {
+public interface AccountRegisterDAO extends HeyCrudRepository<SystemUserDTO,Long> {
     /**
      * 注册系统用户
      *

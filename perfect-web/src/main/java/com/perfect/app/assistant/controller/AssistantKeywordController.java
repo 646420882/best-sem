@@ -3,7 +3,6 @@ package com.perfect.app.assistant.controller;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.perfect.api.baidu.BaiduServiceSupport;
-import com.perfect.api.baidu.SearchTermsReport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
@@ -16,6 +15,7 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.keyword.SearchwordReportDTO;
+import com.perfect.service.BaiduAccountService;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.service.KeyWordBackUpService;
@@ -36,7 +36,7 @@ import java.util.*;
 
 /**
  * Created by john on 2014/8/14.
- * 2014-11-28 refactor XiaoWeii
+ * 2014-11-28 refactor XiaoWei
  */
 @RestController
 @Scope("prototype")
@@ -50,7 +50,8 @@ public class AssistantKeywordController extends WebContextSupport{
     private KeyWordBackUpService keyWordBackUpService;
 
     @Resource
-    private SearchTermsReport searchTermsReport;
+    private BaiduAccountService baiduAccountService;
+
 
 
 
@@ -295,8 +296,8 @@ public class AssistantKeywordController extends WebContextSupport{
 
         List<RealTimeQueryResultType> resultList = null;
         try {
-            //TODO 谢教的代码，下面这个代码少了一个参数
-            resultList = getSearchTermsReprot(levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
+            BaiduAccountInfoDTO accountInfoDTO=baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(),AppContext.getAccountId());
+            resultList = getSearchTermsReprot(accountInfoDTO,levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
         } catch (ParseException e) {
             e.printStackTrace();
         }

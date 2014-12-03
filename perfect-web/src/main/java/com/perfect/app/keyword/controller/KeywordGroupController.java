@@ -1,7 +1,6 @@
 package com.perfect.app.keyword.controller;
 
 import com.perfect.service.KeywordGroupService;
-import org.bson.types.ObjectId;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +15,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by baizz on 2014-08-08.
@@ -114,7 +110,7 @@ public class KeywordGroupController {
                                          @RequestParam(value = "seedWords", required = false) String seedWords,
                                          @RequestParam(value = "krFileId") String krFileId) throws IOException {
         List<String> seedWordList = new ArrayList<>(Arrays.asList(seedWords.split(",")));
-        String filename = new ObjectId().toString() + ".csv";
+        String filename = new Random().toString() + ".csv";
         response.addHeader("Content-Disposition", "attachment;filename=" + filename);
         try (OutputStream os = response.getOutputStream()) {
             keywordGroupService.downloadBaiduCSV(seedWordList, krFileId, os);
@@ -134,7 +130,7 @@ public class KeywordGroupController {
     public ModelAndView downloadCSV(HttpServletResponse response,
                                     @RequestParam(value = "trade", required = false) String trade,
                                     @RequestParam(value = "category", required = false) String category) throws IOException {
-        String filename = new ObjectId().toString() + ".csv";
+        String filename = new Random().toString() + ".csv";
         response.addHeader("Content-Disposition", "attachment;filename=" + filename);
         try (OutputStream os = response.getOutputStream()) {
             keywordGroupService.downloadCSV(trade, category, os);

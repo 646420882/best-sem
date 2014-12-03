@@ -8,6 +8,7 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordReportDTO;
+import com.perfect.service.AccountManageService;
 import com.perfect.service.KeywordReportService;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.utils.DateUtils;
@@ -36,7 +37,7 @@ public class ImportKeywordManageController extends WebContextSupport {
     private KeywordReportService keywordReportService;
 
     @Resource
-    private AccountManageDAO accountManageDAO;
+    private AccountManageService accountManageService;
 
     @RequestMapping(value = "/import/getImportKeywordList")
     public void getImportKeywordList(HttpServletResponse response,
@@ -68,7 +69,7 @@ public class ImportKeywordManageController extends WebContextSupport {
      */
     public PromotionMonitoring getUserInfo() {
         Long accid = AppContext.getAccountId();
-        BaiduAccountInfoDTO entity = accountManageDAO.findByBaiduUserId(accid);
+        BaiduAccountInfoDTO entity = accountManageService.findByBaiduUserId(accid);
         PromotionMonitoring Monitoring = new PromotionMonitoring(entity.getBaiduUserName(),entity.getBaiduPassword(),entity.getToken());;
         return Monitoring;
     }
