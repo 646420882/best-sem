@@ -1,7 +1,7 @@
 package com.perfect.commons.web;
 
 import com.perfect.core.AppContext;
-import com.perfect.entity.sys.BaiduAccountInfoEntity;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -43,22 +43,22 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         AppContext.setUser(userName, accountId);
     }
 
-    public static void setAccountList(HttpServletRequest request, List<BaiduAccountInfoEntity> baiduAccountInfoEntities) {
-        request.getSession().setAttribute(KEY_ACCOUNTLIST, baiduAccountInfoEntities);
+    public static void setAccountList(HttpServletRequest request, List<BaiduAccountInfoDTO> baiduAccountInfoDTOList) {
+        request.getSession().setAttribute(KEY_ACCOUNTLIST, baiduAccountInfoDTOList);
     }
 
-    public static List<BaiduAccountInfoEntity> getAccountList(HttpServletRequest request) {
+    public static List<BaiduAccountInfoDTO> getAccountList(HttpServletRequest request) {
         Object list = request.getSession().getAttribute(KEY_ACCOUNTLIST);
 
-        if(list == null){
+        if (list == null) {
             return null;
-        }else{
-            return (List<BaiduAccountInfoEntity>)list;
+        } else {
+            return (List<BaiduAccountInfoDTO>) list;
         }
     }
 
 
-    public static ModelAndView getJsonView(){
+    public static ModelAndView getJsonView() {
         return new ModelAndView(new MappingJackson2JsonView());
     }
 }
