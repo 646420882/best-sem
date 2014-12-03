@@ -501,4 +501,9 @@ public class SystemUserServiceImpl implements SystemUserService {
     public List<Long> getLocalCreativeIds(Long accountId, List<Long> adgroupIds) {
         return systemUserDAO.getLocalCreativeIds(accountId, adgroupIds);
     }
+
+    @Override
+    public SystemUserDTO findByUserName(String userName) {
+        return systemUserDAO.findByUserName(userName);
+    }
 }

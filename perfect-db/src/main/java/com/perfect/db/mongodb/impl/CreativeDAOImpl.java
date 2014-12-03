@@ -402,15 +402,6 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
 
-    @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
-    }
-
-    @Override
-    public List<CreativeDTO> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, boolean asc) {
-        return null;
-    }
 
 
     private List<CreativeDTO> wrapperList(List<CreativeEntity> list) {

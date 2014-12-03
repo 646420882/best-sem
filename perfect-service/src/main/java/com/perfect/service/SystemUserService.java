@@ -55,4 +55,6 @@ public interface SystemUserService {
 
     List<Long> getLocalCreativeIds(Long accountId, List<Long> adgroupIds);
 
+    SystemUserDTO findByUserName(String userName);
+
 }

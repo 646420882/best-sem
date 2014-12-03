@@ -6,6 +6,8 @@ import com.perfect.dao.account.AccountWarningDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.WarningRuleDTO;
+import com.perfect.service.AccountWarningService;
+import com.perfect.service.SystemUserService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,10 +34,10 @@ public class AccountWarningController extends WebContextSupport {
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     @Resource
-    AccountWarningDAO accountWarningDAO;
+    AccountWarningService accountWarningService;
 
     @Resource
-    private SystemUserDAO systemUserDAO;
+    private SystemUserService systemUserService;
 
     /**
      * 设置提醒页面
@@ -43,7 +45,7 @@ public class AccountWarningController extends WebContextSupport {
      */
     @RequestMapping(value = "assistant/accountWarning" , method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView setWarningPage(ModelMap model){
-        SystemUserDTO systemUserEntity = systemUserDAO.findByUserName(AppContext.getUser());
+        SystemUserDTO systemUserEntity = systemUserService.findByUserName(AppContext.getUser());
         model.addAttribute("list",systemUserEntity.getBaiduAccountInfoDTOs());
         return new ModelAndView("promotionAssistant/setWarning");
     }
@@ -79,7 +81,7 @@ public class AccountWarningController extends WebContextSupport {
         warningRuleEntity.setTels(tels);
         warningRuleEntity.setStartTime(new Date());
 
-        accountWarningDAO.mySave(warningRuleEntity);
+        accountWarningService.mySave(warningRuleEntity);
 
         return new ModelAndView("redirect:/assistant/showWarningRulePage");
     }
@@ -100,7 +102,7 @@ public class AccountWarningController extends WebContextSupport {
      */
     @RequestMapping(value = "assistant/getAllWarningRule",method = {RequestMethod.GET,RequestMethod.POST})
     public void showAllWarningRule(HttpServletResponse response){
-       Iterable<WarningRuleDTO> list = accountWarningDAO.findByUserName(AppContext.getUser());
+       Iterable<WarningRuleDTO> list = accountWarningService.findByUserName(AppContext.getUser());
         writeJson(list, response);
     }
 
@@ -117,7 +119,7 @@ public class AccountWarningController extends WebContextSupport {
         WarningRuleDTO warningRuleEntity = new WarningRuleDTO();
         warningRuleEntity.setId(id);
         warningRuleEntity.setIsEnable(isEnbled);
-        accountWarningDAO.update(warningRuleEntity);
+        accountWarningService.update(warningRuleEntity);
     }
 
 }

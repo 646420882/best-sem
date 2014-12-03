@@ -206,6 +206,11 @@ public class AccountManageServiceImpl implements AccountManageService {
         return accountManageDAO.getYesterdayCost(accountId);
     }
 
+    @Override
+    public BaiduAccountInfoDTO findByBaiduUserId(Long baiduUserId) {
+        return accountManageDAO.findByBaiduUserId(baiduUserId);
+    }
+
     protected JsonNode getJson(Object o) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);

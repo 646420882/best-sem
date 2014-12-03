@@ -3,9 +3,14 @@ package com.perfect.commons.web;
 
 import com.perfect.dto.web.MessageResultDTO;
 import com.perfect.utils.json.JSONUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.AbstractView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/7/28.
@@ -39,4 +44,13 @@ public class WebContextSupport   {
     public void writeData(Object message, HttpServletResponse response, Object data) {
         writeJson(new MessageResultDTO(message, data), response);
     }
+
+//    protected ModelAndView writeJson(String key, Object obj) {
+//        AbstractView jsonView = new MappingJackson2JsonView();
+//        Map<String, Object> returnMap = new HashMap<String, Object>() {{
+//            put(key, JSONUtils.getJsonObject(obj));
+//        }};
+//        jsonView.setAttributesMap(returnMap);
+//        return new ModelAndView(jsonView);
+//    }
 }

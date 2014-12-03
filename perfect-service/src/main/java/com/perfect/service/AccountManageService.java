@@ -132,4 +132,11 @@ public interface AccountManageService {
      */
     Double getYesterdayCost(Long accountId);
 
+    /**
+     *  根据百度Id查询百度账号
+     * @param baiduUserId
+     * @return
+     */
+    BaiduAccountInfoDTO findByBaiduUserId(Long baiduUserId);
+
 }
