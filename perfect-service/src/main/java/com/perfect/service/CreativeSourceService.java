@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.entity.creative.CreativeSourceEntity;
+import com.perfect.dto.creative.CreativeSourceDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,11 +11,11 @@ import java.util.List;
  */
 public interface CreativeSourceService {
 
-    void save(CreativeSourceEntity creativeSourceEntity);
+    void save(CreativeSourceDTO creativeSourceDTO);
 
-    Page<CreativeSourceEntity> search(String title, String desc, String url, Pageable pageable);
+    Page<CreativeSourceDTO> search(String title, String desc, String url, Pageable pageable);
 
-    void save(List<CreativeSourceEntity> resultList);
+    void save(List<CreativeSourceDTO> resultList);
 
     boolean exits(String id);
 }

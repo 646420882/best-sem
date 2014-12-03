@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Created by vbzer_000 on 14-11-25.
  */
+@SuppressWarnings("unchecked")
 public class ObjectUtils {
 
     public static <T> List<T> convert(List srcList, Class<T> targetClz) {
@@ -19,18 +20,12 @@ public class ObjectUtils {
         }
 
         List<T> targetList = new ArrayList(srcList.size());
-        srcList.stream().filter((o) -> {
-            return o != null;
-        }).forEach((o) -> {
+        srcList.stream().filter((o) -> o != null).forEach((o) -> {
             try {
                 T t = targetClz.newInstance();
                 BeanUtils.copyProperties(o, t);
                 targetList.add(t);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         });

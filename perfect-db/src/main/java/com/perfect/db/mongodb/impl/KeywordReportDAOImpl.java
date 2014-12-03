@@ -9,7 +9,6 @@ import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.entity.report.KeywordReportEntity;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.ObjectUtils;
-import com.perfect.utils.paging.Pager;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -21,18 +20,20 @@ import java.util.*;
 
 /**
  * Created by XiaoWei on 2014/9/17.
- * 2014-11-26 refactor
+ * 2014-12-3 refactor
  */
+@SuppressWarnings("unchecked")
 @Repository("keywordReportDAO")
-public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportEntity, Long> implements KeywordReportDAO {
+public class KeywordReportDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportDTO, Long> implements KeywordReportDAO {
+
     @Override
     public Class<KeywordReportEntity> getEntityClass() {
-        return null;
+        return KeywordReportEntity.class;
     }
 
     @Override
-    public Pager findByPager(int start, int pageSize, Map<String, Object> q, int orderBy) {
-        return null;
+    public Class<KeywordReportDTO> getDTOClass() {
+        return KeywordReportDTO.class;
     }
 
     @Override

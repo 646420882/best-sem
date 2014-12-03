@@ -36,7 +36,7 @@ public class MonitoringServiceImpl implements MonitoringService {
     private AssistantKeywordService assistantKeywordService;
 
     @Resource
-    private AccountManageDAO<BaiduAccountInfoDTO> accountManageDAO;
+    private AccountManageDAO accountManageDAO;
 
     @Override
     public List<FolderDTO> getFolder() {

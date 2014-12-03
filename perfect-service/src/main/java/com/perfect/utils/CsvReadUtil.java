@@ -25,8 +25,8 @@ public class CsvReadUtil implements Iterator<List<String>> {
             this.encoding = encoding;
             this.csvFile = csvFile;
             reader = new CsvListReader(new InputStreamReader(new FileInputStream(csvFile), encoding), CsvPreference.EXCEL_PREFERENCE);
-        } catch (UnsupportedEncodingException e) {
-        } catch (FileNotFoundException e) {
+        } catch (UnsupportedEncodingException | FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -38,6 +38,7 @@ public class CsvReadUtil implements Iterator<List<String>> {
             }
             row = reader.read();
         } catch (IOException e) {
+            e.printStackTrace();
         }
         return row != null;
     }
@@ -57,6 +58,7 @@ public class CsvReadUtil implements Iterator<List<String>> {
             try {
                 reader.close();
             } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

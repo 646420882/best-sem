@@ -28,7 +28,7 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
     private MonitorSynchronizedDAO monitorSynchronizedDAO;
 
     @Resource
-    private AccountManageDAO<BaiduAccountInfoDTO> accountManageDAO;
+    private AccountManageDAO accountManageDAO;
 
     @Override
     public int getSynchronized() {

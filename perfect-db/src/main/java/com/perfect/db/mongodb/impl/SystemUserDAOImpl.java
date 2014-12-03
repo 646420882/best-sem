@@ -10,9 +10,9 @@ import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -64,8 +65,13 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     public SystemUserDTO findByAid(long aid) {
         Query query = Query.query(Criteria.where("bdAccounts._id").is(aid));
         SystemUserDTO systemUserDTO = new SystemUserDTO();
-        BeanUtils.copyProperties(getSysMongoTemplate().findOne(query, getEntityClass()), systemUserDTO);
-        return systemUserDTO;
+        try {
+            BeanUtils.copyProperties(systemUserDTO, getSysMongoTemplate().findOne(query, getEntityClass()));
+            return systemUserDTO;
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -76,10 +82,14 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
             baiduAccountInfoDTO.setDfault(true);
 
         BaiduAccountInfoEntity baiduAccountInfoEntity = new BaiduAccountInfoEntity();
-        BeanUtils.copyProperties(baiduAccountInfoDTO, baiduAccountInfoEntity);
-        Update update = new Update();
-        update.addToSet("bdAccounts", baiduAccountInfoEntity);
-        getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(user)), update, getEntityClass());
+        try {
+            BeanUtils.copyProperties(baiduAccountInfoEntity, baiduAccountInfoDTO);
+            Update update = new Update();
+            update.addToSet("bdAccounts", baiduAccountInfoEntity);
+            getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(user)), update, getEntityClass());
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -176,22 +186,31 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     @Override
     public SystemUserDTO findByUserName(String userName) {
         SystemUserDTO user = new SystemUserDTO();
-        BeanUtils.copyProperties(
-                getSysMongoTemplate().findOne(
-                        Query.query(Criteria.where("userName").is(userName)),
-                        getEntityClass(),
-                        "sys_user"),
-                user);
-        return user;
+        try {
+            BeanUtils.copyProperties(user,
+                    getSysMongoTemplate().findOne(
+                            Query.query(Criteria.where("userName").is(userName)),
+                            getEntityClass(),
+                            "sys_user"));
+            return user;
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public SystemUserDTO save(SystemUserDTO dto) {
         SystemUserEntity systemUserEntity = new SystemUserEntity();
-        BeanUtils.copyProperties(dto, systemUserEntity);
-        getSysMongoTemplate().save(systemUserEntity);
-        BeanUtils.copyProperties(systemUserEntity, dto);
-        return dto;
+        try {
+            BeanUtils.copyProperties(systemUserEntity, dto);
+            getSysMongoTemplate().save(systemUserEntity);
+            BeanUtils.copyProperties(dto, systemUserEntity);
+            return dto;
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

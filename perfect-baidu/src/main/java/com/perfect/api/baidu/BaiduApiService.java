@@ -23,8 +23,6 @@ public class BaiduApiService {
 
     private final CommonService commonService;
 
-    private BaiduPreviewHelperFactory baiduPreviewHelperFactory;
-
     public BaiduApiService(CommonService commonService) {
         this.commonService = commonService;
     }
@@ -342,7 +340,7 @@ public class BaiduApiService {
 
         initIdMap(keys.keySet(), keywordEntityMap);
         convertMap(keys, regionDataMap);
-        BaiduPreviewHelper baiduPreviewHelper = baiduPreviewHelperFactory.createInstance(commonService);
+        BaiduPreviewHelper baiduPreviewHelper = new BaiduPreviewHelper(commonService);
 
         List<BaiduPreviewHelper.PreviewData> resultDataList = new ArrayList<>();
         for (Map.Entry<Integer, List<KeywordInfoDTO>> entry : regionDataMap.entrySet()) {
@@ -462,14 +460,5 @@ public class BaiduApiService {
                 }
             }
         }
-    }
-
-
-    public void setBaiduPreviewHelperFactory(BaiduPreviewHelperFactory baiduPreviewHelperFactory) {
-        this.baiduPreviewHelperFactory = baiduPreviewHelperFactory;
-    }
-
-    public BaiduPreviewHelperFactory getBaiduPreviewHelperFactory() {
-        return baiduPreviewHelperFactory;
     }
 }

@@ -1,7 +1,6 @@
 package com.perfect.service.impl;
 
 import com.perfect.api.baidu.BaiduPreviewHelper;
-import com.perfect.api.baidu.BaiduPreviewHelperFactory;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.core.AppContext;
@@ -15,16 +14,14 @@ import javax.annotation.Resource;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by baizz on 2014-9-18.
- * 2014-11-26 refactor
+ * 2014-12-3 refactor
  */
 @Component("keywordBiddingRankService")
 public class KeywordBiddingRankServiceImpl implements KeywordBiddingRankService {
-
-    @Resource
-    private BaiduPreviewHelperFactory baiduPreviewHelperFactory;
 
     @Resource
     private AccountManageService accountManageService;
@@ -38,7 +35,7 @@ public class KeywordBiddingRankServiceImpl implements KeywordBiddingRankService 
 
         CommonService service = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
 
-        BaiduPreviewHelper baiduPreviewHelper = baiduPreviewHelperFactory.createInstance(service);
+        BaiduPreviewHelper baiduPreviewHelper = new BaiduPreviewHelper(service);
 
         String[] keywords = {keyword};
         List<BaiduPreviewHelper.PreviewData> previewDatas = baiduPreviewHelper.getPageData(keywords, region);
@@ -50,6 +47,8 @@ public class KeywordBiddingRankServiceImpl implements KeywordBiddingRankService 
 
             List<CreativeInfoDTO> leftList = previewData.getLeft();
             List<CreativeInfoDTO> rightList = previewData.getRight();
+            Objects.requireNonNull(leftList);
+            Objects.requireNonNull(rightList);
 
             int rank = 0;
             try {
