@@ -11,8 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.perfect.commons.constants.RegionalConstants.FIDE_REGIONNAME;
-import static com.perfect.commons.constants.RegionalConstants.TBL_SYS_REGIONAL;
+import static com.perfect.commons.constants.RegionalConstants.*;
 
 /**
  * Created by SubDong on 2014/9/29.
@@ -39,6 +38,32 @@ public class RegionalCodeDAOImpl extends AbstractSysBaseDAOImpl<RegionalCodeDTO,
         List<RegionalCodeDTO> codeDTOs = ObjectUtils.convert(dtos, getDTOClass());
 
         return codeDTOs.size() == 0 ? null : codeDTOs.get(0);
+    }
+
+    @Override
+    public String getProvinceNameById(Integer provinceId) {
+        String fideName = FIDE_PROVINCEID;
+        RegionalCodeEntity entity = getSysMongoTemplate().findOne(new Query(Criteria.where(fideName).is(provinceId.toString()).and(FIDE_REGIONNAME).is("")), getEntityClass(), TBL_SYS_REGIONAL);
+        String name;
+        if(entity != null){
+            name = entity.getRegionName();
+        }else{
+            name = "北京";
+        }
+        return name;
+    }
+
+    @Override
+    public String getRegionNameById(Integer regionId) {
+        String fideName = FIDE_REGIONID;
+        RegionalCodeEntity entity = getSysMongoTemplate().findOne(new Query(Criteria.where(fideName).is(regionId.toString()).and(FIDE_REGIONNAME).is("")), getEntityClass(), TBL_SYS_REGIONAL);
+        String name;
+        if(entity != null){
+            name = entity.getRegionName();
+        }else{
+            name = "北京";
+        }
+        return name;
     }
 
 

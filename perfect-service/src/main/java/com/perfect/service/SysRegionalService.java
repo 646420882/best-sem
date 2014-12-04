@@ -36,8 +36,18 @@ public interface SysRegionalService {
      */
     public Map<String, List<RegionalReturnDataDTO>> getProvince();
 
+    /**
+     * 通过省级ID查询省级信息
+     * @param provinceId
+     * @return
+     */
     public String getProvinceNameById(Integer provinceId);
 
+    /**
+     * 通过区域ID  获取区域信息
+     * @param regionId
+     * @return
+     */
     public String getRegionNameById(Integer regionId);
 
     /**

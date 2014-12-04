@@ -126,12 +126,16 @@ public class SysRegionalServiceImpl implements SysRegionalService {
 
     @Override
     public String getProvinceNameById(Integer provinceId) {
-        return null;
+        String fideName = FIDE_PROVINCEID;
+        RegionalCodeDTO codeDTO = regionalCodeDAO.getRegionalByRegionId(fideName, provinceId + "");
+        return codeDTO.getProvinceName();
     }
 
     @Override
     public String getRegionNameById(Integer regionId) {
-        return null;
+        String fideName = FIDE_REGIONID;
+        RegionalCodeDTO codeDTO = regionalCodeDAO.getRegionalByRegionId(fideName, regionId + "");
+        return codeDTO.getRegionName();
     }
 
     @Override

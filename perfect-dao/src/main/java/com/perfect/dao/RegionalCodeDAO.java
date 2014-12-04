@@ -27,10 +27,26 @@ public interface RegionalCodeDAO extends HeyCrudRepository<RegionalCodeDTO,Long>
 
 
     /**
-     * 根据一个省id得到一个省的信息
+     * 根据一个指定id得到一个指定ID的信息
      *
      * @param id
      * @return
      */
     public RegionalCodeDTO getRegionalByRegionId(String feidName, String id);
+
+    /**
+     * 根据一个省id得到一个省的信息
+     *
+     * @param id
+     * @return
+     */
+    public String getProvinceNameById(Integer id);
+
+    /**
+     * 根据一个区域id得到一个区域的信息
+     *
+     * @param id
+     * @return
+     */
+    public String getRegionNameById(Integer id);
 }

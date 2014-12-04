@@ -1,6 +1,6 @@
 package com.perfect.db.elasticsearch.impl;
 
-import com.perfect.dao.SysRegionalDAO;
+import com.perfect.dao.RegionalCodeDAO;
 import com.perfect.dao.creative.CreativeSourceDAO;
 import com.perfect.db.elasticsearch.base.BaseEsDaoImpl;
 import com.perfect.dto.creative.CreativeSourceDTO;
@@ -32,7 +32,7 @@ import java.util.*;
 public class CreativeSourceDAOImpl extends BaseEsDaoImpl<CreativeSourceDTO, String> implements CreativeSourceDAO {
 
     @Resource
-    private SysRegionalDAO sysRegionalDAO;
+    private RegionalCodeDAO regionalCodeDAO;
 
     @Resource
     private Client esClient;
@@ -100,11 +100,11 @@ public class CreativeSourceDAOImpl extends BaseEsDaoImpl<CreativeSourceDTO, Stri
 
                 if (region < 100) {
                     // 获取省名称
-                    String name = sysRegionalDAO.getProvinceNameById(region);
+                    String name = regionalCodeDAO.getProvinceNameById(region);
                     regionMap.put(region, name);
                 } else {
                     // 获取市级名称
-                    String name = sysRegionalDAO.getRegionNameById(region);
+                    String name = regionalCodeDAO.getRegionNameById(region);
                     regionMap.put(region, name);
                 }
 
