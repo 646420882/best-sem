@@ -2,8 +2,6 @@ package com.perfect.app.bdlogin.core;
 
 import com.perfect.dto.creative.CreativeInfoDTO;
 import com.perfect.dto.creative.SublinkInfoDTO;
-import com.perfect.service.CookieService;
-import com.perfect.utils.json.JSONUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
@@ -18,20 +16,29 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.annotation.Resource;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * Created by baizz on 2014-11-10.
  * 2014-11-26 refactor
  */
 public class BaiduSearchPageUtils {
+
+    private static String previewUrl;
+
+    static {
+        String path = new File(BaiduHttpLogin.class.getResource("/").getPath()).getPath() + System.getProperty("file.separator") + "bdlogin.properties";
+        try {
+            InputStream is = new BufferedInputStream(new FileInputStream(path));
+            Properties properties = new Properties();
+            properties.load(is);
+            previewUrl = properties.getProperty("bd.preview-url");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static String getBaiduSearchPage(CookieStore cookieStore, String keyword, int area) {
         StringBuilder _cookies = new StringBuilder("");
@@ -53,7 +60,7 @@ public class BaiduSearchPageUtils {
         }
         _cookies = _cookies.delete(_cookies.length() - 2, _cookies.length());
 
-        HttpPost httpPost = new HttpPost("http://fengchao.baidu.com/nirvana/request.ajax?path=nirvana/GET/Live");
+        HttpPost httpPost = new HttpPost(previewUrl);
         httpPost.addHeader("Host", "fengchao.baidu.com");
         httpPost.addHeader("Cookie", _cookies.toString());
         httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded");

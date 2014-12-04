@@ -18,8 +18,7 @@ import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 
 import javax.net.ssl.SSLContext;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -42,6 +41,20 @@ public class BaiduHttpLogin {
     private static CloseableHttpClient sslHttpClient;
     private static String redirectUrl;  //check success before redirect
     private static String castk;
+
+    private static String loginUrl;
+
+    static {
+        String path = new File(BaiduHttpLogin.class.getResource("/").getPath()).getPath() + System.getProperty("file.separator") + "bdlogin.properties";
+        try {
+            InputStream is = new BufferedInputStream(new FileInputStream(path));
+            Properties properties = new Properties();
+            properties.load(is);
+            loginUrl = properties.getProperty("bd.login-url");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static CloseableHttpClient createSSLClientDefault(boolean isSSL) {
         HttpClientBuilder httpClientBuilder = HttpClients.custom();
@@ -85,7 +98,7 @@ public class BaiduHttpLogin {
         formParams.add(new BasicNameValuePair("tpl", "www2"));
         formParams.add(new BasicNameValuePair("fromu", "http://www2.baidu.com/"));
 
-        HttpPost httpPost = new HttpPost("https://cas.baidu.com?action=login");
+        HttpPost httpPost = new HttpPost(loginUrl);
         httpPost.addHeader("Cookie", cookies);
         httpPost.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
         httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
