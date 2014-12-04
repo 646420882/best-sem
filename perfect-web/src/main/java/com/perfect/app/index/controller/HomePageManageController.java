@@ -31,7 +31,7 @@ import java.util.UUID;
  */
 @RestController
 @Scope("prototype")
-public class HomePageManageController  extends WebContextSupport{
+public class HomePageManageController extends WebContextSupport {
 
     @Resource
     private SystemUserService systemUserService;
