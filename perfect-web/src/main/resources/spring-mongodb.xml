@@ -15,7 +15,7 @@
     <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"/>
     <mongo:mapping-converter id="mongoConverter"/>
 
-    <bean id="noClassMongoConverter" class="com.perfect.dao.mongodb.base.MongoConverterEnhanceFactoryBean">
+    <bean id="noClassMongoConverter" class="com.perfect.db.mongodb.base.MongoConverterEnhanceFactoryBean">
         <property name="mongoConverter" ref="mongoConverter"/>
     </bean>
 

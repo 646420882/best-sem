@@ -32,7 +32,7 @@
     </mvc:interceptors>
 
     <!-- 扫描注册处理器实现类 -->
-    <context:component-scan base-package="com.perfect.app.ucenter.controller">
+    <context:component-scan base-package="com.perfect.app.*.controller">
         <context:include-filter type="annotation"
                                 expression="org.springframework.web.bind.annotation.RestController"/>
         <context:include-filter type="annotation"
