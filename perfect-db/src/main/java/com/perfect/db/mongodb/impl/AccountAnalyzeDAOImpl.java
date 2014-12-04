@@ -3,6 +3,7 @@ package com.perfect.db.mongodb.impl;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountAnalyzeDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
+import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.keyword.KeywordRealDTO;
 import com.perfect.entity.account.AccountReportEntity;
@@ -26,8 +27,8 @@ public class AccountAnalyzeDAOImpl extends AbstractUserBaseDAOImpl<AccountReport
 
     @Override
     @SuppressWarnings("unchecked")
-    public <E> Class<E> getEntityClass() {
-        return (Class<E>) AccountReportEntity.class;
+    public Class<AccountReportEntity> getEntityClass() {
+        return AccountReportEntity.class;
     }
 
     @Override
@@ -47,18 +48,18 @@ public class AccountAnalyzeDAOImpl extends AbstractUserBaseDAOImpl<AccountReport
     @Override
     public List<KeywordRealDTO> performance(String userTable) {
         List<KeywordRealEntity> list = getMongoTemplate().findAll(getKeywordRealEntityClass(), userTable);
-        return ObjectUtils.convert(list, getEntityClass());
+        return ObjectUtils.convert(list, KeywordRealDTO.class);
     }
 
     @Override
     public List<AccountReportDTO> performaneUser(Date startDate, Date endDate) {
-        List<AccountReportEntity> list = getMongoTemplate().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass(), TBL_ACCOUNT_REPORT);
+        List<AccountReportEntity> list = BaseMongoTemplate.getUserReportMongo().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass(), TBL_ACCOUNT_REPORT);
         return ObjectUtils.convert(list, getDTOClass());
     }
 
     @Override
     public List<AccountReportDTO> performaneCurve(Date startDate, Date endDate) {
-        List<AccountReportEntity> list = getMongoTemplate().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())).with(new Sort(Sort.Direction.ASC, "date")), getEntityClass(), TBL_ACCOUNT_REPORT);
+        List<AccountReportEntity> list = BaseMongoTemplate.getUserReportMongo().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())).with(new Sort(Sort.Direction.ASC, "date")), getEntityClass(), TBL_ACCOUNT_REPORT);
         return ObjectUtils.convert(list, getDTOClass());
     }
 

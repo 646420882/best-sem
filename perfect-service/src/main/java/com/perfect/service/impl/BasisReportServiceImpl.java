@@ -64,7 +64,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 Jedis jc = JRedisUtils.get();
 
                 Long jedisKey = jc.ttl(date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId);
-                if (jedisKey == -1) {
+                if (jedisKey == -1 || jedisKey == -2) {
                     List<StructureReportDTO> dateMap0 = new ArrayList<>();
                     StructureReportDTO dateObject0 = new StructureReportDTO();
                     //初始化容器
@@ -152,6 +152,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                         listMap.put(REPORT_STATISTICS, returnListAll);
                         listMap.put(REPORT_COUNTDATA, entityList1);
                         listMap.put(REPORT_ROWS, pageReport);
+                        if (jc != null) {
+                            JRedisUtils.returnJedis(jc);
+                        }
                         return listMap;
                     } else {
                         if (reportType == 4) {
@@ -181,6 +184,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                         listMap.put(REPORT_STATISTICS, returnListAll);
                         listMap.put(REPORT_COUNTDATA, entityList1);
                         listMap.put(REPORT_ROWS, pageReport);
+                        if (jc != null) {
+                            JRedisUtils.returnJedis(jc);
+                        }
                         return listMap;
                     }
                 } else {
@@ -219,6 +225,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                     listMap.put(REPORT_STATISTICS, listAll);
                     listMap.put(REPORT_COUNTDATA, entityList1);
                     listMap.put(REPORT_ROWS, pageReport);
+                    if (jc != null) {
+                        JRedisUtils.returnJedis(jc);
+                    }
                     return listMap;
                 }
                 //分日生成报告
@@ -226,7 +235,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 Jedis jc1 = JRedisUtils.get();
 
                 Long jedisKey1 = jc1.ttl(date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId);
-                if (jedisKey1 == -1) {
+                if (jedisKey1 == -1 || jedisKey1 == -2) {
                     List<StructureReportDTO> dateMap = new ArrayList<>();
 
                     //初始化容器
@@ -300,6 +309,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                         listMap1.put(REPORT_COUNTDATA, entityList1);
                         listMap1.put(REPORT_CHART, lineChart);
                         listMap1.put(REPORT_ROWS, pageReport);
+                        if (jc1 != null) {
+                            JRedisUtils.returnJedis(jc1);
+                        }
                         return listMap1;
                     } else {
                         //对相应的数据进行计算百分比
@@ -323,6 +335,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                     mapDay.put(REPORT_CHART, lineChart);
                     mapDay.put(REPORT_COUNTDATA, entityList1);
                     mapDay.put(REPORT_ROWS, pageReport);
+                    if (jc1 != null) {
+                        JRedisUtils.returnJedis(jc1);
+                    }
                     return mapDay;
                 } else {
                     String data = jc1.get((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId));
@@ -345,6 +360,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                     listMap1.put(REPORT_COUNTDATA, entityList1);
                     listMap1.put(REPORT_CHART, lineChart);
                     listMap1.put(REPORT_ROWS, pageReport);
+                    if (jc1 != null) {
+                        JRedisUtils.returnJedis(jc1);
+                    }
                     return listMap1;
                 }
 
@@ -353,7 +371,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 Jedis jc2 = JRedisUtils.get();
 
                 Long jedisKey2 = jc2.ttl(date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId);
-                if (jedisKey2 == -1) {
+                if (jedisKey2 == -1 || jedisKey2 == -2) {
                     List<StructureReportDTO> dateMap2 = new ArrayList<>();
 
                     Map<String, StructureReportDTO> reportEntities = new HashMap<>();
@@ -468,6 +486,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                             listMap1.put(REPORT_CHART, lineChart1);
                             listMap1.put(REPORT_COUNTDATA, entityList2);
                             listMap1.put(REPORT_ROWS, pageReport1);
+                            if (jc2 != null) {
+                                JRedisUtils.returnJedis(jc2);
+                            }
                             return listMap1;
                         }
 
@@ -488,6 +509,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                         endListMap.put(REPORT_CHART, lineChart1);
                         endListMap.put(REPORT_COUNTDATA, entityList2);
                         endListMap.put(REPORT_ROWS, pageReport1);
+                        if (jc2 != null) {
+                            JRedisUtils.returnJedis(jc2);
+                        }
                         return endListMap;
                     } else {
                         List<StructureReportDTO> dateMap2else = new ArrayList<>();
@@ -544,6 +568,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                             listMap1.put(REPORT_CHART, lineChart1);
                             listMap1.put(REPORT_COUNTDATA, entityList2);
                             listMap1.put(REPORT_ROWS, pageReport1);
+                            if (jc2 != null) {
+                                JRedisUtils.returnJedis(jc2);
+                            }
                             return listMap1;
                         }
 
@@ -564,6 +591,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                         endListMap.put(REPORT_CHART, lineChart1);
                         endListMap.put(REPORT_COUNTDATA, entityList2);
                         endListMap.put(REPORT_ROWS, pageReport1);
+                        if (jc2 != null) {
+                            JRedisUtils.returnJedis(jc2);
+                        }
                         return endListMap;
                     }
                 } else {
@@ -586,6 +616,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                     endListMap.put(REPORT_CHART, lineChart1);
                     endListMap.put(REPORT_COUNTDATA, entityList2);
                     endListMap.put(REPORT_ROWS, pageReport1);
+                    if (jc2 != null) {
+                        JRedisUtils.returnJedis(jc2);
+                    }
                     return endListMap;
                 }
 
@@ -594,7 +627,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 Jedis jc3 = JRedisUtils.get();
 
                 Long jedisKey3 = jc3.ttl(date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId);
-                if (jedisKey3 == -1) {
+                if (jedisKey3 == -1 || jedisKey3 == -2) {
                     List<StructureReportDTO> dateMap3 = new ArrayList<>();
 
                     Map<String, StructureReportDTO> reportEntities1 = new HashMap<>();
@@ -758,6 +791,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                             listMap1.put(REPORT_CHART, lineChart1);
                             listMap1.put(REPORT_COUNTDATA, entityList3);
                             listMap1.put(REPORT_ROWS, pageReport1);
+                            if (jc3 != null) {
+                                JRedisUtils.returnJedis(jc3);
+                            }
                             return listMap1;
                         }
                         //数据放入redis中
@@ -777,6 +813,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                         endListMap1.put(REPORT_CHART, lineChart1);
                         endListMap1.put(REPORT_COUNTDATA, entityList3);
                         endListMap1.put(REPORT_ROWS, pageReport1);
+                        if (jc3 != null) {
+                            JRedisUtils.returnJedis(jc3);
+                        }
                         return endListMap1;
                     } else {
                         List<StructureReportDTO> dateMap3else = new ArrayList<>();
@@ -832,6 +871,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                             listMap1.put(REPORT_CHART, lineChart1);
                             listMap1.put(REPORT_COUNTDATA, entityList3);
                             listMap1.put(REPORT_ROWS, pageReport1);
+                            if (jc3 != null) {
+                                JRedisUtils.returnJedis(jc3);
+                            }
                             return listMap1;
                         }
                         //数据放入redis中
@@ -851,6 +893,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                         endListMap1.put(REPORT_CHART, lineChart1);
                         endListMap1.put(REPORT_COUNTDATA, entityList3);
                         endListMap1.put(REPORT_ROWS, pageReport1);
+                        if (jc3 != null) {
+                            JRedisUtils.returnJedis(jc3);
+                        }
                         return endListMap1;
                     }
                 } else {
@@ -873,6 +918,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                     endListMap1.put(REPORT_CHART, lineChart1);
                     endListMap1.put(REPORT_COUNTDATA, entityList3);
                     endListMap1.put(REPORT_ROWS, pageReport1);
+                    if (jc3 != null) {
+                        JRedisUtils.returnJedis(jc3);
+                    }
                     return endListMap1;
                 }
 
@@ -1313,7 +1361,7 @@ public class BasisReportServiceImpl implements BasisReportService {
 
                 List<Object> objectListDateOne3 = new ArrayList<>();
                 List<Object> objectListDateTow3 = new ArrayList<>();
-                List<Object> objectListDateOne31 = new ArrayList<>();
+                List<Object> objectListDateOne31 = (List<Object>) new ArrayList<>();
                 List<Object> objectListDateTow31 = new ArrayList<>();
 
                 List<AccountReportDTO> listOne3 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
@@ -1642,12 +1690,12 @@ public class BasisReportServiceImpl implements BasisReportService {
                 if (terminal != 2) {
                     for (StructureReportDTO entity : list) {
                         os.write(Bytes.concat(commonCSVHead, (dateHead +
-                                ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
-                                ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
-                                ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName()) +
-                                ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName()) +
-                                ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle()) +
-                                ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName()) +
+                                ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount().replace(",","，")) +
+                                ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName().replace(",","，")) +
+                                ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName().replace(",","，")) +
+                                ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName().replace(",","，")) +
+                                ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle().replace(",","，")) +
+                                ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName().replace(",","，")) +
                                 DEFAULT_DELIMITER + entity.getPcImpression() +
                                 DEFAULT_DELIMITER + entity.getPcClick() +
                                 DEFAULT_DELIMITER + entity.getPcCost() +
@@ -1659,12 +1707,12 @@ public class BasisReportServiceImpl implements BasisReportService {
                 } else {
                     for (StructureReportDTO entity : list) {
                         os.write(Bytes.concat(commonCSVHead, (dateHead +
-                                ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
-                                ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
-                                ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName()) +
-                                ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName()) +
-                                ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle()) +
-                                ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName()) +
+                                ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount().replace(",","，")) +
+                                ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName().replace(",","，")) +
+                                ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName().replace(",","，")) +
+                                ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName().replace(",","，")) +
+                                ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle().replace(",","，")) +
+                                ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName().replace(",","，")) +
                                 DEFAULT_DELIMITER + entity.getMobileImpression() +
                                 DEFAULT_DELIMITER + entity.getMobileClick() +
                                 DEFAULT_DELIMITER + entity.getMobileCost() +
@@ -1689,12 +1737,12 @@ public class BasisReportServiceImpl implements BasisReportService {
                     for (Map.Entry<String, List<StructureReportDTO>> voEntity : responseMap.entrySet()) {
                         for (StructureReportDTO entity : voEntity.getValue()) {
                             os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                    ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
-                                    ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
-                                    ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName()) +
-                                    ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName()) +
-                                    ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle()) +
-                                    ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName()) +
+                                    ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount().replace(",","，")) +
+                                    ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName().replace(",","，")) +
+                                    ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName().replace(",","，")) +
+                                    ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName().replace(",","，")) +
+                                    ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle().replace(",","，")) +
+                                    ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName().replace(",","，")) +
                                     DEFAULT_DELIMITER + entity.getPcImpression() +
                                     DEFAULT_DELIMITER + entity.getPcClick() +
                                     DEFAULT_DELIMITER + entity.getPcCost() +
@@ -1708,12 +1756,12 @@ public class BasisReportServiceImpl implements BasisReportService {
                     for (Map.Entry<String, List<StructureReportDTO>> voEntity : responseMap.entrySet()) {
                         for (StructureReportDTO entity : voEntity.getValue()) {
                             os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                    ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount()) +
-                                    ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName()) +
-                                    ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName()) +
-                                    ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName()) +
-                                    ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle()) +
-                                    ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName()) +
+                                    ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount().replace(",","，")) +
+                                    ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName().replace(",","，")) +
+                                    ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName().replace(",","，")) +
+                                    ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName().replace(",","，")) +
+                                    ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle().replace(",","，")) +
+                                    ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName().replace(",","，")) +
                                     DEFAULT_DELIMITER + entity.getMobileImpression() +
                                     DEFAULT_DELIMITER + entity.getMobileClick() +
                                     DEFAULT_DELIMITER + entity.getMobileCost() +
