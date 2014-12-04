@@ -1,8 +1,8 @@
 package com.perfect.utils;
 
-import org.apache.commons.beanutils.BeanUtils;
 
-import java.lang.reflect.InvocationTargetException;
+import org.springframework.beans.BeanUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,9 +23,9 @@ public class ObjectUtils {
         srcList.stream().filter((o) -> o != null).forEach((o) -> {
             try {
                 T t = targetClz.newInstance();
-                BeanUtils.copyProperties(t, o);
+                BeanUtils.copyProperties(o, t);
                 targetList.add(t);
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         });
@@ -38,8 +38,8 @@ public class ObjectUtils {
         T t = null;
         try {
             t = targetClz.newInstance();
-            BeanUtils.copyProperties(t, srcObj);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            BeanUtils.copyProperties(srcObj, t);
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
