@@ -3,12 +3,10 @@ package com.perfect.service.impl;
 import com.perfect.dao.keyword.KeywordImportDAO;
 import com.perfect.dto.keyword.KeywordImportDTO;
 import com.perfect.service.KeywordImportService;
-import com.perfect.utils.paging.Pager;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/9/22.

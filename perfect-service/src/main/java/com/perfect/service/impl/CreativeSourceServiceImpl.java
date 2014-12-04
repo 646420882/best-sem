@@ -1,10 +1,9 @@
 package com.perfect.service.impl;
 
-import com.perfect.db.elasticsearch.repo.CreativeSourceRepository;
-import com.perfect.entity.creative.CreativeSourceEntity;
+import com.perfect.dao.creative.CreativeSourceDAO;
+import com.perfect.dto.creative.CreativeSourceDTO;
+import com.perfect.dto.creative.EsSearchResultDTO;
 import com.perfect.service.CreativeSourceService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -17,28 +16,26 @@ import java.util.List;
 public class CreativeSourceServiceImpl implements CreativeSourceService {
 
     @Resource
-    private CreativeSourceRepository creativeSourceRepository;
+    private CreativeSourceDAO creativeSourceRepository;
 
     @Override
-    public void save(CreativeSourceEntity creativeSourceEntity) {
+    public void save(CreativeSourceDTO creativeSourceEntity) {
         creativeSourceRepository.save(creativeSourceEntity);
     }
 
     @Override
-    public Page<CreativeSourceEntity> search(String title, String desc, String url, Pageable pageable) {
-        Page<CreativeSourceEntity> page = creativeSourceRepository.findByTitleOrBodyAndHostNot(title, desc, url,
-                pageable);
-        return page;
-    }
-
-    @Override
-    public void save(List<CreativeSourceEntity> resultList) {
+    public void save(List<CreativeSourceDTO> resultList) {
         creativeSourceRepository.save(resultList);
     }
 
     @Override
     public boolean exits(String id) {
         return creativeSourceRepository.exists(id);
+    }
+
+    @Override
+    public EsSearchResultDTO search(String query, int page, int size, int[] regions) {
+        return creativeSourceRepository.search(query, page, size, regions);
     }
 
 }

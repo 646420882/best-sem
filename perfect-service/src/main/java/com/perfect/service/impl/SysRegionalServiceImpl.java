@@ -4,7 +4,6 @@ import com.perfect.dao.RegionalCodeDAO;
 import com.perfect.dto.regional.RegionalCodeDTO;
 import com.perfect.dto.regional.RegionalReturnDataDTO;
 import com.perfect.service.SysRegionalService;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

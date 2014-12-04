@@ -1,8 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dto.creative.CreativeSourceDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.perfect.dto.creative.EsSearchResultDTO;
 
 import java.util.List;
 
@@ -13,9 +12,9 @@ public interface CreativeSourceService {
 
     void save(CreativeSourceDTO creativeSourceDTO);
 
-    Page<CreativeSourceDTO> search(String title, String desc, String url, Pageable pageable);
-
     void save(List<CreativeSourceDTO> resultList);
 
     boolean exits(String id);
+
+    EsSearchResultDTO search(String query, int page, int size, int[] regions);
 }

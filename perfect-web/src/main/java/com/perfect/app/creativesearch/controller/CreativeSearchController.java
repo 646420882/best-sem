@@ -1,6 +1,7 @@
 package com.perfect.app.creativesearch.controller;
 
 import com.perfect.dto.creative.EsSearchResultDTO;
+import com.perfect.service.CreativeSourceService;
 import com.perfect.utils.json.JSONUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ import javax.annotation.Resource;
 public class CreativeSearchController {
 
     @Resource
-    private EsService esService;
+    private CreativeSourceService esService;
 
 
     @RequestMapping(value = "/q", method = {RequestMethod.GET, RequestMethod.POST},

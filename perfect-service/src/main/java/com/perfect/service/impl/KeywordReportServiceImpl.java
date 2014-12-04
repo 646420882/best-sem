@@ -4,7 +4,6 @@ import com.google.common.primitives.Bytes;
 import com.perfect.dao.KeywordReportDAO;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.service.KeywordReportService;
-import com.perfect.utils.paging.Pager;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.stereotype.Service;
 

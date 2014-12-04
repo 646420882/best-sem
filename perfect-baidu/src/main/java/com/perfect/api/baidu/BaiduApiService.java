@@ -318,15 +318,15 @@ public class BaiduApiService {
         return response.getKeywordTypes();
     }
 
-    public List<BaiduPreviewHelper.PreviewData> getPreviewData(int region, List<String> keyList, BaiduPreviewHelper helper) {
-        GetPreviewRequest request = new GetPreviewRequest();
-        request.setKeyWords(keyList);
-        request.setRegion(region);
-        request.setDevice(0);
-        request.setPage(0);
-        List<BaiduPreviewHelper.PreviewData> previewDatas = helper.getPageData(keyList.toArray(new
-                String[]{}), region);
-        return previewDatas;
-    }
+//    public List<BaiduPreviewHelper.PreviewData> getPreviewData(int region, List<String> keyList, BaiduPreviewHelper helper) {
+//        GetPreviewRequest request = new GetPreviewRequest();
+//        request.setKeyWords(keyList);
+//        request.setRegion(region);
+//        request.setDevice(0);
+//        request.setPage(0);
+//        List<BaiduPreviewHelper.PreviewData> previewDatas = helper.getPageData(keyList.toArray(new
+//                String[]{}), region);
+//        return previewDatas;
+//    }
 
 }

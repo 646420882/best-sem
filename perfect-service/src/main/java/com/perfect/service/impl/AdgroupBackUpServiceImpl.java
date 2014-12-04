@@ -4,11 +4,9 @@ import com.perfect.dao.adgroup.AdgroupBackUpDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
 import com.perfect.service.AdgroupBackUpService;
-import com.perfect.utils.paging.Pager;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/9/4.

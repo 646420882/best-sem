@@ -9,8 +9,6 @@ import com.perfect.dto.account.*;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.service.AsynchronousReportService;
-import com.perfect.utils.ObjectUtils;
-import com.perfect.utils.mongodb.DBNameUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -32,8 +30,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveTask;
-
-import static com.perfect.commons.constants.MongoEntityConstants.TBL_ACCOUNT_REPORT;
 
 /**
  * Created by baizz on 2014-08-07.

@@ -2,13 +2,10 @@ package com.perfect.db.mongodb.base;
 
 import com.perfect.dto.BaseDTO;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by yousheng on 2014/8/19.
@@ -18,8 +15,9 @@ import java.util.Map;
 public abstract class AbstractSysBaseDAOImpl<T extends BaseDTO, ID extends Serializable> extends AbstractUserBaseDAOImpl<T, ID> {
 
     @Override
-    public void delete(T t) {
+    public boolean delete(T t) {
         getSysMongoTemplate().remove(t);
+        return false;
     }
 
     @Override
@@ -38,8 +36,9 @@ public abstract class AbstractSysBaseDAOImpl<T extends BaseDTO, ID extends Seria
     }
 
     @Override
-    public void deleteAll() {
+    public boolean deleteAll() {
         getSysMongoTemplate().dropCollection(getEntityClass());
+        return false;
     }
 
 

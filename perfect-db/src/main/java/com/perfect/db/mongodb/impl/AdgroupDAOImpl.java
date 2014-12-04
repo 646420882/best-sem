@@ -11,13 +11,11 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
-import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
-import com.perfect.utils.paging.Pager;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
@@ -439,14 +437,16 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         return AdgroupDTO.class;
     }
 
-    public void delete(AdgroupDTO adgroupDTO) {
+    public boolean delete(AdgroupDTO adgroupDTO) {
         deleteById(adgroupDTO.getAdgroupId());
+        return false;
     }
 
-    public void deleteAll() {
+    public boolean deleteAll() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.dropCollection(AdgroupEntity.class);
         deleteSub(getAllAdgroupId());
+        return false;
     }
 
 

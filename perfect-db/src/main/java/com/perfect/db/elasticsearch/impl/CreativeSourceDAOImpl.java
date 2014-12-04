@@ -2,6 +2,7 @@ package com.perfect.db.elasticsearch.impl;
 
 import com.perfect.dao.SysRegionalDAO;
 import com.perfect.dao.creative.CreativeSourceDAO;
+import com.perfect.db.elasticsearch.base.BaseEsDaoImpl;
 import com.perfect.dto.creative.CreativeSourceDTO;
 import com.perfect.dto.creative.EsSearchResultDTO;
 import com.perfect.utils.RegionalCodeUtils;
@@ -28,7 +29,7 @@ import java.util.*;
  * Created by vbzer_000 on 2014/9/19.
  */
 @Component
-public class CreativeSourceDAOImpl implements CreativeSourceDAO {
+public class CreativeSourceDAOImpl extends BaseEsDaoImpl<CreativeSourceDTO, String> implements CreativeSourceDAO {
 
     @Resource
     private SysRegionalDAO sysRegionalDAO;
@@ -107,11 +108,9 @@ public class CreativeSourceDAOImpl implements CreativeSourceDAO {
                     regionMap.put(region, name);
                 }
 
-
                 creativeSourceEntity.setRegion(regionMap.get(region));
             }
             hitList.add(creativeSourceEntity);
-
         }
 
         esSearchResultDTO.setList(hitList);
@@ -152,5 +151,35 @@ public class CreativeSourceDAOImpl implements CreativeSourceDAO {
             }
         }
         return esSearchResultDTO;
+    }
+
+    @Override
+    public String getIndex() {
+        return "creative";
+    }
+
+    @Override
+    public String getType() {
+        return "source";
+    }
+
+    @Override
+    public String getId() {
+        return "_id";
+    }
+
+    @Override
+    public Class<String> getIdClass() {
+        return String.class;
+    }
+
+    @Override
+    public <E> Class<E> getEntityClass() {
+        return null;
+    }
+
+    @Override
+    public Class<CreativeSourceDTO> getDTOClass() {
+        return CreativeSourceDTO.class;
     }
 }

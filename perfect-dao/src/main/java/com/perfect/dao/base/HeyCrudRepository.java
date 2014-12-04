@@ -96,7 +96,7 @@ public interface HeyCrudRepository<T extends BaseDTO, ID extends Serializable> e
      * @param entity
      * @throws IllegalArgumentException in case the given entity is (@literal null}.
      */
-    void delete(T entity);
+    boolean delete(T entity);
 
     /**
      * Deletes the given entities.
@@ -109,7 +109,7 @@ public interface HeyCrudRepository<T extends BaseDTO, ID extends Serializable> e
     /**
      * Deletes all entities managed by the repository.
      */
-    void deleteAll();
+    boolean deleteAll();
 
 
     public int deleteByIds(List<ID> ids);

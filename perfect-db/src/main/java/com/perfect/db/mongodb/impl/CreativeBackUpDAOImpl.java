@@ -6,14 +6,11 @@ import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.entity.backup.CreativeBackUpEntity;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.utils.paging.Pager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/9/4.
@@ -64,8 +61,9 @@ public class CreativeBackUpDAOImpl extends AbstractUserBaseDAOImpl<CreativeBackU
 
 
     @Override
-    public void delete(CreativeBackUpDTO entity) {
+    public boolean delete(CreativeBackUpDTO entity) {
 
+        return false;
     }
 
     @Override

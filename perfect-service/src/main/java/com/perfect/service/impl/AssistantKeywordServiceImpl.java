@@ -4,7 +4,6 @@ import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.QualityType;
-import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
@@ -19,21 +18,20 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
-//import com.perfect.entity.adgroup.AdgroupEntity;
-//import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.service.KeyWordBackUpService;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
-//import org.springframework.data.mongodb.core.query.Criteria;
-//import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static com.perfect.commons.constants.MongoEntityConstants.*;
+//import com.perfect.entity.adgroup.AdgroupEntity;
+//import com.perfect.entity.campaign.CampaignEntity;
+//import org.springframework.data.mongodb.core.query.Criteria;
+//import org.springframework.data.mongodb.core.query.Query;
 
 /**
  * Created by john on 2014/8/19.

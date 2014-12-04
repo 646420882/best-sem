@@ -133,11 +133,6 @@ public class CensusEveryDayReportDaoImpl extends AbstractSysBaseDAOImpl implemen
         return null;
     }
 
-    @Override
-    public Pager findByPager(int start, int pageSize, Map q, int orderBy) {
-        return null;
-    }
-
     private List<CensusDTO> wrapperList(List<CensusEntity> censusEntityList){
        return ObjectUtils.convert(censusEntityList, CensusDTO.class);
     }

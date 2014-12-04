@@ -1,6 +1,5 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignBackUpDAO;
 import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dto.backup.CampaignBackUpDTO;

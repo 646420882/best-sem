@@ -8,7 +8,6 @@ import com.perfect.entity.keyword.KeywordImportEntity;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.utils.ObjectUtils;
-import com.perfect.utils.paging.Pager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -134,8 +132,9 @@ public class KeywordImportDAOImpl extends AbstractUserBaseDAOImpl<KeywordImportD
 
 
     @Override
-    public void delete(KeywordImportDTO entity) {
+    public boolean delete(KeywordImportDTO entity) {
 
+        return false;
     }
 
 }

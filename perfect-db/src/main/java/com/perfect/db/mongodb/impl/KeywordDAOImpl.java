@@ -756,13 +756,15 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         return null;
     }
 
-    public void delete(KeywordDTO keywordDTO) {
+    public boolean delete(KeywordDTO keywordDTO) {
         deleteById(keywordDTO.getKeywordId());
+        return false;
     }
 
 
-    public void deleteAll() {
+    public boolean deleteAll() {
         getMongoTemplate().dropCollection(getEntityClass());
+        return false;
     }
 
     public Pager findByPager(int start, int pageSize, Map<String, Object> params, int orderBy) {

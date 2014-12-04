@@ -1,18 +1,15 @@
 package com.perfect.service.impl;
 
-import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.dao.keyword.KeyWordBackUpDAO;
 import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dto.backup.KeyWordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.service.KeyWordBackUpService;
-import com.perfect.utils.paging.Pager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/9/9.

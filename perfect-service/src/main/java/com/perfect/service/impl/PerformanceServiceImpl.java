@@ -7,7 +7,6 @@ import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.keyword.KeywordRealDTO;
 import com.perfect.service.PerformanceService;
 import com.perfect.utils.report.Performance;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

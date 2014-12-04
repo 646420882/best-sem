@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.perfect.dao.adgroup.CustomGroupDAO;
 import com.perfect.dto.CustomGroupDTO;
 import com.perfect.service.CustomGroupService;
-import com.perfect.utils.paging.Pager;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

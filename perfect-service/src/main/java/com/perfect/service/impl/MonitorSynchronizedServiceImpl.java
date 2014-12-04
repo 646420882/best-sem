@@ -11,7 +11,6 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.dto.monitor.FolderMonitorDTO;
 import com.perfect.service.MonitorSynchronizedService;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

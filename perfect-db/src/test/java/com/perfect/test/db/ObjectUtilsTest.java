@@ -1,6 +1,6 @@
 package com.perfect.test.db;
 
-import com.perfect.db.utils.ObjectUtils;
+import com.perfect.utils.ObjectUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;

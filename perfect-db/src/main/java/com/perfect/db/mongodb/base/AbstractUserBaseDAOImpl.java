@@ -97,8 +97,9 @@ public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Seri
     }
 
     @Override
-    public void delete(T t) {
+    public boolean delete(T t) {
         getMongoTemplate().remove(t.getId());
+        return false;
     }
 
     @Override
@@ -124,8 +125,9 @@ public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Seri
     }
 
     @Override
-    public void deleteAll() {
+    public boolean deleteAll() {
         getMongoTemplate().dropCollection(getEntityClass());
+        return false;
     }
 
     @Override

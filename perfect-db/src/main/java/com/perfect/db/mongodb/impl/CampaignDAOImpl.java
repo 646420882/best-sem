@@ -348,13 +348,15 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         return MongoEntityConstants.CAMPAIGN_ID;
     }
 
-    public void delete(CampaignDTO campaignDTO) {
+    public boolean delete(CampaignDTO campaignDTO) {
         deleteById(campaignDTO.getCampaignId());
+        return false;
     }
 
-    public void deleteAll() {
+    public boolean deleteAll() {
         getMongoTemplate().dropCollection(MongoEntityConstants.TBL_CAMPAIGN);
         deleteSub(getAllCampaignId());
+        return false;
     }
 
 

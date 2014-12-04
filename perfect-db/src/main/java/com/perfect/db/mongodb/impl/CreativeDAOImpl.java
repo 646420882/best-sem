@@ -395,8 +395,9 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         return CreativeDTO.class;
     }
 
-    public void delete(CreativeDTO creativeDTO) {
+    public boolean delete(CreativeDTO creativeDTO) {
         deleteById(creativeDTO.getCreativeId());
+        return false;
     }
 
     private List<CreativeDTO> wrapperList(List<CreativeEntity> list) {
