@@ -322,8 +322,9 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
-        List list = getMongoTemplate().find(query, getEntityClass());
-        p.setList(list);
+        List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
+        List<KeywordDTO> dtos=ObjectUtils.convert(list,KeywordDTO.class);
+        p.setList(dtos);
         return p;
     }
 
@@ -359,8 +360,9 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
-        List list = getMongoTemplate().find(query, getEntityClass());
-        p.setList(list);
+        List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
+        List<KeywordDTO> dtos=ObjectUtils.convert(list,KeywordDTO.class);
+        p.setList(dtos);
         return p;
     }
 
@@ -382,8 +384,9 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
-        List list = getMongoTemplate().find(query, getEntityClass());
-        p.setList(list);
+        List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
+        List<KeywordDTO> dtos=ObjectUtils.convert(list, KeywordDTO.class);
+        p.setList(dtos);
         return p;
     }
 
@@ -400,8 +403,9 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
-        List list = getMongoTemplate().find(query, getEntityClass());
-        p.setList(list);
+        List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
+        List<KeywordDTO> dtos=ObjectUtils.convert(list, KeywordDTO.class);
+        p.setList(dtos);
         return p;
     }
 

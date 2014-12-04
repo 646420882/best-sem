@@ -314,9 +314,9 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         }
         mongoTemplate.updateFirst(query, update, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         AdgroupBackupDTO adgroupBackupDTOFind = adgroupBackUpDAO.findOne(adgroupDTO.getId());
-        if (adgroupBackupDTOFind == null) {
+        if (adgroupBackupDTOFind.getId() == null) {
             AdgroupBackUpEntity adgroupBakcUpEntity = new AdgroupBackUpEntity();
-            BeanUtils.copyProperties(adgroupBackupDTOFind, adgroupBakcUpEntity);
+            BeanUtils.copyProperties(bakadgroupDTO, adgroupBakcUpEntity);
             getMongoTemplate().insert(adgroupBakcUpEntity, MongoEntityConstants.BAK_ADGROUP);
         }
         logDAO.insertLog(id, LogStatusConstant.ENTITY_ADGROUP, LogStatusConstant.OPT_UPDATE);
@@ -355,7 +355,8 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         q.skip(p.getFirstStation());
         q.limit(p.getPageSize());
         List<AdgroupEntity> adgroupEntityList = mongoTemplate.find(q, AdgroupEntity.class);
-        p.setList(adgroupEntityList);
+        List<AdgroupDTO> returnList = ObjectUtils.convert(adgroupEntityList, AdgroupDTO.class);
+        p.setList(returnList);
         return p;
     }
 
@@ -546,7 +547,9 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     private AdgroupDTO wrapperObject(AdgroupEntity entity) {
         AdgroupDTO dto = new AdgroupDTO();
+        if (entity != null) {
         BeanUtils.copyProperties(entity, dto);
+        }
         return dto;
     }
 }

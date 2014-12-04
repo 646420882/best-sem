@@ -29,7 +29,9 @@ public class CreativeBackUpDAOImpl extends AbstractUserBaseDAOImpl<CreativeBackU
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         CreativeBackUpEntity creativeBackUpEntity= mongoTemplate.findOne((new Query(Criteria.where(getId()).is(id))), CreativeBackUpEntity.class, MongoEntityConstants.BAK_CREATIVE);
         CreativeBackUpDTO creativeBackUpDTO=new CreativeBackUpDTO();
-        BeanUtils.copyProperties(creativeBackUpEntity,creativeBackUpDTO);
+        if(creativeBackUpEntity!=null){
+            BeanUtils.copyProperties(creativeBackUpEntity,creativeBackUpDTO);
+        }
         return creativeBackUpDTO;
     }
 
@@ -38,7 +40,9 @@ public class CreativeBackUpDAOImpl extends AbstractUserBaseDAOImpl<CreativeBackU
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         CreativeBackUpEntity creativeBackUpEntity=  mongoTemplate.findOne((new Query(Criteria.where(MongoEntityConstants.CREATIVE_ID).is(crid))), CreativeBackUpEntity.class, MongoEntityConstants.BAK_CREATIVE);
         CreativeBackUpDTO creativeBackUpDTO=new CreativeBackUpDTO();
-        BeanUtils.copyProperties(creativeBackUpEntity,creativeBackUpDTO);
+        if(creativeBackUpEntity!=null){
+            BeanUtils.copyProperties(creativeBackUpEntity,creativeBackUpDTO);
+        }
         return creativeBackUpDTO;
     }
 

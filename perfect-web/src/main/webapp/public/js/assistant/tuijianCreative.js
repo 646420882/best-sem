@@ -120,9 +120,9 @@ function initEditView(res) {
             var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
             _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
             if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) == 0) {
-                $(o).removeClass().addClass("span-error");
+                $(o).removeClass().addClass("span-error").css("color", "red");
             } else {
-                $(o).removeClass().addClass("span-ok");
+                $(o).removeClass().addClass("span-ok").css("color", "#b4b4b4");
             }
             $(o).html(_thisStr + "/" + _max);
         } else {
@@ -130,9 +130,9 @@ function initEditView(res) {
             var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
             _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
             if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) == 0) {
-                $(o).removeClass().addClass("span-error");
+                $(o).removeClass().addClass("span-error").css("color", "red");
             } else {
-                $(o).removeClass().addClass("span-ok");
+                $(o).removeClass().addClass("span-ok").css("color", "#b4b4b4");
             }
             $(o).html(_thisStr + "/" + _max);
         }
@@ -142,7 +142,7 @@ function initEditView(res) {
         if(i==0){
             var _max = $(o).next("span").html().split("/")[1];
             var char = $(o).val().match(/[^\x00-\xff]/ig);
-           var  _thisStr = $(o).val().length + (char == null ? 0 : char.length);
+            var  _thisStr = $(o).val().length + (char == null ? 0 : char.length);
             if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 0) {
                 $("#titleMsg").html("<b style='color:red'>标题长度必须大于5个字符小于50个字符！</b>");
             } else {
@@ -168,7 +168,7 @@ function initEditView(res) {
             var char = $(o).val().match(/[^\x00-\xff]/ig);
             var  _thisStr = $(o).val().length + (char == null ? 0 : char.length);
             if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 8) {
-                $("#desc1Msg").html("<b style='color:red'>创意\"描述1\"长度必须大于8个字符小于50个字符！</b>");
+                $("#desc1Msg").html("<b style='color:red'>创意\"描述1\"长度必须大于8个字符小于80个字符！</b>");
             } else {
                 $("#desc1Msg").html("");
             }
@@ -177,7 +177,7 @@ function initEditView(res) {
             var char = $(o).val().match(/[^\x00-\xff]/ig);
             var  _thisStr = $(o).val().length + (char == null ? 0 : char.length);
             if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 8) {
-                $("#desc2Msg").html("<b style='color:red'>创意\"描述2\"长度必须大于8个字符小于50个字符！</b>");
+                $("#desc2Msg").html("<b style='color:red'>创意\"描述2\"长度必须大于8个字符小于80个字符！</b>");
             } else {
                 $("#desc2Msg").html("");
             }
@@ -314,7 +314,7 @@ function reSave() {
         return false;
     }
     if ($("#_editor textarea[name='pcUrl']").val().indexOf(dm) == -1) {
-         $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
+        $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
         alert("\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!");
         return false;
     }else {
@@ -454,9 +454,9 @@ function textSizeValid() {
         var _max = $(this).next("span").html().split("/")[1];
         var _thisStr = $(this).val().length;
         if (8 > parseInt(_thisStr) > parseInt(_max)) {
-            $(this).next("span").removeClass().addClass("span-error");
+            $(this).next("span").removeClass().addClass("span-error").css("color","red");
         } else {
-            $(this).next("span").removeClass().addClass("span-ok");
+            $(this).next("span").removeClass().addClass("span-ok").css("color", "#b4b4b4");
         }
         $(this).next("span").html(_thisStr + "/" + _max);
     });
@@ -500,10 +500,10 @@ function onKeyDownView() {
         var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
         var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
         if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 8) {
-            $(this).next("span").removeClass().addClass("span-error");
+            $(this).next("span").removeClass().addClass("span-error").css("color","red");
             $("#titleMsg").html("<b style='color:red'>标题长度必须大于8个字符小于50个字符！</b>");
         } else {
-            $(this).next("span").removeClass().addClass("span-ok");
+            $(this).next("span").removeClass().addClass("span-ok").css("color", "#b4b4b4");
             $("#titleMsg").html("");
         }
         $(this).next("span").html(_thisStr + "/" + _max);
@@ -523,10 +523,10 @@ function onKeyDownView() {
         var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
         var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
         if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 8) {
-            $(this).next("span").removeClass().addClass("span-error");
+            $(this).next("span").removeClass().addClass("span-error").css("color","red");
             $("#desc1Msg").html("<b style='color:red'>创意\"描述1\"长度必须大于8个字符小于80个字符！</b>");
         } else {
-            $(this).next("span").removeClass().addClass("span-ok");
+            $(this).next("span").removeClass().addClass("span-ok").css("color", "#b4b4b4");
             $("#desc1Msg").html("");
         }
         $(this).next("span").html(_thisStr + "/" + _max);
@@ -546,10 +546,10 @@ function onKeyDownView() {
         var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
         var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
         if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 8) {
-            $(this).next("span").removeClass().addClass("span-error");
+            $(this).next("span").removeClass().addClass("span-error").css("color","red");
             $("#desc2Msg").html("<b style='color:red'>创意\"描述2\"长度必须大于8个字符小于80个字符！</b>");
         } else {
-            $(this).next("span").removeClass().addClass("span-ok");
+            $(this).next("span").removeClass().addClass("span-ok").css("color", "#b4b4b4");
             $("#desc2Msg").html("");
         }
         $(this).next("span").html(_thisStr + "/" + _max);
@@ -564,9 +564,9 @@ function onKeyDownView() {
         var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
         var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
         if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 5) {
-            $(this).next("span").removeClass().addClass("span-error");
+            $(this).next("span").removeClass().addClass("span-error").css("color","red");
         } else {
-            $(this).next("span").removeClass().addClass("span-ok");
+            $(this).next("span").removeClass().addClass("span-ok").css("color", "#b4b4b4");
             var dm = "." + $("#dm").val();
             if ($(this).val().indexOf(dm) == -1) {
                 $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
@@ -590,9 +590,9 @@ function onKeyDownView() {
         var char = _thisSttmpr.match(/[^\x00-\xff]/ig);
         var _thisStr = _thisSttmpr.length + (char == null ? 0 : char.length);
         if (parseInt(_thisStr) > parseInt(_max) || parseInt(_thisStr) <= 5) {
-            $(this).next("span").removeClass().addClass("span-error");
+            $(this).next("span").removeClass().addClass("span-error").css("color","red");
         } else {
-            $(this).next("span").removeClass().addClass("span-ok");
+            $(this).next("span").removeClass().addClass("span-ok").css("color", "#b4b4b4");
             var dm = "." + $("#dm").val();
             if ($(this).val().indexOf(dm) == -1) {
                 $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");

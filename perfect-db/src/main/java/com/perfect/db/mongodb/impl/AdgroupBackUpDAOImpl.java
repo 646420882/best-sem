@@ -42,7 +42,9 @@ public class AdgroupBackUpDAOImpl extends AbstractUserBaseDAOImpl<AdgroupBackupD
     public AdgroupBackupDTO findOne(String oid) {
         AdgroupBackUpEntity adgroupBackUpEntity= BaseMongoTemplate.getUserMongo().findOne(new Query(Criteria.where(getId()).is(oid)),AdgroupBackUpEntity.class, MongoEntityConstants.BAK_ADGROUP);
         AdgroupBackupDTO adgroupBackupDTO=new AdgroupBackupDTO();
+        if(adgroupBackUpEntity!=null){
         BeanUtils.copyProperties(adgroupBackUpEntity,adgroupBackupDTO);
+        }
         return adgroupBackupDTO;
     }
 
@@ -50,7 +52,9 @@ public class AdgroupBackUpDAOImpl extends AbstractUserBaseDAOImpl<AdgroupBackupD
     public AdgroupBackupDTO findByLongId(Long oid) {
         AdgroupBackUpEntity adgroupBackUpEntity= BaseMongoTemplate.getUserMongo().findOne(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(oid)),AdgroupBackUpEntity.class, MongoEntityConstants.BAK_ADGROUP);
         AdgroupBackupDTO adgroupBackupDTO=new AdgroupBackupDTO();
-        BeanUtils.copyProperties(adgroupBackUpEntity,adgroupBackupDTO);
+        if(adgroupBackUpEntity!=null){
+            BeanUtils.copyProperties(adgroupBackUpEntity,adgroupBackupDTO);
+        }
         return adgroupBackupDTO;
    }
 

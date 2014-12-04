@@ -149,14 +149,18 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     public CampaignDTO findByObjectId(String oid) {
         CampaignEntity campaignEntity = getMongoTemplate().findOne(Query.query(Criteria.where(SYSTEM_ID).is(oid)), getEntityClass());
         CampaignDTO campaignDTO = new CampaignDTO();
+        if (campaignEntity != null) {
         BeanUtils.copyProperties(campaignEntity, campaignDTO);
+        }
         return campaignDTO;
     }
 
 
     public void insert(CampaignDTO campaignDTO) {
         CampaignEntity campaignEntity = new CampaignBackUpEntity();
+        if (campaignDTO != null) {
         BeanUtils.copyProperties(campaignDTO, campaignEntity);
+        }
         getMongoTemplate().insert(campaignEntity, MongoEntityConstants.TBL_CAMPAIGN);
     }
 

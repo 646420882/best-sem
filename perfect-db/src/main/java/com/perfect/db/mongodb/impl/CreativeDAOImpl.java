@@ -210,7 +210,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         }
         mongoTemplate.updateFirst(query, update, CreativeEntity.class, TBL_CREATIVE);
         CreativeBackUpDTO creativeBackUpDTOFind = bakcUpDAO.findByStringId(newCreativeDTO.getId());
-        if (creativeBackUpDTOFind == null) {
+        if (creativeBackUpDTOFind.getId() == null) {
             CreativeBackUpEntity backUpEntity = new CreativeBackUpEntity();
             BeanUtils.copyProperties(creativeBackUpDTO, backUpEntity);
             getMongoTemplate().insert(backUpEntity, BAK_CREATIVE);
