@@ -299,7 +299,7 @@ public class BiddingController {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index() {
-        return new ModelAndView("bidding/jingjia");
+        return new ModelAndView("bidding/bidding");
     }
 
 //    @RequestMapping(value = "/getKeywordBiddingRank", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

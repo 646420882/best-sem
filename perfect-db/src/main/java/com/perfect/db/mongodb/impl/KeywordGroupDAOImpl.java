@@ -11,7 +11,6 @@ import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.mongodb.DBNameUtils;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.redis.JRedisUtils;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,7 +25,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -123,15 +121,9 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
         c.and("tr").is(lexiconDTO.getTrade()).and("kw").is(lexiconDTO.getKeyword());
         LexiconEntity findLexiconEntity = mongoTemplate.findOne(new Query(c), LexiconEntity.class, SYS_KEYWORD);
         if (findLexiconEntity == null) {
-            findLexiconEntity = new LexiconEntity();
-            try {
-                BeanUtils.copyProperties(findLexiconEntity, lexiconDTO);
-                mongoTemplate.insert(findLexiconEntity, SYS_KEYWORD);
-                return 1;
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-                return -1;
-            }
+            findLexiconEntity = ObjectUtils.convert(lexiconDTO, getEntityClass());
+            mongoTemplate.insert(findLexiconEntity, SYS_KEYWORD);
+            return 1;
         } else {
             return 3;
         }
@@ -148,8 +140,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
         ).withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
         AggregationResults<CategoryVO> aggregationResults = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, CategoryVO.class);
 
-        List<CategoryVO> list = aggregationResults.getMappedResults();
-        return list;
+        return aggregationResults.getMappedResults();
     }
 
     @Override
