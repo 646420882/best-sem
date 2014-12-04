@@ -209,12 +209,6 @@
             </dependency>
 
 
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-redis</artifactId>
-                <version>1.4.0.RELEASE</version>
-            </dependency>
-
             <!-- for msm -->
             <dependency>
                 <groupId>de.javakaffee.msm</groupId>
