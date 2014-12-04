@@ -8,6 +8,5 @@ import java.util.Map;
 public interface LogService {
     public Map<String, Long> getStatiscs(String userName , Long accountId);
 
-
     boolean upload(String userName , Long accountId);
 }

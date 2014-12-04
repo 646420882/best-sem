@@ -10,7 +10,6 @@ import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.utils.paging.PaginationParam;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -191,7 +190,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
                 .ne(0)
                 .and(ACCOUNT_ID).is(id));
         List list = BaseMongoTemplate.getUserMongo(userName).find(query, getEntityClass());
-        return convertToDTOs(list);
+        return convert(list);
     }
 
     @Override
@@ -275,7 +274,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
             mongoQuery.addCriteria(Criteria.where(NAME).regex(prefix + reg + suffix));
         }
 
-        return convertToDTOs(getMongoTemplate().find(PageParamUtils.withParam(param,mongoQuery), getEntityClass()));
+        return convert(getMongoTemplate().find(PageParamUtils.withParam(param, mongoQuery), getEntityClass()));
     }
 
     @Override

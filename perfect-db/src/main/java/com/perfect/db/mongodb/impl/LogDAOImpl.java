@@ -22,7 +22,7 @@ public class LogDAOImpl extends AbstractUserBaseDAOImpl<LogDTO, String> implemen
 
     @Override
     public Iterable<LogDTO> findAll(Long accountId) {
-        return convertToDTOs(getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), getEntityClass()));
+        return convert(getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), getEntityClass()));
     }
 
     @Override

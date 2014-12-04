@@ -21,12 +21,12 @@ import java.util.Map;
 public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Serializable> implements HeyCrudRepository<T, ID> {
 
 
-    protected List<T> convertToDTOs(List entities) {
-        List<T> list = new ArrayList<>();
+    protected List convert(List entities) {
+        List list = new ArrayList<>();
         try {
 
             for (Object entity : entities) {
-                T dto = getDTOClass().newInstance();
+                Object dto = getDTOClass().newInstance();
                 BeanUtils.copyProperties(entity, dto);
 
                 list.add(dto);
@@ -39,19 +39,23 @@ public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Seri
         return list;
     }
 
-    protected T convertToDTO(Object entity) {
+
+    protected List convertByClass(List entities, Class clz) {
+        List list = new ArrayList<>();
         try {
-            T dto = getDTOClass().newInstance();
 
-            BeanUtils.copyProperties(entity, dto);
+            for (Object entity : entities) {
+                Object dto = clz.newInstance();
+                BeanUtils.copyProperties(entity, dto);
 
-            return dto;
+                list.add(dto);
+            }
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        return null;
+        return list;
     }
 
     public String getId() {
@@ -167,7 +171,7 @@ public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Seri
             query.with(new Sort((asc) ? Sort.Direction.ASC : Sort.Direction.DESC, sort));
         }
 
-        return convertToDTOs(getMongoTemplate().find(query, getEntityClass()));
+        return convert(getMongoTemplate().find(query, getEntityClass()));
     }
 
 //    @Override
@@ -249,12 +253,12 @@ public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Seri
 
     @Override
     public Iterable<T> findAll() {
-        return convertToDTOs(getMongoTemplate().findAll(getEntityClass()));
+        return convert(getMongoTemplate().findAll(getEntityClass()));
     }
 
     @Override
     public Iterable<T> findAll(Iterable<ID> ids) {
 
-        return convertToDTOs(getMongoTemplate().find(Query.query(Criteria.where(getId()).in(ids)), getEntityClass()));
+        return convert(getMongoTemplate().find(Query.query(Criteria.where(getId()).in(ids)), getEntityClass()));
     }
 }

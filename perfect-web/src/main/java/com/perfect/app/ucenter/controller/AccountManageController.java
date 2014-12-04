@@ -11,7 +11,6 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.AccountManageService;
-import com.perfect.service.LogService;
 import com.perfect.utils.json.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -46,8 +45,8 @@ public class AccountManageController extends WebContextSupport {
     private AccountDataService accountDataService;
 
 
-    @Resource
-    private LogService logService;
+//    @Resource
+//    private LogService logService;
 
 
     /**
@@ -343,7 +342,7 @@ public class AccountManageController extends WebContextSupport {
     @RequestMapping(value = "/sync/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView info() {
 
-        Map<String, Long> statics = logService.getStatiscs(AppContext.getUser(), AppContext.getAccountId());
+//        Map<String, Long> statics = logService.getStatiscs(AppContext.getUser(), AppContext.getAccountId());
         return new ModelAndView();
     }
 
