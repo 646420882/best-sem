@@ -20,7 +20,6 @@ import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.Pager;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.paging.PaginationParam;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -211,14 +210,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
 
     @Override
     public KeywordDTO findOne(Long keywordId) {
-        KeywordDTO keywordDTO = new KeywordDTO();
-        try {
-            BeanUtils.copyProperties(keywordDTO, getMongoTemplate().findOne(new Query(Criteria.where(getId()).is(keywordId)), getEntityClass(), MongoEntityConstants.TBL_KEYWORD));
-            return keywordDTO;
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
+        KeywordEntity entity = getMongoTemplate().findOne(new Query(Criteria.where(getId()).is(keywordId)), getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
+        return ObjectUtils.convert(entity, getDTOClass());
     }
 
     @Override
@@ -300,14 +293,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
 
     @Override
     public KeywordDTO findByObjectId(String oid) {
-        KeywordDTO keywordDTO = new KeywordDTO();
-        try {
-            BeanUtils.copyProperties(keywordDTO, getMongoTemplate().findOne(Query.query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(oid)), getEntityClass()));
-            return keywordDTO;
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
+        KeywordEntity entity = getMongoTemplate().findOne(Query.query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(oid)), getEntityClass());
+        return ObjectUtils.convert(entity, getDTOClass());
     }
 
     @Override
@@ -323,7 +310,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             return p;
         }
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
-        List<KeywordDTO> dtos=ObjectUtils.convert(list,KeywordDTO.class);
+        List<KeywordDTO> dtos = ObjectUtils.convert(list, KeywordDTO.class);
         p.setList(dtos);
         return p;
     }
@@ -361,7 +348,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             return p;
         }
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
-        List<KeywordDTO> dtos=ObjectUtils.convert(list,KeywordDTO.class);
+        List<KeywordDTO> dtos = ObjectUtils.convert(list, KeywordDTO.class);
         p.setList(dtos);
         return p;
     }
@@ -385,7 +372,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             return p;
         }
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
-        List<KeywordDTO> dtos=ObjectUtils.convert(list, KeywordDTO.class);
+        List<KeywordDTO> dtos = ObjectUtils.convert(list, KeywordDTO.class);
         p.setList(dtos);
         return p;
     }
@@ -404,7 +391,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             return p;
         }
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
-        List<KeywordDTO> dtos=ObjectUtils.convert(list, KeywordDTO.class);
+        List<KeywordDTO> dtos = ObjectUtils.convert(list, KeywordDTO.class);
         p.setList(dtos);
         return p;
     }
@@ -418,13 +405,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     public void insert(KeywordDTO keywordDTO) {
-        KeywordEntity keywordEntity = new KeywordEntity();
-        try {
-            BeanUtils.copyProperties(keywordEntity, keywordDTO);
-            getMongoTemplate().insert(keywordEntity, MongoEntityConstants.TBL_KEYWORD);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        KeywordEntity keywordEntity = ObjectUtils.convert(keywordDTO, getEntityClass());
+        getMongoTemplate().insert(keywordEntity, MongoEntityConstants.TBL_KEYWORD);
     }
 
     @Override
@@ -503,13 +485,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         getMongoTemplate().updateFirst(query, update, getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
         KeyWordBackUpDTO _keyWordBackUpDTO = keyWordBackUpDAO.findByObjectId(keywordDTO.getId());
         if (_keyWordBackUpDTO == null && keywordDTO.getLocalStatus() == 2) {
-            KeyWordBackUpEntity backUpEntity = new KeyWordBackUpEntity();
-            try {
-                BeanUtils.copyProperties(backUpEntity, keyWordBackUpDTO);
-                getMongoTemplate().insert(backUpEntity);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
+            KeyWordBackUpEntity backUpEntity = ObjectUtils.convert(keyWordBackUpDTO, KeyWordBackUpEntity.class);
+            getMongoTemplate().insert(backUpEntity);
         }
         logDao.insertLog(id, LogStatusConstant.ENTITY_KEYWORD, LogStatusConstant.OPT_UPDATE);
     }
@@ -712,14 +689,9 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         MongoTemplate mongoTemplate = getMongoTemplate();
         KeywordEntity keywordEntity = mongoTemplate.findOne(Query.query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(keywordId)), getEntityClass());
         Long adgroupId = keywordEntity.getAdgroupId();
-        AdgroupDTO adgroupDTO = new AdgroupDTO();
-        try {
-            BeanUtils.copyProperties(adgroupDTO, mongoTemplate.findOne(Query.query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), AdgroupEntity.class));
-            return adgroupDTO;
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
+        AdgroupEntity entity = mongoTemplate.findOne(Query.query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), AdgroupEntity.class);
+        AdgroupDTO adgroupDTO = ObjectUtils.convert(entity, AdgroupDTO.class);
+        return adgroupDTO;
     }
 
     public void deleteById(Long id) {

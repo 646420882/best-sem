@@ -71,6 +71,23 @@ public class JSONUtils {
     }
 
     /**
+     * 根据JSON字符串获取JSON对象
+     *
+     * @param content
+     * @return
+     */
+    public static JsonNode getJsonObject(String content) {
+        JsonNode jsonObj = null;
+        try {
+            jsonObj = mapper.readTree(content);
+            return jsonObj;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return jsonObj;
+    }
+
+    /**
      * 获取JSON对象
      *
      * @param o

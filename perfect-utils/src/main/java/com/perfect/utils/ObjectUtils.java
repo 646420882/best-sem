@@ -6,7 +6,6 @@ import org.springframework.beans.BeanUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by vbzer_000 on 14-11-25.
@@ -14,16 +13,15 @@ import java.util.Objects;
 public class ObjectUtils {
 
     public static <T> List<T> convert(List<?> srcList, Class<T> targetClz) {
-        Objects.requireNonNull(srcList);
-        if (srcList.isEmpty()) {
+        if (srcList == null || srcList.isEmpty()) {
             return Collections.emptyList();
         }
 
         List<T> targetList = new ArrayList<>(srcList.size());
-        srcList.stream().filter((o) -> o != null).forEach((o) -> {
+        srcList.stream().filter(s -> s != null).forEach((s) -> {
             try {
                 T t = targetClz.newInstance();
-                BeanUtils.copyProperties(o, t);
+                BeanUtils.copyProperties(s, t);
                 targetList.add(t);
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
@@ -34,7 +32,10 @@ public class ObjectUtils {
     }
 
     public static <S, T> T convert(S srcObj, Class<T> targetClz) {
-        Objects.requireNonNull(srcObj);
+        if (srcObj == null) {
+            return null;
+        }
+
         T t = null;
         try {
             t = targetClz.newInstance();

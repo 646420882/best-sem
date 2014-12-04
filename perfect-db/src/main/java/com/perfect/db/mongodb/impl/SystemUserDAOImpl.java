@@ -10,7 +10,7 @@ import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
-import org.apache.commons.beanutils.BeanUtils;
+import com.perfect.utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -21,7 +21,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -64,14 +63,8 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     @Override
     public SystemUserDTO findByAid(long aid) {
         Query query = Query.query(Criteria.where("bdAccounts._id").is(aid));
-        SystemUserDTO systemUserDTO = new SystemUserDTO();
-        try {
-            BeanUtils.copyProperties(systemUserDTO, getSysMongoTemplate().findOne(query, getEntityClass()));
-            return systemUserDTO;
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
+        SystemUserEntity entity = getSysMongoTemplate().findOne(query, getEntityClass());
+        return ObjectUtils.convert(entity, getDTOClass());
     }
 
     @Override
@@ -81,15 +74,10 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
         if (systemUserDTO.getBaiduAccountInfoDTOs().isEmpty())
             baiduAccountInfoDTO.setDfault(true);
 
-        BaiduAccountInfoEntity baiduAccountInfoEntity = new BaiduAccountInfoEntity();
-        try {
-            BeanUtils.copyProperties(baiduAccountInfoEntity, baiduAccountInfoDTO);
-            Update update = new Update();
-            update.addToSet("bdAccounts", baiduAccountInfoEntity);
-            getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(user)), update, getEntityClass());
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        BaiduAccountInfoEntity baiduAccountInfoEntity = ObjectUtils.convert(baiduAccountInfoDTO, BaiduAccountInfoEntity.class);
+        Update update = new Update();
+        update.addToSet("bdAccounts", baiduAccountInfoEntity);
+        getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(user)), update, getEntityClass());
     }
 
     @Override
@@ -204,39 +192,21 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     }
 
     public SystemUserDTO fromEntity(SystemUserEntity systemUserEntity) {
-        SystemUserDTO user = new SystemUserDTO();
+        List<BaiduAccountInfoEntity> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccountInfoEntities();
+        SystemUserDTO user = ObjectUtils.convert(systemUserEntity, getDTOClass());
 
-        try {
-            BeanUtils.copyProperties(user, systemUserEntity);
-
-            List<BaiduAccountInfoEntity> list = systemUserEntity.getBaiduAccountInfoEntities();
-            List<BaiduAccountInfoDTO> dtoList = convertByClass(list, BaiduAccountInfoDTO.class);
-            user.setBaiduAccountInfoDTOs(dtoList);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
+        List<BaiduAccountInfoDTO> dtoList = convertByClass(baiduAccountInfoEntityList, BaiduAccountInfoDTO.class);
+        user.setBaiduAccountInfoDTOs(dtoList);
         return user;
     }
 
 
     public SystemUserEntity toEntity(SystemUserDTO systemUserDTO) {
-        SystemUserEntity user = new SystemUserEntity();
+        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccountInfoDTOs();
+        SystemUserEntity user = ObjectUtils.convert(systemUserDTO, getEntityClass());
 
-        try {
-            BeanUtils.copyProperties(user, systemUserDTO);
-
-            List<BaiduAccountInfoDTO> list = systemUserDTO.getBaiduAccountInfoDTOs();
-            List<BaiduAccountInfoEntity> entityList = convert(list);
-            user.setBaiduAccountInfoEntities(entityList);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
+        List<BaiduAccountInfoEntity> baiduAccountInfoEntityList = convertByClass(baiduAccountInfoDTOList, BaiduAccountInfoEntity.class);
+        user.setBaiduAccountInfoEntities(baiduAccountInfoEntityList);
         return user;
     }
 }

@@ -5,7 +5,6 @@ import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.CookieDTO;
 import com.perfect.entity.sys.CookieEntity;
 import com.perfect.utils.ObjectUtils;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -13,7 +12,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -49,25 +47,14 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
         if (cookieEntity == null) {
             return null;
         }
-        try {
-            BeanUtils.copyProperties(cookieDTO, cookieEntity);
-            return cookieDTO;
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return ObjectUtils.convert(cookieEntity, getDTOClass());
     }
 
     @Override
     public void returnOne(CookieDTO cookieDTO) {
         cookieDTO.setIdle(true);
-        CookieEntity cookieEntity = new CookieEntity();
-        try {
-            BeanUtils.copyProperties(cookieEntity, cookieDTO);
-            getMongoTemplate().save(cookieEntity);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        CookieEntity cookieEntity = ObjectUtils.convert(cookieDTO, getEntityClass());
+        getMongoTemplate().save(cookieEntity);
     }
 
     @Override

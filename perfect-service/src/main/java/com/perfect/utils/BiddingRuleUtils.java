@@ -18,6 +18,10 @@ public class BiddingRuleUtils {
 
         StrategyDTO entity = biddingRuleEntity.getStrategyEntity();
 
+        if (entity == null) {
+            return null;
+        }
+
         int positionStrategy = entity.getExpPosition();
         if (positionStrategy == BiddingStrategyConstants.POS_LEFT_1.value()) {
             sb.append("左:[1,");

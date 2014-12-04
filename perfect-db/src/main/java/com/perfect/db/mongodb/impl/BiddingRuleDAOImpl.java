@@ -8,6 +8,7 @@ import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.db.mongodb.utils.PageParamUtils;
 import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
+import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PaginationParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -169,9 +170,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
     @Override
     public BiddingRuleDTO getBiddingRuleByKeywordId(Long keywordId) {
         BiddingRuleEntity entity = getMongoTemplate().findOne(Query.query(Criteria.where(KEYWORD_ID).is(keywordId)), getEntityClass());
-        BiddingRuleDTO returnObj = new BiddingRuleDTO();
-        BeanUtils.copyProperties(entity, returnObj);
-        return returnObj;
+        return ObjectUtils.convert(entity, getDTOClass());
     }
 
     @Override
@@ -189,7 +188,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
         Query query = Query.query(Criteria.where("ebl").is(true).and("r").is(false).and("nxt").lte(time).not().and("ct")
                 .ne(0)
                 .and(ACCOUNT_ID).is(id));
-        List list = BaseMongoTemplate.getUserMongo(userName).find(query, getEntityClass());
+        List<BiddingRuleEntity> list = BaseMongoTemplate.getUserMongo(userName).find(query, getEntityClass());
         return convert(list);
     }
 

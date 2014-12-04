@@ -16,7 +16,6 @@ import com.perfect.entity.account.AccountReportEntity;
 import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.ObjectUtils;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -29,7 +28,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -169,15 +167,10 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
 
     @Override
     public SystemUserDTO getCurrUserInfo() {
-        SystemUserDTO systemUserDTO = new SystemUserDTO();
+
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        try {
-            BeanUtils.copyProperties(systemUserDTO, mongoTemplate.findOne(Query.query(Criteria.where("userName").is(AppContext.getUser())), getEntityClass()));
-            return systemUserDTO;
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
+        SystemUserEntity entity = mongoTemplate.findOne(Query.query(Criteria.where("userName").is(AppContext.getUser())), getEntityClass());
+        return ObjectUtils.convert(entity, getDTOClass());
     }
 
     @Override

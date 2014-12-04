@@ -3,6 +3,7 @@ package com.perfect.db.mongodb.base;
 import com.mongodb.WriteResult;
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.BaseDTO;
+import com.perfect.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -14,46 +15,30 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by vbzer_000 on 2014/6/18.
  */
 public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Serializable> implements HeyCrudRepository<T, ID> {
 
-
-    protected List convert(List entities) {
-        List list = new ArrayList<>();
-        try {
-
-            for (Object entity : entities) {
-                Object dto = getDTOClass().newInstance();
-                BeanUtils.copyProperties(entity, dto);
-
-                list.add(dto);
-            }
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+    protected <S> List<T> convert(List<S> entities) {
+        Objects.requireNonNull(entities);
+        List<T> list = new ArrayList<>(entities.size());
+        for (S entity : entities) {
+            T dto = ObjectUtils.convert(entity, getDTOClass());
+            list.add(dto);
         }
         return list;
     }
 
-
-    protected List convertByClass(List entities, Class clz) {
-        List list = new ArrayList<>();
-        try {
-
-            for (Object entity : entities) {
-                Object dto = clz.newInstance();
-                BeanUtils.copyProperties(entity, dto);
-
-                list.add(dto);
-            }
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+    @SuppressWarnings("unchecked")
+    protected <S, D> List<D> convertByClass(List<S> entities, Class<D> clz) {
+        Objects.requireNonNull(entities);
+        List<D> list = new ArrayList<>(entities.size());
+        for (S entity : entities) {
+            D dto = ObjectUtils.convert(entity, clz);
+            list.add(dto);
         }
         return list;
     }

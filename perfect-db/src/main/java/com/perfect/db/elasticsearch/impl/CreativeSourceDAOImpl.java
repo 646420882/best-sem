@@ -87,9 +87,7 @@ public class CreativeSourceDAOImpl extends BaseEsDaoImpl<CreativeSourceDTO, Stri
 
             try {
                 BeanUtils.populate(creativeSourceEntity, map);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
+            } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
             Object regionObj = map.get("region");
