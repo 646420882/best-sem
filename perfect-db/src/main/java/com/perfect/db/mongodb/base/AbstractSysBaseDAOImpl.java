@@ -49,9 +49,7 @@ public abstract class AbstractSysBaseDAOImpl<T extends BaseDTO, ID extends Seria
             Object entity = getEntityClass().newInstance();
             BeanUtils.copyProperties(entity, dto);
             getSysMongoTemplate().save(entity);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 

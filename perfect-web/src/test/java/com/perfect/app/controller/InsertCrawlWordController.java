@@ -1,12 +1,12 @@
 package com.perfect.app.controller;
 
-import com.perfect.dao.mongodb.base.BaseMongoTemplate;
-import com.perfect.entity.sys.CrawlWordEntity;
+import com.perfect.dto.CrawlWordDTO;
+import com.perfect.service.CrawlWordService;
 import com.perfect.utils.excel.XSSFReadUtils;
 import com.perfect.utils.excel.XSSFSheetHandler;
-import com.perfect.utils.mongodb.DBNameUtils;
 import org.junit.Test;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,9 +31,14 @@ public class InsertCrawlWordController extends JUnitBaseController {
         put(7, "taobao");
     }};
 
-    private static final List<CrawlWordEntity> crawlWordList = new ArrayList<>();
+    private static final List<CrawlWordDTO> crawlWordList = new ArrayList<>();
 
-//    private static final String[] rowName = new String[2];
+    @Autowired
+    private CrawlWordService crawlWordService;
+
+    public void setCrawlWordService(@Qualifier("crawlWordService") CrawlWordService crawlWordService) {
+        this.crawlWordService = crawlWordService;
+    }
 
     @Test
     public void insert() {
@@ -76,8 +81,7 @@ public class InsertCrawlWordController extends JUnitBaseController {
         }
 
         if (!crawlWordList.isEmpty()) {
-            MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
-            mongoTemplate.insertAll(crawlWordList);
+            crawlWordService.save(crawlWordList);
         }
     }
 
@@ -92,11 +96,11 @@ public class InsertCrawlWordController extends JUnitBaseController {
                         String category = (String) row.get(0);
                         for (int i = 1; i < row.size(); i++) {
                             String keyword = (String) row.get(i);
-                            CrawlWordEntity entity = new CrawlWordEntity();
-                            entity.setSite(sheetNameMap.get(7));
-                            entity.setCategory(category);
-                            entity.setKeyword(keyword);
-                            crawlWordList.add(entity);
+                            CrawlWordDTO dto = new CrawlWordDTO();
+                            dto.setSite(sheetNameMap.get(7));
+                            dto.setCategory(category);
+                            dto.setKeyword(keyword);
+                            crawlWordList.add(dto);
                         }
                     }
                 }
@@ -106,32 +110,22 @@ public class InsertCrawlWordController extends JUnitBaseController {
         }
 
         if (!crawlWordList.isEmpty()) {
-            MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
-            mongoTemplate.insertAll(crawlWordList);
+            crawlWordService.save(crawlWordList);
         }
     }
 
 
     protected static void rowProcessor(int sheetIndex, int rowIndex, List<Object> row) {
         if (!row.isEmpty() && rowIndex > 0) {
-//            if (rowName[0] == null && rowName[1] == null) {
-//                rowName[0] = (String) row.get(0);
-//            }
-//            rowName[1] = (String) row.get(0);
-//            boolean categoryIsNotEmpty = (rowName[1] != null) && (!"".equals(rowName[1])) && (rowName[1].trim().length() > 0);
             String category = (String) row.get(0);
             for (int i = 1; i < row.size(); i++) {
                 String keyword = (String) row.get(i);
-                CrawlWordEntity entity = new CrawlWordEntity();
-                entity.setSite(sheetNameMap.get(sheetIndex));
-//                entity.setCategory(categoryIsNotEmpty ? rowName[1] : rowName[0]);
-                entity.setCategory(category);
-                entity.setKeyword(keyword);
-                crawlWordList.add(entity);
+                CrawlWordDTO dto = new CrawlWordDTO();
+                dto.setSite(sheetNameMap.get(sheetIndex));
+                dto.setCategory(category);
+                dto.setKeyword(keyword);
+                crawlWordList.add(dto);
             }
-//            if (categoryIsNotEmpty) {
-//                rowName[0] = (String) row.get(0);
-//            }
         }
     }
 }

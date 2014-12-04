@@ -1,5 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
+import com.google.common.collect.Lists;
 import com.perfect.dao.sys.CrawlWordDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.CrawlWordDTO;
@@ -19,7 +20,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.matc
 
 /**
  * Created by baizz on 2014-11-18.
- * 2014-12-2 refactor
+ * 2014-12-4 refactor
  */
 @Repository("crawlWordDAO")
 public class CrawlWordDAOImpl extends AbstractSysBaseDAOImpl<CrawlWordDTO, String> implements CrawlWordDAO {
@@ -54,4 +55,10 @@ public class CrawlWordDAOImpl extends AbstractSysBaseDAOImpl<CrawlWordDTO, Strin
                 getEntityClass()), getDTOClass());
     }
 
+    @Override
+    public Iterable<CrawlWordDTO> save(Iterable<CrawlWordDTO> entities) {
+        List<CrawlWordEntity> entityList = ObjectUtils.convert(Lists.newArrayList(entities), getEntityClass());
+        getSysMongoTemplate().insertAll(entityList);
+        return ObjectUtils.convert(entityList, getDTOClass());
+    }
 }

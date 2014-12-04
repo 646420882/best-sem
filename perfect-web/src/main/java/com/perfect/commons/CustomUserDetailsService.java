@@ -1,7 +1,7 @@
 package com.perfect.commons;
 
-import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.SystemUserDTO;
+import com.perfect.service.SystemUserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,13 +26,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private static int passwdBadCredentialsNum = 0;
 
-    @Resource(name = "systemUserDAO")
-    private SystemUserDAO systemUserDAO;
+    @Resource
+    private SystemUserService systemUserService;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserDetails user;
-        SystemUserDTO systemUser = systemUserDAO.findByUserName(s);
+        SystemUserDTO systemUser = systemUserService.findByUserName(s);
         if (systemUser == null) {
             throw new UsernameNotFoundException("Username not found");
         }

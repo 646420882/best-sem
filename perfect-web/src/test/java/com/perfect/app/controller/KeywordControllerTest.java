@@ -1,6 +1,6 @@
 package com.perfect.app.controller;
 
-import com.perfect.dao.keyword.KeywordDAO;
+import com.perfect.service.KeywordService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,10 +15,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class KeywordControllerTest extends JUnitBaseController {
 
     @Autowired
-    private KeywordDAO keywordDAO;
+    private KeywordService keywordService;
 
-    public void setKeywordDAO(@Qualifier("keywordDAO") KeywordDAO keywordDAO) {
-        this.keywordDAO = keywordDAO;
+    public void setKeywordService(@Qualifier("keywordService") KeywordService keywordService) {
+        this.keywordService = keywordService;
     }
 
     @Test
