@@ -45,12 +45,12 @@ public class WebContextSupport   {
         writeJson(new MessageResultDTO(message, data), response);
     }
 
-//    protected ModelAndView writeJson(String key, Object obj) {
-//        AbstractView jsonView = new MappingJackson2JsonView();
-//        Map<String, Object> returnMap = new HashMap<String, Object>() {{
-//            put(key, JSONUtils.getJsonObject(obj));
-//        }};
-//        jsonView.setAttributesMap(returnMap);
-//        return new ModelAndView(jsonView);
-//    }
+    protected ModelAndView writeMapObject(String key, Object obj) {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> returnMap = new HashMap<String, Object>() {{
+            put(key, JSONUtils.getJsonObject(obj));
+        }};
+        jsonView.setAttributesMap(returnMap);
+        return new ModelAndView(jsonView);
+    }
 }

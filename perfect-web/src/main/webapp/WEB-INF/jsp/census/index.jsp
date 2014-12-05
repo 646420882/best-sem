@@ -11,40 +11,31 @@
     <title>网站概况</title>
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/css/count/count.css">
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="/public/js/census/allvariable.js"></script>
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
     <script src="/public/js/census/websurvey.js"></script>
-    <style>
-        * {
-            font-size: 12px;
-        }
-    </style>
 </head>
 <body>
 <div class="container-fluid">
-
+<jsp:include page="../count/count_head.jsp"/>
+<jsp:include page="../count/count_nav.jsp"/>
+<div class="count_content clearfix">
 <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-10"><h1>Perfect 统计</h1></div>
-</div>
-<div class="row">
-<div class="col-md-2">
-    <jsp:include page="left/left-nav.jsp"/>
-</div>
-<div class="col-md-10">
+<div class="col-md-12">
 <div class="well well-sm">
     <span style="font-weight: bold;">全部网站</span>&nbsp;
     <a href="javascript:void(0)" onclick="Test();"><span class="glyphicon glyphicon-question-sign"></span></a>&nbsp;
     <a href="javascript:void(0)"> 返回单站查看>></a>
-    <div class="alert alert-success" role="alert" style="display: none">
+</div>
+<div class="alert alert-success" role="alert" style="display: none">
     <p>本报告助您分析：</p>
     <p>提供与账户对应的网站或子目录列表，可分别查看每个网站的详细报告。助您了解所拥有的网站或子目录整体情况。</p>
 </div>
-</div>
 <div class="panel panel-default">
     <div class="panel panel-heading">
-        <a href="http://edit.baidu.com">edit.com.perfect.api.baidu.com</a>
+        <a href="javascrip:void(0)">暂无统计页面</a>&nbsp;&nbsp;|&nbsp;&nbsp;<span>暂无说明</span>
         <a href="javascript:void(0)" class="btn btn-default btn-xs" role="button"><span  class="glyphicon glyphicon-search"></span >&nbsp;查看报告</a>
                <span style="float: right;">排序方式：
                 <select>
@@ -68,33 +59,6 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>今日:</td>
-                <td>1276</td>
-                <td>865</td>
-                <td>812</td>
-                <td>92.4%</td>
-                <td>00:02:41</td>
-                <td>1</td>
-            <tr>
-            <tr>
-                <td>昨日:</td>
-                <td>1276</td>
-                <td>865</td>
-                <td>812</td>
-                <td>92.4%</td>
-                <td>00:02:41</td>
-                <td>1</td>
-            <tr>
-            <tr>
-                <td>预计今日:</td>
-                <td>1276<span class="glyphicon glyphicon-arrow-up" style="color: red;"></span></td>
-                <td>865<span class="glyphicon glyphicon-arrow-up" style="color: red;"></span></td>
-                <td>812<span class="glyphicon glyphicon-arrow-down" style="color: green;"></span></td>
-                <td>92.4%</td>
-                <td>00:02:41</td>
-                <td>1</td>
-            <tr>
             </tbody>
         </table>
     </div>
@@ -102,7 +66,7 @@
 
 <div class="panel panel-default" id="dir1">
     <div class="panel panel-heading">
-        edit.baidu.com&nbsp;&nbsp;功能特点页&nbsp;
+        <a href="javascrip:void(0)">暂无统计页面</a>&nbsp;&nbsp;|&nbsp;&nbsp;<span>暂无说明</span>
         <a href="javascript:void(0)" class="btn btn-default btn-xs" role="button"><span  class="glyphicon glyphicon-search"></span >&nbsp;查看报告</a>
     </div>
     <div class="table-responsive">
@@ -119,33 +83,6 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>今日:</td>
-                <td>1276</td>
-                <td>865</td>
-                <td>812</td>
-                <td>92.4%</td>
-                <td>00:02:41</td>
-                <td>1</td>
-            <tr>
-            <tr>
-                <td>昨日:</td>
-                <td>1276</td>
-                <td>865</td>
-                <td>812</td>
-                <td>92.4%</td>
-                <td>00:02:41</td>
-                <td>1</td>
-            <tr>
-            <tr>
-                <td>预计今日:</td>
-                <td>1276</td>
-                <td>865</td>
-                <td>812</td>
-                <td>92.4%</td>
-                <td>00:02:41</td>
-                <td>1</td>
-            <tr>
             </tbody>
         </table>
     </div>
@@ -153,7 +90,7 @@
 
 <div class="panel panel-default" id="dir2">
     <div class="panel panel-heading">
-        edit.baidu.com&nbsp;&nbsp;1&nbsp;
+        <a href="javascrip:void(0)">暂无统计页面</a>&nbsp;&nbsp;|&nbsp;&nbsp;<span>暂无说明</span>
         <a href="javascript:void(0)" class="btn btn-default btn-xs" role="button"><span  class="glyphicon glyphicon-search"></span >&nbsp;查看报告</a>
     </div>
     <div class="table-responsive">
@@ -170,33 +107,6 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>今日:</td>
-                <td>1276</td>
-                <td>865</td>
-                <td>812</td>
-                <td>92.4%</td>
-                <td>00:02:41</td>
-                <td>1</td>
-            <tr>
-            <tr>
-                <td>昨日:</td>
-                <td>1276</td>
-                <td>865</td>
-                <td>812</td>
-                <td>92.4%</td>
-                <td>00:02:41</td>
-                <td>1</td>
-            <tr>
-            <tr>
-                <td>预计今日:</td>
-                <td>1276</td>
-                <td>865</td>
-                <td>812</td>
-                <td>92.4%</td>
-                <td>00:02:41</td>
-                <td>1</td>
-            <tr>
             </tbody>
         </table>
     </div>
@@ -204,7 +114,7 @@
 
 <div class="panel panel-default" id="dir3">
     <div class="panel panel-heading">
-        edit.baidu.com&nbsp;&nbsp;搜索推广功能介绍页&nbsp;
+        <a href="javascrip:void(0)">暂无统计页面</a>&nbsp;&nbsp;|&nbsp;&nbsp;<span>暂无说明</span>
         <a href="javascript:void(0)" class="btn btn-default btn-xs" role="button"><span  class="glyphicon glyphicon-search"></span >&nbsp;查看报告</a>
     </div>
     <div class="table-responsive">
@@ -221,38 +131,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>今日:</td>
-                <td>1276</td>
-                <td>865</td>
-                <td>812</td>
-                <td>92.4%</td>
-                <td>00:02:41</td>
-                <td>1</td>
-            <tr>
-            <tr>
-                <td>昨日:</td>
-                <td>1276</td>
-                <td>865</td>
-                <td>812</td>
-                <td>92.4%</td>
-                <td>00:02:41</td>
-                <td>1</td>
-            <tr>
-            <tr>
-                <td>预计今日:</td>
-                <td>1276</td>
-                <td>865</td>
-                <td>812</td>
-                <td>92.4%</td>
-                <td>00:02:41</td>
-                <td>1</td>
-            <tr>
             </tbody>
         </table>
     </div>
 </div>
 
+</div>
 </div>
 </div>
 </div>

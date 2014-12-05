@@ -1,6 +1,7 @@
 package com.perfect.app.statistics.controller;
 
 import com.perfect.commons.web.WebContextSupport;
+import com.perfect.dao.CensusDAO;
 import com.perfect.dao.report.CensusEveryDayReportDao;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -20,6 +22,7 @@ public class TrendAnalysisController extends WebContextSupport {
 
     @Resource
     private CensusEveryDayReportDao censusEveryDayReportDao ;
+
 
 
     /**
@@ -42,7 +45,7 @@ public class TrendAnalysisController extends WebContextSupport {
 
     @RequestMapping(value = "/getTrendAnalysisData",method = {RequestMethod.GET, RequestMethod.POST})
     public void getTrendAnalysisData(HttpServletResponse response){
-        writeJson(censusEveryDayReportDao.getCensus(),response);
+        writeJson(censusEveryDayReportDao.getCensus(), response);
         System.out.println();
     }
 

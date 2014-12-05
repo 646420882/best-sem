@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class Websurvey {
 
     /**
-     * 调转到网站概况页面
+     * 调转到“网站概况”页面
      *
      * @return
      */
@@ -21,8 +21,45 @@ public class Websurvey {
         return new ModelAndView("census/index");
     }
 
+    /**
+     * 跳转到“受访页面”页面
+     * @return
+     */
     @RequestMapping("/getVisitPage")
     public ModelAndView convertVisit() {
         return new ModelAndView("census/visitPage");
     }
+
+    /**
+     * 跳转到“受访域名”页面
+     * @return
+     */
+    @RequestMapping("/getVisitHost")
+    public ModelAndView convertVisitHost() {
+        return new ModelAndView("census/visitHost");
+    }
+
+    /**
+     * 跳转到“入口页面”页面
+     * @return
+     */
+    @RequestMapping("/getLandingPage")
+    public ModelAndView getLandingPage() {
+        return new ModelAndView("census/landingPage");
+    }
+
+    /**
+     * 跳转到“页面点击图”页面
+     * @return
+     */
+    @RequestMapping("/getPageClk")
+    public ModelAndView getPageClick(){
+        return new ModelAndView("census/pageClk");
+    }
+
+    @RequestMapping("/getConfigPag")
+    public ModelAndView getConfigPage(){
+        return new ModelAndView("census/config");
+    }
+
 }

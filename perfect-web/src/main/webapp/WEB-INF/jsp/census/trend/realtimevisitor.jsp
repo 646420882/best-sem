@@ -218,7 +218,7 @@
                                  <td>1</td>
                                  <td>重庆</td>
                                  <td>14:06:03</td>
-                                 <td>http://www.com.perfect.api.baidu.com/login</td>
+                                 <td>http://www.baidu.com/login</td>
                                  <td>f0a37486b9730687b23a2edee5d336db<a href="#" class="wryh">&nbsp;仅看该访客</a></td>
                                  <td>196.168.2.2<a href="#" class="wryh">&nbsp;仅看该IP</a></td>
                                  <td>6</td>
