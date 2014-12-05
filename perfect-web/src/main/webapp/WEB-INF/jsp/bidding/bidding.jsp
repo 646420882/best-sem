@@ -1,4 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%!
+    String strUp = "高级搜索∧";
+    String strDown = "高级搜索∨";
+%>
 <!doctype html>
 <html>
 <head>
@@ -33,9 +37,7 @@
 <div id="main" class="mid over">
 <div class="title_box">
     <div class="on_title over">
-        <a href="#">
-            推广助手
-        </a>
+        <a href="#"> 智能竞价 </a>
     </div>
 </div>
 <div id="tab">
@@ -1055,7 +1057,13 @@ var refreshAccountTree = function () {
 var _biddingStatus = null;
 var _statusStr = null;
 
+var strUp = null;
+var strDown = null;
+
 $(function () {
+    strUp = "<%=strUp%>";
+    strDown = "<%=strDown%>";
+
     //获取账户树数据
     $.ajax({
         url: "/account/get_tree",

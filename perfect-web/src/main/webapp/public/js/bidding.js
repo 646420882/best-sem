@@ -303,11 +303,11 @@ $(function () {
     $(".advanced_search").click(function () {
         if ($(".Senior").css("display") == "none") {
             $(".Senior").show();
-            $(".advanced_search").attr('value', "高级搜索∧");
+            $(".advanced_search").attr('value', strUp);
         }
         else {
             $(".Senior").hide();
-            $(".advanced_search").attr('value', "高级搜索∨");
+            $(".advanced_search").attr('value', strDown);
         }
     });
     $(".Screenings").click(function () {

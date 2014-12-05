@@ -92,13 +92,13 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
 
     @Override
     public List<CreativeDTO> getAllsByAdgroupIds(List<Long> l) {
-        List<CreativeEntity> list= BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where(ADGROUP_ID).in(l)), CreativeEntity.class, TBL_CREATIVE);
+        List<CreativeEntity> list = BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where(ADGROUP_ID).in(l)), CreativeEntity.class, TBL_CREATIVE);
         return wrapperList(list);
     }
 
     @Override
     public List<CreativeDTO> getAllsByAdgroupIdsForString(List<String> l) {
-        List<CreativeEntity> list= BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where(OBJ_ADGROUP_ID).in(l)), CreativeEntity.class, TBL_CREATIVE);
+        List<CreativeEntity> list = BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where(OBJ_ADGROUP_ID).in(l)), CreativeEntity.class, TBL_CREATIVE);
         return wrapperList(list);
     }
 
@@ -136,9 +136,9 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
 
     @Override
     public String insertOutId(CreativeDTO creativeDTO) {
-        CreativeEntity creativeEntity=new CreativeEntity();
-        BeanUtils.copyProperties(creativeDTO,creativeEntity);
-        getMongoTemplate().insert(creativeEntity,MongoEntityConstants.TBL_CREATIVE);
+        CreativeEntity creativeEntity = new CreativeEntity();
+        BeanUtils.copyProperties(creativeDTO, creativeEntity);
+        getMongoTemplate().insert(creativeEntity, MongoEntityConstants.TBL_CREATIVE);
         CreativeBackUpEntity backUpEntity = new CreativeBackUpEntity();
         BeanUtils.copyProperties(creativeDTO, backUpEntity);
         getMongoTemplate().insert(backUpEntity, MongoEntityConstants.BAK_CREATIVE);
@@ -150,8 +150,8 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     public void insertByReBack(CreativeDTO creativeDTO) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.remove(new Query(Criteria.where(getId()).is(creativeDTO.getId())), CreativeEntity.class, TBL_CREATIVE);
-        CreativeEntity creativeEntity=new CreativeEntity();
-        BeanUtils.copyProperties(creativeDTO,creativeEntity);
+        CreativeEntity creativeEntity = new CreativeEntity();
+        BeanUtils.copyProperties(creativeDTO, creativeEntity);
         getMongoTemplate().insert(creativeEntity, TBL_CREATIVE);
     }
 
@@ -160,8 +160,8 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         CreativeEntity entity = mongoTemplate.findOne(
                 new Query(Criteria.where(getId()).is(obj)), CreativeEntity.class, TBL_CREATIVE);
-        CreativeDTO creativeDTO=new CreativeDTO();
-        BeanUtils.copyProperties(entity,creativeDTO);
+        CreativeDTO creativeDTO = new CreativeDTO();
+        BeanUtils.copyProperties(entity, creativeDTO);
         return creativeDTO;
     }
 
@@ -316,7 +316,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     public CreativeDTO findOne(Long creativeId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         CreativeEntity entity = mongoTemplate.findOne(new Query(Criteria.where(CREATIVE_ID).is(creativeId)), CreativeEntity.class, TBL_CREATIVE);
-        return  wrapperObject(entity);
+        return wrapperObject(entity);
     }
 
     public List<CreativeDTO> findAll() {
@@ -346,13 +346,13 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     public void insert(CreativeDTO creativeDTO) {
-        CreativeEntity creativeEntity=new CreativeEntity();
-        BeanUtils.copyProperties(creativeDTO,creativeEntity);
-        getMongoTemplate().insert(creativeEntity,MongoEntityConstants.TBL_CREATIVE);
+        CreativeEntity creativeEntity = new CreativeEntity();
+        BeanUtils.copyProperties(creativeDTO, creativeEntity);
+        getMongoTemplate().insert(creativeEntity, MongoEntityConstants.TBL_CREATIVE);
     }
 
     public void insertAll(List<CreativeDTO> creativeDTOList) {
-        List<CreativeEntity> creativeEntityList=ObjectUtils.convert(creativeDTOList,CreativeEntity.class);
+        List<CreativeEntity> creativeEntityList = ObjectUtils.convert(creativeDTOList, CreativeEntity.class);
         getMongoTemplate().insertAll(creativeEntityList);
     }
 
@@ -391,8 +391,9 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     @Override
-    public Class<CreativeDTO> getEntityClass() {
-        return CreativeDTO.class;
+    @SuppressWarnings("unchecked")
+    public Class<CreativeEntity> getEntityClass() {
+        return CreativeEntity.class;
     }
 
     public boolean delete(CreativeDTO creativeDTO) {

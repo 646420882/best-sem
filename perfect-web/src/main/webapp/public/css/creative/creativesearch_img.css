@@ -75,11 +75,11 @@ a.m:visited {
 #u, #head, #tool, #search, #foot {
     font-size: 12px;
 }
-.logo {
+/*.logo {
     cursor: pointer;
     height: 38px;
     width: 117px;
-}
+}*/
 .p1 {
     line-height: 120%;
     margin-left: -12pt;

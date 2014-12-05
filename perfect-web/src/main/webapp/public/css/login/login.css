@@ -17,9 +17,8 @@ ul, ol {
 }
 
 .login_box1, .login_box2 {
-    width: 472px;
-    height: 468px;
-    padding: 10px;
+    width: 461px;
+    height: 462px;
     background: url(/public/img/login_box_bg.png) no-repeat;
 }
 .login_box2{
@@ -28,8 +27,8 @@ ul, ol {
 }
 
 .login_box2 {
-    background: url(/public/img/register.png) no-repeat;
-    height:490px;
+    background: url(/public/img/regster.png) no-repeat;
+    height:491px;
 
 }
 
@@ -45,7 +44,10 @@ ul, ol {
 
 .login_logo2 {
     text-align: center;
-    padding: 30px 0 0 0;
+    padding: 40px 0 0 0;
+}
+.login_box2 .login_part1{
+    height:408px;
 }
 
 .login_click {
@@ -79,7 +81,7 @@ ul, ol {
     position: relative;
     font-size: 14px;
     color: #666666;
-    border: 1px solid #cccccc;
+    border: 1px solid #90a8c1;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
@@ -185,7 +187,7 @@ ul, ol {
 }
 
 .login_box2 .login_part2 input{
-    color: #055d9c;
+    color: #ffffff;
 
 }
 
@@ -209,7 +211,7 @@ ul, ol {
     height:100%;
     border:0px;
    background:none;
-    color: #796100;
+    color: #ffffff;
     font-size:24px;
     font-weight:bold;
     cursor: pointer;

@@ -15,10 +15,10 @@ body{
     height:60px;
 }
 .backstage_logo img{
-    width:110px;
     height:36px;
     vertical-align: inherit;
-    margin-top:8px;
+    margin-top:14px;
+    *margin-top:0px;
 
 }
 .backstage_text{
@@ -115,6 +115,7 @@ body{
     background:#f18b1d;
     color:#fff;
     border:none;
+    padding:0px;
 }
 #table1 {
     width: 100%;

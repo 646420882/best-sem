@@ -1,7 +1,7 @@
 package com.perfect.app.bidding.controller;
 
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.bidding.KeywordReportDTO;
+import com.perfect.dto.bidding.KeywordBiddingInfoDTO;
 import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.commons.constants.KeywordStatusEnum;
 import com.perfect.core.AppContext;
@@ -222,8 +222,8 @@ public class ImportKeywordBiddingController extends WebContextSupport {
 
 
             //获取entities的质量度
-            Map<Long, KeywordReportDTO> keywordReportDTOHashMap = new HashMap<>();
-            List<KeywordReportDTO> resultList = new ArrayList<>();
+            Map<Long, KeywordBiddingInfoDTO> keywordReportDTOHashMap = new HashMap<>();
+            List<KeywordBiddingInfoDTO> resultList = new ArrayList<>();
 
             List<Long> tmpKeywordIdList = new ArrayList<>();
             for (KeywordDTO entity : entities) {
@@ -233,37 +233,37 @@ public class ImportKeywordBiddingController extends WebContextSupport {
 
             Integer index = 0;
             for (KeywordDTO entity : entities) {
-                KeywordReportDTO keywordReportDTO = new KeywordReportDTO();
-                BeanUtils.copyProperties(entity, keywordReportDTO);
+                KeywordBiddingInfoDTO keywordBiddingInfoDTO = new KeywordBiddingInfoDTO();
+                BeanUtils.copyProperties(entity, keywordBiddingInfoDTO);
 
                 Long kwid = entity.getKeywordId();
 
                 index++;
                 AdgroupDTO adgroupEntity = sysAdgroupService.findByAdgroupId(entity.getAdgroupId());
                 CampaignDTO campaignEntity = sysCampaignService.findById(adgroupEntity.getCampaignId());
-                keywordReportDTO.setCampaignName(campaignEntity.getCampaignName());
-                keywordReportDTO.setAdgroupName(adgroupEntity.getAdgroupName());
+                keywordBiddingInfoDTO.setCampaignName(campaignEntity.getCampaignName());
+                keywordBiddingInfoDTO.setAdgroupName(adgroupEntity.getAdgroupName());
 
 //                setting quality/暂时注释掉，配额不够！
                 if (quality10TypeMap.size() > 0) {
-                    keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
-                    keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
+                    keywordBiddingInfoDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
+                    keywordBiddingInfoDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
                 }
                 if (entity.getStatus() != null) {
-                    keywordReportDTO.setStatusStr(KeywordStatusEnum.getName(entity.getStatus()));
+                    keywordBiddingInfoDTO.setStatusStr(KeywordStatusEnum.getName(entity.getStatus()));
                 } else {
-                    keywordReportDTO.setStatusStr(KeywordStatusEnum.STATUS_UNKNOWN.name());
+                    keywordBiddingInfoDTO.setStatusStr(KeywordStatusEnum.STATUS_UNKNOWN.name());
                 }
 
-                keywordReportDTOHashMap.put(entity.getKeywordId(), keywordReportDTO);
-                resultList.add(keywordReportDTO);
+                keywordReportDTOHashMap.put(entity.getKeywordId(), keywordBiddingInfoDTO);
+                resultList.add(keywordBiddingInfoDTO);
             }
             String yesterday = DateUtils.getYesterdayStr();
             Map<String, List<StructureReportDTO>> reports = basisReportService.getKeywordReport(tmpKeywordIdList.toArray(new Long[tmpKeywordIdList.size()]), yesterday, yesterday, 0);
             List<StructureReportDTO> list = reports.get(yesterday);
             for (StructureReportDTO entity : list) {
                 long kwid = entity.getKeywordId();
-                KeywordReportDTO dto = keywordReportDTOHashMap.get(kwid);
+                KeywordBiddingInfoDTO dto = keywordReportDTOHashMap.get(kwid);
                 dto.setClick(NumberUtils.getInteger(entity.getPcClick()));
                 dto.setConversion(NumberUtils.getDouble(entity.getPcConversion()));
                 dto.setCost(entity.getPcCost());

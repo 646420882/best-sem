@@ -30,7 +30,7 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
 
     SystemUserDTO findByAid(long aid);
 
-    void insertAccountInfo(String user, BaiduAccountInfoDTO baiduAccountInfoDTO);
+    void insertAccountInfo(String userName, BaiduAccountInfoDTO baiduAccountInfoDTO);
 
     void removeAccountInfo(Long id);
 

@@ -88,6 +88,9 @@ public class SystemUserServiceImpl implements SystemUserService {
             }
             BeanUtils.copyProperties(accountInfoType, baiduAccountInfoDTO);
 
+            //新增百度账户
+            systemUserDAO.insertAccountInfo(userName, baiduAccountInfoDTO);
+
             logger.info("查询账户推广计划...");
             List<CampaignType> campaignTypes = apiService.getAllCampaign();
             logger.info("查询结束: 计划数=" + campaignTypes.size());
@@ -115,13 +118,44 @@ public class SystemUserServiceImpl implements SystemUserService {
             }
 
             logger.info("查询账户推广关键词...");
-            List<KeywordType> keywordTypes = apiService.getAllKeyword(ids);
-            logger.info("查询结束: 关键词数=" + keywordTypes.size());
 
-            List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+//            List<KeywordType> keywordTypes = apiService.getAllKeyword(ids);
+//            logger.info("查询结束: 关键词数=" + keywordTypes.size());
+//
+//            List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+//
+//            for (KeywordDTO keywordEntity : keywordEntities) {
+//                keywordEntity.setAccountId(aid);
+//            }
 
-            for (KeywordDTO keywordEntity : keywordEntities) {
-                keywordEntity.setAccountId(aid);
+            //分批次请求关键词数据
+            List<Long> subList = new ArrayList<>(4);
+            for (int i = 1; i <= ids.size(); i++) {
+                Long adgroupId = ids.get(i - 1);
+                subList.add(adgroupId);
+
+                if (i % 4 == 0) {
+                    List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
+                    List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+
+                    for (KeywordDTO keywordEntity : keywordEntities) {
+                        keywordEntity.setAccountId(aid);
+                    }
+                    keywordDAO.save(keywordEntities);
+                    subList.clear();
+                }
+            }
+
+
+            if (!subList.isEmpty()) {
+                List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
+                List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+
+                for (KeywordDTO keywordEntity : keywordEntities) {
+                    keywordEntity.setAccountId(aid);
+                }
+                keywordDAO.save(keywordEntities);
+                subList.clear();
             }
 
             logger.info("查询账户推广创意...");
@@ -133,15 +167,14 @@ public class SystemUserServiceImpl implements SystemUserService {
             for (CreativeDTO creativeEntity : creativeEntityList) {
                 creativeEntity.setAccountId(aid);
             }
-            // 开始保存数据
 
-            // 保存推广计划
+            // 开始保存数据
             campaignDAO.save(campaignEntities);
             adgroupDAO.save(adgroupEntities);
-            keywordDAO.save(keywordEntities);
+//            keywordDAO.save(keywordEntities);
             creativeDAO.save(creativeEntityList);
         }
-        systemUserDAO.save(systemUserDTO);
+//        systemUserDAO.save(systemUserDTO);
     }
 
     @Override
@@ -386,7 +419,6 @@ public class SystemUserServiceImpl implements SystemUserService {
 
         //本地的推广单元
         List<CampaignDTO> campaignEntityList = Lists.newArrayList(campaignDAO.findAll());
-
         List<CampaignType> campaignTypes = apiService.getAllCampaign();
         List<CampaignDTO> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
         //凤巢中的推广单元

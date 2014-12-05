@@ -14,7 +14,7 @@ import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.bidding.BiddingRuleDTO;
-import com.perfect.dto.bidding.KeywordReportDTO;
+import com.perfect.dto.bidding.KeywordBiddingInfoDTO;
 import com.perfect.dto.bidding.StrategyDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.keyword.KeywordDTO;
@@ -511,8 +511,8 @@ public class BiddingController {
         }
 
 
-        Map<Long, KeywordReportDTO> keywordReportDTOHashMap = new HashMap<>();
-        List<KeywordReportDTO> resultList = new ArrayList<>();
+        Map<Long, KeywordBiddingInfoDTO> keywordReportDTOHashMap = new HashMap<>();
+        List<KeywordBiddingInfoDTO> resultList = new ArrayList<>();
 
         //获取entities的质量度
         List<Long> tmpKeywordIdList = new ArrayList<>();
@@ -524,8 +524,8 @@ public class BiddingController {
 
 //        Integer index = 0;
         for (KeywordDTO entity : entities) {
-            KeywordReportDTO keywordReportDTO = new KeywordReportDTO();
-            BeanUtils.copyProperties(entity, keywordReportDTO);
+            KeywordBiddingInfoDTO keywordBiddingInfoDTO = new KeywordBiddingInfoDTO();
+            BeanUtils.copyProperties(entity, keywordBiddingInfoDTO);
 
             Long kwid = entity.getKeywordId();
             if (keywordQualityConditionSize > 0) {
@@ -538,25 +538,25 @@ public class BiddingController {
 //            index++;
             AdgroupDTO adgroupEntity = sysAdgroupService.findByAdgroupId(entity.getAdgroupId());
             CampaignDTO campaignEntity = sysCampaignService.findById(adgroupEntity.getCampaignId());
-            keywordReportDTO.setAdgroupId(adgroupEntity.getAdgroupId());
-            keywordReportDTO.setCampaignName(campaignEntity.getCampaignName());
-            keywordReportDTO.setAdgroupName(adgroupEntity.getAdgroupName());
+            keywordBiddingInfoDTO.setAdgroupId(adgroupEntity.getAdgroupId());
+            keywordBiddingInfoDTO.setCampaignName(campaignEntity.getCampaignName());
+            keywordBiddingInfoDTO.setAdgroupName(adgroupEntity.getAdgroupName());
 
             if (quality10TypeSize > 0) {
                 if (quality10TypeMap.get(kwid) != null) {
-                    keywordReportDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
-                    keywordReportDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
+                    keywordBiddingInfoDTO.setPcQuality(quality10TypeMap.get(kwid).getPcQuality());
+                    keywordBiddingInfoDTO.setmQuality(quality10TypeMap.get(kwid).getMobileQuality());
                 } else {
-                    keywordReportDTO.setPcQuality(0);
-                    keywordReportDTO.setmQuality(0);
+                    keywordBiddingInfoDTO.setPcQuality(0);
+                    keywordBiddingInfoDTO.setmQuality(0);
                 }
 
             }
 
             if (entity.getStatus() != null) {
-                keywordReportDTO.setStatusStr(KeywordStatusEnum.getName(entity.getStatus()));
+                keywordBiddingInfoDTO.setStatusStr(KeywordStatusEnum.getName(entity.getStatus()));
             } else {
-                keywordReportDTO.setStatusStr(KeywordStatusEnum.STATUS_UNKNOWN.name());
+                keywordBiddingInfoDTO.setStatusStr(KeywordStatusEnum.STATUS_UNKNOWN.name());
             }
 
             if (ruleReady)
@@ -573,10 +573,10 @@ public class BiddingController {
 
             Integer tempBiddingStatus;
             if (ruleEntity != null) {
-                keywordReportDTO.setRule(true);
-                keywordReportDTO.setRuleDesc(BiddingRuleUtils.getRule(ruleEntity));
+                keywordBiddingInfoDTO.setRule(true);
+                keywordBiddingInfoDTO.setRuleDesc(BiddingRuleUtils.getRule(ruleEntity));
                 if (ruleEntity.isEnabled()) {
-                    keywordReportDTO.setBiddingStatus(1);
+                    keywordBiddingInfoDTO.setBiddingStatus(1);
                     tempBiddingStatus = 1;
                 } else {
                     tempBiddingStatus = 0;
@@ -597,8 +597,8 @@ public class BiddingController {
                 }
             }
 
-            keywordReportDTOHashMap.put(entity.getKeywordId(), keywordReportDTO);
-            resultList.add(keywordReportDTO);
+            keywordReportDTOHashMap.put(entity.getKeywordId(), keywordBiddingInfoDTO);
+            resultList.add(keywordBiddingInfoDTO);
         }
 //        if (keywordQualityConditionSize > 0) {
 //            total1 = index; //包含质量度查询时符合条件的最终记录数
@@ -610,7 +610,7 @@ public class BiddingController {
 
         for (StructureReportDTO entity : list) {
             long kwid = entity.getKeywordId();
-            KeywordReportDTO dto = keywordReportDTOHashMap.get(kwid);
+            KeywordBiddingInfoDTO dto = keywordReportDTOHashMap.get(kwid);
             dto.setClick(NumberUtils.getInteger(entity.getPcClick()));
             dto.setConversion(NumberUtils.getDouble(entity.getPcConversion()));
             dto.setCost(entity.getPcCost());
@@ -620,7 +620,7 @@ public class BiddingController {
             dto.setImpression(NumberUtils.getInteger(entity.getPcImpression()));
         }
 
-        List<KeywordReportDTO> newResultList = new ArrayList<>();
+        List<KeywordBiddingInfoDTO> newResultList = new ArrayList<>();
         if (keywordQualityConditionSize > 0) {
             int tmpSize = resultList.size();
             for (int i = skip; i < skip + limit; i++) {

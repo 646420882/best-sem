@@ -74,25 +74,22 @@ table tr ,table tr td{
 .top_middle{
     width:100%;
     height:94px;
+    background:url(/public/img/top_left.png) left no-repeat;
     position: relative;
     
 }
 .top_mid{
-    line-height: 94px;
+  /*  line-height: 94px;*/
     margin-right: 3%;
+
 }
 .logo {
-    height: 53px;
     margin-top: 22px;
     padding-left: 2%;
-
     padding-left: 20px;
-    border-left: 1px dotted #646464;
 }
 .logo img {
-    width: 151px;
-    height: 53px;
-    *margin-top: -40px;
+
 }
 .logo_text {
     color: #fff;
@@ -110,10 +107,9 @@ table tr ,table tr td{
 .on_title {
     width:100%;
     padding-left: 20px;
-    height: 32px;
-    line-height: 32px;
-    background: url(/public/img/title_bg.jpg) repeat-x;
-    border-bottom: 1px solid #abafbc;
+    height: 34px;
+    line-height: 34px;
+    background:#dfdfdf;
     position:fixed;
     z-index:98;
 }
@@ -134,7 +130,6 @@ table tr ,table tr td{
 }
 /*nav*/
 .nav {
-    width:180px;
     height:100%;
     position:fixed;
     z-index:112;
@@ -170,8 +165,9 @@ table tr ,table tr td{
     background: url(/public/img/bg.png) -74px -10px no-repeat;
 }
 .user_mid {
-    width:40%;
+   *width:40%;
     padding-top:20px;
+    margin-left:20px;
 }
 .user_img{
     width:55px;
@@ -230,17 +226,22 @@ table tr ,table tr td{
     height: 100%;
     z-index: -1;
 }
+.user_top span{
+    color:#f5b802;
+    font-weight:bold;
+
+}
 .user_name{
-    color: #f2ab00;
-    height: 18px;
-    line-height: 18px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
+    color: #ffffff;
+    height: 24px;
+    line-height: 24px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
     behavior: url(/public/css/accountCss/iecss3.htc);
-    border-radius: 10px;
+    border-radius: 5px;
     font-weight:bold;
     cursor: pointer;
-    background:#000;
+    background:#274a66;
     padding:0 10px;
     overflow:hidden;
 }
@@ -257,12 +258,12 @@ table tr ,table tr td{
 }
 .user_names{
     position:absolute;
-    top:18px;
-    background:#2a2d35;
-    color:#f2ab00;
+    top:25px;
+    background:#274a66;
+    color:#ffffff;
     font-weight:bold;
     padding:10px;
-    border-radius: 10px;
+    border-radius: 5px;
     -moz-box-shadow: 3px 3px 4px #000;
     -webkit-box-shadow: 3px 3px 4px #000;
     box-shadow: 3px 3px 4px #000;
@@ -283,6 +284,7 @@ table tr ,table tr td{
 .nav_under ul li {
     height:61px;
     position:relative;
+    border-bottom: 1px solid #e4e4e4;
     overflow:hidden;
 }
 .nav_under ul li h3 {
@@ -299,7 +301,6 @@ table tr ,table tr td{
     color: #959cad;
 }
 .nav_under ul li a:hover {
-    color: #fff;
     text-decoration: none;
 }
 .nav_under ul li span {
@@ -329,14 +330,14 @@ table tr ,table tr td{
    position:relative;
 }
 .nav_under ul li .nav_input1{
-    width:8px;
-    height:15px;
+    width:11px;
+    height:16px;
     background:url(/public/img/jiantou.png) right  no-repeat;
     margin:0px;
     position:absolute;
-    right:0px;
+    right:-1px;
     top:35%;
-    z-index:102;
+    z-index:999;
 }
 .nav_input{
     width:8px;
@@ -351,12 +352,12 @@ table tr ,table tr td{
     background: url(/public/img/bg.png) -10px -551px no-repeat;
 }
 .nav_under ul .current{
-    background: url(/public/img/nav_bg2.png)  no-repeat;
+    background: #ffffff;
 }
 .nav_under ul .current a{
     color:#ffb500;
 }
-.nav_under ul .current .list_1{
+/*.nav_under ul .current .list_1{
     background: url(/public/img/bg.png) -10px -515px no-repeat;
 }
 .nav_under ul .current .list_2{
@@ -368,7 +369,7 @@ table tr ,table tr td{
 }
 .nav_under ul .current .list_4{
     background: url(/public/img/bg.png) -126px -515px no-repeat;
-}
+}*/
 .nav_under ul .current .list_5{
     background: url(/public/img/bg.png) -172px -515px no-repeat;
 }
