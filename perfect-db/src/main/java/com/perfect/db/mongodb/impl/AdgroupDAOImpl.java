@@ -246,8 +246,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     @Override
     public void deleteByObjId(final String oid) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(Query.query(Criteria.where(get_id()).is(oid)), getEntityClass());
-
+        mongoTemplate.remove(Query.query(Criteria.where(get_id()).is(oid)), AdgroupEntity.class);
         deleteSubOid(Arrays.asList(oid));
 
     }

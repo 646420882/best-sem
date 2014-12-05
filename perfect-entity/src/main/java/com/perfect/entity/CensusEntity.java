@@ -45,10 +45,11 @@ public class CensusEntity {
     @Field(value = "ope")
     private Integer operate;//使用设备
     @Field(value = "up")
-    private Integer userType;//新老客户标识
+    private Integer userType;//新老客户标识 1为新客户，0为老客户
     @Field(value = "se")
     private String searchEngine;//搜索引擎
-
+    @Field(value = "sid")
+    private String sessionId;//sessionId 用于求访客数
 
     public String getBrowser() {
         return browser;
@@ -194,6 +195,14 @@ public class CensusEntity {
         this.searchEngine = searchEngine;
     }
 
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
     @Override
     public String toString() {
         return "CensusEntity{" +
@@ -215,6 +224,7 @@ public class CensusEntity {
                 ", operate=" + operate +
                 ", userType=" + userType +
                 ", searchEngine='" + searchEngine + '\'' +
+                ", sessionId='" + sessionId + '\'' +
                 '}';
     }
 }

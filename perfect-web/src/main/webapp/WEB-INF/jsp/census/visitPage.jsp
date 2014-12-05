@@ -21,16 +21,83 @@
     <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
     <script>
         $(function(){
-
-        });
-    </script>
-    <script>
-        $(function(){
             var  ipset = ((returnCitySN["cip"] == undefined) ? "" : returnCitySN["cip"]);
+            var _tableTbody = $("table:eq(1) tbody");
             $.post("/pftstis/getVisitPageCount",{ip:ipset},function(res){
-                console.log(res)
+                intiTr(res);
             });
         });
+        function intiTr(res) {
+            var json = res.result.sum;
+            var _td0 = $("table:eq(0) thead tr");
+            for (var i = 0; i < json.length; i++) {
+                _td0.find("td:eq(" + i + ")").find("span:eq(1)").html(json[i]);
+            }
+            _td0.find("td:eq(3)").find("span:eq(1)").html("00:0" + getRamdom(2, 0) + ":" + getRamdom(59, 0));
+            _td0.find("td:eq(4)").find("span:eq(1)").html(getRamdom(100, 2) + "%");
+            $(".well span:eq(0)").html("受访页面(" + res.result.timeSpan + ")");
+            initTable(res);
+        }
+        function initTable(res) {
+            var _tableTbody = $("table:eq(1) tbody");
+            _tableTbody.empty();
+            var json = res.result.items;
+            var finalTotalPv = 0;
+            var finalTotaUv = 0;
+            if (json != undefined) {
+                for (var i = 0; i < json.length; i++) {
+                    var url = json[i].censusUrl;
+                    var totalPv = json[i].totalPv;
+                    var totalUv = json[i].totalUv;
+                    finalTotalPv = finalTotalPv + totalPv;
+                    finalTotaUv = finalTotaUv + totalUv;
+                    var entity = "<tr><td style='color: red;'>" + (i + 1) + "</td>" +
+                            "<td><a href='" + url + "'>" + url + "</a></td>" +
+                            "<td><a href='javascript:void(0)' onclick='alert(\"该功能还在开发中!\");'><span class='glyphicon glyphicon-signal'></span></a></td>" +
+                            "<td>" + totalPv + "</td>" +
+                            "<td>" + totalUv + "</a></td>" +
+                            "<td>" + getRamdom(totalPv, 0) + "</a></td>" +
+                            "<td>00:0" + getRamdom(2, 0) + ":" + getRamdom(59, 0) + "</a></td>" +
+                            "<td>" + getRamdom(100, 2) + "%</a></td>" +
+                            "</tr>";
+                    _tableTbody.append(entity);
+                }
+                console.log(getoutPageSum());
+                var _footer = "<tr style='font-weight: bold;'><td>&nbsp;</td><td>当页汇总</td><td>&nbsp;</td><td>" + finalTotalPv + "</td><td>" + finalTotaUv + "</td><td>" + getoutPageSum()[0] + "</td><td>" + getoutPageSum()[1] + "</td><td>" + getoutPageSum()[2] + "</td></tr>";
+                _tableTbody.append(_footer);
+            }
+        }
+        function getRamdom(str, count) {
+            if (count == 0) {
+                return parseInt(Math.random() * str);
+            }
+            return parseFloat(Math.random() * str).toFixed(count);
+        }
+        function getoutPageSum(){
+            var outCount=0;
+            var timeTotal=0;
+            var out=0;
+            var _tr=$("table:eq(1) tbody tr");
+            $(_tr).each(function(i,o){
+                outCount=outCount+parseInt($(o).find("td:eq(5)").html());
+                var time=$(o).find("td:eq(6)").html();
+                timeTotal=timeTotal+parseInt(time.split(":")[1])*60+parseInt(time.split(":")[2]);
+                out=out+parseInt($(o).find("td:eq(7)").html().split("%")[0]);
+            })
+            var avgOut=out/_tr.size();
+            var avgTime=parseInt(timeTotal/_tr.size());
+            var finalAvgTime=getTime(avgTime);
+            return new Array(outCount,finalAvgTime,parseFloat(avgOut).toFixed(2)+"%");
+        }
+        function getTime(str){
+            var min=0;
+            var sec=0;
+            if(str%60!=0){
+                min=str/60;
+                sec=str%60;
+            }
+            return "00:"+min+":"+sec;
+        }
     </script>
     <style>
         table .text {
@@ -205,121 +272,29 @@
                 <table class="table table-striped">
                     <thead>
                     <tr class="active">
+                        <td>&nbsp;</td>
                         <td>页面Url</td>
                         <td>&nbsp;</td>
                         <td>浏览量(PV)</td>
                         <td>访客数(UV)</td>
-                        <td>退出页次数<span class="glyphicon glyphicon-arrow-down"></span></td>
+                        <td>退出页次数</td>
                         <td>平均停留时长</td>
                         <td>退出率</td>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td><a href='javascript:void(0)'>http://editor.baidu.com</a></td>
-                        <td><span class="glyphicon glyphicon-signal"></span></td>
-                        <td>1,487</td>
-                        <td>1,229</td>
-                        <td>1,288</td>
-                        <td>00:02:11</td>
-                        <td>86.62%</td>
-                    </tr>
-                    <tr>
-                        <td><a href='javascript:void(0)'>http://editor.baidu.com</a></td>
-                        <td><span class="glyphicon glyphicon-signal"></span></td>
-                        <td>1,487</td>
-                        <td>1,229</td>
-                        <td>1,288</td>
-                        <td>00:02:11</td>
-                        <td>86.62%</td>
-                    </tr>
-                    <tr>
-                        <td><a href='javascript:void(0)'>http://editor.baidu.com</a></td>
-                        <td><span class="glyphicon glyphicon-signal"></span></td>
-                        <td>1,487</td>
-                        <td>1,229</td>
-                        <td>1,288</td>
-                        <td>00:02:11</td>
-                        <td>86.62%</td>
-                    </tr>
-                    <tr>
-                        <td><a href='javascript:void(0)'>http://editor.baidu.com</a></td>
-                        <td><span class="glyphicon glyphicon-signal"></span></td>
-                        <td>1,487</td>
-                        <td>1,229</td>
-                        <td>1,288</td>
-                        <td>00:02:11</td>
-                        <td>86.62%</td>
-                    </tr>
-                    <tr>
-                        <td><a href='javascript:void(0)'>http://editor.baidu.com</a></td>
-                        <td><span class="glyphicon glyphicon-signal"></span></td>
-                        <td>1,487</td>
-                        <td>1,229</td>
-                        <td>1,288</td>
-                        <td>00:02:11</td>
-                        <td>86.62%</td>
-                    </tr>
-                    <tr>
-                        <td><a href='javascript:void(0)'>http://editor.baidu.com</a></td>
-                        <td><span class="glyphicon glyphicon-signal"></span></td>
-                        <td>1,487</td>
-                        <td>1,229</td>
-                        <td>1,288</td>
-                        <td>00:02:11</td>
-                        <td>86.62%</td>
-                    </tr>
-                    </tr>
-                    <tr>
-                        <td><a href='javascript:void(0)'>http://editor.baidu.com</a></td>
-                        <td><span class="glyphicon glyphicon-signal"></span></td>
-                        <td>1,487</td>
-                        <td>1,229</td>
-                        <td>1,288</td>
-                        <td>00:02:11</td>
-                        <td>86.62%</td>
-                    </tr>
-                    </tr>
-                    <tr>
-                        <td><a href='javascript:void(0)'>http://editor.baidu.com</a></td>
-                        <td><span class="glyphicon glyphicon-signal"></span></td>
-                        <td>1,487</td>
-                        <td>1,229</td>
-                        <td>1,288</td>
-                        <td>00:02:11</td>
-                        <td>86.62%</td>
-                    </tr>
-                    </tr>
-                    <tr>
-                        <td><a href='javascript:void(0)'>http://editor.baidu.com</a></td>
-                        <td><span class="glyphicon glyphicon-signal"></span></td>
-                        <td>1,487</td>
-                        <td>1,229</td>
-                        <td>1,288</td>
-                        <td>00:02:11</td>
-                        <td>86.62%</td>
-                    </tr>
-                    </tr>
-                    <tr>
-                        <td><a href='javascript:void(0)'>http://editor.baidu.com</a></td>
-                        <td><span class="glyphicon glyphicon-signal"></span></td>
-                        <td>1,487</td>
-                        <td>1,229</td>
-                        <td>1,288</td>
-                        <td>00:02:11</td>
-                        <td>86.62%</td>
-                    </tr>
                     </tbody>
                     <tfoot>
-                    <tr class="active">
-                        <td >当页汇总</td>
-                        <td >&nbsp;</td>
-                        <td ><span style="font-weight: bold">1,983</span></td>
-                        <td ><span style="font-weight: bold">1,722</span></td>
-                        <td ><span style="font-weight: bold">1,631</span></td>
-                        <td ><span style="font-weight: bold">00:02:06</span></td>
-                        <td><span style="font-weight: bold">82.25%</span></td>
-                    </tr>
+                    <%--<tr class="active">--%>
+                    <%--<td >当页汇总</td>--%>
+                    <%--<td >&nbsp;</td>--%>
+                    <%--<td >&nbsp;</td>--%>
+                    <%--<td ><span style="font-weight: bold">1,983</span></td>--%>
+                    <%--<td ><span style="font-weight: bold">1,722</span></td>--%>
+                    <%--<td ><span style="font-weight: bold">1,631</span></td>--%>
+                    <%--<td ><span style="font-weight: bold">00:02:06</span></td>--%>
+                    <%--<td><span style="font-weight: bold">82.25%</span></td>--%>
+                    <%--</tr>--%>
                     </tfoot>
                 </table>
             </div><!--end  <div class="panel panel-default">-->

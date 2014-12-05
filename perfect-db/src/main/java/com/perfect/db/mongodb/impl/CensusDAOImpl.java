@@ -11,7 +11,6 @@ import com.perfect.dto.count.ConstantsDTO.CensusStatus;
 import com.perfect.dto.count.CountDTO;
 import com.perfect.entity.CensusCfgEntity;
 import com.perfect.entity.CensusEntity;
-import com.perfect.utils.paging.Pager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -37,16 +36,17 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
 
 
     @Override
-    public CensusDTO saveParams(CensusDTO censusEntity) {
+    public CensusDTO saveParams(CensusDTO censusDTO) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        if(mongoTemplate.exists(new Query(Criteria.where("uid").is(censusEntity.getUuid())),CensusEntity.class)){
-            censusEntity.setUserType(0);
+        if(mongoTemplate.exists(new Query(Criteria.where("uid").is(censusDTO.getUuid())),CensusEntity.class)){
+            censusDTO.setUserType(0);
         }else{
-            censusEntity.setUserType(1);
+            censusDTO.setUserType(1);
         }
+        CensusEntity censusEntity=new CensusEntity();
+        BeanUtils.copyProperties(censusDTO,censusEntity);
         mongoTemplate.save(censusEntity, MongoEntityConstants.SYS_CENSUS);
-        CensusDTO censusDTO=new CensusDTO();
-        BeanUtils.copyProperties(censusEntity,censusDTO);
+
         return censusDTO;
     }
 
@@ -180,8 +180,10 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
     private List<ConstantsDTO> getConstantsList(CensusStatus status,List<String> urlNames) {
         List<ConstantsDTO> returnList=new ArrayList<>();
         for(String url:urlNames){
+            if(!url.equals("")||!url.equals(null)){
             ConstantsDTO constantsDTO=getTotalConstants(status,url);
             returnList.add(constantsDTO);
+            }
         }
         return returnList;
     }
@@ -193,7 +195,7 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
      * @return
      */
     private List<String> getUrlName(List<CountVO> pvCountList) {
-        List<String> listNames=new ArrayList<>();
+        List<String> listNames=new ArrayList<String>();
         for (CountVO vo:pvCountList){
             listNames.add(vo.getLp());
         }
@@ -206,6 +208,8 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
         Query q = new Query();
         Criteria c = getStaticCriteria(status, url);
         q.addCriteria(c);
+
+        //获取某url的Ip总数
         Aggregation ipCountAgg = Aggregation.newAggregation(
                 match(c),
                 project("ip"),
@@ -214,6 +218,7 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
         AggregationResults<CensusIpVO> ipCountResult = mongoTemplate.aggregate(ipCountAgg, MongoEntityConstants.SYS_CENSUS, CensusIpVO.class);
         List<CensusIpVO> ipCountList = new ArrayList<>(ipCountResult.getMappedResults());
 
+        //获取某url的UV总数
         Aggregation uidCountAgg = Aggregation.newAggregation(
                 match(c),
                 project("uid"),
@@ -222,17 +227,31 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
         AggregationResults<CensusUidVO> uidCountResult = mongoTemplate.aggregate(uidCountAgg, MongoEntityConstants.SYS_CENSUS, CensusUidVO.class);
         List<CensusUidVO> uidCountList = new ArrayList<>(uidCountResult.getMappedResults());
 
+        //获取某url的新访客总数
+
         int totalPv = (int) mongoTemplate.count(q, MongoEntityConstants.SYS_CENSUS);
         int totalUv = uidCountList.size();
         int totalIp = ipCountList.size();
+        int totalNewClient= (int) mongoTemplate.count(getClientQuery(status,url,1),MongoEntityConstants.SYS_CENSUS);
+        int totalOldClient= (int) mongoTemplate.count(getClientQuery(status,url,0),MongoEntityConstants.SYS_CENSUS);
         ConstantsDTO constantsDTO = new ConstantsDTO();
         constantsDTO.setCensusUrl(url);
         constantsDTO.setTotalCount(totalPv);
         constantsDTO.setTotalPv(totalPv);
         constantsDTO.setTotalUv(totalUv);
         constantsDTO.setTotalIp(totalIp);
-
+        constantsDTO.setNewClientCount(totalNewClient);
+        constantsDTO.setOldClientCount(totalOldClient);
         return constantsDTO;
+    }
+
+    //获取查询新老访客的方法
+    private Query getClientQuery(CensusStatus status,String url,int userType){
+        Query clientQuery=new Query();
+        Criteria c=getStaticCriteria(status,url);
+        c.and("up").is(userType);
+        clientQuery.addCriteria(c);
+        return clientQuery;
     }
 
     private Criteria getStaticCriteria(CensusStatus status, String url) {
@@ -419,8 +438,6 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
     public class CountVO {
         @Id
         private String lp;
-        private String uid;
-        private String ip;
         private int count;
 
         public String getLp() {
@@ -440,28 +457,11 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
             this.count = count;
         }
 
-        public String getUid() {
-            return uid;
-        }
-
-        public void setUid(String uid) {
-            this.uid = uid;
-        }
-
-        public String getIp() {
-            return ip;
-        }
-
-        public void setIp(String ip) {
-            this.ip = ip;
-        }
 
         @Override
         public String toString() {
             return "CountVO{" +
                     "lp='" + lp + '\'' +
-                    ", uid='" + uid + '\'' +
-                    ", ip='" + ip + '\'' +
                     ", count=" + count +
                     '}';
         }

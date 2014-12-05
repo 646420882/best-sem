@@ -169,18 +169,14 @@ public class PerfectStatistics extends WebContextSupport {
     @RequestMapping(value = "/saveParams", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getAvg(HttpServletResponse response,HttpServletRequest request,
                                @RequestParam(value = "osAnBrowser", required = true) String[] osAnBrowser) {
-        int osA=osAnBrowser.length;
         List<String> list=new ArrayList<>();
         for (int i = 0; i <osAnBrowser.length ; i++) {
             list.add(osAnBrowser[i]);
         }
         list.add(request.getHeader("referer"));
+        list.add(request.getSession().getId());
         String[] newStr=list.toArray(new String[1]);
         String sid = censusService.saveParams(newStr);
-        if(sid!=null)
-        {
-            System.out.println("success!");
-        }
         return null;
     }
     @RequestMapping(value = "/getTodayConstants",method = RequestMethod.GET)

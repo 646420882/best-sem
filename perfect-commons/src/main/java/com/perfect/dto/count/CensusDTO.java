@@ -25,7 +25,7 @@ public class CensusDTO extends BaseDTO {
     private Integer operate;//使用设备
     private Integer userType;//新老客户标识
     private String searchEngine;//搜索引擎
-
+    private String sessionId;//sessionId 用于求访客数
     public String getUuid() {
         return uuid;
     }
@@ -162,6 +162,14 @@ public class CensusDTO extends BaseDTO {
         this.searchEngine = searchEngine;
     }
 
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
     @Override
     public String toString() {
         return "CensusDTO{" +
@@ -182,6 +190,7 @@ public class CensusDTO extends BaseDTO {
                 ", operate=" + operate +
                 ", userType=" + userType +
                 ", searchEngine='" + searchEngine + '\'' +
+                ", sessionId='" + sessionId + '\'' +
                 '}';
     }
 }

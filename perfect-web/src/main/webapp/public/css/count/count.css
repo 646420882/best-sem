@@ -1,5 +1,9 @@
 @charset "utf-8";
 /*浮动*/
+* {
+    font-size: 12px;
+    font-family: Microsoft Yahei, "微软雅黑", "新宋体", "宋体", "Arial Narrow";
+}
 body{
     min-width: 1000px;
 }
@@ -26,7 +30,6 @@ ul, li, h1, h2, h3, h4, h5, h6 ,p {
 /**top**/
 .top{
     height:50px;
-    line-height:50px;
     padding:0 20px;
     background: url(/public/img/count_bg.png);
     background-position: left 0;
@@ -50,18 +53,17 @@ ul, li, h1, h2, h3, h4, h5, h6 ,p {
     padding:0px;
 }
 .nav .dropdown-toggle .caret {
-    margin-top: 10px;
 }
 .top_nav ul .top_select{
     display:block;
     width:100%;
-    margin-top:-18px;
 }
 .top_nav ul .top_select select{
     height:20px;
     line-height:20px;
     padding:0px;
-   float:right;
+    float:right;
+    width:50%;
 
 
 }

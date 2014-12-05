@@ -11,20 +11,12 @@ public class ConstantsDTO {
     private int totalPv;//等价于totalCount
     private int totalUv;//以独立uuid为标识区分，一个uuid为一个Uv访问量
     private int totalIp;//以独立ip为标识区分,一个ip为一个Ip访问量
+    private int newClientCount;
+    private int oldClientCount;
     private double avgTime;//平均访问时间
     private double alert;//跳出率
     private int convert;//转化
 
-    public ConstantsDTO(String censusUrl, int totalCount, int totalPv, int totalUv, int totalIp, double avgTime, double alert, int convert) {
-        this.censusUrl = censusUrl;
-        this.totalCount = totalCount;
-        this.totalPv = totalPv;
-        this.totalUv = totalUv;
-        this.totalIp = totalIp;
-        this.avgTime = avgTime;
-        this.alert = alert;
-        this.convert = convert;
-    }
 
     public ConstantsDTO() {
     }
@@ -93,6 +85,22 @@ public class ConstantsDTO {
         this.censusUrl = censusUrl;
     }
 
+    public int getNewClientCount() {
+        return newClientCount;
+    }
+
+    public void setNewClientCount(int newClientCount) {
+        this.newClientCount = newClientCount;
+    }
+
+    public int getOldClientCount() {
+        return oldClientCount;
+    }
+
+    public void setOldClientCount(int oldClientCount) {
+        this.oldClientCount = oldClientCount;
+    }
+
     @Override
     public String toString() {
         return "ConstantsDTO{" +
@@ -101,11 +109,14 @@ public class ConstantsDTO {
                 ", totalPv=" + totalPv +
                 ", totalUv=" + totalUv +
                 ", totalIp=" + totalIp +
+                ", newClientCount=" + newClientCount +
+                ", oldClientCount=" + oldClientCount +
                 ", avgTime=" + avgTime +
                 ", alert=" + alert +
                 ", convert=" + convert +
                 '}';
     }
+
     public enum CensusStatus{
         TO_DAY, LAST_DAY, LAST_WEEK,LAST_MONTH;
     }
