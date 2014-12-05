@@ -23,9 +23,17 @@
                                                        src="${pageContext.request.contextPath}/account/getImg"></span>
                         </div>
                         <div class="user_text fl">
-                            <p><b id="time"></b><a
-                                    href="${pageContext.request.contextPath}/configuration/"><span>${currSystemUserName}</span></a>
-                            </p>
+                            <div class="user_top over">
+                                    <div class="fl"><b id="time"></b><a
+                                            href="${pageContext.request.contextPath}/configuration/"><span>${currSystemUserName}</span></a>
+                                    </div>
+                                    <div class="user_logo2 fr">
+                                        <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
+                                            <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png"
+                                                   onclick="$('form[logout]').submit();"/>
+                                        </form>
+                                    </div>
+                            </div>
 
                             <div class="user_select">
                                 <div class="user_name">
@@ -37,12 +45,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="user_logo2 fr">
-                            <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
-                                <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png"
-                                       onclick="$('form[logout]').submit();"/>
-                            </form>
-                        </div>
+
                     </div>
                 </div>
                 <div class="user_detali fl over">
@@ -54,10 +57,7 @@
                 </div>
             </div>
             <div class="top_mid fr over">
-                <div class="logo_text fl">
-                    大数据智能营销
-                </div>
-                <div class="logo fl">
+                <div class="logo">
                     <img src="${pageContext.request.contextPath}/public/img/logo.png">
                 </div>
             </div>

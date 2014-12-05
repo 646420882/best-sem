@@ -1,4 +1,4 @@
-<%@ page import="com.perfect.commons.web.WebUtils" %>
+<%@ page import="com.perfect.core.AppContext" %>
 <%--
   Created by IntelliJ IDEA.
   User: john
@@ -10,7 +10,7 @@
 <%
     Long accountId = 0l;
     if (request != null) {
-        accountId = WebUtils.getAccountId(request);
+        accountId = AppContext.getAccountId();
     }
 %>
 <div id="navigator" class="nav fl">
