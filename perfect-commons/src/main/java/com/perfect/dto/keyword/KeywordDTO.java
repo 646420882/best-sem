@@ -52,75 +52,23 @@ public class KeywordDTO extends AccountIdDTO implements Comparable<KeywordDTO> {
         this.localStatus = localStatus;
     }
 
-    public boolean setKeywordId(Long aKeywordId) {
-        boolean wasSet = false;
+    public void setKeywordId(Long aKeywordId) {
         keywordId = aKeywordId;
-        wasSet = true;
-        return wasSet;
     }
 
-    public boolean setAdgroupId(Long aAdgroupId) {
-        boolean wasSet = false;
+    public void setAdgroupId(Long aAdgroupId) {
         adgroupId = aAdgroupId;
-        wasSet = true;
-        return wasSet;
     }
 
-    public boolean setKeyword(String aKeyword) {
-        boolean wasSet = false;
+    public void setKeyword(String aKeyword) {
         keyword = aKeyword;
-        wasSet = true;
-        return wasSet;
     }
 
-    public boolean setPrice(BigDecimal aPrice) {
-        boolean wasSet = false;
+    public void setPrice(BigDecimal aPrice) {
         price = aPrice;
-        wasSet = true;
-        return wasSet;
     }
 
-    public boolean setPcDestinationUrl(String aPcDestinationUrl) {
-        boolean wasSet = false;
-        pcDestinationUrl = aPcDestinationUrl;
-        wasSet = true;
-        return wasSet;
-    }
 
-    public boolean setMobileDestinationUrl(String aMobileDestinationUrl) {
-        boolean wasSet = false;
-        mobileDestinationUrl = aMobileDestinationUrl;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setMatchType(Integer aMatchType) {
-        boolean wasSet = false;
-        matchType = aMatchType;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setPause(Boolean aPause) {
-        boolean wasSet = false;
-        pause = aPause;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setStatus(Integer aStatus) {
-        boolean wasSet = false;
-        status = aStatus;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setPhraseType(Integer aPhraseType) {
-        boolean wasSet = false;
-        phraseType = aPhraseType;
-        wasSet = true;
-        return wasSet;
-    }
 
     public Long getKeywordId() {
         return keywordId;
@@ -192,5 +140,29 @@ public class KeywordDTO extends AccountIdDTO implements Comparable<KeywordDTO> {
     @Override
     public int compareTo(KeywordDTO o) {
         return 0;
+    }
+
+    public void setPcDestinationUrl(String pcDestinationUrl) {
+        this.pcDestinationUrl = pcDestinationUrl;
+    }
+
+    public void setMobileDestinationUrl(String mobileDestinationUrl) {
+        this.mobileDestinationUrl = mobileDestinationUrl;
+    }
+
+    public void setMatchType(Integer matchType) {
+        this.matchType = matchType;
+    }
+
+    public void setPause(Boolean pause) {
+        this.pause = pause;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public void setPhraseType(Integer phraseType) {
+        this.phraseType = phraseType;
     }
 }

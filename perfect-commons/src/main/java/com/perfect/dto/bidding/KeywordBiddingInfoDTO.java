@@ -1,11 +1,13 @@
 package com.perfect.dto.bidding;
 
+import com.perfect.dto.keyword.KeywordDTO;
+
 import java.math.BigDecimal;
 
 /**
  * Created by vbzer_000 on 2014/8/25.
  */
-public class KeywordReportDTO {
+public class KeywordBiddingInfoDTO extends KeywordDTO {
 
     private String campaignName;
 
