@@ -60,6 +60,7 @@
     </profiles>
 
     <properties>
+        <maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
         <springframework-version>4.0.7.RELEASE</springframework-version>
         <spring-data-mongo-version>1.6.0.RELEASE</spring-data-mongo-version>
         <spring-security-version>3.2.4.RELEASE</spring-security-version>
@@ -75,11 +76,6 @@
             <id>central</id>
             <url>http://repo1.maven.org/maven2/</url>
         </repository>
-
-        <!--<repository>-->
-        <!--<id>sonatype</id>-->
-        <!--<url>http://repository.sonatype.org/content/groups/public/</url>-->
-        <!--</repository>-->
 
         <repository>
             <id>spring-release</id>
@@ -170,7 +166,7 @@
 
             <dependency>
                 <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
+                <artifactId>slf4j-api</artifactId>
                 <version>1.7.7</version>
             </dependency>
 
@@ -489,12 +485,6 @@
                 <version>1.1.37</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.7</version>
-            </dependency>
-
 
             <dependency>
                 <groupId>org.mockito</groupId>
@@ -515,7 +505,9 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin-version}</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>

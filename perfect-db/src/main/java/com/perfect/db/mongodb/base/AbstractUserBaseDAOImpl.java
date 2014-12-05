@@ -4,7 +4,6 @@ import com.mongodb.WriteResult;
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.BaseDTO;
 import com.perfect.utils.ObjectUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -32,7 +31,6 @@ public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Seri
         return list;
     }
 
-    @SuppressWarnings("unchecked")
     protected <S, D> List<D> convertByClass(List<S> entities, Class<D> clz) {
         Objects.requireNonNull(entities);
         List<D> list = new ArrayList<>(entities.size());
@@ -61,28 +59,19 @@ public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Seri
 
     @Override
     public T save(T dto) {
-
-        try {
-            Object entity = getEntityClass().newInstance();
-            BeanUtils.copyProperties(dto, entity);
-            getMongoTemplate().save(entity);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        Object entity = ObjectUtils.convert(dto, getEntityClass());
+        getMongoTemplate().save(entity);
         return dto;
     }
 
 
     @Override
-    public Iterable<T> save(Iterable<T> entities) {
-
-        for (T t : entities) {
+    public Iterable<T> save(Iterable<T> ts) {
+        for (T t : ts) {
             save(t);
         }
 
-        return entities;
+        return ts;
     }
 
     @Override
@@ -122,18 +111,7 @@ public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Seri
     @Override
     public T findOne(ID id) {
         Object entity = getMongoTemplate().findById(id, getEntityClass());
-
-        try {
-            T dto = getDTOClass().newInstance();
-            BeanUtils.copyProperties(entity, dto);
-            return dto;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        return ObjectUtils.convert(entity, getDTOClass());
     }
 
 
@@ -151,29 +129,18 @@ public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Seri
             criteria.and(param.getKey()).is(param.getValue());
         }
 
-        query.addCriteria(criteria).skip(skip).limit(limit);
+        if (criteria == null) {
+            query.skip(skip).limit(limit);
+        } else {
+            query.addCriteria(criteria).skip(skip).limit(limit);
+        }
+
         if (sort != null) {
             query.with(new Sort((asc) ? Sort.Direction.ASC : Sort.Direction.DESC, sort));
         }
 
         return convert(getMongoTemplate().find(query, getEntityClass()));
     }
-
-//    @Override
-//    public T findOne(ID id) {
-//        return getMongoTemplate().findOne(Query.query(Criteria.where(getId()).is(id)), getEntityClass());
-//    }
-//
-//
-//    @Override
-//    public Iterable<T> findAll() {
-//        return getMongoTemplate().findAll(getEntityClass());
-//    }
-//
-//    @Override
-//    public Iterable<T> findAll(Iterable<ID> ids) {
-//        return getMongoTemplate().find(Query.query(Criteria.where(getId()).in(ids)), getEntityClass());
-//    }
 
     @Override
     public boolean exists(ID id) {
@@ -185,35 +152,33 @@ public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Seri
         return getMongoTemplate().count(null, getEntityClass());
     }
 
+//    public List<T> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, Sort.Direction direction) {
+//
+//        Query query = new Query();
+//        Criteria criteria = null;
+//        for (Map.Entry<String, Object> param : params.entrySet()) {
+//            if (criteria == null) {
+//                criteria = new Criteria(param.getKey());
+//                criteria.is(param.getValue());
+//                continue;
+//            }
+//
+//            criteria.and(param.getKey()).is(param.getValue());
+//        }
+//
+//        if (fieldName != null && q != null) {
+//            criteria.and(fieldName).regex(".*(" + q.replaceAll(" ", "|") + ").*");
+//        }
+//
+//        query.addCriteria(criteria).skip(skip).limit(limit);
+//        if (sort != null) {
+//            query.with(new Sort(Sort.Direction.ASC, sort));
+//        }
+//
+//        return getMongoTemplate().find(query, getEntityClass());
+//
+//    }
 
-    public List<T> find(Map<String, Object> params, String fieldName, String q, int skip, int limit, String sort, Sort.Direction direction) {
-
-        Query query = new Query();
-        Criteria criteria = null;
-        for (Map.Entry<String, Object> param : params.entrySet()) {
-            if (criteria == null) {
-                criteria = new Criteria(param.getKey());
-                criteria.is(param.getValue());
-                continue;
-            }
-
-            criteria.and(param.getKey()).is(param.getValue());
-        }
-
-        if (fieldName != null && q != null) {
-            criteria.and(fieldName).regex(".*(" + q.replaceAll(" ", "|") + ").*");
-        }
-
-        query.addCriteria(criteria).skip(skip).limit(limit);
-        if (sort != null) {
-            query.with(new Sort(Sort.Direction.ASC, sort));
-        }
-
-        return getMongoTemplate().find(query, getEntityClass());
-
-    }
-
-    //
     public List<T> find(Map<String, Object> params, int skip, int limit) {
         Query query = new Query();
         Criteria criteria = null;
@@ -227,14 +192,18 @@ public abstract class AbstractUserBaseDAOImpl<T extends BaseDTO, ID extends Seri
             criteria.and(param.getKey()).is(param.getValue());
         }
 
-        query.addCriteria(criteria).skip(skip).limit(limit);
+        if (criteria == null) {
+            query.skip(skip).limit(limit);
+        } else {
+            query.addCriteria(criteria).skip(skip).limit(limit);
+        }
 
         return getMongoTemplate().find(query, getEntityClass());
     }
 
-    String getMatchReg(String query) {
-        return ".*(" + query.replaceAll(" ", "|") + ").*";
-    }
+//    private String getMatchReg(String query) {
+//        return ".*(" + query.replaceAll(" ", "|") + ").*";
+//    }
 
     @Override
     public Iterable<T> findAll() {
