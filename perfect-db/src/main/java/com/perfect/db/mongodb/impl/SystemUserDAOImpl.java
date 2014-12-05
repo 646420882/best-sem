@@ -11,8 +11,6 @@ import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.utils.ObjectUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
@@ -33,10 +31,6 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
  */
 @Repository("systemUserDAO")
 public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, String> implements SystemUserDAO {
-
-
-    private Logger logger = LoggerFactory.getLogger(SystemUserDAOImpl.class);
-
 
     @Override
     @SuppressWarnings("unchecked")
@@ -68,16 +62,15 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     }
 
     @Override
-    public void insertAccountInfo(String user, BaiduAccountInfoDTO baiduAccountInfoDTO) {
-
-        SystemUserDTO systemUserDTO = findByUserName(user);
+    public void insertAccountInfo(String userName, BaiduAccountInfoDTO baiduAccountInfoDTO) {
+        SystemUserDTO systemUserDTO = findByUserName(userName);
         if (systemUserDTO.getBaiduAccountInfoDTOs().isEmpty())
             baiduAccountInfoDTO.setDfault(true);
 
         BaiduAccountInfoEntity baiduAccountInfoEntity = ObjectUtils.convert(baiduAccountInfoDTO, BaiduAccountInfoEntity.class);
         Update update = new Update();
         update.addToSet("bdAccounts", baiduAccountInfoEntity);
-        getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(user)), update, getEntityClass());
+        getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(userName)), update, getEntityClass());
     }
 
     @Override
@@ -89,7 +82,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
     @Override
     public void clearAccountData(Long accountId) {
-        MongoTemplate mongoTemplate = getSysMongoTemplate();
+        MongoTemplate mongoTemplate = getMongoTemplate();
         if (mongoTemplate.collectionExists(CampaignEntity.class))
             mongoTemplate.remove(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), CampaignEntity.class);
 
@@ -105,7 +98,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
     @Override
     public void clearCampaignData(Long accountId, List<Long> campaignIds) {
-        MongoTemplate mongoTemplate = getSysMongoTemplate();
+        MongoTemplate mongoTemplate = getMongoTemplate();
         Query query = new Query(Criteria.where(ACCOUNT_ID).is(accountId).and(CAMPAIGN_ID).in(campaignIds));
         if (mongoTemplate.collectionExists(CampaignEntity.class))
             mongoTemplate.remove(query, TBL_CAMPAIGN);
@@ -113,7 +106,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
     @Override
     public void clearAdgroupData(Long accountId, List<Long> adgroupIds) {
-        MongoTemplate mongoTemplate = getSysMongoTemplate();
+        MongoTemplate mongoTemplate = getMongoTemplate();
         Query query = new Query(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).in(adgroupIds));
         if (mongoTemplate.collectionExists(AdgroupEntity.class))
             mongoTemplate.remove(query, TBL_ADGROUP);
@@ -121,7 +114,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
     @Override
     public void clearKeywordData(Long accountId, List<Long> keywordIds) {
-        MongoTemplate mongoTemplate = getSysMongoTemplate();
+        MongoTemplate mongoTemplate = getMongoTemplate();
         Query query = new Query(Criteria.where(ACCOUNT_ID).is(accountId).and(KEYWORD_ID).in(keywordIds));
         if (mongoTemplate.collectionExists(KeywordEntity.class))
             mongoTemplate.remove(query, TBL_KEYWORD);
@@ -129,7 +122,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
     @Override
     public void clearCreativeData(Long accountId, List<Long> creativeIds) {
-        MongoTemplate mongoTemplate = getSysMongoTemplate();
+        MongoTemplate mongoTemplate = getMongoTemplate();
         Query query = new Query(Criteria.where(ACCOUNT_ID).is(accountId).and(CREATIVE_ID).in(creativeIds));
         if (mongoTemplate.collectionExists(CreativeEntity.class))
             mongoTemplate.remove(query, TBL_CREATIVE);
@@ -141,7 +134,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
                 match(Criteria.where(ACCOUNT_ID).is(accountId).and(CAMPAIGN_ID).in(campaignIds)),
                 project(ADGROUP_ID).andExclude(SYSTEM_ID)
         );
-        AggregationResults<AdgroupEntity> results = getSysMongoTemplate().aggregate(aggregation, TBL_ADGROUP, AdgroupEntity.class);
+        AggregationResults<AdgroupEntity> results = getMongoTemplate().aggregate(aggregation, TBL_ADGROUP, AdgroupEntity.class);
         List<Long> ids = new ArrayList<>();
         results.getMappedResults().parallelStream().forEach(e -> ids.add(e.getAdgroupId()));
         return ids;
@@ -153,7 +146,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
                 match(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).in(adgroupIds)),
                 project(KEYWORD_ID).andExclude(SYSTEM_ID)
         );
-        AggregationResults<KeywordEntity> results = getSysMongoTemplate().aggregate(aggregation, TBL_KEYWORD, KeywordEntity.class);
+        AggregationResults<KeywordEntity> results = getMongoTemplate().aggregate(aggregation, TBL_KEYWORD, KeywordEntity.class);
         List<Long> ids = new ArrayList<>();
         results.getMappedResults().parallelStream().forEach(e -> ids.add(e.getKeywordId()));
         return ids;
@@ -165,7 +158,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
                 match(Criteria.where(ACCOUNT_ID).is(accountId).and(ADGROUP_ID).in(adgroupIds)),
                 project(CREATIVE_ID).andExclude(SYSTEM_ID)
         );
-        AggregationResults<CreativeEntity> results = getSysMongoTemplate().aggregate(aggregation, TBL_CREATIVE, CreativeEntity.class);
+        AggregationResults<CreativeEntity> results = getMongoTemplate().aggregate(aggregation, TBL_CREATIVE, CreativeEntity.class);
         List<Long> ids = new ArrayList<>();
         results.getMappedResults().parallelStream().forEach(e -> ids.add(e.getCreativeId()));
         return ids;

@@ -47,8 +47,8 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     private SystemUserDAO systemUserDAO;
 
     @Override
-    public <E> Class<E> getEntityClass() {
-        return (Class<E>) SystemUserEntity.class;
+    public Class<SystemUserEntity> getEntityClass() {
+        return SystemUserEntity.class;
     }
 
     @Override
@@ -167,7 +167,6 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
 
     @Override
     public SystemUserDTO getCurrUserInfo() {
-
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         SystemUserEntity entity = mongoTemplate.findOne(Query.query(Criteria.where("userName").is(AppContext.getUser())), getEntityClass());
         return ObjectUtils.convert(entity, getDTOClass());
