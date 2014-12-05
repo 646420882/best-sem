@@ -31,18 +31,49 @@ $(function () {
         });
     });
 
-    var _li=$("#tab1 li")   ;
+    var _li = $("#tab1 li");
     _li.each(function(i,o){
-        $(o).click(function(){
+        $(o).hover(function(){
                 _li.each(function(i,o){
                     $(o).removeClass("active");
                 });
             $(this).addClass("active");
         });
     });
+
+    var _li2=$("#tab2 li")   ;
+    _li2.each(function(i,o){
+        $(o).hover(function(){
+            _li2.each(function(i,o){
+                $(o).removeClass("active");
+                $("#filter li:eq(" + i + ")").css("display", "none");
+            });
+            $(this).addClass("active");
+            $("#filter li:eq(" + i + ")").css("display", "block");
+        });
+    });
+
+    $("tr[class^=child]").hide();
+    var _child = $("tr[class^='child']")
+    $(".parent").click(function () {
+        var _p = $(this).find("td:eq(0)");
+        if (_p.html() == "-") {
+            _p.html("+");
+        } else {
+            _p.html("-");
+        }
+        $(this).siblings('.child_' + this.id).toggle();
+    });
+
+
+
 });
 function Ts(){
-    $("#filter").toggle();
+    if ($("#filter").css("display") == "block") {
+        $("#filter").css("display", "none");
+    } else {
+        $("#filter").css("display", "block");
+    }
 }
 function Test() {
     $("div[class^='alert']").toggle();
@@ -53,6 +84,10 @@ function dB(str){
             console.log(start.toISOString(), end.toISOString(), label);
         });
     }
-
+}
+function chartToggle() {
+    $("#filter-speak").toggle();
+    $(".fold a").toggle();
+    $("#chart_div").toggle();
 }
 
