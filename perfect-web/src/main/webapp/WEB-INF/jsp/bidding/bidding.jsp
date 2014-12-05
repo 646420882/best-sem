@@ -37,9 +37,7 @@
 <div id="main" class="mid over">
 <div class="title_box">
     <div class="on_title over">
-        <a href="#">
-            推广助手
-        </a>
+        <a href="#"> 智能竞价 </a>
     </div>
 </div>
 <div id="tab">
