@@ -95,7 +95,7 @@
                             </div>
                         </li>
                     </ul>
-                    <div class="login_part2">
+                    <div class="login_part2" style="margin-top:20px;">
                         <input type="submit" id="" value="立即注册" class="submit"></a>
                     </div>
                 </form>
@@ -103,7 +103,7 @@
         </div>
     </div>
     <div class="login_contact over">
-        <a href="#">普菲特官网 </a>如在使用过程中有任何问题请联系客服：010-84922996
+        <a href="http://www.perfect-cn.cn/" target="_blank">普菲特官网 </a>如在使用过程中有任何问题请联系客服：010-84922996
     </div>
 </div>
 </div>
