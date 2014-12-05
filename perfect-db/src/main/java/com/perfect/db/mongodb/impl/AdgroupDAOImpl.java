@@ -373,9 +373,11 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     @Override
     public List<AdgroupDTO> findByTwoParams(Long cid, Long accountId) {
+        MongoTemplate mongoTemplate=BaseMongoTemplate.getUserMongo();
         Query query=new Query();
         query.addCriteria(Criteria.where(CAMPAIGN_ID).is(cid).and(ACCOUNT_ID).is(accountId));
-        return null;
+        List<AdgroupEntity> list=mongoTemplate.find(query,AdgroupEntity.class);
+        return wrapperList(list);
     }
 
     public void insertAll(List<AdgroupDTO> adgroupDTOs) {
