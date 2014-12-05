@@ -9,6 +9,7 @@ public interface MongoEntityConstants {
     public static final String SYS_KEYWORD = "sys_keyword";
     public static final String SYS_CENSUS="sys_census";
     public static final String SYS_CENSUS_EVERYDAY_REPORT="sys_census_everyday_report";
+    public static final String SYS_CENSUS_CONFIG="sys_census_config";
 
     //Jedis static Key
     public static final String TRADE_KEY="trade_key";

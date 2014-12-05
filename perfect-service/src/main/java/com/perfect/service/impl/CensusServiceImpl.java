@@ -1,21 +1,20 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.CensusDAO;
+import com.perfect.dto.count.CensusCfgDTO;
 import com.perfect.dto.count.CensusDTO;
+import com.perfect.dto.count.ConstantsDTO;
+import com.perfect.entity.CensusEntity;
 import com.perfect.service.CensusService;
-import com.perfect.vo.CensusVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Created by XiaoWei on 2014/11/11.
- * 2014-11-26 refactor
  */
 @Service("censusService")
 public class CensusServiceImpl  implements CensusService {
@@ -23,6 +22,7 @@ public class CensusServiceImpl  implements CensusService {
     private SimpleDateFormat allFormat=new SimpleDateFormat("EEE MMM dd yyyy hh:mm:ss z", Locale.ENGLISH);
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);
+
 
     @Override
     public String saveParams(String[] osAnBrowser) {
@@ -62,28 +62,55 @@ public class CensusServiceImpl  implements CensusService {
         censusEntity.setIp(ip);
         censusEntity.setArea(area);
         censusEntity.setOperate(operate);
+        if(intoPage.indexOf("www.baidu.com") != -1) censusEntity.setSearchEngine("百度");
+        else if(intoPage.indexOf("www.google.cn") != -1) censusEntity.setSearchEngine("Google");
+        else if(intoPage.indexOf("www.sogou.com") != -1) censusEntity.setSearchEngine("搜狗");
+        else if(intoPage.indexOf("www.so.com") != -1) censusEntity.setSearchEngine("360搜索引擎");
+        else if(intoPage.indexOf("www.soso.com") != -1) censusEntity.setSearchEngine("SOSO搜搜");
+        else censusEntity.setSearchEngine("其他");
         censusDAO.saveParams(censusEntity);
         return censusEntity.getId();
     }
 
     @Override
-    public CensusVO getTodayTotal(String url) {
+    public Map<String, ConstantsDTO> getTodayTotal(String url) {
         return censusDAO.getTodayTotal(url);
     }
 
     @Override
-    public CensusVO getLastDayTotal(String url) {
-        return censusDAO.getLastDayTotal(url);
+    public List<ConstantsDTO> getVisitCustom(Map<String, Object> q) {
+        return censusDAO.getVisitCustom(q);
+    }
+
+
+    @Override
+    public int saveConfig(CensusCfgDTO censusCfgDTO) {
+        return censusDAO.saveConfig(censusCfgDTO);
     }
 
     @Override
-    public CensusVO getLastWeekTotal(String url) {
-        return censusDAO.getLastWeekTotal(url);
+    public List<CensusCfgDTO> getCfgList(String ip) {
+        return censusDAO.getCfgList(ip);
     }
 
     @Override
-    public CensusVO getLastMonthTotal(String url) {
-        return censusDAO.getLastMonthTotal(url);
+    public void delete(String id) {
+        censusDAO.delete(id);
     }
+
+    @Override
+    public CountDTO getVisitPage(String ip,int datStatus) {
+        switch (datStatus){
+            case 2:
+                return censusDAO.getVisitPage(ip, ConstantsDTO.CensusStatus.LAST_DAY);
+            case 3:
+                return censusDAO.getVisitPage(ip, ConstantsDTO.CensusStatus.LAST_WEEK);
+            case 4:
+                return censusDAO.getVisitPage(ip, ConstantsDTO.CensusStatus.LAST_MONTH);
+            default:
+                return censusDAO.getVisitPage(ip, ConstantsDTO.CensusStatus.TO_DAY);
+        }
+    }
+
 
 }

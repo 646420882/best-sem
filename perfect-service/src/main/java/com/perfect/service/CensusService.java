@@ -1,10 +1,15 @@
 package com.perfect.service;
 
-import com.perfect.vo.CensusVO;
+import com.perfect.dto.count.CensusCfgDTO;
+import com.perfect.dto.count.ConstantsDTO;
+import com.perfect.entity.CensusEntity;
+import com.perfect.service.impl.CensusServiceImpl;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/11/11.
- * 2014-11-26 refactor
  */
 public interface CensusService  {
     /**
@@ -18,27 +23,16 @@ public interface CensusService  {
      * 根据某个url地址获取今日统计数据
      * @return
      */
-    public CensusVO getTodayTotal(String url);
+    public Map<String,ConstantsDTO> getTodayTotal(String url);
 
-    /**
-     * 根据某个url地址获取昨日统计数据
-     * @param url
-     * @return
-     */
-    public CensusVO getLastDayTotal(String url);
+    public List<ConstantsDTO> getVisitCustom(Map<String, Object> q);
 
-    /**
-     * 根据某个url地址获取上周统计数据
-     * @param url
-     * @return
-     */
-    public CensusVO getLastWeekTotal(String url);
+    public int saveConfig(CensusCfgDTO censusCfgDTO);
 
-    /**
-     * 根据某个url地址获取上个月统计数据
-     * @param url
-     * @return
-     */
-    public CensusVO getLastMonthTotal(String url);
+    List<CensusCfgDTO> getCfgList(String ip);
+
+    void delete(String id);
+
+    CountDTO getVisitPage(String ip, int datStatus);
 
 }
