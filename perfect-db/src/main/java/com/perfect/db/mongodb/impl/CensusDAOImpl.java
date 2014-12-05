@@ -8,6 +8,8 @@ import com.perfect.dto.count.CensusCfgDTO;
 import com.perfect.dto.count.CensusDTO;
 import com.perfect.dto.count.ConstantsDTO;
 import com.perfect.dto.count.ConstantsDTO.CensusStatus;
+import com.perfect.dto.count.CountDTO;
+import com.perfect.entity.CensusCfgEntity;
 import com.perfect.entity.CensusEntity;
 import com.perfect.utils.paging.Pager;
 import org.springframework.beans.BeanUtils;
@@ -33,16 +35,19 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.proj
 public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> implements CensusDAO {
 
 
+
     @Override
-    public CensusEntity saveParams(CensusEntity censusEntity) {
+    public CensusDTO saveParams(CensusDTO censusEntity) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         if(mongoTemplate.exists(new Query(Criteria.where("uid").is(censusEntity.getUuid())),CensusEntity.class)){
             censusEntity.setUserType(0);
         }else{
             censusEntity.setUserType(1);
         }
-        mongoTemplate.save(censusEntity, EntityConstants.SYS_CENSUS);
-        return censusEntity;
+        mongoTemplate.save(censusEntity, MongoEntityConstants.SYS_CENSUS);
+        CensusDTO censusDTO=new CensusDTO();
+        BeanUtils.copyProperties(censusEntity,censusDTO);
+        return censusDTO;
     }
 
     @Override
@@ -69,7 +74,7 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
     public int saveConfig(CensusCfgDTO censusCfgDTO) {
         MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
         Query q=new Query(Criteria.where("url").is(censusCfgDTO.getUrl()).and("ip").is(censusCfgDTO.getIp()));
-        if(!mongoTemplate.exists(q,EntityConstants.SYS_CENSUS_CONFIG)){
+        if(!mongoTemplate.exists(q,MongoEntityConstants.SYS_CENSUS_CONFIG)){
             CensusCfgEntity censusCfgEntity=new CensusCfgEntity();
             BeanUtils.copyProperties(censusCfgDTO,censusCfgEntity);
             mongoTemplate.save(censusCfgEntity, MongoEntityConstants.SYS_CENSUS_CONFIG);
@@ -81,7 +86,7 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
     @Override
     public List<CensusCfgDTO> getCfgList(String ip) {
         MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
-        List<CensusCfgEntity> list=mongoTemplate.find(new Query(Criteria.where("ip").is(ip)),CensusCfgEntity.class,EntityConstants.SYS_CENSUS_CONFIG);
+        List<CensusCfgEntity> list=mongoTemplate.find(new Query(Criteria.where("ip").is(ip)),CensusCfgEntity.class,MongoEntityConstants.SYS_CENSUS_CONFIG);
         List<CensusCfgDTO> returnList=new ArrayList<>();
         for (CensusCfgEntity cfgEntity:list){
             CensusCfgDTO censusCfgDTO=new CensusCfgDTO();
@@ -339,6 +344,16 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         return c.getTime();
+    }
+
+    @Override
+    public <E> Class<E> getEntityClass() {
+        return null;
+    }
+
+    @Override
+    public Class<CensusDTO> getDTOClass() {
+        return null;
     }
 
     public class CensusIpVO {

@@ -2,6 +2,7 @@ package com.perfect.service;
 
 import com.perfect.dto.count.CensusCfgDTO;
 import com.perfect.dto.count.ConstantsDTO;
+import com.perfect.dto.count.CountDTO;
 import com.perfect.entity.CensusEntity;
 import com.perfect.service.impl.CensusServiceImpl;
 

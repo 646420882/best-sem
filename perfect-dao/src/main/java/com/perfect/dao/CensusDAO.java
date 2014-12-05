@@ -3,6 +3,7 @@ package com.perfect.dao;
 import com.perfect.dto.count.CensusCfgDTO;
 import com.perfect.dto.count.CensusDTO;
 import com.perfect.dto.count.ConstantsDTO;
+import com.perfect.dto.count.CountDTO;
 
 import java.util.List;
 import java.util.Map;

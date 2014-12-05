@@ -4,6 +4,7 @@ import com.perfect.dao.CensusDAO;
 import com.perfect.dto.count.CensusCfgDTO;
 import com.perfect.dto.count.CensusDTO;
 import com.perfect.dto.count.ConstantsDTO;
+import com.perfect.dto.count.CountDTO;
 import com.perfect.entity.CensusEntity;
 import com.perfect.service.CensusService;
 import org.springframework.stereotype.Service;
