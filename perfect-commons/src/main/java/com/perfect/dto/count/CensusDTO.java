@@ -24,6 +24,7 @@ public class CensusDTO extends BaseDTO {
     private String area;//地区
     private Integer operate;//使用设备
     private Integer userType;//新老客户标识
+    private String searchEngine;//搜索引擎
 
     public String getUuid() {
         return uuid;
@@ -153,10 +154,18 @@ public class CensusDTO extends BaseDTO {
         this.userType = userType;
     }
 
+    public String getSearchEngine() {
+        return searchEngine;
+    }
+
+    public void setSearchEngine(String searchEngine) {
+        this.searchEngine = searchEngine;
+    }
+
     @Override
     public String toString() {
         return "CensusDTO{" +
-                ", uuid='" + uuid + '\'' +
+                "uuid='" + uuid + '\'' +
                 ", system='" + system + '\'' +
                 ", browser='" + browser + '\'' +
                 ", resolution='" + resolution + '\'' +
@@ -172,6 +181,7 @@ public class CensusDTO extends BaseDTO {
                 ", area='" + area + '\'' +
                 ", operate=" + operate +
                 ", userType=" + userType +
+                ", searchEngine='" + searchEngine + '\'' +
                 '}';
     }
 }

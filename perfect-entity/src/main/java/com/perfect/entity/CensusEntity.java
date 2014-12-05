@@ -35,7 +35,7 @@ public class CensusEntity {
     @Field(value = "ti")
     private String time;//访问时间
     @Field(value = "tp")
-    private String intoPage;//目标页面
+    private String intoPage;//目标页面，直接访问 入库为direct
     @Field(value = "lp")
     private String  lastPage;//停留页面
     @Field(value = "ip")
@@ -46,6 +46,8 @@ public class CensusEntity {
     private Integer operate;//使用设备
     @Field(value = "up")
     private Integer userType;//新老客户标识
+    @Field(value = "se")
+    private String searchEngine;//搜索引擎
 
 
     public String getBrowser() {
@@ -184,6 +186,14 @@ public class CensusEntity {
         this.userType = userType;
     }
 
+    public String getSearchEngine() {
+        return searchEngine;
+    }
+
+    public void setSearchEngine(String searchEngine) {
+        this.searchEngine = searchEngine;
+    }
+
     @Override
     public String toString() {
         return "CensusEntity{" +
@@ -204,6 +214,7 @@ public class CensusEntity {
                 ", area='" + area + '\'' +
                 ", operate=" + operate +
                 ", userType=" + userType +
+                ", searchEngine='" + searchEngine + '\'' +
                 '}';
     }
 }
