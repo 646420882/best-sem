@@ -13,9 +13,9 @@ import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
-import com.perfect.utils.ObjectUtils;
 import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
+import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +31,10 @@ import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vbzer_000 on 2014-07-02.
@@ -96,7 +99,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     @Override
     public List<AdgroupDTO> findByCampaignOId(String id) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        return mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(id)), getEntityClass(), MongoEntityConstants.TBL_ADGROUP);
+        return mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(id)), getDTOClass(), MongoEntityConstants.TBL_ADGROUP);
     }
 
     public List<String> getObjAdgroupIdByCampaignId(List<String> cids) {
@@ -128,13 +131,13 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     public List<AdgroupDTO> getAdgroupByCampaignObjId(String campaignObjId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        return mongoTemplate.find(Query.query(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(campaignObjId)), getEntityClass(), MongoEntityConstants.TBL_ADGROUP);
+        return mongoTemplate.find(Query.query(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(campaignObjId)), getDTOClass(), MongoEntityConstants.TBL_ADGROUP);
     }
 
     @Override
     public List<AdgroupDTO> getAdgroupByCampaignId(Long campaignId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        List<AdgroupEntity> adgroupDTOList= mongoTemplate.find(Query.query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(campaignId)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> adgroupDTOList = mongoTemplate.find(Query.query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(campaignId)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         return wrapperList(adgroupDTOList);
     }
 
@@ -197,7 +200,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     @Override
     public List<AdgroupDTO> findByCampaignId(Long cid) {
-        return getMongoTemplate().find(Query.query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(cid)), getEntityClass());
+        return getMongoTemplate().find(Query.query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(cid)), getDTOClass());
     }
 
     @Override
@@ -373,7 +376,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     @Override
     public List<AdgroupDTO> findByTwoParams(Long cid, Long accountId) {
-        Query query=new Query();
+        Query query = new Query();
         query.addCriteria(Criteria.where(CAMPAIGN_ID).is(cid).and(ACCOUNT_ID).is(accountId));
         return null;
     }
@@ -434,8 +437,9 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     }
 
     @Override
-    public Class<AdgroupDTO> getEntityClass() {
-        return AdgroupDTO.class;
+    @SuppressWarnings("unchecked")
+    public Class<AdgroupEntity> getEntityClass() {
+        return AdgroupEntity.class;
     }
 
     public boolean delete(AdgroupDTO adgroupDTO) {
@@ -548,7 +552,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     private AdgroupDTO wrapperObject(AdgroupEntity entity) {
         AdgroupDTO dto = new AdgroupDTO();
         if (entity != null) {
-        BeanUtils.copyProperties(entity, dto);
+            BeanUtils.copyProperties(entity, dto);
         }
         return dto;
     }

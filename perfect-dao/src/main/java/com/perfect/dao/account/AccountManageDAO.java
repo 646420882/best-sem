@@ -16,14 +16,14 @@ import java.util.List;
 public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, String> {
 
     /**
-     * 获取账户树
+     * 获取帐号树
      *
      * @return
      */
     ArrayNode getAccountTree();
 
     /**
-     * 获取百度账户列表
+     * 获取百度帐户列表
      *
      * @return
      */
@@ -37,7 +37,7 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
     List<SystemUserDTO> getAllSysUserAccount();
 
     /**
-     * 根据百度账户ID获取用户信息
+     * 根据百度帐号ID获取用户信息
      *
      * @param baiduUserId
      * @return
@@ -57,28 +57,28 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
      * @param pwd
      * @return
      */
-    public boolean updatePwd(String userName, String pwd);
+    boolean updatePwd(String userName, String pwd);
 
     /**
      * 得到所有未审核的帐号
      *
      * @return
      */
-    public List<SystemUserDTO> getAccount();
+    List<SystemUserDTO> getAccount();
 
     /**
      * 百度帐号启用/停用状态更改
      *
      * @return
      */
-    public boolean updateBaiDuAccount(String userName, Long baiduId, Long state);
+    boolean updateBaiDuAccount(String userName, Long baiduId, Long state);
 
     /**
      * 查询所有未帐号信息
      *
      * @return
      */
-    public List<SystemUserDTO> getAccountAll();
+    List<SystemUserDTO> getAccountAll();
 
     /**
      * 审核帐号
@@ -95,7 +95,7 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
      *
      * @return
      */
-    public int updateAccountStruts(String userName);
+    int updateAccountStruts(String userName);
 
     /**
      * 上传用户头像
@@ -105,14 +105,14 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
     void uploadImg(byte[] bytes);
 
     /**
-     * 更新百度账户信息
+     * 更新百度帐号信息
      *
      * @param t
      */
     void updateBaiduAccountInfo(BaiduAccountInfoDTO t);
 
     /**
-     * 更新百度账户信息
+     * 更新百度帐号信息
      *
      * @param dto
      * @param accountId
@@ -120,7 +120,7 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
     void updateBaiduAccountInfo(String userName, Long accountId, BaiduAccountInfoDTO dto);
 
     /**
-     * 根据当前登录的系统用户下指定的百度账号获取账户报告
+     * 根据当前登录的系统用户下指定的百度帐号获取帐户报告
      *
      * @param dates
      * @return
@@ -128,14 +128,14 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
     List<AccountReportDTO> getAccountReports(List<Date> dates);
 
     /**
-     * 获取账户昨日消费
+     * 获取帐户昨日消费
      *
      * @return
      */
     Double getYesterdayCost(Long accountId);
 
     /**
-     * 获取账户的消费升降情况
+     * 获取帐户的消费升降情况
      *
      * @return
      */

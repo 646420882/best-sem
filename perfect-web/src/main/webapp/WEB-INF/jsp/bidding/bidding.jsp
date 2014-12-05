@@ -1,4 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%!
+    String strUp = "高级搜索∧";
+    String strDown = "高级搜索∨";
+%>
 <!doctype html>
 <html>
 <head>
@@ -1055,7 +1059,13 @@ var refreshAccountTree = function () {
 var _biddingStatus = null;
 var _statusStr = null;
 
+var strUp = null;
+var strDown = null;
+
 $(function () {
+    strUp = "<%=strUp%>";
+    strDown = "<%=strDown%>";
+
     //获取账户树数据
     $.ajax({
         url: "/account/get_tree",
