@@ -1,6 +1,7 @@
 package com.perfect.utils;
 
 
+import com.perfect.utils.json.JSONUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -45,5 +46,22 @@ public class ObjectUtils {
         }
 
         return t;
+    }
+
+    public static <S, T> T convertToObject(S srcObj, Class<T> targetClz) {
+        if (srcObj == null) {
+            return null;
+        }
+
+        return JSONUtils.getObjectByJson(JSONUtils.getJsonObject(srcObj).toString(), targetClz);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <S, T> List<T> convertToList(S list, Class<T> targetClz) {
+        if (list == null) {
+            return Collections.EMPTY_LIST;
+        }
+
+        return JSONUtils.getObjectListByJson(JSONUtils.getJsonObject(list).toString(), targetClz);
     }
 }
