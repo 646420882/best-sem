@@ -27,7 +27,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
         MD5Utils md5 = md5Builder.password(pwd).salt(account).build();
 
         systemUserDTO.setAccess(2);
-        systemUserDTO.setBaiduAccountInfoDTOs(new ArrayList<BaiduAccountInfoDTO>());
+        systemUserDTO.setBaiduAccounts(new ArrayList<BaiduAccountInfoDTO>());
         systemUserDTO.setUserName(account);
         systemUserDTO.setPassword(md5.getMD5());
         systemUserDTO.setCompanyName(company);

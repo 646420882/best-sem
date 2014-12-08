@@ -91,7 +91,7 @@ public class HomePageManageController extends WebContextSupport {
         }
 
         modelMap.put("currSystemUserName", userName);
-        modelMap.put("accountList", systemUserDTO.getBaiduAccountInfoDTOs());
+        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
         return new ModelAndView("homePage/home");
     }
 
@@ -249,7 +249,7 @@ public class HomePageManageController extends WebContextSupport {
         try {
             if (jedis.exists(key)) {
                 SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
-                List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccountInfoDTOs();
+                List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccounts();
                 String baiduUserName = null;
                 for (BaiduAccountInfoDTO dto : baiduAccountInfoDTOList) {
                     if (dto.getBaiduUserName().equals(baiduAccountName)) {

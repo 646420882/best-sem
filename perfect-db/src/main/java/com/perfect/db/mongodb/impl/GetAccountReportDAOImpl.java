@@ -58,7 +58,7 @@ public class GetAccountReportDAOImpl implements GetAccountReportDAO {
      */
     public BaiduAccountInfoDTO getAccountRealTimeTypeByDate(String systemUserName, Long accountId, String startDate, String endDate) {
         SystemUserDTO systemUserDTO=systemUserDAO.findByAid(accountId);
-        List<BaiduAccountInfoDTO> baiduAccountInfoDTO=systemUserDTO.getBaiduAccountInfoDTOs();
+        List<BaiduAccountInfoDTO> baiduAccountInfoDTO=systemUserDTO.getBaiduAccounts();
         return baiduAccountInfoDTO.get(0);
     }
 

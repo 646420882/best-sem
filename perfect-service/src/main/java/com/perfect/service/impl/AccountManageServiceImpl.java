@@ -94,8 +94,8 @@ public class AccountManageServiceImpl implements AccountManageService {
             if (systemUserDTO.getUserName().equals("administrator")) {
                 continue;
             }
-            if (systemUserDTO.getBaiduAccountInfoDTOs().size() > 0) {
-                for (BaiduAccountInfoDTO dto : systemUserDTO.getBaiduAccountInfoDTOs()) {
+            if (systemUserDTO.getBaiduAccounts().size() > 0) {
+                for (BaiduAccountInfoDTO dto : systemUserDTO.getBaiduAccounts()) {
                     BaiduAccountAllStateDTO accountAllState = new BaiduAccountAllStateDTO();
                     accountAllState.setIdObj(dto.getId());
                     accountAllState.setUserName(systemUserDTO.getUserName());
@@ -155,8 +155,8 @@ public class AccountManageServiceImpl implements AccountManageService {
     public List<BaiduAccountInfoDTO> getAllBaiduAccount() {
         List<BaiduAccountInfoDTO> baiduAccountList = new ArrayList<>();
         accountManageDAO.getAllSysUserAccount().stream().forEach(e -> {
-            if (e.getBaiduAccountInfoDTOs().size() > 0)
-                baiduAccountList.addAll(e.getBaiduAccountInfoDTOs());
+            if (e.getBaiduAccounts().size() > 0)
+                baiduAccountList.addAll(e.getBaiduAccounts());
         });
         return baiduAccountList;
     }

@@ -678,7 +678,7 @@ public class BiddingController {
         List<Integer> accountRegionList = new ArrayList<>();
         CommonService commonService = null;
         String host = null;
-        for (BaiduAccountInfoDTO infoEntity : systemUserEntity.getBaiduAccountInfoDTOs()) {
+        for (BaiduAccountInfoDTO infoEntity : systemUserEntity.getBaiduAccounts()) {
             if (infoEntity.getId().longValue() == accid) {
                 try {
                     // 如果竞价规则和推广计划都未设置推广地域,则通过账户获取

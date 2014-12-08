@@ -69,7 +69,7 @@ public class ContextInterceptor implements HandlerInterceptor {
             if (systemUserDTO == null) {
                 return false;
             }
-            int size = systemUserDTO.getBaiduAccountInfoDTOs().size();
+            int size = systemUserDTO.getBaiduAccounts().size();
             if (systemUserDTO.getAccess() == 1) {
                 adminFlag = true;
                 return true;
@@ -92,14 +92,14 @@ public class ContextInterceptor implements HandlerInterceptor {
                 return false;
             }
 
-            if (systemUserDTO.getBaiduAccountInfoDTOs().size() == 1) {
-                BaiduAccountInfoDTO infoDTO = systemUserDTO.getBaiduAccountInfoDTOs().get(0);
+            if (systemUserDTO.getBaiduAccounts().size() == 1) {
+                BaiduAccountInfoDTO infoDTO = systemUserDTO.getBaiduAccounts().get(0);
                 WebUtils.setAccountId(request, infoDTO.getId());
                 AppContext.setUser(userName, infoDTO.getId());
                 return true;
             }
 
-            for (BaiduAccountInfoDTO infoDTO : systemUserDTO.getBaiduAccountInfoDTOs()) {
+            for (BaiduAccountInfoDTO infoDTO : systemUserDTO.getBaiduAccounts()) {
                 if (infoDTO.isDfault()) {
                     WebUtils.setAccountId(request, infoDTO.getId());
                     AppContext.setUser(userName, infoDTO.getId());

@@ -46,7 +46,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     @Override
     public void addBaiduAccount(List<BaiduAccountInfoDTO> list, String currSystemUserName) {
         SystemUserDTO currSystemUserDTO = findByUserName(currSystemUserName);
-        List<BaiduAccountInfoDTO> _list = currSystemUserDTO.getBaiduAccountInfoDTOs();
+        List<BaiduAccountInfoDTO> _list = currSystemUserDTO.getBaiduAccounts();
         if (_list == null) {
             _list = new ArrayList<>();
         }
@@ -64,7 +64,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     @Override
     public void insertAccountInfo(String userName, BaiduAccountInfoDTO baiduAccountInfoDTO) {
         SystemUserDTO systemUserDTO = findByUserName(userName);
-        if (systemUserDTO.getBaiduAccountInfoDTOs().isEmpty())
+        if (systemUserDTO.getBaiduAccounts().isEmpty())
             baiduAccountInfoDTO.setDfault(true);
 
         BaiduAccountInfoEntity baiduAccountInfoEntity = ObjectUtils.convert(baiduAccountInfoDTO, BaiduAccountInfoEntity.class);
@@ -185,21 +185,21 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     }
 
     public SystemUserDTO fromEntity(SystemUserEntity systemUserEntity) {
-        List<BaiduAccountInfoEntity> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccountInfoEntities();
+        List<BaiduAccountInfoEntity> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccounts();
         SystemUserDTO user = ObjectUtils.convert(systemUserEntity, getDTOClass());
 
         List<BaiduAccountInfoDTO> dtoList = convertByClass(baiduAccountInfoEntityList, BaiduAccountInfoDTO.class);
-        user.setBaiduAccountInfoDTOs(dtoList);
+        user.setBaiduAccounts(dtoList);
         return user;
     }
 
 
     public SystemUserEntity toEntity(SystemUserDTO systemUserDTO) {
-        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccountInfoDTOs();
+        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccounts();
         SystemUserEntity user = ObjectUtils.convert(systemUserDTO, getEntityClass());
 
         List<BaiduAccountInfoEntity> baiduAccountInfoEntityList = convertByClass(baiduAccountInfoDTOList, BaiduAccountInfoEntity.class);
-        user.setBaiduAccountInfoEntities(baiduAccountInfoEntityList);
+        user.setBaiduAccounts(baiduAccountInfoEntityList);
         return user;
     }
 }

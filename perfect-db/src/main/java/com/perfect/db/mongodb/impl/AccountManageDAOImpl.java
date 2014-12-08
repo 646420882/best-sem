@@ -134,7 +134,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
      */
     @Override
     public List<BaiduAccountInfoDTO> getBaiduAccountItems(String currUserName) {
-        return systemUserDAO.findByUserName(currUserName).getBaiduAccountInfoDTOs();
+        return systemUserDAO.findByUserName(currUserName).getBaiduAccounts();
     }
 
     @Override

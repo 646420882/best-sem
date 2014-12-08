@@ -46,7 +46,7 @@ public class ConfigurationController {
         String userName = AppContext.getUser();
         SystemUserDTO systemUserEntity = systemUserService.getSystemUser(userName);
 
-        List<BaiduAccountInfoDTO> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccountInfoDTOs();
+        List<BaiduAccountInfoDTO> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccounts();
 
         modelMap.addAttribute("accountList", baiduAccountInfoEntityList);
         return new ModelAndView("configuration/configure", modelMap);

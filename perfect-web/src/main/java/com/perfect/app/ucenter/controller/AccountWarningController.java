@@ -46,7 +46,7 @@ public class AccountWarningController extends WebContextSupport {
     @RequestMapping(value = "assistant/accountWarning" , method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView setWarningPage(ModelMap model){
         SystemUserDTO systemUserEntity = systemUserService.findByUserName(AppContext.getUser());
-        model.addAttribute("list",systemUserEntity.getBaiduAccountInfoDTOs());
+        model.addAttribute("list",systemUserEntity.getBaiduAccounts());
         return new ModelAndView("promotionAssistant/setWarning");
     }
 

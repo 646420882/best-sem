@@ -7,8 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,17 +34,17 @@ public class SystemUserEntity implements Serializable {
     private String email;
 
     @Field(value = "bdAccounts")
-    private List<BaiduAccountInfoEntity> baiduAccountInfoEntities;
+    private List<BaiduAccountInfoEntity> baiduAccounts;
 
     public SystemUserEntity() {
     }
 
     @PersistenceConstructor
     public SystemUserEntity(String userName, String password,
-                            List<BaiduAccountInfoEntity> baiduAccountInfoEntities) {
+                            List<BaiduAccountInfoEntity> baiduAccounts) {
         this.userName = userName;
         this.password = password;
-        this.baiduAccountInfoEntities = baiduAccountInfoEntities;
+        this.baiduAccounts = baiduAccounts;
     }
 
     public String getId() {
@@ -97,10 +95,6 @@ public class SystemUserEntity implements Serializable {
         this.email = email;
     }
 
-    public List<BaiduAccountInfoEntity> getBaiduAccountInfoEntities() {
-        return baiduAccountInfoEntities;
-    }
-
     public Integer getState() {
         return state;
     }
@@ -117,28 +111,20 @@ public class SystemUserEntity implements Serializable {
         this.companyName = companyName;
     }
 
-    public void setBaiduAccountInfoEntities(List<BaiduAccountInfoEntity> baiduAccountInfoEntities) {
-        this.baiduAccountInfoEntities = baiduAccountInfoEntities;
+    public List<BaiduAccountInfoEntity> getBaiduAccounts() {
+        return baiduAccounts;
     }
 
-    public void addBaiduAccountInfo(BaiduAccountInfoEntity baiduAccountInfoEntity) {
-        if (baiduAccountInfoEntities == null) {
-            baiduAccountInfoEntities = new ArrayList<>();
-        }
-        baiduAccountInfoEntities.add(baiduAccountInfoEntity);
+    public void setBaiduAccounts(List<BaiduAccountInfoEntity> baiduAccounts) {
+        this.baiduAccounts = baiduAccounts;
     }
 
-    @Override
-    public String toString() {
-        return "SystemUserEntity{" +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", state=" + state +
-                ", access=" + access +
-                ", img=" + Arrays.toString(img) +
-                ", email='" + email + '\'' +
-                ", baiduAccountInfoEntities=" + baiduAccountInfoEntities +
-                '}';
+    public byte[] getImg() {
+        return img;
     }
+
+    public void setImg(byte[] img) {
+        this.img = img;
+    }
+
 }

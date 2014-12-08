@@ -71,7 +71,7 @@ public class SystemUserServiceImpl implements SystemUserService {
         clearAccountData(accountId);
         logger.info("清理数据完成!");
 
-        for (BaiduAccountInfoDTO baiduAccountInfoDTO : systemUserDTO.getBaiduAccountInfoDTOs()) {
+        for (BaiduAccountInfoDTO baiduAccountInfoDTO : systemUserDTO.getBaiduAccounts()) {
 
             Long aid = baiduAccountInfoDTO.getId();
             if (!Objects.equals(aid, accountId))
@@ -184,7 +184,7 @@ public class SystemUserServiceImpl implements SystemUserService {
             return;
         }
 
-        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccountInfoDTOs();
+        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccounts();
 
         if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
             return;
@@ -281,7 +281,7 @@ public class SystemUserServiceImpl implements SystemUserService {
             return;
         }
 
-        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccountInfoDTOs();
+        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccounts();
         if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
             return;
         }
@@ -397,7 +397,7 @@ public class SystemUserServiceImpl implements SystemUserService {
             return Collections.EMPTY_LIST;
         }
 
-        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccountInfoDTOs();
+        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccounts();
 
         if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
             return Collections.EMPTY_LIST;

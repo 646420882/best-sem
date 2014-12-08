@@ -49,7 +49,7 @@ public class LogServiceImpl {
 //        SystemUserEntity systemUserEntity = systemUserService.getSystemUser(accountId);
 //
 //        CommonService commonService = null;
-//        for (BaiduAccountInfoEntity accountInfoEntity : systemUserEntity.getBaiduAccountInfoEntities()) {
+//        for (BaiduAccountInfoEntity accountInfoEntity : systemUserEntity.getBaiduAccounts()) {
 //            if (accountInfoEntity.getId() == accountId) {
 //                try {
 //                    commonService = ServiceFactory.getInstance(accountInfoEntity.getBaiduUserName(), accountInfoEntity.getBaiduPassword(), accountInfoEntity.getToken(), null);

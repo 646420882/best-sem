@@ -70,10 +70,10 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoDTOs().size() <= 0 || systemUser.getAccess() == 1) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
-            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccountInfoDTOs()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
 
                 if (entity.getState() == 0) {
                     continue;
@@ -116,10 +116,10 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoDTOs().size() <= 0 || systemUser.getAccess() == 1) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
-            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccountInfoDTOs()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
 
                 if (entity.getState() == 0) {
                     continue;
@@ -161,10 +161,10 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoDTOs().size() <= 0 || systemUser.getAccess() == 1) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
-            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccountInfoDTOs()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
 
                 if (entity.getState() == 0) {
                     continue;
@@ -208,10 +208,10 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoDTOs().size() <= 0 || systemUser.getAccess() == 1) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
-            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccountInfoDTOs()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
 
                 if (entity.getState() == 0) {
                     continue;
@@ -254,10 +254,10 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoDTOs().size() <= 0 || systemUser.getAccess() == 1) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
-            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccountInfoDTOs()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
 
                 if (entity.getState() == 0) {
                     continue;
@@ -300,10 +300,10 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccountInfoDTOs().size() <= 0 || systemUser.getAccess() == 1) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
-            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccountInfoDTOs()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
 
                 if (entity.getState() == 0) {
                     continue;

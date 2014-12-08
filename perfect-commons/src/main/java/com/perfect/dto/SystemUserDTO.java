@@ -3,8 +3,6 @@ package com.perfect.dto;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,16 +24,16 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
 
     private String email;
 
-    private List<BaiduAccountInfoDTO> baiduAccountInfoDTOs;
+    private List<BaiduAccountInfoDTO> baiduAccounts;
 
     public SystemUserDTO() {
     }
 
     public SystemUserDTO(String userName, String password,
-                         List<BaiduAccountInfoDTO> baiduAccountInfoDTOs) {
+                         List<BaiduAccountInfoDTO> baiduAccounts) {
         this.userName = userName;
         this.password = password;
-        this.baiduAccountInfoDTOs = baiduAccountInfoDTOs;
+        this.baiduAccounts = baiduAccounts;
     }
 
     public String getUserName() {
@@ -78,10 +76,6 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
         this.email = email;
     }
 
-    public List<BaiduAccountInfoDTO> getBaiduAccountInfoDTOs() {
-        return baiduAccountInfoDTOs;
-    }
-
     public Integer getState() {
         return state;
     }
@@ -98,28 +92,20 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
         this.companyName = companyName;
     }
 
-    public void setBaiduAccountInfoDTOs(List<BaiduAccountInfoDTO> baiduAccountInfoDTOs) {
-        this.baiduAccountInfoDTOs = baiduAccountInfoDTOs;
+    public byte[] getImg() {
+        return img;
     }
 
-    public void addBaiduAccountInfo(BaiduAccountInfoDTO baiduAccountInfoDTO) {
-        if (baiduAccountInfoDTOs == null) {
-            baiduAccountInfoDTOs = new ArrayList<>();
-        }
-        baiduAccountInfoDTOs.add(baiduAccountInfoDTO);
+    public void setImg(byte[] img) {
+        this.img = img;
     }
 
-    @Override
-    public String toString() {
-        return "SystemUserEntity{" +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", state=" + state +
-                ", access=" + access +
-                ", img=" + Arrays.toString(img) +
-                ", email='" + email + '\'' +
-                ", baiduAccountInfoDTOs=" + baiduAccountInfoDTOs +
-                '}';
+    public List<BaiduAccountInfoDTO> getBaiduAccounts() {
+        return baiduAccounts;
     }
+
+    public void setBaiduAccounts(List<BaiduAccountInfoDTO> baiduAccounts) {
+        this.baiduAccounts = baiduAccounts;
+    }
+
 }

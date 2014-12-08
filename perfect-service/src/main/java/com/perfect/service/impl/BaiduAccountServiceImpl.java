@@ -25,7 +25,7 @@ public class BaiduAccountServiceImpl implements BaiduAccountService {
         BaiduAccountInfoDTO  baiduUser = null;
 
         SystemUserDTO systemUserEntity = systemUserDAO.findByUserName(systemUserName);
-        List<BaiduAccountInfoDTO> list = systemUserEntity.getBaiduAccountInfoDTOs();
+        List<BaiduAccountInfoDTO> list = systemUserEntity.getBaiduAccounts();
         for(BaiduAccountInfoDTO baidu : list){
             if(baidu.getId().longValue()==accountId.longValue()){
                 baiduUser = baidu;

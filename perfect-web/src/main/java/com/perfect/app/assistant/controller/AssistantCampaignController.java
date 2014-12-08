@@ -157,7 +157,7 @@ public class AssistantCampaignController extends WebContextSupport {
     public void getAccountRegion(HttpServletResponse response) {
         SystemUserDTO currentUser = systemUserService.findByAid(AppContext.getAccountId());
 
-        List<BaiduAccountInfoDTO> accounts = currentUser.getBaiduAccountInfoDTOs();
+        List<BaiduAccountInfoDTO> accounts = currentUser.getBaiduAccounts();
         BaiduAccountInfoDTO baiduEntity = null;
 
         for (BaiduAccountInfoDTO accountInfoDTO : accounts) {
