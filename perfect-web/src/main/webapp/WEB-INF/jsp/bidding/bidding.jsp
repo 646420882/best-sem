@@ -234,7 +234,7 @@
                             <li id="showbox2_im">修改出价</li>
                             <li id="showbox4_im">修改访问网址</li>
                             <li id="showbox5_im">分组(改变分组)</li>
-                            <li class="showbox6">自定义列</li>
+                            <li id="showbox62">自定义列</li>
                         </ul>
                         <div class="Screening_concent over" style="display: none;">
                             <div class="Screening_row over">
@@ -612,6 +612,66 @@
         <div class="w_list03">
             <ul>
                 <li id="customCol" class="current">确定</li>
+                <li class="close">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!---------自定义列重点词分组----------->
+<div id="custom_col2" class="box6" style="display:none; *width:280px;">
+    <h2 id="box62"><span class="fl">自定义列</span><a href="#" class="close">关闭</a></h2>
+
+    <div class="mainlist">
+        <ul id="customColList2">
+            <li>
+                <span class="define fl"><input type="checkbox" checked="checked" value="campaignName" name="columns"> 推广计划</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="cpm"
+                                               name="columns"> 千次展现消费</span>
+            </li>
+            <li>
+                <span class="define fl"><input type="checkbox" checked="checked" value="adgroupName" name="columns"> 推广单元</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="impression" name="columns"> 展现量</span>
+            </li>
+            <li>
+                <span class="define fl"><input type="checkbox" checked="checked" value="statusStr"
+                                               name="columns"> 状态</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="ctr" name="columns"> 点击率</span>
+            </li>
+            <li>
+                <span class="define fl"><input type="checkbox" checked="checked" value="price" name="columns"> 出价</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="cpc"
+                                               name="columns">平均点击价格</span>
+            </li>
+            <li>
+                <span class="define fl"><input type="checkbox" checked="checked" value="pcQuality" name="columns"> PC端质量度</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="mQuality" name="columns">移动端质量度</span>
+            </li>
+            <li>
+                <span class="define fl"><input type="checkbox" checked="checked" value="click"
+                                               name="columns"> 点击量</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="currentRank" name="columns"> 当前排名</span>
+            </li>
+            <li>
+                <span class="define fl"><input type="checkbox" checked="checked" value="cost" name="columns"> 消费</span>
+                <span class="define fl"><input type="checkbox" checked="checked"
+                                               value="pcDestinationUrl" name="columns"> Pc&nbsp;URL</span>
+            </li>
+            <li><span class="define fl"><input type="checkbox" checked="checked" value="ruleDesc"
+                                               name="columns"> 竞价规则</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="mobileDestinationUrl"
+                                               name="columns"> Mobile&nbsp;URL</span>
+            </li>
+            <li><span class="define fl"><input type="checkbox" checked="checked" value="biddingStatus" name="columns"> 竞价状态</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="matchType" name="columns"> 匹配模式</span>
+            </li>
+        </ul>
+
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li id="customCol2" class="current">确定</li>
                 <li class="close">取消</li>
             </ul>
         </div>
@@ -1016,8 +1076,8 @@ var changeGridCol1 = function () {
     $(".TB_overlayBG").css("display", "none");
     $("#custom_col").css("display", "none");
 };
-var changeGridCol = function () {
-    var cbs = $("#customColList").find("input[type=checkbox]");
+var changeGridCol2 = function () {
+    var cbs = $("#customColList2").find("input[type=checkbox]");
     $.each(cbs, function (i, item) {
         if (item.checked)
             $("#table2").setGridParam().showCol(item.value);
@@ -1079,6 +1139,10 @@ $(function () {
 
     $("#customCol").on('click', function () {
         changeGridCol1();
+    });
+
+    $("#customCol2").on('click', function () {
+        changeGridCol2();
     });
 
     $("#modifyPrice").on('click', function () {
@@ -1459,7 +1523,7 @@ $(function () {
 
         gridComplete: function () {
 //            alert(JSON.stringify($("#table1").jqGrid("getRowData")));
-            records2 = grid2.getGridParam("records");
+            records2 = grid2.getGridParam("records2");
             if (records2 == 0) {
                 return false;
             }

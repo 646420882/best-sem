@@ -2,6 +2,7 @@ package com.perfect.db.mongodb.impl;
 
 import com.perfect.dao.RegionalCodeDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
+import com.perfect.dto.RealTimeResultDTO;
 import com.perfect.dto.regional.RegionalCodeDTO;
 import com.perfect.entity.RegionalCodeEntity;
 import com.perfect.utils.ObjectUtils;
@@ -55,8 +56,8 @@ public class RegionalCodeDAOImpl extends AbstractSysBaseDAOImpl<RegionalCodeDTO,
 
     @Override
     public String getRegionNameById(Integer regionId) {
-        String fideName = FIDE_REGIONID;
-        RegionalCodeEntity entity = getSysMongoTemplate().findOne(new Query(Criteria.where(fideName).is(regionId.toString()).and(FIDE_REGIONNAME).is("")), getEntityClass(), TBL_SYS_REGIONAL);
+        String fideName = FIDE_REGIONNAME;
+        RegionalCodeEntity entity = getSysMongoTemplate().findOne(new Query(Criteria.where(fideName).is(regionId.toString())), getEntityClass(), TBL_SYS_REGIONAL);
         String name;
         if(entity != null){
             name = entity.getRegionName();
@@ -64,6 +65,13 @@ public class RegionalCodeDAOImpl extends AbstractSysBaseDAOImpl<RegionalCodeDTO,
             name = "北京";
         }
         return name;
+    }
+
+    @Override
+    public RegionalCodeDTO getRegionalByRegionName(String regionalName) {
+        String fideName = FIDE_REGIONID;
+        RegionalCodeEntity entity = getSysMongoTemplate().findOne(new Query(Criteria.where(fideName).is(regionalName).and(FIDE_REGIONNAME).is("")), getEntityClass(), TBL_SYS_REGIONAL);
+        return ObjectUtils.convert(entity,RegionalCodeDTO.class);
     }
 
 

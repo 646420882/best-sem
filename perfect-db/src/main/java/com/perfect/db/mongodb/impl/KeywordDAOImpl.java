@@ -360,7 +360,21 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
 
     @Override
     public PagerInfo findByPageInfoForStringId(String aid, int pageSize, int pageNo) {
-        return findByPageInfoForLongId(Long.parseLong(aid), pageSize, pageNo);
+        Query query = new Query();
+        query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
+        query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).is(aid));
+        int totalCount = getListTotalCount(query);
+        PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
+        query.skip(p.getFirstStation());
+        query.limit(p.getPageSize());
+        if (totalCount < 1) {
+            p.setList(new ArrayList());
+            return p;
+        }
+        List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
+        List<KeywordDTO> dtos = ObjectUtils.convert(list, KeywordDTO.class);
+        p.setList(dtos);
+        return p;
     }
 
     @Override
@@ -557,6 +571,20 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     @Override
     public void insertAll(List<KeywordDTO> dtos) {
         getMongoTemplate().insertAll(ObjectUtils.convert(dtos, getEntityClass()));
+    }
+
+    @Override
+    public List<KeywordDTO> findByParams(Map<String, Object> mapParams) {
+        Query q=new Query();
+        if(mapParams!=null&&mapParams.size()>0){
+            Criteria c=new Criteria();
+            for(Map.Entry<String,Object> map:mapParams.entrySet()){
+                c.and(map.getKey()).is(map.getValue());
+            }
+            q.addCriteria(c);
+        }
+        List<KeywordEntity> list=getMongoTemplate().find(q,KeywordEntity.class);
+        return ObjectUtils.convert(list,KeywordDTO.class);
     }
 
     /**

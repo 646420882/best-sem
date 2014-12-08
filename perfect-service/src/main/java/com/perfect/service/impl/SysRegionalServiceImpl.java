@@ -1,6 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.RegionalCodeDAO;
+import com.perfect.dto.regional.RegionCodeDTO;
 import com.perfect.dto.regional.RegionalCodeDTO;
 import com.perfect.dto.regional.RegionalReturnDataDTO;
 import com.perfect.service.SysRegionalService;
@@ -317,6 +318,17 @@ public class SysRegionalServiceImpl implements SysRegionalService {
             dtos.add(regionalCodeDAO.getRegionalByRegionId(fideName, dto + ""));
         }
         return dtos;
+    }
+
+    @Override
+    public Map<Integer,String> getRegionalByRegionName(List<String> regionalName) {
+//        regionalCodeDAO.getRegionalByRegionName(regionalName);
+        Map<Integer,String> map=new HashMap<>();
+        for (int i = 0; i <regionalName.size() ; i++) {
+            RegionalCodeDTO regionalCodeDTO= regionalCodeDAO.getRegionalByRegionName(regionalName.get(i));
+            map.put(i,regionalCodeDTO.getProvinceId());
+        }
+        return map;
     }
 
 

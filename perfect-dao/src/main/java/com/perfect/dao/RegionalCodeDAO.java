@@ -49,4 +49,11 @@ public interface RegionalCodeDAO extends HeyCrudRepository<RegionalCodeDTO,Long>
      * @return
      */
     public String getRegionNameById(Integer id);
+
+    /**
+     * 通过地域名称查询省级和区域id
+     * @param regionalName
+     * @return
+     */
+    public RegionalCodeDTO getRegionalByRegionName(String regionalName);
 }

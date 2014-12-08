@@ -7,6 +7,7 @@ import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.paging.PaginationParam;
 
+import javax.management.Query;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -102,6 +103,9 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
     List<KeywordDTO> findKeywordByIds(List<Long> ids);
 
     void insertAll(List<KeywordDTO> dtos);
+
+    List<KeywordDTO> findByParams(Map<String,Object> mapParams);
+
 
 
 }

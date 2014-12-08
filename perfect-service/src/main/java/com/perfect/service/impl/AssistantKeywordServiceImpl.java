@@ -4,6 +4,7 @@ import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.QualityType;
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
@@ -22,6 +23,8 @@ import com.perfect.service.AssistantKeywordService;
 import com.perfect.service.KeyWordBackUpService;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -271,9 +274,6 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             nowPage = 0;
         }
         PagerInfo page = null;
-        long accountId=AppContext.getAccountId();
-//        Query query = new Query();
-//        query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
 
         CampaignDTO campaignDTO = null;
         if (cid != null && !"".equals(cid)) {
@@ -499,11 +499,19 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             adgroupMap.clear();
             for (String name : names) {
                 List<KeywordDTO> list;
-//                if (fileds[1].matches(regex)) {
-//                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(ADGROUP_ID).is(Long.parseLong(fileds[1])).and("name").is(name)));
-//                } else {
-//                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(OBJ_ADGROUP_ID).is(fileds[1]).and("name").is(name)));
-//                }
+                if (fileds[1].matches(regex)) {
+                    list=keywordDAO.findByParams(new HashMap<String,Object>(){{
+                        put(MongoEntityConstants.ADGROUP_ID,Long.parseLong(fileds[1]));
+                        put("name",name);
+                    }});
+//                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.parseLong(fileds[1])).and("name").is(name)));
+                } else {
+                    list=keywordDAO.findByParams(new HashMap<String,Object>(){{
+                        put(MongoEntityConstants.OBJ_ADGROUP_ID,fileds[1]);
+                        put("name",name);
+                    }});
+//                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(.MongoEntityConstantsOBJ_ADGROUP_ID).is(fileds[1]).and("name").is(name)));
+                }
 
 
                 if (!(new ArrayList<>(campaignMap.keySet()).contains(fileds[0]))) {
@@ -517,21 +525,21 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 }
 
 
-//                if (list.size() != 0) {
-//                    for (KeywordDTO entity : list) {
-//                        KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
-//                        keywordInfoDTO.setCampaignName(campaignMap.get(fileds[0]).getCampaignName());
-//                        keywordInfoDTO.setAdgroupName(adgroupMap.get(fileds[1]).getAdgroupName());
-//                        keywordInfoDTO.setObject(entity);
-//                        deleteKwd.add(keywordInfoDTO);
-//                    }
-//                } else {
-//                    AssistantKeywordIgnoreDTO assistantKeywordIgnoreDTO = new AssistantKeywordIgnoreDTO();
-//                    assistantKeywordIgnoreDTO.setCampaignName(campaignMap.get(fileds[0]).getCampaignName());
-//                    assistantKeywordIgnoreDTO.setAdgroupName(adgroupMap.get(fileds[1]).getAdgroupName());
-//                    assistantKeywordIgnoreDTO.setKeywordName(name);
-//                    ignoreList.add(assistantKeywordIgnoreDTO);
-//                }
+                if (list.size() != 0) {
+                    for (KeywordDTO entity : list) {
+                        KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
+                        keywordInfoDTO.setCampaignName(campaignMap.get(fileds[0]).getCampaignName());
+                        keywordInfoDTO.setAdgroupName(adgroupMap.get(fileds[1]).getAdgroupName());
+                        keywordInfoDTO.setObject(entity);
+                        deleteKwd.add(keywordInfoDTO);
+                    }
+                } else {
+                    AssistantKeywordIgnoreDTO assistantKeywordIgnoreDTO = new AssistantKeywordIgnoreDTO();
+                    assistantKeywordIgnoreDTO.setCampaignName(campaignMap.get(fileds[0]).getCampaignName());
+                    assistantKeywordIgnoreDTO.setAdgroupName(adgroupMap.get(fileds[1]).getAdgroupName());
+                    assistantKeywordIgnoreDTO.setKeywordName(name);
+                    ignoreList.add(assistantKeywordIgnoreDTO);
+                }
             }
         }
 
@@ -656,38 +664,46 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 String[] kwInfo = info.split(",|，|\t");
                 KeywordDTO keywordDTO = validateKewword(kwInfo);
                 List<KeywordDTO> list;
-//                if (fieds[1].matches(regex)) {
+                if (fieds[1].matches(regex)) {
+                    list = keywordDAO.findByParams(new HashMap<String, Object>() {{
+                        put(MongoEntityConstants.ADGROUP_ID, Long.parseLong(fieds[1]));
+                        put("name",keywordDTO.getKeyword());
+                    }});
 //                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.parseLong(fieds[1])).and("name").is(keywordDTO.getKeyword())));
-//                } else {
+                } else {
+                    list = keywordDAO.findByParams(new HashMap<String, Object>() {{
+                        put(MongoEntityConstants.OBJ_ADGROUP_ID, fieds[1]);
+                        put("name",keywordDTO.getKeyword());
+                    }});
 //                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).is(fieds[1]).and("name").is(keywordDTO.getKeyword())));
-//                }
+                }
 
-//                if (list.size() > 0 && kwInfo.length == 1) {
-//                    AssistantKeywordIgnoreDTO dto = new AssistantKeywordIgnoreDTO();
-//
-//                    if (fieds[0].matches(regex)) {
-//                        dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
-//                    } else {
-//                        dto.setCampaignName(campaignDAO.findByObjectId(fieds[0]).getCampaignName());
-//                    }
-//
-//                    if (fieds[1].matches(regex)) {
-//                        dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
-//                    } else {
-//                        dto.setAdgroupName(adgroupDAO.findByObjId(fieds[1]).getAdgroupName());
-//                    }
-//                    dto.setKeywordName(kwInfo[0]);
-//                    igoneList.add(dto);
-//                    continue;
-//                }
+                if (list.size() > 0 && kwInfo.length == 1) {
+                    AssistantKeywordIgnoreDTO dto = new AssistantKeywordIgnoreDTO();
 
-//                if (list.size() == 0) {
-//                    insertList.add(setFieldToDTO(fieds, keywordDTO, null));
-//                } else {
-//                    for (KeywordDTO entity : list) {
-//                        updateList.add(setFieldToDTO(fieds, keywordDTO, entity));
-//                    }
-//                }
+                    if (fieds[0].matches(regex)) {
+                        dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
+                    } else {
+                        dto.setCampaignName(campaignDAO.findByObjectId(fieds[0]).getCampaignName());
+                    }
+
+                    if (fieds[1].matches(regex)) {
+                        dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
+                    } else {
+                        dto.setAdgroupName(adgroupDAO.findByObjId(fieds[1]).getAdgroupName());
+                    }
+                    dto.setKeywordName(kwInfo[0]);
+                    igoneList.add(dto);
+                    continue;
+                }
+
+                if (list.size() == 0) {
+                    insertList.add(setFieldToDTO(fieds, keywordDTO, null));
+                } else {
+                    for (KeywordDTO entity : list) {
+                        updateList.add(setFieldToDTO(fieds, keywordDTO, entity));
+                    }
+                }
             }
         }
 

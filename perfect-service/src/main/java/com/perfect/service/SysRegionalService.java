@@ -76,4 +76,11 @@ public interface SysRegionalService {
      * @return
      */
     public List<RegionalCodeDTO> getProvinceIdByRegionalId(List<Integer> listId);
+
+    /**
+     * 通过地域名称查询省级和区域id
+     * @param regionalName
+     * @return
+     */
+    public Map<Integer,String> getRegionalByRegionName(List<String> regionalName);
 }

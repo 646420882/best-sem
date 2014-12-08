@@ -497,7 +497,7 @@ $("#batchDelKwd").livequery('click', function () {
 function batchDelKeyword() {
     top.dialog({title: "批量删除",
         padding: "5px",
-        content: "<iframe src='/assistantKeyword/showBatchDelDialog' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showBatchDelDialog' width='900' height='550' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -530,7 +530,8 @@ function searchword() {
             // window.location.reload(true);
         },
         onremove: function () {
-        }
+        },
+        position:['left','top']
     }).showModal();
     return false;
 }

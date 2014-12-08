@@ -29,7 +29,7 @@ $(function () {
         if (lis.eq(0).hasClass("selected")) {
             type = 1;
         } else {
-            changeGridCol();
+            changeGridCol2();
             initImzTree();
             type = 2;
         }
@@ -269,9 +269,21 @@ $(function () {
             display: "block"
         });
     });
+    //自定义列重点词分组
+    $("#showbox62").click(function () {
+        $(".TB_overlayBG").css({
+            display: "block", height: $(document).height()
+        });
+        $("#custom_col2").css({
+            left: ($("body").width() - $("#custom_col2").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#custom_col2").height()) / 2 + $(window).scrollTop() + "px",
+            display: "block"
+        });
+    });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
         $("#custom_col").css("display", "none");
+        $("#custom_col2").css("display", "none");
         $("#paiming").css("display", "none");
     });
     //弹窗内部切换

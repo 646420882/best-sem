@@ -16,6 +16,7 @@ import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.keyword.SearchwordReportDTO;
 import com.perfect.service.BaiduAccountService;
+import com.perfect.service.SysRegionalService;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.service.KeyWordBackUpService;
@@ -23,6 +24,7 @@ import com.perfect.utils.RegionalCodeUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -52,6 +54,9 @@ public class AssistantKeywordController extends WebContextSupport{
     @Resource
     private BaiduAccountService baiduAccountService;
 
+    @Resource
+    private SysRegionalService sysRegionalService;
+
 
 
 
@@ -78,7 +83,11 @@ public class AssistantKeywordController extends WebContextSupport{
      * @return
      */
     @RequestMapping(value = "assistantKeyword/list", method = {RequestMethod.GET, RequestMethod.POST})
-    public void getAllKeywordList(HttpServletResponse response, String cid, String aid, Integer nowPage, Integer pageSize) {
+    public void getAllKeywordList(HttpServletResponse response,
+                                  @RequestParam(value = "cid")String cid,
+                                  @RequestParam(value = "aid")String aid,
+                                  @RequestParam(value = "nowPage")int nowPage,
+                                  @RequestParam(value = "pageSize")int pageSize){
         PagerInfo page = assistantKeywordService.getKeyWords(cid, aid, nowPage, pageSize);
         writeJson(page, response);
     }
@@ -287,7 +296,7 @@ public class AssistantKeywordController extends WebContextSupport{
         if (attributes != null && attributes != "") {
             list = new ArrayList<>();
             String[] attrs = attributes.split(",");
-            Map<Integer, String> regions = RegionalCodeUtils.regionalCodeName(Arrays.asList(attrs));
+            Map<Integer, String> regions = sysRegionalService.getRegionalByRegionName(Arrays.asList(attrs));
             AttributeType attributeType = new AttributeType();
             attributeType.setKey("provid");
             attributeType.setValue(new ArrayList<Integer>(regions.keySet()));
