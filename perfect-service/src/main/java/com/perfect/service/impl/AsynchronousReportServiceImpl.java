@@ -698,13 +698,55 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         @Override
         protected List<AccountReportDTO> compute() {
             List<AccountReportDTO> list = new ArrayList<>();
-            boolean status = (last - first) < threshold;
-            if (status) {
-                for (int i = first; i < last; i++) {
-                    AccountReportDTO entity = pcList.get(i);
-                    boolean temp = true;
-                    for (AccountReportDTO type : acrmList) {
-                        if (Long.valueOf(entity.getAccountId()).compareTo(type.getAccountId()) == 0) {
+            if (pcList.size() == 0) {
+                //
+                for (AccountReportDTO type : acrmList) {
+                    AccountReportDTO dto = new AccountReportDTO();
+                    dto.setDate(type.getDate());
+                    dto.setAccountId(type.getAccountId());
+                    dto.setAccountName(type.getAccountName());
+                    dto.setMobileImpression(type.getMobileImpression());
+                    dto.setMobileClick(type.getMobileClick());
+                    dto.setMobileCtr(type.getMobileCtr());
+                    dto.setMobileCost(type.getMobileCost());
+                    dto.setMobileCpc(type.getMobileCpc());
+                    dto.setMobileCpm(type.getMobileCpm());
+                    dto.setMobileConversion(type.getMobileConversion());
+                    list.add(dto);
+                }
+                //
+            } else {
+                boolean status = (last - first) < threshold;
+                if (status) {
+                    for (int i = first; i < last; i++) {
+                        AccountReportDTO entity = pcList.get(i);
+                        boolean temp = true;
+                        for (AccountReportDTO type : acrmList) {
+                            if (Long.valueOf(entity.getAccountId()).compareTo(type.getAccountId()) == 0) {
+                                AccountReportDTO _entity = new AccountReportDTO();
+                                _entity.setDate(entity.getDate());
+                                _entity.setAccountId(entity.getAccountId());
+                                _entity.setAccountName(entity.getAccountName());
+                                _entity.setPcImpression(entity.getPcImpression());
+                                _entity.setPcClick(entity.getPcClick());
+                                _entity.setPcCtr(entity.getPcCtr());
+                                _entity.setPcCost(entity.getPcCost());
+                                _entity.setPcCpc(entity.getPcCpc());
+                                _entity.setPcCpm(entity.getPcCpm());
+                                _entity.setPcConversion(entity.getPcConversion());
+                                _entity.setMobileImpression(type.getMobileImpression());
+                                _entity.setMobileClick(type.getMobileClick());
+                                _entity.setMobileCtr(type.getMobileCtr());
+                                _entity.setMobileCost(type.getMobileCost());
+                                _entity.setMobileCpc(type.getMobileCpc());
+                                _entity.setMobileCpm(type.getMobileCpm());
+                                _entity.setMobileConversion(type.getMobileConversion());
+                                list.add(_entity);
+                                temp = false;
+                                break;
+                            }
+                        }
+                        if (temp) {
                             AccountReportDTO _entity = new AccountReportDTO();
                             _entity.setDate(entity.getDate());
                             _entity.setAccountId(entity.getAccountId());
@@ -716,42 +758,19 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setPcCpc(entity.getPcCpc());
                             _entity.setPcCpm(entity.getPcCpm());
                             _entity.setPcConversion(entity.getPcConversion());
-                            _entity.setMobileImpression(type.getMobileImpression());
-                            _entity.setMobileClick(type.getMobileClick());
-                            _entity.setMobileCtr(type.getMobileCtr());
-                            _entity.setMobileCost(type.getMobileCost());
-                            _entity.setMobileCpc(type.getMobileCpc());
-                            _entity.setMobileCpm(type.getMobileCpm());
-                            _entity.setMobileConversion(type.getMobileConversion());
                             list.add(_entity);
-                            temp = false;
-                            break;
                         }
                     }
-                    if (temp) {
-                        AccountReportDTO _entity = new AccountReportDTO();
-                        _entity.setDate(entity.getDate());
-                        _entity.setAccountId(entity.getAccountId());
-                        _entity.setAccountName(entity.getAccountName());
-                        _entity.setPcImpression(entity.getPcImpression());
-                        _entity.setPcClick(entity.getPcClick());
-                        _entity.setPcCtr(entity.getPcCtr());
-                        _entity.setPcCost(entity.getPcCost());
-                        _entity.setPcCpc(entity.getPcCpc());
-                        _entity.setPcCpm(entity.getPcCpm());
-                        _entity.setPcConversion(entity.getPcConversion());
-                        list.add(_entity);
-                    }
-                }
-            } else {
-                int middle = (first + last) / 2;
-                AccountReportHandler task1 = new AccountReportHandler(pcList, first, middle);
-                AccountReportHandler task2 = new AccountReportHandler(pcList, middle, last);
+                } else {
+                    int middle = (first + last) / 2;
+                    AccountReportHandler task1 = new AccountReportHandler(pcList, first, middle);
+                    AccountReportHandler task2 = new AccountReportHandler(pcList, middle, last);
 
-                invokeAll(task1, task2);
-                list.clear();
-                list.addAll(task1.join());
-                list.addAll(task2.join());
+                    invokeAll(task1, task2);
+                    list.clear();
+                    list.addAll(task1.join());
+                    list.addAll(task2.join());
+                }
             }
             return list;
         }
