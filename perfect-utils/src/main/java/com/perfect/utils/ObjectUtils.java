@@ -48,6 +48,15 @@ public class ObjectUtils {
         return t;
     }
 
+    /**
+     * JSON convert to Object
+     *
+     * @param srcObj
+     * @param targetClz
+     * @param <S>
+     * @param <T>
+     * @return
+     */
     public static <S, T> T convertToObject(S srcObj, Class<T> targetClz) {
         if (srcObj == null) {
             return null;
@@ -56,12 +65,21 @@ public class ObjectUtils {
         return JSONUtils.getObjectByJson(JSONUtils.getJsonObject(srcObj).toString(), targetClz);
     }
 
+    /**
+     * JSON convert to List
+     *
+     * @param srcList
+     * @param targetClz
+     * @param <S>
+     * @param <T>
+     * @return
+     */
     @SuppressWarnings("unchecked")
-    public static <S, T> List<T> convertToList(S list, Class<T> targetClz) {
-        if (list == null) {
+    public static <S, T> List<T> convertToList(List<S> srcList, Class<T> targetClz) {
+        if (srcList == null || srcList.isEmpty()) {
             return Collections.EMPTY_LIST;
         }
 
-        return JSONUtils.getObjectListByJson(JSONUtils.getJsonObject(list).toString(), targetClz);
+        return JSONUtils.getObjectListByJson(JSONUtils.getJsonObject(srcList).toString(), targetClz);
     }
 }
