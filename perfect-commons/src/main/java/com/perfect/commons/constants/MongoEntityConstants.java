@@ -53,4 +53,17 @@ public interface MongoEntityConstants {
     public static final String MONITOR_ACLID = "aclid";
 
     public static final String NAME = "name";
+
+    //时间查询字段
+    public final static String DATE_FIELD = "dat";
+    //设备查询字段
+    public final static String IPERATE = "ope";
+    //新老客户表示
+    public final static String USERTYPE = "up";
+    //分组字段intoPage（外部链接）
+    public final static String INTOPAGE = "tp";
+    //分组字段searchEngine(搜索引擎)
+    public final static String SEARCHENGINE = "se";
+    //Cookie 分组字段
+    public final static String COOKIE_UUID ="uid";
 }
