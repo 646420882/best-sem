@@ -162,6 +162,11 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
                 if ("status".equals(entry.getKey())) {
                     criteria.and("s").is((Integer) entry.getValue());
                 }
+
+                if ("price".equals(entry.getKey())) {
+                    BigDecimal[] bigDecimals = (BigDecimal[]) entry.getValue();
+                    criteria.and("pr").gte(bigDecimals[0]).lte(bigDecimals[1]);
+                }
             }
         }
         mongoQuery.addCriteria(criteria);

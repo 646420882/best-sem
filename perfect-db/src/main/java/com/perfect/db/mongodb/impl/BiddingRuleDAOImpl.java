@@ -261,11 +261,10 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
                         criteria.and("mt").is(3);
                     }
                 }
-                if ("keywordPrice".equals(entry.getKey())) {
-                    String prices[] = entry.getValue().toString().split(",");
-                    BigDecimal startPrice = new BigDecimal(Double.valueOf(prices[0]));
-                    BigDecimal endPrice = new BigDecimal(Double.valueOf(prices[1]));
-                    criteria.and("stgy.min").lte(startPrice).and("stgy.max").gte(endPrice);
+                if ("price".equals(entry.getKey())) {
+                    BigDecimal[] prices = (BigDecimal[]) entry.getValue();
+
+                    criteria.and("stgy.min").gte(prices[0]).and("stgy.max").lte(prices[1]);
                 }
             }
             mongoQuery.addCriteria(criteria);

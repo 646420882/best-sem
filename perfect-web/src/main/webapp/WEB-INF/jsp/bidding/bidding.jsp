@@ -1340,7 +1340,11 @@ $(function () {
                 if (bidStatus == 0 && bidRule.length > 0) {
                     $("#table1").setCell(rowId, "biddingStatus", "已暂停");
                 } else if (bidStatus == 1) {
-                    $("#table1").setCell(rowId, "biddingStatus", "已启动");
+                    if (bidRule.length == 0) {
+                        $("#table1").setCell(rowId, "biddingStatus", "无");
+                    } else {
+                        $("#table1").setCell(rowId, "biddingStatus", "已启动");
+                    }
                 } else {
                     $("#table1").setCell(rowId, "biddingStatus", "无");
                 }

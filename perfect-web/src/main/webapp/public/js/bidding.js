@@ -20,7 +20,7 @@ var _filter = null;
 
 //高级搜索功能
 var matchType = null;
-var keywordQuality = "";
+var keywordQuality = null;
 var keywordPrice = null;
 
 $(function () {
@@ -389,6 +389,7 @@ $(function () {
 
             //keywordQuality
             var checkedKeywordQuality = $("input[name=keywordQuality]:checked");
+            keywordQuality = "";
             $.each(checkedKeywordQuality, function (i, item) {
                 keywordQuality += item.value + ",";
             });

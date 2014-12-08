@@ -44,6 +44,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by yousheng on 2014/8/22.
@@ -356,12 +357,13 @@ public class BiddingController {
         }
         BigDecimal minPrice = new BigDecimal(0);
         BigDecimal maxPrice = new BigDecimal(0);
-        boolean priceStatus = (price != null && price.trim().length() > 0);//为真代表查询已参加竞价的关键词
+        boolean priceStatus = (price != null && price.trim().contains(","));//为真代表查询已参加竞价的关键词
         if (priceStatus) {
             String p[] = price.split(",");
             if (p.length == 2) {
-                minPrice.add(new BigDecimal(Double.valueOf(p[0])));
-                maxPrice.add(new BigDecimal(Double.valueOf(p[1])));
+                minPrice = minPrice.add(new BigDecimal(Double.valueOf(p[0])));
+                maxPrice = maxPrice.add(new BigDecimal(Double.valueOf(p[1])));
+                queryParams.put("price", new BigDecimal[]{minPrice, maxPrice});
             } else {
                 priceStatus = false;
             }
@@ -374,12 +376,17 @@ public class BiddingController {
             }
         }
         int keywordQualityConditionSize = keywordQualityList.size();
+
+        /**
+         * 如果开启了质量度搜索, 必须开启完全匹配模式, 否则模糊查询会有很多的关键词向百度发送请求会消耗大量的API配额
+         * <p/>
+         */
         if (keywordQualityConditionSize > 0) {
             fullMatch = true;
         }
-
-        //是否启用了高级搜索
-        boolean advancedSearch = (matchType != null) || (priceStatus) || (keywordQualityConditionSize > 0);
+//
+//        //是否启用了高级搜索
+//        boolean advancedSearch = (matchType != null) || (priceStatus) || (keywordQualityConditionSize > 0);
 
         List<KeywordDTO> entities = null;
         Long total = 0l;
@@ -499,10 +506,30 @@ public class BiddingController {
                     ids.add(tmpEntity.getKeywordId());
                 }
                 if (ids.isEmpty()) {
-                    jsonView.setAttributesMap(new HashMap<String, Object>());
+                    jsonView.setAttributesMap(new HashMap<>());
                     return new ModelAndView(jsonView);
                 }
                 entities = sysKeywordService.findByIds(ids);
+
+
+                List<KeywordDTO> tmpEntities = sysKeywordService.findByNames(query.split(" "), fullMatch, param1, queryParams);
+                //entities和tmpEntities中的共同元素即为结果集
+                List<KeywordDTO> tmpResult = Lists.newArrayList();
+//                for (KeywordDTO dto : entities) {
+//                    for (KeywordDTO tmpDto : tmpEntities) {
+//                        if (dto.getKeywordId().compareTo(tmpDto.getKeywordId()) == 0) {
+//                            tmpResult.add(dto);
+//                        }
+//                    }
+//                }
+                for (KeywordDTO dto : entities) {
+                    tmpResult.addAll(tmpEntities.stream().filter(tmpDto -> dto.getKeywordId().compareTo(tmpDto.getKeywordId()) == 0).map(tmpDto -> dto).collect(Collectors.toList()));
+                }
+                entities.clear();
+                if (!tmpResult.isEmpty()) {
+                    entities.addAll(tmpResult);
+                }
+
 
                 ruleReady = !ruleEntities.isEmpty();
             }
@@ -611,13 +638,15 @@ public class BiddingController {
         for (StructureReportDTO entity : list) {
             long kwid = entity.getKeywordId();
             KeywordBiddingInfoDTO dto = keywordReportDTOHashMap.get(kwid);
-            dto.setClick(NumberUtils.getInteger(entity.getPcClick()));
-            dto.setConversion(NumberUtils.getDouble(entity.getPcConversion()));
-            dto.setCost(entity.getPcCost());
-            dto.setCpc(entity.getPcCpc());
-            dto.setCpm(entity.getPcCpm());
-            dto.setCtr(NumberUtils.getDouble(entity.getPcCtr()));
-            dto.setImpression(NumberUtils.getInteger(entity.getPcImpression()));
+            if (dto != null) {
+                dto.setClick(NumberUtils.getInteger(entity.getPcClick()));
+                dto.setConversion(NumberUtils.getDouble(entity.getPcConversion()));
+                dto.setCost(entity.getPcCost());
+                dto.setCpc(entity.getPcCpc());
+                dto.setCpm(entity.getPcCpm());
+                dto.setCtr(NumberUtils.getDouble(entity.getPcCtr()));
+                dto.setImpression(NumberUtils.getInteger(entity.getPcImpression()));
+            }
         }
 
         List<KeywordBiddingInfoDTO> newResultList = new ArrayList<>();
