@@ -65,7 +65,7 @@ public class AccountAnalyzeDAOImpl extends AbstractUserBaseDAOImpl<AccountReport
 
     @Override
     public List<AccountReportDTO> downAccountCSV() {
-        List<AccountReportEntity> list = getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())).with(new Sort("date")), getEntityClass(), TBL_ACCOUNT_REPORT);
+        List<AccountReportEntity> list = BaseMongoTemplate.getUserReportMongo().find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())).with(new Sort("date")), getEntityClass(), TBL_ACCOUNT_REPORT);
         return ObjectUtils.convert(list, getDTOClass());
     }
 }

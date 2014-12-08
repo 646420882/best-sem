@@ -54,7 +54,6 @@ public class SourceAnaly {
     public ModelAndView getAllSource(HttpServletResponse response,
                              @RequestParam(value = "startDate", required = false) String startDate,
                              @RequestParam(value = "endDate", required = false) String endDate,
-                             @RequestParam(value = "findType", required = false) int findType,
                              @RequestParam(value = "accessType", required = false) Integer accessType,
                              @RequestParam(value = "allTypes", required = false) Integer allTypes) {
 
@@ -80,7 +79,7 @@ public class SourceAnaly {
         dates.add(newendDates);
 
 
-        List<CensusDTO> allType = sourceService.getSourceAnalysis(dates, findType, accessType, allTypes);
+        List<CensusDTO> allType = sourceService.getSourceAnalysis(dates, accessType, allTypes);
 
 
         /*Map<String, List<Object>> mainMap = new HashMap<>();

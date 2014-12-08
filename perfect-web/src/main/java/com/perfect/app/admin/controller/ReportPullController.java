@@ -84,6 +84,7 @@ public class ReportPullController extends WebContextSupport {
             flag = 1;
             writeData(SUCCESS, response, null);
         } catch (Exception e) {
+            e.printStackTrace();
             writeData(EXCEPTION, response, null);
             flag = -1;
         }

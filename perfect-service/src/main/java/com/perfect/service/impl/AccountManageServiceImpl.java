@@ -16,6 +16,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.MD5Utils;
+import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.json.JSONUtils;
 import org.springframework.stereotype.Service;
 
@@ -88,13 +89,14 @@ public class AccountManageServiceImpl implements AccountManageService {
     @Override
     public List<BaiduAccountAllStateDTO> getAccountAll() {
         List<SystemUserDTO> systemUserDTOList = accountManageDAO.getAccountAll();
+        List<SystemUserDTO> systemUserDTOs = ObjectUtils.convertToList(systemUserDTOList, SystemUserDTO.class);
         List<BaiduAccountAllStateDTO> allStates = new ArrayList<>();
 
-        for (SystemUserDTO systemUserDTO : systemUserDTOList) {
+        for (SystemUserDTO systemUserDTO : systemUserDTOs) {
             if (systemUserDTO.getUserName().equals("administrator")) {
                 continue;
             }
-            if (systemUserDTO.getBaiduAccounts().size() > 0) {
+            if (systemUserDTO.getBaiduAccounts() != null && systemUserDTO.getBaiduAccounts().size() > 0) {
                 for (BaiduAccountInfoDTO dto : systemUserDTO.getBaiduAccounts()) {
                     BaiduAccountAllStateDTO accountAllState = new BaiduAccountAllStateDTO();
                     accountAllState.setIdObj(dto.getId());

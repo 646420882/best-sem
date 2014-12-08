@@ -46,7 +46,7 @@ public class RegionalCodeDAOImpl extends AbstractSysBaseDAOImpl<RegionalCodeDTO,
         RegionalCodeEntity entity = getSysMongoTemplate().findOne(new Query(Criteria.where(fideName).is(provinceId.toString()).and(FIDE_REGIONNAME).is("")), getEntityClass(), TBL_SYS_REGIONAL);
         String name;
         if(entity != null){
-            name = entity.getRegionName();
+            name = entity.getProvinceName();
         }else{
             name = "北京";
         }

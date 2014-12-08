@@ -9,6 +9,7 @@ import com.perfect.dto.account.*;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.service.AsynchronousReportService;
+import com.perfect.utils.ObjectUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -63,14 +64,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
             Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
-            entityList = Lists.newArrayList(entities);
+            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserDTO.class);
         } else {
             SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
@@ -109,14 +110,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
             Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
-            entityList = Lists.newArrayList(entities);
+            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserDTO.class);
         } else {
             SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
@@ -154,14 +155,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
             Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
-            entityList = Lists.newArrayList(entities);
+            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserDTO.class);
         } else {
             SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
+            if (systemUser.getState() == 0  || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
@@ -201,14 +202,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
             Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
-            entityList = Lists.newArrayList(entities);
+            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserDTO.class);
         } else {
             SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
@@ -247,14 +248,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
             Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
-            entityList = Lists.newArrayList(entities);
+            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserDTO.class);
         } else {
             SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
@@ -293,14 +294,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
             Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
-            entityList = Lists.newArrayList(entities);
+            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserDTO.class);
         } else {
             SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
@@ -793,13 +794,53 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         @Override
         protected List<CampaignReportDTO> compute() {
             List<CampaignReportDTO> list = new ArrayList<>();
-            boolean status = (last - first) < threshold;
-            if (status) {
-                for (int i = first; i < last; i++) {
-                    CampaignReportDTO entity = pcList.get(i);
-                    boolean temp = true;
-                    for (CampaignReportDTO type : cprmList) {
-                        if (entity.getCampaignId().compareTo(type.getCampaignId()) == 0) {
+            if (pcList.size() == 0) {
+                for (CampaignReportDTO type : cprmList) {
+                    CampaignReportDTO dto = new CampaignReportDTO();
+                    dto.setAccountId(type.getAccountId());
+                    dto.setCampaignId(type.getCampaignId());
+                    dto.setCampaignName(type.getCampaignName());
+                    dto.setMobileImpression(type.getMobileImpression());
+                    dto.setMobileClick(type.getMobileClick());
+                    dto.setMobileCtr(type.getMobileCtr());
+                    dto.setMobileCost(type.getMobileCost());
+                    dto.setMobileCpc(type.getMobileCpc());
+                    dto.setMobileCpm(type.getMobileCpm());
+                    dto.setMobileConversion(type.getMobileConversion());
+                    list.add(dto);
+                }
+            } else {
+                boolean status = (last - first) < threshold;
+                if (status) {
+                    for (int i = first; i < last; i++) {
+                        CampaignReportDTO entity = pcList.get(i);
+                        boolean temp = true;
+                        for (CampaignReportDTO type : cprmList) {
+                            if (entity.getCampaignId().compareTo(type.getCampaignId()) == 0) {
+                                CampaignReportDTO _entity = new CampaignReportDTO();
+                                _entity.setAccountId(entity.getAccountId());
+                                _entity.setCampaignId(entity.getCampaignId());
+                                _entity.setCampaignName(entity.getCampaignName());
+                                _entity.setPcImpression(entity.getPcImpression());
+                                _entity.setPcClick(entity.getPcClick());
+                                _entity.setPcCtr(entity.getPcCtr());
+                                _entity.setPcCost(entity.getPcCost());
+                                _entity.setPcCpc(entity.getPcCpc());
+                                _entity.setPcCpm(entity.getPcCpm());
+                                _entity.setPcConversion(entity.getPcConversion());
+                                _entity.setMobileImpression(type.getMobileImpression());
+                                _entity.setMobileClick(type.getMobileClick());
+                                _entity.setMobileCtr(type.getMobileCtr());
+                                _entity.setMobileCost(type.getMobileCost());
+                                _entity.setMobileCpc(type.getMobileCpc());
+                                _entity.setMobileCpm(type.getMobileCpm());
+                                _entity.setMobileConversion(type.getMobileConversion());
+                                list.add(_entity);
+                                temp = false;
+                                break;
+                            }
+                        }
+                        if (temp) {
                             CampaignReportDTO _entity = new CampaignReportDTO();
                             _entity.setAccountId(entity.getAccountId());
                             _entity.setCampaignId(entity.getCampaignId());
@@ -811,42 +852,19 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setPcCpc(entity.getPcCpc());
                             _entity.setPcCpm(entity.getPcCpm());
                             _entity.setPcConversion(entity.getPcConversion());
-                            _entity.setMobileImpression(type.getMobileImpression());
-                            _entity.setMobileClick(type.getMobileClick());
-                            _entity.setMobileCtr(type.getMobileCtr());
-                            _entity.setMobileCost(type.getMobileCost());
-                            _entity.setMobileCpc(type.getMobileCpc());
-                            _entity.setMobileCpm(type.getMobileCpm());
-                            _entity.setMobileConversion(type.getMobileConversion());
                             list.add(_entity);
-                            temp = false;
-                            break;
                         }
                     }
-                    if (temp) {
-                        CampaignReportDTO _entity = new CampaignReportDTO();
-                        _entity.setAccountId(entity.getAccountId());
-                        _entity.setCampaignId(entity.getCampaignId());
-                        _entity.setCampaignName(entity.getCampaignName());
-                        _entity.setPcImpression(entity.getPcImpression());
-                        _entity.setPcClick(entity.getPcClick());
-                        _entity.setPcCtr(entity.getPcCtr());
-                        _entity.setPcCost(entity.getPcCost());
-                        _entity.setPcCpc(entity.getPcCpc());
-                        _entity.setPcCpm(entity.getPcCpm());
-                        _entity.setPcConversion(entity.getPcConversion());
-                        list.add(_entity);
-                    }
-                }
-            } else {
-                int middle = (first + last) / 2;
-                CampaignReportHandler task1 = new CampaignReportHandler(pcList, first, middle);
-                CampaignReportHandler task2 = new CampaignReportHandler(pcList, middle, last);
+                } else {
+                    int middle = (first + last) / 2;
+                    CampaignReportHandler task1 = new CampaignReportHandler(pcList, first, middle);
+                    CampaignReportHandler task2 = new CampaignReportHandler(pcList, middle, last);
 
-                invokeAll(task1, task2);
-                list.clear();
-                list.addAll(task1.join());
-                list.addAll(task2.join());
+                    invokeAll(task1, task2);
+                    list.clear();
+                    list.addAll(task1.join());
+                    list.addAll(task2.join());
+                }
             }
             return list;
         }
@@ -869,13 +887,57 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         @Override
         protected List<AdgroupReportDTO> compute() {
             List<AdgroupReportDTO> list = new ArrayList<>();
-            boolean status = (last - first) < threshold;
-            if (status) {
-                for (int i = first; i < last; i++) {
-                    AdgroupReportDTO entity = pcList.get(i);
-                    boolean temp = true;
-                    for (AdgroupReportDTO type : armList) {
-                        if (entity.getAdgroupId().compareTo(type.getAdgroupId()) == 0) {
+            if (pcList.size() == 0) {
+                for (AdgroupReportDTO type : armList) {
+                    AdgroupReportDTO dto = new AdgroupReportDTO();
+                    dto.setAdgroupId(type.getAdgroupId());
+                    dto.setAdgroupName(type.getAdgroupName());
+                    dto.setAccountId(type.getAccountId());
+                    dto.setCampaignId(type.getCampaignId());
+                    dto.setCampaignName(type.getCampaignName());
+                    dto.setMobileImpression(type.getMobileImpression());
+                    dto.setMobileClick(type.getMobileClick());
+                    dto.setMobileCtr(type.getMobileCtr());
+                    dto.setMobileCost(type.getMobileCost());
+                    dto.setMobileCpc(type.getMobileCpc());
+                    dto.setMobileCpm(type.getMobileCpm());
+                    dto.setMobileConversion(type.getMobileConversion());
+                    list.add(dto);
+                }
+            } else {
+                boolean status = (last - first) < threshold;
+                if (status) {
+                    for (int i = first; i < last; i++) {
+                        AdgroupReportDTO entity = pcList.get(i);
+                        boolean temp = true;
+                        for (AdgroupReportDTO type : armList) {
+                            if (entity.getAdgroupId().compareTo(type.getAdgroupId()) == 0) {
+                                AdgroupReportDTO _entity = new AdgroupReportDTO();
+                                _entity.setAdgroupId(entity.getAdgroupId());
+                                _entity.setAdgroupName(entity.getAdgroupName());
+                                _entity.setAccountId(entity.getAccountId());
+                                _entity.setCampaignId(entity.getCampaignId());
+                                _entity.setCampaignName(entity.getCampaignName());
+                                _entity.setPcImpression(entity.getPcImpression());
+                                _entity.setPcClick(entity.getPcClick());
+                                _entity.setPcCtr(entity.getPcCtr());
+                                _entity.setPcCost(entity.getPcCost());
+                                _entity.setPcCpc(entity.getPcCpc());
+                                _entity.setPcCpm(entity.getPcCpm());
+                                _entity.setPcConversion(entity.getPcConversion());
+                                _entity.setMobileImpression(type.getMobileImpression());
+                                _entity.setMobileClick(type.getMobileClick());
+                                _entity.setMobileCtr(type.getMobileCtr());
+                                _entity.setMobileCost(type.getMobileCost());
+                                _entity.setMobileCpc(type.getMobileCpc());
+                                _entity.setMobileCpm(type.getMobileCpm());
+                                _entity.setMobileConversion(type.getMobileConversion());
+                                list.add(_entity);
+                                temp = false;
+                                break;
+                            }
+                        }
+                        if (temp) {
                             AdgroupReportDTO _entity = new AdgroupReportDTO();
                             _entity.setAdgroupId(entity.getAdgroupId());
                             _entity.setAdgroupName(entity.getAdgroupName());
@@ -889,44 +951,19 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setPcCpc(entity.getPcCpc());
                             _entity.setPcCpm(entity.getPcCpm());
                             _entity.setPcConversion(entity.getPcConversion());
-                            _entity.setMobileImpression(type.getMobileImpression());
-                            _entity.setMobileClick(type.getMobileClick());
-                            _entity.setMobileCtr(type.getMobileCtr());
-                            _entity.setMobileCost(type.getMobileCost());
-                            _entity.setMobileCpc(type.getMobileCpc());
-                            _entity.setMobileCpm(type.getMobileCpm());
-                            _entity.setMobileConversion(type.getMobileConversion());
                             list.add(_entity);
-                            temp = false;
-                            break;
                         }
                     }
-                    if (temp) {
-                        AdgroupReportDTO _entity = new AdgroupReportDTO();
-                        _entity.setAdgroupId(entity.getAdgroupId());
-                        _entity.setAdgroupName(entity.getAdgroupName());
-                        _entity.setAccountId(entity.getAccountId());
-                        _entity.setCampaignId(entity.getCampaignId());
-                        _entity.setCampaignName(entity.getCampaignName());
-                        _entity.setPcImpression(entity.getPcImpression());
-                        _entity.setPcClick(entity.getPcClick());
-                        _entity.setPcCtr(entity.getPcCtr());
-                        _entity.setPcCost(entity.getPcCost());
-                        _entity.setPcCpc(entity.getPcCpc());
-                        _entity.setPcCpm(entity.getPcCpm());
-                        _entity.setPcConversion(entity.getPcConversion());
-                        list.add(_entity);
-                    }
-                }
-            } else {
-                int middle = (first + last) / 2;
-                AdgroupReportHandler task1 = new AdgroupReportHandler(pcList, first, middle);
-                AdgroupReportHandler task2 = new AdgroupReportHandler(pcList, middle, last);
+                } else {
+                    int middle = (first + last) / 2;
+                    AdgroupReportHandler task1 = new AdgroupReportHandler(pcList, first, middle);
+                    AdgroupReportHandler task2 = new AdgroupReportHandler(pcList, middle, last);
 
-                invokeAll(task1, task2);
-                list.clear();
-                list.addAll(task1.join());
-                list.addAll(task2.join());
+                    invokeAll(task1, task2);
+                    list.clear();
+                    list.addAll(task1.join());
+                    list.addAll(task2.join());
+                }
             }
             return list;
         }
@@ -951,13 +988,67 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         @Override
         protected List<CreativeReportDTO> compute() {
             List<CreativeReportDTO> list = new ArrayList<>();
-            boolean status = (last - first) < threshold;
-            if (status) {
-                for (int i = first; i < last; i++) {
-                    CreativeReportDTO entity = pcList.get(i);
-                    boolean temp = true;
-                    for (CreativeReportDTO type : crmList) {
-                        if (entity.getCreativeId().compareTo(type.getCreativeId()) == 0) {
+            if (pcList.size() == 0) {
+                for (CreativeReportDTO type : crmList) {
+                    CreativeReportDTO dto = new CreativeReportDTO();
+                    dto.setCreativeId(type.getCreativeId());
+                    dto.setCreativeTitle(type.getCreativeTitle());
+                    dto.setDescription1(type.getDescription1());
+                    dto.setDescription2(type.getDescription2());
+                    dto.setShowUrl(type.getShowUrl());
+                    dto.setAdgroupId(type.getAdgroupId());
+                    dto.setAdgroupName(type.getAdgroupName());
+                    dto.setAccountId(type.getAccountId());
+                    dto.setCampaignId(type.getCampaignId());
+                    dto.setCampaignName(type.getCampaignName());
+                    dto.setMobileImpression(type.getMobileImpression());
+                    dto.setMobileClick(type.getMobileClick());
+                    dto.setMobileCtr(type.getMobileCtr());
+                    dto.setMobileCost(type.getMobileCost());
+                    dto.setMobileCpc(type.getMobileCpc());
+                    dto.setMobileCpm(type.getMobileCpm());
+                    dto.setMobileConversion(type.getMobileConversion());
+                    list.add(dto);
+                }
+            } else {
+                boolean status = (last - first) < threshold;
+                if (status) {
+                    for (int i = first; i < last; i++) {
+                        CreativeReportDTO entity = pcList.get(i);
+                        boolean temp = true;
+                        for (CreativeReportDTO type : crmList) {
+                            if (entity.getCreativeId().compareTo(type.getCreativeId()) == 0) {
+                                CreativeReportDTO _entity = new CreativeReportDTO();
+                                _entity.setCreativeId(entity.getCreativeId());
+                                _entity.setCreativeTitle(entity.getCreativeTitle());
+                                _entity.setDescription1(entity.getDescription1());
+                                _entity.setDescription2(entity.getDescription2());
+                                _entity.setShowUrl(entity.getShowUrl());
+                                _entity.setAdgroupId(entity.getAdgroupId());
+                                _entity.setAdgroupName(entity.getAdgroupName());
+                                _entity.setAccountId(entity.getAccountId());
+                                _entity.setCampaignId(entity.getCampaignId());
+                                _entity.setCampaignName(entity.getCampaignName());
+                                _entity.setPcImpression(entity.getPcImpression());
+                                _entity.setPcClick(entity.getPcClick());
+                                _entity.setPcCtr(entity.getPcCtr());
+                                _entity.setPcCost(entity.getPcCost());
+                                _entity.setPcCpc(entity.getPcCpc());
+                                _entity.setPcCpm(entity.getPcCpm());
+                                _entity.setPcConversion(entity.getPcConversion());
+                                _entity.setMobileImpression(type.getMobileImpression());
+                                _entity.setMobileClick(type.getMobileClick());
+                                _entity.setMobileCtr(type.getMobileCtr());
+                                _entity.setMobileCost(type.getMobileCost());
+                                _entity.setMobileCpc(type.getMobileCpc());
+                                _entity.setMobileCpm(type.getMobileCpm());
+                                _entity.setMobileConversion(type.getMobileConversion());
+                                list.add(_entity);
+                                temp = false;
+                                break;
+                            }
+                        }
+                        if (temp) {
                             CreativeReportDTO _entity = new CreativeReportDTO();
                             _entity.setCreativeId(entity.getCreativeId());
                             _entity.setCreativeTitle(entity.getCreativeTitle());
@@ -976,49 +1067,19 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setPcCpc(entity.getPcCpc());
                             _entity.setPcCpm(entity.getPcCpm());
                             _entity.setPcConversion(entity.getPcConversion());
-                            _entity.setMobileImpression(type.getMobileImpression());
-                            _entity.setMobileClick(type.getMobileClick());
-                            _entity.setMobileCtr(type.getMobileCtr());
-                            _entity.setMobileCost(type.getMobileCost());
-                            _entity.setMobileCpc(type.getMobileCpc());
-                            _entity.setMobileCpm(type.getMobileCpm());
-                            _entity.setMobileConversion(type.getMobileConversion());
                             list.add(_entity);
-                            temp = false;
-                            break;
                         }
                     }
-                    if (temp) {
-                        CreativeReportDTO _entity = new CreativeReportDTO();
-                        _entity.setCreativeId(entity.getCreativeId());
-                        _entity.setCreativeTitle(entity.getCreativeTitle());
-                        _entity.setDescription1(entity.getDescription1());
-                        _entity.setDescription2(entity.getDescription2());
-                        _entity.setShowUrl(entity.getShowUrl());
-                        _entity.setAdgroupId(entity.getAdgroupId());
-                        _entity.setAdgroupName(entity.getAdgroupName());
-                        _entity.setAccountId(entity.getAccountId());
-                        _entity.setCampaignId(entity.getCampaignId());
-                        _entity.setCampaignName(entity.getCampaignName());
-                        _entity.setPcImpression(entity.getPcImpression());
-                        _entity.setPcClick(entity.getPcClick());
-                        _entity.setPcCtr(entity.getPcCtr());
-                        _entity.setPcCost(entity.getPcCost());
-                        _entity.setPcCpc(entity.getPcCpc());
-                        _entity.setPcCpm(entity.getPcCpm());
-                        _entity.setPcConversion(entity.getPcConversion());
-                        list.add(_entity);
-                    }
-                }
-            } else {
-                int middle = (first + last) / 2;
-                CreativeReportHandler task1 = new CreativeReportHandler(pcList, first, middle);
-                CreativeReportHandler task2 = new CreativeReportHandler(pcList, middle, last);
+                } else {
+                    int middle = (first + last) / 2;
+                    CreativeReportHandler task1 = new CreativeReportHandler(pcList, first, middle);
+                    CreativeReportHandler task2 = new CreativeReportHandler(pcList, middle, last);
 
-                invokeAll(task1, task2);
-                list.clear();
-                list.addAll(task1.join());
-                list.addAll(task2.join());
+                    invokeAll(task1, task2);
+                    list.clear();
+                    list.addAll(task1.join());
+                    list.addAll(task2.join());
+                }
             }
             return list;
         }
@@ -1041,13 +1102,63 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         @Override
         protected List<KeywordReportDTO> compute() {
             List<KeywordReportDTO> list = new ArrayList<>();
-            boolean status = (last - first) < threshold;
-            if (status) {
-                for (int i = first; i < last; i++) {
-                    KeywordReportDTO entity = pcList.get(i);
-                    boolean temp = true;
-                    for (KeywordReportDTO type : krmList) {
-                        if (entity.getKeywordId().compareTo(type.getKeywordId()) == 0) {
+            if (pcList.size() == 0) {
+                for (KeywordReportDTO type : krmList) {
+                    KeywordReportDTO dto = new KeywordReportDTO();
+                    dto.setKeywordId(dto.getKeywordId());
+                    dto.setKeywordName(dto.getKeywordName());
+                    dto.setAdgroupId(dto.getAdgroupId());
+                    dto.setAdgroupName(dto.getAdgroupName());
+                    dto.setAccountId(dto.getAccountId());
+                    dto.setCampaignId(dto.getCampaignId());
+                    dto.setCampaignName(dto.getCampaignName());
+                    dto.setMobileImpression(type.getMobileImpression());
+                    dto.setMobileClick(type.getMobileClick());
+                    dto.setMobileCtr(type.getMobileCtr());
+                    dto.setMobileCost(type.getMobileCost());
+                    dto.setMobileCpc(type.getMobileCpc());
+                    dto.setMobileCpm(type.getMobileCpm());
+                    dto.setMobileConversion(type.getMobileConversion());
+                    list.add(dto);
+                }
+            } else {
+                boolean status = (last - first) < threshold;
+                if (status) {
+                    for (int i = first; i < last; i++) {
+                        KeywordReportDTO entity = pcList.get(i);
+                        boolean temp = true;
+                        for (KeywordReportDTO type : krmList) {
+                            if (entity.getKeywordId().compareTo(type.getKeywordId()) == 0) {
+                                KeywordReportDTO _entity = new KeywordReportDTO();
+                                _entity.setKeywordId(entity.getKeywordId());
+                                _entity.setKeywordName(entity.getKeywordName());
+                                _entity.setAdgroupId(entity.getAdgroupId());
+                                _entity.setAdgroupName(entity.getAdgroupName());
+                                _entity.setAccountId(entity.getAccountId());
+                                _entity.setCampaignId(entity.getCampaignId());
+                                _entity.setCampaignName(entity.getCampaignName());
+                                _entity.setPcImpression(entity.getPcImpression());
+                                _entity.setPcClick(entity.getPcClick());
+                                _entity.setPcCtr(entity.getPcCtr());
+                                _entity.setPcCost(entity.getPcCost());
+                                _entity.setPcCpc(entity.getPcCpc());
+                                _entity.setPcCpm(entity.getPcCpm());
+                                _entity.setPcConversion(entity.getPcConversion());
+                                _entity.setPcPosition(entity.getPcPosition());
+                                _entity.setMobileImpression(type.getMobileImpression());
+                                _entity.setMobileClick(type.getMobileClick());
+                                _entity.setMobileCtr(type.getMobileCtr());
+                                _entity.setMobileCost(type.getMobileCost());
+                                _entity.setMobileCpc(type.getMobileCpc());
+                                _entity.setMobileCpm(type.getMobileCpm());
+                                _entity.setMobileConversion(type.getMobileConversion());
+                                _entity.setMobilePosition(type.getMobilePosition());
+                                list.add(_entity);
+                                temp = false;
+                                break;
+                            }
+                        }
+                        if (temp) {
                             KeywordReportDTO _entity = new KeywordReportDTO();
                             _entity.setKeywordId(entity.getKeywordId());
                             _entity.setKeywordName(entity.getKeywordName());
@@ -1064,48 +1175,19 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setPcCpm(entity.getPcCpm());
                             _entity.setPcConversion(entity.getPcConversion());
                             _entity.setPcPosition(entity.getPcPosition());
-                            _entity.setMobileImpression(type.getMobileImpression());
-                            _entity.setMobileClick(type.getMobileClick());
-                            _entity.setMobileCtr(type.getMobileCtr());
-                            _entity.setMobileCost(type.getMobileCost());
-                            _entity.setMobileCpc(type.getMobileCpc());
-                            _entity.setMobileCpm(type.getMobileCpm());
-                            _entity.setMobileConversion(type.getMobileConversion());
-                            _entity.setMobilePosition(type.getMobilePosition());
                             list.add(_entity);
-                            temp = false;
-                            break;
                         }
                     }
-                    if (temp) {
-                        KeywordReportDTO _entity = new KeywordReportDTO();
-                        _entity.setKeywordId(entity.getKeywordId());
-                        _entity.setKeywordName(entity.getKeywordName());
-                        _entity.setAdgroupId(entity.getAdgroupId());
-                        _entity.setAdgroupName(entity.getAdgroupName());
-                        _entity.setAccountId(entity.getAccountId());
-                        _entity.setCampaignId(entity.getCampaignId());
-                        _entity.setCampaignName(entity.getCampaignName());
-                        _entity.setPcImpression(entity.getPcImpression());
-                        _entity.setPcClick(entity.getPcClick());
-                        _entity.setPcCtr(entity.getPcCtr());
-                        _entity.setPcCost(entity.getPcCost());
-                        _entity.setPcCpc(entity.getPcCpc());
-                        _entity.setPcCpm(entity.getPcCpm());
-                        _entity.setPcConversion(entity.getPcConversion());
-                        _entity.setPcPosition(entity.getPcPosition());
-                        list.add(_entity);
-                    }
-                }
-            } else {
-                int middle = (first + last) / 2;
-                KeywordReportHandler task1 = new KeywordReportHandler(pcList, first, middle);
-                KeywordReportHandler task2 = new KeywordReportHandler(pcList, middle, last);
+                } else {
+                    int middle = (first + last) / 2;
+                    KeywordReportHandler task1 = new KeywordReportHandler(pcList, first, middle);
+                    KeywordReportHandler task2 = new KeywordReportHandler(pcList, middle, last);
 
-                invokeAll(task1, task2);
-                list.clear();
-                list.addAll(task1.join());
-                list.addAll(task2.join());
+                    invokeAll(task1, task2);
+                    list.clear();
+                    list.addAll(task1.join());
+                    list.addAll(task2.join());
+                }
             }
             return list;
         }
@@ -1128,13 +1210,63 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         @Override
         protected List<RegionReportDTO> compute() {
             List<RegionReportDTO> list = new ArrayList<>();
-            boolean status = (last - first) < threshold;
-            if (status) {
-                for (int i = first; i < last; i++) {
-                    RegionReportDTO entity = pcList.get(i);
-                    boolean temp = true;
-                    for (RegionReportDTO type : rrmList) {
-                        if (entity.getRegionId().compareTo(type.getRegionId()) == 0) {
+            if (pcList.size() == 0) {
+                for (RegionReportDTO type : rrmList) {
+                    RegionReportDTO dto = new RegionReportDTO();
+                    dto.setRegionId(type.getRegionId());
+                    dto.setRegionName(type.getRegionName());
+                    dto.setAdgroupId(type.getAdgroupId());
+                    dto.setAdgroupName(type.getAdgroupName());
+                    dto.setAccountId(type.getAccountId());
+                    dto.setCampaignId(type.getCampaignId());
+                    dto.setCampaignName(type.getCampaignName());
+                    dto.setMobileImpression(type.getMobileImpression());
+                    dto.setMobileClick(type.getMobileClick());
+                    dto.setMobileCtr(type.getMobileCtr());
+                    dto.setMobileCost(type.getMobileCost());
+                    dto.setMobileCpc(type.getMobileCpc());
+                    dto.setMobileCpm(type.getMobileCpm());
+                    dto.setMobileConversion(type.getMobileConversion());
+                    list.add(dto);
+                }
+            } else {
+                boolean status = (last - first) < threshold;
+                if (status) {
+                    for (int i = first; i < last; i++) {
+                        RegionReportDTO entity = pcList.get(i);
+                        boolean temp = true;
+                        for (RegionReportDTO type : rrmList) {
+                            if (entity.getRegionId().compareTo(type.getRegionId()) == 0) {
+                                RegionReportDTO _entity = new RegionReportDTO();
+                                _entity.setRegionId(entity.getRegionId());
+                                _entity.setRegionName(entity.getRegionName());
+                                _entity.setAdgroupId(entity.getAdgroupId());
+                                _entity.setAdgroupName(entity.getAdgroupName());
+                                _entity.setAccountId(entity.getAccountId());
+                                _entity.setCampaignId(entity.getCampaignId());
+                                _entity.setCampaignName(entity.getCampaignName());
+                                _entity.setPcImpression(entity.getPcImpression());
+                                _entity.setPcClick(entity.getPcClick());
+                                _entity.setPcCtr(entity.getPcCtr());
+                                _entity.setPcCost(entity.getPcCost());
+                                _entity.setPcCpc(entity.getPcCpc());
+                                _entity.setPcCpm(entity.getPcCpm());
+                                _entity.setPcConversion(entity.getPcConversion());
+                                _entity.setPcPosition(entity.getPcPosition());
+                                _entity.setMobileImpression(type.getMobileImpression());
+                                _entity.setMobileClick(type.getMobileClick());
+                                _entity.setMobileCtr(type.getMobileCtr());
+                                _entity.setMobileCost(type.getMobileCost());
+                                _entity.setMobileCpc(type.getMobileCpc());
+                                _entity.setMobileCpm(type.getMobileCpm());
+                                _entity.setMobileConversion(type.getMobileConversion());
+                                _entity.setMobilePosition(type.getMobilePosition());
+                                list.add(_entity);
+                                temp = false;
+                                break;
+                            }
+                        }
+                        if (temp) {
                             RegionReportDTO _entity = new RegionReportDTO();
                             _entity.setRegionId(entity.getRegionId());
                             _entity.setRegionName(entity.getRegionName());
@@ -1151,48 +1283,19 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setPcCpm(entity.getPcCpm());
                             _entity.setPcConversion(entity.getPcConversion());
                             _entity.setPcPosition(entity.getPcPosition());
-                            _entity.setMobileImpression(type.getMobileImpression());
-                            _entity.setMobileClick(type.getMobileClick());
-                            _entity.setMobileCtr(type.getMobileCtr());
-                            _entity.setMobileCost(type.getMobileCost());
-                            _entity.setMobileCpc(type.getMobileCpc());
-                            _entity.setMobileCpm(type.getMobileCpm());
-                            _entity.setMobileConversion(type.getMobileConversion());
-                            _entity.setMobilePosition(type.getMobilePosition());
                             list.add(_entity);
-                            temp = false;
-                            break;
                         }
                     }
-                    if (temp) {
-                        RegionReportDTO _entity = new RegionReportDTO();
-                        _entity.setRegionId(entity.getRegionId());
-                        _entity.setRegionName(entity.getRegionName());
-                        _entity.setAdgroupId(entity.getAdgroupId());
-                        _entity.setAdgroupName(entity.getAdgroupName());
-                        _entity.setAccountId(entity.getAccountId());
-                        _entity.setCampaignId(entity.getCampaignId());
-                        _entity.setCampaignName(entity.getCampaignName());
-                        _entity.setPcImpression(entity.getPcImpression());
-                        _entity.setPcClick(entity.getPcClick());
-                        _entity.setPcCtr(entity.getPcCtr());
-                        _entity.setPcCost(entity.getPcCost());
-                        _entity.setPcCpc(entity.getPcCpc());
-                        _entity.setPcCpm(entity.getPcCpm());
-                        _entity.setPcConversion(entity.getPcConversion());
-                        _entity.setPcPosition(entity.getPcPosition());
-                        list.add(_entity);
-                    }
-                }
-            } else {
-                int middle = (first + last) / 2;
-                RegionReportHandler task1 = new RegionReportHandler(pcList, first, middle);
-                RegionReportHandler task2 = new RegionReportHandler(pcList, middle, last);
+                } else {
+                    int middle = (first + last) / 2;
+                    RegionReportHandler task1 = new RegionReportHandler(pcList, first, middle);
+                    RegionReportHandler task2 = new RegionReportHandler(pcList, middle, last);
 
-                invokeAll(task1, task2);
-                list.clear();
-                list.addAll(task1.join());
-                list.addAll(task2.join());
+                    invokeAll(task1, task2);
+                    list.clear();
+                    list.addAll(task1.join());
+                    list.addAll(task2.join());
+                }
             }
             return list;
         }

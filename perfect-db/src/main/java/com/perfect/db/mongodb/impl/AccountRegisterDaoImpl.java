@@ -4,6 +4,7 @@ import com.perfect.dao.account.AccountRegisterDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.entity.sys.SystemUserEntity;
+import com.perfect.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -27,8 +28,7 @@ public class AccountRegisterDaoImpl extends AbstractSysBaseDAOImpl<SystemUserDTO
     public SystemUserDTO getAccount(String userName) {
         SystemUserEntity user = getSysMongoTemplate().findOne(Query.query(Criteria.where("userName").is(userName)), getEntityClass(), "sys_user");
 
-        SystemUserDTO systemUserDTO = new SystemUserDTO();
-        BeanUtils.copyProperties(user, systemUserDTO);
+        SystemUserDTO systemUserDTO = ObjectUtils.convertToObject(user, SystemUserDTO.class);
 
         return systemUserDTO;
     }
