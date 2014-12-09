@@ -8,5 +8,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Created by XiaoWei on 2014/9/9.
  */
 @Document(collection = MongoEntityConstants.BAK_KEYWORD)
-public class KeyWordBackUpEntity extends KeywordEntity {
+public class KeywordBackUpEntity extends KeywordEntity {
 }

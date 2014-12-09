@@ -84,8 +84,8 @@ public class AssistantKeywordController extends WebContextSupport{
      */
     @RequestMapping(value = "assistantKeyword/list", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAllKeywordList(HttpServletResponse response,
-                                  @RequestParam(value = "cid")String cid,
-                                  @RequestParam(value = "aid")String aid,
+                                  @RequestParam(value = "cid",required = false,defaultValue = "")String cid,
+                                  @RequestParam(value = "aid",required = false,defaultValue = "")String aid,
                                   @RequestParam(value = "nowPage")int nowPage,
                                   @RequestParam(value = "pageSize")int pageSize){
         PagerInfo page = assistantKeywordService.getKeyWords(cid, aid, nowPage, pageSize);

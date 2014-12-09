@@ -8,6 +8,6 @@ import java.math.BigDecimal;
 /**
  * Created by baizz on 2014-11-25.
  */
-public class KeyWordBackUpDTO extends KeywordDTO {
+public class KeywordBackUpDTO extends KeywordDTO {
 
 }

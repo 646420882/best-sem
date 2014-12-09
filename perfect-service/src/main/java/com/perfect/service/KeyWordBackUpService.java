@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.dto.backup.KeyWordBackUpDTO;
+import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 
 import java.util.List;
@@ -14,5 +14,5 @@ public interface KeyWordBackUpService {
     KeywordDTO reducUpdate(String id);
 
     void reducDel(String id);
-    void myInsertAll(List<KeyWordBackUpDTO> list);
+    void myInsertAll(List<KeywordBackUpDTO> list);
 }

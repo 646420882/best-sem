@@ -1,8 +1,8 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.keyword.KeyWordBackUpDAO;
+import com.perfect.dao.keyword.KeywordBackUpDAO;
 import com.perfect.dao.keyword.KeywordDAO;
-import com.perfect.dto.backup.KeyWordBackUpDTO;
+import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.service.KeyWordBackUpService;
 import org.springframework.beans.BeanUtils;
@@ -19,7 +19,7 @@ import java.util.List;
 public class KeyWordBackUpServiceImpl implements KeyWordBackUpService {
 
     @Resource
-     private KeyWordBackUpDAO keyWordBackUpDAO;
+     private KeywordBackUpDAO keywordBackUpDAO;
 
     @Resource
     private KeywordDAO keywordDAO;
@@ -27,11 +27,11 @@ public class KeyWordBackUpServiceImpl implements KeyWordBackUpService {
 
 
 
-    public void insertAll(List<KeyWordBackUpDTO> entities) {
-        for(KeyWordBackUpDTO tempKwdBack:entities){
-            boolean exists = keyWordBackUpDAO.existsByObjectId(tempKwdBack.getId());
+    public void insertAll(List<KeywordBackUpDTO> entities) {
+        for(KeywordBackUpDTO tempKwdBack:entities){
+            boolean exists = keywordBackUpDAO.existsByObjectId(tempKwdBack.getId());
             if (exists == false) {
-                keyWordBackUpDAO.save(tempKwdBack);
+                keywordBackUpDAO.save(tempKwdBack);
             }
         }
     }
@@ -44,11 +44,11 @@ public class KeyWordBackUpServiceImpl implements KeyWordBackUpService {
 
         if(id.matches("^\\d+$")==true){
             KeywordDTO keywordEntity = new KeywordDTO();
-            KeyWordBackUpDTO keyWordBackUpDTOFind = keyWordBackUpDAO.findById(Long.parseLong(id));
-            BeanUtils.copyProperties(keyWordBackUpDTOFind, keywordEntity);
+            KeywordBackUpDTO keywordBackUpDTOFind = keywordBackUpDAO.findById(Long.parseLong(id));
+            BeanUtils.copyProperties(keywordBackUpDTOFind, keywordEntity);
             keywordEntity.setLocalStatus(null);
             keywordDAO.save(keywordEntity);
-            keyWordBackUpDAO.deleteByKwid(Long.parseLong(id));
+            keywordBackUpDAO.deleteByKwid(Long.parseLong(id));
             KeywordDTO keywordDTO=new KeywordDTO();
             BeanUtils.copyProperties(keywordEntity,keywordDTO);
             return keywordDTO;
@@ -72,8 +72,8 @@ public class KeyWordBackUpServiceImpl implements KeyWordBackUpService {
     }
 
     @Override
-    public void myInsertAll(List<KeyWordBackUpDTO> list) {
-        keyWordBackUpDAO.myInsertAll(list);
+    public void myInsertAll(List<KeywordBackUpDTO> list) {
+        keywordBackUpDAO.myInsertAll(list);
     }
 
 }

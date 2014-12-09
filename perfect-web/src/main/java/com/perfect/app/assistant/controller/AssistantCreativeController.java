@@ -60,8 +60,13 @@ public class AssistantCreativeController extends WebContextSupport {
         Map<String,Object> map=new HashMap<>();
         if (aid.length() > OBJ_SIZE || cid.length() > OBJ_SIZE) {
             if (aid != "" || !aid.equals("")) {
+                if (aid.length() > OBJ_SIZE) {
+                    map.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
+                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
+                } else {
                 map.put(MongoEntityConstants.ADGROUP_ID,aid);
                 pagerInfo = creativeService.findByPagerInfo(map,nowPage,pageSize);
+                }
             } else if (!cid.equals("") && aid.equals("")) {
                 List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignId(Long.parseLong(cid));
                 pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize);

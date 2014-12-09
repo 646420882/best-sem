@@ -1,11 +1,11 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.commons.constants.MongoEntityConstants;
-import com.perfect.dao.keyword.KeyWordBackUpDAO;
+import com.perfect.dao.keyword.KeywordBackUpDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.dto.backup.KeyWordBackUpDTO;
-import com.perfect.entity.backup.KeyWordBackUpEntity;
+import com.perfect.dto.backup.KeywordBackUpDTO;
+import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -20,11 +20,11 @@ import java.util.List;
  * 2014-11-26 refactor
  */
 @Component
-public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpDTO, Long> implements KeyWordBackUpDAO {
+public class KeywordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeywordBackUpDTO, Long> implements KeywordBackUpDAO {
 
     @Override
-    public Class<KeyWordBackUpEntity> getEntityClass() {
-        return KeyWordBackUpEntity.class;
+    public Class<KeywordBackUpEntity> getEntityClass() {
+        return KeywordBackUpEntity.class;
     }
 
     /**
@@ -33,9 +33,9 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpD
      * @param id
      * @return
      */
-    public KeyWordBackUpDTO findByObjectId(String id) {
+    public KeywordBackUpDTO findByObjectId(String id) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        KeyWordBackUpEntity keywordBackUpEntity = mongoTemplate.findOne(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)), getEntityClass());
+        KeywordBackUpEntity keywordBackUpEntity = mongoTemplate.findOne(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)), getEntityClass());
 
         return ObjectUtils.convertToObject(keywordBackUpEntity, getDTOClass());
 
@@ -54,8 +54,8 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpD
     }
 
     @Override
-    public void myInsertAll(List<KeyWordBackUpDTO> list) {
-        List<KeyWordBackUpEntity> keywordBackUpEntityList = ObjectUtils.convert(list, KeyWordBackUpEntity.class);
+    public void myInsertAll(List<KeywordBackUpDTO> list) {
+        List<KeywordBackUpEntity> keywordBackUpEntityList = ObjectUtils.convert(list, KeywordBackUpEntity.class);
         getMongoTemplate().insertAll(keywordBackUpEntityList);
     }
 
@@ -69,13 +69,13 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpD
 //        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)),getEntityClass(),MongoEntityConstants.BAK_KEYWORD);
 //    }
 
-    public KeyWordBackUpDTO findById(long id) {
+    public KeywordBackUpDTO findById(long id) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        List<KeyWordBackUpEntity> list = mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(id)), KeyWordBackUpEntity.class, MongoEntityConstants.BAK_KEYWORD);
-        KeyWordBackUpEntity keywordBackUpEntity = list.size() == 0 ? null : list.get(0);
-        KeyWordBackUpDTO keyWordBackUpDTO = new KeyWordBackUpDTO();
-        BeanUtils.copyProperties(keywordBackUpEntity, keyWordBackUpDTO);
-        return keyWordBackUpDTO;
+        List<KeywordBackUpEntity> list = mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(id)), KeywordBackUpEntity.class, MongoEntityConstants.BAK_KEYWORD);
+        KeywordBackUpEntity keywordBackUpEntity = list.size() == 0 ? null : list.get(0);
+        KeywordBackUpDTO keywordBackUpDTO = new KeywordBackUpDTO();
+        BeanUtils.copyProperties(keywordBackUpEntity, keywordBackUpDTO);
+        return keywordBackUpDTO;
     }
 
     public void deleteByKwid(long kwid) {
@@ -84,7 +84,7 @@ public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpD
     }
 
     @Override
-    public Class<KeyWordBackUpDTO> getDTOClass() {
-        return KeyWordBackUpDTO.class;
+    public Class<KeywordBackUpDTO> getDTOClass() {
+        return KeywordBackUpDTO.class;
     }
 }

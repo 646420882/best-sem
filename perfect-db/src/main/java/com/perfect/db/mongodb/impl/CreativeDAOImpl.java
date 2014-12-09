@@ -104,7 +104,6 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
 
     @Override
     public CreativeDTO getAllsBySomeParams(Map<String, Object> params) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query q = new Query();
         Criteria c = new Criteria();
         if (params != null && params.size() > 0) {
@@ -113,7 +112,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
             }
         }
         q.addCriteria(c);
-        CreativeEntity creativeEntity = mongoTemplate.findOne(q, CreativeEntity.class, TBL_CREATIVE);
+        CreativeEntity creativeEntity = getMongoTemplate().findOne(q, CreativeEntity.class, TBL_CREATIVE);
         return wrapperObject(creativeEntity);
     }
 
@@ -161,7 +160,9 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         CreativeEntity entity = mongoTemplate.findOne(
                 new Query(Criteria.where(getId()).is(obj)), CreativeEntity.class, TBL_CREATIVE);
         CreativeDTO creativeDTO = new CreativeDTO();
-        BeanUtils.copyProperties(entity, creativeDTO);
+        if (entity != null) {
+            BeanUtils.copyProperties(entity, creativeDTO);
+        }
         return creativeDTO;
     }
 
@@ -345,11 +346,6 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         return wrapperList(list);
     }
 
-    public void insert(CreativeDTO creativeDTO) {
-        CreativeEntity creativeEntity = new CreativeEntity();
-        BeanUtils.copyProperties(creativeDTO, creativeEntity);
-        getMongoTemplate().insert(creativeEntity, MongoEntityConstants.TBL_CREATIVE);
-    }
 
     public void insertAll(List<CreativeDTO> creativeDTOList) {
         List<CreativeEntity> creativeEntityList = ObjectUtils.convert(creativeDTOList, CreativeEntity.class);
@@ -406,8 +402,10 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     private CreativeDTO wrapperObject(CreativeEntity entity) {
-        CreativeDTO dto = new CreativeDTO();
-        BeanUtils.copyProperties(entity, dto);
+        CreativeDTO dto = null;
+        if (entity != null) {
+            BeanUtils.copyProperties(entity, dto);
+        }
         return dto;
     }
 }

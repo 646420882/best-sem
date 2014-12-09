@@ -2,12 +2,11 @@ package com.perfect.dao.keyword;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.backup.KeyWordBackUpDTO;
+import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.paging.PaginationParam;
 
-import javax.management.Query;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +87,7 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     List<KeywordDTO> findByIds(List<Long> ids, PaginationParam... param);
 
-    void update(KeywordDTO keywordDTO, KeyWordBackUpDTO keyWordBackUpDTO);
+    void update(KeywordDTO keywordDTO, KeywordBackUpDTO keywordBackUpDTO);
 
     void softDelete(Long id);
 

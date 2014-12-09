@@ -12,7 +12,7 @@ import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dao.monitoring.MonitoringDao;
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.backup.KeyWordBackUpDTO;
+import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
@@ -23,8 +23,6 @@ import com.perfect.service.AssistantKeywordService;
 import com.perfect.service.KeyWordBackUpService;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -157,7 +155,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
             for (KeywordInfoDTO dto : updateDtos) {
                 KeywordDTO keywordDTO = dto.getObject();
-                KeyWordBackUpDTO backUpEntity = new KeyWordBackUpDTO();
+                KeywordBackUpDTO backUpEntity = new KeywordBackUpDTO();
                 KeywordDTO sourceKeywordEntity = keywordDAO.findByObjectId(keywordDTO.getId());
                 BeanUtils.copyProperties(sourceKeywordEntity, backUpEntity);
                 keywordDAO.update(keywordDTO, backUpEntity);
@@ -175,7 +173,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             keywordDAO.insertAll(list);
 
             //开始备份需要备份的关键词
-            List<KeyWordBackUpDTO> keyWordBackUpEntities = copyKeywordEntityToKeywordBack(keywordBackups);
+            List<KeywordBackUpDTO> keyWordBackUpEntities = copyKeywordEntityToKeywordBack(keywordBackups);
             keyWordBackUpService.myInsertAll(keyWordBackUpEntities);
             keywordDAO.save(getKwdListByDTO(updateDtos));
         }
@@ -236,10 +234,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * @param list
      * @return
      */
-    private List<KeyWordBackUpDTO> copyKeywordEntityToKeywordBack(List<KeywordDTO> list) {
-        List<KeyWordBackUpDTO> backList = new ArrayList<>();
+    private List<KeywordBackUpDTO> copyKeywordEntityToKeywordBack(List<KeywordDTO> list) {
+        List<KeywordBackUpDTO> backList = new ArrayList<>();
         for (KeywordDTO kwd : list) {
-            KeyWordBackUpDTO kwdBack = new KeyWordBackUpDTO();
+            KeywordBackUpDTO kwdBack = new KeywordBackUpDTO();
             kwdBack.setId(kwd.getId());
             kwdBack.setKeywordId(kwd.getKeywordId());
             kwdBack.setAdgroupId(kwd.getAdgroupId());
@@ -410,8 +408,8 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         } else {
             newKeywordDTO = keywordDAO.findOne(kwd.getKeywordId());
         }
-        KeyWordBackUpDTO keyWordBackUpDTO = new KeyWordBackUpDTO();
-        BeanUtils.copyProperties(newKeywordDTO, keyWordBackUpDTO);
+        KeywordBackUpDTO keywordBackUpDTO = new KeywordBackUpDTO();
+        BeanUtils.copyProperties(newKeywordDTO, keywordBackUpDTO);
 
         if (newKeywordDTO.getKeywordId() == null) {
             newKeywordDTO.setLocalStatus(1);
@@ -437,7 +435,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             newKeywordDTO.setPause(kwd.getPause());
         }
 
-        keywordDAO.update(newKeywordDTO, keyWordBackUpDTO);
+        keywordDAO.update(newKeywordDTO, keywordBackUpDTO);
         return newKeywordDTO;
     }
 

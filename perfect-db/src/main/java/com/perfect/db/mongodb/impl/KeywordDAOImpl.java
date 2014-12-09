@@ -4,17 +4,17 @@ import com.google.common.collect.Lists;
 import com.perfect.commons.constants.LogStatusConstant;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
-import com.perfect.dao.keyword.KeyWordBackUpDAO;
+import com.perfect.dao.keyword.KeywordBackUpDAO;
 import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dao.sys.LogDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.db.mongodb.utils.PageParamUtils;
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.backup.KeyWordBackUpDTO;
+import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
-import com.perfect.entity.backup.KeyWordBackUpEntity;
+import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.Pager;
@@ -51,7 +51,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     private LogDAO logDao;
 
     @Resource
-    private KeyWordBackUpDAO keyWordBackUpDAO;
+    private KeywordBackUpDAO keywordBackUpDAO;
 
     @Override
     public String getId() {
@@ -475,7 +475,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
 
 
     //xj
-    public void update(KeywordDTO keywordDTO, KeyWordBackUpDTO keyWordBackUpDTO) {
+    public void update(KeywordDTO keywordDTO, KeywordBackUpDTO keywordBackUpDTO) {
         Long id = keywordDTO.getKeywordId();
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(keywordDTO.getId()));
@@ -502,9 +502,9 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             e.printStackTrace();
         }
         getMongoTemplate().updateFirst(query, update, getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
-        KeyWordBackUpDTO _keyWordBackUpDTO = keyWordBackUpDAO.findByObjectId(keywordDTO.getId());
-        if (_keyWordBackUpDTO == null && keywordDTO.getLocalStatus() == 2) {
-            KeyWordBackUpEntity backUpEntity = ObjectUtils.convert(keyWordBackUpDTO, KeyWordBackUpEntity.class);
+        KeywordBackUpDTO _keywordBackUpDTO = keywordBackUpDAO.findByObjectId(keywordDTO.getId());
+        if (_keywordBackUpDTO == null && keywordDTO.getLocalStatus() == 2) {
+            KeywordBackUpEntity backUpEntity = ObjectUtils.convert(keywordBackUpDTO, KeywordBackUpEntity.class);
             getMongoTemplate().insert(backUpEntity);
         }
         logDao.insertLog(id, LogStatusConstant.ENTITY_KEYWORD, LogStatusConstant.OPT_UPDATE);
