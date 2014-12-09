@@ -90,7 +90,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         }
 
         if (isUser) {
-            return "/home";
+            return "/bestIndex";
         } else if (isAdmin) {
             return "/admin/index";
         } else {

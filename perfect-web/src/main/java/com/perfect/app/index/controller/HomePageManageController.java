@@ -1,15 +1,15 @@
 package com.perfect.app.index.controller;
 
-import com.perfect.commons.web.WebContextSupport;
-import com.perfect.utils.MD5Utils;
 import com.perfect.commons.CustomUserDetailsService;
 import com.perfect.commons.message.mail.SendMail;
+import com.perfect.commons.web.WebContextSupport;
 import com.perfect.commons.web.WebUtils;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
-import com.perfect.utils.redis.JRedisUtils;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemUserService;
+import com.perfect.utils.MD5Utils;
+import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,6 +93,19 @@ public class HomePageManageController extends WebContextSupport {
         modelMap.put("currSystemUserName", userName);
         modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
         return new ModelAndView("homePage/home");
+    }
+
+    @RequestMapping(value = "/bestIndex", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView getBestIndexPage(HttpServletRequest request, ModelMap modelMap) {
+        String userName = WebUtils.getUserName(request);
+        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+        if (systemUserDTO == null) {
+            return new ModelAndView("redirect:/logout");
+        }
+
+        modelMap.put("currSystemUserName", userName);
+        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
+        return new ModelAndView("bestPage/bestIndex");
     }
 
     /**
