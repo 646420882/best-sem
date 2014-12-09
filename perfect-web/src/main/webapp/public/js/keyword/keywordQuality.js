@@ -43,6 +43,11 @@ var iframeLoad = function () {
 //关键词质量度数据加载
 var loadKeywordQualityData = function () {
 
+    var qtrs = $("#keywordQualityTab").find("tr");
+    for (var i = 1, l = qtrs.length - 1; i < l; i++) {
+        qtrs.eq(i).hide();
+    }
+
     $.ajax({
         url: "/keywordQuality/list",
         dataType: "json",
@@ -75,6 +80,8 @@ var loadKeywordQualityData = function () {
 
             var reports = data.report;
             if (reports != null && reports.length > 0) {
+                var map = new Map();
+
                 for (var i = 0; i <= 10; i++) {
                     if (reports[i] == undefined) {
                         continue;
@@ -93,7 +100,16 @@ var loadKeywordQualityData = function () {
                             "<li>" + item.pcCpc + "</li><li>" + item.pcConversion + "</li></ul></div>";
                         $("#keywordQuality" + grade).append(_div);
                     });
+                    map.put((i + 1) * 2, i);
                 }
+
+                for (var _k = 1, l = qtrs.length - 1; _k < l; _k++) {
+                    if (map.containsKey(_k)) {
+                        qtrs.eq(_k - 1).show();
+                        qtrs.eq(_k).show();
+                    }
+                }
+
             }
         }
     });
