@@ -29,6 +29,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -134,7 +135,11 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
      */
     @Override
     public List<BaiduAccountInfoDTO> getBaiduAccountItems(String currUserName) {
-        return systemUserDAO.findByUserName(currUserName).getBaiduAccounts();
+        SystemUserDTO systemUserDTO = systemUserDAO.findByUserName(currUserName);
+        if (systemUserDTO != null) {
+            return systemUserDTO.getBaiduAccounts();
+        }
+        return Collections.emptyList();
     }
 
     @Override
