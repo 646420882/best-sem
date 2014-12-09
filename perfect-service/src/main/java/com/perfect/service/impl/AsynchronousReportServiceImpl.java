@@ -71,7 +71,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
@@ -117,7 +117,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
@@ -162,7 +162,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0  || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
+            if (systemUser.getState() == 0  || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
@@ -209,7 +209,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
@@ -255,7 +255,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
@@ -301,7 +301,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1) {
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {

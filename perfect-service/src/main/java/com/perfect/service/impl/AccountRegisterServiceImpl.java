@@ -33,7 +33,6 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
         systemUserDTO.setCompanyName(company);
         systemUserDTO.setEmail(email);
         systemUserDTO.setState(0);
-        systemUserDTO.setAccountState(1);
         int returnState;
         SystemUserDTO user = accountRegisterDAO.getAccount(account);
         if (user == null) {
