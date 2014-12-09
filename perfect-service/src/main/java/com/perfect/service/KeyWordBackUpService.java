@@ -9,7 +9,7 @@ import java.util.List;
  * Created by XiaoWei on 2014/9/9.
  * 2014-11-28 refactor
  */
-public interface KeyWordBackUpService {
+public interface KeywordBackUpService {
 
     KeywordDTO reducUpdate(String id);
 

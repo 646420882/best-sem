@@ -16,11 +16,10 @@ import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.keyword.SearchwordReportDTO;
 import com.perfect.service.BaiduAccountService;
+import com.perfect.service.KeywordBackUpService;
 import com.perfect.service.SysRegionalService;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
-import com.perfect.service.KeyWordBackUpService;
-import com.perfect.utils.RegionalCodeUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,7 +48,7 @@ public class AssistantKeywordController extends WebContextSupport{
     private AssistantKeywordService assistantKeywordService;
 
     @Resource
-    private KeyWordBackUpService keyWordBackUpService;
+    private KeywordBackUpService keywordBackUpService;
 
     @Resource
     private BaiduAccountService baiduAccountService;
@@ -249,7 +248,7 @@ public class AssistantKeywordController extends WebContextSupport{
      */
     @RequestMapping(value = "assistantKeyword/reducUpdate", method = {RequestMethod.GET, RequestMethod.POST})
     public void reducUpdate(HttpServletResponse response, String id) {
-        KeywordDTO keywordDTO = keyWordBackUpService.reducUpdate(id);
+        KeywordDTO keywordDTO = keywordBackUpService.reducUpdate(id);
         writeJson(keywordDTO, response);
     }
 
@@ -261,7 +260,7 @@ public class AssistantKeywordController extends WebContextSupport{
      */
     @RequestMapping(value = "assistantKeyword/reducDel", method = {RequestMethod.GET, RequestMethod.POST})
     public void reducDel(HttpServletResponse response, String id) {
-        keyWordBackUpService.reducDel(id);
+        keywordBackUpService.reducDel(id);
         writeJson(RES_SUCCESS, response);
     }
 

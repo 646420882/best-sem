@@ -4,7 +4,7 @@ import com.perfect.dao.keyword.KeywordBackUpDAO;
 import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.service.KeyWordBackUpService;
+import com.perfect.service.KeywordBackUpService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * 2014-11-26 refactor
  */
 @Service
-public class KeyWordBackUpServiceImpl implements KeyWordBackUpService {
+public class KeywordBackUpServiceImpl implements KeywordBackUpService {
 
     @Resource
      private KeywordBackUpDAO keywordBackUpDAO;

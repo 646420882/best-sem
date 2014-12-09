@@ -20,7 +20,7 @@ import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.service.AssistantKeywordService;
-import com.perfect.service.KeyWordBackUpService;
+import com.perfect.service.KeywordBackUpService;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -54,7 +54,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     private KeywordDAO keywordDAO;
 
     @Resource
-    private KeyWordBackUpService keyWordBackUpService;
+    private KeywordBackUpService keywordBackUpService;
 
     @Resource
     private MonitoringDao monitoringDao;
@@ -174,7 +174,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
             //开始备份需要备份的关键词
             List<KeywordBackUpDTO> keyWordBackUpEntities = copyKeywordEntityToKeywordBack(keywordBackups);
-            keyWordBackUpService.myInsertAll(keyWordBackUpEntities);
+            keywordBackUpService.myInsertAll(keyWordBackUpEntities);
             keywordDAO.save(getKwdListByDTO(updateDtos));
         }
     }

@@ -55,9 +55,8 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     private AdgroupBackUpDAO adgroupBackUpDAO;
 
     public List<Long> getAllAdgroupId() {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new BasicQuery("{}", "{" + MongoEntityConstants.ADGROUP_ID + " : 1}");
-        List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<Long> adgroupIds = new ArrayList<>(list.size());
         for (AdgroupEntity type : list)
             adgroupIds.add(type.getAdgroupId());
@@ -65,10 +64,9 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     }
 
     public List<Long> getAdgroupIdByCampaignId(Long campaignId) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new BasicQuery("{}", "{" + MongoEntityConstants.ADGROUP_ID + " : 1}");
         query.addCriteria(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(campaignId));
-        List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<Long> adgroupIds = new ArrayList<>(list.size());
         for (AdgroupEntity type : list)
             adgroupIds.add(type.getAdgroupId());
@@ -78,18 +76,16 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     //xj根据单元
     public AdgroupDTO getByCampaignIdAndName(Long campaignId, String name) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        List<AdgroupEntity> adgroupEntityList = mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(MongoEntityConstants.CAMPAIGN_ID).is(campaignId).and("name").is(name)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> adgroupEntityList = getMongoTemplate().find(new Query(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(MongoEntityConstants.CAMPAIGN_ID).is(campaignId).and("name").is(name)), getEntityClass());
         AdgroupEntity adgroupEntity = adgroupEntityList.size() == 0 ? null : adgroupEntityList.get(0);
         return wrapperObject(adgroupEntity);
     }
 
     @Override
     public List<String> getAdgroupIdByCampaignId(String campaignId) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new BasicQuery("{}", "{_id : 1}");
         query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(campaignId));
-        List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<String> adgroupIds = new ArrayList<>(list.size());
         for (AdgroupEntity type : list)
             adgroupIds.add(type.getId());
@@ -98,15 +94,14 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     @Override
     public List<AdgroupDTO> findByCampaignOId(String id) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        return mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(id)), getDTOClass(), MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> adgroupEntities= getMongoTemplate().find(new Query(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(id)), getEntityClass());
+        return wrapperList(adgroupEntities);
     }
 
     public List<String> getObjAdgroupIdByCampaignId(List<String> cids) {
-        MongoTemplate mongoTemplate = getMongoTemplate();
         Query query = new BasicQuery("{}", "{" + MongoEntityConstants.OBJ_ADGROUP_ID + " : 1}");
         query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).in(cids));
-        List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<String> adgroupIds = new ArrayList<>(list.size());
         for (AdgroupEntity type : list)
             adgroupIds.add(type.getId());
@@ -115,7 +110,6 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
 
     public List<AdgroupDTO> getAdgroupByCampaignId(Long campaignId, Map<String, Object> params, int skip, int limit) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
         Criteria criteria = Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(campaignId);
         if (params != null && params.size() > 0) {
@@ -124,38 +118,29 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         }
         query.addCriteria(criteria);
         query.with(new PageRequest(skip, limit));
-        List<AdgroupEntity> _list = mongoTemplate.find(query, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> _list = getMongoTemplate().find(query, getEntityClass());
         return wrapperList(_list);
     }
 
 
     public List<AdgroupDTO> getAdgroupByCampaignObjId(String campaignObjId) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        return mongoTemplate.find(Query.query(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(campaignObjId)), getDTOClass(), MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> adgroupEntities= getMongoTemplate().find(Query.query(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(campaignObjId)), getEntityClass());
+        return wrapperList(adgroupEntities);
     }
 
     @Override
     public List<AdgroupDTO> getAdgroupByCampaignId(Long campaignId) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        List<AdgroupEntity> adgroupDTOList = mongoTemplate.find(Query.query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(campaignId)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> adgroupDTOList = getMongoTemplate().find(Query.query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(campaignId)), getEntityClass());
         return wrapperList(adgroupDTOList);
     }
 
-    @Override
-    public Class<AdgroupDTO> getDTOClass() {
-        return AdgroupDTO.class;
-    }
-
     public AdgroupDTO findOne(Long adgroupId) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        AdgroupEntity _adgroupEntity = mongoTemplate.findOne(
-                new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        AdgroupEntity _adgroupEntity = getMongoTemplate().findOne(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), getEntityClass());
         return wrapperObject(_adgroupEntity);
     }
 
     public List<AdgroupDTO> findAll() {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        List<AdgroupEntity> adgroupEntities = mongoTemplate.find(Query.query(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId())), AdgroupEntity.class);
+        List<AdgroupEntity> adgroupEntities = getMongoTemplate().find(Query.query(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
         return wrapperList(adgroupEntities);
     }
 
@@ -173,7 +158,6 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
      * @return
      */
     public List<AdgroupDTO> find(Map<String, Object> params, int skip, int limit) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
         if (params != null && params.size() > 0) {
             Criteria criteria = new Criteria();
@@ -183,42 +167,32 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
             query.addCriteria(criteria);
         }
         query.with(new PageRequest(skip, limit, new Sort(Sort.Direction.DESC, "price")));
-        List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<AdgroupEntity> list = getMongoTemplate().find(query, getEntityClass());
         return wrapperList(list);
     }
 
-    /**
-     * 条件查询
-     *
-     * @param query
-     * @return
-     */
-    public List<AdgroupDTO> findByQuery(Query query) {
-        List<AdgroupEntity> list = getMongoTemplate().find(query, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
-        return wrapperList(list);
-    }
 
     @Override
     public List<AdgroupDTO> findByCampaignId(Long cid) {
-        return getMongoTemplate().find(Query.query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(cid)), getDTOClass());
+        List<AdgroupEntity> adgroupEntities= getMongoTemplate().find(Query.query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(cid)), getEntityClass());
+        return wrapperList(adgroupEntities);
     }
 
     @Override
     public List<AdgroupDTO> findIdByCampaignId(Long cid) {
         Query query = new BasicQuery("{}", "{ " + MongoEntityConstants.ADGROUP_ID + " : 1 }");
-        List<AdgroupEntity> list = getMongoTemplate().find(query.addCriteria(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(cid)), AdgroupEntity.class);
+        List<AdgroupEntity> list = getMongoTemplate().find(query.addCriteria(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(cid)), getEntityClass());
         return wrapperList(list);
     }
 
     @Override
     public AdgroupDTO findByObjId(String oid) {
-        AdgroupEntity adgroupEntity = getMongoTemplate().findOne(Query.query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(oid)), AdgroupEntity.class);
+        AdgroupEntity adgroupEntity = getMongoTemplate().findOne(Query.query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(oid)), getEntityClass());
         return wrapperObject(adgroupEntity);
     }
 
     @Override
     public AdgroupDTO fndEntity(Map<String, Object> params) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query q = new Query();
         Criteria c = new Criteria();
         if (params != null && params.size() > 0) {
@@ -227,16 +201,15 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
             }
         }
         q.addCriteria(c);
-        AdgroupEntity adgroupEntity = mongoTemplate.findOne(q, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        AdgroupEntity adgroupEntity = getMongoTemplate().findOne(q, getEntityClass());
         return wrapperObject(adgroupEntity);
     }
 
     @Override
     public Object insertOutId(AdgroupDTO adgroupEntity) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         AdgroupEntity adgroupEntityInsert = new AdgroupEntity();
         BeanUtils.copyProperties(adgroupEntity, adgroupEntityInsert);
-        mongoTemplate.insert(adgroupEntityInsert, MongoEntityConstants.TBL_ADGROUP);
+        getMongoTemplate().insert(adgroupEntityInsert);
         logDAO.insertLog(adgroupEntity.getId(), LogStatusConstant.ENTITY_ADGROUP);
         return adgroupEntityInsert.getId();
     }
@@ -248,21 +221,19 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
      */
     @Override
     public void deleteByObjId(final String oid) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(Query.query(Criteria.where(get_id()).is(oid)), AdgroupEntity.class);
+        getMongoTemplate().remove(Query.query(Criteria.where(get_id()).is(oid)), getEntityClass());
         deleteSubOid(Arrays.asList(oid));
 
     }
 
     @Override
     public void deleteByObjId(Long adgroupId) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Update update = new Update();
         update.set("ls", "");
-        mongoTemplate.updateFirst(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), update, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), update, getEntityClass());
         deleteLinked(adgroupId);
         //以前是直接删除拉取到本地的数据，是硬删除，现在改为软删除，以便以后还原操作
-//        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)),AdgroupEntity.class,MongoEntityConstants.TBL_ADGROUP);
+//        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)),getEntityClass(),MongoEntityConstants.TBL_ADGROUP);
         logDAO.insertLog(adgroupId, LogStatusConstant.ENTITY_ADGROUP, LogStatusConstant.OPT_DELETE);
     }
 
@@ -275,7 +246,6 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     @Override
 
     public void updateByObjId(AdgroupDTO adgroupEntity) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Update up = new Update();
         up.set("name", adgroupEntity.getAdgroupName());
         up.set("max", adgroupEntity.getMaxPrice());
@@ -284,14 +254,13 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         up.set("p", adgroupEntity.getPause());
         up.set("s", adgroupEntity.getStatus());
         up.set("m", adgroupEntity.getMib());
-        mongoTemplate.updateFirst(new Query(Criteria.where(get_id()).is(adgroupEntity.getId())), up, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        getMongoTemplate().updateFirst(new Query(Criteria.where(get_id()).is(adgroupEntity.getId())), up, getEntityClass());
         logDAO.insertLog(adgroupEntity.getId(), LogStatusConstant.ENTITY_ADGROUP);
     }
 
 
     @Override
     public void update(AdgroupDTO adgroupDTO, AdgroupDTO bakadgroupDTO) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Long id = adgroupDTO.getAdgroupId();
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(id));
@@ -314,36 +283,34 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        mongoTemplate.updateFirst(query, update, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        getMongoTemplate().updateFirst(query, update, getEntityClass());
         AdgroupBackupDTO adgroupBackupDTOFind = adgroupBackUpDAO.findOne(adgroupDTO.getId());
         if (adgroupBackupDTOFind.getId() == null) {
             AdgroupBackUpEntity adgroupBakcUpEntity = new AdgroupBackUpEntity();
             BeanUtils.copyProperties(bakadgroupDTO, adgroupBakcUpEntity);
-            getMongoTemplate().insert(adgroupBakcUpEntity, MongoEntityConstants.BAK_ADGROUP);
+            getMongoTemplate().insert(adgroupBakcUpEntity);
         }
         logDAO.insertLog(id, LogStatusConstant.ENTITY_ADGROUP, LogStatusConstant.OPT_UPDATE);
     }
 
     @Override
     public void insertReBack(AdgroupDTO adgroupDTO) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(get_id()).is(adgroupDTO.getId())), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        getMongoTemplate().remove(new Query(Criteria.where(get_id()).is(adgroupDTO.getId())), getEntityClass());
         AdgroupEntity adgroupEntity = new AdgroupEntity();
         BeanUtils.copyProperties(adgroupDTO, adgroupEntity);
-        getMongoTemplate().insert(adgroupEntity, MongoEntityConstants.TBL_ADGROUP);
+        getMongoTemplate().insert(adgroupEntity);
     }
 
     @Override
     public void delBack(Long oid) {
         Update up = new Update();
         up.set("ls", "");
-        BaseMongoTemplate.getUserMongo().updateFirst(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(oid)), up, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(oid)), up, getEntityClass());
         subdelBack(oid);
     }
 
     @Override
     public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query q = new Query();
         Criteria c = new Criteria();
         if (params.size() > 0 || params != null) {
@@ -352,19 +319,18 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
             }
         }
         q.addCriteria(c);
-        Integer totalCount = getTotalCount(q, AdgroupEntity.class);
+        Integer totalCount = getTotalCount(q, getEntityClass());
         PagerInfo p = new PagerInfo(nowPage, pageSize, totalCount);
         q.skip(p.getFirstStation());
         q.limit(p.getPageSize());
-        List<AdgroupEntity> adgroupEntityList = mongoTemplate.find(q, AdgroupEntity.class);
-        List<AdgroupDTO> returnList = ObjectUtils.convert(adgroupEntityList, AdgroupDTO.class);
+        List<AdgroupEntity> adgroupEntityList = getMongoTemplate().find(q, getEntityClass());
+        List<AdgroupDTO> returnList = wrapperList(adgroupEntityList);
         p.setList(returnList);
         return p;
     }
 
     private int getTotalCount(Query q, Class<?> cls) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        return (int) mongoTemplate.count(q, cls);
+        return (int) getMongoTemplate().count(q, cls);
     }
 
     public void insert(AdgroupDTO adgroupDTO) {
@@ -375,22 +341,19 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     @Override
     public List<AdgroupDTO> findByTwoParams(Long cid, Long accountId) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Query query = new Query();
         query.addCriteria(Criteria.where(CAMPAIGN_ID).is(cid).and(ACCOUNT_ID).is(accountId));
-        List<AdgroupEntity> list = mongoTemplate.find(query, AdgroupEntity.class);
+        List<AdgroupEntity> list = getMongoTemplate().find(query, getEntityClass());
         return wrapperList(list);
     }
 
     public void insertAll(List<AdgroupDTO> adgroupDTOs) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        List<AdgroupEntity> insertList = ObjectUtils.convert(adgroupDTOs, AdgroupEntity.class);
-        mongoTemplate.insertAll(insertList);
+        List<AdgroupEntity> insertList = ObjectUtils.convert(adgroupDTOs, getEntityClass());
+        getMongoTemplate().insertAll(insertList);
     }
 
     @SuppressWarnings("unchecked")
     public void update(AdgroupDTO adgroupDTO) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         Long id = adgroupDTO.getAdgroupId();
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(id));
@@ -408,31 +371,24 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
                 Object after = method.invoke(adgroupDTO);
                 if (after != null) {
                     update.set(field.getName(), after);
-                    Object before = method.invoke(findOne(id));
                 }
             }
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        mongoTemplate.updateFirst(query, update, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        getMongoTemplate().updateFirst(query, update, getEntityClass());
     }
 
-    public void update(List<AdgroupDTO> adgroupDTOs) {
-        for (AdgroupDTO dtos : adgroupDTOs)
-            update(dtos);
-    }
 
     public void deleteById(final Long adgroupId) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), getEntityClass());
         deleteSub(new ArrayList<Long>(1) {{
             add(adgroupId);
         }});
     }
 
     public int deleteByIds(List<Long> adgroupIds) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        WriteResult writeResult = mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        WriteResult writeResult = getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)), getEntityClass());
         deleteSub(adgroupIds);
         return writeResult.getN();
     }
@@ -443,52 +399,10 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         return AdgroupEntity.class;
     }
 
-    public boolean delete(AdgroupDTO adgroupDTO) {
-        deleteById(adgroupDTO.getAdgroupId());
-        return false;
+    @Override
+    public Class<AdgroupDTO> getDTOClass() {
+        return AdgroupDTO.class;
     }
-
-    public boolean deleteAll() {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.dropCollection(AdgroupEntity.class);
-        deleteSub(getAllAdgroupId());
-        return false;
-    }
-
-
-//    private Update getUpdate(AdgroupEntity adgroupEntity) {
-//        Update update = new Update();
-//
-//        if (adgroupEntity.getAdgroupName() != null) {
-//            update = update.addToSet(ADGROUP_NAME, adgroupEntity.getAdgroupName());
-//        }
-//
-//        if (adgroupEntity.getCampaignId() != null) {
-//            update = update.addToSet(CAMPAIGN_ID, adgroupEntity.getCampaignId());
-//        }
-//
-//        if (adgroupEntity.getPause() != null) {
-//            update = update.addToSet(PAUSE, adgroupEntity.getPause());
-//        }
-//
-//        if (adgroupEntity.getExactNegativeWords() != null) {
-//            update = update.addToSet(EXA_NEG_WORDS, adgroupEntity.getExactNegativeWords());
-//        }
-//
-//        if (adgroupEntity.getNegativeWords() != null) {
-//            update = update.addToSet(NEG_WORDS, adgroupEntity.getNegativeWords());
-//        }
-//
-//        if (adgroupEntity.getReserved() != null) {
-//            update = update.addToSet(RESERVED, adgroupEntity.getReserved());
-//        }
-//
-//        if (adgroupEntity.getMaxPrice() != null) {
-//            update = update.addToSet(MAX_PRICE, adgroupEntity.getMaxPrice());
-//        }
-//
-//        return update;
-//    }
 
     /**
      * 根据计划id级联软删除
@@ -500,9 +414,9 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         Update up = new Update();
         up.set("ls", 4);
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.updateMulti(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(agid)), up, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
-        mongoTemplate.updateMulti(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(agid)), up, KeywordEntity.class, MongoEntityConstants.TBL_KEYWORD);
-        mongoTemplate.updateMulti(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(agid)), up, CreativeEntity.class, MongoEntityConstants.TBL_CREATIVE);
+        mongoTemplate.updateMulti(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(agid)), up, getEntityClass());
+        mongoTemplate.updateMulti(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(agid)), up, KeywordEntity.class);
+        mongoTemplate.updateMulti(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(agid)), up, CreativeEntity.class);
     }
 
     private void deleteSub(List<Long> adgroupIds) {
