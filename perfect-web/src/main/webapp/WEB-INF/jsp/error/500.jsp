@@ -7,13 +7,14 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
+    <meta charset="UTF-8"/>
     <title>500 error</title>
 </head>
 <body>
 
-<h3 align="center" style="color: #f00">500</h3>
+<h2 align="center" style="color: #f00">500</h2>
 
 </body>
 </html>

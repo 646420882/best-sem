@@ -9,8 +9,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>Twurn | The page you were looking for doesn't exist (404)</title>
+    <meta charset="UTF-8"/>
+    <title>The page you were looking for doesn't exist (404)</title>
     <style type="text/css">
         body {
             background-color: #efefef;

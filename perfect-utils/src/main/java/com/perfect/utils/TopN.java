@@ -76,7 +76,7 @@ public class TopN {
     }
 
     /**
-     * 自定义快速排序实现
+     * custom quickSort
      *
      * @param arr
      * @param low
@@ -146,7 +146,8 @@ public class TopN {
             if (l >= n) {
                 topNData = (T[]) Array.newInstance(ts.getClass().getComponentType(), n);
                 System.arraycopy(ts, 0, topNData, 0, n);
-            } else topNData = ts;
+            } else
+                topNData = ts;
 
             return topNData;
         } catch (NoSuchMethodException e) {
@@ -156,7 +157,7 @@ public class TopN {
     }
 
     protected static class Comparators {
-        public static <T> Comparator<T> getComparator(Method _method, int sort) {
+        protected static <T> Comparator<T> getComparator(Method _method, int sort) {
             return (t1, t2) -> {
                 try {
                     int compareResult = ((Comparable) _method.invoke(t1)).compareTo(_method.invoke(t2));
