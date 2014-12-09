@@ -69,9 +69,16 @@ public class RegionalCodeDAOImpl extends AbstractSysBaseDAOImpl<RegionalCodeDTO,
 
     @Override
     public RegionalCodeDTO getRegionalByRegionName(String regionalName) {
-        String fideName = FIDE_REGIONID;
-        RegionalCodeEntity entity = getSysMongoTemplate().findOne(new Query(Criteria.where(fideName).is(regionalName).and(FIDE_REGIONNAME).is("")), getEntityClass(), TBL_SYS_REGIONAL);
-        return ObjectUtils.convert(entity,RegionalCodeDTO.class);
+        String provinceName = FIDE_PROVINCENAME;
+        RegionalCodeEntity entityProvince = getSysMongoTemplate().findOne(new Query(Criteria.where(provinceName).is(regionalName)), getEntityClass());
+        if(entityProvince!=null){
+            return ObjectUtils.convert(entityProvince,RegionalCodeDTO.class);
+        }
+        else {
+            String rName = FIDE_REGIONNAME;
+            RegionalCodeEntity entityRegional = getSysMongoTemplate().findOne(new Query(Criteria.where(rName).is(regionalName)), getEntityClass());
+            return ObjectUtils.convert(entityRegional,RegionalCodeDTO.class);
+        }
     }
 
 

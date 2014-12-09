@@ -351,9 +351,9 @@ function nextStep() {
                 var c0 = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";
                 var c1 = txtSize[j].split(",")[1] != undefined ? txtSize[j].split(",")[1] : "";
                 var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "0.0";
-                var c4_pause = "停用";
+                var c4_pause = "暂停";
                 if (c1 != "") {
-                    c4_pause = c1 == "停用" ? "停用" : "启用";
+                    c4_pause = c1 == "暂停" ? "暂停" : "启用";
                 }
                 var _tbody = "<tr>" +
                         "<td>" + names[i] + "<input type='hidden' value=" + ids[i] + "></td>" +

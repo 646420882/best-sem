@@ -28,12 +28,13 @@
                             <h3>帐户全景</h3>
                         </a>
                     </li>
-                    <li>
+
+                    <%--<li>
                         <a href="/assistant/index">
                             <span class="list_2"></span>
                             <h3>推广助手</h3>
                         </a>
-                    </li>
+                    </li>--%>
                     <li>
                         <a href="${pageContext.request.contextPath}/keyword_group"><span class="list_3"></span>
 
@@ -132,8 +133,8 @@
             }
         });
         $(".nav_input1").click(function () {
-             $(this).parent().removeAttr('href');
-             $(".nav_input1").attr('title', "点击隐藏导航");
+            $(this).parent().removeAttr('href');
+            $(".nav_input1").attr('title', "点击隐藏导航");
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").show();
                 $(".tips").css("position", "relative");

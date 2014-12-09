@@ -58,7 +58,6 @@ public class AssistantKeywordController extends WebContextSupport{
 
 
 
-
     /**
      * 批量添加或者修改关键词
      */
@@ -311,28 +310,26 @@ public class AssistantKeywordController extends WebContextSupport{
         }
 
         List<SearchwordReportDTO> dtoList = new ArrayList<>();
-        for (RealTimeQueryResultType resultType : resultList) {
-            SearchwordReportDTO searchwordReportDTO = new SearchwordReportDTO();
-            searchwordReportDTO.setKeyword(resultType.getQueryInfo(3));
-            searchwordReportDTO.setSearchWord(resultType.getQuery());
-            searchwordReportDTO.setClick(resultType.getKPI(0));
-            searchwordReportDTO.setImpression(resultType.getKPI(1));
-            searchwordReportDTO.setSearchEngine(resultType.getQueryInfo(8));
-            searchwordReportDTO.setAdgroupName(resultType.getQueryInfo(2));
-            searchwordReportDTO.setCampaignName(resultType.getQueryInfo(1));
-            searchwordReportDTO.setCreateTitle(resultType.getQueryInfo(4));
-            searchwordReportDTO.setCreateDesc1(resultType.getQueryInfo(5));
-            searchwordReportDTO.setCreateDesc2(resultType.getQueryInfo(6));
-            searchwordReportDTO.setDate(resultType.getDate());
-            searchwordReportDTO.setParseExtent(resultType.getQueryInfo(9));
-            dtoList.add(searchwordReportDTO);
+        if (resultList.size() > 0) {
+            for (RealTimeQueryResultType resultType : resultList) {
+                SearchwordReportDTO searchwordReportDTO = new SearchwordReportDTO();
+                searchwordReportDTO.setKeyword(resultType.getQueryInfo(3));
+                searchwordReportDTO.setSearchWord(resultType.getQuery());
+                searchwordReportDTO.setClick(resultType.getKPI(0));
+                searchwordReportDTO.setImpression(resultType.getKPI(1));
+                searchwordReportDTO.setSearchEngine(resultType.getQueryInfo(8));
+                searchwordReportDTO.setAdgroupName(resultType.getQueryInfo(2));
+                searchwordReportDTO.setCampaignName(resultType.getQueryInfo(1));
+                searchwordReportDTO.setCreateTitle(resultType.getQueryInfo(4));
+                searchwordReportDTO.setCreateDesc1(resultType.getQueryInfo(5));
+                searchwordReportDTO.setCreateDesc2(resultType.getQueryInfo(6));
+                searchwordReportDTO.setDate(resultType.getDate());
+                searchwordReportDTO.setParseExtent(resultType.getQueryInfo(9));
+                dtoList.add(searchwordReportDTO);
+            }
         }
-
-
         writeJson(dtoList, response);
     }
-
-
     /**
      * 将搜索词报告中关键词添加到现登录的账户
      */
@@ -375,9 +372,10 @@ public class AssistantKeywordController extends WebContextSupport{
         writeJson(RES_SUCCESS, response);
     }
 
-
     public List<RealTimeQueryResultType> getSearchTermsReprot(BaiduAccountInfoDTO accountInfoDTO, Integer levelOfDetails, Date startDate, Date endDate, List<AttributeType> attributes, Integer device, Integer searchType) {
         DateFormat df = new SimpleDateFormat("hh:mm:ss");
+        CommonService commonService = BaiduServiceSupport.getCommonService(accountInfoDTO.getBaiduUserName(), accountInfoDTO.getBaiduPassword(), accountInfoDTO.getToken());
+        List<RealTimeQueryResultType> resList=new ArrayList<>();
         try {
             Date baseDate = df.parse("11:51:00");
             Calendar beforeYesterDay = Calendar.getInstance();
@@ -396,8 +394,6 @@ public class AssistantKeywordController extends WebContextSupport{
                     startDate = yesterDay.getTime();
                 }
             }
-
-
             if (df.parse(df.format(endDate)).getTime() < baseDate.getTime()) {
                 //若开始日期大于了前天，就将开始日期置为前天
                 if (endDate.getTime() > beforeYesterDay.getTime().getTime()) {
@@ -408,45 +404,34 @@ public class AssistantKeywordController extends WebContextSupport{
                     endDate = yesterDay.getTime();
                 }
             }
+            ReportService  reportService = commonService.getService(ReportService.class);
+            //设置请求参数
+            RealTimeQueryRequestType realTimeQueryRequestType = new RealTimeQueryRequestType();
+            String[] returnFileds = new String[]{"click", "impression"};
+            realTimeQueryRequestType.setPerformanceData(Arrays.asList(returnFileds));
+            realTimeQueryRequestType.setLevelOfDetails(levelOfDetails);
+            realTimeQueryRequestType.setStartDate(startDate);
+            realTimeQueryRequestType.setEndDate(endDate);
+            realTimeQueryRequestType.setAttributes(attributes);
+            realTimeQueryRequestType.setDevice(device);
+            realTimeQueryRequestType.setReportType(6);//报告类型
+            realTimeQueryRequestType.setNumber(20);//获取数据的条数
 
+            //创建请求
+            GetRealTimeQueryDataRequest getRealTimeQueryDataRequest = new GetRealTimeQueryDataRequest();
+            getRealTimeQueryDataRequest.setRealTimeQueryRequestTypes(realTimeQueryRequestType);
+            GetRealTimeQueryDataResponse response1 = reportService.getRealTimeQueryData(getRealTimeQueryDataRequest);
 
+            if (response1 == null) {
+                return new ArrayList<>();
+            } else {
+                resList= response1.getRealTimeQueryResultTypes();
+            }
+        } catch (ApiException e) {
+            e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        CommonService commonService = BaiduServiceSupport.getCommonService(accountInfoDTO.getBaiduUserName(), accountInfoDTO.getBaiduPassword(), accountInfoDTO.getToken());
-        ReportService reportService = null;
-        try {
-            reportService = commonService.getService(ReportService.class);
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-
-
-        //设置请求参数
-        RealTimeQueryRequestType realTimeQueryRequestType = new RealTimeQueryRequestType();
-        String[] returnFileds = new String[]{"click", "impression"};
-        realTimeQueryRequestType.setPerformanceData(Arrays.asList(returnFileds));
-        realTimeQueryRequestType.setLevelOfDetails(levelOfDetails);
-        realTimeQueryRequestType.setStartDate(startDate);
-        realTimeQueryRequestType.setEndDate(endDate);
-        realTimeQueryRequestType.setAttributes(attributes);
-        realTimeQueryRequestType.setDevice(device);
-        realTimeQueryRequestType.setReportType(6);//报告类型
-        realTimeQueryRequestType.setNumber(20);//获取数据的条数
-
-
-        //创建请求
-        GetRealTimeQueryDataRequest getRealTimeQueryDataRequest = new GetRealTimeQueryDataRequest();
-        getRealTimeQueryDataRequest.setRealTimeQueryRequestTypes(realTimeQueryRequestType);
-        GetRealTimeQueryDataResponse response1 = reportService.getRealTimeQueryData(getRealTimeQueryDataRequest);
-
-        if (response1 == null) {
-            return new ArrayList<>();
-        } else {
-            List<RealTimeQueryResultType> resList = response1.getRealTimeQueryResultTypes();
-            return resList;
-        }
+        return resList;
     }
-
 }

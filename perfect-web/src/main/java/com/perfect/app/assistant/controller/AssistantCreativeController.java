@@ -64,8 +64,8 @@ public class AssistantCreativeController extends WebContextSupport {
                     map.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
                     pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
                 } else {
-                map.put(MongoEntityConstants.ADGROUP_ID,aid);
-                pagerInfo = creativeService.findByPagerInfo(map,nowPage,pageSize);
+                    map.put(MongoEntityConstants.ADGROUP_ID,aid);
+                    pagerInfo = creativeService.findByPagerInfo(map,nowPage,pageSize);
                 }
             } else if (!cid.equals("") && aid.equals("")) {
                 List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignId(Long.parseLong(cid));
@@ -302,7 +302,7 @@ public class AssistantCreativeController extends WebContextSupport {
      */
     @RequestMapping(value = "/updateMulti")
     public ModelAndView convertMulti() {
-        return new ModelAndView("promotionAssistant/alert/publicUpdateMulti");
+        return new ModelAndView("promotionAssistant/alert/creativeMutli");
     }
 
     /**
@@ -362,7 +362,7 @@ public class AssistantCreativeController extends WebContextSupport {
                     creativeEntityFind.setPause(bol);
                     creativeEntityFind.setLocalStatus(1);
                     creativeService.updateByObjId(creativeEntityFind);
-                //如果已经是同步到本地的数据，则要执行备份操作，将这条数据备份到备份数据库中
+                    //如果已经是同步到本地的数据，则要执行备份操作，将这条数据备份到备份数据库中
                 } else {
                     creativeEntityFind = creativeService.findOne(creativeEntity.getCreativeId());
                     CreativeDTO creativeEntityBackUp = new CreativeDTO();
@@ -378,7 +378,7 @@ public class AssistantCreativeController extends WebContextSupport {
                     creativeEntityFind.setPause(bol);
                     creativeService.update(creativeEntityFind, creativeEntityBackUp);
                 }
-            //如果没有查到匹配的数据，则执行添加操作
+                //如果没有查到匹配的数据，则执行添加操作
             }else{
                 CreativeDTO creativeEntityInsert = new CreativeDTO();
                 creativeEntityInsert.setAccountId(AppContext.getAccountId());
@@ -431,12 +431,12 @@ public class AssistantCreativeController extends WebContextSupport {
         creativeTypes.setDevicePreference(1);
         CommonService commonService= BaiduServiceSupport.getCommonService(bad.getBaiduUserName(),bad.getBaiduPassword(),bad.getToken());
         try {
-           CreativeService service= commonService.getService(CreativeService.class);
+            CreativeService service= commonService.getService(CreativeService.class);
 
             AddCreativeRequest addCreativeRequest=new AddCreativeRequest();
             addCreativeRequest.setCreativeTypes(Arrays.asList(creativeTypes));
             AddCreativeResponse addCreativeResponse=  service.addCreative(addCreativeRequest);
-           CreativeType creativeTypeResponse= addCreativeResponse.getCreativeType(0);
+            CreativeType creativeTypeResponse= addCreativeResponse.getCreativeType(0);
             if (creativeTypeResponse.getCreativeId()!=0){
                 writeHtml(SUCCESS, response);
             }else{
@@ -452,7 +452,7 @@ public class AssistantCreativeController extends WebContextSupport {
     public ModelAndView getDomain(HttpServletResponse response){
         BaiduAccountInfoDTO baiduAccountInfoEntity=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
         if(baiduAccountInfoEntity!=null){
-        writeHtml(baiduAccountInfoEntity.getRegDomain(),response);
+            writeHtml(baiduAccountInfoEntity.getRegDomain(),response);
         }else{
             writeHtml(FAIL,response);
         }
