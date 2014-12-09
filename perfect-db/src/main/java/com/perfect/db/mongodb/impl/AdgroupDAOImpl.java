@@ -202,7 +202,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         }
         q.addCriteria(c);
         AdgroupEntity adgroupEntity = getMongoTemplate().findOne(q, getEntityClass());
-        return wrapperObject(adgroupEntity);
+        return ObjectUtils.convert(adgroupEntity,AdgroupDTO.class);
     }
 
     @Override

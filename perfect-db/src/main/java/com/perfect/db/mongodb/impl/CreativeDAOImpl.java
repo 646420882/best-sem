@@ -110,7 +110,8 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         }
         q.addCriteria(c);
         CreativeEntity creativeEntity = getMongoTemplate().findOne(q, getEntityClass());
-        return wrapperObject(creativeEntity);
+        CreativeDTO creativeDTO= ObjectUtils.convert(creativeEntity,CreativeDTO.class);
+        return creativeDTO;
     }
 
     @Override

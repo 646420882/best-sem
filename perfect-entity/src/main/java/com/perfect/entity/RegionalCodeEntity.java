@@ -1,11 +1,14 @@
 package com.perfect.entity;
 
+import com.perfect.commons.constants.RegionalConstants;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * Created by SubDong on 2014/11/26.
  */
+@Document(collection = RegionalConstants.TBL_SYS_REGIONAL)
 public class RegionalCodeEntity {
 
     @Id

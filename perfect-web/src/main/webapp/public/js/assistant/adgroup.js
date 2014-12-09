@@ -706,7 +706,8 @@ function adgroupMutli(){
 
         },
         onclose: function () {
-//            loadCreativeData({cid:null,aid:null});
+//            loadCreativeData({cid:plans.cid,aid:plans.aid});
+            loadAdgroupData(plans.nowPage);
         },
         onremove: function () {
         }

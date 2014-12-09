@@ -1485,7 +1485,6 @@
 <jsp:include page="../promotionAssistant/alert/addCampaign.jsp"/>
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/jquery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/store.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/grid/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/jquery.resizableColumns.min.js"></script>

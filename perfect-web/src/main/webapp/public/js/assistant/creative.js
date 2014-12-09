@@ -290,34 +290,34 @@ function loadCreativeData(page_index) {
         var gson = $.parseJSON(result);
 
         if (gson.list != undefined) {
-                var json = gson.list;
-                pagerInit(gson);
-                _createTable.empty();
-                var _trClass = "";
-                for (var i = 0; i < json.length; i++) {
-                    var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
-                    var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
-                    var ls = getLocalStatus(parseInt(_edit));
-                    _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-                    var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                        "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
-                        "<td >" + until.substring(10, json[i].title) + "</td>" +
-                        " <td >" + until.substring(10, json[i].description1) + "</td>" +
-                        " <td >" + until.substring(10, json[i].description2) + "</td>" +
-                        " <td ><a href='" + json[i].pcDestinationUrl + "' target='_blank'>" + until.substring(10, json[i].pcDestinationUrl) + "</a></td>" +
-                        " <td >" + until.substring(10, json[i].pcDisplayUrl) + "</td>" +
-                        " <td>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
-                        " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
-                        " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
-                        " <td >" + until.getCreativeStatus(parseInt(json[i].status)) + "<input type='hidden' value='" + json[i].status + "'/></td>" +
-                        " <td >" + ls + "</td>" +
-                        "</tr>";
-                    _createTable.append(_tbody);
-                }
-            }else {
-                _createTable.empty();
-                _createTable.append("<tr><td>暂无数据</td></tr>");
+            var json = gson.list;
+            pagerInit(gson);
+            _createTable.empty();
+            var _trClass = "";
+            for (var i = 0; i < json.length; i++) {
+                var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
+                var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
+                var ls = getLocalStatus(parseInt(_edit));
+                _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+                var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
+                    "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
+                    "<td >" + until.substring(10, json[i].title) + "</td>" +
+                    " <td >" + until.substring(10, json[i].description1) + "</td>" +
+                    " <td >" + until.substring(10, json[i].description2) + "</td>" +
+                    " <td ><a href='" + json[i].pcDestinationUrl + "' target='_blank'>" + until.substring(10, json[i].pcDestinationUrl) + "</a></td>" +
+                    " <td >" + until.substring(10, json[i].pcDisplayUrl) + "</td>" +
+                    " <td>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
+                    " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
+                    " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
+                    " <td >" + until.getCreativeStatus(parseInt(json[i].status)) + "<input type='hidden' value='" + json[i].status + "'/></td>" +
+                    " <td >" + ls + "</td>" +
+                    "</tr>";
+                _createTable.append(_tbody);
             }
+        }else {
+            _createTable.empty();
+            _createTable.append("<tr><td>暂无数据</td></tr>");
+        }
 
     });
 }
@@ -960,37 +960,37 @@ function updateOk() {
     }
     var con = confirm("你确定要修改该创意吗？");
     if (con) {
-    var _this = $(tmp);
-    $("#cUpdateForm").formSubmit("/assistantCreative/update", function (rs) {
-        if (rs == "1") {
-            var p = formData["pause"] == "true" ? "启用" : "暂停";
-            var _createTable = $("#createTable tbody");
-            var i = $("#createTable tbody tr").size();
-            var _trClass = i % 2 == 0 ? "list2_box1 list2_box3" : "list2_box2 list2_box3";
-            var _edit = null;
-            if (formData["oid"].length > 18) {
-                _edit = "<span class='pen' step='1'></span>";
-            } else {
-                _edit = "<span class='pen' step='2'></span>";
-            }
-            var _tbody =
-                "<td>&nbsp;<span style='display: none;'>" + formData["oid"] + "</span></td>" +
-                "<td >" + until.substring(10, formData["title"]) + "</td>" +
-                " <td >" + until.substring(10, formData["description1"]) + "</td>" +
-                " <td >" + until.substring(10, formData["description2"]) + "</td>" +
-                " <td ><a href='" + formData["pcDestinationUrl"] + "' target='_blank'>" + until.substring(10, formData["pcDestinationUrl"]) + "</a></td>" +
-                " <td >" + until.substring(10, formData["pcDisplayUrl"]) + "</td>" +
-                " <td >" + until.substring(10, formData["mobileDestinationUrl"]) + "</td>" +
-                " <td >" + until.substring(10, formData["mobileDisplayUrl"]) + "</td>" +
-                " <td >" + p + "</td>" +
-                " <td >" + until.getCreativeStatus(parseInt(formData["status"])) + "</td>" +
-                " <td >" + _edit + "</td>";
-            $(tmp).html(_tbody);
-            alert("修改完成");
-            closeAlertCreative();
+        var _this = $(tmp);
+        $("#cUpdateForm").formSubmit("/assistantCreative/update", function (rs) {
+            if (rs == "1") {
+                var p = formData["pause"] == "true" ? "启用" : "暂停";
+                var _createTable = $("#createTable tbody");
+                var i = $("#createTable tbody tr").size();
+                var _trClass = i % 2 == 0 ? "list2_box1 list2_box3" : "list2_box2 list2_box3";
+                var _edit = null;
+                if (formData["oid"].length > 18) {
+                    _edit = "<span class='pen' step='1'></span>";
+                } else {
+                    _edit = "<span class='pen' step='2'></span>";
+                }
+                var _tbody =
+                    "<td>&nbsp;<span style='display: none;'>" + formData["oid"] + "</span></td>" +
+                    "<td >" + until.substring(10, formData["title"]) + "</td>" +
+                    " <td >" + until.substring(10, formData["description1"]) + "</td>" +
+                    " <td >" + until.substring(10, formData["description2"]) + "</td>" +
+                    " <td ><a href='" + formData["pcDestinationUrl"] + "' target='_blank'>" + until.substring(10, formData["pcDestinationUrl"]) + "</a></td>" +
+                    " <td >" + until.substring(10, formData["pcDisplayUrl"]) + "</td>" +
+                    " <td >" + until.substring(10, formData["mobileDestinationUrl"]) + "</td>" +
+                    " <td >" + until.substring(10, formData["mobileDisplayUrl"]) + "</td>" +
+                    " <td >" + p + "</td>" +
+                    " <td >" + until.getCreativeStatus(parseInt(formData["status"])) + "</td>" +
+                    " <td >" + _edit + "</td>";
+                $(tmp).html(_tbody);
+                alert("修改完成");
+                closeAlertCreative();
 
-        }
-    });
+            }
+        });
     }
 }
 /**
@@ -1088,12 +1088,16 @@ function getLocalStatus(number) {
 function creativeMulti() {
     top.dialog({title: "批量添加创意",
         padding: "5px",
-        content: "<iframe src='/assistantCreative/updateMulti' width='900' height='650' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        id:'creativeMutli',
+        align:'top',
+        content: "<a src='/assistantCreative/updateMulti' ></a>",
+        width:'900',
+        height:'650',
         oniframeload: function () {
 
         },
         onclose: function () {
-            loadCreativeData({cid: null, aid: null});
+            loadCreativeData(sparams.nowPage);
         },
         onremove: function () {
         }
