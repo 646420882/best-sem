@@ -80,9 +80,6 @@ public class BiddingController {
     private BasisReportService basisReportService;
 
     @Resource
-    private KeywordBiddingRankService keywordBiddingRankService;
-
-    @Resource
     private Keyword10QualityService keyword10QualityService;
 
     @Resource

@@ -1,5 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
+import com.google.common.collect.Lists;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.SystemUserDTO;
@@ -47,9 +48,9 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     public void addBaiduAccount(List<BaiduAccountInfoDTO> list, String currSystemUserName) {
         SystemUserDTO currSystemUserDTO = findByUserName(currSystemUserName);
         List<BaiduAccountInfoDTO> _list = currSystemUserDTO.getBaiduAccounts();
-        if (_list == null) {
+        if (_list == null)
             _list = new ArrayList<>();
-        }
+
         _list.addAll(list);
         getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName)), Update.update("baiduAccountInfos", _list), "sys_user");
     }
@@ -181,10 +182,10 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
     @Override
     public List<SystemUserDTO> find(Map<String, Object> params, int skip, int limit) {
-        return null;
+        return Lists.newArrayList();
     }
 
-    public SystemUserDTO fromEntity(SystemUserEntity systemUserEntity) {
+    protected SystemUserDTO fromEntity(SystemUserEntity systemUserEntity) {
         List<BaiduAccountInfoEntity> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccounts();
         SystemUserDTO user = ObjectUtils.convert(systemUserEntity, getDTOClass());
 
@@ -194,7 +195,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     }
 
 
-    public SystemUserEntity toEntity(SystemUserDTO systemUserDTO) {
+    protected SystemUserEntity toEntity(SystemUserDTO systemUserDTO) {
         List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccounts();
         SystemUserEntity user = ObjectUtils.convert(systemUserDTO, getEntityClass());
 

@@ -265,15 +265,15 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         String currUser = AppContext.getUser();
         Update update = new Update();
-        if (dto.getBudget() != null) {
+        if (dto.getBudget() != null)
             update.set("bdAccounts.$.bgt", dto.getBudget());
-        }
-        if (dto.getIsDynamicCreative() != null) {
+
+        if (dto.getIsDynamicCreative() != null)
             update.set("bdAccounts.$.dc", dto.getIsDynamicCreative());
-        }
-        if (dto.getExcludeIp() != null) {
+
+        if (dto.getExcludeIp() != null)
             update.set("bdAccounts.$.exIp", dto.getExcludeIp());
-        }
+
         mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(currUser).and("bdAccounts._id").is(dto.getId())), update, getEntityClass());
     }
 
@@ -310,9 +310,9 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
                 project("pccost")
         );
         AggregationResults<AccountReportEntity> results = mongoTemplate.aggregate(aggregation, TBL_ACCOUNT_REPORT, AccountReportEntity.class);
-        if (results == null) {
+        if (results == null)
             return 0d;
-        }
+
         AccountReportEntity reportEntity = results.getUniqueMappedResult();
         if (reportEntity != null)
             return reportEntity.getPcCost().doubleValue();

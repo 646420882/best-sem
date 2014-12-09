@@ -1,5 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
+import com.google.common.collect.Lists;
 import com.perfect.dao.keyword.KeywordQualityDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 /**
  * Created by baizz on 2014-07-24.
- * 2014-12-2 refactor
+ * 2014-12-9 refactor
  */
 @Repository("keywordQualityDAO")
 public class KeywordQualityDAOImpl extends AbstractUserBaseDAOImpl<KeywordReportDTO, Long> implements KeywordQualityDAO {
@@ -37,12 +38,6 @@ public class KeywordQualityDAOImpl extends AbstractUserBaseDAOImpl<KeywordReport
 //        Date startDate = new Date(), endDate = new Date();
 //
 //        boolean isLoadYesterdayData = false;
-//        if (_startDate != null) {
-//            Assert.notNull(_endDate, "_endDate must not be null!");
-//        }
-//        if (_endDate != null) {
-//            Assert.notNull(_startDate, "_startDate must not be null!");
-//        }
 //        if (_startDate == null && _endDate == null) {
 //            isLoadYesterdayData = true;
 //            //昨天的时间
@@ -109,7 +104,7 @@ public class KeywordQualityDAOImpl extends AbstractUserBaseDAOImpl<KeywordReport
 
     @Override
     public List<KeywordReportDTO> find(Map<String, Object> params, int skip, int limit) {
-        return null;
+        return Lists.newArrayList();
     }
 
 //    @Override
@@ -132,7 +127,6 @@ public class KeywordQualityDAOImpl extends AbstractUserBaseDAOImpl<KeywordReport
 //    }
 
 
-//    @Deprecated
 //    class KeywordIdVO {
 //
 //        @Field(KEYWORD_ID)
@@ -147,7 +141,6 @@ public class KeywordQualityDAOImpl extends AbstractUserBaseDAOImpl<KeywordReport
 //        }
 //    }
 //
-//    @Deprecated
 //    class QueryTask extends RecursiveTask<List<KeywordReportEntity>> {
 //
 //        private static final int threshold = 4;
