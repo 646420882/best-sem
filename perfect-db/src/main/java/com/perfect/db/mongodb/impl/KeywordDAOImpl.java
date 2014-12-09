@@ -17,7 +17,6 @@ import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.utils.ObjectUtils;
-import com.perfect.utils.paging.Pager;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.paging.PaginationParam;
 import org.springframework.data.domain.PageRequest;
@@ -200,7 +199,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         keywordDTOList.forEach(e -> {
             Query q = new Query(Criteria.where(getId()).is(e.getKeywordId()));
             if (!mongoTemplate.exists(q, getEntityClass()))
-                mongoTemplate.insert(e);
+                mongoTemplate.insert(ObjectUtils.convert(e, getEntityClass()));
         });
     }
 
@@ -249,10 +248,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         Query query = new Query();
         Criteria criteria = Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId);
         if (queryParams != null && !queryParams.isEmpty()) {
-            for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
-                if ("status".equals(entry.getKey()))
-                    criteria.and("s").is(entry.getValue());
-            }
+            queryParams.entrySet().stream().filter(entry -> "status".equals(entry.getKey())).forEach(entry -> criteria.and("s").is(entry.getValue()));
         }
 
         if (param == null) {
@@ -280,12 +276,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     public List<KeywordDTO> findByAdgroupIds(List<Long> adgroupIds, PaginationParam param, Map<String, Object> queryParams) {
         Query query = new Query();
         Criteria criteria = Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds);
-        if (queryParams != null && !queryParams.isEmpty()) {
-            for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
-                if ("status".equals(entry.getKey()))
-                    criteria.and("s").is(entry.getValue());
-            }
-        }
+        if (queryParams != null && !queryParams.isEmpty())
+            queryParams.entrySet().stream().filter(entry -> "status".equals(entry.getKey())).forEach(entry -> criteria.and("s").is(entry.getValue()));
 
         if (param != null) {
             query.addCriteria(criteria);
@@ -320,23 +312,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         return p;
     }
 
-    //    //xj
-//    public PagerInfo findByPageInfo(Query q, int pageSize, int pageNo) {
-//        int totalCount = getListTotalCount(q);
-//        PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
-//        q.skip(p.getFirstStation());
-//        q.limit(p.getPageSize());
-//        if (totalCount < 1) {
-//            p.setList(new ArrayList());
-//            return p;
-//        }
-//        List list = getMongoTemplate().find(q, getEntityClass());
-//        p.setList(list);
-//        return p;
-//    }
-
-    private int getListTotalCount(Query q) {
-        return (int) getMongoTemplate().count(q, MongoEntityConstants.TBL_KEYWORD);
+    private int getListTotalCount(Query query) {
+        return (int) getMongoTemplate().count(query, MongoEntityConstants.TBL_KEYWORD);
     }
 
     @Override
@@ -372,7 +349,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             return p;
         }
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
-        List<KeywordDTO> dtos = ObjectUtils.convert(list, KeywordDTO.class);
+        List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         p.setList(dtos);
         return p;
     }
@@ -391,7 +368,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             return p;
         }
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
-        List<KeywordDTO> dtos = ObjectUtils.convert(list, KeywordDTO.class);
+        List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         p.setList(dtos);
         return p;
     }
@@ -410,7 +387,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             return p;
         }
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
-        List<KeywordDTO> dtos = ObjectUtils.convert(list, KeywordDTO.class);
+        List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         p.setList(dtos);
         return p;
     }
@@ -437,42 +414,41 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         return dtoList;
     }
 
-//    public void insertAll(List<KeywordDTO> keywordDTOList) {
-//        List<KeywordEntity> keywordEntityList = ObjectUtils.convert(keywordDTOList, getEntityClass());
-//        getMongoTemplate().insertAll(keywordEntityList);
+//    public void update(KeywordDTO keywordDTO) {
+//        Long id = keywordDTO.getKeywordId();
+//        Query query = new Query();
+//        query.addCriteria(Criteria.where(getId()).is(id));
+//        Update update = new Update();
+//        try {
+//            Class _class = keywordDTO.getClass();
+//            Field[] fields = _class.getDeclaredFields();
+//            for (Field field : fields) {
+//                String fieldName = field.getName();
+//                if ("keywordId".equals(fieldName))
+//                    continue;
+//                StringBuilder fieldGetterName = new StringBuilder("get");
+//                fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
+//                Method method = _class.getDeclaredMethod(fieldGetterName.toString());
+//                if (method == null)
+//                    continue;
+//
+//                Object after = method.invoke(keywordDTO);
+//                if (after != null) {
+//                    update.set(field.getName(), after);
+//                    Object before = method.invoke(findOne(id));
+//                    break;
+//                }
+//            }
+//        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+//            e.printStackTrace();
+//        }
+//        getMongoTemplate().updateFirst(query, update, getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
 //    }
 
-    public void update(KeywordDTO keywordDTO) {
-        Long id = keywordDTO.getKeywordId();
-        Query query = new Query();
-        query.addCriteria(Criteria.where(getId()).is(id));
-        Update update = new Update();
-        try {
-            Class _class = keywordDTO.getClass();
-            Field[] fields = _class.getDeclaredFields();//get object's fields by reflect
-            for (Field field : fields) {
-                String fieldName = field.getName();
-                if ("keywordId".equals(fieldName))
-                    continue;
-                StringBuilder fieldGetterName = new StringBuilder("get");
-                fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
-                Method method = _class.getDeclaredMethod(fieldGetterName.toString());
-                if (method == null)
-                    continue;
-
-                Object after = method.invoke(keywordDTO);
-                if (after != null) {
-                    update.set(field.getName(), after);
-                    Object before = method.invoke(findOne(id));
-                    break;
-                }
-            }
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        getMongoTemplate().updateFirst(query, update, getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
-    }
-
+//    public void update(List<KeywordDTO> keywordDTOList) {
+//        for (KeywordDTO dto : keywordDTOList)
+//            update(dto);
+//    }
 
     //xj
     public void update(KeywordDTO keywordDTO, KeywordBackUpDTO keywordBackUpDTO) {
@@ -574,17 +550,17 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public List<KeywordDTO> findByParams(Map<String, Object> mapParams) {
-        Query q = new Query();
-        if (mapParams != null && mapParams.size() > 0) {
+    public List<KeywordDTO> findByParams(Map<String, Object> params) {
+        Query query = new Query();
+        if (params != null && !params.isEmpty()) {
             Criteria c = new Criteria();
-            for (Map.Entry<String, Object> map : mapParams.entrySet()) {
+            for (Map.Entry<String, Object> map : params.entrySet()) {
                 c.and(map.getKey()).is(map.getValue());
             }
-            q.addCriteria(c);
+            query.addCriteria(c);
         }
-        List<KeywordEntity> list = getMongoTemplate().find(q, KeywordEntity.class);
-        return ObjectUtils.convert(list, KeywordDTO.class);
+        List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
+        return ObjectUtils.convert(list, getDTOClass());
     }
 
     /**
@@ -625,11 +601,6 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
 
-    public void update(List<KeywordDTO> keywordDTOList) {
-        for (KeywordDTO dto : keywordDTOList)
-            update(dto);
-    }
-
     public void updateMulti(String fieldName, String seedWord, Object value) {
         MongoTemplate mongoTemplate = getMongoTemplate();
         Class _class = getEntityClass();
@@ -654,67 +625,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
 
     @Override
     public void updateMultiKeyword(Long[] ids, BigDecimal price, String pcUrl) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        Query query = Query.query(Criteria.where(MongoEntityConstants.KEYWORD_ID).in(ids));
-        Update update = new Update();
-
-//        CommonService commonService = BaiduServiceSupport.getCommonService(accountManageDAO.findByBaiduUserId(AppContext.getAccountId()));
-//        BaiduApiService apiService = new BaiduApiService(commonService);
-//        List<KeywordEntity> keywordTypeList = new ArrayList<>(ids.length);
-//
-//        if (price != null) {
-//            if (price.doubleValue() == 0) {
-//                //使用单元出价
-//                for (Long id : ids) {
-//                    AdgroupEntity adgroupEntity = findByKeywordId(id);
-//                    Double _price;
-//                    if (adgroupEntity != null) {
-//                        _price = adgroupEntity.getMaxPrice();
-//                        BigDecimal adgroupPrice = new BigDecimal(_price);
-//                        update.set("pr", adgroupPrice);
-//                        mongoTemplate.updateMulti(query, update, getDTOClass());
-//
-//                        //baidu api
-//                        KeywordEntity keywordType = new KeywordEntity();
-//                        keywordType.setKeywordId(id);
-//                        keywordType.setPrice(BigDecimal.valueOf(adgroupPrice.doubleValue()));
-//                        keywordTypeList.add(keywordType);
-//                    }
-//                }
-//            } else {
-//                update.set("pr", price);
-//                mongoTemplate.updateMulti(query, update, getDTOClass());
-//
-//                //baidu api
-//                for (Long id : ids) {
-//                    KeywordEntity keywordType = new KeywordEntity();
-//                    keywordType.setKeywordId(id);
-//                    keywordType.setPrice(BigDecimal.valueOf(price.doubleValue()));
-//                    keywordTypeList.add(keywordType);
-//                }
-//            }
-//        }
-//        if (pcUrl != null) {
-//            update.set("pc", pcUrl);
-//            mongoTemplate.updateMulti(query, update, getDTOClass());
-//
-//            //baidu api
-//            for (Long id : ids) {
-//                KeywordEntity keywordType = new KeywordEntity();
-//                keywordType.setKeywordId(id);
-//                keywordType.setPcDestinationUrl(pcUrl);
-//                keywordTypeList.add(keywordType);
-//            }
-//        }
-//
-//        try {
-//            List<KeywordEntity> list = apiService.updateKeyword(keywordTypeList);
-//            if (list.isEmpty()) {
-//                throw new ApiException();
-//            }
-//        } catch (ApiException e) {
-//            e.printStackTrace();
-//        }
+        //do nothing
     }
 
     @Override
@@ -722,9 +633,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         MongoTemplate mongoTemplate = getMongoTemplate();
         KeywordEntity keywordEntity = mongoTemplate.findOne(Query.query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(keywordId)), getEntityClass());
         Long adgroupId = keywordEntity.getAdgroupId();
-        AdgroupEntity entity = mongoTemplate.findOne(Query.query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), AdgroupEntity.class);
-        AdgroupDTO adgroupDTO = ObjectUtils.convert(entity, AdgroupDTO.class);
-        return adgroupDTO;
+        AdgroupEntity entity = mongoTemplate.findOne(Query.query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(adgroupId)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        return ObjectUtils.convert(entity, AdgroupDTO.class);
     }
 
     public void deleteById(Long id) {
@@ -765,63 +675,19 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         return null;
     }
 
+    @Override
     public boolean delete(KeywordDTO keywordDTO) {
         deleteById(keywordDTO.getKeywordId());
         return false;
     }
 
-
+    @Override
     public boolean deleteAll() {
-        getMongoTemplate().dropCollection(getEntityClass());
-        return false;
+        getMongoTemplate().dropCollection(MongoEntityConstants.TBL_KEYWORD);
+        return true;
     }
 
-    public Pager findByPager(int start, int pageSize, Map<String, Object> params, int orderBy) {
-        Query q = new Query();
-        List<KeywordEntity> list;
-        if (params != null && params.size() > 0) {
-            q.skip(start);
-            q.limit(pageSize);
-            Criteria criteria = Criteria.where(MongoEntityConstants.KEYWORD_ID).ne(null);
-            for (Map.Entry<String, Object> m : params.entrySet()) {
-                criteria.and(m.getKey()).is(m.getValue());
-            }
-            q.addCriteria(criteria);
-        }
-        addOrder(orderBy, q);
-        list = getMongoTemplate().find(q, getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
-        Pager p = new Pager();
-        p.setRows(list);
-
-        return p;
-    }
-
-
-//    private int getCount(Map<String, Object> params, String collections, String nell) {
-//        Query q = new Query();
-//        if (params != null && params.size() > 0) {
-//            Criteria criteria = nell != null ? Criteria.where(nell).ne(null) : null;
-//            for (Map.Entry<String, Object> m : params.entrySet()) {
-//                criteria.and(m.getKey()).is(m.getValue());
-//            }
-//            q.addCriteria(criteria);
-//        }
-//        return (int) getMongoTemplate().count(q, collections);
-//    }
-
-    private void addOrder(int orderBy, Query q) {
-        switch (orderBy) {
-            case 1:
-                q.with(new Sort(Sort.Direction.DESC, "price"));
-                break;
-            default:
-                q.with(new Sort(Sort.Direction.DESC, "price"));
-                break;
-        }
-    }
-
-
-    public void remove(Query query) {
+    protected void remove(Query query) {
         getMongoTemplate().remove(query, getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
     }
 

@@ -42,9 +42,10 @@ public class CrawlWordDAOImpl extends AbstractSysBaseDAOImpl<CrawlWordDTO, Strin
         for (String site : sites) {
             criteria.and("site").is(site);
         }
-        AggregationResults<CrawlWordEntity> results = getSysMongoTemplate().aggregate(Aggregation.newAggregation(
-                match(criteria)
-        ), "sys_crawl_word", getEntityClass());
+        AggregationResults<CrawlWordEntity> results = getSysMongoTemplate().aggregate(
+                Aggregation.newAggregation(
+                        match(criteria)
+                ), "sys_crawl_word", getEntityClass());
         return ObjectUtils.convert(results.getMappedResults(), getDTOClass());
     }
 
@@ -56,9 +57,9 @@ public class CrawlWordDAOImpl extends AbstractSysBaseDAOImpl<CrawlWordDTO, Strin
     }
 
     @Override
-    public Iterable<CrawlWordDTO> save(Iterable<CrawlWordDTO> entities) {
-        List<CrawlWordEntity> entityList = ObjectUtils.convert(Lists.newArrayList(entities), getEntityClass());
+    public Iterable<CrawlWordDTO> save(Iterable<CrawlWordDTO> crawlWordDTOs) {
+        List<CrawlWordEntity> entityList = ObjectUtils.convert(Lists.newArrayList(crawlWordDTOs), getEntityClass());
         getSysMongoTemplate().insertAll(entityList);
-        return ObjectUtils.convert(entityList, getDTOClass());
+        return crawlWordDTOs;
     }
 }

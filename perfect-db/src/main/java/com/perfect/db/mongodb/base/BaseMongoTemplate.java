@@ -21,37 +21,38 @@ import java.util.Properties;
 
 /**
  * Created by baizz on 2014-07-23.
- * 2014-11-24 refactor
+ * 2014-12-8 refactor
  */
 public class BaseMongoTemplate {
 
     private static Mongo mongo;
 
     static {
-        InputStream is = BaseMongoTemplate.class.getResourceAsStream("/mongodb.properties");
-        Properties p = new Properties();
-        try {
-            p.load(is);
-
-            String hosts = p.getProperty("mongo.host");
-            if (hosts != null && !hosts.isEmpty()) {
-                String[] hostArray = hosts.split(",");
-                List<ServerAddress> serverAddresses = new ArrayList<>();
-                for (String host : hostArray) {
-                    String[] hostPort = host.split(":");
-                    ServerAddress address = null;
-                    if (hostPort.length == 1) {
-                        address = new ServerAddress(hostPort[0]);
-                    } else {
-                        address = new ServerAddress(hostPort[0], Integer.parseInt(hostPort[1]));
+        if (mongo == null) {
+            InputStream is = BaseMongoTemplate.class.getResourceAsStream("/mongodb.properties");
+            Properties p = new Properties();
+            try {
+                p.load(is);
+                String hosts = p.getProperty("mongo.host");
+                if (hosts != null && !hosts.isEmpty()) {
+                    String[] hostArray = hosts.split(",");
+                    List<ServerAddress> serverAddresses = new ArrayList<>();
+                    for (String host : hostArray) {
+                        String[] hostPort = host.split(":");
+                        ServerAddress address;
+                        if (hostPort.length == 1) {
+                            address = new ServerAddress(hostPort[0]);
+                        } else {
+                            address = new ServerAddress(hostPort[0], Integer.parseInt(hostPort[1]));
+                        }
+                        serverAddresses.add(address);
                     }
-                    serverAddresses.add(address);
-                }
 
-                mongo = new MongoClient(serverAddresses);
+                    mongo = new MongoClient(serverAddresses);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
