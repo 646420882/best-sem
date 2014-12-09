@@ -20,7 +20,7 @@ import java.util.List;
  * 2014-11-26 refactor
  */
 @Component
-public class KeywordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpDTO, Long> implements KeyWordBackUpDAO {
+public class KeyWordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpDTO, Long> implements KeyWordBackUpDAO {
 
     @Override
     public Class<KeyWordBackUpEntity> getEntityClass() {
