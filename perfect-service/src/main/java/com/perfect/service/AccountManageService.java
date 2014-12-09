@@ -1,7 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dto.SystemUserDTO;
-import com.perfect.dto.baidu.BaiduAccountAllStateDTO;
+import com.perfect.dto.baidu.AccountAllStateDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 
 import java.util.List;
@@ -49,7 +49,7 @@ public interface AccountManageService {
      *
      * @return
      */
-    public List<BaiduAccountAllStateDTO> getAccountAll();
+    public List<AccountAllStateDTO> getAccountAll();
 
     /**
      * 修改百度帐号的启用状态
@@ -57,6 +57,13 @@ public interface AccountManageService {
      * @return
      */
     public int updateAccountAllState(String userName, Long baiduId, Long state);
+
+    /**
+     * 修改系统账户启用禁用状态
+     *
+     * @return
+     */
+    public int updateSystemAccount(String userName, Long state);
 
     /**
      * 获取账户树

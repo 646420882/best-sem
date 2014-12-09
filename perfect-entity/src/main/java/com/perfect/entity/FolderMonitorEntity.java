@@ -25,7 +25,7 @@ public class FolderMonitorEntity {
     @Field("type")
     private Integer type;
 
-    @Field("acId")
+    @Field("acid")
     private Long accountId;
 
     public Long getMonitorId() {

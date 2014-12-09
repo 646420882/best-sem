@@ -26,6 +26,8 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
 
     private List<BaiduAccountInfoDTO> baiduAccounts;
 
+    private Integer accountState;
+
     public SystemUserDTO() {
     }
 
@@ -108,4 +110,11 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
         this.baiduAccounts = baiduAccounts;
     }
 
+    public Integer getAccountState() {
+        return accountState;
+    }
+
+    public void setAccountState(Integer accountState) {
+        this.accountState = accountState;
+    }
 }

@@ -39,7 +39,6 @@
                 <tr>
                     <td>系统帐号</td>
                     <td>审核状态</td>
-                    <td>百度帐号</td>
                     <td>启用状态</td>
                     <td>操作</td>
                 </tr>
@@ -130,9 +129,9 @@
                 $("#shuju").empty();
                 var html_account = "";
                 $.each(data.rows, function (i, item) {
-                        html_account = "<tr><td cname=" + item.userName + " cid = " + item.id + ">" + item.userName + "</td><td " + ((item.userState == 0) ? 'style=color:red' : '') + ">" +
-                                ((item.userState == 0) ? '未通过审核' : '已通过审核') + "</td><td>" + item.baiduUserName + "</td><td " + ((item.baiduState == 1) ? '' : 'style=color:red') + ">" +
-                                ((item.baiduState == 1) ? '已启用' : '已停用') + "</td><td>"
+                        html_account = "<tr><td cname=" + item.userName + " cid = " + item.accountState + ">" + item.userName + "</td><td " + ((item.userState == 0) ? 'style=color:red' : '') + ">" +
+                                ((item.userState == 0) ? '未通过审核' : '已通过审核') + "</td><td " + ((item.accountState == 1) ? '' : 'style=color:red') + ">" +
+                                ((item.accountState == 1) ? '已启用' : '已停用') + "</td><td>"
                     if(item.id != 0){
                         html_account = html_account +
                         "<a href='javascript:void(0)' onclick='showDialogMon(this,1)'>启用</a>&nbsp;&nbsp;&nbsp;&nbsp;" +

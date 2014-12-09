@@ -6,7 +6,7 @@ import com.perfect.commons.web.WebContextSupport;
 import com.perfect.commons.web.WebUtils;
 import com.perfect.core.AppContext;
 import com.perfect.dto.SystemUserDTO;
-import com.perfect.dto.baidu.BaiduAccountAllStateDTO;
+import com.perfect.dto.baidu.AccountAllStateDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.service.AccountDataService;
@@ -108,10 +108,10 @@ public class AccountManageController extends WebContextSupport {
     @RequestMapping(value = "/getAccountAll", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccountAll(HttpServletResponse response) {
 
-        List<BaiduAccountAllStateDTO> entities = accountManageService.getAccountAll();
+        List<AccountAllStateDTO> entities = accountManageService.getAccountAll();
 
 
-        Map<String, List<BaiduAccountAllStateDTO>> map = new HashMap<>();
+        Map<String, List<AccountAllStateDTO>> map = new HashMap<>();
         map.put("rows", entities);
 
         writeJson(map, response);
@@ -129,7 +129,7 @@ public class AccountManageController extends WebContextSupport {
                                       @RequestParam(value = "baiduId") Long baiduId,
                                       @RequestParam(value = "state") Long state) {
 
-        int entities = accountManageService.updateAccountAllState(userName, baiduId, state);
+        int entities = accountManageService.updateSystemAccount(userName, state);
 
         Map<String, Integer> map = new HashMap<>();
         map.put("rows", entities);

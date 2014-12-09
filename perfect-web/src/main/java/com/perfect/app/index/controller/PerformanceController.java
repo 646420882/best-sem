@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by SubDong on 2014/7/25.
@@ -113,7 +114,7 @@ public class PerformanceController {
 
     @RequestMapping(value = "/account/downAccountCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ModelAndView downAccountCSV(HttpServletResponse response) {
-        String filename = DateUtils.getYesterdayStr() + "-Performance.csv";
+        String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
         OutputStream os = null;
         try {
             response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));

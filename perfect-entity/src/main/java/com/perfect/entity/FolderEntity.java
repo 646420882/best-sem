@@ -17,8 +17,6 @@ public class FolderEntity {
     @Field("acid")
     private Long accountId;
 
-    private int countNumber;
-
     public Long getFolderId() {
         return folderId;
     }
@@ -35,14 +33,6 @@ public class FolderEntity {
         this.folderName = folderName;
     }
 
-    public int getCountNumber() {
-        return countNumber;
-    }
-
-    public void setCountNumber(int countNumber) {
-        this.countNumber = countNumber;
-    }
-
     public Long getAccountId() {
         return accountId;
     }
@@ -57,7 +47,6 @@ public class FolderEntity {
                 "folderId=" + folderId +
                 ", folderName='" + folderName + '\'' +
                 ", accountId=" + accountId +
-                ", countNumber=" + countNumber +
                 '}';
     }
 }

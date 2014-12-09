@@ -27,8 +27,8 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
-        List<AccountReportEntity> reportDTOs = ObjectUtils.convert(accountReportDTOs, AccountReportEntity.class);
-        mongoTemplate.insert(reportDTOs, TBL_ACCOUNT_REPORT);
+        List<AccountReportEntity> accountReportEntities = ObjectUtils.convert(accountReportDTOs, AccountReportEntity.class);
+        mongoTemplate.insert(accountReportEntities, TBL_ACCOUNT_REPORT);
     }
 
     @Override
@@ -36,8 +36,8 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
-        List<CampaignReportEntity> reportDTOs = ObjectUtils.convert(campaignReportDTOs, CampaignReportEntity.class);
-        mongoTemplate.insert(reportDTOs, dateStr + "-campaign");
+        List<CampaignReportEntity> campaignReportEntities = ObjectUtils.convert(campaignReportDTOs, CampaignReportEntity.class);
+        mongoTemplate.insert(campaignReportEntities, dateStr + "-campaign");
     }
 
     @Override
@@ -45,8 +45,8 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
-        List<AdgroupReportEntity> reportDTOs = ObjectUtils.convert(adgroupReportDTOs, AdgroupReportEntity.class);
-        mongoTemplate.insert(reportDTOs, dateStr + "-adgroup");
+        List<AdgroupReportEntity> adgroupReportEntities = ObjectUtils.convert(adgroupReportDTOs, AdgroupReportEntity.class);
+        mongoTemplate.insert(adgroupReportEntities, dateStr + "-adgroup");
     }
 
     @Override
@@ -54,8 +54,8 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
-        List<CreativeReportEntity> reportDTOs = ObjectUtils.convert(creativeReportDTOs, CreativeReportEntity.class);
-        mongoTemplate.insert(reportDTOs, dateStr + "-creative");
+        List<CreativeReportEntity> creativeReportEntities = ObjectUtils.convert(creativeReportDTOs, CreativeReportEntity.class);
+        mongoTemplate.insert(creativeReportEntities, dateStr + "-creative");
     }
 
     @Override
@@ -63,8 +63,8 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
-        List<KeywordReportEntity> reportDTOs = ObjectUtils.convert(keywordReportDTOs, KeywordReportEntity.class);
-        mongoTemplate.insert(reportDTOs, dateStr + "-keyword");
+        List<KeywordReportEntity> keywordReportEntities = ObjectUtils.convert(keywordReportDTOs, KeywordReportEntity.class);
+        mongoTemplate.insert(keywordReportEntities, dateStr + "-keyword");
     }
 
     @Override
@@ -72,8 +72,8 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
-        List<RegionReportEntity> reportDTOs = ObjectUtils.convert(regionReportDTOs, RegionReportEntity.class);
-        mongoTemplate.insert(reportDTOs, dateStr + "-region");
+        List<RegionReportEntity> regionReportEntities = ObjectUtils.convert(regionReportDTOs, RegionReportEntity.class);
+        mongoTemplate.insert(regionReportEntities, dateStr + "-region");
     }
 
     @Override

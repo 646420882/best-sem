@@ -36,6 +36,10 @@ public class SystemUserEntity implements Serializable {
     @Field(value = "bdAccounts")
     private List<BaiduAccountInfoEntity> baiduAccounts;
 
+    //系统帐号状态  1、启用  0、禁用
+    @Field(value = "acstate")
+    private Integer accountState = 1;
+
     public SystemUserEntity() {
     }
 
@@ -125,6 +129,14 @@ public class SystemUserEntity implements Serializable {
 
     public void setImg(byte[] img) {
         this.img = img;
+    }
+
+    public Integer getAccountState() {
+        return accountState;
+    }
+
+    public void setAccountState(Integer accountState) {
+        this.accountState = accountState;
     }
 
 }

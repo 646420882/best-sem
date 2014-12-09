@@ -19,10 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -222,7 +219,8 @@ public class BasisReportController {
         }
         String redisKey = (startDate + "|" + endDate + "|" + devices + "|" + dateType + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId);
         String dateHead = startDate + " 至 " + endDate;
-        String filename = DateUtils.getYesterdayStr() + "-ReportDetails.csv";
+        String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
+
         OutputStream os = null;
         try {
             response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
@@ -295,7 +293,7 @@ public class BasisReportController {
         }
 
 
-        String filename = DateUtils.getYesterdayStr() + "-AccountReport.csv";
+        String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
         OutputStream os = null;
         try {
             response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));

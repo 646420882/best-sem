@@ -97,7 +97,7 @@ public class PerformanceServiceImpl implements PerformanceService {
     @Override
     public List<AccountReportDTO> performanceUser(Date startDate, Date endDate, String sorted, int limit, int startPer, List<String> date) {
 
-        List<AccountReportDTO> listUser = accountAnalyzeDAO.performaneUser(startDate, endDate);
+        List<AccountReportDTO> listUser = new ArrayList<>(accountAnalyzeDAO.performaneUser(startDate, endDate));
         DecimalFormat df = new DecimalFormat("#.0000");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (AccountReportDTO list : listUser) {

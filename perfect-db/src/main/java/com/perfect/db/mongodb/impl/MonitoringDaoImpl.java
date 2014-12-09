@@ -25,7 +25,7 @@ import java.util.Map;
 public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> implements MonitoringDao {
     @Override
     public List<FolderDTO> getForlder() {
-        List<FolderEntity> forlderEntities = getMongoTemplate().find(new Query(), FolderEntity.class, TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
+        List<FolderEntity> forlderEntities = getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())), FolderEntity.class, TBL_MONITORING_FOLDERS);
 
         List<FolderDTO> folderDTOs = ObjectUtils.convert(forlderEntities, FolderDTO.class);
 
@@ -34,7 +34,7 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
 
     @Override
     public List<FolderDTO> getForlderId(Long folderId) {
-        List<FolderEntity> forlderEntities = getMongoTemplate().find(Query.query(Criteria.where(FOLDER_ID).is(folderId)), FolderEntity.class, TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
+        List<FolderEntity> forlderEntities = getMongoTemplate().find(Query.query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), FolderEntity.class, TBL_MONITORING_FOLDERS);
 
         List<FolderDTO> folderDTOs = ObjectUtils.convert(forlderEntities, FolderDTO.class);
 
@@ -43,7 +43,7 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
 
     @Override
     public boolean updataForlderId(Long folderId, String folderName) {
-        WriteResult writeResult = getMongoTemplate().updateFirst(Query.query(Criteria.where(FOLDER_ID).is(folderId)), Update.update("fdna", folderName), TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
+        WriteResult writeResult = getMongoTemplate().updateFirst(Query.query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), Update.update("fdna", folderName), TBL_MONITORING_FOLDERS);
         boolean b = writeResult.isUpdateOfExisting();
         return b;
     }
@@ -53,12 +53,12 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
         FolderEntity folderEntity = new FolderEntity();
         BeanUtils.copyProperties(folderDTO, folderEntity);
 
-        getMongoTemplate().insert(folderEntity, TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
+        getMongoTemplate().insert(folderEntity, TBL_MONITORING_FOLDERS);
     }
 
     @Override
     public int deleteFoder(Long folderId) {
-        WriteResult remove = getMongoTemplate().remove(Query.query(Criteria.where(FOLDER_ID).is(folderId)), TBL_MONITORING_FOLDERS + "_" + AppContext.getAccountId());
+        WriteResult remove = getMongoTemplate().remove(Query.query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), TBL_MONITORING_FOLDERS);
 
         int i = remove.getN();
         return i;
@@ -66,7 +66,7 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
 
     @Override
     public int deleteMonitor(Long folderId) {
-        WriteResult remove = getMongoTemplate().remove(Query.query(Criteria.where(FOLDER_ID).is(folderId)), TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
+        WriteResult remove = getMongoTemplate().remove(Query.query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), TBL_MONITORING_TARGETS);
 
         int i = remove.getN();
 
@@ -75,7 +75,7 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
 
     @Override
     public List<FolderMonitorDTO> getMonitor() {
-        List<FolderMonitorEntity> entities = getMongoTemplate().find(new Query(), FolderMonitorEntity.class, TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
+        List<FolderMonitorEntity> entities = getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())), FolderMonitorEntity.class, TBL_MONITORING_TARGETS);
 
         List<FolderMonitorDTO> folderMonitorDTOs = ObjectUtils.convert(entities, FolderMonitorDTO.class);
 
@@ -84,7 +84,7 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
 
     @Override
     public List<FolderMonitorDTO> getMonitorId(Long folderId) {
-        List<FolderMonitorEntity> entities = getMongoTemplate().find(Query.query(Criteria.where(FOLDER_ID).is(folderId)), FolderMonitorEntity.class, TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
+        List<FolderMonitorEntity> entities = getMongoTemplate().find(Query.query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), FolderMonitorEntity.class, TBL_MONITORING_TARGETS);
 
         List<FolderMonitorDTO> folderMonitorDTOs = ObjectUtils.convert(entities, FolderMonitorDTO.class);
 
@@ -93,7 +93,7 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
 
     @Override
     public int deleteMonitorId(Long MonitorId) {
-        WriteResult remove = getMongoTemplate().remove(Query.query(Criteria.where(MONITOR_ID).is(MonitorId)), TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
+        WriteResult remove = getMongoTemplate().remove(Query.query(Criteria.where(MONITOR_ID).is(MonitorId).and(ACCOUNT_ID).is(AppContext.getAccountId())), TBL_MONITORING_TARGETS);
         int i = remove.getN();
         return i;
     }
@@ -103,12 +103,12 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
         FolderMonitorEntity folderMonitorEntity = new FolderMonitorEntity();
         BeanUtils.copyProperties(folderMonitorDTO, folderMonitorEntity);
 
-        getMongoTemplate().insert(folderMonitorEntity, TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
+        getMongoTemplate().insert(folderMonitorEntity, TBL_MONITORING_TARGETS);
     }
 
     @Override
     public Long getForlderCountByKwid(long kwid) {
-        return getMongoTemplate().count(new Query(Criteria.where(MONITOR_ACLID).is(kwid)), TBL_MONITORING_TARGETS + "_" + AppContext.getAccountId());
+        return getMongoTemplate().count(new Query(Criteria.where(MONITOR_ACLID).is(kwid).and(ACCOUNT_ID).is(AppContext.getAccountId())), TBL_MONITORING_TARGETS);
     }
 
     @Override

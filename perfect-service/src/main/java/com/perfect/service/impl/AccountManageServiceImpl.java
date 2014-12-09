@@ -11,7 +11,7 @@ import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
-import com.perfect.dto.baidu.BaiduAccountAllStateDTO;
+import com.perfect.dto.baidu.AccountAllStateDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.utils.DateUtils;
@@ -87,16 +87,22 @@ public class AccountManageServiceImpl implements AccountManageService {
     }
 
     @Override
-    public List<BaiduAccountAllStateDTO> getAccountAll() {
+    public List<AccountAllStateDTO> getAccountAll() {
         List<SystemUserDTO> systemUserDTOList = accountManageDAO.getAccountAll();
         List<SystemUserDTO> systemUserDTOs = ObjectUtils.convertToList(systemUserDTOList, SystemUserDTO.class);
-        List<BaiduAccountAllStateDTO> allStates = new ArrayList<>();
+        List<AccountAllStateDTO> allStates = new ArrayList<>();
 
         for (SystemUserDTO systemUserDTO : systemUserDTOs) {
             if (systemUserDTO.getUserName().equals("administrator")) {
                 continue;
             }
-            if (systemUserDTO.getBaiduAccounts() != null && systemUserDTO.getBaiduAccounts().size() > 0) {
+
+            AccountAllStateDTO accountAllState = new AccountAllStateDTO();
+            accountAllState.setUserName(systemUserDTO.getUserName());
+            accountAllState.setUserState(systemUserDTO.getState());
+            accountAllState.setAccountState(systemUserDTO.getAccountState());
+            allStates.add(accountAllState);
+            /*if (systemUserDTO.getBaiduAccounts() != null && systemUserDTO.getBaiduAccounts().size() > 0) {
                 for (BaiduAccountInfoDTO dto : systemUserDTO.getBaiduAccounts()) {
                     BaiduAccountAllStateDTO accountAllState = new BaiduAccountAllStateDTO();
                     accountAllState.setIdObj(dto.getId());
@@ -114,7 +120,7 @@ public class AccountManageServiceImpl implements AccountManageService {
                 accountAllState.setBaiduUserName(" ");
                 accountAllState.setBaiduState(0l);
                 allStates.add(accountAllState);
-            }
+            }*/
 
         }
         return allStates;
@@ -124,6 +130,16 @@ public class AccountManageServiceImpl implements AccountManageService {
     public int updateAccountAllState(String userName, Long baiduId, Long state) {
         int i = 0;
         boolean writeResult = accountManageDAO.updateBaiDuAccount(userName, baiduId, state);
+        if (writeResult) {
+            i = 1;
+        }
+        return i;
+    }
+
+    @Override
+    public int updateSystemAccount(String userName, Long state) {
+        int i = 0;
+        boolean writeResult = accountManageDAO.updateSysAccount(userName,state);
         if (writeResult) {
             i = 1;
         }

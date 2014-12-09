@@ -13,7 +13,8 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/grid/ui.jqgrid.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
     <style type="text/css">
         .tab_box {
@@ -24,7 +25,7 @@
             /* jqGrid cell content wrap  */
             white-space: normal !important;
             height: 30px;
-            line-height:inherit;
+            line-height: inherit;
         }
     </style>
 </head>
@@ -61,9 +62,9 @@
                 <ul id="zTree" class="ztree over">
                 </ul>
             </div>
-            <div class="j_l_under over">
+            <%--<div class="j_l_under over">
                 <a href="#">监控文件夹</a>
-            </div>
+            </div>--%>
         </div>
         <div class="jingjia_right fr over">
             <div class="zhushou_concent over">
@@ -310,6 +311,7 @@
 <!-------设置规则-------->
 <div class="box" id="seetingRules" style="display:none">
     <h2 id="box1"><span class="fl">设置规则</span><a href="#" class="close">关闭</a></h2>
+
     <div class="mainlist jiangjia_main">
         <ul>
             <li>
@@ -317,17 +319,26 @@
                 <ul>
                     <li class="jingjia_select">
                         <form name="biddingfrm" action="">
-                            <input type="radio" checked="checked" name="times" class="time_sl" value="1">&nbsp;单时段竞价 &nbsp;
+                            <input type="radio" checked="checked" name="times" class="time_sl" value="1">&nbsp;单时段竞价
+                            &nbsp;
                             <input type="radio" name="times" class="time_sl1" value="2"> &nbsp;多时段竞价 &nbsp;
                         </form>
                         <div class="time_select">
-                            <select id="start"><option>0点</option></select><span>至</span>
-                            <select id="end"><option>24点</option></select>
+                            <select id="start">
+                                <option>0点</option>
+                            </select><span>至</span>
+                            <select id="end">
+                                <option>24点</option>
+                            </select>
                         </div>
                         <div class="time_select01 hides">
                             <ul>
-                                <li><input name="mtimes" type="checkbox" data-id="1"><select id="start1"><option>0点</option></select><span>至</span>
-                                    <select id="end1"><option>12点</option></select>&nbsp;上午
+                                <li><input name="mtimes" type="checkbox" data-id="1"><select id="start1">
+                                    <option>0点</option>
+                                </select><span>至</span>
+                                    <select id="end1">
+                                        <option>12点</option>
+                                    </select>&nbsp;上午
                                 </li>
                                 <li><input name="mtimes" type="checkbox" data-id="2"><select id="start2">
                                     <option>12点</option>
@@ -365,40 +376,40 @@
             <%--</select>--%>
             <%--</form>--%>
             <%--</li>--%>
+            <li>
+                <b>竞价位置:</b>
+                <ul class="fl">
                     <li>
-                        <b>竞价位置:</b>
-                        <ul class="fl">
-                            <li>
-                                <select id="pos">
-                                    <option class="right_define1" value="1">左侧:1位</option>
-                                    <option class="right_define1" value="2">左侧:2-3位</option>
-                                    <option class="right_define1" value="3">右侧:1-3位</option>
-                                    <option class="right_define" value="4">右侧自定义</option>
-                                </select>
-                            </li>
-                        </ul>
+                        <select id="pos">
+                            <option class="right_define1" value="1">左侧:1位</option>
+                            <option class="right_define1" value="2">左侧:2-3位</option>
+                            <option class="right_define1" value="3">右侧:1-3位</option>
+                            <option class="right_define" value="4">右侧自定义</option>
+                        </select>
                     </li>
+                </ul>
+            </li>
+            <li>
+                <b>出价规则:</b>
+                <ul class="fl">
+                    <%--  <li class="right_stes over">
+                          <span class="right_sets1 hides over">右侧：<input name="rightpos" type="text" class="price2"> 位 </span>
+                      </li>--%>
+                    <li>最高出价（最低区间0.01）<input type="text" id="max" class="price2" value="0.01"></li>
+                    <li>最低出价（最低区间0.01）<input type="text" id="min" class="price2" value="0.01"></li>
+                </ul>
+            </li>
+            <li>
+                <b class="fl">出价未达到排名:</b>
+                <ul class="fl">
                     <li>
-                        <b>出价规则:</b>
-                        <ul class="fl">
-                          <%--  <li class="right_stes over">
-                                <span class="right_sets1 hides over">右侧：<input name="rightpos" type="text" class="price2"> 位 </span>
-                            </li>--%>
-                           <li>最高出价（最低区间0.01）<input type="text" id="max" class="price2" value="0.01"></li>
-                           <li>最低出价（最低区间0.01）<input type="text" id="min" class="price2" value="0.01"></li>
-                        </ul>
+                        <form>
+                            <input name="failed" type="radio" checked="checked" value="11"> &nbsp;自动匹配最佳排名
+                            &nbsp;<input type="radio" name="failed" value="12"> &nbsp;恢复账户设置 &nbsp;
+                        </form>
                     </li>
-                    <li>
-                        <b class="fl">出价未达到排名:</b>
-                        <ul class="fl">
-                            <li>
-                                <form >
-                                    <input name="failed" type="radio" checked="checked" value="11"> &nbsp;自动匹配最佳排名
-                                    &nbsp;<input type="radio" name="failed" value="12"> &nbsp;恢复账户设置 &nbsp;
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
+                </ul>
+            </li>
             <li>
                 <b class="fl">自动竞价模式:</b>
                 <ul class="fl">
@@ -407,7 +418,9 @@
                     </li>
                     <li class="hides" id="jiangjia_add">
                         <input type="radio" name="sbid" value="everyday"><span>每天执行</span>
-                        <input type="radio" name="sbid" value="bytime"> <span>竞价次数:</span><input class="times" type="text" name="bytimes">
+                        <input type="radio" name="sbid" value="bytime"> <span>竞价次数:</span><input class="times"
+                                                                                                 type="text"
+                                                                                                 name="bytimes">
                     </li>
                     <li><input type="radio" name="auto" value="2" checked="checked" id="jiangjia_chongfu"><span>重复竞价速度 每隔
                         <select id="interval">
@@ -729,11 +742,14 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/grid/jquery.jqGrid.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/importKeyword/importKeywordBidding.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/importKeyword/importKeywordBidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">

@@ -25,7 +25,7 @@ import java.util.*;
 @Controller
 @Scope("prototype")
 @RequestMapping("/pftstis")
-public class SourceAnaly {
+public class SourceAnalysis {
 
     @Resource
     private CensusService censusService;
