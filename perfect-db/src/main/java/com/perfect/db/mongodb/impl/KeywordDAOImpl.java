@@ -14,7 +14,7 @@ import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeyWordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
-import com.perfect.entity.backup.KeyWordBackUpEntity;
+import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.Pager;
@@ -504,7 +504,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         getMongoTemplate().updateFirst(query, update, getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
         KeyWordBackUpDTO _keyWordBackUpDTO = keyWordBackUpDAO.findByObjectId(keywordDTO.getId());
         if (_keyWordBackUpDTO == null && keywordDTO.getLocalStatus() == 2) {
-            KeyWordBackUpEntity backUpEntity = ObjectUtils.convert(keyWordBackUpDTO, KeyWordBackUpEntity.class);
+            KeywordBackUpEntity backUpEntity = ObjectUtils.convert(keyWordBackUpDTO, KeywordBackUpEntity.class);
             getMongoTemplate().insert(backUpEntity);
         }
         logDao.insertLog(id, LogStatusConstant.ENTITY_KEYWORD, LogStatusConstant.OPT_UPDATE);
@@ -575,16 +575,16 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
 
     @Override
     public List<KeywordDTO> findByParams(Map<String, Object> mapParams) {
-        Query q=new Query();
-        if(mapParams!=null&&mapParams.size()>0){
-            Criteria c=new Criteria();
-            for(Map.Entry<String,Object> map:mapParams.entrySet()){
+        Query q = new Query();
+        if (mapParams != null && mapParams.size() > 0) {
+            Criteria c = new Criteria();
+            for (Map.Entry<String, Object> map : mapParams.entrySet()) {
                 c.and(map.getKey()).is(map.getValue());
             }
             q.addCriteria(c);
         }
-        List<KeywordEntity> list=getMongoTemplate().find(q,KeywordEntity.class);
-        return ObjectUtils.convert(list,KeywordDTO.class);
+        List<KeywordEntity> list = getMongoTemplate().find(q, KeywordEntity.class);
+        return ObjectUtils.convert(list, KeywordDTO.class);
     }
 
     /**

@@ -37,7 +37,7 @@ public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleDTO
 
     @Override
     public List<WarningRuleDTO> findAll() {
-        List<WarningRuleEntity> warningRuleEntities= getSysMongoTemplate().findAll(WarningRuleEntity.class, "sys_warning");
+        List<WarningRuleEntity> warningRuleEntities = getSysMongoTemplate().findAll(WarningRuleEntity.class, "sys_warning");
         return ObjectUtils.convert(warningRuleEntities, WarningRuleDTO.class);
     }
 
@@ -47,13 +47,13 @@ public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleDTO
     }
 
     public List<WarningRuleDTO> findEnableIsOne() {
-        List<WarningRuleEntity> warningRuleEntityList= getSysMongoTemplate().find(new Query(Criteria.where("isEnable").is(1)), WarningRuleEntity.class, "sys_warning");
-        return ObjectUtils.convert(warningRuleEntityList,WarningRuleDTO.class);
+        List<WarningRuleEntity> warningRuleEntityList = getSysMongoTemplate().find(new Query(Criteria.where("isEnable").is(1)), WarningRuleEntity.class, "sys_warning");
+        return ObjectUtils.convert(warningRuleEntityList, WarningRuleDTO.class);
     }
 
     @Override
-    public Class<WarningRuleDTO> getEntityClass() {
-        return WarningRuleDTO.class;
+    public Class<WarningRuleEntity> getEntityClass() {
+        return WarningRuleEntity.class;
     }
 
 
@@ -62,64 +62,64 @@ public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleDTO
         if (warningRuleEntity == null) {
             return;
         }
-           Query query = new Query();
-            query.addCriteria(Criteria.where("id").is(warningRuleEntity.getId()));
-            Class entityClass = WarningRuleEntity.class;
-            Field[] fields = entityClass.getDeclaredFields();
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(warningRuleEntity.getId()));
+        Class entityClass = WarningRuleEntity.class;
+        Field[] fields = entityClass.getDeclaredFields();
 
-            Update update = new Update();
+        Update update = new Update();
 
-            for (Field field : fields) {
-                String fiedName = field.getName();
-                if(fiedName.equals("id")){
-                    continue;
-                }
-
-                StringBuffer getterName = new StringBuffer("get");
-                getterName.append(fiedName.substring(0, 1).toUpperCase()).append(fiedName.substring(1));
-                try {
-                    Method method = entityClass.getDeclaredMethod(getterName.toString());
-                    Object obj = method.invoke(warningRuleEntity);
-                    if (obj != null) {
-                        update.set(fiedName, obj);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        for (Field field : fields) {
+            String fiedName = field.getName();
+            if (fiedName.equals("id")) {
+                continue;
             }
-            getSysMongoTemplate().updateFirst(query, update, entityClass, "sys_warning");
 
+            StringBuffer getterName = new StringBuffer("get");
+            getterName.append(fiedName.substring(0, 1).toUpperCase()).append(fiedName.substring(1));
+            try {
+                Method method = entityClass.getDeclaredMethod(getterName.toString());
+                Object obj = method.invoke(warningRuleEntity);
+                if (obj != null) {
+                    update.set(fiedName, obj);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        getSysMongoTemplate().updateFirst(query, update, entityClass, "sys_warning");
+
+    }
 
 
-
-    public  void updateMulti(Query query,Update update){
-        getSysMongoTemplate().updateMulti(query,update,WarningRuleEntity.class,"sys_warning");
+    public void updateMulti(Query query, Update update) {
+        getSysMongoTemplate().updateMulti(query, update, WarningRuleEntity.class, "sys_warning");
     }
 
 
     /**
      * 根据预警规则启用状态和当天预警状态查询
+     *
      * @param isEnable
      * @param isWarninged
      * @return
      */
-    public List<WarningRuleDTO> findWarningRule(int isEnable, int isWarninged){
-        List<WarningRuleEntity> warningRuleEntityList= getSysMongoTemplate().find(new Query(Criteria.where("isEnable").is(isEnable).and("isWarninged").is(isWarninged)),WarningRuleEntity.class,"sys_warning");
-        return ObjectUtils.convert(warningRuleEntityList,WarningRuleDTO.class);
+    public List<WarningRuleDTO> findWarningRule(int isEnable, int isWarninged) {
+        List<WarningRuleEntity> warningRuleEntityList = getSysMongoTemplate().find(new Query(Criteria.where("isEnable").is(isEnable).and("isWarninged").is(isWarninged)), WarningRuleEntity.class, "sys_warning");
+        return ObjectUtils.convert(warningRuleEntityList, WarningRuleDTO.class);
     }
 
-    public Iterable<WarningRuleDTO> findByUserName(String user){
+    public Iterable<WarningRuleDTO> findByUserName(String user) {
         MongoTemplate mongoTemplate = getSysMongoTemplate();
-        List<WarningRuleEntity> warningRuleEntityList= mongoTemplate.find(Query.query(Criteria.where("sysUserName").is(user)),WarningRuleEntity.class,"sys_warning");
-        return ObjectUtils.convert(warningRuleEntityList,WarningRuleDTO.class);
+        List<WarningRuleEntity> warningRuleEntityList = mongoTemplate.find(Query.query(Criteria.where("sysUserName").is(user)), WarningRuleEntity.class, "sys_warning");
+        return ObjectUtils.convert(warningRuleEntityList, WarningRuleDTO.class);
     }
 
     @Override
     public void mySave(WarningRuleDTO warningRuleDTO) {
-        WarningRuleEntity warningRuleEntity=new WarningRuleEntity();
-        BeanUtils.copyProperties(warningRuleDTO,warningRuleEntity);
-        getMongoTemplate().save(warningRuleEntity,"sys_warning");
+        WarningRuleEntity warningRuleEntity = new WarningRuleEntity();
+        BeanUtils.copyProperties(warningRuleDTO, warningRuleEntity);
+        getMongoTemplate().save(warningRuleEntity, "sys_warning");
     }
 
 }

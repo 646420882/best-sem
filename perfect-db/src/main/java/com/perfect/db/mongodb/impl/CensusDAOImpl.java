@@ -34,17 +34,16 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.proj
 public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> implements CensusDAO {
 
 
-
     @Override
     public CensusDTO saveParams(CensusDTO censusDTO) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        if(mongoTemplate.exists(new Query(Criteria.where("uid").is(censusDTO.getUuid())),CensusEntity.class)){
+        if (mongoTemplate.exists(new Query(Criteria.where("uid").is(censusDTO.getUuid())), CensusEntity.class)) {
             censusDTO.setUserType(0);
-        }else{
+        } else {
             censusDTO.setUserType(1);
         }
-        CensusEntity censusEntity=new CensusEntity();
-        BeanUtils.copyProperties(censusDTO,censusEntity);
+        CensusEntity censusEntity = new CensusEntity();
+        BeanUtils.copyProperties(censusDTO, censusEntity);
         mongoTemplate.save(censusEntity, MongoEntityConstants.SYS_CENSUS);
 
         return censusDTO;
@@ -52,31 +51,31 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
 
     @Override
     public Map<String, ConstantsDTO> getTodayTotal(String url) {
-        ConstantsDTO toDayCensus=getTotalConstants(CensusStatus.TO_DAY,url);
-        ConstantsDTO lastDayCensus=getTotalConstants(CensusStatus.LAST_DAY,url);
-        ConstantsDTO lastWeekCensus=getTotalConstants(CensusStatus.LAST_WEEK,url);
-        ConstantsDTO lastMonthCensus=getTotalConstants(CensusStatus.LAST_MONTH,url);
-        Map<String,ConstantsDTO> returnMap=new HashMap<String,ConstantsDTO>();
-        returnMap.put("t",toDayCensus);
-        returnMap.put("ld",lastDayCensus);
-        returnMap.put("lw",lastWeekCensus);
-        returnMap.put("lm",lastMonthCensus);
+        ConstantsDTO toDayCensus = getTotalConstants(CensusStatus.TO_DAY, url);
+        ConstantsDTO lastDayCensus = getTotalConstants(CensusStatus.LAST_DAY, url);
+        ConstantsDTO lastWeekCensus = getTotalConstants(CensusStatus.LAST_WEEK, url);
+        ConstantsDTO lastMonthCensus = getTotalConstants(CensusStatus.LAST_MONTH, url);
+        Map<String, ConstantsDTO> returnMap = new HashMap<String, ConstantsDTO>();
+        returnMap.put("t", toDayCensus);
+        returnMap.put("ld", lastDayCensus);
+        returnMap.put("lw", lastWeekCensus);
+        returnMap.put("lm", lastMonthCensus);
         return returnMap;
     }
 
     @Override
     public List<ConstantsDTO> getVisitCustom(Map<String, Object> q) {
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         return null;
     }
 
     @Override
     public int saveConfig(CensusCfgDTO censusCfgDTO) {
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
-        Query q=new Query(Criteria.where("url").is(censusCfgDTO.getUrl()).and("ip").is(censusCfgDTO.getIp()));
-        if(!mongoTemplate.exists(q,MongoEntityConstants.SYS_CENSUS_CONFIG)){
-            CensusCfgEntity censusCfgEntity=new CensusCfgEntity();
-            BeanUtils.copyProperties(censusCfgDTO,censusCfgEntity);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        Query q = new Query(Criteria.where("url").is(censusCfgDTO.getUrl()).and("ip").is(censusCfgDTO.getIp()));
+        if (!mongoTemplate.exists(q, MongoEntityConstants.SYS_CENSUS_CONFIG)) {
+            CensusCfgEntity censusCfgEntity = new CensusCfgEntity();
+            BeanUtils.copyProperties(censusCfgDTO, censusCfgEntity);
             mongoTemplate.save(censusCfgEntity, MongoEntityConstants.SYS_CENSUS_CONFIG);
             return 1;
         }
@@ -85,12 +84,12 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
 
     @Override
     public List<CensusCfgDTO> getCfgList(String ip) {
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
-        List<CensusCfgEntity> list=mongoTemplate.find(new Query(Criteria.where("ip").is(ip)),CensusCfgEntity.class,MongoEntityConstants.SYS_CENSUS_CONFIG);
-        List<CensusCfgDTO> returnList=new ArrayList<>();
-        for (CensusCfgEntity cfgEntity:list){
-            CensusCfgDTO censusCfgDTO=new CensusCfgDTO();
-            BeanUtils.copyProperties(cfgEntity,censusCfgDTO);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        List<CensusCfgEntity> list = mongoTemplate.find(new Query(Criteria.where("ip").is(ip)), CensusCfgEntity.class, MongoEntityConstants.SYS_CENSUS_CONFIG);
+        List<CensusCfgDTO> returnList = new ArrayList<>();
+        for (CensusCfgEntity cfgEntity : list) {
+            CensusCfgDTO censusCfgDTO = new CensusCfgDTO();
+            BeanUtils.copyProperties(cfgEntity, censusCfgDTO);
             returnList.add(censusCfgDTO);
         }
         return returnList;
@@ -98,16 +97,16 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
 
     @Override
     public void delete(String id) {
-        MongoTemplate mongoTemplate=BaseMongoTemplate.getSysMongo();
-        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)),MongoEntityConstants.SYS_CENSUS_CONFIG);
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)), MongoEntityConstants.SYS_CENSUS_CONFIG);
     }
 
     @Override
-    public CountDTO getVisitPage(String ip,CensusStatus status) {
+    public CountDTO getVisitPage(String ip, CensusStatus status) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Query q = new Query();
         Criteria c = Criteria.where("ip").is(ip);
-        switch (status){
+        switch (status) {
             case LAST_DAY:
                 c.and("dat").gte(getLastDayStartDate()).lte(getLastDayEndDate());
                 break;
@@ -128,11 +127,11 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
                 group("lp").count().as("count")
         );
         AggregationResults<CountVO> pageAggResult = mongoTemplate.aggregate(pageAgg, MongoEntityConstants.SYS_CENSUS, CountVO.class);
-        List<CountVO> pvCountList=new ArrayList<>(pageAggResult.getMappedResults());
-        List<String> urlNames=getUrlName(pvCountList);
-        List<ConstantsDTO> itemsList=getConstantsList(status,urlNames);
+        List<CountVO> pvCountList = new ArrayList<>(pageAggResult.getMappedResults());
+        List<String> urlNames = getUrlName(pvCountList);
+        List<ConstantsDTO> itemsList = getConstantsList(status, urlNames);
 
-        CountDTO countDTO=new CountDTO();
+        CountDTO countDTO = new CountDTO();
         countDTO.setTotal(pvCountList.size());
         countDTO.setItems(itemsList);
         countDTO.setSum(getSum(itemsList));
@@ -141,29 +140,29 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
     }
 
     private String getTimeSpan(CensusStatus status) {
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd");
-        switch (status){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        switch (status) {
             case LAST_DAY:
                 return sdf.format(getLastDayStartDate());
             case LAST_WEEK:
                 return sdf.format(getLastWeekDate());
             case LAST_MONTH:
-                return  sdf.format(getLastMonthDate());
+                return sdf.format(getLastMonthDate());
             default:
                 return sdf.format(new Date());
         }
     }
 
     private List<Integer> getSum(List<ConstantsDTO> itemsList) {
-        int pvCount=0;
-        int uvCount=0;
-        int ipCount=0;
-        for(ConstantsDTO cd:itemsList){
-            pvCount+=cd.getTotalPv();
-            uvCount+=cd.getTotalUv();
-            ipCount+=cd.getTotalIp();
+        int pvCount = 0;
+        int uvCount = 0;
+        int ipCount = 0;
+        for (ConstantsDTO cd : itemsList) {
+            pvCount += cd.getTotalPv();
+            uvCount += cd.getTotalUv();
+            ipCount += cd.getTotalIp();
         }
-        List<Integer> sum=new ArrayList<>();
+        List<Integer> sum = new ArrayList<>();
         sum.add(pvCount);
         sum.add(uvCount);
         sum.add(ipCount);
@@ -173,16 +172,17 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
 
     /**
      * 根据查询日期范围，url地址获得某url的统计数据
+     *
      * @param status
      * @param urlNames
      * @return
      */
-    private List<ConstantsDTO> getConstantsList(CensusStatus status,List<String> urlNames) {
-        List<ConstantsDTO> returnList=new ArrayList<>();
-        for(String url:urlNames){
-            if(!url.equals("")||!url.equals(null)){
-            ConstantsDTO constantsDTO=getTotalConstants(status,url);
-            returnList.add(constantsDTO);
+    private List<ConstantsDTO> getConstantsList(CensusStatus status, List<String> urlNames) {
+        List<ConstantsDTO> returnList = new ArrayList<>();
+        for (String url : urlNames) {
+            if (!url.equals("") || !url.equals(null)) {
+                ConstantsDTO constantsDTO = getTotalConstants(status, url);
+                returnList.add(constantsDTO);
             }
         }
         return returnList;
@@ -191,12 +191,13 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
 
     /**
      * 获取Url地址列表
+     *
      * @param pvCountList
      * @return
      */
     private List<String> getUrlName(List<CountVO> pvCountList) {
-        List<String> listNames=new ArrayList<String>();
-        for (CountVO vo:pvCountList){
+        List<String> listNames = new ArrayList<String>();
+        for (CountVO vo : pvCountList) {
             listNames.add(vo.getLp());
         }
         return listNames;
@@ -232,8 +233,8 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
         int totalPv = (int) mongoTemplate.count(q, MongoEntityConstants.SYS_CENSUS);
         int totalUv = uidCountList.size();
         int totalIp = ipCountList.size();
-        int totalNewClient= (int) mongoTemplate.count(getClientQuery(status,url,1),MongoEntityConstants.SYS_CENSUS);
-        int totalOldClient= (int) mongoTemplate.count(getClientQuery(status,url,0),MongoEntityConstants.SYS_CENSUS);
+        int totalNewClient = (int) mongoTemplate.count(getClientQuery(status, url, 1), MongoEntityConstants.SYS_CENSUS);
+        int totalOldClient = (int) mongoTemplate.count(getClientQuery(status, url, 0), MongoEntityConstants.SYS_CENSUS);
         ConstantsDTO constantsDTO = new ConstantsDTO();
         constantsDTO.setCensusUrl(url);
         constantsDTO.setTotalCount(totalPv);
@@ -246,9 +247,9 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
     }
 
     //获取查询新老访客的方法
-    private Query getClientQuery(CensusStatus status,String url,int userType){
-        Query clientQuery=new Query();
-        Criteria c=getStaticCriteria(status,url);
+    private Query getClientQuery(CensusStatus status, String url, int userType) {
+        Query clientQuery = new Query();
+        Criteria c = getStaticCriteria(status, url);
         c.and("up").is(userType);
         clientQuery.addCriteria(c);
         return clientQuery;
@@ -291,9 +292,10 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
 
     /**
      * 获取今日的开始时间
+     *
      * @return
      */
-    private  Date getTodayStartDate() {
+    private Date getTodayStartDate() {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, 8);
         c.set(Calendar.MINUTE, 0);
@@ -303,9 +305,10 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
 
     /**
      * 获取今日的结束时间
+     *
      * @return
      */
-    private  Date getTodayEndDate() {
+    private Date getTodayEndDate() {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, 31);
         c.set(Calendar.MINUTE, 59);
@@ -315,11 +318,12 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
 
     /**
      * 获取昨日的开始时间
+     *
      * @return
      */
-    private  Date getLastDayStartDate(){
-        Calendar c=Calendar.getInstance();
-        c.add(Calendar.DATE,-1);
+    private Date getLastDayStartDate() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, -1);
         c.set(Calendar.HOUR_OF_DAY, 8);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
@@ -328,11 +332,12 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
 
     /**
      * 获取昨日的结束时间
+     *
      * @return
      */
-    private Date getLastDayEndDate(){
-        Calendar c=Calendar.getInstance();
-        c.add(Calendar.DATE,-1);
+    private Date getLastDayEndDate() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, -1);
         c.set(Calendar.HOUR_OF_DAY, 31);
         c.set(Calendar.MINUTE, 59);
         c.set(Calendar.SECOND, 59);
@@ -341,11 +346,12 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
 
     /**
      * 获取上周的开始时间
+     *
      * @return
      */
-    private  Date getLastWeekDate(){
-        Calendar c=Calendar.getInstance();
-        c.add(Calendar.DAY_OF_WEEK_IN_MONTH,-1);
+    private Date getLastWeekDate() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_WEEK_IN_MONTH, -1);
         c.set(Calendar.HOUR_OF_DAY, 8);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
@@ -354,11 +360,12 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
 
     /**
      * 获取上个月的开始时间
+     *
      * @return
      */
-    private  Date getLastMonthDate(){
-        Calendar c=Calendar.getInstance();
-        c.add(Calendar.MONTH,-1);
+    private Date getLastMonthDate() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, -1);
         c.set(Calendar.HOUR_OF_DAY, 8);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
@@ -366,13 +373,13 @@ public class CensusDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, Long> impl
     }
 
     @Override
-    public <E> Class<E> getEntityClass() {
-        return null;
+    public Class<CensusEntity> getEntityClass() {
+        return CensusEntity.class;
     }
 
     @Override
     public Class<CensusDTO> getDTOClass() {
-        return null;
+        return CensusDTO.class;
     }
 
     public class CensusIpVO {

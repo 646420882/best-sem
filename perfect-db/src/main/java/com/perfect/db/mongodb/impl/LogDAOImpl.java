@@ -4,6 +4,7 @@ import com.perfect.commons.constants.LogStatusConstant;
 import com.perfect.dao.sys.LogDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.LogDTO;
+import com.perfect.entity.sys.LogEntity;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
@@ -16,8 +17,8 @@ import java.util.List;
 @Component
 public class LogDAOImpl extends AbstractUserBaseDAOImpl<LogDTO, String> implements LogDAO {
     @Override
-    public Class<LogDTO> getEntityClass() {
-        return LogDTO.class;
+    public Class<LogEntity> getEntityClass() {
+        return LogEntity.class;
     }
 
     @Override
@@ -55,12 +56,12 @@ public class LogDAOImpl extends AbstractUserBaseDAOImpl<LogDTO, String> implemen
     @Override
     public void insertLog(Long bid, String entity, int opt) {
         if (existsByBid(bid)) {
-            LogDTO logEntity = getMongoTemplate().findOne(Query.query(Criteria.where(BAIDU_ID).is(bid)), getEntityClass());
+            boolean exists = getMongoTemplate().exists(Query.query(Criteria.where(BAIDU_ID).is(bid).and("opt").is(LogStatusConstant.OPT_DELETE)), getEntityClass());
 
-            if (logEntity.getOpt() == LogStatusConstant.OPT_DELETE)
+            if (exists)
                 return;
         }
-        LogDTO logEntity = new LogDTO();
+        LogEntity logEntity = new LogEntity();
         logEntity.setBid(bid);
         logEntity.setType(entity.toLowerCase().replaceAll("entity", ""));
         logEntity.setOpt(opt);

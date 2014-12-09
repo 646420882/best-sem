@@ -8,12 +8,14 @@ import com.perfect.entity.keyword.LexiconEntity;
 import com.perfect.utils.ObjectUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Created by baizz on 2014-12-2.
  */
+@Component
 public class LexiconDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, String> implements LexiconDAO {
     @Override
     public void deleteLexiconByTrade(String trade, String category) {
@@ -28,8 +30,8 @@ public class LexiconDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, String> i
 
     @Override
     @SuppressWarnings("unchecked")
-    public <E> Class<E> getEntityClass() {
-        return (Class<E>) LexiconEntity.class;
+    public Class<LexiconEntity> getEntityClass() {
+        return LexiconEntity.class;
     }
 
     @Override

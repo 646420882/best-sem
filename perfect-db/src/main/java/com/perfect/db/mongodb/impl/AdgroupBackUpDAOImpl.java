@@ -20,16 +20,16 @@ import java.util.Map;
  * Created by XiaoWei on 2014/9/4.
  */
 @Component
-public class AdgroupBackUpDAOImpl extends AbstractUserBaseDAOImpl<AdgroupBackupDTO,Long> implements AdgroupBackUpDAO{
+public class AdgroupBackUpDAOImpl extends AbstractUserBaseDAOImpl<AdgroupBackupDTO, Long> implements AdgroupBackUpDAO {
 
     @Override
-    public Class<AdgroupBackupDTO> getEntityClass() {
-        return AdgroupBackupDTO.class;
+    public Class<AdgroupBackUpEntity> getEntityClass() {
+        return AdgroupBackUpEntity.class;
     }
 
     @Override
     public Class<AdgroupBackupDTO> getDTOClass() {
-        return null;
+        return AdgroupBackupDTO.class;
     }
 
     @Override
@@ -40,26 +40,26 @@ public class AdgroupBackUpDAOImpl extends AbstractUserBaseDAOImpl<AdgroupBackupD
 
     @Override
     public AdgroupBackupDTO findOne(String oid) {
-        AdgroupBackUpEntity adgroupBackUpEntity= BaseMongoTemplate.getUserMongo().findOne(new Query(Criteria.where(getId()).is(oid)),AdgroupBackUpEntity.class, MongoEntityConstants.BAK_ADGROUP);
-        AdgroupBackupDTO adgroupBackupDTO=new AdgroupBackupDTO();
-        if(adgroupBackUpEntity!=null){
-        BeanUtils.copyProperties(adgroupBackUpEntity,adgroupBackupDTO);
+        AdgroupBackUpEntity adgroupBackUpEntity = BaseMongoTemplate.getUserMongo().findOne(new Query(Criteria.where(getId()).is(oid)), AdgroupBackUpEntity.class, MongoEntityConstants.BAK_ADGROUP);
+        AdgroupBackupDTO adgroupBackupDTO = new AdgroupBackupDTO();
+        if (adgroupBackUpEntity != null) {
+            BeanUtils.copyProperties(adgroupBackUpEntity, adgroupBackupDTO);
         }
         return adgroupBackupDTO;
     }
 
     @Override
     public AdgroupBackupDTO findByLongId(Long oid) {
-        AdgroupBackUpEntity adgroupBackUpEntity= BaseMongoTemplate.getUserMongo().findOne(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(oid)),AdgroupBackUpEntity.class, MongoEntityConstants.BAK_ADGROUP);
-        AdgroupBackupDTO adgroupBackupDTO=new AdgroupBackupDTO();
-        if(adgroupBackUpEntity!=null){
-            BeanUtils.copyProperties(adgroupBackUpEntity,adgroupBackupDTO);
+        AdgroupBackUpEntity adgroupBackUpEntity = BaseMongoTemplate.getUserMongo().findOne(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(oid)), AdgroupBackUpEntity.class, MongoEntityConstants.BAK_ADGROUP);
+        AdgroupBackupDTO adgroupBackupDTO = new AdgroupBackupDTO();
+        if (adgroupBackUpEntity != null) {
+            BeanUtils.copyProperties(adgroupBackUpEntity, adgroupBackupDTO);
         }
         return adgroupBackupDTO;
-   }
+    }
 
     @Override
     public void deleteByLongId(Long id) {
-        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(id)), AdgroupEntity.class,MongoEntityConstants.BAK_ADGROUP);
+        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(id)), AdgroupEntity.class, MongoEntityConstants.BAK_ADGROUP);
     }
 }

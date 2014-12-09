@@ -29,7 +29,7 @@ import java.util.Map;
 public class CustomGroupDAOImpl extends AbstractUserBaseDAOImpl<CustomGroupDTO, Long> implements CustomGroupDAO {
     @Override
     public Class<CustomGroupEntity> getEntityClass() {
-        return null;
+        return CustomGroupEntity.class;
     }
 
 
@@ -37,7 +37,7 @@ public class CustomGroupDAOImpl extends AbstractUserBaseDAOImpl<CustomGroupDTO, 
     public List<CustomGroupDTO> findAll(Long acId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         List<CustomGroupEntity> findList = mongoTemplate.find(new Query(Criteria.where(ACCOUNT_ID).is(acId)), CustomGroupEntity.class);
-        return ObjectUtils.convert(findList,CustomGroupDTO.class);
+        return ObjectUtils.convert(findList, CustomGroupDTO.class);
     }
 
     @Override
@@ -59,16 +59,16 @@ public class CustomGroupDAOImpl extends AbstractUserBaseDAOImpl<CustomGroupDTO, 
     @Override
     public CustomGroupDTO findByCustomName(String customName) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        CustomGroupEntity customGroupEntity= mongoTemplate.findOne(new Query(Criteria.where("gname").is(customName)), CustomGroupEntity.class);
-        CustomGroupDTO customGroupDTO=new CustomGroupDTO();
-        BeanUtils.copyProperties(customGroupEntity,customGroupDTO);
+        CustomGroupEntity customGroupEntity = mongoTemplate.findOne(new Query(Criteria.where("gname").is(customName)), CustomGroupEntity.class);
+        CustomGroupDTO customGroupDTO = new CustomGroupDTO();
+        BeanUtils.copyProperties(customGroupEntity, customGroupDTO);
         return customGroupDTO;
     }
 
     @Override
     public void myInsert(CustomGroupDTO customGroupDTO) {
-        CustomGroupEntity customGroupEntity=new CustomGroupEntity();
-        BeanUtils.copyProperties(customGroupDTO,customGroupEntity);
+        CustomGroupEntity customGroupEntity = new CustomGroupEntity();
+        BeanUtils.copyProperties(customGroupDTO, customGroupEntity);
         getMongoTemplate().insert(customGroupEntity, MongoEntityConstants.TBL_CUSTOMGROUP);
     }
 

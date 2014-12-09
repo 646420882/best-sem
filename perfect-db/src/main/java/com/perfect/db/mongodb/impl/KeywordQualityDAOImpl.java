@@ -22,8 +22,8 @@ public class KeywordQualityDAOImpl extends AbstractUserBaseDAOImpl<KeywordReport
 
     @Override
     @SuppressWarnings("unchecked")
-    public <E> Class<E> getEntityClass() {
-        return (Class<E>) KeywordReportEntity.class;
+    public Class<KeywordReportEntity> getEntityClass() {
+        return KeywordReportEntity.class;
     }
 
     @Override

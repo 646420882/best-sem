@@ -20,17 +20,17 @@ import org.springframework.stereotype.Component;
 public class CreativeBackUpDAOImpl extends AbstractUserBaseDAOImpl<CreativeBackUpDTO, Long> implements CreativeBackUpDAO {
     @Override
     public Class<CreativeBackUpEntity> getEntityClass() {
-        return null;
+        return CreativeBackUpEntity.class;
     }
 
 
     @Override
     public CreativeBackUpDTO findByStringId(String id) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        CreativeBackUpEntity creativeBackUpEntity= mongoTemplate.findOne((new Query(Criteria.where(getId()).is(id))), CreativeBackUpEntity.class, MongoEntityConstants.BAK_CREATIVE);
-        CreativeBackUpDTO creativeBackUpDTO=new CreativeBackUpDTO();
-        if(creativeBackUpEntity!=null){
-            BeanUtils.copyProperties(creativeBackUpEntity,creativeBackUpDTO);
+        CreativeBackUpEntity creativeBackUpEntity = mongoTemplate.findOne((new Query(Criteria.where(getId()).is(id))), CreativeBackUpEntity.class, MongoEntityConstants.BAK_CREATIVE);
+        CreativeBackUpDTO creativeBackUpDTO = new CreativeBackUpDTO();
+        if (creativeBackUpEntity != null) {
+            BeanUtils.copyProperties(creativeBackUpEntity, creativeBackUpDTO);
         }
         return creativeBackUpDTO;
     }
@@ -38,10 +38,10 @@ public class CreativeBackUpDAOImpl extends AbstractUserBaseDAOImpl<CreativeBackU
     @Override
     public CreativeBackUpDTO findByLongId(Long crid) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        CreativeBackUpEntity creativeBackUpEntity=  mongoTemplate.findOne((new Query(Criteria.where(MongoEntityConstants.CREATIVE_ID).is(crid))), CreativeBackUpEntity.class, MongoEntityConstants.BAK_CREATIVE);
-        CreativeBackUpDTO creativeBackUpDTO=new CreativeBackUpDTO();
-        if(creativeBackUpEntity!=null){
-            BeanUtils.copyProperties(creativeBackUpEntity,creativeBackUpDTO);
+        CreativeBackUpEntity creativeBackUpEntity = mongoTemplate.findOne((new Query(Criteria.where(MongoEntityConstants.CREATIVE_ID).is(crid))), CreativeBackUpEntity.class, MongoEntityConstants.BAK_CREATIVE);
+        CreativeBackUpDTO creativeBackUpDTO = new CreativeBackUpDTO();
+        if (creativeBackUpEntity != null) {
+            BeanUtils.copyProperties(creativeBackUpEntity, creativeBackUpDTO);
         }
         return creativeBackUpDTO;
     }

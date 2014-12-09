@@ -31,8 +31,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 public class CensusEveryDayReportDaoImpl extends AbstractSysBaseDAOImpl implements CensusEveryDayReportDao {
 
 
-
-    public List<ViewsDTO> getGroupLastPageByDate(Date date){
+    public List<ViewsDTO> getGroupLastPageByDate(Date date) {
         MongoTemplate mongoTemplate = getSysMongoTemplate();
         Query q = new Query();
         Criteria c = new Criteria("dat").gte(getStartByDate(date)).lte(getEndByDate(date));
@@ -50,20 +49,20 @@ public class CensusEveryDayReportDaoImpl extends AbstractSysBaseDAOImpl implemen
         return list;
     }
 
-    public long getCensusCount(Date date, String lastPage,String database_Field) {
+    public long getCensusCount(Date date, String lastPage, String database_Field) {
         MongoTemplate mongoTemplate = getSysMongoTemplate();
         Query q = new Query();
         Criteria c = new Criteria("dat").gte(getStartByDate(date)).lte(getEndByDate(date)).and("lp").is(lastPage);
         q.addCriteria(c);
 
         Aggregation aggre = null;
-        if("ip".equals(database_Field)){
+        if ("ip".equals(database_Field)) {
             aggre = Aggregation.newAggregation(
                     match(c),
                     project("ip"),
                     group("ip").count().as("count")
             );
-        }else if("uid".equals(database_Field)){
+        } else if ("uid".equals(database_Field)) {
             aggre = Aggregation.newAggregation(
                     match(c),
                     project("uid"),
@@ -73,31 +72,29 @@ public class CensusEveryDayReportDaoImpl extends AbstractSysBaseDAOImpl implemen
 
 
         long count;
-        if(aggre!=null){
+        if (aggre != null) {
             AggregationResults<ViewsDTO> results = mongoTemplate.aggregate(aggre, MongoEntityConstants.SYS_CENSUS, ViewsDTO.class);
             count = results.getMappedResults().size();
-        }else{
-            count = mongoTemplate.count(q,MongoEntityConstants.SYS_CENSUS);
+        } else {
+            count = mongoTemplate.count(q, MongoEntityConstants.SYS_CENSUS);
         }
 
         return count;
     }
 
 
-
-    public void insertList(List<CensusEveryDayReportDTO> list){
+    public void insertList(List<CensusEveryDayReportDTO> list) {
         MongoTemplate mongoTemplate = getSysMongoTemplate();
-        List<CensusEveryDayReportEntity> insertList=ObjectUtils.convert(list,CensusEveryDayReportEntity.class);
+        List<CensusEveryDayReportEntity> insertList = ObjectUtils.convert(list, CensusEveryDayReportEntity.class);
         mongoTemplate.insertAll(insertList);
     }
 
 
-    public List<CensusDTO> getCensus(){
+    public List<CensusDTO> getCensus() {
         MongoTemplate mongoTemplate = getSysMongoTemplate();
-        List<CensusEntity> list= mongoTemplate.find(new Query(Criteria.where("sys").is("Windows 7")),CensusEntity.class,MongoEntityConstants.SYS_CENSUS);
+        List<CensusEntity> list = mongoTemplate.find(new Query(Criteria.where("sys").is("Windows 7")), CensusEntity.class, MongoEntityConstants.SYS_CENSUS);
         return wrapperList(list);
     }
-
 
 
     /**
@@ -130,16 +127,16 @@ public class CensusEveryDayReportDaoImpl extends AbstractSysBaseDAOImpl implemen
 
     @Override
     public Class getEntityClass() {
-        return null;
+        return CensusEntity.class;
     }
 
-    private List<CensusDTO> wrapperList(List<CensusEntity> censusEntityList){
-       return ObjectUtils.convert(censusEntityList, CensusDTO.class);
+    private List<CensusDTO> wrapperList(List<CensusEntity> censusEntityList) {
+        return ObjectUtils.convert(censusEntityList, CensusDTO.class);
     }
 
     @Override
     public Class getDTOClass() {
-        return null;
+        return CensusDTO.class;
     }
 
     @Override
