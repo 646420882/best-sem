@@ -1,0 +1,694 @@
+
+.EC_im_tg {
+    font-size: 12px;
+    line-height: 24px;
+    margin: 0 0 4px;
+}
+.EC_im_tg a {
+    color: #666;
+}
+.EC_fr {
+    font-size: medium;
+    line-height: 1.15em;
+    width: 270px;
+    word-break: break-all;
+}
+.EC_im .EC_t ,.EC_t ,.ec-link ,.EC_im .EC_t:hover ,.EC_t:hover ,.ec-link:hover{
+    font-size: 16px;
+    text-decoration: underline;
+    line-height:26px;
+}
+.EC_im .EC_t font ,.EC_t font {
+    text-decoration: underline;
+}
+.EC_desc .EC_url {
+    color: #080;
+
+}
+.EC_desc font{
+    color:#000;
+}
+.EC_pic a {
+    text-decoration: none;
+}
+.EC_im {
+    margin-bottom: 1em;
+}
+.EC_url ,.ec_url,.ec_date{
+    color: #080;
+}
+.EC_im .EC_url {
+    color: #080;
+}
+#ec_im_container .EC_idea1009 {
+    position: relative;
+}
+.EC_im .EC_desc, .EC_im .EC_url {
+    font-size: small;
+    text-decoration: none;
+}
+.EC_im .EC_desc {
+    color: #000;
+}
+.icons {
+    display: inline-block;
+    line-height: 12px;
+}
+.icon {
+    background-image: url("http://a.baidu.com/xianzhi/wholeIconNew.gif");
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    margin: 0 5px 0 0;
+    vertical-align: text-top;
+    width: 16px;
+}
+.EC_tip {
+    background: none repeat scroll 0 0 white;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px #dfdfdf;
+    color: #575757;
+    display: none;
+    font-size: 12px;
+    line-height: 16px;
+    padding: 5px 9px;
+    position: absolute;
+    text-align: left;
+    white-space: nowrap;
+    width: auto !important;
+    z-index: 9;
+}
+.EC_tip_content {
+    font-size: 12px;
+    line-height: 16px;
+    padding: 0;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.EC_tip_dir {
+    background: url("http://a.baidu.com/xianzhi/EC_tip_dir.png") no-repeat scroll 5px 5px rgba(0, 0, 0, 0);
+    height: 14px;
+    left: 0;
+    position: absolute;
+    top: -11px;
+    width: 50px;
+}
+.EC_tip_title {
+    color: #575757;
+    display: inline-block;
+    font-size: 12px;
+    height: 14px;
+    line-height: 14px;
+    margin-bottom: 8px;
+}
+.EC_fix_cover {
+    display: inline-block;
+}
+.icon {
+    background-image: url("http://s1.bdstatic.com/r/www/cache/biz/ecom/common/api/tip0624/wholeIconNew.gif");
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    margin: 0 5px 0 0;
+    vertical-align: text-top;
+    width: 16px;
+}
+.icon-coupon {
+    background-position: 0 0;
+}
+.icon-tel {
+    background-position: 0 -32px;
+}
+.icon-yiliao {
+    background-position: 2px -94px;
+}
+.icon-vshenfen {
+    background-position: 0 -117px;
+}
+.ec_vshenfen_level {
+    background-image: url("http://s1.bdstatic.com/r/www/cache/biz/ecom/common/api/tip0624/wholeIconNew.gif");
+    background-repeat: no-repeat;
+    display: none;
+    margin-left: 5px;
+    padding-right: 59px;
+}
+.ec_vshenfen_level1 {
+    background-position: 76px -570px;
+    display: inline;
+    padding-right: 15px;
+}
+.ec_vshenfen_level2 {
+    background-position: 76px -610px;
+    display: inline;
+    padding-right: 27px;
+}
+.ec_vshenfen_level3 {
+    background-position: 76px -650px;
+    display: inline;
+    padding-right: 38px;
+}
+.ec_vshenfen_level4 {
+    background-position: 76px -690px;
+    display: inline;
+    padding-right: 48px;
+}
+.ec_vshenfen_level5 {
+    background-position: 76px -730px;
+    display: inline;
+    padding-right: 59px;
+}
+.EC_certify_tip .icon {
+    margin-right: 5px;
+}
+.EC_tip {
+    background: none repeat scroll 0 0 white;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px #dfdfdf;
+    color: #575757;
+    display: none;
+    font-size: 12px;
+    line-height: 16px;
+    padding: 5px 9px;
+    position: absolute;
+    text-align: left;
+    white-space: nowrap;
+    width: auto !important;
+    z-index: 9;
+}
+.EC_tip_content {
+    font-size: 12px;
+    line-height: 16px;
+    padding: 0;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.EC_certify_tip li {
+    font-size: 12px;
+    height: 18px;
+    line-height: 18px;
+}
+.EC_certify_tip li img {
+    vertical-align: top;
+}
+.EC_certify_tip_logo, .EC_safeguard_tip_logo {
+    margin-right: 5px;
+}
+.EC_tip_dir {
+    background: url("http://a.baidu.com/xianzhi/EC_tip_dir.png") no-repeat scroll 5px 5px rgba(0, 0, 0, 0);
+    height: 14px;
+    left: 0;
+    position: absolute;
+    top: -11px;
+    width: 50px;
+}
+.EC_tip_title {
+    color: #575757;
+    display: inline-block;
+    font-size: 12px;
+    height: 14px;
+    line-height: 14px;
+    margin-bottom: 8px;
+}
+.EC_clearfix {
+    clear: both;
+}
+.EC_ppim_top {
+    background-color: #f5f5f5;
+    border: medium none;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 635px;
+}
+.ec-ppim-narrow {
+    width: 539px !important;
+}
+.EC_ppim_top td {
+    padding: 0;
+}
+.EC_ppim_top .EC_header {
+    line-height: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.EC_ppim_top .EC_footer {
+    line-height: 16px;
+    overflow: hidden;
+    padding: 0 0 1px;
+    white-space: nowrap;
+}
+.EC_ppim_top .EC_title {
+    cursor: pointer;
+    font-size: medium;
+    overflow: hidden;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.EC_ppim_top .EC_title span font {
+    display: inline-block;
+    text-decoration: underline;
+}
+.EC_ppim_top .EC_url {
+    color: #080;
+    font-size: small;
+    padding: 0 0 0 5px;
+    text-decoration: none;
+}
+.EC_ppim_top .EC_zpmore .EC_url {
+    color: #080;
+    font-size: small;
+    padding: 0;
+    text-decoration: none;
+}
+.EC_ppim_top .EC_blank {
+    display: inline-block;
+    height: 18px;
+    text-decoration: none;
+    vertical-align: bottom;
+    width: 100%;
+}
+.EC_ppim_top .EC_header .EC_blank {
+    height: 25px;
+}
+.EC_ppim_top .EC_zptxt .EC_blank {
+    height: 17px;
+}
+.EC_ppim_top .EC_desc {
+    color: #000;
+    display: block;
+    font-size: small;
+    text-decoration: none;
+    width: 100%;
+}
+.EC_favurl  ,.ec_favicon{
+    background-position: 0 center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+
+}
+.EC_tglj {
+    background: none repeat scroll 0 0 #f5f5f5;
+    color: #666;
+    float: right;
+    margin-bottom: -25px;
+    margin-top: 4px;
+    position: relative;
+    z-index: 100;
+}
+.EC_nowraped {
+    overflow: hidden;
+    white-space: nowrap;
+}
+.EC_ib {
+    display: inline-block;
+}
+table.EC_ppim_top > tbody > tr > td {
+    word-wrap: normal;
+}
+#wrapper_wrapper .container_l .EC_ppim_top {
+    width: 640px;
+}
+#wrapper_wrapper .container_s .EC_ppim_top {
+    width: 570px;
+}
+.icons {
+    display: inline-block;
+    line-height: 12px;
+    margin: 0 5px 0 3px;
+}
+.icon {
+    background-image: url("http://a.baidu.com/xianzhi/wholeIconNew.gif");
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    margin: 0 5px 0 0;
+    vertical-align: text-top;
+    width: 16px;
+}
+.EC_tip {
+    background: none repeat scroll 0 0 white;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px #dfdfdf;
+    color: #575757;
+    display: none;
+    font-size: 12px;
+    line-height: 16px;
+    padding: 5px 9px;
+    position: absolute;
+    text-align: left;
+    white-space: nowrap;
+    width: auto !important;
+    z-index: 9;
+}
+.EC_tip_content {
+    font-size: 12px;
+    line-height: 16px;
+    padding: 0;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.EC_tip_dir {
+    background: url("http://a.baidu.com/xianzhi/EC_tip_dir.png") no-repeat scroll 5px 5px rgba(0, 0, 0, 0);
+    height: 14px;
+    left: 0;
+    position: absolute;
+    top: -11px;
+    width: 50px;
+}
+.EC_tip_title {
+    color: #000;
+    display: inline-block;
+    font-size: 12px;
+    height: 14px;
+    line-height: 14px;
+    margin-bottom: 8px;
+}
+.EC_fix_cover {
+    display: inline-block;
+}
+.ec-vertical-baseline {
+}
+.icon-coupon {
+    background-position: 0 0;
+}
+.EC_coupon_title {
+    font-size: 13px;
+    vertical-align: baseline;
+    white-space: normal;
+}
+.EC_tip_coupon {
+    width: 241px;
+}
+.icon-tel {
+    background-position: 0 -32px;
+}
+.icon {
+    background-image: url("http://s1.bdstatic.com/r/www/cache/biz/ecom/common/api/tip0624/wholeIconNew.gif");
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    margin: 0 5px 0 0;
+    vertical-align: text-top;
+    width: 16px;
+}
+.icon-coupon {
+    background-position: 0 0;
+}
+.icon-tel {
+    background-position: 0 -32px;
+}
+.icon-yiliao {
+    background-position: 2px -94px;
+}
+.icon-vshenfen {
+    background-position: 0 -117px;
+}
+.ec_vshenfen_level {
+    background-image: url("http://s1.bdstatic.com/r/www/cache/biz/ecom/common/api/tip0624/wholeIconNew.gif");
+    background-repeat: no-repeat;
+    display: none;
+    margin-left: 5px;
+    padding-right: 59px;
+}
+.ec_vshenfen_level1 {
+    background-position: 76px -570px;
+    display: inline;
+    padding-right: 15px;
+}
+.ec_vshenfen_level2 {
+    background-position: 76px -610px;
+    display: inline;
+    padding-right: 27px;
+}
+.ec_vshenfen_level3 {
+    background-position: 76px -650px;
+    display: inline;
+    padding-right: 38px;
+}
+.ec_vshenfen_level4 {
+    background-position: 76px -690px;
+    display: inline;
+    padding-right: 48px;
+}
+.ec_vshenfen_level5 {
+    background-position: 76px -730px;
+    display: inline;
+    padding-right: 59px;
+}
+.EC_certify_tip .icon {
+    margin-right: 5px;
+}
+.EC_certify_tip li {
+    font-size: 12px;
+    height: 18px;
+    line-height: 18px;
+}
+.EC_certify_tip li img {
+    vertical-align: top;
+}
+.EC_certify_tip_logo, .EC_safeguard_tip_logo {
+    margin-right: 5px;
+}
+.EC_koubei {
+    color: #666;
+    font-family: arial;
+    font-size: 13px;
+    height: 20px;
+    line-height: 20px;
+    overflow: hidden;
+    vertical-align: baseline;
+    white-space: nowrap;
+}
+.EC_koubei .EC_koube_url, .EC_koubei .EC_koube_url:hover {
+    color: #666;
+    display: inline-block;
+    text-decoration: underline;
+    vertical-align: baseline;
+}
+.EC_koubei_line {
+    display: inline-block;
+    padding: 0 8px;
+}
+.EC_koubei_label {
+    display: inline-block;
+}
+.EC_koubei_ppimpap {
+    margin: 2px 0 -2px;
+}
+.EC_im .EC_koubei {
+    padding-top: 3px;
+}
+.ec_dynamic_sublinks a {
+    font-size: small;
+    margin: 0 28px 0 0;
+    text-decoration: underline !important;
+}
+.ec_dynamic_sublinks a font {
+    text-decoration: underline;
+}
+a.ec_dynamic_sublinks_arr {
+    color: #333;
+    font-size: small;
+    margin: 2px 0;
+    text-decoration: none;
+}
+.ec_dynamic_sublinks_arr span {
+    margin-right: 28px;
+}
+.ec_dynamic_sublinks_tag {
+    font-size: small;
+    margin: 2px 0;
+}
+.ec_dynamic_sublinks_tag_tag {
+    margin-right: -21px;
+}
+.ec_dynamic_sublinks_tag_link {
+    margin-left: 26px;
+}
+.EC_clearfix {
+    clear: both;
+}
+.EC_ppim_top {
+    background-color: #f5f5f5;
+    border: medium none;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 635px;
+}
+.EC_ppim_top td {
+    padding: 0;
+}
+.EC_ppim_top .EC_header {
+    line-height: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.EC_ppim_top .EC_footer {
+    line-height: 16px;
+    overflow: hidden;
+    padding: 0 0 1px;
+    white-space: nowrap;
+}
+.EC_ppim_top .EC_title {
+    cursor: pointer;
+    font-size: medium;
+    overflow: hidden;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.EC_ppim_top .EC_title span font {
+    display: inline-block;
+    text-decoration: underline;
+}
+.EC_ppim_top .EC_url {
+    color: #080;
+    font-size: small;
+    padding: 0 0 0 5px;
+    text-decoration: none;
+}
+.EC_ppim_top .EC_zpmore .EC_url {
+    color: #080;
+    font-size: small;
+    padding: 0;
+    text-decoration: none;
+}
+.EC_url span{
+    padding:0 0 0 5px;
+}
+.EC_ppim_top .EC_blank {
+    display: inline-block;
+    height: 18px;
+    text-decoration: none;
+    vertical-align: bottom;
+    width: 100%;
+}
+.EC_ppim_top .EC_header .EC_blank {
+    height: 25px;
+}
+.EC_ppim_top .EC_zptxt .EC_blank {
+    height: 17px;
+}
+.EC_ppim_top .EC_desc {
+    color: #000;
+    display: block;
+    font-size: small;
+    text-decoration: none;
+    width: 100%;
+}
+.EC_favurl {
+    background-position: 0 center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}
+.EC_tglj {
+    background: none repeat scroll 0 0 #f5f5f5;
+    color: #666;
+    float: right;
+    margin-bottom: -25px;
+    margin-top: 4px;
+    position: relative;
+    z-index: 100;
+}
+.EC_nowraped {
+    overflow: hidden;
+    white-space: nowrap;
+}
+.EC_ib {
+    display: inline-block;
+}
+table.EC_ppim_top > tbody > tr > td {
+    word-wrap: normal;
+}
+#wrapper_wrapper .container_l .EC_ppim_top {
+    width: 640px;
+}
+#wrapper_wrapper .container_s .EC_ppim_top {
+    width: 570px;
+}
+.c-gap-bottom-small {
+    margin-bottom: 5px;
+}
+.c-span2 {
+    width: 29px;
+}
+.c-span3 {
+    width: 52px;
+}
+.c-span4 {
+    width: 75px;
+}
+.c-span5 {
+    width: 98px;
+}
+.c-span6 {
+    width: 121px;
+}
+.c-span7 {
+    width: 144px;
+}
+.c-span8 {
+    width: 167px;
+}
+.c-span9 {
+    width: 190px;
+}
+.c-span10 {
+    width: 213px;
+}
+.c-span11 {
+    width: 236px;
+}
+.c-span12 {
+    width: 259px;
+}
+.c-span13 {
+    width: 282px;
+}
+.c-span14 {
+    width: 305px;
+}
+.c-span15 {
+    width: 328px;
+}
+.c-span16 {
+    width: 351px;
+}
+.c-span17 {
+    width: 374px;
+}
+.c-span18 {
+    width: 397px;
+}
+.c-span19 {
+    width: 420px;
+}
+.c-span20 {
+    width: 443px;
+}
+.c-span21 {
+    width: 466px;
+}
+.c-span22 {
+    width: 489px;
+}
+.c-span23 {
+    width: 512px;
+}
+.c-span24 {
+    width: 535px;
+}
+.c-span2, .c-span3, .c-span4, .c-span5, .c-span6, .c-span7, .c-span8, .c-span9, .c-span10, .c-span11, .c-span12, .c-span13, .c-span14, .c-span15, .c-span16, .c-span17, .c-span18, .c-span19, .c-span20, .c-span21, .c-span22, .c-span23, .c-span24 {
+    float: left;
+    list-style: none outside none;
+    margin-right: 17px;
+}
+.EC_body .EC_nowraped{
+    font-size: 12px;
+}
+.r_under_left ul li ul li{
+    border:none;
+    padding: inherit;
+}

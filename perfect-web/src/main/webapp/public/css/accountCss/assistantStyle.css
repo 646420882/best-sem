@@ -1,0 +1,144 @@
+/*否定关键词窗口css*/
+#setNegtiveWord>span{
+    float:left;
+    margin:20px;
+    width:100%;
+}
+
+#setNegtiveWord .main_bottom{
+    float:left;
+}
+
+
+.inputKwdDiv{
+    /*width:380px;*/
+}
+#setNegtiveWord .inputKwdDiv{
+   /* float:left;
+    margin-left: 16px;*/
+}
+
+#setNegtiveWord{
+    width: 800px;
+}
+
+
+/*ip排除窗口css*/
+#setExcludeIp .inputIpDiv{
+    margin-left: 10px;
+}
+#setExcludeIp>span{
+    margin:20px;
+}
+
+#setExtension .chooseTime{
+    margin:20px;
+}
+
+#setExtension .chooseTime span{
+    float:left;
+}
+#setExtension .chooseTime ul li{
+    float:right;
+}
+
+
+
+.changeGray{
+    background-color:gray;
+}
+.changeGreen{
+    background-color: #89a4e8;
+    color: #fff;
+}
+.hours>ul li{
+    cursor: pointer;
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    margin-left: 3px;
+    text-align: center;
+    width: 20px;
+}
+
+.hours>ul div{
+    float:left;
+}
+
+.hours{
+    margin: 12px;
+}
+.chooseTime>ul .ztsjd span{
+    width:15px;
+    height:15px;
+    background-color: gray;
+}
+
+.chooseTime>ul .tfsjd span{
+    width:15px;
+    height:15px;
+    background-color: #89a4e8;
+}
+
+.chooseTime>ul li{
+    margin-left: 20px;
+}
+
+
+/*设置推广地域的窗口css*/
+.chooseRegion_5 li{
+    display: inline;
+    margin-left: 7px;
+}
+
+.chooseRegion{
+    margin:15px;
+}
+
+.allRegion,.useAccountRe,.chooseRegion{
+    border: 1px solid red;
+    width: 550px;
+    height:300px;
+    display: none;
+}
+
+/*推广助手分页css*/
+.page{
+    margin:20px 0;
+    *margin-left:25%;
+}
+
+.page ul li{
+    margin-left: 5px;
+    display:inline-block;
+    line-height: 25px;
+    *float:left;
+}
+
+.page ul>div{
+    float:left;
+}
+
+.page ul li .inputNo{
+    width:40px;
+}
+
+
+.page ul li a{
+    margin-left: 5px;
+    display:inline-block;
+    width:50px;
+    background-color: lightgray;
+    text-align: center;
+    line-height: 25px;
+}
+.page ul li a:hover{
+    background-color: dodgerblue;
+}
+
+.page ul{
+   text-align: center;
+}
+.hours input[type="radio"], .hours input[type="checkbox"] {
+    margin:0 5px 0 0 ;
+}

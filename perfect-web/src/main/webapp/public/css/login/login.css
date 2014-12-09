@@ -1,0 +1,321 @@
+ul, ol {
+    margin:0;
+    padding: 0;
+}
+.login {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.login_box {
+    position: fixed;
+    z-index: 2;
+    left: 34%;
+    top: 26%;
+}
+
+.login_box1, .login_box2 {
+    width: 461px;
+    height: 462px;
+    background: url(/public/img/login_box_bg.png) no-repeat;
+}
+.login_box2{
+    width: 490px;
+
+}
+
+.login_box2 {
+    background: url(/public/img/regster.png) no-repeat;
+    height:491px;
+
+}
+
+.login_part1 {
+    padding: 0 80px;
+    height: 386px;
+}
+
+.login_logo {
+    text-align: center;
+    padding: 78px 0 30px 0px;
+}
+
+.login_logo2 {
+    text-align: center;
+    padding: 40px 0 0 0;
+}
+.login_box2 .login_part1{
+    height:408px;
+}
+
+.login_click {
+    font-size: 14px;
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.login_click a {
+    padding: 0 10px;
+    color: #143e9c;
+}
+
+.login_click a:hover {
+    background: #f18b20;
+    color: #fff;
+   text-decoration: none;
+}
+
+.login_input ul li {
+    margin-top: 20px;
+    height:34px;
+    line-height:34px;
+    position: relative;
+}
+
+.login_input ul li input {
+    display: block;
+    width: 96.8%;
+    padding: 10px 1%;
+    position: relative;
+    font-size: 14px;
+    color: #666666;
+    border: 1px solid #90a8c1;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    overflow:hidden;
+}
+
+.login_input ul li span {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    *top:10px;
+    z-index: 3;
+}
+
+.login_input ul li a {
+    color: #143e9c;
+    cursor: pointer;
+}
+
+.login_input ul li a:hover {
+    background: #f18b20;
+    color: #fff;
+}
+
+.login_checkbox {
+    width: 135px;
+    height: 34px;
+    position: absolute;
+    top: 0px;
+    right: -135px;
+    line-height: 34px;
+    background: url(/public/img/bg.png) -10px -471px no-repeat;
+    color: #fff;
+    z-index: 4;
+}
+
+.login_checkbox b {
+    display: block;
+    padding: 0 10px 0 15px;
+}
+
+.login_part2 {
+    padding: 0px 60px;
+    height: 78px;
+    line-height: 78px;
+    font-size: 24px;
+    color: #796100;
+    text-align: center;
+}
+
+.login_part2 a {
+    display: block;
+    color: #796100;
+}
+
+.login_contact {
+    height: 41px;
+    line-height: 41px;
+    padding: 0 30px;
+    margin-top: 15px;
+    color: #a9a9a9;
+    font-size: 12px;
+    background: url(/public/img/login_under_bg.png) repeat-x;
+}
+
+.login_contact a {
+    color: #f18a1d;
+}
+
+/******注册********/
+
+.login_input2 ul li {
+    position: relative;
+    height: 34px;
+    margin-bottom: 10px;
+    *margin-bottom: 5px;
+}
+
+.login_input2 ul li input {
+    display: block;
+    float: left;
+    width: 100%;
+    padding: 6px 1%;
+    margin-bottom: 5px;
+    position: relative;
+    font-size: 12px;
+    color: #000;
+    border: 1px solid #cccccc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    height:34px;
+    *height:20px;
+}
+
+.login_input2 ul li span {
+    display: block;
+    float: left;
+    width:80px;
+    padding: 6px 0;
+    margin-bottom: 5px;
+}
+
+.login_box2 .login_part2 input{
+    color: #ffffff;
+
+}
+
+.login_input2 ul li .proving {
+    width: 150px;
+    *width:120px;
+    margin-right: 10px;
+    font-size:14px;
+    color:#000;
+    float:left;
+
+}
+
+.login_input2 ul li b {
+    margin-top: 5px;
+
+}
+.login_part2 input{
+    display:block;
+    width:100%;
+    height:100%;
+    border:0px;
+   background:none;
+    color: #ffffff;
+    font-size:24px;
+    font-weight:bold;
+    cursor: pointer;
+    line-height:78px;
+
+}
+
+.login_input ul li .red ,.login_input2 ul li .red{
+    border-color: #a94442;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.login_input ul li .red:focus ,.login_input2 ul li .red:focus {
+    border-color: #843534;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #ce8483;
+}
+.bv-form .help-block {
+    margin-bottom: 0;
+    color:#fff;
+}
+.bv-form .tooltip-inner {
+    text-align: left;
+}
+.nav-tabs li.bv-tab-success > a {
+    color: #3c763d;
+}
+.nav-tabs li.bv-tab-error > a {
+    color: #a94442;
+}
+.help-block{
+   width:210px;
+    height: 34px;
+    font-weight:bold;
+    position: absolute;
+    padding:0 10px 0 15px;
+    top: -5px;
+    left:240px;
+    *left:220px;
+    line-height: 34px;
+    background:#343535 url(/public/img/left_rejister.jpg) left no-repeat;
+    color: #fff;
+    z-index: 4;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+
+
+}
+.has-error .help-block{
+    color:#fff;
+}
+.col-lg-5{
+    width:230px;
+    *width:210px;
+    height:34px;
+    padding:0px;
+}
+.form-horizontal .form-group{
+    margin:0px;
+    padding:0px;
+}
+.login_input2 ul li .code{
+    float:right;
+    font-family:Arial;
+    font-style:italic;
+    color:#000;
+    border:0;
+    padding:2px 3px;
+    letter-spacing:3px;
+    font-weight:bolder;
+    font-size:16px;
+}
+.login_input2 ul li #checkCode{
+    float:left;
+    font-family:Arial;
+    font-style:italic;
+    color:#000;
+    border:0;
+    padding:2px 3px;
+    letter-spacing:3px;
+    font-weight:bolder;
+    font-size:16px;
+    height:30px;
+    line-height:30px;
+}
+.unchanged
+{
+    border:0;
+}
+.has-feedback .form-control{
+    padding-right:0px;
+}
+
+.configure_under ul li{
+    margin-top:10px;
+    line-height:30px;
+    font-size:14px;
+    width:100%;
+    overflow:hidden;
+}
+.configure_under ul li span{
+    width:100px;
+    float:left;
+    padding:0px;
+}
+.configure_under ul li input{
+    height:30px;
+
+}

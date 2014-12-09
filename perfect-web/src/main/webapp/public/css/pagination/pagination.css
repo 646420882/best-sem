@@ -1,0 +1,36 @@
+.pagination{
+    margin:10px 0;
+    overflow:hidden;
+    text-align:center;
+    line-height: 24px;
+
+}
+.pagination a {
+    background: none repeat scroll 0 0 #e4eafa;
+    border: 1px solid #f3f5fd;
+    color: #000;
+    *height: 24px;
+    margin-right: 8px;
+    line-height: 24px;
+    padding: 0 8px;
+}
+
+.pagination a, .pagination span {
+    display:inline-block;
+    margin-right: 8px;
+    line-height: 24px;
+    padding: 0 8px;
+    cursor: pointer;
+
+}
+.pagination .current {
+    background: #ffb900;
+    border: 1px solid #fab30b;
+    color: #fff;
+}
+
+.pagination .current.prev, .pagination .current.next{
+    background: none repeat scroll 0 0 #e4eafa;
+    border: 1px solid #f3f5fd;
+    color: #000;
+}

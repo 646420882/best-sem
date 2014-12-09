@@ -1,0 +1,124 @@
+@charset "utf-8";
+/*浮动*/
+* {
+    font-size: 12px;
+    font-family: Microsoft Yahei, "微软雅黑", "新宋体", "宋体", "Arial Narrow";
+}
+body{
+    min-width: 1000px;
+}
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+ul, li, h1, h2, h3, h4, h5, h6 ,p {
+    list-style: none;
+    margin:0px;
+    padding:0px;
+}
+.clearfix{
+    display:block;
+}
+.display{
+    display:none;
+}
+.container-fluid{
+    padding:0px;
+}
+/**top**/
+.top{
+    height:50px;
+    padding:0 20px;
+    background: url(/public/img/count_bg.png);
+    background-position: left 0;
+    background-repeat: repeat-x;
+}
+.dropdown-menu li{
+    padding-left:5px;
+}
+
+.top_nav ul li{
+    float:right;
+    margin:4px 10px 0 0 ;
+}
+.top_nav ul li ul li{
+    float:none;
+    margin:0px;
+}
+.top_nav ul li a,.top_nav ul li span{
+    cursor: pointer;
+    color:#fff;
+    padding:0px;
+}
+.nav .dropdown-toggle .caret {
+}
+.top_nav ul .top_select{
+    display:block;
+    width:100%;
+}
+.top_nav ul .top_select select{
+    height:20px;
+    line-height:20px;
+    padding:0px;
+    float:right;
+    width:50%;
+
+
+}
+.count_nav{
+    position:absolute;
+    width:149px;
+    min-height:100%;
+    border-right:1px solid #6191d4;
+    background:#f9fcff;
+}
+.count_content{
+    margin-left: 160px;
+    margin-right: 40px;
+
+}
+.count_nav ul li{
+    line-height:30px;
+
+}
+.count_nav ul li a{
+    display:block;
+    padding-left:20px;
+}
+.count_nav ul .count_nav_top{
+    background-color: #ea764f;
+    border-right: 4px solid #e3563a;
+    color:#fff;
+}
+.count_nav ul .count_nav_top a{
+    color:#fff;
+}
+.count_nav_mid{
+    background-color: #e2edfb;
+    background-image:url(/public/img/count_bg.png);
+    background-position: left -737px;
+    background-repeat: no-repeat;
+    color: #0965b8;
+    display: block;
+    font-weight: bolder;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 20px;
+
+}
+.count_nav_mid2{
+    background-color: #e2edfb;
+    background-image: url(/public/img/count_bg.png);
+    background-position: left -777px;
+    background-repeat: no-repeat;
+    color: #0965b8;
+    display: block;
+    font-weight: bolder;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom:1px;
+    padding-left: 20px;
+
+}

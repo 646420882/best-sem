@@ -1,0 +1,391 @@
+a, applet, blockquote, body, button, caption, code, dd, div, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, html, iframe, input, legend, li, object, ol, p, pre, span, table, tbody, td, textarea, tfoot, th, thead, tr, ul {
+    margin: 0;
+    padding: 0;
+}
+.hide {
+	display: none!important
+}
+
+
+.ui_dialog {
+	position: absolute;
+	z-index: 1001;
+	width: 440px;
+	background: #fff;
+	border: 2px solid #394459;
+	font-size:12px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+}
+.ui_dialog_head {
+    background: none repeat scroll 0 0 #394459;
+    cursor: move;
+    height: 28px;}
+.ui_dialog_title {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 27px;
+    padding-left: 12px;
+}
+
+.ui_dialog_close {
+    background: url("http://tuiguang-s3.bdstatic.com/nirvana/asset/resource/img/78490fdb8055b4a2.png") repeat scroll -150px -65px transparent;
+    cursor: pointer;
+    height: 12px;
+    overflow: hidden;
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    width: 12px;
+}
+
+.region-secondarea-select dd dd {
+    padding-left: 88px;
+}
+.region-secondarea-select dd dd, .region-secondarea-select dd dt {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.current_region {
+    font-weight: 700;
+}
+.ui_dialog_body {
+   /* margin: 10px 8px;*/
+    padding:10px;
+}
+#DenyAreaNotice {
+    line-height: 23px;
+    margin-top: 10px;
+}
+.common_notice {
+    background: none repeat scroll 0 0 #fff9c8;
+    border: 1px solid #eee495;
+    color: #666;
+    padding: 0 11px;
+}
+.hide {
+    display: none !important;
+}
+
+.manage_region {
+    height: 24px;
+    line-height: 24px;
+    margin-bottom: 5px;
+}
+
+.manage_region span {
+    cursor: pointer;
+}
+
+
+.manage_region .ui_radiobox {
+    margin-left: 5px;
+}
+
+
+.region-secondarea-select {
+    background: none repeat scroll 0 0 #fff;
+    text-align: left;
+    width: 100%;
+}
+.region-secondarea-select dt {
+    background: none repeat scroll 0 0 #d3e5fb;
+    line-height: 27px;
+    padding-left: 10px;
+}
+.region-secondarea-select dd, .region-secondarea-select dl, .region-secondarea-select dt {
+    margin: 0;
+    padding: 0;
+}
+
+.region-secondarea-select dd dt {
+    color: #666;
+    float: left;
+    padding-left: 0;
+    padding-right: 20px;
+}
+
+input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+.region-secondarea-select .whitebg {
+    border-bottom: 1px solid #e4e4e4;
+    padding-left: 10px;
+}
+
+.region-secondarea-select dd dt label {
+    color: #666;
+}
+
+.region-secondarea-select .leaf {
+    display: inline-block;
+    height: 27px;
+    position: relative;
+    text-align: left;
+    width: 120px;
+}
+
+.region-secondarea-select .graybg {
+    background: none repeat scroll 0 0 #f9f9f9;
+    border-bottom: 1px solid #e4e4e4;
+    padding-left: 10px;
+}
+
+.ui_dialog_foot:after {
+    clear: both;
+    content: " ";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+.ui_dialog_foot {
+    clear: both;
+    margin: 10px 8px 10px;
+}
+
+.ui_dialog_foot .ui_button {
+    margin-right: 5px;
+}
+
+.ui_button, .ui_button_label {
+	background-image: url(http://tuiguang-s3.bdstatic.com/nirvana/asset/resource/img/78490fdb8055b4a2.png);
+	display: inline-block;
+	float: left
+}
+
+.ui_button {
+	  
+    height: 22px;
+ background-position: right -209px;
+    cursor: pointer;
+    margin-left: 5px;
+    padding-right: 5px;
+    position: relative;
+    text-align: center;
+     zoom: 1
+}
+.ui_button_label {
+	position: relative;
+	    background-position: left -209px;
+    height: 22px;
+	line-height: 22px;
+	overflow: hidden;
+	margin-left: -5px;
+	padding: 0 5px 0 10px;
+	font-size: 12px;
+	text-decoration: none;
+	color: #000
+}
+.ui_button_label a {
+	text-decoration: none
+}
+
+
+.ui_dialog_foot .ui_button {
+    margin-right: 5px;
+}
+
+
+#regionErrorTooltip {
+    color: red;
+    line-height: 20px;
+}
+.regionSelect {
+	width: 100%;
+	background: #fff;
+	text-align: left
+}
+.regionSelect dd, .regionSelect dl, .regionSelect dt {
+	margin: 0;
+	padding: 0
+}
+.regionSelect dt {
+	background: #D3E5FB;
+	line-height: 32px;
+	_height: 32px;
+	padding-left: 10px;
+	_padding-top: 6px
+}
+.regionSelect dd dd, .regionSelect dd dt {
+	background: 0 0;
+	_padding-top: 0
+}
+.regionSelect dd {
+	line-height: 32px;
+	_height: 32px
+}
+.regionSelect dd label {
+	zoom: 1
+}
+.regionSelect dd dt {
+	float: left;
+	padding-left: 0;
+	padding-right: 20px;
+	color: #666
+}
+.regionSelect dd dt label {
+	color: #666
+}
+.regionSelect dd dd {
+	padding-left: 88px;
+*padding-left:91px;
+	_padding-left: 0
+}
+.regionSelect input {
+	position: relative;
+	top: 1px;
+	margin-right: 3px
+}
+.regionSelect dt input {
+*top:-1px;
+	_top: 0
+}
+.regionSelect dt label {
+	position: relative;
+*top:-3px;
+	_top: 0
+}
+.regionSelect dd dt input {
+*top:1px;
+	_top: 0
+}
+.regionSelect dd dt label {
+	position: relative;
+*top:0;
+	_top: 0
+}
+.regionSelect .leaf {
+	display: inline-block;
+	margin-right: 7px
+}
+.regionSelect .graybg {
+	background: #F9F9F9;
+	border-bottom: 1px solid #E4E4E4;
+	padding-left: 10px
+}
+.regionSelect .whitebg {
+	padding-left: 10px;
+	border-bottom: 1px solid #E4E4E4
+}
+.region-secondarea-select {
+	width: 100%;
+	background: #fff;
+	text-align: left
+}
+.region-secondarea-select label {
+*margin:-5px
+}
+.region-secondarea-select dd, .region-secondarea-select dl, .region-secondarea-select dt {
+	margin: 0;
+	padding: 0
+}
+.region-secondarea-select dt {
+	_height: 27px;
+	padding-left: 10px;
+	_padding-top: 6px;
+	background: #D3E5FB;
+	line-height: 27px
+}
+.region-secondarea-select dd dd, .region-secondarea-select dd dt {
+	_padding-top: 0;
+	background: 0 0
+}
+.region-secondarea-select dd label {
+	zoom: 1
+}
+.region-secondarea-select dd dt {
+	float: left;
+	padding-left: 0;
+	padding-right: 20px;
+	color: #666
+}
+.region-secondarea-select dd dt label {
+	color: #666
+}
+.region-secondarea-select dd dd {
+	padding-left: 88px;
+*padding-left:98px;
+	_padding-left: 0
+}
+
+.region-secondarea-select .ie7-index {
+	z-index: 999
+}
+.region-secondarea-select .leaf .first-area-container {
+	position: absolute;
+	text-align: left;
+	width: 88px;
+	top: 0;
+	height: 27px;
+	padding-left: 10px;
+	border-right: 0;
+	line-height: 27px
+}
+.region-secondarea-select .leaf .first-area-container-hover {
+	width: 93px;
+	width\0: 95px;
+	height: 25px;
+     *height:24px;
+	padding-left: 9px;
+	border: 1px solid #999;
+	border-right: 0;
+	background-color: #fff;
+	line-height: 25px;
+   *line-height:24px;
+	z-index: 1000;
+}
+
+
+.region-secondarea-select .leaf .second-area-container {
+	position: absolute;
+	top: 0;
+	right: -424px;
+	right\0: -424px;
+	width: 420px;
+	padding: 0 10px;
+	border: 1px solid #999;
+	background-color: #fff;
+	z-index: 999;
+	zoom: 1
+
+}
+
+.region-secondarea-select .leaf .second-area-leaf {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 128px;
+	height: 27px;
+	padding-left: 10px;
+	border-right: 0;
+	line-height: 27px
+}
+.region-secondarea-select .leaf .half-checked-icon {
+	position: absolute;
+	top: 5px;
+*top:7px;
+	left: 10px;
+*left:14px;
+	padding: 7px;
+*height:1px;
+	background: url(http://tuiguang-s1.bdstatic.com/nirvana/asset/resource/img/72b94739ddbacd74.png) 0 -2363px
+}
+
+#Abroad_regionBody .second-area-leaf {
+    padding-left: 0;
+    width:140px;
+}
+.region-secondarea-select .checked-num {
+	margin-left: 1px;
+*margin-left:0;
+	padding: 0 2px;
+	background-color: #6C83E0;
+*line-height:19px;
+	color: #fff;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px
+}
