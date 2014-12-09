@@ -5,7 +5,7 @@ import com.perfect.dao.keyword.KeyWordBackUpDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.backup.KeyWordBackUpDTO;
-import com.perfect.entity.backup.KeywordBackUpEntity;
+import com.perfect.entity.backup.KeyWordBackUpEntity;
 import com.perfect.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -23,8 +23,8 @@ import java.util.List;
 public class KeywordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpDTO, Long> implements KeyWordBackUpDAO {
 
     @Override
-    public Class<KeywordBackUpEntity> getEntityClass() {
-        return KeywordBackUpEntity.class;
+    public Class<KeyWordBackUpEntity> getEntityClass() {
+        return KeyWordBackUpEntity.class;
     }
 
     /**
@@ -35,7 +35,7 @@ public class KeywordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpD
      */
     public KeyWordBackUpDTO findByObjectId(String id) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        KeywordBackUpEntity keywordBackUpEntity = mongoTemplate.findOne(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)), getEntityClass());
+        KeyWordBackUpEntity keywordBackUpEntity = mongoTemplate.findOne(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)), getEntityClass());
 
         return ObjectUtils.convertToObject(keywordBackUpEntity, getDTOClass());
 
@@ -55,7 +55,7 @@ public class KeywordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpD
 
     @Override
     public void myInsertAll(List<KeyWordBackUpDTO> list) {
-        List<KeywordBackUpEntity> keywordBackUpEntityList = ObjectUtils.convert(list, KeywordBackUpEntity.class);
+        List<KeyWordBackUpEntity> keywordBackUpEntityList = ObjectUtils.convert(list, KeyWordBackUpEntity.class);
         getMongoTemplate().insertAll(keywordBackUpEntityList);
     }
 
@@ -71,8 +71,8 @@ public class KeywordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeyWordBackUpD
 
     public KeyWordBackUpDTO findById(long id) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        List<KeywordBackUpEntity> list = mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(id)), KeywordBackUpEntity.class, MongoEntityConstants.BAK_KEYWORD);
-        KeywordBackUpEntity keywordBackUpEntity = list.size() == 0 ? null : list.get(0);
+        List<KeyWordBackUpEntity> list = mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(id)), KeyWordBackUpEntity.class, MongoEntityConstants.BAK_KEYWORD);
+        KeyWordBackUpEntity keywordBackUpEntity = list.size() == 0 ? null : list.get(0);
         KeyWordBackUpDTO keyWordBackUpDTO = new KeyWordBackUpDTO();
         BeanUtils.copyProperties(keywordBackUpEntity, keyWordBackUpDTO);
         return keyWordBackUpDTO;

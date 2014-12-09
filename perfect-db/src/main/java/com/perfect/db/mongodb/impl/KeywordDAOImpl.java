@@ -14,7 +14,7 @@ import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeyWordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
-import com.perfect.entity.backup.KeywordBackUpEntity;
+import com.perfect.entity.backup.KeyWordBackUpEntity;
 import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.Pager;
@@ -504,7 +504,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         getMongoTemplate().updateFirst(query, update, getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
         KeyWordBackUpDTO _keyWordBackUpDTO = keyWordBackUpDAO.findByObjectId(keywordDTO.getId());
         if (_keyWordBackUpDTO == null && keywordDTO.getLocalStatus() == 2) {
-            KeywordBackUpEntity backUpEntity = ObjectUtils.convert(keyWordBackUpDTO, KeywordBackUpEntity.class);
+            KeyWordBackUpEntity backUpEntity = ObjectUtils.convert(keyWordBackUpDTO, KeyWordBackUpEntity.class);
             getMongoTemplate().insert(backUpEntity);
         }
         logDao.insertLog(id, LogStatusConstant.ENTITY_KEYWORD, LogStatusConstant.OPT_UPDATE);
