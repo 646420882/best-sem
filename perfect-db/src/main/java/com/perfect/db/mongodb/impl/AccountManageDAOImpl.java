@@ -145,7 +145,8 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     @Override
     public List<SystemUserDTO> getAllSysUserAccount() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        return ObjectUtils.convert(mongoTemplate.find(Query.query(Criteria.where("access").is(2)), getEntityClass()), getDTOClass());
+        List<SystemUserEntity> userEntityList = mongoTemplate.find(Query.query(Criteria.where("access").is(2)), getEntityClass());
+        return ObjectUtils.convertToList(userEntityList, getDTOClass());
     }
 
     /**

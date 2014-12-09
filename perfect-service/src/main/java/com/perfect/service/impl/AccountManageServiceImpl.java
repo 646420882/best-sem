@@ -156,8 +156,9 @@ public class AccountManageServiceImpl implements AccountManageService {
     @Override
     public List<BaiduAccountInfoDTO> getAllBaiduAccount() {
         List<BaiduAccountInfoDTO> baiduAccountList = new ArrayList<>();
-        accountManageDAO.getAllSysUserAccount().stream().forEach(e -> {
-            if (e.getBaiduAccounts().size() > 0)
+        List<SystemUserDTO> userDTOList = accountManageDAO.getAllSysUserAccount();
+        userDTOList.stream().filter(o -> o.getBaiduAccounts() != null).forEach(e -> {
+            if (!e.getBaiduAccounts().isEmpty())
                 baiduAccountList.addAll(e.getBaiduAccounts());
         });
         return baiduAccountList;

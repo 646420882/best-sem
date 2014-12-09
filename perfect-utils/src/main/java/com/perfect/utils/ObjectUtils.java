@@ -62,7 +62,7 @@ public class ObjectUtils {
             return null;
         }
 
-        return JSONUtils.getObjectByJson(JSONUtils.getJsonObject(srcObj).toString(), targetClz);
+        return JSONUtils.getObjectByJson(JSONUtils.getJsonString(srcObj), targetClz);
     }
 
     /**
@@ -80,6 +80,9 @@ public class ObjectUtils {
             return Collections.EMPTY_LIST;
         }
 
-        return JSONUtils.getObjectListByJson(JSONUtils.getJsonObject(srcList).toString(), targetClz);
+        List<T> targetList = new ArrayList<>(srcList.size());
+        srcList.parallelStream().forEach(e -> targetList.add(convertToObject(e, targetClz)));
+
+        return targetList;
     }
 }

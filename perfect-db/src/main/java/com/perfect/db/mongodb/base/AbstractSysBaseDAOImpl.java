@@ -1,7 +1,7 @@
 package com.perfect.db.mongodb.base;
 
 import com.perfect.dto.BaseDTO;
-import org.springframework.beans.BeanUtils;
+import com.perfect.utils.ObjectUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -44,39 +44,11 @@ public abstract class AbstractSysBaseDAOImpl<T extends BaseDTO, ID extends Seria
 
     @Override
     public T save(T dto) {
-
-        try {
-            Object entity = getEntityClass().newInstance();
-            BeanUtils.copyProperties(entity, dto);
-            getSysMongoTemplate().save(entity);
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
+        Object entity = ObjectUtils.convert(dto, getEntityClass());
+        getSysMongoTemplate().save(entity);
         return dto;
     }
 
-//    @Override
-//    public List<T> find(Map<String, Object> params, int skip, int limit, String order, Sort.Direction direction) {
-//        Query query = new Query();
-//        Criteria criteria = null;
-//        for (Map.Entry<String, Object> param : params.entrySet()) {
-//            if (criteria == null) {
-//                criteria = new Criteria(param.getKey());
-//                criteria.is(param.getValue());
-//                continue;
-//            }
-//
-//            criteria.and(param.getKey()).is(param.getValue());
-//        }
-//
-//        query.addCriteria(criteria).skip(skip).limit(limit);
-//
-//        if (order != null) {
-//            query.with(new Sort(direction, order));
-//        }
-//        return getSysMongoTemplate().find(query, getEntityClass());
-//    }
 
     @Override
     public T findOne(ID id) {
