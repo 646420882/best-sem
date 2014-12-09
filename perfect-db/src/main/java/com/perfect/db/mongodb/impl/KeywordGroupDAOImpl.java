@@ -119,10 +119,10 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Criteria c = new Criteria();
         c.and("tr").is(lexiconDTO.getTrade()).and("kw").is(lexiconDTO.getKeyword());
-        LexiconEntity findLexiconEntity = mongoTemplate.findOne(new Query(c), LexiconEntity.class, SYS_KEYWORD);
-        if (findLexiconEntity == null) {
-            findLexiconEntity = ObjectUtils.convert(lexiconDTO, getEntityClass());
-            mongoTemplate.insert(findLexiconEntity, SYS_KEYWORD);
+        LexiconEntity lexiconEntity = mongoTemplate.findOne(new Query(c), getEntityClass(), SYS_KEYWORD);
+        if (lexiconEntity == null) {
+            lexiconEntity = ObjectUtils.convert(lexiconDTO, getEntityClass());
+            mongoTemplate.insert(lexiconEntity, SYS_KEYWORD);
             return 1;
         } else {
             return 3;
@@ -164,13 +164,13 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
     public PagerInfo findByPager(Map<String, Object> params, int page, int limit) {
         Query q = new Query();
         Criteria c = new Criteria();
-        if (params.size() > 0 || params != null) {
+        if (params != null && !params.isEmpty()) {
             for (Map.Entry<String, Object> cri : params.entrySet()) {
                 c.and(cri.getKey()).is(cri.getValue());
             }
             q.addCriteria(c);
         }
-        Integer totalCount = getTotalCount(q, LexiconEntity.class);
+        Integer totalCount = getTotalCount(q, getEntityClass());
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         PagerInfo p = new PagerInfo(page, limit, totalCount);
         q.skip(p.getFirstStation());
@@ -179,8 +179,8 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
             p.setList(new ArrayList());
             return p;
         }
-        List<LexiconEntity> creativeEntityList = mongoTemplate.find(q, LexiconEntity.class);
-        p.setList(ObjectUtils.convert(creativeEntityList, LexiconDTO.class));
+        List<LexiconEntity> creativeEntityList = mongoTemplate.find(q, getEntityClass());
+        p.setList(ObjectUtils.convert(creativeEntityList, getDTOClass()));
         return p;
     }
 
@@ -189,7 +189,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Query q = new Query();
         q.addCriteria(Criteria.where("tr").is(trade).and("kw").is(keyword));
-        mongoTemplate.remove(q, LexiconEntity.class);
+        mongoTemplate.remove(q, getEntityClass());
     }
 
     @Override
@@ -204,9 +204,9 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
         mongoTemplate.updateFirst(new Query(Criteria.where("id").is(mapParams.get("id"))), up, LexiconEntity.class);
     }
 
-    private int getTotalCount(Query q, Class<?> cls) {
+    private int getTotalCount(Query q, Class<?> clazz) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        return (int) mongoTemplate.count(q, cls);
+        return (int) mongoTemplate.count(q, clazz);
     }
 
     //行业词库下的类别VO实体
@@ -232,13 +232,6 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
             this.count = count;
         }
 
-        @Override
-        public String toString() {
-            return "CategoryVO{" +
-                    "category='" + category + '\'' +
-                    ", count=" + count +
-                    '}';
-        }
     }
 
     class TradeVO {
@@ -253,11 +246,5 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
             this.trade = trade;
         }
 
-        @Override
-        public String toString() {
-            return "TradeVO{" +
-                    "trade='" + trade + '\'' +
-                    '}';
-        }
     }
 }

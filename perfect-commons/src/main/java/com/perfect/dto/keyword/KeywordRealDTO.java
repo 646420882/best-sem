@@ -97,55 +97,6 @@ public class KeywordRealDTO implements Comparable<KeywordRealDTO> {
         this.conversion = conversion;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        KeywordRealDTO that = (KeywordRealDTO) o;
-
-        if (click != null ? !click.equals(that.click) : that.click != null) return false;
-        if (conversion != null ? !conversion.equals(that.conversion) : that.conversion != null) return false;
-        if (cost != null ? !cost.equals(that.cost) : that.cost != null) return false;
-        if (cpc != null ? !cpc.equals(that.cpc) : that.cpc != null) return false;
-        if (ctr != null ? !ctr.equals(that.ctr) : that.ctr != null) return false;
-        if (impression != null ? !impression.equals(that.impression) : that.impression != null) return false;
-        if (keywordId != null ? !keywordId.equals(that.keywordId) : that.keywordId != null) return false;
-        if (keywordName != null ? !keywordName.equals(that.keywordName) : that.keywordName != null) return false;
-        if (position != null ? !position.equals(that.position) : that.position != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = keywordId != null ? keywordId.hashCode() : 0;
-        result = 31 * result + (keywordName != null ? keywordName.hashCode() : 0);
-        result = 31 * result + (impression != null ? impression.hashCode() : 0);
-        result = 31 * result + (click != null ? click.hashCode() : 0);
-        result = 31 * result + (ctr != null ? ctr.hashCode() : 0);
-        result = 31 * result + (cost != null ? cost.hashCode() : 0);
-        result = 31 * result + (cpc != null ? cpc.hashCode() : 0);
-        result = 31 * result + (position != null ? position.hashCode() : 0);
-        result = 31 * result + (conversion != null ? conversion.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "KeywordRealTimeDataVOEntity{" +
-                "keywordId=" + keywordId +
-                ", keywordName='" + keywordName + '\'' +
-                ", impression=" + impression +
-                ", click=" + click +
-                ", ctr=" + ctr +
-                ", cost=" + cost +
-                ", cpc=" + cpc +
-                ", position=" + position +
-                ", conversion=" + conversion +
-                '}';
-    }
-
     public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
     }

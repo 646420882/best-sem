@@ -1,5 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
+import com.google.common.collect.Lists;
 import com.perfect.dao.sys.CookieDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.CookieDTO;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 /**
  * Created by baizz on 2014-11-10.
- * 2014-12-2 refactor
+ * 2014-12-9 refactor
  */
 @Repository("cookieDAO")
 public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> implements CookieDAO {
@@ -35,7 +36,6 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
 
     @Override
     public CookieDTO takeOne() {
-        CookieDTO cookieDTO = new CookieDTO();
         CookieEntity cookieEntity = getSysMongoTemplate().findAndModify(
                 Query.query(
                         Criteria.where("i").is(true)
@@ -44,9 +44,7 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
                 Update.update("i", false),
                 FindAndModifyOptions.options().returnNew(true),
                 getEntityClass());
-        if (cookieEntity == null) {
-            return null;
-        }
+
         return ObjectUtils.convert(cookieEntity, getDTOClass());
     }
 
@@ -57,10 +55,10 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
         getMongoTemplate().save(cookieEntity);
     }
 
-    @Override
     /**
      * 查询最后执行时间在5分钟之前的账号
      */
+    @Override
     public List<CookieDTO> allUnused() {
         return ObjectUtils.convert(getSysMongoTemplate()
                 .find(Query.query(Criteria.where("f").lte(System.currentTimeMillis() - 5 * 60 * 1000))
@@ -74,6 +72,6 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
 
     @Override
     public List<CookieDTO> find(Map<String, Object> params, int skip, int limit) {
-        return null;
+        return Lists.newArrayList();
     }
 }
