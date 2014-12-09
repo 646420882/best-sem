@@ -1,4 +1,4 @@
-package com.perfect.app.controller;
+package com.perfect.test.app.controller;
 
 import com.perfect.dto.CrawlWordDTO;
 import com.perfect.service.CrawlWordService;
@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-11-17.
  */
-public class InsertCrawlWordController extends JUnitBaseController {
+public class InsertCrawlWordControllerTest extends JUnitBaseControllerTest {
 
     private static final Map<Integer, String> sheetNameMap = new LinkedHashMap<Integer, String>() {{
         put(0, "lefeng&vip");

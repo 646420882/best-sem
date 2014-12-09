@@ -1,4 +1,4 @@
-package com.perfect.app.controller;
+package com.perfect.test.app.controller;
 
 import com.perfect.core.AppContext;
 import org.junit.Test;
@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 /**
  * Created by vbzer_000 on 2014/8/26.
  */
-public class BiddingControllerTest extends JUnitBaseController {
+public class BiddingControllerTest extends JUnitBaseControllerTest {
 
 
     @Test

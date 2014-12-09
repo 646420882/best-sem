@@ -30,23 +30,23 @@
                 }
             });
         });
-        function addSuccess(file){
+        function addSuccess(file) {
             var _tr = "<tr>";
-            var td = "<td><input type='checkbox' name='cs' value="+file.name +"></td><td>" + file.name + "</td><td>" + getSize(file.size) + "</td><td>" + file.type + "</td><td><a href='/upload/getTotal?fileName=" +  file.name + "'>下载</a>" +
-                    "&nbsp;<a href='javascript:void(0)' step='" +file.name + "' onclick='delFile(this)'>删除</a></td>";
+            var td = "<td><input type='checkbox' name='cs' value=" + file.name + "></td><td>" + file.name + "</td><td>" + getSize(file.size) + "</td><td>" + file.type + "</td><td><a href='/upload/getTotal?fileName=" + file.name + "'>下载</a>" +
+                    "&nbsp;<a href='javascript:void(0)' step='" + file.name + "' onclick='delFile(this)'>删除</a></td>";
             var _etr = "</tr>";
             $("#t1").append(_tr + td + _etr);
         }
-        function getSize(fileSize){
-            var fileSizeString="";
+        function getSize(fileSize) {
+            var fileSizeString = "";
             if (fileSize < 1024) {
-                fileSizeString=parseFloat(fileSize)+"B";
-            }else if(fileSize<1048576){
-                fileSizeString=parseFloat(fileSize/1024).toFixed(2)+"Kb";
-            }else if (fileS < 1073741824) {
+                fileSizeString = parseFloat(fileSize) + "B";
+            } else if (fileSize < 1048576) {
+                fileSizeString = parseFloat(fileSize / 1024).toFixed(2) + "Kb";
+            } else if (fileS < 1073741824) {
                 fileSizeString = parseFloat(fileSize / 1048576).toFixed(2) + "Mb";
             } else {
-                fileSizeString =  parseFloat(fileSize / 1073741824).toFixed(2) + "Git";
+                fileSizeString = parseFloat(fileSize / 1073741824).toFixed(2) + "Git";
             }
             return fileSizeString;
         }
@@ -56,7 +56,7 @@
                 var json = eval("(" + result + ")");
                 for (var i = 0; i < json.length; i++) {
                     var _tr = "<tr>";
-                    var td = "<td><input type='checkbox' name='cs' value="+ json[i].fileName +"></td><td>" + json[i].fileName + "</td><td>" + json[i].fileSize + "</td><td>" + json[i].fileExt + "</td><td><a href='/upload/getTotal?fileName=" + json[i].fileName + "'>下载</a>" +
+                    var td = "<td><input type='checkbox' name='cs' value=" + json[i].fileName + "></td><td>" + json[i].fileName + "</td><td>" + json[i].fileSize + "</td><td>" + json[i].fileExt + "</td><td><a href='/upload/getTotal?fileName=" + json[i].fileName + "'>下载</a>" +
                             "&nbsp;<a href='javascript:void(0)' step='" + json[i].fileName + "' onclick='delFile(this)'>删除</a></td>";
                     var _etr = "</tr>";
                     $("#t1").append(_tr + td + _etr);
@@ -76,33 +76,33 @@
                 });
             }
         }
-        function checkAlls(tag){
-            var check_size=document.getElementsByName("cs");
-            if(tag){
+        function checkAlls(tag) {
+            var check_size = document.getElementsByName("cs");
+            if (tag) {
                 for (var i = 0; i < check_size.length; i++) {
-                    check_size[i].checked=true;
+                    check_size[i].checked = true;
                 }
-            }else{
+            } else {
                 for (var i = 0; i < check_size.length; i++) {
-                    check_size[i].checked=false;
+                    check_size[i].checked = false;
                 }
             }
         }
-        function getSum(){
-            var check_size=document.getElementsByName("cs");
-            var count=0;
-            var fileNames="";
-            for(var i=0;i<check_size.length;i++){
-                if(check_size[i].checked==true){
-                    fileNames=fileNames+check_size[i].value+",";
+        function getSum() {
+            var check_size = document.getElementsByName("cs");
+            var count = 0;
+            var fileNames = "";
+            for (var i = 0; i < check_size.length; i++) {
+                if (check_size[i].checked == true) {
+                    fileNames = fileNames + check_size[i].value + ",";
                     count++;
                 }
             }
-            if(count<=0){
+            if (count <= 0) {
                 alert("请选择要统计的文件或者文件数量不能小于两个！");
-            }else{
-               fileNames= fileNames.substring(0,fileNames.length-1);
-                $.get("/upload/getSum",{fileNames:fileNames},function(rs){
+            } else {
+                fileNames = fileNames.substring(0, fileNames.length - 1);
+                $.get("/upload/getSum", {fileNames: fileNames}, function (rs) {
                     alert(rs);
                 });
             }
@@ -115,16 +115,16 @@
 <a href="javascript:$('#file_upload').uploadify('upload', '*')">上传文件</a> | <a
         href="javascript:$('#file_upload').uploadify('stop')">停止上传!</a>|<a href="javascript:void(0)" onclick="getSum()">统计</a>
 
-    <div style="width:400px;height: 200px;overflow: auto;border: 1px solid lightgrey;">
-        <table id="t1" border="1">
-            <tr>
-                <td><input type="checkbox" onchange="checkAlls(this)"></td>
-                <td>文件名</td>
-                <td>文件大小</td>
-                <td>文件类型</td>
-                <td>操作</td>
-            <tr>
-        </table>
-    </div>
+<div style="width:400px;height: 200px;overflow: auto;border: 1px solid lightgrey;">
+    <table id="t1" border="1">
+        <tr>
+            <td><input type="checkbox" onchange="checkAlls(this)"></td>
+            <td>文件名</td>
+            <td>文件大小</td>
+            <td>文件类型</td>
+            <td>操作</td>
+        <tr>
+    </table>
+</div>
 </body>
 </html>

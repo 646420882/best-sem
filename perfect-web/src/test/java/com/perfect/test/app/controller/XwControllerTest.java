@@ -1,4 +1,4 @@
-package com.perfect.app.controller;
+package com.perfect.test.app.controller;
 
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 /**
  * Created by XiaoWei on 2014/10/29.
  */
-public class XwControllerTest extends JUnitBaseController {
+public class XwControllerTest extends JUnitBaseControllerTest {
     @Test
     public void insertTest() throws Exception {
         String params="{\"tr\":\"测试行业\",\"cg\":\"测试行业类别\",\"gr\":\"分组1\",\"kw\":\"关键词1\",\"url\":\"www.baidu.com\"}";

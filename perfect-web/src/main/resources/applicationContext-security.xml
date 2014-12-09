@@ -20,8 +20,8 @@
     <security:http pattern="/register/*" security="none"/>
     <security:http pattern="/validate/*" security="none"/>
     <security:http pattern="/forgetPassword/*" security="none"/>
-    <security:http pattern="/upload/uploadFile" security="none"/>
-    <security:http pattern="/upload/upTotal" security="none"/>
+    <!--<security:http pattern="/upload/uploadFile" security="none"/>-->
+    <!--<security:http pattern="/upload/upTotal" security="none"/>-->
     <security:http pattern="/pftstis/*" security="none"/>
 
     <security:http auto-config="true">

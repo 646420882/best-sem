@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/upload")
-public class UploadManager extends WebContextSupport {
+public class UploadController extends WebContextSupport {
     /**
      * DEFAULT 默认在Perfect目录下
      * TOTAL Total目录下，表示是用户上传的需要统计的文件
