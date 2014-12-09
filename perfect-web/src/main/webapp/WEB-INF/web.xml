@@ -30,13 +30,21 @@
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
         <init-param>
             <param-name>encoding</param-name>
-            <param-value>utf-8</param-value>
+            <param-value>UTF-8</param-value>
         </init-param>
     </filter>
     <filter-mapping>
         <filter-name>characterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <!-- 字符编码设置 -->
+    <locale-encoding-mapping-list>
+        <locale-encoding-mapping>
+            <locale>zh</locale>
+            <encoding>UTF-8</encoding>
+        </locale-encoding-mapping>
+    </locale-encoding-mapping-list>
 
     <!-- 加载静态资源 -->
     <servlet-mapping>
@@ -98,7 +106,7 @@
         <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
     </listener>
 
-    <!-- session超时定义,单位为分钟 -->
+    <!-- session超时定义, 单位为分钟 -->
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
@@ -107,12 +115,10 @@
         <error-code>403</error-code>
         <location>/WEB-INF/jsp/error/403.jsp</location>
     </error-page>
-
     <error-page>
         <error-code>404</error-code>
         <location>/WEB-INF/jsp/error/404.jsp</location>
     </error-page>
-
     <error-page>
         <error-code>500</error-code>
         <location>/WEB-INF/jsp/error/500.jsp</location>

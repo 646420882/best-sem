@@ -1,5 +1,6 @@
 package com.perfect.service.impl;
 
+import com.google.common.collect.Lists;
 import com.google.common.primitives.Bytes;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
@@ -37,7 +38,7 @@ import java.util.concurrent.RecursiveTask;
 
 /**
  * Created by baizz on 2014-08-16.
- * 2014-12-2 refactor
+ * 2014-12-8 refactor
  */
 @Service("keywordQualityService")
 public class KeywordQualityServiceImpl implements KeywordQualityService {
@@ -45,6 +46,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
     private static final String DEFAULT_DELIMITER = ",";
     private static final String DEFAULT_END = "\r\n";
     private static final byte commonCSVHead[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+    private static final List<Integer> qList = Lists.newArrayList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
     private static String key = "";
 
@@ -107,12 +109,11 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         QualityDTO allQualityData = getQualityData(list);
 
         //获取关键词质量度
-//        List<Quality10Type> quality10Types = getKeyword10Quality(keywordIds);
         List<Quality10Type> quality10Types = getQuality10Type(redisKey, keywordIds);
 
         Map<Integer, List<KeywordReportDTO>> tempMap = new HashMap<>();
         for (int i = 0; i <= 10; i++) {
-            tempMap.put(i, new ArrayList<KeywordReportDTO>());
+            tempMap.put(i, new ArrayList<>());
         }
 
         for (Quality10Type quality10Type : quality10Types) {
@@ -123,7 +124,10 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         List<QualityDTO> qualityList = new ArrayList<>();
         List<KeywordQualityReportVO> reportList = new ArrayList<>();
 
-        for (int i = 0; i <= 10; i++) {
+
+        final List<KeywordReportDTO> finalList = list;
+        final String finalFieldName = fieldName;
+        qList.parallelStream().forEach(i -> {
             List<KeywordReportDTO> tempList = tempMap.get(i);
             if (!tempList.isEmpty()) {
 
@@ -143,7 +147,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                     cpc = new BigDecimal(cpc * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     qualityDTO.setCpc(cpc);
                 }
-                Double keywordQtyRate = (tempList.size() + 0.0) / list.size();
+                Double keywordQtyRate = (tempList.size() + 0.0) / finalList.size();
                 keywordQtyRate = new BigDecimal(keywordQtyRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                 qualityDTO.setKeywordQtyRate(keywordQtyRate);
 
@@ -179,13 +183,14 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                 qualityList.add(qualityDTO);
 
                 //每个质量度下具体的关键词信息
-                KeywordReportDTO topNData[] = TopN.getTopN(tempList.toArray(new KeywordReportDTO[tempList.size()]), n, fieldName, sort);
+                KeywordReportDTO topNData[] = TopN.getTopN(tempList.toArray(new KeywordReportDTO[tempList.size()]), n, finalFieldName, sort);
 
                 if ((skip + 1) * n > topNData.length) {
                     List<KeywordReportDTO> data = new ArrayList<>();
-                    for (int j = skip * n; j < topNData.length; j++) {
-                        data.add(topNData[j]);
-                    }
+//                    for (int j = skip * n; j < topNData.length; j++) {
+//                        data.add(topNData[j]);
+//                    }
+                    data.addAll(Arrays.asList(topNData).subList(skip * n, topNData.length));
                     reportList.add(new KeywordQualityReportVO(i, data));
                 } else {
                     KeywordReportDTO arrData[] = new KeywordReportDTO[n];
@@ -193,8 +198,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                     reportList.add(new KeywordQualityReportVO(i, Arrays.asList(arrData)));
                 }
             }
-
-        }
+        });
 
         results.put("redisKey", key);
         results.put("qualityDTO", JSONUtils.getJsonObjectArray(qualityList));
@@ -217,15 +221,14 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             request.setHasScale(false);
             GetKeyword10QualityResponse response = keywordService.getKeyword10Quality(request);
 
-            if (response == null) {
+            if (response == null)
                 return Collections.EMPTY_LIST;
-            }
 
             return response.getKeyword10Quality();
         } catch (ApiException e) {
             e.printStackTrace();
         }
-        return null;
+        return Collections.EMPTY_LIST;
     }
 
     @Override
@@ -266,7 +269,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
 
         Map<Integer, List<KeywordReportDTO>> tempMap = new HashMap<>();
         for (int i = 0; i <= 10; i++) {
-            tempMap.put(i, new ArrayList<KeywordReportDTO>());
+            tempMap.put(i, new ArrayList<>());
         }
 
         for (Quality10Type quality10Type : quality10Types) {
@@ -276,7 +279,8 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         Map<Integer, QualityDTO> qualityDTOMap = new HashMap<>();
         List<KeywordQualityReportVO> reportList = new ArrayList<>();
 
-        for (int i = 0; i <= 10; i++) {
+        final List<KeywordReportDTO> finalList = list;
+        qList.parallelStream().forEach(i -> {
             List<KeywordReportDTO> tempList = tempMap.get(i);
             if (!tempList.isEmpty()) {
 
@@ -296,7 +300,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                     cpc = new BigDecimal(cpc * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     qualityDTO.setCpc(cpc);
                 }
-                Double keywordQtyRate = (tempList.size() + 0.0) / list.size();
+                Double keywordQtyRate = (tempList.size() + 0.0) / finalList.size();
                 keywordQtyRate = new BigDecimal(keywordQtyRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                 qualityDTO.setKeywordQtyRate(keywordQtyRate);
 
@@ -335,8 +339,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                 KeywordReportDTO topNData[] = TopN.getTopN(tempList.toArray(new KeywordReportDTO[tempList.size()]), tempList.size(), "pcImpression", -1);
                 reportList.add(new KeywordQualityReportVO(i, Arrays.asList(topNData)));
             }
-
-        }
+        });
 
 
         //CSV file
@@ -404,7 +407,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                     byte[] bytes = jedis.get(redisKey.getBytes(StandardCharsets.UTF_8));
                     quality10Types = SerializeUtils.deSerializeList(bytes, Quality10Type.class);
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             } finally {
                 if (jedis != null) {
@@ -442,7 +445,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             jedis = JRedisUtils.get();
             jedis.set(key, value);
             jedis.expire(id, 600);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         } finally {
             if (jedis != null) {
@@ -537,7 +540,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             return map;
         }
 
-        @Deprecated
+        /*@Deprecated
         private Map<String, KeywordReportDTO> merge(Map<String, KeywordReportDTO> map1, Map<String, KeywordReportDTO> map2) {
             Map<String, KeywordReportDTO> _map = new HashMap<>();
             for (Iterator<Map.Entry<String, KeywordReportDTO>> iterator1 = map1.entrySet().iterator(); iterator1.hasNext(); ) {
@@ -572,7 +575,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             }
 
             return _map;
-        }
+        }*/
 
     }
 
