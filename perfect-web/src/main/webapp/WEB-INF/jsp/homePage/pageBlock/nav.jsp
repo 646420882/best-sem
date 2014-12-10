@@ -153,7 +153,7 @@
 
             }
         });
-        if (baiduAccountId != -1) {
+        if (parseInt(baiduAccountId) != -1) {
             loadBaiduAccount();
         }
         $('.user_name').click(function () {
