@@ -87,7 +87,13 @@ public class SystemUserServiceImpl implements SystemUserService {
                 logger.error("获取账户信息错误: " + ResHeaderUtil.getJsonResHeader(false).toString());
                 continue;
             }
+            boolean isDefault = baiduAccountInfoDTO.isDfault();
             baiduAccountInfoDTO = ObjectUtils.convert(accountInfoType, BaiduAccountInfoDTO.class);
+            baiduAccountInfoDTO.setId(accountInfoType.getUserid());
+            baiduAccountInfoDTO.setBaiduUserName(baiduAccountInfoDTO.getBaiduUserName());
+            baiduAccountInfoDTO.setBaiduPassword(baiduAccountInfoDTO.getBaiduPassword());
+            baiduAccountInfoDTO.setToken(baiduAccountInfoDTO.getToken());
+            baiduAccountInfoDTO.setDfault(isDefault);
 
             //新增百度账户
             systemUserDAO.insertAccountInfo(userName, baiduAccountInfoDTO);
@@ -204,7 +210,13 @@ public class SystemUserServiceImpl implements SystemUserService {
 
             // 初始化账户数据
             AccountInfoType accountInfoType = apiService.getAccountInfo();
+            boolean isDefault = baiduAccountInfoDTO.isDfault();
             _dto = ObjectUtils.convert(accountInfoType, BaiduAccountInfoDTO.class);
+            _dto.setId(accountInfoType.getUserid());
+            _dto.setBaiduUserName(baiduAccountInfoDTO.getBaiduUserName());
+            _dto.setBaiduPassword(baiduAccountInfoDTO.getBaiduPassword());
+            _dto.setToken(baiduAccountInfoDTO.getToken());
+            _dto.setDfault(isDefault);
 
             //更新账户数据
             updateBaiduAccountInfo(userName, accountId, _dto);
@@ -387,18 +399,17 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<CampaignDTO> getCampaign(String userName, long accountId) {
         SystemUserDTO systemUserDTO = getSystemUser(userName);
 
         if (systemUserDTO == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccounts();
 
         if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         BaiduAccountInfoDTO baiduAccountInfoDTO = null;
@@ -439,7 +450,7 @@ public class SystemUserServiceImpl implements SystemUserService {
         }
 
         if (campaignEntityMap.size() == 0) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         } else {
             List<CampaignDTO> campaignDTOList = new ArrayList<>();
             campaignEntityMap.values().forEach(e -> {

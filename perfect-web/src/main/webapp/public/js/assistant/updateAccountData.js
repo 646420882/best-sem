@@ -108,9 +108,9 @@ var updateNewCampaign = function () {
 var index = 0;
 
 $(function () {
-    loadExistsCampaign();
-
-    loadNewCampaignData();
+    //loadExistsCampaign();
+    //
+    //loadNewCampaignData();
 
     $("input[name=no1]").on('click', function () {
         $.each($("input[name=no1]"), function (i, item) {
