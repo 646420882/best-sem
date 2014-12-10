@@ -141,6 +141,9 @@ $(function () {
 
     //下载
     $("#updateBtn").click(function () {
+        loadExistsCampaign();
+
+        loadNewCampaignData();
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
@@ -176,8 +179,10 @@ $(function () {
         if (ids.length > 0) {
             $.ajax({
                 url: "/bidding/enable",
-                data: {'ids': ids.toString(),
-                    "ebl": false},
+                data: {
+                    'ids': ids.toString(),
+                    "ebl": false
+                },
                 type: "POST",
                 success: function (datas) {
                     if (datas.code == 0) {
@@ -215,8 +220,10 @@ $(function () {
         if (ids.length > 0) {
             $.ajax({
                 url: "/bidding/enable",
-                data: {'ids': ids.toString(),
-                    "ebl": true},
+                data: {
+                    'ids': ids.toString(),
+                    "ebl": true
+                },
                 type: "POST",
                 success: function (datas) {
                     if (datas.code == 0) {
@@ -432,32 +439,34 @@ $(function () {
                     }
                 }
             });
-            $.extend(tmpValue, { postData: {
-                s: skip,
-                l: size,
-                q: text,
-                f: f,
-                filter: _filter,
-                matchType: matchType,
-                price: keywordPrice,
-                quality: keywordQuality,
-                biddingStatus: _biddingStatus,
-                statusStr: _statusStr
-            }
+            $.extend(tmpValue, {
+                postData: {
+                    s: skip,
+                    l: size,
+                    q: text,
+                    f: f,
+                    filter: _filter,
+                    matchType: matchType,
+                    price: keywordPrice,
+                    quality: keywordQuality,
+                    biddingStatus: _biddingStatus,
+                    statusStr: _statusStr
+                }
             });
         } else {
-            $.extend(tmpValue, { postData: {
-                s: skip,
-                l: size,
-                q: text,
-                f: f,
-                filter: _filter,
-                matchType: null,
-                price: null,
-                quality: null,
-                biddingStatus: _biddingStatus,
-                statusStr: _statusStr
-            }
+            $.extend(tmpValue, {
+                postData: {
+                    s: skip,
+                    l: size,
+                    q: text,
+                    f: f,
+                    filter: _filter,
+                    matchType: null,
+                    price: null,
+                    quality: null,
+                    biddingStatus: _biddingStatus,
+                    statusStr: _statusStr
+                }
             });
         }
 
@@ -752,20 +761,21 @@ var toAnyPage = function (page_index) {
 
     if (type == 1) {
         var tmpValue = $("#table1").jqGrid("getGridParam", "postData");
-        $.extend(tmpValue, { postData: {
-            cp: _campaignId,
-            ag: _adgroupId,
-            s: skip,
-            l: limit,
-            q: text,
-            f: f,
-            filter: _filter,
-            matchType: matchType,
-            price: keywordPrice,
-            quality: keywordQuality,
-            biddingStatus: _biddingStatus,
-            statusStr: _statusStr
-        }
+        $.extend(tmpValue, {
+            postData: {
+                cp: _campaignId,
+                ag: _adgroupId,
+                s: skip,
+                l: limit,
+                q: text,
+                f: f,
+                filter: _filter,
+                matchType: matchType,
+                price: keywordPrice,
+                quality: keywordQuality,
+                biddingStatus: _biddingStatus,
+                statusStr: _statusStr
+            }
         });
 
         $("#table1").jqGrid("setGridParam", tmpValue).trigger("reloadGrid");
