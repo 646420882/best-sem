@@ -14,7 +14,7 @@
         <div class="nav_bg">
             <img src="${pageContext.request.contextPath}/public/img/top_bg.jpg" width="100%" height="100%">
         </div>
-        <div class="top_middle ">
+        <div class="top_middle" >
             <div class="user_mid fl">
                 <div class="user_logo fl">
                     <div class="user_logo1">
@@ -48,9 +48,9 @@
 
                     </div>
                 </div>
-                <div class="user_detali fl over">
+                <div class="user_detali fl over" id="argDialogDiv" style="min-width:350px;">
                     <ul>
-                        <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<a href="/pftstis//getTodayConstant"
+                        <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<a href="/pftstis/getIndex"
                                                                                style="color: white">.</a></li>
                         <li><span>余额预计可消费：${remainderDays}天</span><span>日预算：${accountBudget}元</span></li>
                     </ul>

@@ -962,6 +962,7 @@ $("#quickAddplan").click(function () {
 function showQuickAddPlanWindow() {
     top.dialog({title: "快速新建计划",
         padding: "5px",
+        align:'right bottom',
         content: "<iframe src='/assistantCampaign/showCreatePlanWindow' width='900' height='620' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
@@ -970,7 +971,7 @@ function showQuickAddPlanWindow() {
         },
         onremove: function () {
         }
-    }).showModal();
+    }).showModal(dockObj);
 }
 
 

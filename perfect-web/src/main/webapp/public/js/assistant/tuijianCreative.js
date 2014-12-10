@@ -556,9 +556,6 @@ function onKeyDownView() {
     });
     $("textarea[name='pcUrl']").keyup(function () {
         var title = $(this).val();
-        $("#left1Url").html(title);
-        $("#left2Url").html(title);
-        $("#rightUrl").html(title);
         var _max = $(this).next("span").html().split("/")[1];
         var _thisSttmpr = $(this).next("span").prev("textarea").val();
         var char = _thisSttmpr.match(/[^\x00-\xff]/ig);

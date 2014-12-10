@@ -47,6 +47,8 @@ window.onload = function () {
 
 $(function () {
     $("#downloadAccountData").click(function () {
+        loadExistsCampaign();
+        loadNewCampaignData();
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });

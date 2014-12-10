@@ -475,6 +475,7 @@ $("#addOrUpdateKwd").livequery('click', function () {
 function batchAddOrUpdate() {
     top.dialog({title: "批量添加/更新",
         padding: "5px",
+        align:'right bottom',
         content: "<iframe src='/assistantKeyword/showAddOrUpdateKeywordDialog' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
@@ -486,7 +487,7 @@ function batchAddOrUpdate() {
         },
         onremove: function () {
         }
-    }).showModal();
+    }).showModal(dockObj);
     return false;
 }
 
@@ -497,6 +498,7 @@ $("#batchDelKwd").livequery('click', function () {
 function batchDelKeyword() {
     top.dialog({title: "批量删除",
         padding: "5px",
+        align:'right bottom',
         content: "<iframe src='/assistantKeyword/showBatchDelDialog' width='900' height='550' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
@@ -508,7 +510,7 @@ function batchDelKeyword() {
         },
         onremove: function () {
         }
-    }).showModal();
+    }).showModal(dockObj);
     return false;
 }
 
@@ -520,6 +522,7 @@ $(".searchwordReport").livequery('click', function () {
 function searchword() {
     top.dialog({title: "搜索词报告",
         padding: "5px",
+        align:'right bottom',
         content: "<iframe src='/assistantKeyword/showSearchWordDialog' width='900' height='570' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
@@ -532,7 +535,7 @@ function searchword() {
         onremove: function () {
         },
         position:['left','top']
-    }).showModal();
+    }).showModal(dockObj);
     return false;
 }
 
@@ -672,11 +675,12 @@ var menu_keyword_add = {
 function showSearchWord() {
     top.dialog({title: "关键词工具",
         padding: "5px",
+        align:'right bottom',
         content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         onclose: function () {
             /* whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());*/
         }
-    }).showModal();
+    }).showModal(dockObj);
     return false;
 }
 /**

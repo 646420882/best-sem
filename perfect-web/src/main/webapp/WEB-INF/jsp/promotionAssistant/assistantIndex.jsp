@@ -23,7 +23,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/grid/ui.jqgrid.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
+
     <style rel="stylesheet" type="text/css">
         #sDiv .span-error {
             color: red;
@@ -87,7 +87,7 @@
     <ul class="zs_nav">
         <li class="showbox"><a id="downloadAccountData"><span><img  src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
         <li><a><span><img src="../public/img/update.png"></span><span>上传更新</span></a></li>
-        <li class="current"><a><span><img src="../public/img/Advanced_search.png"></span><span>高级搜索</span></a></li>
+        <li class="current"><a><span><img src="../public/img/Advanced_search.png"></span><span >高级搜索</span></a></li>
         <li class="nav_menu"><a><span><img src="../public/img/Repeat_keyword.png"></span><span>重复关键词</span></a>
             <ul>
                 <li class="showbox3 current">重复关键词</li>
@@ -1509,6 +1509,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/Monitoring.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
 <script type="text/javascript">
     $(function () {
         window.dialog = dialog;

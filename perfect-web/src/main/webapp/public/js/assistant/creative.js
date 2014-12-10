@@ -33,6 +33,7 @@ $.fn.selectionTp= function () {
     return {start: s, end: e, text: te};
 };
 var sparams = {aid: null, cid: null,nowPage:0,pageSize:20};
+var dockObj=document.getElementById('argDialogDiv');
 $(function () {
     InitMenu();
     rDrag.init(document.getElementById("dAdd"));
@@ -1089,10 +1090,14 @@ function creativeMulti() {
     top.dialog({title: "批量添加创意",
         padding: "5px",
         id:'creativeMutli',
-        align:'top',
-        content: "<a src='/assistantCreative/updateMulti' ></a>",
+        align:'right bottom',
+        content: "<iframe src='/assistantCreative/updateMulti' width='900' height='650' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         width:'900',
         height:'650',
+        ok:function(){
+            alert("123");
+            return false;
+        },
         oniframeload: function () {
 
         },
@@ -1101,7 +1106,7 @@ function creativeMulti() {
         },
         onremove: function () {
         }
-    }).showModal();
+    }).showModal(dockObj);
 
 }
 

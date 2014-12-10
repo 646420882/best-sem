@@ -1,4 +1,4 @@
-package com.perfect.app.index.controller;
+package com.perfect.app.ucenter.controller;
 
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.service.AccountOverviewService;
