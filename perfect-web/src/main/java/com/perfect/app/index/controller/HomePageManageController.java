@@ -101,7 +101,9 @@ public class HomePageManageController extends WebContextSupport {
      * @return
      */
     @RequestMapping(value = "/bestIndex", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView getBestIndexPage() {
+    public ModelAndView getBestIndexPage(HttpServletRequest request, ModelMap modelMap) {
+        String userName = WebUtils.getUserName(request);
+        modelMap.put("currSystemUserName", userName);
         return new ModelAndView("bestPage/bestIndex");
     }
 

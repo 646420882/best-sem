@@ -22,8 +22,12 @@
     </div>
 
     <div class="servicesBox">
-        <div class="time">
-            <b id="time"></b><span>perfect</span>
+        <div class="time over">
+            <b id="time" class="fl"></b><span class="fl">${currSystemUserName}</span><form class="fl" name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
+           <input type="submit" value="| 退出"
+                   onclick="$('form[logout]').submit();"/>
+        </form>
+
         </div>
         <div class="serBox disabled">
             <div class="serBoxOn"></div>

@@ -182,3 +182,12 @@ body {
     cursor: not-allowed;
 
 }
+.time input{
+    background:none;
+    border:none;
+    margin-left:5px;
+
+}
+.time input:hover{
+    color:#f7b003;
+}
