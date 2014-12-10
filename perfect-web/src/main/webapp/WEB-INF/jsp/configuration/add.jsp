@@ -179,8 +179,8 @@
                             <input id="submit" class="add_submit" onclick="progress(2)" type="button" value="确认"/>
                         </form>
                     </div>
-                    <div id="step3" class="hide">
-                        <label style="font-size: 16px"><label style="color: red;font-weight: bold">绑定已完成.</label>2秒后自动跳转...如果没有跳转请点击 《<a href="${pageContext.request.contextPath}/home">此处</a>》</label>
+                    <div id="step3" class="hide" style="text-align: center">
+                        <span style="font-size: 14px;margin-top: 100px;display: block;"><label style="color: red;font-weight: bold">绑定已完成.</label>&nbsp;&nbsp;&nbsp;2秒后自动跳转...如果没有跳转请点击 《<a href="${pageContext.request.contextPath}/home">此处</a>》跳转</span>
                     </div>
                 </div>
             </div>

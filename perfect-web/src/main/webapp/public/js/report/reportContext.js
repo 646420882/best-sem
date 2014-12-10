@@ -530,6 +530,7 @@ $(function () {
     });
 //明细报告
     reportData = function () {
+        jQuery.ajaxSetup ({cache:false});
         $("#containerLegend").empty();
         $("#shujuthead").empty();
         $('#container').empty();
