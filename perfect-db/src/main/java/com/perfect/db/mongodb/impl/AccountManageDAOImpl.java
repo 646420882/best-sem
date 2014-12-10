@@ -145,7 +145,8 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     @Override
     public List<SystemUserDTO> getAllSysUserAccount() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        List<SystemUserEntity> userEntityList = mongoTemplate.find(Query.query(Criteria.where("access").is(2)), getEntityClass());
+        List<SystemUserEntity> userEntityList = mongoTemplate.find(
+                Query.query(Criteria.where("access").is(2).and("acstate").is(1).and("state").is(1)), getEntityClass());
         return ObjectUtils.convertToList(userEntityList, getDTOClass());
     }
 
@@ -205,7 +206,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Update update = new Update();
         update.set("acstate", state);
-        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(userName)),update,"sys_user");
+        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(userName)), update, "sys_user");
         return writeResult.isUpdateOfExisting();
     }
 

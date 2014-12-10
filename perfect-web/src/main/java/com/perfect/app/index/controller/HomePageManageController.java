@@ -78,7 +78,7 @@ public class HomePageManageController extends WebContextSupport {
     }
 
     /**
-     * 登录成功, 跳转至首页
+     * 跳转至SEM首页
      *
      * @return
      */
@@ -95,16 +95,13 @@ public class HomePageManageController extends WebContextSupport {
         return new ModelAndView("homePage/home");
     }
 
+    /**
+     * 登录成功, 跳转至百思首页
+     *
+     * @return
+     */
     @RequestMapping(value = "/bestIndex", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView getBestIndexPage(HttpServletRequest request, ModelMap modelMap) {
-        String userName = WebUtils.getUserName(request);
-        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
-        if (systemUserDTO == null) {
-            return new ModelAndView("redirect:/logout");
-        }
-
-        modelMap.put("currSystemUserName", userName);
-        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
+    public ModelAndView getBestIndexPage() {
         return new ModelAndView("bestPage/bestIndex");
     }
 

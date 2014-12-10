@@ -56,7 +56,8 @@
 
                 <p>针对搜索引擎营销的
                     第三方优化管理平台</p></div>
-            <div class="txt2"><a href="#" target="_blank" class="a_jump"><span class="tit">百思搜客</span></a>
+            <div class="txt2"><a href="${pageContext.request.contextPath}/home" target="_blank" class="a_jump"><span
+                    class="tit">百思搜客</span></a>
 
                 <div class="tex2_mid">
                     <p>推广额度：<b>100000</b>元</p>
@@ -64,7 +65,7 @@
                     <p>余额预计可消费<b>0</b>天日预算<b>0</b>元</p>
                 </div>
                 <div class="enter">
-                    <a href="#">点击进入</a>
+                    <a href="${pageContext.request.contextPath}/home" target="_blank">点击进入</a>
                 </div>
             </div>
         </div>
@@ -77,7 +78,7 @@
 
                 <p>SEO追踪，集统计、分析和管理
                     专家级的建议和优化方案</p></div>
-            <div class="txt2"><a href="${pageContext.request.contextPath}/home" target="_blank"
+            <div class="txt2"><a href="#" target="_blank"
                                  class="a_jump"><span class="tit">百思SEO</span></a>
 
                 <div class="tex2_mid">
@@ -86,7 +87,7 @@
                     <p>余额预计可消费<b>0</b>天日预算<b>0</b>元</p>
                 </div>
                 <div class="enter">
-                    <a href="${pageContext.request.contextPath}/home">点击进入</a>
+                    <a href="#">点击进入</a>
                 </div>
             </div>
         </div>

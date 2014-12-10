@@ -32,7 +32,7 @@
 <div class="backstage_concent mid over">
     <div id="bidding_box">
         <div>
-            <div style="color: red;font-size: 16px;padding: 10px 0px 20px 20px">注：被停用的百度帐号将不再拉取报告数据等相关信息！请谨慎操作！！</div>
+            <div style="color: red;font-size: 16px;padding: 10px 0px 20px 20px">注：被停用的系统帐号将不能进行任何操作！请谨慎操作！！</div>
             <table id="table1" class="table table-striped table-bordered table-hover datatable dataTable"
                    aria-describedby="DataTables_Table_0_info">
                 <thead>
@@ -129,16 +129,16 @@
                 $("#shuju").empty();
                 var html_account = "";
                 $.each(data.rows, function (i, item) {
-                        html_account = "<tr><td cname=" + item.userName + " cid = " + item.accountState + ">" + item.userName + "</td><td " + ((item.userState == 0) ? 'style=color:red' : '') + ">" +
-                                ((item.userState == 0) ? '未通过审核' : '已通过审核') + "</td><td " + ((item.accountState == 1) ? '' : 'style=color:red') + ">" +
-                                ((item.accountState == 1) ? '已启用' : '已停用') + "</td><td>"
-                    if(item.id != 0){
+                    html_account = "<tr><td cname=" + item.userName + " cid = " + item.accountState + ">" + item.userName + "</td><td " + ((item.userState == 0) ? 'style=color:red' : '') + ">" +
+                    ((item.userState == 0) ? '未通过审核' : '已通过审核') + "</td><td " + ((item.accountState == 1) ? '' : 'style=color:red') + ">" +
+                    ((item.accountState == 1) ? '已启用' : '已停用') + "</td><td>"
+                    if (item.id != 0) {
                         html_account = html_account +
                         "<a href='javascript:void(0)' onclick='showDialogMon(this,1)'>启用</a>&nbsp;&nbsp;&nbsp;&nbsp;" +
                         "<a href='javascript:void(0)' onclick='showDialogMon(this,0)'>停用</a></td></tr>";
                     }
 
-                $("#shuju").append(html_account);
+                    $("#shuju").append(html_account);
                 });
             }
         });

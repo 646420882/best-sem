@@ -22,9 +22,9 @@ public class SystemUserEntity implements Serializable {
     private String userName;
 
     private String password;
-    //公司名字
+
     private String companyName;
-    //审核状态
+    //审核状态: 1审核通过, 0审核通过
     private Integer state;
 
     private Integer access;     //1.admin; 2.user
@@ -36,9 +36,9 @@ public class SystemUserEntity implements Serializable {
     @Field(value = "bdAccounts")
     private List<BaiduAccountInfoEntity> baiduAccounts;
 
-    //系统帐号状态  1、启用  0、禁用
+    //系统帐号状态: 1.启用  0.禁用
     @Field(value = "acstate")
-    private Integer accountState = 1;
+    private Integer accountState;
 
     public SystemUserEntity() {
     }
