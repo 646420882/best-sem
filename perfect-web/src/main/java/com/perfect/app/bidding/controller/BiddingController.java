@@ -85,6 +85,9 @@ public class BiddingController {
     @Resource
     private CookieService cookieService;
 
+    @Resource
+    private SysRegionalService sysRegionalService;
+
     @RequestMapping(value = "/save", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView save(@RequestBody BiddingRuleParam param) {
@@ -832,7 +835,7 @@ public class BiddingController {
         }
         Map<Integer, Integer> tmpMap = keywordRankEntity.getTargetRank();
         List<RegionCodeDTO> regionCodeDTOs = new ArrayList<>();
-        for (final Map.Entry<Integer, Integer> entry : tmpMap.entrySet()) {
+        for (Map.Entry<Integer, Integer> entry : tmpMap.entrySet()) {
             RegionCodeDTO dto = new RegionCodeDTO();
             Integer regionId = entry.getKey();
             Map<Integer, String> regionMap = RegionalCodeUtils.regionalCode(Arrays.asList(regionId));
