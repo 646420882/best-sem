@@ -125,14 +125,16 @@ public class ContextInterceptor implements HandlerInterceptor {
 
 
         Long accountId = WebUtils.getAccountId(request);
+        ModelMap modelMap = modelAndView.getModelMap();
+        modelMap.put("currSystemUserName", WebUtils.getUserName(request));
         if (accountId == -1) {
+            modelMap.put("accountBalance", 0);
+            modelMap.put("accountBudget", 0);
+            modelMap.put("remainderDays", 0);
             return;
         }
 
         Double datas[] = getBalanceAndBudget(accountId);
-
-        ModelMap modelMap = modelAndView.getModelMap();
-        modelMap.put("currSystemUserName", WebUtils.getUserName(request));
 
         if (datas[0] == null) {
             if (datas[1] == null) {
