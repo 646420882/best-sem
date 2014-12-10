@@ -55,7 +55,7 @@ body {
     text-align: center;
     position: absolute;
     top: 22px;
-    right: 60px;
+    right: 45px;
     z-index: 99;
 }
 
@@ -166,5 +166,19 @@ body {
 
 .time span {
     color: #f7b003;
+
+}
+.tex2_mid p b{
+    font-size:14px;
+}
+.servicesBox .disabled .txt2 p
+{
+    text-align: center;
+}
+.servicesBox .disabled{
+   cursor: not-allowed;
+}
+.servicesBox .disabled a{
+    cursor: not-allowed;
 
 }

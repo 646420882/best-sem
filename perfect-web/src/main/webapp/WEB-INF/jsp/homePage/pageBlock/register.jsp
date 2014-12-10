@@ -26,7 +26,7 @@
     <div class="login_box2">
         <div class="login_part1 ">
             <div class="login_logo2 ">
-                <img src="/public/img/login_logo.png">
+                <a href="http://best-ad.cn/"><img src="/public/img/login_logo.png"></a>
             </div>
             <div class="login_click over">
                 <span id="tishi"></span>
