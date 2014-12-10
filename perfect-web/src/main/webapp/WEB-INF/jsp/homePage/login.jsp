@@ -26,7 +26,7 @@
         <form action="../j_spring_security_check" method="post">
             <div class="login_part1 ">
                 <div class="login_logo ">
-                    <a href="http://best-ad.cn/"><img src="${pageContext.request.contextPath}/public/img/login_logo.png"></a>
+                    <a href="http://best-ad.cn/" target="_blank"><img src="${pageContext.request.contextPath}/public/img/login_logo.png"></a>
                 </div>
                 <div class="login_click over">
                     <a href="/register/page">→ 还没有帐号？点击注册</a>

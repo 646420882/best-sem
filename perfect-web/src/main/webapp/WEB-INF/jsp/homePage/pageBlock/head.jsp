@@ -58,7 +58,7 @@
             </div>
             <div class="top_mid fr over">
                 <div class="logo">
-                    <a href="http://best-ad.cn/"><img src="${pageContext.request.contextPath}/public/img/logo.png"></a>
+                    <a href="http://best-ad.cn/" target="_blank"><img src="${pageContext.request.contextPath}/public/img/logo.png"></a>
                 </div>
             </div>
         </div>
