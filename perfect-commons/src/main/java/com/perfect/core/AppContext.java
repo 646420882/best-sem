@@ -70,6 +70,12 @@ public class AppContext {
     }
 
     public static Long getAccountId() {
-        return contextMap.get().getAccountId();
+        SessionObject sessionObject = contextMap.get();
+
+        if (sessionObject != null) {
+            return sessionObject.getAccountId();
+        } else {
+            return -1l;
+        }
     }
 }
