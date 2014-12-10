@@ -25,7 +25,6 @@ import com.perfect.service.*;
 import com.perfect.utils.BiddingRuleUtils;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.NumberUtils;
-import com.perfect.utils.RegionalCodeUtils;
 import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.paging.PaginationParam;
 import org.apache.commons.lang.StringUtils;
@@ -838,8 +837,7 @@ public class BiddingController {
         for (Map.Entry<Integer, Integer> entry : tmpMap.entrySet()) {
             RegionCodeDTO dto = new RegionCodeDTO();
             Integer regionId = entry.getKey();
-            Map<Integer, String> regionMap = RegionalCodeUtils.regionalCode(Arrays.asList(regionId));
-            String regionName = regionMap.get(regionId);
+            String regionName = sysRegionalService.getRegionNameById(regionId);
             Integer rank = entry.getValue();
 //            dto.setRegionId(regionId);
             dto.setRegionName(regionName);
