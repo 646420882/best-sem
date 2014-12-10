@@ -13,6 +13,7 @@ import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.account.AccountReportEntity;
+import com.perfect.entity.sys.BaiduAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.ObjectUtils;
@@ -59,7 +60,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
 
     @Override
     public List<SystemUserDTO> find(Map<String, Object> params, int skip, int limit) {
-        return null;
+        return Collections.emptyList();
     }
 
     /**
@@ -298,7 +299,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         getSysMongoTemplate().updateFirst(
                 Query.query(
                         Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
-                Update.update("bdAccounts.$", dto),
+                Update.update("bdAccounts.$", ObjectUtils.convert(dto, BaiduAccountInfoEntity.class)),
                 getEntityClass());
     }
 

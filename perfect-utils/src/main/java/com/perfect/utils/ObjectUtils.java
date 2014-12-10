@@ -74,10 +74,9 @@ public class ObjectUtils {
      * @param <T>
      * @return
      */
-    @SuppressWarnings("unchecked")
     public static <S, T> List<T> convertToList(List<S> srcList, Class<T> targetClz) {
         if (srcList == null || srcList.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         List<T> targetList = new ArrayList<>(srcList.size());

@@ -8,10 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    Long accountId = 0l;
-    if (request != null) {
-        accountId = AppContext.getAccountId();
-    }
+    Long accountId = AppContext.getAccountId();
 %>
 <div id="navigator" class="nav fl">
     <div class="nav_left fl over ">
@@ -68,7 +65,7 @@
         $.getJSON("/account/getAllBaiduAccount",
                 {},
                 function (data) {
-                    var options, results = data.rows;
+                    var results = data.rows;
                     if (results != null && results.length > 0) {
                         var lis = "";
                         $.each(results, function (i, item) {
@@ -85,7 +82,7 @@
     };
     $(".nav_under>ul>li>a").each(function () {
         if ($($(this))[0].href == String(window.location)) {
-            $(".nav_under>ul>li").removeClass("current")
+            $(".nav_under>ul>li").removeClass("current");
             $(this).parent().addClass('current');
             $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
             $(this).addClass('current').append("<span class='nav_input1'></span>");
@@ -156,7 +153,9 @@
 
             }
         });
-        loadBaiduAccount();
+        if (baiduAccountId != -1) {
+            loadBaiduAccount();
+        }
         $('.user_name').click(function () {
             if ($("#switchAccount").css("display") == "none") {//隐藏
                 $(this).next('#switchAccount').show();

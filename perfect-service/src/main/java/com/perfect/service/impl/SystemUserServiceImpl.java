@@ -20,6 +20,7 @@ import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.EntityConvertUtils;
+import com.perfect.utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -86,7 +87,7 @@ public class SystemUserServiceImpl implements SystemUserService {
                 logger.error("获取账户信息错误: " + ResHeaderUtil.getJsonResHeader(false).toString());
                 continue;
             }
-            BeanUtils.copyProperties(accountInfoType, baiduAccountInfoDTO);
+            baiduAccountInfoDTO = ObjectUtils.convert(accountInfoType, BaiduAccountInfoDTO.class);
 
             //新增百度账户
             systemUserDAO.insertAccountInfo(userName, baiduAccountInfoDTO);
@@ -171,10 +172,8 @@ public class SystemUserServiceImpl implements SystemUserService {
             // 开始保存数据
             campaignDAO.save(campaignEntities);
             adgroupDAO.save(adgroupEntities);
-//            keywordDAO.save(keywordEntities);
             creativeDAO.save(creativeEntityList);
         }
-//        systemUserDAO.save(systemUserDTO);
     }
 
     @Override
@@ -199,14 +198,13 @@ public class SystemUserServiceImpl implements SystemUserService {
             Long aid = baiduAccountInfoDTO.getId();
             if (aid != accountId)
                 continue;
-            _dto = baiduAccountInfoDTO;
 
             CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
             BaiduApiService apiService = new BaiduApiService(commonService);
 
             // 初始化账户数据
             AccountInfoType accountInfoType = apiService.getAccountInfo();
-            BeanUtils.copyProperties(accountInfoType, baiduAccountInfoDTO);
+            _dto = ObjectUtils.convert(accountInfoType, BaiduAccountInfoDTO.class);
 
             //更新账户数据
             updateBaiduAccountInfo(userName, accountId, _dto);
