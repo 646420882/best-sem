@@ -254,6 +254,7 @@
     });
     if ($("#dataRe").val() == 1) {
         $("#tishi").append("注册成功！                ");
+        if(confirm('注册成功！点击按钮继续操作')){ location.href="/login"}else{ location.href="/login"}
     } else if ($("#dataRe").val() == -1) {
         $("#tishi").append("注册失败！用户名已存在！   ");
     }

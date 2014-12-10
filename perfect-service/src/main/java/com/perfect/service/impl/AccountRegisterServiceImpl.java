@@ -25,7 +25,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
         SystemUserDTO systemUserDTO = new SystemUserDTO();
         MD5Utils.Builder md5Builder = new MD5Utils.Builder();
         MD5Utils md5 = md5Builder.password(pwd).salt(account).build();
-
+        SystemUserDTO administrator = accountRegisterDAO.getAccount("administrator");
         systemUserDTO.setAccess(2);
         systemUserDTO.setBaiduAccounts(new ArrayList<BaiduAccountInfoDTO>());
         systemUserDTO.setUserName(account);
@@ -33,6 +33,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
         systemUserDTO.setCompanyName(company);
         systemUserDTO.setEmail(email);
         systemUserDTO.setState(0);
+        systemUserDTO.setImg(administrator.getImg());
 
         systemUserDTO.setAccountState(1);
         int returnState;
