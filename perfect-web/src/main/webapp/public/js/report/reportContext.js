@@ -602,7 +602,7 @@ $(function () {
                                     "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
+                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
                                 break;
                             case "2":
                                 html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
@@ -616,7 +616,7 @@ $(function () {
                                     "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
+                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
                                 break;
                             case "3":
                                 html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
@@ -630,7 +630,7 @@ $(function () {
                                     "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
+                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
                                 break;
                             case "4":
                                 html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
@@ -643,7 +643,7 @@ $(function () {
                                     "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
+                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
                                 break;
                             case "5":
                                 html_head = "<tr><td><a href='javascript:void(0)' class='returnUp' onclick='javascrpt:javascript:$(\"#reportTypes\").val(4);$(\"#pageDet\").empty();judgeDet=0;dataid=0;dataname=\"0\";reportData();'></a></td></tr><tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
@@ -656,7 +656,7 @@ $(function () {
                                     "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
+                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
                                 break;
                             case "6":
                                 html_head = "<tr><td><a href='javascript:void(0)' class='returnUp' onclick='javascrpt:javascript:$(\"#reportTypes\").val(5);$(\"#pageDet\").empty();judgeDet=0;dataid=0;dataname=\"0\";reportData();'></a></td></tr><tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
@@ -670,7 +670,7 @@ $(function () {
                                     "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
+                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
                                 break;
                             case "7":
                                 html_head = "<tr><td><a href='javascript:void(0)' class='returnUp' onclick='javascrpt:javascript:$(\"#reportTypes\").val(6);$(\"#pageDet\").empty();judgeDet=0;reportData();'></a></td></tr><tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
@@ -685,7 +685,7 @@ $(function () {
                                     "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话))</span><b><p></p><p></p></b></td></td></tr>";
+                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
                                 break;
                         }
                         $("#shujuthead").append(html_head);
