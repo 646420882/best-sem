@@ -36,13 +36,13 @@
                    <p>第三方优化管理平台</p>
             </div>
             <div class="txt2">
-                <a href="#" target="_blank" class="a_jump"><span class="tit">百思速投</span></a>
+                <a href="javascript:void(0);" onclick="js_method()" class="a_jump"><span class="tit">百思速投</span></a>
                 <div class="tex2_mid">
                     <p><b>2015年3月31日</b> </p>
                     <p><b>正式上线</b></p>
                 </div>
                 <div class="enter">
-                    <a>敬请期待</a>
+                    <a href="javascript:void(0);" onclick="js_method()">敬请期待</a>
                 </div>
             </div>
             <div>
@@ -74,13 +74,13 @@
             <div class="txt1"><span class="tit">百思SEO</span>
                 <p>SEO追踪，集统计、分析和管理</p>
                     <p>专家级的建议和优化方案</p></div>
-            <div class="txt2"><a href="#" target="_blank" class="a_jump"><span class="tit">百思SEO</span></a>
+            <div class="txt2"><a href="javascript:void(0);" onclick="js_method()" class="a_jump"><span class="tit">百思SEO</span></a>
                 <div class="tex2_mid">
                     <p><b>2014年12月31日</b> </p>
                     <p><b>正式上线</b></p>
                 </div>
                 <div class="enter">
-                    <a href="#">敬请期待</a>
+                    <a href="javascript:void(0);" onclick="js_method()">敬请期待</a>
                 </div>
             </div>
         </div>
@@ -93,13 +93,13 @@
                 <p>一站式解决客户移动建站</p>
                  <p>及微信运营推广</p>
             </div>
-            <div class="txt2"><a href="#" target="_blank" class="a_jump"><span class="tit">百思无线</span></a>
+            <div class="txt2"><a href="javascript:void(0);" onclick="js_method()" class="a_jump"><span class="tit">百思无线</span></a>
                 <div class="tex2_mid">
                     <p><b>2015年1月31日</b> </p>
                     <p><b>正式上线</b></p>
                 </div>
                 <div class="enter">
-                    <a >敬请期待</a>
+                    <a href="javascript:void(0);" onclick="js_method()">敬请期待</a>
                 </div>
             </div>
         </div>
@@ -112,13 +112,13 @@
                 <p>云端备份数据</p>
                <p>快速实现信息同步！</p>
             </div>
-            <div class="txt2"><a href="#" target="_blank" class="a_jump"><span class="tit">百思慧眼</span></a>
+            <div class="txt2"><a  href="javascript:void(0);" onclick="js_method()"  class="a_jump"><span class="tit">百思慧眼</span></a>
                 <div class="tex2_mid">
                     <p><b>2015年3月31日</b> </p>
                     <p><b>正式上线</b></p>
                 </div>
                 <div class="enter">
-                    <a >敬请期待</a>
+                    <a href="javascript:void(0);" onclick="js_method()">敬请期待</a>
                 </div>
             </div>
         </div>
@@ -179,6 +179,10 @@
     else {
         time.innerHTML = "晚上,好！"
     }
+</script>
+<script type="text/javascript">
+    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F9e0d99624d24d17bb95abc5ca469c64e' type='text/javascript'%3E%3C/script%3E"));
 </script>
 </body>
 </html>
