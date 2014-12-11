@@ -638,45 +638,38 @@
     <div class="mainlist">
         <ul id="customColList2">
             <li>
-                <span class="define fl"><input type="checkbox" checked="checked" value="campaignName" name="columns"> 推广计划</span>
-                <span class="define fl"><input type="checkbox" checked="checked" value="cpm"
-                                               name="columns"> 千次展现消费</span>
+                <span class="define fl"><input type="checkbox"  value="campaignName" name="columns"> 推广计划</span>
+                <span class="define fl"><input type="checkbox" value="cpm" name="columns"> 千次展现消费</span>
             </li>
             <li>
-                <span class="define fl"><input type="checkbox" checked="checked" value="adgroupName" name="columns"> 推广单元</span>
-                <span class="define fl"><input type="checkbox" checked="checked" value="impression" name="columns"> 展现量</span>
+                <span class="define fl"><input type="checkbox"  value="adgroupName" name="columns"> 推广单元</span>
+                <span class="define fl"><input type="checkbox" checked="checked"  value="impression" name="columns"> 展现量</span>
             </li>
             <li>
-                <span class="define fl"><input type="checkbox" checked="checked" value="statusStr"
-                                               name="columns"> 状态</span>
-                <span class="define fl"><input type="checkbox" checked="checked" value="ctr" name="columns"> 点击率</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="statusStr"  name="columns"> 状态</span>
+                <span class="define fl"><input type="checkbox"  checked="checked" value="ctr" name="columns"> 点击率</span>
             </li>
             <li>
                 <span class="define fl"><input type="checkbox" checked="checked" value="price" name="columns"> 出价</span>
-                <span class="define fl"><input type="checkbox" checked="checked" value="cpc"
-                                               name="columns">平均点击价格</span>
+                <span class="define fl"><input type="checkbox"  value="cpc" name="columns">平均点击价格</span>
             </li>
             <li>
                 <span class="define fl"><input type="checkbox" checked="checked" value="pcQuality" name="columns"> PC端质量度</span>
                 <span class="define fl"><input type="checkbox" checked="checked" value="mQuality" name="columns">移动端质量度</span>
             </li>
             <li>
-                <span class="define fl"><input type="checkbox" checked="checked" value="click"
-                                               name="columns"> 点击量</span>
-                <span class="define fl"><input type="checkbox" checked="checked" value="currentRank" name="columns"> 当前排名</span>
+                <span class="define fl"><input type="checkbox"  value="click" name="columns"> 点击量</span>
+                <span class="define fl"><input type="checkbox" checked="checked"  value="currentRank" name="columns"> 当前排名</span>
             </li>
             <li>
                 <span class="define fl"><input type="checkbox" checked="checked" value="cost" name="columns"> 消费</span>
-                <span class="define fl"><input type="checkbox" checked="checked"
-                                               value="pcDestinationUrl" name="columns"> Pc&nbsp;URL</span>
+                <span class="define fl"><input type="checkbox" checked="checked" value="pcDestinationUrl" name="columns"> Pc&nbsp;URL</span>
             </li>
-            <li><span class="define fl"><input type="checkbox" checked="checked" value="ruleDesc"
-                                               name="columns"> 竞价规则</span>
-                <span class="define fl"><input type="checkbox" checked="checked" value="mobileDestinationUrl"
-                                               name="columns"> Mobile&nbsp;URL</span>
+            <li><span class="define fl"><input type="checkbox" checked="checked" value="ruleDesc" name="columns"> 竞价规则</span>
+                <span class="define fl"><input type="checkbox"  checked="checked" value="mobileDestinationUrl"  name="columns"> Mobile&nbsp;URL</span>
             </li>
             <li><span class="define fl"><input type="checkbox" checked="checked" value="biddingStatus" name="columns"> 竞价状态</span>
-                <span class="define fl"><input type="checkbox" checked="checked" value="matchType" name="columns"> 匹配模式</span>
+                <span class="define fl"><input type="checkbox"  value="matchType" name="columns"> 匹配模式</span>
             </li>
         </ul>
 
@@ -1456,7 +1449,7 @@ $(function () {
         mtype: "POST",
         jsonReader: {
             root: "rows",
-            records2: "records",
+            records: "records",
             repeatitems: false
         },
         forceFit: true,
@@ -1465,24 +1458,24 @@ $(function () {
             // {label: '<input type=\"checkbox\" name=\"check_all\" onclick=\"checkAll();\" id=\"check_all\" >', name: 'checkall', width: 30,
             //sortable: false, align: 'center', formatter:function(v,x,r){ return "<input type='checkbox'/>"; }},
             {label: ' 关键词ID', name: 'keywordId', sortable: false, align: 'center', hidden: true},
-            {label: ' 关键词', name: 'keyword', sortable: false, align: 'center'},
+            {label: ' 关键词', name: 'keyword', sortable: false, width: 200, align: 'center'},
             {label: ' 推广计划', name: 'campaignName', sortable: false, align: 'center', hidden: true},
             {label: ' 推广单元', name: 'adgroupName', sortable: false, align: 'center', hidden: true},
             {label: ' 匹配模式', name: 'matchType', sortable: false, align: 'center', hidden: true},
             {label: ' 高级短语匹配模式', name: 'phraseType', sortable: false, align: 'center', hidden: true},
             {label: ' 当前排名', name: 'currentRank', sortable: false, align: 'center'},
-            {label: ' 消费', name: 'cost', sortable: false, align: 'center'},
-            {label: ' 展现量', name: 'impression', sortable: false, align: 'center'},
-            {label: ' 点击量', name: 'click', sortable: false, align: 'center', hidden: true},
-            {label: ' 点击率', name: 'ctr', sortable: false, align: 'center'},
-            {label: ' 出价', name: 'price', sortable: false, align: 'center'},
+            {label: ' 消费', name: 'cost', sortable: false, width: 80, align: 'center'},
+            {label: ' 展现量', name: 'impression', sortable: false, width: 80, align: 'center'},
+            {label: ' 点击量', name: 'click', sortable: false, width: 80, align: 'center', hidden: true},
+            {label: ' 点击率', name: 'ctr', sortable: false, width: 80, align: 'center'},
+            {label: ' 出价', name: 'price', sortable: false, width: 80, align: 'center'},
             {label: ' 平均点击价格', name: 'cpc', sortable: false, align: 'center', hidden: true},
             {label: ' 千次展现消费', name: 'cpm', sortable: false, align: 'center', hidden: true},
-            {label: ' 质量度', name: 'pcQuality', sortable: false, align: 'center'},
+            {label: ' 质量度', name: 'pcQuality', sortable: false, width: 80, align: 'center'},
             {label: ' 移动端质量度', name: 'mQuality', sortable: false, align: 'center'},
             {label: ' 状态', name: 'statusStr', sortable: false, align: 'center'},
-            {label: ' 竞价规则', name: 'ruleDesc', sortable: false, align: 'center'},
-            {label: ' Pc URL', name: 'pcDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
+            {label: ' 竞价规则', name: 'ruleDesc', sortable: false, width: 200, align: 'center'},
+            {label: ' Pc URL', name: 'pcDestinationUrl', sortable: false, width: 200, align: 'center', formatter: 'link'},
             {label: ' Mobile URL', name: 'mobileDestinationUrl', sortable: false, align: 'center', formatter: 'link'},
             {label: ' 竞价状态', name: 'biddingStatus', sortable: false, align: 'center'},
             {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true},
@@ -1539,7 +1532,7 @@ $(function () {
 
         gridComplete: function () {
 //            alert(JSON.stringify($("#table1").jqGrid("getRowData")));
-            records2 = grid2.getGridParam("records2");
+            records2 = grid2.getGridParam("records");
             if (records2 == 0) {
                 return false;
             }
