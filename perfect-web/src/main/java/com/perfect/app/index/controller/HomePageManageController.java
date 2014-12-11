@@ -53,11 +53,13 @@ public class HomePageManageController extends WebContextSupport {
             if (CustomUserDetailsService.isUsernameNotFound()) {
                 if (CustomUserDetailsService.isVerifyNotPass())
                     model.put("invalidUserName", "正在审核中");
+                else if (CustomUserDetailsService.isForbidden())
+                    model.put("invalidUserName", "帐号已禁用");
                 else
                     model.put("invalidUserName", "用户名不存在");
             } else if (badCredentialsNum > 0) {
                 if (badCredentialsNum == 3)
-                    model.put("invalidPassword", "账户已被锁定");
+                    model.put("invalidPassword", "帐号已被锁定");
                 else
                     model.put("invalidPassword", "密码错误, 剩余" + (3 - badCredentialsNum) + "次");
             }

@@ -24,6 +24,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private static boolean verifyNotPass = false;
 
+    private static boolean forbidden = false;
+
     private static int passwdBadCredentialsNum = 0;
 
     @Resource
@@ -38,6 +40,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         if (systemUser.getState() == 0) {
             verifyNotPass = true;
+            throw new UsernameNotFoundException("Username not found");
+        }
+        if (systemUser.getAccountState() == 0) {
+            forbidden = true;
             throw new UsernameNotFoundException("Username not found");
         }
         userName = systemUser.getUserName();
@@ -90,5 +96,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public static void setPasswdBadCredentialsNum(int passwdBadCredentialsNum) {
         CustomUserDetailsService.passwdBadCredentialsNum = passwdBadCredentialsNum;
+    }
+
+    public static boolean isForbidden() {
+        return forbidden;
+    }
+
+    public static void setForbidden(boolean forbidden) {
+        CustomUserDetailsService.forbidden = forbidden;
     }
 }
