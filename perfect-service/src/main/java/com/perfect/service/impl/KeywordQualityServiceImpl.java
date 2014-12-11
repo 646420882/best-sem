@@ -128,7 +128,8 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         final List<KeywordReportDTO> finalList = list;
         final String finalFieldName = fieldName;
         qList.parallelStream().forEach(i -> {
-            List<KeywordReportDTO> tempList = tempMap.get(i);
+            List<KeywordReportDTO> tempList = new ArrayList<>();
+            tempMap.get(i).stream().filter(o -> o != null).forEach(tempList::add);
             if (!tempList.isEmpty()) {
 
                 //质量度级别信息计算
@@ -208,27 +209,47 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<Quality10Type> getKeyword10Quality(List<Long> keywordIds) {
         BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
+        List<Quality10Type> quality10TypeList = new ArrayList<>();
         try {
             KeywordService keywordService = commonService.getService(KeywordService.class);
-            GetKeyword10QualityRequest request = new GetKeyword10QualityRequest();
-            request.setIds(keywordIds);
-            request.setDevice(0);
-            request.setType(11);
-            request.setHasScale(false);
-            GetKeyword10QualityResponse response = keywordService.getKeyword10Quality(request);
-
-            if (response == null)
-                return Collections.EMPTY_LIST;
-
-            return response.getKeyword10Quality();
+            int _max = 10_000, toIndex = _max;
+            if (keywordIds.size() > _max) {
+                for (int i = 0, s = keywordIds.size(); i < s; i += _max) {
+                    if (i + _max > s) {
+                        toIndex = s;
+                    } else if (i > 0) {
+                        toIndex = i + _max;
+                    }
+                    List<Long> tmpKeywordIdList = keywordIds.subList(i, toIndex);
+                    GetKeyword10QualityRequest request = new GetKeyword10QualityRequest();
+                    request.setIds(tmpKeywordIdList);
+                    request.setDevice(0);
+                    request.setType(11);
+                    request.setHasScale(false);
+                    GetKeyword10QualityResponse response = keywordService.getKeyword10Quality(request);
+                    if (response != null) {
+                        quality10TypeList.addAll(response.getKeyword10Quality());
+                    }
+                }
+            } else {
+                GetKeyword10QualityRequest request = new GetKeyword10QualityRequest();
+                request.setIds(keywordIds);
+                request.setDevice(0);
+                request.setType(11);
+                request.setHasScale(false);
+                GetKeyword10QualityResponse response = keywordService.getKeyword10Quality(request);
+                if (response != null) {
+                    quality10TypeList.addAll(response.getKeyword10Quality());
+                }
+            }
+            return quality10TypeList;
         } catch (ApiException e) {
             e.printStackTrace();
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     @Override
@@ -281,7 +302,8 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
 
         final List<KeywordReportDTO> finalList = list;
         qList.parallelStream().forEach(i -> {
-            List<KeywordReportDTO> tempList = tempMap.get(i);
+            List<KeywordReportDTO> tempList = new ArrayList<>();
+            tempMap.get(i).stream().filter(o -> o != null).forEach(tempList::add);
             if (!tempList.isEmpty()) {
 
                 //质量度级别信息计算
@@ -427,13 +449,13 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
 
     private QualityDTO getQualityData(List<KeywordReportDTO> list) {
         QualityDTO qualityDTO = new QualityDTO(list.size(), .0, 0, .0, 0, .0, .0, .0, .0, .0, .0, .0);
-        for (KeywordReportDTO entity : list) {
-            qualityDTO.setImpression(qualityDTO.getImpression() + entity.getPcImpression());
-            qualityDTO.setClick(qualityDTO.getClick() + entity.getPcClick());
+        list.stream().forEach(o -> {
+            qualityDTO.setImpression(qualityDTO.getImpression() + o.getPcImpression());
+            qualityDTO.setClick(qualityDTO.getClick() + o.getPcClick());
             BigDecimal bigDecimal = new BigDecimal(qualityDTO.getCost());
-            qualityDTO.setCost(bigDecimal.add(entity.getPcCost()).doubleValue());
-            qualityDTO.setConversion(qualityDTO.getConversion() + entity.getPcConversion());
-        }
+            qualityDTO.setCost(bigDecimal.add(o.getPcCost()).doubleValue());
+            qualityDTO.setConversion(qualityDTO.getConversion() + o.getPcConversion());
+        });
         return qualityDTO;
     }
 
@@ -444,7 +466,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         try {
             jedis = JRedisUtils.get();
             jedis.set(key, value);
-            jedis.expire(id, 600);
+            jedis.expire(id, 3600);
         } catch (final Exception e) {
             e.printStackTrace();
         } finally {
