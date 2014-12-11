@@ -62,11 +62,20 @@ public interface SysRegionalService {
     /**
      * 通过区域ID查询 区域名称 及省份id 省份名称
      * 如未查询到对应的区域ID 则 区域ID返回-1
-     *
+     *  返回集合
      * @param listId
      * @return
      */
     public List<RegionalCodeDTO> getRegionalId(List<Integer> listId);
+
+    /**
+     * 通过区域ID查询 区域名称 及省份id 省份名称
+     * 如未查询到对应的区域ID 则 区域ID返回-1
+     *  返回单条
+     * @param listId
+     * @return
+     */
+    public RegionalCodeDTO getRegionalId(Integer listId);
 
 
     /**
@@ -83,4 +92,6 @@ public interface SysRegionalService {
      * @return
      */
     public Map<Integer,String> getRegionalByRegionName(List<String> regionalName);
+
+
 }

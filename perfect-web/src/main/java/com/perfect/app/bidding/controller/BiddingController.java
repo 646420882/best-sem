@@ -20,6 +20,7 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordRankDTO;
 import com.perfect.dto.regional.RegionCodeDTO;
+import com.perfect.dto.regional.RegionalCodeDTO;
 import com.perfect.param.BiddingRuleParam;
 import com.perfect.service.*;
 import com.perfect.utils.BiddingRuleUtils;
@@ -837,7 +838,8 @@ public class BiddingController {
         for (Map.Entry<Integer, Integer> entry : tmpMap.entrySet()) {
             RegionCodeDTO dto = new RegionCodeDTO();
             Integer regionId = entry.getKey();
-            String regionName = sysRegionalService.getRegionNameById(regionId);
+            RegionalCodeDTO regionDTO = sysRegionalService.getRegionalId(regionId);
+            String regionName = regionDTO.getRegionName();
             Integer rank = entry.getValue();
 //            dto.setRegionId(regionId);
             dto.setRegionName(regionName);
