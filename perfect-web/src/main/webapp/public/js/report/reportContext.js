@@ -616,7 +616,7 @@ $(function () {
                                     "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
                                     "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
+                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p>    <p></p></b></td></td></tr>";
                                 break;
                             case "3":
                                 html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
@@ -1102,17 +1102,29 @@ $(function () {
                                     + "<td>" + Math.round(((items.pcCost + items.mobileCost) / (items.pcClick + items.mobileClick)) * 100) / 100 + "</td>"
                                     + "<td>" + (items.pcConversion + items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
                             } else {
-                                html_GoAll = "<tr><td>合计</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+                                var headTd = "";
+                                var bodyTd = "";
+                                if(reportTypes == "6"){
+                                    headTd ="<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                    bodyTd ="<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                }else if(reportTypes =="7"){
+                                    headTd ="<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                    bodyTd ="<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                }else{
+                                    headTd ="<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                    bodyTd ="<td>&nbsp;</td><td>&nbsp;</td>";
+                                }
+                                html_GoAll = "<tr><td>合计</td>"+headTd+"</tr>"
                                 html_GoAll = html_GoAll + "<tr><td>计算机</td>"
-                                    + "<td>&nbsp;</td><td>&nbsp;</td><td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
+                                    + bodyTd +"<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
                                     + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
                                     + "<td>" + Math.round(items.pcCtr * 100) / 100 + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                 html_GoAll = html_GoAll + "<tr><td>移动设备</td>"
-                                    + "<td>&nbsp;</td><td>&nbsp;</td><td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td>"
+                                    + bodyTd +"<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td>"
                                     + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
                                     + "<td>" + Math.round(items.mobileCtr * 100) / 100 + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                 html_GoAll = html_GoAll + "<tr><td>合计</td>"
-                                    + "<td>&nbsp;</td><td>&nbsp;</td><td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
+                                    + bodyTd +"<td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
                                     + "<td>" + Math.round((items.pcCost + items.mobileCost) * 100) / 100 + "</td>"
                                     + "<td>" + Math.round(((items.pcClick + items.mobileClick) / (items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
                                     + "<td>" + Math.round(((items.pcCost + items.mobileCost) / (items.pcClick + items.mobileClick)) * 100) / 100 + "</td>"
@@ -1169,8 +1181,6 @@ $(function () {
                 $("#userTbody").empty();
                 $("#userStits").empty();
                 if (checkboxhidden == 0) {
-                    /*$("#trTop").removeAttr("class");
-                     $("#trTop").addClass("list02_top");*/
                     $.each(data.date, function (i, item) {
                         $.each(data.rows, function (z, items1) {
                             if (items1[item] != null) {
