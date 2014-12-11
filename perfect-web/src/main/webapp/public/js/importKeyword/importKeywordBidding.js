@@ -117,7 +117,7 @@ function checkGroupOk() {
         if (cgroupName != "") {
             var con = confirm("是否添加名为：\"" + cgroupName + "\"的分组?");
             if (con) {
-                $.post("/importBid/insert", {gname: cgroupName}, function (result) {
+                $.post("/importBid/insert", {gname: cgroupName.trim()}, function (result) {
                     var json = eval("(" + result + ")");
                     if (json.success == 1) {
                         $("#cgroup").append("<option value='" + json.data + "'>" + cgroupName + "</option>");

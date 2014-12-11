@@ -34,8 +34,7 @@ public class KeywordImportDAOImpl extends AbstractUserBaseDAOImpl<KeywordImportD
     public KeywordImportDTO findByKwdId(Long kwdId) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         KeywordImportEntity keywordImportEntity= mongoTemplate.findOne(new Query(Criteria.where(KEYWORD_ID).is(kwdId)), KeywordImportEntity.class);
-        KeywordImportDTO dto=new KeywordImportDTO();
-        BeanUtils.copyProperties(keywordImportEntity,dto);
+        KeywordImportDTO dto= ObjectUtils.convert(keywordImportEntity,KeywordImportDTO.class);
         return dto;
     }
 

@@ -58,7 +58,7 @@
 <div class="jingjia_left fl over" id="left">
     <div class="j_l_top over">
         <span class="fl"><h3>账户目录</h3></span>
-        <a href="javascript:void(0)" onclick="javascript:window.location.reload(true);" class="fr">刷新</a>
+        <a href="javascript:loadTree()"  class="fr">刷新</a>
     </div>
     <div class="j_l_top2 over">
         <span class="fl">查找计划单元</span>

@@ -1582,6 +1582,8 @@ $(function () {
             }
 
             $("#pagination2").pagination(records2, getOptionsFromForm(pageIndex));
+            _biddingStatus = null;
+            _statusStr = null;
         }
     });
 });

@@ -911,6 +911,7 @@ function reducCpg_Add(id) {
         dataType: "json",
         success: function (data) {
             $("#tbodyClick5").find(".list2_box3").remove();
+            loadTree();
         }
     });
 }
@@ -946,6 +947,7 @@ function reducCpg_del(id) {
         data: {"id": id},
         dataType: "json",
         success: function (data) {
+            loadTree();
             $("#tbodyClick5").find(".list2_box3 td:last").html("&nbsp;");
         }
     });
@@ -968,6 +970,8 @@ function showQuickAddPlanWindow() {
         },
         onclose: function () {
             whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
+            loadTree();
+            alert("1");
         },
         onremove: function () {
         }

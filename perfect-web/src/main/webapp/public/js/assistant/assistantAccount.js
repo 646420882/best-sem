@@ -353,17 +353,7 @@ var campaignId;
 var adgroupId;
 
 $(function () {
-    //获取账户树数据
-    $.ajax({
-        url: "/account/get_tree",
-        type: "GET",
-        async: false,
-        dataType: "json",
-        success: function (data, textStatus, jqXHR) {
-            zNodes = data.trees;
-            $.fn.zTree.init($("#zTree"), setting, zNodes);
-        }
-    });
+    loadTree();
 
     loadAccountData();
 
@@ -411,7 +401,19 @@ $(function () {
         });
     });
 });
-
+var loadTree=function (){
+    //获取账户树数据
+    $.ajax({
+        url: "/account/get_tree",
+        type: "GET",
+        async: false,
+        dataType: "json",
+        success: function (data, textStatus, jqXHR) {
+            zNodes = data.trees;
+            $.fn.zTree.init($("#zTree"), setting, zNodes);
+        }
+    });
+}
 var loadAccountData = function () {
     $.ajax({
         url: "/account/getBaiduAccountInfoByUserId",

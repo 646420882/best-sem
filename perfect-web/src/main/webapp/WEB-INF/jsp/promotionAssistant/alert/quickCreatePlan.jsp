@@ -99,8 +99,7 @@
                         <div class="keyworld_text over">
 
                             <div class="keyworld_text2 fl">
-                                <textarea style="width: 100%;height:100%;font-size:13px;" id="addedkwd">
-                                </textarea>
+                                <textarea style="width: 98%;height:98%;font-size:12px;" id="addedkwd"></textarea>
                             </div>
                         </div>
                         <%-- <div class="k_l_under over">
@@ -170,12 +169,19 @@
 
 <script type="text/javascript">
 
+
+$("#inputKwd").blur(function(){
+    if($(this).val()==""){
+        $(this).val("多个以逗号分隔，如:雅思,出国");
+    }
+});
 /**
  *下一步按钮的单击事件
  */
 $(".nextStep").click(function () {
     var selectValue = $("#selectPrice").val();
-    if ($("#inputKwd").val() == "多个以逗号分隔，如:雅思,出国") {
+    var serchKeyword=$("#inputKwd").val();
+    if (serchKeyword == "多个以逗号分隔，如:雅思,出国"||serchKeyword=="") {
         alert("请输入您从事的业务!");
         return;
     }
@@ -258,14 +264,14 @@ var searchKeyword = function (seedWord) {
 
 //添加选中按钮的事件
 $("#addChooseKeyword").click(function () {
-    var checkboxs = $("#tbody1>tr input[type=checkbox]");
+    var checkBoxs=$("#tbody1 :checkbox");
     var kwds = "";
-    checkboxs.each(function () {
-        if ($(this)[0].checked == true) {
-            var value = $(this).parent().next().html();
-            kwds += value + "\r";
+    for(var i=0;i<checkBoxs.length;i++){
+        if(checkBoxs[i].checked==true){
+            var value=$(checkBoxs[i]).parents("tr").find("td:eq(1)").html();
+            kwds += value + "\n";
         }
-    });
+    }
     setNewkeywordToTextArea(kwds);
 });
 
@@ -278,11 +284,12 @@ $("#addAllKeyword").click(function () {
     }
     setNewkeywordToTextArea(kwds);
 });
-
+$("#addedkwd").keyup(function(){
+    $("#keywordCount").html("已添加关键词（" + $("#addedkwd").val().trim().split("\n").length + "/500）");
+});
 function setNewkeywordToTextArea(kwds) {
-    $("#addedkwd").empty();
-    $("#addedkwd").append(kwds);
-    $("#keywordCount").html("已添加关键词（" + $("#addedkwd").val().split("\n").length + "/500）");
+    $("#addedkwd").val(kwds);
+    $("#keywordCount").html("已添加关键词（" + $("#addedkwd").val().trim().split("\n").length + "/500）");
 }
 
 
@@ -290,7 +297,12 @@ function setNewkeywordToTextArea(kwds) {
 var saveChooseKeyword = function () {
     //获取所有选中的关键词
     var jsonArr = [];
+    var values=$("#addedkwd").val();
     var kwds = $("#addedkwd").val().split("\n");
+    if(values==""){
+        alert("您没有选择关键词!");
+        return;
+    }
     if (kwds.length > 500) {
         alert("添加的关键词数量不能超过500个");
         return;
@@ -321,7 +333,10 @@ var saveChooseKeyword = function () {
         async: false,
         contentType: "application/json; charset=UTF-8",
         success: function (data, textStatus, jqXHR) {
-            window.location.reload(true);
+            if(data=="success"){
+                alert("添加成功!");
+                top.dialog.getCurrent().close().remove();
+            }
         }
     });
 };

@@ -60,9 +60,7 @@ public class CustomGroupDAOImpl extends AbstractUserBaseDAOImpl<CustomGroupDTO, 
     public CustomGroupDTO findByCustomName(String customName) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         CustomGroupEntity customGroupEntity = mongoTemplate.findOne(new Query(Criteria.where("gname").is(customName)), CustomGroupEntity.class);
-        CustomGroupDTO customGroupDTO = new CustomGroupDTO();
-        BeanUtils.copyProperties(customGroupEntity, customGroupDTO);
-        return customGroupDTO;
+        return ObjectUtils.convert(customGroupEntity,CustomGroupDTO.class);
     }
 
     @Override

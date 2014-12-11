@@ -61,6 +61,7 @@ function initAMenu() {
                 $(this).submit("../assistantAdgroup/adAdd", function (rs) {
                     var json = eval("(" + rs + ")");
                     if (json.success == "1") {
+                        loadTree();
                         var _span = $("#" + sp + "").html();
                         if (_span == null) {
                             _span = "<span>未设置</span>";
@@ -309,6 +310,7 @@ function adgroupDel() {
         if (con) {
             $.get("../assistantAdgroup/del", {oid: oid}, function (rs) {
                 if (rs == "1") {
+                    loadTree();
                     $(atmp).find("td:eq(8)").html("<span class='error' step='3'></span>");
                 }
             });
@@ -588,6 +590,7 @@ function adrgoupUpdateOk() {
                 "<td>" + _edit + "</td>";
             $(atmp).html(_tbody);
             alert("修改完成");
+            loadTree();
         }
     });
 }
