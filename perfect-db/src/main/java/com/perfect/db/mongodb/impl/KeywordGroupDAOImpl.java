@@ -24,10 +24,13 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
@@ -37,6 +40,12 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
  */
 @Repository("keywordGroupDAO")
 public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, String> implements KeywordGroupDAO {
+
+    public static final String CATEGORY_KEY = "_keywords_category";
+
+    private static final String SEP_KEYWORD = "|";
+
+    private static final String SEP_NAME_COUNT = ":";
 
     @Override
     @SuppressWarnings("unchecked")
@@ -131,16 +140,55 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
 
     @Override
     public List<CategoryVO> findCategories(String trade) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        Aggregation aggregation = Aggregation.newAggregation(
-                match(Criteria.where("tr").is(trade)),
-                project("cg"),
-                group("cg").count().as("count"),
-                sort(Sort.Direction.ASC, "cg")
-        ).withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
-        AggregationResults<CategoryVO> aggregationResults = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, CategoryVO.class);
 
-        return aggregationResults.getMappedResults();
+        // redis 缓存数据
+
+        Jedis jedis = JRedisUtils.get();
+        try {
+            if (jedis.exists(CATEGORY_KEY)) {
+                List<CategoryVO> returnList = new ArrayList<>();
+                String value = jedis.get(CATEGORY_KEY);
+                String[] categoryPairs = value.split(SEP_KEYWORD);
+                for (String pairs : categoryPairs) {
+                    String[] nameCount = pairs.split(SEP_NAME_COUNT);
+
+
+                    CategoryVO categoryVO = new CategoryVO();
+                    categoryVO.setCategory(nameCount[0]);
+                    categoryVO.setCount(Integer.parseInt(nameCount[1]));
+
+                    returnList.add(categoryVO);
+                }
+                return returnList;
+            } else {
+                MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+                Aggregation aggregation = Aggregation.newAggregation(
+                        match(Criteria.where("tr").is(trade)),
+                        project("cg"),
+                        group("cg").count().as("count"),
+                        sort(Sort.Direction.ASC, "cg")
+                ).withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
+                AggregationResults<CategoryVO> aggregationResults = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, CategoryVO.class);
+
+                List<CategoryVO> returnList = aggregationResults.getMappedResults();
+
+                List<String> pairs = new ArrayList<>();
+                for (CategoryVO categoryVO : returnList) {
+
+                    String pair = categoryVO.getCategory() + SEP_NAME_COUNT + categoryVO.getCount();
+                    pairs.add(pair);
+                }
+                String value = String.join(SEP_KEYWORD, pairs.toArray(new String[]{}));
+                jedis.setex(CATEGORY_KEY, (int) TimeUnit.DAYS.toSeconds(1) * 7, value);
+                return returnList;
+            }
+        } catch (Exception e) {
+
+        } finally {
+            JRedisUtils.returnJedis(jedis);
+        }
+
+        return Collections.emptyList();
     }
 
     @Override
