@@ -8,9 +8,12 @@ import com.perfect.dto.account.*;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.entity.account.AccountReportEntity;
 import com.perfect.entity.report.*;
+import com.perfect.utils.DateUtils;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.mongodb.DBNameUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,6 +31,7 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<AccountReportEntity> accountReportEntities = ObjectUtils.convert(accountReportDTOs, AccountReportEntity.class);
+        mongoTemplate.findAndRemove(Query.query(Criteria.where("date").is(DateUtils.getYesterday())),AccountReportEntity.class);
         mongoTemplate.insert(accountReportEntities, TBL_ACCOUNT_REPORT);
     }
 
@@ -37,6 +41,9 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<CampaignReportEntity> campaignReportEntities = ObjectUtils.convert(campaignReportDTOs, CampaignReportEntity.class);
+        if(mongoTemplate.collectionExists(dateStr + "-campaign")){
+            mongoTemplate.dropCollection(dateStr + "-campaign");
+        }
         mongoTemplate.insert(campaignReportEntities, dateStr + "-campaign");
     }
 
@@ -46,6 +53,9 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<AdgroupReportEntity> adgroupReportEntities = ObjectUtils.convert(adgroupReportDTOs, AdgroupReportEntity.class);
+        if(mongoTemplate.collectionExists(dateStr + "-adgroup")){
+            mongoTemplate.dropCollection(dateStr + "-adgroup");
+        }
         mongoTemplate.insert(adgroupReportEntities, dateStr + "-adgroup");
     }
 
@@ -55,6 +65,9 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<CreativeReportEntity> creativeReportEntities = ObjectUtils.convert(creativeReportDTOs, CreativeReportEntity.class);
+        if(mongoTemplate.collectionExists(dateStr + "-creative")){
+            mongoTemplate.dropCollection(dateStr + "-creative");
+        }
         mongoTemplate.insert(creativeReportEntities, dateStr + "-creative");
     }
 
@@ -64,6 +77,9 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<KeywordReportEntity> keywordReportEntities = ObjectUtils.convert(keywordReportDTOs, KeywordReportEntity.class);
+        if(mongoTemplate.collectionExists(dateStr + "-keyword")){
+            mongoTemplate.dropCollection(dateStr + "-keyword");
+        }
         mongoTemplate.insert(keywordReportEntities, dateStr + "-keyword");
     }
 
@@ -73,6 +89,9 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<RegionReportEntity> regionReportEntities = ObjectUtils.convert(regionReportDTOs, RegionReportEntity.class);
+        if(mongoTemplate.collectionExists(dateStr + "-region")){
+            mongoTemplate.dropCollection(dateStr + "-region");
+        }
         mongoTemplate.insert(regionReportEntities, dateStr + "-region");
     }
 

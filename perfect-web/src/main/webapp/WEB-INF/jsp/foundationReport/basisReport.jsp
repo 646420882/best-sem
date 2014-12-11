@@ -385,7 +385,7 @@
         <div class="shuju_detali over">
             <ul>
                 <li>选择时间范围：
-                    <input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31">
+                    <input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31" readonly>
                     <input name="reservation" type="image" cname="dateClick"
                            onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                            src="${pageContext.request.contextPath}/public/img/date.png" readonly>
