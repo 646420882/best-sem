@@ -146,6 +146,9 @@ body {
     margin-top: 100px;
     color: #908c8c;
 }
+.footer img{
+    vertical-align: middle;
+}
 
 .footer a{
     font-weight: bold;
