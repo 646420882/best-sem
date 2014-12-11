@@ -27,6 +27,9 @@ public class KeywordRankDAOImpl extends AbstractUserBaseDAOImpl<KeywordRankDTO, 
     @Override
     public KeywordRankDTO findByKeywordId(String id) {
         KeywordRankEntity keywordRankEntity = getMongoTemplate().findOne(Query.query(Criteria.where(KEYWORD_ID).is(id)), getEntityClass());
+        if(keywordRankEntity == null){
+            return null;
+        }
         Map<Integer, Integer> targetRank = keywordRankEntity.getTargetRank();
         KeywordRankDTO keywordRankDTO = ObjectUtils.convertToObject(keywordRankEntity, getDTOClass());
         if (targetRank.isEmpty()) {

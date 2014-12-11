@@ -76,6 +76,11 @@ public class BasisReportController {
         for (List<StructureReportDTO> entity : responseDate.values()) {
             totalRows = totalRows + ((entity == null) ? 0 : entity.size());
         }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         String data = new Gson().toJson(responseDate);
         try {
             response.setContentType("text/html;charset=UTF-8");
