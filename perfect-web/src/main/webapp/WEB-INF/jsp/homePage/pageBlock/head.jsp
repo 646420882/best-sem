@@ -48,7 +48,7 @@
 
                     </div>
                 </div>
-                <div class="user_detali fl over" id="argDialogDiv" style="min-width:350px;">
+                <div class="user_detali fl over" id="argDialogDiv" style="min-width:300px;">
                     <ul>
                         <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<a href="/pftstis/getIndex"
                                                                                style="color: white">.</a></li>

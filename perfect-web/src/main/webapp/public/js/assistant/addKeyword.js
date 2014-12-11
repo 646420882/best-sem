@@ -22,6 +22,7 @@ $(function () {
         top.dialog({title: "关键词工具",
             padding: "5px",
             align:'right bottom',
+            id:'keywordTool',
             content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
             oniframeload: function () {
             },

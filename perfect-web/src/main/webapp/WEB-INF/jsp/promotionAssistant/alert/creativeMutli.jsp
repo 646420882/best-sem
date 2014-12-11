@@ -482,9 +482,13 @@ function overStep() {
             var pause = _tr.find("td:eq(9)").html();
             var pause_ToF = pause != "启用" ? false : true;
             $.post("../assistantCreative/insertOrUpdate", {aid: aid, title: title, description1: desc1, description2: desc2, pcDestinationUrl: pc, pcDisplayUrl: pcs, mobileDestinationUrl: mib, mobileDisplayUrl: mibs, pause: pause_ToF, status: -1}, function (rs) {
+             if(rs=="1"){
+                 alert("操作成功!");
+             }
+                top.dialog.getCurrent().close().remove();
             });
         });
-        alert("操作成功!");
+
     }
 }
 </script>

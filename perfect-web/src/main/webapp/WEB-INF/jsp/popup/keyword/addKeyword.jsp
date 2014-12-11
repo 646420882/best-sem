@@ -436,7 +436,10 @@ var saveKeyword = function () {
         async: false,
         contentType: "application/json; charset=UTF-8",
         success: function (data, textStatus, jqXHR) {
-//            alert("success!");
+            if(data.stat==true){
+                alert("添加成功");
+                top.dialog.getCurrent().close().remove();
+            }
         }
     });
 
