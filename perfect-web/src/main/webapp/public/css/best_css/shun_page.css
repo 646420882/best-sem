@@ -17,7 +17,7 @@ body {
 /* servicesBox */
 .servicesBox {
     height: 280px;
-    margin-top: 7%;
+    margin-top: 6%;
     clear: both;
     line-height: 18px;
     font-size: 12px;
@@ -186,7 +186,8 @@ body {
     background:none;
     border:none;
     margin-left:5px;
-    cursor: pointer;
+    cursor: pointer
+;
 
 }
 .time input:hover{

@@ -375,6 +375,8 @@
     font-size: 12px;
     padding-left: 10px;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 1270px) {
