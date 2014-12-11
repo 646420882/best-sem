@@ -19,15 +19,27 @@ public class ObjectUtils {
         }
 
         List<T> targetList = new ArrayList<>(srcList.size());
-        srcList.stream().filter(s -> s != null).forEach((s) -> {
-            try {
-                T t = targetClz.newInstance();
-                BeanUtils.copyProperties(s, t);
-                targetList.add(t);
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        });
+        if (srcList.size() > 1_000) {
+            srcList.parallelStream().filter(s -> s != null).forEach((s) -> {
+                try {
+                    T t = targetClz.newInstance();
+                    BeanUtils.copyProperties(s, t);
+                    targetList.add(t);
+                } catch (InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            srcList.stream().filter(s -> s != null).forEach((s) -> {
+                try {
+                    T t = targetClz.newInstance();
+                    BeanUtils.copyProperties(s, t);
+                    targetList.add(t);
+                } catch (InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
 
         return targetList;
     }

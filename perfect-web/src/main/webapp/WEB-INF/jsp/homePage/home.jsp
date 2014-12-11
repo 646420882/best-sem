@@ -1168,7 +1168,7 @@ $(function () {
                 break;
             case 3:
                 //默认加载昨天的数据(质量度)
-                loadKeywordQualityData(null, 1);
+//                loadKeywordQualityData(null, 1);
                 break;
             case 4:
                     //重点词加载
@@ -1219,6 +1219,8 @@ $(function () {
     //账户表现-----默认加载7天数据
     loadPerformance(null, 7);
 
+    //关键词质量度分析异步加载
+    loadKeywordQualityData();
 
 });
 

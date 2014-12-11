@@ -51,6 +51,7 @@ var loadKeywordQualityData = function () {
     $.ajax({
         url: "/keywordQuality/list",
         dataType: "json",
+        async: true,
         data: {
             redisKey: redisKey,
             fieldName: category,

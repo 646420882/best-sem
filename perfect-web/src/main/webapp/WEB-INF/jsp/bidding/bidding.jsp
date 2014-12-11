@@ -220,9 +220,9 @@
                 <ul id="zTreeImport" class="ztree over">
                 </ul>
             </div>
-            <div class="j_l_under over">
-                <a href="#">监控文件夹</a>
-            </div>
+            <%--<div class="j_l_under over">--%>
+                <%--<a href="#">监控文件夹</a>--%>
+            <%--</div>--%>
         </div>
         <div class="jingjia_right fr over">
             <div>
