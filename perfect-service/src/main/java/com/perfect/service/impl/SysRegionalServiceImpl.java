@@ -1,7 +1,6 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.RegionalCodeDAO;
-import com.perfect.dto.regional.RegionCodeDTO;
 import com.perfect.dto.regional.RegionalCodeDTO;
 import com.perfect.dto.regional.RegionalReturnDataDTO;
 import com.perfect.service.SysRegionalService;
@@ -127,16 +126,48 @@ public class SysRegionalServiceImpl implements SysRegionalService {
 
     @Override
     public String getProvinceNameById(Integer provinceId) {
-        String fideName = FIDE_PROVINCEID;
-        RegionalCodeDTO codeDTO = regionalCodeDAO.getRegionalByRegionId(fideName, provinceId + "");
-        return codeDTO.getProvinceName();
+        String provinceString = "";
+        int province = provinceId / 1000;
+        if (province > 100) {
+            String fideName = FIDE_STATEID;
+            String stateid = province / 100 + "";
+            RegionalCodeDTO codeDTO = regionalCodeDAO.getRegionalByRegionId(fideName, stateid);
+            return codeDTO.getProvinceName();
+        } else {
+            String fideName = FIDE_PROVINCEID;
+            if (province < 1000) {
+                if (province < 10) {
+                    provinceString = "0" + province;
+                } else {
+                    provinceString = province + "";
+                }
+            }
+
+            RegionalCodeDTO codeDTO = regionalCodeDAO.getRegionalByRegionId(fideName, provinceString);
+            return codeDTO.getProvinceName();
+        }
     }
 
     @Override
     public String getRegionNameById(Integer regionId) {
-        String fideName = FIDE_REGIONID;
-        RegionalCodeDTO codeDTO = regionalCodeDAO.getRegionalByRegionId(fideName, regionId + "");
-        return codeDTO.getRegionName();
+        int region = regionId % 1000;
+        if (region == 0) {
+            String fideName = FIDE_PROVINCEID;
+            RegionalCodeDTO codeDTO = regionalCodeDAO.getRegionalByRegionId(fideName, regionId + "");
+            return codeDTO.getRegionName();
+        } else {
+            String fideName = FIDE_REGIONID;
+            String regionString = "";
+            if (region < 1000) {
+                if (region < 10) {
+                    regionString = "00" + region;
+                } else if (region < 100) {
+                    regionString = "0" + region;
+                }
+            }
+            RegionalCodeDTO codeDTO = regionalCodeDAO.getRegionalByRegionId(fideName, regionString + "");
+            return codeDTO.getRegionName();
+        }
     }
 
     @Override
@@ -324,12 +355,12 @@ public class SysRegionalServiceImpl implements SysRegionalService {
     }
 
     @Override
-    public Map<Integer,String> getRegionalByRegionName(List<String> regionalName) {
+    public Map<Integer, String> getRegionalByRegionName(List<String> regionalName) {
 //        regionalCodeDAO.getRegionalByRegionName(regionalName);
-        Map<Integer,String> map=new HashMap<>();
-        for (String name:regionalName){
-            RegionalCodeDTO regionalCodeDTO= regionalCodeDAO.getRegionalByRegionName(name);
-            map.put(Integer.valueOf((regionalCodeDTO.getProvinceId()+regionalCodeDTO.getRegionId())),name);
+        Map<Integer, String> map = new HashMap<>();
+        for (String name : regionalName) {
+            RegionalCodeDTO regionalCodeDTO = regionalCodeDAO.getRegionalByRegionName(name);
+            map.put(Integer.valueOf((regionalCodeDTO.getProvinceId() + regionalCodeDTO.getRegionId())), name);
         }
         return map;
     }

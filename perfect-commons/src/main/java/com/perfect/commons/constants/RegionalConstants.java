@@ -20,6 +20,10 @@ public class RegionalConstants {
     public static final String FIDE_PROVINCEID = "provinceId";
     //省域名称
     public static final String FIDE_PROVINCENAME = "provinceName";
+    //国家ID
+    public static final String FIDE_STATEID = "stateId";
+    //国家名称
+    public static final String FIDE_STATENAME = "stateName";
 
 
     //static  00000

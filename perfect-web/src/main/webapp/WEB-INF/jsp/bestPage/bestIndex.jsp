@@ -18,24 +18,25 @@
 <body>
 <div class="mid wd">
     <div class="logo">
-        <a href="http://best-ad.cn/"><img src="${pageContext.request.contextPath}/public/img/best_img/logo.png"></a>
+        <a href="http://best-ad.cn/" target="_blank"><img src="${pageContext.request.contextPath}/public/img/best_img/logo.png"></a>
     </div>
-
     <div class="servicesBox">
-        <div class="time">
-            <b id="time"></b><span>perfect</span>
+        <div class="time over">
+            <b id="time" class="fl"></b><span class="fl">${currSystemUserName}</span><form class="fl" name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
+           <input type="submit" value="| 退出"
+                   onclick="$('form[logout]').submit();"/>
+        </form>
         </div>
         <div class="serBox disabled">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_sutou.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_sutou2.png"></div>
             <div class="txt1"><span class="tit">百思速投</span>
-
-                <p>针对搜索引擎营销的
-                    第三方优化管理平台</p></div>
+                <p>针对搜索引擎营销的</p>
+                   <p>第三方优化管理平台</p>
+            </div>
             <div class="txt2">
                 <a href="#" target="_blank" class="a_jump"><span class="tit">百思速投</span></a>
-
                 <div class="tex2_mid">
                     <p><b>2015年3月31日</b> </p>
                     <p><b>正式上线</b></p>
@@ -52,13 +53,14 @@
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_shouke.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_shouke2.png"></div>
             <div class="txt1"><span class="tit">百思搜客</span>
-                <p>针对搜索引擎营销的
-                    第三方优化管理平台</p></div>
+                <p>针对搜索引擎营销的</p>
+                   <p>第三方优化管理平台</p></div>
             <div class="txt2"><a href="${pageContext.request.contextPath}/home" target="_blank" class="a_jump"><span
                     class="tit">百思搜客</span></a>
                 <div class="tex2_mid">
-                    <p>推广额度：<b>100000</b>元</p>
-                    <p>余额预计可消费<b>0</b>天日预算<b>0</b>元</p>
+                    <p>推广额度：<b> ${accountBalance} </b>元</p>
+                    <p>余额预计可消费<b> ${remainderDays} </b>天</p>
+                    <p>日预算<b> ${accountBudget} </b>元</p>
                 </div>
                 <div class="enter">
                     <a href="${pageContext.request.contextPath}/home" target="_blank">点击进入</a>
@@ -70,14 +72,11 @@
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_seo.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_seo2.png"></div>
             <div class="txt1"><span class="tit">百思SEO</span>
-                <p>SEO追踪，集统计、分析和管理
-                    专家级的建议和优化方案</p></div>
-            <div class="txt2"><a href="#" target="_blank"
-                                 class="a_jump"><span class="tit">百思SEO</span></a>
-
+                <p>SEO追踪，集统计、分析和管理</p>
+                    <p>专家级的建议和优化方案</p></div>
+            <div class="txt2"><a href="#" target="_blank" class="a_jump"><span class="tit">百思SEO</span></a>
                 <div class="tex2_mid">
                     <p><b>2014年12月31日</b> </p>
-
                     <p><b>正式上线</b></p>
                 </div>
                 <div class="enter">
@@ -85,20 +84,18 @@
                 </div>
             </div>
         </div>
-
         <div class="serBox disabled">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_wuxian.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_wuxian2.png"></div>
-            <div class="txt1"><span class="tit">百思无线</span>
-
-                <p>一站式解决客户移动建站
-                    及微信运营推广</p></div>
+            <div class="txt1">
+                <span class="tit">百思无线</span>
+                <p>一站式解决客户移动建站</p>
+                 <p>及微信运营推广</p>
+            </div>
             <div class="txt2"><a href="#" target="_blank" class="a_jump"><span class="tit">百思无线</span></a>
-
                 <div class="tex2_mid">
                     <p><b>2015年1月31日</b> </p>
-
                     <p><b>正式上线</b></p>
                 </div>
                 <div class="enter">
@@ -106,20 +103,18 @@
                 </div>
             </div>
         </div>
-
         <div class="serBox disabled">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_huiyan.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_huiyan2.png"></div>
-            <div class="txt1"><span class="tit">百思慧眼</span>
-
-                <p>云端备份数据，
-                    快速实现信息同步！</p></div>
+            <div class="txt1">
+                <span class="tit">百思慧眼</span>
+                <p>云端备份数据</p>
+               <p>快速实现信息同步！</p>
+            </div>
             <div class="txt2"><a href="#" target="_blank" class="a_jump"><span class="tit">百思慧眼</span></a>
-
                 <div class="tex2_mid">
                     <p><b>2015年3月31日</b> </p>
-
                     <p><b>正式上线</b></p>
                 </div>
                 <div class="enter">
@@ -127,13 +122,10 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 </div>
 <div class="footer wd over">
-    <b>普菲特官网</b>如在使用过程中有任何问题请联系客服：010-84922996
-
+    <a href="http://www.perfect-cn.cn/" target="_blank">普菲特官网 </a>如在使用过程中有任何问题请联系客服：010-84922996
 </div>
 <script type="text/javascript">
     $(".serBox").hover(function () {
@@ -143,7 +135,7 @@
         $(this).children(".pic2").animate({left: 50}, 400);
         $(this).children(".txt1").animate({left: -220}, 400);
         $(this).children(".txt2").animate({right: 0}, 400);
-        $(this).attr("style", "height:306px;background:#01aeef");
+        $(this).attr("style", "height:338px;*height:334px;background:#01aeef");
 
     }, function () {
         $(this).children().stop(false, true);
@@ -154,8 +146,12 @@
         $(this).children(".txt2").animate({right: -220}, 400);
         $(this).removeAttr("style");
     });
+    $(".disabled").hover(function (){
+        $(this).attr("style", "height:306px;background:#01aeef");
+    }, function () {
+        $(this).removeAttr("style");
 
-
+    });
 
     var now = new Date(), hour = now.getHours();
     var time = document.getElementById('time');

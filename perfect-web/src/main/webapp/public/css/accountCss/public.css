@@ -246,6 +246,7 @@ table tr ,table tr td{
     overflow:hidden;
 }
 .user_text{
+    line-height:22px;
 
 }
 .user_name span{

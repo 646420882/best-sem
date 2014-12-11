@@ -26,7 +26,7 @@
     <div class="login_box2">
         <div class="login_part1 ">
             <div class="login_logo2 ">
-                <a href="http://best-ad.cn/"><img src="/public/img/login_logo.png"></a>
+                <a href="http://best-ad.cn/" target="_blank"><img src="/public/img/login_logo.png"></a>
             </div>
             <div class="login_click over">
                 <span id="tishi"></span>
@@ -254,6 +254,7 @@
     });
     if ($("#dataRe").val() == 1) {
         $("#tishi").append("注册成功！                ");
+        if(confirm('注册成功！点击按钮继续操作')){ location.href="/login"}else{ location.href="/login"}
     } else if ($("#dataRe").val() == -1) {
         $("#tishi").append("注册失败！用户名已存在！   ");
     }

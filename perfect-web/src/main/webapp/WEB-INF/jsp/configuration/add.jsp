@@ -90,7 +90,7 @@
                                     document.getElementById("step3").className = "";
                                     document.getElementById("step2").className = "hide";
                                     document.getElementById("buzhou3").className = "current";
-                                    setTimeout('location.href="/home"',3000)
+                                    setTimeout('location.href="/home"',2000)
                                     judeit =1;
                                 }else{
                                     alert("请确认你的信息是否填写正确后重新提交！");
@@ -179,7 +179,8 @@
                             <input id="submit" class="add_submit" onclick="progress(2)" type="button" value="确认"/>
                         </form>
                     </div>
-                    <div id="step3" class="hide">
+                    <div id="step3" class="hide" style="text-align: center">
+                        <span style="font-size: 14px;margin-top: 100px;display: block;"><label style="color: red;font-weight: bold">绑定已完成.</label>&nbsp;&nbsp;&nbsp;2秒后自动跳转...如果没有跳转请点击 《<a href="${pageContext.request.contextPath}/home">此处</a>》跳转</span>
                     </div>
                 </div>
             </div>

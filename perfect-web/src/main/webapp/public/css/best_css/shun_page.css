@@ -147,7 +147,7 @@ body {
     color: #908c8c;
 }
 
-.footer b {
+.footer a{
     font-weight: bold;
     color: #f18a1d;
 
@@ -181,4 +181,14 @@ body {
 .servicesBox .disabled a{
     cursor: not-allowed;
 
+}
+.time input{
+    background:none;
+    border:none;
+    margin-left:5px;
+    cursor: pointer;
+
+}
+.time input:hover{
+    color:#f7b003;
 }
