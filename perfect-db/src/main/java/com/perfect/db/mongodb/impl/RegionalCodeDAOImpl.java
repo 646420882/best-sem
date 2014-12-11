@@ -2,7 +2,6 @@ package com.perfect.db.mongodb.impl;
 
 import com.perfect.dao.RegionalCodeDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
-import com.perfect.dto.RealTimeResultDTO;
 import com.perfect.dto.regional.RegionalCodeDTO;
 import com.perfect.entity.RegionalCodeEntity;
 import com.perfect.utils.ObjectUtils;
@@ -29,6 +28,13 @@ public class RegionalCodeDAOImpl extends AbstractSysBaseDAOImpl<RegionalCodeDTO,
     public List<RegionalCodeDTO> getRegional(String fieldName, String id) {
         List<RegionalCodeEntity> list = getSysMongoTemplate().find(Query.query(Criteria.where(fieldName).is(id)), getEntityClass(), TBL_SYS_REGIONAL);
         List<RegionalCodeDTO> regionalCodeDTOs = ObjectUtils.convert(list, getDTOClass());
+        return regionalCodeDTOs;
+    }
+
+    @Override
+    public RegionalCodeDTO getRegionalById(String fieldName, String id) {
+        RegionalCodeEntity list = getSysMongoTemplate().findOne(Query.query(Criteria.where(fieldName).is(id)), getEntityClass(), TBL_SYS_REGIONAL);
+        RegionalCodeDTO regionalCodeDTOs = ObjectUtils.convert(list, getDTOClass());
         return regionalCodeDTOs;
     }
 
