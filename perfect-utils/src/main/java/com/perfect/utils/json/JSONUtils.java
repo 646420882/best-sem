@@ -27,6 +27,10 @@ public class JSONUtils {
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
     }
 
+    public static ObjectMapper getMapper() {
+        return mapper;
+    }
+
     public static Map<String, Object> getJsonMapData(Object o) {
         Map<String, Object> map = new HashMap<>();
         map.put("rows", getJsonObject(o));

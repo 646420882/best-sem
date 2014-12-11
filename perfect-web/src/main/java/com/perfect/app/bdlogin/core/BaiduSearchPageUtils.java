@@ -1,7 +1,9 @@
 package com.perfect.app.bdlogin.core;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.perfect.dto.creative.CreativeInfoDTO;
 import com.perfect.dto.creative.SublinkInfoDTO;
+import com.perfect.utils.json.JSONUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
@@ -9,7 +11,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,6 +22,8 @@ import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -40,7 +46,25 @@ public class BaiduSearchPageUtils {
         }
     }
 
-    public static String getBaiduSearchPage(CookieStore cookieStore, String keyword, int area) {
+    public static String getBaiduSearchPage(String cookies, String keyword, int area) {
+        CookieStore cookieStore = new BasicCookieStore();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            for (JsonNode node : JSONUtils.getMapper().readTree(cookies).get("cookies")) {
+                BasicClientCookie cookie = new BasicClientCookie(node.get("name").asText(), node.get("value").asText());
+                cookie.setVersion(node.get("version").asInt());
+                cookie.setDomain(node.get("domain").asText());
+                cookie.setPath(node.get("path").asText());
+                cookie.setSecure(node.get("secure").asBoolean());
+                if (node.get("expiryDate") != null) {
+                    cookie.setExpiryDate(sdf.parse(node.get("expiryDate").asText()));
+                }
+                cookieStore.addCookie(cookie);
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+
         StringBuilder _cookies = new StringBuilder("");
         String userid = "";
         String token = "";

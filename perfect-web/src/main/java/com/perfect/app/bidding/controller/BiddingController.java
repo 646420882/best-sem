@@ -29,7 +29,6 @@ import com.perfect.utils.NumberUtils;
 import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.paging.PaginationParam;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.client.CookieStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -755,11 +754,7 @@ public class BiddingController {
                         continue;
                     }
 
-
-                    CookieStore cookieStore = JSONUtils.getObjectByJson(cookieDTO.getCookie(), CookieStore.class);
-
-
-                    String previewHTML = BaiduSearchPageUtils.getBaiduSearchPage(cookieStore, keywordEntity.getKeyword(), region);
+                    String previewHTML = BaiduSearchPageUtils.getBaiduSearchPage(cookieDTO.getCookie(), keywordEntity.getKeyword(), region);
 
                     int rank = BaiduSearchPageUtils.where(previewHTML, host);
 
@@ -773,9 +768,7 @@ public class BiddingController {
                         continue;
                     }
 
-                    CookieStore cookieStore = JSONUtils.getObjectByJson(cookieDTO.getCookie(), CookieStore.class);
-
-                    String previewHTML = BaiduSearchPageUtils.getBaiduSearchPage(cookieStore, keywordEntity.getKeyword(), region);
+                    String previewHTML = BaiduSearchPageUtils.getBaiduSearchPage(cookieDTO.getCookie(), keywordEntity.getKeyword(), region);
 
                     int rank = BaiduSearchPageUtils.where(previewHTML, host);
 
