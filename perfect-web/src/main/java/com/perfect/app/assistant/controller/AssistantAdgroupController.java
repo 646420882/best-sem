@@ -408,8 +408,9 @@ public class AssistantAdgroupController extends WebContextSupport {
                 adgroupDTOInsert.setMib(0.0);
                 adgroupDTOInsert.setLocalStatus(1);
                 adgroupService.insertOutId(adgroupDTOInsert);
+                writeHtml(SUCCESS, response);
             }
-            writeHtml(SUCCESS, response);
+
         } catch (Exception e) {
             e.printStackTrace();
             writeHtml(EXCEPTION, response);

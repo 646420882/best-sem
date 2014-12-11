@@ -344,10 +344,13 @@ public class SysRegionalServiceImpl implements SysRegionalService {
         List<RegionalCodeDTO> dtos = new ArrayList<>();
 
         String fideName = FIDE_PROVINCEID;
+        if (listId != null) {
         for (Integer dto : listId) {
             dto = dto / 1000 % 100;
             dtos.add(regionalCodeDAO.getRegionalByRegionId(fideName, dto + ""));
         }
+        }
+
         return dtos;
     }
 

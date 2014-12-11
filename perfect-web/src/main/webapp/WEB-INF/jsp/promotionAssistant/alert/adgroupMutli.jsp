@@ -436,9 +436,13 @@ function overStep() {
             var maxPrice = _tr.find("td:eq(3)").html();
             var pause_ToF = pause != "启用" ? false : true;
             $.post("../assistantAdgroup/insertOrUpdate", {cid: cid, name: name, pause: pause_ToF, maxPrice: maxPrice, status: -1}, function (rs) {
+                if(rs=="1"){
+                    alert("操作成功");
+                    top.dialog.getCurrent().close().remove();
+                }
             });
         });
-        alert("操作成功!");
+
     }
 }
 </script>

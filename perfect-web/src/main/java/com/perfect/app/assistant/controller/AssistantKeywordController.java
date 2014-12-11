@@ -310,7 +310,7 @@ public class AssistantKeywordController extends WebContextSupport{
         }
 
         List<SearchwordReportDTO> dtoList = new ArrayList<>();
-        if (resultList.size() > 0) {
+        if (resultList!=null) {
             for (RealTimeQueryResultType resultType : resultList) {
                 SearchwordReportDTO searchwordReportDTO = new SearchwordReportDTO();
                 searchwordReportDTO.setKeyword(resultType.getQueryInfo(3));
