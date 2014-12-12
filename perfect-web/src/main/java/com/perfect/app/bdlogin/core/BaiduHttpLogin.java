@@ -1,5 +1,6 @@
 package com.perfect.app.bdlogin.core;
 
+import com.perfect.commons.web.ServletContextUtils;
 import org.apache.http.*;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.RequestConfig;
@@ -29,13 +30,12 @@ import java.util.*;
  * Created by baizz on 2014-11-5.
  */
 public class BaiduHttpLogin {
-    public static final String phantomJSPath =
-            new File(BaiduHttpLogin.class.getResource("/").getPath()).getPath() + System.getProperty("file.separator") + "phantomJs" + System.getProperty("file.separator") + "baiduLogin.js ";
 
     public static final Set<String> set = new HashSet<String>() {{
         addAll(Arrays.asList("CASSSID", "GBIZSSID", "GIMGSSID", "LOGINAID", "LOGINUID", "__cas__id__", "__cas__st__", "bdsfuid"));
     }};
 
+    private static String baiduLoginJSPath = null;
     private static CookieStore cookies = new BasicCookieStore();
     private static CookieStore sslCookies = new BasicCookieStore();
     private static CloseableHttpClient sslHttpClient;
@@ -45,6 +45,12 @@ public class BaiduHttpLogin {
     private static String loginUrl;
 
     static {
+        baiduLoginJSPath = ServletContextUtils.getServletContext().getRealPath("") + System.getProperty("file.separator")
+                + "WEB-INF" + System.getProperty("file.separator")
+                + "classes" + System.getProperty("file.separator")
+                + "phantomJs" + System.getProperty("file.separator")
+                + "baiduLogin.js ";
+
         String path = new File(BaiduHttpLogin.class.getResource("/").getPath()).getPath() + System.getProperty("file.separator") + "bdlogin.properties";
         try {
             InputStream is = new BufferedInputStream(new FileInputStream(path));
@@ -135,8 +141,12 @@ public class BaiduHttpLogin {
         return redirectResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK;
     }
 
+    public static String getBaiduLoginJSPath() {
+        return baiduLoginJSPath;
+    }
+
     public static void main(String[] args) throws IOException {
-        CaptchaHandler.handle(phantomJSPath);
+        CaptchaHandler.handle(baiduLoginJSPath);
         String cookies = CaptchaHandler.getCookies();
 
         Scanner sc = new Scanner(System.in);

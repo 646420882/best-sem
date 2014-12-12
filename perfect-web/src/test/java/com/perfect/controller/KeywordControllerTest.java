@@ -1,5 +1,6 @@
-package com.perfect.test.app.controller;
+package com.perfect.controller;
 
+import com.perfect.base.JUnitBaseTest;
 import com.perfect.service.KeywordService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 /**
  * Created by baizz on 2014-7-11.
  */
-public class KeywordControllerTest extends JUnitBaseControllerTest {
+public class KeywordControllerTest extends JUnitBaseTest {
 
     @Autowired
     private KeywordService keywordService;

@@ -7,12 +7,11 @@ import com.perfect.utils.json.JSONUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
@@ -96,12 +95,11 @@ public class BaiduSearchPageUtils {
         httpPost.setEntity(new UrlEncodedFormEntity(postData, StandardCharsets.UTF_8));
         BaiduHttpLogin.headerWrap(httpPost);
 
-        HttpClient client = HttpClients.createDefault();
+        CloseableHttpClient sslHttpClient = BaiduHttpLogin.createSSLClientDefault(true);
         try {
-            HttpResponse ht = client.execute(httpPost);
+            HttpResponse response = sslHttpClient.execute(httpPost);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            ht.getEntity().writeTo(outputStream);
-
+            response.getEntity().writeTo(outputStream);
             return new String(outputStream.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
@@ -111,8 +109,6 @@ public class BaiduSearchPageUtils {
     }
 
     public static int where(String html, String expectedHost) {
-
-
         Document doc = Jsoup.parse(html);
 
         List<CreativeInfoDTO> leftCreativeVOList = new ArrayList<>();

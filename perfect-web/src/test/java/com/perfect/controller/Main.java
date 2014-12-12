@@ -1,4 +1,4 @@
-package com.perfect.test.app.controller;
+package com.perfect.controller;
 
 import org.quartz.CronExpression;
 

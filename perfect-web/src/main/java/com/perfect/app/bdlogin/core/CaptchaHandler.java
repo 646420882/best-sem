@@ -19,6 +19,8 @@ import java.util.List;
  */
 public class CaptchaHandler {
 
+    private static final ObjectMapper mapper = new ObjectMapper();
+
     private static byte[] captchaBytes;
     private static String cookies;
 
@@ -27,7 +29,7 @@ public class CaptchaHandler {
         Runtime runtime = Runtime.getRuntime();
         Process process = runtime.exec("phantomjs " + phantomJSPath);
         InputStream is = process.getInputStream();
-        JsonNode jsonNodes = new ObjectMapper().readTree(is);
+        JsonNode jsonNodes = mapper.readTree(is);
         List<String> cookieList = new ArrayList<>();
         for (JsonNode jsonNode : jsonNodes) {
             cookieList.add(jsonNode.get("name").asText() + "=" + jsonNode.get("value").asText() + "; " + "path=" + jsonNode.get("path").asText() + "; domain=" + jsonNode.get("domain").asText() + "; " + "httponly");

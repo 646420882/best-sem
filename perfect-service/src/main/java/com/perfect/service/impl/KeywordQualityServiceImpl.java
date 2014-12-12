@@ -116,9 +116,8 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             tempMap.put(i, new ArrayList<>());
         }
 
-        for (Quality10Type quality10Type : quality10Types) {
-            tempMap.get(quality10Type.getPcQuality()).add(map.get(quality10Type.getId().toString()));
-        }
+        final Map<String, KeywordReportDTO> finalMap = map;
+        quality10Types.parallelStream().forEach(q -> tempMap.get(q.getPcQuality()).add(finalMap.get(q.getId().toString())));
 
         Map<String, Object> results = new HashMap<>();
         List<QualityDTO> qualityList = new ArrayList<>();
@@ -129,7 +128,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         final String finalFieldName = fieldName;
         qList.parallelStream().forEach(i -> {
             List<KeywordReportDTO> tempList = new ArrayList<>();
-            tempMap.get(i).stream().filter(o -> o != null).forEach(tempList::add);
+            tempMap.get(i).parallelStream().filter(o -> o != null).forEach(tempList::add);
             if (!tempList.isEmpty()) {
 
                 //质量度级别信息计算
@@ -293,9 +292,8 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
             tempMap.put(i, new ArrayList<>());
         }
 
-        for (Quality10Type quality10Type : quality10Types) {
-            tempMap.get(quality10Type.getPcQuality()).add(map.get(quality10Type.getId().toString()));
-        }
+        final Map<String, KeywordReportDTO> finalMap = map;
+        quality10Types.parallelStream().forEach(q -> tempMap.get(q.getPcQuality()).add(finalMap.get(q.getId().toString())));
 
         Map<Integer, QualityDTO> qualityDTOMap = new HashMap<>();
         List<KeywordQualityReportVO> reportList = new ArrayList<>();
@@ -303,7 +301,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         final List<KeywordReportDTO> finalList = list;
         qList.parallelStream().forEach(i -> {
             List<KeywordReportDTO> tempList = new ArrayList<>();
-            tempMap.get(i).stream().filter(o -> o != null).forEach(tempList::add);
+            tempMap.get(i).parallelStream().filter(o -> o != null).forEach(tempList::add);
             if (!tempList.isEmpty()) {
 
                 //质量度级别信息计算
