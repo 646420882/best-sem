@@ -194,14 +194,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!--netty-->
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty</artifactId>
-            <version>3.9.5.Final</version>
-            <scope>compile</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
