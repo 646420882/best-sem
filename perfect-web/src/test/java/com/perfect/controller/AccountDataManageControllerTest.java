@@ -1,6 +1,7 @@
-package com.perfect.test.app.controller;
+package com.perfect.controller;
 
 import com.google.common.collect.Lists;
+import com.perfect.base.JUnitBaseTest;
 import com.perfect.core.AppContext;
 import com.perfect.service.AccountDataService;
 import org.junit.Test;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
  * <p>
  * 初始化和更新帐户数据
  */
-public class AccountDataManageControllerTest extends JUnitBaseControllerTest {
+public class AccountDataManageControllerTest extends JUnitBaseTest {
 
     @Autowired
     private AccountDataService accountDataService;

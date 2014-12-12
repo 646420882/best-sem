@@ -5,9 +5,9 @@ import com.perfect.app.bdlogin.core.CaptchaHandler;
 import com.perfect.commons.web.ServletContextUtils;
 import com.perfect.dto.CookieDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
-import com.perfect.utils.json.JSONUtils;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.CookieService;
+import com.perfect.utils.json.JSONUtils;
 import org.apache.http.client.CookieStore;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.app.bdlogin.core.BaiduHttpLogin.phantomJSPath;
+import static com.perfect.app.bdlogin.core.BaiduHttpLogin.getBaiduLoginJSPath;
 
 /**
  * Created by baizz on 2014-11-10.
@@ -99,7 +99,7 @@ public class BaiduHttpLoginController implements Controller {
 
     @RequestMapping(value = "/bdLogin/getCaptcha", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void getCaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        CaptchaHandler.handle(phantomJSPath);
+        CaptchaHandler.handle(getBaiduLoginJSPath());
         byte[] captchaBytes = CaptchaHandler.getCaptchaBytes();
         String cookies = CaptchaHandler.getCookies();
         HttpSession session = ServletContextUtils.getSession();

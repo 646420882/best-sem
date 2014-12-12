@@ -37,14 +37,15 @@
         <div class="backstage_list over">
             <ul>
                 <li><span>请输入模拟登录次数:</span>
-                    <input type="text" class="form-control fl" id="number">
+                    <label for="number"></label><input type="text" class="form-control fl" id="number">
                 </li>
                 <li><span>请输入验证码:</span>
-                    <input id="imageCode" type="text" class="form-control fl">
-                    <img id="img" src="${pageContext.request.contextPath}/admin/bdLogin/getCaptcha"
-                         onclick=refreshImg()>
+                    <label for="imageCode"></label><input id="imageCode" type="text" class="form-control fl">
+                    <img id="img" style="cursor: pointer;"
+                         src="${pageContext.request.contextPath}/admin/bdLogin/getCaptcha"
+                         onclick="refreshImg();">
                     <button class="btn sure btn-lg" type="button" style="width:80px; margin-left:10px;"
-                            onclick=validateImageCode()>提交
+                            onclick="validateImageCode();">提交
                     </button>
                 </li>
             </ul>
@@ -81,7 +82,7 @@
             url: "/admin/biddingUrl/list",
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
-                $("#table1 tbody").empty();
+                $("#table1").find("tbody").empty();
                 var results = data.rows;
                 if (results != null && results.length > 0) {
                     var idle = 0;
@@ -94,7 +95,7 @@
                         }
                     });
                     var tr = "<tr><td>" + results.length + "</td><td>" + idle + "</td><td>" + notIdle + "</td></tr>";
-                    $("#table1 tbody").append(tr);
+                    $("#table1").find("tbody").append(tr);
                 }
             }
         });

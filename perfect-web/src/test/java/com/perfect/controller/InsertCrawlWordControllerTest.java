@@ -1,5 +1,6 @@
-package com.perfect.test.app.controller;
+package com.perfect.controller;
 
+import com.perfect.base.JUnitBaseTest;
 import com.perfect.dto.CrawlWordDTO;
 import com.perfect.service.CrawlWordService;
 import com.perfect.utils.excel.XSSFReadUtils;
@@ -18,7 +19,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-11-17.
  */
-public class InsertCrawlWordControllerTest extends JUnitBaseControllerTest {
+public class InsertCrawlWordControllerTest extends JUnitBaseTest {
 
     private static final Map<Integer, String> sheetNameMap = new LinkedHashMap<Integer, String>() {{
         put(0, "lefeng&vip");

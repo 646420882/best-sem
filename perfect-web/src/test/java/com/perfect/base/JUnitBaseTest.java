@@ -1,4 +1,4 @@
-package com.perfect.test.app.controller;
+package com.perfect.base;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
         @ContextConfiguration(name = "parent", locations = "classpath:applicationContext.xml"),
         @ContextConfiguration(name = "child", locations = "classpath:applicationContext-mvc.xml")
 })
-public class JUnitBaseControllerTest {
+public class JUnitBaseTest {
 
     @Autowired
     private WebApplicationContext wac;

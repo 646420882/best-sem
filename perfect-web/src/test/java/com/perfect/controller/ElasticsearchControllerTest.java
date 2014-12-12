@@ -1,5 +1,6 @@
-package com.perfect.test.app.controller;
+package com.perfect.controller;
 
+import com.perfect.base.JUnitBaseTest;
 import com.perfect.core.AppContext;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -9,7 +10,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 /**
  * Created by vbzer_000 on 2014/9/19.
  */
-public class ElasticsearchControllerTest extends JUnitBaseControllerTest {
+public class ElasticsearchControllerTest extends JUnitBaseTest {
 
     @Test
     public void test() throws Exception {
