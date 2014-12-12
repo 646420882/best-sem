@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="footer">
     <p>
-        <a href="#">
+        <a href="http://best-ad.cn/about.html">
             关于我们
         </a>
         |
