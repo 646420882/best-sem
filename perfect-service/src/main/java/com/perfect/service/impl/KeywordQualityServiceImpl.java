@@ -464,7 +464,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         try {
             jedis = JRedisUtils.get();
             jedis.set(key, value);
-            jedis.expire(id, 3600);
+            jedis.expire(id, 10_800);
         } catch (final Exception e) {
             e.printStackTrace();
         } finally {

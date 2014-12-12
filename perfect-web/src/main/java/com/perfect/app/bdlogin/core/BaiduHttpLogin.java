@@ -19,7 +19,10 @@ import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 
 import javax.net.ssl.SSLContext;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -45,18 +48,31 @@ public class BaiduHttpLogin {
     private static String loginUrl;
 
     static {
-        baiduLoginJSPath = ServletContextUtils.getServletContext().getRealPath("") + System.getProperty("file.separator")
-                + "WEB-INF" + System.getProperty("file.separator")
-                + "classes" + System.getProperty("file.separator")
-                + "phantomJs" + System.getProperty("file.separator")
-                + "baiduLogin.js ";
+//        baiduLoginJSPath = ServletContextUtils.getServletContext().getRealPath("")
+//                + System.getProperty("file.separator") + "WEB-INF"
+//                + System.getProperty("file.separator") + "classes"
+//                + System.getProperty("file.separator") + "phantomJs"
+//                + System.getProperty("file.separator") + "baiduLogin.js ";
 
-        String path = new File(BaiduHttpLogin.class.getResource("/").getPath()).getPath() + System.getProperty("file.separator") + "bdlogin.properties";
+//        baiduLoginJSPath = new File(BaiduHttpLogin.class.getResource("/").getPath()).getPath()
+//                + System.getProperty("file.separator") + "phantomJs"
+//                + System.getProperty("file.separator") + "baiduLogin.js ";
+
+//        String path = new File(BaiduHttpLogin.class.getResource("/").getPath()).getPath()
+//                + System.getProperty("file.separator") + "bdlogin.properties";
+
+        String path = ServletContextUtils.getServletContext().getRealPath("")
+                + System.getProperty("file.separator") + "WEB-INF"
+                + System.getProperty("file.separator") + "classes"
+                + System.getProperty("file.separator") + "bdlogin.properties";
+
         try {
+//            InputStream is = new BufferedInputStream(BaiduHttpLogin.class.getClassLoader().getResourceAsStream("bdlogin.properties"));
             InputStream is = new BufferedInputStream(new FileInputStream(path));
             Properties properties = new Properties();
             properties.load(is);
             loginUrl = properties.getProperty("bd.login-url");
+            baiduLoginJSPath = properties.getProperty("bd.login-js");
         } catch (IOException e) {
             e.printStackTrace();
         }
