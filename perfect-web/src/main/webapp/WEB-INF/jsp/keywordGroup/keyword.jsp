@@ -232,7 +232,7 @@ To change this template use File | Settings | File Templates.
         <div class="r_under_left fl">
             <div class="r_under_top over">
                 <h3 class="fl">推荐创意</h3>
-                <a href="#" class="fr" id="bulid">新建创意</a>
+                <%--<a href="#" class="fr" id="bulid">新建创意</a>--%>
             </div>
             <ul id="creativeList">
             </ul>

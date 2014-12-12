@@ -196,7 +196,7 @@
                         <span class="fl">当前显示数据日期：昨天</span>
                     </div>
                 </div>
-                <div class="list4">
+                <div>
                     <table id="table1" border="0" cellspacing="0" width="100%">
                     </table>
                 </div>
