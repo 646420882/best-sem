@@ -126,7 +126,7 @@
             success: function (data, textStatus, jqXHR) {
                 if (data.status == "fail") {
                     refreshImg();
-                    alert("验证码错误!");
+                    alert("failed!");
                 } else if (data.status == "success") {
                     if (parseInt(data.number) == 0) {
                         alert("全部模拟登录完成!");

@@ -64,6 +64,12 @@ public class BaiduHttpLoginController implements Controller {
                 session.setAttribute(session.getId() + "-baiduAccountInfo", list);
             } else {
                 List<BaiduAccountInfoDTO> list = (List<BaiduAccountInfoDTO>) session.getAttribute(session.getId() + "-baiduAccountInfo");
+                if (list.isEmpty()) {
+                    map.put("number", number);
+                    map.put("status", "fail");
+                    jsonView.setAttributesMap(map);
+                    return new ModelAndView(jsonView);
+                }
                 int index = list.size() - 1;
                 dto = list.get(index);
                 list.remove(index);

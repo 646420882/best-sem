@@ -25,16 +25,17 @@ public class BaiduLoginTest extends JUnitBaseTest {
     @Test
     public void test() {
         List<String> list = new ArrayList<>(Arrays.asList("淘宝双12", "冬装", "书包", "手套", "风衣", "电饭锅", "充电宝", "精品女装"));
+        CookieDTO cookieDTO = cookieService.takeOne();
         for (int i = 0, s = list.size(); i < s; i++) {
-            CookieDTO cookieDTO = cookieService.takeOne();
             try {
                 String html = BaiduSearchPageUtils.getBaiduSearchPage(cookieDTO.getCookie(), list.get(i), 1000);
-                if (html != null) {
-                    FileWriter file = new FileWriter("/home/baizz/data/preview" + Integer.toString(i) + ".html");
-                    PrintWriter pw = new PrintWriter(file);
-                    pw.write(html);
+                if (html.length() < 200) {
+                    System.out.println(html);
                 }
-                Thread.sleep(1000);
+                FileWriter file = new FileWriter("/home/baizz/data/preview" + Integer.toString(i) + ".html");
+                PrintWriter pw = new PrintWriter(file);
+                pw.write(html);
+                Thread.sleep(3000);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
