@@ -257,7 +257,7 @@
                             </div>
                         </div>
 
-                        <div class="list4">
+                        <div>
                             <table id="table2" border="0" cellspacing="0" width="101%">
                             </table>
                         </div>
@@ -1280,13 +1280,12 @@ $(function () {
             records: "records",
             repeatitems: false
         },
-        forceFit: true,
-        shrinkToFit: true,//此选项用于根据width计算每列宽度的算法,默认值true
+       shrinkToFit: true,//此选项用于根据width计算每列宽度的算法,默认值true
         colModel: [
             // {label: '<input type=\"checkbox\" name=\"check_all\" onclick=\"checkAll();\" id=\"check_all\" >', name: 'checkall', width: 30,
             //sortable: false, align: 'center', formatter:function(v,x,r){ return "<input type='checkbox'/>"; }},
             {label: ' 关键词ID', name: 'keywordId', sortable: false, align: 'center', hidden: true},
-            {label: ' 关键词', name: 'keyword', sortable: false, width: 200, align: 'center'},
+            {label: ' 关键词', name: 'keyword', sortable: false, width: 200,align: 'center'},
             {label: ' 推广计划', name: 'campaignName', sortable: false, align: 'center', hidden: true},
             {label: ' 推广单元', name: 'adgroupName', sortable: false, align: 'center', hidden: true},
             {label: ' 匹配模式', name: 'matchType', sortable: false, align: 'center', hidden: true},
@@ -1309,7 +1308,6 @@ $(function () {
             {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true},
             {label: ' adgroupId', name: 'adgroupId', sortable: false, align: 'center', hidden: true}
         ],
-
         rowNum: 20,// 默认每页显示记录条数
         rownumbers: false,
         loadui: 'disable',
@@ -1452,7 +1450,6 @@ $(function () {
             records: "records",
             repeatitems: false
         },
-        forceFit: true,
         shrinkToFit: true,//此选项用于根据width计算每列宽度的算法,默认值true
         colModel: [
             // {label: '<input type=\"checkbox\" name=\"check_all\" onclick=\"checkAll();\" id=\"check_all\" >', name: 'checkall', width: 30,

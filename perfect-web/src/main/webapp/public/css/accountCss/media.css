@@ -131,6 +131,11 @@
         width: 76%;
     }
 }
+@media screen and (min-width: 1442px){
+    .list01_under2 ul li span{
+        font-size:26px;
+    }
+}
 @media screen and (min-width: 1442px) and (max-width: 1579px) {
     .mid {
         width: 88.4%;
