@@ -27,7 +27,6 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 public class SourceDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, String> implements SourceDAO {
 
 
-
     @Override
     public List<CensusDTO> getSourceAnalysis(List<Date> dates, Integer accessType, Integer userType) {
 
@@ -66,7 +65,7 @@ public class SourceDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, String> im
     }
 
     @Override
-    public List<CensusDTO> getDesignationData(List<Date> dates, Integer accessType, Integer userType,String conditionName, String condition) {
+    public List<CensusDTO> getDesignationData(List<Date> dates, Integer accessType, Integer userType, String conditionName, String condition) {
         Query query = new Query();
         Criteria criteria = getCriteria(dates, accessType, userType);
         criteria.and(conditionName).is(condition);
@@ -86,10 +85,11 @@ public class SourceDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, String> im
 
     /**
      * 外部连接分组统计
+     *
      * @param criteria
      * @return
      */
-    private List<BasedDataVO> getIntoPgeCount(Criteria criteria){
+    private List<BasedDataVO> getIntoPgeCount(Criteria criteria) {
         Aggregation aggregation = Aggregation.newAggregation(
                 match(criteria),
                 project(MongoEntityConstants.INTOPAGE),
@@ -103,10 +103,11 @@ public class SourceDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, String> im
 
     /**
      * 搜索引擎分组统计
+     *
      * @param criteria
      * @return
      */
-    private List<BasedDataVO> getSearchEngine(Criteria criteria){
+    private List<BasedDataVO> getSearchEngine(Criteria criteria) {
         Aggregation aggregation1 = Aggregation.newAggregation(
                 match(criteria),
                 project(MongoEntityConstants.SEARCHENGINE),
@@ -121,10 +122,11 @@ public class SourceDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, String> im
 
     /**
      * 得到UV访问数
+     *
      * @param criteria
      * @return
      */
-    private int getVisits(Criteria criteria){
+    private int getVisits(Criteria criteria) {
         Aggregation aggregation2 = Aggregation.newAggregation(
                 match(criteria),
                 project(MongoEntityConstants.COOKIE_UUID),
@@ -138,10 +140,11 @@ public class SourceDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, String> im
 
     /**
      * 得到查询条件中的 总条数
+     *
      * @param criteria
      * @return
      */
-    private int getCountNumber(Criteria criteria){
+    private int getCountNumber(Criteria criteria) {
         Query q = new Query();
         q.addCriteria(criteria);
         return (int) getSysMongoTemplate().count(q, MongoEntityConstants.SYS_CENSUS);
@@ -149,20 +152,21 @@ public class SourceDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, String> im
 
     /**
      * 获取查询条件
+     *
      * @param dates
      * @param accessType
      * @param userType
      * @return
      */
-    private Criteria getCriteria(List<Date> dates,Integer accessType, Integer userType){
+    private Criteria getCriteria(List<Date> dates, Integer accessType, Integer userType) {
         Criteria query = new Criteria();
 
-        if(accessType.intValue() == 0 && userType.intValue() == 0){
+        if (accessType.intValue() == 0 && userType.intValue() == 0) {
             query = new Criteria(MongoEntityConstants.DATE_FIELD).lte(dates.get(1)).gte(dates.get(0));
-        }else{
-            if(accessType.intValue() > 0 && userType.intValue() > 0){
+        } else {
+            if (accessType.intValue() > 0 && userType.intValue() > 0) {
                 query = new Criteria(MongoEntityConstants.DATE_FIELD).lte(dates.get(1)).gte(dates.get(0)).and(MongoEntityConstants.IPERATE).is(accessType).and(MongoEntityConstants.USERTYPE).is(accessType);
-            }else{
+            } else {
                 if (accessType.intValue() > 0) {
                     query = new Criteria(MongoEntityConstants.DATE_FIELD).lte(dates.get(1)).gte(dates.get(0)).and(MongoEntityConstants.IPERATE).is(accessType);
                 }

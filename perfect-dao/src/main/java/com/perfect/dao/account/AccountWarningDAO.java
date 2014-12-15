@@ -20,4 +20,7 @@ public interface AccountWarningDAO extends HeyCrudRepository<WarningRuleDTO,Long
 
     void mySave(WarningRuleDTO warningRuleDTO);
 
+    //scheduler 调用
+    void updateMulti();
+
 }

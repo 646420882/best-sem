@@ -3,12 +3,8 @@ package com.perfect.db.mongodb.impl;
 import com.perfect.dao.report.GetAccountReportDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.dto.RealTimeResultDTO;
-import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.account.AccountReportEntity;
-import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.mongodb.DBNameUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
@@ -49,17 +45,4 @@ public class GetAccountReportDAOImpl implements GetAccountReportDAO {
         BeanUtils.copyProperties(accountReportEntity,accountReportDTO);
         return accountReportDTO;
     }
-
-
-    /**
-     * 得到当天的实时数据报告(来自百度)
-     *
-     * @return
-     */
-    public BaiduAccountInfoDTO getAccountRealTimeTypeByDate(String systemUserName, Long accountId, String startDate, String endDate) {
-        SystemUserDTO systemUserDTO=systemUserDAO.findByAid(accountId);
-        List<BaiduAccountInfoDTO> baiduAccountInfoDTO=systemUserDTO.getBaiduAccounts();
-        return baiduAccountInfoDTO.get(0);
-    }
-
 }

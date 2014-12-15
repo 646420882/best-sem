@@ -65,7 +65,7 @@ public class SourceServiceImpl implements SourceService {
         //处理外部链接数据
         for (BasedDataVO basedDataVO : sourcesAllDTO.getIntoPageData()) {
             sourceDao.getDesignationData(dates, accessType, userType, MongoEntityConstants.INTOPAGE,basedDataVO.getTp());
-            //<-------------------------dsfsdfkjmhsdlkflkjdsajflkdsalkfjdsa----------------------------------->
+
         }
 
 

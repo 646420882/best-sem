@@ -1,11 +1,10 @@
 package com.perfect.db.mongodb.impl;
 
-import com.perfect.utils.ObjectUtils;
 import com.perfect.dao.account.AccountWarningDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.WarningRuleDTO;
 import com.perfect.entity.WarningRuleEntity;
-import com.perfect.utils.paging.Pager;
+import com.perfect.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -91,12 +90,6 @@ public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleDTO
 
     }
 
-
-    public void updateMulti(Query query, Update update) {
-        getSysMongoTemplate().updateMulti(query, update, WarningRuleEntity.class, "sys_warning");
-    }
-
-
     /**
      * 根据预警规则启用状态和当天预警状态查询
      *
@@ -122,5 +115,12 @@ public class AccountWarningDAOImpl extends AbstractSysBaseDAOImpl<WarningRuleDTO
         getMongoTemplate().save(warningRuleEntity, "sys_warning");
     }
 
+    @Override
+    public void updateMulti() {
+        Query query = new Query().addCriteria(Criteria.where("isEnable").is(1));
+        Update update = new Update();
+        update.set("isWarninged", 0);
+        getSysMongoTemplate().updateMulti(query,update,WarningRuleEntity.class,"sys_warning");
+    }
 }
 

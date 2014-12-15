@@ -5,7 +5,9 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.report.GetAccountReportDAO;
+import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.RealTimeResultDTO;
+import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.GetAccountReportService;
@@ -29,6 +31,9 @@ public class GetAccountReportServiceImpl implements GetAccountReportService {
 
     @Resource
     private GetAccountReportDAO getAccountReportDAO;
+    @Resource
+    private SystemUserDAO systemUserDAO;
+
     @Override
     public AccountReportDTO getLocalAccountRealData(String userName, long accountId, Date startDate, Date endDate) {
         return getAccountReportDAO.getLocalAccountRealData(userName,accountId,startDate,endDate);
@@ -36,8 +41,16 @@ public class GetAccountReportServiceImpl implements GetAccountReportService {
 
     @Override
     public List<RealTimeResultDTO> getAccountRealTimeTypeByDate(String systemUserName, Long accountId, String startDate, String endDate) {
-        BaiduAccountInfoDTO accountInfoDTO=getAccountReportDAO.getAccountRealTimeTypeByDate(systemUserName,accountId,startDate,endDate);
-        List<RealTimeResultDTO> realTimeDataList = getAccountRealTimeData(systemUserName,accountInfoDTO.getBaiduPassword(),accountInfoDTO.getToken(), startDate, endDate);
+
+        SystemUserDTO systemUserDTO=systemUserDAO.findByAid(accountId);
+        List<BaiduAccountInfoDTO> accountInfoDTO = systemUserDTO.getBaiduAccounts();
+        BaiduAccountInfoDTO baiduAccountInfoDTO = new BaiduAccountInfoDTO();
+        for (BaiduAccountInfoDTO infoDTO : accountInfoDTO) {
+            if(infoDTO.getId() == accountId){
+                baiduAccountInfoDTO = infoDTO;
+            }
+        }
+        List<RealTimeResultDTO> realTimeDataList = getAccountRealTimeData(systemUserName,baiduAccountInfoDTO.getBaiduPassword(),baiduAccountInfoDTO.getToken(), startDate, endDate);
         return ObjectUtils.convert(realTimeDataList, RealTimeResultDTO.class);
     }
       private List<RealTimeResultDTO> getAccountRealTimeData(String username, String passwd, String token, String _startDate, String _endDate) {
