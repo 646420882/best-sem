@@ -19,4 +19,6 @@ public interface CookieService {
     List<CookieDTO> allUnused();
 
     List<CookieDTO> findAll();
+
+    boolean delete(String id);
 }

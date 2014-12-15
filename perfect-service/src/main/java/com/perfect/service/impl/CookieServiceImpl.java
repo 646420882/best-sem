@@ -44,4 +44,9 @@ public class CookieServiceImpl implements CookieService {
         return Lists.newArrayList(cookieDAO.findAll());
     }
 
+    @Override
+    public boolean delete(String id) {
+        return cookieDAO.delete(id);
+    }
+
 }
