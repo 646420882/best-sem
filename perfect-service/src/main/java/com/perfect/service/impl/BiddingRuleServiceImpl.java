@@ -57,6 +57,11 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
+    public void save(BiddingRuleDTO biddingRuleDTO) {
+        biddingRuleDAO.save(biddingRuleDTO);
+    }
+
+    @Override
     public void updateRule(BiddingRuleParam entity) {
     }
 

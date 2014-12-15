@@ -1,4 +1,4 @@
-package com.perfect.app.bdlogin.core;
+package com.perfect.commons.bdlogin;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

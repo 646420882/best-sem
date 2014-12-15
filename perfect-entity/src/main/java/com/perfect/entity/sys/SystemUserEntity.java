@@ -24,8 +24,8 @@ public class SystemUserEntity implements Serializable {
     private String password;
 
     private String companyName;
-    //审核状态: 1审核通过, 0审核通过
-    private Integer state;
+
+    private Integer state;      //审核状态: 1审核通过, 0审核未通过
 
     private Integer access;     //1.admin; 2.user
 

@@ -478,6 +478,11 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
+    public List<SystemUserDTO> getAllValidUser() {
+        return Lists.newArrayList(systemUserDAO.getAllValidUser());
+    }
+
+    @Override
     public void save(SystemUserDTO systemUserDTO) {
         systemUserDAO.save(systemUserDTO);
     }

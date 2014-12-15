@@ -13,10 +13,10 @@ import java.util.*;
  */
 public class BiddingRuleUtils {
 
-    public static String getRule(BiddingRuleDTO biddingRuleEntity) {
+    public static String getRule(BiddingRuleDTO biddingRuleDTO) {
         StringBuilder sb = new StringBuilder();
 
-        StrategyDTO entity = biddingRuleEntity.getStrategyEntity();
+        StrategyDTO entity = biddingRuleDTO.getStrategyDTO();
 
         if (entity == null) {
             return null;

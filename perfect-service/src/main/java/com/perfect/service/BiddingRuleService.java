@@ -15,23 +15,25 @@ import java.util.Map;
  */
 public interface BiddingRuleService {
 
-    public void createBiddingRule(BiddingRuleDTO biddingRuleEntity);
+    void createBiddingRule(BiddingRuleDTO biddingRuleEntity);
 
-    public BiddingRuleDTO findByKeywordId(Long keywordId);
+    BiddingRuleDTO findByKeywordId(Long keywordId);
 
     void updateToNextTime(BiddingRuleDTO biddingRuleEntity, int time);
 
-    public void createRule(BiddingRuleDTO entity);
+    void createRule(BiddingRuleDTO biddingRuleDTO);
 
-    public void disableRule(String id);
+    void disableRule(String id);
 
-    public void enableRule(String id);
+    void enableRule(String id);
 
-    public void updateRule(BiddingRuleParam param);
+    void save(BiddingRuleDTO biddingRuleDTO);
 
-    public List<BiddingRuleDTO> getReadyRule();
+    void updateRule(BiddingRuleParam param);
 
-    public List<BiddingRuleDTO> getTaskByAccountId(String userName, Long id, long hour);
+    List<BiddingRuleDTO> getReadyRule();
+
+    List<BiddingRuleDTO> getTaskByAccountId(String userName, Long id, long hour);
 
     void updateRule(List<BiddingRuleDTO> tasks);
 

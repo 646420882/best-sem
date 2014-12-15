@@ -1,7 +1,5 @@
 package com.perfect.dto.bidding;
 
-import com.perfect.commons.constants.MongoEntityConstants;
-import com.perfect.dto.BaseDTO;
 import com.perfect.dto.account.AccountIdDTO;
 
 import java.math.BigDecimal;
@@ -17,7 +15,7 @@ public class BiddingRuleDTO extends AccountIdDTO {
 
     private String keyword;
 
-    private StrategyDTO strategyEntity;
+    private StrategyDTO strategyDTO;
 
     private Integer matchType;
 
@@ -116,11 +114,11 @@ public class BiddingRuleDTO extends AccountIdDTO {
         return currentTimes;
     }
 
-    public StrategyDTO getStrategyEntity() {
-        return strategyEntity;
+    public StrategyDTO getStrategyDTO() {
+        return strategyDTO;
     }
 
-    public void setStrategyEntity(StrategyDTO strategyEntity) {
-        this.strategyEntity = strategyEntity;
+    public void setStrategyDTO(StrategyDTO strategyDTO) {
+        this.strategyDTO = strategyDTO;
     }
 }

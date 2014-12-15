@@ -1,11 +1,11 @@
 package com.perfect.app.bidding.controller;
 
 import com.google.common.collect.Lists;
-import com.perfect.app.bdlogin.core.BaiduSearchPageUtils;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.Quality10Type;
+import com.perfect.commons.bdlogin.BaiduSearchPageUtils;
 import com.perfect.commons.constants.KeywordStatusEnum;
 import com.perfect.core.AppContext;
 import com.perfect.dto.CookieDTO;
@@ -128,9 +128,9 @@ public class BiddingController {
             biddingRuleEntity.setCurrentPrice(BigDecimal.ZERO);
 
             StrategyDTO strategyEntity = new StrategyDTO();
-            biddingRuleEntity.setStrategyEntity(strategyEntity);
+            biddingRuleEntity.setStrategyDTO(strategyEntity);
 
-            Date date = null;
+            Date date;
             int interval = param.getInterval();
             if (interval == -1) {
                 boolean runNow = BiddingRuleUtils.runNow(param.getTimes());
