@@ -10,7 +10,6 @@ import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PaginationParam;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -168,6 +167,13 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
     }
 
     @Override
+    public BiddingRuleDTO save(BiddingRuleDTO dto) {
+        BiddingRuleEntity entity = ObjectUtils.convertToObject(dto, getEntityClass());
+        getMongoTemplate().save(entity);
+        return ObjectUtils.convertToObject(entity, getDTOClass());
+    }
+
+    @Override
     public BiddingRuleDTO getBiddingRuleByKeywordId(Long keywordId) {
         BiddingRuleEntity entity = getMongoTemplate().findOne(Query.query(Criteria.where(KEYWORD_ID).is(keywordId)), getEntityClass());
         return ObjectUtils.convert(entity, getDTOClass());
@@ -285,10 +291,6 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
         BiddingRuleEntity ruleEntity = BaseMongoTemplate.getUserMongo(userName).findAndModify(query, Update.update("r", true),
                 FindAndModifyOptions.options().returnNew(true), getEntityClass());
 
-        BiddingRuleDTO dto = new BiddingRuleDTO();
-
-        BeanUtils.copyProperties(ruleEntity, dto);
-
-        return dto;
+        return ObjectUtils.convert(ruleEntity, getDTOClass());
     }
 }

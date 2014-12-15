@@ -1,4 +1,4 @@
-package com.perfect.app.bdlogin.core;
+package com.perfect.commons.bdlogin;
 
 import org.apache.http.*;
 import org.apache.http.client.CookieStore;

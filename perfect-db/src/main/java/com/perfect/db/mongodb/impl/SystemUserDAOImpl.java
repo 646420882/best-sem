@@ -59,8 +59,18 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     public SystemUserDTO findByAid(long aid) {
         Query query = Query.query(Criteria.where("bdAccounts._id").is(aid));
         SystemUserEntity entity = getSysMongoTemplate().findOne(query, getEntityClass());
-        SystemUserDTO dto=ObjectUtils.convertToObject(entity,getDTOClass());
+        SystemUserDTO dto = ObjectUtils.convertToObject(entity, getDTOClass());
         return dto;
+    }
+
+    @Override
+    public Iterable<SystemUserDTO> getAllValidUser() {
+        List<SystemUserEntity> entityList = getSysMongoTemplate().find(
+                Query.query(Criteria.where("access").is(2).and("state").is(1).and("acstate").is(1)),
+                getEntityClass());
+        List<SystemUserDTO> dtoList = new ArrayList<>(entityList.size());
+        entityList.stream().forEach(e -> dtoList.add(fromEntity(e)));
+        return dtoList;
     }
 
     @Override

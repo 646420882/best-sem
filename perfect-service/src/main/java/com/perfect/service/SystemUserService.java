@@ -29,6 +29,8 @@ public interface SystemUserService {
 
     Iterable<SystemUserDTO> getAllUser();
 
+    List<SystemUserDTO> getAllValidUser();
+
     void save(SystemUserDTO systemUserDTO);
 
     boolean removeAccount(Long id);

@@ -1,7 +1,7 @@
 package com.perfect.app.bdlogin.controller;
 
-import com.perfect.app.bdlogin.core.BaiduHttpLogin;
-import com.perfect.app.bdlogin.core.CaptchaHandler;
+import com.perfect.commons.bdlogin.BaiduHttpLogin;
+import com.perfect.commons.bdlogin.CaptchaHandler;
 import com.perfect.commons.web.ServletContextUtils;
 import com.perfect.dto.CookieDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.app.bdlogin.core.BaiduHttpLogin.getBaiduLoginJSPath;
+import static com.perfect.commons.bdlogin.BaiduHttpLogin.getBaiduLoginJSPath;
 
 /**
  * Created by baizz on 2014-11-10.
@@ -37,6 +37,7 @@ import static com.perfect.app.bdlogin.core.BaiduHttpLogin.getBaiduLoginJSPath;
 @RestController
 @Scope("prototype")
 @RequestMapping("/admin")
+@SuppressWarnings("unchecked")
 public class BaiduHttpLoginController implements Controller {
 
     @Resource

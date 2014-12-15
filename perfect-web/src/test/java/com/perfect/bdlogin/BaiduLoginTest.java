@@ -1,7 +1,7 @@
 package com.perfect.bdlogin;
 
-import com.perfect.app.bdlogin.core.BaiduSearchPageUtils;
 import com.perfect.base.JUnitBaseTest;
+import com.perfect.commons.bdlogin.BaiduSearchPageUtils;
 import com.perfect.dto.CookieDTO;
 import com.perfect.service.CookieService;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class BaiduLoginTest extends JUnitBaseTest {
             try {
                 String html = BaiduSearchPageUtils.getBaiduSearchPage(cookieDTO.getCookie(), list.get(i), 1000);
                 if (html.length() < 200) {
-                    System.out.println(html);
+                    System.out.println("length: " + html.length() + html);
                 }
                 FileWriter file = new FileWriter("/home/baizz/data/preview" + Integer.toString(i) + ".html");
                 PrintWriter pw = new PrintWriter(file);
