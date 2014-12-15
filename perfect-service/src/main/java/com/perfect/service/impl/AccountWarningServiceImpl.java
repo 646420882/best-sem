@@ -6,6 +6,7 @@ import com.perfect.service.AccountWarningService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by XiaoWei on 2014/12/3.
@@ -28,5 +29,25 @@ public class AccountWarningServiceImpl implements AccountWarningService {
     @Override
     public void update(WarningRuleDTO warningRuleEntity) {
         accountWarningDAO.update(warningRuleEntity);
+    }
+
+    @Override
+    public List<WarningRuleDTO> findEnableIsOne() {
+        return accountWarningDAO.findEnableIsOne();
+    }
+
+    @Override
+    public void save(WarningRuleDTO task) {
+        accountWarningDAO.save(task);
+    }
+
+    @Override
+    public void updateMulti() {
+        accountWarningDAO.updateMulti();
+    }
+
+    @Override
+    public List<WarningRuleDTO> findWarningRule(int isEnable, int isWarninged) {
+        return accountWarningDAO.findWarningRule(isEnable,isWarninged);
     }
 }

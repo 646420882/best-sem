@@ -1,7 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.dao.report.GetAccountReportDAO;
-import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.entity.account.AccountReportEntity;
@@ -13,7 +12,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -26,10 +24,6 @@ import static com.perfect.commons.constants.MongoEntityConstants.TBL_ACCOUNT_REP
  */
 @Component("getAccountReportDAO")
 public class GetAccountReportDAOImpl implements GetAccountReportDAO {
-
-
-    @Resource
-    private SystemUserDAO systemUserDAO;
 
     /**
      * 得到本地的数据报告（数据来自本地）

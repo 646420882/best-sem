@@ -552,4 +552,9 @@ public class SystemUserServiceImpl implements SystemUserService {
     public SystemUserDTO findByUserName(String userName) {
         return systemUserDAO.findByUserName(userName);
     }
+
+    @Override
+    public Iterable<SystemUserDTO> findAll() {
+        return systemUserDAO.findAll();
+    }
 }

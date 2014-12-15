@@ -59,4 +59,6 @@ public interface SystemUserService {
 
     SystemUserDTO findByUserName(String userName);
 
+    Iterable<SystemUserDTO> findAll();
+
 }
