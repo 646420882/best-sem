@@ -19,30 +19,40 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by baizz on 2014-11-10.
- * 2014-11-26 refactor
+ * 2014-12-16 refactor
  */
-public class BaiduSearchPageUtils {
+public class BaiduSearchPageUtils extends AbstractBaiduHttpClient {
 
-    private static String previewUrl;
+    private static final BaiduSearchPageUtils instance = new BaiduSearchPageUtils();
 
-    static {
-        String path = new File(BaiduHttpLogin.class.getResource("/").getPath()).getPath() + System.getProperty("file.separator") + "bdlogin.properties";
-        try {
-            InputStream is = new BufferedInputStream(new FileInputStream(path));
-            Properties properties = new Properties();
-            properties.load(is);
-            previewUrl = properties.getProperty("bd.preview-url");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//    private static String previewUrl;
+//
+//    static {
+//        String path = new File(BaiduHttpLogin.class.getResource("/").getPath()).getPath() + System.getProperty("file.separator") + "bdlogin.properties";
+//        try {
+//            InputStream is = new BufferedInputStream(new FileInputStream(path));
+//            Properties properties = new Properties();
+//            properties.load(is);
+//            previewUrl = properties.getProperty("bd.preview-url");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    private static BaiduSearchPageUtils getInstance() {
+        return instance;
     }
 
     public static String getBaiduSearchPage(String cookies, String keyword, int area) {
@@ -73,9 +83,9 @@ public class BaiduSearchPageUtils {
                 continue;
             }
 
-            if ("__cas__st__3".equals(cookie.getName())) {
+            if (__cas__st__3.equals(cookie.getName())) {
                 token = cookie.getValue();
-            } else if ("__cas__id__3".equals(cookie.getName())) {
+            } else if (__cas__id__3.equals(cookie.getName())) {
                 userid = cookie.getValue();
             }
 
@@ -83,19 +93,19 @@ public class BaiduSearchPageUtils {
         }
         _cookies = _cookies.delete(_cookies.length() - 2, _cookies.length());
 
-        HttpPost httpPost = new HttpPost(previewUrl);
-        httpPost.addHeader("Host", "fengchao.baidu.com");
+        HttpPost httpPost = new HttpPost(baiduPreviewURL);
+        httpPost.addHeader("Host", baiduPreviewHost);
         httpPost.addHeader("Cookie", _cookies.toString());
-        httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        httpPost.addHeader("Content-Type", contentType);
 
         List<NameValuePair> postData = new ArrayList<>();
         postData.add(new BasicNameValuePair("params", "{\"device\":1,\"keyword\":\"" + keyword + "\",\"area\":" + area + ",\"pageNo\":0}"));
         postData.add(new BasicNameValuePair("userid", userid));
         postData.add(new BasicNameValuePair("token", token));
         httpPost.setEntity(new UrlEncodedFormEntity(postData, StandardCharsets.UTF_8));
-        BaiduHttpLogin.headerWrap(httpPost);
+        getInstance().headerWrap(httpPost);
 
-        CloseableHttpClient sslHttpClient = BaiduHttpLogin.createSSLClientDefault(true);
+        CloseableHttpClient sslHttpClient = getInstance().createSSLClientDefault(true);
         try {
             HttpResponse response = sslHttpClient.execute(httpPost);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -233,7 +243,7 @@ public class BaiduSearchPageUtils {
 
         //获取右侧推广数据
         if (_temp2 && div_right.size() > 0) {
-            CreativeInfoDTO creativeVO = null;
+            CreativeInfoDTO creativeVO;
             for (Element e : div_right) {
                 String _title = e.select("a").first().text();
                 String _description = e.select("a").get(1).text();

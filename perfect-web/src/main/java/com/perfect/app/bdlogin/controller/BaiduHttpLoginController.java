@@ -108,7 +108,7 @@ public class BaiduHttpLoginController implements Controller {
     public void getCaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
         CaptchaHandler.handle(getBaiduLoginJSPath());
         byte[] captchaBytes = CaptchaHandler.getCaptchaBytes();
-        String cookies = CaptchaHandler.getCookies();
+        String cookies = CaptchaHandler.getCaptchaCookies();
         HttpSession session = ServletContextUtils.getSession();
         session.setAttribute(session.getId() + "-bdLogin", cookies);
         if (captchaBytes != null) {
