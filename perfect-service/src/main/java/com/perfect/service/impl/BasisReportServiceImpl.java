@@ -974,10 +974,10 @@ public class BasisReportServiceImpl implements BasisReportService {
                 dtoRings.setMobileConversion(dtoRing.getPcConversion() - listAve.get(x).getPcConversion());
                 dtoRings.setPcImpression((int) (((dtoRing.getPcImpression().doubleValue() - listAve.get(x).getPcImpression().doubleValue()) / ((listAve.get(x).getPcImpression() <= 0) ? 1 : listAve.get(x).getPcImpression())) * 10000));
                 dtoRings.setPcClick((int) (((dtoRing.getPcClick().doubleValue() - listAve.get(x).getPcClick().doubleValue()) / ((listAve.get(x).getPcClick() <= 0) ? 1 : listAve.get(x).getPcClick())) * 10000));
-                dtoRings.setPcCost(((dtoRing.getPcCost().subtract(listAve.get(x).getPcCost())).divide((listAve.get(x).getPcCost() == BigDecimal.ZERO) ? BigDecimal.valueOf(1) : listAve.get(x).getPcCost(), 4, BigDecimal.ROUND_UP)).multiply(BigDecimal.valueOf(100)));
+                dtoRings.setPcCost(((dtoRing.getPcCost().subtract(listAve.get(x).getPcCost())).divide((listAve.get(x).getPcCost().doubleValue() == 0) ? BigDecimal.valueOf(1) : listAve.get(x).getPcCost(), 4, BigDecimal.ROUND_UP)).multiply(BigDecimal.valueOf(100)));
                 int s = (int) ((dtoRing.getPcCtr() - listAve.get(x).getPcCtr()) / ((listAve.get(x).getPcCtr() <= 0) ? 1 : listAve.get(x).getPcCtr()) * 10000);
                 dtoRings.setPcCtr((double) s);
-                dtoRings.setPcCpc(((dtoRing.getPcCpc().subtract(listAve.get(x).getPcCpc())).divide((listAve.get(x).getPcCpc() == BigDecimal.ZERO) ? BigDecimal.valueOf(1) : listAve.get(x).getPcCpc(), 4, BigDecimal.ROUND_UP)).multiply(BigDecimal.valueOf(100)));
+                dtoRings.setPcCpc(((dtoRing.getPcCpc().subtract(listAve.get(x).getPcCpc())).divide((listAve.get(x).getPcCpc().doubleValue() == 0) ? BigDecimal.valueOf(1) : listAve.get(x).getPcCpc(), 4, BigDecimal.ROUND_UP)).multiply(BigDecimal.valueOf(100)));
                 int a = (int) ((dtoRing.getPcConversion() - listAve.get(x).getPcConversion()) / ((listAve.get(x).getPcConversion() <= 0) ? 1 : listAve.get(x).getPcConversion()) * 10000);
                 dtoRings.setPcConversion((double) a);
                 list.add(dtoRings);
@@ -2440,9 +2440,9 @@ public class BasisReportServiceImpl implements BasisReportService {
             List<AccountReportDTO> list = new ArrayList<>();
             AccountReportDTO dto = new AccountReportDTO();
             for (AccountReportDTO response : voEntity.getValue()) {
-                dto.setPcImpression(response.getPcImpression() + ((response.getMobileImpression() == null) ? 0 : response.getMobileImpression()));
-                dto.setPcConversion(response.getPcConversion() + ((response.getMobileConversion() == null) ? 0 : response.getMobileConversion()));
-                dto.setPcClick(response.getPcClick() + ((response.getMobileClick() == null) ? 0 : response.getMobileClick()));
+                dto.setPcImpression(((response.getPcImpression() == null)?0:response.getPcImpression()) + ((response.getMobileImpression() == null) ? 0 : response.getMobileImpression()));
+                dto.setPcConversion(((response.getPcConversion() == null)?0:response.getPcConversion()) + ((response.getMobileConversion() == null) ? 0 : response.getMobileConversion()));
+                dto.setPcClick(((response.getPcClick() == null)?0:response.getPcClick()) + ((response.getMobileClick() == null) ? 0 : response.getMobileClick()));
                 dto.setPcCost(response.getPcCost().add((response.getMobileCost() == null) ? BigDecimal.valueOf(0) : response.getMobileCost()));
                 //计算点击率
                 if (((response.getPcImpression() == null) ? 0 : response.getPcImpression()) == 0) {

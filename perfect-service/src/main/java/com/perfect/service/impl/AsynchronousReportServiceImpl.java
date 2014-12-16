@@ -339,21 +339,21 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     entity1.setAccountId(Long.valueOf(arr[1]));
                     entity1.setAccountName(arr[2]);
                     if (type == 1) {
-                        entity1.setPcImpression(Integer.valueOf(arr[3]));
-                        entity1.setPcClick(Integer.valueOf(arr[4]));
-                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[5])));
-                        entity1.setPcCtr(Double.valueOf(arr[6].substring(0, arr[6].length() - 1)));
-                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[7])));
-                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[8])));
-                        entity1.setPcConversion(Double.valueOf(arr[9]));
+                        entity1.setPcImpression(Integer.valueOf(arr[3] == null ? "0" : arr[3]));
+                        entity1.setPcClick(Integer.valueOf(arr[4] == null ? "0" : arr[4]));
+                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[5] == null ? "0" : arr[5])));
+                        entity1.setPcCtr(Double.valueOf(arr[6] == null ? "0" : arr[6].substring(0, arr[6].length() - 1)));
+                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[7] == null ? "0" : arr[7])));
+                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[8] == null ? "0" : arr[8])));
+                        entity1.setPcConversion(Double.valueOf(arr[9] == null ? "0" : arr[9]));
                     } else if (type == 2) {
-                        entity1.setMobileImpression(Integer.valueOf(arr[3]));
-                        entity1.setMobileClick(Integer.valueOf(arr[4]));
-                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[5])));
-                        entity1.setMobileCtr(Double.valueOf(arr[6].substring(0, arr[6].length() - 1)));
-                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[7])));
-                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[8])));
-                        entity1.setMobileConversion(Double.valueOf(arr[9]));
+                        entity1.setMobileImpression(Integer.valueOf(arr[3] == null ? "0" : arr[3]));
+                        entity1.setMobileClick(Integer.valueOf(arr[4] == null ? "0" : arr[4]));
+                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[5] == null ? "0" : arr[5])));
+                        entity1.setMobileCtr(Double.valueOf(arr[6] == null ? "0" : arr[6].substring(0, arr[6].length() - 1)));
+                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[7] == null ? "0" : arr[7])));
+                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[8] == null ? "0" : arr[8])));
+                        entity1.setMobileConversion(Double.valueOf(arr[9] == null ? "0" : arr[9]));
                     }
                     list.add(entity1);
                     index++;
@@ -392,21 +392,21 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     entity1.setCampaignId(Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
                     if (type == 1) {
-                        entity1.setPcImpression(Integer.valueOf(arr[5]));
-                        entity1.setPcClick(Integer.valueOf(arr[6]));
-                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[7])));
-                        entity1.setPcCtr(Double.valueOf(arr[8].substring(0, arr[8].length() - 1)));
-                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[9])));
-                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[10])));
-                        entity1.setPcConversion(Double.valueOf(arr[11]));
+                        entity1.setPcImpression(Integer.valueOf(arr[5] == null ? "0" : arr[5]));
+                        entity1.setPcClick(Integer.valueOf(arr[6] == null ? "0" : arr[6]));
+                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[7] == null ? "0" : arr[7])));
+                        entity1.setPcCtr(Double.valueOf(arr[8] == null ? "0" : arr[8].substring(0, arr[8].length() - 1)));
+                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[9] == null ? "0" : arr[9])));
+                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[10] == null ? "0" : arr[10])));
+                        entity1.setPcConversion(Double.valueOf(arr[11] == null ? "0" : arr[11]));
                     } else if (type == 2) {
-                        entity1.setMobileImpression(Integer.valueOf(arr[5]));
-                        entity1.setMobileClick(Integer.valueOf(arr[6]));
-                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[7])));
-                        entity1.setMobileCtr(Double.valueOf(arr[8].substring(0, arr[8].length() - 1)));
-                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[9])));
-                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[10])));
-                        entity1.setMobileConversion(Double.valueOf(arr[11]));
+                        entity1.setMobileImpression(Integer.valueOf(arr[5] == null ? "0" : arr[5]));
+                        entity1.setMobileClick(Integer.valueOf(arr[6] == null ? "0" : arr[6]));
+                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[7] == null ? "0" : arr[7])));
+                        entity1.setMobileCtr(Double.valueOf(arr[8] == null ? "0" : arr[8].substring(0, arr[8].length() - 1)));
+                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[9] == null ? "0" : arr[9])));
+                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[10] == null ? "0" : arr[10])));
+                        entity1.setMobileConversion(Double.valueOf(arr[11] == null ? "0" : arr[11]));
                     }
                     list.add(entity1);
                     index++;
@@ -446,21 +446,21 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     entity1.setAdgroupId(Long.valueOf(arr[5]));
                     entity1.setAdgroupName(arr[6]);
                     if (type == 1) {
-                        entity1.setPcImpression(Integer.valueOf(arr[7]));
-                        entity1.setPcClick(Integer.valueOf(arr[8]));
-                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[9])));
-                        entity1.setPcCtr(Double.valueOf(arr[10].substring(0, arr[10].length() - 1)));
-                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[11])));
-                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[12])));
-                        entity1.setPcConversion(Double.valueOf(arr[13]));
+                        entity1.setPcImpression(Integer.valueOf(arr[7] == null ? "0" : arr[7]));
+                        entity1.setPcClick(Integer.valueOf(arr[8] == null ? "0" : arr[8]));
+                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[9] == null ? "0" : arr[9])));
+                        entity1.setPcCtr(Double.valueOf(arr[10] == null ? "0" : arr[10].substring(0, arr[10].length() - 1)));
+                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[11] == null ? "0" : arr[11])));
+                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[12] == null ? "0" : arr[12])));
+                        entity1.setPcConversion(Double.valueOf(arr[13] == null ? "0" : arr[13]));
                     } else if (type == 2) {
-                        entity1.setMobileImpression(Integer.valueOf(arr[7]));
-                        entity1.setMobileClick(Integer.valueOf(arr[8]));
-                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[9])));
-                        entity1.setMobileCtr(Double.valueOf(arr[10].substring(0, arr[10].length() - 1)));
-                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[11])));
-                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[12])));
-                        entity1.setMobileConversion(Double.valueOf(arr[13]));
+                        entity1.setMobileImpression(Integer.valueOf(arr[7] == null ? "0" : arr[7]));
+                        entity1.setMobileClick(Integer.valueOf(arr[8] == null ? "0" : arr[8]));
+                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[9] == null ? "0" : arr[9])));
+                        entity1.setMobileCtr(Double.valueOf(arr[10] == null ? "0" : arr[10].substring(0, arr[10].length() - 1)));
+                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[11] == null ? "0" : arr[11])));
+                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[12] == null ? "0" : arr[12])));
+                        entity1.setMobileConversion(Double.valueOf(arr[13] == null ? "0" : arr[13]));
                     }
                     list.add(entity1);
                     index++;
@@ -505,21 +505,21 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     entity1.setAdgroupId(Long.valueOf(arr[5]));
                     entity1.setAdgroupName(arr[6]);
                     if (type == 1) {
-                        entity1.setPcImpression(Integer.valueOf(arr[12]));
-                        entity1.setPcClick(Integer.valueOf(arr[13]));
-                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[14])));
-                        entity1.setPcCtr(Double.valueOf(arr[15].substring(0, arr[15].length() - 1)));
-                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[16])));
-                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[17])));
-                        entity1.setPcConversion(Double.valueOf(arr[18]));
+                        entity1.setPcImpression(Integer.valueOf(arr[12] == null ? "0" : arr[12]));
+                        entity1.setPcClick(Integer.valueOf(arr[13] == null ? "0" : arr[13]));
+                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[14] == null ? "0" : arr[14])));
+                        entity1.setPcCtr(Double.valueOf(arr[15] == null ? "0" : arr[15].substring(0, arr[15].length() - 1)));
+                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[16] == null ? "0" : arr[16])));
+                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[17] == null ? "0" : arr[17])));
+                        entity1.setPcConversion(Double.valueOf(arr[18] == null ? "0" : arr[18]));
                     } else if (type == 2) {
-                        entity1.setMobileImpression(Integer.valueOf(arr[12]));
-                        entity1.setMobileClick(Integer.valueOf(arr[13]));
-                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[14])));
-                        entity1.setMobileCtr(Double.valueOf(arr[15].substring(0, arr[15].length() - 1)));
-                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[16])));
-                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[17])));
-                        entity1.setMobileConversion(Double.valueOf(arr[18]));
+                        entity1.setMobileImpression(Integer.valueOf(arr[12] == null ? "0" : arr[12]));
+                        entity1.setMobileClick(Integer.valueOf(arr[13] == null ? "0" : arr[13]));
+                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[14] == null ? "0" : arr[14])));
+                        entity1.setMobileCtr(Double.valueOf(arr[15] == null ? "0" : arr[15].substring(0, arr[15].length() - 1)));
+                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[16] == null ? "0" : arr[16])));
+                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[17] == null ? "0" : arr[17])));
+                        entity1.setMobileConversion(Double.valueOf(arr[18] == null ? "0" : arr[18]));
                     }
                     list.add(entity1);
                     index++;
@@ -562,23 +562,23 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     entity1.setAdgroupId(Long.valueOf(arr[5]));
                     entity1.setAdgroupName(arr[6]);
                     if (type == 1) {
-                        entity1.setPcImpression(Integer.valueOf(arr[10]));
-                        entity1.setPcClick(Integer.valueOf(arr[11]));
-                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[12])));
-                        entity1.setPcCtr(Double.valueOf(arr[13].substring(0, arr[13].length() - 1)));
-                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[14])));
-                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[15])));
-                        entity1.setPcConversion(Double.valueOf(arr[16]));
-                        entity1.setPcPosition(Double.valueOf(arr[17]));
+                        entity1.setPcImpression(Integer.valueOf(arr[10] == null ? "0" : arr[10]));
+                        entity1.setPcClick(Integer.valueOf(arr[11] == null ? "0" : arr[11]));
+                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[12] == null ? "0" : arr[12])));
+                        entity1.setPcCtr(Double.valueOf(arr[13] == null ? "0" : arr[13].substring(0, arr[13].length() - 1)));
+                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[14] == null ? "0" : arr[14])));
+                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[15] == null ? "0" : arr[15])));
+                        entity1.setPcConversion(Double.valueOf(arr[16] == null ? "0" : arr[16]));
+                        entity1.setPcPosition(Double.valueOf(arr[17] == null ? "0" : arr[17]));
                     } else if (type == 2) {
-                        entity1.setMobileImpression(Integer.valueOf(arr[10]));
-                        entity1.setMobileClick(Integer.valueOf(arr[11]));
-                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[12])));
-                        entity1.setMobileCtr(Double.valueOf(arr[13].substring(0, arr[13].length() - 1)));
-                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[14])));
-                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[15])));
-                        entity1.setMobileConversion(Double.valueOf(arr[16]));
-                        entity1.setMobilePosition(Double.valueOf(arr[17]));
+                        entity1.setMobileImpression(Integer.valueOf(arr[10] == null ? "0" : arr[10]));
+                        entity1.setMobileClick(Integer.valueOf(arr[11] == null ? "0" : arr[11]));
+                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[12] == null ? "0" : arr[12])));
+                        entity1.setMobileCtr(Double.valueOf(arr[13] == null ? "0" : arr[13].substring(0, arr[13].length() - 1)));
+                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[14] == null ? "0" : arr[14])));
+                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[15] == null ? "0" : arr[15])));
+                        entity1.setMobileConversion(Double.valueOf(arr[16] == null ? "0" : arr[16]));
+                        entity1.setMobilePosition(Double.valueOf(arr[17] == null ? "0" : arr[17]));
                     }
                     list.add(entity1);
                     index++;
@@ -620,14 +620,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                         entity1.setAdgroupName(arr[6]);
                         entity1.setRegionId(((arr[7].equals("-")) ? -1l : Long.valueOf(arr[7])));
                         entity1.setRegionName(arr[8]);
-                        entity1.setPcImpression(Integer.valueOf(arr[9]));
-                        entity1.setPcClick(Integer.valueOf(arr[10]));
-                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[11])));
-                        entity1.setPcCtr(Double.valueOf(arr[12].substring(0, arr[12].length() - 1)));
-                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[13])));
-                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[14])));
-                        entity1.setPcConversion(Double.valueOf(arr[15]));
-                        entity1.setPcPosition(Double.valueOf(arr[16]));
+                        entity1.setPcImpression(Integer.valueOf(arr[9] == null ? "0" : arr[9]));
+                        entity1.setPcClick(Integer.valueOf(arr[10] == null ? "0" : arr[10]));
+                        entity1.setPcCost(BigDecimal.valueOf(Double.valueOf(arr[11] == null ? "0" : arr[11])));
+                        entity1.setPcCtr(Double.valueOf(arr[12] == null ? "0" : arr[12].substring(0, arr[12].length() - 1)));
+                        entity1.setPcCpc(BigDecimal.valueOf(Double.valueOf(arr[13] == null ? "0" : arr[13])));
+                        entity1.setPcCpm(BigDecimal.valueOf(Double.valueOf(arr[14] == null ? "0" : arr[14])));
+                        entity1.setPcConversion(Double.valueOf(arr[15] == null ? "0" : arr[15]));
+                        entity1.setPcPosition(Double.valueOf(arr[16] == null ? "0" : arr[16]));
                     } else if (type == 2) {
                         if (arr[5].equals("-")) {
                             entity1.setRegionId(-1l);
@@ -635,13 +635,13 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             entity1.setRegionId(Long.valueOf(arr[5]));
                         }
                         entity1.setRegionName(arr[6]);
-                        entity1.setMobileImpression(Integer.valueOf(arr[7]));
-                        entity1.setMobileClick(Integer.valueOf(arr[8]));
-                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[9])));
-                        entity1.setMobileCtr(Double.valueOf(arr[10].substring(0, arr[10].length() - 1)));
-                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[11])));
-                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[12])));
-                        entity1.setMobileConversion(Double.valueOf(arr[13]));
+                        entity1.setMobileImpression(Integer.valueOf(arr[7] == null ? "0" : arr[7]));
+                        entity1.setMobileClick(Integer.valueOf(arr[8] == null ? "0" : arr[8]));
+                        entity1.setMobileCost(BigDecimal.valueOf(Double.valueOf(arr[9] == null ? "0" : arr[9])));
+                        entity1.setMobileCtr(Double.valueOf(arr[10] == null ? "0" : arr[10].substring(0, arr[10].length() - 1)));
+                        entity1.setMobileCpc(BigDecimal.valueOf(Double.valueOf(arr[11] == null ? "0" : arr[11])));
+                        entity1.setMobileCpm(BigDecimal.valueOf(Double.valueOf(arr[12] == null ? "0" : arr[12])));
+                        entity1.setMobileConversion(Double.valueOf(arr[13] == null ? "0" : arr[13]));
                     }
                     list.add(entity1);
                     index++;
@@ -683,6 +683,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     dto.setDate(type.getDate());
                     dto.setAccountId(type.getAccountId());
                     dto.setAccountName(type.getAccountName());
+
+                    dto.setPcImpression(0);
+                    dto.setPcClick(0);
+                    dto.setPcCtr(Double.valueOf(0));
+                    dto.setPcCost(BigDecimal.valueOf(0));
+                    dto.setPcCpc(BigDecimal.valueOf(0));
+                    dto.setPcCpm(BigDecimal.valueOf(0));
+                    dto.setPcConversion(Double.valueOf(0));
+
                     dto.setMobileImpression(type.getMobileImpression());
                     dto.setMobileClick(type.getMobileClick());
                     dto.setMobileCtr(type.getMobileCtr());
@@ -729,6 +738,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setDate(entity.getDate());
                             _entity.setAccountId(entity.getAccountId());
                             _entity.setAccountName(entity.getAccountName());
+
                             _entity.setPcImpression(entity.getPcImpression());
                             _entity.setPcClick(entity.getPcClick());
                             _entity.setPcCtr(entity.getPcCtr());
@@ -736,6 +746,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setPcCpc(entity.getPcCpc());
                             _entity.setPcCpm(entity.getPcCpm());
                             _entity.setPcConversion(entity.getPcConversion());
+
+                            _entity.setMobileImpression(0);
+                            _entity.setMobileClick(0);
+                            _entity.setMobileCtr(Double.valueOf(0));
+                            _entity.setMobileCost(BigDecimal.valueOf(0));
+                            _entity.setMobileCpc(BigDecimal.valueOf(0));
+                            _entity.setMobileCpm(BigDecimal.valueOf(0));
+                            _entity.setMobileConversion(Double.valueOf(0));
                             list.add(_entity);
                         }
                     }
@@ -777,6 +795,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     dto.setAccountId(type.getAccountId());
                     dto.setCampaignId(type.getCampaignId());
                     dto.setCampaignName(type.getCampaignName());
+
+                    dto.setPcImpression(0);
+                    dto.setPcClick(0);
+                    dto.setPcCtr(Double.valueOf(0));
+                    dto.setPcCost(BigDecimal.valueOf(0));
+                    dto.setPcCpc(BigDecimal.valueOf(0));
+                    dto.setPcCpm(BigDecimal.valueOf(0));
+                    dto.setPcConversion(Double.valueOf(0));
+
                     dto.setMobileImpression(type.getMobileImpression());
                     dto.setMobileClick(type.getMobileClick());
                     dto.setMobileCtr(type.getMobileCtr());
@@ -822,6 +849,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setAccountId(entity.getAccountId());
                             _entity.setCampaignId(entity.getCampaignId());
                             _entity.setCampaignName(entity.getCampaignName());
+
                             _entity.setPcImpression(entity.getPcImpression());
                             _entity.setPcClick(entity.getPcClick());
                             _entity.setPcCtr(entity.getPcCtr());
@@ -829,6 +857,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setPcCpc(entity.getPcCpc());
                             _entity.setPcCpm(entity.getPcCpm());
                             _entity.setPcConversion(entity.getPcConversion());
+
+                            _entity.setMobileImpression(0);
+                            _entity.setMobileClick(0);
+                            _entity.setMobileCtr(Double.valueOf(0));
+                            _entity.setMobileCost(BigDecimal.valueOf(0));
+                            _entity.setMobileCpc(BigDecimal.valueOf(0));
+                            _entity.setMobileCpm(BigDecimal.valueOf(0));
+                            _entity.setMobileConversion(Double.valueOf(0));
                             list.add(_entity);
                         }
                     }
@@ -872,6 +908,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     dto.setAccountId(type.getAccountId());
                     dto.setCampaignId(type.getCampaignId());
                     dto.setCampaignName(type.getCampaignName());
+
+                    dto.setPcImpression(0);
+                    dto.setPcClick(0);
+                    dto.setPcCtr(Double.valueOf(0));
+                    dto.setPcCost(BigDecimal.valueOf(0));
+                    dto.setPcCpc(BigDecimal.valueOf(0));
+                    dto.setPcCpm(BigDecimal.valueOf(0));
+                    dto.setPcConversion(Double.valueOf(0));
+
                     dto.setMobileImpression(type.getMobileImpression());
                     dto.setMobileClick(type.getMobileClick());
                     dto.setMobileCtr(type.getMobileCtr());
@@ -921,6 +966,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setAccountId(entity.getAccountId());
                             _entity.setCampaignId(entity.getCampaignId());
                             _entity.setCampaignName(entity.getCampaignName());
+
                             _entity.setPcImpression(entity.getPcImpression());
                             _entity.setPcClick(entity.getPcClick());
                             _entity.setPcCtr(entity.getPcCtr());
@@ -928,6 +974,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setPcCpc(entity.getPcCpc());
                             _entity.setPcCpm(entity.getPcCpm());
                             _entity.setPcConversion(entity.getPcConversion());
+
+                            _entity.setMobileImpression(0);
+                            _entity.setMobileClick(0);
+                            _entity.setMobileCtr(Double.valueOf(0));
+                            _entity.setMobileCost(BigDecimal.valueOf(0));
+                            _entity.setMobileCpc(BigDecimal.valueOf(0));
+                            _entity.setMobileCpm(BigDecimal.valueOf(0));
+                            _entity.setMobileConversion(Double.valueOf(0));
                             list.add(_entity);
                         }
                     }
@@ -978,6 +1032,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     dto.setAccountId(type.getAccountId());
                     dto.setCampaignId(type.getCampaignId());
                     dto.setCampaignName(type.getCampaignName());
+
+                    dto.setPcImpression(0);
+                    dto.setPcClick(0);
+                    dto.setPcCtr(Double.valueOf(0));
+                    dto.setPcCost(BigDecimal.valueOf(0));
+                    dto.setPcCpc(BigDecimal.valueOf(0));
+                    dto.setPcCpm(BigDecimal.valueOf(0));
+                    dto.setPcConversion(Double.valueOf(0));
+
                     dto.setMobileImpression(type.getMobileImpression());
                     dto.setMobileClick(type.getMobileClick());
                     dto.setMobileCtr(type.getMobileCtr());
@@ -1037,6 +1100,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setAccountId(entity.getAccountId());
                             _entity.setCampaignId(entity.getCampaignId());
                             _entity.setCampaignName(entity.getCampaignName());
+
                             _entity.setPcImpression(entity.getPcImpression());
                             _entity.setPcClick(entity.getPcClick());
                             _entity.setPcCtr(entity.getPcCtr());
@@ -1044,6 +1108,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setPcCpc(entity.getPcCpc());
                             _entity.setPcCpm(entity.getPcCpm());
                             _entity.setPcConversion(entity.getPcConversion());
+
+                            _entity.setMobileImpression(0);
+                            _entity.setMobileClick(0);
+                            _entity.setMobileCtr(Double.valueOf(0));
+                            _entity.setMobileCost(BigDecimal.valueOf(0));
+                            _entity.setMobileCpc(BigDecimal.valueOf(0));
+                            _entity.setMobileCpm(BigDecimal.valueOf(0));
+                            _entity.setMobileConversion(Double.valueOf(0));
                             list.add(_entity);
                         }
                     }
@@ -1089,6 +1161,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     dto.setAccountId(dto.getAccountId());
                     dto.setCampaignId(dto.getCampaignId());
                     dto.setCampaignName(dto.getCampaignName());
+
+                    dto.setPcImpression(0);
+                    dto.setPcClick(0);
+                    dto.setPcCtr(Double.valueOf(0));
+                    dto.setPcCost(BigDecimal.valueOf(0));
+                    dto.setPcCpc(BigDecimal.valueOf(0));
+                    dto.setPcCpm(BigDecimal.valueOf(0));
+                    dto.setPcConversion(Double.valueOf(0));
+
                     dto.setMobileImpression(type.getMobileImpression());
                     dto.setMobileClick(type.getMobileClick());
                     dto.setMobileCtr(type.getMobileCtr());
@@ -1144,6 +1225,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setAccountId(entity.getAccountId());
                             _entity.setCampaignId(entity.getCampaignId());
                             _entity.setCampaignName(entity.getCampaignName());
+
                             _entity.setPcImpression(entity.getPcImpression());
                             _entity.setPcClick(entity.getPcClick());
                             _entity.setPcCtr(entity.getPcCtr());
@@ -1152,6 +1234,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setPcCpm(entity.getPcCpm());
                             _entity.setPcConversion(entity.getPcConversion());
                             _entity.setPcPosition(entity.getPcPosition());
+
+                            _entity.setMobileImpression(0);
+                            _entity.setMobileClick(0);
+                            _entity.setMobileCtr(Double.valueOf(0));
+                            _entity.setMobileCost(BigDecimal.valueOf(0));
+                            _entity.setMobileCpc(BigDecimal.valueOf(0));
+                            _entity.setMobileCpm(BigDecimal.valueOf(0));
+                            _entity.setMobileConversion(Double.valueOf(0));
                             list.add(_entity);
                         }
                     }
@@ -1197,6 +1287,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     dto.setAccountId(type.getAccountId());
                     dto.setCampaignId(type.getCampaignId());
                     dto.setCampaignName(type.getCampaignName());
+
+                    dto.setPcImpression(0);
+                    dto.setPcClick(0);
+                    dto.setPcCtr(Double.valueOf(0));
+                    dto.setPcCost(BigDecimal.valueOf(0));
+                    dto.setPcCpc(BigDecimal.valueOf(0));
+                    dto.setPcCpm(BigDecimal.valueOf(0));
+                    dto.setPcConversion(Double.valueOf(0));
+
                     dto.setMobileImpression(type.getMobileImpression());
                     dto.setMobileClick(type.getMobileClick());
                     dto.setMobileCtr(type.getMobileCtr());
@@ -1252,6 +1351,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setAccountId(entity.getAccountId());
                             _entity.setCampaignId(entity.getCampaignId());
                             _entity.setCampaignName(entity.getCampaignName());
+
                             _entity.setPcImpression(entity.getPcImpression());
                             _entity.setPcClick(entity.getPcClick());
                             _entity.setPcCtr(entity.getPcCtr());
@@ -1260,6 +1360,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                             _entity.setPcCpm(entity.getPcCpm());
                             _entity.setPcConversion(entity.getPcConversion());
                             _entity.setPcPosition(entity.getPcPosition());
+
+                            _entity.setMobileImpression(0);
+                            _entity.setMobileClick(0);
+                            _entity.setMobileCtr(Double.valueOf(0));
+                            _entity.setMobileCost(BigDecimal.valueOf(0));
+                            _entity.setMobileCpc(BigDecimal.valueOf(0));
+                            _entity.setMobileCpm(BigDecimal.valueOf(0));
+                            _entity.setMobileConversion(Double.valueOf(0));
                             list.add(_entity);
                         }
                     }
