@@ -131,9 +131,9 @@
         width: 76%;
     }
 }
-@media screen and (min-width: 1442px){
+@media screen and (max-width: 1442px){
     .list01_under2 ul li span{
-        font-size:26px;
+        font-size:28px;
     }
 }
 @media screen and (min-width: 1442px) and (max-width: 1579px) {
@@ -224,6 +224,9 @@
      .t_list06 .zs_input3 {
          width: 69%;
      }
+     .list01_under2 ul li span {
+         font-size: 28px;
+     }
     }
 
 /******1368************/
@@ -299,6 +302,9 @@
 
     .fenrilist table tr td ul li {
         width: 13.2%;
+    }
+    .list01_under2 ul li span {
+        font-size: 28px;
     }
 }
 /******1360************/
@@ -383,6 +389,9 @@
     .t_list06 .zs_input3 {
         width: 60%;
     }
+    .list01_under2 ul li span {
+        font-size: 26px;
+    }
 
 }
 
@@ -436,6 +445,9 @@
 
     .wrap_list01 .w_list02 ul li span {
         padding: 0 10px 0 20px;
+    }
+    .list01_under2 ul li span {
+        font-size: 20px;
     }
 }
 /******1024************/
@@ -531,6 +543,18 @@
     .list01_under2 ul li span {
 
         font-size: 26px;
+    }
+    .list01_under2 ul li span {
+        font-size: 20px;
+    }
+    .ui-datepicker{
+        padding: 0.1em 0.1em 0;
+        width: 11.5em;
+    }
+
+    .ui-datepicker td {
+        border: 0 none;
+        padding: 0.5px;
     }
 }
 

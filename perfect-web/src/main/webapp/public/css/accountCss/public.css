@@ -419,7 +419,7 @@ table tr ,table tr td{
     font-family: "微软雅黑";
     position: absolute;
     bottom: 20px;
-    margin-top: 80px;
+   /* margin-top: 80px;*/
 }
 .footer a {
     color: #999999;
