@@ -24,7 +24,7 @@ public class BaiduLoginTest extends JUnitBaseTest {
 
     @Test
     public void test() {
-        List<String> list = new ArrayList<>(Arrays.asList("淘宝双12", "冬装", "书包", "手套", "风衣", "电饭锅", "充电宝", "精品女装"));
+        List<String> list = new ArrayList<>(Arrays.asList("iphone6", "冬装", "书包", "手套", "风衣", "电饭锅", "充电宝", "精品女装"));
         CookieDTO cookieDTO = cookieService.takeOne();
         for (int i = 0, s = list.size(); i < s; i++) {
             try {
@@ -40,6 +40,7 @@ public class BaiduLoginTest extends JUnitBaseTest {
                 e.printStackTrace();
             }
         }
+        cookieService.returnOne(cookieDTO);
     }
 
 }
