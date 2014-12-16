@@ -1,6 +1,5 @@
 package com.perfect.db.mongodb.impl;
 
-import com.google.common.collect.Lists;
 import com.perfect.dao.sys.CookieDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.CookieDTO;
@@ -13,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +52,7 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
     public void returnOne(CookieDTO cookieDTO) {
         cookieDTO.setIdle(true);
         CookieEntity cookieEntity = ObjectUtils.convert(cookieDTO, getEntityClass());
-        getMongoTemplate().save(cookieEntity);
+        getSysMongoTemplate().save(cookieEntity);
     }
 
     /**
@@ -72,6 +72,6 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
 
     @Override
     public List<CookieDTO> find(Map<String, Object> params, int skip, int limit) {
-        return Lists.newArrayList();
+        return Collections.emptyList();
     }
 }
