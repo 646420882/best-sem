@@ -43,6 +43,8 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
 
     public static final String CATEGORY_KEY = "_keywords_category";
 
+    private static final String SEP_KEYWORD_REG = "\\|";
+
     private static final String SEP_KEYWORD = "|";
 
     private static final String SEP_NAME_COUNT = ":";
@@ -145,10 +147,12 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
 
         Jedis jedis = JRedisUtils.get();
         try {
-            if (jedis.exists(CATEGORY_KEY)) {
+
+            String key = CATEGORY_KEY + ":" + trade;
+            if (jedis.exists(key)) {
                 List<CategoryVO> returnList = new ArrayList<>();
-                String value = jedis.get(CATEGORY_KEY);
-                String[] categoryPairs = value.split(SEP_KEYWORD);
+                String value = jedis.get(key);
+                String[] categoryPairs = value.split(SEP_KEYWORD_REG);
                 for (String pairs : categoryPairs) {
                     String[] nameCount = pairs.split(SEP_NAME_COUNT);
 
@@ -174,12 +178,11 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
 
                 List<String> pairs = new ArrayList<>();
                 for (CategoryVO categoryVO : returnList) {
-
                     String pair = categoryVO.getCategory() + SEP_NAME_COUNT + categoryVO.getCount();
                     pairs.add(pair);
                 }
                 String value = String.join(SEP_KEYWORD, pairs.toArray(new String[]{}));
-                jedis.setex(CATEGORY_KEY, (int) TimeUnit.DAYS.toSeconds(1) * 7, value);
+                jedis.setex(key, (int) TimeUnit.DAYS.toSeconds(1) * 7, value);
                 return returnList;
             }
         } catch (Exception e) {
