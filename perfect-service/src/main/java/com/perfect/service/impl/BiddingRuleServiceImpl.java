@@ -26,8 +26,6 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
 
     @Override
     public void createBiddingRule(BiddingRuleDTO biddingRuleDTO) {
-
-
         biddingRuleDAO.createBidding(biddingRuleDTO);
     }
 

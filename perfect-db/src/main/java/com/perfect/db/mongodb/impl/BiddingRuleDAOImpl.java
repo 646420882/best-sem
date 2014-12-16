@@ -2,12 +2,13 @@ package com.perfect.db.mongodb.impl;
 
 import com.mongodb.WriteResult;
 import com.perfect.dao.bidding.BiddingRuleDAO;
-import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.db.mongodb.utils.PageParamUtils;
 import com.perfect.dto.bidding.BiddingRuleDTO;
+import com.perfect.dto.bidding.StrategyDTO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
+import com.perfect.entity.bidding.StrategyEntity;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PaginationParam;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -16,8 +17,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,8 +36,11 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
         return BiddingRuleDTO.class;
     }
 
-    @Resource
-    private SystemUserDAO systemUserDAO;
+    @Override
+    @SuppressWarnings("unchecked")
+    public Class<BiddingRuleEntity> getEntityClass() {
+        return BiddingRuleEntity.class;
+    }
 
     @Override
     public List<BiddingRuleDTO> find(Map<String, Object> params, int skip, int limit) {
@@ -52,14 +56,11 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
             criteria.and(param.getKey()).is(param.getValue());
         }
 
-        query.addCriteria(criteria).skip(skip).limit(limit);
+        if (criteria != null) {
+            query.addCriteria(criteria).skip(skip).limit(limit);
+        }
 
-        return getMongoTemplate().find(query, BiddingRuleDTO.class);
-    }
-
-    @Override
-    public Class<BiddingRuleEntity> getEntityClass() {
-        return BiddingRuleEntity.class;
+        return convertToDTOList(getMongoTemplate().find(query, getEntityClass()));
     }
 
 
@@ -127,40 +128,6 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
 //            mongoTemplate.updateFirst(Query.query(Criteria.where("_id").is(entity.getId())), Update.update("next", entity.getStart()), BiddingRuleDTO.class);
 //        }
 //    }
-    private Update getUpdate(BiddingRuleDTO entity) {
-        Update update = new Update();
-
-//        if (entity.getNextRunTime() > 0) {
-//            update = update.addToSet("next", entity.getNextRunTime());
-//        }
-//
-//        if (entity.getPosition() > 0) {
-//            update = update.addToSet("pos", entity.getPosition());
-//        }
-//
-//        if (entity.getInterval() > 0) {
-//            update = update.addToSet("intval", entity.getInterval());
-//        }
-//
-//        if (entity.getExpPosition() > 0) {
-//            update = update.addToSet("pstra", entity.getExpPosition());
-//        }
-//
-//        if (entity.getMaxPrice() > 0) {
-//            update = update.addToSet("max", entity.getMaxPrice());
-//        }
-//
-//        if (entity.getMinPrice() > 0) {
-//            update = update.addToSet("min", entity.getMinPrice());
-//        }
-//
-//        if (entity.getPriority() > 0) {
-//            update = update.addToSet("priority", entity.getPriority());
-//        }
-
-        return update;
-    }
-
     @Override
     public void createBidding(BiddingRuleDTO biddingRuleDTO) {
         save(biddingRuleDTO);
@@ -168,15 +135,17 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
 
     @Override
     public BiddingRuleDTO save(BiddingRuleDTO dto) {
-        BiddingRuleEntity entity = ObjectUtils.convertToObject(dto, getEntityClass());
-        getMongoTemplate().save(entity);
-        return ObjectUtils.convertToObject(entity, getDTOClass());
+        StrategyDTO strategyDTO = dto.getStrategyDTO();
+        BiddingRuleEntity biddingRule = ObjectUtils.convert(dto, getEntityClass());
+        biddingRule.setStrategyEntity(ObjectUtils.convert(strategyDTO, StrategyEntity.class));
+        getMongoTemplate().save(biddingRule);
+        return dto;
     }
 
     @Override
     public BiddingRuleDTO getBiddingRuleByKeywordId(Long keywordId) {
-        BiddingRuleEntity entity = getMongoTemplate().findOne(Query.query(Criteria.where(KEYWORD_ID).is(keywordId)), getEntityClass());
-        return ObjectUtils.convert(entity, getDTOClass());
+        BiddingRuleEntity biddingRule = getMongoTemplate().findOne(Query.query(Criteria.where(KEYWORD_ID).is(keywordId)), getEntityClass());
+        return convertToDTO(biddingRule);
     }
 
     @Override
@@ -195,7 +164,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
                 .ne(0)
                 .and(ACCOUNT_ID).is(id));
         List<BiddingRuleEntity> list = BaseMongoTemplate.getUserMongo(userName).find(query, getEntityClass());
-        return convert(list);
+        return convertToDTOList(list);
     }
 
     @Override
@@ -211,7 +180,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
 
     @Override
     public List<BiddingRuleDTO> findByKeywordIds(List<Long> ids) {
-        return getMongoTemplate().find(Query.query(Criteria.where(KEYWORD_ID).in(ids)), BiddingRuleDTO.class);
+        return convertToDTOList(getMongoTemplate().find(Query.query(Criteria.where(KEYWORD_ID).in(ids)), getEntityClass()));
     }
 
     @Override
@@ -278,7 +247,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
             mongoQuery.addCriteria(Criteria.where(NAME).regex(prefix + reg + suffix));
         }
 
-        return convert(getMongoTemplate().find(PageParamUtils.withParam(param, mongoQuery), getEntityClass()));
+        return convertToDTOList(getMongoTemplate().find(PageParamUtils.withParam(param, mongoQuery), getEntityClass()));
     }
 
     @Override
@@ -291,6 +260,26 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
         BiddingRuleEntity ruleEntity = BaseMongoTemplate.getUserMongo(userName).findAndModify(query, Update.update("r", true),
                 FindAndModifyOptions.options().returnNew(true), getEntityClass());
 
-        return ObjectUtils.convert(ruleEntity, getDTOClass());
+        return convertToDTO(ruleEntity);
+    }
+
+    private BiddingRuleDTO convertToDTO(BiddingRuleEntity biddingRuleEntity) {
+        if (biddingRuleEntity == null) {
+            return null;
+        }
+        StrategyEntity strategyEntity = biddingRuleEntity.getStrategyEntity();
+        BiddingRuleDTO biddingRuleDTO = ObjectUtils.convert(biddingRuleEntity, getDTOClass());
+        biddingRuleDTO.setStrategyDTO(ObjectUtils.convert(strategyEntity, StrategyDTO.class));
+        return biddingRuleDTO;
+    }
+
+    private List<BiddingRuleDTO> convertToDTOList(List<BiddingRuleEntity> list) {
+        List<BiddingRuleDTO> dtoList = new ArrayList<>(list.size());
+        list.parallelStream().forEach(e -> {
+            BiddingRuleDTO biddingRuleDTO = convertToDTO(e);
+            if (biddingRuleDTO != null)
+                dtoList.add(biddingRuleDTO);
+        });
+        return dtoList;
     }
 }

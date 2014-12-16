@@ -686,7 +686,7 @@ public class BiddingController {
 
         AbstractView jsonView = new MappingJackson2JsonView();
 
-        List<Integer> result = Collections.EMPTY_LIST;
+        List<Integer> result = Collections.emptyList();
 
         if (ids == null || ids.length == 0) {
             return new ModelAndView(jsonView);
