@@ -68,32 +68,32 @@ public class PerfectStatistics extends WebContextSupport {
 
 
     /**
-     * osAnBrowser数组参数说明：
-     * 0 Cookie中的UUID
-     * 1 客户端电脑系统信息
-     * 2 客户端浏览器信息
-     * 3 客户端屏幕分辨率信息
-     * 4 客户端是否支持cookie（true为支持）
-     * 5 客户端是否支持java（true为支持）
-     * 6 客户端屏幕颜色渲染bit
-     * 7 客户端flash版本 （如果此参数为空则表明不支持flash插件,数据库标识为  Deny）
-     * 8 客户端访问目标地址时间
-     * 9 客户端网页的访问来源（如果此参数为空则表明访问来远为：“直接访问”,数据库标识为  direct）
-     * 10 用户IP地址
-     * 11 用户所在地区
-     * 12 用户浏览网站使用设备(0 PC端浏览  1 移动端浏览)
+     * 参数说明：
+     * a Cookie中的UUID
+     * b 电脑系统
+     * c 客户端浏览器信息
+     * d 客户端屏幕分辨率信息
+     * e 客户端是否支持cookie（true为支持）
+     * f 客户端是否支持java（true为支持）
+     * g 客户端屏幕颜色渲染bit
+     * h 客户端flash版本 （如果此参数为空则表明不支持flash插件,数据库标识为  Deny）
+     * i 客户端访问目标地址时间
+     * j 客户端网页的访问来源（如果此参数为空则表明访问来远为：“直接访问”,数据库标识为  direct）
+     * k 用户IP地址
+     * l 用户所在地区
+     * m 用户浏览网站使用设备(0 PC端浏览  1 移动端浏览)
+     * n 用户自定义数组
      * Url：客户端网页目标地址
      * ip: java获取客户端IP地址
      * @return
      */
     @RequestMapping(value = "/statistics", method = {RequestMethod.GET, RequestMethod.POST})
     public void gettests(HttpServletRequest request, HttpServletResponse response,
-                         String[] osAnBrowser) throws UnsupportedEncodingException {
+                         String a,String b,String c,String d,String e,String f,String g,
+                         String h,String i,String j,String k,String l,String m,String[] n){
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(new File("F://statistics.log"), true));
-            for (int i = 0;i<osAnBrowser.length; i++){
-                writer.write(Parameters(i,osAnBrowser)+osAnBrowser[i]+"\r\n");
-            }
+
 
             String Url = request.getHeader("referer");
             //获取用户IP地址
@@ -101,8 +101,8 @@ public class PerfectStatistics extends WebContextSupport {
             System.out.println(ip);
             writer.write(Url+"\r\n\r\n");
             writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
 

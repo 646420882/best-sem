@@ -167,10 +167,10 @@ public class SourceDAOImpl extends AbstractUserBaseDAOImpl<CensusDTO, String> im
             if (accessType.intValue() > 0 && userType.intValue() > 0) {
                 query = new Criteria(MongoEntityConstants.DATE_FIELD).lte(dates.get(1)).gte(dates.get(0)).and(MongoEntityConstants.IPERATE).is(accessType).and(MongoEntityConstants.USERTYPE).is(accessType);
             } else {
-                if (accessType.intValue() > 0) {
+                if (accessType.intValue() > 0 && userType.intValue() <= 0) {
                     query = new Criteria(MongoEntityConstants.DATE_FIELD).lte(dates.get(1)).gte(dates.get(0)).and(MongoEntityConstants.IPERATE).is(accessType);
                 }
-                if (userType.intValue() > 0) {
+                if (userType.intValue() > 0 && accessType.intValue() <= 0) {
                     query = new Criteria(MongoEntityConstants.DATE_FIELD).lte(dates.get(1)).gte(dates.get(0)).and(MongoEntityConstants.USERTYPE).is(accessType);
                 }
             }

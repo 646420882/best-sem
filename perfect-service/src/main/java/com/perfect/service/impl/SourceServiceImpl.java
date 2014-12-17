@@ -62,9 +62,15 @@ public class SourceServiceImpl implements SourceService {
 
         SourcesAllDTO sourcesAllDTO = sourceDao.getGroupFind(dates, accessType, userType);
 
+        Map<String,String> waibuMap = new HashMap<>();
         //处理外部链接数据
         for (BasedDataVO basedDataVO : sourcesAllDTO.getIntoPageData()) {
-            sourceDao.getDesignationData(dates, accessType, userType, MongoEntityConstants.INTOPAGE,basedDataVO.getTp());
+            List<CensusDTO> censusDTOList = sourceDao.getDesignationData(dates, accessType, userType, MongoEntityConstants.INTOPAGE, basedDataVO.getTp());
+            censusDTOList.forEach(e->{
+
+            });
+
+            waibuMap.put("count",sourcesAllDTO.getFindCount().toString());
 
         }
 

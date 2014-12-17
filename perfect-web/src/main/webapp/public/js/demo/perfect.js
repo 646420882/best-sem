@@ -1,5 +1,29 @@
 var sysArrayp = new Array(), iptest, regions, intId = 0, intEnd = 0, interval;
-;
+var uuidInfo,
+// 1 电脑系统
+    computerVersion,
+// 2 浏览器版本
+    browserVersion,
+// 3 屏幕分辨率
+    screenResolution,
+// 4 是否支持cookie
+    cookieSupport,
+// 5 是否支持java
+    javaSupport,
+// 6 屏幕颜色
+    screenColor,
+// 7 flash版本
+    flashVersion,
+// 8 客户端访问目标地址时间
+    dateTime,
+// 9 客户端网页的访问来源
+    source,
+// 10 用户IP地址
+    IPAddress,
+// 11 用户所在地区
+    userArea,
+// 12 移动或PC访问（1 移动端访问网页  0 PC端访问网页）
+    accessType;
 (function () {
     loadScript("http://pv.sohu.com/cityjson?ie=utf-8", function () {
         if (typeof(returnCitySN) == "undefined") {
@@ -13,32 +37,47 @@ var sysArrayp = new Array(), iptest, regions, intId = 0, intEnd = 0, interval;
 }());
 //提交操作
 function suumitScript() {
-    var script = document.getElementById('ScriptId');
-    if (script) {
-        document.getElementsByTagName("head")[0].removeChild(script);
+    var frmSubmit = document.getElementById('perfect_Form_Id');
+    if (frmSubmit) {
+        document.getElementsByTagName("body")[0].removeChild(frmSubmit);
     }
     /*var url = new Array("http://182.150.24.24:18080/pftstis/statistics", "http://182.150.24.24:18080/pftstis/saveParams");*/
-    var url = new Array("http://182.150.24.24:18080/pftstis/saveParams");
+    var url = new Array("http://182.150.24.24:18080/pftstis/statistics");
+    getOSAndBrowser();
     if (intId == 1) {
         for (var i = 0; i < url.length; i++) {
-            script = document.createElement("script");
-            script.type = "text/javascript";
-            script.id = "ScriptId";
-            script.charset = "utf-8";
-            script.src = url[i] + "?osAnBrowser=" + getOSAndBrowser();
-            document.getElementsByTagName("head")[0].appendChild(script);
+            frmSubmit = document.createElement("div");
+            frmSubmit.style.display = "none";
+            frmSubmit.setAttribute("id","perfect_Form_Id");
+            frmSubmit.innerHTML = '<form action="' + url + '" method="post" target="lxbHideIframe"><input name="a" value="' + uuidInfo + '"/><input name="b" value="' + computerVersion + '"/>' +
+            '<input name="c" value="' + browserVersion + '"/><input name="d" value="' + screenResolution + '"/><input name="e" value="' + cookieSupport + '"/>' +
+            '<input name="f" value="' + javaSupport + '"/><input name="g" value="' + screenColor + '"/><input name="h" value="' + flashVersion + '"/>' +
+            '<input name="i" value="' + dateTime + '"/><input name="j" value="' + source + '"/><input name="k" value="' + IPAddress + '"/>' +
+            '<input name="l" value="' + userArea + '"/><input name="m" value="' + accessType + '"/><input name="n" value="' + sysArrayp + '"/>' +
+            '</form><iframe id="lxbHideIframe" name="lxbHideIframe" src="about:blank"></iframe>';
+            if (document.body) {
+                document.body.appendChild(frmSubmit);
+                frmSubmit.getElementsByTagName("form")[0].submit();
+            }
         }
         clearInterval(interval)
     } else {
         intEnd++;
         if (intEnd == 1) {
             for (var i = 0; i < url.length; i++) {
-                script = document.createElement("script");
-                script.type = "text/javascript";
-                script.id = "ScriptId";
-                script.charset = "utf-8";
-                script.src = url[i] + "?osAnBrowser=" + getOSAndBrowser();
-                document.getElementsByTagName("head")[0].appendChild(script);
+                frmSubmit = document.createElement("div");
+                frmSubmit.style.display = "none";
+                frmSubmit.setAttribute("id","perfect_Form_Id");
+                frmSubmit.innerHTML = '<form action="' + url + '" method="post"><input name="a" value="' + uuidInfo + '"/><input name="b" value="' + computerVersion + '"/>' +
+                '<input name="c" value="' + browserVersion + '"/><input name="d" value="' + screenResolution + '"/><input name="e" value="' + cookieSupport + '"/>' +
+                '<input name="f" value="' + javaSupport + '"/><input name="g" value="' + screenColor + '"/><input name="h" value="' + flashVersion + '"/>' +
+                '<input name="i" value="' + dateTime + '"/><input name="j" value="' + source + '"/><input name="k" value="' + IPAddress + '"/>' +
+                '<input name="l" value="' + userArea + '"/><input name="m" value="' + accessType + '"/><input name="n" value="' + sysArrayp + '"/>' +
+                '</form><iframe id="lxbHideIframe" name="lxbHideIframe" src="about:blank"></iframe>';
+                if (document.body) {
+                    document.body.appendChild(frmSubmit);
+                    frmSubmit.getElementsByTagName("form")[0].submit();
+                }
             }
             clearInterval(interval)
         }
@@ -61,19 +100,7 @@ function getCookieValue(name) {
 }
 
 function getOSAndBrowser() {
-    // 0 UUID
-    // 1 电脑系统
-    // 2 浏览器版本
-    // 3 屏幕分辨率
-    // 4 是否支持cookie
-    // 5 是否支持java
-    // 6 屏幕颜色
-    // 7 flash版本
-    // 8 客户端访问目标地址时间
-    // 9 客户端网页的访问来源
-    // 10 用户IP地址
-    // 11 用户所在地区
-    // 12 移动或PC访问（1 移动端访问网页  0 PC端访问网页）
+
     var os = navigator.platform;
 
     var userAgent = navigator.userAgent;
@@ -83,68 +110,68 @@ function getOSAndBrowser() {
     if (cookie_pos == -1) {
         document.cookie = "PFT_USER_UUID=" + createUUID();
     }
-    sysArrayp[0] = getCookieValue("PFT_USER_UUID");
+    uuidInfo = getCookieValue("PFT_USER_UUID");
 
     if (os.indexOf("Win") > -1) {
         if (userAgent.indexOf("Windows NT 5.0") > -1) {
-            sysArrayp[1] = "Windows 2000";
+            computerVersion = "Windows 2000";
         } else if (userAgent.indexOf("Windows NT 5.1") > -1) {
-            sysArrayp[1] = "Windows XP";
+            computerVersion = "Windows XP";
         } else if (userAgent.indexOf("Windows NT 5.2") > -1) {
-            sysArrayp[1] = "Windows 2003";
+            computerVersion = "Windows 2003";
         } else if (userAgent.indexOf("Windows NT 6.0") > -1) {
-            sysArrayp[1] = "Windows Vista";
+            computerVersion = "Windows Vista";
         } else if (userAgent.indexOf("Windows NT 6.1") > -1 || userAgent.indexOf("Windows 7") > -1) {
-            sysArrayp[1] = "Windows 7";
+            computerVersion = "Windows 7";
         } else if (userAgent.indexOf("Windows 8") > -1) {
-            sysArrayp[1] = "Windows 8";
+            computerVersion = "Windows 8";
         } else {
-            sysArrayp[1] = "Other";
+            computerVersion = "Other";
         }
     } else if (os.indexOf("Mac") > -1) {
-        sysArrayp[1] = "Mac";
+        computerVersion = "Mac";
     } else if (os.indexOf("X11") > -1) {
-        sysArrayp[1] = "Unix";
+        computerVersion = "Unix";
     } else if (os.indexOf("Linux") > -1) {
-        sysArrayp[1] = "Linux";
+        computerVersion = "Linux";
     } else if (os.indexOf('Android') > -1 || os.indexOf('Linux') > -1) {
-        sysArrayp[1] = "Android";
+        computerVersion = "Android";
     } else if (os.indexOf('iPhone') > -1) {
-        sysArrayp[1] = "iPhone";
+        computerVersion = "iPhone";
     } else if (os.indexOf('Windows Phone') > -1) {
-        sysArrayp[1] = "Windows Phone";
+        computerVersion = "Windows Phone";
     }else {
-        sysArrayp[1] = "Other";
+        computerVersion = "Other";
     }
     if (/[Ff]irefox(\/\d+\.\d+)/.test(userAgent)) {
         tempArray = /([Ff]irefox)\/(\d+\.\d+)/.exec(userAgent);
-        sysArrayp[2] = tempArray[1] + tempArray[2];
+        browserVersion = tempArray[1] + tempArray[2];
     } else if (/MSIE \d+\.\d+/.test(userAgent)) {
         tempArray = /MS(IE) (\d+\.\d+)/.exec(userAgent);
-        sysArrayp[2] = tempArray[1] + tempArray[2];
+        browserVersion = tempArray[1] + tempArray[2];
     } else if (/[Cc]hrome\/\d+/.test(userAgent)) {
         tempArray = /([Cc]hrome)\/(\d+)/.exec(userAgent);
-        sysArrayp[2] = tempArray[1] + tempArray[2];
+        browserVersion = tempArray[1] + tempArray[2];
     } else if (/[Vv]ersion\/\d+\.\d+\.\d+(\.\d)* *[Ss]afari/.test(userAgent)) {
         tempArray = /[Vv]ersion\/(\d+\.\d+\.\d+)(\.\d)* *([Ss]afari)/.exec(userAgent);
-        sysArrayp[2] = tempArray[3] + tempArray[1];
+        browserVersion = tempArray[3] + tempArray[1];
     } else if (/[Oo]pera.+[Vv]ersion\/\d+\.\d+/.test(userAgent)) {
         tempArray = /([Oo]pera).+[Vv]ersion\/(\d+)\.\d+/.exec(userAgent);
-        sysArrayp[2] = tempArray[1] + tempArray[2];
+        browserVersion = tempArray[1] + tempArray[2];
     } else if (/[Tt]rident\/\d+\.\d+/.test(userAgent)) {
         tempArray = /[Tt]rident\/(\d+)\.\d+/.exec(userAgent);
-        sysArrayp[2] = tempArray[1] + tempArray[2];
+        browserVersion = tempArray[1] + tempArray[2];
     } else if (/[Aa]ppleWebKit\/\d+\.\d+/.test(userAgent)) {
         tempArray = /[Aa]ppleWebKit\/(\d+)\.\d+/.exec(userAgent);
-        sysArrayp[2] = tempArray[1] + tempArray[2];
+        browserVersion = tempArray[1] + tempArray[2];
     } else if (/[Gg]ecko\/\d+\.\d+/.test(userAgent)) {
         tempArray = /[Gg]ecko\/(\d+)\.\d+/.exec(userAgent);
-        sysArrayp[2] = tempArray[1] + tempArray[2];
+        browserVersion = tempArray[1] + tempArray[2];
     } else if (/[Kk]HTML\/\d+\.\d+/.test(userAgent)) {
         tempArray = /[Kk]HTML\/(\d+)\.\d+/.exec(userAgent);
-        sysArrayp[2] = tempArray[1] + tempArray[2];
+        browserVersion = tempArray[1] + tempArray[2];
     } else {
-        sysArrayp[2] = "Other";
+        browserVersion = "Other";
     }
     var v_flash;
     for (var i = 0; i < navigator.plugins.length; i++) {
@@ -153,17 +180,16 @@ function getOSAndBrowser() {
             v_flash = v_flash.substring(0, v_flash.indexOf(" "));
         }
     }
-    sysArrayp[3] = window.screen.width + "x" + window.screen.height;
-    sysArrayp[4] = navigator.cookieEnabled;
-    sysArrayp[5] = navigator.javaEnabled();
-    sysArrayp[6] = window.screen.colorDepth + "-bit";
-    sysArrayp[7] = ((v_flash == undefined || v_flash == "") ? "" : v_flash);
-    sysArrayp[8] = new Date();
-    sysArrayp[9] = document.referrer;
-    sysArrayp[10] = iptest;
-    sysArrayp[11] = regions;
-    sysArrayp[12] = getPcOrMobile();
-    return sysArrayp;
+    screenResolution = window.screen.width + "x" + window.screen.height;
+    cookieSupport = navigator.cookieEnabled;
+    javaSupport = navigator.javaEnabled();
+    screenColor = window.screen.colorDepth + "-bit";
+    flashVersion = ((v_flash == undefined || v_flash == "") ? "" : v_flash);
+    dateTime = new Date();
+    source = document.referrer;
+    IPAddress = iptest;
+    userArea = regions;
+    accessType = getPcOrMobile();
 };
 //判断客户端使用设备  0 为PC  1为移动
 function getPcOrMobile() {
