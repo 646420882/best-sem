@@ -15,12 +15,12 @@ public class WebSiteConstants {
 
     public static String suningUrlTemplate = "http://search.suning.com/%s/";
 
-    public static String vipTempUrllate = "";
+    public static String vipTempUrlTemplate = "http://category.vip.com/search-3-0-1.html?q=%s";
 
-    public static String lefengUrlTemplate = "";
+    public static String lefengUrlTemplate = "http://search.lefeng.com/search/search?key=%s&wt.s_pg=Isearch&wt.s_pf=public&sos=sd#clothList";
 
-    public static String yhdUrlTemplate = "";
+    public static String yhdUrlTemplate = "http://search.yhd.com/c0-0/k%s/12/?tp=1.0.12.0.10.KawutWo#page=1&sort=2";
 
-    public static String xiuUrlTemplate = "";
+    public static String xiuUrlTemplate = "http://search.xiu.com/s?kw=%s&src=ori";
 
 }

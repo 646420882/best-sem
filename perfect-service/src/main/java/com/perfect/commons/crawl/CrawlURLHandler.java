@@ -143,7 +143,7 @@ public class CrawlURLHandler implements Runnable {
                     jedis.set("extras_" + md5, confStr);
 
                     if ("lefeng&vip".equals(_site)) {
-                        conf.put("q", WebSiteConstants.vipTempUrllate);
+                        conf.put("q", WebSiteConstants.vipTempUrlTemplate);
                         confStr = JSONUtils.getJsonString(conf);
                         md5 = DigestUtils.md5Hex(confStr);
 
