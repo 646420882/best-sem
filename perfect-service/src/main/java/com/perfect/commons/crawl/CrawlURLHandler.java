@@ -2,12 +2,14 @@ package com.perfect.commons.crawl;
 
 import com.perfect.commons.constants.WebSiteConstants;
 import com.perfect.dao.sys.CrawlWordDAO;
+import com.perfect.db.mongodb.impl.CrawlWordDAOImpl;
 import com.perfect.dto.CrawlWordDTO;
 import com.perfect.utils.json.JSONUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -46,7 +48,7 @@ public class CrawlURLHandler implements Runnable {
     private JedisPool pool;
 
     @Resource
-    private CrawlWordDAO crawlWordDAO;
+    private CrawlWordDAO crawlWordDAO1;
 
     private CrawlURLHandler() {
         CrawlURLHandler.JedisPools.init("182.150.24.24");
@@ -64,6 +66,11 @@ public class CrawlURLHandler implements Runnable {
             logger.info("starting reading data...");
         }
 
+        //
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        CrawlWordDAO crawlWordDAO = (CrawlWordDAOImpl) context.getBean("crawlWordDAO");
+        //
+
         //从本地缓存中取值放于阻塞队列中
         sites.forEach(site -> cacheMap.computeIfAbsent(site, (key) -> crawlWordDAO.findBySite(site)));
         cacheMap.get(sites.get(0)).forEach(queue::offer);
@@ -74,7 +81,7 @@ public class CrawlURLHandler implements Runnable {
             Jedis jedis = pool.getResource();
 
             try {
-                if (jedis.llen(crawler_queue) >= 500) {
+                if (jedis.llen(crawler_queue) >= 50000) {
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException e) {
@@ -100,8 +107,12 @@ public class CrawlURLHandler implements Runnable {
                     conf.put("p", _site);
 
                     switch (_site) {
-                        case "lefeng&vip":
+                        case "lefeng":
                             conf.put("q", WebSiteConstants.lefengUrlTemplate);
+                            conf.put("d", "default");
+                            break;
+                        case "vip":
+                            conf.put("q", WebSiteConstants.vipTempUrlTemplate);
                             conf.put("d", "default");
                             break;
                         case "yhd":
@@ -141,15 +152,6 @@ public class CrawlURLHandler implements Runnable {
 
                     jedis.rpush("crawler_queue", md5);
                     jedis.set("extras_" + md5, confStr);
-
-                    if ("lefeng&vip".equals(_site)) {
-                        conf.put("q", WebSiteConstants.vipTempUrlTemplate);
-                        confStr = JSONUtils.getJsonString(conf);
-                        md5 = DigestUtils.md5Hex(confStr);
-
-                        jedis.rpush("crawler_queue", md5);
-                        jedis.set("extras_" + md5, confStr);
-                    }
                 }
 
                 if (logger.isInfoEnabled()) {

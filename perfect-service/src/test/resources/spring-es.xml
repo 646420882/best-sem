@@ -9,9 +9,9 @@
        default-autowire="byName">
 
     <context:annotation-config/>
-    <context:component-scan base-package="com.perfect.elasticsearch.*"/>
+    <context:component-scan base-package="com.perfect.es.*"/>
 
-    <elasticsearch:repositories base-package="com.perfect.elasticsearch"/>
+    <elasticsearch:repositories base-package="com.perfect.es"/>
     <elasticsearch:transport-client id="esClient" cluster-nodes="127.0.0.1:9300" cluster-name="es-cluster"/>
 
     <bean name="elasticsearchTemplate" class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
