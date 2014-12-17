@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Created by baizz on 2014-11-17.
  */
-public class InsertCrawlWordControllerTest extends JUnitBaseTest {
+public class CrawlWordControllerTest extends JUnitBaseTest {
 
     private static final Map<Integer, String> sheetNameMap = new LinkedHashMap<Integer, String>() {{
         put(0, "lefeng&vip");
