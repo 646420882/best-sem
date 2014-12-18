@@ -655,7 +655,7 @@ function preview(obj) {
     var h3 = "<a href='" + pc + "' target='_blank'><h3>" + title + "</h3></a>" +
         "<span class='black-color'>" + de1 + "</span></br>" +
         "<span class='black-color'>" + de2 + "<span></br>" +
-        "<span  class='green-color'>" + pc + "<span></br>";
+        "<span  class='green-color'>" + pcs + "<span></br>";
     previeBody.append(h3);
 }
 /**
@@ -901,32 +901,24 @@ function updateOk() {
         alert("默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
         return false;
     } else {
-//        if (!re.test(_pc.val())) {
-//            alert("默认\"访问\"Url地址格式不正确，请重新输入");
-//            _pc.val("");
-//            return false;
-//        }
         if (_pc.val().indexOf(dm) == -1) {
             alert("默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
-        } else {
-            var _pcSize = _pc.val();
-            if (_pc.val().substr(_pc.val().indexOf(dm)) != dm) {
-                alert("默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-                return false;
-            }
         }
+        //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+//        else {
+//            var _pcSize = _pc.val();
+//            if (_pc.val().substr(_pc.val().indexOf(dm)) != dm) {
+//                alert("默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+//                return false;
+//            }
+//        }
     }
     var _thisStrpcs = getChar(_pcs.val());
     if (parseInt(_thisStrpcs) > 50 || parseInt(_thisStrpcs) <= 1) {
         alert("默认\"显示\"Url地址长度应大于2个字符小于50个字符，汉子占两个字符!");
         return false;
     } else {
-//        if (!re.test(_pcs.val())) {
-//            alert("默认\"显示\"Url地址格式不正确，请重新输入");
-//            _pcs.val("");
-//            return false;
-//        }
         if (_pcs.val().indexOf(dm) == -1) {
             alert("默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
@@ -941,12 +933,14 @@ function updateOk() {
         if (_mib.val().indexOf(dm) == -1) {
             alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
-        } else {
-            if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
-                alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-                return false;
-            }
         }
+        //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+//        else {
+//            if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
+//                alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+//                return false;
+//            }
+//        }
     }
     if (_mibs.val() != ""||_mibs.val() != "空") {
         if (_mibs.val().indexOf(dm) == -1) {

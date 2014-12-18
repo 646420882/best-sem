@@ -151,20 +151,31 @@ public class AssistantCreativeController extends WebContextSupport {
                                        @RequestParam(value = "status") Integer s,
                                        @RequestParam(value = "d", required = false, defaultValue = "0") Integer d) {
         try {
+            UUID uuidRandom=UUID.randomUUID();
+           String uuid=uuidRandom.toString().replaceAll("-","");
             CreativeDTO creativeEntity = new CreativeDTO();
             creativeEntity.setAccountId(AppContext.getAccountId());
             creativeEntity.setTitle(title);
 
             creativeEntity.setDescription1(de1);
             creativeEntity.setDescription2(de2);
-            creativeEntity.setPcDestinationUrl(pc);
+            if(pc.indexOf("?")>-1){
+                creativeEntity.setPcDestinationUrl(pc+"&pk="+uuid);
+            }else{
+                creativeEntity.setPcDestinationUrl(pc+"?pk="+uuid);
+            }
             creativeEntity.setPcDisplayUrl(pcs);
-            creativeEntity.setMobileDestinationUrl(mib);
+            if(mib.indexOf("?")>-1){
+                creativeEntity.setMobileDestinationUrl(mib+"&pk="+uuid);
+            }else{
+                creativeEntity.setMobileDestinationUrl(mib+"?pk="+uuid);
+            }
             creativeEntity.setMobileDisplayUrl(mibs);
             creativeEntity.setPause(bol);
             creativeEntity.setStatus(s);
             creativeEntity.setDevicePreference(d);
             creativeEntity.setLocalStatus(1);
+            creativeEntity.setKey(uuid);
             if (aid.length() > OBJ_SIZE) {
                 creativeEntity.setAdgroupObjId(aid);
                 creativeEntity.setCreativeId(null);
@@ -222,14 +233,28 @@ public class AssistantCreativeController extends WebContextSupport {
                                @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
                                @RequestParam(value = "pause") Boolean bol) {
         CreativeDTO creativeEntityFind = null;
+        UUID uuidRandom=UUID.randomUUID();
+        String uuid=uuidRandom.toString().replaceAll("-","");
         if (oid.length() > OBJ_SIZE) {
             creativeEntityFind = creativeService.findByObjId(oid);
             creativeEntityFind.setTitle(title);
             creativeEntityFind.setDescription1(de1);
             creativeEntityFind.setDescription2(de2);
-            creativeEntityFind.setPcDestinationUrl(pc);
+            if(pc.indexOf("pk=")==-1){
+                if(pc.indexOf("?")>-1){
+                    creativeEntityFind.setPcDestinationUrl(pc+"&pk="+uuid);
+                }else{
+                    creativeEntityFind.setPcDestinationUrl(pc+"?pk="+uuid);
+                }
+            }
             creativeEntityFind.setPcDisplayUrl(pcs);
-            creativeEntityFind.setMobileDestinationUrl(mib);
+            if(mib.indexOf("pk=")==-1){
+                if(mib.indexOf("?")>-1){
+                    creativeEntityFind.setMobileDestinationUrl(mib+"&pk="+uuid);
+                }else{
+                    creativeEntityFind.setMobileDestinationUrl(mib+"?pk="+uuid);
+                }
+            }
             creativeEntityFind.setMobileDisplayUrl(mibs);
             creativeEntityFind.setPause(bol);
             creativeEntityFind.setLocalStatus(1);
@@ -243,9 +268,21 @@ public class AssistantCreativeController extends WebContextSupport {
             creativeEntityFind.setTitle(title);
             creativeEntityFind.setDescription1(de1);
             creativeEntityFind.setDescription2(de2);
-            creativeEntityFind.setPcDestinationUrl(pc);
+            if(pc.indexOf("pk=")==-1){
+                if(pc.indexOf("?")>-1){
+                    creativeEntityFind.setPcDestinationUrl(pc+"&pk="+uuid);
+                }else{
+                    creativeEntityFind.setPcDestinationUrl(pc+"?pk="+uuid);
+                }
+            }
             creativeEntityFind.setPcDisplayUrl(pcs);
-            creativeEntityFind.setMobileDestinationUrl(mib);
+            if(mib.indexOf("pk=")==-1){
+                if(mib.indexOf("?")>-1){
+                    creativeEntityFind.setMobileDestinationUrl(mib+"&pk="+uuid);
+                }else{
+                    creativeEntityFind.setMobileDestinationUrl(mib+"?pk="+uuid);
+                }
+            }
             creativeEntityFind.setMobileDisplayUrl(mibs);
             creativeEntityFind.setPause(bol);
 
@@ -425,8 +462,8 @@ public class AssistantCreativeController extends WebContextSupport {
         creativeTypes.setTitle(title);
         creativeTypes.setDescription1(desc1);
         creativeTypes.setDescription2(desc2);
-        creativeTypes.setPcDisplayUrl(pcUrl);
-        creativeTypes.setPcDestinationUrl(pcsUrl);
+        creativeTypes.setPcDestinationUrl(pcUrl);
+        creativeTypes.setPcDisplayUrl(pcsUrl);
         creativeTypes.setAdgroupId(aid);
         creativeTypes.setDevicePreference(1);
         CommonService commonService= BaiduServiceSupport.getCommonService(bad.getBaiduUserName(),bad.getBaiduPassword(),bad.getToken());

@@ -35,6 +35,8 @@ public class CreativeDTO extends AccountIdDTO {
 
     private Integer localStatus;//本地状态1为新增,2为修改,3为删除,4为级联删除标识
 
+    private String key;//自定义id
+
 
     public Long getCreativeId() {
         return creativeId;
@@ -148,10 +150,18 @@ public class CreativeDTO extends AccountIdDTO {
         this.localStatus = localStatus;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     @Override
     public String toString() {
-        return "CreativeDTOs{" +
-                ", creativeId=" + creativeId +
+        return "CreativeDTO{" +
+                "creativeId=" + creativeId +
                 ", adgroupId=" + adgroupId +
                 ", adgroupObjId='" + adgroupObjId + '\'' +
                 ", title='" + title + '\'' +
@@ -165,6 +175,7 @@ public class CreativeDTO extends AccountIdDTO {
                 ", status=" + status +
                 ", devicePreference=" + devicePreference +
                 ", localStatus=" + localStatus +
+                ", key='" + key + '\'' +
                 '}';
     }
 }

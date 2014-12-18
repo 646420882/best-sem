@@ -20,10 +20,10 @@ public class CreativeType
   private String title;
   private String description1;
   private String description2;
-  private String pcDestinationUrl;
-  private String pcDisplayUrl;
-  private String mobileDestinationUrl;
-  private String mobileDisplayUrl;
+  private String pcDestinationUrl;//实际访问Url
+  private String pcDisplayUrl;//显示Url
+  private String mobileDestinationUrl;//移动实际访问Url
+  private String mobileDisplayUrl;//移动显示Url
   private Boolean pause;
   private Integer status;
   private Integer devicePreference;

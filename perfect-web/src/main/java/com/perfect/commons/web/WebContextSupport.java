@@ -21,6 +21,7 @@ public class WebContextSupport   {
     public static final String FAIL = "0";//失败
     public static final String EXCEPTION = "3";//异常;
     public static final String NOLOGIN = "4";//未登陆;
+    public static final String DATA="data";
 
     public void writeHtml(String html, HttpServletResponse response) {
         try {

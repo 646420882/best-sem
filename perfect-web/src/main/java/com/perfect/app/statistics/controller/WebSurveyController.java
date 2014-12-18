@@ -4,12 +4,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by XiaoWei on 2014/11/19.
  */
 @Controller
 @RequestMapping("/pftstis")
-public class Websurvey {
+public class WebSurveyController {
 
     /**
      * 调转到“网站概况”页面
@@ -17,9 +19,14 @@ public class Websurvey {
      * @return
      */
     @RequestMapping("/getIndex")
-    public ModelAndView convertIndex(){
-        return new ModelAndView("census/index");
+    public ModelAndView convertIndex(HttpServletRequest request){
+
+        return new ModelAndView("census/register");
     }
+
+ /*   public ModelAndView convertRegister(){
+        return new ModelAndView("census/register");
+    }*/
 
     /**
      * 跳转到“受访页面”页面

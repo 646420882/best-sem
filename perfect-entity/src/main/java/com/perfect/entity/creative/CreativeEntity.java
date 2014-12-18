@@ -63,6 +63,9 @@ public class CreativeEntity extends AccountIdEntity {
     @Field("ls")
     private Integer localStatus;//本地状态1为新增,2为修改,3为删除,4为级联删除标识
 
+    @Field("k")
+    private String key;
+
     public String getAdgroupObjId() {
         return adgroupObjId;
     }
@@ -216,27 +219,38 @@ public class CreativeEntity extends AccountIdEntity {
         return devicePreference;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public void delete() {
     }
 
+    @Override
     public String toString() {
-        String outputString = "";
-        return super.toString() + "[" +
-                "creativeId" + ":" + getCreativeId() + "," +
-                "adgroupId" + ":" + getAdgroupId() + "," +
-                "title" + ":" + getTitle() + "," +
-                "description1" + ":" + getDescription1() + "," +
-                "description2" + ":" + getDescription2() + "," +
-                "pcDestinationUrl" + ":" + getPcDestinationUrl() + "," +
-                "pcDisplayUrl" + ":" + getPcDisplayUrl() + "," +
-                "mobileDestinationUrl" + ":" + getMobileDestinationUrl() + "," +
-                "mobileDisplayUrl" + ":" + getMobileDisplayUrl() + "," +
-                "pause" + ":" + getPause() + "," +
-                "status" + ":" + getStatus() + "," +
-                "devicePreference" + ":" + getDevicePreference() + "]"
-                + outputString;
+        return "CreativeEntity{" +
+                "id='" + id + '\'' +
+                ", creativeId=" + creativeId +
+                ", adgroupId=" + adgroupId +
+                ", adgroupObjId='" + adgroupObjId + '\'' +
+                ", title='" + title + '\'' +
+                ", description1='" + description1 + '\'' +
+                ", description2='" + description2 + '\'' +
+                ", pcDestinationUrl='" + pcDestinationUrl + '\'' +
+                ", pcDisplayUrl='" + pcDisplayUrl + '\'' +
+                ", mobileDestinationUrl='" + mobileDestinationUrl + '\'' +
+                ", mobileDisplayUrl='" + mobileDisplayUrl + '\'' +
+                ", pause=" + pause +
+                ", status=" + status +
+                ", devicePreference=" + devicePreference +
+                ", localStatus=" + localStatus +
+                ", key='" + key + '\'' +
+                '}';
     }
-
 
     public String getId() {
         return id;

@@ -3,6 +3,7 @@ package com.perfect.service;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.AccountAllStateDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoNoPasswordDTO;
 
 import java.util.List;
 import java.util.Map;
