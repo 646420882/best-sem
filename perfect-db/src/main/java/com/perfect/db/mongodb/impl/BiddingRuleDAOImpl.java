@@ -185,6 +185,11 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
     }
 
     @Override
+    public boolean isPause(Long accountId, Long keywordId) {
+        return getMongoTemplate().findOne(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and(KEYWORD_ID).is(keywordId).and("ebl").is(false)), getEntityClass()) != null;
+    }
+
+    @Override
     public List<BiddingRuleDTO> findByKeywordIds(List<Long> ids) {
         return convertToDTOList(getMongoTemplate().find(Query.query(Criteria.where(KEYWORD_ID).in(ids)), getEntityClass()));
     }
