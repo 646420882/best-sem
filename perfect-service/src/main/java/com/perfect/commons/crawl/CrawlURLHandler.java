@@ -2,14 +2,12 @@ package com.perfect.commons.crawl;
 
 import com.perfect.commons.constants.WebSiteConstants;
 import com.perfect.dao.sys.CrawlWordDAO;
-import com.perfect.db.mongodb.impl.CrawlWordDAOImpl;
 import com.perfect.dto.CrawlWordDTO;
 import com.perfect.utils.json.JSONUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -48,7 +46,7 @@ public class CrawlURLHandler implements Runnable {
     private JedisPool pool;
 
     @Resource
-    private CrawlWordDAO crawlWordDAO1;
+    private CrawlWordDAO crawlWordDAO;
 
     private CrawlURLHandler() {
         CrawlURLHandler.JedisPools.init("182.150.24.24");
@@ -66,10 +64,8 @@ public class CrawlURLHandler implements Runnable {
             logger.info("starting reading data...");
         }
 
-        //
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-        CrawlWordDAO crawlWordDAO = (CrawlWordDAOImpl) context.getBean("crawlWordDAO");
-        //
+//        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+//        CrawlWordDAO crawlWordDAO = (CrawlWordDAOImpl) context.getBean("crawlWordDAO");
 
         //从本地缓存中取值放于阻塞队列中
         sites.forEach(site -> cacheMap.computeIfAbsent(site, (key) -> crawlWordDAO.findBySite(site)));
