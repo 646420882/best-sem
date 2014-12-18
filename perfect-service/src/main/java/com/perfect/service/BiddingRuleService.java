@@ -23,9 +23,9 @@ public interface BiddingRuleService {
 
     void createRule(BiddingRuleDTO biddingRuleDTO);
 
-    void disableRule(String id);
+    void disableRule(Long keywordId);
 
-    void enableRule(String id);
+    void enableRule(Long keywordId);
 
     void save(BiddingRuleDTO biddingRuleDTO);
 

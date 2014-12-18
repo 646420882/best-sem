@@ -1,5 +1,6 @@
 package com.perfect.service.impl;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.bidding.BiddingRuleDAO;
 import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.param.BiddingRuleParam;
@@ -45,13 +46,13 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public void disableRule(String id) {
-        biddingRuleDAO.disableRule(id);
+    public void disableRule(Long keywordId) {
+        biddingRuleDAO.disableRule(AppContext.getAccountId(), keywordId);
     }
 
     @Override
-    public void enableRule(String id) {
-        biddingRuleDAO.enableRule(id);
+    public void enableRule(Long keywordId) {
+        biddingRuleDAO.enableRule(AppContext.getAccountId(), keywordId);
     }
 
     @Override

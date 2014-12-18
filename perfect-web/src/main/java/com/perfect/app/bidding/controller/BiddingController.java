@@ -36,6 +36,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -679,6 +680,19 @@ public class BiddingController {
         return new ModelAndView(jsonView);
     }
 
+    @RequestMapping(value = "/pauseBidding", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView pauseBidding(@RequestParam(value = "keywordId") Long keywordId,
+                                     @RequestParam(value = "biddingStatus") Integer biddingStatus) {
+        if (biddingStatus == 1) {
+            //对当前关键词启动竞价
+            biddingRuleService.enableRule(keywordId);
+        } else if (biddingStatus == 0) {
+            //暂停竞价
+            biddingRuleService.disableRule(keywordId);
+        }
+        return new ModelAndView(getJsonView(null));
+    }
+
     @RequestMapping(value = "/rank", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView checkCurrentRank(HttpServletRequest request,
                                          @RequestParam(value = "ids", required = true) Long[] ids
@@ -864,5 +878,17 @@ public class BiddingController {
         return new ModelAndView(jsonView);
     }
 
+    private View getJsonView(Map<String, Object> attributes) {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        if (attributes == null) {
+            jsonView.setAttributesMap(new HashMap<String, Object>(1) {{
+                put("stat", true);
+            }});
+            return jsonView;
+        }
+
+        jsonView.setAttributesMap(attributes);
+        return jsonView;
+    }
 
 }

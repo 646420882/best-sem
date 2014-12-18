@@ -14,21 +14,19 @@ import java.util.Map;
  */
 public interface BiddingRuleDAO extends HeyCrudRepository<BiddingRuleDTO, Long> {
 
-    public void createBidding(BiddingRuleDTO biddingRuleDTO);
+    void createBidding(BiddingRuleDTO biddingRuleDTO);
 
-//    public List<BiddingRuleDTO> findByCampagainId(long cid, int skip, int limit, String field, boolean asc);
+    BiddingRuleDTO getBiddingRuleByKeywordId(Long keywordId);
 
-    public BiddingRuleDTO getBiddingRuleByKeywordId(Long keywordId);
+    List<BiddingRuleDTO> getReadyRule();
 
-    public List<BiddingRuleDTO> getReadyRule();
+    void disableRule(Long accountId, Long keywordId);
 
-    public boolean disableRule(String id);
-
-    public List<BiddingRuleDTO> getTaskByAccoundId(String userName, Long id, long hour);
+    List<BiddingRuleDTO> getTaskByAccoundId(String userName, Long id, long hour);
 
     void updateToNextRunTime(List<BiddingRuleDTO> tasks);
 
-    void enableRule(String id);
+    void enableRule(Long accountId, Long keywordId);
 
     List<BiddingRuleDTO> findByKeywordIds(List<Long> ids);
 

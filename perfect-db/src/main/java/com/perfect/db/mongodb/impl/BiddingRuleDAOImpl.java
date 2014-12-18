@@ -154,8 +154,11 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
     }
 
     @Override
-    public boolean disableRule(String id) {
-        return false;
+    public void disableRule(Long accountId, Long keywordId) {
+        getMongoTemplate().findAndModify(
+                Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and(KEYWORD_ID).is(keywordId)),
+                Update.update("ebl", false),
+                getEntityClass());
     }
 
     @Override
@@ -174,8 +177,11 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
 
 
     @Override
-    public void enableRule(String id) {
-        getMongoTemplate().findAndModify(Query.query(Criteria.where(getId()).is(id)), Update.update("ebl", 1), getEntityClass());
+    public void enableRule(Long accountId, Long keywordId) {
+        getMongoTemplate().findAndModify(
+                Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and(KEYWORD_ID).is(keywordId)),
+                Update.update("ebl", true),
+                getEntityClass());
     }
 
     @Override
