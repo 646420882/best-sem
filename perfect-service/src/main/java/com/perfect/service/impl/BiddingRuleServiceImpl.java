@@ -56,6 +56,11 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
+    public boolean isPause(Long accountId, Long keywordId) {
+        return biddingRuleDAO.isPause(accountId, keywordId);
+    }
+
+    @Override
     public void save(BiddingRuleDTO biddingRuleDTO) {
         biddingRuleDAO.save(biddingRuleDTO);
     }

@@ -27,6 +27,8 @@ public interface BiddingRuleService {
 
     void enableRule(Long keywordId);
 
+    boolean isPause(Long accountId, Long keywordId);
+
     void save(BiddingRuleDTO biddingRuleDTO);
 
     void updateRule(BiddingRuleParam param);

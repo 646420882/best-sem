@@ -1396,10 +1396,10 @@
                     selectedKeywordIds = [];
                     selectedKeywordIds.push(keywordId);
                 } else if (iCol === 21) {   //修改竞价状态
-                    if (bidStatus == 0 && bidRule.length > 0) {//竞价状态: 暂停
+                    if (bidStatus == "已暂停") {//竞价状态: 暂停
                         if (confirm("您要启动竞价吗?")) {
                             $.ajax({
-                                url: "/keyword/update",
+                                url: "/bidding/pauseBidding",
                                 dataType: "json",
                                 async: false,
                                 data: {
@@ -1417,10 +1417,10 @@
                                 }
                             });
                         }
-                    } else if (bidStatus == 1 && bidRule.length > 0) {//竞价状态: 启动
+                    } else if (bidStatus == "已启动") {//竞价状态: 启动
                         if (confirm("您要暂停竞价吗?")) {
                             $.ajax({
-                                url: "/keyword/update",
+                                url: "/bidding/pauseBidding",
                                 dataType: "json",
                                 async: false,
                                 data: {
@@ -1455,27 +1455,28 @@
 
             gridComplete: function () {
 //            alert(JSON.stringify($("#table1").jqGrid("getRowData")));
-                $("#jqgh_table1_biddingStatus").on('click', function () {
-                    $(".TB_overlayBG").css({
-                        display: "block", height: $(document).height()
-                    });
-                    $(".box9").css({
-                        left: ($("body").width() - $(".box9").width()) / 2 - 20 + "px",
-                        top: ($(window).height() - $(".box9").height()) / 2 + $(window).scrollTop() + "px",
-                        display: "block"
-                    });
-                });
-
-                $("#jqgh_table1_statusStr").on('click', function () {
-                    $(".TB_overlayBG").css({
-                        display: "block", height: $(document).height()
-                    });
-                    $(".box7").css({
-                        left: ($("body").width() - $(".box7").width()) / 2 - 20 + "px",
-                        top: ($(window).height() - $(".box7").height()) / 2 + $(window).scrollTop() + "px",
-                        display: "block"
-                    });
-                });
+//
+//                $("#jqgh_table1_biddingStatus").on('click', function () {
+//                    $(".TB_overlayBG").css({
+//                        display: "block", height: $(document).height()
+//                    });
+//                    $(".box9").css({
+//                        left: ($("body").width() - $(".box9").width()) / 2 - 20 + "px",
+//                        top: ($(window).height() - $(".box9").height()) / 2 + $(window).scrollTop() + "px",
+//                        display: "block"
+//                    });
+//                });
+//
+//                $("#jqgh_table1_statusStr").on('click', function () {
+//                    $(".TB_overlayBG").css({
+//                        display: "block", height: $(document).height()
+//                    });
+//                    $(".box7").css({
+//                        left: ($("body").width() - $(".box7").width()) / 2 - 20 + "px",
+//                        top: ($(window).height() - $(".box7").height()) / 2 + $(window).scrollTop() + "px",
+//                        display: "block"
+//                    });
+//                });
                 records = grid.getGridParam("records");
                 if (records == 0) {
                     return false;

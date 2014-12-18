@@ -28,6 +28,8 @@ public interface BiddingRuleDAO extends HeyCrudRepository<BiddingRuleDTO, Long> 
 
     void enableRule(Long accountId, Long keywordId);
 
+    boolean isPause(Long accountId, Long keywordId);
+
     List<BiddingRuleDTO> findByKeywordIds(List<Long> ids);
 
     void removeByKeywordId(Long id);
