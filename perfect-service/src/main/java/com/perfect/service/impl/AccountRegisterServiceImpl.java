@@ -4,7 +4,7 @@ import com.perfect.dao.account.AccountRegisterDAO;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountRegisterService;
-import com.perfect.utils.MD5Utils;
+import com.perfect.utils.MD5;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,8 +23,8 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
     public int addAccount(String account, String pwd, String company, String email) {
 
         SystemUserDTO systemUserDTO = new SystemUserDTO();
-        MD5Utils.Builder md5Builder = new MD5Utils.Builder();
-        MD5Utils md5 = md5Builder.password(pwd).salt(account).build();
+        MD5.Builder md5Builder = new MD5.Builder();
+        MD5 md5 = md5Builder.password(pwd).salt(account).build();
         SystemUserDTO administrator = accountRegisterDAO.getAccount("administrator");
         systemUserDTO.setAccess(2);
         systemUserDTO.setBaiduAccounts(new ArrayList<BaiduAccountInfoDTO>());

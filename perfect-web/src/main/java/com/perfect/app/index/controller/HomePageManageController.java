@@ -8,7 +8,7 @@ import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemUserService;
-import com.perfect.utils.MD5Utils;
+import com.perfect.utils.MD5;
 import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
@@ -274,8 +274,8 @@ public class HomePageManageController extends WebContextSupport {
 
                 if (baiduUserName != null) {
                     //重置密码
-                    MD5Utils.Builder md5Builder = new MD5Utils.Builder();
-                    MD5Utils md5 = md5Builder.password(pwd).salt(userName).build();
+                    MD5.Builder md5Builder = new MD5.Builder();
+                    MD5 md5 = md5Builder.password(pwd).salt(userName).build();
                     boolean isSuccess = systemUserService.updatePassword(userName, md5.getMD5());
                     if (isSuccess) {
                         jedis.expire(key, 0);

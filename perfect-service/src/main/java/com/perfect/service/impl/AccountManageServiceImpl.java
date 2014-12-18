@@ -15,7 +15,7 @@ import com.perfect.dto.baidu.AccountAllStateDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.utils.DateUtils;
-import com.perfect.utils.MD5Utils;
+import com.perfect.utils.MD5;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.json.JSONUtils;
 import org.springframework.stereotype.Service;
@@ -39,10 +39,10 @@ public class AccountManageServiceImpl implements AccountManageService {
     public int updatePwd(String password, String newPwd) {
         SystemUserDTO currUserInfo = getCurrUserInfo();
 
-        MD5Utils.Builder builder = new MD5Utils.Builder();
-        MD5Utils md5 = builder.password(password).salt(currUserInfo.getUserName()).build();
+        MD5.Builder builder = new MD5.Builder();
+        MD5 md5 = builder.password(password).salt(currUserInfo.getUserName()).build();
 
-        MD5Utils md5NewPwd = builder.password(newPwd).salt(currUserInfo.getUserName()).build();
+        MD5 md5NewPwd = builder.password(newPwd).salt(currUserInfo.getUserName()).build();
 
         int i;
         if (md5.getMD5().equals(currUserInfo.getPassword())) {
@@ -62,8 +62,8 @@ public class AccountManageServiceImpl implements AccountManageService {
     public int JudgePwd(String password) {
         SystemUserDTO currUserInfo = getCurrUserInfo();
 
-        MD5Utils.Builder builder = new MD5Utils.Builder();
-        MD5Utils md5 = builder.password(password).salt(currUserInfo.getUserName()).build();
+        MD5.Builder builder = new MD5.Builder();
+        MD5 md5 = builder.password(password).salt(currUserInfo.getUserName()).build();
         int i;
         if (md5.getMD5().equals(currUserInfo.getPassword())) {
             i = 1;
