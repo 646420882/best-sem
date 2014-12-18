@@ -6,11 +6,11 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Created by baizz on 2014-7-6.
  */
-public class MD5Utils {
+public class MD5 {
 
     private String md5;
 
-    private MD5Utils(String password, Object salt) {
+    private MD5(String password, Object salt) {
         this.md5 = generateMD5(password + "{" + salt.toString() + "}");
     }
 
@@ -62,8 +62,8 @@ public class MD5Utils {
             return this;
         }
 
-        public MD5Utils build() {
-            return new MD5Utils(password, salt);
+        public MD5 build() {
+            return new MD5(password, salt);
         }
     }
 }

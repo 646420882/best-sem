@@ -1,6 +1,6 @@
 package com.perfect.commons;
 
-import com.perfect.utils.MD5Utils;
+import com.perfect.utils.MD5;
 import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -30,8 +30,8 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             //密码验证失败
             CustomUserDetailsService.setUsernameNotFound(false);
             String userName = CustomUserDetailsService.getUserName();
-            MD5Utils.Builder md5Builder = new MD5Utils.Builder();
-            MD5Utils md5 = md5Builder.password(userName).salt("passwd").build();
+            MD5.Builder md5Builder = new MD5.Builder();
+            MD5 md5 = md5Builder.password(userName).salt("passwd").build();
             String key = md5.getMD5();
 
             Jedis jedis = null;
