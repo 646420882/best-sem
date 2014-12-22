@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -91,19 +90,14 @@ public class PerfectStatistics extends WebContextSupport {
     public void gettests(HttpServletRequest request, HttpServletResponse response,
                          String a,String b,String c,String d,String e,String f,String g,
                          String h,String i,String j,String k,String l,String m,String[] n){
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("F://statistics.log"), true));
-
-
+        /*try {
             String Url = request.getHeader("referer");
             //获取用户IP地址
             String ip = getIpAddr(request);
             System.out.println(ip);
-            writer.write(Url+"\r\n\r\n");
-            writer.close();
         } catch (IOException e1) {
             e1.printStackTrace();
-        }
+        }*/
     }
 
     /**
