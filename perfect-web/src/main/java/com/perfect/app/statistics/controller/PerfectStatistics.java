@@ -65,6 +65,24 @@ public class PerfectStatistics extends WebContextSupport {
         return new ModelAndView("avatar/cookie");
     }
 
+    /**
+     * 获取用户IP地址
+     * @param request
+     * @return
+     */
+    public String getIpAddr(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
+    }
 
     /**
      * 参数说明：
@@ -84,81 +102,9 @@ public class PerfectStatistics extends WebContextSupport {
      * n 用户自定义数组
      * Url：客户端网页目标地址
      * ip: java获取客户端IP地址
+     * TODO 后期更换参数处理
      * @return
      */
-    @RequestMapping(value = "/statistics", method = {RequestMethod.GET, RequestMethod.POST})
-    public void gettests(HttpServletRequest request, HttpServletResponse response,
-                         String a,String b,String c,String d,String e,String f,String g,
-                         String h,String i,String j,String k,String l,String m,String[] n){
-        /*try {
-            String Url = request.getHeader("referer");
-            //获取用户IP地址
-            String ip = getIpAddr(request);
-            System.out.println(ip);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }*/
-    }
-
-    /**
-     * 获取用户IP地址
-     * @param request
-     * @return
-     */
-    public String getIpAddr(HttpServletRequest request) {
-        String ip = request.getHeader("x-forwarded-for");
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        return ip;
-    }
-    //
-    private String Parameters(int a,String[] osAnBrowser){
-        switch (a){
-            case 0:
-                return "Cookie中的UUID：";
-            case 1:
-                return "电脑系统信息：";
-            case 2:
-                return "浏览器信息：";
-            case 3:
-                return "屏幕分辨率信息：";
-            case 4:
-                return "是否支持cookie：";
-            case 5:
-                return "是否支持java：";
-            case 6:
-                return "屏幕颜色渲染bit：";
-            case 7:
-                return "flash版本：";
-            case 8:
-                return "访问目标地址时间：";
-            case 9:
-                return "网页的访问来源：";
-            case 10:
-                return "IP：";
-            case 11:
-                if(osAnBrowser[11] == null || osAnBrowser[11] == ""){
-                    return "地区：未知区域";
-                }
-                return "地区：";
-            case 12:
-                if(osAnBrowser[12].equals("0")){
-                    return "使用设备：PC端->";
-                }else if(osAnBrowser[12].equals("1")){
-                    return "使用设备：移动端->";
-                }else{
-                    return "使用设备：其他";
-                }
-        }
-        return "未知";
-    }
 
     @RequestMapping(value = "/saveParams", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getAvg(HttpServletResponse response,HttpServletRequest request,
