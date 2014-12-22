@@ -1322,7 +1322,7 @@
                 {label: ' 推广单元', name: 'adgroupName', sortable: false, align: 'center', hidden: true},
                 {label: ' 匹配模式', name: 'matchType', sortable: false, align: 'center', hidden: true},
                 {label: ' 高级短语匹配模式', name: 'phraseType', sortable: false, align: 'center', hidden: true},
-                {label: ' 当前排名', name: 'currentRank', sortable: false, align: 'center'},
+                {label: ' 当前排名', name: 'currentRank', sortable: false, align: 'center', classes: 'jqgrid_td_cursor'},
                 {label: ' 消费', name: 'cost', sortable: false, width: 80, align: 'center'},
                 {label: ' 展现量', name: 'impression', sortable: false, width: 80, align: 'center'},
                 {label: ' 点击量', name: 'click', sortable: false, width: 80, align: 'center', hidden: true},
@@ -1333,7 +1333,7 @@
                 {label: ' 质量度', name: 'pcQuality', sortable: false, width: 80, align: 'center'},
                 {label: ' 移动端质量度', name: 'mQuality', sortable: false, align: 'center'},
                 {label: ' 状态', name: 'statusStr', sortable: false, align: 'center'},
-                {label: ' 竞价规则', name: 'ruleDesc', sortable: false, width: 200, align: 'center'},
+                {label: ' 竞价规则', name: 'ruleDesc', sortable: false, width: 200, align: 'center', classes: 'jqgrid_td_cursor'},
                 {
                     label: ' Pc URL',
                     name: 'pcDestinationUrl',
@@ -1349,7 +1349,7 @@
                     align: 'center',
                     formatter: 'link'
                 },
-                {label: ' 竞价状态', name: 'biddingStatus', sortable: false, align: 'center'},
+                {label: ' 竞价状态', name: 'biddingStatus', sortable: false, align: 'center', classes: 'jqgrid_td_cursor'},
                 {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true},
                 {label: ' adgroupId', name: 'adgroupId', sortable: false, align: 'center', hidden: true}
             ],

@@ -542,10 +542,7 @@ public class BiddingController {
         List<KeywordBiddingInfoDTO> resultList = new ArrayList<>();
 
         //获取entities的质量度
-        List<Long> tmpKeywordIdList = new ArrayList<>();
-        for (KeywordDTO entity : entities) {
-            tmpKeywordIdList.add(entity.getKeywordId());
-        }
+        List<Long> tmpKeywordIdList = entities.stream().map(KeywordDTO::getKeywordId).collect(Collectors.toList());
         Map<Long, Quality10Type> quality10TypeMap = keyword10QualityService.getKeyword10Quality(tmpKeywordIdList);
         Integer quality10TypeSize = quality10TypeMap.size();
 
