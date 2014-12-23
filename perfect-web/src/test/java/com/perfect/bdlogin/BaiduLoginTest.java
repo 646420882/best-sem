@@ -40,7 +40,7 @@ public class BaiduLoginTest extends JUnitBaseTest {
                 e.printStackTrace();
             }
         }
-        cookieService.returnOne(cookieDTO);
+        cookieService.returnOne(cookieDTO.getId());
     }
 
 }

@@ -149,15 +149,10 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
     }
 
     @Override
-    public List<BiddingRuleDTO> getReadyRule() {
-        return null;
-    }
-
-    @Override
     public void disableRule(Long accountId, Long keywordId) {
         getMongoTemplate().findAndModify(
                 Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and(KEYWORD_ID).is(keywordId)),
-                Update.update("ebl", false),
+                Update.update("ebl", false).set("r", false),
                 getEntityClass());
     }
 
@@ -272,6 +267,14 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
                 FindAndModifyOptions.options().returnNew(true), getEntityClass());
 
         return convertToDTO(ruleEntity);
+    }
+
+    @Override
+    public void hotRecovery(String username, Long bdAccountId) {
+        BaseMongoTemplate.getUserMongo(username).updateMulti(
+                Query.query(Criteria.where(ACCOUNT_ID).is(bdAccountId).and("ebl").is(true)),
+                Update.update("r", false),
+                getEntityClass());
     }
 
     private BiddingRuleDTO convertToDTO(BiddingRuleEntity biddingRuleEntity) {

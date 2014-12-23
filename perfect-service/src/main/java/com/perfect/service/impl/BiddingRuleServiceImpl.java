@@ -66,12 +66,7 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public void updateRule(BiddingRuleParam entity) {
-    }
-
-    @Override
-    public List<BiddingRuleDTO> getReadyRule() {
-        return biddingRuleDAO.getReadyRule();
+    public void updateRule(BiddingRuleParam param) {
     }
 
     @Override
@@ -141,6 +136,11 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     @Override
     public BiddingRuleDTO takeOne(String userName, Long id, long hour) {
         return biddingRuleDAO.takeOne(userName, id, hour);
+    }
+
+    @Override
+    public void hotRecovery(String username, Long bdAccountId) {
+        biddingRuleDAO.hotRecovery(username, bdAccountId);
     }
 
 

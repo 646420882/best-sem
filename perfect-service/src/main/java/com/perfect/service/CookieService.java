@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Created by baizz on 2014-11-10.
- * 2014-11-29 refactor
+ * 2014-12-23 refactor
  */
 public interface CookieService {
 
@@ -14,9 +14,7 @@ public interface CookieService {
 
     CookieDTO takeOne();
 
-    void returnOne(CookieDTO cookieDTO);
-
-    List<CookieDTO> allUnused();
+    void returnOne(String objectId);
 
     List<CookieDTO> findAll();
 

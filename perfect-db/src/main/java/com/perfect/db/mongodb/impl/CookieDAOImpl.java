@@ -18,10 +18,12 @@ import java.util.Map;
 
 /**
  * Created by baizz on 2014-11-10.
- * 2014-12-9 refactor
+ * 2014-12-23 refactor
  */
 @Repository("cookieDAO")
 public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> implements CookieDAO {
+
+    private static final int TIME_INT = 5_000;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -49,20 +51,11 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
     }
 
     @Override
-    public void returnOne(CookieDTO cookieDTO) {
-        cookieDTO.setIdle(true);
-        CookieEntity cookieEntity = ObjectUtils.convert(cookieDTO, getEntityClass());
-        getSysMongoTemplate().save(cookieEntity);
-    }
-
-    /**
-     * 查询最后执行时间在5分钟之前的账号
-     */
-    @Override
-    public List<CookieDTO> allUnused() {
-        return ObjectUtils.convert(getSysMongoTemplate()
-                .find(Query.query(Criteria.where("f").lte(System.currentTimeMillis() - 5 * 60 * 1000))
-                        .with(new Sort(Sort.Direction.ASC, "f")), getEntityClass()), getDTOClass());
+    public void returnOne(String objectId) {
+        getSysMongoTemplate().updateFirst(
+                Query.query(Criteria.where(SYSTEM_ID).is(objectId)),
+                Update.update("i", true).set("f", System.currentTimeMillis() + TIME_INT),
+                getEntityClass());
     }
 
     @Override

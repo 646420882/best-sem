@@ -33,8 +33,6 @@ public interface BiddingRuleService {
 
     void updateRule(BiddingRuleParam param);
 
-    List<BiddingRuleDTO> getReadyRule();
-
     List<BiddingRuleDTO> getTaskByAccountId(String userName, Long id, long hour);
 
     void updateRule(List<BiddingRuleDTO> tasks);
@@ -63,5 +61,12 @@ public interface BiddingRuleService {
     Integer countBiddingRuleDTOfindByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
 
     BiddingRuleDTO takeOne(String userName, Long id, long hour);
+
+    /**
+     * 对于竞价系统意外中断时, 某些关键词可能正在执行竞价
+     * <p>
+     * 当竞价系统恢复之后, 需要重启这些关键词的竞价规则
+     */
+    void hotRecovery(String username, Long bdAccountId);
 
 }
