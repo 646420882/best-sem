@@ -1,19 +1,29 @@
 package com.perfect.app.admin.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.AsynchronousReportService;
 import com.perfect.utils.DateUtils;
+import com.perfect.utils.json.JSONUtils;
+import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.AbstractView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by SubDong on 2014/10/8.
@@ -88,8 +98,36 @@ public class ReportPullController extends WebContextSupport {
             writeData(EXCEPTION, response, null);
             flag = -1;
         }
-        if (flag == 0) {
-            writeData(FAIL, response, null);
+        List<String> strings = new ArrayList<>();
+        Jedis jc = JRedisUtils.get();
+        String data = jc.get("_administrator_PullLog");
+        List<String> lists = new Gson().fromJson(data, new TypeToken<List<String>>() {}.getType());
+        strings.addAll(lists);
+        strings.add("数据拉取完毕");
+        String jsonData = new Gson().toJson(strings);
+        jc.set("_administrator_PullLog", jsonData);
+        jc.expire("_administrator_PullLog", 10);
+        if (jc != null) {
+            JRedisUtils.returnJedis(jc);
         }
+    }
+
+
+    @RequestMapping(value = "/admin/reportPull/getPullLog", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView getPullLog(){
+        Jedis jc = JRedisUtils.get();
+        String data = jc.get("_administrator_PullLog");
+        List<String> list = new Gson().fromJson(data, new TypeToken<List<String>>() {}.getType());
+        if(list == null || list.size()==0){
+            list = new ArrayList<>();
+            list.add("-1");
+        }
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> attributes = JSONUtils.getJsonMapData(list);
+        jsonView.setAttributesMap(attributes);
+        if (jc != null) {
+            JRedisUtils.returnJedis(jc);
+        }
+        return new ModelAndView(jsonView);
     }
 }
