@@ -185,7 +185,7 @@
                             Heartbeat = 10000;
                             $("#tijiao").removeClass("displayNone");
                             $("#tijiao").addClass("displayNone");
-                            $("#dataLog").append("<div style='font-weight: bold;margin-top: 10px;'>"+item+"</div>");
+                            $("#dataLog").append("<div style='font-size: 12px;margin-top: 10px;'>"+item+"</div>");
                         }
 
                     });

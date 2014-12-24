@@ -65,9 +65,9 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
     private static final String ADMIN_KEY_STRING = "_administrator_PullLog";
 
-    private static final String ADMIN_PROMPT_HEAD  = "开始拉取:";
+    private static final String ADMIN_PROMPT_HEAD  = "Start: ";
 
-    private static final String ADMIN_PROMPT_CENTRAL  = ":账户下的:";
+    private static final String ADMIN_PROMPT_CENTRAL  = " --> ";
 
     public void getAccountReportData(String dateStr, String userName) {
 
