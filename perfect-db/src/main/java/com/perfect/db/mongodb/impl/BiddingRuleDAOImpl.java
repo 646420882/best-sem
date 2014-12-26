@@ -12,6 +12,10 @@ import com.perfect.entity.bidding.StrategyEntity;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PaginationParam;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOptions;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -21,6 +25,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 
 /**
  * Created by yousheng on 2014/8/1.
@@ -158,8 +164,10 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
 
     @Override
     public List<BiddingRuleDTO> getTaskByAccoundId(String userName, Long id, long time) {
-        Query query = Query.query(Criteria.where("ebl").is(true).and("r").is(false).and("nxt").lte(time).not().and("ct")
-                .ne(0)
+        Query query = Query.query(Criteria.where("ebl").is(true)
+                .and("r").is(false)
+                .and("nxt").lte(time).not()
+                .and("ct").ne(0)
                 .and(ACCOUNT_ID).is(id));
         List<BiddingRuleEntity> list = BaseMongoTemplate.getUserMongo(userName).find(query, getEntityClass());
         return convertToDTOList(list);
@@ -277,6 +285,52 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
                 getEntityClass());
     }
 
+    /**
+     * 由中央调度器获取可以执行的竞价任务,
+     * 但不更改状态("r").
+     * <p>
+     *
+     * @param username
+     * @param time
+     * @return
+     */
+    @Override
+    public List<BiddingRuleDTO> getAvailableRules(String username, long time) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(username);
+        Criteria c = Criteria.where("ebl").is(true)
+                .and("r").is(false)
+                .and("nxt").not().lte(time)
+                .and("ct").ne(0);
+        Aggregation aggregation = Aggregation.newAggregation(match(c))
+                .withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
+        AggregationResults<BiddingRuleDTO> aggregationResults = mongoTemplate
+                .aggregate(aggregation, TBL_BIDDINGRULE, getDTOClass());
+
+//        aggregationResults.getMappedResults().stream().map(BiddingRuleIdVO::getId).forEach(results::add);
+        return aggregationResults.getMappedResults();
+    }
+
+    /**
+     * 竞价器根据objectId来获取相应的竞价规则,
+     * 并标示为运行状态.
+     * <p>
+     *
+     * @param username
+     * @param objectId
+     * @return
+     */
+    @Override
+    public BiddingRuleDTO takeOneById(String username, String objectId) {
+        BiddingRuleEntity ruleEntity = BaseMongoTemplate.getUserMongo(username)
+                .findAndModify(
+                        Query.query(Criteria.where(SYSTEM_ID).is(objectId)),
+                        Update.update("r", true),
+                        FindAndModifyOptions.options().returnNew(true),
+                        getEntityClass());
+
+        return convertToDTO(ruleEntity);
+    }
+
     private BiddingRuleDTO convertToDTO(BiddingRuleEntity biddingRuleEntity) {
         if (biddingRuleEntity == null) {
             return null;
@@ -296,4 +350,17 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
         });
         return dtoList;
     }
+
+//    class BiddingRuleIdVO {
+//
+//        private String id;
+//
+//        public String getId() {
+//            return id;
+//        }
+//
+//        public void setId(String id) {
+//            this.id = id;
+//        }
+//    }
 }

@@ -2,16 +2,25 @@ package com.perfect.controller;
 
 import com.perfect.base.JUnitBaseTest;
 import com.perfect.core.AppContext;
+import com.perfect.dao.bidding.BiddingRuleDAO;
+import com.perfect.service.BiddingRuleService;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by vbzer_000 on 2014/8/26.
  */
 public class BiddingControllerTest extends JUnitBaseTest {
+
+    @Resource
+    private BiddingRuleDAO biddingRuleDAO;
 
 
     @Test
@@ -24,6 +33,12 @@ public class BiddingControllerTest extends JUnitBaseTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
+    }
+
+    @Test
+    public void testBiding(){
+//        Map<String, List<String>> map = biddingRuleDAO.getAllEnableRules("jiehun");
+        System.out.println();
     }
 
 

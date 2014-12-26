@@ -43,4 +43,8 @@ public interface BiddingRuleDAO extends HeyCrudRepository<BiddingRuleDTO, Long> 
     BiddingRuleDTO takeOne(String userName, Long id, long hour);
 
     void hotRecovery(String username, Long bdAccountId);
+
+    List<BiddingRuleDTO> getAvailableRules(String username, long time);
+
+    BiddingRuleDTO takeOneById(String username, String objectId);
 }

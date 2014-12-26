@@ -69,4 +69,8 @@ public interface BiddingRuleService {
      */
     void hotRecovery(String username, Long bdAccountId);
 
+    List<BiddingRuleDTO> getAvailableRules(String username, long unixEpoch);
+
+    BiddingRuleDTO takeOneById(String username, String objectId);
+
 }

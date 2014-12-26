@@ -143,6 +143,16 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
         biddingRuleDAO.hotRecovery(username, bdAccountId);
     }
 
+    @Override
+    public List<BiddingRuleDTO> getAvailableRules(String username, long unixEpoch) {
+        return biddingRuleDAO.getAvailableRules(username, unixEpoch);
+    }
+
+    @Override
+    public BiddingRuleDTO takeOneById(String username, String objectId) {
+        return biddingRuleDAO.takeOneById(username, objectId);
+    }
+
 
     public long countRule(String userName) {
         return biddingRuleDAO.count();
