@@ -321,12 +321,15 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
      */
     @Override
     public BiddingRuleDTO takeOneById(String username, String objectId) {
+//        BiddingRuleEntity ruleEntity = BaseMongoTemplate.getUserMongo(username)
+//                .findAndModify(
+//                        Query.query(Criteria.where(SYSTEM_ID).is(objectId)),
+//                        Update.update("r", true),
+//                        FindAndModifyOptions.options().returnNew(true),
+//                        getEntityClass());
+
         BiddingRuleEntity ruleEntity = BaseMongoTemplate.getUserMongo(username)
-                .findAndModify(
-                        Query.query(Criteria.where(SYSTEM_ID).is(objectId)),
-                        Update.update("r", true),
-                        FindAndModifyOptions.options().returnNew(true),
-                        getEntityClass());
+                .findOne(Query.query(Criteria.where(SYSTEM_ID).is(objectId)), getEntityClass(), TBL_BIDDINGRULE);
 
         return convertToDTO(ruleEntity);
     }
