@@ -168,6 +168,7 @@
         $(document).ajaxStop(function () {
             ajaxbg.fadeOut(1000);
         });
+
         getPullLog = function(){
             $.ajax({
                 url: "/admin/reportPull/getPullLog",
@@ -178,18 +179,30 @@
                         $("#dataLog").empty();
                     }
                     $.each(data.rows,function(i,item){
+
                         if(item == '-1'){
                             clearInterval(getTime);
                             $("#tijiao").removeClass("displayNone");
+                            ix=0;
                         }else{
                             $("#tijiao").removeClass("displayNone");
                             $("#tijiao").addClass("displayNone");
-                            $("#dataLog").append("<div style='font-size: 12px;margin-top: 10px;'>"+item+"</div>");
+                            if(i == data.rows.length-1){
+                                if(data.rows[data.rows.length-1] == "数据拉取完毕"){
+                                    $("#dataLog").append("<div style='font-size: 12px;margin-top: 10px;'>"+item+"</div>");
+                                }else{
+                                    $("#dataLog").append("<div style='font-size: 12px;margin-top: 10px;'>"+item+"<img style='margin-left: 20px;' src='/public/img/loading.gif'></div>");
+                                }
+                            }else{
+                                $("#dataLog").append("<div style='font-size: 12px;margin-top: 10px;'>"+item+"</div>");
+                            }
                         }
-
                     });
                 }
+
             });
+
+
         }
         getPullLog();
     });

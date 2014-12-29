@@ -183,7 +183,7 @@ public class AsynchronousReport {
             e.printStackTrace();
         }
         int isGenerated = 0;
-        int sleepTime = 20 * 1000;
+        int sleepTime = 10 * 1000;
         int views = 0;
         isGenerated = reportStateResponse.getIsGenerated();
 
