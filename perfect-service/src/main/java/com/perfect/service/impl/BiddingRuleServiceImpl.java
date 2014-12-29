@@ -6,7 +6,7 @@ import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.param.BiddingRuleParam;
 import com.perfect.service.BiddingRuleService;
 import com.perfect.utils.paging.PaginationParam;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Collection;
@@ -19,7 +19,7 @@ import java.util.Map;
  *
  * @author yousheng
  */
-@Component("biddingRuleService")
+@Service("biddingRuleService")
 public class BiddingRuleServiceImpl implements BiddingRuleService {
 
     @Resource

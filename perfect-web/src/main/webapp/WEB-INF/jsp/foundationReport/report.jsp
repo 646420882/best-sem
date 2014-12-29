@@ -104,7 +104,7 @@
 </script>
 <script>
     var getPullLog;
-    var Heartbeat = 1000;
+    var heartbeat = 10000;
     var daterangepicker_start_date=null,daterangepicker_end_date=null,selectOP = 0,number=0;
     $(document).ready(function(){
         $("input[name=reservationa]").daterangepicker();
@@ -115,7 +115,8 @@
             daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
             $("#date").val(daterangepicker_start_date +" 至 "+ daterangepicker_end_date);
         });
-        var getTime = setInterval("getPullLog()", Heartbeat);
+
+        var getTime = setInterval("getPullLog()", heartbeat);
         $("#tijiao").click(function(){
             if(confirm("请再次确认拉取对象和时间是否正确"))
             {
@@ -151,7 +152,7 @@
                         }
                     });
                     $("#tijiao").addClass("displayNone");
-                    getTime = setInterval("getPullLog()", Heartbeat);
+                    getTime = setInterval("getPullLog()", heartbeat);
                 }else{
                     alert("请耐心等待,上一次的拉取操作尚未完成，请勿重复操作。")
                 }
@@ -179,10 +180,8 @@
                     $.each(data.rows,function(i,item){
                         if(item == '-1'){
                             clearInterval(getTime);
-                            Heartbeat = 10000;
                             $("#tijiao").removeClass("displayNone");
                         }else{
-                            Heartbeat = 10000;
                             $("#tijiao").removeClass("displayNone");
                             $("#tijiao").addClass("displayNone");
                             $("#dataLog").append("<div style='font-size: 12px;margin-top: 10px;'>"+item+"</div>");
@@ -192,6 +191,7 @@
                 }
             });
         }
+        getPullLog();
     });
 </script>
 </body>
