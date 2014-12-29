@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ import java.util.Map;
 @Repository("cookieDAO")
 public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> implements CookieDAO {
 
-    private static final int TIME_INT = 5_000;
+    private static final int TIME_PERIOD = 5_000;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -54,8 +55,15 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
     public void returnOne(String objectId) {
         getSysMongoTemplate().updateFirst(
                 Query.query(Criteria.where(SYSTEM_ID).is(objectId)),
-                Update.update("i", true).set("f", System.currentTimeMillis() + TIME_INT),
+                Update.update("i", true).set("f", Instant.now().getEpochSecond() + TIME_PERIOD),
                 getEntityClass());
+    }
+
+    @Override
+    public boolean delete(String id) {
+        return getSysMongoTemplate()
+                .remove(Query.query(Criteria.where(SYSTEM_ID).is(id)), getEntityClass())
+                .getN() > 0;
     }
 
     @Override
