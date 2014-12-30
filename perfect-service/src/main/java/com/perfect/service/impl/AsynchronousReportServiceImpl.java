@@ -108,8 +108,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<AccountReportDTO> pcList = httpFileHandler.getAccountReport(pcFilePath, 1);
-                acrmList = httpFileHandler.getAccountReport(mobileFilePath, 2);
+                List<AccountReportDTO> pcList = new ArrayList<>();
+                if(pcFilePath != null){
+                    pcList = httpFileHandler.getAccountReport(pcFilePath, 1);
+                }
+
+                if(mobileFilePath != null){
+                    acrmList = httpFileHandler.getAccountReport(mobileFilePath, 2);
+                }
+
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 AccountReportHandler task = new AccountReportHandler(pcList, 0, pcList.size());
@@ -162,8 +169,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<CampaignReportDTO> pcList = httpFileHandler.getCampaignReport(pcFilePath, 1);
-                cprmList = httpFileHandler.getCampaignReport(mobileFilePath, 2);
+                List<CampaignReportDTO> pcList = new ArrayList<>();
+                if(pcFilePath != null){
+                    pcList = httpFileHandler.getCampaignReport(pcFilePath, 1);
+                }
+
+                if(mobileFilePath != null){
+                    cprmList = httpFileHandler.getCampaignReport(mobileFilePath, 2);
+                }
+
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 CampaignReportHandler task = new CampaignReportHandler(pcList, 0, pcList.size());
@@ -211,8 +225,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<AdgroupReportDTO> pcList = httpFileHandler.getAdgroupReport(pcFilePath, 1);
-                armList = httpFileHandler.getAdgroupReport(mobileFilePath, 2);
+
+                List<AdgroupReportDTO> pcList = new ArrayList<>();
+                if(pcFilePath != null){
+                    pcList = httpFileHandler.getAdgroupReport(pcFilePath, 1);
+                }
+
+                if(mobileFilePath != null){
+                    armList = httpFileHandler.getAdgroupReport(mobileFilePath, 2);
+                }
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 AdgroupReportHandler task = new AdgroupReportHandler(pcList, 0, pcList.size());
@@ -260,8 +281,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<CreativeReportDTO> pcList = httpFileHandler.getCreativeReport(pcFilePath, 1);
-                crmList = httpFileHandler.getCreativeReport(mobileFilePath, 2);
+
+                List<CreativeReportDTO> pcList = new ArrayList<>();
+                if(pcFilePath != null){
+                    pcList = httpFileHandler.getCreativeReport(pcFilePath, 1);
+                }
+
+                if(mobileFilePath != null){
+                    crmList = httpFileHandler.getCreativeReport(mobileFilePath, 2);
+                }
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 CreativeReportHandler task = new CreativeReportHandler(pcList, 0, pcList.size());
@@ -308,8 +336,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<KeywordReportDTO> pcList = httpFileHandler.getKeywordReport(pcFilePath, 1);
-                krmList = httpFileHandler.getKeywordReport(mobileFilePath, 2);
+
+                List<KeywordReportDTO> pcList = new ArrayList<>();
+                if(pcFilePath != null){
+                    pcList = httpFileHandler.getKeywordReport(pcFilePath, 1);
+                }
+
+                if(mobileFilePath != null){
+                    krmList = httpFileHandler.getKeywordReport(mobileFilePath, 2);
+                }
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 KeywordReportHandler task = new KeywordReportHandler(pcList, 0, pcList.size());
@@ -357,8 +392,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     continue;
                 }
 
-                List<RegionReportDTO> pcList = httpFileHandler.getRegionReport(pcFilePath, 1);
-                /*rrmList = httpFileHandler.getRegionReport(mobileFilePath, 2);*/
+                List<RegionReportDTO> pcList = new ArrayList<>();
+                if(pcFilePath != null){
+                    pcList = httpFileHandler.getRegionReport(pcFilePath, 1);
+                }
+
+                /*if(mobileFilePath != null){
+                    rrmList = httpFileHandler.getRegionReport(mobileFilePath, 2);
+                }*/
+
                 rrmList = new ArrayList<>();
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 RegionReportHandler task = new RegionReportHandler(pcList, 0, pcList.size());
