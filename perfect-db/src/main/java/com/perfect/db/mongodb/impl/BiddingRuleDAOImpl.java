@@ -5,6 +5,7 @@ import com.perfect.dao.bidding.BiddingRuleDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.db.mongodb.utils.PageParamUtils;
+import com.perfect.dto.BaseDTO;
 import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.dto.bidding.StrategyDTO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
@@ -23,8 +24,10 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 
@@ -277,17 +280,8 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
         return convertToDTO(ruleEntity);
     }
 
-    @Override
-    public void hotRecovery(String username, Long bdAccountId) {
-        BaseMongoTemplate.getUserMongo(username).updateMulti(
-                Query.query(Criteria.where(ACCOUNT_ID).is(bdAccountId).and("ebl").is(true)),
-                Update.update("r", false),
-                getEntityClass());
-    }
-
     /**
-     * 由中央调度器获取可以执行的竞价任务,
-     * 但不更改状态("r").
+     * 由中央调度器获取可以执行的竞价任务, 并更改"r"的状态.
      * <p>
      *
      * @param username
@@ -307,7 +301,17 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
                 .aggregate(aggregation, TBL_BIDDINGRULE, getDTOClass());
 
 //        aggregationResults.getMappedResults().stream().map(BiddingRuleIdVO::getId).forEach(results::add);
-        return aggregationResults.getMappedResults();
+        List<BiddingRuleDTO> list = aggregationResults.getMappedResults();
+        if (list.size() > 0) {
+            List<String> idList = new ArrayList<>(list.stream().map(BaseDTO::getId).collect(Collectors.toList()));
+
+            // update the status of r
+            Query query = Query.query(Criteria.where(SYSTEM_ID).in(idList));
+            mongoTemplate.updateMulti(query, Update.update("r", true), getEntityClass(), TBL_BIDDINGRULE);
+            return list;
+        }
+
+        return Collections.emptyList();
     }
 
     /**
