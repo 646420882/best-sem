@@ -24,7 +24,7 @@ import java.util.Map;
 @Repository("cookieDAO")
 public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> implements CookieDAO {
 
-    private static final int TIME_PERIOD = 5_000;
+    private static final long TIME_PERIOD = 5;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -41,8 +41,7 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
     public CookieDTO takeOne() {
         CookieEntity cookieEntity = getSysMongoTemplate().findAndModify(
                 Query.query(
-                        Criteria.where("i").is(true)
-                                .and("f").lte(System.currentTimeMillis()))
+                        Criteria.where("i").is(true).and("f").lte(Instant.now().getEpochSecond()))
                         .limit(1).with(new Sort(Sort.Direction.ASC, "f")),
                 Update.update("i", false),
                 FindAndModifyOptions.options().returnNew(true),

@@ -134,18 +134,13 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public BiddingRuleDTO takeOne(String userName, Long id, long hour) {
-        return biddingRuleDAO.takeOne(userName, id, hour);
+    public BiddingRuleDTO takeOne(String userName, Long id, long time) {
+        return biddingRuleDAO.takeOne(userName, id, time);
     }
 
     @Override
-    public void hotRecovery(String username, Long bdAccountId) {
-        biddingRuleDAO.hotRecovery(username, bdAccountId);
-    }
-
-    @Override
-    public List<BiddingRuleDTO> getAvailableRules(String username, long unixEpoch) {
-        return biddingRuleDAO.getAvailableRules(username, unixEpoch);
+    public List<BiddingRuleDTO> getAvailableRules(String username, long time) {
+        return biddingRuleDAO.getAvailableRules(username, time);
     }
 
     @Override
