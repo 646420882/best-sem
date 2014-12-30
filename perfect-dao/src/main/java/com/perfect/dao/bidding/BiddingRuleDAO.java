@@ -40,9 +40,7 @@ public interface BiddingRuleDAO extends HeyCrudRepository<BiddingRuleDTO, Long> 
 
     List<BiddingRuleDTO> findByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
 
-    BiddingRuleDTO takeOne(String userName, Long id, long hour);
-
-    void hotRecovery(String username, Long bdAccountId);
+    BiddingRuleDTO takeOne(String userName, Long id, long time);
 
     List<BiddingRuleDTO> getAvailableRules(String username, long time);
 
