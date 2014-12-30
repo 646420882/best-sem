@@ -214,7 +214,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
 
     @Override
     public KeywordDTO findOne(Long keywordId) {
-        KeywordEntity entity = getMongoTemplate().findOne(new Query(Criteria.where(getId()).is(keywordId)), getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
+        KeywordEntity entity = getMongoTemplate().findOne(Query.query(Criteria.where(getId()).is(keywordId)), getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
         return ObjectUtils.convert(entity, getDTOClass());
     }
 

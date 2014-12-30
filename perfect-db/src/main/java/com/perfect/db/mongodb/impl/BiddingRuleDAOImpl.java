@@ -14,9 +14,6 @@ import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PaginationParam;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationOptions;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -28,8 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 
 /**
  * Created by yousheng on 2014/8/1.
@@ -169,7 +164,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
     public List<BiddingRuleDTO> getTaskByAccoundId(String userName, Long id, long time) {
         Query query = Query.query(Criteria.where("ebl").is(true)
                 .and("r").is(false)
-                .and("nxt").lte(time).not()
+                .and("nxt").ne(null).lte(time)
                 .and("ct").ne(0)
                 .and(ACCOUNT_ID).is(id));
         List<BiddingRuleEntity> list = BaseMongoTemplate.getUserMongo(userName).find(query, getEntityClass());
@@ -271,7 +266,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
     public BiddingRuleDTO takeOne(String userName, Long id, long time) {
         Query query = Query.query(Criteria.where("ebl").is(true)
                 .and("r").is(false)
-                .and("nxt").lte(time).not()
+                .and("nxt").ne(null).lte(time)
                 .and("ct").ne(0)
                 .and(ACCOUNT_ID).is(id)).limit(1);
         BiddingRuleEntity ruleEntity = BaseMongoTemplate.getUserMongo(userName).findAndModify(query, Update.update("r", true),
@@ -291,24 +286,19 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
     @Override
     public List<BiddingRuleDTO> getAvailableRules(String username, long time) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(username);
-        Criteria c = Criteria.where("ebl").is(true)
+        Query q = Query.query(Criteria.where("ebl").is(true)
                 .and("r").is(false)
-                .and("nxt").not().lte(time)
-                .and("ct").ne(0);
-        Aggregation aggregation = Aggregation.newAggregation(match(c))
-                .withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
-        AggregationResults<BiddingRuleDTO> aggregationResults = mongoTemplate
-                .aggregate(aggregation, TBL_BIDDINGRULE, getDTOClass());
-
-//        aggregationResults.getMappedResults().stream().map(BiddingRuleIdVO::getId).forEach(results::add);
-        List<BiddingRuleDTO> list = aggregationResults.getMappedResults();
-        if (list.size() > 0) {
-            List<String> idList = new ArrayList<>(list.stream().map(BaseDTO::getId).collect(Collectors.toList()));
+                .and("nxt").ne(null).lte(time)
+                .and("ct").ne(0));
+        List<BiddingRuleEntity> entityList = mongoTemplate.find(q, getEntityClass(), TBL_BIDDINGRULE);
+        if (entityList.size() > 0) {
+            List<BiddingRuleDTO> dtoList = convertToDTOList(entityList);
+            List<String> idList = new ArrayList<>(dtoList.stream().map(BaseDTO::getId).collect(Collectors.toList()));
 
             // update the status of r
             Query query = Query.query(Criteria.where(SYSTEM_ID).in(idList));
             mongoTemplate.updateMulti(query, Update.update("r", true), getEntityClass(), TBL_BIDDINGRULE);
-            return list;
+            return dtoList;
         }
 
         return Collections.emptyList();
@@ -349,25 +339,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
     }
 
     private List<BiddingRuleDTO> convertToDTOList(List<BiddingRuleEntity> list) {
-        List<BiddingRuleDTO> dtoList = new ArrayList<>(list.size());
-        list.parallelStream().forEach(e -> {
-            BiddingRuleDTO biddingRuleDTO = convertToDTO(e);
-            if (biddingRuleDTO != null)
-                dtoList.add(biddingRuleDTO);
-        });
-        return dtoList;
+        return new ArrayList<>(list.stream().filter(e -> e != null).map(this::convertToDTO).collect(Collectors.toList()));
     }
 
-//    class BiddingRuleIdVO {
-//
-//        private String id;
-//
-//        public String getId() {
-//            return id;
-//        }
-//
-//        public void setId(String id) {
-//            this.id = id;
-//        }
-//    }
 }

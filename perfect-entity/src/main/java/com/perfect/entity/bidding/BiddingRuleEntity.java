@@ -2,7 +2,6 @@ package com.perfect.entity.bidding;
 
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.entity.account.AccountIdEntity;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,7 +20,7 @@ public class BiddingRuleEntity extends AccountIdEntity {
     // TODO create a price field to save the price when the rule is out of running status
 
     @Id
-    private ObjectId id;
+    private String id;
 
     @Indexed(unique = true)
     @Field(MongoEntityConstants.KEYWORD_ID)
@@ -73,11 +72,11 @@ public class BiddingRuleEntity extends AccountIdEntity {
         this.phraseType = phraseType;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
