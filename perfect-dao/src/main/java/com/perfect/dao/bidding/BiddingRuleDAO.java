@@ -45,4 +45,6 @@ public interface BiddingRuleDAO extends HeyCrudRepository<BiddingRuleDTO, Long> 
     List<BiddingRuleDTO> getAvailableRules(String username, long time);
 
     BiddingRuleDTO takeOneById(String username, String objectId);
+
+    BiddingRuleDTO saveWithAccountId(BiddingRuleDTO biddingRuleDTO);
 }

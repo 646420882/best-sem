@@ -148,6 +148,11 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
         return biddingRuleDAO.takeOneById(username, objectId);
     }
 
+    @Override
+    public BiddingRuleDTO saveWithAccountId(BiddingRuleDTO biddingRuleDTO) {
+        return biddingRuleDAO.saveWithAccountId(biddingRuleDTO);
+    }
+
 
     public long countRule(String userName) {
         return biddingRuleDAO.count();

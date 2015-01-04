@@ -1,11 +1,14 @@
 package com.perfect.db.mongodb.impl;
 
 import com.mongodb.WriteResult;
+import com.perfect.core.AppContext;
 import com.perfect.dao.bidding.BiddingRuleDAO;
+import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.db.mongodb.utils.PageParamUtils;
 import com.perfect.dto.BaseDTO;
+import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.dto.bidding.StrategyDTO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
@@ -19,6 +22,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
+import javax.annotation.Resources;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +39,9 @@ import java.util.stream.Collectors;
 @Repository("biddingRuleDAO")
 public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, Long> implements BiddingRuleDAO {
 
+
+    @Resource
+    private SystemUserDAO systemUserDAO;
 
     @Override
     public Class<BiddingRuleDTO> getDTOClass() {
@@ -326,6 +334,16 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
                 .findOne(Query.query(Criteria.where(SYSTEM_ID).is(objectId)), getEntityClass(), TBL_BIDDINGRULE);
 
         return convertToDTO(ruleEntity);
+    }
+
+    @Override
+    public BiddingRuleDTO saveWithAccountId(BiddingRuleDTO biddingRuleDTO) {
+        long accId = biddingRuleDTO.getAccountId();
+        SystemUserDTO systemUserDTO = systemUserDAO.findByAid(accId);
+        AppContext.setUser(systemUserDTO.getUserName());
+        save(biddingRuleDTO);
+
+        return biddingRuleDTO;
     }
 
     private BiddingRuleDTO convertToDTO(BiddingRuleEntity biddingRuleEntity) {

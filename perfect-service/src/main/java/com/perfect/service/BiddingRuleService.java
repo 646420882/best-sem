@@ -66,4 +66,6 @@ public interface BiddingRuleService {
 
     BiddingRuleDTO takeOneById(String username, String objectId);
 
+    BiddingRuleDTO saveWithAccountId(BiddingRuleDTO biddingRuleDTO);
+
 }
