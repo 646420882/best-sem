@@ -47,4 +47,9 @@ public class CookieServiceImpl implements CookieService {
         return cookieDAO.delete(id);
     }
 
+    @Override
+    public long usingSum() {
+        return cookieDAO.usingSum();
+    }
+
 }

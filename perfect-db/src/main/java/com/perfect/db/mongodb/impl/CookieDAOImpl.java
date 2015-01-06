@@ -58,6 +58,11 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
     }
 
     @Override
+    public long usingSum() {
+        return getSysMongoTemplate().count(Query.query(Criteria.where("i").is(false)), getEntityClass());
+    }
+
+    @Override
     public boolean delete(String id) {
         return getSysMongoTemplate()
                 .remove(Query.query(Criteria.where(SYSTEM_ID).is(id)), getEntityClass())

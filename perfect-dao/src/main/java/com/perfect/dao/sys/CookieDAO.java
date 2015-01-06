@@ -13,4 +13,6 @@ public interface CookieDAO extends HeyCrudRepository<CookieDTO, String> {
 
     void returnOne(String objectId);
 
+    long usingSum();
+
 }
