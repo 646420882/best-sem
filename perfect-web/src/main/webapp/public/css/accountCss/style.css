@@ -3614,23 +3614,7 @@ h2 .close {
 .list01_top2 .question {
     margin: 4px 0 0 4px
 }
-.assistantList table tr{
-    height:40px;
-}
-.ui-jqgrid-btable .list2_box2 {
-    background-color: #ecf3f9;
 
-}
-.assistantList .ui-widget-content{
-    background-image: none;
-}
-.assistantList{
-    width:100%;
-}
-.jiangjia_list li img{
-    vertical-align: middle;
-    margin-right:5px;
-}
 /*input[type=checkbox],
 input[type=radio]{
     -webkit-appearance: none;
