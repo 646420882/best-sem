@@ -79,6 +79,8 @@ public class CaptchaHandler extends AbstractBaiduHttpClient {
                 EntityUtils.consume(entity);
             }
             exceptionMsg = "java.lang.NullPointerException: no usable captcha cookies.";
+        } finally {
+//            httpClient.close();
         }
     }
 

@@ -86,7 +86,7 @@ public class BaiduSearchPageUtils implements BaiduHttpClient {
         String token = "";
 
         for (Cookie cookie : cookieStore.getCookies()) {
-            if (BaiduHttpLoginHandler.set.contains(cookie.getName())) {
+            if (COOKIE_SET.contains(cookie.getName())) {
                 continue;
             }
 
@@ -118,6 +118,12 @@ public class BaiduSearchPageUtils implements BaiduHttpClient {
             return new String(outputStream.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+//            try {
+//                baiduLoginHandler.httpClient.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
 
         return null;

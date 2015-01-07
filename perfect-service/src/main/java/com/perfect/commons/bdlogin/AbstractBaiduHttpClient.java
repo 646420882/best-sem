@@ -11,14 +11,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.PKIXRevocationChecker;
-import java.security.cert.X509Certificate;
 
 /**
  * Created by baizz on 2014-12-16.
@@ -32,8 +27,7 @@ public abstract class AbstractBaiduHttpClient implements BaiduHttpClient {
     protected CloseableHttpClient httpClient;
 
     protected AbstractBaiduHttpClient() {
-        if (httpClient == null)
-            initHttpClient();
+        initHttpClient();
     }
 
     private void initHttpClient() {
@@ -43,43 +37,19 @@ public abstract class AbstractBaiduHttpClient implements BaiduHttpClient {
         httpClientConnectionManager.setMaxTotal(MAX_TOTAL);
         // 设置单个路由的最大连接线程数量
         httpClientConnectionManager.setDefaultMaxPerRoute(MAX_PER_ROUTE);
-        // 创建http request的配置信息
-
         // 初始化httpClient客户端
-        httpClient = createSSLHttpClientBuilder()
-                .setConnectionManager(httpClientConnectionManager)
-//                .setDefaultRequestConfig(requestConfig)
-                .setUserAgent(USER_AGENT)
+        httpClient = sslHttpClientBuilder()
+//                .setConnectionManager(httpClientConnectionManager)
                 .build();
     }
 
-    private HttpClientBuilder createSSLHttpClientBuilder() {
+    private HttpClientBuilder sslHttpClientBuilder() {
         HttpClientBuilder httpClientBuilder = HttpClients.custom();
         RequestConfig requestConfig = RequestConfig.custom().setCircularRedirectsAllowed(true).build();
-        SSLContext sslContext = null;
+        SSLContext sslContext;
         try {
-            sslContext = new SSLContextBuilder().loadTrustMaterial(null, (chain, authType) -> true).build();
+            sslContext = new SSLContextBuilder().useTLS().loadTrustMaterial(null, (chain, authType) -> true).build();
             if (sslContext != null) {
-                //
-                X509TrustManager xtm = new X509TrustManager() {
-                    @Override
-                    public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-
-                    }
-
-                    @Override
-                    public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-
-                    }
-
-                    @Override
-                    public X509Certificate[] getAcceptedIssuers() {
-                        return new X509Certificate[0];
-                    }
-                };
-                //
-                sslContext.init(null, new TrustManager[]{xtm}, null);
-                javax.net.ssl.HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
                 SSLConnectionSocketFactory sslcsf = new SSLConnectionSocketFactory(sslContext);
                 httpClientBuilder.setSSLSocketFactory(sslcsf).setDefaultCookieStore(sslCookies);
             } else {
@@ -90,22 +60,10 @@ public abstract class AbstractBaiduHttpClient implements BaiduHttpClient {
         }
 
 
-
         return httpClientBuilder.setDefaultRequestConfig(requestConfig);
     }
 
-//    private static final AbstractBaiduHttpClient baiduHttpClient = new AbstractBaiduHttpClient() {
-//        @Override
-//        public String toString() {
-//            return super.toString();
-//        }
-//    };
 
-//    public static AbstractBaiduHttpClient getBaiduHttpClient(){
-//        return baiduHttpClient;
-//    }
-
-//    @Override
 //    public CloseableHttpClient createSSLClientDefault(boolean isSSL) {
 //        HttpClientBuilder httpClientBuilder = HttpClients.custom();
 //        RequestConfig requestConfig = RequestConfig.custom().setCircularRedirectsAllowed(true).build();

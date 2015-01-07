@@ -30,7 +30,7 @@ public interface BaiduHttpClient {
 
     public static final String ACCEPT_ENCODING = "gzip, deflate";
 
-    public static final Set<String> set = new HashSet<String>() {{
+    public static final Set<String> COOKIE_SET = new HashSet<String>() {{
         addAll(Arrays.asList("CASSSID", "GBIZSSID", "GIMGSSID", "LOGINAID", "LOGINUID", "__cas__id__", "__cas__st__", "bdsfuid"));
     }};
 
@@ -38,12 +38,9 @@ public interface BaiduHttpClient {
 
     public static final String __cas__st__3 = "__cas__st__3";
 
-    public static final int MAX_TOTAL = 16;
+    public static final int MAX_TOTAL = 50;
 
-    public static final int MAX_PER_ROUTE = 16;
-
-
-//    CloseableHttpClient createSSLClientDefault(boolean isSSL);
+    public static final int MAX_PER_ROUTE = 20;
 
 
     public static void headerWrap(HttpRequest request) {
