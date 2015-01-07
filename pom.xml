@@ -47,8 +47,8 @@
             <properties>
                 <env>prod</env>
 
-                <redis.host>mongo2</redis.host>
-                <redis.port>16379</redis.port>
+                <redis.host>web1</redis.host>
+                <redis.port>6379</redis.port>
                 <redis.password>3edcvfr4</redis.password>
 
                 <mongo.host>mongo1:23135,mongo2:23136</mongo.host>
