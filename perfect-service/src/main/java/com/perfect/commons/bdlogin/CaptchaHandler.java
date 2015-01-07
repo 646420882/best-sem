@@ -3,7 +3,6 @@ package com.perfect.commons.bdlogin;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -11,7 +10,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -58,7 +56,7 @@ public class CaptchaHandler extends AbstractBaiduHttpClient {
 
         List<String> cookieList = new ArrayList<>();
         for (JsonNode node : jsonNode) {
-            cookieList.add(node.get("name").asText() + "=" + node.get("value").asText() + "; " + "path=" + node.get("path").asText() + "; domain=" + jsonNode.get("domain").asText() + "; " + "httponly");
+            cookieList.add(node.get("name").asText() + "=" + node.get("value").asText() + "; " + "path=" + node.get("path").asText() + "; domain=" + node.get("domain").asText() + "; " + "httponly");
         }
         for (String strCookie : cookieList) {
             _cookies.add(strCookie.substring(0, strCookie.indexOf(";")));
@@ -77,7 +75,7 @@ public class CaptchaHandler extends AbstractBaiduHttpClient {
                 HttpEntity entity = response.getEntity();
                 InputStream content = entity.getContent();
                 captchaBytes = IOUtils.toByteArray(content);
-                FileUtils.writeByteArrayToFile(new File("/home/baizz/captcha.jpeg"), captchaBytes);
+//                FileUtils.writeByteArrayToFile(new File("/home/baizz/captcha.jpeg"), captchaBytes);
                 EntityUtils.consume(entity);
             }
             exceptionMsg = "java.lang.NullPointerException: no usable captcha cookies.";

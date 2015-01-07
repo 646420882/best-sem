@@ -4,13 +4,21 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContextBuilder;
-import org.apache.http.impl.client.*;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.PKIXRevocationChecker;
+import java.security.cert.X509Certificate;
 
 /**
  * Created by baizz on 2014-12-16.
@@ -24,7 +32,8 @@ public abstract class AbstractBaiduHttpClient implements BaiduHttpClient {
     protected CloseableHttpClient httpClient;
 
     protected AbstractBaiduHttpClient() {
-        initHttpClient();
+        if (httpClient == null)
+            initHttpClient();
     }
 
     private void initHttpClient() {
@@ -35,43 +44,62 @@ public abstract class AbstractBaiduHttpClient implements BaiduHttpClient {
         // 设置单个路由的最大连接线程数量
         httpClientConnectionManager.setDefaultMaxPerRoute(MAX_PER_ROUTE);
         // 创建http request的配置信息
-        RequestConfig requestConfig = RequestConfig.custom().setCircularRedirectsAllowed(true).build();
-        // 设置重定向策略
-        LaxRedirectStrategy redirectStrategy = new LaxRedirectStrategy();
+
         // 初始化httpClient客户端
         httpClient = createSSLHttpClientBuilder()
                 .setConnectionManager(httpClientConnectionManager)
-                .setDefaultRequestConfig(requestConfig)
-                .setRedirectStrategy(redirectStrategy)
+//                .setDefaultRequestConfig(requestConfig)
                 .setUserAgent(USER_AGENT)
                 .build();
     }
 
     private HttpClientBuilder createSSLHttpClientBuilder() {
         HttpClientBuilder httpClientBuilder = HttpClients.custom();
+        RequestConfig requestConfig = RequestConfig.custom().setCircularRedirectsAllowed(true).build();
         SSLContext sslContext = null;
         try {
             sslContext = new SSLContextBuilder().loadTrustMaterial(null, (chain, authType) -> true).build();
+            if (sslContext != null) {
+                //
+                X509TrustManager xtm = new X509TrustManager() {
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+
+                    }
+
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+
+                    }
+
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return new X509Certificate[0];
+                    }
+                };
+                //
+                sslContext.init(null, new TrustManager[]{xtm}, null);
+                javax.net.ssl.HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+                SSLConnectionSocketFactory sslcsf = new SSLConnectionSocketFactory(sslContext);
+                httpClientBuilder.setSSLSocketFactory(sslcsf).setDefaultCookieStore(sslCookies);
+            } else {
+                httpClientBuilder.setDefaultCookieStore(cookies);
+            }
         } catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
             e.printStackTrace();
         }
 
-        if (sslContext != null) {
-            SSLConnectionSocketFactory sslcsf = new SSLConnectionSocketFactory(sslContext);
-            httpClientBuilder.setSSLSocketFactory(sslcsf).setDefaultCookieStore(sslCookies);
-        } else {
-            httpClientBuilder.setDefaultCookieStore(cookies);
-        }
 
-        return httpClientBuilder;
+
+        return httpClientBuilder.setDefaultRequestConfig(requestConfig);
     }
 
-    private static final AbstractBaiduHttpClient baiduHttpClient = new AbstractBaiduHttpClient() {
-        @Override
-        public String toString() {
-            return super.toString();
-        }
-    };
+//    private static final AbstractBaiduHttpClient baiduHttpClient = new AbstractBaiduHttpClient() {
+//        @Override
+//        public String toString() {
+//            return super.toString();
+//        }
+//    };
 
 //    public static AbstractBaiduHttpClient getBaiduHttpClient(){
 //        return baiduHttpClient;
