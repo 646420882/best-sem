@@ -1,6 +1,8 @@
 package com.perfect.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.perfect.api.baidu.AsynchronousReport;
 import com.perfect.dao.report.AsynchronousReportDAO;
 import com.perfect.dao.sys.SystemUserDAO;
@@ -10,12 +12,14 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.service.AsynchronousReportService;
 import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.redis.JRedisUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.stereotype.Repository;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import java.io.BufferedReader;
@@ -24,9 +28,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
@@ -59,6 +61,12 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
     private List<RegionReportDTO> rrmList;
 
+    private static final String ADMIN_KEY_STRING = "_administrator_PullLog";
+
+    private static final String ADMIN_PROMPT_HEAD = "Start: ";
+
+    private static final String ADMIN_PROMPT_CENTRAL = " --> ";
+
     public void getAccountReportData(String dateStr, String userName) {
 
         List<SystemUserDTO> entityList = new ArrayList<>();
@@ -70,11 +78,27 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             entityList.add(userEntity);
         }
 
+        Jedis jc = JRedisUtils.get();
+
         for (SystemUserDTO systemUser : entityList) {
             if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                getSkipPull(jc, systemUser, dateStr + "--用户");
                 continue;
             }
+
+
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                getStartPull(systemUser, entity, dateStr + "--用户");
 
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
                 String pcFilePath = report.getAccountReportDataPC(null, dateStr, dateStr);
@@ -82,8 +106,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<AccountReportDTO> pcList = httpFileHandler.getAccountReport(pcFilePath, 1);
-                acrmList = httpFileHandler.getAccountReport(mobileFilePath, 2);
+                List<AccountReportDTO> pcList = new ArrayList<>();
+                if (pcFilePath != null) {
+                    pcList = httpFileHandler.getAccountReport(pcFilePath, 1);
+                }
+
+                if (mobileFilePath != null) {
+                    acrmList = httpFileHandler.getAccountReport(mobileFilePath, 2);
+                }
+
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 AccountReportHandler task = new AccountReportHandler(pcList, 0, pcList.size());
@@ -92,12 +123,23 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 try {
                     list = voResult.get();
                     asynchronousReportDAO.getAccountReportData(list, systemUser, dateStr);
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    getEndPull(systemUser, entity, dateStr + "--用户");
+
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {
                     forkJoinPool.shutdown();
                 }
+
             }
+        }
+        if (jc != null) {
+            JRedisUtils.returnJedis(jc);
         }
     }
 
@@ -111,21 +153,29 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
-
+        Jedis jc = JRedisUtils.get();
         for (SystemUserDTO systemUser : entityList) {
             if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
+                getSkipPull(jc, systemUser, dateStr + "--计划");
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
-
+                getStartPull(systemUser, entity, dateStr + "--计划");
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
                 String pcFilePath = report.getCampaignReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getCampaignReportDataMobile(null, null, dateStr, dateStr);
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<CampaignReportDTO> pcList = httpFileHandler.getCampaignReport(pcFilePath, 1);
-                cprmList = httpFileHandler.getCampaignReport(mobileFilePath, 2);
+                List<CampaignReportDTO> pcList = new ArrayList<>();
+                if (pcFilePath != null) {
+                    pcList = httpFileHandler.getCampaignReport(pcFilePath, 1);
+                }
+
+                if (mobileFilePath != null) {
+                    cprmList = httpFileHandler.getCampaignReport(mobileFilePath, 2);
+                }
+
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 CampaignReportHandler task = new CampaignReportHandler(pcList, 0, pcList.size());
@@ -134,12 +184,17 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 try {
                     list = voResult.get();
                     asynchronousReportDAO.getCampaignReportData(list, systemUser, dateStr);
+
+                    getEndPull(systemUser, entity, dateStr + "--计划");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {
                     forkJoinPool.shutdown();
                 }
             }
+        }
+        if (jc != null) {
+            JRedisUtils.returnJedis(jc);
         }
     }
 
@@ -153,13 +208,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
-
+        Jedis jc = JRedisUtils.get();
         for (SystemUserDTO systemUser : entityList) {
             if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
+                getSkipPull(jc, systemUser, dateStr + "--单元");
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
-
+                getStartPull(systemUser, entity, dateStr + "--单元");
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
 
                 String pcFilePath = report.getUnitReportDataPC(null, null, dateStr, dateStr);
@@ -167,8 +223,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<AdgroupReportDTO> pcList = httpFileHandler.getAdgroupReport(pcFilePath, 1);
-                armList = httpFileHandler.getAdgroupReport(mobileFilePath, 2);
+
+                List<AdgroupReportDTO> pcList = new ArrayList<>();
+                if (pcFilePath != null) {
+                    pcList = httpFileHandler.getAdgroupReport(pcFilePath, 1);
+                }
+
+                if (mobileFilePath != null) {
+                    armList = httpFileHandler.getAdgroupReport(mobileFilePath, 2);
+                }
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 AdgroupReportHandler task = new AdgroupReportHandler(pcList, 0, pcList.size());
@@ -177,12 +240,17 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 try {
                     list = voResult.get();
                     asynchronousReportDAO.getAdgroupReportData(list, systemUser, dateStr);
+
+                    getEndPull(systemUser, entity, dateStr + "--单元");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {
                     forkJoinPool.shutdown();
                 }
             }
+        }
+        if (jc != null) {
+            JRedisUtils.returnJedis(jc);
         }
     }
 
@@ -196,13 +264,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
-
+        Jedis jc = JRedisUtils.get();
         for (SystemUserDTO systemUser : entityList) {
             if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
+                getSkipPull(jc, systemUser, dateStr + "--创意");
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
-
+                getStartPull(systemUser, entity, dateStr + "--创意");
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
 
                 String pcFilePath = report.getCreativeReportDataPC(null, null, dateStr, dateStr);
@@ -210,8 +279,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<CreativeReportDTO> pcList = httpFileHandler.getCreativeReport(pcFilePath, 1);
-                crmList = httpFileHandler.getCreativeReport(mobileFilePath, 2);
+
+                List<CreativeReportDTO> pcList = new ArrayList<>();
+                if (pcFilePath != null) {
+                    pcList = httpFileHandler.getCreativeReport(pcFilePath, 1);
+                }
+
+                if (mobileFilePath != null) {
+                    crmList = httpFileHandler.getCreativeReport(mobileFilePath, 2);
+                }
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 CreativeReportHandler task = new CreativeReportHandler(pcList, 0, pcList.size());
@@ -220,12 +296,17 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 try {
                     list = voResult.get();
                     asynchronousReportDAO.getCreativeReportData(list, systemUser, dateStr);
+
+                    getEndPull(systemUser, entity, dateStr + "--创意");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {
                     forkJoinPool.shutdown();
                 }
             }
+        }
+        if (jc != null) {
+            JRedisUtils.returnJedis(jc);
         }
     }
 
@@ -238,13 +319,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
-
+        Jedis jc = JRedisUtils.get();
         for (SystemUserDTO systemUser : entityList) {
             if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
+                getSkipPull(jc, systemUser, dateStr + "--关键字");
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
-
+                getStartPull(systemUser, entity, dateStr + "--关键字");
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
 
                 String pcFilePath = report.getKeyWordidReportDataPC(null, null, dateStr, dateStr);
@@ -252,8 +334,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 if (pcFilePath == null && mobileFilePath == null) {
                     continue;
                 }
-                List<KeywordReportDTO> pcList = httpFileHandler.getKeywordReport(pcFilePath, 1);
-                krmList = httpFileHandler.getKeywordReport(mobileFilePath, 2);
+
+                List<KeywordReportDTO> pcList = new ArrayList<>();
+                if (pcFilePath != null) {
+                    pcList = httpFileHandler.getKeywordReport(pcFilePath, 1);
+                }
+
+                if (mobileFilePath != null) {
+                    krmList = httpFileHandler.getKeywordReport(mobileFilePath, 2);
+                }
 
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 KeywordReportHandler task = new KeywordReportHandler(pcList, 0, pcList.size());
@@ -262,12 +351,17 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 try {
                     list = voResult.get();
                     asynchronousReportDAO.getKeywordReportData(list, systemUser, dateStr);
+
+                    getEndPull(systemUser, entity, dateStr + "--关键字");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {
                     forkJoinPool.shutdown();
                 }
             }
+        }
+        if (jc != null) {
+            JRedisUtils.returnJedis(jc);
         }
     }
 
@@ -280,13 +374,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
-
+        Jedis jc = JRedisUtils.get();
         for (SystemUserDTO systemUser : entityList) {
             if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
+                getSkipPull(jc, systemUser, dateStr + "--地域");
                 continue;
             }
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
-
+                getStartPull(systemUser, entity, dateStr + "--地域");
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
 
                 String pcFilePath = report.getRegionalReportDataPC(null, null, dateStr, dateStr);
@@ -295,8 +390,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     continue;
                 }
 
-                List<RegionReportDTO> pcList = httpFileHandler.getRegionReport(pcFilePath, 1);
-                /*rrmList = httpFileHandler.getRegionReport(mobileFilePath, 2);*/
+                List<RegionReportDTO> pcList = new ArrayList<>();
+                if (pcFilePath != null) {
+                    pcList = httpFileHandler.getRegionReport(pcFilePath, 1);
+                }
+
+                /*if(mobileFilePath != null){
+                    rrmList = httpFileHandler.getRegionReport(mobileFilePath, 2);
+                }*/
+
                 rrmList = new ArrayList<>();
                 ForkJoinPool forkJoinPool = new ForkJoinPool();
                 RegionReportHandler task = new RegionReportHandler(pcList, 0, pcList.size());
@@ -305,6 +407,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 try {
                     list = voResult.get();
                     asynchronousReportDAO.getRegionReportData(list, systemUser, dateStr);
+
+                    getEndPull(systemUser, entity, dateStr + "--地域");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {
@@ -312,11 +416,92 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 }
             }
         }
+        if (jc != null) {
+            JRedisUtils.returnJedis(jc);
+        }
+    }
+
+    //跳过日志；
+    private void getSkipPull(Jedis jc, SystemUserDTO systemUser, String report) {
+        boolean jedisKey = jc.exists(ADMIN_KEY_STRING);
+        if (jedisKey) {
+            List<String> strings = new ArrayList<>();
+            String data = jc.get(ADMIN_KEY_STRING);
+            List<String> list = new Gson().fromJson(data, new TypeToken<List<String>>() {
+            }.getType());
+            strings.addAll(list);
+            strings.add(systemUser.getUserName() + "账户根据权限规则已跳过：" + report + " :报告拉取！");
+            String jsonData = new Gson().toJson(strings);
+            jc.set(ADMIN_KEY_STRING, jsonData);
+            jc.expire(ADMIN_KEY_STRING, 3600);
+        } else {
+            List<String> strings = new ArrayList<>();
+            strings.add(systemUser.getUserName() + "账户根据权限规则已跳过：" + report + " :报告拉取！");
+            String jsonData = new Gson().toJson(strings);
+            jc.set(ADMIN_KEY_STRING, jsonData);
+            jc.expire(ADMIN_KEY_STRING, 3600);
+        }
+    }
+
+    //开始日志
+    private void getStartPull(SystemUserDTO systemUser, BaiduAccountInfoDTO entity, String report) {
+        Jedis jc = JRedisUtils.get();
+        boolean jedisKey = jc.exists(ADMIN_KEY_STRING);
+        if (jedisKey) {
+            List<String> strings = new ArrayList<>();
+            String data = jc.get(ADMIN_KEY_STRING);
+            List<String> list = new Gson().fromJson(data, new TypeToken<List<String>>() {
+            }.getType());
+            strings.addAll(list);
+            strings.add(ADMIN_PROMPT_HEAD + systemUser.getUserName() + ADMIN_PROMPT_CENTRAL + entity.getBaiduUserName() + ":子账户：" + report + " :报告数据");
+            String jsonData = new Gson().toJson(strings);
+            jc.set(ADMIN_KEY_STRING, jsonData);
+            jc.expire(ADMIN_KEY_STRING, 3600);
+        } else {
+            List<String> strings = new ArrayList<>();
+            strings.add(ADMIN_PROMPT_HEAD + systemUser.getUserName() + ADMIN_PROMPT_CENTRAL + entity.getBaiduUserName() + ":子账户：" + report + " :报告数据");
+            String jsonData = new Gson().toJson(strings);
+            jc.set(ADMIN_KEY_STRING, jsonData);
+            jc.expire(ADMIN_KEY_STRING, 3600);
+        }
+        if(jc != null){
+            JRedisUtils.returnJedis(jc);
+        }
+    }
+
+    //结束日志
+    private void getEndPull(SystemUserDTO systemUser, BaiduAccountInfoDTO entity, String report) {
+        Jedis jc = JRedisUtils.get();
+        boolean jedisKey1 = jc.exists(ADMIN_KEY_STRING);
+        if (jedisKey1) {
+            List<String> strings = new ArrayList<>();
+            String data = jc.get(ADMIN_KEY_STRING);
+            List<String> lists = new Gson().fromJson(data, new TypeToken<List<String>>() {
+            }.getType());
+            strings.addAll(lists);
+            strings.add(systemUser.getUserName() + ADMIN_PROMPT_CENTRAL + entity.getBaiduUserName() + ":子账户：" + report + " :报告数据拉取结束！");
+            String jsonData = new Gson().toJson(strings);
+            jc.set(ADMIN_KEY_STRING, jsonData);
+            jc.expire(ADMIN_KEY_STRING, 3600);
+
+        } else {
+            List<String> strings = new ArrayList<>();
+            strings.add(systemUser.getUserName() + ADMIN_PROMPT_CENTRAL + entity.getBaiduUserName() + ":子账户：" + report + " :报告数据拉取结束！");
+            String jsonData = new Gson().toJson(strings);
+            jc.set(ADMIN_KEY_STRING, jsonData);
+            jc.expire(ADMIN_KEY_STRING, 3600);
+        }
+        if(jc != null){
+            JRedisUtils.returnJedis(jc);
+        }
     }
 
     class HttpFileHandler {
 
         public List<AccountReportDTO> getAccountReport(String filePath, int type) {
+            if(filePath == null){
+                return Collections.emptyList();
+            }
             List<AccountReportDTO> list = new ArrayList<>();
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(filePath);
@@ -372,6 +557,9 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
 
         public List<CampaignReportDTO> getCampaignReport(String filePath, int type) {
+            if(filePath == null){
+                return Collections.emptyList();
+            }
             List<CampaignReportDTO> list = new ArrayList<>();
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(filePath);
@@ -424,6 +612,9 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         public List<AdgroupReportDTO> getAdgroupReport(String filePath, int type) {
+            if(filePath == null){
+                return Collections.emptyList();
+            }
             List<AdgroupReportDTO> list = new ArrayList<>();
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(filePath);
@@ -478,6 +669,9 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         public List<CreativeReportDTO> getCreativeReport(String filePath, int type) {
+            if(filePath == null){
+                return Collections.emptyList();
+            }
             List<CreativeReportDTO> list = new ArrayList<>();
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(filePath);
@@ -537,6 +731,9 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         public List<KeywordReportDTO> getKeywordReport(String filePath, int type) {
+            if(filePath == null){
+                return Collections.emptyList();
+            }
             List<KeywordReportDTO> list = new ArrayList<>();
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(filePath);
@@ -596,6 +793,9 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         public List<RegionReportDTO> getRegionReport(String filePath, int type) {
+            if(filePath == null){
+                return Collections.emptyList();
+            }
             List<RegionReportDTO> list = new ArrayList<>();
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(filePath);

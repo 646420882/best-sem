@@ -15,12 +15,17 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
+    <style>
+        .displayNone{
+            display: none;
+        }
 
+    </style>
 </head>
 <body>
-<div id="background" class="background"></div>
+<%--<div id="background" class="background"></div>
 <div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
-<div id="progressBar1" class="progressBar">正在生成数据，请稍等...</div>
+<div id="progressBar1" class="progressBar">正在生成数据，请稍等...</div>--%>
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
 <div class="backstage_concent mid over">
         <div class="backstage_notice over">
@@ -63,7 +68,10 @@
             </ul>
 
         </div>
-
+</div>
+<div class="backstage_concent mid over" >
+    <div style="font-size: 14px;font-weight: bold">拉取日志：</div>
+    <div id="dataLog"></div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
@@ -95,6 +103,8 @@
     }
 </script>
 <script>
+    var getPullLog;
+    var heartbeat = 10000;
     var daterangepicker_start_date=null,daterangepicker_end_date=null,selectOP = 0,number=0;
     $(document).ready(function(){
         $("input[name=reservationa]").daterangepicker();
@@ -105,14 +115,16 @@
             daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
             $("#date").val(daterangepicker_start_date +" 至 "+ daterangepicker_end_date);
         });
+
+        var getTime = setInterval("getPullLog()", heartbeat);
         $("#tijiao").click(function(){
             if(confirm("请再次确认拉取对象和时间是否正确"))
-
             {
                 selectOP = $("#selectOP").find("option:selected").val();
                 $("#appendtext").empty();
                 $("#appendtext").append("<label class='mesLable'>数据拉取中，需要时间较长！请耐心等待。。。</label>");
                 if(number==0){
+//                    getTime = setInterval("getPullLog()", 2000);
                     var name = $("#zhanghao").val();
                     number++;
                     $.ajax({
@@ -139,10 +151,11 @@
                             number = 0;
                         }
                     });
+                    $("#tijiao").addClass("displayNone");
+                    getTime = setInterval("getPullLog()", heartbeat);
                 }else{
                     alert("请耐心等待,上一次的拉取操作尚未完成，请勿重复操作。")
                 }
-
             }
         });
         //loading
@@ -156,8 +169,43 @@
             ajaxbg.fadeOut(1000);
         });
 
-    });
+        getPullLog = function(){
+            $.ajax({
+                url: "/admin/reportPull/getPullLog",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if(data.rows != "-1"){
+                        $("#dataLog").empty();
+                    }
+                    $.each(data.rows,function(i,item){
 
+                        if(item == '-1'){
+                            clearInterval(getTime);
+                            $("#tijiao").removeClass("displayNone");
+                            ix=0;
+                        }else{
+                            $("#tijiao").removeClass("displayNone");
+                            $("#tijiao").addClass("displayNone");
+                            if(i == data.rows.length-1){
+                                if(data.rows[data.rows.length-1] == "数据拉取完毕"){
+                                    $("#dataLog").append("<div style='font-size: 12px;margin-top: 10px;'>"+item+"</div>");
+                                }else{
+                                    $("#dataLog").append("<div style='font-size: 12px;margin-top: 10px;'>"+item+"<img style='margin-left: 20px;' src='/public/img/loading.gif'></div>");
+                                }
+                            }else{
+                                $("#dataLog").append("<div style='font-size: 12px;margin-top: 10px;'>"+item+"</div>");
+                            }
+                        }
+                    });
+                }
+
+            });
+
+
+        }
+        getPullLog();
+    });
 </script>
 </body>
 </html>

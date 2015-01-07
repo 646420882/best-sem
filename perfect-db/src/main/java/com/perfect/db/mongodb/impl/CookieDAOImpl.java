@@ -18,10 +18,12 @@ import java.util.Map;
 
 /**
  * Created by baizz on 2014-11-10.
- * 2014-12-9 refactor
+ * 2014-12-23 refactor
  */
 @Repository("cookieDAO")
 public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> implements CookieDAO {
+
+    private static final long TIME_PERIOD = 5_000;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -38,8 +40,7 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
     public CookieDTO takeOne() {
         CookieEntity cookieEntity = getSysMongoTemplate().findAndModify(
                 Query.query(
-                        Criteria.where("i").is(true)
-                                .and("f").lte(System.currentTimeMillis()))
+                        Criteria.where("i").is(true).and("f").lte(System.currentTimeMillis()))
                         .limit(1).with(new Sort(Sort.Direction.ASC, "f")),
                 Update.update("i", false),
                 FindAndModifyOptions.options().returnNew(true),
@@ -49,20 +50,23 @@ public class CookieDAOImpl extends AbstractSysBaseDAOImpl<CookieDTO, String> imp
     }
 
     @Override
-    public void returnOne(CookieDTO cookieDTO) {
-        cookieDTO.setIdle(true);
-        CookieEntity cookieEntity = ObjectUtils.convert(cookieDTO, getEntityClass());
-        getSysMongoTemplate().save(cookieEntity);
+    public void returnOne(String objectId) {
+        getSysMongoTemplate().updateFirst(
+                Query.query(Criteria.where(SYSTEM_ID).is(objectId)),
+                Update.update("i", true).set("f", System.currentTimeMillis() + TIME_PERIOD),
+                getEntityClass());
     }
 
-    /**
-     * 查询最后执行时间在5分钟之前的账号
-     */
     @Override
-    public List<CookieDTO> allUnused() {
-        return ObjectUtils.convert(getSysMongoTemplate()
-                .find(Query.query(Criteria.where("f").lte(System.currentTimeMillis() - 5 * 60 * 1000))
-                        .with(new Sort(Sort.Direction.ASC, "f")), getEntityClass()), getDTOClass());
+    public long usingSum() {
+        return getSysMongoTemplate().count(Query.query(Criteria.where("i").is(false)), getEntityClass());
+    }
+
+    @Override
+    public boolean delete(String id) {
+        return getSysMongoTemplate()
+                .remove(Query.query(Criteria.where(SYSTEM_ID).is(id)), getEntityClass())
+                .getN() > 0;
     }
 
     @Override

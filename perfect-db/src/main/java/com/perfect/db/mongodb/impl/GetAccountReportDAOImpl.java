@@ -4,8 +4,8 @@ import com.perfect.dao.report.GetAccountReportDAO;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.entity.account.AccountReportEntity;
+import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.mongodb.DBNameUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -35,8 +35,9 @@ public class GetAccountReportDAOImpl implements GetAccountReportDAO {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(userName));
         List<AccountReportEntity> list = mongoTemplate.find(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and("date").gte(startDate).lte(endDate)).with(new Sort(Sort.Direction.DESC, "date")), AccountReportEntity.class, TBL_ACCOUNT_REPORT);
         AccountReportEntity accountReportEntity= list.size() == 0 ? null : list.get(0);
-        AccountReportDTO accountReportDTO=new AccountReportDTO();
-        BeanUtils.copyProperties(accountReportEntity,accountReportDTO);
+
+        AccountReportDTO accountReportDTO = ObjectUtils.convert(accountReportEntity, AccountReportDTO.class);
+
         return accountReportDTO;
     }
 }

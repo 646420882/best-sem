@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * Created by baizz on 2014-11-10.
- * 2014-11-24 refactor
+ * 2014-12-23 refactor
  */
 @Document(collection = "sys_cookie")
 public class CookieEntity {
@@ -21,7 +21,7 @@ public class CookieEntity {
     private boolean idle;
 
     @Field("f")
-    private long finishTime;
+    private long finishTime;    //下次什么时候可以使用该cookie
 
     public String getId() {
         return id;

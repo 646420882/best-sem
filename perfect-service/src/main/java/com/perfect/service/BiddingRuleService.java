@@ -27,11 +27,11 @@ public interface BiddingRuleService {
 
     void enableRule(Long keywordId);
 
+    boolean isPause(Long accountId, Long keywordId);
+
     void save(BiddingRuleDTO biddingRuleDTO);
 
     void updateRule(BiddingRuleParam param);
-
-    List<BiddingRuleDTO> getReadyRule();
 
     List<BiddingRuleDTO> getTaskByAccountId(String userName, Long id, long hour);
 
@@ -60,6 +60,12 @@ public interface BiddingRuleService {
 
     Integer countBiddingRuleDTOfindByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
 
-    BiddingRuleDTO takeOne(String userName, Long id, long hour);
+    BiddingRuleDTO takeOne(String userName, Long id, long time);
+
+    List<BiddingRuleDTO> getAvailableRules(String username, long time);
+
+    BiddingRuleDTO takeOneById(String username, String objectId);
+
+    BiddingRuleDTO saveWithAccountId(BiddingRuleDTO biddingRuleDTO);
 
 }

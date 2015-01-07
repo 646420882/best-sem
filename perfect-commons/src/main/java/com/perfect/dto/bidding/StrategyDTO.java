@@ -1,11 +1,12 @@
 package com.perfect.dto.bidding;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * Created by yousheng on 14/12/1.
  */
-public class StrategyDTO {
+public class StrategyDTO implements Serializable {
 
 
     // 1 = economics

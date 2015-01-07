@@ -18,8 +18,6 @@ public interface BiddingRuleDAO extends HeyCrudRepository<BiddingRuleDTO, Long> 
 
     BiddingRuleDTO getBiddingRuleByKeywordId(Long keywordId);
 
-    List<BiddingRuleDTO> getReadyRule();
-
     void disableRule(Long accountId, Long keywordId);
 
     List<BiddingRuleDTO> getTaskByAccoundId(String userName, Long id, long hour);
@@ -27,6 +25,8 @@ public interface BiddingRuleDAO extends HeyCrudRepository<BiddingRuleDTO, Long> 
     void updateToNextRunTime(List<BiddingRuleDTO> tasks);
 
     void enableRule(Long accountId, Long keywordId);
+
+    boolean isPause(Long accountId, Long keywordId);
 
     List<BiddingRuleDTO> findByKeywordIds(List<Long> ids);
 
@@ -40,5 +40,11 @@ public interface BiddingRuleDAO extends HeyCrudRepository<BiddingRuleDTO, Long> 
 
     List<BiddingRuleDTO> findByNames(String[] split, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams);
 
-    BiddingRuleDTO takeOne(String userName, Long id, long hour);
+    BiddingRuleDTO takeOne(String userName, Long id, long time);
+
+    List<BiddingRuleDTO> getAvailableRules(String username, long time);
+
+    BiddingRuleDTO takeOneById(String username, String objectId);
+
+    BiddingRuleDTO saveWithAccountId(BiddingRuleDTO biddingRuleDTO);
 }

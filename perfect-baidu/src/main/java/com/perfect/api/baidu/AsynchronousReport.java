@@ -183,7 +183,7 @@ public class AsynchronousReport {
             e.printStackTrace();
         }
         int isGenerated = 0;
-        int sleepTime = 30 * 1000;
+        int sleepTime = 15 * 1000;
         int views = 0;
         isGenerated = reportStateResponse.getIsGenerated();
 
@@ -222,14 +222,18 @@ public class AsynchronousReport {
 
                 GetReportFileUrlResponse stateResponse = null;
                 int reRetry4 = 1;
-                while (reRetry4 > 0) {
+                while (reRetry4 < 4) {
                     try {
                         stateResponse = reportService.getReportFileUrl(fileUrlRequest);
-                        reRetry4 = 0;
+                        if(stateResponse != null){
+                            reRetry4 = 5;
+                        }
                     } catch (Exception e) {
                         try {
+                            reRetry4 ++;
                             Thread.sleep(1000);
                         } catch (InterruptedException e1) {
+                            System.out.println("AsynchronousReport.java --> 227");
                             e1.printStackTrace();
                         }
                     }

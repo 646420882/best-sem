@@ -6,7 +6,7 @@ import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.param.BiddingRuleParam;
 import com.perfect.service.BiddingRuleService;
 import com.perfect.utils.paging.PaginationParam;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Collection;
@@ -19,7 +19,7 @@ import java.util.Map;
  *
  * @author yousheng
  */
-@Component("biddingRuleService")
+@Service("biddingRuleService")
 public class BiddingRuleServiceImpl implements BiddingRuleService {
 
     @Resource
@@ -56,17 +56,17 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
+    public boolean isPause(Long accountId, Long keywordId) {
+        return biddingRuleDAO.isPause(accountId, keywordId);
+    }
+
+    @Override
     public void save(BiddingRuleDTO biddingRuleDTO) {
         biddingRuleDAO.save(biddingRuleDTO);
     }
 
     @Override
-    public void updateRule(BiddingRuleParam entity) {
-    }
-
-    @Override
-    public List<BiddingRuleDTO> getReadyRule() {
-        return biddingRuleDAO.getReadyRule();
+    public void updateRule(BiddingRuleParam param) {
     }
 
     @Override
@@ -134,8 +134,23 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
     }
 
     @Override
-    public BiddingRuleDTO takeOne(String userName, Long id, long hour) {
-        return biddingRuleDAO.takeOne(userName, id, hour);
+    public BiddingRuleDTO takeOne(String userName, Long id, long time) {
+        return biddingRuleDAO.takeOne(userName, id, time);
+    }
+
+    @Override
+    public List<BiddingRuleDTO> getAvailableRules(String username, long time) {
+        return biddingRuleDAO.getAvailableRules(username, time);
+    }
+
+    @Override
+    public BiddingRuleDTO takeOneById(String username, String objectId) {
+        return biddingRuleDAO.takeOneById(username, objectId);
+    }
+
+    @Override
+    public BiddingRuleDTO saveWithAccountId(BiddingRuleDTO biddingRuleDTO) {
+        return biddingRuleDAO.saveWithAccountId(biddingRuleDTO);
     }
 
 

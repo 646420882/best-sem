@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Created by baizz on 2014-11-10.
- * 2014-11-29 refactor
+ * 2014-12-23 refactor
  */
 @Service("cookieService")
 public class CookieServiceImpl implements CookieService {
@@ -30,13 +30,11 @@ public class CookieServiceImpl implements CookieService {
     }
 
     @Override
-    public void returnOne(CookieDTO cookieDTO) {
-        cookieDAO.returnOne(cookieDTO);
-    }
-
-    @Override
-    public List<CookieDTO> allUnused() {
-        return cookieDAO.allUnused();
+    public void returnOne(String objectId) {
+        if (objectId == null || "".equals(objectId)) {
+            return;
+        }
+        cookieDAO.returnOne(objectId);
     }
 
     @Override
@@ -47,6 +45,11 @@ public class CookieServiceImpl implements CookieService {
     @Override
     public boolean delete(String id) {
         return cookieDAO.delete(id);
+    }
+
+    @Override
+    public long usingSum() {
+        return cookieDAO.usingSum();
     }
 
 }

@@ -34,4 +34,3 @@
     </script>
 
 </div>
-<script src="/public/js/demo/perfect.js"></script>

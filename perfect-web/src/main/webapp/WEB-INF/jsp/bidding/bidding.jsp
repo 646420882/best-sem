@@ -1322,7 +1322,7 @@
                 {label: ' 推广单元', name: 'adgroupName', sortable: false, align: 'center', hidden: true},
                 {label: ' 匹配模式', name: 'matchType', sortable: false, align: 'center', hidden: true},
                 {label: ' 高级短语匹配模式', name: 'phraseType', sortable: false, align: 'center', hidden: true},
-                {label: ' 当前排名', name: 'currentRank', sortable: false, align: 'center'},
+                {label: ' 当前排名', name: 'currentRank', sortable: false, align: 'center', classes: 'jqgrid_td_cursor'},
                 {label: ' 消费', name: 'cost', sortable: false, width: 80, align: 'center'},
                 {label: ' 展现量', name: 'impression', sortable: false, width: 80, align: 'center'},
                 {label: ' 点击量', name: 'click', sortable: false, width: 80, align: 'center', hidden: true},
@@ -1333,7 +1333,7 @@
                 {label: ' 质量度', name: 'pcQuality', sortable: false, width: 80, align: 'center'},
                 {label: ' 移动端质量度', name: 'mQuality', sortable: false, align: 'center'},
                 {label: ' 状态', name: 'statusStr', sortable: false, align: 'center'},
-                {label: ' 竞价规则', name: 'ruleDesc', sortable: false, width: 200, align: 'center'},
+                {label: ' 竞价规则', name: 'ruleDesc', sortable: false, width: 200, align: 'center', classes: 'jqgrid_td_cursor'},
                 {
                     label: ' Pc URL',
                     name: 'pcDestinationUrl',
@@ -1349,7 +1349,7 @@
                     align: 'center',
                     formatter: 'link'
                 },
-                {label: ' 竞价状态', name: 'biddingStatus', sortable: false, align: 'center'},
+                {label: ' 竞价状态', name: 'biddingStatus', sortable: false, align: 'center', classes: 'jqgrid_td_cursor'},
                 {label: ' 是否设置了rule', name: 'rule', sortable: false, align: 'center', hidden: true},
                 {label: ' adgroupId', name: 'adgroupId', sortable: false, align: 'center', hidden: true}
             ],
@@ -1396,10 +1396,10 @@
                     selectedKeywordIds = [];
                     selectedKeywordIds.push(keywordId);
                 } else if (iCol === 21) {   //修改竞价状态
-                    if (bidStatus == 0 && bidRule.length > 0) {//竞价状态: 暂停
+                    if (bidStatus == "已暂停") {//竞价状态: 暂停
                         if (confirm("您要启动竞价吗?")) {
                             $.ajax({
-                                url: "/keyword/update",
+                                url: "/bidding/pauseBidding",
                                 dataType: "json",
                                 async: false,
                                 data: {
@@ -1417,10 +1417,10 @@
                                 }
                             });
                         }
-                    } else if (bidStatus == 1 && bidRule.length > 0) {//竞价状态: 启动
+                    } else if (bidStatus == "已启动") {//竞价状态: 启动
                         if (confirm("您要暂停竞价吗?")) {
                             $.ajax({
-                                url: "/keyword/update",
+                                url: "/bidding/pauseBidding",
                                 dataType: "json",
                                 async: false,
                                 data: {
@@ -1455,27 +1455,28 @@
 
             gridComplete: function () {
 //            alert(JSON.stringify($("#table1").jqGrid("getRowData")));
-                $("#jqgh_table1_biddingStatus").on('click', function () {
-                    $(".TB_overlayBG").css({
-                        display: "block", height: $(document).height()
-                    });
-                    $(".box9").css({
-                        left: ($("body").width() - $(".box9").width()) / 2 - 20 + "px",
-                        top: ($(window).height() - $(".box9").height()) / 2 + $(window).scrollTop() + "px",
-                        display: "block"
-                    });
-                });
-
-                $("#jqgh_table1_statusStr").on('click', function () {
-                    $(".TB_overlayBG").css({
-                        display: "block", height: $(document).height()
-                    });
-                    $(".box7").css({
-                        left: ($("body").width() - $(".box7").width()) / 2 - 20 + "px",
-                        top: ($(window).height() - $(".box7").height()) / 2 + $(window).scrollTop() + "px",
-                        display: "block"
-                    });
-                });
+//
+//                $("#jqgh_table1_biddingStatus").on('click', function () {
+//                    $(".TB_overlayBG").css({
+//                        display: "block", height: $(document).height()
+//                    });
+//                    $(".box9").css({
+//                        left: ($("body").width() - $(".box9").width()) / 2 - 20 + "px",
+//                        top: ($(window).height() - $(".box9").height()) / 2 + $(window).scrollTop() + "px",
+//                        display: "block"
+//                    });
+//                });
+//
+//                $("#jqgh_table1_statusStr").on('click', function () {
+//                    $(".TB_overlayBG").css({
+//                        display: "block", height: $(document).height()
+//                    });
+//                    $(".box7").css({
+//                        left: ($("body").width() - $(".box7").width()) / 2 - 20 + "px",
+//                        top: ($(window).height() - $(".box7").height()) / 2 + $(window).scrollTop() + "px",
+//                        display: "block"
+//                    });
+//                });
                 records = grid.getGridParam("records");
                 if (records == 0) {
                     return false;

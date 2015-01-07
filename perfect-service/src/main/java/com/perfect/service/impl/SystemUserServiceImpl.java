@@ -24,7 +24,7 @@ import com.perfect.utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -34,7 +34,7 @@ import java.util.*;
  *
  * @author yousheng
  */
-@Component
+@Service("systemUserService")
 public class SystemUserServiceImpl implements SystemUserService {
 
     private Logger logger = LoggerFactory.getLogger(SystemUserServiceImpl.class);

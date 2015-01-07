@@ -4,7 +4,7 @@
 
     <groupId>com.perfect</groupId>
     <artifactId>perfect-parent</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -101,43 +101,43 @@
             <dependency>
                 <groupId>com.perfect</groupId>
                 <artifactId>perfect-commons</artifactId>
-                <version>1.0</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.perfect</groupId>
                 <artifactId>perfect-service</artifactId>
-                <version>1.0</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.perfect</groupId>
                 <artifactId>perfect-entity</artifactId>
-                <version>1.0</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.perfect</groupId>
                 <artifactId>perfect-utils</artifactId>
-                <version>1.0</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.perfect</groupId>
                 <artifactId>perfect-dao</artifactId>
-                <version>1.0</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.perfect</groupId>
                 <artifactId>perfect-baidu</artifactId>
-                <version>1.0</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.perfect</groupId>
                 <artifactId>perfect-db</artifactId>
-                <version>1.0</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
