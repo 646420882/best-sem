@@ -1,6 +1,6 @@
 package com.perfect.app.bdlogin.controller;
 
-import com.perfect.commons.bdlogin.BaiduHttpLogin;
+import com.perfect.commons.bdlogin.BaiduHttpLoginHandler;
 import com.perfect.commons.bdlogin.CaptchaHandler;
 import com.perfect.commons.web.ServletContextUtils;
 import com.perfect.dto.CookieDTO;
@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.perfect.commons.bdlogin.BaiduHttpLogin.getBaiduLoginJSPath;
+import static com.perfect.commons.bdlogin.BaiduHttpLoginHandler.getBaiduLoginJSPath;
 
 /**
  * Created by baizz on 2014-11-10.
@@ -45,6 +45,13 @@ public class BaiduHttpLoginController implements Controller {
 
     @Resource
     private CookieService cookieService;
+
+    @Resource
+    private BaiduHttpLoginHandler baiduLoginHandler;
+
+    @Resource
+    private CaptchaHandler captchaHandler;
+
 
     @Override
     @RequestMapping(value = "/bdLogin/checkImageCode", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,14 +85,14 @@ public class BaiduHttpLoginController implements Controller {
             }
 
             String cookies = session.getAttribute(session.getId() + "-bdLogin").toString();
-            boolean isSuccess = BaiduHttpLogin.execute(dto.getBaiduUserName(), dto.getBaiduPassword(), imageCode, cookies);
+            boolean isSuccess = baiduLoginHandler.execute(dto.getBaiduUserName(), dto.getBaiduPassword(), imageCode, cookies);
             if (isSuccess) {
                 number--;
                 session.setAttribute(session.getId() + "-number", number);
                 map.put("status", "success");
                 map.put("number", number);
 
-                CookieStore cookieStore = BaiduHttpLogin.getSSLCookies();
+                CookieStore cookieStore = BaiduHttpLoginHandler.getSSLCookies();
                 CookieDTO cookieDTO = new CookieDTO();
                 cookieDTO.setCookie(JSONUtils.getJsonString(cookieStore));
                 cookieDTO.setIdle(true);
@@ -106,13 +113,16 @@ public class BaiduHttpLoginController implements Controller {
 
     @RequestMapping(value = "/bdLogin/getCaptcha", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void getCaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        CaptchaHandler.handle(getBaiduLoginJSPath());
-        byte[] captchaBytes = CaptchaHandler.getCaptchaBytes();
-        String cookies = CaptchaHandler.getCaptchaCookies();
+        captchaHandler.handle(getBaiduLoginJSPath());
+        byte[] captchaBytes = captchaHandler.getCaptchaBytes();
+        if (captchaBytes.length == 0) {
+            response.getWriter().write("<script type='text/javascript'>alert(" + captchaHandler.getExceptionMsg() + ")</script>");
+            return;
+        }
+
+        String cookies = captchaHandler.getCaptchaCookies();
         HttpSession session = ServletContextUtils.getSession();
         session.setAttribute(session.getId() + "-bdLogin", cookies);
-        if (captchaBytes != null) {
-            response.getOutputStream().write(captchaBytes);
-        }
+        response.getOutputStream().write(captchaBytes);
     }
 }
