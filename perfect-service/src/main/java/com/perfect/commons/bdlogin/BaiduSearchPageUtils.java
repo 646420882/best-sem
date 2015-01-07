@@ -1,17 +1,17 @@
 package com.perfect.commons.bdlogin;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.dto.creative.CreativeInfoDTO;
 import com.perfect.dto.creative.SublinkInfoDTO;
 import com.perfect.utils.json.JSONUtils;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
@@ -22,6 +22,7 @@ import org.jsoup.select.Elements;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,9 +34,11 @@ import java.util.ListIterator;
  * Created by baizz on 2014-11-10.
  * 2014-12-16 refactor
  */
-public class BaiduSearchPageUtils extends AbstractBaiduHttpClient {
+public class BaiduSearchPageUtils implements BaiduHttpClient {
 
-    private static final BaiduSearchPageUtils instance = new BaiduSearchPageUtils();
+    private static BaiduHttpLoginHandler baiduLoginHandler;
+
+//    private static final BaiduSearchPageUtils instance = new BaiduSearchPageUtils();
 
 //    private static String previewUrl;
 //
@@ -51,13 +54,17 @@ public class BaiduSearchPageUtils extends AbstractBaiduHttpClient {
 //        }
 //    }
 
-    private static BaiduSearchPageUtils getInstance() {
-        return instance;
-    }
+//    private static BaiduSearchPageUtils getInstance() {
+//        return instance;
+//    }
 
     public static String getBaiduSearchPage(String cookies, String keyword, int area) {
+        if (baiduLoginHandler == null)
+            baiduLoginHandler =
+                    (BaiduHttpLoginHandler) ApplicationContextHelper.getBeanByClass(BaiduHttpLoginHandler.class);
+
         CookieStore cookieStore = new BasicCookieStore();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             for (JsonNode node : JSONUtils.getMapper().readTree(cookies).get("cookies")) {
                 BasicClientCookie cookie = new BasicClientCookie(node.get("name").asText(), node.get("value").asText());
@@ -79,7 +86,7 @@ public class BaiduSearchPageUtils extends AbstractBaiduHttpClient {
         String token = "";
 
         for (Cookie cookie : cookieStore.getCookies()) {
-            if (BaiduHttpLogin.set.contains(cookie.getName())) {
+            if (BaiduHttpLoginHandler.set.contains(cookie.getName())) {
                 continue;
             }
 
@@ -93,21 +100,19 @@ public class BaiduSearchPageUtils extends AbstractBaiduHttpClient {
         }
         _cookies = _cookies.delete(_cookies.length() - 2, _cookies.length());
 
-        HttpPost httpPost = new HttpPost(baiduPreviewURL);
-        httpPost.addHeader("Host", baiduPreviewHost);
+        HttpPost httpPost = new HttpPost(PREVIEW_URL);
+        httpPost.addHeader("Host", PREVIEW_HOST);
         httpPost.addHeader("Cookie", _cookies.toString());
-        httpPost.addHeader("Content-Type", contentType);
+        httpPost.addHeader("Content-Type", CONTENT_TYPE);
 
         List<NameValuePair> postData = new ArrayList<>();
         postData.add(new BasicNameValuePair("params", "{\"device\":1,\"keyword\":\"" + keyword + "\",\"area\":" + area + ",\"pageNo\":0}"));
         postData.add(new BasicNameValuePair("userid", userid));
         postData.add(new BasicNameValuePair("token", token));
         httpPost.setEntity(new UrlEncodedFormEntity(postData, StandardCharsets.UTF_8));
-        getInstance().headerWrap(httpPost);
+        BaiduHttpClient.headerWrap(httpPost);
 
-        CloseableHttpClient sslHttpClient = getInstance().createSSLClientDefault(true);
-        try {
-            HttpResponse response = sslHttpClient.execute(httpPost);
+        try (CloseableHttpResponse response = baiduLoginHandler.httpClient.execute(httpPost)) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             response.getEntity().writeTo(outputStream);
             return new String(outputStream.toByteArray());
