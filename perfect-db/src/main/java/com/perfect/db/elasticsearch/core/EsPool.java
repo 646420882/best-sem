@@ -42,7 +42,7 @@ public class EsPool {
         TransportClient client = null;
         try {
 //            InputStream is = EsPool.class.getClassLoader().getResourceAsStream("es.properties");
-            ResourceBundle bundle = ResourceBundle.getBundle("es");
+            ResourceBundle bundle = ResourceBundle.getBundle("elasticsearch");
             String host = bundle.getString("es.host");
             int port = Integer.valueOf(host.substring(host.indexOf(":") + 1, host.length()));
             host = host.substring(0, host.indexOf(":"));
