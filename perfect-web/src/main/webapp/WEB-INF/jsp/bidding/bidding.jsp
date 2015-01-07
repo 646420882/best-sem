@@ -206,15 +206,15 @@
                                 </div>
                                 <div class="w_list03 ">
                                     <ul class="jiangjia_list">
-                                        <li class="current" id="showbox">设置规则</li>
-                                        <li id="updateBtn">更新账户数据</li>
-                                        <li id="rankBtn">检查当前排名</li>
-                                        <li id="showbox2">修改出价</li>
-                                        <li id="showbox7">启动竞价</li>
-                                        <li id="showbox3">暂停竞价</li>
-                                        <li id="showbox4">修改访问网址</li>
-                                        <li id="showbox5">分组</li>
-                                        <li id="showbox6">自定义列</li>
+                                        <li class="current" id="showbox"><img src="${pageContext.request.contextPath}/public/img/guize.png">设置规则</li>
+                                        <li id="updateBtn"><img src="${pageContext.request.contextPath}/public/img/gengxin.png">更新账户数据</li>
+                                        <li id="rankBtn"><img src="${pageContext.request.contextPath}/public/img/jiancha.png">检查当前排名</li>
+                                        <li id="showbox2"><img src="${pageContext.request.contextPath}/public/img/xiugai.png">修改出价</li>
+                                        <li id="showbox7"><img src="${pageContext.request.contextPath}/public/img/qidong.png">启动竞价</li>
+                                        <li id="showbox3"><img src="${pageContext.request.contextPath}/public/img/zanting.png">暂停竞价</li>
+                                        <li id="showbox4"><img src="${pageContext.request.contextPath}/public/img/wangzhi.png">修改访问网址</li>
+                                        <li id="showbox5"><img src="${pageContext.request.contextPath}/public/img/fenzu.png">分组</li>
+                                        <li id="showbox6"><img src="${pageContext.request.contextPath}/public/img/zidingyi.png">自定义列</li>
                                     </ul>
                                     <div class="over wd">
                                         <span class="fl">当前显示数据日期：昨天</span>
@@ -254,13 +254,13 @@
                                 <div class="zhushou_concent over">
                                     <div class="w_list03">
                                         <ul class="jiangjia_list">
-                                            <li class="current Screenings">筛选</li>
-                                            <li id="showbox_im">设置规则</li>
-                                            <li id="showbox3_im">暂停竞价</li>
-                                            <li id="showbox2_im">修改出价</li>
-                                            <li id="showbox4_im">修改访问网址</li>
-                                            <li id="showbox5_im">分组(改变分组)</li>
-                                            <li id="showbox62">自定义列</li>
+                                            <li class="current Screenings"><img src="${pageContext.request.contextPath}/public/img/shuaixuan.png">筛选</li>
+                                            <li id="showbox_im"><img src="${pageContext.request.contextPath}/public/img/guize.png">设置规则</li>
+                                            <li id="showbox3_im"><img src="${pageContext.request.contextPath}/public/img/zanting.png">暂停竞价</li>
+                                            <li id="showbox2_im"><img src="${pageContext.request.contextPath}/public/img/xiugai.png">修改出价</li>
+                                            <li id="showbox4_im"><img src="${pageContext.request.contextPath}/public/img/wangzhi.png">修改访问网址</li>
+                                            <li id="showbox5_im"><img src="${pageContext.request.contextPath}/public/img/fenzu.png">分组(改变分组)</li>
+                                            <li id="showbox62"><img src="${pageContext.request.contextPath}/public/img/zidingyi.png">自定义列</li>
                                         </ul>
                                         <div class="Screening_concent over" style="display: none;">
                                             <div class="Screening_row over">
@@ -1384,7 +1384,7 @@
                 var bidStatus = $("#table1").jqGrid("getCell", rowId, "biddingStatus");//竞价状态: 已启动, 已暂停, 无
                 if (iCol === 7) {//查看当前排名
                     getRank(keywordId);
-                } else if (iCol === 18 && ruleFlag == "false") {//设置竞价规则
+                } else if (iCol === 18) {//设置竞价规则
                     $(".TB_overlayBG").css({
                         display: "block", height: $(document).height()
                     });
