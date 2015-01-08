@@ -182,6 +182,10 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
                 Query.query(Criteria.where("userName").is(userName)),
                 getEntityClass(),
                 "sys_user");
+
+        if (systemUserEntity == null)
+            return null;
+
         return fromEntity(systemUserEntity);
     }
 
