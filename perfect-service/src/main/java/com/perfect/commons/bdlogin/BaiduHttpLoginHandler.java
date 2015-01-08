@@ -7,6 +7,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
@@ -21,13 +22,12 @@ import java.util.Objects;
 
 /**
  * Created by baizz on 2014-11-5.
- * refactor 2015-1-7
+ * refactor 2015-1-8
  */
 @Component("baiduLoginHandler")
 public class BaiduHttpLoginHandler extends AbstractBaiduHttpClient {
 
     private static String baiduLoginJSPath = null;
-    private static String redirectUrl;
     private static String castk;
 
     static {
@@ -53,44 +53,44 @@ public class BaiduHttpLoginHandler extends AbstractBaiduHttpClient {
         httpPost.setHeader("Content-Type", CONTENT_TYPE);
         httpPost.setEntity(new UrlEncodedFormEntity(formParams, StandardCharsets.UTF_8));
 
-        CloseableHttpResponse loginResponse = httpClient.execute(httpPost);
-        if (loginResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            HttpEntity entity = loginResponse.getEntity();
-            String body = EntityUtils.toString(entity, StandardCharsets.UTF_8);
-            String data = Jsoup.parse(body).body().data();
-            String url = data.substring(data.indexOf("\"") + 1, data.lastIndexOf("\""));
-            boolean isSuccess = url.contains("action=check");
-            if (isSuccess) {
-                redirectUrl = url;
-                int first = url.indexOf("castk") + 8;
-                int last = url.lastIndexOf("&");
-                castk = url.substring(first, last);
+        try (CloseableHttpClient httpClient = createHttpClient()) {
+            // login check
+            boolean isChecked;
+            String redirectUrl = null;
+            try (CloseableHttpResponse loginResponse = httpClient.execute(httpPost)) {
+                if (loginResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                    HttpEntity entity = loginResponse.getEntity();
+                    String body = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+                    String data = Jsoup.parse(body).body().data();
+                    String url = data.substring(data.indexOf("\"") + 1, data.lastIndexOf("\""));
+                    isChecked = url.contains("action=check");
+                    if (isChecked) {
+                        redirectUrl = url;
+                        int first = url.indexOf("castk") + 8;
+                        int last = url.lastIndexOf("&");
+                        castk = url.substring(first, last);
+                    } else {
+                        return false;
+                    }
+                }
             }
 
-            return isSuccess;
+            // redirect
+            HttpGet redirectRequest = new HttpGet(redirectUrl);
+            BaiduHttp.headerWrap(redirectRequest);
+            try (CloseableHttpResponse redirectResponse = httpClient.execute(redirectRequest)) {
+                return redirectResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK;
+            }
         }
 
-        return false;
     }
 
     public boolean execute(String username, String password, String imagecode, String cookies) throws IOException {
-        return login(username, password, imagecode, cookies) && redirect(redirectUrl);
+        return login(username, password, imagecode, cookies);
     }
-
-    public boolean redirect(String url) throws IOException {
-        HttpGet redirectRequest = new HttpGet(url);
-        BaiduHttpClient.headerWrap(redirectRequest);
-        CloseableHttpResponse redirectResponse = httpClient.execute(redirectRequest);
-        return redirectResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK;
-    }
-
 
     public static String getBaiduLoginJSPath() {
         return baiduLoginJSPath;
-    }
-
-    public static String getRedirectUrl() {
-        return redirectUrl;
     }
 
     public static String getCastk() {

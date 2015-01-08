@@ -8,9 +8,9 @@ import java.util.Set;
 
 /**
  * Created by baizz on 2014-12-16.
- * refactor 2015-1-7
+ * refactor 2015-1-8
  */
-public interface BaiduHttpClient {
+public interface BaiduHttp {
 
     public static final String CAPTCHA_URL = "http://cas.baidu.com/?action=image2&appid=3&key=";
 
@@ -37,10 +37,6 @@ public interface BaiduHttpClient {
     public static final String __cas__id__3 = "__cas__id__3";
 
     public static final String __cas__st__3 = "__cas__st__3";
-
-    public static final int MAX_TOTAL = 50;
-
-    public static final int MAX_PER_ROUTE = 20;
 
 
     public static void headerWrap(HttpRequest request) {

@@ -43,7 +43,7 @@
                     <label for="imageCode"></label><input id="imageCode" type="text" class="form-control fl">
                     <img id="img" style="cursor: pointer;"
                          src="${pageContext.request.contextPath}/admin/bdLogin/getCaptcha"
-                         onclick="refreshImg();">
+                         onclick="refreshImg();" onerror="javascript:alert(${sessionScope.imgError});">
                     <button class="btn sure btn-lg" type="button" style="width:80px; margin-left:10px;"
                             onclick="validateImageCode();">提交
                     </button>

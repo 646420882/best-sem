@@ -1,7 +1,6 @@
 package com.perfect.commons.bdlogin;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.perfect.commons.context.ApplicationContextHelper;
 import com.perfect.dto.creative.CreativeInfoDTO;
 import com.perfect.dto.creative.SublinkInfoDTO;
 import com.perfect.utils.json.JSONUtils;
@@ -12,6 +11,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
@@ -34,50 +34,30 @@ import java.util.ListIterator;
  * Created by baizz on 2014-11-10.
  * 2014-12-16 refactor
  */
-public class BaiduSearchPageUtils implements BaiduHttpClient {
+public class BaiduSearchPageUtils implements BaiduHttp {
 
-    private static BaiduHttpLoginHandler baiduLoginHandler;
-
-//    private static final BaiduSearchPageUtils instance = new BaiduSearchPageUtils();
-
-//    private static String previewUrl;
-//
-//    static {
-//        String path = new File(BaiduHttpLogin.class.getResource("/").getPath()).getPath() + System.getProperty("file.separator") + "bdlogin.properties";
-//        try {
-//            InputStream is = new BufferedInputStream(new FileInputStream(path));
-//            Properties properties = new Properties();
-//            properties.load(is);
-//            previewUrl = properties.getProperty("bd.preview-url");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    private static BaiduSearchPageUtils getInstance() {
-//        return instance;
-//    }
 
     public static String getBaiduSearchPage(String cookies, String keyword, int area) {
-        if (baiduLoginHandler == null)
-            baiduLoginHandler =
-                    (BaiduHttpLoginHandler) ApplicationContextHelper.getBeanByClass(BaiduHttpLoginHandler.class);
-
         CookieStore cookieStore = new BasicCookieStore();
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            for (JsonNode node : JSONUtils.getMapper().readTree(cookies).get("cookies")) {
+            JsonNode jsonNode = JSONUtils.getMapper().readTree(cookies).get("cookies");
+            jsonNode.elements().forEachRemaining(node -> {
                 BasicClientCookie cookie = new BasicClientCookie(node.get("name").asText(), node.get("value").asText());
                 cookie.setVersion(node.get("version").asInt());
                 cookie.setDomain(node.get("domain").asText());
                 cookie.setPath(node.get("path").asText());
                 cookie.setSecure(node.get("secure").asBoolean());
                 if (node.get("expiryDate") != null) {
-                    cookie.setExpiryDate(sdf.parse(node.get("expiryDate").asText()));
+                    try {
+                        cookie.setExpiryDate(sdf.parse(node.get("expiryDate").asText()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
                 cookieStore.addCookie(cookie);
-            }
-        } catch (IOException | ParseException e) {
+            });
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -110,20 +90,15 @@ public class BaiduSearchPageUtils implements BaiduHttpClient {
         postData.add(new BasicNameValuePair("userid", userid));
         postData.add(new BasicNameValuePair("token", token));
         httpPost.setEntity(new UrlEncodedFormEntity(postData, StandardCharsets.UTF_8));
-        BaiduHttpClient.headerWrap(httpPost);
+        BaiduHttp.headerWrap(httpPost);
 
-        try (CloseableHttpResponse response = baiduLoginHandler.httpClient.execute(httpPost)) {
+
+        try (CloseableHttpClient httpClient = BaiduHttpConnFactory.build(); CloseableHttpResponse response = httpClient.execute(httpPost)) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             response.getEntity().writeTo(outputStream);
             return new String(outputStream.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-//            try {
-//                baiduLoginHandler.httpClient.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
         }
 
         return null;

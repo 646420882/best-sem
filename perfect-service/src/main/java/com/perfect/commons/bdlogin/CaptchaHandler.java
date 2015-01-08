@@ -7,6 +7,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ import java.util.StringJoiner;
 
 /**
  * Created by baizz on 2014-11-8.
- * refactor 2015-1-7
+ * refactor 2015-1-8
  */
 @Component("captchaHandler")
 public class CaptchaHandler extends AbstractBaiduHttpClient {
@@ -63,9 +64,10 @@ public class CaptchaHandler extends AbstractBaiduHttpClient {
         }
 
         HttpGet captchaRequest = new HttpGet(CAPTCHA_URL + System.currentTimeMillis());
-        BaiduHttpClient.headerWrap(captchaRequest);
+        BaiduHttp.headerWrap(captchaRequest);
         captchaRequest.addHeader("Cookie", _cookies.toString());
 
+        CloseableHttpClient httpClient = createHttpClient();
         try (CloseableHttpResponse response = httpClient.execute(captchaRequest)) {
             if (response.getHeaders("Set-Cookie") != null) {
                 String tmpStr = response.getHeaders("Set-Cookie")[0].getValue();
@@ -80,7 +82,7 @@ public class CaptchaHandler extends AbstractBaiduHttpClient {
             }
             exceptionMsg = "java.lang.NullPointerException: no usable captcha cookies.";
         } finally {
-//            httpClient.close();
+            httpClient.close();
         }
     }
 
