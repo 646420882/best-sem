@@ -1,34 +1,17 @@
 package com.perfect.commons.bdlogin;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.perfect.commons.bdpreview.CmdHandler;
 import com.perfect.dto.creative.CreativeInfoDTO;
 import com.perfect.dto.creative.SublinkInfoDTO;
 import com.perfect.utils.json.JSONUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.cookie.BasicClientCookie;
-import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * Created by baizz on 2014-11-10.
@@ -36,72 +19,109 @@ import java.util.ListIterator;
  */
 public class BaiduSearchPageUtils implements BaiduHttp {
 
+    public static String getBaiduSearchPage(String curl, String keyword, int area) {
+        try {
+            keyword = java.net.URLEncoder.encode(keyword, "UTF-8");
+            curl = curl.replace("%KEYWORD%", keyword).replace("%AREA_ID%", area + "");
+            String fileName = CmdHandler.createShell(curl);
+            String html = CmdHandler.executeShell(fileName);
+            CmdHandler.deleteTempFile(fileName);
+            return html;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-    public static String getBaiduSearchPage(String cookies, String keyword, int area) {
-        CookieStore cookieStore = new BasicCookieStore();
-        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    public static String getBaiduSearchPage(String cookies, String castk, String keyword, int area) {
         try {
             JsonNode jsonNode = JSONUtils.getMapper().readTree(cookies).get("cookies");
-            jsonNode.elements().forEachRemaining(node -> {
-                BasicClientCookie cookie = new BasicClientCookie(node.get("name").asText(), node.get("value").asText());
-                cookie.setVersion(node.get("version").asInt());
-                cookie.setDomain(node.get("domain").asText());
-                cookie.setPath(node.get("path").asText());
-                cookie.setSecure(node.get("secure").asBoolean());
-                if (node.get("expiryDate") != null) {
-                    try {
-                        cookie.setExpiryDate(sdf.parse(node.get("expiryDate").asText()));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-                cookieStore.addCookie(cookie);
-            });
+            Map<String, String> cookieMap = new HashMap<>();
+            for (Iterator<JsonNode> nodeIterator = jsonNode.elements(); nodeIterator.hasNext(); ) {
+                JsonNode node = nodeIterator.next();
+                String name = node.get("name").asText();
+                if (COOKIE_SET.contains(name))
+                    continue;
+                cookieMap.put(name.toUpperCase(), node.get("value").asText());
+            }
+            cookieMap.put("CASTK", castk);
+
+            keyword = java.net.URLEncoder.encode(keyword, "UTF-8");
+            String curl = CmdHandler.createCurl(cookieMap, keyword, area);
+            String fileName = CmdHandler.createShell(curl);
+            String html = CmdHandler.executeShell(fileName);
+            CmdHandler.deleteTempFile(fileName);
+            return html;
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        StringBuilder _cookies = new StringBuilder("");
-        String userid = "";
-        String token = "";
-
-        for (Cookie cookie : cookieStore.getCookies()) {
-            if (COOKIE_SET.contains(cookie.getName())) {
-                continue;
-            }
-
-            if (__cas__st__3.equals(cookie.getName())) {
-                token = cookie.getValue();
-            } else if (__cas__id__3.equals(cookie.getName())) {
-                userid = cookie.getValue();
-            }
-
-            _cookies.append(cookie.getName()).append("=").append(cookie.getValue()).append("; ");
-        }
-        _cookies = _cookies.delete(_cookies.length() - 2, _cookies.length());
-
-        HttpPost httpPost = new HttpPost(PREVIEW_URL);
-        httpPost.addHeader("Host", PREVIEW_HOST);
-        httpPost.addHeader("Cookie", _cookies.toString());
-        httpPost.addHeader("Content-Type", CONTENT_TYPE);
-
-        List<NameValuePair> postData = new ArrayList<>();
-        postData.add(new BasicNameValuePair("params", "{\"device\":1,\"keyword\":\"" + keyword + "\",\"area\":" + area + ",\"pageNo\":0}"));
-        postData.add(new BasicNameValuePair("userid", userid));
-        postData.add(new BasicNameValuePair("token", token));
-        httpPost.setEntity(new UrlEncodedFormEntity(postData, StandardCharsets.UTF_8));
-        BaiduHttp.headerWrap(httpPost);
-
-
-        try (CloseableHttpClient httpClient = BaiduHttpConnFactory.build(); CloseableHttpResponse response = httpClient.execute(httpPost)) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            response.getEntity().writeTo(outputStream);
-            return new String(outputStream.toByteArray());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         return null;
+
+//        CookieStore cookieStore = new BasicCookieStore();
+//        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        try {
+//            JsonNode jsonNode = JSONUtils.getMapper().readTree(cookies).get("cookies");
+//            jsonNode.elements().forEachRemaining(node -> {
+//                BasicClientCookie cookie = new BasicClientCookie(node.get("name").asText(), node.get("value").asText());
+//                cookie.setVersion(node.get("version").asInt());
+//                cookie.setDomain(node.get("domain").asText());
+//                cookie.setPath(node.get("path").asText());
+//                cookie.setSecure(node.get("secure").asBoolean());
+//                if (node.get("expiryDate") != null) {
+//                    try {
+//                        cookie.setExpiryDate(sdf.parse(node.get("expiryDate").asText()));
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                cookieStore.addCookie(cookie);
+//            });
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        StringBuilder _cookies = new StringBuilder("");
+//        String userid = "";
+//        String token = "";
+//
+//        for (Cookie cookie : cookieStore.getCookies()) {
+//            if (COOKIE_SET.contains(cookie.getName())) {
+//                continue;
+//            }
+//
+//            if (__cas__st__3.equals(cookie.getName())) {
+//                token = cookie.getValue();
+//            } else if (__cas__id__3.equals(cookie.getName())) {
+//                userid = cookie.getValue();
+//            }
+//
+//            _cookies.append(cookie.getName()).append("=").append(cookie.getValue()).append("; ");
+//        }
+//        _cookies = _cookies.delete(_cookies.length() - 2, _cookies.length());
+//
+//        HttpPost httpPost = new HttpPost(PREVIEW_URL);
+//        httpPost.addHeader("Host", PREVIEW_HOST);
+//        httpPost.addHeader("Cookie", _cookies.toString());
+//        httpPost.addHeader("Content-Type", CONTENT_TYPE);
+//
+//        List<NameValuePair> postData = new ArrayList<>();
+//        postData.add(new BasicNameValuePair("params", "{\"device\":1,\"keyword\":\"" + keyword + "\",\"area\":" + area + ",\"pageNo\":0}"));
+//        postData.add(new BasicNameValuePair("userid", userid));
+//        postData.add(new BasicNameValuePair("token", token));
+//        httpPost.setEntity(new UrlEncodedFormEntity(postData, StandardCharsets.UTF_8));
+//        BaiduHttp.headerWrap(httpPost);
+//
+//
+//        try (CloseableHttpClient httpClient = BaiduHttpConnFactory.build(); CloseableHttpResponse response = httpClient.execute(httpPost)) {
+//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//            response.getEntity().writeTo(outputStream);
+//            return new String(outputStream.toByteArray());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return null;
     }
 
     public static int where(String html, String expectedHost) {

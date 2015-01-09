@@ -101,6 +101,7 @@ public class BaiduHttpLoginController implements Controller {
                 CookieStore cookieStore = BaiduHttpLoginHandler.getSSLCookies();
                 CookieDTO cookieDTO = new CookieDTO();
                 cookieDTO.setCookie(JSONUtils.getJsonString(cookieStore));
+                cookieDTO.setCastk(baiduLoginHandler.getCastk());
                 cookieDTO.setIdle(true);
                 cookieService.saveCookie(cookieDTO);
 
@@ -133,9 +134,25 @@ public class BaiduHttpLoginController implements Controller {
         response.getOutputStream().write(captchaBytes);
     }
 
+    @RequestMapping(value = "/bdLogin/saveCurl", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView saveCurl(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String curl = request.getParameter("curl");
+        curl = curl.replace("test", "%KEYWORD%").replace("%3A0%2C%22pageNo", "%3A%AREA_ID%%2C%22pageNo");
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> map = new HashMap<>();
+        CookieDTO cookieDTO = new CookieDTO();
+        cookieDTO.setCookie(curl);
+        cookieDTO.setIdle(true);
+        cookieService.saveCookie(cookieDTO);
+        map.put("status", "success");
+        jsonView.setAttributesMap(map);
+        return new ModelAndView(jsonView);
+    }
+
     @RequestMapping(value = "/bdLogin/heartbeat", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void cookieHeartbeat() {
         String[] arr = {"雪地靴", "冬装", "时尚女包", "旅游攻略", "贷款", "风衣", "打底裤", "男鞋品牌"};
+
         while (true) {
             CookieDTO cookieDTO = cookieService.takeOne();
             if (cookieDTO == null) {
@@ -147,24 +164,24 @@ public class BaiduHttpLoginController implements Controller {
                     if (html.length() > 200) {
                         System.out.println(Thread.currentThread().getName() + ". keyword: " + keyword + ", cookieId: " + cookieDTO.getId() + ", html length: " + html.length() + ", heartbeat time: " + Instant.now().atZone(ZoneId.of("Asia/Shanghai")));
                     } else if (html.length() == 185) {
-                        System.out.println("error message!");
+                        System.out.println(cookieDTO.getId() + "-cookie expired!");
                         cookieService.delete(cookieDTO.getId());
                     } else {
-                        try {
-                            System.out.println("sleep : " + cookieDTO.getId());
-                            TimeUnit.MINUTES.sleep(1);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        System.out.println("sleep : " + cookieDTO.getId());
+                        sleep(1);
                     }
-                }, 0, 8, TimeUnit.SECONDS);
+                }, 0, 5, TimeUnit.SECONDS);
 
-                try {
-                    TimeUnit.SECONDS.sleep(5);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                sleep(5);
             }
+        }
+    }
+
+    private void sleep(long seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(seconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

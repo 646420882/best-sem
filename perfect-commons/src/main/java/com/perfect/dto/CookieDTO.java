@@ -7,6 +7,8 @@ public class CookieDTO extends BaseDTO {
 
     private String cookie;
 
+    private String castk;
+
     private boolean idle;
 
     private long finishTime;
@@ -17,6 +19,14 @@ public class CookieDTO extends BaseDTO {
 
     public void setCookie(String cookie) {
         this.cookie = cookie;
+    }
+
+    public String getCastk() {
+        return castk;
+    }
+
+    public void setCastk(String castk) {
+        this.castk = castk;
     }
 
     public boolean isIdle() {
