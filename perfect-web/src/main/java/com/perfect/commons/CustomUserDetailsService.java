@@ -28,6 +28,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private static int passwdBadCredentialsNum = 0;
 
+    private static boolean hasBaiduAccount = false;
+
     @Resource
     private SystemUserService systemUserService;
 
@@ -47,6 +49,8 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Username not found");
         }
         userName = systemUser.getUserName();
+
+        hasBaiduAccount = systemUser.getBaiduAccounts().size() > 0;
 
         user = new User(
                 systemUser.getUserName(),
@@ -104,5 +108,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public static void setForbidden(boolean forbidden) {
         CustomUserDetailsService.forbidden = forbidden;
+    }
+
+    public static boolean hasBaiduAccount() {
+        return hasBaiduAccount;
     }
 }

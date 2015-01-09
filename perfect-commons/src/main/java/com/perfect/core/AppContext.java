@@ -28,14 +28,14 @@ public class AppContext {
     }
 
 
-    public static void setSessionObject(String sessionId, SessionObject so) {
-        if (sessionId == null || so == null) {
-            return;
-        }
-        sessionMap.put(sessionId, so);
-
-        contextMap.set(so);
-    }
+//    public static void setSessionObject(String sessionId, SessionObject so) {
+//        if (sessionId == null || so == null) {
+//            return;
+//        }
+//        sessionMap.put(sessionId, so);
+//
+//        contextMap.set(so);
+//    }
 
     public static void remove(String id) {
         sessionMap.remove(id);
@@ -46,10 +46,10 @@ public class AppContext {
         return sessionMap.get(id);
     }
 
-    public static void setLocal(String sessionId) {
-        SessionObject so = sessionMap.get(sessionId);
-        contextMap.set(so);
-    }
+//    public static void setLocal(String sessionId) {
+//        SessionObject so = sessionMap.get(sessionId);
+//        contextMap.set(so);
+//    }
 
     public static void setUser(String userName) {
         SessionObject so = new SessionObject();
@@ -66,6 +66,8 @@ public class AppContext {
     }
 
     public static String getUser() {
+        if (contextMap.get() == null)
+            return null;
         return contextMap.get().getUserName();
     }
 
