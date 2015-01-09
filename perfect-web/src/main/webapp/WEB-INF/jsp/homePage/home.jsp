@@ -11,6 +11,7 @@
 <head>
     <meta charset="utf-8">
     <title>大数据智能营销</title>
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/zTreeStyle/Normalize.css">--%>
@@ -113,10 +114,12 @@
     </div>
 </div>
 <div class="containers  hides over">
-    <div class="list01 over" style="border-bottom:1px solid #d5d5d8;">
+    <div class="list01" style="border-bottom:1px solid #d5d5d8;">
         <div class="list01_top over">
             <Span>账户趋势图</Span>
-            <a href="javascript:void(0)" class="question"></a>
+            <button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="分色标注了波动最大的指标及其升降趋势，便于您对关键数据信息一目了然。
+"></button>
+
             <ul id="clickqushi">
                 <li class="current">
                     <a onclick="loadPerformanceCurve(this,7)">
@@ -147,7 +150,7 @@
     <div class="list01_under3 over" style=" padding-top:20px;">
         <div class="list01_top over">
             <Span>分日表现</Span>
-            <a href="javascript:void(0)" class="question"></a>
+            <button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="着重表现近七天、近30天等时间范围的各项细致指标数据值。"></button>
             <ul id="clickfenri">
                 <li class="current">
                     <a onclick="$('#pageUser').empty();judgeDet = 0;loadPerformance(this,7);">
@@ -238,8 +241,6 @@
                                     <input class="two" type="button"
                                            onclick="javascript:category = 'ctr';sort = 5;loadPerformance(statDate)">
                                 </p></b>
-                                <a href="#" class="question">
-                                </a>
                             </li>
                             <li>
                                 <span>平均点击价格</span><b>
@@ -252,8 +253,6 @@
                                     <input class="two" type="button"
                                            onclick="javascript:category = 'cpc';sort = 6;loadPerformance(statDate)">
                                 </p></b>
-                                <a href="#" class="question">
-                                </a>
                             </li>
                             <li>
                                 <span>转化(页面)</span><b>
@@ -266,8 +265,6 @@
                                     <input class="two" type="button"
                                            onclick="javascript:category = 'conversion';sort = 7;loadPerformance(statDate)">
                                 </p></b>
-                                <a href="#" class="question">
-                                </a>
                             </li>
                         </ul>
                     </td>
@@ -296,7 +293,7 @@
 <div class="containers hides over">
 <div class="list01_top over">
     <Span>质量度分析</Span>
-    <a href="#" class="question"></a>
+    <button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="是SEM核心基础元素，它影响着优化策略和思路的变化。实时把控质量度星级指标，助力核心优化。"></button>
     <%--<ul id="keywordQualityClass">
         <li class="current">
             <a onclick="loadKeywordQualityData(this, 1);">
@@ -390,8 +387,6 @@
                     <input class="two" type="button"
                            onclick="javascript:category = 'ctr';sort = 1;loadKeywordQualityData();"/>
                 </p></b>
-                <a href="#" class="question">
-                </a>
             </li>
             <li>
                 <span>消费</span><b>
@@ -418,7 +413,6 @@
                     <input class="two" type="button"
                            onclick="javascript:category = 'cpc';sort = 1;loadKeywordQualityData();"/>
                 </p></b>
-                <a href="#" class="question"></a>
             </li>
             <li>
                 <span>转化</span><b>
@@ -431,7 +425,6 @@
                     <input class="two" type="button"
                            onclick="javascript:category = 'conversion';sort = 1;loadKeywordQualityData();"/>
                 </p></b>
-                <a href="#" class="question"></a>
             </li>
         </ul>
     </td>
@@ -909,7 +902,7 @@
 <div class="containers hides over">
     <div class="list01_top over">
         <Span>重点关键词监控</Span>
-        <a href="#" class="question"></a>
+        <button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="凤巢重点关键词同步监控。"></button>
         <ul>
             <li class="current">
                 <a href="javascript:void(0)" onclick="getImportKeywordDefault(this, 1);">
@@ -954,8 +947,6 @@
                             <p>
                                 <input class="two" type="button">
                             </p></b>
-                            <a href="#" class="question">
-                            </a>
                         </li>
                         <li>
                             <span>展现</span><b>
@@ -1060,7 +1051,6 @@
                             <p>
                                 <input class="two" type="button">
                             </p></b>
-                            <a href="#" class="question"></a>
                         </li>
                     </ul>
                 </td>
@@ -1092,6 +1082,7 @@
 
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
@@ -1966,7 +1957,9 @@ var showDate = function () {
         $(".datebox").hide();
     });
 };
-
+$(function (){
+    $("[data-toggle='tooltip']").tooltip();
+});
 </script>
 </body>
 </html>

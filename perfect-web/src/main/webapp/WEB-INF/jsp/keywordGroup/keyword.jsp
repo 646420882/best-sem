@@ -12,6 +12,7 @@ To change this template use File | Settings | File Templates.
     <title>大数据智能营销</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
@@ -56,7 +57,7 @@ To change this template use File | Settings | File Templates.
 </ul>
 <div class="tab_box">
 <div class="containers over">
-    <div class="list01_top over"><Span>关键词拓词</Span> <a href="#" class="question"></a></div>
+    <div class="list01_top over"><Span>关键词拓词</Span><button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="分为词根拓词和行业拓词，多拓词来源有百度、Google、360等平台抓取调用，并独有百思智能词库作为依托。"></button></div>
     <div class="keyword over">
         <div class="keyword_right over">
             <div class="k_r_top over">
@@ -191,7 +192,7 @@ To change this template use File | Settings | File Templates.
     </div>
 </div>
 <div class="containers over hides">
-    <div class="list01_top over"><span>创意推荐</span> <a class="question" href="#"></a><b>输入关键词，系统为您推荐有限创意和优秀词根；关键词之间的相关性会影响推荐创意的质量。</b><a
+    <div class="list01_top over"><span>创意推荐</span><button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="系统自动抓取搜索引擎页面信息，进行分析提取与当前创意相关的优秀词根及优秀创意作为新创意的参考，从而提升创意质量。"></button><b>输入关键词，系统为您推荐有限创意和优秀词根；关键词之间的相关性会影响推荐创意的质量。</b><a
             href="#">同步账户</a></div>
     <div class="originality over">
         <div class="originality_left fl">
@@ -526,6 +527,7 @@ To change this template use File | Settings | File Templates.
 
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>

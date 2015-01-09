@@ -12,7 +12,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=7"/>
     <title></title>
+
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
@@ -129,7 +131,7 @@
 <div class="tab_box" style=" padding:inherit;">
 <div class="containers  over">
 <div class="list01_under3 over">
-    <div class="list01_top over"><Span>基础统计</Span><a href="#" class="question"></a>
+    <div class="list01_top over"><Span>基础统计</Span> <button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="通过对账户数据全方位的科学分析评估， 对账户数据对比、地域数据统计分析、广告系列、广告组、关键词、广告创意数据等进行统计分析。"></button>
     </div>
     <div class="list3 wd">
         <table border="0" cellspacing="0" cellspacing="0" width="100%">
@@ -468,6 +470,7 @@
 </div>
 </div>
 </body>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.cxcalendar.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>

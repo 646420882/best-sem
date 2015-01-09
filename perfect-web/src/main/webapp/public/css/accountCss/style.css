@@ -92,14 +92,20 @@
 }
 
 .question {
-    display: block;
-    float: left;
+    float:left;
     *display: inline-block;
     *float: none;
     width: 14px;
     height: 12px;
     margin: 8px 0 0 4px;
     background: url(/public/img/bg.png) -10px -10px no-repeat;
+    border:none;
+    padding:0px;
+    overflow:hidden;
+
+}
+.popover{
+    z-index: 119;
 }
 
 .list01_top ul {
@@ -974,7 +980,7 @@
     width: 46%;
     border-right: 1px solid #cdd6ed;
     padding: 20px 2%;
-    height: 265px;
+    height: 300px;
 }
 
 .k_top2_text textarea {
@@ -1025,7 +1031,7 @@
     width: 45%;
     border-left: 1px solid #fff;
     padding: 20px 2%;
-    height: 265px;
+    height: 300px;
 }
 
 .list01_top2 span {
@@ -2573,6 +2579,9 @@ h2 .close {
     color: #555555;
     background: #e4eafa;
 }
+.r_under_top h3{
+    margin-top:0px;
+}
 
 .r_under_top a {
     padding-left: 13px;
@@ -3329,8 +3338,8 @@ h2 .close {
 }
 
 .progressBar {
-    width: 148px;
-    height: 28px;
+/*    width: 200px;
+    height: 28px;*/
     position: fixed;
     top: 45%;
     left: 50%;
@@ -3623,6 +3632,27 @@ h2 .close {
 .jiangjia_list li img{
     vertical-align: middle;
     margin-right:5px;
+}
+.tab_menu2{
+    margin-bottom:0px;
+}
+.list01_top .btn{
+    float:left;
+}
+.ui-helper-hidden-accessible{
+    border: 1px solid #696;padding: 60px 0;text-align: center; width: 200px;
+
+    -webkit-border-radius: 8px;
+
+    -moz-border-radius: 8px;
+
+    border-radius: 8px;
+
+    -webkit-box-shadow: #666 0px 0px 10px;
+
+    -moz-box-shadow: #666 0px 0px 10px;
+
+    box-shadow: #666 0px 0px 10px;
 }
 /*input[type=checkbox],
 input[type=radio]{
