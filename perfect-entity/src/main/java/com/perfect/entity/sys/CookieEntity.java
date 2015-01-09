@@ -17,6 +17,9 @@ public class CookieEntity {
     @Field("c")
     private String cookie;
 
+    @Field("k")
+    private String castk;
+
     @Field("i")
     private boolean idle;
 
@@ -37,6 +40,14 @@ public class CookieEntity {
 
     public void setCookie(String cookie) {
         this.cookie = cookie;
+    }
+
+    public String getCastk() {
+        return castk;
+    }
+
+    public void setCastk(String castk) {
+        this.castk = castk;
     }
 
     public boolean isIdle() {

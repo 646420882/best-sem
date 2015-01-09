@@ -28,7 +28,8 @@ import java.util.Objects;
 public class BaiduHttpLoginHandler extends AbstractBaiduHttpClient {
 
     private static String baiduLoginJSPath = null;
-    private static String castk;
+
+    private String castk;
 
     static {
         URL url = BaiduHttpLoginHandler.class.getClassLoader().getResource("phantomJs" + System.getProperty("file.separator") + "baiduLogin.js");
@@ -93,7 +94,7 @@ public class BaiduHttpLoginHandler extends AbstractBaiduHttpClient {
         return baiduLoginJSPath;
     }
 
-    public static String getCastk() {
+    public String getCastk() {
         return castk;
     }
 }

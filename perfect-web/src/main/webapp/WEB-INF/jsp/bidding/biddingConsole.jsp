@@ -19,7 +19,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
     <style type="text/css">
         .backstage_list ul li input, .backstage_list ul li select {
             height: 28px;
@@ -34,7 +35,7 @@
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
 <div class="backstage_concent mid over">
     <div id="bidding_box">
-        <div class="backstage_list over">
+<%--        <div class="backstage_list over">
             <ul>
                 <li><span>请输入模拟登录次数:</span>
                     <label for="number"></label><input type="text" class="form-control fl" id="number">
@@ -47,6 +48,15 @@
                     <button class="btn sure btn-lg" type="button" style="width:80px; margin-left:10px;"
                             onclick="validateImageCode();">提交
                     </button>
+                </li>
+            </ul>
+        </div>--%>
+        <div class="backstage_list over">
+            <ul>
+                <li>
+                    <span>请输入curl: </span>
+                    <input id="curlStr" type="text" class="form-control fl">
+                    <button class="btn sure btn-lg" type="button" style="width:80px; margin-left:10px;" onclick="saveCurl();">提交</button>
                 </li>
             </ul>
         </div>
@@ -65,6 +75,7 @@
                 </tbody>
             </table>
         </div>
+        <a href="http://www2.baidu.com" target="_blank">百度推广后台登录</a>
     </div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
@@ -105,6 +116,24 @@
     var refreshImg = function () {
         var img = document.getElementById("img");
         img.setAttribute("src", "${pageContext.request.contextPath}/admin/bdLogin/getCaptcha?" + Math.random());
+    };
+
+    var saveCurl = function () {
+        var curl = $("#curlStr").val();
+        $.ajax({
+            url: "/admin/bdLogin/saveCurl",
+            type: "POST",
+            dataType: "json",
+            data: {
+                "curl": curl
+            },
+            success: function (data, textStatus, jqXHR) {
+                if(data.status == "success"){
+                    window.location.reload(true);
+                    alert("success!");
+                }
+            }
+        });
     };
 
     var validateImageCode = function () {
