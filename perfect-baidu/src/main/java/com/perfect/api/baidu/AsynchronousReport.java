@@ -227,6 +227,9 @@ public class AsynchronousReport {
                         stateResponse = reportService.getReportFileUrl(fileUrlRequest);
                         if(stateResponse != null){
                             reRetry4 = 5;
+                        }else{
+                            reRetry4 ++;
+                            Thread.sleep(1000);
                         }
                     } catch (Exception e) {
                         try {
