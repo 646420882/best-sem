@@ -38,6 +38,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
         String userName = CustomUserDetailsService.getUserName();
+        boolean hasBaiduAccont = CustomUserDetailsService.hasBaiduAccount();
         MD5.Builder md5Builder = new MD5.Builder();
         MD5 md5 = md5Builder.password(userName).salt("passwd").build();
         String key = md5.getMD5();
@@ -64,7 +65,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         CustomUserDetailsService.setUsernameNotFound(false);
         CustomUserDetailsService.setVerifyNotPass(false);
 
-        String targetUrl = determineTargetUrl(authentication);
+        String targetUrl = determineTargetUrl(authentication, hasBaiduAccont);
 
         if (response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
@@ -75,7 +76,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     }
 
 
-    protected String determineTargetUrl(Authentication authentication) {
+    protected String determineTargetUrl(Authentication authentication, boolean hasBaiduAccount) {
         boolean isUser = false;
         boolean isAdmin = false;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
@@ -90,7 +91,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         }
 
         if (isUser) {
-            return "/bestIndex";
+            if (hasBaiduAccount)
+                return "/index";
+            else
+                return "/configuration/add";
         } else if (isAdmin) {
             return "/admin/index";
         } else {

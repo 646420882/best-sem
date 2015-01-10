@@ -1,6 +1,5 @@
 package com.perfect.app.conf.controller;
 
-import com.perfect.commons.web.WebUtils;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ResHeader;
 import com.perfect.autosdk.core.ResHeaderUtil;
@@ -10,6 +9,7 @@ import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.autosdk.sms.v3.AccountService;
 import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
+import com.perfect.commons.web.WebUtils;
 import com.perfect.core.AppContext;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
@@ -44,6 +44,9 @@ public class ConfigurationController {
     @RequestMapping(value = "/")
     public ModelAndView index(ModelMap modelMap) {
         String userName = AppContext.getUser();
+        if (userName == null)
+            return new ModelAndView("configuration/configure", modelMap);
+
         SystemUserDTO systemUserEntity = systemUserService.getSystemUser(userName);
 
         List<BaiduAccountInfoDTO> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccounts();
