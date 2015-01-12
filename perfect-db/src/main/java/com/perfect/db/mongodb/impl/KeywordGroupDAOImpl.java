@@ -24,7 +24,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static com.perfect.commons.constants.RedisConstants.CATEGORY_KEY;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
@@ -40,8 +40,6 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
  */
 @Repository("keywordGroupDAO")
 public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, String> implements KeywordGroupDAO {
-
-    public static final String CATEGORY_KEY = "_keywords_category";
 
     private static final String SEP_KEYWORD_REG = "\\|";
 
