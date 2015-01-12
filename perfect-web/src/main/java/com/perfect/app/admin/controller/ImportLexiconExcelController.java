@@ -36,6 +36,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
 import static com.perfect.commons.constants.MongoEntityConstants.TRADE_KEY;
+import static com.perfect.commons.constants.RedisConstants.CATEGORY_KEY;
 
 /**
  * Created by baizz on 2014-10-9.
@@ -112,12 +113,20 @@ public class ImportLexiconExcelController extends WebContextSupport {
         } finally {
             pool.shutdown();
         }
-//        response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
-        writeData(SUCCESS, response, fileName);
-        Jedis jc = JRedisUtils.get();
-        if (jc.exists(TRADE_KEY)) {
-            jc.del(TRADE_KEY);
+        response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
+//        writeData(SUCCESS, response, fileName);
+
+        Jedis jc = null;
+        try {
+            jc = JRedisUtils.get();
+            if (jc.exists(TRADE_KEY)) {
+                jc.del(TRADE_KEY);
+            }
+        } finally {
+            if (jc != null)
+                JRedisUtils.returnJedis(jc);
         }
+
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -133,10 +142,20 @@ public class ImportLexiconExcelController extends WebContextSupport {
         jsonView.setAttributesMap(result);
 //        return new ModelAndView(jsonView);
         writeData(SUCCESS, response, SUCCESS);
-        Jedis jc = JRedisUtils.get();
-        if (jc.exists(TRADE_KEY)) {
-            jc.del(TRADE_KEY);
+
+
+        Jedis jc = null;
+        try {
+            jc = JRedisUtils.get();
+            if (jc.exists(TRADE_KEY)) {
+                jc.del(CATEGORY_KEY + ":" + TRADE_KEY);
+                jc.del(TRADE_KEY);
+            }
+        } finally {
+            if (jc != null)
+                JRedisUtils.returnJedis(jc);
         }
+
         return null;
     }
 
