@@ -16,6 +16,24 @@ import java.util.concurrent.TimeUnit;
  */
 public class CmdHandler implements CmdConstants {
 
+    static {
+        if (Files.notExists(Paths.get(PREVIEW_PATH))) {
+            try {
+                Files.createDirectory(Paths.get(PREVIEW_PATH));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * <p>create curl
+     *
+     * @param cookieMap
+     * @param keyword
+     * @param area
+     * @return
+     */
     public static String createCurl(Map<String, String> cookieMap, String keyword, int area) {
         String curl = CURL_TEMPLATE;
         for (Map.Entry<String, String> entry : cookieMap.entrySet()) {
@@ -51,6 +69,13 @@ public class CmdHandler implements CmdConstants {
         return uuid;
     }
 
+    /**
+     * <p>execute shell
+     *
+     * @param fileName
+     * @return
+     * @throws IOException
+     */
     public static String executeShell(String fileName) throws IOException {
         String cmd = SH_CMD + PREVIEW_PATH + fileName + SH_SUFFIX;
         Process process = Runtime.getRuntime().exec(cmd);
@@ -63,15 +88,17 @@ public class CmdHandler implements CmdConstants {
             }
         }
 
-        StringBuilder html = new StringBuilder("");
-//        List<String> lines = Files.readAllLines(Paths.get(PREVIEW_PATH + fileName + HTML_SUFFIX), StandardCharsets.UTF_8);
+        final StringBuilder html = new StringBuilder("");
         Files.lines(Paths.get(PREVIEW_PATH + fileName + HTML_SUFFIX), StandardCharsets.UTF_8).forEach(html::append);
-//        if (html.length() > 200) {
-//            return html.toString();
-//        }
         return html.toString();
     }
 
+    /**
+     * <p>delete temp file
+     *
+     * @param fileName
+     * @throws IOException
+     */
     public static void deleteTempFile(String fileName) throws IOException {
         String shPath = PREVIEW_PATH + fileName + SH_SUFFIX, htmlPath = PREVIEW_PATH + fileName + HTML_SUFFIX;
         Files.delete(Paths.get(shPath));

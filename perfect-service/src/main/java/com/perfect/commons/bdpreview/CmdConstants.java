@@ -5,7 +5,11 @@ package com.perfect.commons.bdpreview;
  */
 public interface CmdConstants {
 
-    public static final String PREVIEW_PATH = "/home/baizz/biddingPreview/";
+    public static final String TMP_DIR = System.getProperty("java.io.tmpdir");
+
+    public static final String FILE_SEPARATOR = System.getProperty("file.separator");
+
+    public static final String PREVIEW_PATH = TMP_DIR + FILE_SEPARATOR + "biddingPreview" + FILE_SEPARATOR;
 
     public static final String SH_CMD = "sh ";
 
