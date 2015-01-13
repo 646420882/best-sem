@@ -1,6 +1,8 @@
 //tbodyClick5
-
 //子窗口拖动初始化
+$(function(){
+    CampaignList();
+});
 window.onload = function () {
     rDrag.init(document.getElementById('setFdKeywordDiv'));
     rDrag.init(document.getElementById('setExcludeIpDiv'));
@@ -8,74 +10,105 @@ window.onload = function () {
     rDrag.init(document.getElementById('setScheduleDiv'));
     rDrag.init(document.getElementById('plan2'));
 }
-
+var CampaignGrid=null;
+//Go按钮单击事件
+function skipCampaignPage() {
+    var pageNo = $("#campaignPageNum").val();
+    $("#pagination_campaignPage").pagination(records, getOptionsFromForm(/^\d+$/.test(pageNo) == false ? 0 : parseInt(pageNo) - 1));
+}
 /**
  * 得到所有推广计划
  */
-function getCampaignList(nowPage) {
-    pageType = 2;
-
-    $("#tbodyClick5").empty();
-    $("#tbodyClick5").html("加载中...");
-
-    if (/^\d+$/.test(nowPage) == false) {
-        nowPage = 0;
-    }
-
-    var param = getNowChooseCidAndAid();
-    if (param == null) {
-        param = {};
-    }
-    param["nowPage"] = nowPage;
-    param["pageSize"] = items_per_page;
-    $.ajax({
-        url: "/assistantCampaign/list",
-        type: "post",
-        data: param,
-        dataType: "json",
-        success: function (data) {
-            $("#tbodyClick5").empty();
-
-            records = data.totalCount;
-            pageIndex = data.pageNo;
+function CampaignList() {
+    CampaignGrid = jQuery("#PlanTable").jqGrid({
+        datatype: "json",
+        id:"CampaignGrid",
+        url: '/assistantCampaign/list',
+        mtype: "POST",
+        jsonReader: {
+            root: "list",
+            records: "totalCount",
+            repeatitems: false
+        },
+        postData:{aid:jsonData.aid,cid:jsonData.cid,nowPage:0,pageSize:20},
+        height: 500,//高度
+        colModel: [
+            {label: '推广计划名称',name:'campaignName',index:'campaignName',align:'center',sortable:false},
+            {label: ' 推广计划状态',name:'status',index:'status',width:100,align:'center',sortable:false},
+            {label: '启用/暂停',name:'pause',index:'obj.pause',width:100,align:'center',sortable:false},
+            {label: '每日预算',name:'budget',index:'budget',align:'center',sortable:false},
+            {label: ' 创意展现方式',name:'showProb',index:'showProb',width:100,align:'center',sortable:false},
+            {label: ' 动态创意状态',name:'isDynamicCreative',index:'isDynamicCreative',align:'center',sortable:false},
+            {label: ' 推广时段',name:'schedule',index:'schedule',width:100,align:'center',sortable:false},
+            {label: ' 推广地域',name:'regionTarget',index:'regionTarget',width:100,align:'center',sortable:false},
+            {label: ' 否定关键词',name:'ForDingKeyword',index:'ForDingKeyword',align:'center',sortable:false},
+            {label: ' 否定关键词',name:'negativeWords',index:'negativeWords',align:'center',sortable:false, hidden: true},
+            {label: ' 否定关键词',name:'exactNegativeWords',index:'exactNegativeWords',align:'center',sortable:false, hidden: true},
+            {label: ' IP排除',name:'excludeIp',index:'excludeIp',width:120,align:'center',sortable:false},
+            {label: ' 到预算下线时间',name:'budgetOfflineTime',index:'budgetOfflineTime',width:100,align:'center',sortable:false}
+        ],
+        rowNum: 20,// 默认每页显示记录条数
+        rownumbers: false,
+        loadui: 'disable',
+        pgbuttons: false,
+        altRows: true,
+        altclass: 'list2_box2',
+        resizable: true,
+        scroll: false,
+        autowidth: true,
+        shrinkToFit: true,
+        forceFit:true,
+        gridComplete: function () {
+            var graduateIds = jQuery("#PlanTable").jqGrid('getDataIDs');
+            for (var i = 0, l = graduateIds.length; i < l; i++) {
+                var rowId = graduateIds[i];
+                var pause = CampaignGrid.jqGrid("getCell", rowId, "pause");
+                var status = CampaignGrid.jqGrid("getCell", rowId, "status");
+                var showProb = CampaignGrid.jqGrid("getCell", rowId, "showProb");
+                var isDynamicCreative = CampaignGrid.jqGrid("getCell", rowId, "isDynamicCreative");
+                var regionTarget = CampaignGrid.jqGrid("getCell", rowId, "regionTarget");
+                var schedule = CampaignGrid.jqGrid("getCell", rowId, "schedule");
+                var budget = CampaignGrid.jqGrid("getCell", rowId, "budget");
+                var excludeIp = CampaignGrid.jqGrid("getCell", rowId, "excludeIp");
+                var budgetOfflineTime = CampaignGrid.jqGrid("getCell", rowId, " budgetOfflineTime");
+                var ForDingKeyword = CampaignGrid.jqGrid("getCell", rowId, " ForDingKeyword");
+                var negativeWords = CampaignGrid.jqGrid("getCell", rowId, " negativeWords");
+                var exactNegativeWords = CampaignGrid.jqGrid("getCell", rowId, " exactNegativeWords");
+                var FouKeyword= (negativeWords != null && negativeWords.length > 0 && exactNegativeWords != null && exactNegativeWords.length > 0);
+                $("#PlanTable").setCell(rowId, "pause", until.convert(pause == true, "暂停:" + "启用"));
+                $("#PlanTable").setCell(rowId, "status", until.PlanStatus(parseInt(status)));
+                $("#PlanTable").setCell(rowId, "showProb", until.convert(showProb == 1, "优选:" + "轮显"));
+                $("#PlanTable").setCell(rowId, "isDynamicCreative", until.convert(isDynamicCreative == true, "开启:" + "关闭"));
+                $("#PlanTable").setCell(rowId, "schedule", until.convert(schedule == "" || schedule == null, "全部:" + "已设置"));
+                $("#PlanTable").setCell(rowId, "budget", (budget == '') ? "<不限定>" : budget);
+                $("#PlanTable").setCell(rowId, "regionTarget", until.convert(regionTarget == "" || regionTarget == null, "账户推广地域:" + "计划推广地域"));
+                $("#PlanTable").setCell(rowId, "excludeIp", (excludeIp != null) ? "0" : excludeIp.length);
+                $("#PlanTable").setCell(rowId, "budgetOfflineTime", (budgetOfflineTime != null ? "-": budgetOfflineTime.length));
+                $("#PlanTable").setCell(rowId, "ForDingKeyword", (FouKeyword ? "已设置:" : "未设置"));
+            }
+            var records = CampaignGrid.getGridParam("records");
             $("#pagination_campaignPage").pagination(records, getOptionsFromForm(pageIndex));
-
-
-            if (data.list.length == 0) {
-                $("#tbodyClick5").html("暂无数据!");
-                return;
-            }
-            for (var i = 0; i < data.list.length; i++) {
-                var html = campaignDataToHtml(data.list[i], i);
-                $("#tbodyClick5").append(html);
-                if (i == 0) {
-                    setCampaignValue(".firstCampaign", data.list[i].campaignId);
-                    if (data.list[i].localStatus != null) {
-                        $("#reduction_caipamgin").find("span").removeClass("z_function_hover");
-                        $("#reduction_caipamgin").find("span").addClass("zs_top");
-                    } else {
-                        $("#reduction_caipamgin").find("span").removeClass("zs_top");
-                        $("#reduction_caipamgin").find("span").addClass("z_function_hover");
-                    }
-                }
-            }
         }
     });
-
+}
+function getCampaignList(page_index){
+    pageType = 2;
+    var tmpValue=$("#PlanTable").jqGrid("getGridParam", "postData");
+    $.extend(tmpValue, {aid:jsonData.aid,cid:jsonData.cid,nowPage:page_index,pageSize:jsonData.pageSize});
+        if(CampaignGrid!=null){
+            CampaignGrid.jqGrid("setGridParam", tmpValue).trigger("reloadGrid");
+    }
 }
 
-
-/**
- * 关键词Go按钮的单击事件
- */
-function skipCampaignPage() {
+/* *//*
+function skipCreativePage(){
     var pageNo = $("#campaignPageNum").val();
-    getCampaignList(/^\d+$/.test(pageNo) == false ? 0 : parseInt(pageNo) - 1);
-}
+    $("#pagination_campaignPage").pagination(records, getOptionsFromForm(/^\d+$/.test(pageNo) == false?0:parseInt(pageNo)-1));
+}*/
 /**
  * 单击某一行时将改行的数据放入文本框内
  */
-$("#tbodyClick5").delegate("tr", "click", function () {
+$("#PlanTable").delegate("tr", "click", function () {
     var span = $(this).find("td:last");
     if (span.html() != "&nbsp;") {
         $("#reduction_caipamgin").find("span").removeClass("z_function_hover");
@@ -99,7 +132,7 @@ function campaignDataToHtml(obj, index) {
     var html = "";
 
     if (obj.campaignId == null) {
-        obj.campaignId = obj.id;
+        obj.campaignId = obj.object.id;
     }
 
     if (index == 0) {
@@ -113,25 +146,25 @@ function campaignDataToHtml(obj, index) {
     html = html + "<input type='hidden' value = " + obj.campaignId + " />";
     html = html + "<td>" + obj.campaignName + "</td>";
 
-    switch (obj.status) {
-        case 21:
-            html = html + "<td>有效</td>";
-            break;
-        case 22:
-            html = html + "<td>处于暂停时段</td>";
-            break;
-        case 23:
-            html = html + "<td>暂停推广</td>";
-            break;
-        case 24:
-            html = html + "<td>推广计划预算不足</td>";
-            break;
-        case 25:
-            html = html + "<td>账户预算不足</td>";
-            break;
-        default :
-            html = html + "<td>本地新增</td>";
-    }
+//    switch (obj.status) {
+//        case 21:
+//            html = html + "<td>有效</td>";
+//            break;
+//        case 22:
+//            html = html + "<td>处于暂停时段</td>";
+//            break;
+//        case 23:
+//            html = html + "<td>暂停推广</td>";
+//            break;
+//        case 24:
+//            html = html + "<td>推广计划预算不足</td>";
+//            break;
+//        case 25:
+//            html = html + "<td>账户预算不足</td>";
+//            break;
+//        default :
+//            html = html + "<td>本地新增</td>";
+//    }
 
 
     html = html + until.convert(obj.pause == true, "<td>暂停</td>:" + "<td>启用</td>")
@@ -139,15 +172,11 @@ function campaignDataToHtml(obj, index) {
     html = html + until.convert(obj.showProb == 1, "<td>优选</td>:" + "<td>轮显</td>")
     html = html + until.convert(obj.isDynamicCreative == true, "<td>开启</td>:" + "<td>关闭</td>");
     html = html + until.convert(obj.schedule == "" || obj.schedule == null, "<td>全部</td>:" + "<td>已设置</td>");
-
-
     //推广地域
     html = html + until.convert(obj.regionTarget == "" || obj.regionTarget == null, "<td>账户推广地域</td>" + ":" + "<td>计划推广地域</td>");
-
     var fd = obj.negativeWords != null ? obj.negativeWords.length : 0;
     var jqfd = obj.exactNegativeWords != null ? obj.exactNegativeWords.length : 0;
     html = html + until.convert(fd == 0 && jqfd == 0, "<td>未设置</td>:" + "<td>" + fd + ";" + jqfd + "</td>");
-
     html = html + "<td>" + (obj.excludeIp != null ? obj.excludeIp.length : 0) + "</td>";
     html = html + (obj.budgetOfflineTime != null ? "<td>" + obj.budgetOfflineTime.length + "</td>" : "<td>-</td>");
     html = html + "<input type='hidden' value=" + obj.priceRatio + " class='hidden'/>";
@@ -224,7 +253,7 @@ function editCampaignInfo(jsonData) {
         dataType: "json",
         success: function (data) {
             var html = campaignDataToHtml(data, 0);
-            var tr = $("#tbodyClick5").find(".list2_box3");
+            var tr = $("#PlanTable").find(".list2_box3");
             tr.replaceWith(html);
             setCampaignValue(html, data.campaignId);
         }
@@ -237,7 +266,7 @@ function editCampaignInfo(jsonData) {
  * @param value
  */
 function whenBlurEditCampaign(num, value) {
-    if ($("#tbodyClick5").find("tr").length == 0) {
+    if ($("#PlanTable").find("tr").length == 0) {
         return;
     }
 
@@ -288,7 +317,7 @@ function whenBlurEditCampaign(num, value) {
 function deleteCampaign() {
     var cids = "";
 
-    $("#tbodyClick5").find(".list2_box3").each(function () {
+    $("#PlanTable").find(".list2_box3").each(function () {
         cids += $(this).find("input[type=hidden]").val() + ",";
     });
     if (cids == "") {
@@ -305,7 +334,7 @@ function deleteCampaign() {
         type: "post",
         data: {"cid": cids},
         success: function (data) {
-            $("#tbodyClick5").find(".list2_box3 td:last").html("<span class='error' step='3'></span>");
+            $("#PlanTable").find(".list2_box3 td:last").html("<span class='error' step='3'></span>");
         }
     });
 }
@@ -873,13 +902,13 @@ $("#reduction_caipamgin").click(function () {
 
 
 function showReductionCampaignWindow() {
-    var choose = $("#tbodyClick5").find(".list2_box3");
+    var choose = $("#PlanTable").find(".list2_box3");
     if (choose != undefined && choose.find("td:last").html() != "&nbsp;") {
         if (confirm("是否还原选择的数据?") == false) {
             return;
         }
         var step = choose.find("td:last span").attr("step");
-        var id = $("#tbodyClick5").find(".list2_box3").find("input[type=hidden]").val();
+        var id = $("#PlanTable").find(".list2_box3").find("input[type=hidden]").val();
         switch (parseInt(step)) {
             case 1:
                 reducCpg_Add(id);
@@ -910,7 +939,7 @@ function reducCpg_Add(id) {
         data: {"cid": id},
         dataType: "json",
         success: function (data) {
-            $("#tbodyClick5").find(".list2_box3").remove();
+            $("#PlanTable").find(".list2_box3").remove();
             loadTree();
         }
     });
@@ -928,7 +957,7 @@ function reducCpg_update(id) {
         dataType: "json",
         success: function (data) {
             var html = campaignDataToHtml(data, 0);
-            var tr = $("#tbodyClick5").find(".list2_box3");
+            var tr = $("#PlanTable").find(".list2_box3");
             tr.replaceWith(html);
             setCampaignValue(html, data.campaignId);
         }
@@ -948,7 +977,7 @@ function reducCpg_del(id) {
         dataType: "json",
         success: function (data) {
             loadTree();
-            $("#tbodyClick5").find(".list2_box3 td:last").html("&nbsp;");
+            $("#PlanTable").find(".list2_box3 td:last").html("&nbsp;");
         }
     });
 }
@@ -1071,7 +1100,7 @@ var campaignMenuExt = {
     }
 };
 
-$("#tbodyClick5").on("mousedown", "tr", function () {
+$("#PlanTable").on("mousedown", "tr", function () {
     $(this).smartMenu(campaignMenuData, campaignMenuExt);
 });
 
