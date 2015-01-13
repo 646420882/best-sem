@@ -55,7 +55,7 @@ public class PerformanceServiceImpl implements PerformanceService {
         List<KeywordRealDTO> analyzeEntities;
         List<KeywordRealDTO> entities = new ArrayList<>();
         for (int i = 0; i < date.length; i++) {
-            analyzeEntities = accountAnalyzeDAO.performance(newStr + "-KeywordRealTimeData-log-" + date[i]);
+            analyzeEntities = new ArrayList<>(accountAnalyzeDAO.performance(newStr + "-KeywordRealTimeData-log-" + date[i]));
             entities.addAll(analyzeEntities);
         }
         if (entities.size() != 0) {
