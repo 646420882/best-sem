@@ -93,7 +93,6 @@ public class ImportLexiconExcelController extends WebContextSupport {
             return;
         }
 
-        trade = fileName.substring(0, 2);
         Path file = Paths.get(tmpFile);
         final Map<String, LexiconDTO> map = new HashMap<>(1 << 16);
         XSSFReadUtils.read(file, new XSSFSheetHandler() {
