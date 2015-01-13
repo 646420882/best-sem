@@ -28,24 +28,7 @@ function filter(treeId, parentNode, childNodes) {
     }
     return childNodes;
 }
-function getNowChooseCampaignTreeData(treeNode) {
-    if (treeNode.level == 0) {
-        //点击的是父节点(推广计划)
-        jsonData.cid = treeNode.id;
-        jsonData.aid=null;
-        jsonData.cn = treeNode.name;
-    } else if (treeNode.level == 1) {
-        //点击的是子节点(推广单元)
-        jsonData.cid = treeNode.getParentNode().id;
-        jsonData.aid = treeNode.id;
-    } else {
-        jsonData.cid = null;
-        jsonData.aid = null;
-        jsonData.cn = null;
-    }
-    nowChoose = jsonData;
-    whenClickTreeLoadData(getCurrentTabName(), jsonData);
-}
+
 function beforeClick(treeId, treeNode) {
     //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
     $("#jiangkong_box3").show();

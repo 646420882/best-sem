@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface AsynchronousReportDAO extends HeyCrudRepository<AccountReportDTO,Long> {
 
-    void getAccountReportData(List<AccountReportDTO> accountReportDTOs, SystemUserDTO systemUser, String dateStr);
+    void getAccountReportData(List<AccountReportDTO> accountReportDTOs, SystemUserDTO systemUser, String dateStr, String baiduUserName);
 
     void getCampaignReportData(List<CampaignReportDTO> campaignReportDTOs, SystemUserDTO systemUser, String dateStr);
 
