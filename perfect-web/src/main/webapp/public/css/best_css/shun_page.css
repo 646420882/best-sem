@@ -114,10 +114,14 @@ body {
     border-top: 1px solid #30bdf2;
     margin: 0px 10px;
 }
+.tex2_mid p{
+    height:19px;
+}
 
 .servicesBox .serBox p {
     padding: 0 10px;
     text-align: center;
+
 }
 
 .servicesBox .serBox .txt2 p {

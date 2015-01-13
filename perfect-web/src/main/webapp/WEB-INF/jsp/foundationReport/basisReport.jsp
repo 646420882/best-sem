@@ -470,9 +470,9 @@
 </div>
 </div>
 </body>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.cxcalendar.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
@@ -482,9 +482,11 @@
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
-
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/report/reportProgress.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/report/reportContext.js"></script>
-
-
+<script  type="text/javascript">
+    $(function (){
+        $("[data-toggle='tooltip']").tooltip();
+    });
+</script>
 </html>

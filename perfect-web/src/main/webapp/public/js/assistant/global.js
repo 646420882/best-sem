@@ -1,6 +1,6 @@
 $("tbody").delegate("tr", "click", function (event) {
-    $(this).parent().find("tr").removeClass("list2_box3");
-    $(this).addClass("list2_box3");
+    $(this).parent().find("tr").removeClass("list2_box2");
+    $(this).addClass("list2_box2");
 });
 
 /*=======================================公用函数=====================================*/
@@ -10,11 +10,12 @@ $("tbody").delegate("tr", "click", function (event) {
  * @returns {{cid: null, aid: null}}
  */
 var nowChoose = null;
+var jsonData = {cid: null, aid: null, cn: null};
 function getNowChooseCampaignTreeData(treeNode) {
-    var jsonData = {cid: null, aid: null, cn: null};
     if (treeNode.level == 0) {
         //点击的是父节点(推广计划)
         jsonData.cid = treeNode.id;
+        jsonData.aid=null;
         jsonData.cn = treeNode.name;
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元)
@@ -28,25 +29,22 @@ function getNowChooseCampaignTreeData(treeNode) {
     nowChoose = jsonData;
     whenClickTreeLoadData(getCurrentTabName(), jsonData);
 }
-
 /**
  * 得到当前选择的推广计划id或者推广单元的id
  */
 function getNowChooseCidAndAid() {
+
     return nowChoose;
 }
-
 //刚进入该页面的时候加载的数据
 whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
-
-
 function whenClickTreeLoadData(tabName, param) {
     $("#jiangkong_box3").hide();
     $("#jiangkong_box2").show();
     param = param != null ? param : {aid: null, cid: null};
     var tabName = $.trim(tabName);
     if (tabName == "关键词") {
-        getKwdList(0);
+        keywordPageDynamic(0);
     } else if (tabName == "推广计划") {
         getCampaignList(0);
     } else if (tabName == "普通创意") {

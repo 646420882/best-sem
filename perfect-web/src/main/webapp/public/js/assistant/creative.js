@@ -34,12 +34,14 @@ $.fn.selectionTp= function () {
 };
 var sparams = {aid: null, cid: null,nowPage:0,pageSize:20};
 var dockObj=document.getElementById('argDialogDiv');
+var creativeGrid=null;
 $(function () {
     InitMenu();
     rDrag.init(document.getElementById("dAdd"));
     rDrag.init(document.getElementById("dUpdate"));
     initsDivKeyup();
     initUpdateInputKeyUp();
+    loadCreativeData();
 });
 
 /**
@@ -236,104 +238,85 @@ function InitMenu() {
  * 加载创意数据
  * @param params
  */
+    //jqGrid表格宽度自适应
 var recordsCreative=0;
-function loadCreativeData(page_index) {
+function loadCreativeData() {
     initRbackBtn();
     var _createTable = $("#createTable tbody");
-    _createTable.empty().html("加载中...");
-    sparams.nowPage=page_index;
-    sparams.pageSize=items_per_page;
-    pageType=3;
-//  var grid=  $("#createTable").jqGrid({
-//        datatype:'json',
-//        url:'/assistantCreative/getList',
-//        postData:sparams,
-//        mtype: "POST",
-//        jsonReader: {
-//            root: "list",
-//            records: "totalPage",
-//            repeatitems: false
-//        },
-//        forceFit: true,
-//        shrinkToFit: true,//此选项用于根据width计算每列宽度的算法,默认值true
-//        colModel: [
-//            {label: ' 用户编号', name: 'accountId', sortable: false, align: 'center', hidden: true},
-//            {label: ' 本身ID', name: 'id', sortable: false, align: 'center', hidden: true},
-//            {label: ' 创意ID', name: 'creativeId', sortable: false, align: 'center', hidden: true},
-//            {label: ' 单元ID', name: 'adgroupId', sortable: false, align: 'center', hidden: true},
-//            {label: ' 创意标题', name: 'title', sortable: false, align: 'center'},
-//            {label: ' 创意描述1', name: 'description1', sortable: false, align: 'center'},
-//            {label: ' 创意描述2', name: 'description2', sortable: false, align: 'center'},//pcDestinationUrl
-//            {label: ' 默认访问Url', name: 'pcDestinationUrl', sortable: false, align: 'center'},
-//            {label: ' 默认显示Url', name: 'pcDisplayUrl', sortable: false, align: 'center'},
-//            {label: ' 移动访问Url', name: 'mobileDestinationUrl', sortable: false, align: 'center'},
-//            {label: ' 移动显示Url', name: 'mobileDisplayUrl', sortable: false, align: 'center'}
-//        ],
-//        rowNum: 20,// 默认每页显示记录条数
-//        rownumbers: false,
-//        loadui: 'disable',
-//        pgbuttons: false,
-//        autowidth: true,
-//        altRows: true,
-//        altclass: 'list2_box2',
-//        resizable: true,
-//        scroll: false,
-//        multiselect: true,
-//        gridComplete:function(){
-//            recordsCreative = grid.getGridParam("records");
-//            if (recordsCreative== 0) {
-//                return false;
-//            }
-//            $("#creativePager").pagination(recordsCreative, getOptionsFromForm(0));
-//        }
-//    });
-    $.post("/assistantCreative/getList", sparams, function (result) {
-        var gson = $.parseJSON(result);
+    creativeGrid= jQuery("#createTable").jqGrid({
+        datatype: "json",
+        id:"creativeGrid",
+        url: '/assistantCreative/getList',
+        mtype: "POST",
+        jsonReader: {
+            root: "list",
+            records: "totalCount",
+            repeatitems: false
+        },
+        postData:sparams,
+        height: 500,//高度
+        width:1400,
+        colModel:[
+            {label: ' 操作', name:'',sortable: false,width:80, align: 'center'},
+            {label: ' 创意标题', name:'title',width:160, sortable: false,  align: 'center'},
+            {label: ' 创意描述1', name:'description1',width:160, sortable: false,  align: 'center'},
+            {label: ' 创意描述2', name:'description2', width:160,sortable: false,  align: 'center'},
+            {label: ' 默认访问URL', name:'pcDestinationUrl', sortable: false, formatter: 'link',align: 'center'},
+            {label: ' 默认显示URL', name:'pcDisplayUrl', sortable: false,  align: 'center'},
+            {label: ' 移动访问URL', name:'mobileDestinationUrl',formatter: 'link', sortable: false,   align: 'center'},
+            {label: ' 移动显示URL', name:'mobileDisplayUrl', sortable: false,  align: 'center'},
+            {label: ' 启用/暂停', name:'pause',  width:80,sortable: false, align: 'center'},
+            {label: ' 创意状态', name:'status',width:80, sortable: false,   align: 'center'}
+        ],
+        rowNum: 20,// 默认每页显示记录条数
+        rownumbers: false,
+        loadui: 'disable',
+        pgbuttons: false,
+        altRows: true,
+        altclass: 'list2_box2',
+        resizable: true,
+        scroll: false,
+        autowidth: true,
+        shrinkToFit: true,
+        forceFit:true,
+        gridComplete: function () {
+            var graduateIds = jQuery("#createTable").jqGrid('getDataIDs');
+            for (var i = 0, l = graduateIds.length; i < l; i++) {
+                var rowId = graduateIds[i];
+                var pause = creativeGrid.jqGrid("getCell", rowId, "pause");//当前排名
+                var status = creativeGrid.jqGrid("getCell", rowId, "status");//设置竞价规则
+                if (pause.length == true) {
+                    $("#createTable").setCell(rowId, "pause", "启用");
+                } else {
+                    $("#createTable").setCell(rowId, "pause", "暂停");
+                }
+                $("#createTable").setCell(rowId, "status", until.getCreativeStatus(parseInt(status)));
 
-        if (gson.list != undefined) {
-            var json = gson.list;
-            pagerInit(gson);
-            _createTable.empty();
-            var _trClass = "";
-            for (var i = 0; i < json.length; i++) {
-                var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
-                var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
-                var ls = getLocalStatus(parseInt(_edit));
-                _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-                var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                    "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
-                    "<td >" + until.substring(10, json[i].title) + "</td>" +
-                    " <td >" + until.substring(10, json[i].description1) + "</td>" +
-                    " <td >" + until.substring(10, json[i].description2) + "</td>" +
-                    " <td ><a href='" + json[i].pcDestinationUrl + "' target='_blank'>" + until.substring(10, json[i].pcDestinationUrl) + "</a></td>" +
-                    " <td >" + until.substring(10, json[i].pcDisplayUrl) + "</td>" +
-                    " <td>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
-                    " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
-                    " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
-                    " <td >" + until.getCreativeStatus(parseInt(json[i].status)) + "<input type='hidden' value='" + json[i].status + "'/></td>" +
-                    " <td >" + ls + "</td>" +
-                    "</tr>";
-                _createTable.append(_tbody);
             }
-        }else {
-            _createTable.empty();
-            _createTable.append("<tr><td>暂无数据</td></tr>");
+            var records = creativeGrid.getGridParam("records");
+            $("#creativePager").pagination(records, getOptionsFromForm(pageIndex));
         }
-
     });
+
+}
+function creativePageDynamic(page_index){
+    pageType=3;
+    var tmpValue = $("#createTable").jqGrid("getGridParam", "postData");
+    $.extend(tmpValue, {aid:sparams.aid,cid:sparams.cid,nowPage:page_index,pageSize:sparams.pageSize});
+    creativeGrid.jqGrid("setGridParam", tmpValue).trigger("reloadGrid");
 }
 /**
  * 初始化分页控件
  */
-function pagerInit(data) {
-    if(data.totalCount==0){
-        return false;
-    }
-    $("#creativePager").pagination(data.totalCount, getOptionsFromForm(data.pageNo));
-}
+//function pagerInit(data) {
+//    if(data.totalCount==0){
+//        return false;
+//    }
+//    $("#creativePager").pagination(data.totalCount, getOptionsFromForm(data.pageNo));
+//}
 function skipCreativePage(){
     var pageNo = $("#creativePageNum").val();
-    loadCreativeData(/^\d+$/.test(pageNo) == false?0:parseInt(pageNo)-1);
+    $("#creativePager").pagination(records, getOptionsFromForm(/^\d+$/.test(pageNo) == false?0:parseInt(pageNo)-1));
 }
 
 /**
@@ -674,7 +657,7 @@ function edit(rs) {
 function getCreativePlan(cid) {
     sparams.cid = cid;
     sparams.aid = null;
-    loadCreativeData(0);
+    creativePageDynamic(0);
 }
 /**
  * 动态更新创意中的数据，如果点击单元树
@@ -683,7 +666,7 @@ function getCreativePlan(cid) {
 function getCreativeUnit(con) {
     sparams.cid = con.cid;
     sparams.aid = con.aid;
-    loadCreativeData(0);
+    creativePageDynamic(0);
 }
 /**
  * 选择推广计划和单元

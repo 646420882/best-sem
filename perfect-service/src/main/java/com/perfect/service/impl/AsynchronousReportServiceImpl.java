@@ -83,7 +83,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         for (SystemUserDTO systemUser : entityList) {
             if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -94,7 +94,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -122,9 +122,9 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 List<AccountReportDTO> list;
                 try {
                     list = voResult.get();
-                    asynchronousReportDAO.getAccountReportData(list, systemUser, dateStr);
+                    asynchronousReportDAO.getAccountReportData(list, systemUser, dateStr,entity.getBaiduUserName());
                     try {
-                        Thread.sleep(3000);
+                        Thread.sleep(2000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

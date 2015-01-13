@@ -32,6 +32,22 @@
         #sDiv .span-ok {
             color: #9f9f9f;
         }
+        .ui-jqgrid tr.jqgrow td {
+            /* jqGrid cell content wrap  */
+            white-space: normal !important;
+            height: 30px;
+            line-height: inherit;
+        }
+        .ui-state-highlight{
+            background-color: #fcefc5;
+        }
+        .container {
+            width: 100%;
+            overflow:auto;
+        }
+        #plan .mainlist2{
+            width:500px;
+        }
     </style>
     <script>
         String.prototype.trims = function () {
@@ -47,7 +63,7 @@
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-<div class="mid over">
+<div class="mid over" id="min">
 <div class="title_box">
     <div class="on_title over">
         <a href="#">  推广助手</a>
@@ -100,11 +116,11 @@
 <div class="zhushou_concent over" id="jiangkong_box2">
 <div class="zs_concent_top over">
     <ul class="zh_menu2 fl" id="tabMenu">
-        <li class="current" cname="table1">关键词</li>
-        <li cname="table2">普通创意</li>
-        <li cname="table3">附加创意</li>
-        <li cname="table4">推广单元</li>
-        <li cname="table5">推广计划</li>
+        <li class="current">关键词</li>
+        <li>普通创意</li>
+        <li >附加创意</li>
+        <li>推广单元</li>
+        <li>推广计划</li>
         <li>账户</li>
     </ul>
 </div>
@@ -134,30 +150,9 @@
         </ul>
         <span class="fr">1/10</span>
     </div>
-    <div class="list4">
+    <div class="assistantList">
         <div class="container">
-            <table border="0" cellspacing="0" width="100%" class="table1 table-bordered"
-                   data-resizable-columns-id="demo-table">
-                <thead>
-                <tr class="list02_top">
-                    <th>&nbsp;关键词名称</th>
-                    <th>&nbsp;关键词状态</th>
-                    <th>&nbsp;启动/暂停</th>
-                    <th>&nbsp;出价</th>
-                    <th>&nbsp;计算机质量度</th>
-                    <th>&nbsp;移动质量度</th>
-                    <th>&nbsp;匹配模式</th>
-                    <th>&nbsp;访问URL</th>
-                    <th>&nbsp;移动访问URL</th>
-                    <th class="username-column" data-noresize>&nbsp;推广计划名称</th>
-                    <th class="username-column" data-noresize>&nbsp;
-                        <div class="set fr"></div>
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="tbodyClick">
-                </tbody>
-            </table>
+             <table cellpadding="0" cellspacing="0" class="tbl_search_bg" width="100%" id="keywordTable"></table>
         </div>
     </div>
     <div class="more_list over" style="display:none;">
@@ -236,29 +231,9 @@
         </ul>
         <span class="fr">1/10</span>
     </div>
-    <div class="list4" style="height:480px;">
+    <div class="assistantList">
         <div class="container">
-            <table border="0" cellspacing="0" width="100%" id="createTable" class="table2 table-bordered" data-resizable-columns-id="demo-table">
-                <thead>
-                <tr class="list02_top">
-                    <th>&nbsp;操作</th>
-                    <th>&nbsp;创意标题</th>
-                    <th>&nbsp;创意描述1</th>
-                    <th>&nbsp;创意描述2</th>
-                    <th>&nbsp;默认访问URL</th>
-                    <th>&nbsp;默认显示URL</th>
-                    <th>&nbsp;移动访问URL</th>
-                    <th>&nbsp;移动显示URL</th>
-                    <th>&nbsp;启用/暂停</th>
-                    <th>&nbsp;创意状态</th>
-                    <th class="username-column" data-noresize>
-                        <div class="set fr"></div>
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="tbodyClick2">
-                </tbody>
-            </table>
+            <table id="createTable"></table>
         </div>
         <div class="more_list over" style="display:none;">
             <ul>
@@ -352,7 +327,7 @@
     </div>
 </div>
 <!--附加创意-->
-<div class="containers  over hides">
+<div class="containers over hides">
 <div class="cy_menu over">
     <ul>
         <li class="current">蹊径子链</li>
@@ -371,218 +346,9 @@
     </ul>
     <span class="fr">1/10</span>
 </div>
-<div class="list4" style="height:368px;">
+<div class="assistantList">
 <div class="container">
-<table border="0" cellspacing="0" width="100%" class="table3 table-bordered" data-resizable-columns-id="demo-table">
-<thead>
-<tr class="list02_top">
-    <th>&nbsp;子链一名称</th>
-    <th>&nbsp;子链一URL</th>
-    <th>&nbsp;子链二名称</th>
-    <th>&nbsp;子链二URL</th>
-    <th>&nbsp;子链三名称</th>
-    <th>&nbsp;子链三URL</th>
-    <th>&nbsp;子链四名称</th>
-    <th>&nbsp;子链四URL</th>
-    <th>&nbsp;子链五名称</th>
-    <th class="username-column" data-noresize>&nbsp;子链五URL
-        <div class="set fr"></div>
-    </th>
-</tr>
-</thead>
-<tbody id="tbodyClick4">
-<tr class="list2_box3">
-    <td>&nbsp;<span class="editor"></span></td>
-    <td>&nbsp;<span class="editor"></span></td>
-    <td>&nbsp;<span class="editor"></span></td>
-    <td>&nbsp;<span class="editor"></span></td>
-    <td>&nbsp;<span class="editor"></span></td>
-    <td>&nbsp;<span class="editor"></span></td>
-    <td>&nbsp;<span class="editor"></span></td>
-    <td>&nbsp;<span class="editor"></span></td>
-    <td>&nbsp;<span class="editor"></span></td>
-    <td>&nbsp;<span class="editor"></span></td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box1">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr class="list2_box2">
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tbody>
+<table border="0" cellspacing="0" width="100%" data-resizable-columns-id="demo-table" id="addcrativeTable">
 </table>
 </div>
 </div>
@@ -704,36 +470,9 @@
         </ul>
         <span class="fr">1/10</span>
     </div>
-    <div class="list4">
+    <div class="assistantList">
         <div class="container">
-            <table border="0" cellspacing="0" width="100%" id="adGroupTable" class="table4 table-bordered" data-resizable-columns-id="demo-table">
-                <thead>
-                <tr class="list02_top">
-                    <th>&nbsp;操作</th>
-                    <th>&nbsp;推广单元名称</th>
-                    <th>&nbsp;推广单元状态</th>
-                    <th>&nbsp;启动/暂停</th>
-                    <th>&nbsp;出价</th>
-                    <th>&nbsp;否定关键词</th>
-                    <th>&nbsp;移动出价比例</th>
-                    <th>&nbsp;推广计划名称</th>
-                    <th class="username-column" data-noresize>
-                        <div class="set fr"></div>
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="tbodyClick_campaign">
-                <%--<tr class="list2_box3">--%>
-                <%--<td>&nbsp;北京{婚博会}<span class="editor"></span></td>--%>
-                <%--<td>&nbsp;有效<span class="editor"></span></td>--%>
-                <%--<td>&nbsp;启用<span class="editor"></span></td>--%>
-                <%--<td>&nbsp;一星<span class="editor"></span></td>--%>
-                <%--<td>&nbsp;一星<span class="editor"></span></td>--%>
-                <%--<td>&nbsp;短语-核心包含<span class="editor"></span></td>--%>
-                <%--<td>&nbsp;<a href="#">http://tthunbohui.com </a><span class="editor"></span></td>--%>
-                <%--</tr>--%>
-                </tbody>
-            </table>
+            <table id="Tuiguanglist"></table>
         </div>
     </div>
     <div class="more_list over" style="display:none;">
@@ -797,30 +536,9 @@
         </ul>
         <span class="fr">1/10</span>
     </div>
-    <div class="list4">
+    <div class="assistantList">
         <div class="container">
-            <table border="0" cellspacing="0" width="100%" class="table5 table-bordered" data-resizable-columns-id="demo-table">
-                <thead>
-                <tr class="list02_top">
-                    <th>&nbsp;推广计划名称</th>
-                    <th>&nbsp;推广计划状态</th>
-                    <th>&nbsp;启用/暂停</th>
-                    <th>&nbsp;每日预算</th>
-                    <th>&nbsp;创意展现方式</th>
-                    <th>&nbsp;动态创意状态</th>
-                    <th>&nbsp;推广时段</th>
-                    <th>&nbsp;推广地域</th>
-                    <th>&nbsp;否定关键词</th>
-                    <th>&nbsp;IP排除</th>
-                    <th>&nbsp;到预算下线时间</th>
-                    <th class="username-column" data-noresize style="text-align:left; width:150px;"><span class="fl"> </span>
-                        <div class="set fr"></div>
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="tbodyClick5">
-                </tbody>
-            </table>
+            <table id="PlanTable"></table>
         </div>
     </div>
     <div class="more_list over" style="display:none;">
@@ -985,9 +703,10 @@
                     </li>
                 </ul>
             </div>
-            <div class="list4">
+            <div class="assistantList">
                 <div class="container">
-                    <table border="0" cellspacing="0" width="100%" class="table1 table-bordered"
+                    <table id="monitorFolder"></table>
+                <%--    <table border="0" cellspacing="0" width="100%" class="table1 table-bordered"
                            data-resizable-columns-id="demo-table">
                         <thead>
                         <tr class="list02_top">
@@ -1007,9 +726,9 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody id="monitorFolder">
+                        <tbody >
                         </tbody>
-                    </table>
+                    </table>--%>
                     <input type="hidden" id="remoneMonitor">
                 </div>
             </div>
@@ -1057,9 +776,11 @@
                     <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
                 </ul>
             </div>
-            <div class="list4" style="height:480px;">
+            <div class="assistantList">
                 <div class="container">
-                    <table border="0" cellspacing="0" width="100%" class="table2 table-bordered"
+                    <table id="MonitorTbody">
+                    </table>
+                <%--    <table border="0" cellspacing="0" width="100%" class="table2 table-bordered"
                            data-resizable-columns-id="demo-table">
                         <thead>
                         <tr class="list02_top">
@@ -1070,9 +791,9 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody id="MonitorTbody">
+                        <tbody >
                         </tbody>
-                    </table>
+                    </table>--%>
                 </div>
             </div>
             <div class="zhanghu_input"></div>
@@ -1498,8 +1219,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/creative.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantKeyword.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/creative.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/global.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantCampaign.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantAccount.js"></script>
@@ -1510,6 +1231,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/Indextable.js"></script>
 <script type="text/javascript">
     $(function () {
         window.dialog = dialog;
@@ -1532,6 +1254,7 @@
         ajaxbg.fadeOut(1000);
     });
 
+
 </script>
-</body>
+</body>a
 </html>

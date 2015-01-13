@@ -87,7 +87,6 @@ public class ReportPullController extends WebContextSupport {
                     asynchronousReportService.getKeywordReportData(dateStr, userName);
                 }
                 if (pullObj == 6) {
-                    asynchronousReportService.getKeywordReportData(dateStr, userName);
                     asynchronousReportService.getRegionReportData(dateStr, userName);
                 }
             }

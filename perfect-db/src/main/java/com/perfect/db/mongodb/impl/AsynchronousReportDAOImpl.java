@@ -8,7 +8,6 @@ import com.perfect.dto.account.*;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.entity.account.AccountReportEntity;
 import com.perfect.entity.report.*;
-import com.perfect.utils.DateUtils;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.mongodb.DBNameUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -16,6 +15,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,13 +28,27 @@ import java.util.List;
 public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountReportDTO,Long> implements AsynchronousReportDAO {
 
     @Override
-    public void getAccountReportData(List<AccountReportDTO> accountReportDTOs, SystemUserDTO systemUser, String dateStr) {
+    public void getAccountReportData(List<AccountReportDTO> accountReportDTOs, SystemUserDTO systemUser, String dateStr,String baiduUserName) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<AccountReportEntity> accountReportEntities = ObjectUtils.convert(accountReportDTOs, AccountReportEntity.class);
-        mongoTemplate.findAndRemove(Query.query(Criteria.where("date").is(DateUtils.getYesterday())),AccountReportEntity.class);
-        mongoTemplate.insert(accountReportEntities, TBL_ACCOUNT_REPORT);
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = df.format(date);
+
+        List<AccountReportEntity> entities = null;
+        if(!dateStr.equals(dateString)){
+            try {
+                entities = mongoTemplate.find(Query.query(Criteria.where("date").is(new SimpleDateFormat("yyyy-MM-dd").parse(dateStr)).and("acna").is(baiduUserName)), AccountReportEntity.class);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if(entities ==null || entities.size() == 0){
+                mongoTemplate.insert(accountReportEntities, TBL_ACCOUNT_REPORT);
+            }
+        }
     }
 
     @Override
