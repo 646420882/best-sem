@@ -104,6 +104,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 String pcFilePath = report.getAccountReportDataPC(null, dateStr, dateStr);
                 String mobileFilePath = report.getAccountReportDataMobile(null, dateStr, dateStr);
                 if (pcFilePath == null && mobileFilePath == null) {
+                    getEndPull(systemUser, entity, dateStr + "--用户 -> 无返回连接");
                     continue;
                 }
                 List<AccountReportDTO> pcList = new ArrayList<>();
@@ -165,6 +166,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 String pcFilePath = report.getCampaignReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getCampaignReportDataMobile(null, null, dateStr, dateStr);
                 if (pcFilePath == null && mobileFilePath == null) {
+                    getEndPull(systemUser, entity, dateStr + "--计划 -> 无返回连接");
                     continue;
                 }
                 List<CampaignReportDTO> pcList = new ArrayList<>();
@@ -221,6 +223,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 String pcFilePath = report.getUnitReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getUnitReportDataMobile(null, null, dateStr, dateStr);
                 if (pcFilePath == null && mobileFilePath == null) {
+                    getEndPull(systemUser, entity, dateStr + "--单元 -> 无返回连接");
                     continue;
                 }
 
@@ -277,6 +280,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 String pcFilePath = report.getCreativeReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getCreativeReportDataMobile(null, null, dateStr, dateStr);
                 if (pcFilePath == null && mobileFilePath == null) {
+                    getEndPull(systemUser, entity, dateStr + "--创意 -> 无返回连接");
                     continue;
                 }
 
@@ -332,6 +336,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 String pcFilePath = report.getKeyWordidReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getKeyWordidReportDataMobile(null, null, dateStr, dateStr);
                 if (pcFilePath == null && mobileFilePath == null) {
+                    getEndPull(systemUser, entity, dateStr + "--关键字 -> 无返回连接");
                     continue;
                 }
 
@@ -387,6 +392,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 String pcFilePath = report.getRegionalReportDataPC(null, null, dateStr, dateStr);
                 /*String mobileFilePath = report.getRegionalReportDataMobile(null, null, dateStr, dateStr); */
                 if (pcFilePath == null /*|| mobileFilePath == null*/) {
+                    getEndPull(systemUser, entity, dateStr + "--地域 -> 无返回连接");
                     continue;
                 }
 
