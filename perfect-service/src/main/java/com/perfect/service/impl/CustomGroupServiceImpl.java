@@ -41,7 +41,7 @@ public class CustomGroupServiceImpl implements CustomGroupService {
     }
 
     @Override
-    public void myInsert(CustomGroupDTO customGroupDTO) {
-        customGroupDAO.myInsert(customGroupDTO);
+    public String myInsert(CustomGroupDTO customGroupDTO) {
+      return  customGroupDAO.myInsert(customGroupDTO);
     }
 }

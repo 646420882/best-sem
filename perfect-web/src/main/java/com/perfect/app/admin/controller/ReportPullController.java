@@ -20,10 +20,7 @@ import redis.clients.jedis.Jedis;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by SubDong on 2014/10/8.
@@ -100,7 +97,8 @@ public class ReportPullController extends WebContextSupport {
         List<String> strings = new ArrayList<>();
         Jedis jc = JRedisUtils.get();
         String data = jc.get("_administrator_PullLog");
-        List<String> lists = new Gson().fromJson(data, new TypeToken<List<String>>() {}.getType());
+        List<String> lists = new Gson().fromJson(data, new TypeToken<List<String>>() {
+        }.getType());
         strings.addAll(lists);
         strings.add("数据拉取完毕");
         String jsonData = new Gson().toJson(strings);
@@ -113,11 +111,12 @@ public class ReportPullController extends WebContextSupport {
 
 
     @RequestMapping(value = "/admin/reportPull/getPullLog", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView getPullLog(){
+    public ModelAndView getPullLog() {
         Jedis jc = JRedisUtils.get();
         String data = jc.get("_administrator_PullLog");
-        List<String> list = new Gson().fromJson(data, new TypeToken<List<String>>() {}.getType());
-        if(list == null || list.size()==0){
+        List<String> list = new Gson().fromJson(data, new TypeToken<List<String>>() {
+        }.getType());
+        if (list == null || list.size() == 0) {
             list = new ArrayList<>();
             list.add("-1");
         }
@@ -129,4 +128,45 @@ public class ReportPullController extends WebContextSupport {
         }
         return new ModelAndView(jsonView);
     }
+
+    @RequestMapping(value = "/admin/reportPull/delRedisKey", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView delRedisKey(@RequestParam(value = "keyValues", required = false) String keyValues) {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        if (keyValues != null || !keyValues.equals("")) {
+            Jedis jc = JRedisUtils.get();
+            Boolean keyState = jc.exists(keyValues);
+            Long aLong = 0l;
+            if (keyState) {
+                aLong = jc.del(keyValues);
+                System.out.println();
+            }
+            if (jc != null) {
+                JRedisUtils.returnJedis(jc);
+            }
+
+            Map<String, Object> values = JSONUtils.getJsonMapData(aLong);
+
+            jsonView.setAttributesMap(values);
+        }
+        return new ModelAndView(jsonView);
+    }
+
+    @RequestMapping(value = "/admin/reportPull/getRedisKey", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView getRedisKey() {
+        AbstractView jsonView = new MappingJackson2JsonView();
+
+        Jedis jc = JRedisUtils.get();
+        Set<String> keys = jc.keys("*");
+
+        Map<String, Object> values = JSONUtils.getJsonMapData(keys);
+
+        jsonView.setAttributesMap(values);
+
+        if (jc != null) {
+            JRedisUtils.returnJedis(jc);
+        }
+
+        return new ModelAndView(jsonView);
+    }
+
 }

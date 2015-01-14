@@ -55,6 +55,7 @@ public class AssistantAdgroupController extends WebContextSupport {
                                 @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize) {
         PagerInfo pagerInfo = null;
         Map<String, Object> parms = new HashMap<>();
+        if (!cid.equals("-1")) {
         if (cid.length() > OBJ_SIZE) {
             if (cid != "" || !cid.equals("")) {
                 parms.put(MongoEntityConstants.OBJ_CAMPAIGN_ID, cid);
@@ -71,6 +72,7 @@ public class AssistantAdgroupController extends WebContextSupport {
                 pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize);
             }
             setCampaignNameByLongId((List<AdgroupDTO>) pagerInfo.getList());
+        }
         }
         writeJson(pagerInfo, response);
         return null;

@@ -19,4 +19,6 @@ public interface KeywordImportService {
     void update(KeywordImportDTO keywordImportDTO);
     void myInsertAll(List<KeywordImportDTO> keywordImportDTOs);
     void myInsert(KeywordImportDTO dto);
+    void deleteBySelectLong(String cgid,Long kwd);
+    void deleteBySelectObj(String cgid,String kwd);
 }

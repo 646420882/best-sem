@@ -261,6 +261,7 @@
                                             <li id="showbox4_im"><img src="${pageContext.request.contextPath}/public/img/wangzhi.png">修改访问网址</li>
                                             <li id="showbox5_im"><img src="${pageContext.request.contextPath}/public/img/fenzu.png">分组(改变分组)</li>
                                             <li id="showbox62"><img src="${pageContext.request.contextPath}/public/img/zidingyi.png">自定义列</li>
+                                            <li id="showboxD"><img src="${pageContext.request.contextPath}/public/img/zidingyi.png">删除数据</li>
                                         </ul>
                                         <div class="Screening_concent over" style="display: none;">
                                             <div class="Screening_row over">
@@ -941,6 +942,7 @@
 
             skip = 0;
             limit = 20;
+            selection=treeNode.id;
             dataUrl2 = "/importBid/loadData?cgId=" + treeNode.id + "&s=" + skip + "&l=" + limit;
 
             grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");

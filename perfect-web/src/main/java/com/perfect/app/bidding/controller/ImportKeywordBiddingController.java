@@ -68,8 +68,7 @@ public class ImportKeywordBiddingController extends WebContextSupport {
             CustomGroupDTO customGroupEntity = new CustomGroupDTO();
             customGroupEntity.setAccountId(AppContext.getAccountId());
             customGroupEntity.setGroupName(groupName);
-            customGroupSerivice.myInsert(customGroupEntity);
-            String oid = customGroupEntity.getId();
+            String oid = customGroupSerivice.myInsert(customGroupEntity);
             writeData(SUCCESS, response, oid);
         } else {
             writeData(FAIL, response, null);
@@ -310,5 +309,29 @@ public class ImportKeywordBiddingController extends WebContextSupport {
         }
 
         return null;
+    }
+
+    /**
+     *
+     * @param cgid 自定义分组id
+     * @param kwdId 关键词id
+     * @return
+     */
+    @RequestMapping(value = "/deleteBySelection",method = RequestMethod.GET)
+    public ModelAndView deleteBySelection(@RequestParam(value = "cgid", required = true, defaultValue = "") String cgid, @RequestParam(value = "kwdId", required = true, defaultValue = "") String kwdId) {
+        try {
+            String[] kwds = kwdId.split(",");
+            for (String kwd : kwds) {
+                if (kwd.length() > 18) {
+                    keywordImportService.deleteBySelectObj(cgid, kwd);
+                }else{
+                    keywordImportService.deleteBySelectLong(cgid, Long.valueOf(kwd));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return writeMapObject("error", EXCEPTION);
+        }
+        return writeMapObject("status", SUCCESS);
     }
 }

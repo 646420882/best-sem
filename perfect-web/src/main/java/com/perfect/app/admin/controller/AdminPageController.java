@@ -66,6 +66,16 @@ public class AdminPageController implements Controller {
     }
 
     /**
+     * redis后台页面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getRedisPage", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView getRedisPage() {
+        return new ModelAndView("foundationReport/redis");
+    }
+
+    /**
      * 审核账户后台页面
      *
      * @return

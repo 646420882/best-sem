@@ -29,4 +29,8 @@ public interface KeywordImportDAO extends HeyCrudRepository<KeywordImportDTO,Lon
     void myInsertAll(List<KeywordImportDTO> keywordImportDTOs);
 
     void myInsert(KeywordImportDTO dto);
+
+    void deleteBySelectLong(String cgid,Long kwd);
+
+    void deleteBySelectObj(String cgid,String kwd);
 }

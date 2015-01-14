@@ -58,6 +58,7 @@ public class AssistantCreativeController extends WebContextSupport {
                                         @RequestParam(value = "pageSize",required = false,defaultValue = "20")int pageSize){
         PagerInfo pagerInfo=null;
         Map<String,Object> map=new HashMap<>();
+        if (!aid.equals("-1")) {
         if (aid.length() > OBJ_SIZE || cid.length() > OBJ_SIZE) {
             if (aid != "" || !aid.equals("")) {
                 if (aid.length() > OBJ_SIZE) {
@@ -83,6 +84,7 @@ public class AssistantCreativeController extends WebContextSupport {
             } else {
                 pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
             }
+        }
         }
 
         writeJson(pagerInfo, response);

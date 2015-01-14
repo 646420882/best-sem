@@ -32,7 +32,6 @@ $.fn.selectionTp= function () {
     var te = this[0].value.substring(s, e);
     return {start: s, end: e, text: te};
 };
-var sparams = {aid: null, cid: null,nowPage:0,pageSize:20};
 var dockObj=document.getElementById('argDialogDiv');
 var creativeGrid=null;
 $(function () {
@@ -253,7 +252,7 @@ function loadCreativeData() {
             records: "totalCount",
             repeatitems: false
         },
-        postData:sparams,
+        postData:{aid:"-1",cid:staticParams.cid,nowPage:0,pageSize:20},
         height: 500,//高度
         width:1400,
         colModel:[
@@ -302,7 +301,10 @@ function loadCreativeData() {
 function creativePageDynamic(page_index){
     pageType=3;
     var tmpValue = $("#createTable").jqGrid("getGridParam", "postData");
-    $.extend(tmpValue, {aid:sparams.aid,cid:sparams.cid,nowPage:page_index,pageSize:sparams.pageSize});
+    if(staticParams.aid==null&&staticParams.cid==null){
+        staticParams.aid="-1";
+    }
+    $.extend(tmpValue, {aid:staticParams.aid,cid:staticParams.cid,nowPage:page_index,pageSize:items_per_page});
     creativeGrid.jqGrid("setGridParam", tmpValue).trigger("reloadGrid");
 }
 /**
@@ -449,7 +451,7 @@ function addTbDes2(){
  */
 function addCreative() {
     var jcBox = $("#jcUl");
-    if (sparams.cid != null && sparams.aid != null) {
+    if (staticParams.cid != null && staticParams.aid != null) {
         var i = $("#createTable tbody tr").size();
         var _createTable = $("#createTable tbody");
         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
@@ -467,23 +469,23 @@ function addCreative() {
             " <td><span class='pen'></span></td>" +
             "</tr>";
         _createTable.append(_tbody);
-    } else if (sparams.cid != null && sparams.aid == null) {
+    } else if (staticParams.cid != null && staticParams.aid == null) {
         jcBox.empty();
-        loadUnit(sparams.cid);
+        loadUnit(staticParams.cid);
         jcBox.append("<li><span>推广单元</span><select id='sUnit' onchange='loadTree(this.value)'><option value='-1'>请选择单元</option></select></li>");
         creativeAddBoxShow();
-    } else if (sparams.cid == null && sparams.aid == null) {
+    } else if (staticParams.cid == null && staticParams.aid == null) {
         jcBox.empty();
         getPlans();
         jcBox.append("<li><span>推广计划</span><select id='sPlan' onchange='loadUnit(this.value)'><option value='-1'>请选择计划</option></select></li>");
         jcBox.append("<li><span>推广单元</span><select id='sUnit' onchange='loadTree(this.value)'><option value='-1'>请选择单元</option></select></li>");
         creativeAddBoxShow();
     } else {
-        alert(sparams.cid + ":" + sparams.aid);
+        alert(staticParams.cid + ":" + staticParams.aid);
     }
 }
 function getCreativeAId() {
-    return sparams.aid;
+    return staticParams.aid;
 }
 /**
  * 查询所有计划，生成select的Option对象
@@ -655,8 +657,8 @@ function edit(rs) {
  * @param cid
  */
 function getCreativePlan(cid) {
-    sparams.cid = cid;
-    sparams.aid = null;
+    staticParams.cid = cid;
+    staticParams.aid = null;
     creativePageDynamic(0);
 }
 /**
@@ -664,16 +666,16 @@ function getCreativePlan(cid) {
  * @param con
  */
 function getCreativeUnit(con) {
-    sparams.cid = con.cid;
-    sparams.aid = con.aid;
+    staticParams.cid = con.cid;
+    staticParams.aid = con.aid;
     creativePageDynamic(0);
 }
 /**
  * 选择推广计划和单元
  */
 function planUnit() {
-    var cid = $("#sPlan :selected").val() == undefined ? sparams.cid : $("#sPlan :selected").val();
-    var aid = $("#sUnit :selected").val() == undefined ? sparams.aid : $("#sUnit :selected").val();
+    var cid = $("#sPlan :selected").val() == undefined ? staticParams.cid : $("#sPlan :selected").val();
+    var aid = $("#sUnit :selected").val() == undefined ? staticParams.aid : $("#sUnit :selected").val();
     if (cid == "-1") {
         alert("请选择计划");
     } else if (aid == "-1") {
@@ -687,8 +689,8 @@ function planUnit() {
                 }
             });
         }
-        sparams.cid = cid;
-        sparams.aid = aid;
+        staticParams.cid = cid;
+        staticParams.aid = aid;
         closeAlertCreative();
         addCreative();
     }
@@ -753,8 +755,8 @@ function loadUnit(rs) {
  */
 function loadTree(rs) {
     if (rs != "-1") {
-        var cid = $("#sPlan :selected").val() == undefined ? sparams.cid : $("#sPlan :selected").val();
-        sparams = {cid: cid, aid: rs};
+        var cid = $("#sPlan :selected").val() == undefined ? staticParams.cid : $("#sPlan :selected").val();
+        staticParams = {cid: cid, aid: rs};
         loadCreativeData(0);
     }
 }
@@ -1075,7 +1077,7 @@ function creativeMulti() {
 
         },
         onclose: function () {
-            loadCreativeData(sparams.nowPage);
+            loadCreativeData(staticParams.nowPage);
         },
         onremove: function () {
         }
