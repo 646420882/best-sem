@@ -3,6 +3,7 @@ package com.perfect.app.admin.controller;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.dto.keyword.LexiconDTO;
 import com.perfect.service.LexiconService;
+import com.perfect.utils.MD5;
 import com.perfect.utils.excel.XSSFReadUtils;
 import com.perfect.utils.excel.XSSFSheetHandler;
 import com.perfect.utils.redis.JRedisUtils;
@@ -49,6 +50,7 @@ public class ImportLexiconExcelController extends WebContextSupport {
 
     private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
     private static final String FILE_SEPARATOR = System.getProperty("file.separator");
+    private static final String XLSX = "xlsx";
 
     private static String trade;
 
@@ -68,21 +70,29 @@ public class ImportLexiconExcelController extends WebContextSupport {
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
                 fileName = file.getOriginalFilename();
+
+                if (!XLSX.equals(com.google.common.io.Files.getFileExtension(fileName))) {
+                    Files.delete(Paths.get(tmpFile));
+                    break;
+                }
+
+                trade = fileName.substring(0, 2);
+
+                MD5.Builder md5Builder = new MD5.Builder();
+                MD5 md5 = md5Builder.password(fileName.replace("." + XLSX, "")).salt(XLSX).build();
+                fileName = md5.getMD5();
+
                 File _file = new File(tmpDirPath, fileName);
                 FileUtils.copyInputStreamToFile(file.getInputStream(), _file);
                 tmpFile = tmpDirPath + fileName;
+
+                break;
             }
         }
         if (StringUtils.isEmpty(tmpFile)) {
             return;
         }
 
-        if (!"xlsx".equals(com.google.common.io.Files.getFileExtension(fileName))) {
-            Files.delete(Paths.get(tmpFile));
-            return;
-        }
-
-        trade = fileName.substring(0, 2);
         Path file = Paths.get(tmpFile);
         final Map<String, LexiconDTO> map = new HashMap<>(1 << 16);
         XSSFReadUtils.read(file, new XSSFSheetHandler() {
