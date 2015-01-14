@@ -37,7 +37,7 @@
             <li>
                 <span>输入要删除的key：</span>
                 <input type="text" id="textY">
-                <input type="button" id="btnY" value="确定删除">
+                <a id="btnY" class="btn btn-info">确定删除</a>
             </li>
             <li>
                 <div id="appendtext"></div>
