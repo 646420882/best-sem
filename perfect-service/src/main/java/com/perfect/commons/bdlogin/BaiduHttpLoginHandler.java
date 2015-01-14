@@ -14,11 +14,9 @@ import org.jsoup.Jsoup;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by baizz on 2014-11-5.
@@ -27,15 +25,9 @@ import java.util.Objects;
 @Component("baiduLoginHandler")
 public class BaiduHttpLoginHandler extends AbstractBaiduHttpClient {
 
-    private static String baiduLoginJSPath = null;
+    private static String login_js = null;
 
     private String castk;
-
-    static {
-        URL url = BaiduHttpLoginHandler.class.getClassLoader().getResource("phantomJs" + System.getProperty("file.separator") + "baiduLogin.js");
-        Objects.requireNonNull(url);
-        baiduLoginJSPath = url.getPath();
-    }
 
 
     public boolean login(String username, String password, String imagecode, String cookies) throws IOException {
@@ -91,7 +83,14 @@ public class BaiduHttpLoginHandler extends AbstractBaiduHttpClient {
     }
 
     public static String getBaiduLoginJSPath() {
-        return baiduLoginJSPath;
+        if (login_js == null) {
+            try {
+                login_js = JavascriptFileHelper.getJavascriptPath().toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return login_js;
     }
 
     public String getCastk() {
