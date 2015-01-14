@@ -1,3 +1,4 @@
+var staticParams={cid:null,aid:null,cn:null,nowPage:0,pageSize:20};
 $("tbody").delegate("tr", "click", function (event) {
     $(this).parent().find("tr").removeClass("list2_box2");
     $(this).addClass("list2_box2");
@@ -9,54 +10,50 @@ $("tbody").delegate("tr", "click", function (event) {
  * @param treeNode
  * @returns {{cid: null, aid: null}}
  */
-var nowChoose = null;
-var jsonData = {cid: null, aid: null, cn: null};
-function getNowChooseCampaignTreeData(treeNode) {
+//var nowChoose = null;
+//var jsonData = {cid: null, aid: null, cn: null};
+function loadData(treeNode) {
     if (treeNode.level == 0) {
         //点击的是父节点(推广计划)
-        jsonData.cid = treeNode.id;
-        jsonData.aid=null;
-        jsonData.cn = treeNode.name;
+        staticParams.cid = treeNode.id;
+        staticParams.aid=null;
+        staticParams.cn = treeNode.name;
+        whenClickTreeLoadData(getCurrentTabName());
+
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元)
-        jsonData.cid = treeNode.getParentNode().id;
-        jsonData.aid = treeNode.id;
+        staticParams.cid = treeNode.getParentNode().id;
+        staticParams.aid = treeNode.id;
+        whenClickTreeLoadData(getCurrentTabName());
+
     } else {
-        jsonData.cid = null;
-        jsonData.aid = null;
-        jsonData.cn = null;
+        staticParams.cid=null;
+        staticParams.aid=null;
+        staticParams.cn=null;
     }
-    nowChoose = jsonData;
-    whenClickTreeLoadData(getCurrentTabName(), jsonData);
+
 }
 /**
  * 得到当前选择的推广计划id或者推广单元的id
  */
-function getNowChooseCidAndAid() {
-
-    return nowChoose;
-}
 //刚进入该页面的时候加载的数据
-whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
-function whenClickTreeLoadData(tabName, param) {
+function whenClickTreeLoadData(tabName) {
     $("#jiangkong_box3").hide();
     $("#jiangkong_box2").show();
-    param = param != null ? param : {aid: null, cid: null};
+    //param = param != null ? param : {aid: null, cid: null};
     var tabName = $.trim(tabName);
     if (tabName == "关键词") {
         keywordPageDynamic(0);
-    } else if (tabName == "推广计划") {
-        getCampaignList(0);
-    } else if (tabName == "普通创意") {
-        if (param.cid != null && param.aid != null) {
-            getCreativeUnit(param);
+    }  else if (tabName == "普通创意") {
+        if (staticParams.cid != null && staticParams.aid != null) {
+            getCreativeUnit(staticParams);
         } else {
-            getCreativePlan(param.cid);
+            getCreativePlan(staticParams.cid);
         }
     } else if (tabName == "附加创意") {
 
     } else if (tabName == "推广单元") {
-        getAdgroupPlan(param.cid, param.cn);
+        getAdgroupPlan(staticParams.cid, staticParams.cn);
     }
 
 }
@@ -66,8 +63,7 @@ function whenClickTreeLoadData(tabName, param) {
  */
 $("#tabMenu li").click(function () {
     var tabName = $(this).html();
-    var param = getNowChooseCidAndAid();
-    whenClickTreeLoadData(tabName, param);
+    whenClickTreeLoadData(tabName);
 });
 
 /**

@@ -128,6 +128,8 @@ function checkGroupOk() {
                     }
                 });
             }
+        }else{
+            alert("请输入分组名！");
         }
     }
 }

@@ -750,7 +750,7 @@
 
             <div class="page kwdPage over">
                 <ul>
-                    <div>每页显示条数<select style="width:60px;" onchange="getKwdList(1)">
+                    <div>每页显示条数<select style="width:60px;" onchange="getKwdList()">
                         <option value="20">20</option>
                         <option value="40">40</option>
                         <option value="60">60</option>
@@ -1219,9 +1219,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/global.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantKeyword.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/creative.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/global.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantCampaign.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantAccount.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/adgroup.js"></script>

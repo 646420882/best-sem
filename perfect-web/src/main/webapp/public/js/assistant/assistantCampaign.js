@@ -30,7 +30,7 @@ function CampaignList() {
             records: "totalCount",
             repeatitems: false
         },
-        postData:{aid:jsonData.aid,cid:jsonData.cid,nowPage:0,pageSize:20},
+        postData:{aid:"",cid:"",nowPage:0,pageSize:20},
         height: 500,//高度
         colModel: [
             {label: '推广计划名称',name:'campaignName',index:'campaignName',align:'center',sortable:false},
@@ -94,7 +94,7 @@ function CampaignList() {
 function getCampaignList(page_index){
     pageType = 2;
     var tmpValue=$("#PlanTable").jqGrid("getGridParam", "postData");
-    $.extend(tmpValue, {aid:jsonData.aid,cid:jsonData.cid,nowPage:page_index,pageSize:jsonData.pageSize});
+    $.extend(tmpValue, {aid:staticParams.aid,cid:staticParams.cid,nowPage:page_index,pageSize:items_per_page});
         if(CampaignGrid!=null){
             CampaignGrid.jqGrid("setGridParam", tmpValue).trigger("reloadGrid");
     }

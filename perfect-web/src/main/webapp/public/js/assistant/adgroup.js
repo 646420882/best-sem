@@ -1,9 +1,7 @@
 /**
  * Created by XiaoWei on 2014/8/21.
  */
-var plans = {cid: null, cn: null,nowPage:1,pageSize:20};
 $(function () {
-
     initAMenu();
     rDrag.init(document.getElementById("bAdd"));
     rDrag.init(document.getElementById("aKwd"));
@@ -80,7 +78,7 @@ function initAMenu() {
                             "<td>" + parseFloat(subData["maxPrice"]).toFixed(2) + "</td>" +
                             "<td><span>" + _span + "</span><input type='hidden' value='" + subData["negativeWords"] + "'><input type='hidden' value='" + subData["exactNegativeWords"] + "'></td>" +
                             "<td>" + parseFloat(subData["mib"]).toFixed(2) + "</td>" +
-                            "<td>" + plans.cn + "</td>" +
+                            "<td>" + staticParams.cn + "</td>" +
                             "<td><span class='pen' step='1'></span></td>" +
                             "</tr>";
                         _createTable.append(_tbody);
@@ -124,12 +122,12 @@ function initNoKwdKeyUp() {
 }
 /**
  * 加载单元数据
- * @param plans 根据点击树结构的计划id，如果有则根据计划加载，如果没有，查询所有单元
+ * @param staticParams 根据点击树结构的计划id，如果有则根据计划加载，如果没有，查询所有单元
  */
 function AdgroupData() {
 //    pageType = 4;
-/*    plans.pageSize=items_per_page;
-    plans.nowPage=page_index;*/
+/*    staticParams.pageSize=items_per_page;
+    staticParams.nowPage=page_index;*/
     initAgReback();
     AdgropGrid = jQuery("#Tuiguanglist").jqGrid({
         datatype: "json",
@@ -141,7 +139,7 @@ function AdgroupData() {
             records: "totalCount",
             repeatitems: false
         },
-        postData:plans,
+        postData:staticParams,
         width:1400,
         height: 500,//高度
         colModel: [
@@ -189,7 +187,7 @@ function AdgroupData() {
 function loadAdgroupData(page_index){
     pageType=4;
     var tmpValue = $("#Tuiguanglist").jqGrid("getGridParam", "postData");
-    $.extend(tmpValue, {cid:plans.cid,cn:plans.cn,nowPage:page_index,pageSize:plans.pageSize});
+    $.extend(tmpValue, {cid:staticParams.cid,cn:staticParams.cn,nowPage:page_index,pageSize:staticParams.pageSize});
     AdgropGrid.jqGrid("setGridParam", tmpValue).trigger("reloadGrid");
 }
 /**
@@ -266,8 +264,8 @@ function aon(ts) {
  * @param rs
  */
 function getAdgroupPlan(rs, name) {
-    plans.cid = rs;
-    plans.cn = name;
+    staticParams.cid = rs;
+    staticParams.cn = name;
     loadAdgroupData(0);
 }
 /**
@@ -299,7 +297,7 @@ function adgroupAddAlertClose() {
  */
 function addAdgroup() {
     var jcBox = $("#adUi");
-    if (plans.cid == null) {
+    if (staticParams.cid == null) {
         jcBox.empty();
         adgetPlans();
         jcBox.append("<li>推广计划<select id='aPlan' onchange='getAdgroupPlan(this.value)'><option value='-1'>请选择计划</option></select></li>");
@@ -316,7 +314,7 @@ function addAdgroup() {
             "<td><input name='maxPrice' style='width:50px;' value='0.0' onkeypress='until.regDouble(this)' maxlength='3'></td>" +
             "<td><span id='" + getRandomId() + "sp'>未设置</span><input name='negativeWords' id='" + getRandomId() + "ni' type='hidden' readonly='readonly'><input type='button' onclick='adgroupNokeyword(this)' value='设置否定关键词'/><input name='exactNegativeWords' id='" + getRandomId() + "ne' type='hidden'  readonly='readonly'></td>" +
             "<td><input name='mib' style='width:50px;' value='0.0' onkeypress='until.regDouble(this)' maxlength='3'></td>" +
-            "<td>" + plans.cn + "</td>" +
+            "<td>" + staticParams.cn + "</td>" +
             "</tr>";
         _createTable.append(_tbody);
     }
@@ -411,7 +409,7 @@ function adgroupUpdate() {
  * @returns {null}
  */
 function getAdgroupId() {
-    return plans.cid;
+    return staticParams.cid;
 }
 /**
  * 弹出设置否定关键词页面
@@ -523,13 +521,13 @@ function adgetPlans() {
  * 弹出框选择计划后确认方法
  */
 function adgroudAddAlertOk() {
-    var aid = $("#aPlan :selected").val() != undefined ? $("#aPlan :selected").val() : plans.cid;
-    var cn = $("#aPlan :selected").text() != undefined ? $("#aPlan :selected").text() : plans.cn;
+    var aid = $("#aPlan :selected").val() != undefined ? $("#aPlan :selected").val() : staticParams.cid;
+    var cn = $("#aPlan :selected").text() != undefined ? $("#aPlan :selected").text() : staticParams.cn;
     if (aid == "-1") {
         alert("请选择计划");
     } else {
-        plans.cid = aid;
-        plans.cn = cn;
+        staticParams.cid = aid;
+        staticParams.cn = cn;
         adgroupAddAlertClose();
         addAdgroup();
     }
@@ -703,7 +701,7 @@ function agReBack(oid) {
                     "<td >" + parseFloat(_maxPrice).toFixed(2) + "</td>" +
                     "<td ><input type='hidden' value='" + nn + "'><input type='hidden' value='" + ne + "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
                     "<td >" + parseFloat(getMib(json.data.mib)).toFixed(2) + "</td>" +
-                    "<td >" + plans.cn + "</td>" +
+                    "<td >" + staticParams.cn + "</td>" +
                     "<td >" + _ls + "</td>" +
                     "</tr>";
                 $(atmp).html(_tbody);
@@ -734,8 +732,8 @@ function adgroupMutli(){
 
         },
         onclose: function () {
-//            loadCreativeData({cid:plans.cid,aid:plans.aid});
-            AdgroupData(plans.nowPage);
+//            loadCreativeData({cid:staticParams.cid,aid:staticParams.aid});
+            AdgroupData(staticParams.nowPage);
         },
         onremove: function () {
         }

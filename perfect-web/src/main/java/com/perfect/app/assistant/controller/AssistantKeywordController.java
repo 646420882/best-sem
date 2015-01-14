@@ -86,7 +86,10 @@ public class AssistantKeywordController extends WebContextSupport{
                                   @RequestParam(value = "aid",required = false,defaultValue = "")String aid,
                                   @RequestParam(value = "nowPage")int nowPage,
                                   @RequestParam(value = "pageSize")int pageSize){
-        PagerInfo page = assistantKeywordService.getKeyWords(cid, aid, nowPage, pageSize);
+        PagerInfo page=null;
+        if(!aid.equals("-1")){
+            page  = assistantKeywordService.getKeyWords(cid, aid, nowPage, pageSize);
+        }
         writeJson(page, response);
     }
 

@@ -1,6 +1,6 @@
 jQuery("#addcrativeTable").jqGrid({
     datatype: "json",
-    url: '/assistantKeyword/list',
+    url: '',
     mtype: "POST",
     jsonReader: {
         root: "rows",

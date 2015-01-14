@@ -1,8 +1,9 @@
 /*加载列表数据start*/
 /******************pagination*********************/
+
 $(function(){
-        getKwdList();
-    });
+    getKwdList();
+});
 var items_per_page = 20;    //默认每页显示20条数据
 var pageIndex = 0;  //当前页码
 var records = 0;//数据的总条数
@@ -72,7 +73,7 @@ function getKwdList() {
             records: "totalCount",
             repeatitems: false
         },
-        postData:{aid:jsonData.aid,cid:jsonData.cid,nowPage:0,pageSize:20},
+        postData:{aid:"-1",cid:"",nowPage:0,pageSize:20},
         height: 500,//高度
         width:1400,
         colModel: [
@@ -82,7 +83,7 @@ function getKwdList() {
             {label: ' 出价',name:'object.price',index:'price',align:'center',width:60,sortable:false},
             {label: ' 计算机质量度',name:'quality',index:'quality',align:'center',width:160,sortable:false},
             {label: ' 移动质量度',name:'mobileQuality',index:'mobileQuality',align:'center',width:160,sortable:false},
-            {label: ' 匹配模式',name:'object.matchType',index:'object.matchType', formatter: 'link',align:'center',sortable:false},
+            {label: ' 匹配模式',name:'object.matchType',index:'object.matchType', align:'center',sortable:false},
             {label: ' 访问Url',name:'object.pcDestinationUrl',index:'pcDestinationUrl',formatter: 'link',width:200,align:'center',sortable:false},
             {label: ' 移动访问URL',name:'object.mobileDestinationUrl',index:'object.pcDestinationUrl',width:200,formatter: 'link',align:'center',sortable:false},
             {label: ' 推广计划名称',name:'campaignName',index:'campaignName',align:'center',sortable:false}
@@ -122,7 +123,7 @@ var id = $("#keywordTable").jqGrid("getGridParam", "selrow");
 function keywordPageDynamic(page_index){
     pageType=1;
     var value=$("#keywordTable").jqGrid("getGridParam", "postData");
-    $.extend(value, {aid:jsonData.aid,cid:jsonData.cid,nowPage:page_index,pageSize:items_per_page});
+    $.extend(value, {aid:staticParams.aid,cid:staticParams.cid,nowPage:page_index,pageSize:items_per_page});
     if(keywordGrid!=null){
     keywordGrid.jqGrid("setGridParam",value).trigger("reloadGrid");
     }
