@@ -14,5 +14,5 @@ public interface CustomGroupDAO  {
     public List<CustomGroupDTO> findAll(Long acId);
     ArrayNode getCustomGroupTree();
     public CustomGroupDTO findByCustomName(String customName);
-    void myInsert(CustomGroupDTO customGroupDTO);
+    String myInsert(CustomGroupDTO customGroupDTO);
 }

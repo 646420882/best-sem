@@ -115,6 +115,20 @@ public class KeywordImportDAOImpl extends AbstractUserBaseDAOImpl<KeywordImportD
         getMongoTemplate().insert(keywordImportEntity, MongoEntityConstants.TBL_IMPORTANT_KEYWORD);
     }
 
+    @Override
+    public void deleteBySelectLong(String cgid, Long kwd) {
+        Query q=new Query();
+        q.addCriteria(Criteria.where("kwid").is(kwd)).addCriteria(Criteria.where("cgid").is(cgid));
+        getMongoTemplate().remove(q,KeywordImportEntity.class);
+    }
+
+    @Override
+    public void deleteBySelectObj(String cgid, String kwd) {
+        Query q=new Query();
+        q.addCriteria(Criteria.where("kwid").is(kwd)).addCriteria(Criteria.where("cgid").is(cgid));
+        getMongoTemplate().remove(q,KeywordImportEntity.class);
+    }
+
     private void deleteBySubData(String cgid) {
         BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where("cgid").in(cgid)), KeywordImportEntity.class);
     }

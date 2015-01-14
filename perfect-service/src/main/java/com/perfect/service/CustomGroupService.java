@@ -13,5 +13,5 @@ public interface CustomGroupService {
     List<CustomGroupDTO> findAll(Long acId);
     Map<String,Object> getCustomGroupTree();
     CustomGroupDTO findByCustomName(String customName);
-    void myInsert(CustomGroupDTO customGroupDTO);
+   String  myInsert(CustomGroupDTO customGroupDTO);
 }

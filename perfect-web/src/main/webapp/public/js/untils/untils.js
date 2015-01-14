@@ -2,7 +2,7 @@
  * Created by XiaoWei on 2014/8/21.
  */
 var subData = {};
-var formData={};
+var formData = {};
 $.fn.extend({
     submit: function (url, func) {
         var data = {};
@@ -31,13 +31,13 @@ $.fn.extend({
         for (var i = 0; i < inputs.length; i++) {
             if (inputs[i].name) {
                 data[inputs[i].name] = inputs[i].value;
-                formData[inputs[i].name]=inputs[i].value;
+                formData[inputs[i].name] = inputs[i].value;
             }
         }
         var selects = $(this).find("select");
         for (var i = 0; i < selects.length; i++) {
             data[selects[i].name] = selects[i].value;
-            formData[selects[i].name]=selects[i].value;
+            formData[selects[i].name] = selects[i].value;
         }
         $.post(url, data, function (json) {
             if (func)
@@ -99,13 +99,13 @@ var until = {
                 return "本地新增";
                 break;
         }
-    },getKeywordStatus:function(number){
+    }, getKeywordStatus: function (number) {
         switch (number) {
             case 41:
                 return "有效";
                 break;
             case 42:
-                return"暂停推广";
+                return "暂停推广";
                 break;
             case 43:
                 return "不宜推广";
@@ -123,25 +123,25 @@ var until = {
                 return "搜索量过低";
                 break;
             case 48:
-                return"部分无效";
+                return "部分无效";
                 break;
             case 49:
                 return "计算机搜索无效";
                 break;
             case 50:
-                return"移动搜索无效";
+                return "移动搜索无效";
                 break;
             default:
                 return "本地新增";
         }
-    },regDouble:function(ids){
-        $(ids).keyup(function(){
-            $(this).val($(this).val().replace(/[^0-9.]/g,''));
-        }).bind("paste",function(){  //CTR+V事件处理
-            $(this).val($(this).val().replace(/[^0-9.]/g,''));
+    }, regDouble: function (ids) {
+        $(ids).keyup(function () {
+            $(this).val($(this).val().replace(/[^0-9.]/g, ''));
+        }).bind("paste", function () {  //CTR+V事件处理
+            $(this).val($(this).val().replace(/[^0-9.]/g, ''));
         }).css("ime-mode", "disabled"); //CSS设置输入法不可用
-    },getMatchTypeName:function(num){
-        switch(num){
+    }, getMatchTypeName: function (num) {
+        switch (num) {
             case "1":
                 return "精确匹配";
                 break;
@@ -156,10 +156,10 @@ var until = {
                 break;
         }
     },
-    getQuality:function(number) {
+    getQuality: function (number) {
         var quanlityHtml = "<span>";
         var quanlityText = "";
-        if (number> 0) {
+        if (number > 0) {
             switch (number) {
                 case 11:
                 case 12:
@@ -208,9 +208,9 @@ var until = {
         }
         quanlityHtml += "&nbsp;&nbsp;&nbsp;" + quanlityText + "</span>";
         return quanlityHtml;
-    }, getMobileQuanlity:function(number){
+    }, getMobileQuanlity: function (number) {
         var mobileQuanlityHtml = "<span>";
-        if (number> 0) {
+        if (number > 0) {
             for (var i = 1; i <= 5; i++) {
                 if (number >= i) {
                     mobileQuanlityHtml += "<img src='/public/img/star.png'>";
@@ -222,7 +222,7 @@ var until = {
         }
         mobileQuanlityHtml += "</span>";
         return mobileQuanlityHtml;
-    },getCampaignStatus:function(number){
+    }, getCampaignStatus: function (number) {
         switch (number) {
             case 31:
                 return "有效";
@@ -234,33 +234,32 @@ var until = {
                 return "推广计划暂停推广";
                 break;
             default :
-                return "本地新增";
+                return "本地处理";
                 break;
-    }
+        }
 
     }
-    ,PlanStatus:function(number){
+    , PlanStatus: function (number) {
         switch (number) {
             case 21:
                 return "有效";
                 break;
-      case 22:
-          return "处于暂停时段";
-          break;
-        case 23:
-            return "暂停推广";
-            break;
-       case 24:
-           return "推广计划预算不足";
-           break;
-        case 25:
-            return "账户预算不足";
-            break;
-       default :
-           return "本地新增";
-           break;
+            case 22:
+                return "处于暂停时段";
+                break;
+            case 23:
+                return "暂停推广";
+                break;
+            case 24:
+                return "推广计划预算不足";
+                break;
+            case 25:
+                return "账户预算不足";
+                break;
+            default :
+                return "本地处理";
+                break;
         }
 
     }
-    ,
 };

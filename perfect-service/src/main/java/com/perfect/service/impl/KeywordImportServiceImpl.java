@@ -67,4 +67,14 @@ public class KeywordImportServiceImpl  implements KeywordImportService {
     public void myInsert(KeywordImportDTO dto) {
         keywordImportDAO.myInsert(dto);
     }
+
+    @Override
+    public void deleteBySelectLong(String cgid, Long kwd) {
+        keywordImportDAO.deleteBySelectLong(cgid,kwd);
+    }
+
+    @Override
+    public void deleteBySelectObj(String cgid, String kwd) {
+        keywordImportDAO.deleteBySelectObj(cgid,kwd);
+    }
 }

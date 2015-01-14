@@ -7,6 +7,7 @@ $(function () {
     initImGuiZe();
     initImStopBidStatus();
     imiUpdateCustomGroup();
+    imiDeleteDocument();
 });
 var imzTree = true;//标识分组树是否是第一次加载
 var imId = "";//获取点击关键字的编号
@@ -16,6 +17,7 @@ var imbiddingStatus = "";//竞价状态
 var imrule = "";//竞价规则
 var imadgroupId = "";
 var imSearchData = {};
+var selection = "";
 //加载分组树
 function initImzTree(tre) {
     tre = tre != undefined ? tre : imzTree;
@@ -115,14 +117,27 @@ function checkGroupOk() {
     } else {
         var cgroupName = $("input[name='cgroupName']").val();
         if (cgroupName != "") {
-            var con = confirm("是否添加名为：\"" + cgroupName + "\"的分组?");
+            var con = confirm("是否添加名为：\"" + cgroupName + "\"的分组?并添加选择项？");
             if (con) {
                 $.post("/importBid/insert", {gname: cgroupName.trim()}, function (result) {
                     var json = eval("(" + result + ")");
                     if (json.success == 1) {
                         $("#cgroup").append("<option value='" + json.data + "'>" + cgroupName + "</option>");
-                        initImzTree(true);
-                        alert("添加成功");
+                        $.post("/importBid/addKeyword", {
+                            cgroupId: json.data,
+                            imId: imId,
+                            imap: imap,
+                            imbiddingStatus: imbiddingStatus,
+                            imrule: imrule,
+                            imadgroupId: imadgroupId
+                        }, function (result) {
+                            if (result == 1) {
+                                alert("分组成功");
+                                initImzTree(true);
+                                imclose();
+                            }
+                        });
+
                     } else if (json.success == 0) {
                         alert("已经存在名为：\"" + cgroupName + "\"的分组名了！");
                     }
@@ -137,15 +152,12 @@ function checkGroupOk() {
 function cgroupInsert() {
     var _this = $("#cgroup :selected").val();
     _this = parseInt(_this);
-    switch (_this) {
-        case -1:
-            $("#showTxt").css("display", "block");
-            $("input[name='cgroupName']").css("display", "none");
-            break;
-        default :
-            $("#showTxt").css("display", "none");
-            $("input[name='cgroupName']").css("display", "none");
-            break;
+    if (_this == "-1") {
+        $("#showTxt").css("display", "block");
+        $("input[name='cgroupName']").css("display", "none");
+    } else {
+        $("#showTxt").css("display", "none");
+        $("input[name='cgroupName']").css("display", "none");
     }
 }
 //显示或者消失分组名
@@ -271,6 +283,7 @@ function initImGuiZe(){
 function imiUpdateCustomGroup(){
     //设置分组
     $("#showbox5_im").click(function () {
+        $("#showTxt").css("display", "block");
         if (initCustomGroupSelectUpdate()) {
             $(".TB_overlayBG").css({
                 display: "block", height: $(document).height()
@@ -284,6 +297,35 @@ function imiUpdateCustomGroup(){
             alert("请至少选择一个关键词！");
         }
 
+    });
+}
+function imiDeleteDocument() {
+    $("#showboxD").click(function () {
+        var _checked = $("#table2 tbody input[type='checkbox']:checked");
+        if (_checked.length <= 0) {
+            alert("请至少选择一个关键词！");
+            return false;
+        } else {
+            var id = "";
+            _checked.each(function (i, o) {
+                var kwdId = $(o).parents("tr").find("td:eq(1)").html();
+                id = id + kwdId + ",";
+            });
+            id = id.substr(0, id.length - 1);
+            if (confirm("你确定要撤销这些重点关键字？") == true) {
+                $.get("/importBid/deleteBySelection", {cgid: selection, kwdId: id}, function (res) {
+                    if (res.status = "1") {
+                        alert("删除成功");
+                        _checked.each(function (i, o) {
+                            $(o).parents("tr").remove();
+                        });
+                    } else {
+                        alert("异常");
+                    }
+                });
+            }
+
+        }
     });
 }
 function initCustomGroupSelectUpdate(){
@@ -337,6 +379,7 @@ function ImDeleteCustomGroup(){
             $.get("/importBid/deleteByCGId",{cgid:selectVal},function(res){
                 if(res=="1"){
                     initImzTree(true);
+                    $("#showTxt").css("display", "block");
                     alert("删除成功!");
                     ImSelectInit();
                 }

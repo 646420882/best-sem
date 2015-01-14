@@ -64,10 +64,11 @@ public class CustomGroupDAOImpl extends AbstractUserBaseDAOImpl<CustomGroupDTO, 
     }
 
     @Override
-    public void myInsert(CustomGroupDTO customGroupDTO) {
+    public String myInsert(CustomGroupDTO customGroupDTO) {
         CustomGroupEntity customGroupEntity = new CustomGroupEntity();
         BeanUtils.copyProperties(customGroupDTO, customGroupEntity);
         getMongoTemplate().insert(customGroupEntity, MongoEntityConstants.TBL_CUSTOMGROUP);
+        return customGroupEntity.getId();
     }
 
     @Override

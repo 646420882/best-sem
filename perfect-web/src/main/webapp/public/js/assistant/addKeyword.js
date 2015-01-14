@@ -31,7 +31,7 @@ $(function () {
 //                  $('#value').html(this.returnValue);
 //              }
                // window.location.reload(true);
-                whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
+                whenClickTreeLoadData(getCurrentTabName());
             },
             onremove: function () {
             }

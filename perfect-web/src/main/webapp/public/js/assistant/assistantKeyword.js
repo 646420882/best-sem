@@ -76,7 +76,9 @@ function getKwdList() {
         postData:{aid:"-1",cid:"",nowPage:0,pageSize:20},
         height: 500,//高度
         width:1400,
+         multiselect: true,
         colModel: [
+            {label: 'id', name: 'object.id', index: 'object.keyword', align: 'center', sortable: false, hidden: true},
             {label: '关键词名称',name:'object.keyword',index:'object.keyword',align:'center',sortable:false},
             {label: ' 关键词状态',name:'object.status',index:'object.status',width:80,align:'center',sortable:false},
             {label: ' 启动/暂停',name:'object.pause',index:'object.pause',width:60,align:'center',sortable:false},
@@ -86,7 +88,9 @@ function getKwdList() {
             {label: ' 匹配模式',name:'object.matchType',index:'object.matchType', align:'center',sortable:false},
             {label: ' 访问Url',name:'object.pcDestinationUrl',index:'pcDestinationUrl',formatter: 'link',width:200,align:'center',sortable:false},
             {label: ' 移动访问URL',name:'object.mobileDestinationUrl',index:'object.pcDestinationUrl',width:200,formatter: 'link',align:'center',sortable:false},
-            {label: ' 推广计划名称',name:'campaignName',index:'campaignName',align:'center',sortable:false}
+            {label: ' 推广计划名称', name: 'campaignName', index: 'campaignName', align: 'center', sortable: false},
+            {label: ' 系统状态',name: 'object.localStatus',index: 'object.localStatus',align: 'center',sortable: false,hidden:true},
+            {label: ' 监控文件夹个数',name: 'folderCount',index: 'folderCount',align: 'center',sortable: false,hidden:true}
         ],
          rowNum: 20,// 默认每页显示记录条数
         rownumbers: false,
@@ -108,11 +112,13 @@ function getKwdList() {
                 var matchType = keywordGrid.jqGrid("getCell", rowId, "object.matchType");
                 var pcQuality = keywordGrid.jqGrid("getCell", rowId, "quality");
                 var mobileQuality = keywordGrid.jqGrid("getCell", rowId, "mobileQuality");
+                //var localStatus = keywordGrid.jqGrid("getCell", rowId, "object.localStatus");
                 $("#keywordTable").setCell(rowId, "object.pause", until.convert(pause, "暂停:启用"));
                 $("#keywordTable").setCell(rowId, "object.status", until.getKeywordStatus(parseInt(status)));
                 $("#keywordTable").setCell(rowId, "object.matchType", until.getMatchTypeName(parseInt(matchType)));
                 $("#keywordTable").setCell(rowId, "quality", until.getQuality(parseInt(pcQuality)));
                 $("#keywordTable").setCell(rowId, "mobileQuality", until.getMobileQuanlity(parseInt(mobileQuality)));
+                //$("#keywordTable").setCell(rowId, "object.localStatus", until.getKeywordStatus(parseInt(localStatus)));
             }
             var records = keywordGrid.getGridParam("records");
             $("#pagination_keywordPage").pagination(records, getOptionsFromForm(pageIndex));
@@ -132,7 +138,7 @@ function keywordPageDynamic(page_index){
  * 单击某一行时将该行的值放入相应的文本框内
  */
 $("#keywordTable").delegate("tr", "click", function () {
-    var span = $(this).find("td:last");
+    var span = $(this).find("td:first");
     if (span.html() != "&nbsp;") {
         $("#reduction").find("span").removeClass("z_function_hover");
         $("#reduction").find("span").addClass("zs_top");
@@ -141,7 +147,7 @@ $("#keywordTable").delegate("tr", "click", function () {
         $("#reduction").find("span").addClass("z_function_hover");
     }
     var obj = $(this);
-    var keywordId = $(this).find("input[type=hidden]").val();
+    var keywordId = $(this).find("td:eq(1)").html();
     setKwdValue(obj, keywordId);
 });
 /**
@@ -312,36 +318,36 @@ function keywordDataToHtml(obj, index) {
 /*加载列表数据end*/
 function setKwdValue(obj, kwid) {
     $("#hiddenkwid_1").val(kwid);
-    $(".keyword_1").val($(obj).find("td:eq(0)").html());
-
-
-    if (($(obj).find("td:eq(3)").html()) == "&lt;0.10&gt;") {
+    $(".keyword_1").val($(obj).find("td:eq(2)").html());
+    var price=$(obj).find("td:eq(5)").html();
+    if (price == "&lt;0.10&gt;"){
         $(".price_1").val("<0.10>");
-    } else {
-        $(".price_1").val($(obj).find("td:eq(3)").html());
+    } else if(price=="&nbsp;"){
+        $(".price_1").val("");
+    }else {
+        $(".price_1").val($(obj).find("td:eq(5)").html());
     }
-
-    if ($(obj).find("td:eq(7) a").attr("href") != undefined) {
-        $(".pcurl_1").val($(obj).find("td:eq(7) a").attr("href"));
-        $(".pcurlSize_1").html($(obj).find("td:eq(7) a").attr("href").length + "/1024");
+    if ($(obj).find("td:eq(9) a").attr("href") != undefined) {
+        $(".pcurl_1").val($(obj).find("td:eq(9) a").attr("href"));
+        $(".pcurlSize_1").html($(obj).find("td:eq(9) a").attr("href").length + "/1024");
     } else {
         $(".pcurl_1").val("");
         $(".pcurlSize_1").html("0/1024");
     }
 
-    if ($(obj).find("td:eq(8) a").attr("href") != undefined) {
-        $(".mourl_1").val($(obj).find("td:eq(8) a").attr("href"));
-        $(".mourlSize_1").html($(obj).find("td:eq(8) a").attr("href").length + "/1017");
+    if ($(obj).find("td:eq(10) a").attr("href") != undefined) {
+        $(".mourl_1").val($(obj).find("td:eq(10) a").attr("href"));
+        $(".mourlSize_1").html($(obj).find("td:eq(10) a").attr("href").length + "/1017");
     } else {
         $(".mourl_1").val("");
         $(".mourlSize_1").html("0/1017");
     }
 
-    $("#genusFolderCount").html(obj.find("input[type=hidden]").attr("dirCount") + "个");
-    $(".matchModel_1").html($(obj).find("td:eq(6)").html());
-    $(".status_1").html($(obj).find("td:eq(1)").html());
+    $("#genusFolderCount").html(obj.find("td:eq(13)").html() + "个");
+    $(".matchModel_1").html($(obj).find("td:eq(8)").html());
+    $(".status_1").html($(obj).find("td:eq(3)").html());
 
-    if ($(obj).find("td:eq(2)").html() == "启用") {
+    if ($(obj).find("td:eq(4)").html() == "启用") {
         $(".pause_1").html("<option value='true'>暂停</option><option value='false' selected='selected'>启用</option>");
     } else {
         $(".pause_1").html("<option value='true' selected='selected'>暂停</option><option value='false' >启用</option>");
@@ -470,7 +476,7 @@ function batchAddOrUpdate() {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
-            whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
+            whenClickTreeLoadData(getCurrentTabName());
         },
         onremove: function () {
         }
@@ -493,7 +499,7 @@ function batchDelKeyword() {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
-            whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
+            whenClickTreeLoadData(getCurrentTabName());
         },
         onremove: function () {
         }
@@ -536,26 +542,40 @@ $("#reduction").click(function () {
 
 //还原关键词
 function reductionKeyword() {
-    var choose = $("#keywordTable").find(".list2_box3");
-    if (choose != undefined && choose.find("td:last").html() != "&nbsp;") {
+    var rowData = jQuery('#keywordTable').jqGrid('getGridParam', 'selarrrow');
+    var param = "";
+    if (rowData.length) {
+        for (var i = 0; i < rowData.length; i++) {
+            var id = jQuery('#keywordTable').jqGrid('getCell', rowData[i], 'object.id');//name是colModel中的一属性
+            var localStatus = jQuery('#keywordTable').jqGrid('getCell', rowData[i], 'object.localStatus');//name是colModel中的一属性
+            if(localStatus!=""){
+            param = param + (id + ":" + localStatus) + ",";
+            }
+        }
+        param = param.slice(0, -1);
+    }
+    if (param != "") {
         if (confirm("是否还原选择的数据?") == false) {
             return;
         }
-        var step = choose.find("td:last span").attr("step");
-        var id = $("#keywordTable").find(".list2_box3").find("input[type=hidden]").val();
-        switch (parseInt(step)) {
-            case 1:
-                reducKwd_Add(id);
-                break;
-            case 2:
-                reducKwd_update(id);
-                break;
-            case 3:
-                reducKwd_del(id);
-                break;
-            case 4:
-                alert("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");
-                break;
+        var arr = param.split(",");
+        for (var i = 0; i < arr.length; i++) {
+            var id = arr[i].split(":")[0];
+            var step = arr[i].split(":")[1];
+            switch (parseInt(step)) {
+                case 1:
+                    reducKwd_Add(id);
+                    break;
+                case 2:
+                    reducKwd_update(id);
+                    break;
+                case 3:
+                    reducKwd_del(id);
+                    break;
+                case 4:
+                    alert("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");
+                    break;
+            }
         }
     }
 }
@@ -572,7 +592,11 @@ function reducKwd_Add(id) {
         data: {"id": id},
         dataType: "json",
         success: function (data) {
-            $("#keywordTable").find(".list2_box3").remove();
+            var selectedRowIds =$("#keywordTable").jqGrid("getGridParam","selarrrow");
+            var len = selectedRowIds.length;
+            for(var i = 0;i < len ;i ++) {
+                $("#keywordTable").jqGrid("delRowData", selectedRowIds[0]);
+            }
         }
     });
 }
@@ -588,18 +612,19 @@ function reducKwd_update(id) {
         data: {"id": id},
         dataType: "json",
         success: function (data) {
-            var jsonData = {};
-            jsonData["object"] = data;
-            jsonData["campaignName"] = $("#keywordTable").find(".list2_box3 td:eq(9)").html();
-            jsonData["quality"] = $("#keywordTable").find(".list2_box3 td:eq(4)").attr("cname");
-            jsonData["mobileQuality"] = $("#keywordTable").find(".list2_box3 td:eq(5)").attr("cname");
-
-            var dirCount = $("#keywordTable").find(".list2_box3 input[type=hidden]").attr("dirCount");
-            jsonData["folderCount"] = dirCount;
-
-            var html = keywordDataToHtml(jsonData, 0);
-            var tr = $("#keywordTable").find(".list2_box3");
-            tr.replaceWith(html);
+            //var jsonData = {};
+            //jsonData["object"] = data;
+            //jsonData["campaignName"] = $("#keywordTable").find(".list2_box3 td:eq(9)").html();
+            //jsonData["quality"] = $("#keywordTable").find(".list2_box3 td:eq(4)").attr("cname");
+            //jsonData["mobileQuality"] = $("#keywordTable").find(".list2_box3 td:eq(5)").attr("cname");
+            //
+            //var dirCount = $("#keywordTable").find(".list2_box3 input[type=hidden]").attr("dirCount");
+            //jsonData["folderCount"] = dirCount;
+            //
+            //var html = keywordDataToHtml(jsonData, 0);
+            //var tr = $("#keywordTable").find(".list2_box3");
+            //tr.replaceWith(html);
+            keywordPageDynamic(0);
         }
     });
 }
@@ -616,7 +641,7 @@ function reducKwd_del(id) {
         data: {"id": id},
         dataType: "json",
         success: function (data) {
-            $("#keywordTable").find(".list2_box3 td:last").html("&nbsp;");
+            keywordPageDynamic(0);
         }
     });
 }
@@ -665,7 +690,7 @@ function showSearchWord() {
         align:'right bottom',
         content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         onclose: function () {
-            /* whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());*/
+            /* whenClickTreeLoadData(getCurrentTabName());*/
         }
     }).showModal(dockObj);
     return false;
