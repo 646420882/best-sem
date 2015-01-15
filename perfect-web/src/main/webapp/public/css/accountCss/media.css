@@ -93,6 +93,9 @@
     .t_list05 {
         width: 73%;
     }
+    .w_list03 ul li{
+        padding:0 10px;
+    }
 }
 /******1500************/
 @media screen and (min-width: 1580px) and (max-width: 1600px) {
@@ -227,6 +230,9 @@
      .list01_under2 ul li span {
          font-size: 28px;
      }
+     .w_list03 ul li{
+         padding:0 5px;
+     }
     }
 
 /******1368************/
@@ -306,6 +312,10 @@
     .list01_under2 ul li span {
         font-size: 28px;
     }
+    .w_list03 ul li{
+        padding:0 5px;
+        margin-right:10px;
+    }
 }
 /******1360************/
 @media screen and (min-width: 1359px) and (max-width: 1361px)  {
@@ -319,6 +329,10 @@
     }
     .gjclist table tr td ul li {
         width: 8.4%;
+    }
+    .w_list03 ul li{
+        padding:0 5px;
+        margin-right:10px;
     }
 }
 /******1280************/
@@ -392,7 +406,10 @@
     .list01_under2 ul li span {
         font-size: 26px;
     }
-
+    .w_list03 ul li{
+        padding:0 4px;
+        margin-right:5px;
+    }
 }
 
 /******1152************/
@@ -419,7 +436,7 @@
     }
 
     .gjclist table tr td ul li {
-        width: 8%;
+        width: 9%;
     }
     .t_list02, .t_list03 {
         width: 78%;
@@ -446,9 +463,38 @@
     .wrap_list01 .w_list02 ul li span {
         padding: 0 10px 0 20px;
     }
+    .wrap_list01 .w_list01 ul li span {
+        padding: 0 10px 0 20px;
+    }
     .list01_under2 ul li span {
         font-size: 20px;
     }
+    .w_list03 ul li{
+        padding:0 5px;
+        margin-right:10px;
+    }
+    .ui-daterangepicker .range-start, .ui-daterangepicker .range-end {
+        margin-left: 4px;
+    }
+    .list01_top ul {
+        margin-left: 10px;
+
+    }
+    .zhushou_concent .wrap_list01 .w_list02{
+        float:none;
+    }
+    .zhushou_concent .wrap_list01 .w_text{
+        width:170px;
+        padding: 0;
+    }
+    .w_list03 ul li{
+        margin-right:5px;
+    }
+    .wrap_list01{
+    margin-bottom: 10px;
+         }
+
+
 }
 /******1024************/
 @media screen and (max-width: 1030px) {
@@ -502,10 +548,29 @@
         width: 70%;
     }
     .wrap_list01 span {
-         padding:0 10px;
+        *padding: 0 5px;
+        *width: 100%;
+    }
+  .zhushou_concent .wrap_list01 span {
+        margin-top: 5px;
+        padding: 0;
     }
     .wrap_list01 .w_list02 ul li span {
         padding: 0 0px 0 20px;
+    }
+    .zhushou_concent .w_list02 ul li span {
+        padding: 0 0px 0 0px;
+    }
+    .zhushou_concent .input_box{
+        margin-left:5px;
+
+    }
+    .zhushou_concent .wrap_list01 .w_list02{
+        float:none;
+    }
+    .zhushou_concent .wrap_list01 .w_text{
+        width:170px;
+        padding: 0;
     }
     .t_list05 {
         width: 100%;
@@ -525,10 +590,7 @@
         *margin-left: 5%;
     }
 
-    .wrap_list01 span {
-        *padding: 0 5px;
-        *width: 100%;
-    }
+
     .fenrilist table tr td ul li{
         width: 12.5%;
     }
@@ -556,9 +618,18 @@
         border: 0 none;
         padding: 0.5px;
     }
+    .w_list03 ul li{
+        padding:0 5px;
+        margin-right:10px;
+    }
 }
-
-    @media \0screen {
+@media screen and (max-width: 900px){
+    .user_mid{
+        margin-left:2px;
+        width:55%;
+    }
+}
+@media \0screen {
         .zs_function ul li { margin: 10px 2px 10px 0; }
     }
 

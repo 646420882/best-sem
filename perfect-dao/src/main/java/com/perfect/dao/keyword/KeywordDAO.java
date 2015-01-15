@@ -89,6 +89,8 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     void update(KeywordDTO keywordDTO, KeywordBackUpDTO keywordBackUpDTO);
 
+    void update(KeywordDTO keywordDTO, KeywordDTO keywordBackUpDTO);
+
     void softDelete(Long id);
 
     void updateLocalstatu(long cid);
@@ -105,6 +107,9 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     List<KeywordDTO> findByParams(Map<String,Object> mapParams);
 
+    KeywordDTO findByParamsObject(Map<String,Object> mapParams);
+
+    void updateByObjId(KeywordDTO dto);
 
 
 }

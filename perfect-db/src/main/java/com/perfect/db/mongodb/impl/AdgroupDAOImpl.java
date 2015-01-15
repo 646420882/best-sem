@@ -73,6 +73,17 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         return adgroupIds;
     }
 
+    @Override
+    public List<Long> getAdgroupIdByCampaignObj(String campaignId) {
+        Query query = new BasicQuery("{}", "{" + MongoEntityConstants.ADGROUP_ID + " : 1}");
+        query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_CAMPAIGN_ID).is(campaignId));
+        List<AdgroupEntity> list = getMongoTemplate().find(query, getEntityClass());
+        List<Long> adgroupIds = new ArrayList<>(list.size());
+        for (AdgroupEntity type : list)
+            adgroupIds.add(type.getAdgroupId());
+        return adgroupIds;
+    }
+
 
     //xj根据单元
     public AdgroupDTO getByCampaignIdAndName(Long campaignId, String name) {

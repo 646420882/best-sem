@@ -97,7 +97,7 @@
 
                                     <p>
                                         <%--<span><input type="checkbox"/>用这些普通创意替换目标推广单元的所有相应内容<br/></span>--%>
-                                        <span><input type="checkbox" checked="checked"/>创意标题和描述相同时，更新该创意的url等其他设设置</span>
+                                        <span><input type="checkbox"  id="isReplace"/>创意标题和描述相同时，更新该创意的url等其他设设置</span>
                                     </p>
                                 </div>
 
@@ -371,7 +371,7 @@ function nextStep() {
         var txtSize = txt.split("\n");
         _createTable.empty();
         var _trClass="";
-        $("#criSize").html(txtSize.length);
+        $("#criSize").html(txtSize.length*names.length);
         for (var i = 0; i < names.length; i++) {
             _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
             for (var j = 0; j < txtSize.length; j++) {
@@ -383,7 +383,7 @@ function nextStep() {
                 var c5 = txtSize[j].split(",")[5] != undefined ? txtSize[j].split(",")[5] : "";
                 var c6 = txtSize[j].split(",")[6] != undefined ? txtSize[j].split(",")[6] : "";
                 var c7 = txtSize[j].split(",")[7] != undefined ? txtSize[j].split(",")[7] : "";
-                var c7_pause = c7 == "停用" ? "停用" : "启用";
+                var c7_pause = c7 == "启用" ? "启用" : "暂停";
                 var c8 = txtSize[j].split(",")[8] != undefined ? txtSize[j].split(",")[8] : "";
                 var _tbody = "<tr class='"+_trClass+"'>" +
                         "<td>" + names[i].split(",")[0] + "<input type='hidden' value=" + ids[i].split(",")[0] + "></td>" +
@@ -463,7 +463,12 @@ function initPreStep() {
  完成方法,循环添加批量的数据*
  */
 function overStep() {
-    var con = confirm("你确定要添加或者替换这些创意吗？");
+    var isReplace = $("#isReplace")[0].checked;
+    var str="你确定要添加这些创意吗？"
+    if(isReplace){
+        str="你确定要添加并替换这些创意吗？"
+    }
+    var con = confirm(str);
     if (con) {
         var _table = $("#createTable tbody");
         var trs = _table.find("tr");
@@ -481,7 +486,7 @@ function overStep() {
             var mibs = _tr.find("td:eq(8)").html();
             var pause = _tr.find("td:eq(9)").html();
             var pause_ToF = pause != "启用" ? false : true;
-            $.post("../assistantCreative/insertOrUpdate", {aid: aid, title: title, description1: desc1, description2: desc2, pcDestinationUrl: pc, pcDisplayUrl: pcs, mobileDestinationUrl: mib, mobileDisplayUrl: mibs, pause: pause_ToF, status: -1}, function (rs) {
+            $.post("../assistantCreative/insertOrUpdate", {isReplace:isReplace,aid: aid, title: title, description1: desc1, description2: desc2, pcDestinationUrl: pc, pcDisplayUrl: pcs, mobileDestinationUrl: mib, mobileDisplayUrl: mibs, pause: pause_ToF, status: -1}, function (rs) {
              if(rs=="1"){
                  alert("操作成功!");
              }

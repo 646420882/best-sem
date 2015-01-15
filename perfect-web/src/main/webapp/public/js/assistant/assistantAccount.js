@@ -27,7 +27,7 @@ function filter(treeId, parentNode, childNodes) {
     return childNodes;
 }
 function beforeClick(treeId, treeNode) {
-    loadData(treeNode);
+    getNowChooseCampaignTreeData(treeNode);
     if (treeNode.level == 0) {
         //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
 //        alert(treeNode.id + "," + treeNode.name);
