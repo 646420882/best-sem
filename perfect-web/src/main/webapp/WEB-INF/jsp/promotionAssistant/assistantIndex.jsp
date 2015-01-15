@@ -1539,15 +1539,16 @@
             Tablewidth()
         }, false);
     }
-    if (!!window.ActiveXObject || "ActiveXObject" in window) {
-        myId.attachEvent('onclick', function (event) {
-            Tablewidth()
-        });
-    } else {
-        myId.addEventListener('click', function (event) {
-            Tablewidth()
-        }, false);
-    }
+//    if (!!window.ActiveXObject || "ActiveXObject" in window) {
+//        myId.attachEvent('onclick', function (event) {
+//            Tablewidth()
+//        });
+//    }
+//    else {
+//        myId.addEventListener('click', function (event) {
+//            Tablewidth()
+//        }, false);
+//    }
 
 });
     $(function () {
