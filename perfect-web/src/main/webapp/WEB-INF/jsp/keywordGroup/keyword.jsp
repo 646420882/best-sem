@@ -79,6 +79,7 @@ To change this template use File | Settings | File Templates.
                                 <div class="k_top2_detali2 over">
                                     <div class="list01_top2 over">
                                         <span>拓词来源</span>
+                                        <a href="#" class="question"></a>
                                     </div>
                                     <ul>
                                         <li>·百度、Google、360等搜索引擎平台抓取调用</li>
@@ -153,6 +154,7 @@ To change this template use File | Settings | File Templates.
                                 <div class="k_top2_detali2 over">
                                     <div class="list01_top2 over">
                                         <span>拓词来源</span>
+                                        <a href="#" class="question"></a>
                                     </div>
                                     <ul>
                                         <li>·百度、Google、360等搜索引擎平台抓取调用</li>
@@ -525,8 +527,8 @@ To change this template use File | Settings | File Templates.
 
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
@@ -1028,9 +1030,7 @@ var toAnyPage = function (page_index) {
         });
     }
 };
-$(function (){
-    $("[data-toggle='tooltip']").tooltip();
-});
+
 </script>
 </body>
 </html>

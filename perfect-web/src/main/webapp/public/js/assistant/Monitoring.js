@@ -28,13 +28,12 @@ function filter(treeId, parentNode, childNodes) {
     }
     return childNodes;
 }
-
 function beforeClick(treeId, treeNode) {
     //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
     $("#jiangkong_box3").show();
     $("#jiangkong_box2").hide();
     $("#monitorFolder").empty();
-   /* $.ajax({
+    $.ajax({
         url: "/monitoring/getMonitorId",
         type: "GET",
         dataType: "json",
@@ -43,7 +42,7 @@ function beforeClick(treeId, treeNode) {
         },
         success: function (data) {
             var html_Monitor = "";
-           $.each(data.rows, function (i, item) {
+            $.each(data.rows, function (i, item) {
                 //计算机质量度
                 var quanlityHtml = "";
                 var quanlityText = "";
@@ -105,7 +104,7 @@ function beforeClick(treeId, treeNode) {
                 $("#monitorFolder").append(html_Monitor);
             });
         }
-    });*/
+    });
 
 
 }
@@ -393,45 +392,9 @@ $(function () {
 /**
  * 获取监控文件夹 公用方法
  */
-var MonitorTbodyList =  null;
 var getFolder = function(){
     $("#MonitorTbody").empty();
-    MonitorTbodyList = jQuery("#MonitorTbody").jqGrid({
-        datatype: "json",
-        id:"MonitorTbodyList",
-        url: '/monitoring/getFolder',
-        mtype: "POST",
-        jsonReader: {
-            root: "rows",
-            records: "totalCount",
-            repeatitems: false
-        },
-        postData:{aid:jsonData.aid,cid:jsonData.cid,nowPage:0,pageSize:20},
-        height: 400,//高度
-        width:1400,
-        colModel: [
-            {label: '监控文件夹',name:'folderName',index:'folderName',align:'center',sortable:false},
-            {label: ' 监控文件夹内',name:'countNumber',index:'countNumber',align:'center',sortable:false}
-
-        ],
-        rowNum: 20,// 默认每页显示记录条数
-        rownumbers: false,
-        loadui: 'disable',
-        pgbuttons: false,
-        altRows: true,
-        altclass: 'list2_box2',
-        resizable: true,
-        scroll: false,
-        gridComplete: function () {
-            var graduateIds = jQuery("#monitorFolder").jqGrid('getDataIDs');
-            for (var i = 0, l = graduateIds.length; i < l; i++) {
-                var rowId = graduateIds[i];
-            }
-            var records = monitorGrid.getGridParam("records");
-            $("#pagination_campaignPage").pagination(records, getOptionsFromForm(pageIndex));
-        }
-    });
-/*    $.ajax({
+    $.ajax({
         url: "/monitoring/getFolder",
         type: "GET",
         dataType: "json",
@@ -446,7 +409,7 @@ var getFolder = function(){
                 $("#MonitorTbody").append(monitor_html);
             });
         }
-    });*/
+    });
 }
 
 /**
@@ -454,64 +417,10 @@ var getFolder = function(){
  * @param number
  * @returns {string}
  */
-var monitorGrid = null;
+
 var getMonitor = function(){
     $("#monitorFolder").empty();
-    monitorGrid = jQuery("#monitorFolder").jqGrid({
-        datatype: "json",
-        id:"monitorGrid",
-        url: '/monitoring/getMonitor',
-        mtype: "POST",
-        jsonReader: {
-            root: "rows",
-            records: "totalCount",
-            repeatitems: false
-        },
-        postData:{aid:jsonData.aid,cid:jsonData.cid,nowPage:0,pageSize:20},
-        height: 400,//高度
-        width:1400,
-        colModel: [
-            {label: '关键词名称',name:'object.keyword',index:'object.keyword',width:100,align:'center',sortable:false},
-            {label: ' 推广计划名称',name:'campaignName',index:'campaignName',width:200,align:'center',sortable:false},
-            {label: '推广单元名称',name:'adgroupName',index:'adgroupName',width:200,align:'center',sortable:false},
-            {label: '关键词状态',name:'object.status',index:'object.status',width:80,align:'center',sortable:false},
-            {label: ' 启动/暂停',name:'object.pause',index:'object.pause',width:100,align:'center',sortable:false},
-            {label: ' 出价',name:'object.price',index:'object.price',align:'center',sortable:false},
-            {label: ' 计算机质量度',name:'quality',index:'quality',width:200,align:'center',sortable:false},
-            {label: ' 移动质量度',name:'mobileQuality',index:'mobileQuality',width:100,align:'center',sortable:false},
-            {label: ' 匹配模式',name:'object.matchType',index:'object.matchType',align:'center',sortable:false},
-            {label: ' 访问URL',name:'object.pcDestinationUrl',index:'object.pcDestinationUrl',align:'center',sortable:false},
-            {label: ' 移动访问URL',name:'object.mobileDestinationUrl',index:'object.mobileDestinationUrl',align:'center',sortable:false},
-            {label: ' 监控文件夹',name:'folderName',index:'folderName',width:120,align:'center',sortable:false}
-        ],
-        rowNum: 20,// 默认每页显示记录条数
-        rownumbers: false,
-        loadui: 'disable',
-        pgbuttons: false,
-        altRows: true,
-        altclass: 'list2_box2',
-        resizable: true,
-        scroll: false,
-        gridComplete: function () {
-            var graduateIds = jQuery("#monitorFolder").jqGrid('getDataIDs');
-            for (var i = 0, l = graduateIds.length; i < l; i++) {
-                var rowId = graduateIds[i];
-                var status = monitorGrid.jqGrid("getCell", rowId, "object.status");
-                var pause = monitorGrid.jqGrid("getCell", rowId, "object.pause");
-                var pcQuality = monitorGrid.jqGrid("getCell", rowId, "quality");
-                var mobileQuality = monitorGrid.jqGrid("getCell", rowId, "mobileQuality");
-                var matchType = monitorGrid.jqGrid("getCell", rowId, "object.matchType");
-                $("#monitorFolder").setCell(rowId, "object.status", until.getKeywordStatus(parseInt(status)));
-                $("#monitorFolder").setCell(rowId, "object.pause", until.convert(pause, "暂停:启用"));
-                $("#monitorFolder").setCell(rowId, "quality", until.getQuality(parseInt(pcQuality)));
-                $("#monitorFolder").setCell(rowId, "mobileQuality", until.getMobileQuanlity(parseInt(mobileQuality)));
-                $("#monitorFolder").setCell(rowId, "object.matchType", until.getMatchTypeName(parseInt(matchType)));
-            }
-            var records = monitorGrid.getGridParam("records");
-            $("#pagination_campaignPage").pagination(records, getOptionsFromForm(pageIndex));
-        }
-    });
-/*    $.ajax({
+    $.ajax({
         url: "/monitoring/getMonitor",
         type: "GET",
         dataType: "json",
@@ -578,7 +487,7 @@ var getMonitor = function(){
                 $("#monitorFolder").append(html_Monitor);
             });
         }
-    });*/
+    });
 }
 
 

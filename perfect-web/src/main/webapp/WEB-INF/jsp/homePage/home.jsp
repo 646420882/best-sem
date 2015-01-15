@@ -44,6 +44,7 @@
         &nbsp;&nbsp;>&nbsp;&nbsp;<span>账户分析</span>
     </div>
 </div>
+
 <div id="tab">
 <ul class="tab_menu">
     <li class="selected">
@@ -398,6 +399,8 @@
                     <input class="two" type="button"
                            onclick="javascript:category = 'cost';sort = 1;loadKeywordQualityData();"/>
                 </p></b>
+                <a href="#" class="question">
+                </a>
             </li>
             <li>
                 <span>平均点击价格</span><b>
@@ -1072,13 +1075,15 @@
 </div>
 </div>
 </div>
+
 <jsp:include page="pageBlock/footer.jsp"/>
 </div>
 </div>
+
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-\<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>

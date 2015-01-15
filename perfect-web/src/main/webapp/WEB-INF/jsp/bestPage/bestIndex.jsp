@@ -67,7 +67,7 @@
                 </div>
             </div>
         </div>
-        <div class="serBox disabled ">
+        <div class="serBox disabled">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_seo.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_seo2.png"></div>
@@ -80,7 +80,7 @@
                     <p><b>正式上线</b></p>
                 </div>
                 <div class="enter">
-                    <a href="javascript:void(0);" onclick="js_method()" target="_blank">点击进入</a>
+                    <a href="javascript:void(0);" onclick="js_method()">敬请期待</a>
                 </div>
             </div>
         </div>

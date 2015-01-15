@@ -1,7 +1,7 @@
 var staticParams={cid:null,aid:null,cn:null,nowPage:0,pageSize:20};
 $("tbody").delegate("tr", "click", function (event) {
-    $(this).parent().find("tr").removeClass("list2_box2");
-    $(this).addClass("list2_box2");
+    $(this).parent().find("tr").removeClass("list2_box3");
+    $(this).addClass("list2_box3");
 });
 
 /*=======================================公用函数=====================================*/
@@ -10,16 +10,13 @@ $("tbody").delegate("tr", "click", function (event) {
  * @param treeNode
  * @returns {{cid: null, aid: null}}
  */
-//var nowChoose = null;
-//var jsonData = {cid: null, aid: null, cn: null};
-function loadData(treeNode) {
+var nowChoose = null;
+function getNowChooseCampaignTreeData(treeNode) {
+    var jsonData = {cid: null, aid: null, cn: null};
     if (treeNode.level == 0) {
         //点击的是父节点(推广计划)
-        staticParams.cid = treeNode.id;
-        staticParams.aid=null;
-        staticParams.cn = treeNode.name;
-        whenClickTreeLoadData(getCurrentTabName());
-
+        jsonData.cid = treeNode.id;
+        jsonData.cn = treeNode.name;
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元)
         staticParams.cid = treeNode.getParentNode().id;
@@ -33,20 +30,30 @@ function loadData(treeNode) {
     }
 
 }
+
 /**
  * 得到当前选择的推广计划id或者推广单元的id
  */
+function getNowChooseCidAndAid() {
+    return nowChoose;
+}
+
 //刚进入该页面的时候加载的数据
-function whenClickTreeLoadData(tabName) {
+whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
+
+
+function whenClickTreeLoadData(tabName, param) {
     $("#jiangkong_box3").hide();
     $("#jiangkong_box2").show();
     //param = param != null ? param : {aid: null, cid: null};
     var tabName = $.trim(tabName);
     if (tabName == "关键词") {
-        keywordPageDynamic(0);
-    }  else if (tabName == "普通创意") {
-        if (staticParams.cid != null && staticParams.aid != null) {
-            getCreativeUnit(staticParams);
+        getKwdList(0);
+    } else if (tabName == "推广计划") {
+        getCampaignList(0);
+    } else if (tabName == "普通创意") {
+        if (param.cid != null && param.aid != null) {
+            getCreativeUnit(param);
         } else {
             getCreativePlan(staticParams.cid);
         }

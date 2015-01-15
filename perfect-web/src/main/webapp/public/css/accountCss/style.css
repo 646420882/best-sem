@@ -30,7 +30,6 @@
     border-top: 1px solid #fff;
     background: #f6f6f6;
     z-index: 1;
-    margin-bottom:0px;
     overflow: hidden;
 }
 
@@ -1666,9 +1665,7 @@ ul.ztree.zTreeDragUL {
     height: 30px;
     overflow: hidden;
 }
-.assistantList .list2_box2 {
-    background: #ecf3f9;
-}
+
 .list2_box1 {
     background: #f7f9fb;
 }
@@ -1750,7 +1747,7 @@ ul.ztree.zTreeDragUL {
 
 .box h2, .box2 h2, .box3 h2, .box4 h2, .box5 h2, .box6 h2, .box7 h2, .box8 h2, .box9 h2, .box10 h2 {
     display: block;
- /*   width: 90%;*/
+    width: 90%;
     height: 46px;
     font-size: 14px;
     background-color: #282538;
@@ -3642,8 +3639,21 @@ h2 .close {
 .list01_top .btn{
     float:left;
 }
-.fade .in{
-backgounde:none;}
+.ui-helper-hidden-accessible{
+    border: 1px solid #696;padding: 60px 0;text-align: center; width: 200px;
+
+    -webkit-border-radius: 8px;
+
+    -moz-border-radius: 8px;
+
+    border-radius: 8px;
+
+    -webkit-box-shadow: #666 0px 0px 10px;
+
+    -moz-box-shadow: #666 0px 0px 10px;
+
+    box-shadow: #666 0px 0px 10px;
+}
 /*input[type=checkbox],
 input[type=radio]{
     -webkit-appearance: none;
