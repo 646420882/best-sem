@@ -980,7 +980,7 @@
     width: 46%;
     border-right: 1px solid #cdd6ed;
     padding: 20px 2%;
-    height: 300px;
+    height: 340px;
 }
 
 .k_top2_text textarea {
@@ -994,6 +994,7 @@
 .k_top2_text select {
     width: 100%;
     height: 30px;
+    display:block;
     line-height: 30px;
     border: 1px solid #dadadd;
     color: #8d8d8d;
@@ -1007,7 +1008,7 @@
 }
 
 .k_top2_text1 {
-    height: 190px;
+   /* height: 190px;*/
     position: relative;
 }
 
@@ -1031,7 +1032,7 @@
     width: 45%;
     border-left: 1px solid #fff;
     padding: 20px 2%;
-    height: 300px;
+    height: 340px;
 }
 
 .list01_top2 span {
@@ -1089,13 +1090,13 @@
 }
 
 .jingjia_left {
-    width: 18%;
-    padding: 12px 0.5%;
-    background: #e4eafa;
+    background: none repeat scroll 0 0 #e4eafa;
+    padding: 12px 6px;
+    width: 220px;
 }
 
 .jingjia_right {
-    width: 80%;
+   margin-left:20px;
 }
 
 .j_list01 {
@@ -1105,7 +1106,7 @@
 }
 
 .j_l_under {
-    line-height: 24px;
+   /* line-height: 24px;*/
     margin-top: 5px;
 }
 
@@ -3639,20 +3640,9 @@ h2 .close {
 .list01_top .btn{
     float:left;
 }
-.ui-helper-hidden-accessible{
-    border: 1px solid #696;padding: 60px 0;text-align: center; width: 200px;
+.tuoci table ,.hangyetuoci table{
+    margin-top:0px;
 
-    -webkit-border-radius: 8px;
-
-    -moz-border-radius: 8px;
-
-    border-radius: 8px;
-
-    -webkit-box-shadow: #666 0px 0px 10px;
-
-    -moz-box-shadow: #666 0px 0px 10px;
-
-    box-shadow: #666 0px 0px 10px;
 }
 /*input[type=checkbox],
 input[type=radio]{

@@ -9,6 +9,8 @@
     top: 0;
     padding: 0;
     font-size: 11px;
+    color: #0073ea;
+    font-weight: bold;
 }
 
 /* caption*/
@@ -68,14 +70,13 @@
     table-layout: fixed;
     margin: 0;
     height: 30px;
-    background: #272537;
-    color: #fff;
+    background:#f6f6f6;
 }
 
 .ui-jqgrid .ui-jqgrid-htable th {
     height: 30px;
     line-height: 30px;
-    padding: 0 2px 0 2px;
+    /*padding: 0 2px 0 2px;*/
 }
 
 .ui-jqgrid .ui-jqgrid-htable th div {

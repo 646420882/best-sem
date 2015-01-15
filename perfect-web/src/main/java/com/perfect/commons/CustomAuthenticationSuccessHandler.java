@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
 /**
@@ -25,7 +24,7 @@ import java.util.Collection;
  */
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    protected Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    protected Logger logger = LoggerFactory.getLogger(CustomAuthenticationSuccessHandler.class);
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -64,6 +63,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         CustomUserDetailsService.setUsernameNotFound(false);
         CustomUserDetailsService.setVerifyNotPass(false);
+        CustomUserDetailsService.setForbidden(false);
 
         String targetUrl = determineTargetUrl(authentication, hasBaiduAccont);
 
