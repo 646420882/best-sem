@@ -55,12 +55,9 @@
         <span class="nav_input hides"></span>
     </div>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
 <script type="text/javascript">
     var baiduAccountId = <%=accountId%>;
-
     var loadBaiduAccount = function () {
         $.getJSON("/account/getAllBaiduAccount",
                 {},
@@ -85,7 +82,7 @@
             $(".nav_under>ul>li").removeClass("current");
             $(this).parent().addClass('current');
             $(this).siblings().removeClass('current').find("span").remove(".nav_input1");
-            $(this).addClass('current').append("<span class='nav_input1'></span>");
+            $(this).addClass('current').append("<span class='nav_input1' id='nav_input1'></span>");
         }
     });
     $(function () {
@@ -109,7 +106,7 @@
             top_width = $(document.body).width();
             $(".top").css("width", top_width);
         });
-        $(".tips").click(function () {
+        $(".tips").on("click",function () {
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").show();
                 $(".tips").css("position", "relative");

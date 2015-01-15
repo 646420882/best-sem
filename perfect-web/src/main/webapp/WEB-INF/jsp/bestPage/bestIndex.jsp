@@ -80,7 +80,7 @@
                     <p><b>正式上线</b></p>
                 </div>
                 <div class="enter">
-                    <a href="javascript:void(0);" onclick="js_method()" target="_blank">点击进入</a>
+                    <a href="javascript:void(0);" onclick="js_method()" target="_blank">敬请期待</a>
                 </div>
             </div>
         </div>

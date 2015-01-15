@@ -23,7 +23,6 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/grid/ui.jqgrid.css">
-
     <style rel="stylesheet" type="text/css">
         #sDiv .span-error {
             color: red;
@@ -95,7 +94,7 @@
         </div>
     </div>
 </div>
-<div class="jingjia_right fr over" id="right">
+<div class="jingjia_right fl over" id="right">
 <div ID="testIframe" Name="testIframe" width="100%" onLoad="iFrameHeight()">
 <div class="content_wraps over">
 <div class="zhushou over wd ">
@@ -1232,7 +1231,46 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/Indextable.js"></script>
-<script type="text/javascript">
+<script type="text/javascript"> $(document).ready(function () {
+    var target = document.getElementById("navigator_tips");
+    var myId = document.getElementById("nav_input1");
+    var ztree_minwidth = $(document.body).width() - 432;
+    var ztree_maxwidth = $(document.body).width() - 252;
+    $(".jingjia_right").css("width", ztree_minwidth);
+    $(window).resize(function () {
+        Tablewidth();
+    });
+    function Tablewidth(){
+        ztree_minwidth = $(document.body).width() - 432;
+        ztree_maxwidth = $(document.body).width() - 252;
+        if ($(".nav_left").css("display") == "none") {
+            $(".jingjia_right").css("width", ztree_maxwidth);
+        }
+        else {
+            $(".jingjia_right").css("width", ztree_minwidth);
+        }
+    }
+    if (!!window.ActiveXObject || "ActiveXObject" in window) {
+        target.attachEvent('onclick', function (event) {
+            Tablewidth()
+        });
+    } else {
+        target.addEventListener('click', function (event) {
+            Tablewidth()
+        }, false);
+    }
+    if (!!window.ActiveXObject || "ActiveXObject" in window) {
+        myId.attachEvent('onclick', function (event) {
+            Tablewidth()
+        });
+    } else {
+        myId.addEventListener('click', function (event) {
+            Tablewidth()
+        }, false);
+    }
+
+});
+
     $(function () {
         window.dialog = dialog;
     });
