@@ -35,6 +35,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        {
+            usernameNotFound = false;
+            verifyNotPass = false;
+            forbidden = false;
+            hasBaiduAccount = false;
+        }
+
         UserDetails user;
         SystemUserDTO systemUser = systemUserService.findByUserName(s);
         if (systemUser == null) {
