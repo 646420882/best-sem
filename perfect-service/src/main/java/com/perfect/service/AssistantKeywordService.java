@@ -1,6 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
@@ -39,4 +40,16 @@ public interface AssistantKeywordService {
     void setNeigWord(String agid, String keywords, Integer neigType);
 
     List<KeywordInfoDTO> getKeywordListByIds(List<Long> ids);
+
+    KeywordDTO findByParams(Map<String,Object> params);
+
+    KeywordDTO findByObjId(String obj);
+
+    KeywordDTO findByLongId(Long id);
+
+    void updateByObjId(KeywordDTO dto);
+
+    void update(KeywordDTO keywordDTO,KeywordDTO keywordBackUpDTO);
+
+    void insert(KeywordDTO dto);
 }

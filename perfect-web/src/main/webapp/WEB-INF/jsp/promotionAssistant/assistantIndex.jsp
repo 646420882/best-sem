@@ -241,7 +241,7 @@
             <table border="0" cellspacing="0" width="100%" id="createTable" class="table2 table-bordered" data-resizable-columns-id="demo-table">
                 <thead>
                 <tr class="list02_top">
-                    <th>&nbsp;操作</th>
+                    <th style="width: 40px;">&nbsp;操作</th>
                     <th>&nbsp;创意标题</th>
                     <th>&nbsp;创意描述1</th>
                     <th>&nbsp;创意描述2</th>

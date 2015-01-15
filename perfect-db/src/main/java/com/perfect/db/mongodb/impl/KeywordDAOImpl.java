@@ -19,6 +19,7 @@ import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.paging.PaginationParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -486,6 +487,39 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         logDao.insertLog(id, LogStatusConstant.ENTITY_KEYWORD, LogStatusConstant.OPT_UPDATE);
     }
 
+    @Override
+    public void update(KeywordDTO keywordDTO, KeywordDTO keywordBackUpDTO) {
+        Long id = keywordDTO.getKeywordId();
+        Query query = new Query();
+        query.addCriteria(Criteria.where(CREATIVE_ID).is(id));
+        Update update = new Update();
+        try {
+            Class _class = keywordDTO.getClass();
+            Field[] fields = _class.getDeclaredFields();
+            for (Field field : fields) {
+                String fieldName = field.getName();
+                if ("creativeId".equals(fieldName))
+                    continue;
+                StringBuilder fieldGetterName = new StringBuilder("get");
+                fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
+                Method method = _class.getDeclaredMethod(fieldGetterName.toString());
+                Object after = method.invoke(keywordDTO);
+                if (after != null) {
+                    update.set(field.getName(), after);
+                }
+            }
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        getMongoTemplate().updateFirst(query, update, getEntityClass());
+        KeywordBackUpDTO creativeBackUpDTOFind = keywordBackUpDAO.findByObjectId(keywordDTO.getId());
+        if (creativeBackUpDTOFind.getId() == null) {
+            KeywordBackUpEntity backUpEntity = new KeywordBackUpEntity();
+            BeanUtils.copyProperties(keywordBackUpDTO, backUpEntity);
+            getMongoTemplate().insert(backUpEntity);
+        }
+    }
+
     /**
      * 还原功能的软删除
      *
@@ -561,6 +595,33 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         }
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         return ObjectUtils.convert(list, getDTOClass());
+    }
+
+    @Override
+    public KeywordDTO findByParamsObject(Map<String, Object> mapParams) {
+        Query q = new Query();
+        Criteria c = new Criteria();
+        if (mapParams != null && mapParams.size() > 0) {
+            for (Map.Entry<String, Object> entry : mapParams.entrySet()) {
+                c.and(entry.getKey()).is(entry.getValue());
+            }
+        }
+        q.addCriteria(c);
+        KeywordEntity entity=getMongoTemplate().findOne(q,getEntityClass());
+        KeywordDTO dto=ObjectUtils.convert(entity,KeywordDTO.class);
+        return dto;
+    }
+
+    @Override
+    public void updateByObjId(KeywordDTO dto) {
+        Update update=new Update();
+        update.set("name",dto.getKeyword());
+        update.set("pr",dto.getPrice());
+        update.set("pc",dto.getPcDestinationUrl());
+        update.set("mt",dto.getMatchType());
+        update.set("p",dto.getPause());
+        update.set("mobile",dto.getMobileDestinationUrl());
+        getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(dto.getId())), update, getEntityClass());
     }
 
     /**

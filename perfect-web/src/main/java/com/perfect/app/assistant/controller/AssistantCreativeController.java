@@ -69,7 +69,7 @@ public class AssistantCreativeController extends WebContextSupport {
                     pagerInfo = creativeService.findByPagerInfo(map,nowPage,pageSize);
                 }
             } else if (!cid.equals("") && aid.equals("")) {
-                List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignId(Long.parseLong(cid));
+                List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignObj(cid);
                 pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize);
             } else {
                 pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
@@ -86,7 +86,6 @@ public class AssistantCreativeController extends WebContextSupport {
             }
         }
         }
-
         writeJson(pagerInfo, response);
         return null;
     }
@@ -363,6 +362,7 @@ public class AssistantCreativeController extends WebContextSupport {
     @RequestMapping(value = "insertOrUpdate", method = RequestMethod.POST)
     public ModelAndView insertOrUpdate(HttpServletResponse response,
                                        @RequestParam(value = "aid", required = true) String aid,
+                                       @RequestParam(value = "isReplace") Boolean isReplace,
                                        @RequestParam(value = "title", required = false) String title,
                                        @RequestParam(value = "description1", required = false) String de1,
                                        @RequestParam(value = "description2", required = false) String de2,
@@ -379,7 +379,7 @@ public class AssistantCreativeController extends WebContextSupport {
             params.put("t",title);
             params.put("desc1",de1);
             if(aid.length()>OBJ_SIZE){
-                params.put(MongoEntityConstants.SYSTEM_ID,aid);
+                params.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
             }else{
                 params.put(MongoEntityConstants.ADGROUP_ID,Long.valueOf(aid));
             }
@@ -387,6 +387,7 @@ public class AssistantCreativeController extends WebContextSupport {
             CreativeDTO creativeEntity = creativeService.getAllsBySomeParams(params);
             //如果能查到匹配的数据，则执行修改操作
             if(creativeEntity!=null){
+                if (isReplace) {
                 CreativeDTO creativeEntityFind = null;
                 //判断如果该条数据不为已经同步的数据，则视为本地数据，本地数据库数据修改则不需要备份操作
                 if (creativeEntity.getCreativeId()==null) {
@@ -416,6 +417,7 @@ public class AssistantCreativeController extends WebContextSupport {
                     creativeEntityFind.setMobileDisplayUrl(mibs);
                     creativeEntityFind.setPause(bol);
                     creativeService.update(creativeEntityFind, creativeEntityBackUp);
+                }
                 }
                 //如果没有查到匹配的数据，则执行添加操作
             }else{

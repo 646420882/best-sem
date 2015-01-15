@@ -5,6 +5,7 @@
  * 树加载数据需要的计划，单元参数，默认都为空
  * @type {{aid: null, cid: null}}
  */
+sparams={cid:null,aid:null,nowPage:0,pageSize:20}
 $.fn.selectionTp= function () {
     var s, e, range, stored_range;
     if (this[0].selectionStart == undefined) {
@@ -212,7 +213,7 @@ function InitMenu() {
                         var i = $("#createTable tbody tr").size();
                         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                            "<td>&nbsp;<span style='display: none;'>" + json.data + "</span></td>" +
+                            "<td style='width: 30px;'>&nbsp;<span style='display: none;'>" + json.data + "</span></td>" +
                             "<td >" + until.substring(10, data["title"]) + "</td>" +
                             " <td >" + until.substring(10, data["description1"]) + "</td>" +
                             " <td >" + until.substring(10, data["description2"]) + "</td>" +
@@ -420,7 +421,7 @@ function addTbDes2(){
  */
 function addCreative() {
     var jcBox = $("#jcUl");
-    if (staticParams.cid != null && staticParams.aid != null) {
+    if (sparams.cid != null && sparams.aid != null) {
         var i = $("#createTable tbody tr").size();
         var _createTable = $("#createTable tbody");
         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
@@ -438,23 +439,23 @@ function addCreative() {
             " <td><span class='pen'></span></td>" +
             "</tr>";
         _createTable.append(_tbody);
-    } else if (staticParams.cid != null && staticParams.aid == null) {
+    } else if (sparams.cid != null && sparams.aid == null) {
         jcBox.empty();
-        loadUnit(staticParams.cid);
+        loadUnit(sparams.cid);
         jcBox.append("<li><span>推广单元</span><select id='sUnit' onchange='loadTree(this.value)'><option value='-1'>请选择单元</option></select></li>");
         creativeAddBoxShow();
-    } else if (staticParams.cid == null && staticParams.aid == null) {
+    } else if (sparams.cid == null && sparams.aid == null) {
         jcBox.empty();
         getPlans();
         jcBox.append("<li><span>推广计划</span><select id='sPlan' onchange='loadUnit(this.value)'><option value='-1'>请选择计划</option></select></li>");
         jcBox.append("<li><span>推广单元</span><select id='sUnit' onchange='loadTree(this.value)'><option value='-1'>请选择单元</option></select></li>");
         creativeAddBoxShow();
     } else {
-        alert(staticParams.cid + ":" + staticParams.aid);
+        alert(sparams.cid + ":" + sparams.aid);
     }
 }
 function getCreativeAId() {
-    return staticParams.aid;
+    return sparams.aid;
 }
 /**
  * 查询所有计划，生成select的Option对象
@@ -643,8 +644,8 @@ function getCreativeUnit(con) {
  * 选择推广计划和单元
  */
 function planUnit() {
-    var cid = $("#sPlan :selected").val() == undefined ? staticParams.cid : $("#sPlan :selected").val();
-    var aid = $("#sUnit :selected").val() == undefined ? staticParams.aid : $("#sUnit :selected").val();
+    var cid = $("#sPlan :selected").val() == undefined ? sparams.cid : $("#sPlan :selected").val();
+    var aid = $("#sUnit :selected").val() == undefined ? sparams.aid : $("#sUnit :selected").val();
     if (cid == "-1") {
         alert("请选择计划");
     } else if (aid == "-1") {
@@ -658,8 +659,8 @@ function planUnit() {
                 }
             });
         }
-        staticParams.cid = cid;
-        staticParams.aid = aid;
+        sparams.cid = cid;
+        sparams.aid = aid;
         closeAlertCreative();
         addCreative();
     }
@@ -724,8 +725,8 @@ function loadUnit(rs) {
  */
 function loadTree(rs) {
     if (rs != "-1") {
-        var cid = $("#sPlan :selected").val() == undefined ? staticParams.cid : $("#sPlan :selected").val();
-        staticParams = {cid: cid, aid: rs};
+        var cid = $("#sPlan :selected").val() == undefined ? sparams.cid : $("#sPlan :selected").val();
+        sparams = {cid: cid, aid: rs};
         loadCreativeData(0);
     }
 }
@@ -1046,7 +1047,7 @@ function creativeMulti() {
 
         },
         onclose: function () {
-            loadCreativeData(staticParams.nowPage);
+            loadCreativeData(sparams.nowPage);
         },
         onremove: function () {
         }

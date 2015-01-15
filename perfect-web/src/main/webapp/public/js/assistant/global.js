@@ -1,4 +1,3 @@
-var staticParams={cid:null,aid:null,cn:null,nowPage:0,pageSize:20};
 $("tbody").delegate("tr", "click", function (event) {
     $(this).parent().find("tr").removeClass("list2_box3");
     $(this).addClass("list2_box3");
@@ -11,6 +10,7 @@ $("tbody").delegate("tr", "click", function (event) {
  * @returns {{cid: null, aid: null}}
  */
 var nowChoose = null;
+
 function getNowChooseCampaignTreeData(treeNode) {
     var jsonData = {cid: null, aid: null, cn: null};
     if (treeNode.level == 0) {
@@ -19,16 +19,15 @@ function getNowChooseCampaignTreeData(treeNode) {
         jsonData.cn = treeNode.name;
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元)
-        staticParams.cid = treeNode.getParentNode().id;
-        staticParams.aid = treeNode.id;
-        whenClickTreeLoadData(getCurrentTabName());
-
+        jsonData.cid = treeNode.getParentNode().id;
+        jsonData.aid = treeNode.id;
     } else {
-        staticParams.cid=null;
-        staticParams.aid=null;
-        staticParams.cn=null;
+        jsonData.cid=null;
+        jsonData.aid=null;
+        jsonData.cn=null;
     }
-
+    nowChoose=jsonData;
+    whenClickTreeLoadData(getCurrentTabName(),jsonData);
 }
 
 /**
@@ -45,7 +44,7 @@ whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
 function whenClickTreeLoadData(tabName, param) {
     $("#jiangkong_box3").hide();
     $("#jiangkong_box2").show();
-    //param = param != null ? param : {aid: null, cid: null};
+    param = param != null ? param : {aid: null, cid: null};
     var tabName = $.trim(tabName);
     if (tabName == "关键词") {
         getKwdList(0);
@@ -55,12 +54,12 @@ function whenClickTreeLoadData(tabName, param) {
         if (param.cid != null && param.aid != null) {
             getCreativeUnit(param);
         } else {
-            getCreativePlan(staticParams.cid);
+            getCreativePlan(param.cid);
         }
     } else if (tabName == "附加创意") {
 
     } else if (tabName == "推广单元") {
-        getAdgroupPlan(staticParams.cid, staticParams.cn);
+        getAdgroupPlan(param.cid, param.cn);
     }
 
 }
@@ -70,7 +69,7 @@ function whenClickTreeLoadData(tabName, param) {
  */
 $("#tabMenu li").click(function () {
     var tabName = $(this).html();
-    whenClickTreeLoadData(tabName);
+    whenClickTreeLoadData(tabName,getNowChooseCidAndAid());
 });
 
 /**

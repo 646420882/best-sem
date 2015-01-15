@@ -89,6 +89,7 @@ function getKwdList(nowPage) {
         data: param,
         dataType: "json",
         success: function (data) {
+            if(data!=null){
             $("#tbodyClick").empty();
             records = data.totalCount;
             pageIndex = data.pageNo;
@@ -113,6 +114,9 @@ function getKwdList(nowPage) {
                     }
                 }
             }
+        }else{
+                $("#tbodyClick").html("点击树，则加载！");
+            }
         }
     });
 }
@@ -131,7 +135,7 @@ $("#tbodyClick").delegate("tr", "click", function () {
         $("#reduction").find("span").addClass("z_function_hover");
     }
     var obj = $(this);
-    var keywordId = $(this).find("td:eq(1)").html();
+    var keywordId = obj.find("input[type=hidden]").val();
     setKwdValue(obj, keywordId);
 });
 
@@ -155,7 +159,14 @@ function keywordDataToHtml(obj, index) {
     }
 
     //kwid
-    html = html + "<input type='hidden' camp='" + obj.campaignId + "' adg='" + obj.object.adgroupId + "' dirCount='" + obj.folderCount + "' value = " + obj.object.keywordId + " />";
+    var tmpHtml="";
+    if(obj.object.adgroupId!=undefined){
+        tmpHtml  ="<input type='hidden' camp='" + obj.campaignId + "' adg='" + obj.object.adgroupId + "' dirCount='" + obj.folderCount + "' value = " + obj.object.keywordId + " />";
+    }else{
+        tmpHtml  ="<input type='hidden'  adg='" + obj.object.adgroupObjId + "' dirCount='" + obj.folderCount + "' value = " + obj.object.keywordId + " />";
+    }
+
+    html = html + tmpHtml;
     html = html + "<td>" + obj.object.keyword + "</td>";
 
     switch (obj.object.status) {
@@ -319,14 +330,14 @@ function keywordDataToHtml(obj, index) {
 
 function setKwdValue(obj, kwid) {
     $("#hiddenkwid_1").val(kwid);
-    $(".keyword_1").val($(obj).find("td:eq(2)").html());
-    var price=$(obj).find("td:eq(5)").html();
+    $(".keyword_1").val($(obj).find("td:eq(0)").html());
+    var price=$(obj).find("td:eq(3)").html();
     if (price == "&lt;0.10&gt;"){
         $(".price_1").val("<0.10>");
     } else if(price=="&nbsp;"){
         $(".price_1").val("");
     }else {
-        $(".price_1").val($(obj).find("td:eq(5)").html());
+        $(".price_1").val($(obj).find("td:eq(3)").html());
     }
 
 
@@ -339,19 +350,19 @@ function setKwdValue(obj, kwid) {
         $(".pcurlSize_1").html("0/1024");
     }
 
-    if ($(obj).find("td:eq(10) a").attr("href") != undefined) {
-        $(".mourl_1").val($(obj).find("td:eq(10) a").attr("href"));
-        $(".mourlSize_1").html($(obj).find("td:eq(10) a").attr("href").length + "/1017");
+    if ($(obj).find("td:eq(8) a").attr("href") != undefined) {
+        $(".mourl_1").val($(obj).find("td:eq(8) a").attr("href"));
+        $(".mourlSize_1").html($(obj).find("td:eq(8) a").attr("href").length + "/1017");
     } else {
         $(".mourl_1").val("");
         $(".mourlSize_1").html("0/1017");
     }
 
-    $("#genusFolderCount").html(obj.find("td:eq(13)").html() + "个");
-    $(".matchModel_1").html($(obj).find("td:eq(8)").html());
-    $(".status_1").html($(obj).find("td:eq(3)").html());
+    $("#genusFolderCount").html(obj.find("input").attr("dircount") + "个");
+    $(".matchModel_1").html($(obj).find("td:eq(6)").html());
+    $(".status_1").html($(obj).find("td:eq(2)").html());
 
-    if ($(obj).find("td:eq(4)").html() == "启用") {
+    if ($(obj).find("td:eq(2)").html() == "启用") {
         $(".pause_1").html("<option value='true'>暂停</option><option value='false' selected='selected'>启用</option>");
     } else {
         $(".pause_1").html("<option value='true' selected='selected'>暂停</option><option value='false' >启用</option>");
@@ -485,7 +496,7 @@ function batchAddOrUpdate() {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
-            whenClickTreeLoadData(getCurrentTabName());
+            whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());
         },
         onremove: function () {
         }
@@ -508,7 +519,7 @@ function batchDelKeyword() {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
-            whenClickTreeLoadData(getCurrentTabName());
+            whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());
         },
         onremove: function () {
         }
@@ -680,7 +691,7 @@ function showSearchWord() {
         align:'right bottom',
         content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         onclose: function () {
-            /* whenClickTreeLoadData(getCurrentTabName());*/
+            /* whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());*/
         }
     }).showModal(dockObj);
     return false;

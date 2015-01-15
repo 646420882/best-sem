@@ -6,6 +6,7 @@ import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.core.AppContext;
 import com.perfect.dto.adgroup.AdgroupDTO;
@@ -20,6 +21,7 @@ import com.perfect.service.KeywordBackUpService;
 import com.perfect.service.SysRegionalService;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -62,16 +64,100 @@ public class AssistantKeywordController extends WebContextSupport{
      * 批量添加或者修改关键词
      */
     @RequestMapping(value = "assistantKeyword/batchAddOrUpdate", method = RequestMethod.POST)
-    public void batchAddkeyword(String insertList, String updateList, Boolean isReplace, HttpServletResponse response) {
-        Gson gson = new Gson();
-        List<KeywordInfoDTO> insertDtos = gson.fromJson(insertList, new TypeToken<List<KeywordInfoDTO>>() {
-        }.getType());
-        List<KeywordInfoDTO> updateDtos = gson.fromJson(updateList, new TypeToken<List<KeywordInfoDTO>>() {
-        }.getType());
-        insertDtos = insertDtos == null ? new ArrayList<KeywordInfoDTO>() : insertDtos;
-        updateDtos = updateDtos == null ? new ArrayList<KeywordInfoDTO>() : updateDtos;
-        assistantKeywordService.batchAddUpdateKeyword(insertDtos, updateDtos, isReplace);
-        writeJson(RES_SUCCESS, response);
+    public void batchAddkeyword(
+            @RequestParam(value = "isReplace") Boolean isReplace,
+            @RequestParam(value = "cids") String cids,
+            @RequestParam(value = "aids") String aids,
+            @RequestParam(value = "kwds") String kwds,
+            @RequestParam(value = "mts") String mts,
+            @RequestParam(value = "prices") String prices,
+            @RequestParam(value = "pcs") String pcs,
+            @RequestParam(value = "mibs") String mibs,
+            @RequestParam(value = "pauses") String pauses,
+            HttpServletResponse response) {
+        try {
+            if (cids.contains(",")) {
+                String[] cidStr = cids.split(",");
+                String[] aidStr = aids.split(",");
+                String[] kwdStr = kwds.split(",");
+                String[] mtStr = mts.split(",");
+                String[] pricesStr = prices.split(",");
+                String[] pcsStr = pcs.split(",");
+                String[] mibStr = mibs.split(",");
+                String[] pauseStr = pauses.split(",");
+                for (int i = 0; i < cidStr.length; i++) {
+                    innerUpdate(isReplace, kwdStr[i], aidStr[i], mtStr[i], pricesStr[i], pcsStr[i], mibStr[i], pauseStr[i]);
+                }
+            } else {
+                innerUpdate(isReplace, kwds, aids, mts, prices, pcs, mibs, pauses);
+            }
+            writeHtml(SUCCESS, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            writeHtml(EXCEPTION, response);
+        }
+
+    }
+
+    private void innerUpdate(Boolean isReplace, String name, String aid, String mt, String price, String pc, String mib, String pause) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", name);
+        if (aid.length() > 18) {
+            map.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
+        } else {
+            map.put(MongoEntityConstants.ADGROUP_ID, aid);
+        }
+        //如果查询到有关键词名为此的，需要替换
+        KeywordDTO dto = assistantKeywordService.findByParams(map);
+        //如果能查到匹配的数据，则执行修改操作
+        if (dto != null) {
+            if (isReplace) {
+                KeywordDTO keywordDTOFind = null;
+                //判断如果该条数据不为已经同步的数据，则视为本地数据，本地数据库数据修改则不需要备份操作
+                if (dto.getKeywordId() == null) {
+                    keywordDTOFind = assistantKeywordService.findByObjId(dto.getId());
+                    keywordDTOFind.setKeyword(name);
+                    keywordDTOFind.setMatchType(Integer.parseInt(mt));
+                    keywordDTOFind.setPrice(BigDecimal.valueOf(Double.parseDouble(price)));
+                    keywordDTOFind.setPcDestinationUrl(pc);
+                    keywordDTOFind.setMobileDestinationUrl(mib);
+                    keywordDTOFind.setPause(Boolean.parseBoolean(pause));
+                    keywordDTOFind.setLocalStatus(1);
+                    assistantKeywordService.updateByObjId(keywordDTOFind);
+                } else { //如果已经是同步到本地的数据，则要执行备份操作，将这条数据备份到备份数据库中
+                    keywordDTOFind = assistantKeywordService.findByLongId(dto.getKeywordId());
+                    KeywordDTO keywordDTOBackUp = new KeywordDTO();
+                    keywordDTOFind.setLocalStatus(2);
+                    BeanUtils.copyProperties(keywordDTOFind, dto);
+                    keywordDTOFind.setKeyword(name);
+                    keywordDTOFind.setMatchType(Integer.parseInt(mt));
+                    keywordDTOFind.setPrice(BigDecimal.valueOf(Double.parseDouble(price)));
+                    keywordDTOFind.setPcDestinationUrl(pc);
+                    keywordDTOFind.setMobileDestinationUrl(mib);
+                    keywordDTOFind.setPause(Boolean.parseBoolean(pause));
+                    assistantKeywordService.update(keywordDTOFind, keywordDTOBackUp);
+                }
+            }
+        } else {
+            KeywordDTO insertDTO = new KeywordDTO();
+            insertDTO.setAccountId(AppContext.getAccountId());
+            insertDTO.setLocalStatus(1);
+            insertDTO.setKeyword(name);
+            insertDTO.setMatchType(Integer.parseInt(mt));
+            insertDTO.setPrice(BigDecimal.valueOf(Double.parseDouble(price)));
+            insertDTO.setPcDestinationUrl(pc);
+            insertDTO.setMobileDestinationUrl(mib);
+            insertDTO.setStatus(-1);
+            insertDTO.setPhraseType(1);
+            insertDTO.setPause(Boolean.parseBoolean(pause));
+            if (aid.length() > 18) {
+                insertDTO.setAdgroupObjId(aid);
+                insertDTO.setKeywordId(null);
+            } else {
+                insertDTO.setAdgroupId(Long.parseLong(aid));
+            }
+            assistantKeywordService.insert(insertDTO);
+        }
     }
 
 
@@ -88,7 +174,7 @@ public class AssistantKeywordController extends WebContextSupport{
                                   @RequestParam(value = "pageSize")int pageSize){
         PagerInfo page=null;
         if(!aid.equals("-1")){
-            page  = assistantKeywordService.getKeyWords(cid, aid, nowPage, pageSize);
+            page= assistantKeywordService.getKeyWords(cid, aid, nowPage, pageSize);
         }
         writeJson(page, response);
     }

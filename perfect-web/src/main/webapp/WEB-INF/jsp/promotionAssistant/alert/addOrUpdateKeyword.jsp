@@ -21,6 +21,9 @@
             overflow: auto;
             width: 100%;
         }
+        .table2 tr td{
+            text-align: center;
+        }
 
         .zs_function {
             margin-top: 10px;
@@ -38,6 +41,16 @@
         .ztree {
             height: 280px;
 
+        }
+        .list02_top {
+            background: none repeat scroll 0 0 #edf0f1;
+            color: #333;
+            font-weight: bold;
+            height: 30px;
+            overflow: hidden;
+        }
+        .list2 table .list2_top td, th {
+            color: #333;
         }
     </style>
 </head>
@@ -127,9 +140,26 @@
             <div class="assembly_under over">
                 <div class="assembly_right3 over">
                     <div class="newkeword_end">
-                        <ul id="valideKwd">
-
-                        </ul>
+                        <div style="width:99%;height: 400px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
+                        <p><span style="font-weight: bold; line-height:30px;padding:10px;">新增的关键字：<span id="criSize">0</span></span></p>
+                        <table border="0" cellspacing="0" width="100%" id="createTable"
+                               class="table2 table-bordered" data-resizable-columns-id="demo-table">
+                            <thead>
+                            <tr class="list02_top">
+                                <th>&nbsp;计划名称</th>
+                                <th>&nbsp;单元名称</th>
+                                <th>&nbsp;关键字名称</th>
+                                <th>&nbsp;匹配模式</th>
+                                <th>&nbsp;出价</th>
+                                <th>&nbsp;访问url</th>
+                                <th>&nbsp;移动访问url</th>
+                                <th>&nbsp;启用/暂停</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbodyClick2">
+                            </tbody>
+                        </table>
+                        </div>
                     </div>
                     <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
                         <div class="w_list03">
@@ -364,45 +394,150 @@ function getSelectedNodeToString() {
     }
     return v;
 }
+function getSelectedNodeNameToString() {
+    var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+    var selectNode = treeObj.getCheckedNodes(true);
+    var v = "";
+    var parentNode = "";
+    for (var i = 0; i < selectNode.length; i++) {
+        if (selectNode[i].isParent == true) {
+            parentNode = selectNode[i].name;
+        } else {
+            v = v + parentNode + "," + selectNode[i].name + "-";
+        }
+    }
+    v = v.substr(0, v.length - 1);
+    return v;
+}
 
 
 //下一步按钮的单击事件
 var pdata = null;
 function nextStepAjax() {
+    var txt=$("#TextAreaChoose").val().trim();
+    if (getSelectedNodeToString() != ""&&txt!="") {
+        $("#inputDwdInfo").hide();
+        $("#validateDiv").show();
+        $("#tabUl li:eq(1)").addClass("current");
+        var isReplace = $("#isReplace")[0].checked;
+        var v = getSelectedNodeToString();
+        var vs =getSelectedNodeNameToString();
+        var ids = v.split("-");
+        var names = vs.split("-");
+//        console.log(isReplace+"::::"+ids+"::::"+names);
+        var _createTable = $("#createTable tbody");
+        var txtSize = txt.split("\n");
+        _createTable.empty();
+        var _trClass="";
+        $("#criSize").html(txtSize.length*names.length);
+        for (var i = 0; i < names.length; i++) {
+            _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+            for (var j = 0; j < txtSize.length; j++) {
+                var c0 = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";
+                var c1 = txtSize[j].split(",")[1] != undefined ? txtSize[j].split(",")[1] : "";
+                var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "";
+                var c3 = txtSize[j].split(",")[3] != undefined ? txtSize[j].split(",")[3] : "";
+                var c4 = txtSize[j].split(",")[4] != undefined ? txtSize[j].split(",")[4] : "";
+                var c5 = txtSize[j].split(",")[5] != undefined ? txtSize[j].split(",")[5] : "";
+                var c5_pause = c5 =="启用" ? "启用" : "暂停";
+                var _tbody = "<tr class='"+_trClass+"'>" +
+                        "<td>" + names[i].split(",")[0] + "<input type='hidden' value=" + ids[i].split(",")[0] + "></td>" +
+                        "<td>" + names[i].split(",")[1] + "<input type='hidden' value=" + ids[i].split(",")[1] + "></td>" +
+                        "<td>" + c0 + "</td>" +
+                        "<td>" + c1 + "</td>" +
+                        "<td>" + c2 + "</td>" +
+                        "<td>" + c3 + "</td>" +
+                        "<td>" + c4 + "</td>" +
+                        "<td>" + c5_pause + "</td>" +
+                        "</tr>";
+                _createTable.append(_tbody);
 
-    if (getSelectedNodeToString() == "") {
-        alert("请先选择推广计划和推广单元!");
-        return;
-    }
+            }
 
-    if ($("#TextAreaChoose").val() == "") {
-        alert("请输入要添加或者更新的数据");
-        return;
-    }
-
-    var isReplace = $("#isReplace")[0].checked;
-    var selectNode = getSelectedNodeToString();
-    var keywordInfos = $("#TextAreaChoose").val();
-    $.ajax({
-        url: "/assistantKeyword/addOrUpdateKeywordByChoose",
-        type: "post",
-        data: {"isReplace": isReplace, "chooseInfos": selectNode, "keywordInfos": keywordInfos},
-        dataType: "json",
-        success: function (data) {
-            pdata = data;
-            $("#valideKwd").html("");
-            if (data.insertList.length > 0) {
-                toHtml("insert", data.insertList);
-            }
-            if (data.updateList.length > 0) {
-                toHtml("update", data.updateList);
-            }
-            if (data.igoneList.length > 0) {
-                toHtml("igone", data.igoneList);
-            }
         }
-    });
+    }
+
+
+
+
+
+//    $.ajax({
+//        url: "/assistantKeyword/addOrUpdateKeywordByChoose",
+//        type: "post",
+//        data: {"isReplace": isReplace, "chooseInfos": selectNode, "keywordInfos": keywordInfos},
+//        dataType: "json",
+//        success: function (data) {
+//            pdata = data;
+//            $("#valideKwd").html("");
+//            if (data.insertList.length > 0) {
+//                toHtml("insert", data.insertList);
+//            }
+//            if (data.updateList.length > 0) {
+//                toHtml("update", data.updateList);
+//            }
+//            if (data.igoneList.length > 0) {
+//                toHtml("igone", data.igoneList);
+//            }
+//        }
+//    });
 }
+function overStep(isReplace) {
+    var str = "你确定要添加这些关键字吗";
+    if(isReplace){
+        str = "你确定要添加或者替换这些关键字吗？";
+    }else{
+        str = "你确定要添加关键字吗？";
+    }
+    var con=confirm(str);
+    if (con) {
+        var _table = $("#createTable tbody");
+        var trs = _table.find("tr");
+        var data = {};
+        var cids="";
+        var aids="";
+        var kwds="";
+        var mts="";
+        var prices="";
+        var pcs="";
+        var mibs="";
+        var pauses="";
+        $(trs).each(function (i, o) {
+            var _tr = $(o);
+            cids = cids+_tr.find("td:eq(0) input").val()+",";
+            aids =aids+ _tr.find("td:eq(1) input").val()+",";
+            kwds = kwds+_tr.find("td:eq(2)").html()+",";
+            mts= mts+_tr.find("td:eq(3)").html()+",";
+            var money= _tr.find("td:eq(4)").html();
+            if(/^-?\d+\.?\d*$/.test(money)){
+                prices=prices+money+",";
+            }else{
+                prices=prices+"0.0"+",";
+            }
+            pcs = pcs+_tr.find("td:eq(5)").html()+",";
+            mibs =mibs+ _tr.find("td:eq(6)").html()+",";
+            var pause = _tr.find("td:eq(7)").html();
+            var pause_ToF = pause != "启用" ? false : true;
+            pauses=pauses+pause_ToF+",";
+        });
+        cids=cids.slice(0,-1);
+        aids=aids.slice(0,-1);
+        kwds=kwds.slice(0,-1);
+        mts=mts.slice(0,-1);
+        prices=prices.slice(0,-1);
+        pcs=pcs.slice(0,-1);
+        mibs=mibs.slice(0,-1);
+        pauses=pauses.slice(0,-1);
+        $.post("../assistantKeyword/batchAddOrUpdate",
+                {isReplace: isReplace, cids: cids, aids: aids,kwds:kwds,mts:mts,prices:prices,pcs:pcs,mibs:mibs,pauses:pauses},
+                function (rs) { if(rs=="1"){
+                    alert("操作成功!");
+                }
+                    top.dialog.getCurrent().close().remove();
+                });
+
+    }
+}
+
 
 
 //将请求返回的数据加载到页面
@@ -565,39 +700,41 @@ $(".lastStep").click(function () {
 $("#finish").click(function () {
 
     var isReplace = $("#isReplace")[0].checked;
-    if (isReplace == true) {
-        var isOk = window.confirm("该次操作会将已选定单元下的所有关键词替换，确定要继续?");
-        if (!isOk) {
-            return;
-        }
-    }
+    overStep(isReplace);
 
-    var jsonData = {};
-
-    if ($("#addRadio")[0] != undefined) {
-        var isAdd = $("#addRadio")[0].checked;
-        if (isAdd == true) {
-            jsonData["insertList"] = JSON.stringify(pdata.insertList);
-        }
-    }
-
-    if ($("#updateRadio")[0] != undefined) {
-        var isUpdate = $("#updateRadio")[0].checked;
-        if (isUpdate == true) {
-            jsonData["updateList"] = JSON.stringify(pdata.updateList);
-        }
-    }
-
-    jsonData["isReplace"] = isReplace;
-    $.ajax({
-        url: "/assistantKeyword/batchAddOrUpdate",
-        type: "post",
-        data: jsonData,
-        dataType: "json",
-        success: function (data) {
-            window.location.reload(true);
-        }
-    });
+//    if (isReplace == true) {
+//        var isOk = window.confirm("该次操作会将已选定单元下的所有关键词替换，确定要继续?");
+//        if (!isOk) {
+//            return;
+//        }
+//    }
+//
+//    var jsonData = {};
+//
+//    if ($("#addRadio")[0] != undefined) {
+//        var isAdd = $("#addRadio")[0].checked;
+//        if (isAdd == true) {
+//            jsonData["insertList"] = JSON.stringify(pdata.insertList);
+//        }
+//    }
+//
+//    if ($("#updateRadio")[0] != undefined) {
+//        var isUpdate = $("#updateRadio")[0].checked;
+//        if (isUpdate == true) {
+//            jsonData["updateList"] = JSON.stringify(pdata.updateList);
+//        }
+//    }
+//
+//    jsonData["isReplace"] = isReplace;
+//    $.ajax({
+//        url: "/assistantKeyword/batchAddOrUpdate",
+//        type: "post",
+//        data: jsonData,
+//        dataType: "json",
+//        success: function (data) {
+//            window.location.reload(true);
+//        }
+//    });
 });
 
 

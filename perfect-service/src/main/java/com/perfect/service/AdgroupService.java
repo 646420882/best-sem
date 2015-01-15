@@ -19,6 +19,8 @@ public interface AdgroupService {
 
     List<Long> getAdgroupIdByCampaignId(Long campaignId);
 
+    List<Long> getAdgroupIdByCampaignObj(String campaignId);
+
     AdgroupDTO findOne(Long id);
 
     List<AdgroupDTO> find(Map<String, Object> params, int skip, int limit);

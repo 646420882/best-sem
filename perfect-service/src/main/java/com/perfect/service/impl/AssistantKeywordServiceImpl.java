@@ -115,6 +115,36 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         return dtoList;
     }
 
+    @Override
+    public KeywordDTO findByParams(Map<String, Object> params) {
+        return keywordDAO.findByParamsObject(params);
+    }
+
+    @Override
+    public KeywordDTO findByObjId(String obj) {
+        return keywordDAO.findByObjectId(obj);
+    }
+
+    @Override
+    public KeywordDTO findByLongId(Long id) {
+        return keywordDAO.findOne(id);
+    }
+
+    @Override
+    public void updateByObjId(KeywordDTO dto) {
+        keywordDAO.updateByObjId(dto);
+    }
+
+    @Override
+    public void update(KeywordDTO keywordDTO, KeywordDTO keywordBackUpDTO) {
+        keywordDAO.update(keywordDTO,keywordBackUpDTO);
+    }
+
+    @Override
+    public void insert(KeywordDTO dto) {
+        keywordDAO.save(dto);
+    }
+
 
     public void setNeigWord(String agid, String keywords, Integer neigType) {
         String[] kwds = keywords.split("\n");
@@ -641,74 +671,74 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      * @return
      */
     public Map<String, Object> batchAddOrUpdateKeywordByChoose(Long accountId, Boolean isReplace, String chooseInfos, String keywordInfos) {
-        String regex = "^\\d+$";
-
-        //可被添加的关键词list
-        List<KeywordInfoDTO> insertList = new ArrayList<>();
-
-        //可被修改的关键词list
-        List<KeywordInfoDTO> updateList = new ArrayList<>();
-
-        //可被忽略的关键词list
-        List<AssistantKeywordIgnoreDTO> igoneList = new ArrayList<>();
-
-        String[] everyRow = chooseInfos.split("-");
-        String[] everyInfo = keywordInfos.split("\n");
-
-        for (String row : everyRow) {
-            //切割出推广计划和推广单元ID
-            String[] fieds = row.split(",");
-            for (String info : everyInfo) {
-                String[] kwInfo = info.split(",|，|\t");
-                KeywordDTO keywordDTO = validateKewword(kwInfo);
-                List<KeywordDTO> list;
-                if (fieds[1].matches(regex)) {
-                    list = keywordDAO.findByParams(new HashMap<String, Object>() {{
-                        put(MongoEntityConstants.ADGROUP_ID, Long.parseLong(fieds[1]));
-                        put("name",keywordDTO.getKeyword());
-                    }});
-//                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.parseLong(fieds[1])).and("name").is(keywordDTO.getKeyword())));
-                } else {
-                    list = keywordDAO.findByParams(new HashMap<String, Object>() {{
-                        put(MongoEntityConstants.OBJ_ADGROUP_ID, fieds[1]);
-                        put("name",keywordDTO.getKeyword());
-                    }});
-//                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).is(fieds[1]).and("name").is(keywordDTO.getKeyword())));
-                }
-
-                if (list.size() > 0 && kwInfo.length == 1) {
-                    AssistantKeywordIgnoreDTO dto = new AssistantKeywordIgnoreDTO();
-
-                    if (fieds[0].matches(regex)) {
-                        dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
-                    } else {
-                        dto.setCampaignName(campaignDAO.findByObjectId(fieds[0]).getCampaignName());
-                    }
-
-                    if (fieds[1].matches(regex)) {
-                        dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
-                    } else {
-                        dto.setAdgroupName(adgroupDAO.findByObjId(fieds[1]).getAdgroupName());
-                    }
-                    dto.setKeywordName(kwInfo[0]);
-                    igoneList.add(dto);
-                    continue;
-                }
-
-                if (list.size() == 0) {
-                    insertList.add(setFieldToDTO(fieds, keywordDTO, null));
-                } else {
-                    for (KeywordDTO entity : list) {
-                        updateList.add(setFieldToDTO(fieds, keywordDTO, entity));
-                    }
-                }
-            }
-        }
-
+//        String regex = "^\\d+$";
+//
+//        //可被添加的关键词list
+//        List<KeywordInfoDTO> insertList = new ArrayList<>();
+//
+//        //可被修改的关键词list
+//        List<KeywordInfoDTO> updateList = new ArrayList<>();
+//
+//        //可被忽略的关键词list
+//        List<AssistantKeywordIgnoreDTO> igoneList = new ArrayList<>();
+//
+//        String[] everyRow = chooseInfos.split("-");
+//        String[] everyInfo = keywordInfos.split("\n");
+//
+//        for (String row : everyRow) {
+//            //切割出推广计划和推广单元ID
+//            String[] fieds = row.split(",");
+//            for (String info : everyInfo) {
+//                String[] kwInfo = info.split(",|，|\t");
+//                KeywordDTO keywordDTO = validateKewword(kwInfo);
+//                List<KeywordDTO> list;
+//                if (fieds[1].matches(regex)) {
+//                    list = keywordDAO.findByParams(new HashMap<String, Object>() {{
+//                        put(MongoEntityConstants.ADGROUP_ID, Long.parseLong(fieds[1]));
+//                        put("name",keywordDTO.getKeyword());
+//                    }});
+////                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.parseLong(fieds[1])).and("name").is(keywordDTO.getKeyword())));
+//                } else {
+//                    list = keywordDAO.findByParams(new HashMap<String, Object>() {{
+//                        put(MongoEntityConstants.OBJ_ADGROUP_ID, fieds[1]);
+//                        put("name",keywordDTO.getKeyword());
+//                    }});
+////                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).is(fieds[1]).and("name").is(keywordDTO.getKeyword())));
+//                }
+//
+//                if (list.size() > 0 && kwInfo.length == 1) {
+//                    AssistantKeywordIgnoreDTO dto = new AssistantKeywordIgnoreDTO();
+//
+//                    if (fieds[0].matches(regex)) {
+//                        dto.setCampaignName(campaignDAO.findOne(Long.parseLong(fieds[0])).getCampaignName());
+//                    } else {
+//                        dto.setCampaignName(campaignDAO.findByObjectId(fieds[0]).getCampaignName());
+//                    }
+//
+//                    if (fieds[1].matches(regex)) {
+//                        dto.setAdgroupName(adgroupDAO.findOne(Long.parseLong(fieds[1])).getAdgroupName());
+//                    } else {
+//                        dto.setAdgroupName(adgroupDAO.findByObjId(fieds[1]).getAdgroupName());
+//                    }
+//                    dto.setKeywordName(kwInfo[0]);
+//                    igoneList.add(dto);
+//                    continue;
+//                }
+//
+//                if (list.size() == 0) {
+//                    insertList.add(setFieldToDTO(fieds, keywordDTO, null));
+//                } else {
+//                    for (KeywordDTO entity : list) {
+//                        updateList.add(setFieldToDTO(fieds, keywordDTO, entity));
+//                    }
+//                }
+//            }
+//        }
+//
         Map<String, Object> map = new HashMap<>();
-        map.put("insertList", insertList);
-        map.put("updateList", updateList);
-        map.put("igoneList", igoneList);
+//        map.put("insertList", insertList);
+//        map.put("updateList", updateList);
+//        map.put("igoneList", igoneList);
 
         return map;
     }
