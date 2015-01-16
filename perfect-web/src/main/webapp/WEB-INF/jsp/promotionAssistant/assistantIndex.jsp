@@ -1173,7 +1173,7 @@
         <div class="w_list03">
             <ul>
                 <li class="current">确认</li>
-                <li class="close">取消</li>
+                <li class="close ">取消</li>
             </ul>
         </div>
     </div>

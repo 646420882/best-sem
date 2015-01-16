@@ -985,11 +985,10 @@ function showQuickAddPlanWindow() {
     }).showModal(dockObj);
 }
 
-
 /**
  * 弹出窗口的关闭事件
  */
-$(".close").click(function () {
+$(".closeAddCampaign").click(function () {
     $(this).parent().parent().hide(0);
 })
 

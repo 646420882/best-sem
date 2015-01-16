@@ -784,9 +784,12 @@
         var myId = document.getElementById("nav_input1");
         var ztree_minwidth = $(document.body).width() - 452;
         var ztree_maxwidth = $(document.body).width() - 272;
-        $(".jingjia_right").css("width", ztree_minwidth);
+         $(".jingjia_right").css("width", ztree_minwidth);
+         $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
+         $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
         $(window).resize(function () {
              $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
+             $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
               Tablewidth();
         });
         function Tablewidth(){
@@ -1574,23 +1577,23 @@
                 // {label: '<input type=\"checkbox\" name=\"check_all\" onclick=\"checkAll();\" id=\"check_all\" >', name: 'checkall', width: 30,
                 //sortable: false, align: 'center', formatter:function(v,x,r){ return "<input type='checkbox'/>"; }},
                 {label: ' 关键词ID', name: 'keywordId', sortable: false, align: 'center', hidden: true},
-                {label: ' 关键词', name: 'keyword', sortable: false, width: 200, align: 'center'},
+                {label: ' 关键词', name: 'keyword', sortable: false, align: 'center'},
                 {label: ' 推广计划', name: 'campaignName', sortable: false, align: 'center', hidden: true},
                 {label: ' 推广单元', name: 'adgroupName', sortable: false, align: 'center', hidden: true},
                 {label: ' 匹配模式', name: 'matchType', sortable: false, align: 'center', hidden: true},
                 {label: ' 高级短语匹配模式', name: 'phraseType', sortable: false, align: 'center', hidden: true},
                 {label: ' 当前排名', name: 'currentRank', sortable: false, align: 'center'},
-                {label: ' 消费', name: 'cost', sortable: false, width: 80, align: 'center'},
-                {label: ' 展现量', name: 'impression', sortable: false, width: 80, align: 'center'},
-                {label: ' 点击量', name: 'click', sortable: false, width: 80, align: 'center', hidden: true},
-                {label: ' 点击率', name: 'ctr', sortable: false, width: 80, align: 'center'},
-                {label: ' 出价', name: 'price', sortable: false, width: 80, align: 'center'},
+                {label: ' 消费', name: 'cost', sortable: false,  align: 'center'},
+                {label: ' 展现量', name: 'impression', sortable: false,  align: 'center'},
+                {label: ' 点击量', name: 'click', sortable: false,  align: 'center', hidden: true},
+                {label: ' 点击率', name: 'ctr', sortable: false,  align: 'center'},
+                {label: ' 出价', name: 'price', sortable: false, align: 'center'},
                 {label: ' 平均点击价格', name: 'cpc', sortable: false, align: 'center', hidden: true},
                 {label: ' 千次展现消费', name: 'cpm', sortable: false, align: 'center', hidden: true},
-                {label: ' 质量度', name: 'pcQuality', sortable: false, width: 80, align: 'center'},
+                {label: ' 质量度', name: 'pcQuality', sortable: false,  align: 'center'},
                 {label: ' 移动端质量度', name: 'mQuality', sortable: false, align: 'center'},
                 {label: ' 状态', name: 'statusStr', sortable: false, align: 'center'},
-                {label: ' 竞价规则', name: 'ruleDesc', sortable: false, width: 200, align: 'center'},
+                {label: ' 竞价规则', name: 'ruleDesc', sortable: false,  align: 'center'},
                 {
                     label: ' Pc URL',
                     name: 'pcDestinationUrl',
