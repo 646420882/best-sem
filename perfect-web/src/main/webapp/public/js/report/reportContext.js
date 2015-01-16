@@ -1514,7 +1514,7 @@ $(function () {
                     axisLine:{
                         show:true,
                         lineStyle:{
-                            color:colorTow
+                            color:colorOne
                         }
                     }
                 },{
@@ -1527,7 +1527,7 @@ $(function () {
                     axisLine:{
                         show:true,
                         lineStyle:{
-                            color:colorOne
+                            color:colorTow
                         }
                     }
                 }

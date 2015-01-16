@@ -1868,7 +1868,7 @@ var curve = function () {
                 axisLine:{
                     show:true,
                     lineStyle:{
-                        color:colorTow
+                        color:colorOne
                     }
                 }
             },{
@@ -1881,7 +1881,7 @@ var curve = function () {
                 axisLine:{
                     show:true,
                     lineStyle:{
-                        color:colorOne
+                        color:colorTow
                     }
                 }
             }
