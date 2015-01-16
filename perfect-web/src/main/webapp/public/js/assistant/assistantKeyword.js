@@ -496,7 +496,9 @@ function batchAddOrUpdate() {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
+            if (jsonData.cid != null) {
             whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());
+            }
         },
         onremove: function () {
         }

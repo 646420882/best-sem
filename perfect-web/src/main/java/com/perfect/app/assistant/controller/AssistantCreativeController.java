@@ -150,7 +150,7 @@ public class AssistantCreativeController extends WebContextSupport {
                                        @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
                                        @RequestParam(value = "pause") Boolean bol,
                                        @RequestParam(value = "status") Integer s,
-                                       @RequestParam(value = "d", required = false, defaultValue = "0") Integer d) {
+                                       @RequestParam(value = "d", required = false, defaultValue = "1") Integer d) {
         try {
             UUID uuidRandom=UUID.randomUUID();
            String uuid=uuidRandom.toString().replaceAll("-","");
@@ -355,8 +355,6 @@ public class AssistantCreativeController extends WebContextSupport {
      * @param mib
      * @param mibs
      * @param bol
-     * @param s
-     * @param d
      * @return
      */
     @RequestMapping(value = "insertOrUpdate", method = RequestMethod.POST)
@@ -370,24 +368,48 @@ public class AssistantCreativeController extends WebContextSupport {
                                        @RequestParam(value = "pcDisplayUrl", required = false) String pcs,
                                        @RequestParam(value = "mobileDestinationUrl", required = false) String mib,
                                        @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
-                                       @RequestParam(value = "pause") Boolean bol,
-                                       @RequestParam(value = "status") Integer s,
-                                       @RequestParam(value = "d", required = false, defaultValue = "0") Integer d) {
+                                       @RequestParam(value = "pause") String bol,
+                                        @RequestParam(value = "device")String device){
         try{
             //将获取到的标题和创意1在本地数据库中查询
-            Map<String,Object> params=new HashMap<>();
-            params.put("t",title);
-            params.put("desc1",de1);
-            if(aid.length()>OBJ_SIZE){
-                params.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
+            if(aid.contains("\n")){
+                String[] aidStr = aid.split("\n");
+                String[] titleStr = title.split("\n");
+                String[] de1Str = de1.split("\n");
+                String[] de2Str = de2.split("\n");
+                String[] pcStr = pc.split("\n");
+                String[] pcsStr = pcs.split("\n");
+                String[] mibStr = mib.split("\n");
+                String[] mibsStr = mibs.split("\n");
+                String[] bolStr = bol.split("\n");
+                String[] devStr=device.split("\n");
+                for (int i=0;i<aidStr.length;i++){
+                    innerInsert(isReplace,aidStr[i],titleStr[i],de1Str[i],de2Str[i],pcStr[i],pcsStr[i],mibStr[i],mibsStr[i],bolStr[i],devStr[i]);
+                }
             }else{
-                params.put(MongoEntityConstants.ADGROUP_ID,Long.valueOf(aid));
+                innerInsert(isReplace,aid,title,de1,de2,pc,pcs,mib,mibs,bol,device);
             }
-            //如果查询到结果
-            CreativeDTO creativeEntity = creativeService.getAllsBySomeParams(params);
-            //如果能查到匹配的数据，则执行修改操作
-            if(creativeEntity!=null){
-                if (isReplace) {
+            writeHtml(SUCCESS,response);
+        }catch (Exception e){
+            e.printStackTrace();
+            writeHtml(EXCEPTION,response);
+        }
+        return null;
+    }
+    private  void innerInsert(Boolean isReplace,String aid,String title,String de1,String de2,String pc,String pcs,String mib,String mibs,String bol,String device){
+        Map<String,Object> params=new HashMap<>();
+        params.put("t",title);
+        params.put("desc1",de1);
+        if(aid.length()>OBJ_SIZE){
+            params.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
+        }else{
+            params.put(MongoEntityConstants.ADGROUP_ID,Long.valueOf(aid));
+        }
+        //如果查询到结果
+        CreativeDTO creativeEntity = creativeService.getAllsBySomeParams(params);
+        //如果能查到匹配的数据，则执行修改操作
+        if(creativeEntity!=null){
+            if (isReplace) {
                 CreativeDTO creativeEntityFind = null;
                 //判断如果该条数据不为已经同步的数据，则视为本地数据，本地数据库数据修改则不需要备份操作
                 if (creativeEntity.getCreativeId()==null) {
@@ -399,8 +421,9 @@ public class AssistantCreativeController extends WebContextSupport {
                     creativeEntityFind.setPcDisplayUrl(pcs);
                     creativeEntityFind.setMobileDestinationUrl(mib);
                     creativeEntityFind.setMobileDisplayUrl(mibs);
-                    creativeEntityFind.setPause(bol);
+                    creativeEntityFind.setPause(Boolean.parseBoolean(bol));
                     creativeEntityFind.setLocalStatus(1);
+                    creativeEntityFind.setDevicePreference(Integer.parseInt(device));
                     creativeService.updateByObjId(creativeEntityFind);
                     //如果已经是同步到本地的数据，则要执行备份操作，将这条数据备份到备份数据库中
                 } else {
@@ -415,39 +438,34 @@ public class AssistantCreativeController extends WebContextSupport {
                     creativeEntityFind.setPcDisplayUrl(pcs);
                     creativeEntityFind.setMobileDestinationUrl(mib);
                     creativeEntityFind.setMobileDisplayUrl(mibs);
-                    creativeEntityFind.setPause(bol);
+                    creativeEntityFind.setPause(Boolean.parseBoolean(bol));
+                    creativeEntityFind.setDevicePreference(Integer.parseInt(device));
                     creativeService.update(creativeEntityFind, creativeEntityBackUp);
                 }
-                }
-                //如果没有查到匹配的数据，则执行添加操作
-            }else{
-                CreativeDTO creativeEntityInsert = new CreativeDTO();
-                creativeEntityInsert.setAccountId(AppContext.getAccountId());
-                creativeEntityInsert.setTitle(title);
-                creativeEntityInsert.setDescription1(de1);
-                creativeEntityInsert.setDescription2(de2);
-                creativeEntityInsert.setPcDestinationUrl(pc);
-                creativeEntityInsert.setPcDisplayUrl(pcs);
-                creativeEntityInsert.setMobileDestinationUrl(mib);
-                creativeEntityInsert.setMobileDisplayUrl(mibs);
-                creativeEntityInsert.setPause(bol);
-                creativeEntityInsert.setStatus(s);
-                creativeEntityInsert.setDevicePreference(d);
-                creativeEntityInsert.setLocalStatus(1);
-                if (aid.length() > OBJ_SIZE) {
-                    creativeEntityInsert.setAdgroupObjId(aid);
-                    creativeEntityInsert.setCreativeId(null);
-                } else {
-                    creativeEntityInsert.setAdgroupId(Long.parseLong(aid));
-                }
-                String oid = creativeService.insertOutId(creativeEntityInsert);
             }
-            writeHtml(SUCCESS,response);
-        }catch (Exception e){
-            e.printStackTrace();
-            writeHtml(EXCEPTION,response);
+            //如果没有查到匹配的数据，则执行添加操作
+        }else{
+            CreativeDTO creativeEntityInsert = new CreativeDTO();
+            creativeEntityInsert.setAccountId(AppContext.getAccountId());
+            creativeEntityInsert.setTitle(title);
+            creativeEntityInsert.setDescription1(de1);
+            creativeEntityInsert.setDescription2(de2);
+            creativeEntityInsert.setPcDestinationUrl(pc);
+            creativeEntityInsert.setPcDisplayUrl(pcs);
+            creativeEntityInsert.setMobileDestinationUrl(mib);
+            creativeEntityInsert.setMobileDisplayUrl(mibs);
+            creativeEntityInsert.setPause(Boolean.parseBoolean(bol));
+            creativeEntityInsert.setStatus(-1);
+            creativeEntityInsert.setDevicePreference(Integer.parseInt(device));
+            creativeEntityInsert.setLocalStatus(1);
+            if (aid.length() > OBJ_SIZE) {
+                creativeEntityInsert.setAdgroupObjId(aid);
+                creativeEntityInsert.setCreativeId(null);
+            } else {
+                creativeEntityInsert.setAdgroupId(Long.parseLong(aid));
+            }
+            String oid = creativeService.insertOutId(creativeEntityInsert);
         }
-        return null;
     }
 
 

@@ -818,6 +818,9 @@ $("#createCampaignOk").click(function () {
             "maxPrice": maxPrice,
             "adgroupPause": adgroupPause,
             "adgroupPriceRatio": adgroupPriceRatio
+        },
+        success: function (data) {
+
         }
     });
 
@@ -828,6 +831,9 @@ $("#createCampaignOk").click(function () {
     excludeIpStr = "";
     $("#plan input[type=text]").val("");
     $(".TB_overlayBG,#plan").hide(0);
+    getCampaignList(0);
+    setTimeout("loadTree()", 1500);
+    //loadTree();
 });
 
 
@@ -969,9 +975,10 @@ function showQuickAddPlanWindow() {
         oniframeload: function () {
         },
         onclose: function () {
+            if (jsonData.cid != null) {
             whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
             loadTree();
-            alert("1");
+            }
         },
         onremove: function () {
         }

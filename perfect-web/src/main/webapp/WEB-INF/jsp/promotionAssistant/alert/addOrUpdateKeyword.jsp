@@ -424,7 +424,6 @@ function nextStepAjax() {
         var vs =getSelectedNodeNameToString();
         var ids = v.split("-");
         var names = vs.split("-");
-//        console.log(isReplace+"::::"+ids+"::::"+names);
         var _createTable = $("#createTable tbody");
         var txtSize = txt.split("\n");
         _createTable.empty();
@@ -456,30 +455,6 @@ function nextStepAjax() {
 
         }
     }
-
-
-
-
-
-//    $.ajax({
-//        url: "/assistantKeyword/addOrUpdateKeywordByChoose",
-//        type: "post",
-//        data: {"isReplace": isReplace, "chooseInfos": selectNode, "keywordInfos": keywordInfos},
-//        dataType: "json",
-//        success: function (data) {
-//            pdata = data;
-//            $("#valideKwd").html("");
-//            if (data.insertList.length > 0) {
-//                toHtml("insert", data.insertList);
-//            }
-//            if (data.updateList.length > 0) {
-//                toHtml("update", data.updateList);
-//            }
-//            if (data.igoneList.length > 0) {
-//                toHtml("igone", data.igoneList);
-//            }
-//        }
-//    });
 }
 function overStep(isReplace) {
     var str = "你确定要添加这些关键字吗";
@@ -492,7 +467,6 @@ function overStep(isReplace) {
     if (con) {
         var _table = $("#createTable tbody");
         var trs = _table.find("tr");
-        var data = {};
         var cids="";
         var aids="";
         var kwds="";
@@ -503,21 +477,21 @@ function overStep(isReplace) {
         var pauses="";
         $(trs).each(function (i, o) {
             var _tr = $(o);
-            cids = cids+_tr.find("td:eq(0) input").val()+",";
-            aids =aids+ _tr.find("td:eq(1) input").val()+",";
-            kwds = kwds+_tr.find("td:eq(2)").html()+",";
-            mts= mts+_tr.find("td:eq(3)").html()+",";
+            cids = cids+_tr.find("td:eq(0) input").val()+"\n";
+            aids =aids+ _tr.find("td:eq(1) input").val()+"\n";
+            kwds = kwds+_tr.find("td:eq(2)").html()+"\n";
+            mts= mts+_tr.find("td:eq(3)").html()+"\n";
             var money= _tr.find("td:eq(4)").html();
             if(/^-?\d+\.?\d*$/.test(money)){
-                prices=prices+money+",";
+                prices=prices+money+"\n";
             }else{
-                prices=prices+"0.0"+",";
+                prices=prices+"0.0"+"\n";
             }
-            pcs = pcs+_tr.find("td:eq(5)").html()+",";
-            mibs =mibs+ _tr.find("td:eq(6)").html()+",";
+            pcs = pcs+_tr.find("td:eq(5)").html()+"\n";
+            mibs =mibs+ _tr.find("td:eq(6)").html()+"\n";
             var pause = _tr.find("td:eq(7)").html();
             var pause_ToF = pause != "启用" ? false : true;
-            pauses=pauses+pause_ToF+",";
+            pauses=pauses+pause_ToF+"\n";
         });
         cids=cids.slice(0,-1);
         aids=aids.slice(0,-1);

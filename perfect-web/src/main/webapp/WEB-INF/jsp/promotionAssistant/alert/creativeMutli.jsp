@@ -88,7 +88,8 @@
 
                                     <p>
                                         例如：标题,描述1,描述2,http://com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,http://m.com.perfect.api.baidu.com,m.com.perfect.api.baidu.com,启用,全部设备</p>
-                                    <textarea onkeyup="getColumn(this)" id="creativeMultiTxt"></textarea>
+                                    <textarea onkeyup="getColumn(this)" id="creativeMultiTxt"
+                                              style="font-size: 12px;font-family: 微软雅黑;"></textarea>
 
                                     <p id="pError"><span><span id="checkedNodes">0</span>x<span
                                             id="column">0</span>=<span
@@ -97,7 +98,9 @@
 
                                     <p>
                                         <%--<span><input type="checkbox"/>用这些普通创意替换目标推广单元的所有相应内容<br/></span>--%>
-                                        <span><input type="checkbox"  id="isReplace"/>创意标题和描述相同时，更新该创意的url等其他设设置</span>
+                                            <span><input type="checkbox" id="isReplace"/>创意标题和描述相同时，更新该创意的url等其他设设置&nbsp;<span
+                                                    style="color:red;">您的域名:&nbsp;</span><span
+                                                    id="doMain"></span></span>
                                     </p>
                                 </div>
 
@@ -194,6 +197,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript">
 var settingCreativeMutli = {
     check: {
@@ -213,8 +217,8 @@ var settingCreativeMutli = {
 };
 var columnSize = 0;
 $(function () {
+    initDomain();
     initMutliTree();
-
 });
 function initMutliTree() {
     $("#creativeMultiTree").html("正在加载数据...");
@@ -357,18 +361,121 @@ function stepTwo() {
     $(".chooseKwdInfoDiv").addClass("hides");
 }
 /**
+ *获取字节数
+ * */
+function getChar(str) {
+    var char = str.match(/[^\x00-\xff]/ig);
+    return str.length + (char == null ? 0 : char.length);
+}
+function initDomain() {
+    var dm = $("#doMain").html();
+    if (dm == "") {
+        $.get("/assistantCreative/getDomain", function (result) {
+            if (result != "0") {
+                $("#doMain").html(result);
+            }
+        });
+    }
+}
+/**
  下一步*
  */
 function nextStep() {
     var txt = $("#creativeMultiTxt").val().trim();
     if (getSelectedNodeToString() != "" && txt != "") {
-        initNextStep();
+        var dm = $("#doMain").html();
         var vs = getSelectedNodeNameToString();
         var v = getSelectedNodeToString();
         var ids = v.split("-");
         var names = vs.split("-");
         var _createTable = $("#createTable tbody");
         var txtSize = txt.split("\n");
+        for (var j = 0; j < txtSize.length; j++) {
+            var c0 = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";
+            var c1 = txtSize[j].split(",")[1] != undefined ? txtSize[j].split(",")[1] : "";
+            var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "";
+            var c3 = txtSize[j].split(",")[3] != undefined ? txtSize[j].split(",")[3] : "";
+            var c4 = txtSize[j].split(",")[4] != undefined ? txtSize[j].split(",")[4] : "";
+            var c5 = txtSize[j].split(",")[5] != undefined ? txtSize[j].split(",")[5] : "";
+            var c6 = txtSize[j].split(",")[6] != undefined ? txtSize[j].split(",")[6] : "";
+            if (parseInt(getChar(c0)) > 50 || parseInt(getChar(c0)) <= 8) {
+                alert("第" + (j + 1) + "行的\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
+                return false;
+            }
+            if (parseInt(getChar(c1)) > 80 || parseInt(getChar(c1)) <= 8) {
+                alert("第" + (j + 1) + "行的\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+                return false;
+            }
+            if (parseInt(getChar(c2)) > 80 || parseInt(getChar(c2)) <= 8) {
+                alert("第" + (j + 1) + "行的\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+                return false;
+            }
+            if (parseInt(getChar(c3)) > 1024 || parseInt(getChar(c3)) <= 1) {
+                alert("第" + (j + 1) + "行的默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
+                return false;
+            } else {
+                if (c3.indexOf(dm) == -1) {
+                    alert("第" + (j + 1) + "行的默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    return false;
+                }
+                //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+//                else {
+//                    if (c3.substr(c3.indexOf(dm)) != dm) {
+//                        alert("第"+(j+1)+"行的默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+//                        return false;
+//                    }
+//                }
+            }
+            if (parseInt(getChar(c4)) > 36 || parseInt(getChar(c4)) <= 1) {
+                alert("第" + (j + 1) + "行的默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
+                return false;
+            } else {
+                if (c4.indexOf(dm) == -1) {
+                    alert("第" + (j + 1) + "行的默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    return false;
+                }
+                //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+//                else {
+//                    if (c4.substr(c4.indexOf(dm)) != dm) {
+//                        alert("第"+(j+1)+"行的默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+//                        return false;
+//                    }
+//                }
+            }
+            if (parseInt(getChar(c5)) > 1017 || parseInt(getChar(c5)) <= 1) {
+                alert("第" + (j + 1) + "行的移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
+                return false;
+            } else {
+                if (c5.indexOf(dm) == -1) {
+                    alert("第" + (j + 1) + "行的移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    return false;
+                }
+            }
+            //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+//                else {
+//                    if (c5.substr(c5.indexOf(dm)) != dm) {
+//                        alert("第"+(j+1)+"行的移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+//                        return false;
+//                    }
+//                }
+            if (parseInt(getChar(c6)) > 36 || parseInt(getChar(c6)) <= 1) {
+                alert("第" + (j + 1) + "行的移动\"显示\"Url地址长度应大于2个字符小于36个字符");
+                return false;
+            } else {
+                if (c6.indexOf(dm) == -1) {
+                    alert("第" + (j + 1) + "行的移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    return false;
+                }
+            }
+            //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+//                else {
+//                    if (c6.substr(c6.indexOf(dm)) != dm) {
+//                        alert("第"+(j+1)+"行的移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+//                        return false;
+//                    }
+//                }
+        }
+        initNextStep();
         _createTable.empty();
         var _trClass="";
         $("#criSize").html(txtSize.length*names.length);
@@ -472,28 +579,61 @@ function overStep() {
     if (con) {
         var _table = $("#createTable tbody");
         var trs = _table.find("tr");
-        var data = {};
+        var aid = "";
+        var title = "";
+        var desc1 = "";
+        var desc2 = "";
+        var pc = "";
+        var pcs = "";
+        var mib = "";
+        var mibs = "";
+        var pause = "";
+        var device = "";
         $(trs).each(function (i, o) {
             var _tr = $(o);
-            var cid = _tr.find("td:eq(0) input").val();
-            var aid = _tr.find("td:eq(1) input").val();
-            var title = _tr.find("td:eq(2)").html();
-            var desc1 = _tr.find("td:eq(3)").html();
-            var desc2 = _tr.find("td:eq(4)").html();
-            var pc = _tr.find("td:eq(5)").html();
-            var pcs = _tr.find("td:eq(6)").html();
-            var mib = _tr.find("td:eq(7)").html();
-            var mibs = _tr.find("td:eq(8)").html();
-            var pause = _tr.find("td:eq(9)").html();
-            var pause_ToF = pause != "启用" ? false : true;
-            $.post("../assistantCreative/insertOrUpdate", {isReplace:isReplace,aid: aid, title: title, description1: desc1, description2: desc2, pcDestinationUrl: pc, pcDisplayUrl: pcs, mobileDestinationUrl: mib, mobileDisplayUrl: mibs, pause: pause_ToF, status: -1}, function (rs) {
-             if(rs=="1"){
-                 alert("操作成功!");
-             }
-                top.dialog.getCurrent().close().remove();
-            });
+//            var cid = _tr.find("td:eq(0) input").val();
+            aid = aid + _tr.find("td:eq(1) input").val() + "\n";
+            title = title + _tr.find("td:eq(2)").html() + "\n";
+            desc1 = desc1 + _tr.find("td:eq(3)").html() + "\n";
+            desc2 = desc2 + _tr.find("td:eq(4)").html() + "\n";
+            pc = pc + _tr.find("td:eq(5)").html() + "\n";
+            pcs = pcs + _tr.find("td:eq(6)").html() + "\n";
+            mib = mib + _tr.find("td:eq(7)").html() + "\n";
+            mibs = mibs + _tr.find("td:eq(8)").html() + "\n";
+            var pa = _tr.find("td:eq(9)").html();
+            var pause_ToF = pa != "启用" ? false : true;
+            var de = _tr.find("td:eq(10)").html()
+            pause = pause + pause_ToF + "\n";
+            device = device + until.convertDevice(de) + "\n";
         });
-
+        aid = aid.slice(0, -1);
+        title = title.slice(0, -1);
+        desc1 = desc1.slice(0, -1);
+        desc2 = desc2.slice(0, -1);
+        pc = pc.slice(0, -1);
+        pcs = pcs.slice(0, -1);
+        mib = mib.slice(0, -1);
+        mibs = mibs.slice(0, -1);
+        pause = pause.slice(0, -1);
+        device = device.slice(0, -1);
+        $.post("../assistantCreative/insertOrUpdate", {
+            isReplace: isReplace,
+            aid: aid,
+            title: title,
+            description1: desc1,
+            description2: desc2,
+            pcDestinationUrl: pc,
+            pcDisplayUrl: pcs,
+            mobileDestinationUrl: mib,
+            mobileDisplayUrl: mibs,
+            pause: pause,
+            device: device
+        }, function (rs) {
+            if (rs == "1") {
+                alert("操作成功!");
+            }
+            top.dialog.getCurrent().close().remove();
+        });
     }
 }
 </script>

@@ -127,43 +127,37 @@ function InitMenu() {
                 alert("默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
                 return false;
             } else {
-//                if (!re.test(_pc.val())) {
-//                    alert("默认\"访问\"Url地址格式不正确，请重新输入");
-//                    _pc.val("");
-//                    return false;
-//                }
                 if (_pc.val().indexOf(dm) == -1) {
                     alert("默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
-                } else {
-                    var _pcSize = _pc.val();
-                    if (_pc.val().substr(_pc.val().indexOf(dm)) != dm) {
-                        alert("默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-                        return false;
-                    }
                 }
+                //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+                //else {
+                //    var _pcSize = _pc.val();
+                //    if (_pc.val().substr(_pc.val().indexOf(dm)) != dm) {
+                //        alert("默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                //        return false;
+                //    }
+                //}
             }
             var _pcs = $(this).parents("tr").find("input:eq(6)");
             var _thisStrpcs = getChar(_pcs.val());
-            if (parseInt(_thisStrpcs) > 50 || parseInt(_thisStrpcs) <= 1) {
-                alert("默认\"显示\"Url地址长度应大于2个字符小于50个字符，汉子占两个字符!");
+            if (parseInt(_thisStrpcs) > 36 || parseInt(_thisStrpcs) <= 1) {
+                alert("默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
                 return false;
             } else {
-//                if (!re.test(_pcs.val())) {
-//                    alert("默认\"显示\"Url地址格式不正确，请重新输入");
-//                    _pcs.val("");
-//                    return false;
-//                }
                 if (_pcs.val().indexOf(dm) == -1) {
                     alert("默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
-                } else {
-                    var _pcsSize = _pcs.val();
-                    if (_pcs.val().substr(_pcs.val().indexOf(dm)) != dm) {
-                        alert("默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
-                        return false;
-                    }
                 }
+                //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+                //else {
+                //    var _pcsSize = _pcs.val();
+                //    if (_pcs.val().substr(_pcs.val().indexOf(dm)) != dm) {
+                //        alert("默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                //        return false;
+                //    }
+                //}
             }
             var _mib=$(this).parents("tr").find("input:eq(7)");
             if (_mib.val() != "空"||_mib.val() != "") {
@@ -171,11 +165,19 @@ function InitMenu() {
                     alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 } else {
-                    if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
-                        alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                    var _thisStrMib = getChar(_mib.val());
+                    if (parseInt(_thisStrMib) > 1017 || parseInt(_thisStrMib) <= 1) {
+                        alert("移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
                         return false;
                     }
                 }
+                //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+                //else {
+                //    if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
+                //        alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                //        return false;
+                //    }
+                //}
             }
             var _mibs=$(this).parents("tr").find("input:eq(8)");
             if (_mibs.val() != ""||_mibs.val() != "空") {
@@ -183,11 +185,19 @@ function InitMenu() {
                     alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 } else {
-                    if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
-                        alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                    var _thisStrMibs = getChar(_mibs.val());
+                    if (parseInt(_thisStrMibs) > 36 || parseInt(_thisStrMibs) <= 1) {
+                        alert("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
                         return false;
                     }
                 }
+                //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+                //else {
+                //    if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
+                //        alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                //        return false;
+                //    }
+                //}
             }
             var con = confirm("你确定要添加么？");
             if (con) {
@@ -432,7 +442,7 @@ function addCreative() {
             " <td><input name='description2' onkeyup='onKey(this);'  style='width:140px;' maxlength='80'></td>" +
             " <td><input name='pcDestinationUrl' onkeyup='onKey(this);' style='width:140px;'  maxlength='1024'></td>" +
             " <td><input name='pcDisplayUrl' onkeyup='onKey(this);' style='width:140px;'  maxlength='36'></td>" +
-            " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='1024'></td>" +
+            " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='1017'></td>" +
             " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='36'></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
             " <td><span>本地新增</span><input type='hidden' value='-1' name='status'></td>" +
@@ -442,13 +452,13 @@ function addCreative() {
     } else if (sparams.cid != null && sparams.aid == null) {
         jcBox.empty();
         loadUnit(sparams.cid);
-        jcBox.append("<li><span>推广单元</span><select id='sUnit' onchange='loadTree(this.value)'><option value='-1'>请选择单元</option></select></li>");
+        jcBox.append("<li><span>推广单元</span><select id='sUnit' onchange='loadAdgroup(this.value)'><option value='-1'>请选择单元</option></select></li>");
         creativeAddBoxShow();
     } else if (sparams.cid == null && sparams.aid == null) {
         jcBox.empty();
         getPlans();
         jcBox.append("<li><span>推广计划</span><select id='sPlan' onchange='loadUnit(this.value)'><option value='-1'>请选择计划</option></select></li>");
-        jcBox.append("<li><span>推广单元</span><select id='sUnit' onchange='loadTree(this.value)'><option value='-1'>请选择单元</option></select></li>");
+        jcBox.append("<li><span>推广单元</span><select id='sUnit' onchange='loadAdgroup(this.value)'><option value='-1'>请选择单元</option></select></li>");
         creativeAddBoxShow();
     } else {
         alert(sparams.cid + ":" + sparams.aid);
@@ -683,7 +693,12 @@ function getPlans() {
         var json = eval("(" + rs + ")");
         if (json.length > 0) {
             for (var i = 0; i < json.length; i++) {
-                var str = "<option value='" + json[i].campaignId + "'>" + json[i].campaignName + "</option>";
+                var str = "";
+                if (json[i].campaignId != undefined) {
+                    str = "<option value='" + json[i].campaignId + "'>" + json[i].campaignName + "</option>";
+                } else {
+                    str = "<option value='" + json[i].id + "'>" + json[i].campaignName + "</option>";
+                }
                 $("#sPlan").append(str);
             }
         }
@@ -712,6 +727,8 @@ function loadUnit(rs) {
                     var str = "<option value='" + _id + "'>" + json[i].adgroupName + "</option>";
                     $("#sUnit").append(str);
                 }
+                sparams.cid = planId;
+                loadCreativeData(0);
             }
         } else {
             _sUnit.empty();
@@ -723,10 +740,11 @@ function loadUnit(rs) {
  * 弹出框选择计划或者单元树对应加载
  * @param rs
  */
-function loadTree(rs) {
+function loadAdgroup(rs) {
     if (rs != "-1") {
         var cid = $("#sPlan :selected").val() == undefined ? sparams.cid : $("#sPlan :selected").val();
-        sparams = {cid: cid, aid: rs};
+        sparams.cid = cid;
+        sparams.aid = rs;
         loadCreativeData(0);
     }
 }
@@ -870,26 +888,34 @@ function updateOk() {
 //        }
     }
     var _thisStrpcs = getChar(_pcs.val());
-    if (parseInt(_thisStrpcs) > 50 || parseInt(_thisStrpcs) <= 1) {
-        alert("默认\"显示\"Url地址长度应大于2个字符小于50个字符，汉子占两个字符!");
+    if (parseInt(_thisStrpcs) > 36 || parseInt(_thisStrpcs) <= 1) {
+        alert("默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
         return false;
     } else {
         if (_pcs.val().indexOf(dm) == -1) {
             alert("默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
-        } else {
-            if (_pcs.val().substr(_pcs.val().indexOf(dm)) != dm) {
-                alert("默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
-                return false;
-            }
         }
+        //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+        //else {
+        //    if (_pcs.val().substr(_pcs.val().indexOf(dm)) != dm) {
+        //        alert("默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+        //        return false;
+        //    }
+        //}
     }
     if (_mib.val() != "空"||_mib.val() != "") {
         if (_mib.val().indexOf(dm) == -1) {
             alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
+        } else {
+            var _thisStrMib = getChar(_mib.val());
+            if (parseInt(_thisStrMib) > 1017 || parseInt(_thisStrMib) <= 1) {
+                alert("移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
+                return false;
+            }
         }
-        //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+        //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
 //        else {
 //            if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
 //                alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
@@ -902,11 +928,19 @@ function updateOk() {
             alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
         } else {
-            if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
-                alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+            var _thisStrMibs = getChar(_mibs.val());
+            if (parseInt(_thisStrMibs) > 36 || parseInt(_thisStrMibs) <= 1) {
+                alert("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
                 return false;
             }
         }
+        //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+        //else {
+        //    if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
+        //        alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+        //        return false;
+        //    }
+        //}
     }
     var con = confirm("你确定要修改该创意吗？");
     if (con) {
@@ -1047,7 +1081,9 @@ function creativeMulti() {
 
         },
         onclose: function () {
+            if(sparams.cid!=null){
             loadCreativeData(sparams.nowPage);
+            }
         },
         onremove: function () {
         }

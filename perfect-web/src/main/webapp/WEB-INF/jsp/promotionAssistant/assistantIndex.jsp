@@ -301,7 +301,7 @@
                     </div>
                     <div class="t_list04 fr over">
                         <div class="t_list01 fl over">默认显示URL：</div>
-                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPcs"/><span>49/50</span>
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPcs"/><span>35/36</span>
                         </div>
                     </div>
                 </li>
@@ -309,7 +309,7 @@
                     <div class="t_list04 fl over">
                         <div class="t_list01 fl over">移动访问URL：</div>
                         <div class="t_list05 fl over"><input type="text" class="zs_input3"
-                                                             id="sMib"><span>49/1024</span>
+                                                             id="sMib"><span>49/1017</span>
                         </div>
                     </div>
                     <div class="t_list04 fr over">
@@ -1374,8 +1374,8 @@
                 <li><label>创意描述2:<span>49/80</span></label><input name="description2" class="chuangyi_input"   maxlength="80"/><input type="button"class="chuangyi_fu" value="插入{}符"
                                                                                                                                       onclick="addTbDes2()"/></li>
                 <li><label>默认访问URL:<span>49/1024</span></label><input name="pcDestinationUrl" maxlength="1024"/></li>
-                <li><label>默认显示URL:<span>49/50</span></label><input name="pcDisplayUrl" maxlength="50"/></li>
-                <li><label>移动访问URL:<span>49/1024</span></label><input name="mobileDestinationUrl" maxlength="1024"/></li>
+                <li><label>默认显示URL:<span>35/36</span></label><input name="pcDisplayUrl" maxlength="36"/></li>
+                <li><label>移动访问URL:<span>49/1017</span></label><input name="mobileDestinationUrl" maxlength="1017"/></li>
                 <li><label>移动显示URL:<span>35/36</span></label><input name="mobileDisplayUrl" maxlength="36"/></li>
                 <li> <label class="fl"><span>创意状态:</span></label><label id="cuStatus" class="fl">暂无</label><input type="hidden" name="status"></li>
                 <li><label class="fl"><span>是否启用:</span></label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select></li>
@@ -1500,8 +1500,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/creative.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantKeyword.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/global.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantCampaign.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantAccount.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantCampaign.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/adgroup.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/addKeyword.js"></script>

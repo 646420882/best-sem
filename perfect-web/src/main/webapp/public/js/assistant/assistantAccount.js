@@ -402,6 +402,8 @@ $(function () {
     });
 });
 var loadTree=function (){
+    jsonData.cid = null;
+    jsonData.aid = null;
     //获取账户树数据
     $.ajax({
         url: "/account/get_tree",

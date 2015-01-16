@@ -120,5 +120,22 @@ var until = {
                 return "精确匹配"
                 break;
         }
+    }, convertDevice: function (Str) {
+        switch (Str) {
+            case "pc":
+                return 1;
+                break;
+            case "无线":
+                return 2;
+                break;
+            case "pc+无线":
+                return 0;
+                break;
+            case "知道":
+                return 3;
+                break;
+            default:
+                return 1;
+        }
     }
 };
