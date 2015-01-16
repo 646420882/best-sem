@@ -1127,7 +1127,6 @@ $(function () {
                                 dataOne = {
                                     name: '展现',
                                     type: 'line',
-                                    stack: '次',
                                     smooth:true,
                                     data: t_impr,
                                     itemStyle: {
@@ -1141,7 +1140,6 @@ $(function () {
                                 dataTow = {
                                     name: '点击',
                                     type: 'line',
-                                    stack: '次',
                                     smooth:true,
                                     data: t_clicks,
                                     yAxisIndex:1,
