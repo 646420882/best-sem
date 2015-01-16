@@ -140,7 +140,7 @@ var AccountPerformance = function () {
     $('#container').highcharts({
         chart: {
             zoomType: 'xy',
-            type: 'line'
+            type: 'spline'
         },
         title: {
             text: ''
@@ -413,7 +413,7 @@ var loadTree=function (){
             $.fn.zTree.init($("#zTree"), setting, zNodes);
         }
     });
-}
+};
 var loadAccountData = function () {
     $.ajax({
         url: "/account/getBaiduAccountInfoByUserId",
