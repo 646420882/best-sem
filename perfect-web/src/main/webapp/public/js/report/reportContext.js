@@ -20,6 +20,9 @@ var colorTow = "#40BC2A";
 
 var nameOne = "展现";
 var nameTow = "点击";
+
+unitOne ="次";
+unitTow = "次"
 //展现
 var t_impr = new Array();
 //点击数
@@ -254,6 +257,12 @@ $(function () {
          *生成报告按钮点击
          */
         $("#shengc").click(function () {
+            colorOne = "#4572A7";
+            colorTow = "#40BC2A";
+            nameOne = "展现";
+            nameTow = "点击";
+            unitOne ="次";
+            unitTow = "次"
             $("#downReport").empty();
             $("#pagination1").empty()
             $("#pagination2").empty();
@@ -270,14 +279,18 @@ $(function () {
                             $(this).attr("xname", "dataOne");
                             colorOne = "#078CC7";
                             nameOne = "展现";
+                            unitOne = "次";
                             dataOne = {
                                 name: '展现',
-                                color: '#078CC7',
-                                type: 'spline',
-                                yAxis: 1,
+                                type: 'line',
+                                smooth:true,
                                 data: t_impr,
-                                tooltip: {
-                                    valueSuffix: ' 次'
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color: '#078CC7'
+                                        }
+                                    }
                                 }
                             };
                             curve();
@@ -285,13 +298,19 @@ $(function () {
                             $(this).attr("xname", "dataTow");
                             colorTow = "#078CC7";
                             nameTow = "展现";
+                            unitTow = "次";
                             dataTow = {
                                 name: '展现',
-                                color: '#078CC7',
-                                type: 'spline',
+                                type: 'line',
+                                smooth:true,
                                 data: t_impr,
-                                tooltip: {
-                                    valueSuffix: ' 次'
+                                yAxisIndex:1,
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color: '#078CC7'
+                                        }
+                                    }
                                 }
                             };
                             curve();
@@ -313,14 +332,18 @@ $(function () {
                             $(this).attr("xname", "dataOne");
                             colorOne = "#40BC2A";
                             nameOne = "点击";
+                            unitOne = "次";
                             dataOne = {
                                 name: '点击',
-                                color: '#40BC2A',
-                                type: 'spline',
-                                yAxis: 1,
+                                type: 'line',
+                                smooth:true,
                                 data: t_clicks,
-                                tooltip: {
-                                    valueSuffix: ' 次'
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color: '#40BC2A'
+                                        }
+                                    }
                                 }
                             };
                             curve();
@@ -328,13 +351,19 @@ $(function () {
                             $(this).attr("xname", "dataTow");
                             colorTow = "#40BC2A";
                             nameTow = "点击";
+                            unitTow = "次";
                             dataTow = {
                                 name: '点击',
-                                color: '#40BC2A',
-                                type: 'spline',
+                                type: 'line',
+                                smooth:true,
                                 data: t_clicks,
-                                tooltip: {
-                                    valueSuffix: ' 次'
+                                yAxisIndex:1,
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color: '#40BC2A'
+                                        }
+                                    }
                                 }
                             };
                             curve();
@@ -356,14 +385,18 @@ $(function () {
                             $(this).attr("xname", "dataOne");
                             colorOne = "#F1521B";
                             nameOne = "消费";
+                            unitOne = " ￥";
                             dataOne = {
                                 name: '消费',
-                                color: '#F1521B',
-                                type: 'spline',
-                                yAxis: 1,
+                                type: 'line',
+                                smooth:true,
                                 data: t_cost,
-                                tooltip: {
-                                    valueSuffix: ' ￥'
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color: '#F1521B'
+                                        }
+                                    }
                                 }
                             };
                             curve();
@@ -371,13 +404,19 @@ $(function () {
                             $(this).attr("xname", "dataTow");
                             colorTow = "#F1521B";
                             nameTow = "消费";
+                            unitTow = " ￥";
                             dataTow = {
                                 name: '消费',
-                                color: '#F1521B',
-                                type: 'spline',
+                                type: 'line',
+                                smooth:true,
                                 data: t_cost,
-                                tooltip: {
-                                    valueSuffix: ' ￥'
+                                yAxisIndex:1,
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color: '#F1521B'
+                                        }
+                                    }
                                 }
                             };
                             curve();
@@ -399,14 +438,18 @@ $(function () {
                             $(this).attr("xname", "dataOne");
                             colorOne = "#26CAE5";
                             nameOne = "点击率";
+                            unitOne = " %";
                             dataOne = {
                                 name: '点击率',
-                                color: '#26CAE5',
-                                type: 'spline',
-                                yAxis: 1,
+                                type: 'line',
+                                smooth:true,
                                 data: t_ctr,
-                                tooltip: {
-                                    valueSuffix: ' %'
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color: '#26CAE5'
+                                        }
+                                    }
                                 }
                             };
                             curve();
@@ -414,13 +457,19 @@ $(function () {
                             $(this).attr("xname", "dataTow");
                             colorTow = "#26CAE5";
                             nameTow = "点击率";
+                            unitTow = " %";
                             dataTow = {
                                 name: '点击率',
-                                color: '#26CAE5',
-                                type: 'spline',
+                                type: 'line',
+                                smooth:true,
                                 data: t_ctr,
-                                tooltip: {
-                                    valueSuffix: ' %'
+                                yAxisIndex:1,
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color: '#26CAE5'
+                                        }
+                                    }
                                 }
                             };
                             curve();
@@ -438,18 +487,22 @@ $(function () {
                     }
                 } else if (name == "cpc") {
                     if ($(this).is(':checked')) {
-                        $(this).attr("xname", "dataOne");
-                        colorOne = "#60E47E";
-                        nameOne = "平均点击价格";
                         if (dataOne == "") {
+                            $(this).attr("xname", "dataOne");
+                            colorOne = "#60E47E";
+                            nameOne = "平均点击价格";
+                            unitOne = " ￥";
                             dataOne = {
                                 name: '平均点击价格',
-                                color: '#60E47E',
-                                type: 'spline',
-                                yAxis: 1,
+                                type: 'line',
+                                smooth:true,
                                 data: t_cpc,
-                                tooltip: {
-                                    valueSuffix: ' ￥'
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color: '#60E47E'
+                                        }
+                                    }
                                 }
                             };
                             curve();
@@ -457,13 +510,19 @@ $(function () {
                             $(this).attr("xname", "dataTow");
                             colorTow = "#60E47E";
                             nameTow = "平均点击价格";
+                            unitTow = " ￥";
                             dataTow = {
                                 name: '平均点击价格',
-                                color: '#60E47E',
-                                type: 'spline',
+                                type: 'line',
+                                smooth:true,
                                 data: t_cpc,
-                                tooltip: {
-                                    valueSuffix: ' ￥'
+                                yAxisIndex:1,
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color: '#60E47E'
+                                        }
+                                    }
                                 }
                             };
                             curve();
@@ -481,18 +540,22 @@ $(function () {
                     }
                 } else if (name == "conv") {
                     if ($(this).is(':checked')) {
-                        $(this).attr("xname", "dataOne");
-                        colorOne = "#DEDF00";
-                        nameOne = "转化";
                         if (dataOne == "") {
+                            $(this).attr("xname", "dataOne");
+                            colorOne = "#DEDF00";
+                            nameOne = "转化";
+                            unitOne = "";
                             dataOne = {
                                 name: '转化',
-                                color: '#DEDF00',
-                                type: 'spline',
-                                yAxis: 1,
+                                type: 'line',
+                                smooth:true,
                                 data: t_conversion,
-                                tooltip: {
-                                    valueSuffix: ''
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color: '#DEDF00'
+                                        }
+                                    }
                                 }
                             };
                             curve();
@@ -500,13 +563,19 @@ $(function () {
                             $(this).attr("xname", "dataTow");
                             colorTow = "#DEDF00";
                             nameTow = "转化";
+                            unitTow = "";
                             dataTow = {
                                 name: '转化',
-                                color: '#DEDF00',
-                                type: 'spline',
+                                type: 'line',
+                                smooth:true,
+                                yAxisIndex:1,
                                 data: t_conversion,
-                                tooltip: {
-                                    valueSuffix: ''
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color: '#DEDF00'
+                                        }
+                                    }
                                 }
                             };
                             curve();
@@ -1057,23 +1126,33 @@ $(function () {
 
                                 dataOne = {
                                     name: '展现',
-                                    color: '#4572A7',
-                                    type: 'spline',
-                                    yAxis: 1,
+                                    type: 'line',
+                                    stack: '次',
+                                    smooth:true,
                                     data: t_impr,
-                                    tooltip: {
-                                        valueSuffix: ' 次'
+                                    itemStyle: {
+                                        normal: {
+                                            lineStyle: {
+                                                color: '#4572A7'
+                                            }
+                                        }
                                     }
-                                }
+                                };
                                 dataTow = {
                                     name: '点击',
-                                    color: '#40BC2A',
-                                    type: 'spline',
+                                    type: 'line',
+                                    stack: '次',
+                                    smooth:true,
                                     data: t_clicks,
-                                    tooltip: {
-                                        valueSuffix: '次'
+                                    yAxisIndex:1,
+                                    itemStyle: {
+                                        normal: {
+                                            lineStyle: {
+                                                color: '#40BC2A'
+                                            }
+                                        }
                                     }
-                                }
+                                };
                                 $("input[cname=impr]").attr("xname", "dataOne");
                                 $("input[cname=clicks]").attr("xname", "dataTow");
                                 curve();
@@ -1405,7 +1484,63 @@ $(function () {
         $("#clickDiv").empty();
         $("#costDiv").empty();
         $("#convDiv").empty();
-        $('#container').highcharts({
+        var myChart = echarts.init(document.getElementById('container'));
+        var option = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : t_date
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    name:nameOne,
+                    scale:true,
+                    axisLabel : {
+                        formatter: '{value} ' + unitOne
+                    },
+                    axisLine:{
+                        show:true,
+                        lineStyle:{
+                            color:colorTow
+                        }
+                    }
+                },{
+                    type : 'value',
+                    name:nameTow,
+                    scale:true,
+                    axisLabel : {
+                        formatter: '{value} ' + unitTow
+                    },
+                    axisLine:{
+                        show:true,
+                        lineStyle:{
+                            color:colorOne
+                        }
+                    }
+                }
+            ],
+            series : [
+                dataOne,
+                dataTow
+            ]
+        };
+        myChart.setOption(option);
+        /*$('#container').highcharts({
             chart: {
                 zoomType: 'xy'
             },
@@ -1511,7 +1646,7 @@ $(function () {
                 dataOne,
                 dataTow
             ]
-        });
+        });*/
     }
 //饼状图
     var a = 1;

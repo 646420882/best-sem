@@ -469,8 +469,8 @@
 </body>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.cxcalendar.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>

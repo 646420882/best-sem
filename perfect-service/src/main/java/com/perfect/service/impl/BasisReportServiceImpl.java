@@ -75,7 +75,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                     List<StructureReportDTO> objectsList = new ArrayList<>();
                     //获取需要的数据
                     for (int i = 0; i < date.length; i++) {
-                        List<StructureReportDTO> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
+                        List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName));
                         if (object.size() != 0) {
                             objectsList.addAll(object);
                         }
@@ -243,7 +243,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                     //获得需要的数据
                     for (int i = 0; i < date.length; i++) {
                         StructureReportDTO dateObject = new StructureReportDTO();
-                        List<StructureReportDTO> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
+                        List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName));
                         if (object.size() == 0) {
                             StructureReportDTO entity = new StructureReportDTO();
                             entity.setKeywordId(0l);
@@ -390,7 +390,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                                 if (i >= date.length) {
                                     continue;
                                 }
-                                List<StructureReportDTO> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
+                                List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName));
                                 if (object.size() != 0) {
                                     objectsList1.addAll(object);
                                 }
@@ -519,7 +519,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         List<StructureReportDTO> objectsList = new ArrayList<>();
                         //如果用户选择的时间范围小于或者等于7天
                         for (int i = 0; i < date.length; i++) {
-                            List<StructureReportDTO> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
+                            List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName));
                             if (object.size() != 0) {
                                 objectsList.addAll(object);
                             }
@@ -696,7 +696,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                                     index = 0;
                                 }
 
-                                List<StructureReportDTO> object = basisReportDAO.getUnitReportDate(date[j] + getTableType(reportType), dataId, dateName);
+                                List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[j] + getTableType(reportType), dataId, dateName));
                                 if (object.size() != 0) {
                                     objectsList.addAll(object);
                                 }
@@ -822,7 +822,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         StructureReportDTO dateObject3else = new StructureReportDTO();
                         //如果用户选择的时间范围小于或者等于30天
                         for (int i = 0; i < date.length; i++) {
-                            List<StructureReportDTO> object = basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName);
+                            List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName));
                             if (object.size() != 0) {
                                 objectsList.addAll(object);
                             }
@@ -931,7 +931,7 @@ public class BasisReportServiceImpl implements BasisReportService {
     @Override
     public Map<String, List<AccountReportDTO>> getAccountAll(int Sorted, String fieldName, int startJC, int limitJC) {
 
-        List<AccountReportDTO> reportEntities = basisReportDAO.getAccountReport(Sorted, fieldName);
+        List<AccountReportDTO> reportEntities = new ArrayList<>(basisReportDAO.getAccountReport(Sorted, fieldName));
 
         Map<String, List<AccountReportDTO>> map = new HashMap<>();
         List<AccountReportDTO> entities = new ArrayList<>();
@@ -1001,7 +1001,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 List<Object> objectListDate1 = new ArrayList<>();
                 List<Object> objectListDate2 = new ArrayList<>();
                 //获取数据
-                List<AccountReportDTO> listOne = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
+                List<AccountReportDTO> listOne = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
                 //获取用户统计数据
                 List<Object> userProAll = new ArrayList<>();
                 List<AccountReportDTO> userPro = AccountReportStatisticsUtil.getUserPro(listOne);
@@ -1012,7 +1012,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 Map<String, List<AccountReportDTO>> responseMapTow = null;
                 //比较数据
                 if (compare == 1) {
-                    List<AccountReportDTO> listTow = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
+                    List<AccountReportDTO> listTow = new ArrayList<>(basisReportDAO.getAccountReport(dateTow[0], dateTow[1]));
                     responseMapTow = getUserDataPro(listTow, dateTow[0], dateTow[1]);
                 }
                 //如果要求是全部数据
@@ -1064,7 +1064,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 Map<String, List<AccountReportDTO>> responseMapOne1 = new HashMap<>();
                 Map<String, List<AccountReportDTO>> responseMapTow1 = new HashMap<>();
 
-                List<AccountReportDTO> listOne1 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
+                List<AccountReportDTO> listOne1 = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
                 //获取用户统计数据
                 List<Object> userProAll1 = new ArrayList<>();
                 List<AccountReportDTO> userPro1 = AccountReportStatisticsUtil.getUserPro(listOne1);
@@ -1088,7 +1088,7 @@ public class BasisReportServiceImpl implements BasisReportService {
 
                 //比较数据
                 if (compare == 1) {
-                    List<AccountReportDTO> listTow1 = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
+                    List<AccountReportDTO> listTow1 = new ArrayList<>(basisReportDAO.getAccountReport(dateTow[0], dateTow[1]));
                     for (AccountReportDTO listEnd : listTow1) {
                         List<AccountReportDTO> list = new ArrayList<>();
                         list.add(listEnd);
@@ -1186,7 +1186,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 List<Object> objectListDateOne21 = new ArrayList<>();
                 List<Object> objectListDateTow21 = new ArrayList<>();
 
-                List<AccountReportDTO> listOne2 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
+                List<AccountReportDTO> listOne2 = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
 
                 //获取用户统计数据
                 List<Object> userProAll2 = new ArrayList<>();
@@ -1242,7 +1242,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 List<AccountReportDTO> listTow2 = null;
                 //比较数据
                 if (compare == 1) {
-                    listTow2 = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
+                    listTow2 = new ArrayList<>(basisReportDAO.getAccountReport(dateTow[0], dateTow[1]));
                     List<String> dateListStrings = DateUtils.getPeriod(dateFormat.format(dateTow[0]), dateFormat.format(dateTow[1]));
                     boolean judgeis = true;
                     for (String s : dateListStrings) {
@@ -1364,7 +1364,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 List<Object> objectListDateOne31 = (List<Object>) new ArrayList<>();
                 List<Object> objectListDateTow31 = new ArrayList<>();
 
-                List<AccountReportDTO> listOne3 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
+                List<AccountReportDTO> listOne3 = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
                 //获取用户统计数据
                 List<Object> userProAll3 = new ArrayList<>();
                 List<AccountReportDTO> userPro3 = AccountReportStatisticsUtil.getUserPro(listOne3);
@@ -1420,7 +1420,7 @@ public class BasisReportServiceImpl implements BasisReportService {
 
                 //比较数据
                 if (compare == 1) {
-                    listTow3 = basisReportDAO.getAccountReport(dateTow[0], dateTow[1]);
+                    listTow3 = new ArrayList<>(basisReportDAO.getAccountReport(dateTow[0], dateTow[1]));
 
                     dateListStringst = DateUtils.getPeriod(dateFormat.format(dateTow[0]), dateFormat.format(dateTow[1]));
                     boolean judgeist = true;
@@ -1790,7 +1790,7 @@ public class BasisReportServiceImpl implements BasisReportService {
         switch (dateType) {
             case 0:
                 //获取数据
-                List<AccountReportDTO> listOne = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
+                List<AccountReportDTO> listOne = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
                 //获取用户统计数据
                 List<Object> userProAll = new ArrayList<>();
                 List<AccountReportDTO> userPro = AccountReportStatisticsUtil.getUserPro(listOne);
@@ -1891,7 +1891,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 //分日
                 Map<String, List<AccountReportDTO>> responseMapOne1 = new HashMap<>();
 
-                List<AccountReportDTO> listOne1 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
+                List<AccountReportDTO> listOne1 = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
                 //获取用户统计数据
                 List<Object> userProAll1 = new ArrayList<>();
                 List<AccountReportDTO> userPro1 = AccountReportStatisticsUtil.getUserPro(listOne1);
@@ -2020,7 +2020,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 ///分周
 
                 List<Object> objectListDateOne2 = new ArrayList<>();
-                List<AccountReportDTO> listOne2 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
+                List<AccountReportDTO> listOne2 = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
 
                 //获取用户统计数据
                 List<Object> userProAll2 = new ArrayList<>();
@@ -2167,7 +2167,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                 List<Object> objectListDateOne3 = new ArrayList<>();
                 List<Object> objectListDateOne31 = new ArrayList<>();
 
-                List<AccountReportDTO> listOne3 = basisReportDAO.getAccountReport(dateOne[0], dateOne[1]);
+                List<AccountReportDTO> listOne3 = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
                 //获取用户统计数据
                 List<Object> userProAll3 = new ArrayList<>();
                 List<AccountReportDTO> userPro3 = AccountReportStatisticsUtil.getUserPro(listOne3);
@@ -2404,7 +2404,7 @@ public class BasisReportServiceImpl implements BasisReportService {
         Map<String, List<StructureReportDTO>> listMap = new HashMap<>();
         if (newDate.size() > 0) {
             for (int i = 0; i < newDate.size(); i++) {
-                List<StructureReportDTO> returnStructure = basisReportDAO.getKeywordReport(id, newDate.get(i) + "-keyword");
+                List<StructureReportDTO> returnStructure = new ArrayList<>(basisReportDAO.getKeywordReport(id, newDate.get(i) + "-keyword"));
                 if (devices == 0) {
                     ForkJoinPool joinPoolTow = new ForkJoinPool();
                     //开始对数据进行处理
