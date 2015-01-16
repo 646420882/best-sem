@@ -458,7 +458,7 @@
         <div class="list2_top2">
             <ul>
                 <li class="home_quality"></li>
-                <li><span>关键词</span><a href="#" class="question"></a></li>
+                <li><span>关键词</span></li>
                 <li><span>展现</span></li>
                 <li><span>点击</span></li>
                 <li><span>点击率</span></li>
@@ -466,6 +466,7 @@
                 <li><span>平均点击价格</span></li>
                 <li><span>转化</span></li>
             </ul>
+
         </div>
         <div id="keywordQuality0"></div>
     </td>

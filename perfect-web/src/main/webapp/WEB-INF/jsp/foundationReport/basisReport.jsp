@@ -33,11 +33,6 @@
             -webkit-border-radius: 3px;
             line-height: 24px;
         }
-
-        h3 {
-            text-align: center
-        }
-
         .ui-progressbar-value {
             display: block !important;
             color: #F7B54A;
