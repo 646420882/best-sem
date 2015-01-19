@@ -839,16 +839,16 @@ $(function () {
                                         }
                                     });
                                     if (pie_num1 == 1) {
-                                        pieChart(pie_impr, "展现", "#imprDiv");
+                                        pieChart(pie_impr, "展现", "imprDiv");
                                     }
                                     if (pie_num2 == 1) {
-                                        pieChart(pie_click, "点击", "#clickDiv");
+                                        pieChart(pie_click, "点击", "clickDiv");
                                     }
                                     if (pie_num3 == 1) {
-                                        pieChart(pie_cost, "消费", "#costDiv");
+                                        pieChart(pie_cost, "消费", "costDiv");
                                     }
                                     if (pie_num2 == 1) {
-                                        pieChart(pie_conv, "转化", "#convDiv");
+                                        pieChart(pie_conv, "转化", "convDiv");
                                     }
                                 });
                             }
@@ -1647,11 +1647,11 @@ $(function () {
         });*/
     }
 //饼状图
-    var a = 1;
+//    var a = 1;
     pieChart = function (showData, showName, showId) {
         $(showId).show();
         $("#container").hide()
-        if (a == 1) {
+        /*if (a == 1) {
             //使用饼状图进行颜色渐变
             Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
                 return {
@@ -1663,9 +1663,64 @@ $(function () {
                 };
             });
             a++;
-        }
+        }*/
         //加载开始
-        $(showId).highcharts({
+        var myCharts = echarts.init(document.getElementById(showId));
+        var optionBin = {
+            title : {
+                text: '某站点用户访问来源',
+                subtext: '纯属虚构',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient : 'vertical',
+                x : 'left',
+                data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'left',
+                                max: 1548
+                            }
+                        }
+                    },
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            series : [
+                {
+                    name:'访问来源',
+                    type:'pie',
+                    data:[
+                        {value:335, name:'直接访问'},
+                        {value:310, name:'邮件营销'},
+                        {value:234, name:'联盟广告'},
+                        {value:135, name:'视频广告'},
+                        {value:1548, name:'搜索引擎'}
+                    ]
+                }
+            ]
+        };
+        myCharts.setOption(optionBin);
+
+
+        /*$(showId).highcharts({
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -1752,7 +1807,7 @@ $(function () {
                     ]
                 }
             ]
-        });
+        });*/
     }
 
     $("body").on("click", "a[cname=nameDet]", function () {
