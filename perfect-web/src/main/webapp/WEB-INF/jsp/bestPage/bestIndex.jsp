@@ -48,14 +48,14 @@
             <div>
             </div>
         </div>
-        <div class="serBox">
+        <div class="serBox" onclick="window.open('${pageContext.request.contextPath}/home')">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_shouke.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_shouke2.png"></div>
             <div class="txt1"><span class="tit">百思搜客</span>
                 <p>针对搜索引擎营销的</p>
                    <p>第三方优化管理平台</p></div>
-            <div class="txt2"><a href="${pageContext.request.contextPath}/home" target="_blank" class="a_jump"><span
+            <div class="txt2"><a href="javascript:void(0);" class="a_jump"><span
                     class="tit">百思搜客</span></a>
                 <div class="tex2_mid">
                     <p>推广额度：<b> ${accountBalance} </b>元</p>
@@ -63,7 +63,7 @@
                     <p>日预算<b> ${accountBudget} </b>元</p>
                 </div>
                 <div class="enter">
-                    <a href="${pageContext.request.contextPath}/home" target="_blank">点击进入</a>
+                    <a href="javascript:void(0);" >点击进入</a>
                 </div>
             </div>
         </div>

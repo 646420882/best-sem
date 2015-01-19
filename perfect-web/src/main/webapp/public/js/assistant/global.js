@@ -10,9 +10,9 @@ $("tbody").delegate("tr", "click", function (event) {
  * @returns {{cid: null, aid: null}}
  */
 var nowChoose = null;
-
+var jsonData = {cid: null, aid: null, cn: null};
 function getNowChooseCampaignTreeData(treeNode) {
-    var jsonData = {cid: null, aid: null, cn: null};
+
     if (treeNode.level == 0) {
         //点击的是父节点(推广计划)
         jsonData.cid = treeNode.id;
@@ -38,7 +38,7 @@ function getNowChooseCidAndAid() {
 }
 
 //刚进入该页面的时候加载的数据
-whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
+//whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
 
 
 function whenClickTreeLoadData(tabName, param) {
@@ -47,19 +47,25 @@ function whenClickTreeLoadData(tabName, param) {
     param = param != null ? param : {aid: null, cid: null};
     var tabName = $.trim(tabName);
     if (tabName == "关键词") {
+        if (param.cid != null) {
         getKwdList(0);
+        }
     } else if (tabName == "推广计划") {
         getCampaignList(0);
     } else if (tabName == "普通创意") {
+        if (param.cid != null) {
         if (param.cid != null && param.aid != null) {
             getCreativeUnit(param);
         } else {
             getCreativePlan(param.cid);
         }
+        }
     } else if (tabName == "附加创意") {
 
     } else if (tabName == "推广单元") {
+        if (param.cid != null) {
         getAdgroupPlan(param.cid, param.cn);
+        }
     }
 
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,62 +53,92 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
     }
 
     @Override
-    public void getCampaignReportData(List<CampaignReportDTO> campaignReportDTOs, SystemUserDTO systemUser, String dateStr) {
+    public void getCampaignReportData(List<CampaignReportDTO> campaignReportDTOs, SystemUserDTO systemUser, String dateStr,int i) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<CampaignReportEntity> campaignReportEntities = ObjectUtils.convert(campaignReportDTOs, CampaignReportEntity.class);
+        List<CampaignReportEntity> campaignReportEntities1 = new ArrayList<>();
         if(mongoTemplate.collectionExists(dateStr + "-campaign")){
+            if(i > 1){
+                campaignReportEntities1 =  mongoTemplate.find(new Query(), CampaignReportEntity.class,dateStr+"-campaign");
+                campaignReportEntities.addAll(campaignReportEntities1);
+            }
             mongoTemplate.dropCollection(dateStr + "-campaign");
         }
+
         mongoTemplate.insert(campaignReportEntities, dateStr + "-campaign");
     }
 
     @Override
-    public void getAdgroupReportData(List<AdgroupReportDTO> adgroupReportDTOs, SystemUserDTO systemUser, String dateStr) {
+    public void getAdgroupReportData(List<AdgroupReportDTO> adgroupReportDTOs, SystemUserDTO systemUser, String dateStr,int i) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<AdgroupReportEntity> adgroupReportEntities = ObjectUtils.convert(adgroupReportDTOs, AdgroupReportEntity.class);
+        List<AdgroupReportEntity> adgroupReportEntities1 = new ArrayList<>();
         if(mongoTemplate.collectionExists(dateStr + "-adgroup")){
+            if(i > 1) {
+                adgroupReportEntities1 = mongoTemplate.find(new Query(), AdgroupReportEntity.class, dateStr + "-adgroup");
+                adgroupReportEntities.addAll(adgroupReportEntities1);
+            }
             mongoTemplate.dropCollection(dateStr + "-adgroup");
         }
+
         mongoTemplate.insert(adgroupReportEntities, dateStr + "-adgroup");
     }
 
     @Override
-    public void getCreativeReportData(List<CreativeReportDTO> creativeReportDTOs, SystemUserDTO systemUser, String dateStr) {
+    public void getCreativeReportData(List<CreativeReportDTO> creativeReportDTOs, SystemUserDTO systemUser, String dateStr,int i) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<CreativeReportEntity> creativeReportEntities = ObjectUtils.convert(creativeReportDTOs, CreativeReportEntity.class);
+        List<CreativeReportEntity> creativeReportEntities1 = new ArrayList<>();
         if(mongoTemplate.collectionExists(dateStr + "-creative")){
+            if(i > 1){
+                creativeReportEntities1 = mongoTemplate.find(new Query(), CreativeReportEntity.class, dateStr + "-creative");
+                creativeReportEntities.addAll(creativeReportEntities1);
+            }
             mongoTemplate.dropCollection(dateStr + "-creative");
         }
+
         mongoTemplate.insert(creativeReportEntities, dateStr + "-creative");
     }
 
     @Override
-    public void getKeywordReportData(List<KeywordReportDTO> keywordReportDTOs, SystemUserDTO systemUser, String dateStr) {
+    public void getKeywordReportData(List<KeywordReportDTO> keywordReportDTOs, SystemUserDTO systemUser, String dateStr,int i) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<KeywordReportEntity> keywordReportEntities = ObjectUtils.convert(keywordReportDTOs, KeywordReportEntity.class);
+        List<KeywordReportEntity> keywordReportEntities1 = new ArrayList<>();
         if(mongoTemplate.collectionExists(dateStr + "-keyword")){
+            if(i > 1){
+                keywordReportEntities1 = mongoTemplate.find(new Query(), KeywordReportEntity.class, dateStr + "-keyword");
+                keywordReportEntities.addAll(keywordReportEntities1);
+            }
             mongoTemplate.dropCollection(dateStr + "-keyword");
         }
+
         mongoTemplate.insert(keywordReportEntities, dateStr + "-keyword");
     }
 
     @Override
-    public void getRegionReportData(List<RegionReportDTO> regionReportDTOs, SystemUserDTO systemUser, String dateStr) {
+    public void getRegionReportData(List<RegionReportDTO> regionReportDTOs, SystemUserDTO systemUser, String dateStr,int i) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<RegionReportEntity> regionReportEntities = ObjectUtils.convert(regionReportDTOs, RegionReportEntity.class);
+        List<RegionReportEntity> regionReportEntities1 = new ArrayList<>();
         if(mongoTemplate.collectionExists(dateStr + "-region")){
+            if(i > 1){
+                regionReportEntities1 = mongoTemplate.find(new Query(), RegionReportEntity.class, dateStr + "-region");
+                regionReportEntities.addAll(regionReportEntities1);
+            }
             mongoTemplate.dropCollection(dateStr + "-region");
         }
+
         mongoTemplate.insert(regionReportEntities, dateStr + "-region");
     }
 

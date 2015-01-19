@@ -533,15 +533,14 @@
 
 .tips {
     width: 8px;
+    height: 100%;
     max-width: 8px;
     position: relative;
     background: url(/public/img/tips_bg_03.png) repeat;
     cursor: pointer;
-    height: 100%;
     z-index: 120;
     left: 0px;
     top: 0px;
-
 }
 
 .tips input {
@@ -1972,7 +1971,9 @@ h2 .close {
     font-weight: bold;
     color: #000;
 }
-
+.nav{
+    height:100%;
+}
 .zs_concent_top {
     height: 28px;
     line-height: 28px;

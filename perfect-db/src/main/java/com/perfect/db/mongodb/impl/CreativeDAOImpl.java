@@ -136,10 +136,9 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         CreativeEntity creativeEntity = new CreativeEntity();
         BeanUtils.copyProperties(creativeDTO, creativeEntity);
         getMongoTemplate().insert(creativeEntity);
-        CreativeBackUpEntity backUpEntity = new CreativeBackUpEntity();
-        BeanUtils.copyProperties(creativeDTO, backUpEntity);
-        getMongoTemplate().insert(backUpEntity);
-        logDAO.insertLog(creativeDTO.getId(), LogStatusConstant.ENTITY_CREATIVE);
+//        CreativeBackUpEntity backUpEntity = new CreativeBackUpEntity();
+//        BeanUtils.copyProperties(creativeDTO, backUpEntity);
+//        getMongoTemplate().insert(backUpEntity);
         return creativeDTO.getId();
     }
 
@@ -384,10 +383,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     private CreativeDTO wrapperObject(CreativeEntity entity) {
-        CreativeDTO dto = null;
-        if (entity != null) {
-            BeanUtils.copyProperties(entity, dto);
-        }
+        CreativeDTO dto=   ObjectUtils.convert(entity,CreativeDTO.class);
         return dto;
     }
 }

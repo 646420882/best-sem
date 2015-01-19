@@ -1,8 +1,10 @@
 .pagination{
+    display: inherit;
     margin:10px 0;
     overflow:hidden;
     text-align:center;
     line-height: 24px;
+    vertical-align:middle ;
 
 }
 .pagination a {

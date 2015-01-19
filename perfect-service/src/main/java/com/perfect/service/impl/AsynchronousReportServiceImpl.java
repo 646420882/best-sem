@@ -160,6 +160,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 getSkipPull(jc, systemUser, dateStr + "--计划");
                 continue;
             }
+            int i = 1;
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--计划");
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
@@ -185,8 +186,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 List<CampaignReportDTO> list;
                 try {
                     list = voResult.get();
-                    asynchronousReportDAO.getCampaignReportData(list, systemUser, dateStr);
-
+                    asynchronousReportDAO.getCampaignReportData(list, systemUser, dateStr,i);
+                    i++;
                     getEndPull(systemUser, entity, dateStr + "--计划");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
@@ -216,6 +217,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 getSkipPull(jc, systemUser, dateStr + "--单元");
                 continue;
             }
+            int i = 1;
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--单元");
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
@@ -242,8 +244,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 List<AdgroupReportDTO> list;
                 try {
                     list = voResult.get();
-                    asynchronousReportDAO.getAdgroupReportData(list, systemUser, dateStr);
-
+                    asynchronousReportDAO.getAdgroupReportData(list, systemUser, dateStr,i);
+                    i++;
                     getEndPull(systemUser, entity, dateStr + "--单元");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
@@ -273,6 +275,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 getSkipPull(jc, systemUser, dateStr + "--创意");
                 continue;
             }
+            int i=1;
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--创意");
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
@@ -299,8 +302,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 List<CreativeReportDTO> list;
                 try {
                     list = voResult.get();
-                    asynchronousReportDAO.getCreativeReportData(list, systemUser, dateStr);
-
+                    asynchronousReportDAO.getCreativeReportData(list, systemUser, dateStr,i);
+                    i++;
                     getEndPull(systemUser, entity, dateStr + "--创意");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
@@ -329,6 +332,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 getSkipPull(jc, systemUser, dateStr + "--关键字");
                 continue;
             }
+            int i = 1;
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--关键字");
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
@@ -355,8 +359,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 List<KeywordReportDTO> list;
                 try {
                     list = voResult.get();
-                    asynchronousReportDAO.getKeywordReportData(list, systemUser, dateStr);
-
+                    asynchronousReportDAO.getKeywordReportData(list, systemUser, dateStr, i);
+                    i++;
                     getEndPull(systemUser, entity, dateStr + "--关键字");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
@@ -385,6 +389,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 getSkipPull(jc, systemUser, dateStr + "--地域");
                 continue;
             }
+            int i = 1;
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--地域");
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
@@ -412,8 +417,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 List<RegionReportDTO> list;
                 try {
                     list = voResult.get();
-                    asynchronousReportDAO.getRegionReportData(list, systemUser, dateStr);
-
+                    asynchronousReportDAO.getRegionReportData(list, systemUser, dateStr,i);
+                    i++;
                     getEndPull(systemUser, entity, dateStr + "--地域");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();

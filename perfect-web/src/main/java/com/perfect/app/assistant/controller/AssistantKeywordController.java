@@ -76,16 +76,16 @@ public class AssistantKeywordController extends WebContextSupport{
             @RequestParam(value = "pauses") String pauses,
             HttpServletResponse response) {
         try {
-            if (cids.contains(",")) {
-                String[] cidStr = cids.split(",");
-                String[] aidStr = aids.split(",");
-                String[] kwdStr = kwds.split(",");
-                String[] mtStr = mts.split(",");
-                String[] pricesStr = prices.split(",");
-                String[] pcsStr = pcs.split(",");
-                String[] mibStr = mibs.split(",");
-                String[] pauseStr = pauses.split(",");
-                for (int i = 0; i < cidStr.length; i++) {
+            if (aids.contains("\n")) {
+//                String[] cidStr = cids.split(",");
+                String[] aidStr = aids.split("\n");
+                String[] kwdStr = kwds.split("\n");
+                String[] mtStr = mts.split("\n");
+                String[] pricesStr = prices.split("\n");
+                String[] pcsStr = pcs.split("\n");
+                String[] mibStr = mibs.split("\n");
+                String[] pauseStr = pauses.split("\n");
+                for (int i = 0; i < aidStr.length; i++) {
                     innerUpdate(isReplace, kwdStr[i], aidStr[i], mtStr[i], pricesStr[i], pcsStr[i], mibStr[i], pauseStr[i]);
                 }
             } else {

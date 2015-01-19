@@ -140,7 +140,7 @@ var AccountPerformance = function () {
     $('#container').highcharts({
         chart: {
             zoomType: 'xy',
-            type: 'line'
+            type: 'spline'
         },
         title: {
             text: ''
@@ -402,6 +402,8 @@ $(function () {
     });
 });
 var loadTree=function (){
+    jsonData.cid = null;
+    jsonData.aid = null;
     //获取账户树数据
     $.ajax({
         url: "/account/get_tree",
@@ -413,7 +415,7 @@ var loadTree=function (){
             $.fn.zTree.init($("#zTree"), setting, zNodes);
         }
     });
-}
+};
 var loadAccountData = function () {
     $.ajax({
         url: "/account/getBaiduAccountInfoByUserId",
