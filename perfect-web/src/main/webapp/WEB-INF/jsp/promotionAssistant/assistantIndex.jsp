@@ -85,7 +85,7 @@
 <div class="zhushou_menu wd">
     <ul class="zs_nav">
         <li class="showbox"><a id="downloadAccountData"><span><img  src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
-        <li><a><span><img src="../public/img/update.png"></span><span>上传更新</span></a></li>
+        <li onclick="uploadDialog()"><a><span><img src="../public/img/update.png"></span><span>上传更新</span></a></li>
         <li class="current"><a><span><img src="../public/img/Advanced_search.png"></span><span >高级搜索</span></a></li>
         <li class="nav_menu"><a><span><img src="../public/img/Repeat_keyword.png"></span><span>重复关键词</span></a>
             <ul>
@@ -1139,6 +1139,42 @@
         </div>
     </div>
 </div>
+<!---------上传更新----------->
+<div class="TB_overlayBG"></div>
+<div class="box" style="display:none;*width:400px;" id="uploadMerge">
+    <h2 id="uploadHead"><span class="fl">上传更新</span><a href="javascript:void(0)" onclick="closeUploadDialog()" class="close">关闭</a></h2>
+
+    <div class="mainlist">
+        您希望更新账户的哪个部分？
+        <ul class="zs_set">
+            <li><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</li>
+            <li><input type="radio" name="no1">&nbsp; 部分下载的推广计划</li>
+            <li><input type="radio" name="no1">&nbsp; 从修改的推广计划列表中选择</li>
+        </ul>
+        <div class="zs_sets over">
+            <div id="allCamp" class="zs_ses1" style="overflow: auto">
+                <ul>
+                </ul>
+            </div>
+            <div id="existsCamp" class="zs_ses1 hides" style="overflow: auto">
+                <ul>
+                </ul>
+            </div>
+            <div id="newCamp" class="zs_ses1 hides" style="overflow: auto">
+                <ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li  class="current">确认</li>
+                <li class="close">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
 <!---------查找重复关键词----------->
 <div class="box3" style="display:none;*width:400px;">
     <h2 id="box3">
@@ -1510,6 +1546,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/Indextable.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/uploadMerge.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
     var target = document.getElementById("navigator_tips");
