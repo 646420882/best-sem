@@ -1030,6 +1030,9 @@ var toAnyPage = function (page_index) {
         });
     }
 };
+$(function (){
+    $("[data-toggle='tooltip']").tooltip();
+});
 
 </script>
 </body>
