@@ -622,6 +622,13 @@
         padding:0 5px;
         margin-right:10px;
     }
+    .zs_concent_top ul li {
+        width: 90px;
+    }
+    .zs_top, .z_function_hover {
+        margin-right: 2px;
+
+    }
 }
 @media screen and (max-width: 900px){
     .user_mid{

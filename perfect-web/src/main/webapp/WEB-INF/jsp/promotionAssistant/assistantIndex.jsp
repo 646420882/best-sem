@@ -104,7 +104,7 @@
         <li cname="table3">附加创意</li>
         <li cname="table4">推广单元</li>
         <li cname="table5">推广计划</li>
-        <li>账户</li>
+        <li id="limenuClick">账户</li>
     </ul>
 </div>
 <div class="zs_line"></div>
@@ -934,7 +934,7 @@
     <div class="zh_list over">
         <div id="containerLegend" class="zs_function over">
         </div>
-        <div id="container" style="width: 60%; height: 40%"></div>
+        <div id="container" style="height: 400px"></div>
     </div>
 </div>
 </div>
@@ -1520,6 +1520,7 @@
 <jsp:include page="../promotionAssistant/alert/addCampaign.jsp"/>
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/store.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/grid/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/jquery.resizableColumns.min.js"></script>
