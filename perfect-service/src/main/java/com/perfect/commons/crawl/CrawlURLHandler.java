@@ -142,12 +142,15 @@ public class CrawlURLHandler implements Runnable {
                             conf.put("d", "default");
                             break;
                         case "taobao":
-                            conf.put("q", getTaobaoURL(dto.getKeyword(), WebSiteConstants.taobaoUrlTemplate));
+                            conf.put("q", WebSiteConstants.taobaoUrlTemplate);
                             conf.put("d", "phantomjs");
                             break;
                         default:
                             break;
                     }
+
+                    if (!conf.containsKey("q"))
+                        continue;
 
                     String confStr = JSONUtils.getJsonString(conf);
                     String md5 = DigestUtils.md5Hex(confStr);
