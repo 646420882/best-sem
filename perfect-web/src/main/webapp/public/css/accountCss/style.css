@@ -29,6 +29,7 @@
     height: 60px;
     border-top: 1px solid #fff;
     background: #f6f6f6;
+    margin-bottom:0px;
     z-index: 1;
     overflow: hidden;
 }
@@ -3644,6 +3645,14 @@ h2 .close {
 .tuoci table ,.hangyetuoci table{
     margin-top:0px;
 
+}
+#containerLegend ul li{
+    display:block;
+    float:left;
+
+}
+#riginality_editor1{
+    width:100%;
 }
 /*input[type=checkbox],
 input[type=radio]{

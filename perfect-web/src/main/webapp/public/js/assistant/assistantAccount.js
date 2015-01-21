@@ -75,6 +75,10 @@ function getTime() {
 /******************highcharts********************/
 
 //定义展现、点击、点击率、消费、转化数组
+var colorOne = "#4572A7";
+var colorTow = "#40BC2A";
+var unitOne ="次";
+var unitTow = "次"
 var arr_impr = [];
 var arr_click = [];
 var arr_ctr = [];
@@ -83,7 +87,6 @@ var arr_conv = [];
 var data1 = "";
 var data2 = "";
 var xAxis_categories = [];
-
 var AccountPerformance = function () {
     $.ajax({
         url: "/account/get_reports",
@@ -116,251 +119,386 @@ var AccountPerformance = function () {
     $("#containerLegend").empty();
     $("#containerLegend").append("<div class='tu_top over'><ul><li><b>账户表现<b/></li>" +
 //            + "<li>最近7天&nbsp;<input type='image' src='../public/img/zs_input.png'/></li>"
-        "<li><input id='impression' name='chartcheckbox' type='checkbox' checked='checked'><span style='background-color: #1e90ff'></span><b>展现</b></li>" +
-        "<li><input id='click' name='chartcheckbox' type='checkbox' checked='checked'><span style='background-color: #ff0000'></span><b>点击</b></li>" +
-        "<li><input id='ctr' name='chartcheckbox' type='checkbox'><span style='background-color: #ffa500'></span><b>点击率</b></li>" +
-        "<li><input id='cost' name='chartcheckbox' type='checkbox'><span style='background-color: #008000'></span><b>消费</b></li>" +
-        "<li><input id='conversion' name='chartcheckbox' type='checkbox'><span style='background-color: #9370db'></span><b>转化</b></li>" +
+        "<li><input name='chartcheckbox' cname='impression' xname=''  type='checkbox' checked='checked'><span style='background-color: #1e90ff'></span><b>展现</b></li>" +
+        "<li><input name='chartcheckbox' cname='click'      xname=''  type='checkbox' checked='checked'><span style='background-color: #ff0000'></span><b>点击</b></li>" +
+        "<li><input name='chartcheckbox' cname='ctr'        xname=''  type='checkbox'><span style='background-color: #ffa500'></span><b>点击率</b></li>" +
+        "<li><input name='chartcheckbox' cname='cost'       xname=''  type='checkbox'><span style='background-color: #008000'></span><b>消费</b></li>" +
+        "<li><input name='chartcheckbox' cname='conversion' xname=''  type='checkbox'><span style='background-color: #9370db'></span><b>转化</b></li>" +
         "<li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
-
     data1 = {
-        name: 'impression',
-        color: '#1e90ff',
-        data: arr_impr
-    };
-
-    data2 = {
-        name: 'click',
-        color: '#ff0000',
-        yAxis: 1,
-        data: arr_click
-    };
-
-
-    $('#container').highcharts({
-        chart: {
-            zoomType: 'xy',
-            type: 'spline'
-        },
-        title: {
-            text: ''
-        },
-        subtitle: {
-            text: ''
-        },
-        credits: {
-            enabled: false
-        },
-        xAxis: [
-            {
-                categories: xAxis_categories
-            }
-        ],
-        yAxis: [
-            { labels: {
-                format: '{value}',
-                style: {
-                    color: '#4572A7'
-                }
-            }
-            },
-            {labels: {
-                format: '{value}',
-                style: {
-                    color: '#40BC2A'
-                }
-            },
-                min: 0,
-                gridLineWidth: 0,
-                opposite: true
-            }
-        ],
-        exporting: {
-            enabled: false
-        },
-        tooltip: {
-            shared: true
-        },
-        legend: {
-            align: 'left',
-            x: 10,
-            verticalAlign: 'top',
-            y: -10,
-            floating: true,
-            itemDistance: 20,
-            borderRadius: 5,
-            enabled: false
-        },
-        series: [
-            data1,
-            data2
-        ]
-    });
-};
-
-var reloadhighcharts = function (arr_checkbox) {
-    var chart = $('#container').highcharts();
-    while (chart.series.length > 0) {
-        chart.series[0].remove();
-    }
-
-    //clear
-    data1 = "";
-    data2 = "";
-
-    if (arr_checkbox.length == 1) {
-        var attrValue1 = arr_checkbox.eq(0).attr("id");
-        if (attrValue1 == "impression")
-            chart.addSeries({
-                name: attrValue1,
-                color: '#1e90ff',
-                data: arr_impr
-            });
-        else if (attrValue1 == "click")
-            chart.addSeries({
-                name: attrValue1,
-                color: '#ff0000',
-                data: arr_click
-            });
-        else if (attrValue1 == "ctr")
-            chart.addSeries({
-                name: attrValue1,
-                color: '#ffa500',
-                tooltip: {
-                    valueSuffix: '%'
-                },
-                data: arr_ctr
-            });
-        else if (attrValue1 == "cost")
-            chart.addSeries({
-                name: attrValue1,
-                color: '#008000',
-                data: arr_cost
-            });
-        else if (attrValue1 == "conversion")
-            chart.addSeries({
-                name: attrValue1,
-                color: '#9370db',
-                data: arr_conv
-            });
-    }
-
-    if (arr_checkbox.length == 2) {
-        for (var j = 0, m = arr_checkbox.length; j < m; j++) {
-            if (arr_checkbox[j].checked) {
-                var attrValue2 = arr_checkbox.eq(j).attr("id");
-                if (attrValue2 == "impression") {
-                    if (data1 == "") {
-                        data1 = {
-                            name: attrValue2,
-                            color: '#1e90ff',
-                            data: arr_impr
-                        };
-                        chart.addSeries(data1);
-                    } else if (data2 == "") {
-                        data2 = {
-                            name: attrValue2,
-                            color: '#1e90ff',
-                            yAxis: 1,
-                            data: arr_impr
-                        };
-                        chart.addSeries(data2);
-                    }
-                } else if (attrValue2 == "click") {
-                    if (data1 == "") {
-                        data1 = {
-                            name: attrValue2,
-                            color: '#ff0000',
-                            data: arr_click
-                        };
-                        chart.addSeries(data1);
-                    } else if (data2 == "") {
-                        data2 = {
-                            name: attrValue2,
-                            color: '#ff0000',
-                            yAxis: 1,
-                            data: arr_click
-                        };
-                        chart.addSeries(data2);
-                    }
-                } else if (attrValue2 == "ctr") {
-                    if (data1 == "") {
-                        data1 = {
-                            name: attrValue2,
-                            color: '#ffa500',
-                            tooltip: {
-                                valueSuffix: '%'
-                            },
-                            data: arr_ctr
-                        };
-                        chart.addSeries(data1);
-                    } else if (data2 == "") {
-                        data2 = {
-                            name: attrValue2,
-                            color: '#ffa500',
-                            yAxis: 1,
-                            tooltip: {
-                                valueSuffix: '%'
-                            },
-                            data: arr_ctr
-                        };
-                        chart.addSeries(data2);
-                    }
-                } else if (attrValue2 == "cost") {
-                    if (data1 == "") {
-                        data1 = {
-                            name: attrValue2,
-                            color: '#008000',
-                            data: arr_cost
-                        };
-                        chart.addSeries(data1);
-                    } else if (data2 == "") {
-                        data2 = {
-                            name: attrValue2,
-                            color: '#008000',
-                            yAxis: 1,
-                            data: arr_cost
-                        };
-                        chart.addSeries(data2);
-                    }
-                } else if (attrValue2 == "conversion") {
-                    if (data1 == "") {
-                        data1 = {
-                            name: attrValue2,
-                            color: '#9370db',
-                            data: arr_conv
-                        };
-                        chart.addSeries(data1);
-                    } else if (data2 == "") {
-                        data2 = {
-                            name: attrValue2,
-                            color: '#9370db',
-                            yAxis: 1,
-                            data: arr_conv
-                        };
-                        chart.addSeries(data2);
-                    }
+        name: '展现',
+        type: 'line',
+        smooth:true,
+        data: arr_impr,
+        itemStyle: {
+            normal: {
+                lineStyle: {
+                    color: '#1e90ff'
                 }
             }
         }
-    }
+    };
+    data2 = {
+        name: '点击',
+        type: 'line',
+        smooth:true,
+        data: arr_click,
+        yAxisIndex:1,
+        itemStyle: {
+            normal: {
+                lineStyle: {
+                    color: '#ff0000'
+                }
+            }
+        }
+    };
+    $("#limenuClick").click(function () {
+        mychart();
+    });
+
 };
-
+var mychart = function(){
+    var myChart = echarts.init(document.getElementById('container'));
+    var option = {
+        tooltip : {
+            trigger: 'axis'
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data :xAxis_categories
+            }
+        ],
+        yAxis : [
+              {
+                type : 'value',
+                name:"impression",
+                scale:true,
+                axisLabel : {
+                    formatter: '{value} ' + unitOne
+                },
+                axisLine:{
+                    show:true,
+                    lineStyle:{
+                        color:colorOne
+                    }
+                }
+            },{
+                type : 'value',
+                name:"click",
+                scale:true,
+                axisLabel : {
+                    formatter: '{value} ' + unitTow
+                },
+                axisLine:{
+                    show:true,
+                    lineStyle:{
+                        color:colorTow
+                    }
+                }
+            }
+        ],
+        series : [
+            data1,
+            data2
+        ]
+    };
+    myChart.setOption(option);
+};
 //================================================
-
 var campaignId;
-
 var adgroupId;
-
 $(function () {
     loadTree();
-
     loadAccountData();
-
     AccountPerformance();
+    $("input[cname=impression]").attr("xname", "data1");
+    $("input[cname=click]").attr("xname", "data2");
+    $("input[name=chartcheckbox]").click(function () {
+        var name = $(this).attr("cname");
+        if ($("input[type=checkbox]:checked").length <= 3) {
+            if (name == "impression") {
+                if ($(this).is(':checked')) {
+                    if (data1 == "") {
+                        $(this).attr("xname", "data1");
+                        colorOne = "#1e90ff";
+                        nameOne = "展现";
+                        unitOne = "次";
+                        data1 = {
+                            name: '展现',
+                            type: 'line',
+                            smooth:true,
+                            data: arr_impr,
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        color: '#1e90ff'
+                                    }
+                                }
+                            }
+                        };
+                        mychart();
+                    } else if (data2 == "") {
+                        $(this).attr("xname", "data2");
+                        colorTow = "#1e90ff";
+                        nameTow = "展现";
+                        unitTow = "次";
+                        data2 = {
+                            name: '展现',
+                            type: 'line',
+                            smooth:true,
+                            data: arr_impr,
+                            yAxisIndex:1,
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        color: '#1e90ff'
+                                    }
+                                }
+                            }
+                        };
+                        mychart();
+                    }
+                } else {
+                    if ($(this).attr("xname") == "data1") {
+                        data1 = "";
+                        $(this).attr("xname", "");
+                        mychart();
+                    } else if ($(this).attr("xname") == "data2") {
+                        data2 = "";
+                        $(this).attr("xname", "");
+                        mychart();
+                    }
+                }
+            } else if (name == "click") {
+                if ($(this).is(':checked')) {
+                    if (data1 == "") {
+                        $(this).attr("xname", "data1");
+                        colorOne = "#ff0000";
+                        nameOne = "点击";
+                        unitOne = "次";
+                        data1 = {
+                            name: '点击',
+                            type: 'line',
+                            smooth:true,
+                            data: arr_click,
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        color: '#ff0000'
+                                    }
+                                }
+                            }
+                        };
+                        mychart();
+                    } else if (data2 == "") {
+                        $(this).attr("xname", "data2");
+                        colorTow = "#ff0000";
+                        nameTow = "点击";
+                        unitTow = "次";
+                        data2 = {
+                            name: '点击',
+                            type: 'line',
+                            smooth:true,
+                            data: arr_click,
+                            yAxisIndex:1,
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        color: '#ff0000'
+                                    }
+                                }
+                            }
+                        };
+                        mychart();
+                    }
+                } else {
+                    if ($(this).attr("xname") == "data1") {
+                        data1 = "";
+                        $(this).attr("xname", "");
+                        mychart();
+                    } else if ($(this).attr("xname") == "data2") {
+                        data2 = "";
+                        $(this).attr("xname", "");
+                        mychart();
+                    }
+                }
+            } else if (name == "ctr") {
+                if ($(this).is(':checked')) {
+                    if (data1 == "") {
+                        $(this).attr("xname", "data1");
+                        colorOne = "#ffa500";
+                        nameOne = "点击率";
+                        unitOne = " %";
+                        data1 = {
+                            name: '点击率',
+                            type: 'line',
+                            smooth:true,
+                            data: arr_ctr,
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        color: '#ffa500'
+                                    }
+                                }
+                            }
+                        };
+                        mychart();
+                    } else if (data2 == "") {
+                        $(this).attr("xname", "data2");
+                        colorTow = "#ffa500";
+                        nameTow = "点击率";
+                        unitTow = " %";
+                        data2 = {
+                            name: '点击率',
+                            type: 'line',
+                            smooth:true,
+                            data: arr_ctr,
+                            yAxisIndex:1,
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        color: '#ffa500'
+                                    }
+                                }
+                            }
+                        };
+                        mychart();
+                    }
+                } else {
+                    if ($(this).attr("xname") == "data1") {
+                        data1 = "";
+                        $(this).attr("xname", "");
+                        mychart();
+                    } else if ($(this).attr("xname") == "data2") {
+                        data2 = "";
+                        $(this).attr("xname", "");
+                        mychart();
+                    }
+                }
+            } else if (name == "cost") {
+                if ($(this).is(':checked')) {
+                    if (data1 == "") {
+                        $(this).attr("xname", "data1");
+                        colorOne = "#26CAE5";
+                        nameOne = "消费";
+                        unitOne = " ￥";
+                        data1 = {
+                            name: '消费',
+                            type: 'line',
+                            smooth:true,
+                            data: arr_cost,
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        color: '#008000'
+                                    }
+                                }
+                            }
+                        };
+                        mychart();
+                    } else if (data2 == "") {
+                        $(this).attr("xname", "data2");
+                        colorTow = "#26CAE5";
+                        nameTow = "消费";
+                        unitTow = "￥";
+                        data2 = {
+                            name: '消费',
+                            type: 'line',
+                            smooth:true,
+                            data: arr_cost,
+                            yAxisIndex:1,
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        color: '#008000'
+                                    }
+                                }
+                            }
+                        };
+                        mychart();
+                    }
+                } else {
+                    if ($(this).attr("xname") == "data1") {
+                        data1 = "";
+                        $(this).attr("xname", "");
+                        mychart();
+                    } else if ($(this).attr("xname") == "data2") {
+                        data2 = "";
+                        $(this).attr("xname", "");
+                        mychart();
+                    }
+                }
+            } else if (name == "conversion") {
+                if ($(this).is(':checked')) {
+                    if (data1 == "") {
+                        $(this).attr("xname", "data1");
+                        colorOne = "#9370db";
+                        nameOne = "转化";
+                        unitOne = " ";
+                        data1 = {
+                            name: '转化',
+                            type: 'line',
+                            smooth:true,
+                            data: arr_conv,
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        color: '#9370db'
+                                    }
+                                }
+                            }
+                        };
+                        mychart();
+                    } else if (data2 == "") {
+                        $(this).attr("xname", "data2");
+                        colorTow = "#9370db";
+                        nameTow = "转化";
+                        unitTow = " ";
+                        data2 = {
+                            name: '转化',
+                            type: 'line',
+                            smooth:true,
+                            data: arr_conv,
+                            yAxisIndex:1,
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        color: '#9370db'
+                                    }
+                                }
+                            }
+                        };
+                        mychart();
+                    }
+                } else {
+                    if ($(this).attr("xname") == "data1") {
+                        data1 = "";
+                        $(this).attr("xname", "");
+                        mychart();
+                    } else if ($(this).attr("xname") == "data2") {
+                        data2 = "";
+                        $(this).attr("xname", "");
+                        mychart();
+                    }
+                }
+            }
+        } else {
+            $(this).attr("checked", false);
+        }
+    });
 
     $("#box7").text(loadDynamicCreativeStatus());
-
     $("#dynamicCreative").on('click', function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box7").css("display", "none");
@@ -369,7 +507,6 @@ $(function () {
         $("#box7").text(loadDynamicCreativeStatus());
         changeDynamicCreativeStatus();
     });
-
     $("#modifyAccountBudget_ok").on('click', function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box5").css("display", "none");
@@ -382,13 +519,13 @@ $(function () {
         excludeIP();
     });
 
-    $("input[name=chartcheckbox]:checkbox").on('click', function () {
+    /*$("input[name=chartcheckbox]:checkbox").on('click', function () {
         var arr_checkbox = $("input[name=chartcheckbox]:checked");
         if (arr_checkbox.length > 2) {
             return false;
         }
-        reloadhighcharts(arr_checkbox);
-    });
+       *//* reloadhighcharts(arr_checkbox);*//*
+    });*/
 
     $("#reachBudget").on('click', function () {
         $(".TB_overlayBG").css({
