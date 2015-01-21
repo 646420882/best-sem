@@ -8,20 +8,21 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Protocol;
 
-import javax.annotation.Resource;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by baizz on 2014-11-20.
@@ -31,7 +32,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class CrawlURLHandler implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Logger logger = LoggerFactory.getLogger(CrawlURLHandler.class);
     private static final String crawler_queue = "crawler_queue";
 
     //本地缓存
@@ -45,12 +46,16 @@ public class CrawlURLHandler implements Runnable {
 
     private JedisPool pool;
 
-    @Resource
+    @Autowired
     private CrawlWordDAO crawlWordDAO;
 
     private CrawlURLHandler() {
-        CrawlURLHandler.JedisPools.init("182.150.24.24");
+        CrawlURLHandler.JedisPools.init("192.168.1.120");
         this.pool = CrawlURLHandler.JedisPools.getPool();
+    }
+
+    public void setCrawlWordDAO(@Qualifier("crawlWordDAO") CrawlWordDAO crawlWordDAO) {
+        this.crawlWordDAO = crawlWordDAO;
     }
 
     public CrawlURLHandler setSites(String... sites) {
@@ -64,9 +69,6 @@ public class CrawlURLHandler implements Runnable {
             logger.info("starting reading data...");
         }
 
-//        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-//        CrawlWordDAO crawlWordDAO = (CrawlWordDAOImpl) context.getBean("crawlWordDAO");
-
         //从本地缓存中取值放于阻塞队列中
         sites.forEach(site -> cacheMap.computeIfAbsent(site, (key) -> crawlWordDAO.findBySite(site)));
         cacheMap.get(sites.get(0)).forEach(queue::offer);
@@ -77,9 +79,9 @@ public class CrawlURLHandler implements Runnable {
             Jedis jedis = pool.getResource();
 
             try {
-                if (jedis.llen(crawler_queue) >= 50000) {
+                if (jedis.llen(crawler_queue) >= 500) {
                     try {
-                        Thread.sleep(3000);
+                        TimeUnit.SECONDS.sleep(3);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -136,7 +138,7 @@ public class CrawlURLHandler implements Runnable {
                             conf.put("d", "default");
                             break;
                         case "taobao":
-                            conf.put("q", getTaobaoURL(dto.getKeyword(), WebSiteConstants.taobaoUrlTemplate));
+                            conf.put("q", WebSiteConstants.taobaoUrlTemplate);
                             conf.put("d", "phantomjs");
                             break;
                         default:
@@ -150,9 +152,6 @@ public class CrawlURLHandler implements Runnable {
                     jedis.set("extras_" + md5, confStr);
                 }
 
-                if (logger.isInfoEnabled()) {
-                    logger.info("Redis 当前键值个数: " + jedis.llen(crawler_queue));
-                }
             } finally {
                 pool.returnResource(jedis);
             }
@@ -181,7 +180,7 @@ public class CrawlURLHandler implements Runnable {
             } else {
                 //try again
                 try {
-                    Thread.sleep(500);
+                    TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
