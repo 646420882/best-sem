@@ -365,7 +365,7 @@ public class AssistantCampaignController extends WebContextSupport {
      */
     @RequestMapping(value = "assistantCampaign/reducDel", method = {RequestMethod.GET, RequestMethod.POST})
     public void reducDel(HttpServletResponse response, String id) {
-        campaignBackUpService.reducDel(id);
+        campaignBackUpService.reduceDel(id);
         writeJson(RES_SUCCESS, response);
     }
 
@@ -448,16 +448,23 @@ public class AssistantCampaignController extends WebContextSupport {
         if (cid.length() > OBJ_SIZE) {
             CampaignDTO campaignDTO = campaignService.findByObjectId(cid);
             Long campaignId = campaignService.uploadAdd(campaignDTO);
-            campaignDTO.setCampaignId(campaignId);
             campaignService.update(campaignId, campaignDTO.getId());
         } else {
             CampaignDTO campaignDTO = campaignService.findOne(Long.valueOf(cid));
             switch (campaignDTO.getLocalStatus()) {
                 case 2:
-                    System.out.println("执行修改操作");
+                    //修改后获取到修改成功的一些cid
+                   List<Long> returnCapaignIds= campaignService.uploadUpdate(new ArrayList<Long>(){{
+                        add(Long.valueOf(cid));
+                    }});
+
+                    //获取到修改成功后的cid去本地查询该cid 的mongoid
+                    List<String> afterUpdateObjId=campaignService.getCampaignStrIdByCampaignLongId(returnCapaignIds);
+
+                    //获取到mongoId后去campaign_bak表查询，查询到备份的数据然后将备份的数据删除掉,最后将上传更新的那个方法的ls改为null
+                    campaignBackUpService.deleteByOId(afterUpdateObjId);
                     break;
                 case 3:
-                    System.out.println("执行删除操作");
                     campaignService.uploadDel(new ArrayList<Long>() {{
                         add(Long.valueOf(cid));
                     }});

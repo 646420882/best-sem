@@ -1,14 +1,27 @@
 package com.perfect.service.impl;
 
+import com.perfect.api.baidu.BaiduServiceSupport;
+import com.perfect.autosdk.core.CommonService;
+import com.perfect.autosdk.exception.ApiException;
+import com.perfect.autosdk.sms.v3.AddAdgroupRequest;
+import com.perfect.autosdk.sms.v3.AddAdgroupResponse;
+import com.perfect.autosdk.sms.v3.AdgroupType;
+import com.perfect.core.AppContext;
+import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
+import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.service.AdgroupService;
+import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +34,11 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Resource
     private AdgroupDAO adgroupDAO;
+    @Resource
+    AccountManageDAO accountManageDAO;
+
+    @Resource
+    CampaignDAO campaignDAO;
 
     @Override
     public List<AdgroupDTO> getAdgroupByCampaignId(Long campaignId, Map<String, Object> params, int skip, int limit) {
@@ -127,5 +145,51 @@ public class AdgroupServiceImpl implements AdgroupService {
     @Override
     public void save(AdgroupDTO adgroupDTO) {
         adgroupDAO.save(adgroupDTO);
+    }
+
+    @Override
+    public double findPriceRatio(Long cid) {
+        return adgroupDAO.findPriceRatio(cid);
+    }
+
+    @Override
+    public List<Long> uploadAdd(List<String> aids) {
+        List<Long> returnAids=new ArrayList<>();
+        List<AdgroupType> adgroupTypes = new ArrayList<>();
+        aids.parallelStream().forEach(s -> {
+            AdgroupDTO dto = adgroupDAO.findByObjId(s);
+            CampaignDTO campaignDTO = campaignDAO.findByLongId(dto.getCampaignId());
+            if (campaignDTO.getCampaignId() != null) {
+                AdgroupType adgroupType = new AdgroupType();
+                adgroupType.setAdgroupName(dto.getAdgroupName());
+                adgroupType.setMaxPrice(dto.getMaxPrice());
+                adgroupType.setCampaignId(dto.getCampaignId());
+                adgroupType.setPause(dto.getPause());
+                adgroupType.setNegativeWords(dto.getNegativeWords());
+                adgroupType.setExactNegativeWords(dto.getExactNegativeWords());
+                adgroupTypes.add(adgroupType);
+            }
+        });
+
+        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+        try {
+            com.perfect.autosdk.sms.v3.AdgroupService adgroupService = commonService.getService(com.perfect.autosdk.sms.v3.AdgroupService.class);
+            AddAdgroupRequest addAdgroupRequest = new AddAdgroupRequest();
+            addAdgroupRequest.setAdgroupTypes(adgroupTypes);
+            AddAdgroupResponse addAdgroupResponse=adgroupService.addAdgroup(addAdgroupRequest);
+            List<AdgroupType> returnAdgroupType=addAdgroupResponse.getAdgroupTypes();
+            returnAdgroupType.parallelStream().forEach(s->returnAids.add(s.getCampaignId()));
+            return returnAids;
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+        return returnAids;
+    }
+
+    @Override
+    public void update(String oid, Long aid) {
+        adgroupDAO.update(oid,aid);
     }
 }

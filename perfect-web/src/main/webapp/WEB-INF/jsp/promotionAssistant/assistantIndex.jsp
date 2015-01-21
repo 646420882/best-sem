@@ -1334,7 +1334,7 @@
 <div id="reachBudget1" class="box" style="display:none; width: 600px">
     <h2 id="reachBudget_head">
         <span class="fl">账户预算</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="javascript:void()" class="close">关闭</a></h2>
 
     <div class="mainlist">
         <div class="tu_top over">
@@ -1347,7 +1347,7 @@
 <div class="box" style="display:none" id="jcAdd">
     <h2 id="dAdd">
         <span class="fl">添加创意</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeAlertCreative()" class="close">关闭</a></h2>
 
     <div class="mainlist">
         选择要添加到的计划或者单元!

@@ -885,6 +885,7 @@ function showReductionCampaignWindow() {
         if (confirm("是否还原选择的数据?") == false) {
             return;
         }
+
         var step = choose.find("td:last span").attr("step");
         var id = $("#tbodyClick5").find(".list2_box3").find("input[type=hidden]").val();
         switch (parseInt(step)) {
@@ -968,9 +969,26 @@ $("#quickAddplan").click(function () {
 });
 
 function uploadCampagin(){
-    var id = $("#tbodyClick5").find(".list2_box3").find("input[type=hidden]").val();
+    var _list = $("#tbodyClick5").find(".list2_box3");
+    var id = _list.find("input[type=hidden]").val();
+    var step = _list.find("td:last span").attr("step");
+   switch (parseInt(step)){
+       case 1:
+           if(id.length>18){
+               uploadOperate(id);
+           }
+           break;
+       case 2:
+           uploadOperate(id);
+           break
+       case 3:
+           uploadOperate(id);
+           break;
+    }
+}
+function uploadOperate(id){
     $.get("/assistantCampaign/upload",{cid:id},function(result){
-        if(result.msg!="-1"){
+        if(result.msg!="0"){
             alert("上传成功!");
             getCampaignList(0);
             setTimeout("loadTree()", 1500);

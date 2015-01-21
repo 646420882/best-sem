@@ -417,4 +417,23 @@ public class AssistantAdgroupController extends WebContextSupport {
         }
         return null;
     }
+    @RequestMapping("/getPriceRatio")
+    public void getPriceRatio(HttpServletResponse response,@RequestParam(value = "cid")String cid){
+        double priceRatio=0;
+        if(cid.length()<OBJ_SIZE){
+            priceRatio  =  adgroupService.findPriceRatio(Long.valueOf(cid));
+        }
+        writeHtml(priceRatio+"",response);
+    }
+    @RequestMapping(value = "/uploadOperate")
+    public  ModelAndView uploadOperate(@RequestParam(value = "aid")String aid){
+        if(aid.length()>OBJ_SIZE){
+            List<Long> returnAids=adgroupService.uploadAdd(new ArrayList<String>(){{add(aid);}});
+            returnAids.parallelStream().forEach(s->{
+                String oid=adgroupService.findOne(s).getId();
+                adgroupService.update(oid, Long.valueOf(aid));
+            });
+        }
+        return writeMapObject(MSG,"上传失败！");
+    }
 }

@@ -2,6 +2,7 @@
  * Created by XiaoWei on 2014/8/21.
  */
 var plans = {cid: null, cn: null,nowPage:1,pageSize:20};
+var priceRatio = "";//获取计划下拉时该计划的移动出价比例，用于添加单元时fush到添加框中
 $(function () {
     initAMenu();
     rDrag.init(document.getElementById("bAdd"));
@@ -30,9 +31,14 @@ var aAdd = {
     func: function () {
         adgroupUpdate();
     }
-}
+},aUpload={
+        text:"更新到凤巢",
+        func:function(){
+            adgroupUpload();
+        }
+    }
 var aMeunData = [
-    [aAdd, aDel, aUpdate]
+    [aAdd, aDel, aUpload,aUpdate]
 ];
 /**
  * 初始化单元右键菜单
@@ -54,6 +60,23 @@ function initAMenu() {
     });
     $("#adGroupTable").on("keydown", "input", function (event) {
         if (event.keyCode == 13) {
+            var _an = $(this).parents("tr").find("input:eq(2)");
+            var _anStr = getChar(_an.val());
+            if (parseInt(_anStr) == 0 || parseInt(_anStr) >= 30) {
+                alert("\"推广单元名称\"长度应大于1个字符小于30个字符，汉子占两个字符!");
+                return false;
+            }
+            // /^-?\d+\.?\d*$/
+            var _mp = $(this).parents("tr").find("input:eq(4)").val();
+            if (!/^-?\d+\.?\d*$/.test(_mp)) {
+                alert("请输入正确的\"单元出价\"");
+                return false;
+            }
+            var _mf = $(this).parents("tr").find("input:eq(8)").val();
+            if (!/^-?\d+\.?\d*$/.test(_mf)) {
+                alert("请输入正确的\"移动出价比例\"");
+                return false;
+            }
             var con = confirm("你确定要添加?");
             if (con) {
                 var _this = $(this).parents("tr");
@@ -281,20 +304,25 @@ function addAdgroup() {
         jcBox.append("<li>推广计划<select id='aPlan' onchange='getAdgroupPlan(this.value)'><option value='-1'>请选择计划</option></select></li>");
         adAlertShow();
     } else {
-        var i = $("#adGroupTable tbody tr").size();
-        var _createTable = $("#adGroupTable tbody");
-        var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-        var _tbody = "<tr class=" + _trClass + ">" +
-            "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden'  name='oid' value='" + getRandomId() + "'/><input type='hidden' name='cid' value='" + getAdgroupId() + "'/></td>" +
-            "<td><input name='adgroupName' style='width:140px;' maxlength='1024'></td>" +
-            "<td><input type='hidden' name='status' value='-1'><span>本地新增</span></td>" +
-            " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
-            "<td><input name='maxPrice' style='width:50px;' value='0.0' onkeypress='until.regDouble(this)' maxlength='3'></td>" +
-            "<td><span id='" + getRandomId() + "sp'>未设置</span><input name='negativeWords' id='" + getRandomId() + "ni' type='hidden' readonly='readonly'><input type='button' onclick='adgroupNokeyword(this)' value='设置否定关键词'/><input name='exactNegativeWords' id='" + getRandomId() + "ne' type='hidden'  readonly='readonly'></td>" +
-            "<td><input name='mib' style='width:50px;' value='0.0' onkeypress='until.regDouble(this)' maxlength='3'></td>" +
-            "<td>" + plans.cn + "</td>" +
-            "</tr>";
-        _createTable.append(_tbody);
+        $.get("/assistantAdgroup/getPriceRatio", {cid: plans.cid}, function (res) {
+            if (res != "0.0") {
+                var i = $("#adGroupTable tbody tr").size();
+                var _createTable = $("#adGroupTable tbody");
+                var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+                var _tbody = "<tr class=" + _trClass + ">" +
+                    "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden'  name='oid' value='" + getRandomId() + "'/><input type='hidden' name='cid' value='" + getAdgroupId() + "'/></td>" +
+                    "<td><input name='adgroupName' style='width:140px;' maxlength='30'></td>" +
+                    "<td><input type='hidden' name='status' value='-1'><span>本地新增</span></td>" +
+                    " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
+                    "<td><input name='maxPrice' style='width:50px;'  onkeypress='until.regDouble(this)' maxlength='4'></td>" +
+                    "<td><span id='" + getRandomId() + "sp'>未设置</span><input name='negativeWords' id='" + getRandomId() + "ni' type='hidden' readonly='readonly'><input type='button' onclick='adgroupNokeyword(this)' value='设置否定关键词'/><input name='exactNegativeWords' id='" + getRandomId() + "ne' type='hidden'  readonly='readonly'></td>" +
+                    "<td><input name='mib' style='width:50px;' value='" + res + "' onkeypress='until.regDouble(this)' maxlength='4'></td>" +
+                    "<td>" + plans.cn + "</td>" +
+                    "</tr>";
+                _createTable.append(_tbody);
+            }
+        });
+
     }
 }
 /**
@@ -489,7 +517,12 @@ function adgetPlans() {
         var json = eval("(" + rs + ")");
         if (json.length > 0) {
             for (var i = 0; i < json.length; i++) {
-                var str = "<option value='" + json[i].campaignId + "'>" + json[i].campaignName + "</option>";
+                var str = "";
+                if (json[i].campaignId != undefined) {
+                    str = "<option value='" + json[i].campaignId + "' pr='" + json[i].priceRatio + "'>" + json[i].campaignName + "</option>";
+                } else {
+                    str = "<option value='" + json[i].id + "' pr='" + json[i].priceRatio + "'>" + json[i].campaignName + "</option>";
+                }
                 $("#aPlan").append(str);
             }
         }
@@ -501,11 +534,13 @@ function adgetPlans() {
 function adgroudAddAlertOk() {
     var aid = $("#aPlan :selected").val() != undefined ? $("#aPlan :selected").val() : plans.cid;
     var cn = $("#aPlan :selected").text() != undefined ? $("#aPlan :selected").text() : plans.cn;
+    var pr = $("#aPlan :selected").attr("pr");
     if (aid == "-1") {
         alert("请选择计划");
     } else {
         plans.cid = aid;
         plans.cn = cn;
+        priceRatio = pr;
         adgroupAddAlertClose();
         addAdgroup();
     }
@@ -718,4 +753,34 @@ function adgroupMutli(){
         onremove: function () {
         }
     }).showModal(dockObj);
+}
+function adgroupUpload(){
+    var _this = $(atmp);
+    var oid = _this.find("td:eq(0) input").val();
+    var _localStatus = _this.find("td:eq(8) span").attr("step");
+    if(_localStatus!=undefined){
+        switch (_localStatus){
+            case "1":
+                if(oid.length>18){
+                    adgroupUploadOperate(oid);
+                }
+                break;
+            case "2":
+                alert("执行修改操作");
+                break;
+            case "3":
+                alert("执行删除操作");
+                break;
+        }
+    }
+}
+function adgroupUploadOperate(aid){
+    $.get("/assistantAdgroup/uploadOperate",{aid:aid},function(str){
+        if(str.msg!="0"){
+            alert("上传成功");
+            getCampaignList(0);
+        }else{
+            alert(str.msg);
+        }
+    })
 }

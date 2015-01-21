@@ -13,9 +13,11 @@ import com.perfect.service.CampaignService;
 import com.perfect.utils.CharsetUtils;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class CampaignServiceImpl implements CampaignService {
     private CampaignDAO campaignDAO;
     @Resource
     private AccountManageDAO accountManageDAO;
+
 
     @Override
     public CampaignDTO findOne(Long campaignId) {
@@ -96,13 +99,17 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
+    public List<String> getCampaignStrIdByCampaignLongId(List<Long> campaignIds) {
+        return campaignDAO.getCampaignStrIdByCampaignLongId(campaignIds);
+    }
+
+    @Override
     public String insertReturnId(CampaignDTO campaignEntity) {
         return campaignDAO.insertReturnId(campaignEntity);
     }
 
     @Override
     public Long uploadAdd(CampaignDTO dto) {
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CampaignType campaignType = new CampaignType();
         if (CharsetUtils.getChar(dto.getCampaignName()) < 30) {
             campaignType.setCampaignName(dto.getCampaignName());
@@ -133,6 +140,7 @@ public class CampaignServiceImpl implements CampaignService {
             campaignType.setPause(dto.getPause());
             campaignType.setStatus(dto.getStatus());
             campaignType.setIsDynamicCreative(dto.getIsDynamicCreative());
+            BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
             CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
             try {
                 com.perfect.autosdk.sms.v3.CampaignService campaignService = commonService.getService(com.perfect.autosdk.sms.v3.CampaignService.class);
@@ -174,7 +182,55 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
+    public List<Long> uploadUpdate(List<Long> campaignIds) {
+        List<CampaignType> campaignTypeList = new ArrayList<>();
+        List<Long> returnCampaignIds = new ArrayList<>();
+        List<CampaignDTO> dtos = new ArrayList<>();
+        campaignIds.parallelStream().forEach(s -> dtos.add(campaignDAO.findByLongId(s)));
+        for (CampaignDTO dto : dtos) {
+            CampaignType campaignType = new CampaignType();
+            campaignType.setCampaignId(dto.getCampaignId());
+            campaignType.setCampaignName(dto.getCampaignName());
+            campaignType.setBudget(dto.getBudget());
+            campaignType.setRegionTarget(dto.getRegionTarget());
+            campaignType.setExcludeIp(dto.getExcludeIp());
+            campaignType.setNegativeWords(dto.getNegativeWords());
+            campaignType.setExactNegativeWords(dto.getExactNegativeWords());
+            List<ScheduleType> scheduleTypes = ObjectUtils.convert(dto.getSchedule(), ScheduleType.class);
+            campaignType.setSchedule(scheduleTypes);
+            List<OfflineTimeType> offlineTimeTypes = ObjectUtils.convert(dto.getBudgetOfflineTime(), OfflineTimeType.class);
+            campaignType.setBudgetOfflineTime(offlineTimeTypes);
+            campaignType.setShowProb(dto.getShowProb());
+            campaignType.setDevice(dto.getDevice());
+            campaignType.setPriceRatio(dto.getPriceRatio());
+            campaignType.setPause(dto.getPause());
+            campaignType.setStatus(dto.getStatus());
+            campaignType.setIsDynamicCreative(dto.getIsDynamicCreative());
+            campaignTypeList.add(campaignType);
+        }
+        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+        try {
+            com.perfect.autosdk.sms.v3.CampaignService campaignService = commonService.getService(com.perfect.autosdk.sms.v3.CampaignService.class);
+            UpdateCampaignRequest updateCampaignRequest = new UpdateCampaignRequest();
+            updateCampaignRequest.setCampaignTypes(campaignTypeList);
+            UpdateCampaignResponse updateCampaignResponse = campaignService.updateCampaign(updateCampaignRequest);
+            List<CampaignType> campaignTypes = updateCampaignResponse.getCampaignTypes();
+            campaignTypes.parallelStream().forEach(s -> returnCampaignIds.add(s.getCampaignId()));
+            return returnCampaignIds;
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        return returnCampaignIds;
+    }
+
+    @Override
     public void update(Long campaignId, String objId) {
         campaignDAO.update(campaignId, objId);
+    }
+
+    @Override
+    public void updateRemoveLs(List<String> afterUpdateStr) {
+        campaignDAO.updateRemoveLs(afterUpdateStr);
     }
 }

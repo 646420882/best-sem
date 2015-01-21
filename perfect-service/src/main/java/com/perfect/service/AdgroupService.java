@@ -52,4 +52,19 @@ public interface AdgroupService {
     AdgroupDTO fndEntity(Map<String, Object> params);
 
     void save(AdgroupDTO adgroupDTO);
+
+    double findPriceRatio(Long cid);
+
+    /**
+     * 上传更新到百度 获取到
+     * @param aids
+     */
+    List<Long> uploadAdd(List<String> aids);
+
+    /**
+     * 上传成功后 修改上传状态的修改方法，只适用于上传
+     * @param  aid 上传成功后获取到的单元百度id
+     * @param oid 本地id
+     */
+    void update(String oid,Long aid);
 }
