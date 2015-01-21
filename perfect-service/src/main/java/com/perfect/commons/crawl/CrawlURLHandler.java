@@ -16,7 +16,6 @@ import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Protocol;
 
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
@@ -33,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class CrawlURLHandler implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Logger logger = LoggerFactory.getLogger(CrawlURLHandler.class);
     private static final String crawler_queue = "crawler_queue";
 
     //本地缓存
@@ -69,9 +68,6 @@ public class CrawlURLHandler implements Runnable {
         if (logger.isInfoEnabled()) {
             logger.info("starting reading data...");
         }
-
-//        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-//        CrawlWordDAO crawlWordDAO = (CrawlWordDAOImpl) context.getBean("crawlWordDAO");
 
         //从本地缓存中取值放于阻塞队列中
         sites.forEach(site -> cacheMap.computeIfAbsent(site, (key) -> crawlWordDAO.findBySite(site)));
@@ -149,9 +145,6 @@ public class CrawlURLHandler implements Runnable {
                             break;
                     }
 
-                    if (!conf.containsKey("q"))
-                        continue;
-
                     String confStr = JSONUtils.getJsonString(conf);
                     String md5 = DigestUtils.md5Hex(confStr);
 
@@ -159,9 +152,6 @@ public class CrawlURLHandler implements Runnable {
                     jedis.set("extras_" + md5, confStr);
                 }
 
-                if (logger.isInfoEnabled()) {
-                    logger.info("Redis 当前键值个数: " + jedis.llen(crawler_queue));
-                }
             } finally {
                 pool.returnResource(jedis);
             }
