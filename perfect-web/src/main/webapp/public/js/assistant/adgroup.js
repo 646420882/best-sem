@@ -132,7 +132,7 @@ function loadAdgroupData(page_index) {
     _adGroudTable.empty().html("加载中....");
     $.post("../assistantAdgroup/getAdgroupList", plans, function (rs) {
         var gson= $.parseJSON(rs);
-        if (gson!= "[]") {
+        if (gson.list!= undefined) {
             if (gson.list.length > 0) {
                 adgPagerInit(gson);
                 _adGroudTable.empty();

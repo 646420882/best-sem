@@ -778,9 +778,11 @@ $("#createCampaignOk").click(function () {
         return;
     }
 
-    if (/^[0-9]+|[0-9]+\.[0-9]{2}$/.test(budget) == false) {
-        alert("每日预算只能是数值");
-        return;
+    if(budget!="请输入每日预算，不填默认为不限定"){
+        if (/^[0-9]+|[0-9]+\.[0-9]{2}$/.test(budget) == false) {
+            alert("每日预算只能是数值");
+            return;
+        }
     }
     if (/^[0-9]+|[0-9]+\.[0-9]{2}$/.test(priceRatio) == false) {
         alert("移动出价比例只能是数值");
@@ -831,8 +833,7 @@ $("#createCampaignOk").click(function () {
     excludeIpStr = "";
     $("#plan input[type=text]").val("");
     $(".TB_overlayBG,#plan").hide(0);
-    getCampaignList(0);
-    setTimeout("loadTree()", 1500);
+    setTimeout("loadTree(),getCampaignList(0)", 1500);
     //loadTree();
 });
 
@@ -897,7 +898,6 @@ function showReductionCampaignWindow() {
                 reducCpg_del(id);
                 break;
             case 4:
-                ;
                 break;
         }
 
@@ -966,6 +966,19 @@ function reducCpg_del(id) {
 $("#quickAddplan").click(function () {
     showQuickAddPlanWindow();
 });
+
+function uploadCampagin(){
+    var id = $("#tbodyClick5").find(".list2_box3").find("input[type=hidden]").val();
+    $.get("/assistantCampaign/upload",{cid:id},function(result){
+        if(result.msg!="-1"){
+            alert("上传成功!");
+            getCampaignList(0);
+            setTimeout("loadTree()", 1500);
+        }else{
+            alert(result.msg);
+        }
+    });
+}
 
 function showQuickAddPlanWindow() {
     top.dialog({title: "快速新建计划",
@@ -1046,6 +1059,11 @@ var menu_campaign_add = {
     func: function () {
         showReductionCampaignWindow();
     }
+},menu_campaign_upload={
+    text:"更新到凤巢",
+    func:function(){
+        uploadCampagin();
+    }
 }, menu_campaign_searchWord = {
     text: "搜索词",
     func: function () {
@@ -1057,7 +1075,7 @@ var menu_campaign_add = {
  * @type {*[]}
  */
 var campaignMenuData = [
-    [menu_campaign_add, menu_campaign_quickCreatePlan, menu_campaign_del, menu_campaign_redu, menu_campaign_searchWord]
+    [menu_campaign_add, menu_campaign_quickCreatePlan, menu_campaign_del, menu_campaign_redu,menu_campaign_upload, menu_campaign_searchWord]
 ];
 /**
  * 用户缓存右键点击的对象

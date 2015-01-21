@@ -56,7 +56,7 @@ public class CampaignEntity extends AccountIdEntity {
     private Integer showProb;
 
     @Field("d")
-    private Integer device;
+    private Integer device=0;
 
     @Field("pr")
     private Double priceRatio;

@@ -29,6 +29,7 @@
     height: 60px;
     border-top: 1px solid #fff;
     background: #f6f6f6;
+    margin-bottom:0px;
     z-index: 1;
     overflow: hidden;
 }
@@ -63,9 +64,11 @@
 
 }
 
+/*
 .list01 {
     padding-bottom: 60px;
 }
+*/
 
 .title_box {
     height: 32px;
@@ -90,14 +93,19 @@
     padding-left: 20px;
     overflow: hidden;
 }
-
+.list01_under3 .list01_top{
+    margin-bottom:0px;
+}
+.list01_under3 .download{
+    margin:0px;
+}
 .question {
     float:left;
     *display: inline-block;
     *float: none;
     width: 14px;
     height: 12px;
-    margin: 8px 0 0 4px;
+    margin: 5px 0 0 4px;
     background: url(/public/img/bg.png) -10px -10px no-repeat;
     border:none;
     padding:0px;
@@ -392,16 +400,16 @@
 }
 
 .fenrilist table tr td ul li {
-    width: 13.5%;
+    width: 14.2%;
 }
 
 .zhilianglist table tr td ul li {
-    width: 11.8%;
+    width: 12.5%;
 
 }
 
 .gjclist table tr td ul li {
-    width: 9.3%;
+    width: 10%;
 
 }
 
@@ -3644,6 +3652,25 @@ h2 .close {
 .tuoci table ,.hangyetuoci table{
     margin-top:0px;
 
+}
+#containerLegend ul li{
+    display:block;
+    float:left;
+
+}
+#riginality_editor1{
+    width:100%;
+}
+.k_r_top2 .k_r_under{
+    background: none;
+    margin-top:5px;
+
+}
+.k_r_top2 .k_r_under .download a{
+    margin-right:0px;
+}
+.k_top2_text1{
+    width:100%;
 }
 /*input[type=checkbox],
 input[type=radio]{

@@ -5,7 +5,7 @@ package com.perfect.commons.constants;
  */
 public class WebSiteConstants {
 
-    public static String taobaoUrlTemplate = "http://s.taobao.com/search?q=%s";
+    public static String taobaoUrlTemplate = "http://s.taobao.com/search?q=%s&sort=sale-desc";
 
     public static String amazonUrlTemplate = "http://www.amazon.cn/s/ref=sr_st_popularity-rank?keywords=%s&sort=popularity-rank";
 

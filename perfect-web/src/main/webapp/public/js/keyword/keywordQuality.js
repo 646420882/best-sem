@@ -44,7 +44,7 @@ var iframeLoad = function () {
 var loadKeywordQualityData = function () {
 
     var qtrs = $("#keywordQualityTab").find("tr");
-    for (var i = 1, l = qtrs.length - 1; i < l; i++) {
+    for (var i = 1, l = qtrs.length; i < l; i++) {
         qtrs.eq(i).hide();
     }
 
@@ -59,7 +59,7 @@ var loadKeywordQualityData = function () {
             limit: limit
         },
         success: function (data, textStatus, jqXHR) {
-            for (var k = 0; k <= 10; k++) {
+            for (var k = 0; k < 11; k++) {
                 $("#keywordQuality" + k).empty();
                 $("#quality" + k).empty();
             }
@@ -83,31 +83,30 @@ var loadKeywordQualityData = function () {
             if (reports != null && reports.length > 0) {
                 var map = new Map();
 
-                for (var i = 0; i <= 10; i++) {
-                    if (reports[i] == undefined) {
+                for (var i = 0; i < 11; i++) {
+                    if (reports[i] == undefined)
                         continue;
-                    }
+
                     var grade = reports[i]["grade"];
                     $.each(reports[i]["reportList"], function (j, item) {
                         var _class = "";
-                        if (j % 2 == 0) {
+                        if (j % 2 == 0)
                             _class = "list2_box1";
-                        } else {
+                        else
                             _class = "list2_box2";
-                        }
 
                         var _div = "<div><ul class='" + _class + "'><li class='home_quality'></li><li><span>" + item.keywordName + "</span></li>" +
                             "<li>" + item.pcImpression + "</li><li>" + item.pcClick + "</li><li>" + item.pcCtr + "%</li><li>" + item.pcCost + "</li>" +
                             "<li>" + item.pcCpc + "</li><li>" + item.pcConversion + "</li></ul></div>";
                         $("#keywordQuality" + grade).append(_div);
                     });
-                    map.put((i + 1) * 2, i);
+                    map.put(grade * 2, i);
                 }
 
-                for (var _k = 1, l = qtrs.length - 1; _k < l; _k++) {
-                    if (map.containsKey(_k)) {
-                        qtrs.eq(_k - 1).show();
+                for (var _k = 1, l = qtrs.length; _k < l; _k++) {
+                    if ((_k - 1) % 2 == 0 && map.containsKey(_k - 1)) {
                         qtrs.eq(_k).show();
+                        qtrs.eq(_k + 1).show();
                     }
                 }
 

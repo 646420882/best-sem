@@ -15,4 +15,12 @@ public class CharsetUtils {
 
         return s;
     }
+    public static int getChar(String str){
+        try {
+            return str.getBytes("gb2312").length;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

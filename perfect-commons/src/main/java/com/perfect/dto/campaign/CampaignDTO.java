@@ -35,7 +35,7 @@ public class CampaignDTO extends AccountIdDTO{
 
     private Integer showProb;
 
-    private Integer device;
+    private Integer device=0;
 
     private Double priceRatio;
 
@@ -45,7 +45,7 @@ public class CampaignDTO extends AccountIdDTO{
 
     private Boolean isDynamicCreative;
 
-    private Integer localStatus;
+    private Integer localStatus;//本地状态1为新增,2为修改,3为删除
 
     public Integer getLocalStatus() {
         return localStatus;

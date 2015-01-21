@@ -57,7 +57,7 @@
         width: 72%;
     }
     .zhilianglist table tr td ul li {
-        width: 11.6%;
+        width: 12.5%;
     }
     .t_list05 .zs_input3 {
         width: 73%;
@@ -121,7 +121,7 @@
         width: 70%;
     }
     .zhilianglist table tr td ul li {
-        width: 11.7%;
+        width: 12.5%;
     }
     .t_list05 .zs_input3 {
         width: 70%;
@@ -209,13 +209,13 @@
      }
 
      .fenrilist table tr td ul li {
-         width: 13.2%;
+         width: 14.2%;
      }
      .zhilianglist table tr td ul li {
-         width: 11.5%;
+         width: 12.5%;
      }
      .gjclist table tr td ul li {
-         width: 8.7%;
+         width: 9.8%;
      }
      .zs_bottom2 .t_list06 {
          width: 65%;
@@ -299,15 +299,15 @@
     }
 
     .zhilianglist table tr td ul li {
-        width: 11.5%;
+        width: 12.5%;
     }
 
     .gjclist table tr td ul li {
-        width: 8.6%;
+        width: 9.8%;
     }
 
     .fenrilist table tr td ul li {
-        width: 13.2%;
+        width: 14.2%;
     }
     .list01_under2 ul li span {
         font-size: 28px;
@@ -322,13 +322,13 @@
     .mid {width: 86.5%;
     }
     .zhilianglist table tr td ul li{
-        width: 11.2%;
+        width: 12.5%;
     }
     .fenrilist table tr td ul li {
-        width: 13%;
+        width: 14.2%;
     }
     .gjclist table tr td ul li {
-        width: 8.4%;
+        width: 9.8%;
     }
     .w_list03 ul li{
         padding:0 5px;
@@ -377,13 +377,13 @@
        *margin-left: 15%;
     }
     .zhilianglist table tr td ul li{
-        width: 11.4%;
+        width: 12.5%;
     }
     .fenrilist table tr td ul li {
-        width: 13%;
+        width: 14.2%;
     }
     .gjclist table tr td ul li {
-        width: 8.5%;
+        width: 9.5%;
     }
 
     .t_list02, .t_list03 {
@@ -428,11 +428,11 @@
         *margin-left: 5%;
     }
     .zhilianglist table tr td ul li{
-        width:11%;
+        width: 12.2%;
     }
 
     .fenrilist table tr td ul li {
-        width: 13%;
+        width: 14.2%;
     }
 
     .gjclist table tr td ul li {
@@ -592,13 +592,14 @@
 
 
     .fenrilist table tr td ul li{
-        width: 12.5%;
+        width: 14%;
     }
+
     .zhilianglist table tr td ul li {
-        width: 10%;
+        width: 12%;
     }
     .gjclist table tr td ul li{
-        width:7.5%;
+        width: 9%;
 
     }
 
@@ -621,6 +622,13 @@
     .w_list03 ul li{
         padding:0 5px;
         margin-right:10px;
+    }
+    .zs_concent_top ul li {
+        width: 90px;
+    }
+    .zs_top, .z_function_hover {
+        margin-right: 2px;
+
     }
 }
 @media screen and (max-width: 900px){

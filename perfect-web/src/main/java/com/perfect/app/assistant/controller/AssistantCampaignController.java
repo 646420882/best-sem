@@ -23,10 +23,7 @@ import com.perfect.utils.RegionalCodeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -46,6 +43,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.ACCOUNT_ID;
 public class AssistantCampaignController extends WebContextSupport {
 
     private static final String RES_SUCCESS = "success";
+    private static Integer OBJ_SIZE = 18;
     @Resource
     private CampaignService campaignService;
 
@@ -443,6 +441,32 @@ public class AssistantCampaignController extends WebContextSupport {
 
         keywordService.insertAll(list);
         writeJson(RES_SUCCESS, response);
+    }
+
+    @RequestMapping(value = "/assistantCampaign/upload")
+    public ModelAndView uploadCampaign(@RequestParam(value = "cid", required = true) String cid) {
+        if (cid.length() > OBJ_SIZE) {
+            CampaignDTO campaignDTO = campaignService.findByObjectId(cid);
+            Long campaignId = campaignService.uploadAdd(campaignDTO);
+            campaignDTO.setCampaignId(campaignId);
+            campaignService.update(campaignId, campaignDTO.getId());
+        } else {
+            CampaignDTO campaignDTO = campaignService.findOne(Long.valueOf(cid));
+            switch (campaignDTO.getLocalStatus()) {
+                case 2:
+                    System.out.println("执行修改操作");
+                    break;
+                case 3:
+                    System.out.println("执行删除操作");
+                    campaignService.uploadDel(new ArrayList<Long>() {{
+                        add(Long.valueOf(cid));
+                    }});
+                    break;
+                default:
+                    return writeMapObject(MSG, "暂无操作模式");
+            }
+        }
+        return writeMapObject(MSG, SUCCESS);
     }
 
 }

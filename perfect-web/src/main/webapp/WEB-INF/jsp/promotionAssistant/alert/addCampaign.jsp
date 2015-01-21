@@ -29,7 +29,7 @@
                     </li>
                     <li>
                         <div class="planbox1 fl">
-                            <span>*</span>每日预算：
+                            <span></span>每日预算：
                         </div>
                         <div class="planbox2 fl">
                             <input type="text" class="plan_input inputBudget" value="<请输入每日预算，不填默认为不限定>"

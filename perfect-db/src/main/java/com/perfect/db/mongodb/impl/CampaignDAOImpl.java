@@ -229,6 +229,27 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         getMongoTemplate().updateFirst(query, update, getEntityClass(), MongoEntityConstants.TBL_CAMPAIGN);
     }
 
+    @Override
+    public void update(Long campaignId,String objId) {
+        Update update=new Update();
+        update.set("cid",campaignId);
+        update.set("ls", null);
+        Query q=new Query(Criteria.where(SYSTEM_ID).is(objId));
+        getMongoTemplate().updateFirst(q,update,CampaignEntity.class);
+        // 计划更新后，计划下的单元的ocid 中的值要去掉，再将该单元的cid设置为从百度获取到的id
+        updateSub(campaignId,objId);
+    }
+
+    //54bcd1e3593f6a25cfe4e2da
+    @Override
+    public void deleteByCampaignId(Long campaginId) {
+        Query q=new Query(Criteria.where(CAMPAIGN_ID).is(campaginId));
+        getMongoTemplate().remove(q,CampaignEntity.class);
+        deleteSubByUpload(new ArrayList<Long>() {{
+            add(campaginId);
+        }});
+    }
+
 
     /**
      * 根据mongoID修改计划
@@ -380,13 +401,30 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         return adgroupIds;
     }
 
+    private List<String> getAdgroupIdByCampaignStrId(List<Long> campaignIds) {
+        Query query = new BasicQuery("{}", "{" + MongoEntityConstants.SYSTEM_ID + " : 1}");
+        query.addCriteria(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).in(campaignIds));
+        List<AdgroupEntity> list = getMongoTemplate().find(query, AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        List<String> adgroupIds = new ArrayList<>(list.size());
+        for (AdgroupEntity type : list)
+            adgroupIds.add(type.getId());
+        return adgroupIds;
+    }
+
     //删除下级内容
     private void deleteSub(List<Long> campaignIds) {
         List<Long> adgroupIds = getAdgroupIdByCampaignId(campaignIds);
         getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)), KeywordEntity.class, MongoEntityConstants.TBL_KEYWORD);
         getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)), CreativeEntity.class, MongoEntityConstants.TBL_CREATIVE);
+    }
 
+    //删除下级内容
+    private void deleteSubByUpload(List<Long> campaignIds) {
+        List<String> adgroupIds = getAdgroupIdByCampaignStrId(campaignIds);
+        getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).in(adgroupIds)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
+        getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(adgroupIds)), KeywordEntity.class, MongoEntityConstants.TBL_KEYWORD);
+        getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(adgroupIds)), CreativeEntity.class, MongoEntityConstants.TBL_CREATIVE);
     }
 
 
@@ -396,6 +434,24 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).in(adgroupIds)), AdgroupEntity.class, MongoEntityConstants.TBL_ADGROUP);
         getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(adgroupIds)), KeywordEntity.class, MongoEntityConstants.TBL_KEYWORD);
         getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(adgroupIds)), CreativeEntity.class, MongoEntityConstants.TBL_CREATIVE);
+    }
+
+    /**
+     * 要更新到本地有关联的单元，单元修改需修改关键字和创意的关联
+     * @param campaignId 从百度获取到的id
+     * @param objId 计划的mongodb Id
+     */
+    private void updateSub(Long campaignId,String objId){
+        Update up=new Update();
+        up.set("cid",campaignId);
+        Query query=new Query(Criteria.where(OBJ_CAMPAIGN_ID).in(objId));
+        getMongoTemplate().updateFirst(query,up,AdgroupEntity.class);
+
+//        //根据计划的本地id获取到本地关联到的单元id列表
+//        List<AdgroupEntity> adgroupEntities=getMongoTemplate().find(query,AdgroupEntity.class);
+//        List<String> adgroupIds=new ArrayList<>();
+//        adgroupEntities.parallelStream().forEach(s->adgroupIds.add(s.getId()));
+
     }
 
 }

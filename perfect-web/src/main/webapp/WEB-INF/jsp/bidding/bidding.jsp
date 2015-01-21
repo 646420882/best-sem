@@ -35,7 +35,7 @@
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
     <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-    <div id="main" class="mid over">
+    <div id="main" class="mid fr over">
         <div class="title_box">
             <div class="on_title over">
                 <a href="#"> 智能竞价 </a>

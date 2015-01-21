@@ -480,7 +480,8 @@ function overStep(isReplace) {
             cids = cids+_tr.find("td:eq(0) input").val()+"\n";
             aids =aids+ _tr.find("td:eq(1) input").val()+"\n";
             kwds = kwds+_tr.find("td:eq(2)").html()+"\n";
-            mts= mts+_tr.find("td:eq(3)").html()+"\n";
+            var matchType=until.getMatchTypeNumByName(_tr.find("td:eq(3)").html());
+            mts= mts+matchType+"\n";
             var money= _tr.find("td:eq(4)").html();
             if(/^-?\d+\.?\d*$/.test(money)){
                 prices=prices+money+"\n";
