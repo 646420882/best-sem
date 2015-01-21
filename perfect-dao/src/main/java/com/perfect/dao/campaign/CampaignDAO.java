@@ -40,7 +40,7 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     void update(CampaignDTO campaignDTO);
 
-    void update(Long campaignId,String objId);
+    void update(CampaignDTO dto,String objId);
 
     void deleteByCampaignId(Long campaginId);
 

@@ -239,14 +239,16 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     }
 
     @Override
-    public void update(Long campaignId,String objId) {
+    public void update(CampaignDTO dto,String objId) {
         Update update=new Update();
-        update.set("cid",campaignId);
+        update.set("cid",dto.getCampaignId());
         update.set("ls", null);
+        update.set("p",dto.getPause());
+        update.set("s",dto.getStatus());
         Query q=new Query(Criteria.where(SYSTEM_ID).is(objId));
         getMongoTemplate().updateFirst(q,update,CampaignEntity.class);
         // 计划更新后，计划下的单元的ocid 中的值要去掉，再将该单元的cid设置为从百度获取到的id
-        updateSub(campaignId,objId);
+        updateSub(dto.getCampaignId(),objId);
     }
 
     //54bcd1e3593f6a25cfe4e2da
@@ -254,6 +256,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     public void deleteByCampaignId(Long campaginId) {
         Query q=new Query(Criteria.where(CAMPAIGN_ID).is(campaginId));
         getMongoTemplate().remove(q,CampaignEntity.class);
+        getMongoTemplate().remove(q,CampaignBackUpEntity.class);
         deleteSubByUpload(new ArrayList<Long>() {{
             add(campaginId);
         }});
@@ -473,9 +476,10 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         Update up=new Update();
         up.set(CAMPAIGN_ID,campaignId);
         Query query=new Query(Criteria.where(OBJ_CAMPAIGN_ID).in(objId));
-        getMongoTemplate().updateFirst(query,up,KeywordEntity.class);
-        getMongoTemplate().updateFirst(query,up,CreativeEntity.class);
+        getMongoTemplate().updateFirst(query,up,AdgroupEntity.class);
 
+
+//        getMongoTemplate().updateFirst(query,up,CreativeEntity.class);
 //        //根据计划的本地id获取到本地关联到的单元id列表
 //        List<AdgroupEntity> adgroupEntities=getMongoTemplate().find(query,AdgroupEntity.class);
 //        List<String> adgroupIds=new ArrayList<>();

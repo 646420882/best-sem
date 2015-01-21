@@ -714,7 +714,7 @@
                     <th>&nbsp;启动/暂停</th>
                     <th>&nbsp;出价</th>
                     <th>&nbsp;否定关键词</th>
-                    <th>&nbsp;移动出价比例</th>
+                    <th>&nbsp;</th>
                     <th>&nbsp;推广计划名称</th>
                     <th class="username-column" data-noresize>
                         <div class="set fr"></div>

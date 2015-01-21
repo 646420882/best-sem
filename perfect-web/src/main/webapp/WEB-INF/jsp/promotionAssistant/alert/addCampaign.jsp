@@ -42,7 +42,7 @@
                             <span>*</span>移动出价比例：
                         </div>
                         <div class="planbox2 fl">
-                            <input type="text" class="plan_input inputPriceRatio">
+                            <input type="text" class="plan_input inputPriceRatio" maxlength="3"  onkeypress='until.regDouble(this)'>
                         </div>
                     </li>
                     <li>
@@ -116,10 +116,10 @@
                     </li>
                     <li>
                         <div class="planbox1 fl">
-                            <span></span>出价：
+                            <span>*</span>单元最高出价：
                         </div>
                         <div class="planbox2 fl">
-                            <input type="text" id="inputAdgroupPrice"/>
+                            <input type="text" id="inputAdgroupPrice" onkeypress='until.regDouble(this)' maxlength='4'/>
 
                         </div>
                     </li>
@@ -133,15 +133,6 @@
                                 <option value="true">暂停</option>
                             </select>
 
-                        </div>
-                    </li>
-                    <li>
-                        <div class="planbox1 fl">
-                            <span></span>移动出价比例：
-                        </div>
-                        <div class="planbox2 fl">
-                            <input type="text" id="inputAdgroupPriceRatio"/>
-                            默认为计划移动出价比例
                         </div>
                     </li>
                 </ul>

@@ -3,9 +3,7 @@ package com.perfect.service.impl;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
-import com.perfect.autosdk.sms.v3.AddAdgroupRequest;
-import com.perfect.autosdk.sms.v3.AddAdgroupResponse;
-import com.perfect.autosdk.sms.v3.AdgroupType;
+import com.perfect.autosdk.sms.v3.*;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
@@ -15,7 +13,6 @@ import com.perfect.dto.backup.AdgroupBackupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.service.AdgroupService;
-import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -153,13 +150,13 @@ public class AdgroupServiceImpl implements AdgroupService {
     }
 
     @Override
-    public List<Long> uploadAdd(List<String> aids) {
-        List<Long> returnAids=new ArrayList<>();
+    public List<AdgroupDTO> uploadAdd(List<String> aids) {
+        List<AdgroupDTO> returnDto = new ArrayList<>();
         List<AdgroupType> adgroupTypes = new ArrayList<>();
         aids.parallelStream().forEach(s -> {
             AdgroupDTO dto = adgroupDAO.findByObjId(s);
             CampaignDTO campaignDTO = campaignDAO.findByLongId(dto.getCampaignId());
-            if (campaignDTO.getCampaignId() != null) {
+            if (campaignDTO.getCampaignId() != null) {//判断如果需要上传的单元的计划编号没有更新，则无法更新该条记录
                 AdgroupType adgroupType = new AdgroupType();
                 adgroupType.setAdgroupName(dto.getAdgroupName());
                 adgroupType.setMaxPrice(dto.getMaxPrice());
@@ -170,7 +167,7 @@ public class AdgroupServiceImpl implements AdgroupService {
                 adgroupTypes.add(adgroupType);
             }
         });
-
+        if (adgroupTypes.size() > 0) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         try {
@@ -179,17 +176,94 @@ public class AdgroupServiceImpl implements AdgroupService {
             addAdgroupRequest.setAdgroupTypes(adgroupTypes);
             AddAdgroupResponse addAdgroupResponse=adgroupService.addAdgroup(addAdgroupRequest);
             List<AdgroupType> returnAdgroupType=addAdgroupResponse.getAdgroupTypes();
-            returnAdgroupType.parallelStream().forEach(s->returnAids.add(s.getCampaignId()));
-            return returnAids;
+            returnAdgroupType.parallelStream().forEach(s -> {
+                if (s.getAdgroupId() != null) {
+                    AdgroupDTO dto = new AdgroupDTO();
+                    dto.setAdgroupId(s.getAdgroupId());
+                    dto.setStatus(s.getStatus());
+                    dto.setPause(s.getPause());
+                    returnDto.add(dto);
+                }
+            });
+            return returnDto;
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        }
+        return returnDto;
+    }
+
+    @Override
+    public void update(String oid, AdgroupDTO dto) {
+        adgroupDAO.update(oid, dto);
+    }
+
+    @Override
+    public String uploadDel(Long aid) {
+        String result = null;
+        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+
+        try {
+            com.perfect.autosdk.sms.v3.AdgroupService adgroupService = commonService.getService(com.perfect.autosdk.sms.v3.AdgroupService.class);
+            DeleteAdgroupRequest adgroupRequest = new DeleteAdgroupRequest();
+            adgroupRequest.setAdgroupIds(new ArrayList<Long>() {{
+                add(aid);
+            }});
+            DeleteAdgroupResponse adgroupResponse = adgroupService.deleteAdgroup(adgroupRequest);
+            result = adgroupResponse.getResponse();
+            return result;
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public List<AdgroupDTO> uploadUpdate(List<Long> aid) {
+        List<AdgroupDTO> returnAdgroupDTO = new ArrayList<>();
+        List<AdgroupType> adgroupTypes = new ArrayList<>();
+        aid.parallelStream().forEach(s -> {
+            AdgroupDTO adgroupDTOFind = adgroupDAO.findOne(s);
+            AdgroupType adgroupType = new AdgroupType();
+            adgroupType.setAdgroupId(adgroupDTOFind.getAdgroupId());
+            adgroupType.setAdgroupName(adgroupDTOFind.getAdgroupName());
+            adgroupType.setMaxPrice(adgroupDTOFind.getMaxPrice());
+            adgroupType.setNegativeWords(adgroupDTOFind.getNegativeWords());
+            adgroupType.setExactNegativeWords(adgroupDTOFind.getExactNegativeWords());
+            adgroupType.setPause(adgroupDTOFind.getPause());
+            adgroupType.setStatus(adgroupDTOFind.getStatus());
+            adgroupTypes.add(adgroupType);
+        });
+        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+        try {
+            com.perfect.autosdk.sms.v3.AdgroupService adgroupService = commonService.getService(com.perfect.autosdk.sms.v3.AdgroupService.class);
+            UpdateAdgroupRequest adgroupRequest = new UpdateAdgroupRequest();
+            adgroupRequest.setAdgroupTypes(adgroupTypes);
+            UpdateAdgroupResponse updateCampaignResponse = adgroupService.updateAdgroup(adgroupRequest);
+            List<AdgroupType> returnAdgroupTypes = updateCampaignResponse.getAdgroupTypes();
+            returnAdgroupTypes.parallelStream().filter(s -> s != null).forEach(s -> {
+                AdgroupDTO adgroupDTO = new AdgroupBackupDTO();
+                adgroupDTO.setStatus(s.getStatus());
+                adgroupDTO.setPause(s.getPause());
+                returnAdgroupDTO.add(adgroupDTO);
+            });
+            return returnAdgroupDTO;
         } catch (ApiException e) {
             e.printStackTrace();
         }
 
-        return returnAids;
+        return returnAdgroupDTO;
     }
 
     @Override
-    public void update(String oid, Long aid) {
-        adgroupDAO.update(oid,aid);
+    public void updateUpdate(Long aid, AdgroupDTO dto) {
+        adgroupDAO.pdateUpdate( aid,dto);
+    }
+
+    @Override
+    public void deleteBubLinks(Long aid) {
+        adgroupDAO.deleteBubLinks(aid);
     }
 }

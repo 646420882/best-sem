@@ -109,14 +109,20 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public Long uploadAdd(CampaignDTO dto) {
+    public List<CampaignDTO> uploadAdd(String cid) {
+        List<CampaignDTO> returnDtos = new ArrayList<>();
+        CampaignDTO dto = campaignDAO.findByObjectId(cid);
         CampaignType campaignType = new CampaignType();
         if (CharsetUtils.getChar(dto.getCampaignName()) < 30) {
             campaignType.setCampaignName(dto.getCampaignName());
-            if (dto.getBudget() >= 0.1 && dto.getBudget() <= 49) {
+            if(dto.getBudget()==null){
                 campaignType.setBudget(null);
-            } else {
-                campaignType.setBudget(dto.getBudget());
+            }else{
+                if (dto.getBudget() <=49) {
+                    campaignType.setBudget(null);
+                } else {
+                    campaignType.setBudget(dto.getBudget());
+                }
             }
             campaignType.setRegionTarget(dto.getRegionTarget());
             campaignType.setExcludeIp(dto.getExcludeIp());
@@ -129,17 +135,18 @@ public class CampaignServiceImpl implements CampaignService {
             campaignType.setShowProb(dto.getShowProb());
             campaignType.setDevice(dto.getDevice());
             if (dto.getDevice() != null && dto.getDevice() == 0) {
-                if (dto.getPriceRatio() >= 1.0 && dto.getPriceRatio() <= 10.0) {
+                if (dto.getPriceRatio() >= 0.1 && dto.getPriceRatio() <= 10.0) {
                     campaignType.setPriceRatio(dto.getPriceRatio());
                 } else {
-                    campaignType.setPriceRatio(10.0);
+                    campaignType.setPriceRatio(1.0);
                 }
             } else {
-                campaignType.setPriceRatio(10.0);
+                campaignType.setPriceRatio(1.0);
             }
             campaignType.setPause(dto.getPause());
             campaignType.setStatus(dto.getStatus());
             campaignType.setIsDynamicCreative(dto.getIsDynamicCreative());
+        }
             BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
             CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
             try {
@@ -147,18 +154,22 @@ public class CampaignServiceImpl implements CampaignService {
                 AddCampaignRequest addCampaignRequest = new AddCampaignRequest();
                 addCampaignRequest.setCampaignTypes(Arrays.asList(campaignType));
                 AddCampaignResponse addCampaignResponse = campaignService.addCampaign(addCampaignRequest);
-                CampaignType campaignTypeResponse = addCampaignResponse.getCampaignType(0);
-                if (campaignTypeResponse.getCampaignId() != null) {
-                    return campaignTypeResponse.getCampaignId();
-                }
+                List<CampaignType> campaignTypes = addCampaignResponse.getCampaignTypes();
+                campaignTypes.parallelStream().forEach(s -> {
+                    if (s.getCampaignId() != null) {
+                        CampaignDTO campaignDTO = new CampaignDTO();
+                        campaignDTO.setCampaignId(s.getCampaignId());
+                        campaignDTO.setStatus(s.getStatus());
+                        campaignDTO.setPause(s.getPause());
+                        returnDtos.add(campaignDTO);
+                    }
+                });
+                return returnDtos;
             } catch (ApiException e) {
                 e.printStackTrace();
             }
-        } else {
-            return Long.valueOf(0);
-        }
 
-        return Long.valueOf(0);
+        return returnDtos;
     }
 
     @Override
@@ -225,8 +236,8 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public void update(Long campaignId, String objId) {
-        campaignDAO.update(campaignId, objId);
+    public void update(CampaignDTO dto, String objId) {
+        campaignDAO.update(dto, objId);
     }
 
     @Override

@@ -301,7 +301,7 @@ public class AssistantCampaignController extends WebContextSupport {
     @RequestMapping(value = "assistantCampaign/add")
     public void addCampaign(String campaignName, Double budget, Double priceRatio, Boolean pause, Integer showProb, String schedule, Integer[] regionTarget,
                             String negativeWords, String exactNegativeWords, String excludeIp,
-                            String adgroupName, Double maxPrice, Boolean adgroupPause, Double adgroupPriceRatio
+                            String adgroupName, Double maxPrice, Boolean adgroupPause
     ) {
 
         //推广计划
@@ -338,7 +338,6 @@ public class AssistantCampaignController extends WebContextSupport {
         adgroupDTO.setPause(adgroupPause);
         adgroupDTO.setStatus(-1);
         adgroupDTO.setLocalStatus(1);
-        adgroupDTO.setPriceRatio(adgroupPriceRatio);
         adgroupDTO.setAccountId(AppContext.getAccountId());
         adgroupService.save(adgroupDTO);
 
@@ -446,9 +445,9 @@ public class AssistantCampaignController extends WebContextSupport {
     @RequestMapping(value = "/assistantCampaign/upload")
     public ModelAndView uploadCampaign(@RequestParam(value = "cid", required = true) String cid) {
         if (cid.length() > OBJ_SIZE) {
-            CampaignDTO campaignDTO = campaignService.findByObjectId(cid);
-            Long campaignId = campaignService.uploadAdd(campaignDTO);
-            campaignService.update(campaignId, campaignDTO.getId());
+            List<CampaignDTO> dtos=campaignService.uploadAdd(cid);
+            dtos.parallelStream().forEach(s->campaignService.update(s,cid));
+            return writeMapObject(MSG, SUCCESS);
         } else {
             CampaignDTO campaignDTO = campaignService.findOne(Long.valueOf(cid));
             switch (campaignDTO.getLocalStatus()) {
@@ -463,17 +462,16 @@ public class AssistantCampaignController extends WebContextSupport {
 
                     //获取到mongoId后去campaign_bak表查询，查询到备份的数据然后将备份的数据删除掉,最后将上传更新的那个方法的ls改为null
                     campaignBackUpService.deleteByOId(afterUpdateObjId);
-                    break;
+                    return writeMapObject(MSG, SUCCESS);
                 case 3:
                     campaignService.uploadDel(new ArrayList<Long>() {{
                         add(Long.valueOf(cid));
                     }});
-                    break;
+                    return writeMapObject(MSG, SUCCESS);
                 default:
                     return writeMapObject(MSG, "暂无操作模式");
             }
         }
-        return writeMapObject(MSG, SUCCESS);
     }
 
 }

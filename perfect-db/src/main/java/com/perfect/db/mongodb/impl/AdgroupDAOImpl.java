@@ -232,20 +232,18 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
      */
     @Override
     public void deleteByObjId(final String oid) {
-        getMongoTemplate().remove(Query.query(Criteria.where(get_id()).is(oid)), getEntityClass());
-        deleteSubOid(Arrays.asList(oid));
-
+        getMongoTemplate().remove(Query.query(Criteria.where(SYSTEM_ID).is(oid)), getEntityClass());
+        deleteSubOid(oid);
     }
 
     @Override
     public void deleteByObjId(Long adgroupId) {
         Update update = new Update();
-        update.set("ls", "");
+        update.set("ls", "3");
         getMongoTemplate().updateFirst(new Query(Criteria.where(ADGROUP_ID).is(adgroupId)), update, getEntityClass());
-        deleteLinked(adgroupId);
         //以前是直接删除拉取到本地的数据，是硬删除，现在改为软删除，以便以后还原操作
 //        mongoTemplate.remove(new Query(Criteria.where(ADGROUP_ID).is(adgroupId)),getEntityClass(),TBL_ADGROUP);
-        logDAO.insertLog(adgroupId, LogStatusConstant.ENTITY_ADGROUP, LogStatusConstant.OPT_DELETE);
+//        logDAO.insertLog(adgroupId, LogStatusConstant.ENTITY_ADGROUP, LogStatusConstant.OPT_DELETE);
     }
 
     @Override
@@ -264,7 +262,6 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         up.set("exneg", adgroupEntity.getExactNegativeWords());
         up.set("p", adgroupEntity.getPause());
         up.set("s", adgroupEntity.getStatus());
-        up.set("m", adgroupEntity.getMib());
         getMongoTemplate().updateFirst(new Query(Criteria.where(get_id()).is(adgroupEntity.getId())), up, getEntityClass());
         logDAO.insertLog(adgroupEntity.getId(), LogStatusConstant.ENTITY_ADGROUP);
     }
@@ -370,12 +367,31 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     }
 
     @Override
-    public void update(String oid, Long aid) {
+    public void update(String oid, AdgroupDTO dto) {
         Update up=new Update();
         up.set("ls",null);
-        up.set(ADGROUP_ID,aid);
+        up.set("s",dto.getStatus());
+        up.set("p",dto.getPause());
+        up.set(ADGROUP_ID,dto.getAdgroupId());
         getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(oid)),up,AdgroupEntity.class);
-        updateSub(aid,oid);
+        updateSub(dto.getAdgroupId(),oid);
+    }
+
+    @Override
+    public void deleteBubLinks(Long aid) {
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),AdgroupEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),CreativeEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),KeywordEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),AdgroupBackUpEntity.class);
+    }
+
+    @Override
+    public void pdateUpdate(Long aid, AdgroupDTO dto) {
+        Update up=new Update();
+        up.set("ls",null);
+        up.set("s",dto.getStatus());
+        up.set("p",dto.getPause());
+        getMongoTemplate().updateFirst(new Query(Criteria.where(ADGROUP_ID).is(aid)),up,AdgroupEntity.class);
     }
 
     public void insertAll(List<AdgroupDTO> adgroupDTOs) {
@@ -459,26 +475,26 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     /**
      * 级联删除，删除单元下的创意和关键字
      *
-     * @param oids
+     * @param oid
      */
-    private void deleteSubOid(List<String> oids) {
+    private void deleteSubOid(String oid) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.remove(new Query(Criteria.where(get_id()).in(oids)), KeywordEntity.class);
-        mongoTemplate.remove(new Query(Criteria.where(get_id()).in(oids)), CreativeEntity.class);
+        mongoTemplate.remove(new Query(Criteria.where(OBJ_ADGROUP_ID).is(oid)), KeywordEntity.class);
+        mongoTemplate.remove(new Query(Criteria.where(OBJ_ADGROUP_ID).is(oid)), CreativeEntity.class);
     }
 
-    /**
-     * 根据删除的单元删除其下的关键词和创意，该删除可以拥有还原功能，实际上是将创意和关键字放入备份数据库中，如果还原创单元，则级联的
-     *
-     * @param agid
-     */
-    private void deleteLinked(Long agid) {
-        Update up = new Update();
-        up.set("ls", 4);
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-        mongoTemplate.updateMulti(new Query(Criteria.where(ADGROUP_ID).in(agid)), up, KeywordEntity.class, TBL_KEYWORD);
-        mongoTemplate.updateMulti(new Query(Criteria.where(ADGROUP_ID).in(agid)), up, CreativeEntity.class, TBL_CREATIVE);
-    }
+//    /**
+//     * 根据删除的单元删除其下的关键词和创意，该删除可以拥有还原功能，实际上是将创意和关键字放入备份数据库中，如果还原创单元，则级联的
+//     *
+//     * @param agid
+//     */
+//    private void deleteLinked(Long agid) {
+//        Update up = new Update();
+//        up.set("ls", 3);
+//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
+//        mongoTemplate.updateMulti(new Query(Criteria.where(ADGROUP_ID).in(agid)), up, KeywordEntity.class, TBL_KEYWORD);
+//        mongoTemplate.updateMulti(new Query(Criteria.where(ADGROUP_ID).in(agid)), up, CreativeEntity.class, TBL_CREATIVE);
+//    }
 
     private void subdelBack(Long oid) {
         Update up = new Update();
@@ -493,6 +509,8 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         up.set(ADGROUP_ID,aid);
         Query query=new Query(Criteria.where(OBJ_ADGROUP_ID).in(oid));
         getMongoTemplate().updateFirst(query,up,AdgroupEntity.class);
+        getMongoTemplate().updateFirst(query,up,CreativeEntity.class);
+        getMongoTemplate().updateFirst(query,up,KeywordEntity.class);
     }
 
     @Resource

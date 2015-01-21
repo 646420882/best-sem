@@ -71,6 +71,10 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
 
     double findPriceRatio(Long cid);
 
-    void update(String oid,Long aid);
+    void update(String oid,AdgroupDTO dto);
+
+    void deleteBubLinks(Long aid);
+
+    void pdateUpdate(Long aid, AdgroupDTO dto);
 
 }
