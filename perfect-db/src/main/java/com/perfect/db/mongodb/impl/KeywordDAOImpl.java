@@ -607,7 +607,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             }
         }
         q.addCriteria(c);
-        KeywordEntity entity=getMongoTemplate().findOne(q,getEntityClass());
+        KeywordEntity entity=getMongoTemplate().findOne(q, getEntityClass());
         KeywordDTO dto=ObjectUtils.convert(entity,KeywordDTO.class);
         return dto;
     }
@@ -622,6 +622,23 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         update.set("p",dto.getPause());
         update.set("mobile",dto.getMobileDestinationUrl());
         getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(dto.getId())), update, getEntityClass());
+    }
+
+    @Override
+    public void update(String oid, KeywordDTO dto) {
+        Update update=new Update();
+        update.set("ls",null);
+        update.set(KEYWORD_ID,dto.getKeywordId());
+        update.set("s",dto.getStatus());
+        getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(oid)),update,getEntityClass());
+    }
+
+    @Override
+    public void updateLs(Long kid) {
+        Update up=new Update();
+        up.set("ls",null);
+        getMongoTemplate().updateFirst(new Query(Criteria.where(KEYWORD_ID).is(kid)), up, getEntityClass());//执行修改ls状态后，还需要将备份的keywor对应的删掉
+        getMongoTemplate().remove(new Query(Criteria.where(KEYWORD_ID).is(kid)), KeywordBackUpEntity.class);//删除备份的keyword
     }
 
     /**

@@ -108,7 +108,7 @@
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current" onclick="nextStep();">下一步</li>
-                                            <li class="close">取消</li>
+                                            <%--<li class="close">取消</li>--%>
                                         </ul>
                                     </div>
                                 </div>
@@ -275,7 +275,7 @@ function onCheck(e, treeId, treeNode) {
     var vs = getSelectedNodeNameToString();
     if (v != "") {
         var campaign = v.split("-");
-        $("#column").html(campaign.length);
+        $("#column").html(campaign.length-1);
         focuspError();
     } else {
         $("#column").html(0);

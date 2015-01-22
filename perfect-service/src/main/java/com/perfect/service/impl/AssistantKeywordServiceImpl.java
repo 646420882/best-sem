@@ -3,7 +3,8 @@ package com.perfect.service.impl;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
-import com.perfect.autosdk.sms.v3.QualityType;
+import com.perfect.autosdk.exception.ApiException;
+import com.perfect.autosdk.sms.v3.*;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
@@ -857,6 +858,115 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         }
 
         return keywordDTO;
+    }
+
+    @Override
+    public List<KeywordDTO> uploadAdd(List<String> kids) {
+        List<KeywordDTO> retrunKeywordDTOs = new ArrayList<>();
+        List<KeywordType> keywordTypes = new ArrayList<>();
+        kids.parallelStream().forEach(s -> {
+            KeywordDTO keywordDTO = keywordDAO.findByObjectId(s);
+            AdgroupDTO adgroupDTO = adgroupDAO.findOne(keywordDTO.getAdgroupId());
+            if (adgroupDTO.getAdgroupId() != null) {
+                KeywordType keywordType = new KeywordType();
+                keywordType.setAdgroupId(adgroupDTO.getAdgroupId());
+                keywordType.setKeyword(keywordDTO.getKeyword());
+                keywordType.setMatchType(keywordDTO.getMatchType());
+                keywordType.setPrice(Double.parseDouble(keywordDTO.getPrice()+""));
+                keywordType.setPcDestinationUrl(keywordDTO.getPcDestinationUrl());
+                keywordType.setMobileDestinationUrl(keywordDTO.getMobileDestinationUrl());
+                keywordType.setPause(keywordDTO.getPause());
+                keywordTypes.add(keywordType);
+            }
+        });
+        //这里需要告诉用户哪些关键字没有上传成功，原因是该关键字的上级单元也没有上传，所以，这个方法以后要改为map类型的返回值，一个返回成功的List，一个返回失败的List
+        if (keywordTypes.size() > 0) {//这里判断是否有符合条件的关键词
+            BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+
+            try {
+                KeywordService keywordService = commonService.getService(KeywordService.class);
+                AddKeywordRequest addKeywordRequest = new AddKeywordRequest();
+                addKeywordRequest.setKeywordTypes(keywordTypes);
+                AddKeywordResponse addKeywordResponse = keywordService.addKeyword(addKeywordRequest);
+                List<KeywordType> returnKeywordList = addKeywordResponse.getKeywordTypes();
+                returnKeywordList.parallelStream().filter(s -> s.getKeywordId() != null).forEach(s -> {
+                    KeywordDTO returnKeywordDTO = new KeywordDTO();
+                    returnKeywordDTO.setKeywordId(s.getKeywordId());
+                    returnKeywordDTO.setStatus(s.getStatus());
+                    retrunKeywordDTOs.add(returnKeywordDTO);
+                });
+                return retrunKeywordDTOs;
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+        }
+        return retrunKeywordDTOs;
+    }
+
+    @Override
+    public void update(String oid, KeywordDTO dto) {
+        keywordDAO.update(oid,dto);
+    }
+
+    @Override
+    public Integer uploadDel(Long kid) {
+        Integer result=0;
+        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+        try {
+            KeywordService keywordService = commonService.getService(KeywordService.class);
+            DeleteKeywordRequest deleteKeywordRequest=new DeleteKeywordRequest();
+            deleteKeywordRequest.setKeywordIds(new ArrayList<Long>(){{add(kid);}});
+            DeleteKeywordResponse deleteKeywordResponse=keywordService.deleteKeyword(deleteKeywordRequest);
+            if(deleteKeywordResponse.getResult()==1){//如果全部删除成功，则执行删除本地的关键字
+                keywordDAO.deleteByIds(new ArrayList<Long>(){{add(kid);}});
+            }
+            return deleteKeywordResponse.getResult();
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public List<KeywordDTO> uploadUpdate(List<Long> kid) {
+        List<KeywordDTO> returnKeywordDTOs=new ArrayList<>();
+        List<KeywordType> keywordTypes=new ArrayList<>();
+        kid.parallelStream().forEach(s->{
+            KeywordDTO dtoFind=keywordDAO.findOne(s);
+            if(dtoFind!=null){
+                KeywordType keywordType=new KeywordType();
+                keywordType.setKeywordId(dtoFind.getKeywordId());
+                keywordType.setAdgroupId(dtoFind.getAdgroupId());
+                keywordType.setMatchType(dtoFind.getMatchType());
+                keywordType.setPrice(Double.parseDouble(dtoFind.getPrice()+""));
+                keywordType.setPcDestinationUrl(dtoFind.getPcDestinationUrl());
+                keywordType.setMobileDestinationUrl(dtoFind.getMobileDestinationUrl());
+                keywordType.setPause(dtoFind.getPause());
+                keywordTypes.add(keywordType);
+            }
+        });
+        if(keywordTypes.size()>0){
+            BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+            try {
+                KeywordService keywordService = commonService.getService(KeywordService.class);
+                UpdateKeywordRequest updateKeywordRequest=new UpdateKeywordRequest();
+                updateKeywordRequest.setKeywordTypes(keywordTypes);
+                UpdateKeywordResponse updateKeywordResponse=keywordService.updateKeyword(updateKeywordRequest);
+                List<KeywordType> returnKeywordTypes=updateKeywordResponse.getKeywordTypes();
+                returnKeywordTypes.parallelStream().filter(s->s!=null).forEach(s->{//这里进行判定，如果返回不为null，则进行修改本地的ls为null，表示上传修改操作已经完成
+                    keywordDAO.updateLs(s.getKeywordId());
+                    KeywordDTO keywordDTO=new KeywordDTO();
+                    keywordDTO.setKeywordId(s.getKeywordId());
+                    returnKeywordDTOs.add(keywordDTO);
+                });
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+        }
+        return returnKeywordDTOs;
     }
 
 

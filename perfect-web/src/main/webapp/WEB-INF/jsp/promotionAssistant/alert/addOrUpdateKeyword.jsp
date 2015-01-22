@@ -93,9 +93,17 @@
                                     <p>格式：关键词名称（必填），匹配模式，出价（为0则使用推广单元出价），访问URL，移动访问URL，启用/暂停</p>
 
                                     <p>例如：鲜花，精确，1.0，www.com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,启用</p>
-                                    <textarea id="TextAreaChoose"></textarea>
+                                    <textarea onkeyup="getColumn(this)" id="TextAreaChoose"
+                                              style="font-size: 12px;font-family: 微软雅黑;"></textarea>
 
-                                    <p><input type="checkbox" id="isReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容</p>
+                                    <p id="pError"><span><span id="checkedNodes">0</span>x<span
+                                            id="column">0</span>=<span
+                                            id="totalStr"></span>/<span id="maxLength">5000</span></span>
+                                    </p>
+
+                                    <p><input type="checkbox" id="isReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容&nbsp;<span
+                                            style="color:red;">您的域名:&nbsp;</span><span
+                                            id="doMain"></span></p>
                                     <%-- <p><input type="checkbox">&nbsp;用输入的关键词搜索更多相关关键词，把握题词质量</p>--%>
                                 </div>
                             </div>
@@ -225,6 +233,20 @@
 <script type="text/javascript">
 
 
+    initDomain();
+    //进入此页面加载树形列表数据
+    getCampaiTreeData();
+
+    function initDomain() {
+        var dm = $("#doMain").html();
+        if (dm == "") {
+            $.get("/assistantCreative/getDomain", function (result) {
+                if (result != "0") {
+                    $("#doMain").html(result);
+                }
+            });
+        }
+    }
     //得到树形列表数据
     function getCampaiTreeData() {
         $("#treeDemo").html("正在加载数据...");
@@ -276,10 +298,6 @@
         });
     }
 
-
-    //进入此页面加载树形列表数据
-    getCampaiTreeData();
-
     var setting = {
         check: {
             enable: true
@@ -300,6 +318,15 @@
 
     function onCheck(e, treeId, treeNode) {
         count();
+        var v = getSelectedNodeToString();
+        var vs = getSelectedNodeNameToString();
+        if (v != "") {
+            var campaign = v.split("-");
+            $("#column").html(campaign.length - 1);
+            focuspError();
+        } else {
+            $("#column").html(0);
+        }
     }
 
     function setTitle(node) {
@@ -364,7 +391,6 @@
         setTitle();
         count();
     }
-    ;
 
 </script>
 
@@ -409,23 +435,68 @@ function getSelectedNodeNameToString() {
     v = v.substr(0, v.length - 1);
     return v;
 }
-
+function getChar(str) {
+    var char = str.match(/[^\x00-\xff]/ig);
+    return str.length + (char == null ? 0 : char.length);
+}
 
 //下一步按钮的单击事件
 var pdata = null;
 function nextStepAjax() {
     var txt=$("#TextAreaChoose").val().trim();
     if (getSelectedNodeToString() != ""&&txt!="") {
-        $("#inputDwdInfo").hide();
-        $("#validateDiv").show();
-        $("#tabUl li:eq(1)").addClass("current");
-        var isReplace = $("#isReplace")[0].checked;
+        var dm = $("#doMain").html();
         var v = getSelectedNodeToString();
         var vs =getSelectedNodeNameToString();
         var ids = v.split("-");
         var names = vs.split("-");
         var _createTable = $("#createTable tbody");
         var txtSize = txt.split("\n");
+        for (var j = 0; j < txtSize.length; j++) {
+            var kwd = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";
+            var pr = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "";
+            var pc = txtSize[j].split(",")[3] != undefined ? txtSize[j].split(",")[3] : "";
+            var mib = txtSize[j].split(",")[4] != undefined ? txtSize[j].split(",")[4] : "";
+            if (parseInt(getChar(kwd)) > 30 || parseInt(getChar(kwd)) < 1) {
+                alert("第" + (j + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
+                return;
+            }
+            // /^-?\d+\.?\d*$/
+            if (!/^-?\d+\.?\d*$/.test(pr)) {
+                alert("第" + (j + 1) + "行的\"出价\"小数输入不正确!");
+                return;
+            } else {
+                if (parseFloat(pr).toFixed(3) >= 999.9) {
+                    alert("第" + (j + 1) + "行的\"出价\"大小为：(0,999.9]<=关键词出价&&<=所属计划预算");
+                    return;
+                }
+            }
+            if (pc != "") {
+                if (parseInt(getChar(pc)) > 1024) {
+                    alert("访问Url不能超过1024个字符");
+                    return;
+                } else {
+                    if ((pc.indexOf(dm) == -1)) {
+                        alert("第" + (j + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                        return;
+                    }
+                }
+            }
+            if(mib!=""){
+                if (parseInt(getChar(mib)) > 1024) {
+                    alert("访问Url不能超过1024个字符");
+                    return;
+                } else {
+                    if ((mib.indexOf(dm) == -1)) {
+                        alert("第" + (j + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                        return;
+                    }
+                }
+            }
+        }
+        $("#tabUl li:eq(1)").addClass("current");
+        $("#inputDwdInfo").hide();
+        $("#validateDiv").show();
         _createTable.empty();
         var _trClass="";
         $("#criSize").html(txtSize.length*names.length);
@@ -723,6 +794,33 @@ $(document).ajaxStop(function () {
     ajaxbg.fadeOut(1000);
 });
 
+/**
+ 获取文本框中数据的行数*
+ * @param rs
+ */
+function getColumn(rs) {
+    var _this = $(rs);
+    if (_this.val() != "") {
+        var column = _this.val().trim().split("\n");
+        $("#checkedNodes").html(column.length);
+        focuspError();
+    } else {
+        $("#checkedNodes").html(0);
+    }
+}
+/**
+ 验证输入的字符串是否大于规定值*
+ */
+function focuspError() {
+    var plans = parseInt($("#column").html());
+    var col = parseInt($("#checkedNodes").html());
+    $("#totalStr").html(plans * col);
+    if ((plans * col) > parseInt($("#maxLength").html())) {
+        $("#pError").css("color", "red");
+    } else {
+        $("#pError").css("color", "black");
+    }
+}
 </script>
 
 </body>

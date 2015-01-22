@@ -45,6 +45,7 @@ import java.util.*;
 @Scope("prototype")
 public class AssistantKeywordController extends WebContextSupport{
     private static final String RES_SUCCESS = "success";
+    private static Integer OBJ_SIZE = 18;
 
     @Resource
     private AssistantKeywordService assistantKeywordService;
@@ -105,7 +106,7 @@ public class AssistantKeywordController extends WebContextSupport{
         if (aid.length() > 18) {
             map.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
         } else {
-            map.put(MongoEntityConstants.ADGROUP_ID, aid);
+            map.put(MongoEntityConstants.ADGROUP_ID, Long.valueOf(aid));
         }
         //如果查询到有关键词名为此的，需要替换
         KeywordDTO dto = assistantKeywordService.findByParams(map);
@@ -522,5 +523,40 @@ public class AssistantKeywordController extends WebContextSupport{
             e.printStackTrace();
         }
         return resList;
+    }
+
+    @RequestMapping(value = "assistantKeyword/uploadOperate")
+    public ModelAndView uploadOperate(@RequestParam(value = "kid") String kid, Integer ls) {
+        if (kid.length() > OBJ_SIZE) {
+            List<KeywordDTO> keywordDTOs = assistantKeywordService.uploadAdd(new ArrayList<String>() {{
+                add(kid);
+            }});
+            if (keywordDTOs.size() > 0) {
+                keywordDTOs.parallelStream().forEach(s -> assistantKeywordService.update(kid, s));
+                return writeMapObject(MSG, SUCCESS);
+            } else {
+                return writeMapObject(MSG, "需要更新的关键词的单元还未上传到凤巢，请先上传该关键词的单元后再上传关键词！");
+            }
+        } else {
+            switch (ls) {
+                case 2:
+                    List<KeywordDTO> keywordDTOList = assistantKeywordService.uploadUpdate(new ArrayList<Long>() {{
+                        add(Long.valueOf(kid));
+                    }});
+                    if (keywordDTOList.size() > 0) {
+                        return writeMapObject(MSG, SUCCESS);
+                    } else {
+                        return writeMapObject(MSG, "部分修改失败！");
+                    }
+                case 3:
+                    Integer result = assistantKeywordService.uploadDel(Long.valueOf(kid));
+                    if (result == 1) {
+                        return writeMapObject(MSG, SUCCESS);
+                    } else {
+                        return writeMapObject(MSG, "删除部分失败");
+                    }
+            }
+        }
+        return writeMapObject(MSG, "上传失败");
     }
 }

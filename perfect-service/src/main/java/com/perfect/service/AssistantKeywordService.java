@@ -52,4 +52,33 @@ public interface AssistantKeywordService {
     void update(KeywordDTO keywordDTO,KeywordDTO keywordBackUpDTO);
 
     void insert(KeywordDTO dto);
+
+    /**
+     * 上传添加操作，获取到kid以及status
+     * @param kids 获取到的百度kid
+     * @return
+     */
+    List<KeywordDTO> uploadAdd(List<String> kids);
+
+    /**
+     *  更新成功后需要将本地的关键字的Kwid 更新出来，然后将statu改为百度的status，ls改为null
+     * @param dto 获取到的百度对象
+     * @param oid 本地的mongodbId，用于查询
+     */
+    void update(String oid,KeywordDTO dto);
+
+    /**
+     * 上传删除操作，
+     * @param kid 要删除的关键词id
+     * @return 删除成功返回null值，以此判断删除是否成功
+     */
+    Integer uploadDel(Long kid);
+
+    /**
+     * 上传修改操作
+     * @param kid 要修改的kid
+     * @return 修改过后的KeywordDTO
+     */
+    List<KeywordDTO> uploadUpdate(List<Long> kid);
+
 }

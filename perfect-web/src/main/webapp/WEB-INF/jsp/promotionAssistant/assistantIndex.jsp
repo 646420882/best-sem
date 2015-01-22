@@ -183,17 +183,17 @@
                 </li>
                 <li>
                     <div class="t_list01 fl over">出价：</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(2,this.value)" onkeydown="missBlur(event,this)" class="zs_input1 price_1">
+                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(2,this.value)" onkeydown="missBlur(event,this)" class="zs_input1 price_1" maxlength="5"  onkeypress='until.regDouble(this)'>
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">访问URL:</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(3,this.value)" onkeydown="missBlur(event,this)"class="zs_input1 pcurl_1"><span
+                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(3,this.value)" onkeydown="missBlur(event,this)"class="zs_input1 pcurl_1" maxlength="1024"><span
                             class="pcurlSize_1">0/1024</span></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">移动访问URL：</div>
-                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(4,this.value)"  onkeydown="missBlur(event,this)"class="zs_input1 mourl_1"><span
+                    <div class="t_list02 fl over"><input type="text" onblur="whenBlurEditKeyword(4,this.value)"  onkeydown="missBlur(event,this)"class="zs_input1 mourl_1" maxlength="1024"><span
                             class="mourlSize_1">0/1024</span></div>
                 </li>
             </ul>
@@ -206,7 +206,8 @@
                 </li>
                 <li>
                     <div class="t_list01 fl over">匹配模式：</div>
-                    <div class="w_list02 fl over"><em class="matchModel_1"></em></div>
+                    <div class="w_list02 fl over"><select class="match_1" onchange="whenBlurEditKeyword(5,this.value)">
+                    </select></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">状态：</div>
@@ -216,6 +217,10 @@
                     <div class="t_list01 fl over">启用/暂停：</div>
                     <div class="w_list02 fl over"><select class="pause_1" onchange="whenBlurEditKeyword(7,this.value)">
                     </select></div>
+                </li>
+                <li>
+                    <div class="t_list01 fl over">您的注册域名为：</div>
+                    <div class="w_list02 fl over"><span id="doMainS" style="color:red;"></span></div>
                 </li>
             </ul>
         </div>
@@ -754,15 +759,11 @@
             <ul>
                 <li>
                     <div class="t_list01 fl over">名称：</div>
-                    <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
+                    <div class="t_list02 fl over"><input type="text" class="zs_input1" disabled="disabled"></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">出价：</div>
-                    <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
-                </li>
-                <li>
-                    <div class="t_list01 fl over">移动出价比例：</div>
-                    <div class="t_list02 fl over"><input type="text" class="zs_input1"></div>
+                    <div class="t_list02 fl over"><input type="text" class="zs_input1" disabled="disabled"></div>
                 </li>
             </ul>
         </div>
@@ -841,16 +842,16 @@
             <ul>
                 <li>
                     <div class="t_list01 fl over">名称：</div>
-                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(1,this.value);"onkeydown="missBlur(event,this);" class="zs_input3 campaignName_5"></div>
+                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(1,this.value);"onkeydown="missBlur(event,this);" class="zs_input3 campaignName_5" maxlength="30"></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">每日预算：</div>
-                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(2,this.value);"onkeydown="missBlur(event,this);" class="zs_input3 budget_5">
+                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(2,this.value);"onkeydown="missBlur(event,this);" class="zs_input3 budget_5" maxlength="5">
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">移动出价比例：</div>
-                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(3,this.value);" onkeydown="missBlur(event,this);"class="zs_input3 priceRatio_5"><span>0/1024</span></div>
+                    <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(3,this.value);" onkeydown="missBlur(event,this);"class="zs_input3 priceRatio_5" maxlength="3"  onkeypress='until.regDouble(this)'></div>
                 </li>
             </ul>
         </div>
@@ -1334,7 +1335,7 @@
 <div id="reachBudget1" class="box" style="display:none; width: 600px">
     <h2 id="reachBudget_head">
         <span class="fl">账户预算</span>
-        <a href="javascript:void()" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" class="close">关闭</a></h2>
 
     <div class="mainlist">
         <div class="tu_top over">
@@ -1520,7 +1521,7 @@
 <jsp:include page="../promotionAssistant/alert/addCampaign.jsp"/>
 <!-- javascript -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+<%--<script type="text/javascript" src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/store.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/grid/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/jquery.resizableColumns.min.js"></script>

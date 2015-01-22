@@ -243,8 +243,8 @@ public class AdgroupServiceImpl implements AdgroupService {
             adgroupRequest.setAdgroupTypes(adgroupTypes);
             UpdateAdgroupResponse updateCampaignResponse = adgroupService.updateAdgroup(adgroupRequest);
             List<AdgroupType> returnAdgroupTypes = updateCampaignResponse.getAdgroupTypes();
-            returnAdgroupTypes.parallelStream().filter(s -> s != null).forEach(s -> {
-                AdgroupDTO adgroupDTO = new AdgroupBackupDTO();
+            returnAdgroupTypes.parallelStream().filter(s -> s.getAdgroupId() != null).forEach(s -> {
+                AdgroupDTO adgroupDTO = new AdgroupDTO();
                 adgroupDTO.setStatus(s.getStatus());
                 adgroupDTO.setPause(s.getPause());
                 returnAdgroupDTO.add(adgroupDTO);

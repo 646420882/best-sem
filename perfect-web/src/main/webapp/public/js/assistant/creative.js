@@ -56,10 +56,25 @@ var add = {
     func: function () {
         deleteByObjectId(tmp);
     }
+},cAddMutli={
+    text:"批量添加创意",
+    func:function(){
+        creativeMulti();
+    }
+},creBack = {
+    text: "还原",
+    func: function () {
+        reBakClick();
+    }
 }, update = {
     text: "修改创意",
     func: function () {
         updateCreatvie(tmp);
+    }
+},cUpload={
+    text:"上传到凤巢",
+    func:function(){
+        alert("该功能正在开发中....");
     }
 }
 /**
@@ -67,7 +82,7 @@ var add = {
  * @type {*[]}
  */
 var menuData = [
-    [add, del, update]
+    [add, del, update,cAddMutli,creBack,cUpload]
 ];
 /**
  * 用户缓存右键点击的对象

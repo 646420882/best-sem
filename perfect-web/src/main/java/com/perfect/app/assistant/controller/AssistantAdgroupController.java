@@ -407,24 +407,26 @@ public class AssistantAdgroupController extends WebContextSupport {
         }
         return null;
     }
+
     @RequestMapping("/getPriceRatio")
-    public void getPriceRatio(HttpServletResponse response,@RequestParam(value = "cid")String cid){
-        double priceRatio=0;
-        if(cid.length()<OBJ_SIZE){
-            priceRatio  =  adgroupService.findPriceRatio(Long.valueOf(cid));
+    public void getPriceRatio(HttpServletResponse response, @RequestParam(value = "cid") String cid) {
+        double priceRatio = 0;
+        if (cid.length() < OBJ_SIZE) {
+            priceRatio = adgroupService.findPriceRatio(Long.valueOf(cid));
         }
-        writeHtml(priceRatio+"",response);
+        writeHtml(priceRatio + "", response);
     }
+
     @RequestMapping(value = "/uploadOperate")
     public ModelAndView uploadOperate(@RequestParam(value = "aid") String aid, @RequestParam(value = "ls", required = false) Integer ls) {
-        if(aid.length()>OBJ_SIZE){
+        if (aid.length() > OBJ_SIZE) {
             List<AdgroupDTO> returnAids = adgroupService.uploadAdd(new ArrayList<String>() {{
                 add(aid);
             }});
             if (returnAids.size() > 0) {
-            returnAids.parallelStream().forEach(s->{
-                adgroupService.update(aid, s);
-            });
+                returnAids.parallelStream().forEach(s -> {
+                    adgroupService.update(aid, s);
+                });
                 return writeMapObject(MSG, SUCCESS);
             } else {
                 return writeMapObject(MSG, "需要更新的单元的计划还未上传到凤巢，请先上传该单元的计划后再上传单元！");
@@ -435,8 +437,8 @@ public class AssistantAdgroupController extends WebContextSupport {
                     List<AdgroupDTO> updatedAdgroupDTO = adgroupService.uploadUpdate(new ArrayList<Long>() {{
                         add(Long.valueOf(aid));
                     }});
-                    if(updatedAdgroupDTO.size()>0){
-                        updatedAdgroupDTO.parallelStream().forEach(s->{
+                    if (updatedAdgroupDTO.size() > 0) {
+                        updatedAdgroupDTO.parallelStream().forEach(s -> {
                             adgroupService.updateUpdate(Long.valueOf(aid), s);
                         });
                         return writeMapObject(MSG, SUCCESS);
@@ -451,6 +453,6 @@ public class AssistantAdgroupController extends WebContextSupport {
 
             }
         }
-        return writeMapObject(MSG,"上传失败！");
+        return writeMapObject(MSG, "上传失败！");
     }
 }

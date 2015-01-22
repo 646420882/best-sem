@@ -133,7 +133,7 @@ function campaignDataToHtml(obj, index) {
     }
 
 
-    html = html + until.convert(obj.pause == true, "<td>暂停</td>:" + "<td>启用</td>")
+    html = html + until.convert(obj.pause == false, "<td>暂停</td>:" + "<td>启用</td>")
     html = html + until.convert(obj.budget == null, "<td><不限定></td>:" + "<td>" + obj.budget + "</td>")
     html = html + until.convert(obj.showProb == 1, "<td>优选</td>:" + "<td>轮显</td>")
     html = html + until.convert(obj.isDynamicCreative == true, "<td>开启</td>:" + "<td>关闭</td>");
@@ -204,9 +204,9 @@ function setCampaignValue(obj, campaignId) {
 
     //推广计划状态
     if (_tr.find("td:eq(2)").html() == "启用") {
-        $(".selectPause_5").html("<option value = 'false' selected='selected'>启用</option><option value='true'>暂停</option>");
+        $(".selectPause_5").html("<option value = 'true' selected='selected'>启用</option><option value='false'>暂停</option>");
     } else {
-        $(".selectPause_5").html("<option value = 'false' >启用</option><option value='true' selected='selected'>暂停</option>");
+        $(".selectPause_5").html("<option value = 'true' >启用</option><option value='false' selected='selected'>暂停</option>");
     }
 }
 
@@ -244,16 +244,45 @@ function whenBlurEditCampaign(num, value) {
     var jsonData = {};
     switch (num) {
         case 1:
-            jsonData["campaignName"] = value;
+            if (value != "") {
+                if (parseInt(getChar(value)) > 30) {
+                    alert("推广计划名不能超过30个字符，汉字占两个字符");
+                    return;
+                } else {
+                    jsonData["campaignName"] = value;
+                }
+            } else {
+                return;
+            }
             break;
         case 2:
-            jsonData["budget"] = value;
+            if (value != "<不限定>") {
+                if (!/^-?\d+\.?\d*$/.test(value)) {
+                    alert("输入正确的每日预算");
+                    return;
+                } else {
+                    if (parseFloat(value).toFixed(3) < 50.0) {
+                        alert("每日预算必须大于50RMB");
+                        return;
+                    } else {
+                        jsonData["budget"] = value;
+                    }
+                }
+            } else {
+                jsonData["budget"] = null;
+            }
+
             break;
         case 3:
-            if (/^\d+$/.test(value) == false) {
-                value = 1.0;
+            if (value != "") {
+                if (!/^-?\d+\.?\d*$/.test(value)) {
+                    alert("输入正确的移动出价比例后再修改！");
+                    return;
+                } else {
+                    jsonData["priceRatio"] = value;
+                }
             }
-            jsonData["priceRatio"] = value;
+
             break;
         case 4:
             jsonData["schedule"] = JSON.stringify(value);
@@ -776,6 +805,11 @@ $("#createCampaignOk").click(function () {
     if (campaignName == "" || campaignName == "<请输入推广计划名称>") {
         alert("请输入推广计划名称");
         return;
+    } else {
+        if (parseInt(getChar(campaignName)) > 30) {
+            alert("推广计划名不能超过30个字符，汉字占两个字符");
+            return;
+        }
     }
 // /^-?\d+\.?\d*$/
     if(budget!="<请输入每日预算，不填默认为不限定>"){
@@ -992,6 +1026,14 @@ function uploadCampagin(){
     var _list = $("#tbodyClick5").find(".list2_box3");
     var id = _list.find("input[type=hidden]").val();
     var step = _list.find("td:last span").attr("step");
+    if (step != undefined) {
+        if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
+            return;
+        }
+    }else{
+        alert("已经是最新数据了！");
+        return;
+    }
    switch (parseInt(step)){
        case 1:
            if(id.length>18){
