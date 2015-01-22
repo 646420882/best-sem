@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by john on 2014/9/16.
@@ -43,9 +44,15 @@ public class CampaignBackUpServiceImpl implements CampaignBackUpService{
      * @param id
      * @return
      */
-    public void reducDel(String id){
+    public void reduceDel(String id){
         if(id.matches("^\\d+$")==true){
             campaignDAO.updateLocalstatu(Long.parseLong(id));
         }
+    }
+
+    @Override
+    public void deleteByOId(List<String> obj) {
+        campaignBackUpDAO.deleteByOId(obj);
+        campaignDAO.updateRemoveLs(obj);
     }
 }

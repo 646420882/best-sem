@@ -91,14 +91,12 @@
                 <li>
                     <div class="green1 fl wd1"></div>
                     <div class="green2 fl wd2"><Span class="click"></Span>
-
                         <p>点击次数</p>
                     </div>
                 </li>
                 <li>
                     <div class="red1 fl wd1"></div>
                     <div class="red2 fl wd2"><Span class="cos"></Span>
-
                         <p>消费</p>
                     </div>
                 </li>
@@ -114,7 +112,7 @@
     </div>
 </div>
 <div class="containers  hides over">
-    <div class="list01" style="border-bottom:1px solid #d5d5d8;">
+    <div class="list01" >
         <div class="list01_top over">
             <Span>账户趋势图</Span>
             <button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="分色标注了波动最大的指标及其升降趋势，便于您对关键数据信息一目了然。
@@ -147,7 +145,7 @@
             <div id="container" style="width:100%;height:400px"></div>
         </div>
     </div>
-    <div class="list01_under3 over" style=" padding-top:20px;">
+    <div class="list01_under3 over">
         <div class="list01_top over">
             <Span>分日表现</Span>
             <button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="着重表现近七天、近30天等时间范围的各项细致指标数据值。"></button>
@@ -322,7 +320,7 @@
 
 </div>
 <div class="download over ">
-    <span class="fl" style=" color:#000; font-weight:bold;">查看完整版数据请点击下载全部→</span>
+    <span class="fl" style=" color:#000; font-weight:bold;line-height:26px;">查看完整版数据请点击下载全部→</span>
     <a href="javascript:downloadKeywordQualityCSV();" class="fr">
         下载全部
     </a>
@@ -399,8 +397,6 @@
                     <input class="two" type="button"
                            onclick="javascript:category = 'cost';sort = 1;loadKeywordQualityData();"/>
                 </p></b>
-                <a href="#" class="question">
-                </a>
             </li>
             <li>
                 <span>平均点击价格</span><b>
@@ -901,6 +897,7 @@
 </div>
 </div>
 <div class="containers hides over">
+    <div class="list01_under3 over">
     <div class="list01_top over">
         <Span>重点关键词监控</Span>
         <button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="凤巢重点关键词同步监控。"></button>
@@ -1073,6 +1070,7 @@
         <%--getImportKeywordDefault--%>
         <div class="pagination" id="importPager"></div>
     </div>
+   </div>
 </div>
 </div>
 </div>
@@ -1830,10 +1828,9 @@ var loadPerformanceCurve = function (obj, date) {
             $(this).attr("checked", false);
         }
     });
-    curve();
 };
 $("#liClick").click(function () {
-    setTimeout("curve()", 200);
+    setTimeout("curve()", 100);
 });
 var curve = function () {
     var myChart = echarts.init(document.getElementById('container'));

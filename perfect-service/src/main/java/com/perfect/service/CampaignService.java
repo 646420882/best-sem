@@ -36,14 +36,16 @@ public interface CampaignService {
 
     void updateByMongoId(CampaignDTO newCampaign, CampaignDTO campaignEntity);
 
+    List<String> getCampaignStrIdByCampaignLongId(List<Long> campaignIds);
+
     String insertReturnId(CampaignDTO campaignEntity);
 
     /**
      * 上传到百度更新方法，慎用！
-     * @param dto
+     * @param cid 要上传的本地id
      * @return
      */
-    Long uploadAdd(CampaignDTO dto);
+    List<CampaignDTO> uploadAdd(String  cid);
 
     /**
      * 更新本地删除操作到百度
@@ -53,9 +55,18 @@ public interface CampaignService {
     int uploadDel(List<Long> campaignIds);
 
     /**
+     * 更新本地修改操作到百度
+     * @param campaignIds 要更新的计划id
+     * @return
+     */
+    public List<Long> uploadUpdate(List<Long> campaignIds);
+
+    /**
      * 上传成功后本地修改方法，此方法只能修改计划的百度Id，其他修改不能修改，用者需看清后台代码
-     * @param campaignId 从百度得到计划id
+     * @param dto 从百度得到计划的dto对象，内只包含了campaignId的百度Id，Status，Pause三个属性，用于后台修改
      * @param objId 本地id，用于查询
      */
-    void update(Long campaignId,String objId);
+    void update(CampaignDTO dto,String objId);
+
+    void updateRemoveLs(List<String> afterUpdateStr);
 }

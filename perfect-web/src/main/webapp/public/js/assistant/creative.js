@@ -100,8 +100,8 @@ function InitMenu() {
     });
     $("#createTable").on("keydown", "input", function (event) {
         if (event.keyCode == 13) {
-            var strRegex = "^((https|http|ftp|rtsp|mms)://)?[a-z0-9A-Z]{3}\.[a-z0-9A-Z][a-z0-9A-Z]{0,61}?[a-z0-9A-Z]\.com|net|cn|cc (:s[0-9]{1-4})?/$";
-            var re = new RegExp(strRegex);
+            //var strRegex = "^((https|http|ftp|rtsp|mms)://)?[a-z0-9A-Z]{3}\.[a-z0-9A-Z][a-z0-9A-Z]{0,61}?[a-z0-9A-Z]\.com|net|cn|cc (:s[0-9]{1-4})?/$";
+            //var re = new RegExp(strRegex);
             var _title = $(this).parents("tr").find("input:eq(2)");
             var _thisStr = getChar(_title.val());
             var dm = "." + $("#doMain").val();

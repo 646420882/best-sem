@@ -1142,7 +1142,7 @@
             else
                 $("#table1").setGridParam().hideCol(item.value);
         });
-        $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
+        $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
 //    $("#table1").closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
         $(".TB_overlayBG").css("display", "none");
         $("#custom_col").css("display", "none");
@@ -1155,7 +1155,7 @@
             else
                 $("#table2").setGridParam().hideCol(item.value);
         });
-        $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.78, true);
+        $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
         $(".TB_overlayBG").css("display", "none");
         $(".box6").css("display", "none");
     };

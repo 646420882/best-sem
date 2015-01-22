@@ -145,7 +145,6 @@ public class AssistantAdgroupController extends WebContextSupport {
      * @param ne
      * @param p
      * @param s
-     * @param mib
      * @return
      */
     @RequestMapping(value = "/adAdd", method = RequestMethod.POST)
@@ -156,8 +155,7 @@ public class AssistantAdgroupController extends WebContextSupport {
                               @RequestParam(value = "negativeWords") List<String> nn,
                               @RequestParam(value = "exactNegativeWords") List<String> ne,
                               @RequestParam(value = "pause") Boolean p,
-                              @RequestParam(value = "status") Integer s,
-                              @RequestParam(value = "mib") Double mib) {
+                              @RequestParam(value = "status") Integer s) {
         try {
             ////2014-11-24 refactor
             AdgroupDTO adgroupDTO = new AdgroupDTO();
@@ -173,7 +171,6 @@ public class AssistantAdgroupController extends WebContextSupport {
             adgroupDTO.setExactNegativeWords(ne);
             adgroupDTO.setPause(p);
             adgroupDTO.setStatus(s);
-            adgroupDTO.setMib(mib);
             adgroupDTO.setLocalStatus(1);
             Object oid = adgroupService.insertOutId(adgroupDTO);
             writeData(SUCCESS, response, oid);
@@ -220,7 +217,6 @@ public class AssistantAdgroupController extends WebContextSupport {
      * @param nn
      * @param ne
      * @param p
-     * @param mib
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -230,18 +226,15 @@ public class AssistantAdgroupController extends WebContextSupport {
                                @RequestParam(value = "maxPrice") Double maxPrice,
                                @RequestParam(value = "negativeWords") List<String> nn,
                                @RequestParam(value = "exactNegativeWords") List<String> ne,
-                               @RequestParam(value = "pause") Boolean p,
-                               @RequestParam(value = "mib") Double mib) {
+                               @RequestParam(value = "pause") Boolean p) {
         AdgroupDTO adgroupDTOFind = null;
         try {
             if (agid.length() > OBJ_SIZE) {
                 adgroupDTOFind = adgroupService.findByObjId(agid);
                 adgroupDTOFind.setAdgroupName(name);
                 adgroupDTOFind.setMaxPrice(maxPrice);
-                adgroupDTOFind.setMib(mib);
                 adgroupDTOFind.setNegativeWords(nn);
                 adgroupDTOFind.setExactNegativeWords(ne);
-                adgroupDTOFind.setMib(mib);
                 adgroupService.updateByObjId(adgroupDTOFind);
                 writeHtml(SUCCESS, response);
             } else {
@@ -251,10 +244,8 @@ public class AssistantAdgroupController extends WebContextSupport {
                 BeanUtils.copyProperties(adgroupDTOFind, adgroupDTO);
                 adgroupDTOFind.setAdgroupName(name);
                 adgroupDTOFind.setMaxPrice(maxPrice);
-                adgroupDTOFind.setMib(mib);
                 adgroupDTOFind.setNegativeWords(nn);
                 adgroupDTOFind.setExactNegativeWords(ne);
-                adgroupDTOFind.setMib(mib);
                 adgroupService.update(adgroupDTOFind, adgroupDTO);
                 writeHtml(SUCCESS, response);
             }
@@ -405,7 +396,6 @@ public class AssistantAdgroupController extends WebContextSupport {
                 adgroupDTOInsert.setExactNegativeWords(new ArrayList<String>(0));
                 adgroupDTOInsert.setPause(p);
                 adgroupDTOInsert.setStatus(s);
-                adgroupDTOInsert.setMib(0.0);
                 adgroupDTOInsert.setLocalStatus(1);
                 adgroupService.insertOutId(adgroupDTOInsert);
                 writeHtml(SUCCESS, response);
@@ -416,5 +406,51 @@ public class AssistantAdgroupController extends WebContextSupport {
             writeHtml(EXCEPTION, response);
         }
         return null;
+    }
+    @RequestMapping("/getPriceRatio")
+    public void getPriceRatio(HttpServletResponse response,@RequestParam(value = "cid")String cid){
+        double priceRatio=0;
+        if(cid.length()<OBJ_SIZE){
+            priceRatio  =  adgroupService.findPriceRatio(Long.valueOf(cid));
+        }
+        writeHtml(priceRatio+"",response);
+    }
+    @RequestMapping(value = "/uploadOperate")
+    public ModelAndView uploadOperate(@RequestParam(value = "aid") String aid, @RequestParam(value = "ls", required = false) Integer ls) {
+        if(aid.length()>OBJ_SIZE){
+            List<AdgroupDTO> returnAids = adgroupService.uploadAdd(new ArrayList<String>() {{
+                add(aid);
+            }});
+            if (returnAids.size() > 0) {
+            returnAids.parallelStream().forEach(s->{
+                adgroupService.update(aid, s);
+            });
+                return writeMapObject(MSG, SUCCESS);
+            } else {
+                return writeMapObject(MSG, "需要更新的单元的计划还未上传到凤巢，请先上传该单元的计划后再上传单元！");
+            }
+        } else {
+            switch (ls) {
+                case 2:
+                    List<AdgroupDTO> updatedAdgroupDTO = adgroupService.uploadUpdate(new ArrayList<Long>() {{
+                        add(Long.valueOf(aid));
+                    }});
+                    if(updatedAdgroupDTO.size()>0){
+                        updatedAdgroupDTO.parallelStream().forEach(s->{
+                            adgroupService.updateUpdate(Long.valueOf(aid), s);
+                        });
+                        return writeMapObject(MSG, SUCCESS);
+                    }
+                case 3:
+                    String result = adgroupService.uploadDel(Long.valueOf(aid));
+                    //如果返回null，则表示删除成功，接着要删除该单元以及该单元下的创意和关键字
+                    if (result == null) {
+                        adgroupService.deleteBubLinks(Long.valueOf(aid));
+                    }
+                    return writeMapObject(MSG, SUCCESS);
+
+            }
+        }
+        return writeMapObject(MSG,"上传失败！");
     }
 }
