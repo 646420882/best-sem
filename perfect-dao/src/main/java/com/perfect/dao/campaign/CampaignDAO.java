@@ -16,6 +16,8 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     List<CampaignDTO> findAllDownloadCampaign();
 
+    CampaignDTO findByLongId(Long cid);
+
     CampaignDTO findByObjectId(String oid);
 
     void deleteByMongoId(String id);
@@ -25,6 +27,8 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
     PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo);
 
     CampaignDTO findCampaignByName(String name);
+
+    List<String> getCampaignStrIdByCampaignLongId(List<Long> campaignIds);
 
     void updateLocalstatu(long cid);
 
@@ -36,8 +40,10 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     void update(CampaignDTO campaignDTO);
 
-    void update(Long campaignId,String objId);
+    void update(CampaignDTO dto,String objId);
 
     void deleteByCampaignId(Long campaginId);
+
+    void updateRemoveLs(List<String> afterUpdateStr);
 
 }

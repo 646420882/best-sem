@@ -306,6 +306,7 @@ function deleteCampaign() {
         data: {"cid": cids},
         success: function (data) {
             $("#tbodyClick5").find(".list2_box3 td:last").html("<span class='error' step='3'></span>");
+            loadTree();
         }
     });
 }
@@ -771,37 +772,57 @@ $("#createCampaignOk").click(function () {
     var adgroupName = $("#inputAdgroupName").val();
     var maxPrice = $("#inputAdgroupPrice").val();
     var adgroupPause = $("#inputAdgroupPause").val();
-    var adgroupPriceRatio = $("#inputAdgroupPriceRatio").val();
 
     if (campaignName == "" || campaignName == "<请输入推广计划名称>") {
         alert("请输入推广计划名称");
         return;
     }
-
-    if(budget!="请输入每日预算，不填默认为不限定"){
+// /^-?\d+\.?\d*$/
+    if(budget!="<请输入每日预算，不填默认为不限定>"){
         if (/^[0-9]+|[0-9]+\.[0-9]{2}$/.test(budget) == false) {
             alert("每日预算只能是数值");
             return;
+        }else{
+            if(parseFloat(budget).toFixed(3)<=49){
+                alert("每日预算必须大于50RMB");
+                return;
+            }
+        }
+    }else{
+        budget=null;
+    }
+    if(priceRatio!=""){
+        if(!/^-?\d+\.?\d*$/.test(priceRatio)){
+            alert("移动出价比例只能是数值");
+            return;
+        }else{
+            if(parseFloat(priceRatio).toFixed(2)<0.1||parseFloat(priceRatio).toFixed(2)>10.0){
+                alert("0.1<移动出价比例<10.0");
+                return;
+            }
         }
     }
     if (/^[0-9]+|[0-9]+\.[0-9]{2}$/.test(priceRatio) == false) {
-        alert("移动出价比例只能是数值");
-        return;
+
     }
     if (adgroupName == "" || adgroupName == "<请输入推广单元名称>") {
         alert("请输入推广单元名称");
         return;
+    }else{
+        if(parseInt(getChar(adgroupName))>30){
+            alert("推广单元名不能超过30个字符，汉字占两个字符");
+            return;
+        }
     }
-    if (!maxPrice == "" && /^[0-9]+|[0-9]+\.[0-9]{2}$/.test(maxPrice) == false) {
-        alert("推广单元的出价只能是数值");
+    if(maxPrice!=""){
+        if(!/^-?\d+\.?\d*$/.test(maxPrice)){
+            alert("推广单元的最高出价只能是数字!");
+            return;
+        }
+    }else{
+        alert("请输入推广单元最高出价！");
         return;
     }
-
-    if (!adgroupPriceRatio == "" && /^[0-9]+|[0-9]+\.[0-9]{2}$/.test(adgroupPriceRatio) == false) {
-        alert("推广单元的出价比例只能是数值");
-        return;
-    }
-
 
     $.ajax({
         url: "/assistantCampaign/add",
@@ -818,8 +839,7 @@ $("#createCampaignOk").click(function () {
             "excludeIp": excludeIp,
             "adgroupName": adgroupName,
             "maxPrice": maxPrice,
-            "adgroupPause": adgroupPause,
-            "adgroupPriceRatio": adgroupPriceRatio
+            "adgroupPause": adgroupPause
         },
         success: function (data) {
 
@@ -885,6 +905,7 @@ function showReductionCampaignWindow() {
         if (confirm("是否还原选择的数据?") == false) {
             return;
         }
+
         var step = choose.find("td:last span").attr("step");
         var id = $("#tbodyClick5").find(".list2_box3").find("input[type=hidden]").val();
         switch (parseInt(step)) {
@@ -968,9 +989,26 @@ $("#quickAddplan").click(function () {
 });
 
 function uploadCampagin(){
-    var id = $("#tbodyClick5").find(".list2_box3").find("input[type=hidden]").val();
+    var _list = $("#tbodyClick5").find(".list2_box3");
+    var id = _list.find("input[type=hidden]").val();
+    var step = _list.find("td:last span").attr("step");
+   switch (parseInt(step)){
+       case 1:
+           if(id.length>18){
+               uploadOperate(id);
+           }
+           break;
+       case 2:
+           uploadOperate(id);
+           break
+       case 3:
+           uploadOperate(id);
+           break;
+    }
+}
+function uploadOperate(id){
     $.get("/assistantCampaign/upload",{cid:id},function(result){
-        if(result.msg!="-1"){
+        if(result.msg!="0"){
             alert("上传成功!");
             getCampaignList(0);
             setTimeout("loadTree()", 1500);

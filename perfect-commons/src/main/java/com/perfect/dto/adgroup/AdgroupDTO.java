@@ -20,8 +20,6 @@ public class AdgroupDTO extends AccountIdDTO {
     private Boolean pause;
     private Integer status;
     private OptTypeDTO opt;
-    private Double mib;
-    private Double priceRatio;
     private Integer localStatus;
     private String campaignName;
 
@@ -105,21 +103,6 @@ public class AdgroupDTO extends AccountIdDTO {
         this.status = status;
     }
 
-    public Double getMib() {
-        return mib;
-    }
-
-    public void setMib(Double mib) {
-        this.mib = mib;
-    }
-
-    public Double getPriceRatio() {
-        return priceRatio;
-    }
-
-    public void setPriceRatio(Double priceRatio) {
-        this.priceRatio = priceRatio;
-    }
 
     public Integer getLocalStatus() {
         return localStatus;
