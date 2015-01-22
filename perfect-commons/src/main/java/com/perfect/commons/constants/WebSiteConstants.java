@@ -15,7 +15,7 @@ public class WebSiteConstants {
 
     public static String suningUrlTemplate = "http://search.suning.com/%s/";
 
-    public static String vipTempUrlTemplate = "http://category.vip.com/search-3-0-1.html?q=%s";
+    public static String vipUrlTemplate = "http://category.vip.com/search-3-0-1.html?q=%s";
 
     public static String lefengUrlTemplate = "http://search.lefeng.com/search/search?key=%s&wt.s_pg=Isearch&wt.s_pf=public&sos=sd#clothList";
 

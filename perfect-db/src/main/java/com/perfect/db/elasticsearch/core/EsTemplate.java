@@ -1,72 +1,72 @@
 package com.perfect.db.elasticsearch.core;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSON;
 import com.perfect.utils.MD5;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.delete.DeleteRequestBuilder;
-import org.elasticsearch.action.deletebyquery.DeleteByQueryRequestBuilder;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.IdsQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by baizz on 2014-12-1.
  */
 public class EsTemplate implements EsRequest {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
-
     protected TransportClient esClient;
     protected String index;
     protected String type;
 
-    public EsTemplate(String index, String type) {
+    protected String[] md5Fields = null;    // 指定哪些属性用于计算MD5码作为ES的sourceId
+
+    public EsTemplate(String index, String type, String[] md5Fields) {
         this.index = index;
         this.type = type;
-        esClient = EsPool.getEsClient();
+        this.md5Fields = md5Fields;
+        esClient = EsPools.getEsClient();
     }
 
     @Override
     public TransportClient getEsClient() {
-        return esClient;
+        return this.esClient;
     }
 
     @Override
     public String index() {
-        Objects.requireNonNull(index);
-        return index;
+        return this.index;
     }
 
     @Override
     public String type() {
-        Objects.requireNonNull(type);
-        return type;
+        return this.type;
     }
 
-    public List<Map<String, Object>> findAll() {
-        SearchRequestBuilder searchRequestBuilder = getSearchRequestBuilder();
-        SearchResponse response = searchRequestBuilder.setQuery(QueryBuilders.matchAllQuery()).get();
-        if (response.getHits().getTotalHits() != 1) {
-            return Collections.emptyList();
-        }
+    public EsTemplate setIndex(String index) {
+        this.index = index;
+        return this;
+    }
 
-        List<Map<String, Object>> results = new ArrayList<>();
-        response.getHits().forEach(s -> results.add(s.getSource()));
-        return results;
+    public EsTemplate setType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setMd5Fields(String[] md5Fields) {
+        this.md5Fields = md5Fields;
     }
 
     public boolean save(Map<String, Object> source) {
         IndexRequestBuilder indexRequestBuilder = getIndexRequestBuilder();
-        indexRequestBuilder.setSource(toJsonString(source));
+        indexRequestBuilder.setSource(JSON.toJSONString(source));
 
         String id = getMD5(source);
         if (!exists(id)) {
@@ -83,7 +83,7 @@ public class EsTemplate implements EsRequest {
         sourceList.stream().forEach(s -> {
             String id = getMD5(s);
             if (!exists(id)) {
-                IndexRequestBuilder indexRequestBuilder = getIndexRequestBuilder().setSource(toJsonString(s));
+                IndexRequestBuilder indexRequestBuilder = getIndexRequestBuilder().setSource(JSON.toJSONString(s));
                 indexRequestBuilder.setId(id);
                 bulkRequestBuilder.add(indexRequestBuilder);
             }
@@ -96,7 +96,7 @@ public class EsTemplate implements EsRequest {
     }
 
     public boolean exists(String id) {
-        SearchRequestBuilder searchRequestBuilder = getEsClient().prepareSearch(getIndex()).setTypes(getType());
+        SearchRequestBuilder searchRequestBuilder = getEsClient().prepareSearch(index()).setTypes(type());
         IdsQueryBuilder idsQueryBuilder = new IdsQueryBuilder();
         idsQueryBuilder.queryName(IDS).ids(id);
         SearchResponse response = searchRequestBuilder.setQuery(idsQueryBuilder).get();
@@ -115,59 +115,18 @@ public class EsTemplate implements EsRequest {
         deleteRequestBuilder.get();
     }
 
-    public void deleteAll(String index) {
-        DeleteByQueryRequestBuilder deleteByQueryRequestBuilder = getDeleteByQueryRequestBuilder();
-        deleteByQueryRequestBuilder.setIndices(index).setQuery(QueryBuilders.matchAllQuery());
-        deleteByQueryRequestBuilder.get();
-    }
 
-    public String getIndex() {
-        return index;
-    }
-
-    public EsTemplate setIndex(String index) {
-        this.index = index;
-        return this;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public EsTemplate setType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    private String getMD5(Map<String, Object> source) {
+    protected String getMD5(Map<String, Object> source) {
+        Objects.requireNonNull(md5Fields);
         String key = "";
-        switch (index) {
-            case "data":
-                key = (String) source.get("title") + source.get("html");
-                break;
-            case "datakw":
-                key = (String) source.get("name") + source.get("category");
-                break;
-            default:
-                break;
+        for (String field : md5Fields) {
+            key += (String) source.get(field);
         }
 
         MD5.Builder md5 = new MD5.Builder();
         md5.password(key);
         md5.salt(SALT);
         return md5.build().getMD5();
-    }
-
-    private String toJsonString(Object o) {
-        Objects.requireNonNull(o);
-
-        try {
-            return mapper.writeValueAsString(o);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
 }

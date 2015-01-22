@@ -1,10 +1,8 @@
 package com.perfect.commons.crawl;
 
-import com.perfect.commons.constants.WebSiteConstants;
 import com.perfect.dao.sys.CrawlWordDAO;
 import com.perfect.dto.CrawlWordDTO;
 import com.perfect.utils.json.JSONUtils;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,53 +101,10 @@ public class CrawlURLHandler implements Runnable {
                     String _site = dto.getSite();
                     conf.put("k", dto.getKeyword());
                     conf.put("p", _site);
-
-                    switch (_site) {
-                        case "lefeng":
-                            conf.put("q", WebSiteConstants.lefengUrlTemplate);
-                            conf.put("d", "default");
-                            break;
-                        case "vip":
-                            conf.put("q", WebSiteConstants.vipTempUrlTemplate);
-                            conf.put("d", "default");
-                            break;
-                        case "yhd":
-                            conf.put("q", WebSiteConstants.yhdUrlTemplate);
-                            conf.put("d", "default");
-                            break;
-                        case "xiu":
-                            conf.put("q", WebSiteConstants.xiuUrlTemplate);
-                            conf.put("d", "default");
-                            break;
-                        case "gome":
-                            conf.put("q", WebSiteConstants.gomeUrlTemplate);
-                            conf.put("d", "default");
-                            break;
-                        case "suning":
-                            conf.put("q", WebSiteConstants.suningUrlTemplate);
-                            conf.put("d", "default");
-                            break;
-                        case "dangdang":
-                            conf.put("q", WebSiteConstants.dangdangUrlTemplate);
-                            conf.put("d", "default");
-                            break;
-                        case "amazon":
-                            conf.put("q", WebSiteConstants.amazonUrlTemplate);
-                            conf.put("d", "default");
-                            break;
-                        case "taobao":
-                            conf.put("q", WebSiteConstants.taobaoUrlTemplate);
-                            conf.put("d", "phantomjs");
-                            break;
-                        default:
-                            break;
-                    }
+                    conf.put("d", "phantomjs");
 
                     String confStr = JSONUtils.getJsonString(conf);
-                    String md5 = DigestUtils.md5Hex(confStr);
-
-                    jedis.rpush("crawler_queue", md5);
-                    jedis.set("extras_" + md5, confStr);
+                    jedis.rpush("crawler_queue", confStr);
                 }
 
             } finally {
