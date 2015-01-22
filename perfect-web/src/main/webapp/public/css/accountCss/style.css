@@ -1747,15 +1747,13 @@ ul.ztree.zTreeDragUL {
 .box10, .box4 {
     *width: 600px;
 }
-
 .box6 {
     min-width: 200px;
     max-width: 300px;
 }
-
 .box h2, .box2 h2, .box3 h2, .box4 h2, .box5 h2, .box6 h2, .box7 h2, .box8 h2, .box9 h2, .box10 h2 {
     display: block;
-    width: 90%;
+    *width: 90%;
     height: 46px;
     font-size: 14px;
     background-color: #282538;
@@ -1770,14 +1768,12 @@ ul.ztree.zTreeDragUL {
 #downloadData, .box5 {
     *width: 410px;
 }
-
 h2 .close {
     color: #fff;
     float: right;
     font-size: 12px;
     line-height: 46px;
 }
-
 .close {
     color: #000;
     float: right;
@@ -1786,7 +1782,6 @@ h2 .close {
     opacity: inherit;
     text-shadow: none;
 }
-
 .close:hover {
     color: #fff;
 }
@@ -3672,6 +3667,7 @@ h2 .close {
 .k_top2_text1{
     width:100%;
 }
+
 /*input[type=checkbox],
 input[type=radio]{
     -webkit-appearance: none;

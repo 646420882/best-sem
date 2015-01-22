@@ -121,8 +121,8 @@ body {
 }
 
 .servicesBox .serBox .txt2 p {
+    height: 28px;
     text-align: left;
-    margin-bottom: 10px;
 }
 
 .enter a {

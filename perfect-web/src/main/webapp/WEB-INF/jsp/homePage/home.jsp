@@ -1828,10 +1828,9 @@ var loadPerformanceCurve = function (obj, date) {
             $(this).attr("checked", false);
         }
     });
-    curve();
 };
 $("#liClick").click(function () {
-    setTimeout("curve()", 200);
+    setTimeout("curve()", 100);
 });
 var curve = function () {
     var myChart = echarts.init(document.getElementById('container'));
