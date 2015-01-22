@@ -266,7 +266,19 @@ public class AssistantCampaignController extends WebContextSupport {
         BeanUtils.copyProperties(newCampaign, campaignEntity);
 
         newCampaign.setCampaignName(campaignName == null ? newCampaign.getCampaignName() : campaignName);
-        newCampaign.setBudget(budget == null ? newCampaign.getBudget() : budget);
+        if (budget != null) {
+            if (budget < 50) {
+                newCampaign.setBudget(newCampaign.getBudget());
+            } else {
+                newCampaign.setBudget(budget);
+            }
+        } else {
+            if(budget==newCampaign.getBudget()){
+                newCampaign.setBudget(newCampaign.getBudget());
+            }else{
+                newCampaign.setBudget(budget);
+            }
+        }
         newCampaign.setPriceRatio(priceRatio == null ? newCampaign.getPriceRatio() : priceRatio);
         newCampaign.setRegionTarget(regionTarget == null ? newCampaign.getRegionTarget() : "".equals(regionTarget) ? new ArrayList<Integer>() : Arrays.asList(regionTarget));
         newCampaign.setIsDynamicCreative(isDynamicCreative == null ? newCampaign.getIsDynamicCreative() : isDynamicCreative);
@@ -456,10 +468,8 @@ public class AssistantCampaignController extends WebContextSupport {
                    List<Long> returnCapaignIds= campaignService.uploadUpdate(new ArrayList<Long>(){{
                         add(Long.valueOf(cid));
                     }});
-
                     //获取到修改成功后的cid去本地查询该cid 的mongoid
                     List<String> afterUpdateObjId=campaignService.getCampaignStrIdByCampaignLongId(returnCapaignIds);
-
                     //获取到mongoId后去campaign_bak表查询，查询到备份的数据然后将备份的数据删除掉,最后将上传更新的那个方法的ls改为null
                     campaignBackUpService.deleteByOId(afterUpdateObjId);
                     return writeMapObject(MSG, SUCCESS);

@@ -31,6 +31,16 @@ var aAdd = {
     func: function () {
         adgroupUpdate();
     }
+}, aAddMutli = {
+    text: "批量添加单元",
+    func: function () {
+        adgroupMutli();
+    }
+}, aReBack = {
+    text: "还原",
+    func: function () {
+        agreBakClick();
+    }
 },aUpload={
         text:"更新到凤巢",
         func:function(){
@@ -38,7 +48,7 @@ var aAdd = {
         }
     }
 var aMeunData = [
-    [aAdd, aDel, aUpload,aUpdate]
+    [aAdd, aDel, aUpdate, aAddMutli, aReBack, aUpload,]
 ];
 /**
  * 初始化单元右键菜单
@@ -770,6 +780,14 @@ function adgroupUpload(){
     var _this = $(atmp);
     var oid = _this.find("td:eq(0) input").val();
     var _localStatus = _this.find("td:eq(8) span").attr("step");
+    if (_localStatus != undefined) {
+        if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
+            return;
+        }
+    }else{
+        alert("已经是最新数据了！");
+        return;
+    }
     if(_localStatus!=undefined){
         switch (_localStatus){
             case "1":

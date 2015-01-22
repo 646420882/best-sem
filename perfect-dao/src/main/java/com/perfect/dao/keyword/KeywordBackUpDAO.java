@@ -21,4 +21,5 @@ public interface KeywordBackUpDAO extends HeyCrudRepository<KeywordBackUpDTO, Lo
 
     void myInsertAll(List<KeywordBackUpDTO> list);
 
+
 }

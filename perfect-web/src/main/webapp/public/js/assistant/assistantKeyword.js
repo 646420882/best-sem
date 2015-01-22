@@ -62,10 +62,23 @@ function skipKeywordPage() {
     var pageNo = $("#keywordPageNum").val();
     getKwdList(/^\d+$/.test(pageNo) == false ? 0 : parseInt(pageNo) - 1);
 }
-
+/**
+ * 获取当前账户的注册域名，用于添加关键字，创意的时候验证！
+ */
+function initDomain() {
+    var dm = $("#doMainS").html();
+    if (dm == "") {
+        $.get("/assistantCreative/getDomain", function (result) {
+            if (result != "0") {
+                $("#doMainS").html(result);
+            }
+        });
+    }
+}
 
 //得到当前账户的所有关键词
 function getKwdList(nowPage) {
+    initDomain();
     pageType = 1;
 
     $("#tbodyClick").empty();
@@ -204,7 +217,7 @@ function keywordDataToHtml(obj, index) {
             html = html + "<td>本地新增</td>";
     }
 
-    html = html + "<td>" + until.convert(obj.object.pause, "暂停:启用") + "</td>";
+    html = html + "<td>" + until.convert(obj.object.pause, "启用:暂停") + "</td>";
 
     html = html + until.convert(obj.object.price == null, "<td><0.10></td>:<td>" + obj.object.price + "</td>");
 
@@ -295,7 +308,6 @@ function keywordDataToHtml(obj, index) {
             } else if (obj.object.phraseType == 3) {
                 matchType = matchType + "-核心包含";
             }
-            ;
             break;
         case 3:
             matchType = "广泛";
@@ -367,6 +379,22 @@ function setKwdValue(obj, kwid) {
     } else {
         $(".pause_1").html("<option value='true' selected='selected'>暂停</option><option value='false' >启用</option>");
     }
+    var matchType = $(obj).find("td:eq(6)").html();
+    $(".match_1").html(renderSelect(matchType));
+    //if ( == "启用") {
+    //    $(".pause_1").html("<option value='true'>暂停</option><option value='false' selected='selected'>启用</option>");
+    //} else {
+    //    $(".pause_1").html("<option value='true' selected='selected'>暂停</option><option value='false' >启用</option>");
+    //}
+}
+function renderSelect(str) {
+    var text = ["精确", "短语", "广泛"];
+    var val = [1, 2, 3];
+    var returnStr = "";
+    for (var i = 0; i < text.length; i++) {
+            returnStr = returnStr + "<option value='" + val[i] + "'>" + text[i] + "</option>";
+    }
+    return returnStr;
 }
 
 
@@ -398,7 +426,10 @@ function editKwdInfo(jsonData) {
         }
     });
 }
-
+function getChar(str) {
+    var char = str.match(/[^\x00-\xff]/ig);
+    return str.length + (char == null ? 0 : char.length);
+}
 
 /**
  * 控件失去焦点时候触发
@@ -406,22 +437,56 @@ function editKwdInfo(jsonData) {
  * @param value
  */
 function whenBlurEditKeyword(num, value) {
+    var dm = $("#doMainS").html();
     if ($("#tbodyClick").find("tr").length == 0) {
         return;
     }
     var jsonData = {};
     switch (num) {
         case 2:
-            if (/^\d+$/.test(value) == false) {
-                value = 0;
+            // /^-?\d+\.?\d*$/
+            if (value != "") {
+                if (!/^-?\d+\.?\d*$/.test(value)) {
+                    alert("请输入正确的关键字出价！");
+                    return;
+                } else {
+                    if (parseFloat(value).toFixed(3) > 999.9) {
+                        alert("关键词出价为：(0,999.9]<关键字出价&&<=计划预算!,如果设为0，则使用单元出价");
+                        return;
+                    } else {
+                        jsonData["price"] = value;
+                    }
+                }
+            } else {
+                alert("请输入关键字出价!");
+                return;
             }
-            jsonData["price"] = value;
             break;
         case 3:
-            jsonData["pcDestinationUrl"] = value;
+            if (getChar(value) > 1024) {
+                alert("访问Url字符不能超过1024个字符");
+                return;
+            } else {
+                if (value.indexOf(dm) == -1) {
+                    alert("\"访问Url\"必须包含" + dm + "的域名！");
+                    return;
+                } else {
+                    jsonData["pcDestinationUrl"] = value;
+                }
+            }
             break;
         case 4:
-            jsonData["mobileDestinationUrl"] = value;
+            if (getChar(value) > 1024) {
+                alert("移动访问Url字符不能超过1024个字符");
+                return;
+            } else {
+                if (value.indexOf(dm) == -1) {
+                    alert("\"移动访问Url\"必须包含" + dm + "的域名！");
+                    return;
+                } else {
+                    jsonData["mobileDestinationUrl"] = value;
+                }
+            }
             break;
         case 5:
             jsonData["matchType"] = value;
@@ -564,6 +629,7 @@ $("#reduction").click(function () {
 
 //还原关键词
 function reductionKeyword() {
+
     var choose = $("#tbodyClick").find(".list2_box3");
     if (choose != undefined && choose.find("td:last").html() != "&nbsp;") {
         if (confirm("是否还原选择的数据?") == false) {
@@ -661,7 +727,7 @@ var menu_keyword_add = {
         showSearchWord();
     }
 }, menu_keyword_del = {
-    text: "删除关键词",
+    text: "删除",
     func: function () {
         deleteKwd();
     }
@@ -679,6 +745,11 @@ var menu_keyword_add = {
     text: "还原",
     func: function () {
         reductionKeyword();
+    }
+}, menu_keyword_upload = {
+    text: "更新到凤巢",
+    func: function () {
+        kUpload();
     }
 }, menu_keyword_searchWord = {
     text: "搜索词",
@@ -703,7 +774,7 @@ function showSearchWord() {
  * @type {*[]}
  */
 var keywordMenuData = [
-    [menu_keyword_add, menu_keyword_del, menu_keyword_batchAddOrUpdate, menu_keyword_batchDel, menu_keyword_redu, menu_keyword_searchWord]
+    [menu_keyword_add, menu_keyword_batchAddOrUpdate, menu_keyword_del, menu_keyword_batchDel, menu_keyword_redu, menu_keyword_upload, menu_keyword_searchWord]
 ];
 /**
  * 用户缓存右键点击的对象
@@ -726,3 +797,41 @@ var keywordMenuExt = {
 $("#tbodyClick").on("mousedown", "tr", function () {
     $(this).smartMenu(keywordMenuData, keywordMenuExt);
 });
+
+function kUpload() {
+    var choose = $("#tbodyClick").find(".list2_box3");
+    if (choose != undefined && choose.find("td:last").html() != "&nbsp;") {
+        if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
+            return;
+        }
+        var step = choose.find("td:last span").attr("step");
+        var id = $("#tbodyClick").find(".list2_box3").find("input[type=hidden]").val();
+        switch (parseInt(step)) {
+            case 1:
+                if (id.length > 18) {
+                    kUploadOperate(id, 1);
+                }
+                break;
+            case 2:
+                kUploadOperate(id, 2);
+                break;
+            case 3:
+                kUploadOperate(id, 3);
+                break;
+        }
+    } else {
+        alert("已经是最新数据了！");
+    }
+}
+function kUploadOperate(kid, ls) {
+    $.get("/assistantKeyword/uploadOperate", {kid: kid, ls: ls}, function (res) {
+        if (res.msg == "1") {
+            alert("上传成功!");
+            if (jsonData.cid != null) {
+                getKwdList(0);
+            }
+        } else {
+            alert(res.msg);
+        }
+    });
+}

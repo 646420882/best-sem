@@ -122,17 +122,17 @@ var until = {
         }
     }, getMatchTypeNumByName: function (str) {
         switch (str) {
-            case "精确匹配":
+            case "精确":
                 return 1;
                 break;
-            case "短语匹配":
+            case "短语":
                 return 2;
                 break;
-            case "广泛匹配":
+            case "广泛":
                 return 3;
                 break;
             default:
-                return 1;
+                return 3;
                 break;
         }
     },convertDevice: function (Str) {

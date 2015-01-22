@@ -422,7 +422,7 @@ function createDeleteKwdHtml(listType, list) {
 
     if (listType == "del") {
         html += "<div class='newkeyword_end1'> <span>[-]</span>删除的关键词:" + list.length + "个</div>";
-        html += "<div class='newkeyword_end2 ' style = 'display:none;'>";
+        html += "<div class='newkeyword_end2 ' style = 'display:block;'>";
         html += "<p><input type='radio' class='delkwdRadio' checked='checked' name='addnew'>删除这些关键词</p>";
         html += "<p><input type='radio'  name='addnew'>不删除这些关键词</p>";
         html += "<div class='list4' style='height:300px;'>";
@@ -447,14 +447,14 @@ function createDeleteKwdHtml(listType, list) {
                     "<td>&nbsp;" + until.convert(list[i].object.price == null, "<0.10>:" + list[i].object.price) + "</td>" +
                     "<td>&nbsp;" + until.convert(list[i].object.pcDestinationUrl == null, "&nbsp;:" + list[i].object.pcDestinationUrl) + "</td>" +
                     "<td>&nbsp;" + until.convert(list[i].object.mobileDestinationUrl == null, "&nbsp;:" + list[i].object.mobileDestinationUrl) + "</td>" +
-                    "<td>&nbsp;" + until.convert(list[i].object.pause == true, "暂停:启用") + "</td>" +
+                    "<td>&nbsp;" + until.convert(list[i].object.pause == true, "启用:暂停") + "</td>" +
                     "</tr>";
         }
         html += " </tbody></table> </div>";
         html += "</div>"
     } else if (listType == "igone") {
         html += "<div class='newkeyword_end1'> <span>[-]</span>忽略的关键词:" + list.length + "个,所选的范围不包含关键词</div>";
-        html += "<div class='newkeyword_end2 ' style = 'display:none;'>";
+        html += "<div class='newkeyword_end2 ' style = 'display:block;'>";
         html += "<div class='list4' style='height:300px;'>";
         html += "<table width='100%' cellspacing='0' border='0' width='500px'>";
         html += "<thead>";
