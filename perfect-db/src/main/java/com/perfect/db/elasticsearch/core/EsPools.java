@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * Created by baizz on 2014-12-1.
  */
-public class EsPool {
+public class EsPools {
 
     private static TransportClient esClient = null;
     private static Map<String, String> esMap = new HashMap<>();
@@ -22,13 +22,13 @@ public class EsPool {
             esClient = initEsClient();
     }
 
-    private EsPool() {
+    private EsPools() {
     }
 
     //retrieve an es client instance
     public static TransportClient getEsClient() {
         if (esClient == null) {
-            synchronized (EsPool.class) {
+            synchronized (EsPools.class) {
                 if (esClient == null)
                     esClient = initEsClient();
             }
