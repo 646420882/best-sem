@@ -469,7 +469,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
-<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/report/reportProgress.js"></script>

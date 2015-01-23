@@ -488,9 +488,30 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
-    public boolean removeAccount(Long id) {
-        systemUserDAO.removeAccountInfo(id);
-        return false;
+    public boolean removeAccount(Long id,String account) {
+
+        SystemUserDTO byUserName = systemUserDAO.findByUserName(account);
+        boolean Master = false;
+        if(byUserName != null && byUserName.getBaiduAccounts().size()>0){
+            for (int i=0;i<byUserName.getBaiduAccounts().size();i++){
+                if(byUserName.getBaiduAccounts().get(i).getId().compareTo(id)==0){
+                    if(byUserName.getBaiduAccounts().get(i).isDfault()){
+
+                    }
+                    byUserName.getBaiduAccounts().remove(i);
+                    --i;
+                }
+            }
+            List<BaiduAccountInfoDTO> baiduAccountInfoDTOs = byUserName.getBaiduAccounts();
+            if(baiduAccountInfoDTOs.size()>0 && Master){
+                baiduAccountInfoDTOs.get(0).setDfault(true);
+            }
+            int falg = systemUserDAO.removeAccountInfo(baiduAccountInfoDTOs,account);
+            if(falg>0){
+                return true;
+            }
+        }
+            return false;
     }
 
     @Override

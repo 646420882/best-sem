@@ -33,7 +33,7 @@ public interface SystemUserService {
 
     void save(SystemUserDTO systemUserDTO);
 
-    boolean removeAccount(Long id);
+    boolean removeAccount(Long id,String account);
 
     void addAccount(String user, BaiduAccountInfoDTO baiduAccountInfoDTO);
 

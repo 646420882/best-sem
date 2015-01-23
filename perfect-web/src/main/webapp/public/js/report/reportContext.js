@@ -759,6 +759,8 @@ $(function () {
                         }
                         $("#shujuthead").append(html_head);
                         //饼状图计算
+                        var dataAll = new Array();
+                        var nameAll = new Array();
                         var pie_impr = new Array();
                         var pie_click = new Array();
                         var pie_cost = new Array();
@@ -773,16 +775,16 @@ $(function () {
                                     $.each(data.impr, function (i, impr) {
                                         if (devices == 2) {
                                             if (isNaN(impr.mobileImpression / countdata.mobileImpression) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
-                                                pie_impr.push([impr.regionName, 0]);
+                                                pie_impr.push(eval("({name:'"+impr.regionName+"', value:0})"));
                                             } else {
-                                                pie_impr.push([impr.regionName, Math.round((impr.mobileImpression / countdata.mobileImpression) * 10000) / 100]);
+                                                pie_impr.push(eval("({name:'"+impr.regionName+"',value:"+ Math.round((impr.mobileImpression / countdata.mobileImpression) * 10000) / 100+"})"));
                                                 pie_num1 = 1;
                                             }
                                         } else {
                                             if (isNaN(impr.pcImpression / countdata.pcImpression) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
-                                                pie_impr.push([impr.regionName, 0]);
+                                                pie_impr.push(eval("({name:'"+impr.regionName+"',value:0})"));
                                             } else {
-                                                pie_impr.push([impr.regionName, Math.round((impr.pcImpression / countdata.pcImpression) * 10000) / 100]);
+                                                pie_impr.push(eval("({name:'"+impr.regionName+"',value:"+ Math.round((impr.pcImpression / countdata.pcImpression) * 10000) / 100+"})"));
                                                 pie_num1 = 1;
                                             }
                                         }
@@ -790,16 +792,16 @@ $(function () {
                                     $.each(data.click, function (i, impr) {
                                         if (devices == 2) {
                                             if (isNaN(impr.mobileClick / countdata.mobileClick) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
-                                                pie_click.push([impr.regionName, 0]);
+                                                pie_click.push(eval("({name:'"+impr.regionName+"', value:0})"));
                                             } else {
-                                                pie_click.push([impr.regionName, Math.round((impr.mobileClick / countdata.mobileClick) * 10000) / 100]);
+                                                pie_click.push(eval("({name:'"+impr.regionName+"',value:"+ Math.round((impr.mobileClick / countdata.mobileClick) * 10000) / 100+"})"));
                                                 pie_num2 = 1;
                                             }
                                         } else {
                                             if (isNaN(impr.pcClick / countdata.pcClick)) {
-                                                pie_click.push([impr.regionName, 0]);
+                                                pie_click.push(eval("({name:'"+impr.regionName+"', value:0})"));
                                             } else {
-                                                pie_click.push([impr.regionName, Math.round((impr.pcClick / countdata.pcClick) * 10000) / 100]);
+                                                pie_click.push(eval("({name:'"+impr.regionName+"',value:"+ Math.round((impr.pcClick / countdata.pcClick) * 10000) / 100+"})"));
                                                 pie_num2 = 1;
                                             }
                                         }
@@ -807,16 +809,16 @@ $(function () {
                                     $.each(data.cost, function (i, impr) {
                                         if (devices == 2) {
                                             if (isNaN(impr.mobileCost / countdata.mobileCost) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
-                                                pie_cost.push([impr.regionName, 0]);
+                                                pie_cost.push(eval("({name:'"+impr.regionName+"', value:0})"));
                                             } else {
-                                                pie_cost.push([impr.regionName, Math.round((impr.mobileCost / countdata.mobileCost) * 10000) / 100]);
+                                                pie_cost.push(eval("({name:'"+impr.regionName+"',value:"+ Math.round((impr.mobileCost / countdata.mobileCost) * 10000) / 100+"})"));
                                                 pie_num3 = 1;
                                             }
                                         } else {
                                             if (isNaN(impr.pcCost / countdata.pcCost) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
-                                                pie_cost.push([impr.regionName, 0]);
+                                                pie_cost.push(eval("({name:'"+impr.regionName+"', value:0})"));
                                             } else {
-                                                pie_cost.push([impr.regionName, Math.round((impr.pcCost / countdata.pcCost) * 10000) / 100]);
+                                                pie_cost.push(eval("({name:'"+impr.regionName+"',value:"+ Math.round((impr.pcCost / countdata.pcCost) * 10000) / 100+"})"));
                                                 pie_num3 = 1;
                                             }
                                         }
@@ -824,32 +826,30 @@ $(function () {
                                     $.each(data.conv, function (i, impr) {
                                         if (devices == 2) {
                                             if (isNaN(impr.mobileConversion / countdata.mobileConversion) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
-                                                pie_conv.push([impr.regionName, 0]);
+                                                pie_conv.push(eval("({name:'"+impr.regionName+"', value:0})"));
                                             } else {
-                                                pie_conv.push([impr.regionName, Math.round((impr.mobileConversion / countdata.mobileConversion) * 10000) / 100]);
+                                                pie_conv.push(eval("({name:'"+impr.regionName+"',value:"+ Math.round((impr.mobileConversion / countdata.mobileConversion) * 10000) / 100+"})"));
                                                 pie_num4 = 1;
                                             }
                                         } else {
                                             if (isNaN(impr.pcConversion / countdata.pcConversion) || (impr.mobileImpression / countdata.mobileImpression) == Infinity) {
-                                                pie_conv.push([impr.regionName, 0]);
+                                                pie_conv.push(eval("({name:'"+impr.regionName+"', value:0})"));
                                             } else {
-                                                pie_conv.push([impr.regionName, Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100]);
+                                                pie_conv.push(eval("({name:'"+impr.regionName+"',value:"+ Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100+"})"));
                                                 pie_num4 = 1;
                                             }
                                         }
                                     });
-                                    if (pie_num1 == 1) {
-                                        pieChart(pie_impr, "展现", "#imprDiv");
-                                    }
-                                    if (pie_num2 == 1) {
-                                        pieChart(pie_click, "点击", "#clickDiv");
-                                    }
-                                    if (pie_num3 == 1) {
-                                        pieChart(pie_cost, "消费", "#costDiv");
-                                    }
-                                    if (pie_num2 == 1) {
-                                        pieChart(pie_conv, "转化", "#convDiv");
-                                    }
+
+                                        dataAll.push(pie_impr);
+                                        nameAll.push("展现");
+                                        dataAll.push(pie_click);
+                                        nameAll.push("点击");
+                                        dataAll.push(pie_cost);
+                                        nameAll.push("消费");
+                                        dataAll.push(pie_conv);
+                                        nameAll.push("转化");
+                                    pieChart(dataAll,nameAll,"imprDiv")
                                 });
                             }
 
@@ -1538,222 +1538,115 @@ $(function () {
             ]
         };
         myChart.setOption(option);
-        /*$('#container').highcharts({
-            chart: {
-                zoomType: 'xy'
-            },
-            title: {
-                text: ''
-            },
-            exporting: {
-                filename: 'Graph_Chart',
-                buttons: {
-                    contextButton: {
-                        symbol: 'url(/public/images/reportDown.jpg)',
-                        menuItems: [
-                            {
-                                text: '导出 JPEG图片',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'image/jpeg'
-                                    });
-                                }
-                            },
-                            {
-                                text: '导出 PNG图片',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'image/png'
-                                    });
-                                }
-                            },
-                            {
-                                text: '导出 PDF',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'application/pdf'
-                                    });
-                                }
-                            },
-                            {
-                                text: '导出 SVG',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'svg'
-                                    });
-                                }
-                            }
-                        ]
-                    }
-                }
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-                categories: t_date,
-                tickInterval: (dateInterval)// 每个间隔
-            },
-            yAxis: [
-                { // Primary yAxis
-                    title: {
-                        text: nameTow,
-                        margin: 30,
-                        style: {'color': colorTow, 'font-size': '16px', 'font-family': '宋体', 'font-weight': 'bold'}
-                    },
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: colorTow
-                        }
-                    }
-                },
-                { // Secondary yAxis
-                    title: {
-                        text: nameOne,
-                        margin: 30,
-                        style: {'color': colorOne, 'font-size': '16px', 'font-family': '宋体', 'font-weight': 'bold'}
-                    },
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: colorOne
-                        }
-                    },
-                    opposite: true
-                }
-            ],
-            credits: {
-                enabled: false
-            },
-            tooltip: {
-                shared: true
-            },
-            legend: {
-                align: 'left',
-                x: 10,
-                verticalAlign: 'top',
-                y: -10,
-                floating: true,
-                backgroundColor: '#FFFFFF',
-                itemDistance: 20,
-                borderRadius: 5,
-                enabled: false
-            },
-            series: [
-                dataOne,
-                dataTow
-            ]
-        });*/
+
     }
 //饼状图
     var a = 1;
+    var legenddata;
     pieChart = function (showData, showName, showId) {
-        $(showId).show();
-        $("#container").hide()
-        if (a == 1) {
-            //使用饼状图进行颜色渐变
-            Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
-                return {
-                    radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
-                    stops: [
-                        [0, color],
-                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
-                    ]
-                };
-            });
-            a++;
+        var dataString;
+        if(a==1) {
+            legenddata = eval("({ " + showName[1] + " : false," + showName[2] + " : false," + showName[3] + " : false})");
         }
-        //加载开始
-        $(showId).highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                events: {
-                    load: function () {
-                        // set up the updating of the chart each second
-                        var series = this.series[0];
-                        setInterval(function () {
-                            series.setData(showData);
-                        }, 2000);
-                    }
+        $(showId).show();
+        $("#container").hide();
+        var  myCharts = echarts.init(document.getElementById(showId));
+        var optionBin = {
+            tooltip : {
+                trigger: 'item',
+                formatter: '{b} {a}<br/>占全国百分比：{c}%'
+            },
+            legend: {
+            orient: 'vertical',
+                x:'left',
+                selected: legenddata,
+                data:[showName[0],showName[1],showName[2],showName[3]]
+            },
+            dataRange: {
+                min: 0,
+                max: 100,
+                x: 'left',
+                y: 'bottom',
+                text:['高','低'],           // 文本，默认为数值文本
+                calculable : true
+            },
+            toolbox: {
+                show: true,
+                orient : 'vertical',
+                x: 'right',
+                y: 'center',
+                feature : {
+                    restore : {show: true},
+                    saveAsImage : {show: true}
                 }
             },
-            credits: {
-                enabled: false
-            },
-            exporting: {
-                filename: 'Pie_Chart',
-                buttons: {
-                    contextButton: {
-                        symbol: 'url(/public/images/reportDown.jpg)',
-                        menuItems: [
-                            {
-                                text: '导出 JPEG图片',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'image/jpeg'
-                                    });
-                                }
-                            },
-                            {
-                                text: '导出 PNG图片',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'image/png'
-                                    });
-                                }
-                            },
-                            {
-                                text: '导出 PDF',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'application/pdf'
-                                    });
-                                }
-                            },
-                            {
-                                text: '导出 SVG',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'svg'
-                                    });
-                                }
-                            }
-                        ]
-                    }
-                }
-            },
-            title: {
-                text: showName + '占有百分比',
-                style: {"font-weight": "bold", "font-size": "18px", "color": "#fab30b", "font-family": "微软雅黑"}
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        color: '#000000',
-                        connectorColor: '#000000',
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                    }
-                }
-            },
-            series: [
+            series : [
                 {
-                    type: 'pie',
-                    name: '占有率',
-                    data: [
-                    ]
+                    name: showName[0],
+                    type: 'map',
+                    mapType: 'china',
+                    roam: false,
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    data:showData[0]
+                },{
+                    name: showName[1],
+                    type: 'map',
+                    mapType: 'china',
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    data:showData[1]
+                },{
+                    name: showName[2],
+                    type: 'map',
+                    mapType: 'china',
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    data:showData[2]
+                },{
+                    name: showName[3],
+                    type: 'map',
+                    mapType: 'china',
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    data:showData[3]
                 }
             ]
+        };
+        a++;
+        myCharts.setOption(optionBin);
+        // 动态添加默认不显示的数据
+
+        myCharts.on(echarts.config.EVENT.LEGEND_SELECTED, function (param){
+            var clickName = param.target;
+            if (clickName == showName[0]) {
+                legenddata = eval("({ "+showName[1]+" : false,"+showName[2]+" : false,"+showName[3]+" : false})");
+                pieChart(showData,showName,showId);
+            }
+            if (clickName == showName[1]) {
+                legenddata = eval("({ "+showName[0]+" : false,"+showName[2]+" : false,"+showName[3]+" : false})");
+                pieChart(showData,showName,showId);
+            }
+            if (clickName == showName[2]) {
+                legenddata = eval("({ "+showName[0]+" : false,"+showName[1]+" : false,"+showName[3]+" : false})");
+                pieChart(showData,showName,showId);
+            }
+            if (clickName == showName[3]) {
+                legenddata = eval("({ "+showName[0]+" : false,"+showName[1]+" : false,"+showName[2]+" : false})");
+                pieChart(showData,showName,showId);
+            }
         });
     }
+
+
 
     $("body").on("click", "a[cname=nameDet]", function () {
         $(this).addClass('ajc').siblings().removeClass('ajc');

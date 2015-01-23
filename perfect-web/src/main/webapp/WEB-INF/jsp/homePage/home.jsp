@@ -1089,7 +1089,6 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/map.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/keyword/keywordQuality.js"></script>
-<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
