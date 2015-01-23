@@ -1520,18 +1520,18 @@
 <%--添加推广计划弹出窗口--%>
 <jsp:include page="../promotionAssistant/alert/addCampaign.jsp"/>
 <!-- javascript -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/echarts/echarts-all.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/store.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/grid/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/echarts/2.1.10/echarts-all.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/store.js/1.3.14/store.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jqgrid/4.6.0/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/jquery.resizableColumns.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/jquery-smartMenu-min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog-plus.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/highcharts.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
+<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
@@ -1544,9 +1544,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/addKeyword.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/Monitoring.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/Indextable.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/uploadMerge.js"></script>
 <script type="text/javascript">

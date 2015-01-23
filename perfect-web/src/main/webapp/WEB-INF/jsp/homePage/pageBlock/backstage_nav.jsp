@@ -27,7 +27,7 @@
         <a href="${pageContext.request.contextPath}/logout" class="fr" style="color:#b4bcbf;">退出</a>
     </div>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript">
     $(function () {
         $(".backstage_menu>ul>li>a").each(function () {

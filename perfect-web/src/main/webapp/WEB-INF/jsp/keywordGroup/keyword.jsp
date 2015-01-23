@@ -20,7 +20,7 @@ To change this template use File | Settings | File Templates.
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/creative/creativesearch.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/creative/creativesearch_img.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <style type="text/css">
         .list2 table tr td ul li {
             width: 12%;
@@ -524,13 +524,13 @@ To change this template use File | Settings | File Templates.
     </div>
 </div>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui-1.11.0.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/creativesearch.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/tuijianCreative.js"></script>
 <script type="text/javascript">

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../public/css/accountCss/public.css"/>
     <link rel="stylesheet" href="../public/css/accountCss/style.css"/>
     <link rel="stylesheet" href="../public/js/plugs/grid.css"/>
-    <script type="text/javascript" src="../public/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript" src="../public/js/plugs/framework.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){

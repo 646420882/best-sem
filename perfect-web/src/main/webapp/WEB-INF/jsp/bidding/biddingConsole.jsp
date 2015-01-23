@@ -78,8 +78,8 @@
         <a href="http://www2.baidu.com" target="_blank">百度推广后台登录</a>
     </div>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
     String.prototype.trims = function () {
         return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');

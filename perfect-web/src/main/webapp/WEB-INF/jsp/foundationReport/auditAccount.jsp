@@ -62,8 +62,8 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="/public/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="application/javascript">
     var username="";
     String.prototype.trims = function () {
