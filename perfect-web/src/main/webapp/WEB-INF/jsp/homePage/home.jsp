@@ -1089,8 +1089,6 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/map.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/keyword/keywordQuality.js"></script>
-<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
-<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/modules/exporting.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript">
@@ -1834,6 +1832,14 @@ $("#liClick").click(function () {
 });
 var curve = function () {
     var myChart = echarts.init(document.getElementById('container'));
+    var dataNew ;
+    if(dataOne == ""){
+        dataNew = [dataTow];
+    }else if(dataTow == ""){
+        dataNew = [dataOne];
+    }else{
+        dataNew = [dataOne,dataTow];
+    }
     var option = {
         tooltip : {
             trigger: 'axis'
@@ -1883,10 +1889,7 @@ var curve = function () {
                 }
             }
         ],
-        series : [
-            dataOne,
-            dataTow
-        ]
+        series : dataNew
     };
     myChart.setOption(option);
 

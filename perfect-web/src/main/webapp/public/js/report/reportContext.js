@@ -662,103 +662,105 @@ $(function () {
                         switch (reportTypes) {
                             case "1":
                                 html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
+                                "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
+                                "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
                                 break;
                             case "2":
                                 html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>关键字</span><b><p><input class='one' type='button' onclick='javascript:sorts = -9;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 9;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p>    <p></p></b></td></td></tr>";
+                                "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>关键字</span><b><p><input class='one' type='button' onclick='javascript:sorts = -9;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 9;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
+                                "<td>&nbsp;<span>转化(电话)</span><b><p></p>    <p></p></b></td></td></tr>";
                                 break;
                             case "3":
                                 html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>创意</span><b><p><input class='one' type='button' onclick='javascript:sorts = -12;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 12;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
+                                "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'onclick='javascript:sorts = -8;reportData()'></p><p><input class='two' type='button'onclick='javascript:sorts = 8;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>创意</span><b><p><input class='one' type='button' onclick='javascript:sorts = -12;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 12;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
+                                "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
                                 break;
                             case "4":
                                 html_head = "<tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>账户</span><b><p><input class='one' type='button'></p><p><input class='two' type='button'></p></b></td>" +
-                                    "<td>&nbsp;<span>地域</span><b><p><input class='one' type='button' onclick='javascript:sorts = -10;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 10;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
+                                "<td>&nbsp;<span>账户</span><b><p><input class='one' type='button'></p><p><input class='two' type='button'></p></b></td>" +
+                                "<td>&nbsp;<span>地域</span><b><p><input class='one' type='button' onclick='javascript:sorts = -10;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 10;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
+                                "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
                                 break;
                             case "5":
                                 html_head = "<tr><td><a href='javascript:void(0)' class='returnUp' onclick='javascrpt:javascript:$(\"#reportTypes\").val(4);$(\"#pageDet\").empty();judgeDet=0;dataid=0;dataname=\"0\";reportData();'></a></td></tr><tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>账户</span><b><p><input class='one' type='button'></p><p><input class='two' type='button'></p></b></td>" +
-                                    "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
+                                "<td>&nbsp;<span>账户</span><b><p><input class='one' type='button'></p><p><input class='two' type='button'></p></b></td>" +
+                                "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
+                                "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
                                 break;
                             case "6":
                                 html_head = "<tr><td><a href='javascript:void(0)' class='returnUp' onclick='javascrpt:javascript:$(\"#reportTypes\").val(5);$(\"#pageDet\").empty();judgeDet=0;dataid=0;dataname=\"0\";reportData();'></a></td></tr><tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>账户</span><b><p><input class='one' type='button'></p><p><input class='two' type='button'></p></b></td>" +
-                                    "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
+                                "<td>&nbsp;<span>账户</span><b><p><input class='one' type='button'></p><p><input class='two' type='button'></p></b></td>" +
+                                "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
+                                "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
                                 break;
                             case "7":
                                 html_head = "<tr><td><a href='javascript:void(0)' class='returnUp' onclick='javascrpt:javascript:$(\"#reportTypes\").val(6);$(\"#pageDet\").empty();judgeDet=0;reportData();'></a></td></tr><tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>账户</span><b><p><input class='one' type='button'></p><p><input class='two' type='button'></p></b></td>" +
-                                    "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>关键字</span><b><p><input class='one' type='button' onclick='javascript:sorts = -9;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 9;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
-                                    "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
+                                "<td>&nbsp;<span>账户</span><b><p><input class='one' type='button'></p><p><input class='two' type='button'></p></b></td>" +
+                                "<td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>关键字</span><b><p><input class='one' type='button' onclick='javascript:sorts = -9;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 9;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>消费</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>点击率</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>平均点击价格</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(网页)</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>" +
+                                "<td>&nbsp;<span>转化(商桥)</span><b><p></p><p></p></b></td>" +
+                                "<td>&nbsp;<span>转化(电话)</span><b><p></p><p></p></b></td></td></tr>";
                                 break;
                         }
                         $("#shujuthead").append(html_head);
                         //饼状图计算
+                        var dataAll = new Array();
+                        var nameAll = new Array();
                         var pie_impr = new Array();
                         var pie_click = new Array();
                         var pie_cost = new Array();
@@ -771,85 +773,91 @@ $(function () {
                             if (dateLis == 0) {
                                 $.each(data.countData, function (i, countdata) {
                                     $.each(data.impr, function (i, impr) {
-                                        if (devices == 2) {
-                                            if (isNaN(impr.mobileImpression / countdata.mobileImpression) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
-                                                pie_impr.push([impr.regionName, 0]);
+                                        if(impr.regionName != "其他") {
+                                            if (devices == 2) {
+                                                if (isNaN(impr.mobileImpression / countdata.mobileImpression) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
+                                                    pie_impr.push(eval("({name:'" + impr.regionName + "', value:0})"));
+                                                } else {
+                                                    pie_impr.push(eval("({name:'" + impr.regionName + "',value:" + Math.round((impr.mobileImpression / countdata.mobileImpression) * 10000) / 100 + "})"));
+                                                    pie_num1 = 1;
+                                                }
                                             } else {
-                                                pie_impr.push([impr.regionName, Math.round((impr.mobileImpression / countdata.mobileImpression) * 10000) / 100]);
-                                                pie_num1 = 1;
-                                            }
-                                        } else {
-                                            if (isNaN(impr.pcImpression / countdata.pcImpression) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
-                                                pie_impr.push([impr.regionName, 0]);
-                                            } else {
-                                                pie_impr.push([impr.regionName, Math.round((impr.pcImpression / countdata.pcImpression) * 10000) / 100]);
-                                                pie_num1 = 1;
+                                                if (isNaN(impr.pcImpression / countdata.pcImpression) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
+                                                    pie_impr.push(eval("({name:'" + impr.regionName + "',value:0})"));
+                                                } else {
+                                                    pie_impr.push(eval("({name:'" + impr.regionName + "',value:" + Math.round((impr.pcImpression / countdata.pcImpression) * 10000) / 100 + "})"));
+                                                    pie_num1 = 1;
+                                                }
                                             }
                                         }
                                     });
                                     $.each(data.click, function (i, impr) {
-                                        if (devices == 2) {
-                                            if (isNaN(impr.mobileClick / countdata.mobileClick) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
-                                                pie_click.push([impr.regionName, 0]);
+                                        if(impr.regionName != "其他") {
+                                            if (devices == 2) {
+                                                if (isNaN(impr.mobileClick / countdata.mobileClick) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
+                                                    pie_click.push(eval("({name:'" + impr.regionName + "', value:0})"));
+                                                } else {
+                                                    pie_click.push(eval("({name:'" + impr.regionName + "',value:" + Math.round((impr.mobileClick / countdata.mobileClick) * 10000) / 100 + "})"));
+                                                    pie_num2 = 1;
+                                                }
                                             } else {
-                                                pie_click.push([impr.regionName, Math.round((impr.mobileClick / countdata.mobileClick) * 10000) / 100]);
-                                                pie_num2 = 1;
-                                            }
-                                        } else {
-                                            if (isNaN(impr.pcClick / countdata.pcClick)) {
-                                                pie_click.push([impr.regionName, 0]);
-                                            } else {
-                                                pie_click.push([impr.regionName, Math.round((impr.pcClick / countdata.pcClick) * 10000) / 100]);
-                                                pie_num2 = 1;
+                                                if (isNaN(impr.pcClick / countdata.pcClick)) {
+                                                    pie_click.push(eval("({name:'" + impr.regionName + "', value:0})"));
+                                                } else {
+                                                    pie_click.push(eval("({name:'" + impr.regionName + "',value:" + Math.round((impr.pcClick / countdata.pcClick) * 10000) / 100 + "})"));
+                                                    pie_num2 = 1;
+                                                }
                                             }
                                         }
                                     });
                                     $.each(data.cost, function (i, impr) {
-                                        if (devices == 2) {
-                                            if (isNaN(impr.mobileCost / countdata.mobileCost) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
-                                                pie_cost.push([impr.regionName, 0]);
+                                        if(impr.regionName != "其他") {
+                                            if (devices == 2) {
+                                                if (isNaN(impr.mobileCost / countdata.mobileCost) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
+                                                    pie_cost.push(eval("({name:'" + impr.regionName + "', value:0})"));
+                                                } else {
+                                                    pie_cost.push(eval("({name:'" + impr.regionName + "',value:" + Math.round((impr.mobileCost / countdata.mobileCost) * 10000) / 100 + "})"));
+                                                    pie_num3 = 1;
+                                                }
                                             } else {
-                                                pie_cost.push([impr.regionName, Math.round((impr.mobileCost / countdata.mobileCost) * 10000) / 100]);
-                                                pie_num3 = 1;
-                                            }
-                                        } else {
-                                            if (isNaN(impr.pcCost / countdata.pcCost) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
-                                                pie_cost.push([impr.regionName, 0]);
-                                            } else {
-                                                pie_cost.push([impr.regionName, Math.round((impr.pcCost / countdata.pcCost) * 10000) / 100]);
-                                                pie_num3 = 1;
+                                                if (isNaN(impr.pcCost / countdata.pcCost) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
+                                                    pie_cost.push(eval("({name:'" + impr.regionName + "', value:0})"));
+                                                } else {
+                                                    pie_cost.push(eval("({name:'" + impr.regionName + "',value:" + Math.round((impr.pcCost / countdata.pcCost) * 10000) / 100 + "})"));
+                                                    pie_num3 = 1;
+                                                }
                                             }
                                         }
                                     });
                                     $.each(data.conv, function (i, impr) {
-                                        if (devices == 2) {
-                                            if (isNaN(impr.mobileConversion / countdata.mobileConversion) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
-                                                pie_conv.push([impr.regionName, 0]);
+                                        if(impr.regionName != "其他"){
+                                            if (devices == 2) {
+                                                if (isNaN(impr.mobileConversion / countdata.mobileConversion) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
+                                                    pie_conv.push(eval("({name:'"+impr.regionName+"', value:0})"));
+                                                } else {
+                                                    pie_conv.push(eval("({name:'"+impr.regionName+"',value:"+ Math.round((impr.mobileConversion / countdata.mobileConversion) * 10000) / 100+"})"));
+                                                    pie_num4 = 1;
+                                                }
                                             } else {
-                                                pie_conv.push([impr.regionName, Math.round((impr.mobileConversion / countdata.mobileConversion) * 10000) / 100]);
-                                                pie_num4 = 1;
-                                            }
-                                        } else {
-                                            if (isNaN(impr.pcConversion / countdata.pcConversion) || (impr.mobileImpression / countdata.mobileImpression) == Infinity) {
-                                                pie_conv.push([impr.regionName, 0]);
-                                            } else {
-                                                pie_conv.push([impr.regionName, Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100]);
-                                                pie_num4 = 1;
+                                                if (isNaN(impr.pcConversion / countdata.pcConversion) || (impr.mobileImpression / countdata.mobileImpression) == Infinity) {
+                                                    pie_conv.push(eval("({name:'"+impr.regionName+"', value:0})"));
+                                                } else {
+                                                    pie_conv.push(eval("({name:'"+impr.regionName+"',value:"+ Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100+"})"));
+                                                    pie_num4 = 1;
+                                                }
                                             }
                                         }
                                     });
-                                    if (pie_num1 == 1) {
-                                        pieChart(pie_impr, "展现", "#imprDiv");
-                                    }
-                                    if (pie_num2 == 1) {
-                                        pieChart(pie_click, "点击", "#clickDiv");
-                                    }
-                                    if (pie_num3 == 1) {
-                                        pieChart(pie_cost, "消费", "#costDiv");
-                                    }
-                                    if (pie_num2 == 1) {
-                                        pieChart(pie_conv, "转化", "#convDiv");
-                                    }
+
+                                    dataAll.push(pie_impr);
+                                    nameAll.push("展现");
+                                    dataAll.push(pie_click);
+                                    nameAll.push("点击");
+                                    dataAll.push(pie_cost);
+                                    nameAll.push("消费");
+                                    dataAll.push(pie_conv);
+                                    nameAll.push("转化");
+                                    //pieChart(dataAll,nameAll,"imprDiv")
                                 });
                             }
 
@@ -889,26 +897,26 @@ $(function () {
                                     if (i % 2 == 0) {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box1'><td>" + items.date + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td>"
-                                                + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td>"
+                                            + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box1'><td>" + items.date + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td>"
-                                                + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td>"
+                                            + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     } else {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box2'><td>" + items.date + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td>"
-                                                + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td>"
+                                            + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box2'><td>" + items.date + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td>"
-                                                + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td>"
+                                            + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     }
                                     break;
@@ -916,26 +924,26 @@ $(function () {
                                     if (i % 2 == 0) {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box1'><td>" + items.date + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
-                                                + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
+                                            + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box1'><td>" + items.date + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
-                                                + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
+                                            + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     } else {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box2'><td>" + items.date + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
-                                                + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
+                                            + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box2'><td>" + items.date + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
-                                                + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
+                                            + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     }
                                     break;
@@ -943,26 +951,26 @@ $(function () {
                                     if (i % 2 == 0) {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box1'><td>" + items.date + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td><label style='color: dodgerblue'>" + items.creativeTitle + "</label><br/><label style='font-size: 8px'>" + items.description1 + "</label></td>"
-                                                + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td><label style='color: dodgerblue'>" + items.creativeTitle + "</label><br/><label style='font-size: 8px'>" + items.description1 + "</label></td>"
+                                            + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box1'><td>" + items.date + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td><label style='color: dodgerblue'>" + items.creativeTitle + "</label><br/><label style='font-size: 8px'>" + items.description1 + "</label></td>"
-                                                + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td><label style='color: dodgerblue'>" + items.creativeTitle + "</label><br/><label style='font-size: 8px'>" + items.description1 + "</label></td>"
+                                            + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     } else {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box2'><td>" + items.date + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td><label style='color: dodgerblue'>" + items.creativeTitle + "</label><br/><label style='font-size: 8px'>" + items.description1 + "</label></td>"
-                                                + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td><label style='color: dodgerblue'>" + items.creativeTitle + "</label><br/><label style='font-size: 8px'>" + items.description1 + "</label></td>"
+                                            + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box2'><td>" + items.date + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td><label style='color: dodgerblue'>" + items.creativeTitle + "</label><br/><label style='font-size: 8px'>" + items.description1 + "</label></td>"
-                                                + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td><label style='color: dodgerblue'>" + items.creativeTitle + "</label><br/><label style='font-size: 8px'>" + items.description1 + "</label></td>"
+                                            + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     }
                                     break;
@@ -970,47 +978,47 @@ $(function () {
                                     if (i % 2 == 0) {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box1' cname='pieClick' region='" + items.regionName + "' impr='" + items.mobileImpression + "' clicks='" + items.mobileClick + "' cost='" + Math.round(items.mobileCost * 100) / 100 + "' ctr='" + Math.round(items.mobileCtr) + "' cpc='" + Math.round(items.mobileCpc * 100) / 100 + "' conv='" + items.mobileConversion + "'>"
-                                                + "<td>" + items.date + "</td>"
-                                                + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(5);$(\"#pageDet\").empty();judgeDet=0;reportData();'>" + items.account + "</a></td>"
-                                                + "<td>" + items.regionName + "</td>"
-                                                + "<td>" + items.mobileImpression + "</td>"
-                                                + "<td>" + items.mobileClick + "</td>"
-                                                + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td>"
-                                                + "<td>" + Math.round(items.mobileCpc * 100) / 100 + "</td>"
-                                                + "<td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.date + "</td>"
+                                            + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(5);$(\"#pageDet\").empty();judgeDet=0;reportData();'>" + items.account + "</a></td>"
+                                            + "<td>" + items.regionName + "</td>"
+                                            + "<td>" + items.mobileImpression + "</td>"
+                                            + "<td>" + items.mobileClick + "</td>"
+                                            + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td>"
+                                            + "<td>" + Math.round(items.mobileCpc * 100) / 100 + "</td>"
+                                            + "<td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box1' cname='pieClick' region='" + items.regionName + "' impr='" + items.pcImpression + "' clicks='" + items.pcClick + "' cost='" + Math.round(items.pcCost * 100) / 100 + "' ctr='" + Math.round(items.pcCtr) + "' cpc='" + Math.round(items.pcCpc * 100) / 100 + "' conv='" + items.pcConversion + "'><td>" + items.date + "</td>"
-                                                + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(5);$(\"#pageDet\").empty();judgeDet=0;reportData();'>" + items.account + "</a></td>"
-                                                + "<td>" + items.regionName + "</td>"
-                                                + "<td>" + items.pcImpression + "</td>"
-                                                + "<td>" + items.pcClick + "</td>"
-                                                + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td>"
-                                                + "<td>" + Math.round(items.pcCpc * 100) / 100 + "</td>"
-                                                + "<td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(5);$(\"#pageDet\").empty();judgeDet=0;reportData();'>" + items.account + "</a></td>"
+                                            + "<td>" + items.regionName + "</td>"
+                                            + "<td>" + items.pcImpression + "</td>"
+                                            + "<td>" + items.pcClick + "</td>"
+                                            + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td>"
+                                            + "<td>" + Math.round(items.pcCpc * 100) / 100 + "</td>"
+                                            + "<td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     } else {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box2' cname='pieClick' region='" + items.regionName + "' impr='" + items.mobileImpression + "' clicks='" + items.mobileClick + "' cost='" + Math.round(items.mobileCost * 100) / 100 + "' ctr='" + Math.round(items.mobileCtr) + "' cpc='" + Math.round(items.mobileCpc * 100) / 100 + "' conv='" + items.mobileConversion + "'><td>" + items.date + "</td>"
-                                                + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(5);$(\"#pageDet\").empty();judgeDet=0;reportData();'>" + items.account + "</a></td>"
-                                                + "<td>" + items.regionName + "</td>"
-                                                + "<td>" + items.mobileImpression + "</td>"
-                                                + "<td>" + items.mobileClick + "</td>"
-                                                + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td>"
-                                                + "<td>" + Math.round(items.mobileCpc * 100) / 100 + "</td>"
-                                                + "<td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(5);$(\"#pageDet\").empty();judgeDet=0;reportData();'>" + items.account + "</a></td>"
+                                            + "<td>" + items.regionName + "</td>"
+                                            + "<td>" + items.mobileImpression + "</td>"
+                                            + "<td>" + items.mobileClick + "</td>"
+                                            + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td>"
+                                            + "<td>" + Math.round(items.mobileCpc * 100) / 100 + "</td>"
+                                            + "<td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box2' cname='pieClick' region='" + items.regionName + "' impr='" + items.pcImpression + "' clicks='" + items.pcClick + "' cost='" + Math.round(items.pcCost * 100) / 100 + "' ctr='" + Math.round(items.pcCtr) + "' cpc='" + Math.round(items.pcCpc * 100) / 100 + "' conv='" + items.pcConversion + "'><td>" + items.date + "</td>"
-                                                + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(5);$(\"#pageDet\").empty();judgeDet=0;reportData();'>" + items.account + "</a></td>"
-                                                + "<td>" + items.regionName + "</td>"
-                                                + "<td>" + items.pcImpression + "</td>"
-                                                + "<td>" + items.pcClick + "</td>"
-                                                + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td>"
-                                                + "<td>" + Math.round(items.pcCpc * 100) / 100 + "</td>"
-                                                + "<td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(5);$(\"#pageDet\").empty();judgeDet=0;reportData();'>" + items.account + "</a></td>"
+                                            + "<td>" + items.regionName + "</td>"
+                                            + "<td>" + items.pcImpression + "</td>"
+                                            + "<td>" + items.pcClick + "</td>"
+                                            + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td>"
+                                            + "<td>" + Math.round(items.pcCpc * 100) / 100 + "</td>"
+                                            + "<td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     }
                                     break;
@@ -1018,30 +1026,30 @@ $(function () {
                                     if (i % 2 == 0) {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box1'><td>" + items.date + "</td>"
-                                                + "<td>" + items.account + "</td>"
-                                                + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(6);$(\"#pageDet\").empty();judgeDet=0;dataname=\"cid\";dataid=" + items.campaignId + ";reportData();'>" + items.campaignName + "</a></td>"
-                                                + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.account + "</td>"
+                                            + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(6);$(\"#pageDet\").empty();judgeDet=0;dataname=\"cid\";dataid=" + items.campaignId + ";reportData();'>" + items.campaignName + "</a></td>"
+                                            + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box1'><td>" + items.date + "</td>"
-                                                + "<td>" + items.account + "</td>"
-                                                + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(6);$(\"#pageDet\").empty();judgeDet=0;dataname=\"cid\";dataid=" + items.campaignId + ";reportData();'>" + items.campaignName + "</a></td>"
-                                                + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.account + "</td>"
+                                            + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(6);$(\"#pageDet\").empty();judgeDet=0;dataname=\"cid\";dataid=" + items.campaignId + ";reportData();'>" + items.campaignName + "</a></td>"
+                                            + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     } else {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box2'><td>" + items.date + "</td>"
-                                                + "<td>" + items.account + "</td>"
-                                                + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(6);$(\"#pageDet\").empty();judgeDet=0;dataname=\"cid\";dataid=" + items.campaignId + ";reportData();'>" + items.campaignName + "</a></td>"
-                                                + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.account + "</td>"
+                                            + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(6);$(\"#pageDet\").empty();judgeDet=0;dataname=\"cid\";dataid=" + items.campaignId + ";reportData();'>" + items.campaignName + "</a></td>"
+                                            + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box2'><td>" + items.date + "</td>"
-                                                + "<td>" + items.account + "</td>"
-                                                + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(6);$(\"#pageDet\").empty();judgeDet=0;dataname=\"cid\";dataid=" + items.campaignId + ";reportData();'>" + items.campaignName + "</a></td>"
-                                                + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.account + "</td>"
+                                            + "<td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(6);$(\"#pageDet\").empty();judgeDet=0;dataname=\"cid\";dataid=" + items.campaignId + ";reportData();'>" + items.campaignName + "</a></td>"
+                                            + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     }
                                     break;
@@ -1049,30 +1057,30 @@ $(function () {
                                     if (i % 2 == 0) {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box1'><td>" + items.date + "</td>"
-                                                + "<td>" + items.account + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(7);$(\"#pageDet\").empty();judgeDet=0;dataname=\"agid\";dataid=" + items.adgroupId + ";reportData();'>" + items.adgroupName + "</a></td>"
-                                                + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.account + "</td>"
+                                            + "<td>" + items.campaignName + "</td><td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(7);$(\"#pageDet\").empty();judgeDet=0;dataname=\"agid\";dataid=" + items.adgroupId + ";reportData();'>" + items.adgroupName + "</a></td>"
+                                            + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box1'><td>" + items.date + "</td>"
-                                                + "<td>" + items.account + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(7);$(\"#pageDet\").empty();judgeDet=0;dataname=\"agid\";dataid=" + items.adgroupId + ";reportData();'>" + items.adgroupName + "</a></td>"
-                                                + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.account + "</td>"
+                                            + "<td>" + items.campaignName + "</td><td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(7);$(\"#pageDet\").empty();judgeDet=0;dataname=\"agid\";dataid=" + items.adgroupId + ";reportData();'>" + items.adgroupName + "</a></td>"
+                                            + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     } else {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box2'><td>" + items.date + "</td>"
-                                                + "<td>" + items.account + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(7);$(\"#pageDet\").empty();judgeDet=0;dataname=\"agid\";dataid=" + items.adgroupId + ";reportData();'>" + items.adgroupName + "</a></td>"
-                                                + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.account + "</td>"
+                                            + "<td>" + items.campaignName + "</td><td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(7);$(\"#pageDet\").empty();judgeDet=0;dataname=\"agid\";dataid=" + items.adgroupId + ";reportData();'>" + items.adgroupName + "</a></td>"
+                                            + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box2'><td>" + items.date + "</td>"
-                                                + "<td>" + items.account + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(7);$(\"#pageDet\").empty();judgeDet=0;dataname=\"agid\";dataid=" + items.adgroupId + ";reportData();'>" + items.adgroupName + "</a></td>"
-                                                + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.account + "</td>"
+                                            + "<td>" + items.campaignName + "</td><td><a href='javascript:void(0)' class='nextOne' onclick='javascript:$(\"#reportTypes\").val(7);$(\"#pageDet\").empty();judgeDet=0;dataname=\"agid\";dataid=" + items.adgroupId + ";reportData();'>" + items.adgroupName + "</a></td>"
+                                            + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     }
                                     break;
@@ -1080,30 +1088,30 @@ $(function () {
                                     if (i % 2 == 0) {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box1'><td>" + items.date + "</td>"
-                                                + "<td>" + items.account + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
-                                                + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.account + "</td>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
+                                            + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box1'><td>" + items.date + "</td>"
-                                                + "<td>" + items.account + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
-                                                + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.account + "</td>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
+                                            + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     } else {
                                         if (devices == 2) {
                                             html_Go = "<tr class='list2_box2'><td>" + items.date + "</td>"
-                                                + "<td>" + items.account + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
-                                                + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.account + "</td>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
+                                            + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td><td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                         } else {
                                             html_Go = "<tr class='list2_box2'><td>" + items.date + "</td>"
-                                                + "<td>" + items.account + "</td>"
-                                                + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
-                                                + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                                + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                            + "<td>" + items.account + "</td>"
+                                            + "<td>" + items.campaignName + "</td><td>" + items.adgroupName + "</td><td>" + items.keywordName + "</td>"
+                                            + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td><td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                            + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                         }
                                     }
                                     dataid = items.campaignId;
@@ -1117,12 +1125,12 @@ $(function () {
                                 $("#containerLegend").empty();
                                 /*初始化曲线图所用需求*/
                                 $("#containerLegend").html("<div class='tu_top over'><ul><li>展示曲线</li>"
-                                    + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
-                                    + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
-                                    + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
-                                    + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
-                                    + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
-                                    + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+                                + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
+                                + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
+                                + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
+                                + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
+                                + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
+                                + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
 
                                 dataOne = {
                                     name: '展现',
@@ -1165,19 +1173,19 @@ $(function () {
                             if (reportTypes == "2" || reportTypes == "3") {
                                 html_GoAll = "<tr><td>合计</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
                                 html_GoAll = html_GoAll + "<tr><td>计算机</td>"
-                                    + "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
-                                    + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                    + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                + "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
+                                + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                 html_GoAll = html_GoAll + "<tr><td>移动设备</td>"
-                                    + "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td>"
-                                    + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                    + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                + "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td>"
+                                + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                 html_GoAll = html_GoAll + "<tr><td>合计</td>"
-                                    + "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
-                                    + "<td>" + Math.round((items.pcCost + items.mobileCost) * 100) / 100 + "</td>"
-                                    + "<td>" + Math.round(((items.pcClick + items.mobileClick) / (items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
-                                    + "<td>" + Math.round(((items.pcCost + items.mobileCost) / (items.pcClick + items.mobileClick)) * 100) / 100 + "</td>"
-                                    + "<td>" + (items.pcConversion + items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
+                                + "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
+                                + "<td>" + Math.round((items.pcCost + items.mobileCost) * 100) / 100 + "</td>"
+                                + "<td>" + Math.round(((items.pcClick + items.mobileClick) / (items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
+                                + "<td>" + Math.round(((items.pcCost + items.mobileCost) / (items.pcClick + items.mobileClick)) * 100) / 100 + "</td>"
+                                + "<td>" + (items.pcConversion + items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
                             } else {
                                 var headTd = "";
                                 var bodyTd = "";
@@ -1193,19 +1201,19 @@ $(function () {
                                 }
                                 html_GoAll = "<tr><td>合计</td>"+headTd+"</tr>"
                                 html_GoAll = html_GoAll + "<tr><td>计算机</td>"
-                                    + bodyTd +"<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
-                                    + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                                    + "<td>" + Math.round(items.pcCtr * 100) / 100 + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                                + bodyTd +"<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
+                                + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                                + "<td>" + Math.round(items.pcCtr * 100) / 100 + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                 html_GoAll = html_GoAll + "<tr><td>移动设备</td>"
-                                    + bodyTd +"<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td>"
-                                    + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                                    + "<td>" + Math.round(items.mobileCtr * 100) / 100 + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                                + bodyTd +"<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td>"
+                                + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                                + "<td>" + Math.round(items.mobileCtr * 100) / 100 + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                 html_GoAll = html_GoAll + "<tr><td>合计</td>"
-                                    + bodyTd +"<td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
-                                    + "<td>" + Math.round((items.pcCost + items.mobileCost) * 100) / 100 + "</td>"
-                                    + "<td>" + Math.round(((items.pcClick + items.mobileClick) / (items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
-                                    + "<td>" + Math.round(((items.pcCost + items.mobileCost) / (items.pcClick + items.mobileClick)) * 100) / 100 + "</td>"
-                                    + "<td>" + (items.pcConversion + items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
+                                + bodyTd +"<td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
+                                + "<td>" + Math.round((items.pcCost + items.mobileCost) * 100) / 100 + "</td>"
+                                + "<td>" + Math.round(((items.pcClick + items.mobileClick) / (items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
+                                + "<td>" + Math.round(((items.pcCost + items.mobileCost) / (items.pcClick + items.mobileClick)) * 100) / 100 + "</td>"
+                                + "<td>" + (items.pcConversion + items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
                             }
 
 
@@ -1267,22 +1275,22 @@ $(function () {
                                     if (i % 2 == 0) {
                                         if (devicesUser == 2) {
                                             html_User = "<tr class='list2_box1'><td>" + item + "</td>"
-                                                + "<td>" + ((items.mobileImpression == null) ? "-" : items.mobileImpression) + "</td><td>" + ((items.mobileClick == null) ? "-" : items.mobileClick) + "</td><td>" + ((items.mobileCost == null) ? "-" : Math.round(items.mobileCost * 100) / 100) + "</td>"
-                                                + "<td>" + ((items.mobileCtr == null) ? "-" : Math.round(items.mobileCtr * 100) / 100) + "%</td><td>" + ((items.mobileCpc == null) ? "-" : Math.round(items.mobileCpc * 100) / 100) + "</td><td>" + ((items.mobileConversion == null) ? "-" : items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
+                                            + "<td>" + ((items.mobileImpression == null) ? "-" : items.mobileImpression) + "</td><td>" + ((items.mobileClick == null) ? "-" : items.mobileClick) + "</td><td>" + ((items.mobileCost == null) ? "-" : Math.round(items.mobileCost * 100) / 100) + "</td>"
+                                            + "<td>" + ((items.mobileCtr == null) ? "-" : Math.round(items.mobileCtr * 100) / 100) + "%</td><td>" + ((items.mobileCpc == null) ? "-" : Math.round(items.mobileCpc * 100) / 100) + "</td><td>" + ((items.mobileConversion == null) ? "-" : items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
                                         } else {
                                             html_User = "<tr class='list2_box1'><td>" + item + "</td>"
-                                                + "<td>" + ((items.pcImpression == null) ? "-" : items.pcImpression) + "</td><td>" + ((items.pcClick == null) ? "-" : items.pcClick) + "</td><td>" + ((items.pcCost == null) ? "-" : Math.round(items.pcCost * 100) / 100) + "</td>"
-                                                + "<td>" + ((items.pcCtr == null) ? "-" : Math.round(items.pcCtr * 100) / 100) + "%</td><td>" + ((items.pcCpc == null) ? "-" : Math.round(items.pcCpc * 100) / 100) + "</td><td>" + ((items.pcConversion == null) ? "-" : items.pcConversion) + "</td><td>-</td><td>-</td></tr>";
+                                            + "<td>" + ((items.pcImpression == null) ? "-" : items.pcImpression) + "</td><td>" + ((items.pcClick == null) ? "-" : items.pcClick) + "</td><td>" + ((items.pcCost == null) ? "-" : Math.round(items.pcCost * 100) / 100) + "</td>"
+                                            + "<td>" + ((items.pcCtr == null) ? "-" : Math.round(items.pcCtr * 100) / 100) + "%</td><td>" + ((items.pcCpc == null) ? "-" : Math.round(items.pcCpc * 100) / 100) + "</td><td>" + ((items.pcConversion == null) ? "-" : items.pcConversion) + "</td><td>-</td><td>-</td></tr>";
                                         }
                                     } else {
                                         if (devicesUser == 2) {
                                             html_User = "<tr class='list2_box2'><td>" + item + "</td>"
-                                                + "<td>" + ((items.mobileImpression == null) ? "-" : items.mobileImpression) + "</td><td>" + ((items.mobileClick == null) ? "-" : items.mobileClick) + "</td><td>" + ((items.mobileCost == null) ? "-" : Math.round(items.mobileCost * 100) / 100) + "</td>"
-                                                + "<td>" + ((items.mobileCtr == null) ? "-" : Math.round(items.mobileCtr * 100) / 100) + "%</td><td>" + ((items.mobileCpc == null) ? "-" : Math.round(items.mobileCpc * 100) / 100) + "</td><td>" + ((items.mobileConversion == null) ? "-" : items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
+                                            + "<td>" + ((items.mobileImpression == null) ? "-" : items.mobileImpression) + "</td><td>" + ((items.mobileClick == null) ? "-" : items.mobileClick) + "</td><td>" + ((items.mobileCost == null) ? "-" : Math.round(items.mobileCost * 100) / 100) + "</td>"
+                                            + "<td>" + ((items.mobileCtr == null) ? "-" : Math.round(items.mobileCtr * 100) / 100) + "%</td><td>" + ((items.mobileCpc == null) ? "-" : Math.round(items.mobileCpc * 100) / 100) + "</td><td>" + ((items.mobileConversion == null) ? "-" : items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
                                         } else {
                                             html_User = "<tr class='list2_box2'><td>" + item + "</td>"
-                                                + "<td>" + ((items.pcImpression == null) ? "-" : items.pcImpression) + "</td><td>" + ((items.pcClick == null) ? "-" : items.pcClick) + "</td><td>" + ((items.pcCost == null) ? "-" : Math.round(items.pcCost * 100) / 100) + "</td>"
-                                                + "<td>" + ((items.pcCtr == null) ? "-" : Math.round(items.pcCtr * 100) / 100) + "%</td><td>" + ((items.pcCpc == null) ? "-" : Math.round(items.pcCpc * 100) / 100) + "</td><td>" + ((items.pcConversion == null) ? "-" : items.pcConversion) + "</td><td>-</td><td>-</td></tr>";
+                                            + "<td>" + ((items.pcImpression == null) ? "-" : items.pcImpression) + "</td><td>" + ((items.pcClick == null) ? "-" : items.pcClick) + "</td><td>" + ((items.pcCost == null) ? "-" : Math.round(items.pcCost * 100) / 100) + "</td>"
+                                            + "<td>" + ((items.pcCtr == null) ? "-" : Math.round(items.pcCtr * 100) / 100) + "%</td><td>" + ((items.pcCpc == null) ? "-" : Math.round(items.pcCpc * 100) / 100) + "</td><td>" + ((items.pcConversion == null) ? "-" : items.pcConversion) + "</td><td>-</td><td>-</td></tr>";
                                         }
                                     }
                                     $("#userTbody").append(html_User);
@@ -1295,19 +1303,19 @@ $(function () {
 
                         html_UserPro = "<tr><td>合计</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
                         html_UserPro = html_UserPro + "<tr><td>计算机</td>"
-                            + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
-                            + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
-                            + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
+                        + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
+                        + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
+                        + "<td>" + Math.round(items.pcCtr) + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                         html_UserPro = html_UserPro + "<tr><td>移动设备</td>"
-                            + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td>"
-                            + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
-                            + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
+                        + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td>"
+                        + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
+                        + "<td>" + Math.round(items.mobileCtr) + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                         html_UserPro = html_UserPro + "<tr><td>合计</td>"
-                            + "<td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
-                            + "<td>" + Math.round((items.pcCost + items.mobileCost) * 100) / 100 + "</td>"
-                            + "<td>" + Math.round(((items.pcClick + items.mobileClick) / (items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
-                            + "<td>" + Math.round(((items.pcCost + items.mobileCost) / (items.pcClick + items.mobileClick)) * 100) / 100 + "</td>"
-                            + "<td>" + (items.pcConversion + items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
+                        + "<td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
+                        + "<td>" + Math.round((items.pcCost + items.mobileCost) * 100) / 100 + "</td>"
+                        + "<td>" + Math.round(((items.pcClick + items.mobileClick) / (items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
+                        + "<td>" + Math.round(((items.pcCost + items.mobileCost) / (items.pcClick + items.mobileClick)) * 100) / 100 + "</td>"
+                        + "<td>" + (items.pcConversion + items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
 
                     });
 
@@ -1382,44 +1390,44 @@ $(function () {
                         var html_User2 = "";
                         if (i % 2 == 0) {
                             html_User1 = "<tr class='list2_box1'><td>" + dateEach[i] + "</td>"
-                                + "<td><span>" + ((impression[i] == undefined) ? '-' : (isNaN(impression[i])) ? '-' : impression[i]) + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((impression1[i] == 0) ? '-%' : ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100)) ? '-' : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100)) ? '-' : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
-                                + "<td><span>" + ((click[i] == undefined) ? '-' : (isNaN(click[i])) ? '-' : click[i]) + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((click1[i] == 0) ? '-%' : ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100)) ? '-' : Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100)) ? '-' : Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
-                                + "<td><span>" + ((cost[i] == undefined) ? '-' : (isNaN(cost[i])) ? '-' : cost[i]) + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((cost1[i] == 0) ? '-%' : ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : (isNaN(Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100)) ? '-' : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : (isNaN(Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100)) ? '-' : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
-                                + "<td><span>" + ((ctr[i] == undefined) ? '-' : (isNaN(ctr[i])) ? '-' : ctr[i]) + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((ctr1[i] == 0) ? '-%' : ((ctr[i] - ctr1[i] >= 0) ? ((isNaN(ctr1[i])) ? "-" : (isNaN(Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100)) ? '-' : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : (isNaN(Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100)) ? '-' : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
-                                + "<td><span>" + ((cpc[i] == undefined) ? '-' : (isNaN(cpc[i])) ? '-' : cpc[i]) + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((cpc1[i] == 0) ? '-%' : ((cpc[i] - cpc1[i] >= 0) ? ((isNaN(cpc1[i])) ? "-" : (isNaN(Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100)) ? '-' : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : (isNaN(Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100)) ? '-' : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
-                                + "<td><span>" + ((conversion[i] == undefined) ? '-' : (isNaN(conversion[i])) ? '-' : conversion[i]) + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((conversion1[i] == 0) ? '-%' : ((conversion[i] - conversion1[i] >= 0) ? ((isNaN(conversion1[i])) ? "-" : (isNaN(Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100)) ? '-' : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : (isNaN(Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100)) ? '-' : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
-                                + "</td><td>-</td><td>-</td></tr>";
+                            + "<td><span>" + ((impression[i] == undefined) ? '-' : (isNaN(impression[i])) ? '-' : impression[i]) + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                            + "<span>" + ((impression1[i] == 0) ? '-%' : ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100)) ? '-' : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100)) ? '-' : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
+                            + "<td><span>" + ((click[i] == undefined) ? '-' : (isNaN(click[i])) ? '-' : click[i]) + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                            + "<span>" + ((click1[i] == 0) ? '-%' : ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100)) ? '-' : Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100)) ? '-' : Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
+                            + "<td><span>" + ((cost[i] == undefined) ? '-' : (isNaN(cost[i])) ? '-' : cost[i]) + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                            + "<span>" + ((cost1[i] == 0) ? '-%' : ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : (isNaN(Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100)) ? '-' : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : (isNaN(Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100)) ? '-' : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
+                            + "<td><span>" + ((ctr[i] == undefined) ? '-' : (isNaN(ctr[i])) ? '-' : ctr[i]) + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                            + "<span>" + ((ctr1[i] == 0) ? '-%' : ((ctr[i] - ctr1[i] >= 0) ? ((isNaN(ctr1[i])) ? "-" : (isNaN(Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100)) ? '-' : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : (isNaN(Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100)) ? '-' : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
+                            + "<td><span>" + ((cpc[i] == undefined) ? '-' : (isNaN(cpc[i])) ? '-' : cpc[i]) + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                            + "<span>" + ((cpc1[i] == 0) ? '-%' : ((cpc[i] - cpc1[i] >= 0) ? ((isNaN(cpc1[i])) ? "-" : (isNaN(Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100)) ? '-' : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : (isNaN(Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100)) ? '-' : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
+                            + "<td><span>" + ((conversion[i] == undefined) ? '-' : (isNaN(conversion[i])) ? '-' : conversion[i]) + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                            + "<span>" + ((conversion1[i] == 0) ? '-%' : ((conversion[i] - conversion1[i] >= 0) ? ((isNaN(conversion1[i])) ? "-" : (isNaN(Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100)) ? '-' : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : (isNaN(Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100)) ? '-' : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
+                            + "</td><td>-</td><td>-</td></tr>";
 
                             html_User2 = "<tr class='list2_box1'><td>" + dateEach1[i] + "</td>"
-                                + "<td>" + ((impression1[i] == undefined) ? 0 : impression1[i]) + "</td><td>" + ((click1[i] == undefined) ? 0 : click1[i]) + "</td><td>" + ((cost1[i] == undefined) ? 0 : cost1[i]) + "</td>"
-                                + "<td>" + ((ctr1[i] == undefined) ? 0 : ctr1[i]) + "%</td><td>" + ((cpc1[i] == undefined) ? 0 : cpc1[i]) + "</td><td>" + ((conversion1[i] == undefined) ? 0 : conversion1[i]) + "</td><td>-</td><td>-</td></tr>"
-                                + "<tr><td colspan='9'>&nbsp;</td></tr>";
+                            + "<td>" + ((impression1[i] == undefined) ? 0 : impression1[i]) + "</td><td>" + ((click1[i] == undefined) ? 0 : click1[i]) + "</td><td>" + ((cost1[i] == undefined) ? 0 : cost1[i]) + "</td>"
+                            + "<td>" + ((ctr1[i] == undefined) ? 0 : ctr1[i]) + "%</td><td>" + ((cpc1[i] == undefined) ? 0 : cpc1[i]) + "</td><td>" + ((conversion1[i] == undefined) ? 0 : conversion1[i]) + "</td><td>-</td><td>-</td></tr>"
+                            + "<tr><td colspan='9'>&nbsp;</td></tr>";
                         } else {
                             html_User1 = "<tr class='list2_box2'><td>" + dateEach[i] + "</td>"
-                                + "<td><span>" + ((impression[i] == undefined) ? '-' : (isNaN(impression[i])) ? '-' : impression[i]) + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((impression1[i] == 0) ? '-%' : ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100)) ? '-' : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100)) ? '-' : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
-                                + "<td><span>" + ((click[i] == undefined) ? '-' : (isNaN(click[i])) ? '-' : click[i]) + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((click1[i] == 0) ? '-%' : ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100)) ? '-' : Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100)) ? '-' : Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
-                                + "<td><span>" + ((cost[i] == undefined) ? '-' : (isNaN(cost[i])) ? '-' : cost[i]) + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((cost1[i] == 0) ? '-%' : ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : (isNaN(Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100)) ? '-' : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : (isNaN(Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100)) ? '-' : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
-                                + "<td><span>" + ((ctr[i] == undefined) ? '-' : (isNaN(ctr[i])) ? '-' : ctr[i]) + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((ctr1[i] == 0) ? '-%' : ((ctr[i] - ctr1[i] >= 0) ? ((isNaN(ctr1[i])) ? "-" : (isNaN(Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100)) ? '-' : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : (isNaN(Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100)) ? '-' : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
-                                + "<td><span>" + ((cpc[i] == undefined) ? '-' : (isNaN(cpc[i])) ? '-' : cpc[i]) + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((cpc1[i] == 0) ? '-%' : ((cpc[i] - cpc1[i] >= 0) ? ((isNaN(cpc1[i])) ? "-" : (isNaN(Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100)) ? '-' : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : (isNaN(Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100)) ? '-' : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
-                                + "<td><span>" + ((conversion[i] == undefined) ? '-' : (isNaN(conversion[i])) ? '-' : conversion[i]) + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
-                                + "<span>" + ((conversion1[i] == 0) ? '-%' : ((conversion[i] - conversion1[i] >= 0) ? ((isNaN(conversion1[i])) ? "-" : (isNaN(Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100)) ? '-' : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : (isNaN(Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100)) ? '-' : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
-                                + "</td><td>-</td><td>-</td></tr>";
+                            + "<td><span>" + ((impression[i] == undefined) ? '-' : (isNaN(impression[i])) ? '-' : impression[i]) + "</span>" + (((impression[i] - impression1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                            + "<span>" + ((impression1[i] == 0) ? '-%' : ((impression[i] - impression1[i] >= 0) ? ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100)) ? '-' : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(impression1[i])) ? "-" : (isNaN(Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100)) ? '-' : Math.round(((impression[i] - impression1[i]) / impression1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
+                            + "<td><span>" + ((click[i] == undefined) ? '-' : (isNaN(click[i])) ? '-' : click[i]) + "</span>" + (((click[i] - click1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                            + "<span>" + ((click1[i] == 0) ? '-%' : ((click[i] - click1[i] >= 0) ? ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100)) ? '-' : Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(click1[i])) ? "-" : (isNaN(Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100)) ? '-' : Math.round(((click[i] - click1[i]) / click1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
+                            + "<td><span>" + ((cost[i] == undefined) ? '-' : (isNaN(cost[i])) ? '-' : cost[i]) + "</span>" + (((cost[i] - cost1[i]) < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                            + "<span>" + ((cost1[i] == 0) ? '-%' : ((cost[i] - cost1[i] >= 0) ? ((isNaN(cost1[i])) ? "-" : (isNaN(Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100)) ? '-' : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(cost1[i])) ? "-" : (isNaN(Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100)) ? '-' : Math.round(((cost[i] - cost1[i]) / cost1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
+                            + "<td><span>" + ((ctr[i] == undefined) ? '-' : (isNaN(ctr[i])) ? '-' : ctr[i]) + "%</span>" + ((ctr[i] - ctr1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                            + "<span>" + ((ctr1[i] == 0) ? '-%' : ((ctr[i] - ctr1[i] >= 0) ? ((isNaN(ctr1[i])) ? "-" : (isNaN(Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100)) ? '-' : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(ctr1[i])) ? "-" : (isNaN(Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100)) ? '-' : Math.round(((ctr[i] - ctr1[i]) / ctr1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
+                            + "<td><span>" + ((cpc[i] == undefined) ? '-' : (isNaN(cpc[i])) ? '-' : cpc[i]) + "</span>" + ((cpc[i] - cpc1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                            + "<span>" + ((cpc1[i] == 0) ? '-%' : ((cpc[i] - cpc1[i] >= 0) ? ((isNaN(cpc1[i])) ? "-" : (isNaN(Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100)) ? '-' : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(cpc1[i])) ? "-" : (isNaN(Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100)) ? '-' : Math.round(((cpc[i] - cpc1[i]) / cpc1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
+                            + "<td><span>" + ((conversion[i] == undefined) ? '-' : (isNaN(conversion[i])) ? '-' : conversion[i]) + "</span>" + ((conversion[i] - conversion1[i] < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>")
+                            + "<span>" + ((conversion1[i] == 0) ? '-%' : ((conversion[i] - conversion1[i] >= 0) ? ((isNaN(conversion1[i])) ? "-" : (isNaN(Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100)) ? '-' : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100) + "%" : "<strong>" + ((isNaN(conversion1[i])) ? "-" : (isNaN(Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100)) ? '-' : Math.round(((conversion[i] - conversion1[i]) / conversion1[i]) * 10000) / 100) + "%</strong>")) + "</span></td>"
+                            + "</td><td>-</td><td>-</td></tr>";
 
                             html_User2 = "<tr class='list2_box2'><td>" + dateEach1[i] + "</td>"
-                                + "<td>" + ((impression1[i] == undefined) ? 0 : impression1[i]) + "</td><td>" + ((click1[i] == undefined) ? 0 : click1[i]) + "</td><td>" + ((cost1[i] == undefined) ? 0 : cost1[i]) + "</td>"
-                                + "<td>" + ((ctr1[i] == undefined) ? 0 : ctr1[i]) + "%</td><td>" + ((cpc1[i] == undefined) ? 0 : cpc1[i]) + "</td><td>" + ((conversion1[i] == undefined) ? 0 : conversion1[i]) + "</td><td>-</td><td>-</td></tr>"
-                                + "<tr><td colspan='9'>&nbsp;</td></tr>";
+                            + "<td>" + ((impression1[i] == undefined) ? 0 : impression1[i]) + "</td><td>" + ((click1[i] == undefined) ? 0 : click1[i]) + "</td><td>" + ((cost1[i] == undefined) ? 0 : cost1[i]) + "</td>"
+                            + "<td>" + ((ctr1[i] == undefined) ? 0 : ctr1[i]) + "%</td><td>" + ((cpc1[i] == undefined) ? 0 : cpc1[i]) + "</td><td>" + ((conversion1[i] == undefined) ? 0 : conversion1[i]) + "</td><td>-</td><td>-</td></tr>"
+                            + "<tr><td colspan='9'>&nbsp;</td></tr>";
                         }
                         $("#userTbody").append(html_User1);
                         $("#userTbody").append(html_User2);
@@ -1454,17 +1462,17 @@ $(function () {
                     $.each(data.Ring, function (is, items) {
                         if (i % 2 == 0) {
                             basisHtml = "<tr class='list2_box1'><td>&nbsp;" + item.dateRep + "</td>"
-                                + "<td><span>&nbsp;" + item.pcImpression + "</span>" + ((items.mobileImpression < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcImpression == 0) ? '-' : items.pcImpression / 100) + "%</strong></span></td>"
-                                + "<td><span>&nbsp;" + item.pcClick + "</span>" + ((items.mobileClick < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcClick == 0) ? '-' : items.pcClick / 100) + "%</strong></span></td>"
-                                + "<td><span>&nbsp;" + item.pcCost + "</span>" + ((items.mobileCost < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCost == 0) ? '-' : items.pcCost) + "%</strong></span></td>"
-                                + "<td><span>&nbsp;" + item.pcCtr + "%</span>" + ((items.mobileCtr < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCtr == 0) ? '-' : items.pcCtr / 100) + "%</strong></span></td>"
-                                + "<td><span>&nbsp;" + item.pcCpc + "</span>" + ((items.mobileCpc < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCpc == 0) ? '-' : items.pcCpc) + "%</strong></span></td>"
-                                + "<td><span>&nbsp;" + item.pcConversion + "</span>" + ((items.mobileCpc < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcConversion == 0) ? '-' : items.pcConversion / 100) + "%</strong></span></td>"
-                                + "<td><span>&nbsp;-</td></tr>"
+                            + "<td><span>&nbsp;" + item.pcImpression + "</span>" + ((items.mobileImpression < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcImpression == 0) ? '-' : items.pcImpression / 100) + "%</strong></span></td>"
+                            + "<td><span>&nbsp;" + item.pcClick + "</span>" + ((items.mobileClick < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcClick == 0) ? '-' : items.pcClick / 100) + "%</strong></span></td>"
+                            + "<td><span>&nbsp;" + item.pcCost + "</span>" + ((items.mobileCost < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCost == 0) ? '-' : items.pcCost) + "%</strong></span></td>"
+                            + "<td><span>&nbsp;" + item.pcCtr + "%</span>" + ((items.mobileCtr < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCtr == 0) ? '-' : items.pcCtr / 100) + "%</strong></span></td>"
+                            + "<td><span>&nbsp;" + item.pcCpc + "</span>" + ((items.mobileCpc < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcCpc == 0) ? '-' : items.pcCpc) + "%</strong></span></td>"
+                            + "<td><span>&nbsp;" + item.pcConversion + "</span>" + ((items.mobileCpc < 0) ? "<span class='red_arrow wd3'></span>" : "<span class='green_arrow wd3'></span>") + "<span><strong>" + ((items.pcConversion == 0) ? '-' : items.pcConversion / 100) + "%</strong></span></td>"
+                            + "<td><span>&nbsp;-</td></tr>"
                         } else {
                             basisHtml = "<tr class='list2_box2'><td>&nbsp;" + item.dateRep + "</td><td>&nbsp;" + item.pcImpression + "</td><td>&nbsp;" + item.pcClick + "</td>"
-                                + "<td>&nbsp;" + Math.round(item.pcCost * 100) / 100 + "</td><td>&nbsp;" + item.pcCtr + "%</td><td>&nbsp;" + item.pcCpc + "</td><td>&nbsp;" + item.pcConversion + "</td>"
-                                + "<td>&nbsp;-</td></tr>"
+                            + "<td>&nbsp;" + Math.round(item.pcCost * 100) / 100 + "</td><td>&nbsp;" + item.pcCtr + "%</td><td>&nbsp;" + item.pcCpc + "</td><td>&nbsp;" + item.pcConversion + "</td>"
+                            + "<td>&nbsp;-</td></tr>"
                         }
                     });
 
@@ -1483,6 +1491,14 @@ $(function () {
         $("#costDiv").empty();
         $("#convDiv").empty();
         var myChart = echarts.init(document.getElementById('container'));
+        var dataNew ;
+        if(dataOne == ""){
+            dataNew = [dataTow];
+        }else if(dataTow == ""){
+            dataNew = [dataOne];
+        }else{
+            dataNew = [dataOne,dataTow];
+        }
         var option = {
             tooltip : {
                 trigger: 'axis'
@@ -1532,228 +1548,118 @@ $(function () {
                     }
                 }
             ],
-            series : [
-                dataOne,
-                dataTow
-            ]
+            series : dataNew
         };
         myChart.setOption(option);
-        /*$('#container').highcharts({
-            chart: {
-                zoomType: 'xy'
-            },
-            title: {
-                text: ''
-            },
-            exporting: {
-                filename: 'Graph_Chart',
-                buttons: {
-                    contextButton: {
-                        symbol: 'url(/public/images/reportDown.jpg)',
-                        menuItems: [
-                            {
-                                text: '导出 JPEG图片',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'image/jpeg'
-                                    });
-                                }
-                            },
-                            {
-                                text: '导出 PNG图片',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'image/png'
-                                    });
-                                }
-                            },
-                            {
-                                text: '导出 PDF',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'application/pdf'
-                                    });
-                                }
-                            },
-                            {
-                                text: '导出 SVG',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'svg'
-                                    });
-                                }
-                            }
-                        ]
-                    }
-                }
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-                categories: t_date,
-                tickInterval: (dateInterval)// 每个间隔
-            },
-            yAxis: [
-                { // Primary yAxis
-                    title: {
-                        text: nameTow,
-                        margin: 30,
-                        style: {'color': colorTow, 'font-size': '16px', 'font-family': '宋体', 'font-weight': 'bold'}
-                    },
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: colorTow
-                        }
-                    }
-                },
-                { // Secondary yAxis
-                    title: {
-                        text: nameOne,
-                        margin: 30,
-                        style: {'color': colorOne, 'font-size': '16px', 'font-family': '宋体', 'font-weight': 'bold'}
-                    },
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: colorOne
-                        }
-                    },
-                    opposite: true
-                }
-            ],
-            credits: {
-                enabled: false
-            },
-            tooltip: {
-                shared: true
-            },
-            legend: {
-                align: 'left',
-                x: 10,
-                verticalAlign: 'top',
-                y: -10,
-                floating: true,
-                backgroundColor: '#FFFFFF',
-                itemDistance: 20,
-                borderRadius: 5,
-                enabled: false
-            },
-            series: [
-                dataOne,
-                dataTow
-            ]
-        });*/
+
     }
 //饼状图
     var a = 1;
+    var legenddata;
     pieChart = function (showData, showName, showId) {
-        $(showId).show();
-        $("#container").hide()
-        if (a == 1) {
-            //使用饼状图进行颜色渐变
-            Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
-                return {
-                    radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
-                    stops: [
-                        [0, color],
-                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
-                    ]
-                };
-            });
-            a++;
+        var dataString;
+        if(a==1) {
+            legenddata = eval("({ " + showName[1] + " : false," + showName[2] + " : false," + showName[3] + " : false})");
         }
-        //加载开始
-        $(showId).highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                events: {
-                    load: function () {
-                        // set up the updating of the chart each second
-                        var series = this.series[0];
-                        setInterval(function () {
-                            series.setData(showData);
-                        }, 2000);
-                    }
+        $(showId).show();
+        $("#container").hide();
+        var myCharts = echarts.init(document.getElementById(showId));
+        var optionBin = {
+            tooltip : {
+                trigger: 'item',
+                formatter: '{b} {a}<br/>占全国百分比：{c}%'
+            },
+            legend: {
+                orient: 'vertical',
+                x:'left',
+                selected: legenddata,
+                data:[showName[0],showName[1],showName[2],showName[3]]
+            },
+            dataRange: {
+                min: 0,
+                max: 100,
+                x: 'left',
+                y: 'bottom',
+                text:['高','低'],           // 文本，默认为数值文本
+                calculable : true
+            },
+            toolbox: {
+                show: true,
+                orient : 'vertical',
+                x: 'right',
+                y: 'center',
+                feature : {
+                    restore : {show: true},
+                    saveAsImage : {show: true}
                 }
             },
-            credits: {
-                enabled: false
-            },
-            exporting: {
-                filename: 'Pie_Chart',
-                buttons: {
-                    contextButton: {
-                        symbol: 'url(/public/images/reportDown.jpg)',
-                        menuItems: [
-                            {
-                                text: '导出 JPEG图片',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'image/jpeg'
-                                    });
-                                }
-                            },
-                            {
-                                text: '导出 PNG图片',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'image/png'
-                                    });
-                                }
-                            },
-                            {
-                                text: '导出 PDF',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'application/pdf'
-                                    });
-                                }
-                            },
-                            {
-                                text: '导出 SVG',
-                                onclick: function () {
-                                    this.exportChart({
-                                        type: 'svg'
-                                    });
-                                }
-                            }
-                        ]
-                    }
-                }
-            },
-            title: {
-                text: showName + '占有百分比',
-                style: {"font-weight": "bold", "font-size": "18px", "color": "#fab30b", "font-family": "微软雅黑"}
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        color: '#000000',
-                        connectorColor: '#000000',
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                    }
-                }
-            },
-            series: [
+            series : [
                 {
-                    type: 'pie',
-                    name: '占有率',
-                    data: [
-                    ]
+                    name: '中国',
+                    type: 'map',
+                    mapType: 'china',
+                    roam: false,
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    data:showData[0]
+                },{
+                    name: showName[1],
+                    type: 'map',
+                    mapType: 'china',
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    data:showData[1]
+                },{
+                    name: showName[2],
+                    type: 'map',
+                    mapType: 'china',
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    data:showData[2]
+                },{
+                    name: showName[3],
+                    type: 'map',
+                    mapType: 'china',
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    data:showData[3]
                 }
             ]
+        };
+        a++;
+        myCharts.setOption(optionBin);
+        // 动态添加默认不显示的数据
+
+        myCharts.on(echarts.config.EVENT.LEGEND_SELECTED, function (param){
+            var clickName = param.target;
+            if (clickName == showName[0]) {
+                legenddata = eval("({ "+showName[1]+" : false,"+showName[2]+" : false,"+showName[3]+" : false})");
+                pieChart(showData,showName,showId);
+            }
+            if (clickName == showName[1]) {
+                legenddata = eval("({ "+showName[0]+" : false,"+showName[2]+" : false,"+showName[3]+" : false})");
+                pieChart(showData,showName,showId);
+            }
+            if (clickName == showName[2]) {
+                legenddata = eval("({ "+showName[0]+" : false,"+showName[1]+" : false,"+showName[3]+" : false})");
+                pieChart(showData,showName,showId);
+            }
+            if (clickName == showName[3]) {
+                legenddata = eval("({ "+showName[0]+" : false,"+showName[1]+" : false,"+showName[2]+" : false})");
+                pieChart(showData,showName,showId);
+            }
         });
     }
+
+
 
     $("body").on("click", "a[cname=nameDet]", function () {
         $(this).addClass('ajc').siblings().removeClass('ajc');

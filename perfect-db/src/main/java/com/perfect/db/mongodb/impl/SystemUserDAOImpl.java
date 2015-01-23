@@ -1,6 +1,7 @@
 package com.perfect.db.mongodb.impl;
 
 import com.google.common.collect.Lists;
+import com.mongodb.WriteResult;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.SystemUserDTO;
@@ -86,10 +87,14 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     }
 
     @Override
-    public void removeAccountInfo(Long id) {
-        Update update = new Update();
-        update.unset("bdAccounts");
-        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("bdAccounts._id").is(id)), update, getEntityClass());
+    public int removeAccountInfo(List<BaiduAccountInfoDTO> baiduAccountInfoDTOs,String account) {
+
+        List<BaiduAccountInfoEntity> baiduAccountInfoEntities = ObjectUtils.convert(baiduAccountInfoDTOs, BaiduAccountInfoEntity.class);
+
+
+        WriteResult writeResult = getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(account)),
+                                                                Update.update("bdAccounts", baiduAccountInfoEntities), getEntityClass());
+        return writeResult.getN();
     }
 
     @Override
