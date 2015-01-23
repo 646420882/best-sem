@@ -206,7 +206,20 @@
                 </li>
                 <li>
                     <div class="t_list01 fl over">匹配模式：</div>
-                    <div class="w_list02 fl over"><select class="match_1" onchange="whenBlurEditKeyword(5,this.value)">
+                    <div class="w_list02 fl over"><select id="match_1" onchange="whenBlurEditKeyword(5,this.value)">
+                        <option value="-1">请选择匹配模式</option>
+                        <option value="3">广泛</option>
+                        <option value="1">精确</option>
+                        <option value="2">短语</option>
+                    </select></div>
+                </li>
+                <li id="phraseTypeLi" style="display: none;">
+                    <div class="t_list01 fl over">高级匹配模式：</div>
+                    <div class="w_list02 fl over"><select id="match_2" onchange="whenBlurEditKeyword(6,this.value)">
+                        <option value="-1">请选择高级匹配模式</option>
+                        <option value="1">同义包含</option>
+                        <option value="2">精确包含</option>
+                        <option value="3">核心包含</option>
                     </select></div>
                 </li>
                 <li>
@@ -220,7 +233,7 @@
                 </li>
                 <li>
                     <div class="t_list01 fl over">您的注册域名为：</div>
-                    <div class="w_list02 fl over"><span id="doMainS" style="color:red;"></span></div>
+                    <div class="w_list02 fl over"><span class="doMainS" style="color:red;"></span></div>
                 </li>
             </ul>
         </div>
@@ -350,6 +363,10 @@
                             <option value="true">启用</option>
                             <option value="false">暂停</option>
                         </select></div>
+                </li>
+                <li>
+                    <div class="t_list01 fl over">您的注册域名为：</div>
+                    <div class="w_list02 fl over"><span class="doMainS" style="color:red;"></span></div>
                 </li>
             </ul>
         </div>
@@ -1370,7 +1387,7 @@
 <div class="box" style="display:none;" id="setNegtiveWord">
     <h2 id="setFdKeywordDiv">
         <span class="fl">否定关键词设置</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeSetNegtiveWord();" style="color: #fff;float: right;font-size: 12px; line-height: 46px;">关闭</a></h2>
 
     <div class="mainlist">
         <p>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，没词20汉字以内，最多200项。</p>
@@ -1432,7 +1449,7 @@
 <div class="box" style="display:none;" id="setExcludeIp">
     <h2 id="setExcludeIpDiv">
         <span class="fl">IP排除列表</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeSetExcludeIp();" style="color: #fff;float: right;font-size: 12px; line-height: 46px;">关闭</a></h2>
 
     <div class="mainlist">
         <ul>
@@ -1459,7 +1476,7 @@
 <div class="box" style="display:none;" id="setExtension">
     <h2 id="setExtensionDiv">
         <span class="fl">推广时段管理</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeSetExtension();" style="color: #fff;float: right;font-size: 12px; line-height: 46px;">关闭</a></h2>
 
     <div class="chooseTime">
         <b class="fl">请选择时段&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(按住Ctrl键并且鼠标经过可多选时间段)</b>
@@ -1475,7 +1492,7 @@
         <div class="w_list03">
             <ul>
                 <li class="current scheduleOk">确认</li>
-                <li onclick="closeSetExtension()">取消</li>
+                <li onclick="closeSetExtension();">取消</li>
             </ul>
         </div>
     </div>
@@ -1484,7 +1501,7 @@
 <div class="box" style="display:none" id="addFolderDiv">
     <h2 id="folderTUO">
         <span class="fl">添加监控文件夹</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeAlert();" class="close">关闭</a></h2>
     <div class="mainlist">
         <label id="dialogMsg">请输入要创建的监控文件夹名称!</label>
         <ul class="zs_set" id="adfd">
@@ -1503,7 +1520,7 @@
 <div class="box" style="display:none" id="addMonitorDiv">
     <h2 id="MonitorTUO">
         <span class="fl">添加监控对象</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeAlert();" class="close">关闭</a></h2>
     <div class="mainlist">
         <ul class="zs_set" id="admon">
         </ul>

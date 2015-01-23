@@ -31,10 +31,10 @@
         }
 
         .newkeyword_right_mid textarea {
-            height: 200px;
+            height: 250px;
         }
         .ztree{
-            height:440px;
+            height:450px;
         }
 
         .list02_top {
@@ -51,7 +51,7 @@
     </style>
 </head>
 <body>
-<div style="background-color: #f3f5fd; width: 900px; height: 700px">
+<div style="background-color: #f3f5fd; width: 900px; height: 900px">
     <div class="addplan_top over">
         <ul id="step">
             <li class="current">1、输入内容</li>
@@ -383,7 +383,7 @@ function initDomain() {
 function nextStep() {
     var txt = $("#creativeMultiTxt").val().trim();
     if (getSelectedNodeToString() != "" && txt != "") {
-        var dm = $("#doMain").html();
+        var dm = "."+$("#doMain").html();
         var vs = getSelectedNodeNameToString();
         var v = getSelectedNodeToString();
         var ids = v.split("-");

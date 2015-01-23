@@ -634,11 +634,12 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public void updateLs(Long kid) {
+    public void updateLs(KeywordDTO dto) {
         Update up=new Update();
         up.set("ls",null);
-        getMongoTemplate().updateFirst(new Query(Criteria.where(KEYWORD_ID).is(kid)), up, getEntityClass());//执行修改ls状态后，还需要将备份的keywor对应的删掉
-        getMongoTemplate().remove(new Query(Criteria.where(KEYWORD_ID).is(kid)), KeywordBackUpEntity.class);//删除备份的keyword
+        up.set("s",dto.getStatus());
+        getMongoTemplate().updateFirst(new Query(Criteria.where(KEYWORD_ID).is(dto.getKeywordId())), up, getEntityClass());//执行修改ls状态后，还需要将备份的keywor对应的删掉
+        getMongoTemplate().remove(new Query(Criteria.where(KEYWORD_ID).is(dto.getKeywordId())), KeywordBackUpEntity.class);//删除备份的keyword
     }
 
     /**

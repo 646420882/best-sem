@@ -941,6 +941,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordType.setAdgroupId(dtoFind.getAdgroupId());
                 keywordType.setMatchType(dtoFind.getMatchType());
                 keywordType.setPrice(Double.parseDouble(dtoFind.getPrice()+""));
+                keywordType.setPhraseType(dtoFind.getPhraseType());
                 keywordType.setPcDestinationUrl(dtoFind.getPcDestinationUrl());
                 keywordType.setMobileDestinationUrl(dtoFind.getMobileDestinationUrl());
                 keywordType.setPause(dtoFind.getPause());
@@ -957,9 +958,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 UpdateKeywordResponse updateKeywordResponse=keywordService.updateKeyword(updateKeywordRequest);
                 List<KeywordType> returnKeywordTypes=updateKeywordResponse.getKeywordTypes();
                 returnKeywordTypes.parallelStream().filter(s->s!=null).forEach(s->{//这里进行判定，如果返回不为null，则进行修改本地的ls为null，表示上传修改操作已经完成
-                    keywordDAO.updateLs(s.getKeywordId());
                     KeywordDTO keywordDTO=new KeywordDTO();
                     keywordDTO.setKeywordId(s.getKeywordId());
+                    keywordDTO.setStatus(s.getStatus());
+                    keywordDAO.updateLs(keywordDTO);
                     returnKeywordDTOs.add(keywordDTO);
                 });
             } catch (ApiException e) {

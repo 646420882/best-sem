@@ -63,6 +63,26 @@
                             <li><select id="campaign" class="team04">
                             </select><select id="adgroup" class="team04">
                             </select></li>
+                            <li>
+                                <div class="assembly_search over">
+                                    <span style="margin-left: 10%;">
+                                    <input id="price" type="text" placeholder="请输入关键词出价,默认为0.1" onkeypress='until.regDouble(this)' maxlength="5">
+                                    </span>
+                                </div>
+                            </li>
+                            <li>
+                                <select id="matchType" class="team04">
+                                    <option value="3">广泛</option>
+                                    <option value="1">精确</option>
+                                    <option value="2">短语</option>
+                                </select>
+
+                                <div id="phraseTypeDiv" style="display: none;"><select id="phraseType" class="team04">
+                                    <option value="1">同义包含</option>
+                                    <option value="2">精确包含</option>
+                                    <option value="3">核心包含</option>
+                                </select></div>
+                            </li>
                             <li><a class="fr" href="javascript:saveKeyword();">保存</a></li>
                         </ul>
 
@@ -145,6 +165,13 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript">
 $(function () {
+    $("#matchType ").change(function () {
+        if (this.value == "2") {
+            $("#phraseTypeDiv").show();
+        } else {
+            $("#phraseTypeDiv").hide();
+        }
+    });
     var $tab_li = $('.assembly_checkbox li');
     $('.assembly_checkbox li').click(function () {
         wordType = $(this).attr("id");
@@ -366,6 +393,7 @@ var loadKeywordFromPerfect = function () {
 };
 
 var saveKeyword = function () {
+
     var campaignId = $("#campaign option:selected").val();
     if (campaignId == null || campaignId.length == 0) {
         alert("请选择推广计划!");
@@ -376,6 +404,22 @@ var saveKeyword = function () {
         alert("请选择推广单元!");
         return;
     }
+    var price=$("#price").val();
+    if(price!=""){
+        if(!/^-?\d+\.?\d*$/.test(price)){
+            alert("输入正确的关键词出价！");
+            return;
+        }else{
+            if(parseFloat(price)>999.9){
+                alert("关键词出价为：(0,999.9]<=出价&&<计划预算!");
+                return;
+            }
+        }
+    }else{
+        price=0.1;
+    }
+    var matchType = $("#matchType :selected").val();
+    var phraseType = $("#phraseType :selected").val();
 
     //获取所有选中的关键词
     var jsonArr = [];
@@ -391,11 +435,15 @@ var saveKeyword = function () {
                     entity1["adgroupObjId"] = adgroupId;
                 }
                 entity1["keyword"] = $("#" + wordType + i).find("td").eq(1).text();
-                entity1["price"] = 1.0;
-                entity1["matchType"] = 1;
+                entity1["price"] =price ;
+                entity1["matchType"] = matchType;
                 entity1["pause"] = false;
                 entity1["status"] = -1;
-                entity1["phraseType"] = 1;
+                if (matchType == "2") {
+                    entity1["phraseType"] = phraseType;
+                }else{
+                    entity1["phraseType"] = 1;
+                }
                 entity1["localStatus"] = 1;
                 jsonArr.push(entity1);
             }
@@ -412,11 +460,15 @@ var saveKeyword = function () {
                     entity2["adgroupObjId"] = adgroupId;
                 }
                 entity2["keyword"] = $("#" + wordType + j).find("td").eq(4).text();
-                entity2["price"] = 1.0;
-                entity2["matchType"] = 1;
+                entity2["price"] =price ;
+                entity2["matchType"] = matchType;
                 entity2["pause"] = false;
                 entity2["status"] = -1;
-                entity2["phraseType"] = 1;
+                if (matchType == "2") {
+                    entity2["phraseType"] = phraseType;
+                }else{
+                    entity2["phraseType"] = 1;
+                }
                 entity2["localStatus"] = 1;
                 jsonArr.push(entity2);
             }
