@@ -56,4 +56,9 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
 
     PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize);
 
+    void update(String crid,CreativeDTO dto);
+
+    void deleteByLongId(Long crid);
+
+    void updateLs(Long crid,CreativeDTO dto);
 }

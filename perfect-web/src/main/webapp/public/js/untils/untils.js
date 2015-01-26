@@ -137,20 +137,14 @@ var until = {
         }
     },convertDevice: function (Str) {
         switch (Str) {
-            case "pc":
-                return 1;
-                break;
-            case "无线":
-                return 2;
-                break;
-            case "pc+无线":
+            case "全部设备":
                 return 0;
                 break;
-            case "知道":
-                return 3;
+            case "仅移动设备":
+                return 1;
                 break;
             default:
-                return 1;
+                return 0;
         }
     }
 };

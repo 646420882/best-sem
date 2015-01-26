@@ -12,6 +12,8 @@ import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
+import com.perfect.entity.backup.CreativeBackUpEntity;
+import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
@@ -380,9 +382,11 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     @Override
     public void deleteBubLinks(Long aid) {
         getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),AdgroupEntity.class);
-        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),CreativeEntity.class);
-        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),KeywordEntity.class);
         getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),AdgroupBackUpEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),CreativeEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),CreativeBackUpEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),KeywordEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),KeywordBackUpEntity.class);
     }
 
     @Override
@@ -392,6 +396,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         up.set("s",dto.getStatus());
         up.set("p",dto.getPause());
         getMongoTemplate().updateFirst(new Query(Criteria.where(ADGROUP_ID).is(aid)),up,AdgroupEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),AdgroupBackUpEntity.class);
     }
 
     public void insertAll(List<AdgroupDTO> adgroupDTOs) {

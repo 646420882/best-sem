@@ -1165,9 +1165,8 @@
     <div class="mainlist">
         您希望更新账户的哪个部分？
         <ul class="zs_set">
-            <li><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</li>
-            <li><input type="radio" name="no1">&nbsp; 部分下载的推广计划</li>
-            <li><input type="radio" name="no1">&nbsp; 从修改的推广计划列表中选择</li>
+            <li><input type="radio" value="all" name="up1" onchange="dialogUpload(this.value)">&nbsp; 所有操作过的计划</li>
+            <li><input type="radio" value="opreated" name="up1" onchange="dialogUpload(this.value)">&nbsp; 从修改的推广计划列表中选择</li>
         </ul>
         <div class="zs_sets over">
             <div id="allCamp" class="zs_ses1" style="overflow: auto">
@@ -1175,10 +1174,6 @@
                 </ul>
             </div>
             <div id="existsCamp" class="zs_ses1 hides" style="overflow: auto">
-                <ul>
-                </ul>
-            </div>
-            <div id="newCamp" class="zs_ses1 hides" style="overflow: auto">
                 <ul>
                 </ul>
             </div>
@@ -1372,7 +1367,6 @@
         <ul class="zs_set" id="jcUl">
             <%--<li><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</li>--%>
         </ul>
-        <input type="hidden" id="doMain">
     </div>
     <div class="main_bottom">
         <div class="w_list03">

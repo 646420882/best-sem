@@ -150,7 +150,7 @@ public class AssistantCreativeController extends WebContextSupport {
                                        @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
                                        @RequestParam(value = "pause") Boolean bol,
                                        @RequestParam(value = "status") Integer s,
-                                       @RequestParam(value = "d", required = false, defaultValue = "1") Integer d) {
+                                       @RequestParam(value = "d", required = false, defaultValue = "0") Integer d) {
         try {
             UUID uuidRandom=UUID.randomUUID();
            String uuid=uuidRandom.toString().replaceAll("-","");
@@ -160,17 +160,9 @@ public class AssistantCreativeController extends WebContextSupport {
 
             creativeEntity.setDescription1(de1);
             creativeEntity.setDescription2(de2);
-            if(pc.indexOf("?")>-1){
-                creativeEntity.setPcDestinationUrl(pc+"&pk="+uuid);
-            }else{
-                creativeEntity.setPcDestinationUrl(pc+"?pk="+uuid);
-            }
+            creativeEntity.setPcDestinationUrl(pc);
             creativeEntity.setPcDisplayUrl(pcs);
-            if(mib.indexOf("?")>-1){
-                creativeEntity.setMobileDestinationUrl(mib+"&pk="+uuid);
-            }else{
-                creativeEntity.setMobileDestinationUrl(mib+"?pk="+uuid);
-            }
+            creativeEntity.setMobileDestinationUrl(mib);
             creativeEntity.setMobileDisplayUrl(mibs);
             creativeEntity.setPause(bol);
             creativeEntity.setStatus(s);
@@ -241,21 +233,9 @@ public class AssistantCreativeController extends WebContextSupport {
             creativeEntityFind.setTitle(title);
             creativeEntityFind.setDescription1(de1);
             creativeEntityFind.setDescription2(de2);
-            if(pc.indexOf("pk=")==-1){
-                if(pc.indexOf("?")>-1){
-                    creativeEntityFind.setPcDestinationUrl(pc+"&pk="+uuid);
-                }else{
-                    creativeEntityFind.setPcDestinationUrl(pc+"?pk="+uuid);
-                }
-            }
+            creativeEntityFind.setPcDestinationUrl(pc);
             creativeEntityFind.setPcDisplayUrl(pcs);
-            if(mib.indexOf("pk=")==-1){
-                if(mib.indexOf("?")>-1){
-                    creativeEntityFind.setMobileDestinationUrl(mib+"&pk="+uuid);
-                }else{
-                    creativeEntityFind.setMobileDestinationUrl(mib+"?pk="+uuid);
-                }
-            }
+            creativeEntityFind.setMobileDestinationUrl(mib);
             creativeEntityFind.setMobileDisplayUrl(mibs);
             creativeEntityFind.setPause(bol);
             creativeEntityFind.setLocalStatus(1);
@@ -269,21 +249,9 @@ public class AssistantCreativeController extends WebContextSupport {
             creativeEntityFind.setTitle(title);
             creativeEntityFind.setDescription1(de1);
             creativeEntityFind.setDescription2(de2);
-            if(pc.indexOf("pk=")==-1){
-                if(pc.indexOf("?")>-1){
-                    creativeEntityFind.setPcDestinationUrl(pc+"&pk="+uuid);
-                }else{
-                    creativeEntityFind.setPcDestinationUrl(pc+"?pk="+uuid);
-                }
-            }
+            creativeEntityFind.setPcDestinationUrl(pc);
             creativeEntityFind.setPcDisplayUrl(pcs);
-            if(mib.indexOf("pk=")==-1){
-                if(mib.indexOf("?")>-1){
-                    creativeEntityFind.setMobileDestinationUrl(mib+"&pk="+uuid);
-                }else{
-                    creativeEntityFind.setMobileDestinationUrl(mib+"?pk="+uuid);
-                }
-            }
+            creativeEntityFind.setMobileDestinationUrl(mib);
             creativeEntityFind.setMobileDisplayUrl(mibs);
             creativeEntityFind.setPause(bol);
 
@@ -398,6 +366,8 @@ public class AssistantCreativeController extends WebContextSupport {
     }
     private  void innerInsert(Boolean isReplace,String aid,String title,String de1,String de2,String pc,String pcs,String mib,String mibs,String bol,String device){
         Map<String,Object> params=new HashMap<>();
+        UUID uuidRandom=UUID.randomUUID();
+        String uuid=uuidRandom.toString().replaceAll("-","");
         params.put("t",title);
         params.put("desc1",de1);
         if(aid.length()>OBJ_SIZE){
@@ -434,9 +404,9 @@ public class AssistantCreativeController extends WebContextSupport {
                     creativeEntityFind.setTitle(title);
                     creativeEntityFind.setDescription1(de1);
                     creativeEntityFind.setDescription2(de2);
-                    creativeEntityFind.setPcDestinationUrl(pc);
+                     creativeEntityFind.setPcDestinationUrl(pc);
                     creativeEntityFind.setPcDisplayUrl(pcs);
-                    creativeEntityFind.setMobileDestinationUrl(mib);
+                     creativeEntityFind.setMobileDestinationUrl(mib);
                     creativeEntityFind.setMobileDisplayUrl(mibs);
                     creativeEntityFind.setPause(Boolean.parseBoolean(bol));
                     creativeEntityFind.setDevicePreference(Integer.parseInt(device));
@@ -450,7 +420,7 @@ public class AssistantCreativeController extends WebContextSupport {
             creativeEntityInsert.setTitle(title);
             creativeEntityInsert.setDescription1(de1);
             creativeEntityInsert.setDescription2(de2);
-            creativeEntityInsert.setPcDestinationUrl(pc);
+             creativeEntityInsert.setPcDestinationUrl(pc);
             creativeEntityInsert.setPcDisplayUrl(pcs);
             creativeEntityInsert.setMobileDestinationUrl(mib);
             creativeEntityInsert.setMobileDisplayUrl(mibs);
@@ -487,7 +457,7 @@ public class AssistantCreativeController extends WebContextSupport {
         creativeTypes.setPcDestinationUrl(pcUrl);
         creativeTypes.setPcDisplayUrl(pcsUrl);
         creativeTypes.setAdgroupId(aid);
-        creativeTypes.setDevicePreference(1);
+        creativeTypes.setDevicePreference(0);
         CommonService commonService= BaiduServiceSupport.getCommonService(bad.getBaiduUserName(),bad.getBaiduPassword(),bad.getToken());
         try {
             CreativeService service= commonService.getService(CreativeService.class);
@@ -549,6 +519,40 @@ public class AssistantCreativeController extends WebContextSupport {
         }
 
         return  null;
+    }
+    @RequestMapping(value = "uploadOperate")
+    public ModelAndView uploadOperate(@RequestParam(value = "crid",required = true)String crid,@RequestParam(value = "ls")Integer ls){
+        if(crid.length()>OBJ_SIZE){
+            List<CreativeDTO> creativeDTOs=creativeService.uploadAdd(new ArrayList<String>(){{add(crid);}});
+            if (creativeDTOs.size()>0){
+                creativeDTOs.parallelStream().forEach(s->{creativeService.update(crid,s);});
+                return writeMapObject(MSG, SUCCESS);
+            }else{
+                return writeMapObject(MSG, "需要更新的创意的单元还未上传到凤巢，请先上传该创意的单元后再上传创意！");
+            }
+        }else{
+            switch (ls){
+                case 2:
+                    List<CreativeDTO> dtos=creativeService.uploadUpdate(new ArrayList<Long>(){{add(Long.valueOf(crid));}});
+                    if(dtos.size()>0){
+                        dtos.parallelStream().forEach(s->{creativeService.updateLs(Long.valueOf(crid), s);});
+                        return writeMapObject(MSG,SUCCESS);
+                    }else{
+                        return writeMapObject(MSG,"修改失败");
+                    }
+                case 3:
+                    Integer result=creativeService.uploadDel(Long.valueOf(crid));
+                    if(result!=0){
+                        creativeService.deleteByLongId(Long.valueOf(crid));
+                        return writeMapObject(MSG,SUCCESS);
+                    }else{
+                        return  writeMapObject(MSG,"删除失败");
+                    }
+
+            }
+        }
+
+        return writeMapObject(MSG,"上传失败");
     }
 }
 

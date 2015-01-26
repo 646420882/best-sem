@@ -244,4 +244,9 @@ public class CampaignServiceImpl implements CampaignService {
     public void updateRemoveLs(List<String> afterUpdateStr) {
         campaignDAO.updateRemoveLs(afterUpdateStr);
     }
+
+    @Override
+    public List<CampaignDTO> getOperateCamp() {
+      return  campaignDAO.getOperateCamp();
+    }
 }

@@ -109,7 +109,7 @@ function getKwdList(nowPage) {
             $("#pagination_keywordPage").pagination(records, getOptionsFromForm(pageIndex));
 
             if (data.list == null || data.list == undefined || data.list.length == 0) {
-                $("#tbodyClick").html("暂无数据!");
+                $("#tbodyClick").html("<tr><td>暂无数据</td></tr>");
                 return;
             }
 
@@ -491,7 +491,12 @@ function whenBlurEditKeyword(num, value) {
                         alert("\"访问Url\"必须包含" + dm + "的域名！");
                         return;
                     } else {
+                        if (value.substr(value.indexOf(dm)) != dm) {
+                            alert("\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                            return false;
+                        } else {
                         jsonData["pcDestinationUrl"] = value;
+                        }
                     }
                 }
             } else {
@@ -508,7 +513,12 @@ function whenBlurEditKeyword(num, value) {
                     alert("\"移动访问Url\"必须包含" + dm + "的域名！");
                     return;
                 } else {
-                    jsonData["mobileDestinationUrl"] = value;
+                    if (value.substr(value.indexOf(dm)) != dm) {
+                        alert("\"移动访问Url\"必须以\"" + dm + "\"结尾！");
+                        return false;
+                    } else {
+                        jsonData["mobileDestinationUrl"] = value;
+                    }
                 }
             }
             } else {
@@ -861,7 +871,7 @@ function kUpload() {
                 if (id.length < 18) {
                     kUploadOperate(id, 3);
                 } else {
-                    kUploadOperate(id, 1);
+                    deleteKwd();
                 }
                 break;
         }

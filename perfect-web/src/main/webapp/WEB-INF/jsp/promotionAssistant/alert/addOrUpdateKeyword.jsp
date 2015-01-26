@@ -478,6 +478,11 @@ function nextStepAjax() {
                         if ((pc.indexOf(dm) == -1)) {
                             alert("第" + (j + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                             return;
+                        } else {
+                            if (pc.substr(pc.indexOf(dm)) != dm) {
+                                alert("第" + (j + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                return false;
+                            }
                         }
                     }
                 }
@@ -494,6 +499,11 @@ function nextStepAjax() {
                     if ((mib.indexOf(dm) == -1)) {
                         alert("第" + (j + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                         return;
+                    }else {
+                        if (mib.substr(mib.indexOf(dm)) != dm) {
+                            alert("第" + (j + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
+                            return false;
+                        }
                     }
                 }
                 }

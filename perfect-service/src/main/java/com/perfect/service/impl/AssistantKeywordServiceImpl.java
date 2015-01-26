@@ -866,10 +866,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         List<KeywordType> keywordTypes = new ArrayList<>();
         kids.parallelStream().forEach(s -> {
             KeywordDTO keywordDTO = keywordDAO.findByObjectId(s);
-            AdgroupDTO adgroupDTO = adgroupDAO.findOne(keywordDTO.getAdgroupId());
-            if (adgroupDTO.getAdgroupId() != null) {
+//            AdgroupDTO adgroupDTO = adgroupDAO.findOne(keywordDTO.getAdgroupId());
+            if (keywordDTO.getAdgroupId()!=null) {
                 KeywordType keywordType = new KeywordType();
-                keywordType.setAdgroupId(adgroupDTO.getAdgroupId());
+                keywordType.setAdgroupId(keywordDTO.getAdgroupId());
                 keywordType.setKeyword(keywordDTO.getKeyword());
                 keywordType.setMatchType(keywordDTO.getMatchType());
                 keywordType.setPrice(Double.parseDouble(keywordDTO.getPrice()+""));

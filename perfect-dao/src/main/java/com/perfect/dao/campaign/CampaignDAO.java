@@ -46,4 +46,6 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     void updateRemoveLs(List<String> afterUpdateStr);
 
+    List<CampaignDTO> getOperateCamp();
+
 }

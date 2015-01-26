@@ -1,9 +1,12 @@
 package com.perfect.app.assistant.controller;
 
 import com.perfect.commons.web.WebContextSupport;
+import com.perfect.service.CampaignService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
 
 /**
  * Created by XiaoWei on 2015/1/19.
@@ -11,11 +14,19 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "/uploadMerge")
 public class AssistantUploadMerge extends WebContextSupport {
+    @Resource
+    private CampaignService campaignService;
 
     @RequestMapping(value = "/upload")
     public ModelAndView uploadMerge(){
+        campaignService.getOperateCamp();
+        return writeMapObject(MSG,SUCCESS);
+    }
 
-        return writeMapObject("msg",SUCCESS);
+    @RequestMapping(value = "/getList'")
+    public ModelAndView getUploadOperate(){
+
+        return writeMapObject(DATA,SUCCESS);
     }
 
 }

@@ -275,7 +275,7 @@ function onCheck(e, treeId, treeNode) {
     var vs = getSelectedNodeNameToString();
     if (v != "") {
         var campaign = v.split("-");
-        $("#column").html(campaign.length-1);
+        $("#column").html(campaign.length);
         focuspError();
     } else {
         $("#column").html(0);
@@ -419,12 +419,12 @@ function nextStep() {
                     return false;
                 }
                 //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-//                else {
-//                    if (c3.substr(c3.indexOf(dm)) != dm) {
-//                        alert("第"+(j+1)+"行的默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-//                        return false;
-//                    }
-//                }
+                else {
+                    if (c3.substr(c3.indexOf(dm)) != dm) {
+                        alert("第"+(j+1)+"行的默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                        return false;
+                    }
+                }
             }
             if (parseInt(getChar(c4)) > 36 || parseInt(getChar(c4)) <= 1) {
                 alert("第" + (j + 1) + "行的默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
@@ -435,12 +435,12 @@ function nextStep() {
                     return false;
                 }
                 //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-//                else {
-//                    if (c4.substr(c4.indexOf(dm)) != dm) {
-//                        alert("第"+(j+1)+"行的默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
-//                        return false;
-//                    }
-//                }
+                else {
+                    if (c4.substr(c4.indexOf(dm)) != dm) {
+                        alert("第"+(j+1)+"行的默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                        return false;
+                    }
+                }
             }
             if (parseInt(getChar(c5)) > 1017 || parseInt(getChar(c5)) <= 1) {
                 alert("第" + (j + 1) + "行的移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
@@ -450,14 +450,15 @@ function nextStep() {
                     alert("第" + (j + 1) + "行的移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 }
+                else {//下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+                    if (c5.substr(c5.indexOf(dm)) != dm) {
+                        alert("第"+(j+1)+"行的移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                        return false;
+                    }
+                }
             }
-            //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-//                else {
-//                    if (c5.substr(c5.indexOf(dm)) != dm) {
-//                        alert("第"+(j+1)+"行的移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-//                        return false;
-//                    }
-//                }
+
+
             if (parseInt(getChar(c6)) > 36 || parseInt(getChar(c6)) <= 1) {
                 alert("第" + (j + 1) + "行的移动\"显示\"Url地址长度应大于2个字符小于36个字符");
                 return false;
@@ -466,14 +467,14 @@ function nextStep() {
                     alert("第" + (j + 1) + "行的移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 }
+                //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+                else {
+                    if (c6.substr(c6.indexOf(dm)) != dm) {
+                        alert("第"+(j+1)+"行的移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                        return false;
+                    }
+                }
             }
-            //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-//                else {
-//                    if (c6.substr(c6.indexOf(dm)) != dm) {
-//                        alert("第"+(j+1)+"行的移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
-//                        return false;
-//                    }
-//                }
         }
         initNextStep();
         _createTable.empty();

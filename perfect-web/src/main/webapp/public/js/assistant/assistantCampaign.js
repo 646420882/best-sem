@@ -1047,7 +1047,7 @@ function uploadCampagin(){
            if (id.length < 18) {
                uploadOperate(id, 3);
            } else {
-               uploadOperate(id, 1);
+               deleteCampaign();
            }
            break;
     }
