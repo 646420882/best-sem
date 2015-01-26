@@ -10,8 +10,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=7"/>
-    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+    <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
@@ -445,10 +445,8 @@
             <div class="tubiao2 over">
                 <div id="containerLegend"></div>
                 <div id="container" style="width:100%;height:400px;display: none"></div>
-                <div id="imprDiv" style="width:45%;display: none;float: left"></div>
-                <div id="clickDiv" style="width:54%;display: none;float: right"></div>
-                <div id="costDiv" style="width:45%;display: none;float: left;margin-top: 40px;"></div>
-                <div id="convDiv" style="width:53%;display: none;float: right;margin-top: 40px;"></div>
+                <div id="imprDiv" style="width:100%;height:530px;display: none;"></div>
+                <div id="pm_data" style="display: none;"></div>
             </div>
 
         </div>
@@ -460,15 +458,13 @@
 <jsp:include page="../homePage/pageBlock/footer.jsp"/>
 </div>
 </div>
-</body>
-<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.cxcalendar.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/echarts/echarts-all.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/echarts/2.1.10/echarts-all.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/report/reportProgress.js"></script>
@@ -478,4 +474,6 @@
         $("[data-toggle='tooltip']").tooltip();
     });
 </script>
+</body>
+
 </html>
