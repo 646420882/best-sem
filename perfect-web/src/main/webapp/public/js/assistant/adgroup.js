@@ -803,6 +803,8 @@ function adgroupUpload(){
             case "3":
                 if (oid.length < 18&&oid!=undefined) {
                     adgroupUploadOperate(oid,3);
+                }else{
+                    adgroupUploadOperate(oid,1);
                 }
                 break;
         }

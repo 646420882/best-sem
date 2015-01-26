@@ -363,7 +363,7 @@ $(".ntwOk").click(function () {
         negativeWordsValue = negativeWords;
         exactNegativeWordsValue = exactNegativeWords;
     }
-    $(".TB_overlayBG,#setNegtiveWord").hide(0);
+    $("#setNegtiveWord").hide(0);
 });
 
 /*验证输入的否定关键词合法性*/
@@ -550,7 +550,7 @@ $(".excludeIpOk").click(function () {
     } else if (windowName == "inputExcludeIp_add") {
         excludeIpStr = ipList;
     }
-    $(".TB_overlayBG,#setExcludeIp").hide(0);
+    $("#setExcludeIp").hide(0);
 });
 
 
@@ -584,7 +584,7 @@ $(".scheduleOk").click(function () {
         jsonSchdule_add = {};
         jsonSchdule_add["schedule"] = getInputScheduleData();
     }
-    $(".TB_overlayBG,#setExtension").hide(0);
+    $("#setExtension").hide(0);
 });
 
 
@@ -1037,19 +1037,23 @@ function uploadCampagin(){
    switch (parseInt(step)){
        case 1:
            if(id.length>18){
-               uploadOperate(id);
+               uploadOperate(id, 1);
            }
            break;
        case 2:
-           uploadOperate(id);
+           uploadOperate(id, 2);
            break
        case 3:
-           uploadOperate(id);
+           if (id.length < 18) {
+               uploadOperate(id, 3);
+           } else {
+               uploadOperate(id, 1);
+           }
            break;
     }
 }
-function uploadOperate(id){
-    $.get("/assistantCampaign/upload",{cid:id},function(result){
+function uploadOperate(id,ls){
+    $.get("/assistantCampaign/upload",{cid:id,ls:ls},function(result){
         if(result.msg!="0"){
             alert("上传成功!");
             getCampaignList(0);
@@ -1088,15 +1092,12 @@ $(".closeAddCampaign").click(function () {
 //推广时段的取消按钮的事件
 function closeSetExtension() {
     $("#setExtension").hide(0);
-    $(".TB_overlayBG").hide(0);
 }
 function closeSetExcludeIp() {
     $("#setExcludeIp").hide(0);
-    $(".TB_overlayBG").hide(0);
 }
 function closeSetNegtiveWord() {
     $("#setNegtiveWord").hide(0);
-    $(".TB_overlayBG").hide(0);
 }
 
 

@@ -455,14 +455,13 @@ public class AssistantCampaignController extends WebContextSupport {
     }
 
     @RequestMapping(value = "/assistantCampaign/upload")
-    public ModelAndView uploadCampaign(@RequestParam(value = "cid", required = true) String cid) {
+    public ModelAndView uploadCampaign(@RequestParam(value = "cid", required = true) String cid,@RequestParam(value = "ls")Integer ls) {
         if (cid.length() > OBJ_SIZE) {
             List<CampaignDTO> dtos=campaignService.uploadAdd(cid);
             dtos.parallelStream().forEach(s->campaignService.update(s,cid));
             return writeMapObject(MSG, SUCCESS);
         } else {
-            CampaignDTO campaignDTO = campaignService.findOne(Long.valueOf(cid));
-            switch (campaignDTO.getLocalStatus()) {
+            switch (ls) {
                 case 2:
                     //修改后获取到修改成功的一些cid
                    List<Long> returnCapaignIds= campaignService.uploadUpdate(new ArrayList<Long>(){{

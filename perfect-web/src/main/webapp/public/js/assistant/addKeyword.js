@@ -18,9 +18,6 @@ var d =  dialog({title: "批量添加/更新",
 
 $(function () {
     $("#addKeyword").livequery('click', function () {
-        alert("该功能功能尚不齐全，尽快开放！，现在需要添加关键词可以用批量添加进行添加！");
-        return;
-
         top.dialog({title: "关键词工具",
             padding: "5px",
             align:'right bottom',
@@ -33,7 +30,7 @@ $(function () {
 //                  $('#value').html(this.returnValue);
 //              }
                // window.location.reload(true);
-                whenClickTreeLoadData(getCurrentTabName());
+                whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());
             },
             onremove: function () {
             }

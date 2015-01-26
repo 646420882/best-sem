@@ -10,7 +10,7 @@
 <head>
     <title>统计</title>
     <link href="/public/plugs/uploadify/uploadify.css" rel="stylesheet"/>
-    <script type="text/javascript" src="/public/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript" src="/public/plugs/uploadify/jquery.uploadify.min.js"></script>
     <script type="text/javascript">
         $(function () {

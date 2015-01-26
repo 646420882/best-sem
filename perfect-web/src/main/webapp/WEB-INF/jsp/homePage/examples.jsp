@@ -16,7 +16,7 @@
     <base href="<%=basePath%>">
     <link type="text/css" href="../public/css/accountCss/style.css" rel="stylesheet">
     <link type="text/css" href="../public/css/accountCss/public.css" rel="stylesheet">
-    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
     <title></title>
     <script type="text/javascript">
         $(document).ready(function(){

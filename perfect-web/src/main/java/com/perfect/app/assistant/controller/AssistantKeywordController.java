@@ -67,10 +67,10 @@ public class AssistantKeywordController extends WebContextSupport{
     @RequestMapping(value = "assistantKeyword/batchAddOrUpdate", method = RequestMethod.POST)
     public void batchAddkeyword(
             @RequestParam(value = "isReplace") Boolean isReplace,
-            @RequestParam(value = "cids") String cids,
             @RequestParam(value = "aids") String aids,
             @RequestParam(value = "kwds") String kwds,
             @RequestParam(value = "mts") String mts,
+            @RequestParam(value = "pts") String pts,
             @RequestParam(value = "prices") String prices,
             @RequestParam(value = "pcs") String pcs,
             @RequestParam(value = "mibs") String mibs,
@@ -85,12 +85,13 @@ public class AssistantKeywordController extends WebContextSupport{
                 String[] pricesStr = prices.split("\n");
                 String[] pcsStr = pcs.split("\n");
                 String[] mibStr = mibs.split("\n");
+                String[] ptsStr=pts.split("\n");
                 String[] pauseStr = pauses.split("\n");
                 for (int i = 0; i < aidStr.length; i++) {
-                    innerUpdate(isReplace, kwdStr[i], aidStr[i], mtStr[i], pricesStr[i], pcsStr[i], mibStr[i], pauseStr[i]);
+                    innerUpdate(isReplace, kwdStr[i], aidStr[i], mtStr[i],ptsStr[i], pricesStr[i], pcsStr[i], mibStr[i], pauseStr[i]);
                 }
             } else {
-                innerUpdate(isReplace, kwds, aids, mts, prices, pcs, mibs, pauses);
+                innerUpdate(isReplace, kwds, aids, mts, pts,prices, pcs, mibs, pauses);
             }
             writeHtml(SUCCESS, response);
         } catch (Exception e) {
@@ -100,7 +101,13 @@ public class AssistantKeywordController extends WebContextSupport{
 
     }
 
-    private void innerUpdate(Boolean isReplace, String name, String aid, String mt, String price, String pc, String mib, String pause) {
+    private void innerUpdate(Boolean isReplace, String name, String aid, String mt,String pt, String price, String pc, String mib, String pause) {
+        if(pc.equals("空")){
+            pc=null;
+        }
+        if(mib.equals("空")){
+            mib=null;
+        }
         Map<String, Object> map = new HashMap<>();
         map.put("name", name);
         if (aid.length() > 18) {
@@ -119,6 +126,7 @@ public class AssistantKeywordController extends WebContextSupport{
                     keywordDTOFind = assistantKeywordService.findByObjId(dto.getId());
                     keywordDTOFind.setKeyword(name);
                     keywordDTOFind.setMatchType(Integer.parseInt(mt));
+                    keywordDTOFind.setPhraseType(Integer.parseInt(pt));
                     keywordDTOFind.setPrice(BigDecimal.valueOf(Double.parseDouble(price)));
                     keywordDTOFind.setPcDestinationUrl(pc);
                     keywordDTOFind.setMobileDestinationUrl(mib);
@@ -132,6 +140,7 @@ public class AssistantKeywordController extends WebContextSupport{
                     BeanUtils.copyProperties(keywordDTOFind, dto);
                     keywordDTOFind.setKeyword(name);
                     keywordDTOFind.setMatchType(Integer.parseInt(mt));
+                    keywordDTOFind.setPhraseType(Integer.parseInt(pt));
                     keywordDTOFind.setPrice(BigDecimal.valueOf(Double.parseDouble(price)));
                     keywordDTOFind.setPcDestinationUrl(pc);
                     keywordDTOFind.setMobileDestinationUrl(mib);
@@ -145,11 +154,11 @@ public class AssistantKeywordController extends WebContextSupport{
             insertDTO.setLocalStatus(1);
             insertDTO.setKeyword(name);
             insertDTO.setMatchType(Integer.parseInt(mt));
+            insertDTO.setPhraseType(Integer.parseInt(pt));
             insertDTO.setPrice(BigDecimal.valueOf(Double.parseDouble(price)));
             insertDTO.setPcDestinationUrl(pc);
             insertDTO.setMobileDestinationUrl(mib);
             insertDTO.setStatus(-1);
-            insertDTO.setPhraseType(1);
             insertDTO.setPause(Boolean.parseBoolean(pause));
             if (aid.length() > 18) {
                 insertDTO.setAdgroupObjId(aid);

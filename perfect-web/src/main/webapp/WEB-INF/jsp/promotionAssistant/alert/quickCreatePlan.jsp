@@ -165,7 +165,7 @@
 
 <jsp:include page="./updateRegionTarget.jsp"/>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 
 <script type="text/javascript">
 

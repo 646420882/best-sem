@@ -14,8 +14,8 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <style type="text/css">
         .tab_box {
             padding: 0px;
@@ -91,26 +91,36 @@
                                             class="fl">${i.baiduUserName}</b></td>
                                     <td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>
                                     <td>&nbsp;${i.token}</td>
-                                    <td>&nbsp;<a href="#" class="showbox">同步密码</a> &nbsp; <a data-id="${i.id}"
-                                                                                             class="delBtn">删除</a></td>
+                                    <td>&nbsp;<a href="#" class="showbox">同步密码</a> &nbsp; <a data-id="${i.id}" data-userName="${currSystemUserName}" class="delBtn" style="cursor: pointer">删除</a></td>
                                 </tr>
 
                             </c:forEach>
                             <script type="application/javascript">
                                 $('.delBtn').click(function () {
-                                    var id = this.data('id');
-                                    $.ajax({
-                                        url: "/configuration/acc/" + id,
-                                        type: "DELETE",
-                                        success: function (datas) {
-                                            if (datas.status != null && datas.status == true) {
-                                                alert("删除成功!");
-                                                window.location.reload(true);
-                                            } else {
-                                                alert("删除失败!")
+                                    var id = $('.delBtn').attr('data-id');
+                                    var userName = $('.delBtn').attr('data-userName');
+                                    if(confirm("是否确定删除此帐号")){
+                                        $.ajax({
+                                            url: "/configuration/acc/deletebdUser",
+                                            type: "GET",
+                                            dataType: "json",
+                                            data:{
+                                                id:id,
+                                                account:userName
+                                            },
+                                            success: function (datas) {
+                                                if (datas.status != null && datas.status == true) {
+                                                    alert("删除成功!请重新登陆你的帐号");
+                                                    window.location.reload(true);
+                                                } else {
+                                                    alert("删除失败!")
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    }else{
+                                        return false;
+                                    }
+
                                 })
                             </script>
                             </tbody>

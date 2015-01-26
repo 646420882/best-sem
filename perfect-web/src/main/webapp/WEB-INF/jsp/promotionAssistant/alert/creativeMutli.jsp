@@ -31,10 +31,10 @@
         }
 
         .newkeyword_right_mid textarea {
-            height: 200px;
+            height: 250px;
         }
         .ztree{
-            height:440px;
+            height:450px;
         }
 
         .list02_top {
@@ -51,7 +51,7 @@
     </style>
 </head>
 <body>
-<div style="background-color: #f3f5fd; width: 900px; height: 700px">
+<div style="background-color: #f3f5fd; width: 900px; height: 900px">
     <div class="addplan_top over">
         <ul id="step">
             <li class="current">1、输入内容</li>
@@ -193,8 +193,8 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
@@ -383,7 +383,7 @@ function initDomain() {
 function nextStep() {
     var txt = $("#creativeMultiTxt").val().trim();
     if (getSelectedNodeToString() != "" && txt != "") {
-        var dm = $("#doMain").html();
+        var dm = "."+$("#doMain").html();
         var vs = getSelectedNodeNameToString();
         var v = getSelectedNodeToString();
         var ids = v.split("-");

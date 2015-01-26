@@ -68,9 +68,9 @@
     </div>
 
 </div>
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>--%>
+<%--<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>--%>
 <script type="text/javascript">
-    window.jQuery || document.write("<script src='${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js'>\x3C/script>");
+    window.jQuery || document.write("<script src='http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js'>\x3C/script>");
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/forgetPassword.js"></script>
 

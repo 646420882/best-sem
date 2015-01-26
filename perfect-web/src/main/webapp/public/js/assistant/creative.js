@@ -119,7 +119,7 @@ function InitMenu() {
             //var re = new RegExp(strRegex);
             var _title = $(this).parents("tr").find("input:eq(2)");
             var _thisStr = getChar(_title.val());
-            var dm = "." + $("#doMain").val();
+            var dm = "." + $(".doMainS").html();
             if (parseInt(_thisStr) > 50 || parseInt(_thisStr) <= 8) {
                 alert("\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
                 return false;
@@ -793,11 +793,11 @@ function updateCreatvie(temp) {
         top: ($(window).height() - _update.height()) / 2 + $(window).scrollTop() + "px",
         display: "block"
     });
-    var dm = $("#doMain").val();
+    var dm = $(".doMain").html();
     if (dm == "") {
         $.get("/assistantCreative/getDomain", function (result) {
             if (result != "0") {
-                $("#doMain").val(result);
+                $(".doMain").html(result);
             }
         });
     }
@@ -869,7 +869,7 @@ function updateOk() {
     var _mibs = $("#cUpdateForm input[name='mobileDisplayUrl']");
 
     var _thisStr = getChar(_title.val());
-    var dm = "." + $("#doMain").val();
+    var dm = "." + $(".doMainS").html();
     if (parseInt(_thisStr) > 50 || parseInt(_thisStr) <= 8) {
         alert("\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
         return false;
@@ -1089,9 +1089,9 @@ function creativeMulti() {
         padding: "5px",
         id:'creativeMutli',
         align:'right bottom',
-        content: "<iframe src='/assistantCreative/updateMulti' width='900' height='650' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantCreative/updateMulti' width='900' height='700' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         width:'900',
-        height:'650',
+        height:'700',
         oniframeload: function () {
 
         },

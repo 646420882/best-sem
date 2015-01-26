@@ -54,7 +54,7 @@
         <span class="nav_input hides"></span>
     </div>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript">
     var baiduAccountId = <%=accountId%>;
     var loadBaiduAccount = function () {

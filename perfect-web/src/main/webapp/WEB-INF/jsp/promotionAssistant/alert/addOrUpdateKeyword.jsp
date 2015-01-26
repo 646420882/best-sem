@@ -25,21 +25,16 @@
             text-align: center;
         }
 
-        .zs_function {
-            margin-top: 10px;
-        }
-
-        .keyworld_text2 {
-            height: 320px;
-        }
-
         .assembly_under {
             height: 440px;
 
         }
 
+        .newkeyword_right_mid textarea {
+            height: 250px;
+        }
         .ztree {
-            height: 280px;
+            height: 450px;
 
         }
         .list02_top {
@@ -57,7 +52,7 @@
 <body>
 <div id="background" class="background hides"></div>
 <div id="progressBar" class="progressBar hides">数据处理中，请稍等...</div>
-<div style="background-color: #f3f5fd; width: 900px; height: 700px">
+<div style="background-color: #f3f5fd; width: 900px; height: 900px">
     <div class="addplan_top over">
         <ul id="tabUl">
             <li class="current">1、输入内容</li>
@@ -93,6 +88,8 @@
                                     <p>格式：关键词名称（必填），匹配模式，出价（为0则使用推广单元出价），访问URL，移动访问URL，启用/暂停</p>
 
                                     <p>例如：鲜花，精确，1.0，www.com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,启用</p>
+
+                                    <p style="color:red;">要设定高级匹配模式的语法如下：短语-同义,短语-核心,短语-精确</p>
                                     <textarea onkeyup="getColumn(this)" id="TextAreaChoose"
                                               style="font-size: 12px;font-family: 微软雅黑;"></textarea>
 
@@ -105,6 +102,14 @@
                                             style="color:red;">您的域名:&nbsp;</span><span
                                             id="doMain"></span></p>
                                     <%-- <p><input type="checkbox">&nbsp;用输入的关键词搜索更多相关关键词，把握题词质量</p>--%>
+                                </div>
+                                <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                                    <div class="w_list03">
+                                        <ul>
+                                            <li class="current" id="downloadAccount">下一步</li>
+                                            <%--<li class="close">取消</li>--%>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
 
@@ -135,14 +140,7 @@
 
 
             </div>
-            <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
-                <div class="w_list03">
-                    <ul>
-                        <li class="current" id="downloadAccount">下一步</li>
-                        <%--<li class="close">取消</li>--%>
-                    </ul>
-                </div>
-            </div>
+
         </div>
         <div class="containers over hides" id="validateDiv">
             <div class="assembly_under over">
@@ -184,8 +182,8 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
@@ -445,7 +443,7 @@ var pdata = null;
 function nextStepAjax() {
     var txt=$("#TextAreaChoose").val().trim();
     if (getSelectedNodeToString() != ""&&txt!="") {
-        var dm = $("#doMain").html();
+        var dm = "." + $("#doMain").html();
         var v = getSelectedNodeToString();
         var vs =getSelectedNodeNameToString();
         var ids = v.split("-");
@@ -472,17 +470,23 @@ function nextStepAjax() {
                 }
             }
             if (pc != "") {
-                if (parseInt(getChar(pc)) > 1024) {
-                    alert("访问Url不能超过1024个字符");
-                    return;
-                } else {
-                    if ((pc.indexOf(dm) == -1)) {
-                        alert("第" + (j + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                if (pc != "空") {
+                    if (parseInt(getChar(pc)) > 1024) {
+                        alert("访问Url不能超过1024个字符");
                         return;
+                    } else {
+                        if ((pc.indexOf(dm) == -1)) {
+                            alert("第" + (j + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                            return;
+                        }
                     }
                 }
+            } else {
+                alert("第" + (j + 1) + "行的\"访问\"Url地址必须如果不输入请输入字符:\"空\"");
+                return;
             }
             if(mib!=""){
+                if (mib != "空") {
                 if (parseInt(getChar(mib)) > 1024) {
                     alert("访问Url不能超过1024个字符");
                     return;
@@ -492,6 +496,10 @@ function nextStepAjax() {
                         return;
                     }
                 }
+                }
+            } else {
+                alert("第" + (j + 1) + "行的\"移动访问\"Url地址如果不输入请输入字符:\"空\"");
+                return;
             }
         }
         $("#tabUl li:eq(1)").addClass("current");
@@ -542,6 +550,7 @@ function overStep(isReplace) {
         var aids="";
         var kwds="";
         var mts="";
+        var pts = "";
         var prices="";
         var pcs="";
         var mibs="";
@@ -551,8 +560,30 @@ function overStep(isReplace) {
             cids = cids+_tr.find("td:eq(0) input").val()+"\n";
             aids =aids+ _tr.find("td:eq(1) input").val()+"\n";
             kwds = kwds+_tr.find("td:eq(2)").html()+"\n";
-            var matchType=until.getMatchTypeNumByName(_tr.find("td:eq(3)").html());
+            var starMatchType = _tr.find("td:eq(3)").html();
+            var phraseType = "";
+            var matchType = "";
+            if (starMatchType.indexOf("短语-") > -1) {
+                matchType = 2;//如果输入短语-xx，必定匹配模式是2
+                switch (starMatchType.split("-")[1]) {
+                    case "同义":
+                        phraseType = 1;
+                        break;
+                    case "精确":
+                        phraseType = 2;
+                        break;
+                    case "核心":
+                        phraseType = 3;
+                        break;
+                    default :
+                        phraseType = 1;
+                        break;
+                }
+            } else {
+                matchType = until.getMatchTypeNumByName(starMatchType);
+            }
             mts= mts+matchType+"\n";
+            pts = pts + phraseType + "\n";
             var money= _tr.find("td:eq(4)").html();
             if(/^-?\d+\.?\d*$/.test(money)){
                 prices=prices+money+"\n";
@@ -569,14 +600,28 @@ function overStep(isReplace) {
         aids=aids.slice(0,-1);
         kwds=kwds.slice(0,-1);
         mts=mts.slice(0,-1);
+        pts = pts.slice(0, -1);
         prices=prices.slice(0,-1);
         pcs=pcs.slice(0,-1);
         mibs=mibs.slice(0,-1);
         pauses=pauses.slice(0,-1);
         $.post("../assistantKeyword/batchAddOrUpdate",
-                {isReplace: isReplace, cids: cids, aids: aids,kwds:kwds,mts:mts,prices:prices,pcs:pcs,mibs:mibs,pauses:pauses},
+                {
+                    isReplace: isReplace,
+                    cids: cids,
+                    aids: aids,
+                    kwds: kwds,
+                    mts: mts,
+                    pts: pts,
+                    prices: prices,
+                    pcs: pcs,
+                    mibs: mibs,
+                    pauses: pauses
+                },
                 function (rs) { if(rs=="1"){
                     alert("操作成功!");
+                } else {
+                    alert("添加失败!");
                 }
                     top.dialog.getCurrent().close().remove();
                 });

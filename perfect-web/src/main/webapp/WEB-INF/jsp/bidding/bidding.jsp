@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <style type="text/css">
         .tab_box {
             padding: 10px 0 80px 0;
@@ -764,16 +764,16 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/grid/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jqgrid/4.6.0/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/importKeyword/importKeywordBidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
 <script type="text/javascript">
     String.prototype.trims = function () {
         return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
@@ -1142,7 +1142,7 @@
             else
                 $("#table1").setGridParam().hideCol(item.value);
         });
-        $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
+        $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.84, true);
 //    $("#table1").closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
         $(".TB_overlayBG").css("display", "none");
         $("#custom_col").css("display", "none");
@@ -1155,7 +1155,7 @@
             else
                 $("#table2").setGridParam().hideCol(item.value);
         });
-        $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
+        $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.84, true);
         $(".TB_overlayBG").css("display", "none");
         $(".box6").css("display", "none");
     };

@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
     <script type="text/javascript">
         var judeit =0;
        $(function () {

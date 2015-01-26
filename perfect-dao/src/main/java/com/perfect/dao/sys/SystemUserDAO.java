@@ -34,7 +34,7 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
 
     void insertAccountInfo(String userName, BaiduAccountInfoDTO baiduAccountInfoDTO);
 
-    void removeAccountInfo(Long id);
+    int removeAccountInfo(List<BaiduAccountInfoDTO> baiduAccountInfoDTOs,String account);
 
     void clearAccountData(Long accountId);
 

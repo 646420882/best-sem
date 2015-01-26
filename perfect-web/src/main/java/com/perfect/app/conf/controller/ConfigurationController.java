@@ -15,10 +15,8 @@ import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.SystemUserService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -101,9 +99,9 @@ public class ConfigurationController {
         return new ModelAndView(jsonView);
     }
 
-    @RequestMapping(value = "/acc/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView del(@PathVariable Long id) {
-        boolean success = systemUserService.removeAccount(id);
+    @RequestMapping(value = "/acc/deletebdUser", method = RequestMethod.GET)
+    public ModelAndView del(Long id,String account) {
+        boolean success = systemUserService.removeAccount(id,account);
 
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> statusMap = new HashMap<>();

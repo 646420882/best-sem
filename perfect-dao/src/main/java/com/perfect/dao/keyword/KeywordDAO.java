@@ -114,10 +114,10 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
     void update(String oid,KeywordDTO dto);
 
     /**
-     * 只用于修改上传修改成功的ls状态
-     * @param kid
+     * 只用于修改上传修改成功的ls状态,以及获取到的Stauts
+     * @param dto 只包含Status和kid
      */
-    void updateLs(Long kid);
+    void updateLs(KeywordDTO dto);
 
 
 }

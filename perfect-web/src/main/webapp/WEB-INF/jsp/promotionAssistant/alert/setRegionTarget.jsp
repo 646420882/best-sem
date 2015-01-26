@@ -10,7 +10,7 @@
 <head>
     <link rel="shortcut icon" type="image/ico"
           href="http://tuiguang-s1.bdstatic.com/nirvana/asset/resource/img/1d95fd9f0985feb4.ico">
-    <script src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/public/css/style.css">
 <head>
 <body>

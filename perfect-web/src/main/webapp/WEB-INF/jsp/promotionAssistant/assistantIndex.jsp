@@ -31,6 +31,9 @@
         #sDiv .span-ok {
             color: #9f9f9f;
         }
+        form{
+            margin:0 0 5px 0;
+        }
     </style>
     <script>
         String.prototype.trims = function () {
@@ -206,7 +209,20 @@
                 </li>
                 <li>
                     <div class="t_list01 fl over">匹配模式：</div>
-                    <div class="w_list02 fl over"><select class="match_1" onchange="whenBlurEditKeyword(5,this.value)">
+                    <div class="w_list02 fl over"><select id="match_1" onchange="whenBlurEditKeyword(5,this.value)">
+                        <option value="-1">请选择匹配模式</option>
+                        <option value="3">广泛</option>
+                        <option value="1">精确</option>
+                        <option value="2">短语</option>
+                    </select></div>
+                </li>
+                <li id="phraseTypeLi" style="display: none;">
+                    <div class="t_list01 fl over">高级匹配模式：</div>
+                    <div class="w_list02 fl over"><select id="match_2" onchange="whenBlurEditKeyword(6,this.value)">
+                        <option value="-1">请选择高级匹配模式</option>
+                        <option value="1">同义包含</option>
+                        <option value="2">精确包含</option>
+                        <option value="3">核心包含</option>
                     </select></div>
                 </li>
                 <li>
@@ -220,7 +236,7 @@
                 </li>
                 <li>
                     <div class="t_list01 fl over">您的注册域名为：</div>
-                    <div class="w_list02 fl over"><span id="doMainS" style="color:red;"></span></div>
+                    <div class="w_list02 fl over"><span class="doMainS" style="color:red;"></span></div>
                 </li>
             </ul>
         </div>
@@ -350,6 +366,10 @@
                             <option value="true">启用</option>
                             <option value="false">暂停</option>
                         </select></div>
+                </li>
+                <li>
+                    <div class="t_list01 fl over">您的注册域名为：</div>
+                    <div class="w_list02 fl over"><span class="doMainS" style="color:red;"></span></div>
                 </li>
             </ul>
         </div>
@@ -1370,7 +1390,7 @@
 <div class="box" style="display:none;" id="setNegtiveWord">
     <h2 id="setFdKeywordDiv">
         <span class="fl">否定关键词设置</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeSetNegtiveWord();" style="color: #fff;float: right;font-size: 12px; line-height: 46px;">关闭</a></h2>
 
     <div class="mainlist">
         <p>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，没词20汉字以内，最多200项。</p>
@@ -1432,7 +1452,7 @@
 <div class="box" style="display:none;" id="setExcludeIp">
     <h2 id="setExcludeIpDiv">
         <span class="fl">IP排除列表</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeSetExcludeIp();" style="color: #fff;float: right;font-size: 12px; line-height: 46px;">关闭</a></h2>
 
     <div class="mainlist">
         <ul>
@@ -1459,7 +1479,7 @@
 <div class="box" style="display:none;" id="setExtension">
     <h2 id="setExtensionDiv">
         <span class="fl">推广时段管理</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeSetExtension();" style="color: #fff;float: right;font-size: 12px; line-height: 46px;">关闭</a></h2>
 
     <div class="chooseTime">
         <b class="fl">请选择时段&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(按住Ctrl键并且鼠标经过可多选时间段)</b>
@@ -1475,7 +1495,7 @@
         <div class="w_list03">
             <ul>
                 <li class="current scheduleOk">确认</li>
-                <li onclick="closeSetExtension()">取消</li>
+                <li onclick="closeSetExtension();">取消</li>
             </ul>
         </div>
     </div>
@@ -1484,7 +1504,7 @@
 <div class="box" style="display:none" id="addFolderDiv">
     <h2 id="folderTUO">
         <span class="fl">添加监控文件夹</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeAlert();" class="close">关闭</a></h2>
     <div class="mainlist">
         <label id="dialogMsg">请输入要创建的监控文件夹名称!</label>
         <ul class="zs_set" id="adfd">
@@ -1503,7 +1523,7 @@
 <div class="box" style="display:none" id="addMonitorDiv">
     <h2 id="MonitorTUO">
         <span class="fl">添加监控对象</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeAlert();" class="close">关闭</a></h2>
     <div class="mainlist">
         <ul class="zs_set" id="admon">
         </ul>
@@ -1520,18 +1540,18 @@
 <%--添加推广计划弹出窗口--%>
 <jsp:include page="../promotionAssistant/alert/addCampaign.jsp"/>
 <!-- javascript -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/echarts/echarts-all.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/store.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/grid/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/echarts/2.1.10/echarts-all.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/store.js/1.3.14/store.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jqgrid/4.6.0/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/jquery.resizableColumns.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/jquery-smartMenu-min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog-plus.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/json2.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/highcharts.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
+<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
@@ -1544,9 +1564,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/addKeyword.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/Monitoring.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.pin.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/respond.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/Indextable.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/uploadMerge.js"></script>
 <script type="text/javascript">

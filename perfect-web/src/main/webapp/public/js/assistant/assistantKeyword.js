@@ -66,11 +66,11 @@ function skipKeywordPage() {
  * 获取当前账户的注册域名，用于添加关键字，创意的时候验证！
  */
 function initDomain() {
-    var dm = $("#doMainS").html();
+    var dm = $(".doMainS").html();
     if (dm == "") {
         $.get("/assistantCreative/getDomain", function (result) {
             if (result != "0") {
-                $("#doMainS").html(result);
+                $(".doMainS").html(result);
             }
         });
     }
@@ -380,21 +380,40 @@ function setKwdValue(obj, kwid) {
         $(".pause_1").html("<option value='true' selected='selected'>暂停</option><option value='false' >启用</option>");
     }
     var matchType = $(obj).find("td:eq(6)").html();
-    $(".match_1").html(renderSelect(matchType));
+    setSelectSelected(matchType);
+
     //if ( == "启用") {
     //    $(".pause_1").html("<option value='true'>暂停</option><option value='false' selected='selected'>启用</option>");
     //} else {
     //    $(".pause_1").html("<option value='true' selected='selected'>暂停</option><option value='false' >启用</option>");
     //}
 }
-function renderSelect(str) {
-    var text = ["精确", "短语", "广泛"];
-    var val = [1, 2, 3];
-    var returnStr = "";
-    for (var i = 0; i < text.length; i++) {
-            returnStr = returnStr + "<option value='" + val[i] + "'>" + text[i] + "</option>";
+
+function setSelectSelected(matStr) {
+    var str = matStr;
+    if (str.indexOf("-")) {
+        str = matStr.split("-")[0];
     }
-    return returnStr;
+    var objSelect = document.getElementById("match_1");
+    for (var i = 0; i < objSelect.options.length; i++) {
+        if (objSelect.options[i].text == str) {
+            if (str != "短语") {
+                $("#phraseTypeLi").hide();
+            } else {
+                $("#phraseTypeLi").show();
+            }
+            objSelect.options[i].selected = true;
+            break;
+        }
+    }
+    var objSelect2 = document.getElementById("match_2");
+    for (var i = 0; i < objSelect2.options.length; i++) {
+        var _thisMathType = matStr.split("-")[1];
+        if (objSelect2.options[i].text == _thisMathType) {
+            $("#phraseTypeLi").show();
+            objSelect2.options[i].selected = true;
+        }
+    }
 }
 
 
@@ -437,7 +456,7 @@ function getChar(str) {
  * @param value
  */
 function whenBlurEditKeyword(num, value) {
-    var dm = $("#doMainS").html();
+    var dm = "." + $(".doMainS").html();
     if ($("#tbodyClick").find("tr").length == 0) {
         return;
     }
@@ -463,19 +482,24 @@ function whenBlurEditKeyword(num, value) {
             }
             break;
         case 3:
-            if (getChar(value) > 1024) {
-                alert("访问Url字符不能超过1024个字符");
-                return;
-            } else {
-                if (value.indexOf(dm) == -1) {
-                    alert("\"访问Url\"必须包含" + dm + "的域名！");
+            if (value != "") {
+                if (getChar(value) > 1024) {
+                    alert("访问Url字符不能超过1024个字符");
                     return;
                 } else {
-                    jsonData["pcDestinationUrl"] = value;
+                    if (value.indexOf(dm) == -1) {
+                        alert("\"访问Url\"必须包含" + dm + "的域名！");
+                        return;
+                    } else {
+                        jsonData["pcDestinationUrl"] = value;
+                    }
                 }
+            } else {
+                jsonData["pcDestinationUrl"] = value;
             }
             break;
         case 4:
+            if (value != "") {
             if (getChar(value) > 1024) {
                 alert("移动访问Url字符不能超过1024个字符");
                 return;
@@ -487,12 +511,30 @@ function whenBlurEditKeyword(num, value) {
                     jsonData["mobileDestinationUrl"] = value;
                 }
             }
+            } else {
+                jsonData["mobileDestinationUrl"] = value;
+            }
             break;
         case 5:
-            jsonData["matchType"] = value;
+            if (value != -1) {
+                if (value == 2) {
+                    $("#phraseTypeLi").show();
+                    return;
+                } else {
+                    $("#phraseTypeLi").hide();
+                    jsonData["matchType"] = value;
+                }
+            } else {
+                return;
+            }
             break;
         case 6:
-            jsonData["phraseType"] = value;
+            if (value != -1) {
+                jsonData["matchType"] = 2;
+                jsonData["phraseType"] = value;
+            } else {
+                return;
+            }
             break;
         case 7:
             jsonData["pause"] = value;
@@ -554,7 +596,7 @@ function batchAddOrUpdate() {
     top.dialog({title: "批量添加/更新",
         padding: "5px",
         align:'right bottom',
-        content: "<iframe src='/assistantKeyword/showAddOrUpdateKeywordDialog' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showAddOrUpdateKeywordDialog' width='900' height='700' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -816,7 +858,11 @@ function kUpload() {
                 kUploadOperate(id, 2);
                 break;
             case 3:
-                kUploadOperate(id, 3);
+                if (id.length < 18) {
+                    kUploadOperate(id, 3);
+                } else {
+                    kUploadOperate(id, 1);
+                }
                 break;
         }
     } else {
