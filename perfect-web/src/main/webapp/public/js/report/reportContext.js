@@ -7,6 +7,7 @@ var reportDataVS;
 var accountBasisReport;
 var curve;
 var pieChart;
+var binFalg;
 
 /*初始化数据变量*/
 var dataOne = "";
@@ -765,6 +766,8 @@ $(function () {
                         var pie_click = new Array();
                         var pie_cost = new Array();
                         var pie_conv = new Array();
+                        //数据联动
+                        var pm_array = new Array()
                         var pie_num1 = 0;
                         var pie_num2 = 0;
                         var pie_num3 = 0;
@@ -778,14 +781,16 @@ $(function () {
                                                 if (isNaN(impr.mobileImpression / countdata.mobileImpression) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
                                                     pie_impr.push(eval("({name:'" + impr.regionName + "', value:0})"));
                                                 } else {
-                                                    pie_impr.push(eval("({name:'" + impr.regionName + "',value:" + Math.round((impr.mobileImpression / countdata.mobileImpression) * 10000) / 100 + "})"));
+                                                    var number = Math.round((impr.mobileImpression / countdata.mobileImpression) * 10000) / 100
+                                                    pie_impr.push(eval("({name:'" + impr.regionName + "',value:" + number + "})"));
                                                     pie_num1 = 1;
                                                 }
                                             } else {
                                                 if (isNaN(impr.pcImpression / countdata.pcImpression) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
                                                     pie_impr.push(eval("({name:'" + impr.regionName + "',value:0})"));
                                                 } else {
-                                                    pie_impr.push(eval("({name:'" + impr.regionName + "',value:" + Math.round((impr.pcImpression / countdata.pcImpression) * 10000) / 100 + "})"));
+                                                    var number = Math.round((impr.pcImpression / countdata.pcImpression) * 10000) / 100;
+                                                    pie_impr.push(eval("({name:'" + impr.regionName + "',value:" + number + "})"));
                                                     pie_num1 = 1;
                                                 }
                                             }
@@ -797,14 +802,16 @@ $(function () {
                                                 if (isNaN(impr.mobileClick / countdata.mobileClick) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
                                                     pie_click.push(eval("({name:'" + impr.regionName + "', value:0})"));
                                                 } else {
-                                                    pie_click.push(eval("({name:'" + impr.regionName + "',value:" + Math.round((impr.mobileClick / countdata.mobileClick) * 10000) / 100 + "})"));
+                                                    var number = Math.round((impr.mobileClick / countdata.mobileClick) * 10000) / 100;
+                                                    pie_click.push(eval("({name:'" + impr.regionName + "',value:" + number + "})"));
                                                     pie_num2 = 1;
                                                 }
                                             } else {
                                                 if (isNaN(impr.pcClick / countdata.pcClick)) {
                                                     pie_click.push(eval("({name:'" + impr.regionName + "', value:0})"));
                                                 } else {
-                                                    pie_click.push(eval("({name:'" + impr.regionName + "',value:" + Math.round((impr.pcClick / countdata.pcClick) * 10000) / 100 + "})"));
+                                                    var number = Math.round((impr.pcClick / countdata.pcClick) * 10000) / 100;
+                                                    pie_click.push(eval("({name:'" + impr.regionName + "',value:" + number + "})"));
                                                     pie_num2 = 1;
                                                 }
                                             }
@@ -816,14 +823,16 @@ $(function () {
                                                 if (isNaN(impr.mobileCost / countdata.mobileCost) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
                                                     pie_cost.push(eval("({name:'" + impr.regionName + "', value:0})"));
                                                 } else {
-                                                    pie_cost.push(eval("({name:'" + impr.regionName + "',value:" + Math.round((impr.mobileCost / countdata.mobileCost) * 10000) / 100 + "})"));
+                                                    var number = Math.round((impr.mobileCost / countdata.mobileCost) * 10000) / 100;
+                                                    pie_cost.push(eval("({name:'" + impr.regionName + "',value:" + number + "})"));
                                                     pie_num3 = 1;
                                                 }
                                             } else {
                                                 if (isNaN(impr.pcCost / countdata.pcCost) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
                                                     pie_cost.push(eval("({name:'" + impr.regionName + "', value:0})"));
                                                 } else {
-                                                    pie_cost.push(eval("({name:'" + impr.regionName + "',value:" + Math.round((impr.pcCost / countdata.pcCost) * 10000) / 100 + "})"));
+                                                    var number = Math.round((impr.pcCost / countdata.pcCost) * 10000) / 100;
+                                                    pie_cost.push(eval("({name:'" + impr.regionName + "',value:" + number + "})"));
                                                     pie_num3 = 1;
                                                 }
                                             }
@@ -835,14 +844,16 @@ $(function () {
                                                 if (isNaN(impr.mobileConversion / countdata.mobileConversion) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
                                                     pie_conv.push(eval("({name:'"+impr.regionName+"', value:0})"));
                                                 } else {
-                                                    pie_conv.push(eval("({name:'"+impr.regionName+"',value:"+ Math.round((impr.mobileConversion / countdata.mobileConversion) * 10000) / 100+"})"));
+                                                    var number = Math.round((impr.mobileConversion / countdata.mobileConversion) * 10000) / 100;
+                                                    pie_conv.push(eval("({name:'"+impr.regionName+"',value:"+number +"})"));
                                                     pie_num4 = 1;
                                                 }
                                             } else {
                                                 if (isNaN(impr.pcConversion / countdata.pcConversion) || (impr.mobileImpression / countdata.mobileImpression) == Infinity) {
                                                     pie_conv.push(eval("({name:'"+impr.regionName+"', value:0})"));
                                                 } else {
-                                                    pie_conv.push(eval("({name:'"+impr.regionName+"',value:"+ Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100+"})"));
+                                                    var number = Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100;
+                                                    pie_conv.push(eval("({name:'"+impr.regionName+"',value:"+ number +"})"));
                                                     pie_num4 = 1;
                                                 }
                                             }
@@ -857,7 +868,14 @@ $(function () {
                                     nameAll.push("消费");
                                     dataAll.push(pie_conv);
                                     nameAll.push("转化");
-                                    //pieChart(dataAll,nameAll,"imprDiv")
+                                    binFalg=1;
+                                    for(var i = 0 ; i < dataAll.length; i++){
+                                        pm_array.push(dataAll[i]);
+                                    }
+
+                                    pieChart(dataAll,nameAll,"imprDiv",pm_array);
+
+
                                 });
                             }
 
@@ -1552,19 +1570,25 @@ $(function () {
         };
         myChart.setOption(option);
 
-    }
+    };
 //饼状图
-    var a = 1;
     var legenddata;
-    pieChart = function (showData, showName, showId) {
-        var dataString;
-        if(a==1) {
+    pieChart = function (showData, showName, showId, pm_array) {
+        $("#pm_data").empty();
+        if(binFalg==1) {
+            var html = "<table>";
+            $.each(pm_array[0],function(i,item){
+                html = html +"<tr><td>"+(i+1)+"</td><td>"+item.name+"</td><td>"+item.value+"</td></tr>"
+            });
+            html = html + "</table>";
+            $("#pm_data").append(html);
             legenddata = eval("({ " + showName[1] + " : false," + showName[2] + " : false," + showName[3] + " : false})");
         }
-        $(showId).show();
+        $("#"+showId).show();
+        $("#pm_data").show();
         $("#container").hide();
-        var myCharts = echarts.init(document.getElementById(showId));
-        var optionBin = {
+        var myChartes = echarts.init(document.getElementById(showId));
+        var optionbing = {
             tooltip : {
                 trigger: 'item',
                 formatter: '{b} {a}<br/>占全国百分比：{c}%'
@@ -1578,8 +1602,6 @@ $(function () {
             dataRange: {
                 min: 0,
                 max: 100,
-                x: 'left',
-                y: 'bottom',
                 text:['高','低'],           // 文本，默认为数值文本
                 calculable : true
             },
@@ -1595,7 +1617,7 @@ $(function () {
             },
             series : [
                 {
-                    name: '中国',
+                    name: showName[0],
                     type: 'map',
                     mapType: 'china',
                     roam: false,
@@ -1634,30 +1656,47 @@ $(function () {
                 }
             ]
         };
-        a++;
-        myCharts.setOption(optionBin);
-        // 动态添加默认不显示的数据
+        binFalg++;
+        myChartes.setOption(optionbing);
 
-        myCharts.on(echarts.config.EVENT.LEGEND_SELECTED, function (param){
+        // 动态添加默认不显示的数据
+        myChartes.on(echarts.config.EVENT.LEGEND_SELECTED, function (param){
             var clickName = param.target;
+            $("#pm_data").empty();
+            var html = "<table>";
             if (clickName == showName[0]) {
                 legenddata = eval("({ "+showName[1]+" : false,"+showName[2]+" : false,"+showName[3]+" : false})");
-                pieChart(showData,showName,showId);
+                $.each(pm_array[0],function(i,item){
+                    html = html +"<tr><td>"+(i+1)+"</td><td>"+item.name+"</td><td>"+item.value+"</td></tr>"
+                });
+                pieChart(showData,showName,showId,pm_array);
             }
             if (clickName == showName[1]) {
                 legenddata = eval("({ "+showName[0]+" : false,"+showName[2]+" : false,"+showName[3]+" : false})");
-                pieChart(showData,showName,showId);
+                $.each(pm_array[1],function(i,item){
+                    html = html +"<tr><td>"+(i+1)+"</td><td>"+item.name+"</td><td>"+item.value+"</td></tr>"
+                });
+                pieChart(showData,showName,showId,pm_array);
             }
             if (clickName == showName[2]) {
                 legenddata = eval("({ "+showName[0]+" : false,"+showName[1]+" : false,"+showName[3]+" : false})");
-                pieChart(showData,showName,showId);
+                $.each(pm_array[2],function(i,item){
+                    html = html +"<tr><td>"+(i+1)+"</td><td>"+item.name+"</td><td>"+item.value+"</td></tr>"
+                });
+                pieChart(showData,showName,showId,pm_array);
             }
             if (clickName == showName[3]) {
                 legenddata = eval("({ "+showName[0]+" : false,"+showName[1]+" : false,"+showName[2]+" : false})");
-                pieChart(showData,showName,showId);
+                $.each(pm_array[3],function(i,item){
+                    html = html +"<tr><td>"+(i+1)+"</td><td>"+item.name+"</td><td>"+item.value+"</td></tr>"
+                });
+                pieChart(showData,showName,showId,pm_array);
             }
+            html = html + "</table>";
+            $("#pm_data").append(html);
         });
-    }
+    };
+
 
 
 
