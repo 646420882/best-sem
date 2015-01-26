@@ -10,8 +10,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=7"/>
-    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+    <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
@@ -446,7 +446,7 @@
                 <div id="containerLegend"></div>
                 <div id="container" style="width:100%;height:400px;display: none"></div>
                 <div id="imprDiv" style="width:100%;height:530px;display: none;"></div>
-                <div id="pm_data" style="width:300px;display: none;"></div>
+                <div id="pm_data" style="display: none;"></div>
             </div>
 
         </div>

@@ -31,6 +31,9 @@
         #sDiv .span-ok {
             color: #9f9f9f;
         }
+        form{
+            margin:0 0 5px 0;
+        }
     </style>
     <script>
         String.prototype.trims = function () {

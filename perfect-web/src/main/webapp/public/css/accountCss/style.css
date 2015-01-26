@@ -3667,7 +3667,62 @@ h2 .close {
 .k_top2_text1{
     width:100%;
 }
+/****map*****/
+.tubiao2{
+    position:relative;
+}
 
+#pm_data{
+    position:absolute;
+    right:0px;
+    top:0px;
+    background: #d8e1e8;
+  /*  background:#f7f9fb;*/
+    *width:300px;
+
+}
+#pm_data table{
+    width:100%;
+}
+#pm_data table tr:hover{
+    background: #f3f5fd;
+}
+#pm_data table tr td{
+    margin:5px 0;
+}
+#pm_data span{
+    font-size:14px;
+    font-weight:bold;
+    margin-right:20px;
+    padding:0 10px;
+}
+#pm_data table tr .map_number{
+    background: none repeat scroll 0 0 #48c9b0;
+    color: #fff;
+    display: block;
+    float: left;
+    height: 25px;
+    line-height: 25px;
+  /*  padding:0px 20px 0 10px;*/
+    margin-left:10px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    width: 25px;
+}
+.map_number em{
+-moz-border-bottom-colors: none;
+-moz-border-left-colors: none;
+-moz-border-right-colors: none;
+-moz-border-top-colors: none;
+border-color: transparent transparent transparent #48c9b0;
+border-image: none;
+border-style: solid;
+border-width: 5px;
+position: absolute;
+right: -10px;
+top: 7.5px;
+}
 /*input[type=checkbox],
 input[type=radio]{
     -webkit-appearance: none;

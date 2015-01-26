@@ -1578,7 +1578,7 @@ $(function () {
         if(binFalg==1) {
             var html = "<table>";
             $.each(pm_array[0],function(i,item){
-                html = html +"<tr><td>"+(i+1)+"</td><td>"+item.name+"</td><td>"+item.value+"</td></tr>"
+                html = html +"<tr><td class='map_number'><em></em>"+(i+1)+"</td><td><span>"+item.name+"</span></td><td><span>"+item.value+"</span></td></tr>"
             });
             html = html + "</table>";
             $("#pm_data").append(html);
