@@ -61,6 +61,13 @@ public interface AssistantKeywordService {
     List<KeywordDTO> uploadAdd(List<String> kids);
 
     /**
+     * 上传添加级联操作，如果用户选择级联上传，则上传关键词 的单元以及计划
+     * @param kid 要上传的关键词
+     * @return 返回成功后的关键字，包括id和Status
+     */
+    List<KeywordDTO> uploadAddByUp(String kid);
+
+    /**
      *  更新成功后需要将本地的关键字的Kwid 更新出来，然后将statu改为百度的status，ls改为null
      * @param dto 获取到的百度对象
      * @param oid 本地的mongodbId，用于查询

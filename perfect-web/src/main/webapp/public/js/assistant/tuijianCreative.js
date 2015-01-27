@@ -153,17 +153,17 @@ function initEditView(res) {
             if ($(this).val().indexOf(dm) == -1) {
                 $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
             }
-            else{
-                $("#pcsUrlMsg").html("");
-            }
+            //else{
+            //    $("#pcsUrlMsg").html("");
+            //}
             //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-//            else {
-//                if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
-//                    $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址必须以\"" + dm + "\"结尾！</b>");
-//                } else {
-//                    $("#pcsUrlMsg").html("");
-//                }
-//            }
+            else {
+                if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
+                    $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址必须以\"" + dm + "\"结尾！</b>");
+                } else {
+                    $("#pcsUrlMsg").html("");
+                }
+            }
         }
     });
     var _textarea=$("#_editor textarea");
@@ -190,17 +190,18 @@ function initEditView(res) {
             var dm = "." + $("#dm").val();
             if ($(this).val().indexOf(dm) == -1) {
                 $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
-            }else{
-                $("#pcUrlMsg").html("");
             }
+            //else{
+            //    $("#pcUrlMsg").html("");
+            //}
             //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-//            else {
-//                if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
-//                    $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址必须以\"" + dm + "\"结尾！</b>");
-//                } else {
-//                    $("#pcUrlMsg").html("");
-//                }
-//            }
+            else {
+                if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
+                    $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址必须以\"" + dm + "\"结尾！</b>");
+                } else {
+                    $("#pcUrlMsg").html("");
+                }
+            }
         }
     });
 
@@ -328,28 +329,28 @@ function reSave() {
         return false;
     }
     //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-//    else {
-//        var _pcSize = $("#_editor textarea[name='pcUrl']").val();
-//        if ($("#_editor textarea[name='pcUrl']").val().substr($("#_editor textarea[name='pcUrl']").val().indexOf(dm)) != dm) {
-//            $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址必须以\"" + dm + "\"结尾！</b>");
-//            alert("\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-//            return false;
-//        }
-//    }
+    else {
+        var _pcSize = $("#_editor textarea[name='pcUrl']").val();
+        if ($("#_editor textarea[name='pcUrl']").val().substr($("#_editor textarea[name='pcUrl']").val().indexOf(dm)) != dm) {
+            $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址必须以\"" + dm + "\"结尾！</b>");
+            alert("\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+            return false;
+        }
+    }
     if ($("#_editor input[name='pcsUrl']").val().indexOf(dm) == -1) {
         $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
         alert("\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!");
         return false;
     }
     //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-//    else {
-//        var _pcSize = $("#_editor input[name='pcsUrl']").val();
-//        if ($("#_editor input[name='pcsUrl']").val().substr($("#_editor input[name='pcsUrl']").val().indexOf(dm)) != dm) {
-//            $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址必须以\"" + dm + "\"结尾！</b>");
-//            alert("\"显示\"Url地址必须以\"" + dm + "\"结尾！");
-//            return false;
-//        }
-//    }
+    else {
+        var _pcSize = $("#_editor input[name='pcsUrl']").val();
+        if ($("#_editor input[name='pcsUrl']").val().substr($("#_editor input[name='pcsUrl']").val().indexOf(dm)) != dm) {
+            $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址必须以\"" + dm + "\"结尾！</b>");
+            alert("\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+            return false;
+        }
+    }
 
 
     reViewData["title"] = $("#_editor [name='title']").val();
@@ -581,17 +582,17 @@ function onKeyDownView() {
             if ($(this).val().indexOf(dm) == -1) {
                 $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
             }
-            else{
-                $("#pcUrlMsg").html("");
-            }
+            //else{
+            //    $("#pcUrlMsg").html("");
+            //}
             //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-//            else {
-//                if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
-//                    $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址必须以\"" + dm + "\"结尾！</b>");
-//                } else {
-//                    $("#pcUrlMsg").html("");
-//                }
-//            }
+            else {
+                if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
+                    $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址必须以\"" + dm + "\"结尾！</b>");
+                } else {
+                    $("#pcUrlMsg").html("");
+                }
+            }
         }
         $(this).next("span").html(_thisStr + "/" + _max);
     });
@@ -611,17 +612,18 @@ function onKeyDownView() {
             var dm = "." + $("#dm").val();
             if ($(this).val().indexOf(dm) == -1) {
                 $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
-            }else{
-                $("#pcsUrlMsg").html("");
             }
+            //else{
+            //    $("#pcsUrlMsg").html("");
+            //}
             //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-//            else {
-//                if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
-//                    $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址必须以\"" + dm + "\"结尾！</b>");
-//                } else {
-//                    $("#pcsUrlMsg").html("");
-//                }
-//            }
+            else {
+                if ($(this).val().substr($(this).val().indexOf(dm)) != dm) {
+                    $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址必须以\"" + dm + "\"结尾！</b>");
+                } else {
+                    $("#pcsUrlMsg").html("");
+                }
+            }
         }
         $(this).next("span").html(_thisStr + "/" + _max);
     });

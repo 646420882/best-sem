@@ -429,7 +429,7 @@ public class AssistantAdgroupController extends WebContextSupport {
                 });
                 return writeMapObject(MSG, SUCCESS);
             } else {
-                return writeMapObject(MSG, "需要更新的单元的计划还未上传到凤巢，请先上传该单元的计划后再上传单元！");
+                return writeMapObject(MSG, "noUp");
             }
         } else {
             switch (ls) {
@@ -454,5 +454,15 @@ public class AssistantAdgroupController extends WebContextSupport {
             }
         }
         return writeMapObject(MSG, "上传失败！");
+    }
+
+    @RequestMapping(value = "/uploadAddByUp")
+    public ModelAndView uploadAddByUp(@RequestParam(value = "aid")String aid){
+        List<AdgroupDTO> adgroupDTOs=adgroupService.uploadAddByUp(aid);
+        if(adgroupDTOs.size()>0){
+            adgroupDTOs.parallelStream().forEach(s ->adgroupService.update(aid, s));
+            return  writeMapObject(MSG,SUCCESS);
+        }
+        return writeMapObject(MSG,"级联上传失败");
     }
 }

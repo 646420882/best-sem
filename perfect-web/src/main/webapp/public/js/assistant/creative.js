@@ -52,9 +52,9 @@ var add = {
         addCreative();
     }
 }, del = {
-    text: "删除创意",
+    text: "删除",
     func: function () {
-        deleteByObjectId(tmp);
+        deleteByObjectId();
     }
 },cAddMutli={
     text:"批量添加创意",
@@ -74,7 +74,7 @@ var add = {
 },cUpload={
     text:"上传到凤巢",
     func:function(){
-        alert("该功能正在开发中....");
+        creativeUpload();
     }
 }
 /**
@@ -147,13 +147,13 @@ function InitMenu() {
                     return false;
                 }
                 //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-                //else {
-                //    var _pcSize = _pc.val();
-                //    if (_pc.val().substr(_pc.val().indexOf(dm)) != dm) {
-                //        alert("默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-                //        return false;
-                //    }
-                //}
+                else {
+                    var _pcSize = _pc.val();
+                    if (_pc.val().substr(_pc.val().indexOf(dm)) != dm) {
+                        alert("默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                        return false;
+                    }
+                }
             }
             var _pcs = $(this).parents("tr").find("input:eq(6)");
             var _thisStrpcs = getChar(_pcs.val());
@@ -166,33 +166,31 @@ function InitMenu() {
                     return false;
                 }
                 //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-                //else {
-                //    var _pcsSize = _pcs.val();
-                //    if (_pcs.val().substr(_pcs.val().indexOf(dm)) != dm) {
-                //        alert("默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
-                //        return false;
-                //    }
-                //}
+                else {
+                    var _pcsSize = _pcs.val();
+                    if (_pcs.val().substr(_pcs.val().indexOf(dm)) != dm) {
+                        alert("默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                        return false;
+                    }
+                }
             }
             var _mib=$(this).parents("tr").find("input:eq(7)");
             if (_mib.val() != "空"||_mib.val() != "") {
                 if (_mib.val().indexOf(dm) == -1) {
                     alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
-                } else {
+                } else {    //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
                     var _thisStrMib = getChar(_mib.val());
                     if (parseInt(_thisStrMib) > 1017 || parseInt(_thisStrMib) <= 1) {
                         alert("移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
                         return false;
+                    }  else {
+                        if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
+                            alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                            return false;
+                        }
                     }
                 }
-                //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-                //else {
-                //    if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
-                //        alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-                //        return false;
-                //    }
-                //}
             }
             var _mibs=$(this).parents("tr").find("input:eq(8)");
             if (_mibs.val() != ""||_mibs.val() != "空") {
@@ -204,15 +202,13 @@ function InitMenu() {
                     if (parseInt(_thisStrMibs) > 36 || parseInt(_thisStrMibs) <= 1) {
                         alert("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
                         return false;
+                    }else {//下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+                        if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
+                            alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                            return false;
+                        }
                     }
                 }
-                //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-                //else {
-                //    if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
-                //        alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
-                //        return false;
-                //    }
-                //}
             }
             var con = confirm("你确定要添加么？");
             if (con) {
@@ -238,7 +234,7 @@ function InitMenu() {
                         var i = $("#createTable tbody tr").size();
                         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                            "<td style='width: 30px;'>&nbsp;<span style='display: none;'>" + json.data + "</span></td>" +
+                            "<td style='width: 30px;'>&nbsp;<input type='hidden' value='"+ json.data+"'/></td>" +
                             "<td >" + until.substring(10, data["title"]) + "</td>" +
                             " <td >" + until.substring(10, data["description1"]) + "</td>" +
                             " <td >" + until.substring(10, data["description2"]) + "</td>" +
@@ -248,7 +244,7 @@ function InitMenu() {
                             " <td >" + until.substring(10, data["mobileDisplayUrl"]) + "</td>" +
                             " <td >" + p + "</td>" +
                             " <td >" + s + "</td>" +
-                            " <td ><span class='pen'></span></td>" +
+                            " <td ><span class='pen' step='1'></span></td>" +
                             "</tr>";
                         _createTable.append(_tbody);
                     }
@@ -257,12 +253,23 @@ function InitMenu() {
         }
     });
 }
+function initDomain(){
+    var dm = $(".doMainS").html();
+    if (dm == "") {
+        $.get("/assistantCreative/getDomain", function (result) {
+            if (result != "0") {
+                $(".doMainS").html(result);
+            }
+        });
+    }
+}
 /**
  * 加载创意数据
  * @param params
  */
 var recordsCreative=0;
 function loadCreativeData(page_index) {
+    initDomain();
     initRbackBtn();
     var _createTable = $("#createTable tbody");
     _createTable.empty().html("加载中...");
@@ -461,7 +468,7 @@ function addCreative() {
             " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='36'></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
             " <td><span>本地新增</span><input type='hidden' value='-1' name='status'></td>" +
-            " <td><span class='pen'></span></td>" +
+            " <td><span class='pen' step='1'></span></td>" +
             "</tr>";
         _createTable.append(_tbody);
     } else if (sparams.cid != null && sparams.aid == null) {
@@ -676,14 +683,7 @@ function planUnit() {
     } else if (aid == "-1") {
         alert("请选择单元");
     } else {
-        var dm = $("#doMain").val();
-        if (dm == "") {
-            $.get("/assistantCreative/getDomain", function (result) {
-                if (result != "0") {
-                    $("#doMain").val(result);
-                }
-            });
-        }
+        initDomain();
         sparams.cid = cid;
         sparams.aid = aid;
         closeAlertCreative();
@@ -767,15 +767,20 @@ function loadAdgroup(rs) {
  * 根据mongoId 删除创意
  * @param temp 选择的对象
  */
-function deleteByObjectId(temp) {
+function deleteByObjectId() {
+    var temp = $(tmp);
     var oid = temp.find("td:eq(0) input").val() != undefined ? temp.find("td:eq(0) input").val() : temp.find("td:eq(0) span").html();
-    var con = confirm("是否删除该创意？");
-    if (con) {
-        $.get("/assistantCreative/del", {oid: oid}, function (rs) {
-            if (rs == "1") {
-                $(tmp).find("td:eq(10)").html("<span class='error' step='3'></span>");
-            }
-        });
+    if (oid != undefined) {
+        var con = confirm("是否删除该创意？");
+        if (con) {
+            $.get("/assistantCreative/del", {oid: oid}, function (rs) {
+                if (rs == "1") {
+                    $(tmp).find("td:eq(10)").html("<span class='error' step='3'></span>");
+                }
+            });
+        }
+    }else{
+        alert("请选择要删除的创意！");
     }
 }
 /**
@@ -793,14 +798,7 @@ function updateCreatvie(temp) {
         top: ($(window).height() - _update.height()) / 2 + $(window).scrollTop() + "px",
         display: "block"
     });
-    var dm = $(".doMain").html();
-    if (dm == "") {
-        $.get("/assistantCreative/getDomain", function (result) {
-            if (result != "0") {
-                $(".doMain").html(result);
-            }
-        });
-    }
+    var dm = $(".doMainS").html();
     var _tr = $(temp);
     var creativeId = _tr.find("td:eq(0) input").val() != undefined ? _tr.find("td:eq(0) input").val() : _tr.find("td:eq(0) span").html();
     var title = _tr.find("td:eq(1) a").attr("title") != undefined ? _tr.find("td:eq(1) a").attr("title") : _tr.find("td:eq(1) span").html();
@@ -894,13 +892,13 @@ function updateOk() {
             return false;
         }
         //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-//        else {
-//            var _pcSize = _pc.val();
-//            if (_pc.val().substr(_pc.val().indexOf(dm)) != dm) {
-//                alert("默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-//                return false;
-//            }
-//        }
+        else {
+            var _pcSize = _pc.val();
+            if (_pc.val().substr(_pc.val().indexOf(dm)) != dm) {
+                alert("默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                return false;
+            }
+        }
     }
     var _thisStrpcs = getChar(_pcs.val());
     if (parseInt(_thisStrpcs) > 36 || parseInt(_thisStrpcs) <= 1) {
@@ -912,12 +910,12 @@ function updateOk() {
             return false;
         }
         //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-        //else {
-        //    if (_pcs.val().substr(_pcs.val().indexOf(dm)) != dm) {
-        //        alert("默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
-        //        return false;
-        //    }
-        //}
+        else {
+            if (_pcs.val().substr(_pcs.val().indexOf(dm)) != dm) {
+                alert("默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                return false;
+            }
+        }
     }
     if (_mib.val() != "空"||_mib.val() != "") {
         if (_mib.val().indexOf(dm) == -1) {
@@ -929,14 +927,15 @@ function updateOk() {
                 alert("移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
                 return false;
             }
+            else {   //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+                if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
+                    alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                    return false;
+                }
+            }
         }
-        //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-//        else {
-//            if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
-//                alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-//                return false;
-//            }
-//        }
+
+
     }
     if (_mibs.val() != ""||_mibs.val() != "空") {
         if (_mibs.val().indexOf(dm) == -1) {
@@ -947,15 +946,15 @@ function updateOk() {
             if (parseInt(_thisStrMibs) > 36 || parseInt(_thisStrMibs) <= 1) {
                 alert("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
                 return false;
+            }else {
+                if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
+                    alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                    return false;
+                }
             }
         }
         //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-        //else {
-        //    if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
-        //        alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
-        //        return false;
-        //    }
-        //}
+
     }
     var con = confirm("你确定要修改该创意吗？");
     if (con) {
@@ -973,7 +972,7 @@ function updateOk() {
                     _edit = "<span class='pen' step='2'></span>";
                 }
                 var _tbody =
-                    "<td>&nbsp;<span style='display: none;'>" + formData["oid"] + "</span></td>" +
+                    "<td>&nbsp;<input type='hidden' value='"+formData["oid"]+"'/></td>" +
                     "<td >" + until.substring(10, formData["title"]) + "</td>" +
                     " <td >" + until.substring(10, formData["description1"]) + "</td>" +
                     " <td >" + until.substring(10, formData["description2"]) + "</td>" +
@@ -1017,7 +1016,7 @@ function reBakClick() {
                 var _oid = _this.find("td:eq(0) input").val() != undefined ? _this.find("td:eq(0) input").val() : _this.find("td:eq(0) span").html();
                 switch (_localStatus) {
                     case 1:
-                        deleteByObjectId(tmp);
+                        deleteByObjectId();
                         break;
                     case 2:
                         reBack(_oid);
@@ -1104,6 +1103,73 @@ function creativeMulti() {
         }
     }).showModal(dockObj);
 
+}
+function creativeUpload(){
+    var _this = $(tmp);
+    var oid = _this.find("td:eq(0) input").val();
+    var _localStatus = _this.find("td:eq(10) span").attr("step");
+    if (_localStatus != undefined) {
+        if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
+            return;
+        }else{
+                switch (_localStatus){
+                    case "1":
+                        if(oid.length>18&&oid!=undefined){
+                            cUploadOpreate(oid,1);
+                        }
+                        break;
+                    case "2":
+                        if (oid.length < 18&&oid!=undefined) {
+                            cUploadOpreate(oid,2);
+                        }
+                        break;
+                    case "3":
+                        if (oid.length < 18&&oid!=undefined) {
+                            cUploadOpreate(oid,3);
+                        }else{
+                            deleteByObjectId();
+                        }
+                        break;
+                }
+        }
+    }else{
+        alert("已经是最新数据了！");
+        return;
+    }
+}
+
+function cUploadOpreate(crid,ls){
+    $.get("/assistantCreative/uploadOperate",{crid:crid,ls:ls},function(res){
+        if(res.msg=="1"){
+            alert("上传成功!");
+            if (sparams.cid != null) {
+                if (sparams.cid != null && sparams.aid != null) {
+                    getCreativeUnit(sparams);
+                } else {
+                    getCreativePlan(sparams.cid);
+                }
+            }
+        } else if (res.msg == "noUp") {
+            var conf = confirm("该创意上级单元或及计划没有上传，是否要一并上传？");
+            if (conf) {
+                $.get("/assistantCreative/uploadAddByUp", {crid: crid}, function (res) {
+                    if (res.msg == "1") {
+                        alert("上传成功");
+                        if (sparams.cid != null) {
+                            if (sparams.cid != null && sparams.aid != null) {
+                                getCreativeUnit(sparams);
+                            } else {
+                                getCreativePlan(sparams.cid);
+                            }
+                        }
+                        loadTree();
+                    }
+                });
+            }
+        }else{
+            alert(res.msg);
+        }
+    });
 }
 
 

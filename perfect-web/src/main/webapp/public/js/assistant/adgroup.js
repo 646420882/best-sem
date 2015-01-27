@@ -309,8 +309,8 @@ function addAdgroup() {
         jcBox.append("<li>推广计划<select id='aPlan' onchange='getAdgroupPlan(this.value)'><option value='-1'>请选择计划</option></select></li>");
         adAlertShow();
     } else {
-        $.get("/assistantAdgroup/getPriceRatio", {cid: plans.cid}, function (res) {
-            if (res != "0.0") {
+        //$.get("/assistantAdgroup/getPriceRatio", {cid: plans.cid}, function (res) {
+        //    if (res != "0.0") {
                 var i = $("#adGroupTable tbody tr").size();
                 var _createTable = $("#adGroupTable tbody");
                 var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
@@ -323,10 +323,11 @@ function addAdgroup() {
                     "<td><span id='" + getRandomId() + "sp'>未设置</span><input name='negativeWords' id='" + getRandomId() + "ni' type='hidden' readonly='readonly'><input type='button' onclick='adgroupNokeyword(this)' value='设置否定关键词'/><input name='exactNegativeWords' id='" + getRandomId() + "ne' type='hidden'  readonly='readonly'></td>" +
                     "<td>&nbsp;</td>" +
                     "<td>" + plans.cn + "</td>" +
+                    "<td>&nbsp;</td>" +
                     "</tr>";
                 _createTable.append(_tbody);
-            }
-        });
+            //}
+        //});
 
     }
 }
@@ -337,8 +338,8 @@ function adgroupDel() {
     var _this = $(atmp);
     var oid = _this.find("td:eq(0) input").val();
     var td1 = _this.find("td:eq(1) input").val();
-    if (td1 == undefined) {
-        var con = confirm("是否删除该计划？");
+    if (oid != undefined) {
+        var con = confirm("是否删除该单元？");
         if (con) {
             $.get("../assistantAdgroup/del", {oid: oid}, function (rs) {
                 if (rs == "1") {
@@ -347,6 +348,8 @@ function adgroupDel() {
                 }
             });
         }
+    }else{
+        alert("请选择单元！");
     }
 }
 /**
@@ -783,31 +786,30 @@ function adgroupUpload(){
     if (_localStatus != undefined) {
         if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
             return;
+        }else{
+            switch (_localStatus){
+                case "1":
+                    if(oid.length>18&&oid!=undefined){
+                        adgroupUploadOperate(oid,1);
+                    }
+                    break;
+                case "2":
+                    if (oid.length < 18&&oid!=undefined) {
+                        adgroupUploadOperate(oid,2);
+                    }
+                    break;
+                case "3":
+                    if (oid.length < 18&&oid!=undefined) {
+                        adgroupUploadOperate(oid,3);
+                    }else{
+                        adgroupDel();
+                    }
+                    break;
+            }
         }
     }else{
         alert("已经是最新数据了！");
         return;
-    }
-    if(_localStatus!=undefined){
-        switch (_localStatus){
-            case "1":
-                if(oid.length>18&&oid!=undefined){
-                    adgroupUploadOperate(oid,1);
-                }
-                break;
-            case "2":
-                if (oid.length < 18&&oid!=undefined) {
-                    adgroupUploadOperate(oid,2);
-                }
-                break;
-            case "3":
-                if (oid.length < 18&&oid!=undefined) {
-                    adgroupUploadOperate(oid,3);
-                }else{
-                    adgroupUploadOperate(oid,1);
-                }
-                break;
-        }
     }
 }
 function adgroupUploadOperate(aid,ls){
@@ -817,6 +819,21 @@ function adgroupUploadOperate(aid,ls){
             if (plans.cid != null) {
                 getAdgroupPlan(plans.cid, plans.cn);
                 loadTree();
+            }
+        }else if(str.msg=="noUp"){
+            var conf=confirm("该单元上级及计划没有上传，是否要一并上传？");
+            if(conf){
+                $.get("/assistantAdgroup/uploadAddByUp",{aid:aid},function(res){
+                   if(res.msg=="1"){
+                       alert("上传成功");
+                       if (plans.cid != null) {
+                           getAdgroupPlan(plans.cid, plans.cn);
+                           loadTree();
+                       }
+                   } else{
+                       alert(res.msg);
+                   }
+                });
             }
         }else{
             alert(str.msg);

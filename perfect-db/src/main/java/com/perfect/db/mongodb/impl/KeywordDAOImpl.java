@@ -744,7 +744,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     public int deleteByIds(List<Long> ids) {
         MongoTemplate mongoTemplate = getMongoTemplate();
         for (Long id : ids) {
-            mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(id)), getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
+            mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(id)), KeywordEntity.class);
+            mongoTemplate.remove(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(id)), KeywordBackUpEntity.class);
         }
         return 0;
     }

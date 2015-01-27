@@ -17,6 +17,7 @@ function getNowChooseCampaignTreeData(treeNode) {
         //点击的是父节点(推广计划)
         jsonData.cid = treeNode.id;
         jsonData.cn = treeNode.name;
+        jsonData.aid=null;
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元)
         jsonData.cid = treeNode.getParentNode().id;
@@ -54,11 +55,11 @@ function whenClickTreeLoadData(tabName, param) {
         getCampaignList(0);
     } else if (tabName == "普通创意") {
         if (param.cid != null) {
-        if (param.cid != null && param.aid != null) {
-            getCreativeUnit(param);
-        } else {
-            getCreativePlan(param.cid);
-        }
+            if (param.cid != null && param.aid != null) {
+                getCreativeUnit(param);
+            } else {
+                getCreativePlan(param.cid);
+            }
         }
     } else if (tabName == "附加创意") {
 

@@ -69,4 +69,12 @@ public interface CampaignService {
     void update(CampaignDTO dto,String objId);
 
     void updateRemoveLs(List<String> afterUpdateStr);
+
+    /**
+     * 获取有本地操作的计划列表，用于加载给用户选择
+     * @return
+     */
+    List<CampaignDTO> getOperateCamp();
+
+
 }

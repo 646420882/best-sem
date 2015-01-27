@@ -258,6 +258,7 @@ $(function () {
          *生成报告按钮点击
          */
         $("#shengc").click(function () {
+
             colorOne = "#4572A7";
             colorTow = "#40BC2A";
             nameOne = "展现";
@@ -267,6 +268,7 @@ $(function () {
             $("#downReport").empty();
             $("#pagination1").empty()
             $("#pagination2").empty();
+            $("#pm_data").empty();
             reportData();
         });
 
@@ -645,7 +647,7 @@ $(function () {
                 dataName: dataname
             },
             success: function (data) {
-                inter = setInterval('if($("#jindut").val() >= 100){contextVal();clearInterval(inter);}', 100);
+                inter = setInterval('if($("#jindut").val() >= 99){contextVal();clearInterval(inter);}', 0);
                 contextVal = function () {
                     $("#shujuthead").empty();
                     $("#shuju").empty();
@@ -1578,7 +1580,7 @@ $(function () {
         if(binFalg==1) {
             var html = "<table>";
             $.each(pm_array[0],function(i,item){
-                html = html +"<tr><td class='map_number'><em></em>"+(i+1)+"</td><td><span>"+item.name+"</span></td><td><span>"+item.value+"</span></td></tr>"
+                html = html +"<tr><td class='map_number'><em></em>"+(i+1)+"</td><td><span>"+item.name+"</span></td><td><span>"+item.value+"%</span></td></tr>"
             });
             html = html + "</table>";
             $("#pm_data").append(html);
@@ -1667,28 +1669,28 @@ $(function () {
             if (clickName == showName[0]) {
                 legenddata = eval("({ "+showName[1]+" : false,"+showName[2]+" : false,"+showName[3]+" : false})");
                 $.each(pm_array[0],function(i,item){
-                    html = html +"<tr><td>"+(i+1)+"</td><td>"+item.name+"</td><td>"+item.value+"</td></tr>"
+                    html = html +"<tr><td class='map_number'><em></em>"+(i+1)+"</td><td><span>"+item.name+"</span></td><td><span>"+item.value+"%</span></td></tr>"
                 });
                 pieChart(showData,showName,showId,pm_array);
             }
             if (clickName == showName[1]) {
                 legenddata = eval("({ "+showName[0]+" : false,"+showName[2]+" : false,"+showName[3]+" : false})");
                 $.each(pm_array[1],function(i,item){
-                    html = html +"<tr><td>"+(i+1)+"</td><td>"+item.name+"</td><td>"+item.value+"</td></tr>"
+                    html = html +"<tr><td class='map_number'><em></em>"+(i+1)+"</td><td><span>"+item.name+"</span></td><td><span>"+item.value+"%</span></td></tr>"
                 });
                 pieChart(showData,showName,showId,pm_array);
             }
             if (clickName == showName[2]) {
                 legenddata = eval("({ "+showName[0]+" : false,"+showName[1]+" : false,"+showName[3]+" : false})");
                 $.each(pm_array[2],function(i,item){
-                    html = html +"<tr><td>"+(i+1)+"</td><td>"+item.name+"</td><td>"+item.value+"</td></tr>"
+                    html = html +"<tr><td class='map_number'><em></em>"+(i+1)+"</td><td><span>"+item.name+"</span></td><td><span>"+item.value+"%</span></td></tr>"
                 });
                 pieChart(showData,showName,showId,pm_array);
             }
             if (clickName == showName[3]) {
                 legenddata = eval("({ "+showName[0]+" : false,"+showName[1]+" : false,"+showName[2]+" : false})");
                 $.each(pm_array[3],function(i,item){
-                    html = html +"<tr><td>"+(i+1)+"</td><td>"+item.name+"</td><td>"+item.value+"</td></tr>"
+                    html = html +"<tr><td class='map_number'><em></em>"+(i+1)+"</td><td><span>"+item.name+"</span></td><td><span>"+item.value+"%</span></td></tr>"
                 });
                 pieChart(showData,showName,showId,pm_array);
             }

@@ -5,6 +5,7 @@ import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.autosdk.sms.v3.KeywordService;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
@@ -20,8 +21,8 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
-import com.perfect.service.AssistantKeywordService;
-import com.perfect.service.KeywordBackUpService;
+import com.perfect.service.*;
+import com.perfect.service.AdgroupService;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,12 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     @Resource
     private KeywordBackUpService keywordBackUpService;
+
+    @Resource
+    private com.perfect.service.CampaignService campaignService;
+
+    @Resource
+    private AdgroupService adgroupService;
 
     @Resource
     private MonitoringDao monitoringDao;
@@ -866,10 +873,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         List<KeywordType> keywordTypes = new ArrayList<>();
         kids.parallelStream().forEach(s -> {
             KeywordDTO keywordDTO = keywordDAO.findByObjectId(s);
-            AdgroupDTO adgroupDTO = adgroupDAO.findOne(keywordDTO.getAdgroupId());
-            if (adgroupDTO.getAdgroupId() != null) {
+//            AdgroupDTO adgroupDTO = adgroupDAO.findOne(keywordDTO.getAdgroupId());
+            if (keywordDTO.getAdgroupId()!=null) {
                 KeywordType keywordType = new KeywordType();
-                keywordType.setAdgroupId(adgroupDTO.getAdgroupId());
+                keywordType.setAdgroupId(keywordDTO.getAdgroupId());
                 keywordType.setKeyword(keywordDTO.getKeyword());
                 keywordType.setMatchType(keywordDTO.getMatchType());
                 keywordType.setPrice(Double.parseDouble(keywordDTO.getPrice()+""));
@@ -902,6 +909,38 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             }
         }
         return retrunKeywordDTOs;
+    }
+
+    @Override
+    public List<KeywordDTO> uploadAddByUp(String kid) {
+        List<KeywordDTO> returnKeywordDTOs=new ArrayList<>();
+            KeywordDTO keywordDTOFind=keywordDAO.findByObjectId(kid);//查询出要上传的关键字的oagid，根据oagid去查询本地的单元，根据oaid查询ocid查询出计划，并两者上传
+            AdgroupDTO adgroupDTOFind=adgroupDAO.findByObjId(keywordDTOFind.getAdgroupObjId());//根据关键字的oagid查询到本地的单元记录
+            if (adgroupDTOFind!=null){//如果本地的数据还存在
+
+                //计划级联上传 star
+               //计划表中查询这条数据，用以cid是否存在，如果存在，嘿嘿...
+                if(adgroupDTOFind.getCampaignId()==null){//如果计划cid已经有了，则不需要再上传了
+                    List<CampaignDTO> dtos=campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
+                    dtos.parallelStream().forEach(j->campaignService.update(j,adgroupDTOFind.getCampaignObjId()));
+                }
+                //计划级联上传 end
+
+                //单元级联上传 star
+                //如果上面判断了计划，则肯定只有单元没有上传了，这里就不需要判断了，如果有agid则根本不会进入这个方法，所以不用判断单元是否上传
+                List<AdgroupDTO> returnAids = adgroupService.uploadAdd(new ArrayList<String>() {{
+                    add(keywordDTOFind.getAdgroupObjId());
+                }});
+                //上传完毕后执行修改单元操作
+                returnAids.parallelStream().forEach(f -> adgroupService.update(keywordDTOFind.getAdgroupObjId(), f));
+                //单元级联上传 end
+
+                //最后上传关键字
+                returnKeywordDTOs = uploadAdd(new ArrayList<String>() {{
+                    add(kid);
+                }});
+            }
+        return returnKeywordDTOs;
     }
 
     @Override

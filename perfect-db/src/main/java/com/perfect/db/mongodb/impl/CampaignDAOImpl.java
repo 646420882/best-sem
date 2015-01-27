@@ -10,8 +10,12 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.CampaignBackUpDTO;
 import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
+import com.perfect.entity.backup.AdgroupBackUpEntity;
 import com.perfect.entity.backup.CampaignBackUpEntity;
+import com.perfect.entity.backup.CreativeBackUpEntity;
+import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
@@ -29,6 +33,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import javax.lang.model.element.Name;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -260,6 +265,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         deleteSubByUpload(new ArrayList<Long>() {{
             add(campaginId);
         }});
+
     }
 
     @Override
@@ -270,6 +276,62 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
             getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(s)),up,CampaignEntity.class);
         });
     }
+
+    @Override
+    public List<CampaignDTO> getOperateCamp() {
+        //根据添加关键字反查到计划,全部增加状态，新增的关键字，新增的计划，新增的计划，只能是全部新增的才能反查到 star
+        List<String> adgroupIdsLsAdd = getStringAdgroupIds();//在新增的关键词模块获取添加的本地单元列表 ok
+        List<String> campaingIdsLsAdd=getStringCampaignIds(adgroupIdsLsAdd);//根据获取到的单元id列表去查询上级所属的计划id
+        //end
+
+        //根据添加的创意反查计划
+
+
+        List<CampaignDTO> campaignDTOs=getCampainByids(campaingIdsLsAdd);
+        return campaignDTOs;
+    }
+
+    private List<String> getStringAdgroupIds() {//ok
+        List<String> ids=new ArrayList<>();
+        Aggregation aggregation = Aggregation.newAggregation(
+                match(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())),
+                project(OBJ_ADGROUP_ID),
+                group(OBJ_ADGROUP_ID).count().as(OBJ_ADGROUP_ID)
+        );
+        AggregationResults<KeywordEntity> aggregationResults = getMongoTemplate().aggregate(aggregation, TBL_KEYWORD, KeywordEntity.class);
+        List<KeywordEntity> keywordEntities = aggregationResults.getMappedResults();
+        for (KeywordEntity s : keywordEntities) {
+            if (s.getId() != null) {
+                ids.add(s.getId());
+            }
+        }
+    return  ids;
+    }
+    private  List<String> getStringCampaignIds(List<String> adgroupIds){ //ok
+        List<String> ids=new ArrayList<>();
+        Aggregation aggregation = Aggregation.newAggregation(
+                match(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())),
+                project(OBJ_CAMPAIGN_ID),
+                group(OBJ_CAMPAIGN_ID).count().as(OBJ_CAMPAIGN_ID)
+        );
+        AggregationResults<AdgroupEntity> aggregationResults = getMongoTemplate().aggregate(aggregation, TBL_ADGROUP, AdgroupEntity.class);
+        List<AdgroupEntity> adgroupEntities = aggregationResults.getMappedResults();
+        for (AdgroupEntity s : adgroupEntities) {
+            if (s.getId() != null) {
+                ids.add(s.getId());
+            }
+        }
+        return ids;
+    }
+
+    private List<CampaignDTO> getCampainByids(List<String> camaingIds){
+        Query query = new BasicQuery("{}", "{" + CAMPAIGN_ID + " : 1," + NAME + " : 1}");
+        query.addCriteria(Criteria.where(SYSTEM_ID).in(camaingIds).and("ls").ne(null));
+        List<CampaignEntity> list = getMongoTemplate().find(query, CampaignEntity.class);
+        List<CampaignDTO> campaignDTOs=ObjectUtils.convert(list,CampaignDTO.class);
+        return campaignDTOs;
+    }
+
 
 
     /**
@@ -430,6 +492,16 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         return adgroupIds;
     }
 
+    private List<Long> getAdgroupByCampaingLongId(List<Long> campaignIds) {
+        Query query = new BasicQuery("{}", "{" + ADGROUP_ID + " : 1}");
+        query.addCriteria(Criteria.where(CAMPAIGN_ID).in(campaignIds));
+        List<AdgroupEntity> list = getMongoTemplate().find(query, AdgroupEntity.class, TBL_ADGROUP);
+        List<Long> adgroupIds = new ArrayList<>(list.size());
+        for (AdgroupEntity type : list)
+            adgroupIds.add(type.getAdgroupId());
+        return adgroupIds;
+    }
+
     public List<String> getCampaignStrIdByCampaignLongId(List<Long> campaignIds) {
         Query query = new BasicQuery("{}", "{" + SYSTEM_ID + " : 1}");
         query.addCriteria(Criteria.where(CAMPAIGN_ID).in(campaignIds));
@@ -450,10 +522,22 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
     //删除下级内容
     private void deleteSubByUpload(List<Long> campaignIds) {
-        List<String> adgroupIds = getAdgroupIdByCampaignStrId(campaignIds);
-        getMongoTemplate().remove(new Query(Criteria.where(SYSTEM_ID).in(adgroupIds)), AdgroupEntity.class, TBL_ADGROUP);
-        getMongoTemplate().remove(new Query(Criteria.where(OBJ_ADGROUP_ID).in(adgroupIds)), KeywordEntity.class, TBL_KEYWORD);
-        getMongoTemplate().remove(new Query(Criteria.where(OBJ_ADGROUP_ID).in(adgroupIds)), CreativeEntity.class, TBL_CREATIVE);
+        List<String> adgroupStrIds = getAdgroupIdByCampaignStrId(campaignIds);
+        List<Long> adgroupLongIds = getAdgroupByCampaingLongId(campaignIds);
+
+        //先删除与本地id相关的下级条目
+        getMongoTemplate().remove(new Query(Criteria.where(SYSTEM_ID).in(adgroupStrIds)), AdgroupEntity.class, TBL_ADGROUP);
+        getMongoTemplate().remove(new Query(Criteria.where(OBJ_ADGROUP_ID).in(adgroupStrIds)), KeywordEntity.class, TBL_KEYWORD);
+        getMongoTemplate().remove(new Query(Criteria.where(OBJ_ADGROUP_ID).in(adgroupStrIds)), CreativeEntity.class, TBL_CREATIVE);
+
+        //再删除与百度id相关的下级条目
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).in(adgroupLongIds)), AdgroupEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).in(adgroupLongIds)), AdgroupBackUpEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).in(adgroupLongIds)), KeywordEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).in(adgroupLongIds)), KeywordBackUpEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).in(adgroupLongIds)), CreativeEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).in(adgroupLongIds)), CreativeBackUpEntity.class);
+
     }
 
 

@@ -22,6 +22,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
+import sun.security.krb5.internal.crypto.dk.AesDkCrypto;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
@@ -139,7 +140,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
 //        CreativeBackUpEntity backUpEntity = new CreativeBackUpEntity();
 //        BeanUtils.copyProperties(creativeDTO, backUpEntity);
 //        getMongoTemplate().insert(backUpEntity);
-        return creativeDTO.getId();
+        return creativeEntity.getId();
     }
 
     @Override
@@ -294,6 +295,30 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         List<CreativeEntity> creativeEntityList = getMongoTemplate().find(q, getEntityClass());
         p.setList(creativeEntityList);
         return p;
+    }
+
+    @Override
+    public void update(String crid, CreativeDTO dto) {
+        Update up = new Update();
+        up.set("ls", null);
+        up.set(CREATIVE_ID, dto.getCreativeId());
+        up.set("s", dto.getStatus());
+        getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(crid)), up, CreativeEntity.class);
+    }
+
+    @Override
+    public void deleteByLongId(Long crid) {
+        getMongoTemplate().remove(new Query(Criteria.where(CREATIVE_ID).is(crid)), CreativeEntity.class);
+        getMongoTemplate().remove(new Query(Criteria.where(CREATIVE_ID).is(crid)), CreativeBackUpEntity.class);
+    }
+
+    @Override
+    public void updateLs(Long crid, CreativeDTO dto) {
+        Update up = new Update();
+        up.set("ls", null);
+        up.set("s", dto.getStatus());
+        getMongoTemplate().updateFirst(new Query(Criteria.where(CREATIVE_ID).is(crid)), up, CreativeEntity.class);//修改掉本地状态的ls
+        getMongoTemplate().remove(new Query(Criteria.where(CREATIVE_ID).is(crid)), CreativeBackUpEntity.class);//删除备份的数据
     }
 
     private Integer getTotalCount(Query q, Class<?> cls) {
