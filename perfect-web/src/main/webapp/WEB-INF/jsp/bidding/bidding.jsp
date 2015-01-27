@@ -1344,6 +1344,7 @@
                 records: "records",
                 repeatitems: false
             },
+            height:500,
             shrinkToFit: true,//此选项用于根据width计算每列宽度的算法,默认值true
             colModel: [
                 // {label: '<input type=\"checkbox\" name=\"check_all\" onclick=\"checkAll();\" id=\"check_all\" >', name: 'checkall', width: 30,
@@ -1572,6 +1573,7 @@
                 records: "records",
                 repeatitems: false
             },
+            height:500,
             shrinkToFit: true,//此选项用于根据width计算每列宽度的算法,默认值true
             colModel: [
                 // {label: '<input type=\"checkbox\" name=\"check_all\" onclick=\"checkAll();\" id=\"check_all\" >', name: 'checkall', width: 30,
