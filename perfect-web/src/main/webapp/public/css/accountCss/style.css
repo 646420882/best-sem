@@ -2947,13 +2947,18 @@ h2 .close {
 }
 
 .planbox1 {
-    width: 200px;
+    width: 120px;
 }
 
 .planbox1 span {
     color: #fa041b;
 }
-
+#plan .mainlist2{
+    width:450px;
+}
+#plan .main_bottom{
+    margin:0px;
+}
 .plan_input {
     width: 240px;
     height: 22px;
