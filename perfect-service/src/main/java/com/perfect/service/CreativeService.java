@@ -58,6 +58,13 @@ public interface CreativeService {
     List<CreativeDTO> uploadAdd(List<String> crid);
 
     /**
+     * 上传创意时用户选择级联上传
+     * @param crid 要上传的创意
+     * @return 返回创建成功的创意,内含创意id和Status
+     */
+    List<CreativeDTO> uploadAddByUp(String crid);
+
+    /**
      * 上传成功后修改本地的状态
      * @param crid 要修改的crid
      * @param dto 设定一些从百度返回回来的状态，Status

@@ -54,7 +54,7 @@ var add = {
 }, del = {
     text: "删除",
     func: function () {
-        deleteByObjectId(tmp);
+        deleteByObjectId();
     }
 },cAddMutli={
     text:"批量添加创意",
@@ -767,15 +767,20 @@ function loadAdgroup(rs) {
  * 根据mongoId 删除创意
  * @param temp 选择的对象
  */
-function deleteByObjectId(temp) {
+function deleteByObjectId() {
+    var temp = $(tmp);
     var oid = temp.find("td:eq(0) input").val() != undefined ? temp.find("td:eq(0) input").val() : temp.find("td:eq(0) span").html();
-    var con = confirm("是否删除该创意？");
-    if (con) {
-        $.get("/assistantCreative/del", {oid: oid}, function (rs) {
-            if (rs == "1") {
-                $(tmp).find("td:eq(10)").html("<span class='error' step='3'></span>");
-            }
-        });
+    if (oid != undefined) {
+        var con = confirm("是否删除该创意？");
+        if (con) {
+            $.get("/assistantCreative/del", {oid: oid}, function (rs) {
+                if (rs == "1") {
+                    $(tmp).find("td:eq(10)").html("<span class='error' step='3'></span>");
+                }
+            });
+        }
+    }else{
+        alert("请选择要删除的创意！");
     }
 }
 /**
@@ -1011,7 +1016,7 @@ function reBakClick() {
                 var _oid = _this.find("td:eq(0) input").val() != undefined ? _this.find("td:eq(0) input").val() : _this.find("td:eq(0) span").html();
                 switch (_localStatus) {
                     case 1:
-                        deleteByObjectId(tmp);
+                        deleteByObjectId();
                         break;
                     case 2:
                         reBack(_oid);
@@ -1122,7 +1127,7 @@ function creativeUpload(){
                         if (oid.length < 18&&oid!=undefined) {
                             cUploadOpreate(oid,3);
                         }else{
-                            deleteByObjectId(tmp);
+                            deleteByObjectId();
                         }
                         break;
                 }
@@ -1143,6 +1148,23 @@ function cUploadOpreate(crid,ls){
                 } else {
                     getCreativePlan(sparams.cid);
                 }
+            }
+        } else if (res.msg == "noUp") {
+            var conf = confirm("该创意上级单元或及计划没有上传，是否要一并上传？");
+            if (conf) {
+                $.get("/assistantCreative/uploadAddByUp", {crid: crid}, function (res) {
+                    if (res.msg == "1") {
+                        alert("上传成功");
+                        if (sparams.cid != null) {
+                            if (sparams.cid != null && sparams.aid != null) {
+                                getCreativeUnit(sparams);
+                            } else {
+                                getCreativePlan(sparams.cid);
+                            }
+                        }
+                        loadTree();
+                    }
+                });
             }
         }else{
             alert(res.msg);

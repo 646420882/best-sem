@@ -83,6 +83,13 @@ public interface AdgroupService {
     List<AdgroupDTO> uploadUpdate(List<Long> aid);
 
     /**
+     * 上传单元时用户选择的级联上传计划
+     * @param aid 要上传的单元id String
+     * @return 返回上传成功后获取的aid Long，以及Status
+     */
+    List<AdgroupDTO> uploadAddByUp(String aid);
+
+    /**
      * 上传修改操作成功后，修改本地的Pause和Stauts状态，这里可能有疑问，已经修改了为什么还不正确？因为凤巢有些限制可能我们本地限制不了，这里修改一次的意思就是
      * 为了保证本地的数据跟凤巢的更接近
      * @param aid  要修改的Long aid 百度id

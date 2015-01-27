@@ -12,7 +12,9 @@ import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
+import com.perfect.service.CampaignService;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,9 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Resource
     CampaignDAO campaignDAO;
+
+    @Resource
+    private CampaignService campaignService;
 
     @Override
     public List<AdgroupDTO> getAdgroupByCampaignId(Long campaignId, Map<String, Object> params, int skip, int limit) {
@@ -255,6 +260,31 @@ public class AdgroupServiceImpl implements AdgroupService {
         }
 
         return returnAdgroupDTO;
+    }
+
+    @Override
+    public List<AdgroupDTO> uploadAddByUp(String aid) {
+        List<AdgroupDTO> returnAdgroupDto=new ArrayList<>();
+        AdgroupDTO adgroupDTOFind=adgroupDAO.findByObjId(aid);
+        if(adgroupDTOFind!=null){//如果本地数据库存在该数据
+
+            //计划级联上传 star
+            //计划表中查询这条数据，用以cid是否存在，如果存在，嘿嘿...
+            if(adgroupDTOFind.getCampaignId()==null){//如果计划cid已经有了，则不需要再上传了
+                List<CampaignDTO> dtos=campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
+                dtos.parallelStream().forEach(j->campaignService.update(j,adgroupDTOFind.getCampaignObjId()));
+            }
+            //计划级联上传 end
+
+            //单元级联上传 star
+            //如果上面判断了计划，则肯定只有单元没有上传了，这里就不需要判断了，如果有agid则根本不会进入这个方法，所以不用判断单元是否上传
+             returnAdgroupDto = uploadAdd(new ArrayList<String>() {{
+                add(aid);
+            }});
+            //上传完毕后执行修改单元操作
+            //单元级联上传 end
+        }
+        return returnAdgroupDto;
     }
 
     @Override

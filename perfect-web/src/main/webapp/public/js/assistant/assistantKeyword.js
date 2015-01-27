@@ -563,9 +563,13 @@ function deleteKwd() {
         ids = ids + $(this).find("input[type=hidden]").val() + ",";
     });
 
-
+    if (ids != "") {
     if (ids.split(",").length == 0) {
         alert("请选择行再操作!");
+        return;
+    }
+    } else {
+        alert("请选择要删除的关键词!");
         return;
     }
 
@@ -885,6 +889,21 @@ function kUploadOperate(kid, ls) {
             alert("上传成功!");
             if (jsonData.cid != null) {
                 getKwdList(0);
+            }
+        } else if (res.msg == "noUp") {
+            var conf = confirm("该关键词上级单元以或计划没有上传，是否要一并上传？");
+            if (conf) {
+                $.get("/assistantKeyword/uploadAddByUp", {kid: kid}, function (res) {
+                    if (res.msg == "1") {
+                        alert("上传成功!");
+                        if (jsonData.cid != null) {
+                            getKwdList(0);
+                            loadTree();
+                        }
+                    } else {
+                        alert(res.msg);
+                    }
+                });
             }
         } else {
             alert(res.msg);

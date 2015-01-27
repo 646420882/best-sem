@@ -544,7 +544,7 @@ public class AssistantKeywordController extends WebContextSupport{
                 keywordDTOs.parallelStream().forEach(s -> assistantKeywordService.update(kid, s));
                 return writeMapObject(MSG, SUCCESS);
             } else {
-                return writeMapObject(MSG, "需要更新的关键词的单元还未上传到凤巢，请先上传该关键词的单元后再上传关键词！");
+                return writeMapObject(MSG, "noUp");
             }
         } else {
             switch (ls) {
@@ -567,5 +567,15 @@ public class AssistantKeywordController extends WebContextSupport{
             }
         }
         return writeMapObject(MSG, "上传失败");
+    }
+
+    @RequestMapping(value = "assistantKeyword/uploadAddByUp")
+    public ModelAndView uploadAddByUp(@RequestParam(value = "kid",required = true)String kid){
+        List<KeywordDTO> returnKeywordDTO=assistantKeywordService.uploadAddByUp(kid);
+        if(returnKeywordDTO.size()>0){
+            returnKeywordDTO.parallelStream().filter(s->s.getKeywordId()!=null).forEach(s -> assistantKeywordService.update(kid, s));
+            return  writeMapObject(MSG,SUCCESS);
+        }
+        return writeMapObject(MSG,"级联上传失败");
     }
 }

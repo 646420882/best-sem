@@ -338,7 +338,7 @@ function adgroupDel() {
     var _this = $(atmp);
     var oid = _this.find("td:eq(0) input").val();
     var td1 = _this.find("td:eq(1) input").val();
-    if (td1 == undefined) {
+    if (oid != undefined) {
         var con = confirm("是否删除该单元？");
         if (con) {
             $.get("../assistantAdgroup/del", {oid: oid}, function (rs) {
@@ -348,6 +348,8 @@ function adgroupDel() {
                 }
             });
         }
+    }else{
+        alert("请选择单元！");
     }
 }
 /**
@@ -817,6 +819,21 @@ function adgroupUploadOperate(aid,ls){
             if (plans.cid != null) {
                 getAdgroupPlan(plans.cid, plans.cn);
                 loadTree();
+            }
+        }else if(str.msg=="noUp"){
+            var conf=confirm("该单元上级及计划没有上传，是否要一并上传？");
+            if(conf){
+                $.get("/assistantAdgroup/uploadAddByUp",{aid:aid},function(res){
+                   if(res.msg=="1"){
+                       alert("上传成功");
+                       if (plans.cid != null) {
+                           getAdgroupPlan(plans.cid, plans.cn);
+                           loadTree();
+                       }
+                   } else{
+                       alert(res.msg);
+                   }
+                });
             }
         }else{
             alert(str.msg);

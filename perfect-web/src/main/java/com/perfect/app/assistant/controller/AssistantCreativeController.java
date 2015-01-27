@@ -12,6 +12,7 @@ import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.service.*;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.service.AdgroupService;
@@ -528,7 +529,7 @@ public class AssistantCreativeController extends WebContextSupport {
                 creativeDTOs.parallelStream().forEach(s->{creativeService.update(crid,s);});
                 return writeMapObject(MSG, SUCCESS);
             }else{
-                return writeMapObject(MSG, "需要更新的创意的单元还未上传到凤巢，请先上传该创意的单元后再上传创意！");
+                return writeMapObject(MSG, "noUp");
             }
         }else{
             switch (ls){
@@ -553,6 +554,15 @@ public class AssistantCreativeController extends WebContextSupport {
         }
 
         return writeMapObject(MSG,"上传失败");
+    }
+    @RequestMapping(value = "uploadAddByUp")
+    public ModelAndView uploadAddByUp(@RequestParam(value = "crid")String crid){
+        List<CreativeDTO> returnKeywordDTO=creativeService.uploadAddByUp(crid);
+        if(returnKeywordDTO.size()>0){
+            returnKeywordDTO.parallelStream().forEach(s->{creativeService.update(crid,s);});
+            return writeMapObject(MSG,SUCCESS);
+        }
+        return writeMapObject(MSG,"级联上传失败");
     }
 }
 

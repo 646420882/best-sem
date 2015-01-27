@@ -33,6 +33,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import javax.lang.model.element.Name;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -278,26 +279,59 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
     @Override
     public List<CampaignDTO> getOperateCamp() {
-       List<String> adgroupIds= getAdgroupIds();
-        return null;
+        //根据添加关键字反查到计划,全部增加状态，新增的关键字，新增的计划，新增的计划，只能是全部新增的才能反查到 star
+        List<String> adgroupIdsLsAdd = getStringAdgroupIds();//在新增的关键词模块获取添加的本地单元列表 ok
+        List<String> campaingIdsLsAdd=getStringCampaignIds(adgroupIdsLsAdd);//根据获取到的单元id列表去查询上级所属的计划id
+        //end
+
+        //根据添加的创意反查计划
+
+
+        List<CampaignDTO> campaignDTOs=getCampainByids(campaingIdsLsAdd);
+        return campaignDTOs;
     }
-    private List<String> getAdgroupIds(){
+
+    private List<String> getStringAdgroupIds() {//ok
         List<String> ids=new ArrayList<>();
         Aggregation aggregation = Aggregation.newAggregation(
                 match(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())),
-                project(ADGROUP_ID),
-                group(ADGROUP_ID)
+                project(OBJ_ADGROUP_ID),
+                group(OBJ_ADGROUP_ID).count().as(OBJ_ADGROUP_ID)
         );
         AggregationResults<KeywordEntity> aggregationResults = getMongoTemplate().aggregate(aggregation, TBL_KEYWORD, KeywordEntity.class);
-        aggregationResults.getMappedResults().parallelStream().forEach(s->{
-            if(s.getAdgroupId()!=null){
-                ids.add(s.getAdgroupId()+"");
-            }else{
-                ids.add(s.getAdgroupObjId());
+        List<KeywordEntity> keywordEntities = aggregationResults.getMappedResults();
+        for (KeywordEntity s : keywordEntities) {
+            if (s.getId() != null) {
+                ids.add(s.getId());
             }
-        });
+        }
     return  ids;
     }
+    private  List<String> getStringCampaignIds(List<String> adgroupIds){ //ok
+        List<String> ids=new ArrayList<>();
+        Aggregation aggregation = Aggregation.newAggregation(
+                match(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())),
+                project(OBJ_CAMPAIGN_ID),
+                group(OBJ_CAMPAIGN_ID).count().as(OBJ_CAMPAIGN_ID)
+        );
+        AggregationResults<AdgroupEntity> aggregationResults = getMongoTemplate().aggregate(aggregation, TBL_ADGROUP, AdgroupEntity.class);
+        List<AdgroupEntity> adgroupEntities = aggregationResults.getMappedResults();
+        for (AdgroupEntity s : adgroupEntities) {
+            if (s.getId() != null) {
+                ids.add(s.getId());
+            }
+        }
+        return ids;
+    }
+
+    private List<CampaignDTO> getCampainByids(List<String> camaingIds){
+        Query query = new BasicQuery("{}", "{" + CAMPAIGN_ID + " : 1," + NAME + " : 1}");
+        query.addCriteria(Criteria.where(SYSTEM_ID).in(camaingIds).and("ls").ne(null));
+        List<CampaignEntity> list = getMongoTemplate().find(query, CampaignEntity.class);
+        List<CampaignDTO> campaignDTOs=ObjectUtils.convert(list,CampaignDTO.class);
+        return campaignDTOs;
+    }
+
 
 
     /**

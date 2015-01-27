@@ -10,7 +10,11 @@ import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.creative.CreativeDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.service.*;
+import com.perfect.service.AdgroupService;
+import com.perfect.service.CampaignService;
 import com.perfect.service.CreativeService;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,11 @@ public class CreativeServiceImpl implements CreativeService {
     private AccountManageDAO accountManageDAO;
     @Resource
     private AdgroupDAO adgroupDAO;
+
+    @Resource
+    private CampaignService campaignService;
+    @Resource
+    private AdgroupService adgroupService;
 
     @Override
     public List<Long> getCreativeIdByAdgroupId(Long adgroupId) {
@@ -173,6 +182,38 @@ public class CreativeServiceImpl implements CreativeService {
         }
 
         return returnCreativeDTOs;
+    }
+
+    @Override
+    public List<CreativeDTO> uploadAddByUp(String crid) {
+        List<CreativeDTO> returnCreativeDTO=new ArrayList<>();
+        CreativeDTO creativeDTOFind=creativeDAO.findByObjId(crid);//查询出要上传的创意的oagid，根据oagid去查询本地的单元，根据oaid查询ocid查询出计划，并两者上传
+        AdgroupDTO adgroupDTOFind=adgroupDAO.findByObjId(creativeDTOFind.getAdgroupObjId());//根据关键字的oagid查询到本地的单元记录
+        if (adgroupDTOFind!=null) {//如果本地的数据还存在
+            //计划级联上传 star
+            //计划表中查询这条数据，用以cid是否存在，如果存在，嘿嘿...
+            if(adgroupDTOFind.getCampaignId()==null){//如果计划cid已经有了，则不需要再上传了
+                List<CampaignDTO> dtos=campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
+                dtos.parallelStream().forEach(j->campaignService.update(j,adgroupDTOFind.getCampaignObjId()));
+            }
+            //计划级联上传 end
+
+            //单元级联上传 star
+            //如果上面判断了计划，则肯定只有单元没有上传了，这里就不需要判断了，如果有agid则根本不会进入这个方法，所以不用判断单元是否上传
+            List<AdgroupDTO> returnAids = adgroupService.uploadAdd(new ArrayList<String>() {{
+                add(creativeDTOFind.getAdgroupObjId());
+            }});
+            //上传完毕后执行修改单元操作
+            returnAids.parallelStream().forEach(f -> adgroupService.update(creativeDTOFind.getAdgroupObjId(), f));
+            //单元级联上传 end
+
+            //最后上传创意
+            returnCreativeDTO = uploadAdd(new ArrayList<String>() {{
+                add(crid);
+            }});
+        }
+
+        return returnCreativeDTO;
     }
 
     @Override
