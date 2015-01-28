@@ -10,6 +10,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
@@ -1395,45 +1396,28 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/uploadMerge.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-    var target = document.getElementById("navigator_tips");
-    var myId = document.getElementById("nav_input1");
-    var ztree_minwidth = $(document.body).width() - 432;
-    var ztree_maxwidth = $(document.body).width() - 252;
-    $(".jingjia_right").css("width", ztree_minwidth);
-    $(window).resize(function () {
-        Tablewidth();
-    });
-    function Tablewidth(){
-        ztree_minwidth = $(document.body).width() - 432;
-        ztree_maxwidth = $(document.body).width() - 252;
-        if ($(".nav_left").css("display") == "none") {
-            $(".jingjia_right").css("width", ztree_maxwidth);
+        var mycheck = $("#navigator_tips,#nav_input1");
+        var ztree_minwidth = $(document.body).width() - 434;
+        var ztree_maxwidth = $(document.body).width() - 260;
+        $(".jingjia_right").css("width", ztree_minwidth);
+            $(window).resize(function () {
+                Tablewidth();
+            });
+            function Tablewidth(){
+                ztree_minwidth = $(document.body).width() - 434;
+                ztree_maxwidth = $(document.body).width() - 260;
+                if ($(".nav_left").css("display") == "none") {
+                    $(".jingjia_right").css("width", ztree_maxwidth);
+                }
+                else {
+                    $(".jingjia_right").css("width", ztree_minwidth);
+                }
         }
-        else {
-            $(".jingjia_right").css("width", ztree_minwidth);
-        }
-    }
-    if (!!window.ActiveXObject || "ActiveXObject" in window) {
-        target.attachEvent('onclick', function (event) {
-            Tablewidth()
-        });
-    } else {
-        target.addEventListener('click', function (event) {
-            Tablewidth()
-        }, false);
-    }
-//    if (!!window.ActiveXObject || "ActiveXObject" in window) {
-//        myId.attachEvent('onclick', function (event) {
-//            Tablewidth()
-//        });
-//    }
-//    else {
-//        myId.addEventListener('click', function (event) {
-//            Tablewidth()
-//        }, false);
-//    }
+        mycheck.click(function () {
+            Tablewidth();
 
-});
+        });
+    });
     $(function () {
         window.dialog = dialog;
     });
