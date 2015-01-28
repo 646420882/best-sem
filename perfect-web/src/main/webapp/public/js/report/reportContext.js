@@ -612,13 +612,19 @@ $(function () {
         $("#clickDiv").empty();
         $("#costDiv").empty();
         $("#convDiv").empty();
+        $("#pm_data").hide();
+        $("#container").hide();
+        $("#imprDiv").hide();
+        $("#pathImages").hide();
 
         $("#shuju").append("<div class='example'><div id='progress2'><div id='percentNumber'></div><div class='pbar'></div><div class='elapsed'></div></div></div>");
         var isMin = 0;
         if (judety <= 0) {
-            isMin = 8;
+            isMin = 5;
         } else {
-            isMin = 3;
+            $("#shuju").empty();
+            $("#pathImages").show();
+            isMin = 1;
             judety = 0;
         }
         // from second #5 till 15
@@ -653,6 +659,7 @@ $(function () {
                     $("#shuju").empty();
                     $("#shujuAll").empty();
                     $('#container').empty();
+                    $("#pathImages").hide();
                     var html_head = "";
                     if (data.rows.length > 0) {
                         t_date.length = 0;
@@ -1573,7 +1580,7 @@ $(function () {
         myChart.setOption(option);
 
     };
-//饼状图
+//map
     var legenddata;
     pieChart = function (showData, showName, showId, pm_array) {
         $("#pm_data").empty();
